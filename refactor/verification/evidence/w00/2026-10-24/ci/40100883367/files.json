@@ -1,0 +1,22 @@
+[
+  {
+    "path": "artifacts.json",
+    "bytes": 32,
+    "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+  },
+  {
+    "path": "jobs.json",
+    "bytes": 6071,
+    "sha256": "909ff8aa0d424e98bd6b9c534b21a03008dca564e122851faa5e4807e055d79a"
+  },
+  {
+    "path": "repository.log",
+    "bytes": 41537,
+    "sha256": "65a9850619e9116db3aa9fb4b8420a7f06ee08e3ce28425de86c8338f0a7002a"
+  },
+  {
+    "path": "run.json",
+    "bytes": 11976,
+    "sha256": "517ec292fabcee7c7cc1b8147eaa4218921d8a4c1fd59f5b9dbab57add0d657e"
+  }
+]

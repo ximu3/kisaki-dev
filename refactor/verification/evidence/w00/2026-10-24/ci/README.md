@@ -26,4 +26,8 @@
 
 本机修复检查包括[普通检查](local-check.log)、[Windows 构建](local-build.log)、[四窗口](local-e2e.json)和[开发会话](local-dev.json)。另外在同一独立 Windows [短路径环境](short-path-environment.json)中，[原实现](short-path-before.json)复现启动失败，[客户端脚本](short-path-http.json)返回 404；在创建测试工作区后立即解析真实路径，完整[开发回归通过](short-path-after.json)，耗时 71.42 秒。检查仍包含配置错误、源码编译失败与恢复、旧输出清除、HMR、公共包快照交接及保留开发资料的正常停止。
 
-六目标修复后的完整结果尚待取得，W00 保持进行中。
+## 增量选择修复
+
+四处修复提交为 `ff20474673cf0dc671e1094ae87a013bc55d544d`。[工作流 40100883367](https://github.com/ximu3/kisaki-w00-ci/actions/runs/40100883367)的类型与依赖检查通过，但首次走到 CI 的增量选择分支时，将临时 affected.json 留在根目录，导致格式检查失败。桌面矩阵因此未执行；本轮没有产生验证附件，日志与状态见[本轮记录](40100883367/run.json)及[仓库日志](40100883367/repository.log)。
+
+选择结果改写入 GitHub runner 的临时目录，原有格式规则、Turbo 依赖图选择和 Required checks 保持。六目标修复后的完整结果尚待取得，W00 保持进行中。

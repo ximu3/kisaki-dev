@@ -41,8 +41,8 @@ jobs:
           if [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]]; then
             echo "desktop=true" >> "$GITHUB_OUTPUT"
           else
-            pnpm exec turbo run build --filter=@kisaki3/desktop --affected --dry=json > affected.json
-            echo "desktop=$(jq -r 'any(.tasks[]; .package == "@kisaki3/desktop")' affected.json)" >> "$GITHUB_OUTPUT"
+            pnpm exec turbo run build --filter=@kisaki3/desktop --affected --dry=json > "$RUNNER_TEMP/desktop-affected.json"
+            echo "desktop=$(jq -r 'any(.tasks[]; .package == "@kisaki3/desktop")' "$RUNNER_TEMP/desktop-affected.json")" >> "$GITHUB_OUTPUT"
           fi
       - name: Check the pull request title
         if: github.event_name == 'pull_request'
