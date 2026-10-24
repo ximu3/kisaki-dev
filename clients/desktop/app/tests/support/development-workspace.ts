@@ -12,9 +12,12 @@ export async function prepareDevelopmentWorkspace(): Promise<{
   app: string
   close(): Promise<void>
 }> {
-  const root = await mkdtemp(join(tmpdir(), 'kisaki-dev-workspace-'))
-  const app = join(root, 'clients', 'desktop', 'app')
+  const temporary = await mkdtemp(join(tmpdir(), 'kisaki-dev-workspace-'))
   try {
+    // Resolve short paths before pnpm records dependency links and Vite resolves module locations.
+    const root = await realpath(temporary)
+    const app = join(root, 'clients', 'desktop', 'app')
+
     for (const file of [
       'package.json',
       'pnpm-workspace.yaml',
@@ -75,7 +78,11 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     const originalElectron = dirname(originalRequire.resolve('electron/package.json'))
     const fixtureElectron = dirname(fixtureRequire.resolve('electron/package.json'))
     if ((await realpath(originalElectron)) !== (await realpath(fixtureElectron))) {
-      await cp(join(originalElectron, 'dist'), join(fixtureElectron, 'dist'), { recursive: true })
+      // macOS framework links must keep their relative targets inside the copied application bundle.
+      await cp(join(originalElectron, 'dist'), join(fixtureElectron, 'dist'), {
+        recursive: true,
+        verbatimSymlinks: true,
+      })
       await copyFile(join(originalElectron, 'path.txt'), join(fixtureElectron, 'path.txt'))
     }
 
@@ -91,7 +98,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       close: () => rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {
-    await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
+    await rm(temporary, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
     throw cause
   }
 }

@@ -1,12 +1,12 @@
 # W00 验证仓库与正式仓库接续
 
-W00 的跨平台验证先在临时私有仓库 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci) 中进行，旧公开仓库的存档与同名重建另行安排。临时库已于 2026-10-24 创建并核实为私有，当前正在准备首次提交与六目标运行。
+W00 的跨平台验证先在临时私有仓库 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci) 中进行，旧公开仓库的存档与同名重建另行安排。临时库已于 2026-10-24 创建并核实为私有，初始提交已推送，六目标 CI 正在验证与修复。
 
 ## 当前状态
 
-- 新工程位于 `F:/project/kisaki`，origin 指向临时私有仓库，本地 main 正在准备初始提交。W00 本机结果与根配置收尾见 [2026-10-24 记录](../verification/evidence/w00/2026-10-24/README.md)及[根配置复核](../verification/evidence/w00/2026-10-24/root-config/README.md)。
+- 新工程位于 `F:/project/kisaki`，origin 指向临时私有仓库，main 的初始提交为 `66d39a78e19945bde223223769dd42741bb45cb1`（`chore: initial commit`）。W00 本机结果与根配置收尾见 [2026-10-24 记录](../verification/evidence/w00/2026-10-24/README.md)及[根配置复核](../verification/evidence/w00/2026-10-24/root-config/README.md)。
 - 旧 `ximu3/kisaki` 仍是公开仓库，默认分支为 main；当前账户具有 admin 权限。它有 17 个 Release，附件约 0.8 GB，完整存档尚未进行。
-- 新工程的六目标工作流已配置，本机 Windows x64 已实测；其余五个目标与远端 CI 运行结果仍缺。独立 ffprobe 已移除，媒体运行依赖由 libmpv-node 在接入工作包交付。
+- [首次六目标 CI](https://github.com/ximu3/kisaki-w00-ci/actions/runs/40099308610)已实际运行，仓库检查与八包消费通过；跨平台运行及打包发现的问题正在修复，详见[远端验证记录](../verification/evidence/w00/2026-10-24/ci/README.md)。独立 ffprobe 已移除，媒体运行依赖由 libmpv-node 在接入工作包交付。
 
 ## 临时私有仓库
 

@@ -14,7 +14,7 @@
 | 正式应用、目标制品与平台验收 | 已运行 W00 工程外壳、Windows 候选和独立原生／SQLite 验证；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-继续完成 [W00](work-packages.md#w00) 的[远端接续](w00-remote-handoff.md)。临时私有仓库 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci) 已建立，正在准备首次提交与六目标 CI；旧公开仓库的存档与同名重建另行安排。其余五个目标尚无运行结果，因此不将 W00 标为完成。设计、实现、运行验收和发布分别依据实际结果记录。
+继续完成 [W00](work-packages.md#w00) 的[远端接续](w00-remote-handoff.md)。临时私有仓库 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci) 已建立，初始提交已推送，六目标 CI 正在验证与修复；旧公开仓库的存档与同名重建另行安排。六目标尚未全部通过，因此不将 W00 标为完成。设计、实现、运行验收和发布分别依据实际结果记录。
 
 <a id="environments"></a>
 
@@ -24,7 +24,7 @@
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | [六目标 runner 矩阵](../design/engineering/build.md#platforms)已配置，临时私有仓库已建立且 Actions 已启用；实际运行待完成，额度 API 权限不足，沿用账户现有设置 |
+| 标准 CI | [六目标 runner 矩阵](../design/engineering/build.md#platforms)已实际启动，仓库检查与八包消费通过，桌面任务正在修复与验证；额度 API 权限不足，沿用账户现有设置 |
 
 <a id="progress"></a>
 
@@ -73,4 +73,4 @@ Windows x64 上，普通检查、八包消费、原生／SQLite 8 项、浏览�
 
 仓库根类型配置已拆分为工具、配置和测试三个项目，12 个输入及其编辑器归属均已核对，Node 工具不再混入 DOM 全局。根工具文档与实际目录一致，首次提交的忽略文件处理已修正，见[根配置收尾](../verification/evidence/w00/2026-10-24/root-config/README.md)。
 
-A24、A26、A28、A31 的本机工程范围已取得证据；其余五目标的实际候选与运行尚缺，W00 保持进行中。临时私有验证库已创建，后续提交、运行和证据留存按[清单](w00-remote-handoff.md)处理。尚未发布或部署。
+A24、A26、A28、A31 的本机工程范围已取得证据；六目标 CI 尚未全部通过，W00 保持进行中。临时私有验证库已创建，初始提交及[首次运行](../verification/evidence/w00/2026-10-24/ci/README.md)已记录，修复与证据留存按[清单](w00-remote-handoff.md)处理。尚未发布或部署。

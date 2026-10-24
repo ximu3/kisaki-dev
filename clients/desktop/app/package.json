@@ -5,7 +5,11 @@
   "type": "module",
   "license": "AGPL-3.0-only",
   "description": "A local library for games, anime, comics and novels.",
-  "author": "ximu3",
+  "homepage": "https://github.com/ximu3/kisaki",
+  "author": {
+    "name": "ximu3",
+    "email": "152481053+ximu3@users.noreply.github.com"
+  },
   "scripts": {
     "dev": "tsx tools/dev/cli.ts",
     "build": "tsx tools/build/cli.ts",

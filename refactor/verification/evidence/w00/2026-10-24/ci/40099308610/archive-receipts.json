@@ -1,0 +1,51 @@
+[
+  {
+    "id": 12562512486,
+    "name": "desktop-macos-x64",
+    "bytes": 4139,
+    "sha256": "9c0d7ec14a72469586d4981387b63f9e5a8717647474adb8d914b93ecc9df003",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-macos-x64.zip"
+  },
+  {
+    "id": 12562496056,
+    "name": "desktop-linux-arm64",
+    "bytes": 16003,
+    "sha256": "aade1aea314a5067c9f8c977fb940e13c4415a73aaabdb587543ecafab68e91c",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-linux-arm64.zip"
+  },
+  {
+    "id": 12562471211,
+    "name": "desktop-macos-arm64",
+    "bytes": 4092,
+    "sha256": "d0ce2b35e59e0ab363a304db0abf9d39b36a44a702ef0b5276a657100b64bff5",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-macos-arm64.zip"
+  },
+  {
+    "id": 12562461765,
+    "name": "desktop-windows-arm64",
+    "bytes": 3722,
+    "sha256": "a22822fed61702d400b30558515eb7555fe9e45c658a0bd7b882add050da7869",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-windows-arm64.zip"
+  },
+  {
+    "id": 12562392595,
+    "name": "desktop-linux-x64",
+    "bytes": 15051,
+    "sha256": "2d75374fb8ce5d031507fdd7e6e86aa9f44b7e29b4aea572dc73a7ee4f43da85",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-linux-x64.zip"
+  },
+  {
+    "id": 12562227692,
+    "name": "repository-verification",
+    "bytes": 23384,
+    "sha256": "9b9cc8b9b14714f4fc86dd329a08b811a839f3258d3766fa8ec5f3d669f58f79",
+    "path": "artifacts/w00-ci/40099308610/archives/repository-verification.zip"
+  },
+  {
+    "id": 12561778753,
+    "name": "desktop-windows-x64",
+    "bytes": 3581,
+    "sha256": "c4500043dce49fc1c0796d31adea5eae779edcb1a7521a01b72bc93a56e3c542",
+    "path": "artifacts/w00-ci/40099308610/archives/desktop-windows-x64.zip"
+  }
+]

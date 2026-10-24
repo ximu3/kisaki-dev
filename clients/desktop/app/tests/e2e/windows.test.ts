@@ -38,8 +38,10 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       expect(runtime.sessionData.startsWith(profile)).toBe(true)
       if (process.platform !== 'linux') expect(runtime.sandboxed).toBe(true)
       expect(runtime.metrics).toContain('Utility')
+
       const closed = desktop.waitForEvent('close')
-      await page.getByRole('button', { name: 'Close window' }).click()
+      // The click closes its renderer; completion is the application's normal exit, not navigation.
+      await page.getByRole('button', { name: 'Close window' }).click({ noWaitAfter: true })
       await closed
       expect(child.exitCode).toBe(0)
     })

@@ -16,9 +16,17 @@ export async function buildDesktop(target: DesktopTarget): Promise<DesktopBuild>
   }
 
   const output = buildDirectory(target)
-  const manifest: { version: string; devDependencies: { electron: string } } = JSON.parse(
-    await readFile(join(appRoot, 'package.json'), 'utf8'),
-  )
+  const manifest: {
+    name: string
+    version: string
+    type: string
+    description: string
+    homepage: string
+    author: { name: string; email: string }
+    license: string
+    devDependencies: { electron: string }
+  } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
+
   return replaceOutput(output, async (staging) => {
     const buildId = await sourceIdentity()
     const resources = await prepareResources(target)
@@ -44,14 +52,15 @@ export async function buildDesktop(target: DesktopTarget): Promise<DesktopBuild>
       join(staging, 'package.json'),
       JSON.stringify(
         {
-          name: '@kisaki3/desktop',
+          name: manifest.name,
           version: manifest.version,
-          type: 'module',
+          type: manifest.type,
           main: 'main/entry.js',
           desktopName: 'me.kisaki.desktop',
-          description: 'A local library for games, anime, comics and novels.',
-          author: 'ximu3',
-          license: 'AGPL-3.0-only',
+          description: manifest.description,
+          homepage: manifest.homepage,
+          author: manifest.author,
+          license: manifest.license,
         },
         null,
         2,
