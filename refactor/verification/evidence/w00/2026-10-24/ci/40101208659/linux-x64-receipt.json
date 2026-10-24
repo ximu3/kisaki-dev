@@ -1,0 +1,24 @@
+{
+  "target": "linux-x64",
+  "version": "0.1.0-dev.0",
+  "buildId": "5602ea20ded0aad4f13ea023e25a45217e23fed77c844b71179d547a6d0fbbde",
+  "testOnly": true,
+  "files": [
+    {
+      "path": "Kisaki-0.1.0-dev.0-linux-x64.AppImage",
+      "sha256": "71ec33b3d0a756e2f303f7531a759beec75c2cf87400cd93d0764306c3740f44"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-linux-x64.deb",
+      "sha256": "93007f3a8de18781c06b5098be7d4ba8b9065380f3e7a2b9b492a2cbfd7cadc5"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-linux-x64.rpm",
+      "sha256": "2cb281e1671d02b18dee3e2a4732e0469a3d88362133f0e530642d215052cf37"
+    },
+    {
+      "path": "latest-linux.yml",
+      "sha256": "2f526157d809157353acf8413e07aa09df20a3ad262cbd43f4ea6ba9ba834a1b"
+    }
+  ]
+}
