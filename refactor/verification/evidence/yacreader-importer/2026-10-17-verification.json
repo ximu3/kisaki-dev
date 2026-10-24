@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 30,
+  "extension": "YACReader Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceRef": "10.4.0",
+  "commit": "28f92f4d8bdbb7170f6002e00bed7503356eea03",
+  "databaseVersion": "9.16.0",
+  "originEvidence": [
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:18.812584+00:00",
+      "bytes": 6402,
+      "sha256": "6f5406f46c7a65f421b8bd2a7139aac19e55b8731e30caf5a437e71e0efa0b51",
+      "archived": false,
+      "default_branch": "develop"
+    },
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:19.279488+00:00",
+      "bytes": 11277,
+      "sha256": "db860011e5352bdcae3505b399d5789683d1630f9017f23893e7923b6cb78c1a",
+      "tag_name": "10.4.0",
+      "published_at": "2026-10-09T15:30:18Z",
+      "html_url": "https://github.com/YACReader/yacreader/releases/tag/10.4.0"
+    },
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader/git/ref/tags/10.4.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:19.701004+00:00",
+      "bytes": 347,
+      "sha256": "aae6e0a19fb48e99b3beaf1061f952efca9824efe6261b91f2d6807116a26a8d",
+      "ref": "refs/tags/10.4.0",
+      "object": {
+        "sha": "28f92f4d8bdbb7170f6002e00bed7503356eea03",
+        "type": "commit",
+        "url": "https://api.github.com/repos/YACReader/yacreader/git/commits/28f92f4d8bdbb7170f6002e00bed7503356eea03"
+      }
+    }
+  ],
+  "sourceFiles": 42,
+  "sourceContract": "source-contract.json",
+  "fixtureManifest": "fixture-manifest.json",
+  "sourceApplicationExecuted": false,
+  "qtOrCppExecuted": false,
+  "productionImporterExecuted": false,
+  "inputFiles": 32,
+  "checks": {
+    "byteAndMapping": 116,
+    "totalPassed": 116,
+    "failed": 0,
+    "allInputsUnchanged": true
+  },
+  "results": ["synthetic-results.json"],
+  "notClaimed": [
+    "Real YACReader library, official user export, Qt or C++ execution.",
+    "A live SQLite WAL snapshot or source database upgrade or restore.",
+    "Every archive backend, image plugin, locale or source-page collation.",
+    "Native Kisaki writes, actual attachment adoption or Kana round trip.",
+    "All application versions, forks or standalone bookmarks.yacr.",
+    "All-platform independent extension artifacts."
+  ]
+}

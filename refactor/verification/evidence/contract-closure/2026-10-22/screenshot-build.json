@@ -1,0 +1,32 @@
+{
+  "scope": "isolated Windows x64 design probe; not a release",
+  "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "patchSha256": "a71f6fed21e0a5754f76cf5c0df9e34126488e0330332fc5259ffeb79d316f57",
+  "sourceSha256": "6d5bbe353c97f114c6eee305495e676b83c330cd6a1b44f464018b541ded8ccf",
+  "dll": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\contract-closure-20261022\\runtime\\libmpv-2.dll",
+  "dllSha256": "2cbda16b6ee887c6ff0e5c2cd5205ef056086aaf264f9e278664f5b35591655e",
+  "options": [
+    "--buildtype=release",
+    "--wrap-mode=nodownload",
+    "--auto-features=disabled",
+    "-Dlibmpv=true",
+    "-Dcplayer=false",
+    "-Dbuild-date=false",
+    "-Dgpl=false",
+    "-Dlua=luajit",
+    "-Djavascript=enabled",
+    "-Dwin32-threads=enabled",
+    "-Dd3d11=enabled",
+    "-Dd3d-hwaccel=enabled",
+    "-Dwasapi=enabled",
+    "-Dshaderc=enabled",
+    "-Dspirv-cross=enabled",
+    "-Dgl=disabled",
+    "-Diconv=enabled",
+    "-Dzlib=enabled",
+    "-Dlcms2=enabled",
+    "-Dlibavdevice=enabled",
+    "-Dlibcurl=disabled"
+  ],
+  "originalDependencyReceiptSha256": "e3886b3bbe297a20533967271df59af4aac219c8e41fbce7bf729f9a6182fc15"
+}

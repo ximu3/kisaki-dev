@@ -1,0 +1,129 @@
+{
+  "checkedAt": "2026-10-18T12:17:59.570377+00:00",
+  "checks": {
+    "softwareHasSeparatePixelContract": true,
+    "softwareDoesNotUseGpuTargetOptions": true,
+    "scrgbDocumentedForGpuNextOnly": true,
+    "embeddedRendererUsesGlVideo": true,
+    "linearAndScrgbSkipNativeOutputEncoding": true,
+    "linearReferenceWhiteIs203": true,
+    "scrgbReferenceWhiteIs80": true,
+    "hdrClassificationIncludesTargetPeak": true,
+    "alphaPremultiplicationPrecedesOutputColorMapping": true,
+    "publicShaderHooksExist": true,
+    "swapReportsHaveNoTimestampArgument": true,
+    "swapReportingMustBeConsistent": true,
+    "missingSwapReportsHaveNativeTimeout": true,
+    "electronHasScRgb80Descriptor": true,
+    "electronDocumentsTimestampAndReleaseLifetime": true
+  },
+  "sources": [
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "include/mpv/render.h",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h",
+      "status": 200,
+      "sha256": "f2550aa29b2e9b20988bd954b4383e9fa05fd9e40d1669fbc6edf2afac603f15"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/vo_libmpv.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/vo_libmpv.c",
+      "status": 200,
+      "sha256": "02dd9ba5ac5c20830dd77fe67ce5f18ecea298aa1e36f5686f92ed52306905b4"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/libmpv_sw.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/libmpv_sw.c",
+      "status": 200,
+      "sha256": "746f788716621bc7b0de3d2e02b015de459f8870404f7c8b87a62d987b99c0fc"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/gpu/libmpv_gpu.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/libmpv_gpu.c",
+      "status": 200,
+      "sha256": "d14137230a2ddd9a5dbf0cbdbe85478208b68a3f2e0a4c186c34266ef27cce60"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/gpu/video.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/video.c",
+      "status": 200,
+      "sha256": "8ca4ac4daebbef241ed0cf4207a0862affbcf385405fa19553fe071ba1246bdd"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/gpu/video_shaders.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/video_shaders.c",
+      "status": 200,
+      "sha256": "b60130a8f3ead493ce34b511b579062a390efc29d616c97f5637370bf2f1c0cd"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/csputils.h",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/csputils.h",
+      "status": 200,
+      "sha256": "78379fd5bdc5146bbbb556a517028b6f8a6e0d2c69352d11cb2488ec05c44923"
+    },
+    {
+      "repository": "mpv-player/mpv",
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "DOCS/man/options.rst",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/DOCS/man/options.rst",
+      "status": 200,
+      "sha256": "61644f1f46e14f050a7f7ae0e1ddc27f3024beeb78f63b1c40b144343f04e8e2"
+    },
+    {
+      "repository": "haasn/libplacebo",
+      "revision": "0df80ae",
+      "path": "src/colorspace.c",
+      "url": "https://raw.githubusercontent.com/haasn/libplacebo/0df80ae/src/colorspace.c",
+      "status": 200,
+      "sha256": "0e533b9419d1389c5ea965377ab3680a9b933dc3d743b955bde3ec576c31cec2"
+    },
+    {
+      "repository": "haasn/libplacebo",
+      "revision": "0df80ae",
+      "path": "src/include/libplacebo/colorspace.h",
+      "url": "https://raw.githubusercontent.com/haasn/libplacebo/0df80ae/src/include/libplacebo/colorspace.h",
+      "status": 200,
+      "sha256": "cf3154fa80bdad57f8b1fcd7ae1afa26edc6ccfb3fb364018bb318d9053e07fe"
+    },
+    {
+      "repository": "electron/electron",
+      "revision": "19c601167d4ae75989938416c18ed81eb21c6020",
+      "path": "docs/api/structures/color-space.md",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/color-space.md",
+      "status": 200,
+      "sha256": "d91833e30056cc4414a6773c472601decab73fa9aaadf59adda2136d10ce42be"
+    },
+    {
+      "repository": "electron/electron",
+      "revision": "19c601167d4ae75989938416c18ed81eb21c6020",
+      "path": "docs/api/structures/shared-texture-import-texture-info.md",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-import-texture-info.md",
+      "status": 200,
+      "sha256": "5bfb47ca2b85fdbfeec9991e77fc80fdea75050b89e52a8b6ff7f900e4a4ca2e"
+    },
+    {
+      "repository": "electron/electron",
+      "revision": "19c601167d4ae75989938416c18ed81eb21c6020",
+      "path": "docs/api/shared-texture.md",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/shared-texture.md",
+      "status": 200,
+      "sha256": "508e3aa988d686cee1febf57b305dd1cfe06ee92cb49a9dd91fa701f6d5f845d"
+    }
+  ],
+  "libplaceboReferenceIsNotExactDirtyBuildSource": true,
+  "sourceChecksAreNotRuntimeValidation": true,
+  "sourceSha256": "929ab9693af2150f61824933ad88c95c70c2f2fbb3e765529bd8b93d67906ac0"
+}

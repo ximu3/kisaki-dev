@@ -1,0 +1,151 @@
+{
+  "checkedAt": "2026-10-19T09:13:22.217761+00:00",
+  "designStatus": "proposal",
+  "sources": [
+    {
+      "name": "mobi.js",
+      "url": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/mobi.js",
+      "finalUrl": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/mobi.js",
+      "status": 200,
+      "bytes": 47716,
+      "sha256": "016526df13a9f11ee6671a8c74346e1cf41fe6bdfe50165fdcbf744f015694f3"
+    },
+    {
+      "name": "foliate-LICENSE",
+      "url": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/LICENSE",
+      "finalUrl": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/LICENSE",
+      "status": 200,
+      "bytes": 1070,
+      "sha256": "b621ffc351fe263bc9b09dd0bc1c9332fda9c462a3904c1e4f0b4d3236b9c28c"
+    },
+    {
+      "name": "archive-reader.js",
+      "url": "https://raw.githubusercontent.com/nika-begiashvili/libarchivejs/0989c1a6db20d030d793b1763e20d880068091bd/src/webworker/archive-reader.js",
+      "finalUrl": "https://raw.githubusercontent.com/nika-begiashvili/libarchivejs/0989c1a6db20d030d793b1763e20d880068091bd/src/webworker/archive-reader.js",
+      "status": 200,
+      "bytes": 3543,
+      "sha256": "466a0e477c0d2a316f65396bf1b9a91e117dadfc5191d12f7cefd5e4e81d1032"
+    },
+    {
+      "name": "archive-main.c",
+      "url": "https://raw.githubusercontent.com/nika-begiashvili/libarchivejs/0989c1a6db20d030d793b1763e20d880068091bd/lib/wrapper/main.c",
+      "finalUrl": "https://raw.githubusercontent.com/nika-begiashvili/libarchivejs/0989c1a6db20d030d793b1763e20d880068091bd/lib/wrapper/main.c",
+      "status": 200,
+      "bytes": 2967,
+      "sha256": "e90032f00680f64f250974ecdd9a9f209a60f217ae70bf58740b9f5fa7506c02"
+    },
+    {
+      "name": "archive-rar.c",
+      "url": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/archive_read_support_format_rar.c",
+      "finalUrl": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/archive_read_support_format_rar.c",
+      "status": 200,
+      "bytes": 111283,
+      "sha256": "9624cd814097eb5df426dccd28b529be36a1d5b62fd0bcb73f2932e245ef666d"
+    },
+    {
+      "name": "archive-rar5.c",
+      "url": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/archive_read_support_format_rar5.c",
+      "finalUrl": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/archive_read_support_format_rar5.c",
+      "status": 200,
+      "bytes": 129492,
+      "sha256": "0a21cc37ef7ae0f83bbffdac1b08414380787ddf1cddae7b8539985e4b28e3ab"
+    },
+    {
+      "name": "unrarsrc-7.2.7.tar.gz",
+      "url": "https://www.rarlab.com/rar/unrarsrc-7.2.7.tar.gz",
+      "finalUrl": "https://www.rarlab.com/rar/unrarsrc-7.2.7.tar.gz",
+      "status": 200,
+      "bytes": 270458,
+      "sha256": "01d903a7dcf413cb2925696d7796e48e38d471f79bfe7ef3ad2aebf6c12dbefd"
+    },
+    {
+      "name": "asyncify.html",
+      "url": "https://emscripten.org/docs/porting/asyncify.html",
+      "finalUrl": "https://emscripten.org/docs/porting/asyncify.html",
+      "status": 200,
+      "bytes": 81218,
+      "sha256": "58f84e789d4f76614878f266c21df32d0a7c7686fa6451dd7189691f2b806722"
+    },
+    {
+      "name": "pdf-npm.json",
+      "url": "https://registry.npmjs.org/pdfjs-dist/6.4.299",
+      "finalUrl": "https://registry.npmjs.org/pdfjs-dist/6.4.299",
+      "status": 200,
+      "bytes": 2172,
+      "sha256": "98080aea15a64442cd77177588336be176d30b37f51e19bacc64653b13453e30"
+    },
+    {
+      "name": "zip-npm.json",
+      "url": "https://registry.npmjs.org/@zip.js/zip.js/2.24.0",
+      "finalUrl": "https://registry.npmjs.org/@zip.js/zip.js/2.24.0",
+      "status": 200,
+      "bytes": 8255,
+      "sha256": "f50f6b11736a6f1debb729c1dd3d55dc665151a653bcadef211ecba0771b395c"
+    },
+    {
+      "name": "parse5-npm.json",
+      "url": "https://registry.npmjs.org/parse5/8.0.1",
+      "finalUrl": "https://registry.npmjs.org/parse5/8.0.1",
+      "status": 200,
+      "bytes": 2095,
+      "sha256": "84d53f636c6da77153f63907b05763dde0fa9b4476d18198ee539de5b345785a"
+    },
+    {
+      "name": "css-tree-npm.json",
+      "url": "https://registry.npmjs.org/css-tree/3.2.1",
+      "finalUrl": "https://registry.npmjs.org/css-tree/3.2.1",
+      "status": 200,
+      "bytes": 4266,
+      "sha256": "a6b877926e148cc2b64643c7679dfcc38ba8a35a9a515f6fd1b8df85d02f8264"
+    },
+    {
+      "name": "parse5-options.html",
+      "url": "https://parse5.js.org/interfaces/parse5.ParserOptions.html",
+      "finalUrl": "https://parse5.js.org/interfaces/parse5.ParserOptions.html",
+      "status": 200,
+      "bytes": 16873,
+      "sha256": "0267b483a2bcaf8ab2208b57e543d40299a0ffb021703c0cd556e96ea5353c06"
+    },
+    {
+      "name": "css-tree-readme.md",
+      "url": "https://raw.githubusercontent.com/csstree/csstree/v3.2.1/README.md",
+      "finalUrl": "https://raw.githubusercontent.com/csstree/csstree/v3.2.1/README.md",
+      "status": 200,
+      "bytes": 8376,
+      "sha256": "a2026e60110b5b033b55b8c36c306060c02e0e4ac0c56377f9b068a5f05b4825"
+    }
+  ],
+  "packages": [
+    {
+      "name": "pdf.tgz",
+      "url": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz",
+      "finalUrl": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz",
+      "status": 200,
+      "bytes": 8539589,
+      "sha256": "86269b40170eb41740ea05ad2102d71d33de4f122b34eb2f478be0ea7779c415",
+      "version": "6.4.299",
+      "license": "Apache-2.0",
+      "registryIntegrityVerified": true,
+      "integrity": "sha512-AVl138zALtfaAPvADulE0PZThbYzCBS79nL4pOSL/6Sm/4AH5A21BD9VHt97OlCuzJuCpmeZtAtkinisF4Vb1g=="
+    },
+    {
+      "name": "zip.tgz",
+      "url": "https://registry.npmjs.org/@zip.js/zip.js/-/zip.js-2.24.0.tgz",
+      "finalUrl": "https://registry.npmjs.org/@zip.js/zip.js/-/zip.js-2.24.0.tgz",
+      "status": 200,
+      "bytes": 2387732,
+      "sha256": "37fe939b7eaf1edc0291fd11c9de5b0814f91b259951489f95ed6f18f5c2db46",
+      "version": "2.24.0",
+      "license": "BSD-3-Clause",
+      "registryIntegrityVerified": true,
+      "integrity": "sha512-WlaVKzdqBK+RF3bdiXZWbdCnvGB6PdO4IHC1mn/2Yfl3bASgqUNegnU3+PNg61iecwoPfUi5BgLUPqBukXpyWw=="
+    }
+  ],
+  "unrarSourceVersion": "7.23",
+  "unrarArchiveName": "unrarsrc-7.2.7.tar.gz",
+  "wasmBuildExecuted": false,
+  "rarDecoderExecuted": false,
+  "mobiDecoderExecuted": false,
+  "kanaProjectCreated": false,
+  "completeDependencyTupleLocked": false
+}

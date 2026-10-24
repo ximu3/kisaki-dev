@@ -1,0 +1,44 @@
+{
+  "created_on": 1792140000,
+  "version": "json/1.0.0",
+  "documents": [
+    {
+      "title": "星海纪事",
+      "author": "甲作者\n乙作者",
+      "file": "/old/books/pdf-book.pdf",
+      "md5sum": "1148f01a540ff7d7355d6c1860918442",
+      "number_of_pages": 3,
+      "exported": false,
+      "entries": [
+        {
+          "sort": "highlight",
+          "page": "i",
+          "time": 1788235200,
+          "text": "第一行\n第二行",
+          "note": "保留 *字面星号*",
+          "chapter": "序",
+          "drawer": "lighten",
+          "color": "yellow",
+          "pn_xp": 1
+        }
+      ]
+    },
+    {
+      "title": "星光旅记",
+      "author": "丁作者",
+      "file": "/old/books/novel.epub",
+      "number_of_pages": 100,
+      "exported": false,
+      "entries": [
+        {
+          "sort": "highlight",
+          "page": 20,
+          "time": 1788667200,
+          "text": "星光🌙",
+          "note": "原文摘录仍可保留。",
+          "pn_xp": "/body/DocFragment[2]/body/p[1].0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[package]
+name = "libmpv-composition-probe"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "libmpv-composition-probe"
+path = "main.rs"
+
+[build-dependencies]
+cc = "=1.7.0"
+
+[workspace]

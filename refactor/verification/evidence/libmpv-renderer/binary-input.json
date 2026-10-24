@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-18T12:46:55.891145+00:00",
+  "pullRequest": "https://github.com/mpv-player/mpv/pull/18607",
+  "pullRequestHead": "16563d120f3260cdc0beb1b07f199818fc32dd8c",
+  "testedMergeCommit": "69f6399d15fa52c47b419f2a86330a9b5c13f72f",
+  "pullRequestState": "open",
+  "pullRequestMerged": false,
+  "currentPullRequestHead": "16563d120f3260cdc0beb1b07f199818fc32dd8c",
+  "workflowRun": 38387767841,
+  "artifactId": 11826903959,
+  "artifactName": "libmpv-v0.41.0-dev-g69f6399d1-pr18607-38387767841-x86_64-w64-mingw32-lgpl",
+  "source": "https://nightly.link/mpv-player/mpv/actions/artifacts/11826903959.zip",
+  "archiveSha256": "e03e03127feef3efd910d55b44457cc59b3cff3890a8f4e6a4cf60d48e9e9090",
+  "dll": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\renderer-upstream\\pr18607-binary\\libmpv-2.dll",
+  "dllSha256": "60cc769e18cf4e88ba7c4f72305447ba34a868f6d6f0b85f087a2b359f9c2867",
+  "artifactLicenseLabel": "lgpl",
+  "selectedForRelease": false,
+  "sourceSha256": "85ea88eda783561bd0243e0c0fd2c749aa29018a0d54a0bf2c329eeaa5778f41"
+}

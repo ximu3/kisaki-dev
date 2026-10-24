@@ -1,0 +1,291 @@
+{
+  "checkedAt": "2026-10-18T12:09:06.787004+00:00",
+  "versions": {
+    "mpv-version": "mpv v0.41.0-1205-g01e2533f3",
+    "libplacebo-version": "v7.376.0 (v7.360.0-171-g0df80ae-dirty)",
+    "ffmpeg-version": "N-127617-g94cba3150"
+  },
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "blank": {
+    "format": "bgr0",
+    "width": 63,
+    "height": 47,
+    "stride": 256,
+    "aligned": true,
+    "samples": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+  },
+  "formats": [
+    {
+      "format": "rgb0",
+      "width": 63,
+      "height": 47,
+      "stride": 256,
+      "aligned": true,
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          255,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          255,
+          255,
+          0
+        ],
+        [
+          128,
+          128,
+          128,
+          0
+        ]
+      ],
+      "sha256": "86ee22b00fb4704f6654dd0a210aa07278a55e7dc1ce87faf6abaaf4e8e1e270"
+    },
+    {
+      "format": "bgr0",
+      "width": 63,
+      "height": 47,
+      "stride": 256,
+      "aligned": true,
+      "samples": [
+        [
+          0,
+          0,
+          255,
+          0
+        ],
+        [
+          0,
+          255,
+          0,
+          0
+        ],
+        [
+          255,
+          0,
+          0,
+          0
+        ],
+        [
+          255,
+          255,
+          255,
+          0
+        ],
+        [
+          128,
+          128,
+          128,
+          0
+        ]
+      ],
+      "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993"
+    },
+    {
+      "format": "0bgr",
+      "width": 63,
+      "height": 47,
+      "stride": 256,
+      "aligned": true,
+      "samples": [
+        [
+          0,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255,
+          0
+        ],
+        [
+          0,
+          255,
+          0,
+          0
+        ],
+        [
+          0,
+          255,
+          255,
+          255
+        ],
+        [
+          0,
+          128,
+          128,
+          128
+        ]
+      ],
+      "sha256": "92aa86ded53da240e985e0a8676b44e6a1eccc9a7862586c13de5f5c8fc0432c"
+    },
+    {
+      "format": "0rgb",
+      "width": 63,
+      "height": 47,
+      "stride": 256,
+      "aligned": true,
+      "samples": [
+        [
+          0,
+          255,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          255,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          255,
+          255,
+          255
+        ],
+        [
+          0,
+          128,
+          128,
+          128
+        ]
+      ],
+      "sha256": "203fda45fa717b1267918a5cf2f3bf4cc6514d688a2770f15db8306d50dbc348"
+    },
+    {
+      "format": "rgb24",
+      "width": 63,
+      "height": 47,
+      "stride": 192,
+      "aligned": true,
+      "samples": [
+        [
+          255,
+          0,
+          0
+        ],
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          0,
+          0,
+          255
+        ],
+        [
+          255,
+          255,
+          255
+        ],
+        [
+          128,
+          128,
+          128
+        ]
+      ],
+      "sha256": "0d0b7e6b3663906ca6a6cbb062e7ff159e3fcdd726e19629da353042ac5aafe4"
+    }
+  ],
+  "resized": {
+    "format": "bgr0",
+    "width": 31,
+    "height": 23,
+    "stride": 128,
+    "aligned": true,
+    "samples": [
+      [
+        0,
+        0,
+        255,
+        0
+      ],
+      [
+        0,
+        255,
+        0,
+        0
+      ],
+      [
+        255,
+        0,
+        0,
+        0
+      ],
+      [
+        255,
+        255,
+        255,
+        0
+      ],
+      [
+        128,
+        128,
+        128,
+        0
+      ]
+    ],
+    "sha256": "cfcb0778c9ec1d07e3b51a258c1ee1ffd19f14bb83fa6a1b2b5db6b8e389ee33"
+  },
+  "targetTrcChangeAffectedPixels": false,
+  "heldStorageStableAfterClose": true,
+  "softwareRenderApiExecuted": true,
+  "sourceSha256": "9de8ddcbcb9b21ee2de49c044045d38816b375e2d57274ed15b2b7f7f6335196",
+  "stderr": ""
+}

@@ -1,0 +1,288 @@
+{
+  "checkedOn": "2026-10-12",
+  "scope": "Synthetic design projections only; no personal records were read and no remote writes were performed. Server-side concurrency and actual authentication remain unverified.",
+  "syntheticLabelPrivacy": [
+    {
+      "id": 1,
+      "private": true
+    },
+    {
+      "id": 2,
+      "private": false
+    },
+    {
+      "id": 3,
+      "private": true
+    },
+    {
+      "id": 4,
+      "private": true
+    },
+    {
+      "id": 5,
+      "private": true
+    },
+    {
+      "id": 6,
+      "private": false
+    },
+    {
+      "id": 7,
+      "private": false
+    },
+    {
+      "id": 10,
+      "private": true
+    }
+  ],
+  "privacyCases": [
+    {
+      "name": "private-status-to-public-label",
+      "before": {
+        "labels": [1],
+        "vote": null
+      },
+      "patch": {
+        "unset": [1],
+        "set": [2]
+      },
+      "expected": "unmappable",
+      "output": {
+        "outcome": "unmappable",
+        "reason": "existing visibility would change"
+      }
+    },
+    {
+      "name": "private-record-gains-public-voted-label",
+      "before": {
+        "labels": [1, 10],
+        "vote": null
+      },
+      "patch": {
+        "vote": 80
+      },
+      "expected": "unmappable",
+      "output": {
+        "outcome": "unmappable",
+        "reason": "existing visibility would change"
+      }
+    },
+    {
+      "name": "clearing-vote-would-hide-public-record",
+      "before": {
+        "labels": [5, 7],
+        "vote": 80
+      },
+      "patch": {
+        "vote": null
+      },
+      "expected": "unmappable",
+      "output": {
+        "outcome": "unmappable",
+        "reason": "existing visibility would change"
+      }
+    },
+    {
+      "name": "private-to-private-progress",
+      "before": {
+        "labels": [1, 10],
+        "vote": null
+      },
+      "patch": {
+        "unset": [1],
+        "set": [3]
+      },
+      "expected": "write",
+      "output": {
+        "outcome": "write",
+        "afterLabels": [3, 10],
+        "afterPrivate": true
+      }
+    },
+    {
+      "name": "public-other-label-preserved",
+      "before": {
+        "labels": [1, 6],
+        "vote": null
+      },
+      "patch": {
+        "unset": [1],
+        "set": [3]
+      },
+      "expected": "write",
+      "output": {
+        "outcome": "write",
+        "afterLabels": [3, 6],
+        "afterPrivate": false
+      }
+    },
+    {
+      "name": "private-creation-cannot-include-public-vote",
+      "before": null,
+      "patch": {
+        "set": [1],
+        "vote": 80
+      },
+      "selectedCreationVisibility": true,
+      "expected": "unmappable",
+      "output": {
+        "outcome": "unmappable",
+        "reason": "selected fields cannot realize creation visibility"
+      }
+    },
+    {
+      "name": "explicit-private-creation",
+      "before": null,
+      "patch": {
+        "set": [5]
+      },
+      "selectedCreationVisibility": true,
+      "expected": "write",
+      "output": {
+        "outcome": "write",
+        "afterLabels": [5],
+        "afterPrivate": true
+      }
+    },
+    {
+      "name": "creation-needs-chosen-visibility",
+      "before": null,
+      "patch": {
+        "set": [5]
+      },
+      "expected": "unmappable",
+      "output": {
+        "outcome": "unmappable",
+        "reason": "creation visibility has not been selected"
+      }
+    },
+    {
+      "name": "absent-clear-is-noop",
+      "before": null,
+      "patch": {
+        "vote": null
+      },
+      "expected": "unchanged",
+      "output": {
+        "outcome": "unchanged",
+        "reason": "absent record is not created to clear fields"
+      }
+    }
+  ],
+  "incompleteLabelVisibilityFails": true,
+  "ratingCases": [
+    {
+      "input": null,
+      "output": null
+    },
+    {
+      "input": 0,
+      "output": "unmappable"
+    },
+    {
+      "input": 9,
+      "output": "unmappable"
+    },
+    {
+      "input": 10,
+      "output": 10
+    },
+    {
+      "input": 87,
+      "output": 87
+    },
+    {
+      "input": 100,
+      "output": 100
+    },
+    {
+      "input": 101,
+      "output": "unmappable"
+    },
+    {
+      "input": 87.5,
+      "output": "unmappable"
+    }
+  ],
+  "dateCases": [
+    {
+      "input": null,
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "year": 2024,
+        "month": 2,
+        "day": 29
+      },
+      "output": "2024-02-29"
+    },
+    {
+      "input": {
+        "year": 2025,
+        "month": 2,
+        "day": 29
+      },
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "year": 2024
+      },
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "year": 2024,
+        "month": 2
+      },
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "month": 2,
+        "day": 3
+      },
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "year": 1970,
+        "month": 1,
+        "day": 1
+      },
+      "output": "1970-01-01"
+    },
+    {
+      "input": {
+        "year": 2099,
+        "month": 12,
+        "day": 31
+      },
+      "output": "2099-12-31"
+    },
+    {
+      "input": {
+        "year": 1969,
+        "month": 12,
+        "day": 31
+      },
+      "output": "unmappable"
+    },
+    {
+      "input": {
+        "year": 2100,
+        "month": 1,
+        "day": 1
+      },
+      "output": "unmappable"
+    }
+  ],
+  "limitations": [
+    "The privacy model follows current inspected source code.",
+    "The API has no atomic compare-and-swap for this workflow.",
+    "This script is not a production provider, a Markdown converter, or a network integration test."
+  ],
+  "dateCasesScope": "A required outbound finished-date update. When both sides are already empty, ordinary unchanged detection avoids any write.",
+  "datePolicyEvidence": "2026-10-12-account-roundtrip.json"
+}

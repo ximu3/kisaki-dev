@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-21T05:26:02.846373+00:00",
+  "fixedSources": [
+    {
+      "name": "electron-import",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc",
+      "sha256": "dcfa5c570396d219f4e3c3d88061c7e33f47e934a380bc109abcb1bffe2988a9"
+    },
+    {
+      "name": "color-space",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/color-space.md",
+      "sha256": "d91833e30056cc4414a6773c472601decab73fa9aaadf59adda2136d10ce42be"
+    }
+  ],
+  "references": [
+    "https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import_modifiers.txt",
+    "https://docs.kernel.org/driver-api/dma-buf.html",
+    "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Refpages/main/gl4/glFenceSync.xml",
+    "https://developer.apple.com/documentation/professional_video_applications/fximagetile/opengltexture%28forcontext%3A%29",
+    "https://raw.githubusercontent.com/chromium/chromium/152.0.7977.130/ui/gfx/native_pixmap_handle.h",
+    "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-handle.md",
+    "https://www.w3.org/TR/css-color-4/#predefined"
+  ],
+  "macosExecuted": false,
+  "linuxExecuted": false,
+  "scope": "Platform layout, process-local handles, completion and import-field mapping; source review is not execution.",
+  "referenceSnapshots": [
+    {
+      "url": "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Refpages/main/gl4/glFenceSync.xml",
+      "sha256": "fb3bcb66ddb4d659d48981117c86059c8a38f3f3ba0c92b8fcf8be4cadab06e5",
+      "file": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-references\\glFenceSync.xml"
+    }
+  ]
+}

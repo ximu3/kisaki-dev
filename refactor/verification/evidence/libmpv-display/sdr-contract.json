@@ -1,0 +1,613 @@
+{
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "capabilities": {
+    "mediaStreamTrackGenerator": true,
+    "dynamicRangeHigh": false,
+    "videoDynamicRangeHigh": false,
+    "visibility": "visible"
+  },
+  "display": {
+    "id": 3231594088,
+    "label": "G24H2",
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 2048,
+      "height": 1152
+    },
+    "colorSpace": "{primaries:BT709, transfer:SRGB, matrix:RGB, range:FULL}"
+  },
+  "forcedColorProfile": "",
+  "primaryDisplayId": 3231594088,
+  "displays": [
+    {
+      "id": 170885731,
+      "label": "TL160ADMP11-0",
+      "bounds": {
+        "x": 2048,
+        "y": -316,
+        "width": 1068,
+        "height": 1708
+      }
+    },
+    {
+      "id": 3231594088,
+      "label": "G24H2",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2048,
+        "height": 1152
+      }
+    }
+  ],
+  "cases": [
+    {
+      "input": "sdr-reference",
+      "nativePixel": [
+        0.58056640625,
+        0.58056640625,
+        0.58056640625,
+        1
+      ],
+      "format": null,
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "srgbCanvas": {
+        "attributes": {
+          "alpha": false,
+          "colorSpace": "srgb",
+          "colorType": "float16",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "pixelFormat": "rgba-float16",
+        "samples": [
+          [
+            0.73828125,
+            -0.01309967041015625,
+            -0.0004825592041015625,
+            1
+          ],
+          [
+            -0.07098388671875,
+            0.7373046875,
+            0.00989532470703125,
+            1
+          ],
+          [
+            0.006130218505859375,
+            -0.0009059906005859375,
+            0.7333984375,
+            1
+          ],
+          [
+            0.734375,
+            0.734375,
+            0.734375,
+            1
+          ]
+        ]
+      },
+      "p3Canvas": {
+        "attributes": {
+          "alpha": false,
+          "colorSpace": "display-p3",
+          "colorType": "float16",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "pixelFormat": "rgba-float16",
+        "samples": [
+          [
+            0.67578125,
+            0.1322021484375,
+            0.08978271484375,
+            1
+          ],
+          [
+            0.321533203125,
+            0.72607421875,
+            0.212158203125,
+            1
+          ],
+          [
+            0.004848480224609375,
+            -0.0007367134094238281,
+            0.703125,
+            1
+          ],
+          [
+            0.734375,
+            0.734375,
+            0.734375,
+            1
+          ]
+        ]
+      },
+      "video": {
+        "supported": true,
+        "callback": {
+          "now": 819.8,
+          "metadata": {
+            "expectedDisplayTime": 822.8,
+            "height": 47,
+            "mediaTime": 0,
+            "presentationTime": 822.8,
+            "presentedFrames": 1,
+            "width": 63
+          }
+        },
+        "readyState": 4,
+        "dimensions": [
+          63,
+          47
+        ],
+        "colorSpace": {
+          "fullRange": true,
+          "matrix": "rgb",
+          "primaries": "bt2020",
+          "transfer": "pq"
+        },
+        "compositor": {
+          "width": 403,
+          "height": 303,
+          "format": "rgba16float",
+          "frames": 3,
+          "dxgiDisplay": {
+            "colorSpace": 0,
+            "bitsPerColor": 8,
+            "minLuminance": 0,
+            "maxLuminance": 417.711792,
+            "maxFullFrameLuminance": 282.855499
+          },
+          "samples": [
+            [
+              0.993652344,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.993652344,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0.993652344,
+              1
+            ],
+            [
+              0.993652344,
+              0.993652344,
+              0.993652344,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        "srgbCanvas": {
+          "attributes": {
+            "alpha": false,
+            "colorSpace": "srgb",
+            "colorType": "float16",
+            "desynchronized": false,
+            "toneMapping": {
+              "mode": "standard"
+            },
+            "willReadFrequently": false
+          },
+          "pixelFormat": "rgba-float16",
+          "samples": [
+            [
+              0.73828125,
+              -0.01309967041015625,
+              -0.0004825592041015625,
+              1
+            ],
+            [
+              -0.07098388671875,
+              0.7373046875,
+              0.00989532470703125,
+              1
+            ],
+            [
+              0.006130218505859375,
+              -0.0009059906005859375,
+              0.7333984375,
+              1
+            ],
+            [
+              0.734375,
+              0.734375,
+              0.734375,
+              1
+            ]
+          ]
+        },
+        "p3Canvas": {
+          "attributes": {
+            "alpha": false,
+            "colorSpace": "display-p3",
+            "colorType": "float16",
+            "desynchronized": false,
+            "toneMapping": {
+              "mode": "standard"
+            },
+            "willReadFrequently": false
+          },
+          "pixelFormat": "rgba-float16",
+          "samples": [
+            [
+              0.67578125,
+              0.1322021484375,
+              0.08978271484375,
+              1
+            ],
+            [
+              0.321533203125,
+              0.72607421875,
+              0.212158203125,
+              1
+            ],
+            [
+              0.004848480224609375,
+              -0.0007367134094238281,
+              0.703125,
+              1
+            ],
+            [
+              0.734375,
+              0.734375,
+              0.734375,
+              1
+            ]
+          ]
+        }
+      },
+      "releasedWhenReceiverFinished": 0,
+      "releaseCount": 1
+    },
+    {
+      "input": "pq-1000-nit-reference",
+      "nativePixel": [
+        0.751953125,
+        0.751953125,
+        0.751953125,
+        1
+      ],
+      "format": null,
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "srgbCanvas": {
+        "attributes": {
+          "alpha": false,
+          "colorSpace": "srgb",
+          "colorType": "float16",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "pixelFormat": "rgba-float16",
+        "samples": [
+          [
+            0.99951171875,
+            1,
+            1,
+            1
+          ],
+          [
+            0.99951171875,
+            1,
+            1,
+            1
+          ],
+          [
+            0.99951171875,
+            1,
+            1,
+            1
+          ],
+          [
+            0.99951171875,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "p3Canvas": {
+        "attributes": {
+          "alpha": false,
+          "colorSpace": "display-p3",
+          "colorType": "float16",
+          "desynchronized": false,
+          "toneMapping": {
+            "mode": "standard"
+          },
+          "willReadFrequently": false
+        },
+        "pixelFormat": "rgba-float16",
+        "samples": [
+          [
+            0.99951171875,
+            0.99951171875,
+            0.99951171875,
+            1
+          ],
+          [
+            0.99951171875,
+            0.99951171875,
+            0.99951171875,
+            1
+          ],
+          [
+            0.99951171875,
+            0.99951171875,
+            0.99951171875,
+            1
+          ],
+          [
+            0.99951171875,
+            0.99951171875,
+            0.99951171875,
+            1
+          ]
+        ]
+      },
+      "video": {
+        "supported": true,
+        "callback": {
+          "now": 1715.6,
+          "metadata": {
+            "expectedDisplayTime": 1718,
+            "height": 47,
+            "mediaTime": 0.041667,
+            "presentationTime": 1718,
+            "presentedFrames": 1,
+            "width": 63
+          }
+        },
+        "readyState": 4,
+        "dimensions": [
+          63,
+          47
+        ],
+        "colorSpace": {
+          "fullRange": true,
+          "matrix": "rgb",
+          "primaries": "bt2020",
+          "transfer": "pq"
+        },
+        "compositor": {
+          "width": 403,
+          "height": 303,
+          "format": "rgba16float",
+          "frames": 3,
+          "dxgiDisplay": {
+            "colorSpace": 0,
+            "bitsPerColor": 8,
+            "minLuminance": 0,
+            "maxLuminance": 417.711792,
+            "maxFullFrameLuminance": 282.855499
+          },
+          "samples": [
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        "srgbCanvas": {
+          "attributes": {
+            "alpha": false,
+            "colorSpace": "srgb",
+            "colorType": "float16",
+            "desynchronized": false,
+            "toneMapping": {
+              "mode": "standard"
+            },
+            "willReadFrequently": false
+          },
+          "pixelFormat": "rgba-float16",
+          "samples": [
+            [
+              0.99951171875,
+              1,
+              1,
+              1
+            ],
+            [
+              0.99951171875,
+              1,
+              1,
+              1
+            ],
+            [
+              0.99951171875,
+              1,
+              1,
+              1
+            ],
+            [
+              0.99951171875,
+              1,
+              1,
+              1
+            ]
+          ]
+        },
+        "p3Canvas": {
+          "attributes": {
+            "alpha": false,
+            "colorSpace": "display-p3",
+            "colorType": "float16",
+            "desynchronized": false,
+            "toneMapping": {
+              "mode": "standard"
+            },
+            "willReadFrequently": false
+          },
+          "pixelFormat": "rgba-float16",
+          "samples": [
+            [
+              0.99951171875,
+              0.99951171875,
+              0.99951171875,
+              1
+            ],
+            [
+              0.99951171875,
+              0.99951171875,
+              0.99951171875,
+              1
+            ],
+            [
+              0.99951171875,
+              0.99951171875,
+              0.99951171875,
+              1
+            ],
+            [
+              0.99951171875,
+              0.99951171875,
+              0.99951171875,
+              1
+            ]
+          ]
+        }
+      },
+      "releasedWhenReceiverFinished": 0,
+      "releaseCount": 1
+    }
+  ],
+  "gpuFeatureStatus": {
+    "2d_canvas": "enabled",
+    "direct_rendering_display_compositor": "disabled_off_ok",
+    "gpu_compositing": "enabled",
+    "multiple_raster_threads": "enabled_on",
+    "opengl": "enabled_on",
+    "rasterization": "enabled",
+    "raw_draw": "disabled_off_ok",
+    "skia_graphite": "disabled_off",
+    "trees_in_viz": "disabled_off",
+    "video_decode": "enabled",
+    "video_encode": "enabled",
+    "webgl": "enabled",
+    "webgpu": "enabled",
+    "webnn": "disabled_off"
+  },
+  "nativeD3d11ImportExecuted": true,
+  "allReferencesReleasedBeforeWindowClose": true,
+  "visibleWindowCreated": true,
+  "physicalHdrDisplayVerified": false,
+  "checkedAt": "2026-10-18T15:32:21.567236+00:00",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "captureExecutableSha256": "aa416f6fd79eede42d58e92d6ff808f3f61f1b6c8c985ac266f719236f886ed3",
+  "samples": [
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\quadrants.ppm",
+      "sha256": "e4488831896519e049583da63a5ed930783290fb569af7964e9dd125f875aa67",
+      "width": 63,
+      "height": 47
+    },
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\playback\\pq-1000-nit.mkv",
+      "sha256": "fe342d06249eefc4decbd5930105d19d98c34861df8600196ba742d98b500783",
+      "pqLumaCode": 723,
+      "bitDepth": 10,
+      "codec": "hevc",
+      "metadata": [
+        {
+          "side_data_type": "Mastering display metadata",
+          "red_x": "35400/50000",
+          "red_y": "14600/50000",
+          "green_x": "8500/50000",
+          "green_y": "39850/50000",
+          "blue_x": "6550/50000",
+          "blue_y": "2300/50000",
+          "white_point_x": "15635/50000",
+          "white_point_y": "16450/50000",
+          "min_luminance": "50/10000",
+          "max_luminance": "10000000/10000"
+        },
+        {
+          "side_data_type": "Content light level metadata",
+          "max_content": 1000,
+          "max_average": 1000
+        }
+      ]
+    }
+  ],
+  "sources": {
+    "main.cjs": "04def34691d39a0287fb8bc292fcb7ec0a4049ca5ad6d1847268092f6783dc13",
+    "preload.cjs": "f5e4cf0a207c143f840e3c6177e9967307cc1bb8a32bdb7b12412a9bf0a324f2",
+    "run.py": "0d3437ba2fc5cb1cdcc2eec481f220f36373589dab4067bd2c28ce48ec1380ae",
+    "capture.cpp": "780cfd040ae5f3e36581afefe8e1d483ae9c0716c2d036b7c72a97ab4fdede17",
+    "build.rs": "33a864ae2415dedc9346700267d5cb6cb751a757477d3afb4339c17418e55d22",
+    "main.rs": "1b1e74c1cac9604d8eae6100b899d68cfd0116d1f86a9f7ece978e25024ad1a4",
+    "Cargo.toml": "a96e104669e1f18043bcab6bbc5847e70a84e6d8d4f844b0dbaa230053a745e6",
+    "Cargo.lock": "b3300dfb508563fbbe5df1288388195c68d2731ba9781d398a724a8370f2b168",
+    "../libmpv-playback/renderer.html": "471404db7114489f1a450de12d16282bd216b64257594176c88e2f9da6e78a69"
+  },
+  "nativeVideoFrameDelivered": true,
+  "productionDisplayPathVerified": false,
+  "continuousLeaseRecyclingVerified": false,
+  "stdout": "\nInspecting Canvas reference.\nWriting video reference.\nWaiting for video reference.\nVideo reference arrived.\nClosing video writer.\nVideo writer closed.\nReference 0 consumed.\nInspecting Canvas reference.\nWriting video reference.\nWaiting for video reference.\nVideo reference arrived.\nClosing video writer.\nVideo writer closed.\nReference 1 consumed.\n",
+  "stderr": "",
+  "compositedHdrHeadroomVerified": false,
+  "highlightToCssWhiteRatio": 1.0,
+  "highlightToReferenceWhiteRatio": 2.012776412270004
+}

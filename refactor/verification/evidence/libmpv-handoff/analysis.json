@@ -1,0 +1,51 @@
+{
+  "verified": true,
+  "cases": [
+    {
+      "runtime": "node",
+      "renderPollingMs": 3,
+      "created": 16,
+      "released": 16,
+      "maxLive": 4,
+      "acceptedDeliveries": 8,
+      "staleConsumerDrops": 1,
+      "staleNodeDrops": 4
+    },
+    {
+      "runtime": "node",
+      "renderPollingMs": 1,
+      "created": 14,
+      "released": 14,
+      "maxLive": 4,
+      "acceptedDeliveries": 7,
+      "staleConsumerDrops": 1,
+      "staleNodeDrops": 3
+    },
+    {
+      "runtime": "electron",
+      "renderPollingMs": 3,
+      "created": 15,
+      "released": 15,
+      "maxLive": 4,
+      "acceptedDeliveries": 7,
+      "staleConsumerDrops": 1,
+      "staleNodeDrops": 4
+    },
+    {
+      "runtime": "electron",
+      "renderPollingMs": 1,
+      "created": 15,
+      "released": 15,
+      "maxLive": 4,
+      "acceptedDeliveries": 7,
+      "staleConsumerDrops": 1,
+      "staleNodeDrops": 4
+    }
+  ],
+  "controlledHandoffVerified": true,
+  "crossPlatformVerified": false,
+  "formalPublicApiImplemented": false,
+  "nativeLowPeakLinearIssueFixed": false,
+  "recordSha256": "4f4fa3d6e7296f4cffedabaed565dc8a47008c781c0fa333333a282c683c1800",
+  "verifierSha256": "22e884ca596c6cd964b821d28410c46f18dc12cf1d9a1d6c1bdd45c3e83767a0"
+}

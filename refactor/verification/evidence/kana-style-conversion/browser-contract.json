@@ -1,0 +1,154 @@
+{
+  "checkedAt": "2026-10-20T14:58:57.891Z",
+  "name": "chromium",
+  "version": "149.0.7827.55",
+  "executableSha256": "b798f9e53a98d29eb7f36f8c409f905d3184780a04d2bcb56989067194784bd1",
+  "playwrightVersion": "1.62.1",
+  "harnessSha256": "9ea0733c604a0d904dd19c3cbe72a44e3964d1b351a92094611dd17cf90e5184",
+  "inputs": {
+    "/probe.mjs": "9e1d51307cc615c978e6e5f1c382b0f923d546504349cdd0a08ff10545cd8572",
+    "/css-tree.mjs": "a34589878a06f95e4e144c27748db5e6d81ba19619d3f36036027098e16c3522",
+    "/AuthorFixture.ttf": "6b232bacc2e7e55b3a49f18e4533093c27b5b159ab2a8572a65adf15b44ab068",
+    "/ReaderFixture.ttf": "072d382bbf1128b9d4b8eef4d241db21286306e4d8a8cdfdc44b60019db52ca6"
+  },
+  "externalRequests": [],
+  "pageErrors": [],
+  "browserClosed": true,
+  "serverClosed": true,
+  "baseline": {
+    "ordinarySize": "20px",
+    "beforeSize": "10px",
+    "privateFamily": "AuthorFixture",
+    "privateSize": "20px",
+    "lineHeight": "14px",
+    "originalAttributeMatch": "3px",
+    "reflectedStyle": "\"font-size:20px!important;line-height:14px\"",
+    "graphicWidth": 64,
+    "graphicFont": "16px",
+    "graphicColor": "rgb(34, 34, 34)",
+    "graphicMeasure": "32px",
+    "rootSize": "16px",
+    "captionColor": "rgb(69, 32, 0)",
+    "gradient": "linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 233, 189))",
+    "focusMargin": "0px",
+    "text": "Straße",
+    "sameTextNode": true
+  },
+  "first": [
+    {
+      "ordinarySize": "30px",
+      "beforeSize": "15px",
+      "privateFamily": "AuthorFixture",
+      "privateSize": "30px",
+      "lineHeight": "54px",
+      "originalAttributeMatch": "3px",
+      "reflectedStyle": "\"font-size:20px!important;line-height:14px\"",
+      "graphicWidth": 64,
+      "graphicFont": "16px",
+      "graphicColor": "rgb(34, 34, 34)",
+      "graphicMeasure": "32px",
+      "rootSize": "16px",
+      "captionColor": "rgb(69, 32, 0)",
+      "gradient": "linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 233, 189))",
+      "focusMargin": "0px",
+      "text": "Straße",
+      "sameTextNode": true
+    },
+    {
+      "ordinarySize": "30px",
+      "beforeSize": "15px",
+      "privateFamily": "AuthorFixture",
+      "privateSize": "30px",
+      "lineHeight": "54px",
+      "originalAttributeMatch": "3px",
+      "reflectedStyle": "\"font-size:20px!important;line-height:14px\"",
+      "graphicWidth": 64,
+      "graphicFont": "16px",
+      "graphicColor": "rgb(34, 34, 34)",
+      "graphicMeasure": "32px",
+      "rootSize": "16px",
+      "captionColor": "rgb(69, 32, 0)",
+      "gradient": "linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 233, 189))",
+      "focusMargin": "0px",
+      "text": "Straße",
+      "sameTextNode": true
+    }
+  ],
+  "second": [
+    {
+      "ordinarySize": "25px",
+      "beforeSize": "12.5px",
+      "privateFamily": "AuthorFixture",
+      "privateSize": "25px",
+      "lineHeight": "45px",
+      "originalAttributeMatch": "3px",
+      "reflectedStyle": "\"font-size:20px!important;line-height:14px\"",
+      "graphicWidth": 64,
+      "graphicFont": "16px",
+      "graphicColor": "rgb(34, 34, 34)",
+      "graphicMeasure": "32px",
+      "rootSize": "16px",
+      "captionColor": "rgb(69, 32, 0)",
+      "gradient": "linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 233, 189))",
+      "focusMargin": "0px",
+      "text": "Straße",
+      "sameTextNode": true
+    },
+    {
+      "ordinarySize": "25px",
+      "beforeSize": "12.5px",
+      "privateFamily": "AuthorFixture",
+      "privateSize": "25px",
+      "lineHeight": "45px",
+      "originalAttributeMatch": "3px",
+      "reflectedStyle": "\"font-size:20px!important;line-height:14px\"",
+      "graphicWidth": 64,
+      "graphicFont": "16px",
+      "graphicColor": "rgb(34, 34, 34)",
+      "graphicMeasure": "32px",
+      "rootSize": "16px",
+      "captionColor": "rgb(69, 32, 0)",
+      "gradient": "linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 233, 189))",
+      "focusMargin": "0px",
+      "text": "Straße",
+      "sameTextNode": true
+    }
+  ],
+  "divergentFocus": ["19px", "0px"],
+  "sharedFocus": ["19px", "19px"],
+  "whitespace": [
+    {
+      "input": "Straße \n B",
+      "output": "Straße B"
+    },
+    {
+      "input": "你\n好",
+      "output": "你 好"
+    },
+    {
+      "input": " A  B\n C ",
+      "output": " A  B\n C "
+    },
+    {
+      "input": "A   B\nC",
+      "output": "A   B\nC"
+    }
+  ],
+  "visibility": {
+    "parentHidden": "hidden",
+    "childVisible": "visible",
+    "contentsBox": 0,
+    "childBoxes": 1
+  },
+  "oneNativeFocus": true,
+  "sourceTextIdentityKept": true,
+  "limits": {
+    "automaticRoleClassification": false,
+    "generalPaintContext": false,
+    "completeWhitespaceMapping": false,
+    "allPseudoStates": false,
+    "animations": false,
+    "fullReader": false,
+    "realAssistiveTechnology": false
+  }
+}

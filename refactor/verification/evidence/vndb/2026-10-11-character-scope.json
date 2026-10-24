@@ -1,0 +1,1619 @@
+{
+  "checkedOn": "2026-10-11",
+  "purpose": "Public character release and instance facts plus an isolated design projection prototype; not provider integration validation.",
+  "requests": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/character",
+        "body": {
+          "filters": ["or", ["id", "=", "c1868"], ["id", "=", "c1871"], ["id", "=", "c1875"]],
+          "fields": "name,original,vns{id,title,olang,role,spoiler,release{id,title,released,official,patch,languages{lang},vns{id,rtype}}}",
+          "results": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "id": "c1868",
+            "name": "Futaki Kanata",
+            "original": "二木 佳奈多",
+            "vns": [
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r174",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2007-07-27",
+                  "title": "Little Busters! - First Press Limited Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "side",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r541",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2008-07-25",
+                  "title": "Little Busters! Ecstasy - First Press Limited Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r18401",
+                  "languages": [
+                    {
+                      "lang": "en"
+                    },
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2017-11-01",
+                  "title": "Little Busters! English Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r22721",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2012-11-30",
+                  "title": "Little Busters! Perfect Edition - TV Anime Commemorative Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v3079",
+                "olang": "ja",
+                "release": null,
+                "role": "side",
+                "spoiler": 0,
+                "title": "Kud Wafter"
+              }
+            ]
+          },
+          {
+            "id": "c1871",
+            "name": "Sasasegawa Sasami",
+            "original": "笹瀬川 佐々美",
+            "vns": [
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r174",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2007-07-27",
+                  "title": "Little Busters! - First Press Limited Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "side",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r541",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2008-07-25",
+                  "title": "Little Busters! Ecstasy - First Press Limited Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r18401",
+                  "languages": [
+                    {
+                      "lang": "en"
+                    },
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2017-11-01",
+                  "title": "Little Busters! English Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r22721",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2012-11-30",
+                  "title": "Little Busters! Perfect Edition - TV Anime Commemorative Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              }
+            ]
+          },
+          {
+            "id": "c1875",
+            "name": "Tokido Saya",
+            "original": "朱鷺戸 沙耶",
+            "vns": [
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r541",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2008-07-25",
+                  "title": "Little Busters! Ecstasy - First Press Limited Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r1944",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2008-09-26",
+                  "title": "Little Busters! Ecstasy - Regular Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r3748",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2009-07-31",
+                  "title": "Key 10th Memorial BOX",
+                  "vns": [
+                    {
+                      "id": "v4",
+                      "rtype": "complete"
+                    },
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    },
+                    {
+                      "id": "v12",
+                      "rtype": "complete"
+                    },
+                    {
+                      "id": "v33",
+                      "rtype": "complete"
+                    },
+                    {
+                      "id": "v34",
+                      "rtype": "complete"
+                    },
+                    {
+                      "id": "v36",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r18401",
+                  "languages": [
+                    {
+                      "lang": "en"
+                    },
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2017-11-01",
+                  "title": "Little Busters! English Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              },
+              {
+                "id": "v5",
+                "olang": "ja",
+                "release": {
+                  "id": "r22721",
+                  "languages": [
+                    {
+                      "lang": "ja"
+                    }
+                  ],
+                  "official": true,
+                  "patch": false,
+                  "released": "2012-11-30",
+                  "title": "Little Busters! Perfect Edition - TV Anime Commemorative Edition",
+                  "vns": [
+                    {
+                      "id": "v5",
+                      "rtype": "complete"
+                    }
+                  ]
+                },
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Little Busters!"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/character",
+        "body": {
+          "results": 10,
+          "filters": ["or", ["id", "=", "c34"], ["id", "=", "c3529"]],
+          "fields": "name,original,age,height,birthday,vns{id,role,spoiler,release.id}"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "age": null,
+            "birthday": [2, 3],
+            "height": 159,
+            "id": "c34",
+            "name": "Toosaka Rin",
+            "original": "遠坂 凛",
+            "vns": [
+              {
+                "id": "v11",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v50",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v666",
+                "release": {
+                  "id": "r20624"
+                },
+                "role": "appears",
+                "spoiler": 0
+              },
+              {
+                "id": "v12369",
+                "release": null,
+                "role": "appears",
+                "spoiler": 1
+              }
+            ]
+          },
+          {
+            "age": null,
+            "birthday": [2, 4],
+            "height": 159,
+            "id": "c3529",
+            "name": "Toosaka Rin",
+            "original": "遠坂 凛",
+            "vns": [
+              {
+                "id": "v7602",
+                "release": null,
+                "role": "side",
+                "spoiler": 0
+              },
+              {
+                "id": "v12369",
+                "release": null,
+                "role": "side",
+                "spoiler": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/vn",
+        "body": {
+          "results": 1,
+          "filters": ["id", "=", "v5"],
+          "fields": "title,olang,va{note,staff{id,aid,name,original},character.id}"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "id": "v5",
+            "olang": "ja",
+            "title": "Little Busters!",
+            "va": [
+              {
+                "character": {
+                  "id": "c1874"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 23,
+                  "id": "s6",
+                  "name": "Tanaka Ryouko",
+                  "original": "田中 涼子"
+                }
+              },
+              {
+                "character": {
+                  "id": "c192"
+                },
+                "note": "Partially voiced",
+                "staff": {
+                  "aid": 66,
+                  "id": "s23",
+                  "name": "Tamiya Tomoe",
+                  "original": "田宮 トモエ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1863"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 66,
+                  "id": "s23",
+                  "name": "Tamiya Tomoe",
+                  "original": "田宮 トモエ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1871"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 66,
+                  "id": "s23",
+                  "name": "Tamiya Tomoe",
+                  "original": "田宮 トモエ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c201"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 147,
+                  "id": "s73",
+                  "name": "Midorikawa Hikaru",
+                  "original": "緑川 光"
+                }
+              },
+              {
+                "character": {
+                  "id": "c193"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 150,
+                  "id": "s76",
+                  "name": "Kanna Nobutoshi",
+                  "original": "神奈 延年"
+                }
+              },
+              {
+                "character": {
+                  "id": "c150177"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 165,
+                  "id": "s88",
+                  "name": "Kishio Daisuke",
+                  "original": "岸尾 だいすけ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c4874"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 185,
+                  "id": "s102",
+                  "name": "Rita",
+                  "original": "理多"
+                }
+              },
+              {
+                "character": {
+                  "id": "c149372"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 685,
+                  "id": "s385",
+                  "name": "Hamada Kenji",
+                  "original": "浜田 賢二"
+                }
+              },
+              {
+                "character": {
+                  "id": "c26520"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 769,
+                  "id": "s422",
+                  "name": "Lia",
+                  "original": null
+                }
+              },
+              {
+                "character": {
+                  "id": "c1864"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 831,
+                  "id": "s445",
+                  "name": "Suzuki Keiko",
+                  "original": "すずき けいこ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1868"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 831,
+                  "id": "s445",
+                  "name": "Suzuki Keiko",
+                  "original": "すずき けいこ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1867"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 835,
+                  "id": "s446",
+                  "name": "Kaneko Akemi",
+                  "original": "金子 明美"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1875"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 842,
+                  "id": "s449",
+                  "name": "Kazane",
+                  "original": "風音"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1873"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 846,
+                  "id": "s13",
+                  "name": "Arai Yumi",
+                  "original": "荒井 悠美"
+                }
+              },
+              {
+                "character": {
+                  "id": "c16639"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 846,
+                  "id": "s13",
+                  "name": "Arai Yumi",
+                  "original": "荒井 悠美"
+                }
+              },
+              {
+                "character": {
+                  "id": "c84292"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 880,
+                  "id": "s467",
+                  "name": "Hirohashi Ryou",
+                  "original": "広橋 涼"
+                }
+              },
+              {
+                "character": {
+                  "id": "c194"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 1934,
+                  "id": "s1147",
+                  "name": "Oda Yuusei",
+                  "original": "織田 優成"
+                }
+              },
+              {
+                "character": {
+                  "id": "c84291"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 2026,
+                  "id": "s1187",
+                  "name": "Nonaka Ai",
+                  "original": "野中 藍"
+                }
+              },
+              {
+                "character": {
+                  "id": "c84290"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 2697,
+                  "id": "s1666",
+                  "name": "Kanda Akemi",
+                  "original": "神田 朱未"
+                }
+              },
+              {
+                "character": {
+                  "id": "c150300"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 11865,
+                  "id": "s9309",
+                  "name": "Ogata Mitsuru",
+                  "original": "小形満"
+                }
+              },
+              {
+                "character": {
+                  "id": "c1865"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 15188,
+                  "id": "s365",
+                  "name": "Yanase Natsumi",
+                  "original": "柳瀬 なつみ"
+                }
+              },
+              {
+                "character": {
+                  "id": "c194"
+                },
+                "note": "Childhood",
+                "staff": {
+                  "aid": 22330,
+                  "id": "s115",
+                  "name": "Kamonomiya Yuu",
+                  "original": "鴨ノ宮 ゆう"
+                }
+              },
+              {
+                "character": {
+                  "id": "c201"
+                },
+                "note": "Childhood",
+                "staff": {
+                  "aid": 22330,
+                  "id": "s115",
+                  "name": "Kamonomiya Yuu",
+                  "original": "鴨ノ宮 ゆう"
+                }
+              },
+              {
+                "character": {
+                  "id": "c82152"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 22330,
+                  "id": "s115",
+                  "name": "Kamonomiya Yuu",
+                  "original": "鴨ノ宮 ゆう"
+                }
+              },
+              {
+                "character": {
+                  "id": "c147768"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 22330,
+                  "id": "s115",
+                  "name": "Kamonomiya Yuu",
+                  "original": "鴨ノ宮 ゆう"
+                }
+              },
+              {
+                "character": {
+                  "id": "c6696"
+                },
+                "note": null,
+                "staff": {
+                  "aid": 46105,
+                  "id": "s2927",
+                  "name": "Morishouji Asahi",
+                  "original": "森小路 旭"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/character",
+        "body": {
+          "filters": ["vn", "=", ["id", "=", "v17"]],
+          "fields": "name,original,vns{id,role,spoiler,release{id,title,official,patch,languages{lang},vns{id,rtype}}}",
+          "results": 100,
+          "sort": "id",
+          "page": 1
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "id": "c23",
+            "name": "Shounen",
+            "original": "少年",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "main",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "main",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c24",
+            "name": "Kuranari Takeshi",
+            "original": "倉成 武",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "main",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "main",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c25",
+            "name": "Hokuto",
+            "original": "ホクト",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c26",
+            "name": "Kuranari Takeshi",
+            "original": "倉成 武",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c27",
+            "name": "Yagami Koko",
+            "original": "八神 ココ",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c28",
+            "name": "Tanaka Yubiseiharukana",
+            "original": "田中 優美清春香菜",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c29",
+            "name": "Tanaka Yubiseiakikana",
+            "original": "田中 優美清秋香菜",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 2
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c30",
+            "name": "Komachi Tsugumi",
+            "original": "小町 つぐみ",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c31",
+            "name": "Matsunaga Sara",
+            "original": "松永 沙羅",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c32",
+            "name": "Akanegasaki Sora",
+            "original": "茜ヶ崎 空",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c88537",
+            "name": "Blick Winkel",
+            "original": "ブリックヴィンケル",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "main",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c103515",
+            "name": "Pipi",
+            "original": "ピピ",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "side",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "side",
+                "spoiler": 0
+              }
+            ]
+          },
+          {
+            "id": "c103516",
+            "name": "Tanaka Youichi",
+            "original": "田中 陽一",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "side",
+                "spoiler": 1
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "side",
+                "spoiler": 1
+              }
+            ]
+          },
+          {
+            "id": "c103518",
+            "name": "Yagami Takeshi",
+            "original": "八神 岳士",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "appears",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c149084",
+            "name": "Morino Shigezou",
+            "original": "守野 茂蔵博",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "appears",
+                "spoiler": 2
+              },
+              {
+                "id": "v248",
+                "release": null,
+                "role": "appears",
+                "spoiler": 0
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "appears",
+                "spoiler": 2
+              }
+            ]
+          },
+          {
+            "id": "c149389",
+            "name": "Chami",
+            "original": "チャミ",
+            "vns": [
+              {
+                "id": "v17",
+                "release": null,
+                "role": "side",
+                "spoiler": 1
+              },
+              {
+                "id": "v19373",
+                "release": null,
+                "role": "side",
+                "spoiler": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "publicGuideline": {
+    "request": {
+      "method": "GET",
+      "url": "https://vndb.org/d12"
+    },
+    "httpStatus": 200,
+    "responseExcerpt": {
+      "unqualifiedReleaseLabel": "All (full) releases",
+      "perReleaseFields": ["role", "spoiler"],
+      "alternateUniverseInstanceExample": ["c34", "c3529"]
+    },
+    "omittedResponseFields": ["Full HTML and prose"]
+  },
+  "actualProjections": [
+    {
+      "characterId": "c1868",
+      "workId": "v5",
+      "output": {
+        "role": "main",
+        "isSpoiler": false,
+        "sourceHighestRole": "primary",
+        "adoptedReleaseIds": ["r174", "r18401", "r22721", "r541"],
+        "sourceQualifications": ["r174:side", "r18401:primary", "r22721:primary", "r541:primary"]
+      }
+    },
+    {
+      "characterId": "c1871",
+      "workId": "v5",
+      "output": {
+        "role": "main",
+        "isSpoiler": false,
+        "sourceHighestRole": "primary",
+        "adoptedReleaseIds": ["r174", "r18401", "r22721", "r541"],
+        "sourceQualifications": ["r174:side", "r18401:primary", "r22721:primary", "r541:primary"]
+      }
+    },
+    {
+      "characterId": "c1875",
+      "workId": "v5",
+      "output": {
+        "role": "main",
+        "isSpoiler": false,
+        "sourceHighestRole": "primary",
+        "adoptedReleaseIds": ["r18401", "r1944", "r22721", "r3748", "r541"],
+        "sourceQualifications": [
+          "r18401:primary",
+          "r1944:primary",
+          "r22721:primary",
+          "r3748:primary",
+          "r541:primary"
+        ]
+      }
+    }
+  ],
+  "syntheticProjections": [
+    {
+      "name": "all-full-releases",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "side",
+            "spoiler": 0,
+            "release": null
+          }
+        ]
+      },
+      "output": {
+        "role": "supporting",
+        "isSpoiler": false,
+        "sourceHighestRole": "side",
+        "adoptedReleaseIds": [null],
+        "sourceQualifications": ["all-full-releases:side"]
+      },
+      "passed": true
+    },
+    {
+      "name": "highest-role-and-spoiler",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "side",
+            "spoiler": 0,
+            "release": null
+          },
+          {
+            "id": "v-example",
+            "role": "main",
+            "spoiler": 2,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": {
+        "role": "main",
+        "isSpoiler": true,
+        "sourceHighestRole": "main",
+        "adoptedReleaseIds": [null, "r-example-1"],
+        "sourceQualifications": ["all-full-releases:side", "r-example-1:main"]
+      },
+      "passed": true
+    },
+    {
+      "name": "excluded-unofficial-does-not-elevate",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "appears",
+            "spoiler": 0,
+            "release": null
+          },
+          {
+            "id": "v-example",
+            "role": "main",
+            "spoiler": 2,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": false,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": {
+        "role": "cameo",
+        "isSpoiler": false,
+        "sourceHighestRole": "appears",
+        "adoptedReleaseIds": [null],
+        "sourceQualifications": ["all-full-releases:appears"]
+      },
+      "passed": true
+    },
+    {
+      "name": "translated-only-excluded",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "main",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "en"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": null,
+      "passed": true
+    },
+    {
+      "name": "multilingual-includes-original",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "primary",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "en"
+                },
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": {
+        "role": "main",
+        "isSpoiler": false,
+        "sourceHighestRole": "primary",
+        "adoptedReleaseIds": ["r-example-1"],
+        "sourceQualifications": ["r-example-1:primary"]
+      },
+      "passed": true
+    },
+    {
+      "name": "trial-excluded",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "main",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "trial"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": null,
+      "passed": true
+    },
+    {
+      "name": "partial-formal-release-adopted",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "primary",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "partial"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": {
+        "role": "main",
+        "isSpoiler": false,
+        "sourceHighestRole": "primary",
+        "adoptedReleaseIds": ["r-example-1"],
+        "sourceQualifications": ["r-example-1:primary"]
+      },
+      "passed": true
+    },
+    {
+      "name": "official-update-patch-adopted",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "side",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": true,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": {
+        "role": "supporting",
+        "isSpoiler": false,
+        "sourceHighestRole": "side",
+        "adoptedReleaseIds": ["r-example-1"],
+        "sourceQualifications": ["r-example-1:side"]
+      },
+      "passed": true
+    },
+    {
+      "name": "bundle-does-not-create-other-work-link",
+      "input": {
+        "workId": "v-other",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "primary",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": [
+                {
+                  "id": "v-example",
+                  "rtype": "complete"
+                },
+                {
+                  "id": "v-other",
+                  "rtype": "complete"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "output": null,
+      "passed": true
+    },
+    {
+      "name": "missing-release-information-fails",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "side",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1"
+            }
+          }
+        ]
+      },
+      "expected": "ordinary source failure",
+      "passed": true
+    },
+    {
+      "name": "missing-release-work-link-fails",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "side",
+            "spoiler": 0,
+            "release": {
+              "id": "r-example-1",
+              "title": "Synthetic release",
+              "official": true,
+              "patch": false,
+              "languages": [
+                {
+                  "lang": "ja"
+                }
+              ],
+              "vns": []
+            }
+          }
+        ]
+      },
+      "expected": "ordinary source failure",
+      "passed": true
+    },
+    {
+      "name": "unknown-role-fails",
+      "input": {
+        "workId": "v-example",
+        "originalLanguage": "ja",
+        "rows": [
+          {
+            "id": "v-example",
+            "role": "unknown",
+            "spoiler": 0,
+            "release": null
+          }
+        ]
+      },
+      "expected": "ordinary source failure",
+      "passed": true
+    }
+  ],
+  "checks": {
+    "queryStatuses": [200, 200, 200, 200],
+    "allQueriesExhausted": true,
+    "v17Characters": 16,
+    "v17SpoilerRelations": 8,
+    "selectedV5Characters": 3,
+    "v5VoiceRows": 27,
+    "sameResultWithReversedRows": true,
+    "sameResultFromWorkAndCharacterScope": true,
+    "independentInstanceBirthdays": true
+  }
+}

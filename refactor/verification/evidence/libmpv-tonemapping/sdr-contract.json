@@ -1,0 +1,2008 @@
+{
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "capabilities": {
+    "visibility": "visible",
+    "dynamicRangeHigh": false
+  },
+  "display": {
+    "id": 850669593,
+    "label": "G24H2",
+    "colorSpace": "{primaries:BT709, transfer:SRGB, matrix:RGB, range:FULL}"
+  },
+  "cases": [
+    {
+      "name": "pq-1000",
+      "referenceKind": "steps",
+      "peakNits": 1000,
+      "nativeSamples": [
+        [
+          0.06268310546875,
+          0.06268310546875,
+          0.06268310546875,
+          1
+        ],
+        [
+          0.300048828125,
+          0.300048828125,
+          0.300048828125,
+          1
+        ],
+        [
+          0.50732421875,
+          0.50732421875,
+          0.50732421875,
+          1
+        ],
+        [
+          0.580078125,
+          0.58056640625,
+          0.580078125,
+          1
+        ],
+        [
+          0.65234375,
+          0.65234375,
+          0.65234375,
+          1
+        ],
+        [
+          0.7294921875,
+          0.7294921875,
+          0.7294921875,
+          1
+        ],
+        [
+          0.75146484375,
+          0.75146484375,
+          0.75146484375,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 1033.8,
+        "metadata": {
+          "expectedDisplayTime": 1047.6,
+          "height": 47,
+          "mediaTime": 0,
+          "presentationTime": 1036.5,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0503540039,
+            0.0503540039,
+            0.0503540039,
+            1
+          ],
+          [
+            0.4921875,
+            0.4921875,
+            0.4921875,
+            1
+          ],
+          [
+            0.993652344,
+            1.00488281,
+            0.993652344,
+            1
+          ],
+          [
+            1.47558594,
+            1.47558594,
+            1.47558594,
+            1
+          ],
+          [
+            1.89453125,
+            1.89453125,
+            1.89453125,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.10131995362309805,
+        10.044441048418635,
+        99.25115414196067,
+        201.8170987197437,
+        399.12508911672774,
+        814.5955047812528,
+        996.6823518930831
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0503540039,
+        0.4921875,
+        0.9973958326666666,
+        1.47558594,
+        1.89453125,
+        2.0
+      ]
+    },
+    {
+      "name": "pq-4000",
+      "referenceKind": "steps",
+      "peakNits": 4000,
+      "nativeSamples": [
+        [
+          0.062744140625,
+          0.062744140625,
+          0.062744140625,
+          1
+        ],
+        [
+          0.300048828125,
+          0.300048828125,
+          0.300048828125,
+          1
+        ],
+        [
+          0.5078125,
+          0.5078125,
+          0.5078125,
+          1
+        ],
+        [
+          0.58056640625,
+          0.5810546875,
+          0.58056640625,
+          1
+        ],
+        [
+          0.65283203125,
+          0.65283203125,
+          0.65283203125,
+          1
+        ],
+        [
+          0.751953125,
+          0.751953125,
+          0.751953125,
+          1
+        ],
+        [
+          0.90283203125,
+          0.90283203125,
+          0.90283203125,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 2006,
+        "metadata": {
+          "expectedDisplayTime": 2019.8,
+          "height": 47,
+          "mediaTime": 0.041667,
+          "presentationTime": 2010.8,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0503540039,
+            0.0503540039,
+            0.0503540039,
+            1
+          ],
+          [
+            0.4921875,
+            0.4921875,
+            0.4921875,
+            1
+          ],
+          [
+            0.993652344,
+            1.00488281,
+            0.993652344,
+            1
+          ],
+          [
+            1.47558594,
+            1.47558594,
+            1.47558594,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.1015538251108279,
+        10.044441048418635,
+        99.73536816501031,
+        202.76226483759663,
+        400.9462413115012,
+        1001.1567900232928,
+        4009.6521452171096
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0503540039,
+        0.4921875,
+        0.9973958326666666,
+        1.47558594,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "pq-418",
+      "referenceKind": "steps",
+      "peakNits": 418,
+      "nativeSamples": [
+        [
+          0.06268310546875,
+          0.06268310546875,
+          0.06268310546875,
+          1
+        ],
+        [
+          0.300048828125,
+          0.300048828125,
+          0.300048828125,
+          1
+        ],
+        [
+          0.50732421875,
+          0.50732421875,
+          0.50732421875,
+          1
+        ],
+        [
+          0.57470703125,
+          0.5751953125,
+          0.57470703125,
+          1
+        ],
+        [
+          0.61865234375,
+          0.61865234375,
+          0.61865234375,
+          1
+        ],
+        [
+          0.6484375,
+          0.6484375,
+          0.6484375,
+          1
+        ],
+        [
+          0.6572265625,
+          0.6572265625,
+          0.6572265625,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 2957.4,
+        "metadata": {
+          "expectedDisplayTime": 2971.4,
+          "height": 47,
+          "mediaTime": 0.083334,
+          "presentationTime": 2960,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0503540039,
+            0.0503540039,
+            0.0503540039,
+            1
+          ],
+          [
+            0.4921875,
+            0.4921875,
+            0.4921875,
+            1
+          ],
+          [
+            0.946777344,
+            0.946777344,
+            0.946777344,
+            1
+          ],
+          [
+            1.27441406,
+            1.27441406,
+            1.27441406,
+            1
+          ],
+          [
+            1.45996094,
+            1.45996094,
+            1.45996094,
+            1
+          ],
+          [
+            1.50585938,
+            1.50585938,
+            1.50585938,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.10131995362309805,
+        10.044441048418635,
+        99.25115414196067,
+        191.6933453400996,
+        291.0654962647144,
+        384.8420674413787,
+        417.70394839361603
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0503540039,
+        0.4921875,
+        0.946777344,
+        1.27441406,
+        1.45996094,
+        1.5058593799999997
+      ]
+    },
+    {
+      "name": "linear-418",
+      "referenceKind": "steps",
+      "peakNits": 418,
+      "nativeSamples": [
+        [
+          0.0012683868408203125,
+          0.0012683868408203125,
+          0.0012683868408203125,
+          1
+        ],
+        [
+          0.12548828125,
+          0.12548828125,
+          0.12548828125,
+          1
+        ],
+        [
+          1.24609375,
+          1.24609375,
+          1.24609375,
+          1
+        ],
+        [
+          2.3984375,
+          2.412109375,
+          2.40234375,
+          1
+        ],
+        [
+          3.646484375,
+          3.646484375,
+          3.646484375,
+          1
+        ],
+        [
+          4.828125,
+          4.828125,
+          4.828125,
+          1
+        ],
+        [
+          5.22265625,
+          5.22265625,
+          5.22265625,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 3887.9,
+        "metadata": {
+          "expectedDisplayTime": 3901.9,
+          "height": 47,
+          "mediaTime": 0.125001,
+          "presentationTime": 3893,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0.0288848877,
+            0.0288848877,
+            0.0288848877,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.101470947265625,
+        10.0390625,
+        99.6875,
+        191.875,
+        291.71875,
+        386.25,
+        417.8125
+      ],
+      "compositorLinearValues": [
+        0.0,
+        0.0288848877,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "linear-1000",
+      "referenceKind": "steps",
+      "peakNits": 1000,
+      "nativeSamples": [
+        [
+          0.0012683868408203125,
+          0.0012683868408203125,
+          0.0012683868408203125,
+          1
+        ],
+        [
+          0.12548828125,
+          0.12548828125,
+          0.12548828125,
+          1
+        ],
+        [
+          1.24609375,
+          1.24609375,
+          1.24609375,
+          1
+        ],
+        [
+          2.525390625,
+          2.546875,
+          2.53125,
+          1
+        ],
+        [
+          5.0078125,
+          5.0078125,
+          5.0078125,
+          1
+        ],
+        [
+          10.1796875,
+          10.1796875,
+          10.1796875,
+          1
+        ],
+        [
+          12.4921875,
+          12.4921875,
+          12.4921875,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 4839.4,
+        "metadata": {
+          "expectedDisplayTime": 4853.3,
+          "height": 47,
+          "mediaTime": 0.166668,
+          "presentationTime": 4844.3,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0.0288848877,
+            0.0288848877,
+            0.0288848877,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.101470947265625,
+        10.0390625,
+        99.6875,
+        202.03125,
+        400.625,
+        814.375,
+        999.375
+      ],
+      "compositorLinearValues": [
+        0.0,
+        0.0288848877,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "linear-100",
+      "referenceKind": "steps",
+      "peakNits": 100,
+      "nativeSamples": [
+        [
+          0.0012683868408203125,
+          0.0012683868408203125,
+          0.0012683868408203125,
+          1
+        ],
+        [
+          0.12548828125,
+          0.12548828125,
+          0.12548828125,
+          1
+        ],
+        [
+          0.6875,
+          0.6875,
+          0.6875,
+          1
+        ],
+        [
+          0.904296875,
+          0.90869140625,
+          0.90576171875,
+          1
+        ],
+        [
+          1.0771484375,
+          1.0771484375,
+          1.0771484375,
+          1
+        ],
+        [
+          1.208984375,
+          1.208984375,
+          1.208984375,
+          1
+        ],
+        [
+          1.25,
+          1.25,
+          1.25,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 5763,
+        "metadata": {
+          "expectedDisplayTime": 5776.9,
+          "height": 47,
+          "mediaTime": 0.208335,
+          "presentationTime": 5768.7,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0.0288848877,
+            0.0288848877,
+            0.0288848877,
+            1
+          ],
+          [
+            0.856933594,
+            0.856933594,
+            0.856933594,
+            1
+          ],
+          [
+            1.59765625,
+            1.61328125,
+            1.59765625,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.101470947265625,
+        10.0390625,
+        55.0,
+        72.34375,
+        86.171875,
+        96.71875,
+        100.0
+      ],
+      "compositorLinearValues": [
+        0.0,
+        0.0288848877,
+        0.856933594,
+        1.6028645833333333,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "linear-relative-418",
+      "referenceKind": "steps",
+      "peakNits": 418,
+      "nativeSamples": [
+        [
+          0.0004229545593261719,
+          0.0004229545593261719,
+          0.0004229545593261719,
+          1
+        ],
+        [
+          0.041839599609375,
+          0.041839599609375,
+          0.041839599609375,
+          1
+        ],
+        [
+          0.415283203125,
+          0.415283203125,
+          0.415283203125,
+          1
+        ],
+        [
+          0.79931640625,
+          0.80419921875,
+          0.80078125,
+          1
+        ],
+        [
+          1.2158203125,
+          1.2158203125,
+          1.2158203125,
+          1
+        ],
+        [
+          1.609375,
+          1.609375,
+          1.609375,
+          1
+        ],
+        [
+          1.7412109375,
+          1.7412109375,
+          1.7412109375,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 6686.7,
+        "metadata": {
+          "expectedDisplayTime": 6700.5,
+          "height": 47,
+          "mediaTime": 0.250002,
+          "presentationTime": 6689.9,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0845947266,
+            0.0845947266,
+            0.0845947266,
+            1
+          ],
+          [
+            0.835449219,
+            0.835449219,
+            0.835449219,
+            1
+          ],
+          [
+            1.59765625,
+            1.61328125,
+            1.59765625,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.10150909423828125,
+        10.04150390625,
+        99.66796875,
+        191.8359375,
+        291.796875,
+        386.25,
+        417.890625
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0845947266,
+        0.835449219,
+        1.6028645833333333,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "linear-relative-100",
+      "referenceKind": "steps",
+      "peakNits": 100,
+      "nativeSamples": [
+        [
+          0.0004227161407470703,
+          0.0004227161407470703,
+          0.0004227161407470703,
+          1
+        ],
+        [
+          0.04180908203125,
+          0.04180908203125,
+          0.04180908203125,
+          1
+        ],
+        [
+          0.229248046875,
+          0.229248046875,
+          0.229248046875,
+          1
+        ],
+        [
+          0.301513671875,
+          0.302734375,
+          0.3017578125,
+          1
+        ],
+        [
+          0.35888671875,
+          0.35888671875,
+          0.35888671875,
+          1
+        ],
+        [
+          0.403076171875,
+          0.403076171875,
+          0.403076171875,
+          1
+        ],
+        [
+          0.41650390625,
+          0.41650390625,
+          0.41650390625,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 7617.2,
+        "metadata": {
+          "expectedDisplayTime": 7631.2,
+          "height": 47,
+          "mediaTime": 0.291669,
+          "presentationTime": 7617.5,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0845947266,
+            0.0845947266,
+            0.0845947266,
+            1
+          ],
+          [
+            0.461425781,
+            0.461425781,
+            0.461425781,
+            1
+          ],
+          [
+            0.601074219,
+            0.601074219,
+            0.601074219,
+            1
+          ],
+          [
+            0.712402344,
+            0.712402344,
+            0.712402344,
+            1
+          ],
+          [
+            0.803710938,
+            0.803710938,
+            0.803710938,
+            1
+          ],
+          [
+            0.835449219,
+            0.835449219,
+            0.835449219,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt709",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.10145187377929688,
+        10.0341796875,
+        55.01953125,
+        72.36328125,
+        86.1328125,
+        96.73828125,
+        99.9609375
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0845947266,
+        0.461425781,
+        0.601074219,
+        0.712402344,
+        0.803710938,
+        0.835449219
+      ]
+    },
+    {
+      "name": "bt2020-linear-418",
+      "referenceKind": "steps",
+      "peakNits": 418,
+      "nativeSamples": [
+        [
+          0.0004229545593261719,
+          0.0004229545593261719,
+          0.0004229545593261719,
+          1
+        ],
+        [
+          0.041839599609375,
+          0.041839599609375,
+          0.041839599609375,
+          1
+        ],
+        [
+          0.415283203125,
+          0.415283203125,
+          0.415283203125,
+          1
+        ],
+        [
+          0.80078125,
+          0.8037109375,
+          0.80078125,
+          1
+        ],
+        [
+          1.2158203125,
+          1.2158203125,
+          1.2158203125,
+          1
+        ],
+        [
+          1.609375,
+          1.609375,
+          1.609375,
+          1
+        ],
+        [
+          1.7412109375,
+          1.7412109375,
+          1.7412109375,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 8582.6,
+        "metadata": {
+          "expectedDisplayTime": 8596.4,
+          "height": 47,
+          "mediaTime": 0.333336,
+          "presentationTime": 8582.8,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            0.000607013702,
+            0.000607013702,
+            0.000607013702,
+            1
+          ],
+          [
+            0.0845947266,
+            0.0845947266,
+            0.0845947266,
+            1
+          ],
+          [
+            0.824707031,
+            0.835449219,
+            0.835449219,
+            1
+          ],
+          [
+            1.59765625,
+            1.61328125,
+            1.59765625,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        0.10150909423828125,
+        10.04150390625,
+        99.66796875,
+        192.1875,
+        291.796875,
+        386.25,
+        417.890625
+      ],
+      "compositorLinearValues": [
+        0.000607013702,
+        0.0845947266,
+        0.8318684896666667,
+        1.6028645833333333,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "name": "bt2020-colors-418",
+      "referenceKind": "colors",
+      "peakNits": 418,
+      "nativeSamples": [
+        [
+          0.415283203125,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0.415283203125,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0.413330078125,
+          1
+        ],
+        [
+          0.413330078125,
+          0.41748046875,
+          0,
+          1
+        ],
+        [
+          0,
+          0.415283203125,
+          0.4111328125,
+          1
+        ],
+        [
+          0.4052734375,
+          0,
+          0.4111328125,
+          1
+        ],
+        [
+          0.415283203125,
+          0.415283203125,
+          0.415283203125,
+          1
+        ]
+      ],
+      "callback": {
+        "now": 9499.2,
+        "metadata": {
+          "expectedDisplayTime": 9513.2,
+          "height": 47,
+          "mediaTime": 0.375003,
+          "presentationTime": 9500.3,
+          "presentedFrames": 3,
+          "width": 63
+        }
+      },
+      "compositor": {
+        "width": 403,
+        "height": 183,
+        "format": "rgba16float",
+        "frames": 3,
+        "dxgiDisplay": {
+          "colorSpace": 0,
+          "bitsPerColor": 8,
+          "minLuminance": 0,
+          "maxLuminance": 417.711792,
+          "maxFullFrameLuminance": 282.855499
+        },
+        "samples": [
+          [
+            1.37304688,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0.935546875,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0.923828125,
+            1
+          ],
+          [
+            0.87890625,
+            0.846191406,
+            0,
+            1
+          ],
+          [
+            0,
+            0.935546875,
+            0.835449219,
+            1
+          ],
+          [
+            1.28808594,
+            0,
+            0.901367188,
+            1
+          ],
+          [
+            0.824707031,
+            0.835449219,
+            0.835449219,
+            1
+          ],
+          [
+            2,
+            2,
+            2,
+            1
+          ]
+        ]
+      },
+      "deliveredColorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": null
+      },
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": null
+      },
+      "format": null,
+      "releaseCount": 1,
+      "nativeNits": [
+        99.66796875,
+        0.0,
+        0.0,
+        99.19921875,
+        0.0,
+        97.265625,
+        99.66796875
+      ],
+      "nativeRgbNits": [
+        [
+          99.66796875,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          99.66796875,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          99.19921875
+        ],
+        [
+          99.19921875,
+          100.1953125,
+          0.0
+        ],
+        [
+          0.0,
+          99.66796875,
+          98.671875
+        ],
+        [
+          97.265625,
+          0.0,
+          98.671875
+        ],
+        [
+          99.66796875,
+          99.66796875,
+          99.66796875
+        ]
+      ],
+      "compositorLinearValues": [
+        0.4576822933333333,
+        0.3118489583333333,
+        0.3079427083333333,
+        0.575032552,
+        0.5903320313333333,
+        0.7298177093333335,
+        0.8318684896666667
+      ]
+    }
+  ],
+  "allReferencesReleasedBeforeWindowClose": true,
+  "physicalHdrDisplayVerified": false,
+  "completeColorPipelineVerified": false,
+  "checkedAt": "2026-10-19T02:47:01.381585+00:00",
+  "sources": {
+    "main.cjs": "5c660af81218de2129969fc0e17fd394cc701d67915bf1c363ba28f9f41b1ca4",
+    "preload.cjs": "f49c4fedaee71562102c218d68630aa738772af8853082fa3f71be84373ddf9e",
+    "run.py": "d955582f578c426c50e9719c6ebb856c4119a318bbae7d2f2fc14e7c5073281d"
+  },
+  "sharedSources": {
+    "libmpv-playback\\display-check.py": "ab147478551b04a8e4c01cdf60932bebbf10facb4974f258de13556e4e8ce1ff",
+    "libmpv-playback\\renderer.html": "471404db7114489f1a450de12d16282bd216b64257594176c88e2f9da6e78a69",
+    "libmpv-display\\capture.cpp": "780cfd040ae5f3e36581afefe8e1d483ae9c0716c2d036b7c72a97ab4fdede17"
+  },
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "captureExecutableSha256": "aa416f6fd79eede42d58e92d6ff808f3f61f1b6c8c985ac266f719236f886ed3",
+  "generatorSha256": "04e1307997530f9cf2fe35cba2ca7e8875ca91da02f89d6c7243df819c94ad00",
+  "reportedDisplayPeak": 417.711792,
+  "reference": {
+    "requestedNits": [
+      0.1,
+      10,
+      100,
+      203,
+      400,
+      1000,
+      4000
+    ],
+    "codes": [
+      119,
+      327,
+      509,
+      573,
+      636,
+      723,
+      855
+    ],
+    "encodedNits": [
+      0.1017120776725406,
+      10.067313475113014,
+      99.91279848944153,
+      203.70295787737396,
+      401.45493782263355,
+      1004.1919039801087,
+      4014.7177018309767
+    ],
+    "sampleSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+    "metadata": [
+      {
+        "side_data_type": "Mastering display metadata",
+        "red_x": "35400/50000",
+        "red_y": "14600/50000",
+        "green_x": "8500/50000",
+        "green_y": "39850/50000",
+        "blue_x": "6550/50000",
+        "blue_y": "2300/50000",
+        "white_point_x": "15635/50000",
+        "white_point_y": "16450/50000",
+        "min_luminance": "50/10000",
+        "max_luminance": "40000000/10000"
+      },
+      {
+        "side_data_type": "Content light level metadata",
+        "max_content": 4000,
+        "max_average": 1000
+      }
+    ],
+    "colorRgbNits": [
+      [
+        100,
+        0,
+        0
+      ],
+      [
+        0,
+        100,
+        0
+      ],
+      [
+        0,
+        0,
+        100
+      ],
+      [
+        100,
+        100,
+        0
+      ],
+      [
+        0,
+        100,
+        100
+      ],
+      [
+        100,
+        0,
+        100
+      ],
+      [
+        100,
+        100,
+        100
+      ]
+    ],
+    "colorYuvCodes": [
+      [
+        181,
+        448,
+        740
+      ],
+      [
+        366,
+        348,
+        303
+      ],
+      [
+        90,
+        740,
+        494
+      ],
+      [
+        483,
+        284,
+        530
+      ],
+      [
+        392,
+        576,
+        284
+      ],
+      [
+        207,
+        676,
+        721
+      ],
+      [
+        509,
+        512,
+        512
+      ]
+    ],
+    "colorSampleSha256": "f0f1bb2dd3cebb56426ce30b4390ea8b5796eea6292168bd5e34dbbd45e1dfa7"
+  },
+  "setups": [
+    {
+      "name": "pq-1000",
+      "peakNits": 1000,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\pq-1000.lua",
+      "scriptSha256": "86f3ac622618eff4dad9ea0d802ae1587fffe671647131626c3721c38f8c97e6",
+      "shaderSha256": null,
+      "nitsPerUnit": null,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "pq",
+      "colorSpace": {
+        "primaries": "bt2020",
+        "transfer": "pq",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "pq-4000",
+      "peakNits": 4000,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\pq-4000.lua",
+      "scriptSha256": "16844945a51fdebe4f989f48385ee25e91c75b5183e56874e4eb13ad1e2d7149",
+      "shaderSha256": null,
+      "nitsPerUnit": null,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "pq",
+      "colorSpace": {
+        "primaries": "bt2020",
+        "transfer": "pq",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "pq-418",
+      "peakNits": 418,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\pq-418.lua",
+      "scriptSha256": "949542479296cf3d01d60b97847383d010bb4d42db860860d30496362a81c72b",
+      "shaderSha256": null,
+      "nitsPerUnit": null,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "pq",
+      "colorSpace": {
+        "primaries": "bt2020",
+        "transfer": "pq",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "linear-418",
+      "peakNits": 418,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\linear-418.lua",
+      "scriptSha256": "ba9425ec9825b11f7dd29ea699cb78e9ba56f6b33f34425c8d952948e0f05162",
+      "shaderSha256": "f6938f0c8b3778592392a39aa40a4f608a660b0a6f2a9f054a35448e577065e6",
+      "nitsPerUnit": 80,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt709",
+        "transfer": "scrgb-linear-80-nits",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "linear-1000",
+      "peakNits": 1000,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\linear-1000.lua",
+      "scriptSha256": "529ad7e5fe33dcfe4117c1b49d43a40be73303f122a9e55c11f10eec959bb386",
+      "shaderSha256": "f6938f0c8b3778592392a39aa40a4f608a660b0a6f2a9f054a35448e577065e6",
+      "nitsPerUnit": 80,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt709",
+        "transfer": "scrgb-linear-80-nits",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "linear-100",
+      "peakNits": 100,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\linear-100.lua",
+      "scriptSha256": "163fde5d65bbaa426f32e58ccb8efeaa9f420811a8e2cf93524077edfed6a6e9",
+      "shaderSha256": "f285656384c223921673c34d9d9957b73cea91952472a6ef9c21c80593467bc5",
+      "nitsPerUnit": 80,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt709",
+        "transfer": "scrgb-linear-80-nits",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "linear-relative-418",
+      "peakNits": 418,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\linear-relative-418.lua",
+      "scriptSha256": "889fd10f1b7d8ae68a93c647eb838dbd746aa333eee884d5b0c5ce961b910883",
+      "shaderSha256": "f8c1bd64844e3539fde5e496f6d5c6d8bcded6003e3db214de22dd560f1c711d",
+      "nitsPerUnit": 240.0,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt709",
+        "transfer": "linear-hdr",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "linear-relative-100",
+      "peakNits": 100,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\linear-relative-100.lua",
+      "scriptSha256": "189b9fec8b20727c99afc0a451440550f4d5c2fb622b3a5d072eaeda98c3cf80",
+      "shaderSha256": "ef972b9a12373e6dc96c08652928fe7b5be98170ca25dae4eccc9900fcf8bb53",
+      "nitsPerUnit": 240.0,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt709",
+        "transfer": "linear-hdr",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "bt2020-linear-418",
+      "peakNits": 418,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\bt2020-linear-418.lua",
+      "scriptSha256": "c43e4bfa4ea8c2790a1e0eb1bf8f29012b62ba7e167ac3745db94dd16776737f",
+      "shaderSha256": "f8c1bd64844e3539fde5e496f6d5c6d8bcded6003e3db214de22dd560f1c711d",
+      "nitsPerUnit": 240.0,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sourceSha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+      "referenceKind": "steps",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt2020",
+        "transfer": "linear-hdr",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    },
+    {
+      "name": "bt2020-colors-418",
+      "peakNits": 418,
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\bt2020-colors-418.lua",
+      "scriptSha256": "53e5febc1efba39a3a4c1befecc7181c575eebdb4a7c503d8cc2749400e171fe",
+      "shaderSha256": "f8c1bd64844e3539fde5e496f6d5c6d8bcded6003e3db214de22dd560f1c711d",
+      "nitsPerUnit": 240.0,
+      "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\colors-pq-4000.mkv",
+      "sourceSha256": "f0f1bb2dd3cebb56426ce30b4390ea8b5796eea6292168bd5e34dbbd45e1dfa7",
+      "referenceKind": "colors",
+      "nativeMode": "scrgb",
+      "colorSpace": {
+        "primaries": "bt2020",
+        "transfer": "linear-hdr",
+        "matrix": "rgb",
+        "range": "full"
+      }
+    }
+  ],
+  "before": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "after": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "originalStateRestored": true,
+  "outputHookDoesNotProveSubtitleConversion": true,
+  "stdout": "\n",
+  "stderr": ""
+}

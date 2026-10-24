@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-10-20T03:21:52.258572+00:00",
+  "references": [
+    {
+      "url": "https://drafts.csswg.org/css-multicol-2/",
+      "resolvedUrl": "https://drafts.csswg.org/css-multicol-2/",
+      "file": "multicol.html",
+      "bytes": 651250,
+      "sha256": "0fc90709ca04851267244b78726fa1c18a8ee4e4ea2d50da82f2573a896493a4"
+    },
+    {
+      "url": "https://developer.chrome.com/blog/multicol-wrapping",
+      "resolvedUrl": "https://developer.chrome.com/blog/multicol-wrapping",
+      "file": "chromium-columns.html",
+      "bytes": 101865,
+      "sha256": "8fecc6ed3b4be5ea5acec0b6d2f146860b2c9519c8592321658aff9fcbdba6e6"
+    },
+    {
+      "url": "https://www.w3.org/TR/css-writing-modes-4/",
+      "resolvedUrl": "https://www.w3.org/TR/css-writing-modes-4/",
+      "file": "writing-modes.html",
+      "bytes": 379734,
+      "sha256": "30a59de49343d984c8570e2c1a5fa5bda511dda4f2e83841c862caa99d155fcd"
+    },
+    {
+      "url": "https://www.w3.org/TR/selection-api/",
+      "resolvedUrl": "https://www.w3.org/TR/selection-api/",
+      "file": "selection.html",
+      "bytes": 198307,
+      "sha256": "616183cecb1e25d14ceca692b0279e2c6404b88973c2e94c80757eee40cd0243"
+    },
+    {
+      "url": "https://www.w3.org/TR/clipboard-apis/",
+      "resolvedUrl": "https://www.w3.org/TR/clipboard-apis/",
+      "file": "clipboard.html",
+      "bytes": 541824,
+      "sha256": "64ff9e279103212d7287137569bf593e73c0501fe6ccb6db824d0b1295bd65da"
+    },
+    {
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=218086",
+      "resolvedUrl": "https://bugs.webkit.org/show_bug.cgi?id=218086",
+      "file": "webkit-events.html",
+      "bytes": 37202,
+      "sha256": "6d2f1f0a074f6ac5cf39ad108cf001151dc918e2f629fe13686631122fccd826"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mdn/browser-compat-data/main/css/properties/column-wrap.json",
+      "resolvedUrl": "https://raw.githubusercontent.com/mdn/browser-compat-data/main/css/properties/column-wrap.json",
+      "file": "column-wrap-compat.json",
+      "bytes": 4029,
+      "sha256": "4d85cb93437948f3674de289ffe2450f91c48879b695adc26b7baa917aa315d9"
+    }
+  ]
+}

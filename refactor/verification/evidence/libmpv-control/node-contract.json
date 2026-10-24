@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-18T06:48:00.064Z",
+  "node": "v24.11.1",
+  "abortResults": [
+    {
+      "preAborted": false,
+      "name": "AbortError",
+      "code": "ABORT_ERR",
+      "causeIdentityPreserved": true,
+      "causeEnumerable": false
+    },
+    {
+      "preAborted": true,
+      "name": "AbortError",
+      "code": "ABORT_ERR",
+      "causeIdentityPreserved": true,
+      "causeEnumerable": false
+    }
+  ],
+  "referencedTimerCompleted": true,
+  "unreferencedTimerAllowedExit": true,
+  "asyncDisposalOrder": ["body", "dispose-start", "dispose-finish"],
+  "nativeAddonExecuted": false,
+  "proposedMpvErrorsInstantiated": false,
+  "proposedMpvKeepaliveExecuted": false,
+  "nativeEnvironmentCleanupVerified": false
+}

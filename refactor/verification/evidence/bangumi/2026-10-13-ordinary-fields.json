@@ -1,0 +1,869 @@
+{
+  "scope": "Anonymous public metadata observations. Source prose and image bytes are not reproduced. The evidence supports field interpretation and does not by itself decide body-content adoption.",
+  "schemaReference": {
+    "url": "https://raw.githubusercontent.com/bangumi/api/a7055f2dca7286d6963aaa7928345eeca6293e2b/open-api/v0.yaml",
+    "declaresDurationSeconds": true
+  },
+  "requests": [
+    {
+      "key": "character-frieren",
+      "observedAt": "2026-10-13T08:12:40.516Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/characters/86246"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 86246,
+        "name": "フリーレン",
+        "type": 1,
+        "gender": "female",
+        "birth_year": null,
+        "birth_mon": null,
+        "birth_day": null,
+        "blood_type": null,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/100/pic/crt/l/b5/b6/86246_crt_L0Zmt.jpg",
+          "grid": "https://lain.bgm.tv/pic/crt/g/b5/b6/86246_crt_L0Zmt.jpg",
+          "large": "https://lain.bgm.tv/pic/crt/l/b5/b6/86246_crt_L0Zmt.jpg",
+          "medium": "https://lain.bgm.tv/r/400/pic/crt/l/b5/b6/86246_crt_L0Zmt.jpg"
+        },
+        "infobox": [
+          {
+            "key": "简体中文名",
+            "value": "芙莉莲"
+          },
+          {
+            "key": "性别",
+            "value": "女"
+          }
+        ],
+        "summaryObservation": {
+          "length": 101,
+          "sha256": "7c010836534003cf71af51e901e87729ea62690fa3ffd7112b27973e23647669",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "person-tanezaki",
+      "observedAt": "2026-10-13T08:12:40.522Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/7575"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 7575,
+        "name": "種﨑敦美",
+        "type": 1,
+        "gender": "female",
+        "birth_year": 1990,
+        "birth_mon": 9,
+        "birth_day": 27,
+        "blood_type": null,
+        "images": {
+          "small": "https://lain.bgm.tv/r/100/pic/crt/l/7a/a7/7575_prsn_8TJlL.jpg?r=1671262190",
+          "grid": "https://lain.bgm.tv/pic/crt/g/7a/a7/7575_prsn_8TJlL.jpg?r=1671262190",
+          "large": "https://lain.bgm.tv/pic/crt/l/7a/a7/7575_prsn_8TJlL.jpg?r=1671262190",
+          "medium": "https://lain.bgm.tv/r/400/pic/crt/l/7a/a7/7575_prsn_8TJlL.jpg?r=1671262190"
+        },
+        "infobox": [
+          {
+            "key": "简体中文名",
+            "value": "种崎敦美"
+          },
+          {
+            "key": "性别",
+            "value": "女"
+          },
+          {
+            "key": "生日",
+            "value": "1990年9月27日"
+          },
+          {
+            "key": "血型",
+            "value": "A型"
+          },
+          {
+            "key": "身高",
+            "value": "157cm"
+          }
+        ],
+        "summaryObservation": {
+          "length": 1019,
+          "sha256": "8ba9f13921bacac9e0b5f3af315c55bac448da14cc6274662f69ec7832c9eed0",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "organization-madhouse",
+      "observedAt": "2026-10-13T08:12:40.525Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/603"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 603,
+        "name": "MADHOUSE",
+        "type": 2,
+        "gender": null,
+        "birth_year": null,
+        "birth_mon": null,
+        "birth_day": null,
+        "blood_type": null,
+        "images": {
+          "small": "https://lain.bgm.tv/r/100/pic/crt/l/f3/80/603_prsn_WSmvG.jpg",
+          "grid": "https://lain.bgm.tv/pic/crt/g/f3/80/603_prsn_WSmvG.jpg",
+          "large": "https://lain.bgm.tv/pic/crt/l/f3/80/603_prsn_WSmvG.jpg",
+          "medium": "https://lain.bgm.tv/r/400/pic/crt/l/f3/80/603_prsn_WSmvG.jpg"
+        },
+        "infobox": [
+          {
+            "key": "简体中文名",
+            "value": "MADHOUSE"
+          },
+          {
+            "key": "成立时间",
+            "value": "1972年10月17日"
+          }
+        ],
+        "summaryObservation": {
+          "length": 3239,
+          "sha256": "b1d0c9161baacbec68e9fc488a8368d0e8cab73fed2d5097ccd5a0aab9beeff5",
+          "bbcodeTags": [
+            "[b]",
+            "[/b]",
+            "[url=https://bgm.tv/person/30844]",
+            "[/url]",
+            "[url=https://bgm.tv/person/30001]",
+            "[url=https://bgm.tv/person/47509]",
+            "[url=https://bgm.tv/person/51364]",
+            "[url=https://bgm.tv/person/50622]",
+            "[url=https://bgm.tv/person/48487]",
+            "[url=https://bgm.tv/person/54469]",
+            "[url=https://bangumi.tv/person/59819]"
+          ]
+        }
+      }
+    },
+    {
+      "key": "game-search",
+      "observedAt": "2026-10-13T08:12:40.521Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/subjects?limit=4&offset=0",
+        "body": {
+          "keyword": "CLANNAD",
+          "sort": "match",
+          "filter": {
+            "type": [4]
+          }
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 5,
+        "limit": 4,
+        "offset": 0,
+        "data": [
+          {
+            "id": 13,
+            "name": "CLANNAD",
+            "name_cn": "",
+            "type": 4,
+            "platform": "游戏",
+            "series": false,
+            "date": "2004-04-28",
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/200/pic/cover/l/c5/1c/13_tQxwM.jpg",
+              "grid": "https://lain.bgm.tv/r/100/pic/cover/l/c5/1c/13_tQxwM.jpg",
+              "large": "https://lain.bgm.tv/pic/cover/l/c5/1c/13_tQxwM.jpg",
+              "medium": "https://lain.bgm.tv/r/800/pic/cover/l/c5/1c/13_tQxwM.jpg",
+              "common": "https://lain.bgm.tv/r/400/pic/cover/l/c5/1c/13_tQxwM.jpg"
+            },
+            "infobox": [
+              {
+                "key": "发行日期",
+                "value": "2004-04-28(PC)"
+              }
+            ],
+            "summaryObservation": {
+              "length": 402,
+              "sha256": "4a445b39196e890ba6448393bac54bc695fa720209b8ff489a2e3b21a91c84d5",
+              "bbcodeTags": []
+            }
+          },
+          {
+            "id": 6312,
+            "name": "CLANNAD: 光見守る坂道で 上巻",
+            "name_cn": "Clannad: 光芒守护的小镇 上卷",
+            "type": 4,
+            "platform": "游戏",
+            "series": false,
+            "date": "2010-06-03",
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/200/pic/cover/l/64/67/6312_7o94P.jpg",
+              "grid": "https://lain.bgm.tv/r/100/pic/cover/l/64/67/6312_7o94P.jpg",
+              "large": "https://lain.bgm.tv/pic/cover/l/64/67/6312_7o94P.jpg",
+              "medium": "https://lain.bgm.tv/r/800/pic/cover/l/64/67/6312_7o94P.jpg",
+              "common": "https://lain.bgm.tv/r/400/pic/cover/l/64/67/6312_7o94P.jpg"
+            },
+            "infobox": [
+              {
+                "key": "中文名",
+                "value": "Clannad: 光芒守护的小镇 上卷"
+              },
+              {
+                "key": "发行日期",
+                "value": "2010-06-03"
+              }
+            ],
+            "summaryObservation": {
+              "length": 661,
+              "sha256": "1724a081c93bb19a6b281793b0848a65e45415024dff501b20e772df89de01b9",
+              "bbcodeTags": []
+            }
+          },
+          {
+            "id": 7970,
+            "name": "CLANNAD: 光見守る坂道で 下巻",
+            "name_cn": "Clannad: 光芒守护的小镇 下卷",
+            "type": 4,
+            "platform": "游戏",
+            "series": false,
+            "date": "2010-07-15",
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/200/pic/cover/l/ec/10/7970_u9REu.jpg",
+              "grid": "https://lain.bgm.tv/r/100/pic/cover/l/ec/10/7970_u9REu.jpg",
+              "large": "https://lain.bgm.tv/pic/cover/l/ec/10/7970_u9REu.jpg",
+              "medium": "https://lain.bgm.tv/r/800/pic/cover/l/ec/10/7970_u9REu.jpg",
+              "common": "https://lain.bgm.tv/r/400/pic/cover/l/ec/10/7970_u9REu.jpg"
+            },
+            "infobox": [
+              {
+                "key": "中文名",
+                "value": "Clannad: 光芒守护的小镇 下卷"
+              },
+              {
+                "key": "发行日期",
+                "value": "2010-07-15"
+              }
+            ],
+            "summaryObservation": {
+              "length": 675,
+              "sha256": "2fc19a6bff69c84eb88b0ad7ce2b216f7a957d3ba77f9345a22fb4000b8af349",
+              "bbcodeTags": []
+            }
+          },
+          {
+            "id": 512739,
+            "name": "Clannad -The Past Path-",
+            "name_cn": "",
+            "type": 4,
+            "platform": "游戏",
+            "series": false,
+            "date": "2011-09-16",
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/200/pic/cover/l/d7/6f/512739_YAnIv.jpg",
+              "grid": "https://lain.bgm.tv/r/100/pic/cover/l/d7/6f/512739_YAnIv.jpg",
+              "large": "https://lain.bgm.tv/pic/cover/l/d7/6f/512739_YAnIv.jpg",
+              "medium": "https://lain.bgm.tv/r/800/pic/cover/l/d7/6f/512739_YAnIv.jpg",
+              "common": "https://lain.bgm.tv/r/400/pic/cover/l/d7/6f/512739_YAnIv.jpg"
+            },
+            "infobox": [
+              {
+                "key": "发行日期",
+                "value": "2011-9-16"
+              }
+            ],
+            "summaryObservation": {
+              "length": 506,
+              "sha256": "9c00decd1f878cd074e7a06f002c339b0fdd844ccaeb89d87436d66f41398b12",
+              "bbcodeTags": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": "character-search",
+      "observedAt": "2026-10-13T08:12:40.518Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/characters?limit=3&offset=0",
+        "body": {
+          "keyword": "遠坂凛"
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 497,
+        "limit": 3,
+        "offset": 0,
+        "data": [
+          {
+            "id": 10596,
+            "name": "遠坂凛",
+            "type": 1,
+            "gender": "female",
+            "birth_year": null,
+            "birth_mon": 2,
+            "birth_day": 3,
+            "blood_type": null,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/100/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+              "grid": "https://lain.bgm.tv/pic/crt/g/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+              "large": "https://lain.bgm.tv/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+              "medium": "https://lain.bgm.tv/r/400/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254"
+            },
+            "infobox": [
+              {
+                "key": "简体中文名",
+                "value": "远坂凛"
+              },
+              {
+                "key": "性别",
+                "value": "女"
+              },
+              {
+                "key": "生日",
+                "value": "2月3日"
+              },
+              {
+                "key": "血型",
+                "value": "O型"
+              },
+              {
+                "key": "身高",
+                "value": "159cm"
+              },
+              {
+                "key": "体重",
+                "value": "47kg"
+              },
+              {
+                "key": "BWH",
+                "value": "B77/W57/H80"
+              }
+            ],
+            "summaryObservation": {
+              "length": 133,
+              "sha256": "1de1dabcdde17231f94c70dc69e8399bdd3f8b7d1702481c60787d372271d14b",
+              "bbcodeTags": []
+            }
+          },
+          {
+            "id": 183135,
+            "name": "遠坂凛 (プリズマ☆イリヤ)",
+            "type": 1,
+            "gender": "female",
+            "birth_year": null,
+            "birth_mon": null,
+            "birth_day": null,
+            "blood_type": null,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/100/pic/crt/l/0a/68/183135_crt_9vc69.jpg",
+              "grid": "https://lain.bgm.tv/pic/crt/g/0a/68/183135_crt_9vc69.jpg",
+              "large": "https://lain.bgm.tv/pic/crt/l/0a/68/183135_crt_9vc69.jpg",
+              "medium": "https://lain.bgm.tv/r/400/pic/crt/l/0a/68/183135_crt_9vc69.jpg"
+            },
+            "infobox": [
+              {
+                "key": "简体中文名",
+                "value": "远坂凛 (Prisma☆Illya)"
+              },
+              {
+                "key": "性别",
+                "value": "女"
+              }
+            ],
+            "summaryObservation": {
+              "length": 95,
+              "sha256": "69e07df8439891a0fe14f5cbf44503bef660c04f6a1a1d0eab9851dfbac35d84",
+              "bbcodeTags": []
+            }
+          },
+          {
+            "id": 183106,
+            "name": "遠坂リン",
+            "type": 1,
+            "gender": "female",
+            "birth_year": null,
+            "birth_mon": 2,
+            "birth_day": 4,
+            "blood_type": null,
+            "nsfw": false,
+            "images": {
+              "small": "https://lain.bgm.tv/r/100/pic/crt/l/6b/d3/183106_crt_2OZ39.jpg",
+              "grid": "https://lain.bgm.tv/pic/crt/g/6b/d3/183106_crt_2OZ39.jpg",
+              "large": "https://lain.bgm.tv/pic/crt/l/6b/d3/183106_crt_2OZ39.jpg",
+              "medium": "https://lain.bgm.tv/r/400/pic/crt/l/6b/d3/183106_crt_2OZ39.jpg"
+            },
+            "infobox": [
+              {
+                "key": "简体中文名",
+                "value": "远坂凛"
+              },
+              {
+                "key": "性别",
+                "value": "女"
+              },
+              {
+                "key": "生日",
+                "value": "2月4日"
+              },
+              {
+                "key": "血型",
+                "value": "O型"
+              },
+              {
+                "key": "身高",
+                "value": "159cm"
+              },
+              {
+                "key": "体重",
+                "value": "48kg"
+              },
+              {
+                "key": "BWH",
+                "value": "B82/W57/H80"
+              }
+            ],
+            "summaryObservation": {
+              "length": 61,
+              "sha256": "025ec3a14b2c165c3ad3e3c71c6b124d0ea6045f935335dd975bf5d9b755c669",
+              "bbcodeTags": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": "game-detail",
+      "observedAt": "2026-10-13T08:17:55.343Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/13"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 13,
+        "name": "CLANNAD",
+        "name_cn": "",
+        "type": 4,
+        "platform": "游戏",
+        "series": false,
+        "date": "2004-04-28",
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/c5/1c/13_tQxwM.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/c5/1c/13_tQxwM.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/c5/1c/13_tQxwM.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/c5/1c/13_tQxwM.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/c5/1c/13_tQxwM.jpg"
+        },
+        "infobox": [
+          {
+            "key": "发行日期",
+            "value": "2004-04-28(PC)"
+          }
+        ],
+        "summaryObservation": {
+          "length": 402,
+          "sha256": "4a445b39196e890ba6448393bac54bc695fa720209b8ff489a2e3b21a91c84d5",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "character-rin",
+      "observedAt": "2026-10-13T08:17:55.317Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/characters/10596"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 10596,
+        "name": "遠坂凛",
+        "type": 1,
+        "gender": "female",
+        "birth_year": null,
+        "birth_mon": 2,
+        "birth_day": 3,
+        "blood_type": null,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/100/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+          "grid": "https://lain.bgm.tv/pic/crt/g/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+          "large": "https://lain.bgm.tv/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254",
+          "medium": "https://lain.bgm.tv/r/400/pic/crt/l/79/f0/10596_crt_J4h2w.jpg?r=1675677254"
+        },
+        "infobox": [
+          {
+            "key": "简体中文名",
+            "value": "远坂凛"
+          },
+          {
+            "key": "性别",
+            "value": "女"
+          },
+          {
+            "key": "生日",
+            "value": "2月3日"
+          },
+          {
+            "key": "血型",
+            "value": "O型"
+          },
+          {
+            "key": "身高",
+            "value": "159cm"
+          },
+          {
+            "key": "体重",
+            "value": "47kg"
+          },
+          {
+            "key": "BWH",
+            "value": "B77/W57/H80"
+          }
+        ],
+        "summaryObservation": {
+          "length": 133,
+          "sha256": "1de1dabcdde17231f94c70dc69e8399bdd3f8b7d1702481c60787d372271d14b",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "episode-detail",
+      "observedAt": "2026-10-13T08:17:55.314Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/episodes/1227087"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 1227087,
+        "name": "冒険の終わり",
+        "name_cn": "冒险结束",
+        "type": 0,
+        "airdate": "2023-09-29",
+        "duration": "00:26:00",
+        "duration_seconds": 1560,
+        "ep": 1,
+        "sort": 1,
+        "subject_id": 400602,
+        "descObservation": {
+          "length": 181,
+          "sha256": "d15a4f2084bb0c8e174a6a35082a8957cc322319e1d483f7c2063fefe00ee778",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "earlier-subject-10086",
+      "observedAt": "2026-10-13T04:47:42.360Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/10086"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 10086,
+        "name": "よつばと!",
+        "name_cn": "四叶妹妹！",
+        "type": 1,
+        "platform": "漫画",
+        "series": true,
+        "date": "2003-08-27",
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/64/12/10086_e981v.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/64/12/10086_e981v.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/64/12/10086_e981v.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/64/12/10086_e981v.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/64/12/10086_e981v.jpg"
+        },
+        "infobox": [
+          {
+            "key": "中文名",
+            "value": "四叶妹妹！"
+          },
+          {
+            "key": "发售日",
+            "value": "2003-08-27"
+          },
+          {
+            "key": "开始",
+            "value": "2003-01-21 (2003年3月号)"
+          }
+        ],
+        "summaryObservation": {
+          "length": 223,
+          "sha256": "fbef4be8f8ebb6991732b1746b4354419b7818ff458f65a25db5e710d6b1b513",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "earlier-subject-13911",
+      "observedAt": "2026-10-13T04:47:40.298Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/13911"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 13911,
+        "name": "キノの旅 -the Beautiful World-",
+        "name_cn": "奇诺之旅",
+        "type": 1,
+        "platform": "小说",
+        "series": true,
+        "date": "2000-07-10",
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/45/e4/13911_8815P.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/45/e4/13911_8815P.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/45/e4/13911_8815P.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/45/e4/13911_8815P.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/45/e4/13911_8815P.jpg"
+        },
+        "infobox": [
+          {
+            "key": "中文名",
+            "value": "奇诺之旅"
+          },
+          {
+            "key": "发售日",
+            "value": "2000-07-10"
+          },
+          {
+            "key": "册数",
+            "value": "既刊24卷、视觉小说既刊3卷"
+          },
+          {
+            "key": "开始",
+            "value": "2000-03"
+          }
+        ],
+        "summaryObservation": {
+          "length": 225,
+          "sha256": "135ea0b6dbbdabc4bd02564b434d515c373db2b6c201971a6311f4f54a572a79",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "earlier-subject-141797",
+      "observedAt": "2026-10-13T04:47:41.677Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/141797"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 141797,
+        "name": "君の膵臓をたべたい",
+        "name_cn": "我想吃掉你的胰脏",
+        "type": 1,
+        "platform": "小说",
+        "series": false,
+        "date": "2015-06-17",
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/b5/d9/141797_ak7f7.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/b5/d9/141797_ak7f7.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/b5/d9/141797_ak7f7.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/b5/d9/141797_ak7f7.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/b5/d9/141797_ak7f7.jpg"
+        },
+        "infobox": [
+          {
+            "key": "中文名",
+            "value": "我想吃掉你的胰脏"
+          },
+          {
+            "key": "发售日",
+            "value": "2015-06-17"
+          },
+          {
+            "key": "页数",
+            "value": "288"
+          }
+        ],
+        "summaryObservation": {
+          "length": 200,
+          "sha256": "a814917123a1c521a471c04ff0cb5e290b8562b65df9f5d01f5f0bdb2c09e2c8",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "earlier-subject-400602",
+      "observedAt": "2026-10-13T04:47:43.578Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/400602"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 400602,
+        "name": "葬送のフリーレン",
+        "name_cn": "葬送的芙莉莲",
+        "type": 2,
+        "platform": "TV",
+        "series": false,
+        "date": "2023-09-29",
+        "eps": 28,
+        "total_episodes": 36,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/13/c5/400602_ZI8Y9.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/13/c5/400602_ZI8Y9.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/13/c5/400602_ZI8Y9.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/13/c5/400602_ZI8Y9.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/13/c5/400602_ZI8Y9.jpg"
+        },
+        "infobox": [
+          {
+            "key": "中文名",
+            "value": "葬送的芙莉莲"
+          },
+          {
+            "key": "话数",
+            "value": "28"
+          },
+          {
+            "key": "放送开始",
+            "value": "2023年9月29日"
+          },
+          {
+            "key": "播放结束",
+            "value": "2024年3月22日"
+          }
+        ],
+        "summaryObservation": {
+          "length": 234,
+          "sha256": "8ce739c0c7c3ef3b7dc058897c22b1a45ce6ca755b6c4a6a40ebb8739502449e",
+          "bbcodeTags": []
+        }
+      }
+    },
+    {
+      "key": "earlier-subject-56575",
+      "observedAt": "2026-10-13T04:47:43.040Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/56575"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 56575,
+        "name": "よつばと! (01)",
+        "name_cn": "",
+        "type": 1,
+        "platform": "漫画",
+        "series": false,
+        "date": "2003-08-27",
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0,
+        "nsfw": false,
+        "images": {
+          "small": "https://lain.bgm.tv/r/200/pic/cover/l/10/67/56575_jp.jpg",
+          "grid": "https://lain.bgm.tv/r/100/pic/cover/l/10/67/56575_jp.jpg",
+          "large": "https://lain.bgm.tv/pic/cover/l/10/67/56575_jp.jpg",
+          "medium": "https://lain.bgm.tv/r/800/pic/cover/l/10/67/56575_jp.jpg",
+          "common": "https://lain.bgm.tv/r/400/pic/cover/l/10/67/56575_jp.jpg"
+        },
+        "infobox": [
+          {
+            "key": "发售日",
+            "value": "2003-08-27"
+          },
+          {
+            "key": "页数",
+            "value": "224"
+          }
+        ],
+        "summaryObservation": {
+          "length": 109,
+          "sha256": "f5cef2e65e384debea0dd9f2fe494d74b24bfa88e0666402c2df5d69b510768a",
+          "bbcodeTags": []
+        }
+      }
+    }
+  ],
+  "imageRedirect": {
+    "key": "subject-image-redirect",
+    "observedAt": "2026-10-13T08:17:55.636Z",
+    "request": {
+      "method": "GET",
+      "url": "https://api.bgm.tv/v0/subjects/13/image?type=large"
+    },
+    "status": 302,
+    "location": "https://lain.bgm.tv/pic/cover/l/c5/1c/13_tQxwM.jpg"
+  },
+  "formatReferences": [
+    {
+      "url": "https://bgm.tv/help/bbcode",
+      "purpose": "Public BBCode marker meanings, including mask, s, links and images"
+    },
+    {
+      "url": "https://bangumi.tv/group/topic/383066",
+      "purpose": "Source announcement requiring story and spoiler content in character introductions to use mask"
+    }
+  ],
+  "checks": {
+    "allApiResponsesOk": true,
+    "characterPartialBirthdayPreserved": true,
+    "infoboxHasBloodTypeWhenParsedFieldIsNull": true,
+    "organizationInfoboxHasFoundingDateWhenBirthFieldsAreNull": true,
+    "episodeDurationRepresentationsAgree": true,
+    "imageRedirectMatchesProvidedLargeUrl": true
+  },
+  "limitations": [
+    "Search results do not establish unique identity or replace full detail reads.",
+    "The image redirect was inspected without downloading image bytes or validating image dimensions.",
+    "These API prose samples did not contain mask; support and meaning were checked against the source documentation.",
+    "Count and date fields must still be interpreted for the specific work or part; current runtime mappers were not changed."
+  ]
+}

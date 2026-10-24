@@ -1,0 +1,475 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 25,
+  "extension": "LaunchBox Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceCodeAvailable": false,
+  "sourceApiAssembly": "13.5.0.0",
+  "currentReleaseEvidence": {
+    "released": "14.0.1",
+    "releasedOn": "2026-08-25",
+    "undatedEntry": "14.1",
+    "undatedEntryIsReleaseProof": false
+  },
+  "sources": [
+    {
+      "id": "igame",
+      "url": "https://pluginapi.launchbox-app.com/html/b33d2055-e2be-3f42-12c6-adbc5668f454.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/b33d2055-e2be-3f42-12c6-adbc5668f454.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:14.883Z",
+      "decodedTextBytes": 34477,
+      "decodedTextSha256": "168f14867932868d723c069a955bb9a3540d420f6802c566162e39dfb13da327",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "xml-specimen",
+      "url": "https://forums.launchbox-app.com/topic/82395-adding-games-manually-to-a-platforms-xml/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/82395-adding-games-manually-to-a-platforms-xml/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:14.888Z",
+      "decodedTextBytes": 168385,
+      "decodedTextSha256": "cf9bec0c240ab74869ed70464ab3ad1d8b7fb12e4178a97764b5ca0e87b007c4",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "changelog",
+      "url": "https://www.launchbox-app.com/about/changelog",
+      "finalUrl": "https://www.launchbox-app.com/about/changelog",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:15.120Z",
+      "decodedTextBytes": 359933,
+      "decodedTextSha256": "22b833f5ccf03811072bec25c43dd3bebfd3875d925b02699ee83ec47ebbf4dd",
+      "evidenceClass": "vendor-changelog"
+    },
+    {
+      "id": "Unbroken.LaunchBox.Plugins.Data",
+      "url": "https://pluginapi.launchbox-app.com/html/afb812f3-7002-75ff-28d3-62a722615597.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/afb812f3-7002-75ff-28d3-62a722615597.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.342Z",
+      "decodedTextBytes": 22936,
+      "decodedTextSha256": "6fb904ca10fd20b9e0dcdbbd59f647a82b72a7184051051d5bdbbe0024aeb0c7",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "PlayTime",
+      "url": "https://pluginapi.launchbox-app.com/html/7c0626f0-3d74-b0f9-25d4-ac8df4235484.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/7c0626f0-3d74-b0f9-25d4-ac8df4235484.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.448Z",
+      "decodedTextBytes": 29670,
+      "decodedTextSha256": "01155fc4f2e1113458118564fe3a65ea1c87e22da9e846b73c9f2e9acfa88296",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "StarRating",
+      "url": "https://pluginapi.launchbox-app.com/html/84fe80ba-287b-6ad3-d84b-24c7f41d38b9.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/84fe80ba-287b-6ad3-d84b-24c7f41d38b9.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.462Z",
+      "decodedTextBytes": 29860,
+      "decodedTextSha256": "91896cfa9c13bc2768a11ef3ffe58a3da52045bc4b76abee2bce5e86b58c3f73",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "LaunchBoxDbId",
+      "url": "https://pluginapi.launchbox-app.com/html/fd7461af-2a5c-9de7-c9b0-9986c00696ca.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/fd7461af-2a5c-9de7-c9b0-9986c00696ca.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.489Z",
+      "decodedTextBytes": 30262,
+      "decodedTextSha256": "722a7f35cd40d6a50543d3eb2ebe1753669e2b49e025193833a461484c25def0",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "StarRatingFloat",
+      "url": "https://pluginapi.launchbox-app.com/html/7af3e6e4-be9e-421d-b896-6f88123f6083.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/7af3e6e4-be9e-421d-b896-6f88123f6083.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.538Z",
+      "decodedTextBytes": 29964,
+      "decodedTextSha256": "5b9e7791499858109c422bfa42530e65bf5af75cb1e021322d2db5bd6d19917b",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "Notes",
+      "url": "https://pluginapi.launchbox-app.com/html/a9b3915d-297f-5e8d-b9c4-b92ea9335d44.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/a9b3915d-297f-5e8d-b9c4-b92ea9335d44.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:21.578Z",
+      "decodedTextBytes": 29640,
+      "decodedTextSha256": "f46d4c42532851794f165f798c2f1ac2e42b79ec97b8c7ff0871979610769c7c",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IEmulatorPlatform",
+      "url": "https://pluginapi.launchbox-app.com/html/d3d87e4d-1887-dde7-3d6e-c303da752cb6.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/d3d87e4d-1887-dde7-3d6e-c303da752cb6.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:28.954Z",
+      "decodedTextBytes": 11978,
+      "decodedTextSha256": "51c4486e525048fa38a0021694098991074e337a2fd09b4f121eacb350dce804",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IEmulator",
+      "url": "https://pluginapi.launchbox-app.com/html/3653db3d-bd7e-2749-1b00-f04d828694f6.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/3653db3d-bd7e-2749-1b00-f04d828694f6.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.010Z",
+      "decodedTextBytes": 16756,
+      "decodedTextSha256": "232d8dc568da85502dd3f28332066167bc95d85fd73e4738ac70bfaa41bf71bf",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IPlaylist",
+      "url": "https://pluginapi.launchbox-app.com/html/5cdc27bd-5576-9d92-468e-c31e1c004cba.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/5cdc27bd-5576-9d92-468e-c31e1c004cba.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.010Z",
+      "decodedTextBytes": 18193,
+      "decodedTextSha256": "82d549bd6c9cd0db8ca4d9aad92b5940289feb2c3834a0c7e5b46f211153a22c",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IPlatformFolder",
+      "url": "https://pluginapi.launchbox-app.com/html/6ff17d85-649c-5698-dcfd-6cd09b73d0bc.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/6ff17d85-649c-5698-dcfd-6cd09b73d0bc.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.029Z",
+      "decodedTextBytes": 10164,
+      "decodedTextSha256": "9cdc2f49f12f89331b40a7cb78fcb53c02702124f6239b90568ead3e6f7d3ea6",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IPlaylistGame",
+      "url": "https://pluginapi.launchbox-app.com/html/3945de52-9e9d-f658-0e2b-f136d77b1a40.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/3945de52-9e9d-f658-0e2b-f136d77b1a40.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.029Z",
+      "decodedTextBytes": 11850,
+      "decodedTextSha256": "dd53aa978f9a182a0376abe6e2403a702d03723c35b708d11ddd138762b4fcc2",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "ICustomField",
+      "url": "https://pluginapi.launchbox-app.com/html/5c39d4d4-78ab-3682-4271-2311dcba0a46.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/5c39d4d4-78ab-3682-4271-2311dcba0a46.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.117Z",
+      "decodedTextBytes": 10539,
+      "decodedTextSha256": "4dae04222306074aa3e64488d96403880efe7b7b4608aa655838fa7adc5a473a",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "IAdditionalApplication",
+      "url": "https://pluginapi.launchbox-app.com/html/866b513c-9bd8-0d1f-1568-45b3a3c24163.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/866b513c-9bd8-0d1f-1568-45b3a3c24163.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:29.283Z",
+      "decodedTextBytes": 18895,
+      "decodedTextSha256": "af7fe3ef372ed8e19c8b9d2a783a80488cfc9f2e9e09d06830479f39c8e4b715",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "sessions-forum",
+      "url": "https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:36.036Z",
+      "decodedTextBytes": 328341,
+      "decodedTextSha256": "ca36564897bce6c6011307979c26f7523425fb443d603a948cac8d35375c4c22",
+      "evidenceClass": "vendor-statement-in-forum"
+    },
+    {
+      "id": "bindings",
+      "url": "https://feedback.launchbox-app.com/help/articles/3543252-data-bindings",
+      "finalUrl": "https://feedback.launchbox-app.com/help/articles/3543252-data-bindings",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:36.912Z",
+      "decodedTextBytes": 980872,
+      "decodedTextSha256": "6602efcf5d042f9b37cc673a5026459e553971a54792a1d4c2616ed5a0425178",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "playlists-help",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/1792544-playlists-manual-auto-populated-and-filter-based",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/1792544-playlists-manual-auto-populated-and-filter-based",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:37.073Z",
+      "decodedTextBytes": 244234,
+      "decodedTextSha256": "722886567a5593f0e029d9f27510a8784c6fa34a675a7c00271074d9777c1748",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "edit-help",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/6470204-editing-game-details-and-fixing-incorrect-matches",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/6470204-editing-game-details-and-fixing-incorrect-matches",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:37.161Z",
+      "decodedTextBytes": 254850,
+      "decodedTextSha256": "307a1466e99a4404728360a15d86f309fdaefefe88916f799a78175be84d5d1d",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "progress",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/6612691-game-progress-tracking",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/6612691-game-progress-tracking",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:11:37.218Z",
+      "decodedTextBytes": 244518,
+      "decodedTextSha256": "27f1187e4b02a5540e019f361e8d3e32d02ba28a7551d49a6d083e6cda3bc382",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "sessions-details",
+      "url": "https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/page/3/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/page/3/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:01.191Z",
+      "decodedTextBytes": 166866,
+      "decodedTextSha256": "6978cada27b64c3850d767de7f4f0ad01d1fada670660c5359b517f4edb314e7",
+      "evidenceClass": "vendor-statement-in-forum"
+    },
+    {
+      "id": "media-help",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/7279041-metadata-and-media-basics",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/7279041-metadata-and-media-basics",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:01.849Z",
+      "decodedTextBytes": 246934,
+      "decodedTextSha256": "6ad8dd9aafa1d4319e0de53e19405e4b9a1eff411aedba0d4df5e6f020ee8c0a",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "multidisc-help",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/8972270-multi-disc-games-and-m3u-playlists",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/8972270-multi-disc-games-and-m3u-playlists",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:02.029Z",
+      "decodedTextBytes": 254253,
+      "decodedTextSha256": "df067c8e8658c5a1ea9f8ee901f3957bc5cbf697c5b4c46fe44482e95b006156",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "windows-launch-help",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/2279589-adding-standalone-windows-games-executables-and-shortcuts",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/2279589-adding-standalone-windows-games-executables-and-shortcuts",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:02.051Z",
+      "decodedTextBytes": 261842,
+      "decodedTextSha256": "b6563e24eba5929338680002f1987ee972c6443323cac2b2c66b076c01a1c67e",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "Setting Up an Emulator Manually",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/3038328-setting-up-an-emulator-manually",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/3038328-setting-up-an-emulator-manually",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:10.086Z",
+      "decodedTextBytes": 245528,
+      "decodedTextSha256": "2dcafbeac9e4ebeafb285cf51c518d258b01bd324a5462891b24f27faae31361",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "Managing Game Files, Folders, and Paths",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/3760208-managing-game-files-folders-and-paths",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/3760208-managing-game-files-folders-and-paths",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:10.146Z",
+      "decodedTextBytes": 238414,
+      "decodedTextSha256": "ea40353745e487787638a741146ca146db995744a4146be5e8c04988d9a0eee6",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "Backing Up and Restoring Your LaunchBox Setup",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/4521068-backing-up-and-restoring-your-launchbox-setup",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/4521068-backing-up-and-restoring-your-launchbox-setup",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:10.223Z",
+      "decodedTextBytes": 244513,
+      "decodedTextSha256": "49c54313cff07473d81d49f1e9af0b58310cb5823bd532f664247c23ba5862c3",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "variables",
+      "url": "https://feedback.launchbox-app.com/en/help/articles/7078334-launchbox-built-in-command-line-variables",
+      "finalUrl": "https://feedback.launchbox-app.com/en/help/articles/7078334-launchbox-built-in-command-line-variables",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:26.070Z",
+      "decodedTextBytes": 203150,
+      "decodedTextSha256": "0c278ac8de75c356c64c583718390d60d9e9b7748b2f9ea53e0551a870d8ce2e",
+      "evidenceClass": "vendor-guide"
+    },
+    {
+      "id": "playlist-specimen",
+      "url": "https://forums.launchbox-app.com/topic/52395-howto-custom-playlist-creation-with-python/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/52395-howto-custom-playlist-creation-with-python/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:35.903Z",
+      "decodedTextBytes": 102415,
+      "decodedTextSha256": "b080c70d8efbd966a67a048b2fe6e6d46c14904f78d5af9e2a08c8c2619a34a2",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "additional-specimen",
+      "url": "https://forums.launchbox-app.com/topic/91814-re-import-titles-are-missing/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/91814-re-import-titles-are-missing/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:35.903Z",
+      "decodedTextBytes": 111078,
+      "decodedTextSha256": "45b816bff24b66151c203665e8b5ce3b250e23286a8419afdec7736c37b9c7d5",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "additional-owner",
+      "url": "https://forums.launchbox-app.com/topic/29400-the-additional-apps-feature/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/29400-the-additional-apps-feature/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:35.937Z",
+      "decodedTextBytes": 168846,
+      "decodedTextSha256": "b3759b900927265e2a86460456afd9ee66877240e948894f8473e808fedffeff",
+      "evidenceClass": "vendor-statement-in-forum"
+    },
+    {
+      "id": "customfield-specimen",
+      "url": "https://forums.launchbox-app.com/topic/90652-importing-teknoparrot-games/?comment=497716&do=findComment",
+      "finalUrl": "https://forums.launchbox-app.com/topic/90652-importing-teknoparrot-games/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:36.332Z",
+      "decodedTextBytes": 151525,
+      "decodedTextSha256": "8d48698630cdf62ccb6c0c09ebd73be3c3ebfd874326a9c4bbfe1915f8ff41b8",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "progress-specimen",
+      "url": "https://forums.launchbox-app.com/topic/92343-ms-dosxml-file-is-getting-over-written-with-old-data/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/92343-ms-dosxml-file-is-getting-over-written-with-old-data/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:43.633Z",
+      "decodedTextBytes": 118004,
+      "decodedTextSha256": "681f1200896334bf2fc35c1f0e6f9b360b29d5f1c0e65ef85d9c5462a9b4653f",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "media-matching",
+      "url": "https://forums.launchbox-app.com/topic/90566-question-about-metadata-in-database-versus-xml-files/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/90566-question-about-metadata-in-database-versus-xml-files/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:43.657Z",
+      "decodedTextBytes": 187448,
+      "decodedTextSha256": "20847d8eaa2a4a5106e0b6d13506e76d9200c3517a45411ccd498f3766d1d591",
+      "evidenceClass": "vendor-statement-in-forum"
+    },
+    {
+      "id": "rating-unset",
+      "url": "https://forums.launchbox-app.com/topic/86591-bug-un-rating-games-defaults-to-community-rating/",
+      "finalUrl": "https://forums.launchbox-app.com/topic/86591-bug-un-rating-games-defaults-to-community-rating/",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:12:54.091Z",
+      "decodedTextBytes": 123404,
+      "decodedTextSha256": "10254d6820a9e7dce4a8964df04f0f2087ab0daaf4865884e64cb06218636b05",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "additional-time",
+      "url": "https://pluginapi.launchbox-app.com/html/f53bd2ac-ade4-3ee5-93f5-55e0abe7abc6.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/f53bd2ac-ade4-3ee5-93f5-55e0abe7abc6.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:13:02.621Z",
+      "decodedTextBytes": 15536,
+      "decodedTextSha256": "5a67d486cc470269ca81cecf979be16742d2dce7452436bfc3f8d204757f0611",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "emulator-nospaces",
+      "url": "https://pluginapi.launchbox-app.com/html/2af349bc-6f4a-fe6b-32ba-0275ac899e09.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/2af349bc-6f4a-fe6b-32ba-0275ac899e09.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:13:02.870Z",
+      "decodedTextBytes": 13878,
+      "decodedTextSha256": "5222d69688f5cc2fa8ca2aec140c259203b890c592ed7f79aa25938a8e555d2f",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "db-port-example",
+      "url": "https://gamesdb.launchbox-app.com/games/details/158875-clannad",
+      "finalUrl": "https://gamesdb.launchbox-app.com/games/details/158875-clannad",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:13:28.840Z",
+      "decodedTextBytes": 58009,
+      "decodedTextSha256": "21c0eee6738048b95b6be7f10486ea005c40d14d8d2bb25dd1c423be42daecc5",
+      "evidenceClass": "public-catalog-record"
+    },
+    {
+      "id": "db-pc-example",
+      "url": "https://gamesdb.launchbox-app.com/games/details/20134-clannad",
+      "finalUrl": "https://gamesdb.launchbox-app.com/games/details/20134-clannad",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:13:28.901Z",
+      "decodedTextBytes": 69998,
+      "decodedTextSha256": "a8f114a268e5d74c227ab450161585d1ed42d8842c2322b1d68f1c1eeba5a9c6",
+      "evidenceClass": "public-catalog-record"
+    },
+    {
+      "id": "emulator-NoQuotes",
+      "url": "https://pluginapi.launchbox-app.com/html/9d38a5a5-d315-ab6c-cdcc-78f8a85512b6.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/9d38a5a5-d315-ab6c-cdcc-78f8a85512b6.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:17:39.724Z",
+      "decodedTextBytes": 13885,
+      "decodedTextSha256": "36b28ecf01f050eea959c5606fb328fef7edb3fb84090638dfa8a83c0255c0bb",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "emulator-FileNameWithoutExtensionAndPath",
+      "url": "https://pluginapi.launchbox-app.com/html/6ddd4b7f-191e-a50c-8c9e-b5ed2c36d2b0.htm",
+      "finalUrl": "https://pluginapi.launchbox-app.com/html/6ddd4b7f-191e-a50c-8c9e-b5ed2c36d2b0.htm",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:17:39.772Z",
+      "decodedTextBytes": 14242,
+      "decodedTextSha256": "d7f9c37162e4d85607d8a473d0c84df6588b6cad340b49d49c8cfbc4bec3247b",
+      "evidenceClass": "vendor-runtime-api"
+    },
+    {
+      "id": "emulator-xml-historical-specimen",
+      "url": "https://gist.github.com/Xananax/7dccce48db254ef7acd0",
+      "finalUrl": "https://gist.github.com/Xananax/7dccce48db254ef7acd0",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:18:12.074Z",
+      "decodedTextBytes": 278300,
+      "decodedTextSha256": "595ee0a3b5cddaf6bec09d2907010f61264108d851b76de63650f5427014038b",
+      "evidenceClass": "public-user-specimen-or-observation"
+    },
+    {
+      "id": "steam-appid-type",
+      "url": "https://partner.steamgames.com/doc/webapi/ISteamUserStats",
+      "finalUrl": "https://partner.steamgames.com/doc/webapi/ISteamUserStats",
+      "status": 200,
+      "checkedAt": "2026-10-17T09:20:41.557Z",
+      "decodedTextBytes": 123375,
+      "decodedTextSha256": "44ac4659dadad7f3c69e3f3ee66d6e589f1feae96c4bd51bfdabcec584426f86",
+      "evidenceClass": "vendor-api-type"
+    }
+  ],
+  "synthetic": {
+    "manifest": "fixture-manifest.json",
+    "result": "synthetic-results.json",
+    "files": 26,
+    "passed": 73,
+    "failed": 0
+  },
+  "notExercised": [
+    "Real LaunchBox Data or official backup",
+    "LaunchBox application or source plugins",
+    "Native Kisaki profile acquisition, prepared adoption, or database writes",
+    "Full Windows launch and working-directory equivalence",
+    "PlaySessions row parsing and total coverage",
+    "All image associations and media priorities",
+    "Save Management adaptation",
+    "Production archive handling and all target platforms"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "delete": "Delete",
+    "browse": "Browse…"
+  },
+  "library": {
+    "entities": {
+      "game": "Game",
+      "anime": "Anime",
+      "comic": "Comic",
+      "novel": "Novel",
+      "character": "Character",
+      "person": "Person",
+      "organization": "Organization"
+    },
+    "collection": "Collection",
+    "favorite": "Favorite",
+    "metadataProfile": "Metadata profile",
+    "added": "Added {name}",
+    "kind": "{kind, select, game {Game} anime {Anime} comic {Comic} novel {Novel} other {Work}}"
+  },
+  "records": {
+    "setStatus": "Set status",
+    "recordCurrent": "Record completion…",
+    "history": "Completion records…",
+    "addPast": "Add a past completion…",
+    "unknownDate": "Date not recorded",
+    "active": { "game": "Playing", "anime": "Watching", "comic": "Reading", "novel": "Reading" },
+    "running": "Running",
+    "additionalDuration": "Additional time",
+    "completionCount": "{count, plural, =0 {No completion records} one {# completion} other {# completions}}"
+  },
+  "selection": {
+    "count": "{count, plural, =0 {No items selected} one {# item selected} other {# items selected}}",
+    "position": "{position, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+    "shared": "{name} and {count, plural, offset:1 =1 {no others} one {one other person} other {# other people}}"
+  },
+  "feedback": {
+    "updated": "Updated {when, date, short}",
+    "retry": "Could not load {name}. Try again.",
+    "value": "Value: {value}",
+    "escaped": "Type '{name}' literally",
+    "literalMarkup": "<b>{name}</b>"
+  }
+}

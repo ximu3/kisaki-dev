@@ -1,0 +1,43 @@
+{
+  "package": "birpc",
+  "version": "4.2.0",
+  "node": "v24.11.1",
+  "checks": [
+    {
+      "name": "Nested bidirectional calls complete without serializing the message pump",
+      "passed": true
+    },
+    {
+      "name": "Independent simultaneous directions preserve their own call correlation",
+      "passed": true
+    },
+    {
+      "name": "Explicit one-way event is delivered",
+      "passed": true
+    },
+    {
+      "name": "Plain safe failure values survive the structured-clone transport",
+      "passed": true
+    },
+    {
+      "name": "Native Error loses custom fields in MessageChannel; an explicit failure codec is required",
+      "passed": true
+    },
+    {
+      "name": "Closing the caller rejects waiting while already-started remote work can still finish",
+      "passed": true
+    },
+    {
+      "name": "Explicit off callbacks release listeners on close",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "notImplementedByThisProbe": [
+    "per-call cancellation",
+    "handshake",
+    "instance ownership",
+    "input authorization",
+    "frame schema validation"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-21T06:46:22.581Z",
+  "node": "v24.11.1",
+  "observations": [
+    {
+      "scenario": "loopback, state, invalid verifier and concurrent exchange",
+      "upstreamExchanges": 1,
+      "indexesAfter": 0
+    },
+    {
+      "scenario": "refresh without authorization session",
+      "success": true,
+      "absentRefreshTokenPreserved": true
+    },
+    {
+      "scenario": "denial, duplicate parameters and literal loopback matching",
+      "success": true
+    },
+    {
+      "scenario": "capacity and expiry with an injected clock",
+      "activeSessionsKeptOnFull": 4,
+      "remainingAfterExpiry": 0
+    },
+    {
+      "scenario": "rate-limit",
+      "upstreamAttempts": 1,
+      "repeatedExchangeRejected": true
+    },
+    {
+      "scenario": "slow",
+      "upstreamAttempts": 1,
+      "repeatedExchangeRejected": true
+    },
+    {
+      "scenario": "HTTP client disconnect",
+      "authorizationIndexesReleased": true
+    },
+    {
+      "scenario": "code from another authorization, controlled upstream",
+      "upstreamModel": "strict",
+      "localVerifierAccepted": true,
+      "upstreamAccepted": false,
+      "provesRealProviderBehavior": false
+    },
+    {
+      "scenario": "code from another authorization, controlled upstream",
+      "upstreamModel": "unbound",
+      "localVerifierAccepted": true,
+      "upstreamAccepted": true,
+      "provesRealProviderBehavior": false
+    }
+  ],
+  "upstreamCalls": 7,
+  "upstreamAborts": 2,
+  "loopbackServersClosed": true,
+  "sourceReceiptSha256": "a3e2004d202d86c07d2fec4ba6e86edead53eacbc62a8764b4c3992c345d6731",
+  "probeSha256": "bdfda6a492e4710bc010435094a29aad7fea429de7d61b36cca545f1f3ed2dfe",
+  "realProviderAuthorizationExecuted": false,
+  "realCredentialsUsed": false,
+  "publicServiceChanged": false,
+  "productionRelayImplemented": false,
+  "containerImageBuilt": false,
+  "composeExecuted": false
+}

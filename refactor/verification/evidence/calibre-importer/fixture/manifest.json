@@ -1,0 +1,15 @@
+{
+  "source": "synthetic",
+  "books": 5,
+  "metadataSchemaVersion": 28,
+  "notesSchemaVersion": 1,
+  "annotations": 6,
+  "resourceHash": "sha1:4a9ff8a56594bd2e2852afdcb3c175dd06d8278c",
+  "epubMembers": [
+    "mimetype",
+    "META-INF/container.xml",
+    "OEBPS/content.opf",
+    "OEBPS/ch1.xhtml"
+  ],
+  "omitted": "FTS, triggers and unrelated source tables are outside this schema subset."
+}

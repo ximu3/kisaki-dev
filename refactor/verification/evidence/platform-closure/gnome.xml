@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Protocol blueprint; no desktop component was installed or executed. -->
+<node>
+  <interface name="dev.ximu.Vantage.Gnome1">
+    <method name="Open">
+      <arg name="protocol" type="s" direction="in"/>
+      <arg name="session" type="o" direction="out"/>
+      <arg name="incarnation" type="s" direction="out"/>
+    </method>
+  </interface>
+  <interface name="dev.ximu.Vantage.WindowSession1">
+    <method name="GetSnapshot">
+      <arg name="snapshot" type="a{sv}" direction="out"/>
+    </method>
+    <method name="Observe">
+      <arg name="observation" type="o" direction="out"/>
+      <arg name="initial" type="a{sv}" direction="out"/>
+    </method>
+    <method name="Control">
+      <arg name="window" type="s" direction="in"/>
+      <arg name="action" type="s" direction="in"/>
+    </method>
+    <method name="ResolveCapture">
+      <arg name="window" type="s" direction="in"/>
+      <arg name="native_id" type="s" direction="out"/>
+    </method>
+    <method name="Close"/>
+  </interface>
+  <interface name="dev.ximu.Vantage.WindowObservation1">
+    <signal name="Changed">
+      <arg name="snapshot" type="a{sv}"/>
+    </signal>
+    <signal name="Interrupted">
+      <arg name="reason" type="s"/>
+    </signal>
+    <method name="Close"/>
+  </interface>
+</node>

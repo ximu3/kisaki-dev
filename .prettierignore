@@ -1,0 +1,15 @@
+refactor/
+pnpm-lock.yaml
+**/Cargo.lock
+**/binding.d.ts
+node_modules/
+**/dist/
+**/out/
+**/target/
+.cache/
+.local/
+/artifacts/
+**/test-results/
+**/playwright-report/
+**/.vitest/
+.husky/_/

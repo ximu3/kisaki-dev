@@ -1,0 +1,32 @@
+{
+  "package": "rangy",
+  "version": "1.3.0",
+  "integrity": "sha512-hcN1Oo5xO7UDLU81aCnO9BEv4Dss6JmxPyrQSFQ16fVL1opbfTRtVpC6GVcGyk1CNvMYoZkrD4g92DGaScABzw==",
+  "sourceCodeExecuted": false,
+  "sources": [
+    {
+      "url": "https://registry.npmjs.org/rangy/1.3.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:09:03.634302+00:00",
+      "bytes": 1303,
+      "sha256": "a185e27af19ecb6c3794ee4442a15e26bc0ca2e94a6d47f88f0a102b5936a6a8"
+    },
+    {
+      "url": "https://registry.npmjs.org/rangy/-/rangy-1.3.0.tgz",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:09:04.101114+00:00",
+      "bytes": 65186,
+      "sha256": "000c9e6e54ca46c97bccae3b4d6dea8706aac41c02f872e05b6411d42206a901"
+    }
+  ],
+  "member": {
+    "path": "package/lib/rangy-textrange.js",
+    "bytes": 82025,
+    "sha256": "75abe8daf96daae32a4bf3bf394248fafdafa4f5099a36a889b6016ba8f847ac"
+  },
+  "findings": [
+    "saveCharacterRanges records characterRange start/end and backward.",
+    "With omitted options, JSON serialization omits characterOptions.",
+    "Indices use rendered visible text rules, not raw textContent offsets."
+  ]
+}

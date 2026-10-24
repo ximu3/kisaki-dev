@@ -1,0 +1,67 @@
+{
+  "evidenceClass": "rendered-synthetic-pdf-geometry",
+  "renderer": "pdftoppm version 26.07.0",
+  "inputPdfSha256": "fc8fba6982d97b6c9c3e0dde3a9dc25ba80413846ab63fdf710004ce2b401209",
+  "passed": 9,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "page 0 renders two separate selected lines",
+      "passed": true
+    },
+    {
+      "name": "page 0 line 0 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    },
+    {
+      "name": "page 0 line 1 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    },
+    {
+      "name": "page 1 renders two separate selected lines",
+      "passed": true
+    },
+    {
+      "name": "page 1 line 0 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    },
+    {
+      "name": "page 1 line 1 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    },
+    {
+      "name": "page 2 renders two separate selected lines",
+      "passed": true
+    },
+    {
+      "name": "page 2 line 0 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    },
+    {
+      "name": "page 2 line 1 matches normalized PDF quad within two raster pixels",
+      "passed": true
+    }
+  ],
+  "images": [
+    {
+      "path": "preview/page-1.png",
+      "width": 347,
+      "height": 240,
+      "sha256": "2d0b237d1d7cd0a095a80ea2d98986bc2d9f8563373dd72d8c08f1558b2f39c2"
+    },
+    {
+      "path": "preview/page-2.png",
+      "width": 240,
+      "height": 347,
+      "sha256": "84913cfbeb37338b416612933cf0f382b00f0e35aab18f5a5d297ee9a95653bc"
+    },
+    {
+      "path": "preview/page-3.png",
+      "width": 240,
+      "height": 347,
+      "sha256": "5c050ca216048b08f9f99edf4ba194fc8a96efbc748cb0982661f93acb9ed60d"
+    }
+  ],
+  "visualReview": "Codex inspected all three previews; page labels and two blue lines are visible with the declared rotations.",
+  "limitations": "Raster comparison verifies normalized crop/rotation geometry, not physical UserUnit scaling or source-reader execution."
+}

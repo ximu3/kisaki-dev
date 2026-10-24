@@ -1,0 +1,488 @@
+{
+  "checkedOn": "2026-10-12",
+  "scope": "User-authorized temporary test records on three explicitly selected visual novels, followed by deletion and read-back confirmation. No existing records were present for these targets.",
+  "testEntries": [
+    {
+      "id": "v14018",
+      "title": "CHAOS;CHILD",
+      "initial": {
+        "labels_set": [5]
+      }
+    },
+    {
+      "id": "v8158",
+      "title": "Daitoshokan no Hitsujikai",
+      "initial": {
+        "labels_set": [2],
+        "vote": 80,
+        "finished": "2026-10-11"
+      }
+    },
+    {
+      "id": "v22783",
+      "title": "MUSICUS!",
+      "initial": {
+        "labels_set": [5],
+        "vote": 80
+      }
+    }
+  ],
+  "preflight": {
+    "httpStatus": 200,
+    "returned": 0,
+    "more": false
+  },
+  "requests": [
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Preflight for the three explicitly authorized test VNs",
+      "httpStatus": 200
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v14018",
+      "body": {
+        "labels_set": [5]
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v8158",
+      "body": {
+        "labels_set": [2],
+        "vote": 80,
+        "finished": "2026-10-11"
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v22783",
+      "body": {
+        "labels_set": [5],
+        "vote": 80
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v14018",
+      "body": {
+        "labels_set": [1],
+        "labels_unset": [2, 3, 4]
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v8158",
+      "body": {
+        "vote": null
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v8158",
+      "body": {
+        "finished": null
+      },
+      "httpStatus": 400
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/ulist/v22783",
+      "body": {
+        "vote": null
+      },
+      "httpStatus": 204
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "ID continuation pagination over authorized test VNs",
+      "httpStatus": 200,
+      "pageSize": 1
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "ID continuation pagination over authorized test VNs",
+      "httpStatus": 200,
+      "pageSize": 1
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "ID continuation pagination over authorized test VNs",
+      "httpStatus": 200,
+      "pageSize": 1
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/ulist/v14018",
+      "httpStatus": 204
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/ulist/v8158",
+      "httpStatus": 204
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/ulist/v22783",
+      "httpStatus": 204
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Final whole-list count",
+      "httpStatus": 400
+    },
+    {
+      "method": "GET",
+      "endpoint": "/ulist_labels",
+      "purpose": "Verify label definitions unchanged",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Read back authorized test records",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Confirm final empty list with results=1",
+      "httpStatus": 200,
+      "request": {
+        "fields": "",
+        "results": 1,
+        "count": true
+      },
+      "responseSummary": {
+        "count": 0,
+        "returned": 0,
+        "more": false
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/ulist_labels",
+      "purpose": "Repeat label-definition confirmation",
+      "httpStatus": 200
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Isolate zero-size query with an explicit record field",
+      "httpStatus": 400,
+      "request": {
+        "fields": "vote",
+        "sort": "id",
+        "reverse": false,
+        "results": 0,
+        "page": 1,
+        "count": true
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/ulist",
+      "purpose": "Control query differing only in results=1",
+      "httpStatus": 200,
+      "request": {
+        "fields": "vote",
+        "sort": "id",
+        "reverse": false,
+        "results": 1,
+        "page": 1,
+        "count": true
+      },
+      "responseSummary": {
+        "count": 0,
+        "returned": 0,
+        "more": false
+      }
+    }
+  ],
+  "phases": [
+    {
+      "name": "create-and-read-back",
+      "passed": true,
+      "records": [
+        {
+          "id": "v8158",
+          "vote": 80,
+          "started": null,
+          "finished": "2026-10-11",
+          "labelIds": [2, 7],
+          "notesEmpty": true,
+          "releaseCount": 0
+        },
+        {
+          "id": "v14018",
+          "vote": null,
+          "started": null,
+          "finished": null,
+          "labelIds": [5],
+          "notesEmpty": true,
+          "releaseCount": 0
+        },
+        {
+          "id": "v22783",
+          "vote": 80,
+          "started": null,
+          "finished": null,
+          "labelIds": [5, 7],
+          "notesEmpty": true,
+          "releaseCount": 0
+        }
+      ]
+    },
+    {
+      "name": "planned-to-active-preserves-wishlist",
+      "passed": true,
+      "updatedRecord": {
+        "id": "v14018",
+        "vote": null,
+        "started": null,
+        "finished": null,
+        "labelIds": [1, 5],
+        "notesEmpty": true,
+        "releaseCount": 0
+      },
+      "otherRecordsUnchanged": true
+    },
+    {
+      "name": "clear-score-removes-voted-preserves-status-and-date",
+      "passed": true,
+      "updatedRecord": {
+        "id": "v8158",
+        "vote": null,
+        "started": null,
+        "finished": "2026-10-11",
+        "labelIds": [2],
+        "notesEmpty": true,
+        "releaseCount": 0
+      },
+      "otherRecordsUnchanged": true
+    },
+    {
+      "name": "finished-null-rejected",
+      "passed": true,
+      "intendedOperationSucceeded": false,
+      "httpStatus": 400,
+      "existingDatePreserved": true,
+      "allOtherFieldsPreserved": true
+    },
+    {
+      "name": "clear-score-preserves-wishlist",
+      "passed": true,
+      "updatedRecord": {
+        "id": "v22783",
+        "vote": null,
+        "started": null,
+        "finished": null,
+        "labelIds": [5],
+        "notesEmpty": true,
+        "releaseCount": 0
+      },
+      "otherRecordsUnchanged": true
+    },
+    {
+      "name": "id-pagination",
+      "passed": true,
+      "pages": [
+        {
+          "batch": 1,
+          "returnedIds": ["v8158"],
+          "more": true
+        },
+        {
+          "batch": 2,
+          "returnedIds": ["v14018"],
+          "more": true
+        },
+        {
+          "batch": 3,
+          "returnedIds": ["v22783"],
+          "more": false
+        }
+      ]
+    },
+    {
+      "name": "zero-result-count-rejected",
+      "actualHttpStatus": 400,
+      "resultsOneConfirmedCount": 0,
+      "countOnlyZeroSizeSupported": false
+    },
+    {
+      "name": "cleanup-and-empty-baseline",
+      "passed": true,
+      "deletedIds": ["v14018", "v8158", "v22783"],
+      "remainingTestRecords": 0,
+      "wholeListCount": 0,
+      "countHttpStatus": 200,
+      "returned": 0,
+      "more": false,
+      "labelsUnchanged": true,
+      "technicalTimestampsRestored": false
+    }
+  ],
+  "sourceReferences": [
+    {
+      "path": "lib/VNWeb/API.pm",
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/API.pm",
+      "treeSha": "514f2391cc12aa94ce420354863c52538641d9b1",
+      "gitBlobSha1": "64ea08e892e81265a57b6c5beb7e9bcb0f373d4e",
+      "sha256": "d6adb5f7b2b4ddc9f1e7b215d05a0c21f3fa10ea591a6045e84a3fb8a6cbb9f6",
+      "sourceLines": [132, 134, 233, 560, 563, 564]
+    },
+    {
+      "path": "lib/VNWeb/Validation.pm",
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/Validation.pm",
+      "treeSha": "514f2391cc12aa94ce420354863c52538641d9b1",
+      "gitBlobSha1": "50bacbb71df6647937b09accec2969873f098194",
+      "sha256": "ffda93917a9de7158338e9d35ea0214c7969294e8f5a34f75b83d1d51c3ae8ef",
+      "sourceLines": [88]
+    }
+  ],
+  "findings": {
+    "ratingWriteAndClear": "80 was stored exactly; null cleared the vote and removed the automatic Voted label while preserving the other selected values.",
+    "statusUpdate": "Playing and Wishlist coexist after the approved planned-to-active patch.",
+    "finishedDateWrite": "2026-10-11 was stored and read back exactly.",
+    "finishedDateClear": {
+      "sentValue": null,
+      "actualHttpStatus": 400,
+      "previousDatePreserved": true,
+      "notSupportedByInspectedCalendarDateValidator": true
+    },
+    "zeroResultCountQuery": {
+      "zeroHttpStatus": 400,
+      "oneHttpStatus": 200,
+      "oneCount": 0,
+      "onlyChangedParameter": "results",
+      "publicDocumentationAndSourceDeclareZeroAllowed": true,
+      "causeOfDeploymentDiscrepancyEstablished": false
+    },
+    "pagination": "Three one-record batches using id > previousId returned each authorized VN exactly once."
+  },
+  "cleanup": {
+    "verified": true,
+    "deletedIds": ["v14018", "v8158", "v22783"],
+    "remainingTestRecords": 0,
+    "wholeListCount": 0,
+    "countHttpStatus": 200,
+    "returned": 0,
+    "more": false,
+    "labelsUnchanged": true,
+    "technicalTimestampsRestored": false
+  },
+  "traffic": {
+    "writeRequests": 10,
+    "successfulWrites": 9,
+    "rejectedWrites": 1
+  },
+  "privacy": {
+    "tokenRetained": false,
+    "accountIdRetained": false,
+    "usernameRetained": false,
+    "privateUserNotesRetained": false,
+    "onlySyntheticAuthorizedRecordValuesRetained": true
+  },
+  "limitations": [
+    "The account had no pre-existing records, custom labels, or nonvirtual private labels. Those preservation and privacy combinations still need dedicated coverage.",
+    "Source history, technical timestamps, and any transient public visibility are not undone by deleting the temporary records.",
+    "Year bounds were inspected in the source validator; only the explicitly authorized 2026-10-11 date was written to the live service.",
+    "The rejected null date and zero-size queries are observed source behavior, not successful operations or proof that the public source exactly matches the deployed service.",
+    "This is an HTTP integration probe, not the future extension runtime, SDK, local database, or a concurrency test."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "@kisaki3/ui",
+  "version": "0.1.0-dev.0",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki.git",
+    "directory": "clients/desktop/packages/ui"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "typecheck": "tsc -b",
+    "pack": "pnpm pack --out out/package.tgz",
+    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css",
+    "clean": "tsx tools/clean.ts"
+  },
+  "dependencies": {
+    "@kisaki3/appearance": "workspace:^"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.16"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "tsdown": "catalog:",
+    "vitest": "catalog:",
+    "publint": "0.3.25",
+    "@arethetypeswrong/cli": "0.18.5",
+    "@types/node": "catalog:",
+    "solid-js": "catalog:",
+    "unplugin-solid": "catalog:",
+    "tailwindcss": "catalog:",
+    "@tailwindcss/cli": "4.3.3",
+    "tsx": "catalog:"
+  }
+}

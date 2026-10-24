@@ -1,0 +1,513 @@
+{
+  "checkedAt": "2026-10-20T07:19:06.089Z",
+  "libraryVersion": "2.45.2",
+  "libraryAdopted": false,
+  "kanaIntegrationExecuted": false,
+  "sourceAddressRoundtripExecuted": false,
+  "screenReaderExecuted": false,
+  "sources": {
+    "layout-engine.cjs": "757cc88a0d962c07668feb39cd8ad682c6b7145dc27460377c7357e33e23be97",
+    "layout-input.json": "e2f3b0d599c5991b952ea58afbc965d9945836d57ca783fa7d8b822564de0ae2",
+    "../kana-browser-scope/source-input.json": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4"
+  },
+  "results": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "results": [
+        {
+          "mode": "horizontal-tb",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:horizontal-tb}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"167\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"168\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"170\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "horizontal-tb",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 280,
+              "height": 60,
+              "top": 20,
+              "right": 280,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 0,
+            "y": 20,
+            "width": 280,
+            "height": 60
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-rl",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "rtl",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-rl}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-rl",
+            "bounds": {
+              "x": 200,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 260,
+              "bottom": 400,
+              "left": 200
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 200,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-lr",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-lr}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-lr",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 19.984375,
+              "height": 60,
+              "top": 20,
+              "right": 19.984375,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 20,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": false,
+          "errors": []
+        }
+      ],
+      "externalRequests": 0
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "results": [
+        {
+          "mode": "horizontal-tb",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:horizontal-tb}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"167\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"168\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"170\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "horizontal-tb",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 280,
+              "height": 60,
+              "top": 20,
+              "right": 280,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 0,
+            "y": 20,
+            "width": 280,
+            "height": 60
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-rl",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "rtl",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-rl}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-rl",
+            "bounds": {
+              "x": 200,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 260,
+              "bottom": 400,
+              "left": 200
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 200,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-lr",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-lr}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-lr",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 19.98333740234375,
+              "height": 60,
+              "top": 20,
+              "right": 19.98333740234375,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 20,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": false,
+          "errors": []
+        }
+      ],
+      "externalRequests": 0
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "results": [
+        {
+          "mode": "horizontal-tb",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:horizontal-tb}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"167\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"168\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"170\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "horizontal-tb",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 280,
+              "height": 60,
+              "top": 20,
+              "right": 280,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 0,
+            "y": 20,
+            "width": 280,
+            "height": 60
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-rl",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "rtl",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-rl}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-rl",
+            "bounds": {
+              "x": 200,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 260,
+              "bottom": 400,
+              "left": 200
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 200,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": true,
+          "errors": []
+        },
+        {
+          "mode": "vertical-lr",
+          "initial": {
+            "sizes": [
+              {
+                "width": 280,
+                "height": 400
+              },
+              {
+                "width": 280,
+                "height": 400
+              }
+            ],
+            "direction": "ltr",
+            "sourceUnchanged": false,
+            "sourceAfter": "<html xmlns=\"http://www.w3.org/1999/xhtml\" data-adapt-eloff=\"0\"><head data-viv-display-none=\"true\" data-adapt-eloff=\"1\"><style data-viv-display-none=\"true\" data-adapt-eloff=\"2\">@page{size:280px 400px;margin:0}html{writing-mode:vertical-lr}body{margin:0;font:20px/1 serif}.block{block-size:60px}#b{break-before:page;margin-block-start:20px}</style></head><body data-adapt-eloff=\"165\"><div class=\"block\" id=\"a\" data-probe=\"a\" data-adapt-eloff=\"166\">A</div><div class=\"block\" id=\"b\" data-probe=\"b\" data-adapt-eloff=\"168\">B</div></body></html>",
+            "sourceBodyText": "AB",
+            "sourceBodyChildren": ["a", "b"],
+            "pages": [
+              {
+                "text": "A",
+                "sourceMarkers": ["a"]
+              },
+              {
+                "text": "B",
+                "sourceMarkers": ["b"]
+              }
+            ]
+          },
+          "second": {
+            "markerFound": true,
+            "writingMode": "vertical-lr",
+            "bounds": {
+              "x": 0,
+              "y": 20,
+              "width": 20,
+              "height": 60,
+              "top": 20,
+              "right": 20,
+              "bottom": 80,
+              "left": 0
+            },
+            "pageCount": 2
+          },
+          "expected": {
+            "x": 20,
+            "y": 0,
+            "width": 60,
+            "height": 400
+          },
+          "geometryMatched": false,
+          "errors": []
+        }
+      ],
+      "externalRequests": 0
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-19T14:47:10.681848+00:00",
+  "references": [
+    {
+      "url": "https://www.w3.org/TR/css-cascade-5/",
+      "resolvedUrl": "https://www.w3.org/TR/css-cascade-5/",
+      "sha256": "1fe27cdb69e4990a801bdad630d4bea755b4d472ff9aa23bf07f743056a3a2a1",
+      "cachePath": "node_modules/.cache/kana-layout-policy/references/01.html",
+      "anchors": ["inheriting"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/css-multicol-1/",
+      "resolvedUrl": "https://www.w3.org/TR/css-multicol-1/",
+      "sha256": "0768f4526ac5b4be220169db13f1db9fb617c81c8112062a9df4883078220d09",
+      "cachePath": "node_modules/.cache/kana-layout-policy/references/02.html",
+      "anchors": ["cf", "the-multi-column-model"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/css-writing-modes-4/",
+      "resolvedUrl": "https://www.w3.org/TR/css-writing-modes-4/",
+      "sha256": "30a59de49343d984c8570e2c1a5fa5bda511dda4f2e83841c862caa99d155fcd",
+      "cachePath": "node_modules/.cache/kana-layout-policy/references/03.html",
+      "anchors": ["logical-directions"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/epub-rs-33/",
+      "resolvedUrl": "https://www.w3.org/TR/epub-rs-33/",
+      "sha256": "2e8d4400d1cce9080e729df8292d8795b4d76cb1a20be2387a263bcfbcd7ca9e",
+      "cachePath": "node_modules/.cache/kana-layout-policy/references/04.html",
+      "anchors": ["sec-fixed-layouts"],
+      "missingAnchors": []
+    }
+  ]
+}

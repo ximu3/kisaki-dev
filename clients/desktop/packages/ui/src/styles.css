@@ -1,0 +1,24 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@kisaki3/appearance/tailwind.css';
+@source './components';
+
+.kisaki-button {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2;
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.kisaki-button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.kisaki-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

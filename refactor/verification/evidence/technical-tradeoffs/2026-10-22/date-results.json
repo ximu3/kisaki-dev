@@ -1,0 +1,47 @@
+{
+  "scope": "Date contract arithmetic and SQLite fixture; no application forms",
+  "versions": {
+    "electron": "41.2.0",
+    "node": "24.14.0",
+    "sqlite": "3.53.2"
+  },
+  "groups": [
+    {
+      "name": "Full Gregorian cycle agrees with UTC date normalization as an independent oracle",
+      "assertions": 158400,
+      "passed": true
+    },
+    {
+      "name": "All seven nonempty component sets round trip without synthesizing unknown fields",
+      "assertions": 24,
+      "passed": true
+    },
+    {
+      "name": "Boundary leap years match exact BigInt arithmetic",
+      "assertions": 2000,
+      "passed": true
+    },
+    {
+      "name": "Era display and form conversion remain exact at both safe-integer endpoints",
+      "assertions": 36,
+      "passed": true
+    },
+    {
+      "name": "Absolute and recurring ranges retain unknown precision",
+      "assertions": 13,
+      "passed": true
+    },
+    {
+      "name": "SQLite JSON extraction preserves safe-integer years and missing components",
+      "assertions": 78,
+      "passed": true
+    },
+    {
+      "name": "SQL range, count and position agree with independent component predicates",
+      "assertions": 18,
+      "passed": true
+    }
+  ],
+  "elapsedMs": 118.05429999999998,
+  "passed": true
+}

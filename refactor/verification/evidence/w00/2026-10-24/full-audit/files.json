@@ -1,0 +1,61 @@
+{
+  "recordedAt": "2026-10-24",
+  "files": {
+    "artifact-test.json": {
+      "bytes": 980,
+      "sha256": "426357ffebd201e42f5c0be3a4f50ca49282e6faf9e2984c3f25a2f7ddf5b628"
+    },
+    "artifacts.json": {
+      "bytes": 753,
+      "sha256": "db92edd3ab1bb4db4bf24289f16fb5f9628da33383dfbc41ef485929940c8fcf"
+    },
+    "browser.log": {
+      "bytes": 240,
+      "sha256": "38266443c9d3ff0a11d8ce4588abb10d0341de7c577c45459b0da55edfe71d44"
+    },
+    "check.log": {
+      "bytes": 18570,
+      "sha256": "c938a7ff4a25dccb404e7bfc5e18f5c3fc64308c5e17497a7264cec23090a683"
+    },
+    "consumer-tests.json": {
+      "bytes": 1315,
+      "sha256": "1a8eb1a981d8736879fb7e454e4365f1fa51fc169bcb8db3d4c0ed442fdcb0e1"
+    },
+    "desktop-build.json": {
+      "bytes": 21690,
+      "sha256": "01122d84da583c279403a8546fa7a0dd4b292d8a06adff28ae678a6b9a050173"
+    },
+    "development-test.json": {
+      "bytes": 1011,
+      "sha256": "3eb2dcf4f6a76dcb2d76509d9f462109a8077373a7e389b9fee04196b2d80bf4"
+    },
+    "e2e.json": {
+      "bytes": 8080,
+      "sha256": "ddcad574920e04d0be8bdce58eaa1829d6206d640ad82d87cde84a379c5a9051"
+    },
+    "inventory.json": {
+      "bytes": 78818,
+      "sha256": "437c8e4cb2f35e47c8c019c30a2f742d47ef2b9772a97e2a4668f5f6a20dc8b6"
+    },
+    "native.log": {
+      "bytes": 329,
+      "sha256": "29fb48dd3be3796870d08a9712929e86901bf12908dc7902cff30fd59816fe7c"
+    },
+    "package-checks.log": {
+      "bytes": 59180,
+      "sha256": "9925ff4abebd05434e668f982628cbd0c865de781ca023792c51696380c7e586"
+    },
+    "package-inputs.json": {
+      "bytes": 2313,
+      "sha256": "2980faec881a71e78472c1cc6e670ef7eea9430040f88fd8f91a74dcc06cbcd7"
+    },
+    "performance.json": {
+      "bytes": 24084,
+      "sha256": "4198a9d6dac039dd97ddfc1eb68e9e11163d2d89a4a606f7a6e2beeb4ad41556"
+    },
+    "README.md": {
+      "bytes": 3970,
+      "sha256": "cc93c2a509b42de7c78425f5b4cb95fcbb9929911fc8b30e3692d2c11103261c"
+    }
+  }
+}

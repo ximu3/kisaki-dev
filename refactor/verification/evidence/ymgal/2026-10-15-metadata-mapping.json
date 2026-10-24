@@ -1,0 +1,170 @@
+{
+  "checkedAt": "2026-10-15T06:34:20.717Z",
+  "scope": "Public online metadata and declared archive fields. No personal account or dataset implementation.",
+  "documentationCommit": "1284ac90454b1e68c15a0fc3e94f6003a927f49b",
+  "archives": [
+    {
+      "sourceId": "31147",
+      "kind": "game",
+      "envelopeFields": ["game", "cidMapping", "pidMapping"],
+      "fields": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "gid",
+        "developerId",
+        "haveChinese",
+        "typeDesc",
+        "releaseDate",
+        "restricted",
+        "country",
+        "website",
+        "characters",
+        "releases",
+        "staff",
+        "type",
+        "freeze"
+      ],
+      "name": "月に寄りそう乙女の作法",
+      "chineseName": "近月少女的礼仪",
+      "mainImg": "https://cdn.ymgal.games/archive/main/3d/3d99dc3f2888479f98eadb3501c50713.webp",
+      "introductionFormat": {
+        "length": 450,
+        "html": false
+      },
+      "websiteCount": 5,
+      "moreEntryCount": 0,
+      "staffRoles": ["原画", "脚本", "其他", "人物设计", "歌曲", "音乐"]
+    },
+    {
+      "sourceId": "19366",
+      "kind": "character",
+      "envelopeFields": ["character"],
+      "fields": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "cid",
+        "gender",
+        "birthday",
+        "type",
+        "freeze"
+      ],
+      "name": "桜小路 ルナ",
+      "chineseName": "樱小路露娜",
+      "birthday": "3000-03-27",
+      "gender": 2,
+      "mainImg": "https://cdn.ymgal.games/archive/main/c5/c509d3ee20ef4e00a473ea89186c039d.jpg",
+      "introductionFormat": {
+        "length": 375,
+        "html": false
+      },
+      "moreEntryCount": 0
+    },
+    {
+      "sourceId": "11333",
+      "kind": "person",
+      "envelopeFields": ["person"],
+      "fields": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "pid",
+        "country",
+        "birthday",
+        "gender",
+        "website",
+        "type",
+        "freeze"
+      ],
+      "name": "中村 繪里子",
+      "chineseName": "中村绘里子",
+      "birthday": "1981-11-19",
+      "gender": 2,
+      "mainImg": "https://cdn.ymgal.games/archive/main/ba/ba4682554814482dab74a5b0b1f28b0c.webp",
+      "introductionFormat": {
+        "length": 454,
+        "html": false
+      },
+      "websiteCount": 3,
+      "moreEntryCount": 0
+    },
+    {
+      "sourceId": "10041",
+      "kind": "org",
+      "envelopeFields": ["org"],
+      "fields": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "orgId",
+        "country",
+        "website",
+        "type",
+        "freeze"
+      ],
+      "name": "Navel",
+      "chineseName": "脐橙社",
+      "mainImg": "https://cdn.ymgal.games/archive/main/21/21607a5b2eb44ccab8b05b76b20bce26.webp",
+      "introductionFormat": {
+        "length": 60,
+        "html": false
+      },
+      "websiteCount": 1,
+      "moreEntryCount": 0
+    }
+  ],
+  "organizationGames": {
+    "kind": "organization-games",
+    "success": true,
+    "count": 24,
+    "first": [
+      {
+        "gid": 12934
+      },
+      {
+        "gid": 10113
+      }
+    ]
+  },
+  "placeholder": {
+    "checkedAt": "2026-10-15T06:40:04.207Z",
+    "success": true,
+    "orgId": 666,
+    "name": "默认机构",
+    "mainImg": "",
+    "introduction": "这个是【默认机构】\n一个游戏如果没有开发商的话， 那开发商项默认为本档案。"
+  }
+}

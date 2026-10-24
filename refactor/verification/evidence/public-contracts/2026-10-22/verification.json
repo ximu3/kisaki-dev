@@ -1,0 +1,112 @@
+{
+  "scope": "Design declarations and isolated fixtures, not application implementation",
+  "typescript": "6.0.3",
+  "extractedTypescriptBlocks": 7,
+  "negativeTypeCases": 16,
+  "declarationTypecheckPassed": true,
+  "drizzleTypecheckPassed": true,
+  "externalDeclarationsSkipLibCheck": true,
+  "rootDependencyFilesUnchanged": {
+    "package.json": true,
+    "pnpm-lock.yaml": true,
+    "pnpm-workspace.yaml": true
+  },
+  "framing": {
+    "node": "v24.11.1",
+    "limitBytes": 1048576,
+    "checks": [
+      {
+        "name": "Header length counts UTF-8 bytes and excludes the header",
+        "passed": true
+      },
+      {
+        "name": "Every single split position reconstructs the same message",
+        "passed": true
+      },
+      {
+        "name": "Byte-by-byte chunks preserve multibyte text",
+        "passed": true
+      },
+      {
+        "name": "Multiple coalesced messages remain separate",
+        "passed": true
+      },
+      {
+        "name": "Zero and excessive lengths are rejected from the header alone",
+        "passed": true
+      },
+      {
+        "name": "Invalid UTF-8, JSON and non-object bodies are rejected",
+        "passed": true
+      },
+      {
+        "name": "EOF with an incomplete header or body is not a complete message",
+        "passed": true
+      },
+      {
+        "name": "The exact maximum body succeeds and one extra byte is rejected",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "drizzle": {
+    "fixture": "Drizzle RC compatibility, not application acceptance",
+    "versions": {
+      "electron": "41.2.0",
+      "node": "24.14.0",
+      "modules": "145",
+      "sqlite": "3.53.2",
+      "betterSqlite3": "12.11.1",
+      "orm": "1.0.0-rc.5",
+      "kit": "1.0.0-rc.5"
+    },
+    "checks": [
+      {
+        "name": "Generated baseline migrates synchronously",
+        "passed": true
+      },
+      {
+        "name": "Forward migration preserves stored choices and adds the declared default",
+        "passed": true
+      },
+      {
+        "name": "Reopen does not reapply completed migrations",
+        "passed": true
+      },
+      {
+        "name": "Strict codec rejects malformed writes without modifying data",
+        "passed": true
+      },
+      {
+        "name": "Lenient reads handle malformed JSON in both direct and relational projections",
+        "passed": true
+      },
+      {
+        "name": "Null and numeric zero retain distinct storage values",
+        "passed": true
+      },
+      {
+        "name": "Empty relation presence and absence match actual facts",
+        "passed": true
+      },
+      {
+        "name": "ORM empty IN semantics are explicit; public queries must reject empty operands",
+        "passed": true
+      },
+      {
+        "name": "Unique identities, foreign keys, CHECK and short transactions enforce constraints",
+        "passed": true
+      },
+      {
+        "name": "A failing pending migration rolls back schema, rows and applied history",
+        "passed": true
+      },
+      {
+        "name": "Reopen after failed migration preserves the last committed database",
+        "passed": true
+      }
+    ],
+    "passed": true
+  }
+}

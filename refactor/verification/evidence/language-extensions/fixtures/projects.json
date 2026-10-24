@@ -1,0 +1,53 @@
+[
+  {
+    "ordinal": 31,
+    "project": "language-zh-hans",
+    "extensionId": "kisaki.language.zh-hans",
+    "translationId": "simplified-chinese",
+    "locale": "zh-Hans",
+    "name": "简体中文",
+    "editorialBaseline": "Mainland Simplified Chinese",
+    "targets": [
+      "windows-x64",
+      "windows-arm64",
+      "macos-x64",
+      "macos-arm64",
+      "linux-x64",
+      "linux-arm64"
+    ]
+  },
+  {
+    "ordinal": 32,
+    "project": "language-zh-hant",
+    "extensionId": "kisaki.language.zh-hant",
+    "translationId": "traditional-chinese",
+    "locale": "zh-Hant",
+    "name": "繁體中文",
+    "editorialBaseline": "Taiwan Traditional Chinese, explicitly selected by the user",
+    "targets": [
+      "windows-x64",
+      "windows-arm64",
+      "macos-x64",
+      "macos-arm64",
+      "linux-x64",
+      "linux-arm64"
+    ]
+  },
+  {
+    "ordinal": 33,
+    "project": "language-ja",
+    "extensionId": "kisaki.language.ja",
+    "translationId": "japanese",
+    "locale": "ja",
+    "name": "日本語",
+    "editorialBaseline": "Natural Japanese UI labels and polite explanatory sentences",
+    "targets": [
+      "windows-x64",
+      "windows-arm64",
+      "macos-x64",
+      "macos-arm64",
+      "linux-x64",
+      "linux-arm64"
+    ]
+  }
+]

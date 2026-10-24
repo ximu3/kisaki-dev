@@ -1,0 +1,43 @@
+{
+  "builtAt": "2026-10-19T07:00:08.719718+00:00",
+  "variant": "baseline",
+  "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "sourceRemote": "https://github.com/mpv-player/mpv.git",
+  "sourceStatus": "",
+  "sourceDiff": "",
+  "patchSha256": null,
+  "buildScriptSha256": "88678b4bbe13739475e5c9877b0ed4ca6b671ebda8324c3220238c01d3f7729d",
+  "testWrapperSha256": "fefe45a09a2e7656246780e7481f0600fc9497b44812c7f21406b8071583c6cf",
+  "dependenciesSha256": "7480c8882532565cb852688d2e23ce145f0c9c68584a08be451d42b14ca2cb18",
+  "options": [
+    "--buildtype=release",
+    "--wrap-mode=nodownload",
+    "--auto-features=disabled",
+    "-Dlibmpv=true",
+    "-Dcplayer=false",
+    "-Dbuild-date=false",
+    "-Dtests=true",
+    "-Dlibavdevice=enabled",
+    "-Dlua=luajit",
+    "-Dwin32-threads=enabled",
+    "-Dd3d11=enabled",
+    "-Dshaderc=enabled",
+    "-Dspirv-cross=enabled",
+    "-Dgl=disabled"
+  ],
+  "dll": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\engine-build\\runtime\\baseline\\libmpv-2.dll",
+    "sha256": "e5376465e6f5f5885ba37dd47a518b84bf44201a93bd61286a6f3ab71470c98b"
+  },
+  "artifacts": {
+    "configure-baseline.log": "f97d8ad9a517b6011b5ed95350a4bbc84e3443f3b125dae42da69741993f5d17",
+    "compile-baseline.log": "38ce2e96a8349250b7abc1868954b39d748ca1cb114c6f9694e4e9de21951fa0",
+    "tests-baseline.log": "ca4de71e0a7ff80e238e602c8a70dc8cf90660a1225063ea526a4b6dab57ae94",
+    "build-baseline\\config.h": "49d5ba11bebd38bb57be47e2c1e3900adc1b946f4e6e13e83c27cfe39bdaac77",
+    "build-baseline\\meson-info\\intro-buildoptions.json": "5095867f6d4312f003055d854895676de52d41b93ea189accf7ca1e7dac5c789",
+    "build-baseline\\meson-info\\intro-dependencies.json": "cca7a4c21e516975ee05a8cc37425300fc4f7f1501f436b1575f83681d8d3bfb",
+    "build-baseline\\meson-logs\\testlog-python.json": "6917c42ad9b3afd97cc332cd9f6ad42f276f01ff586944c923b72d371c031a70"
+  },
+  "testOutput": "ninja: Entering directory `F:/project/3/kisaki/node_modules/.cache/libmpv-design/engine-build/build-baseline'\n[1/30] Generating common/version.h with a custom command (wrapped by meson because command contains newlines)\n 1/41 mpv:chmap                                                     OK              0.12s\n 2/41 mpv:swresample                                                OK              2.54s\n 3/41 mpv:gl-video                                                  OK              0.14s\n 4/41 mpv:json                                                      OK              0.11s\n 5/41 mpv:linked-list                                               OK              0.11s\n 6/41 mpv:timer                                                     OK              0.13s\n 7/41 mpv:format                                                    OK              0.11s\n 8/41 mpv:language                                                  OK              0.11s\n 9/41 mpv:codepoint-width                                           OK              0.11s\n10/41 mpv:paths                                                     OK              0.11s\n11/41 libmpv - mpv:libmpv-test-file-loading                         OK              5.18s\n12/41 libmpv - mpv:libmpv-test-lavfi-complex                        OK              5.20s\n13/41 libmpv - mpv:libmpv-test-options                              OK              0.17s\n14/41 libmpv - mpv:libmpv-test-aes-ctr                              OK              0.34s\n15/41 libmpv - mpv:libmpv-test-eng_default.mkv                      OK              0.22s\n16/41 libmpv - mpv:libmpv-test-eng_default_forced.mkv               OK              0.18s\n17/41 libmpv - mpv:libmpv-test-eng_forced_matching_audio.mkv        OK              0.18s\n18/41 libmpv - mpv:libmpv-test-eng_forced_matching_audio_region.mkv OK              0.17s\n19/41 libmpv - mpv:libmpv-test-eng_forced_no_matching_audio.mkv     OK              0.16s\n20/41 libmpv - mpv:libmpv-test-eng_forced_always_audio.mkv          OK              0.17s\n21/41 libmpv - mpv:libmpv-test-eng_no_default.mkv                   OK              0.19s\n22/41 libmpv - mpv:libmpv-test-locale.mkv                           OK              0.19s\n23/41 libmpv - mpv:libmpv-test-locale_forced.mkv                    OK              0.18s\n24/41 libmpv - mpv:libmpv-test-locale_complex.mkv                   OK              0.26s\n25/41 libmpv - mpv:libmpv-test-multilang.mkv                        OK              0.24s\n26/41 libmpv - mpv:libmpv-test-multilang2.mkv                       OK              0.21s\n27/41 libmpv - mpv:libmpv-test-multiprogram.ts                      OK              0.25s\n28/41 libmpv - mpv:libmpv-test-sdh_default                          OK              0.21s\n29/41 libmpv - mpv:libmpv-test-sdh_default_harder                   OK              0.21s\n30/41 libmpv - mpv:libmpv-test-sdh_mixed                            OK              0.23s\n31/41 libmpv - mpv:libmpv-test-sdh_mixed_harder                     OK              0.22s\n32/41 libmpv - mpv:libmpv-test-sdh_all                              OK              0.23s\n33/41 libmpv - mpv:libmpv-test-sdh_all_harder                       OK              0.22s\n34/41 libmpv - mpv:libmpv-test-sdh_mismatch                         OK              0.22s\n35/41 libmpv - mpv:libmpv-test-sdh_mismatch_harder                  OK              0.26s\n36/41 libmpv - mpv:libmpv-test-sdh_null                             OK              0.28s\n37/41 libmpv - mpv:libmpv-test-sdh_null_harder                      OK              0.24s\n38/41 libmpv - mpv:libmpv-test-sdh_null_text                        OK              0.23s\n39/41 libmpv - mpv:libmpv-test-sdh_null_text_harder                 OK              1.02s\n40/41 libmpv - mpv:libmpv-encode                                    OK              0.41s\n41/41 libmpv - mpv:libmpv-lifetime                                  OK              4.88s\n\nOk:                41  \nFail:              0   \n\nFull log written to F:/project/3/kisaki/node_modules/.cache/libmpv-design/engine-build/build-baseline/meson-logs/testlog-python.txt\n",
+  "productionEngineModified": false
+}

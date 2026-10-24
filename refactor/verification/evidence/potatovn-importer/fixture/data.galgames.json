@@ -1,0 +1,523 @@
+[
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000001",
+    "Name": {
+      "Value": "Synthetic visual novel 1",
+      "IsLock": true
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 1",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 1",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 0,
+    "MyRate": 0,
+    "Comment": "普通私人文字\n<不是 HTML> & 保留换行",
+    "PrivateComment": true,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1001", "2001", null, null, null, "3001", null, null, null],
+    "IdForPlugins": {},
+    "Characters": [
+      {
+        "Ids": ["c101", "201", null, null, null, "301", null, null, null],
+        "Name": "Synthetic character",
+        "Relation": "主角",
+        "ImagePath": ".\\Images\\character.png",
+        "PreviewImagePath": ".\\Images\\character-preview.png",
+        "Summary": "Synthetic character description",
+        "Gender": 2,
+        "BirthYear": null,
+        "BirthMon": 7,
+        "BirthDay": 3,
+        "Height": "165cm"
+      }
+    ],
+    "PreferredInstallationId": null,
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000002",
+    "Name": {
+      "Value": "Synthetic visual novel 2",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 2",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 2",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 1,
+    "MyRate": 8,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1002", "2002", null, null, null, "3002", null, null, null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": "20000000-0000-0000-0000-000000000102",
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000003",
+    "Name": {
+      "Value": "Synthetic visual novel 3",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 3",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 3",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 2,
+    "MyRate": 10,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["r123", null, null, null, null, null, null, null, null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": null,
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000004",
+    "Name": {
+      "Value": "Synthetic visual novel 4",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 4",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 4",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 3,
+    "MyRate": 0,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1004", "2004", null, null, null, "3004", null, null, null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": null,
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000005",
+    "Name": {
+      "Value": "Synthetic visual novel 5",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 5",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 5",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 4,
+    "MyRate": 5,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1005", "2005", null, null, null, "3005", null, "480", null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": null,
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  {
+    "Uuid": "20000000-0000-0000-0000-000000000006",
+    "Name": {
+      "Value": "Synthetic visual novel 6",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 6",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 6",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "0001-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\Images\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\Images\\header.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {},
+    "TotalPlayTime": 0,
+    "LastPlayTime": "0001-01-01T00:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "0001-01-01T00:00:00",
+    "PlayCount": 17,
+    "PlayType": 5,
+    "MyRate": 3,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1006", "2006", null, null, null, "3006", null, null, null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": null,
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  }
+]

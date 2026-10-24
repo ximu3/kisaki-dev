@@ -1,0 +1,869 @@
+{
+  "scope": "Anonymous public source observations for discussing staff and publication scope. The adopted version policy is not determined by this evidence. Only relevant API fields and the public infobox metadata are retained.",
+  "requests": [
+    {
+      "observedAt": "2026-10-13T07:27:15.157Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/305429"
+      },
+      "status": 200,
+      "responseSha256": "1a9ed75a2b9855c10b9b7df463877ab22a33a73e1e3628c40718dadcadd45c7d",
+      "responseProjection": {
+        "id": 305429,
+        "name": "葬送のフリーレン",
+        "type": 1,
+        "platform": "漫画",
+        "series": true,
+        "infobox": [
+          {
+            "key": "作画",
+            "value": "アベツカサ"
+          },
+          {
+            "key": "原作",
+            "value": "山田鐘人"
+          },
+          {
+            "key": "出版社",
+            "value": "小学館"
+          },
+          {
+            "key": "连载杂志",
+            "value": "週刊少年サンデー"
+          },
+          {
+            "key": "版本:东立版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "葬送的芙莉蓮"
+              },
+              {
+                "k": "出版社",
+                "v": "東立出版社"
+              },
+              {
+                "k": "发售日",
+                "v": "2021-05-13"
+              },
+              {
+                "k": "译者",
+                "v": "里歐貝萊"
+              },
+              {
+                "k": "书系",
+                "v": "少年系列"
+              },
+              {
+                "k": "语言",
+                "v": "繁体中文"
+              }
+            ]
+          },
+          {
+            "key": "版本:次元书馆版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "葬送的芙莉莲"
+              },
+              {
+                "k": "语言",
+                "v": "简体中文"
+              },
+              {
+                "k": "图书品牌",
+                "v": "次元书馆"
+              },
+              {
+                "k": "出品方",
+                "v": "红阅科技"
+              },
+              {
+                "k": "出版社",
+                "v": "华中科技大学出版社"
+              },
+              {
+                "k": "发售日",
+                "v": "2022-06-01"
+              },
+              {
+                "k": "译者",
+                "v": "前线作战基地"
+              }
+            ]
+          },
+          {
+            "key": "版本:德语版",
+            "value": [
+              {
+                "k": "出版社",
+                "v": "Altraverse"
+              }
+            ]
+          },
+          {
+            "key": "版本:西班牙版",
+            "value": [
+              {
+                "k": "出版社",
+                "v": "Norma Editorial"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T07:27:15.161Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/305429/persons"
+      },
+      "status": 200,
+      "responseSha256": "da9c10e130b6ebf7be1a0ae38c802b34da9a62edb083d2d36bed4d7bef3697a2",
+      "responseProjection": [
+        {
+          "id": 29554,
+          "name": "山田鐘人",
+          "type": 1,
+          "relation": "原作",
+          "eps": ""
+        },
+        {
+          "id": 71766,
+          "name": "里歐貝萊",
+          "type": 1,
+          "relation": "译者",
+          "eps": ""
+        },
+        {
+          "id": 84678,
+          "name": "前线作战基地",
+          "type": 2,
+          "relation": "译者",
+          "eps": ""
+        },
+        {
+          "id": 6748,
+          "name": "週刊少年サンデー",
+          "type": 2,
+          "relation": "连载杂志",
+          "eps": ""
+        },
+        {
+          "id": 68685,
+          "name": "Norma Editorial",
+          "type": 2,
+          "relation": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 68644,
+          "name": "Altraverse",
+          "type": 2,
+          "relation": "出版社",
+          "eps": "德国版"
+        },
+        {
+          "id": 37923,
+          "name": "アベツカサ",
+          "type": 1,
+          "relation": "作画",
+          "eps": ""
+        },
+        {
+          "id": 92280,
+          "name": "华中科技大学出版社",
+          "type": 1,
+          "relation": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 45890,
+          "name": "红阅科技",
+          "type": 1,
+          "relation": "出品方",
+          "eps": ""
+        },
+        {
+          "id": 72069,
+          "name": "次元书馆",
+          "type": 3,
+          "relation": "图书品牌",
+          "eps": ""
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:42.360Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/10086"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 10086,
+        "name": "よつばと!",
+        "type": 1,
+        "platform": "漫画",
+        "series": true,
+        "infobox": [
+          {
+            "key": "作者",
+            "value": "あずまきよひこ"
+          },
+          {
+            "key": "出版社",
+            "value": "メディアワークス→アスキー・メディアワークス→KADOKAWA"
+          },
+          {
+            "key": "连载杂志",
+            "value": "月刊コミック電撃大王"
+          },
+          {
+            "key": "版本:天闻角川版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "四叶妹妹！"
+              },
+              {
+                "k": "出品方",
+                "v": "天闻角川"
+              },
+              {
+                "k": "出版社",
+                "v": "浙江人民美术出版社→新世纪出版社"
+              },
+              {
+                "k": "出版期间",
+                "v": "2017-03-15 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2022-10)"
+              },
+              {
+                "k": "译者",
+                "v": "黄炳雄"
+              }
+            ]
+          },
+          {
+            "key": "版本:台湾角川版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "四葉妹妹"
+              },
+              {
+                "k": "别名",
+                "v": "四葉妹妹！"
+              },
+              {
+                "k": "出版社",
+                "v": "台灣角川"
+              },
+              {
+                "k": "出版期间",
+                "v": "2004-01-28 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-11)"
+              },
+              {
+                "k": "书系",
+                "v": "Kadokawa Comics Boy Series"
+              },
+              {
+                "k": "译者",
+                "v": "黄炳雄、咖比獸"
+              }
+            ]
+          },
+          {
+            "key": "版本:Yen Press版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "Yen Press"
+              },
+              {
+                "k": "出版期间",
+                "v": "2009-09-15 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-09)"
+              },
+              {
+                "k": "译者",
+                "v": "Stephen Paul"
+              },
+              {
+                "k": "Letterer",
+                "v": "Abigail Blackman"
+              }
+            ]
+          },
+          {
+            "key": "版本:ADV Manga版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "ADV Manga"
+              },
+              {
+                "k": "出版期间",
+                "v": "2005-06-06 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊5卷(2007-10)"
+              },
+              {
+                "k": "备注",
+                "v": "第6卷起中止出版，后由Yen Press重新出版"
+              }
+            ]
+          },
+          {
+            "key": "版本:韩版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "요츠바랑!"
+              },
+              {
+                "k": "出版社",
+                "v": "대원씨아이"
+              },
+              {
+                "k": "出版期间",
+                "v": "2004-08-06 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-06)"
+              },
+              {
+                "k": "书系",
+                "v": "NT노벨"
+              },
+              {
+                "k": "译者",
+                "v": "금정→김동욱"
+              }
+            ]
+          },
+          {
+            "key": "版本:马来版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "KADOKAWA GEMPAK STARZ"
+              },
+              {
+                "k": "出版期间",
+                "v": "2017 ~"
+              }
+            ]
+          },
+          {
+            "key": "版本:俄版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Ёцуба!"
+              },
+              {
+                "k": "出版社",
+                "v": "Палма Пресс"
+              },
+              {
+                "k": "出版期间",
+                "v": "2010-10-28 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊8卷(2024-09)"
+              }
+            ]
+          },
+          {
+            "key": "版本:西班牙版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "¡YOTSUBA!"
+              },
+              {
+                "k": "出版社",
+                "v": "Norma Editorial"
+              },
+              {
+                "k": "出版期间",
+                "v": "2005-10-28 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-12)"
+              }
+            ]
+          },
+          {
+            "key": "版本:法版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba"
+              },
+              {
+                "k": "别名",
+                "v": "Yotsuba et"
+              },
+              {
+                "k": "出版社",
+                "v": "Kurokawa"
+              },
+              {
+                "k": "出版期间",
+                "v": "2006-08-17 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-08)"
+              }
+            ]
+          },
+          {
+            "key": "版本:德版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "TOKYOPOP GmbH"
+              },
+              {
+                "k": "出版期间",
+                "v": "2007-02-20 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2022-08)"
+              },
+              {
+                "k": "译者",
+                "v": "Marcus Wehner"
+              }
+            ]
+          },
+          {
+            "key": "版本:意大利版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "Star Comics"
+              },
+              {
+                "k": "出版期间",
+                "v": "2019-06-19 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2022-02)"
+              }
+            ]
+          },
+          {
+            "key": "版本:印度尼西亚版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "Elex Media Komputindo"
+              },
+              {
+                "k": "出版期间",
+                "v": "2006-06-06 ~"
+              }
+            ]
+          },
+          {
+            "key": "版本:波兰版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba!"
+              },
+              {
+                "k": "出版社",
+                "v": "Wydawnictwo Kotori"
+              },
+              {
+                "k": "出版期间",
+                "v": "2018-05-21 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021-07)"
+              }
+            ]
+          },
+          {
+            "key": "版本:瑞典版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "B. Wahlström"
+              },
+              {
+                "k": "出版期间",
+                "v": "2008 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊4卷(2008-09)"
+              }
+            ]
+          },
+          {
+            "key": "版本:芬兰版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出版社",
+                "v": "Punainen Jättiläinen"
+              },
+              {
+                "k": "出版期间",
+                "v": "2008-04 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊15卷(2021)"
+              },
+              {
+                "k": "译者",
+                "v": "Mylläri Juha"
+              }
+            ]
+          },
+          {
+            "key": "版本:越南版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "Yotsuba&! – Cỏ 4 lá"
+              },
+              {
+                "k": "别名",
+                "v": "Yotsuba&!"
+              },
+              {
+                "k": "出品方",
+                "v": "TVM Comics→IPM"
+              },
+              {
+                "k": "出版社",
+                "v": "Nhà xuất bản Thông Tấn→Nhà xuất bản Hồng Đức"
+              },
+              {
+                "k": "出版期间",
+                "v": "2008 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊13卷(2016-06)→既刊8卷"
+              },
+              {
+                "k": "重版",
+                "v": "2014"
+              },
+              {
+                "k": "备注",
+                "v": "2019年TVM Comics停止营业。2024年4月IPM重新发行"
+              }
+            ]
+          },
+          {
+            "key": "版本:泰版",
+            "value": [
+              {
+                "k": "版本名",
+                "v": "โยทสึบะ หนูเด๋อจอมป่วน!"
+              },
+              {
+                "k": "出版社",
+                "v": "เนชั่น เอ็ดดูเทนเมนท์"
+              },
+              {
+                "k": "出版期间",
+                "v": "2006 ~"
+              },
+              {
+                "k": "册数",
+                "v": "既刊13卷"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:40.298Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/13911"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 13911,
+        "name": "キノの旅 -the Beautiful World-",
+        "type": 1,
+        "platform": "小说",
+        "series": true,
+        "infobox": [
+          {
+            "key": "作者",
+            "value": "時雨沢恵一"
+          },
+          {
+            "key": "出版社",
+            "value": "メディアワークス→アスキー・メディアワークス→KADOKAWA"
+          },
+          {
+            "key": "连载杂志",
+            "value": "電撃hp"
+          }
+        ]
+      }
+    }
+  ],
+  "pageProjection": {
+    "request": {
+      "method": "GET",
+      "url": "https://bgm.tv/subject/305429"
+    },
+    "status": 200,
+    "observedAt": "2026-10-13T07:27:15.507Z",
+    "responseSha256": "5318b8f76f727130f0b0c09fb6ecebb851508f0ccb59201d712c32d34c623193",
+    "extraction": {
+      "target": "#infobox",
+      "versionGroupSelector": "li.sub_container[attr-info-group=\"版本\"]",
+      "fragmentParseErrors": [],
+      "baseFieldsMatchApi": true
+    },
+    "baseFields": [
+      {
+        "field": "作画",
+        "value": "アベツカサ",
+        "personIds": [37923]
+      },
+      {
+        "field": "出版社",
+        "value": "小学館",
+        "personIds": []
+      },
+      {
+        "field": "连载杂志",
+        "value": "週刊少年サンデー",
+        "personIds": [6748]
+      },
+      {
+        "field": "原作",
+        "value": "山田鐘人",
+        "personIds": [29554]
+      }
+    ],
+    "versionGroups": [
+      {
+        "version": "东立版",
+        "fields": [
+          {
+            "field": "版本名",
+            "value": "葬送的芙莉蓮",
+            "personIds": []
+          },
+          {
+            "field": "出版社",
+            "value": "東立出版社",
+            "personIds": []
+          },
+          {
+            "field": "发售日",
+            "value": "2021-05-13",
+            "personIds": []
+          },
+          {
+            "field": "译者",
+            "value": "里歐貝萊",
+            "personIds": [71766]
+          },
+          {
+            "field": "书系",
+            "value": "少年系列",
+            "personIds": []
+          },
+          {
+            "field": "语言",
+            "value": "繁体中文",
+            "personIds": []
+          }
+        ]
+      },
+      {
+        "version": "次元书馆版",
+        "fields": [
+          {
+            "field": "版本名",
+            "value": "葬送的芙莉莲",
+            "personIds": []
+          },
+          {
+            "field": "语言",
+            "value": "简体中文",
+            "personIds": []
+          },
+          {
+            "field": "图书品牌",
+            "value": "次元书馆",
+            "personIds": [72069]
+          },
+          {
+            "field": "出品方",
+            "value": "红阅科技",
+            "personIds": [45890]
+          },
+          {
+            "field": "出版社",
+            "value": "华中科技大学出版社",
+            "personIds": [92280]
+          },
+          {
+            "field": "发售日",
+            "value": "2022-06-01",
+            "personIds": []
+          },
+          {
+            "field": "译者",
+            "value": "前线作战基地",
+            "personIds": [84678]
+          }
+        ]
+      },
+      {
+        "version": "德语版",
+        "fields": [
+          {
+            "field": "出版社",
+            "value": "Altraverse",
+            "personIds": [68644]
+          }
+        ]
+      },
+      {
+        "version": "西班牙版",
+        "fields": [
+          {
+            "field": "出版社",
+            "value": "Norma Editorial",
+            "personIds": [68685]
+          }
+        ]
+      }
+    ]
+  },
+  "comparisons": {
+    "staffRows": 10,
+    "versionLinkedRows": [
+      {
+        "version": "东立版",
+        "role": "译者",
+        "personId": 71766,
+        "apiEps": ""
+      },
+      {
+        "version": "次元书馆版",
+        "role": "图书品牌",
+        "personId": 72069,
+        "apiEps": ""
+      },
+      {
+        "version": "次元书馆版",
+        "role": "出品方",
+        "personId": 45890,
+        "apiEps": ""
+      },
+      {
+        "version": "次元书馆版",
+        "role": "出版社",
+        "personId": 92280,
+        "apiEps": ""
+      },
+      {
+        "version": "次元书馆版",
+        "role": "译者",
+        "personId": 84678,
+        "apiEps": ""
+      },
+      {
+        "version": "德语版",
+        "role": "出版社",
+        "personId": 68644,
+        "apiEps": "德国版"
+      },
+      {
+        "version": "西班牙版",
+        "role": "出版社",
+        "personId": 68685,
+        "apiEps": "西班牙版"
+      }
+    ],
+    "versionLinkedRowsWithEmptyApiEps": 5,
+    "basePublisher": {
+      "name": "小学館",
+      "hasPagePersonLink": false,
+      "appearsInApiStaff": false
+    }
+  },
+  "limitations": [
+    "The infobox parse prototype covers one actual public page, not all pages or a production extension.",
+    "Version affiliation belongs to the specific work and role; a person may have other roles outside that version.",
+    "Missing grouping or eps does not prove original-version participation.",
+    "API infobox names and page person links are different evidence; name-only values do not provide a person source identity.",
+    "Source person types are preserved as returned, not asserted to be correct real-world classifications."
+  ]
+}

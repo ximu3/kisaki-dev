@@ -1,0 +1,1 @@
+<!DOCTYPE LaunchBox [<!ENTITY x SYSTEM "file:///not-a-real-fixture-secret">]><LaunchBox><Game><Title>&x;</Title></Game></LaunchBox>

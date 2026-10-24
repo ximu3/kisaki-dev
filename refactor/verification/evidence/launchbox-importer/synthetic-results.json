@@ -1,0 +1,389 @@
+{
+  "checkedAt": "2026-10-17",
+  "fixtureFiles": 26,
+  "passed": 73,
+  "failed": 0,
+  "runtime": {
+    "python": "3.12.1",
+    "lxml": [6, 1, 0, 0],
+    "libxml": [2, 11, 9],
+    "sevenZip": "21.07 x64 from existing repository 7zip-bin@5.2.0; probe only",
+    "platform": "win32"
+  },
+  "evidenceLimits": [
+    "No real user Data or official backup was available.",
+    "No LaunchBox application or game was executed.",
+    "No Kisaki importer, profile acquisition, database write or native task was exercised.",
+    "Mapping-model checks validate proposed choices, not undocumented source behavior.",
+    "The JSONL fixture only exercises presence detection, not a source row schema.",
+    "The 7-Zip listing probe accepts only its own known names and is not a production archive adapter.",
+    "No proof of aggregate/version playtime overlap, arbitrary artwork matching or shell command equivalence."
+  ],
+  "checks": [
+    {
+      "name": "all source fixtures match the committed manifest",
+      "category": "byte-readability",
+      "passed": true
+    },
+    {
+      "name": "platform XML has four distinct selected games",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "UTF-16 declaration and Unicode decode exactly",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "field reordering leaves source values unchanged",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "XML character references preserve Notes as literal text",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "reject duplicate-scalar.xml",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "reject doctype.xml",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "reject wrong-root.xml",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "reject wrong-namespace.xml",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "reject broken.xml",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "Game ID casing is not silently rewritten from Id",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "conflicting GUID across rows is not last-write-wins",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "GUID text case normalizes without becoming public identity",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "unknown optional XML field stays source data",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "additional apps are root siblings and reference GameID",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "custom fields reference source owner and keep untyped strings",
+      "category": "xml-structure",
+      "passed": true
+    },
+    {
+      "name": "public database number and local GUID use different identities",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "numeric public IDs stay distinct for different platform records",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "known Steam launch URI has exact app identity",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "unknown URI query and arbitrary source label do not invent Steam IDs",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "fractional user rating is preferred over legacy integer",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "explicit zero is unrated despite legacy or community positive values",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "absent rating stays unknown",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "valid legacy integer has its stated scale",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "five stars and half-up precision use the native integer scale",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "invalid preferred rating does not fall back to valid legacy data",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "out-of-range and malformed values are not clamped",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "unconfigured Progress suppresses stale Completed",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "legacy Completed means at least once without a date",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "Dropped receives no inferred completion from its category",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "custom progress mapping can express replaying after a completion",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "empty Progress does not fall through to old Completed",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "launch count and last played are not needed for completion mapping",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "source seconds become exact milliseconds",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "zero playtime is a valid duration",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "large duration is rejected before floating-point rounding",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "fractional, negative and locale duration strings are rejected",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "main total is not summed with overlapping version fields",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "absolute duration adoption subtracts actual activity once",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "smaller source total cannot delete actual activity",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "newer history presence is detected without parsing an invented source schema",
+      "category": "format-limit",
+      "passed": true
+    },
+    {
+      "name": "manual order retains explicit positions and leaves unspecified items last",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "duplicate target membership is not duplicated and orphan is not title-matched",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "dynamic cached members are not claimed as a complete snapshot",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "platform folder and media folder keep their separate owners",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "archive members normalize separators without escaping",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "archive traversal, drive, UNC and separator tricks are rejected",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "data-root.7z contains the expected platform XML",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "data-root.7z streamed member equals the original bytes",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "data-root.7z excludes game and image bytes",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "data-root.7z passes the native archive integrity check",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "wrapped-data.7z contains the expected platform XML",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "wrapped-data.7z streamed member equals the original bytes",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "wrapped-data.7z excludes game and image bytes",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "wrapped-data.7z passes the native archive integrity check",
+      "category": "archive",
+      "passed": true
+    },
+    {
+      "name": "source relative paths use the installation root",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "parent-relative source paths can resolve inside an explicitly allowed root",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "source parent-relative paths do not grant access outside selected roots",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "matching path prefix alone does not grant sibling-root access",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "explicit RootFolder differs from a platform-wide ROM folder",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "inert local launch paths exist without being executable probes",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "game parameter level replaces platform and emulator values",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "nonempty associated-platform parameters replace emulator defaults",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "ROM placeholder is not appended a second time",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "noromfile suppresses automatic ROM append",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "NoSpace and bare filename retain their explicit source meaning",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "unknown frontend variables are rejected",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "Windows API splits quoted ROM and literal ampersand without a process launch",
+      "category": "windows-arguments",
+      "passed": true
+    },
+    {
+      "name": "automatic helper remains distinguishable from a selected playable version",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "multiple same-role images remain ambiguous without a user choice",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "synthetic image bytes decode through a real image library",
+      "category": "byte-readability",
+      "passed": true
+    },
+    {
+      "name": "actual ROM basename gives a distinct platform-local image candidate",
+      "category": "mapping-model",
+      "passed": true
+    },
+    {
+      "name": "all source fixture hashes remain unchanged after reads",
+      "category": "byte-readability",
+      "passed": true
+    }
+  ]
+}

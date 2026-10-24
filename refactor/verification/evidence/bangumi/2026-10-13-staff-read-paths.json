@@ -1,0 +1,1905 @@
+{
+  "scope": "Anonymous public relation and source-constant observations. Source response projections preserve factual identities, roles and scope labels. No account requests or writes were performed.",
+  "sourceConstants": {
+    "tree": "2ee87b9995353f77cf02e390e8635bf97dbc1fa2",
+    "files": [
+      {
+        "file": "subject_staffs.yml",
+        "url": "https://raw.githubusercontent.com/bangumi/common/2ee87b9995353f77cf02e390e8635bf97dbc1fa2/subject_staffs.yml",
+        "status": 200,
+        "observedAt": "2026-10-13T07:41:11.138Z",
+        "sha256": "d12e575c0f28f2b9793027bced2ecc6d3857ecd080839d5917023f7eca9d8547"
+      },
+      {
+        "file": "subject_relations.yml",
+        "url": "https://raw.githubusercontent.com/bangumi/common/2ee87b9995353f77cf02e390e8635bf97dbc1fa2/subject_relations.yml",
+        "status": 200,
+        "observedAt": "2026-10-13T07:41:11.137Z",
+        "sha256": "f3cd4438f70be42f2886cfc54a2cdb6588ad72c015267e1b8446b900db47a92c"
+      },
+      {
+        "file": "wiki_template.yml",
+        "url": "https://raw.githubusercontent.com/bangumi/common/2ee87b9995353f77cf02e390e8635bf97dbc1fa2/wiki_template.yml",
+        "status": 200,
+        "observedAt": "2026-10-13T07:41:11.327Z",
+        "sha256": "3bc0e2cbb2e8d559caa288c38d8aa18a54c72dbf63c0f79c69956304770c778a"
+      }
+    ],
+    "selectedStaff": {
+      "book": [
+        {
+          "id": 2001,
+          "cn": "作者",
+          "en": "",
+          "jp": ""
+        },
+        {
+          "id": 2005,
+          "cn": "连载杂志",
+          "en": "",
+          "jp": "掲載誌"
+        },
+        {
+          "id": 2007,
+          "cn": "原作",
+          "en": "Original Creator/Original Work",
+          "jp": ""
+        },
+        {
+          "id": 2009,
+          "cn": "人物原案",
+          "en": "Original Character Design",
+          "jp": "キャラクター原案"
+        },
+        {
+          "id": 2013,
+          "cn": "图书品牌",
+          "en": "Brand",
+          "jp": "ブランド"
+        }
+      ],
+      "anime": [
+        {
+          "id": 1,
+          "cn": "原作",
+          "en": "Original Creator/Original Work",
+          "jp": ""
+        },
+        {
+          "id": 5,
+          "cn": "演出",
+          "en": "Episode Direction",
+          "jp": ""
+        },
+        {
+          "id": 7,
+          "cn": "人物原案",
+          "en": "Original Character Design",
+          "jp": "キャラ原案"
+        },
+        {
+          "id": 11,
+          "cn": "美术监督",
+          "en": "Art Direction",
+          "jp": "美術監督 アートディレクション 背景監督"
+        },
+        {
+          "id": 15,
+          "cn": "作画监督",
+          "en": "Animation Direction",
+          "jp": "作監 アニメーション演出"
+        },
+        {
+          "id": 17,
+          "cn": "摄影监督",
+          "en": "Director of Photography",
+          "jp": "撮影監督"
+        },
+        {
+          "id": 20,
+          "cn": "原画",
+          "en": "Key Animation",
+          "jp": "作画 原画"
+        },
+        {
+          "id": 24,
+          "cn": "制作助理",
+          "en": "Associate Producer",
+          "jp": "製作補佐 アソシエイトプロデューサー"
+        },
+        {
+          "id": 33,
+          "cn": "主题歌演出",
+          "en": "Theme Song Performance",
+          "jp": ""
+        },
+        {
+          "id": 62,
+          "cn": "制作助理",
+          "en": "Production Assistant",
+          "jp": "制作アシスタント 制作補佐 製作補"
+        },
+        {
+          "id": 174,
+          "cn": "发行",
+          "en": "Distribution",
+          "jp": "配給"
+        }
+      ],
+      "game": [
+        {
+          "id": 1001,
+          "cn": "开发",
+          "en": "Developer",
+          "jp": "開発元"
+        },
+        {
+          "id": 1002,
+          "cn": "发行",
+          "en": "Publisher",
+          "jp": "発売元"
+        },
+        {
+          "id": 1011,
+          "cn": "主题歌演出",
+          "en": "Theme Song Performance",
+          "jp": ""
+        },
+        {
+          "id": 1013,
+          "cn": "原画",
+          "en": "",
+          "jp": ""
+        },
+        {
+          "id": 1015,
+          "cn": "原作",
+          "en": "",
+          "jp": ""
+        },
+        {
+          "id": 1021,
+          "cn": "程序",
+          "en": "Program",
+          "jp": "プログラム"
+        },
+        {
+          "id": 1031,
+          "cn": "作画监督",
+          "en": "",
+          "jp": "作画監督"
+        }
+      ]
+    },
+    "workRelations": {
+      "book": [
+        {
+          "id": 1,
+          "cn": "改编",
+          "en": "Adaptation",
+          "desc": "同系列不同平台作品（如柯南漫画与动画版）"
+        },
+        {
+          "id": 1002,
+          "cn": "系列",
+          "en": "Series",
+          "desc": ""
+        },
+        {
+          "id": 1003,
+          "cn": "单行本",
+          "en": "Offprint",
+          "desc": ""
+        },
+        {
+          "id": 1004,
+          "cn": "画集",
+          "en": "Album",
+          "desc": ""
+        },
+        {
+          "id": 1005,
+          "cn": "前传",
+          "en": "Prequel",
+          "desc": "发生在故事之前"
+        },
+        {
+          "id": 1006,
+          "cn": "续集",
+          "en": "Sequel",
+          "desc": "发生在故事之后"
+        },
+        {
+          "id": 1007,
+          "cn": "番外篇",
+          "en": "Side Story",
+          "desc": ""
+        },
+        {
+          "id": 1008,
+          "cn": "主线故事",
+          "en": "Parent Story",
+          "desc": ""
+        },
+        {
+          "id": 1010,
+          "cn": "不同版本",
+          "en": "Version",
+          "desc": ""
+        },
+        {
+          "id": 1011,
+          "cn": "角色出演",
+          "en": "Character",
+          "desc": "相同角色，没有关联的故事"
+        },
+        {
+          "id": 1012,
+          "cn": "相同世界观",
+          "en": "Same setting",
+          "desc": "发生在同一个世界观/时间线下，不同的出演角色"
+        },
+        {
+          "id": 1013,
+          "cn": "不同世界观",
+          "en": "Alternative setting",
+          "desc": "相同的出演角色，不同的世界观/时间线设定"
+        },
+        {
+          "id": 1014,
+          "cn": "联动",
+          "en": "Collaboration",
+          "desc": "出现了被关联作品中的角色"
+        },
+        {
+          "id": 1015,
+          "cn": "不同演绎",
+          "en": "Alternative Version",
+          "desc": "相同设定、角色，不同的演绎方式"
+        },
+        {
+          "id": 1099,
+          "cn": "其他",
+          "en": "Other",
+          "desc": ""
+        }
+      ],
+      "anime": [
+        {
+          "id": 1,
+          "cn": "改编",
+          "en": "Adaptation",
+          "desc": "同系列不同平台作品（如柯南漫画与动画版）"
+        },
+        {
+          "id": 2,
+          "cn": "前传",
+          "en": "Prequel",
+          "desc": "发生在故事之前"
+        },
+        {
+          "id": 3,
+          "cn": "续集",
+          "en": "Sequel",
+          "desc": "发生在故事之后"
+        },
+        {
+          "id": 4,
+          "cn": "总集篇",
+          "en": "Summary",
+          "desc": "对故事的概括版本"
+        },
+        {
+          "id": 5,
+          "cn": "全集",
+          "en": "Full Story",
+          "desc": "相对于剧场版/总集篇的完整故事"
+        },
+        {
+          "id": 6,
+          "cn": "番外篇",
+          "en": "Side Story",
+          "desc": ""
+        },
+        {
+          "id": 7,
+          "cn": "角色出演",
+          "en": "Character",
+          "desc": "相同角色，没有关联的故事"
+        },
+        {
+          "id": 8,
+          "cn": "相同世界观",
+          "en": "Same Setting",
+          "desc": "发生在同一个世界观/时间线下，不同的出演角色"
+        },
+        {
+          "id": 9,
+          "cn": "不同世界观",
+          "en": "Alternative Setting",
+          "desc": "相同的主演角色，不同的世界观/时间线设定"
+        },
+        {
+          "id": 10,
+          "cn": "不同演绎",
+          "en": "Alternative Version",
+          "desc": "相同设定、角色，不同的演绎方式（如EVA原作与新剧场版)"
+        },
+        {
+          "id": 11,
+          "cn": "衍生",
+          "en": "Spin-off",
+          "desc": "世界观相同，角色主线与有关联或来自主线，但又非主线的主角们"
+        },
+        {
+          "id": 12,
+          "cn": "主线故事",
+          "en": "Parent Story",
+          "desc": ""
+        },
+        {
+          "id": 14,
+          "cn": "联动",
+          "en": "Collaboration",
+          "desc": "出现了被关联作品中的角色"
+        },
+        {
+          "id": 99,
+          "cn": "其他",
+          "en": "Other",
+          "desc": ""
+        }
+      ],
+      "game": [
+        {
+          "id": 1,
+          "cn": "改编",
+          "en": "Adaptation",
+          "desc": "同系列不同平台作品（如 CLANNAD 游戏与动画版）"
+        },
+        {
+          "id": 4002,
+          "cn": "前传",
+          "en": "Prequel",
+          "desc": "发生在故事之前/或作品发售之前"
+        },
+        {
+          "id": 4003,
+          "cn": "续集",
+          "en": "Sequel",
+          "desc": "发生在故事之后/或作品发售之后"
+        },
+        {
+          "id": 4006,
+          "cn": "外传",
+          "en": "Side Story",
+          "desc": ""
+        },
+        {
+          "id": 4007,
+          "cn": "角色出演",
+          "en": "Character",
+          "desc": "相同角色，没有关联的故事"
+        },
+        {
+          "id": 4008,
+          "cn": "相同世界观",
+          "en": "Same Setting",
+          "desc": "发生在同一个世界观/时间线下，不同的出演角色"
+        },
+        {
+          "id": 4009,
+          "cn": "不同世界观",
+          "en": "Alternative Setting",
+          "desc": "相同的出演角色，不同的世界观/时间线设定"
+        },
+        {
+          "id": 4010,
+          "cn": "不同演绎",
+          "en": "Alternative Version",
+          "desc": "相同设定、角色，不同的演绎方式"
+        },
+        {
+          "id": 4012,
+          "cn": "主线故事",
+          "en": "Parent Story",
+          "desc": ""
+        },
+        {
+          "id": 4014,
+          "cn": "联动",
+          "en": "Collaboration",
+          "desc": "出现了被关联作品中的角色"
+        },
+        {
+          "id": 4015,
+          "cn": "扩展包",
+          "en": "DLC",
+          "desc": ""
+        },
+        {
+          "id": 4016,
+          "cn": "不同版本",
+          "en": "Version",
+          "desc": "相同故事、角色，画面、音乐或系统改进"
+        },
+        {
+          "id": 4017,
+          "cn": "主版本",
+          "en": "Main Version",
+          "desc": "游戏最初发售时的版本"
+        },
+        {
+          "id": 4018,
+          "cn": "合集",
+          "en": "Collection",
+          "desc": "收录本作品的合集条目"
+        },
+        {
+          "id": 4019,
+          "cn": "收录作品",
+          "en": "In Collection",
+          "desc": "合集条目中收录的作品"
+        },
+        {
+          "id": 4099,
+          "cn": "其他",
+          "en": "Other",
+          "desc": ""
+        }
+      ]
+    }
+  },
+  "requests": [
+    {
+      "key": "character-subjects",
+      "observedAt": "2026-10-13T07:42:41.178Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/characters/86246/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 1817,
+          "name": "마비노기",
+          "name_cn": "洛奇",
+          "type": 4,
+          "staff": "客串"
+        },
+        {
+          "id": 305429,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "type": 1,
+          "staff": "主角"
+        },
+        {
+          "id": 400602,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "type": 2,
+          "staff": "主角"
+        },
+        {
+          "id": 459283,
+          "name": "葬送のフリーレン ～●●の魔法～",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～",
+          "type": 2,
+          "staff": "主角"
+        },
+        {
+          "id": 515759,
+          "name": "葬送のフリーレン 第2期",
+          "name_cn": "葬送的芙莉莲 第二季",
+          "type": 2,
+          "staff": "主角"
+        },
+        {
+          "id": 549563,
+          "name": "葬送のフリーレン ～●●の魔法～2期",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～2期",
+          "type": 2,
+          "staff": "主角"
+        },
+        {
+          "id": 638133,
+          "name": "葬送のフリーレン 第3期【黄金郷編】",
+          "name_cn": "葬送的芙莉莲 第三季 黄金乡篇",
+          "type": 2,
+          "staff": "主角"
+        }
+      ]
+    },
+    {
+      "key": "person-subjects",
+      "observedAt": "2026-10-13T07:42:41.344Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/29554/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 305429,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 217646,
+          "name": "ぼっち博士とロボット少女の絶望的ユートピア",
+          "name_cn": "孤独博士与机械少女",
+          "type": 1,
+          "staff": "作者",
+          "eps": ""
+        },
+        {
+          "id": 331142,
+          "name": "名無しは一体誰でしょう?",
+          "name_cn": "",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 448518,
+          "name": "ぼっち博士とロボット少女の絶望的ユートピア 新装版",
+          "name_cn": "边缘人博士与机器人少女的绝望乌托邦",
+          "type": 1,
+          "staff": "作者",
+          "eps": ""
+        },
+        {
+          "id": 456693,
+          "name": "YOASOBI「勇者」 Official Music Video",
+          "name_cn": "",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 459283,
+          "name": "葬送のフリーレン ～●●の魔法～",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 463534,
+          "name": "葬送のフリーレン 画集 Vol.1",
+          "name_cn": "葬送的芙莉莲 画集 Vol.1",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 549563,
+          "name": "葬送のフリーレン ～●●の魔法～2期",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～2期",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 601170,
+          "name": "小説 葬送のフリーレン ~前奏~",
+          "name_cn": "",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 535646,
+          "name": "小説 アニメ 葬送のフリーレン",
+          "name_cn": "",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 400602,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 595862,
+          "name": "葬送のフリーレン人狼",
+          "name_cn": "葬送的芙莉莲 狼人杀",
+          "type": 4,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 515759,
+          "name": "葬送のフリーレン 第2期",
+          "name_cn": "葬送的芙莉莲 第二季",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 638133,
+          "name": "葬送のフリーレン 第3期【黄金郷編】",
+          "name_cn": "葬送的芙莉莲 第三季 黄金乡篇",
+          "type": 2,
+          "staff": "原作",
+          "eps": ""
+        },
+        {
+          "id": 667891,
+          "name": "葬送のフリーレン プレミアムポストカードブック",
+          "name_cn": "葬送的芙莉蓮 精裝炫亮明信片書",
+          "type": 1,
+          "staff": "原作",
+          "eps": ""
+        }
+      ]
+    },
+    {
+      "key": "organization-subjects",
+      "observedAt": "2026-10-13T07:42:41.355Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/68685/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 22818,
+          "name": "乙嫁語り",
+          "name_cn": "姊嫁物语",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 65458,
+          "name": "赤髪の白雪姫",
+          "name_cn": "红发的白雪公主",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 212189,
+          "name": "アオアシ",
+          "name_cn": "青色芦苇",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 220683,
+          "name": "来世は他人がいい",
+          "name_cn": "唯愿来世不相识",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 319310,
+          "name": "トリリオンゲーム",
+          "name_cn": "一兆$游戏",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 189208,
+          "name": "憂国のモリアーティ",
+          "name_cn": "忧国的莫里亚蒂",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 378754,
+          "name": "CLAMPノキセキ : the exhibition of CLAMP's works 1989-2004",
+          "name_cn": "CLAMP的奇迹、轨迹",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 382582,
+          "name": "マタギガンナー",
+          "name_cn": "",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 302561,
+          "name": "나 혼자만 레벨업",
+          "name_cn": "我独自升级",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 230591,
+          "name": "天国大魔境",
+          "name_cn": "天国大魔境",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 332994,
+          "name": "Here U Are",
+          "name_cn": "",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 299228,
+          "name": "マッシュル-MASHLE-",
+          "name_cn": "物理魔法使马修",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 305429,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 321285,
+          "name": "더 복서",
+          "name_cn": "拳击手",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 285150,
+          "name": "과호흡",
+          "name_cn": "呼吸过度",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 291096,
+          "name": "アサシン クリード チャイナ",
+          "name_cn": "刺客信条：中国",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 219785,
+          "name": "コールドゲーム",
+          "name_cn": "宫廷游戏",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 227179,
+          "name": "황제의 외동딸",
+          "name_cn": "皇帝的独生女",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 168891,
+          "name": "鬼滅の刃",
+          "name_cn": "鬼灭之刃",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 347461,
+          "name": "전지적 짝사랑 시점",
+          "name_cn": "全知单恋视角",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 270432,
+          "name": "그녀가 공작저로 가야 했던 사정",
+          "name_cn": "公爵的契约未婚妻",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 436853,
+          "name": "The Beginning After the End",
+          "name_cn": "终末起点",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 170186,
+          "name": "ポジ",
+          "name_cn": "积极之恋",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 170187,
+          "name": "ネガ",
+          "name_cn": "消极之爱",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 218809,
+          "name": "夢で見たあの子のために",
+          "name_cn": "为了梦中见到的那孩子",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 328300,
+          "name": "のみ×しば",
+          "name_cn": "",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 333144,
+          "name": "miroirs",
+          "name_cn": "",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 267786,
+          "name": "사랑은 환상!",
+          "name_cn": "恋爱幻想曲",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 131519,
+          "name": "爆音列島",
+          "name_cn": "爆音列岛",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 352449,
+          "name": "귀환자의 마법은 특별해야 합니다",
+          "name_cn": "归还者的魔法要特别",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 327398,
+          "name": "나빌레라",
+          "name_cn": "像蝴蝶一样飞",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 459599,
+          "name": "ネコノヒー",
+          "name_cn": "残念猫",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 273861,
+          "name": "버림 받은 황비",
+          "name_cn": "被废弃的皇妃",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 303391,
+          "name": "날것 : 공작가의 하녀로 빙의했습니다",
+          "name_cn": "穿越成公爵家的女仆",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 444076,
+          "name": "킹더랜드",
+          "name_cn": "欢迎来到王之国",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 307618,
+          "name": "악역의 엔딩은 죽음뿐",
+          "name_cn": "反派角色只有死亡结局",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 511641,
+          "name": "Karmen",
+          "name_cn": "卡尔曼",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 291305,
+          "name": "アルマ",
+          "name_cn": "ALMA魂",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 330443,
+          "name": "Malgré tout",
+          "name_cn": "爱如初见",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 215524,
+          "name": "魔道祖師",
+          "name_cn": "魔道祖师",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        },
+        {
+          "id": 179872,
+          "name": "ファイアパンチ",
+          "name_cn": "炎拳",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 244228,
+          "name": "人渣反派自救系統",
+          "name_cn": "人渣反派自救系统",
+          "type": 1,
+          "staff": "出版社",
+          "eps": ""
+        },
+        {
+          "id": 470282,
+          "name": "Wet Sand(웻샌드)",
+          "name_cn": "WET SAND",
+          "type": 1,
+          "staff": "出版社",
+          "eps": "西班牙版"
+        }
+      ]
+    },
+    {
+      "key": "voiceactor-characters",
+      "observedAt": "2026-10-13T07:42:41.456Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/26403/characters"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 7064,
+          "name": "萩原研二",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 899,
+          "subject_name": "名探偵コナン",
+          "subject_name_cn": "名侦探柯南",
+          "subject_type": 2
+        },
+        {
+          "id": 184148,
+          "name": "Tristepin",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 92704,
+          "subject_name": "Wakfu",
+          "subject_name_cn": "沃土",
+          "subject_type": 2
+        },
+        {
+          "id": 10553,
+          "name": "方兰生",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 108522,
+          "subject_name": "古剑奇谭",
+          "subject_name_cn": "古剑奇谭",
+          "subject_type": 6
+        },
+        {
+          "id": 50152,
+          "name": "居十方",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 119717,
+          "subject_name": "仙剑奇侠传六",
+          "subject_name_cn": "",
+          "subject_type": 4
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 137937,
+          "subject_name": "狐妖小红娘 下沙篇",
+          "subject_name_cn": "狐妖小红娘1 下沙篇",
+          "subject_type": 2
+        },
+        {
+          "id": 2358,
+          "name": "モンキー・D・ルフィ",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 144846,
+          "subject_name": "ONE PIECE FILM GOLD",
+          "subject_name_cn": "航海王之黄金城",
+          "subject_type": 2
+        },
+        {
+          "id": 53268,
+          "name": "许博远",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 153196,
+          "subject_name": "全职高手",
+          "subject_name_cn": "全职高手",
+          "subject_type": 2
+        },
+        {
+          "id": 60816,
+          "name": "グレン・ディン",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 186180,
+          "subject_name": "重神機パンドーラ",
+          "subject_name_cn": "重神机潘多拉",
+          "subject_type": 2
+        },
+        {
+          "id": 8097,
+          "name": "JUN",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 188050,
+          "subject_name": "チーティングクラフト",
+          "subject_name_cn": "一课一练",
+          "subject_type": 2
+        },
+        {
+          "id": 55461,
+          "name": "君子剑",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 189511,
+          "subject_name": "梦间集",
+          "subject_name_cn": "梦间集",
+          "subject_type": 4
+        },
+        {
+          "id": 55479,
+          "name": "齐眉棍",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 189511,
+          "subject_name": "梦间集",
+          "subject_name_cn": "梦间集",
+          "subject_type": 4
+        },
+        {
+          "id": 90056,
+          "name": "修吾",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 193168,
+          "subject_name": "仙剑奇侠传七",
+          "subject_name_cn": "",
+          "subject_type": 4
+        },
+        {
+          "id": 81319,
+          "name": "金光瑶",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 199423,
+          "subject_name": "魔道祖师",
+          "subject_name_cn": "魔道祖师 前尘篇",
+          "subject_type": 2
+        },
+        {
+          "id": 53268,
+          "name": "许博远",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 217235,
+          "subject_name": "全职高手2",
+          "subject_name_cn": "全职高手 第二季",
+          "subject_type": 2
+        },
+        {
+          "id": 185633,
+          "name": "厉飞雨",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 223147,
+          "subject_name": "凡人修仙传之凡人风起天南",
+          "subject_name_cn": "凡人修仙传之凡人风起天南",
+          "subject_type": 2
+        },
+        {
+          "id": 87405,
+          "name": "东方芜穹",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 234449,
+          "subject_name": "我家大师兄脑子有坑",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 245665,
+          "subject_name": "鬼滅の刃",
+          "subject_name_cn": "鬼灭之刃",
+          "subject_type": 2
+        },
+        {
+          "id": 2358,
+          "name": "モンキー・D・ルフィ",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 258349,
+          "subject_name": "ONE PIECE STAMPEDE",
+          "subject_name_cn": "航海王：狂热行动",
+          "subject_type": 2
+        },
+        {
+          "id": 68377,
+          "name": "雛罌粟港",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 265372,
+          "subject_name": "きみと、波にのれたら",
+          "subject_name_cn": "若能与你共乘海浪之上",
+          "subject_type": 2
+        },
+        {
+          "id": 163617,
+          "name": "许仙",
+          "type": 1,
+          "staff": "客串",
+          "subject_id": 265554,
+          "subject_name": "白蛇：缘起",
+          "subject_name_cn": "白蛇：缘起",
+          "subject_type": 2
+        },
+        {
+          "id": 111273,
+          "name": "许宣",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 265554,
+          "subject_name": "白蛇：缘起",
+          "subject_name_cn": "白蛇：缘起",
+          "subject_type": 2
+        },
+        {
+          "id": 102547,
+          "name": "リシ・ラマナサン",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 268067,
+          "subject_name": "名探偵コナン 紺青の拳",
+          "subject_name_cn": "名侦探柯南 绀青之拳",
+          "subject_type": 2
+        },
+        {
+          "id": 87405,
+          "name": "东方芜穹",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 269550,
+          "subject_name": "我家大师兄是个反派",
+          "subject_name_cn": "我家大师兄是个反派",
+          "subject_type": 2
+        },
+        {
+          "id": 71646,
+          "name": "唐三傑",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 273834,
+          "subject_name": "真・中華一番！",
+          "subject_name_cn": "厨神小当家",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 281271,
+          "subject_name": "狐妖小红娘 王权篇",
+          "subject_name_cn": "狐妖小红娘2 王权篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 281272,
+          "subject_name": "狐妖小红娘 月红篇",
+          "subject_name_cn": "狐妖小红娘3 月红篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 281277,
+          "subject_name": "狐妖小红娘 千颜篇",
+          "subject_name_cn": "狐妖小红娘4 千颜篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 281282,
+          "subject_name": "狐妖小红娘 南国篇",
+          "subject_name_cn": "狐妖小红娘5 南国篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 282634,
+          "subject_name": "狐妖小红娘 尾生篇",
+          "subject_name_cn": "狐妖小红娘7 尾生篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 282635,
+          "subject_name": "狐妖小红娘 金晨曦篇",
+          "subject_name_cn": "狐妖小红娘8 金晨曦篇",
+          "subject_type": 2
+        },
+        {
+          "id": 78864,
+          "name": "陆景和",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 290180,
+          "subject_name": "未定事件簿",
+          "subject_name_cn": "未定事件簿",
+          "subject_type": 4
+        },
+        {
+          "id": 200387,
+          "name": "吕树",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 291213,
+          "subject_name": "大王饶命",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 216684,
+          "name": "李云祥",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 307047,
+          "subject_name": "新神榜：哪吒重生",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 309937,
+          "subject_name": "狐妖小红娘 沐天城篇",
+          "subject_name_cn": "狐妖小红娘9 沐天城篇",
+          "subject_type": 2
+        },
+        {
+          "id": 53268,
+          "name": "许博远",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 315740,
+          "subject_name": "全职高手2 Q版小剧场",
+          "subject_name_cn": "全职高手第二季 Q版小剧场",
+          "subject_type": 2
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 320224,
+          "subject_name": "时光代理人",
+          "subject_name_cn": "时光代理人",
+          "subject_type": 2
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 328195,
+          "subject_name": "鬼滅の刃 遊郭編",
+          "subject_name_cn": "鬼灭之刃 游郭篇",
+          "subject_type": 2
+        },
+        {
+          "id": 163617,
+          "name": "许仙",
+          "type": 1,
+          "staff": "客串",
+          "subject_id": 328443,
+          "subject_name": "白蛇Ⅱ：青蛇劫起",
+          "subject_name_cn": "白蛇2：青蛇劫起",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 328707,
+          "subject_name": "狐妖小红娘 两生花篇",
+          "subject_name_cn": "狐妖小红娘10 两生花篇",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 331099,
+          "subject_name": "狐妖小红娘·月红2",
+          "subject_name_cn": "狐妖小红娘·月红2",
+          "subject_type": 2
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 341311,
+          "subject_name": "时光代理人 第二季",
+          "subject_name_cn": "时光代理人 第二季",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 345761,
+          "subject_name": "狐妖小红娘 无暮篇",
+          "subject_name_cn": "狐妖小红娘11 无暮篇",
+          "subject_type": 2
+        },
+        {
+          "id": 53268,
+          "name": "许博远",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 345806,
+          "subject_name": "全职高手3",
+          "subject_name_cn": "全职高手 第三季",
+          "subject_type": 2
+        },
+        {
+          "id": 172992,
+          "name": "刘羡阳",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 345825,
+          "subject_name": "剑来",
+          "subject_name_cn": "剑来",
+          "subject_type": 2
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 350764,
+          "subject_name": "鬼滅の刃 無限列車編",
+          "subject_name_cn": "鬼灭之刃 无限列车篇",
+          "subject_type": 2
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 352184,
+          "subject_name": "时光照相馆的日常",
+          "subject_name_cn": "时光照相馆的日常",
+          "subject_type": 2
+        },
+        {
+          "id": 2358,
+          "name": "モンキー・D・ルフィ",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 358803,
+          "subject_name": "ONE PIECE FILM RED",
+          "subject_name_cn": "航海王：红发歌姬",
+          "subject_type": 2
+        },
+        {
+          "id": 7064,
+          "name": "萩原研二",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 359930,
+          "subject_name": "名探偵コナン ハロウィンの花嫁",
+          "subject_name_cn": "名侦探柯南 万圣节的新娘",
+          "subject_type": 2
+        },
+        {
+          "id": 186667,
+          "name": "波弟",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 363287,
+          "subject_name": "摇滚藏獒：蓝色光芒",
+          "subject_name_cn": "摇滚藏獒：蓝色光芒",
+          "subject_type": 2
+        },
+        {
+          "id": 131389,
+          "name": "狼群",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 365720,
+          "subject_name": "重返未来：1999",
+          "subject_name_cn": "",
+          "subject_type": 4
+        },
+        {
+          "id": 131390,
+          "name": "冬",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 365720,
+          "subject_name": "重返未来：1999",
+          "subject_name_cn": "",
+          "subject_type": 4
+        },
+        {
+          "id": 175563,
+          "name": "韩羽",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 366897,
+          "subject_name": "神印王座",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 200387,
+          "name": "吕树",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 368985,
+          "subject_name": "大王饶命 第二季",
+          "subject_name_cn": "大王饶命 第二季",
+          "subject_type": 2
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 369768,
+          "subject_name": "鬼滅の刃 刀鍛冶の里編",
+          "subject_name_cn": "鬼灭之刃 刀匠村篇",
+          "subject_type": 2
+        },
+        {
+          "id": 25117,
+          "name": "黒尾鉄朗",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 394621,
+          "subject_name": "劇場版ハイキュー!! ゴミ捨て場の決戦",
+          "subject_name_cn": "排球少年！！垃圾场决战",
+          "subject_type": 2
+        },
+        {
+          "id": 175563,
+          "name": "韩羽",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 395289,
+          "subject_name": "神印王座 第二季",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 75332,
+          "name": "ソニック",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 395374,
+          "subject_name": "Sonic the Hedgehog 3",
+          "subject_name_cn": "刺猬索尼克3",
+          "subject_type": 6
+        },
+        {
+          "id": 133717,
+          "name": "高适",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 397534,
+          "subject_name": "长安三万里",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 180452,
+          "name": "狂欢",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 405212,
+          "subject_name": "凸变英雄X",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 191827,
+          "name": "相繇",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 405223,
+          "subject_name": "怪想售",
+          "subject_name_cn": "怪想售",
+          "subject_type": 2
+        },
+        {
+          "id": 209090,
+          "name": "宁缺",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 406488,
+          "subject_name": "将夜",
+          "subject_name_cn": "将夜",
+          "subject_type": 2
+        },
+        {
+          "id": 186667,
+          "name": "波弟",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 422678,
+          "subject_name": "摇滚藏獒3：乘风破浪",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 196752,
+          "name": "胤瞬",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 432932,
+          "subject_name": "谷围南亭",
+          "subject_name_cn": "谷围南亭",
+          "subject_type": 2
+        },
+        {
+          "id": 207032,
+          "name": "假离枭",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 434809,
+          "subject_name": "仙宠",
+          "subject_name_cn": "仙宠",
+          "subject_type": 2
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 441939,
+          "subject_name": "鬼滅の刃 柱稽古編",
+          "subject_name_cn": "鬼灭之刃 柱训练篇",
+          "subject_type": 2
+        },
+        {
+          "id": 163617,
+          "name": "许仙",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 443857,
+          "subject_name": "白蛇：浮生",
+          "subject_name_cn": "",
+          "subject_type": 2
+        },
+        {
+          "id": 54361,
+          "name": "白月初",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 449344,
+          "subject_name": "狐妖小红娘 镜花缘篇",
+          "subject_name_cn": "狐妖小红娘12 镜花缘篇",
+          "subject_type": 2
+        },
+        {
+          "id": 222061,
+          "name": "长庚",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 452310,
+          "subject_name": "杀破狼 第一季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 222061,
+          "name": "长庚",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 452311,
+          "subject_name": "杀破狼 第二季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 222061,
+          "name": "长庚",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 452312,
+          "subject_name": "杀破狼 第三季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 53268,
+          "name": "许博远",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 452313,
+          "subject_name": "全职高手广播剧 第一季 上",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 456165,
+          "subject_name": "时光代理人 英都篇",
+          "subject_name_cn": "时光代理人 英都篇",
+          "subject_type": 2
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 489351,
+          "subject_name": "时光代理人 第一季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170442,
+          "name": "费渡",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 492353,
+          "subject_name": "默读 第一季 于连",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170442,
+          "name": "费渡",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 492354,
+          "subject_name": "默读 第二季 亨伯特·亨伯特",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170442,
+          "name": "费渡",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 492355,
+          "subject_name": "默读 第三季 麦克白",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170442,
+          "name": "费渡",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 492356,
+          "subject_name": "默读 第四季 韦尔霍文斯基",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170442,
+          "name": "费渡",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 492357,
+          "subject_name": "默读 最终季 埃德蒙·唐泰斯",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 205309,
+          "name": "李玉",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 494199,
+          "subject_name": "你却爱着一个他 第一季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 57313,
+          "name": "宇髄天元",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 501958,
+          "subject_name": "劇場版 鬼滅の刃 無限城編 第一章 猗窩座再来",
+          "subject_name_cn": "剧场版 鬼灭之刃 无限城篇 第一章 猗窝座再袭",
+          "subject_type": 2
+        },
+        {
+          "id": 224147,
+          "name": "王泰",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 507530,
+          "subject_name": "灵境行者",
+          "subject_name_cn": "灵境行者",
+          "subject_type": 2
+        },
+        {
+          "id": 200387,
+          "name": "吕树",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 507820,
+          "subject_name": "大王饶命 第三季",
+          "subject_name_cn": "大王饶命 第三季",
+          "subject_type": 2
+        },
+        {
+          "id": 172992,
+          "name": "刘羡阳",
+          "type": 1,
+          "staff": "闲角",
+          "subject_id": 520300,
+          "subject_name": "剑来 第二季",
+          "subject_name_cn": "剑来 第二季",
+          "subject_type": 2
+        },
+        {
+          "id": 222095,
+          "name": "郭伟祥",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 526730,
+          "subject_name": "不死者 第一季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 222095,
+          "name": "郭伟祥",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 526733,
+          "subject_name": "不死者 第二季",
+          "subject_name_cn": "",
+          "subject_type": 6
+        },
+        {
+          "id": 170412,
+          "name": "エグザベ・オリベ",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 526817,
+          "subject_name": "機動戦士Gundam GQuuuuuuX -Beginning-",
+          "subject_name_cn": "机动战士高达 跨时之战",
+          "subject_type": 2
+        },
+        {
+          "id": 90056,
+          "name": "修吾",
+          "type": 1,
+          "staff": "配角",
+          "subject_id": 554015,
+          "subject_name": "仙剑奇侠传七 - 人间如梦",
+          "subject_name_cn": "仙剑奇侠传七 - 人间如梦",
+          "subject_type": 4
+        },
+        {
+          "id": 98248,
+          "name": "陆光",
+          "type": 1,
+          "staff": "主角",
+          "subject_id": 555710,
+          "subject_name": "时光代理人Ⅲ Part One",
+          "subject_name_cn": "时光代理人 第三季 Part 1",
+          "subject_type": 2
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "allResponsesOk": true,
+    "allObservedAnimeStaffLabelsDeclared": true,
+    "reverseCharacterHasConfirmedAnime": true,
+    "reversePersonHasConfirmedComic": true,
+    "reverseOrganizationPreservesTranslationVersion": true,
+    "reverseVoiceRecordPreservesWorkAndCharacter": true
+  },
+  "limitations": [
+    "The ordinary arrays were read as documented; this does not verify every returned work or every source relation.",
+    "Reverse candidates still need the same work, original-version and cast checks as forward reads.",
+    "The source constant file contains duplicate labels with different details; API labels alone cannot recover distinctions that are not returned."
+  ]
+}

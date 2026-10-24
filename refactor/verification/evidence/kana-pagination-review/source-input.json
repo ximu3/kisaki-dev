@@ -1,0 +1,335 @@
+{
+  "checkedAt": "2026-10-20T08:03:35.044325+00:00",
+  "repository": "pagedjs/paged-layout",
+  "commit": "d5639e71be3e5c94ba4f436eae36e5afddc0b161",
+  "packageVersion": "0.1.0",
+  "npmPackageAvailableAtCheck": false,
+  "licenseStatement": "README states MIT; this tree contains no standalone LICENSE file.",
+  "treeUrl": "https://api.github.com/repos/pagedjs/paged-layout/git/trees/d5639e71be3e5c94ba4f436eae36e5afddc0b161?recursive=1",
+  "treeSha256": "0f1393710a426f7fbb5fb810aa1aa2dcea9652b1ab7c4343bd3fbe943b054222",
+  "sources": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/README.md",
+      "bytes": 4916,
+      "sha256": "6d9641efdd86ac58c8b5befc037e1be0d3fc24885848421c9ed8390e43a1b66e"
+    },
+    {
+      "path": "package.json",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/package.json",
+      "bytes": 560,
+      "sha256": "fad0af6b59aaf4e3e1bbd5134d08df59251de450db14c91919a98bcf2dc73110"
+    },
+    {
+      "path": "src/breaktoken.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/breaktoken.js",
+      "bytes": 2732,
+      "sha256": "d4171a0ee3557f07236ec5a0b5923aadc465c360221fc7dc4f2a878e98fd6c49"
+    },
+    {
+      "path": "src/index.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/index.js",
+      "bytes": 1366,
+      "sha256": "ef08e1246677404b6f933dcb3119ee1d3d70e9e4e1ec160c5936da8708a2023e"
+    },
+    {
+      "path": "src/layout.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/layout.js",
+      "bytes": 48233,
+      "sha256": "669c4a006fdbe82b2fa1eebc644fbbe3bdb6cb2c3dcfe82bbb5b24015a2dbcc6"
+    },
+    {
+      "path": "src/overflow.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/overflow.js",
+      "bytes": 1557,
+      "sha256": "f011aa24453ca2bf34de0c4e9a75cbfebbb4b8a544f47cb34f1fbcf5610e09b4"
+    },
+    {
+      "path": "src/parser.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/parser.js",
+      "bytes": 2833,
+      "sha256": "efc70bbea8f5a5d5ab7bcc896166f3abab60d2d110119103adb636d7c5d150d4"
+    },
+    {
+      "path": "src/renderresult.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/renderresult.js",
+      "bytes": 1132,
+      "sha256": "1324bf53cc451c5bb4f90a3c219ade71d804c0d698c2908ea3722f4ba8b754db"
+    },
+    {
+      "path": "src/utils/dom.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/utils/dom.js",
+      "bytes": 38555,
+      "sha256": "e2167407c5efb1f4cc8245e80282f43e867378d76eaea19b2cc6f7287323e4ef"
+    },
+    {
+      "path": "src/utils/hook.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/utils/hook.js",
+      "bytes": 2079,
+      "sha256": "ac6b2333f50c8543662f80d21d0fcf864f7d579c6c50f6b1a66f703d1013fbf3"
+    },
+    {
+      "path": "src/utils/utils.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/src/utils/utils.js",
+      "bytes": 7055,
+      "sha256": "d105e640e6626c750721ba5c6f140fa86c6b71b00fdcae3fb660a48648af8693"
+    },
+    {
+      "path": "vitest.config.js",
+      "url": "https://raw.githubusercontent.com/pagedjs/paged-layout/d5639e71be3e5c94ba4f436eae36e5afddc0b161/vitest.config.js",
+      "bytes": 239,
+      "sha256": "1e6d8fccba39bc7844632e10c5b89f2133244600f6acfe6a749cf4366a172821"
+    }
+  ],
+  "vivliostyleVersion": "2.45.2",
+  "vivliostyleSourceMapSha256": "379cfb9421cd246e88148d63548fe8337e4ed544f6dccb0bc8153c02adfe4938",
+  "vivliostyleEmbeddedSources": [
+    {
+      "path": "constants.ts",
+      "sha256": "5067414e32e3f67e1e7d8a36482edad860284bc0305cf9f8096608e696688aab"
+    },
+    {
+      "path": "logging.ts",
+      "sha256": "49e4264a59b123ff92eac24b09d9d79133497f30dc8d27803f3e2ea919917a6b"
+    },
+    {
+      "path": "plugin.ts",
+      "sha256": "db080da5fcca1a1db93d1a6dcaa83b04e5ee84b3defceee1efc6558a6f866c9c"
+    },
+    {
+      "path": "profile.ts",
+      "sha256": "2ebe0a8b1372ec16fa5de372d5c99befe605bafec1226c5690efb66efc2e8ff6"
+    },
+    {
+      "path": "base.ts",
+      "sha256": "1661d4dd92e3490c8740a6e671201cf5ed2328137958be123502983eff178e36"
+    },
+    {
+      "path": "exprs.ts",
+      "sha256": "bf997195d2bcd1686693db6d3bba149995d7d839aa136b0e84a181545938dd56"
+    },
+    {
+      "path": "css.ts",
+      "sha256": "c0a1e1b43c18b4336144d7f2537b8ca268aa003e828d7327862bfb7588b012b6"
+    },
+    {
+      "path": "cmyk-store.ts",
+      "sha256": "73b664821b2aa3a24928fc92b130ce5b22f1327e084357613bb481510e32ed5a"
+    },
+    {
+      "path": "cfi.ts",
+      "sha256": "8fb0af657444148a964c44dc4de9a4ab865bac9e52fb682bb79f73b4c875c466"
+    },
+    {
+      "path": "geometry-util.ts",
+      "sha256": "441f0137ebb866279862197c3faf2f24c3e7a49182534d74d6a8d81a850d65ac"
+    },
+    {
+      "path": "css-prop.ts",
+      "sha256": "b103787ce25c8e232156d34b43bbd48849100b709924cedc94b6881462c63a4a"
+    },
+    {
+      "path": "counters.ts",
+      "sha256": "fbd5fee6860a41317ec471c43ef8b12765bfd4362cd4d66d36647b90a6c7ca3d"
+    },
+    {
+      "path": "css-nesting.ts",
+      "sha256": "d020f65261b3734d3441c75696cb5c2d673d8a95da228e48032aa34d6975540e"
+    },
+    {
+      "path": "css-tokenizer.ts",
+      "sha256": "bc7c0017cc8b6cd6279be512d3cf0980dd517bbcb35f5372e9b1f2a56b1c8fc1"
+    },
+    {
+      "path": "task.ts",
+      "sha256": "5e4e8f179510755303fa593537c365c049b5c2e4890637081026423dc0a3eb0f"
+    },
+    {
+      "path": "task-util.ts",
+      "sha256": "84e49182fadb19fb0978abe2236753e16c268bb5b7678e1b6c07301377dfdc6d"
+    },
+    {
+      "path": "assets.ts",
+      "sha256": "f89c67eb02c441ec300fbc848cf97fc1425a83573c1ef91efe92ca0a1eee1a87"
+    },
+    {
+      "path": "net.ts",
+      "sha256": "5d26069ed260e7a3b268835a491feee6b06f3ecb5342636404bf9d861bb4ca7c"
+    },
+    {
+      "path": "css-parser.ts",
+      "sha256": "dcdba4a7747a84810caf3c2596a2c16e8ace97f11802b616b11f54839d9d26f3"
+    },
+    {
+      "path": "display.ts",
+      "sha256": "25e46f6e949e3204fb601c4baef6fd54a1932ac515ecd69ff784f6e1239b40ff"
+    },
+    {
+      "path": "range-client-rects.ts",
+      "sha256": "9e4c9080a20c3587484ca5e460ee37decc34237d309ab5ea9999c6450e85cca4"
+    },
+    {
+      "path": "break.ts",
+      "sha256": "9f8183395ca75d21728f4e88eb702683c86217fe5eee91e39ab7ccc5d11ef704"
+    },
+    {
+      "path": "diff.ts",
+      "sha256": "930d0674c8a997a2e7eef365a53c2331986df33eacb3344d96479bc0c7f91530"
+    },
+    {
+      "path": "types.ts",
+      "sha256": "626619a24f96db2ec4222b3a2edf767469c2c71c80f2b2d861442b8ac191ac72"
+    },
+    {
+      "path": "vtree.ts",
+      "sha256": "a343cee9b265aa1e8e738b19815613649164ec99352a69af64bb6376932301ef"
+    },
+    {
+      "path": "layout-helper.ts",
+      "sha256": "3ef53ea21c24603fd48a3d1aa43eb3374fb2dc50b3bd94922d2956e430e9802e"
+    },
+    {
+      "path": "css-logical-util.ts",
+      "sha256": "29dca1cc7efe7748248dbcc3bd5b248a79e66eaaae3a05b98d2a1312d645e8dd"
+    },
+    {
+      "path": "sizing.ts",
+      "sha256": "d85fc825ad86996a0d3b905bc2bfaaf430f80d7d856b9fcbe7edc934edce0692"
+    },
+    {
+      "path": "page-floats.ts",
+      "sha256": "ed152f2ea89a7c75f1bf291fd0c5ec8bea88a51d3fc0400da450cb468a7e55af"
+    },
+    {
+      "path": "semantic-footnote.ts",
+      "sha256": "04bdcf4beb065b157068cebfac36a6e3d49755e1f6995314dbe6eace3627018d"
+    },
+    {
+      "path": "footnotes.ts",
+      "sha256": "a2691d4774cd94d7cd41e626b5024897da85ea30772403bac912924b5223a1f6"
+    },
+    {
+      "path": "break-position.ts",
+      "sha256": "11878cb974777e9034fd26deaa9bcdddc1b063a37633a3a8d8370583454cca40"
+    },
+    {
+      "path": "layout-processor.ts",
+      "sha256": "b688391664b3fd513a0d95541cd6fb700e1b8c06f60d33f7be891eee7ce5b41a"
+    },
+    {
+      "path": "layout-retryers.ts",
+      "sha256": "68811f10ec8d93582756acdbbc347b4f30fa158e0ce696cc02414aeca55cd264"
+    },
+    {
+      "path": "layout-util.ts",
+      "sha256": "da1d495cd1ee0e88844345196381f88e037e8cd369131f7e403767cb24afbeeb"
+    },
+    {
+      "path": "shared.ts",
+      "sha256": "b4584900542c6f975179d6104d720a38597da4066612302aa1403f88e90308f6"
+    },
+    {
+      "path": "counter-style.ts",
+      "sha256": "ab98d6cb74ef40c1b1f33cfa8012ac1b790f8227ddc5759df06f0ca1446bf3e3"
+    },
+    {
+      "path": "css-validator.ts",
+      "sha256": "557673bf9da83638fa8147fda1237426787de06ef6133530acfb4910821ff447"
+    },
+    {
+      "path": "matchers.ts",
+      "sha256": "5da79dfa0a51f0a0d906cf6229b2828d73e0fdb9552ed11add78f83f83a7589f"
+    },
+    {
+      "path": "css-cascade.ts",
+      "sha256": "37662d9562d6da16dd2ef5e299e822ec12910c49394ed10c32d91e562de9931b"
+    },
+    {
+      "path": "text-polyfill.ts",
+      "sha256": "33e8930fc109ebad38eca3b1d5670dc1b6f1ba524af2aa3a52ce1d3a896a84d1"
+    },
+    {
+      "path": "pseudo-element.ts",
+      "sha256": "593e99022282a982a8fb28319dbf54cd62a5353de5bf6ffa00531af656ef8ddf"
+    },
+    {
+      "path": "layout.ts",
+      "sha256": "cfed76ecde91445ac8a8879da8a1daaaf647632e0484b23b5cbf7354815323a7"
+    },
+    {
+      "path": "repetitive-element.ts",
+      "sha256": "ad4bab86d5093f7a58ffae65f322dccb548244239a88c2de122b9c9bb6d3fa04"
+    },
+    {
+      "path": "table.ts",
+      "sha256": "2eb8eb61ac4c9788739fc121b1caeeab8c47cd004a13bfac37aebe65361c6c13"
+    },
+    {
+      "path": "math-util.ts",
+      "sha256": "80c30ff021e8598c14cedcdbdedc3d89a310f38594ab431d283bf9dd06836786"
+    },
+    {
+      "path": "columns.ts",
+      "sha256": "496ec26c1c30d8040f9cfff4dfc5be0f47f41785fff990ccdf64b6385ff18bb8"
+    },
+    {
+      "path": "css-styler.ts",
+      "sha256": "8efe640454d1859771a8749897dcc17b66a36f7b503d3327148f3bcdb98d31c8"
+    },
+    {
+      "path": "font.ts",
+      "sha256": "1fc6c2ed49944dfad4b0fb21a3ac1cfb7456ea0286d334fe8a6c13cb3163f159"
+    },
+    {
+      "path": "scripts.ts",
+      "sha256": "53c4e31d95a070ef0ee7810ce5fd6d6518ebf71cb25a567af1e89e7732e3e99d"
+    },
+    {
+      "path": "urls.ts",
+      "sha256": "60f270bff7b5ad939a941f6c437830bb71a09a928e86f0f8ea292f98dd1045dc"
+    },
+    {
+      "path": "vgen.ts",
+      "sha256": "e41737666555f003b21bcb431cf403aae4477da5106be2c1a2ca06508f2440d8"
+    },
+    {
+      "path": "page-master.ts",
+      "sha256": "8929762749f38b835d946634b55fa15b5f6ae9673283ca3e7c8d9ac643507467"
+    },
+    {
+      "path": "css-page.ts",
+      "sha256": "3a079a5d1c816484991a4c798511d549c6364b815c8dee424c6bae78612f6a97"
+    },
+    {
+      "path": "xml-doc.ts",
+      "sha256": "6b586917d33fa972f568830d8be3ef375bc2944687cf3ebe704ac27dc1e53e30"
+    },
+    {
+      "path": "ops.ts",
+      "sha256": "3b8c36f5cd2f2df0120fcdb0f01135d296016367479c8870b7e3edc3660d9388"
+    },
+    {
+      "path": "toc.ts",
+      "sha256": "b9deac40542381ec18be3e724b7e8c778117738e75b3bb5d3870713826cf3d39"
+    },
+    {
+      "path": "epub.ts",
+      "sha256": "0356a74ffea889b619832f00b8835441960fafa10194fefd5e532faddb9195f8"
+    },
+    {
+      "path": "adaptive-viewer.ts",
+      "sha256": "c6d1f156c3e2b739e6d7dc6f7c37235301fe102f15a0754cd3a74634f4a7f9fa"
+    },
+    {
+      "path": "core-viewer.ts",
+      "sha256": "98572f5c56245bfc6feca5e989f423053921bdce0de38132bad23752337f58ac"
+    },
+    {
+      "path": "print.ts",
+      "sha256": "618a9c0a152ca35e2b1c9509e66c856e2c12cce7f7445836c2e0e9adc7816f6a"
+    }
+  ],
+  "prepareSha256": "322665170081e9df3402bd34f7d77d21c4e6382b42311c0ffe308ab189583d29",
+  "packageScriptsExecuted": false,
+  "workspaceDependenciesChanged": false
+}

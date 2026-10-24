@@ -1,0 +1,120 @@
+{
+  "node": "v24.11.1",
+  "nodeApi": "10",
+  "cases": [
+    {
+      "name": "load-context-reentry",
+      "observations": 8,
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 1,
+      "lateReplies": 1,
+      "nativeCloses": 1,
+      "nativeCancels": 0
+    },
+    {
+      "name": "stop-read-and-join-cleanup",
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 1,
+      "lateReplies": 1,
+      "nativeCloses": 1,
+      "nativeCancels": 1
+    },
+    {
+      "name": "late-open-resource",
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 1,
+      "lateReplies": 1,
+      "nativeCloses": 0,
+      "nativeCancels": 0
+    },
+    {
+      "name": "canceled-open-rejection",
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 1,
+      "lateReplies": 1,
+      "nativeCloses": 0,
+      "nativeCancels": 0
+    },
+    {
+      "name": "original-reason-and-passive-receiver",
+      "failures": 1,
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 0,
+      "lateReplies": 0,
+      "nativeCloses": 1,
+      "nativeCancels": 1
+    },
+    {
+      "name": "invalid-bytes-and-uncaught-receiver",
+      "receiverCalls": 1,
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 0,
+      "lateReplies": 0,
+      "nativeCloses": 1,
+      "nativeCancels": 1
+    },
+    {
+      "name": "aggregate-cleanup-failures",
+      "failures": 2,
+      "destroyed": true,
+      "pending": 0,
+      "canceledWaits": 0,
+      "lateReplies": 0,
+      "nativeCloses": 2,
+      "nativeCancels": 0
+    },
+    {
+      "name": "worker-terminate-open",
+      "nativeDestroyed": true,
+      "survivingCoreUsable": true,
+      "javascriptCleanupRan": false
+    },
+    {
+      "name": "worker-terminate-read",
+      "nativeDestroyed": true,
+      "survivingCoreUsable": true,
+      "javascriptCleanupRan": false
+    },
+    {
+      "name": "worker-natural-exit-pending-open",
+      "exitCode": 0,
+      "nativeDestroyed": true,
+      "survivingCoreUsable": true
+    }
+  ],
+  "liveCores": 0,
+  "unhandledRejections": 0,
+  "checkedAt": "2026-10-18T09:12:58.375842+00:00",
+  "host": {
+    "system": "Windows",
+    "release": "10",
+    "machine": "AMD64"
+  },
+  "nodeAddonExecuted": true,
+  "javascriptProviderBridgeExecuted": true,
+  "graphicsExecuted": false,
+  "productionPackageImplemented": false,
+  "selectedReleaseBuildVerified": false,
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "libmpvSourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "addonSha256": "5d44c0a4eea3c38dfe363748560e7623cd342cb5e6c1944fde17cc81116a9511",
+  "cargoLockSha256": "37b8b986305aa9586478ab2ec802138976e96f1e2bdb5e1e5657fbe8f45cfa3f",
+  "requestedNodeApi": 8,
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+  "sources": {
+    "Cargo.toml": "29404b8d3732c944742992a8716530d08cde61a92063396212f72d3fecc55255",
+    "build.rs": "fcbd1ff3f627a7553fa1704dc6f558998daff8bc256015c37aace62cc49ce584",
+    "bridge.rs": "278b963ff3aee2ff57520310229868dcc28fd2ab813308db21e7a814e2c98a3c",
+    "provider.mjs": "bc1fa54bdf2a7928a13af71f2ecd7ce18fdd25e05b8833a7c0f278c3ea393410",
+    "probe.mjs": "990d2a7e5755846ecdc03455bf07a850e552036d29922783ba310ab0d5eb61eb",
+    "worker.mjs": "ccc4477186fa13c0bde330c2cfbc99f3eb94f9f5d099b9b6ac4798ced8eee9a6",
+    "run.py": "a3e20ca716f2dde252774d3bcbf650ea9a07179dc3ad18a9cf47610f7cdddbe6"
+  },
+  "stderr": ""
+}

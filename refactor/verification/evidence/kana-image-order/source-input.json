@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-19T17:02:35.127254+00:00",
+  "unicodeVersion": "18.0.0",
+  "decimalDigits": 770,
+  "caseFoldMappings": 1606,
+  "sources": [
+    {
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/UnicodeData.txt",
+      "file": "UnicodeData.txt",
+      "sha256": "0736451de439ae7baf1425136617da495e09ee5afbe6e394374db7009ea08950"
+    },
+    {
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/CaseFolding.txt",
+      "file": "../kana-content/casefold.txt",
+      "sha256": "a004797658a457bec4dc11683e39f69249ea3b595b752dbea6721c4c9f587b0d"
+    }
+  ],
+  "dataSha256": "f3f4405b3a4cf4da8a96f0a4025ec0311a5863d6c34376d2cf9bc103448a4bdb"
+}

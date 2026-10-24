@@ -1,0 +1,382 @@
+[
+  {
+    "name": "staff-search-alias",
+    "observedAt": "2026-10-11T20:00:00.1524634+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "filters": ["search", "=", "Koiwai Sayuri"],
+      "results": 10,
+      "fields": "aid,ismain,name,original",
+      "sort": "searchrank"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "aid": 11554,
+          "id": "s81",
+          "ismain": false,
+          "name": "Koiwai Sayuri",
+          "original": "小岩井 小百合"
+        }
+      ]
+    }
+  },
+  {
+    "name": "staff-search-alias-main-only",
+    "observedAt": "2026-10-11T20:00:00.9051756+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "filters": ["and", ["search", "=", "Koiwai Sayuri"], ["ismain", "=", 1]],
+      "results": 10,
+      "fields": "aid,ismain,name,original",
+      "sort": "searchrank"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": []
+    }
+  },
+  {
+    "name": "work-credited-alias",
+    "observedAt": "2026-10-11T12:00:16.2946412+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "results": 1,
+      "sort": "id",
+      "filters": ["staff", "=", ["aid", "=", 11554]],
+      "fields": "title,staff{id,aid,name,original,role},va.staff{id,aid,name,original}"
+    },
+    "status": 200,
+    "response": {
+      "more": true,
+      "results": [
+        {
+          "id": "v11301",
+          "staff": [
+            {
+              "aid": 1332,
+              "id": "s758",
+              "name": "Angel Note",
+              "original": null,
+              "role": "music"
+            },
+            {
+              "aid": 1556,
+              "id": "s876",
+              "name": "NANA",
+              "original": null,
+              "role": "songs"
+            },
+            {
+              "aid": 1866,
+              "id": "s1102",
+              "name": "Nanao Naru",
+              "original": "七尾 奈留",
+              "role": "chardesign"
+            },
+            {
+              "aid": 1866,
+              "id": "s1102",
+              "name": "Nanao Naru",
+              "original": "七尾 奈留",
+              "role": "art"
+            },
+            {
+              "aid": 3324,
+              "id": "s2131",
+              "name": "Mitha",
+              "original": null,
+              "role": "chardesign"
+            },
+            {
+              "aid": 3324,
+              "id": "s2131",
+              "name": "Mitha",
+              "original": null,
+              "role": "art"
+            },
+            {
+              "aid": 4419,
+              "id": "s3005",
+              "name": "Izumi Yura",
+              "original": "いずみ 由羅",
+              "role": "art"
+            },
+            {
+              "aid": 4431,
+              "id": "s3016",
+              "name": "Hazuki Sai",
+              "original": "葉月 サイ",
+              "role": "scenario"
+            },
+            {
+              "aid": 5682,
+              "id": "s4097",
+              "name": "Yoshida Seiji",
+              "original": "吉田 誠治",
+              "role": "art"
+            },
+            {
+              "aid": 5913,
+              "id": "s4320",
+              "name": "Oosaka Genomu",
+              "original": "大阪 ゲノム",
+              "role": "scenario"
+            },
+            {
+              "aid": 5913,
+              "id": "s4320",
+              "name": "Oosaka Genomu",
+              "original": "大阪 ゲノム",
+              "role": "director"
+            },
+            {
+              "aid": 5914,
+              "id": "s4321",
+              "name": "Prhythm Vision",
+              "original": null,
+              "role": "staff"
+            },
+            {
+              "aid": 8457,
+              "id": "s6469",
+              "name": "Tani Hajime",
+              "original": "谷 一",
+              "role": "scenario"
+            },
+            {
+              "aid": 11735,
+              "id": "s9204",
+              "name": "NORAS",
+              "original": null,
+              "role": "music"
+            },
+            {
+              "aid": 13209,
+              "id": "s10409",
+              "name": "NIRAI-KANAI",
+              "original": "株式会社ニライカナイ",
+              "role": "art"
+            },
+            {
+              "aid": 13498,
+              "id": "s10646",
+              "name": "Uehara Toraya",
+              "original": "上原 寅弥",
+              "role": "staff"
+            },
+            {
+              "aid": 14362,
+              "id": "s11324",
+              "name": "PeasSoft",
+              "original": null,
+              "role": "art"
+            },
+            {
+              "aid": 14363,
+              "id": "s11325",
+              "name": "Usagi Ryokan",
+              "original": "うさぎ 旅館",
+              "role": "art"
+            },
+            {
+              "aid": 14364,
+              "id": "s2591",
+              "name": "Kyuubi",
+              "original": "九尾",
+              "role": "chardesign"
+            },
+            {
+              "aid": 19858,
+              "id": "s15832",
+              "name": "Wamsoft",
+              "original": "合資会社ワムソフト",
+              "role": "staff"
+            },
+            {
+              "aid": 27318,
+              "id": "s22005",
+              "name": "Wakai Jiken",
+              "original": "和解 事件",
+              "role": "music"
+            },
+            {
+              "aid": 48064,
+              "id": "s39318",
+              "name": "Asano Kenji",
+              "original": "浅野 健司",
+              "role": "staff"
+            },
+            {
+              "aid": 60505,
+              "id": "s49185",
+              "name": "Cap",
+              "original": null,
+              "role": "music"
+            },
+            {
+              "aid": 65226,
+              "id": "s52863",
+              "name": "Hachi",
+              "original": "八",
+              "role": "staff"
+            }
+          ],
+          "title": "ALIA's CARNIVAL!",
+          "va": [
+            {
+              "staff": {
+                "aid": 76,
+                "id": "s27",
+                "name": "Mikogami Neko",
+                "original": "御子神 猫"
+              }
+            },
+            {
+              "staff": {
+                "aid": 341,
+                "id": "s189",
+                "name": "Mishiro Mako",
+                "original": "三代 眞子"
+              }
+            },
+            {
+              "staff": {
+                "aid": 354,
+                "id": "s196",
+                "name": "Kiritani Hana",
+                "original": "桐谷 華"
+              }
+            },
+            {
+              "staff": {
+                "aid": 473,
+                "id": "s284",
+                "name": "Himari",
+                "original": "ヒマリ"
+              }
+            },
+            {
+              "staff": {
+                "aid": 1316,
+                "id": "s749",
+                "name": "Koike Takezou",
+                "original": "小池 竹蔵"
+              }
+            },
+            {
+              "staff": {
+                "aid": 1586,
+                "id": "s902",
+                "name": "Akino Hana",
+                "original": "秋野 花"
+              }
+            },
+            {
+              "staff": {
+                "aid": 1648,
+                "id": "s945",
+                "name": "Fujino Rika",
+                "original": "藤乃 理香"
+              }
+            },
+            {
+              "staff": {
+                "aid": 1684,
+                "id": "s977",
+                "name": "Yuzuhara Miu",
+                "original": "柚原 みう"
+              }
+            },
+            {
+              "staff": {
+                "aid": 2323,
+                "id": "s1399",
+                "name": "Miraku Akira",
+                "original": "三楽 章"
+              }
+            },
+            {
+              "staff": {
+                "aid": 2687,
+                "id": "s1658",
+                "name": "Aoi Tokio",
+                "original": "葵 時緒"
+              }
+            },
+            {
+              "staff": {
+                "aid": 2806,
+                "id": "s1748",
+                "name": "Aoi Yuri",
+                "original": "葵 ゆり"
+              }
+            },
+            {
+              "staff": {
+                "aid": 3020,
+                "id": "s1896",
+                "name": "Kadogawa Ryuuji",
+                "original": "角川 竜二"
+              }
+            },
+            {
+              "staff": {
+                "aid": 4312,
+                "id": "s2908",
+                "name": "Nomiya Kaoru",
+                "original": "野宮 カヲル"
+              }
+            },
+            {
+              "staff": {
+                "aid": 4314,
+                "id": "s2909",
+                "name": "Bear Guy",
+                "original": "邊鴉 凱"
+              }
+            },
+            {
+              "staff": {
+                "aid": 4321,
+                "id": "s2914",
+                "name": "Onigiri Yamajirou",
+                "original": "おにぎり 山次郎"
+              }
+            },
+            {
+              "staff": {
+                "aid": 4410,
+                "id": "s2997",
+                "name": "Yumemi Sora",
+                "original": "夢見 そら"
+              }
+            },
+            {
+              "staff": {
+                "aid": 6078,
+                "id": "s4473",
+                "name": "Matsubara Kie",
+                "original": "松原 きえ"
+              }
+            },
+            {
+              "staff": {
+                "aid": 11554,
+                "id": "s81",
+                "name": "Koiwai Sayuri",
+                "original": "小岩井 小百合"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

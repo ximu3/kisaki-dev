@@ -1,0 +1,516 @@
+{
+  "kind": "synthetic",
+  "sourceBaseline": "Vnite v4.14.0",
+  "games": [
+    {
+      "_id": "00000000-0000-4000-8000-000000000001",
+      "metadata": {
+        "name": "Synthetic game 1",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": -1,
+        "playTime": 0,
+        "playStatus": "unplayed",
+        "hideFromRecentGames": false,
+        "timers": [],
+        "dailyPlayTimes": [],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {
+          "synthetic-save": {
+            "_id": "synthetic-save",
+            "date": "2026-10-10T00:00:00.000Z",
+            "note": "Synthetic archive.",
+            "locked": false
+          }
+        },
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {
+          "synthetic-memory": {
+            "_id": "synthetic-memory",
+            "date": "2026-10-10T00:00:00.000Z",
+            "note": "Synthetic note.\n\n![sample](attachment://game/00000000-0000-4000-8000-000000000001/images/memories/inline/synthetic-inline.webp)",
+            "pinned": true
+          },
+          "synthetic-empty": {
+            "_id": "synthetic-empty",
+            "date": "2026-10-10T00:00:00.000Z",
+            "note": "",
+            "pinned": false
+          }
+        }
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      },
+      "_attachments": {
+        "images/cover.webp": {
+          "content_type": "image/webp",
+          "data": "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA"
+        },
+        "images/memories/synthetic-memory.webp": {
+          "content_type": "image/webp",
+          "data": "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA"
+        },
+        "images/memories/inline/synthetic-inline.webp": {
+          "content_type": "image/webp",
+          "data": "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA"
+        },
+        "saves/synthetic-save.zip": {
+          "content_type": "application/zip",
+          "data": "UEsDBBQAAAgIAIt0UV17OZnAEQAAAA8AAAAOAAAAU2F2ZS9zdGF0ZS5kYXQrrswryUgtyUxWKE4sS+UCAFBLAQIUChQAAAgIAIt0UV17OZnAEQAAAA8AAAAOAAAAAAAAAAAAAACkgQAAAABTYXZlL3N0YXRlLmRhdFBLBQYAAAAAAQABADwAAAA9AAAAAAA="
+        }
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000002",
+      "metadata": {
+        "name": "Synthetic game 2",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": 0,
+        "playTime": 5000,
+        "playStatus": "playing",
+        "hideFromRecentGames": false,
+        "timers": [
+          {
+            "start": "2026-10-10T00:00:00.000Z",
+            "end": "2026-10-10T00:00:02.000Z"
+          }
+        ],
+        "dailyPlayTimes": [],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {},
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {}
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000003",
+      "metadata": {
+        "name": "Synthetic game 3",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": 8.5,
+        "playTime": 5400000,
+        "playStatus": "partial",
+        "hideFromRecentGames": false,
+        "timers": [],
+        "dailyPlayTimes": [
+          {
+            "date": "2026-10-09",
+            "playTime": 3600000
+          }
+        ],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {},
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {}
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000004",
+      "metadata": {
+        "name": "Synthetic game 4",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": 10,
+        "playTime": 3000,
+        "playStatus": "finished",
+        "hideFromRecentGames": false,
+        "timers": [
+          {
+            "start": "2026-10-10T00:00:00.000Z",
+            "end": "2026-10-10T00:00:01.200Z"
+          },
+          {
+            "start": "2026-10-10T00:01:00.000Z",
+            "end": "2026-10-10T00:01:01.800Z"
+          }
+        ],
+        "dailyPlayTimes": [],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {},
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {}
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000005",
+      "metadata": {
+        "name": "Synthetic game 5",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": 7.3,
+        "playTime": 500,
+        "playStatus": "multiple",
+        "hideFromRecentGames": false,
+        "timers": [
+          {
+            "start": "2026-10-10T00:00:00.000Z",
+            "end": "2026-10-10T00:00:01.000Z"
+          }
+        ],
+        "dailyPlayTimes": [],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {},
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {}
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000006",
+      "metadata": {
+        "name": "Synthetic game 6",
+        "originalName": "",
+        "sortName": "",
+        "releaseDate": "2020-01-01",
+        "description": "<p>Synthetic description.</p>",
+        "developers": [],
+        "publishers": [],
+        "platforms": [],
+        "genres": [],
+        "tags": ["Synthetic"],
+        "relatedSites": [],
+        "steamId": "",
+        "vndbId": "",
+        "igdbId": "",
+        "ymgalId": "",
+        "extra": []
+      },
+      "record": {
+        "addDate": "2026-10-01T00:00:00.000Z",
+        "lastRunDate": "",
+        "score": -1,
+        "playTime": 6000,
+        "playStatus": "shelved",
+        "hideFromRecentGames": false,
+        "timers": [],
+        "dailyPlayTimes": [],
+        "storageSize": -1
+      },
+      "save": {
+        "saveList": {},
+        "maxBackups": 7,
+        "autoBackupSave": false,
+        "autoRestoreSave": false
+      },
+      "memory": {
+        "preferences": {
+          "viewMode": null
+        },
+        "memoryList": {}
+      },
+      "apperance": {
+        "logo": {
+          "position": {
+            "x": 1.5,
+            "y": 35
+          },
+          "size": 100,
+          "visible": true
+        },
+        "nsfw": false
+      }
+    }
+  ],
+  "gameLocal": [
+    {
+      "_id": "00000000-0000-4000-8000-000000000001",
+      "path": {
+        "gamePath": "C:\\KisakiSynthetic",
+        "savePaths": []
+      },
+      "launcher": {
+        "mode": "file",
+        "fileConfig": {
+          "path": "C:\\KisakiSynthetic\\Game.exe",
+          "args": [],
+          "monitorMode": "folder",
+          "monitorPath": "C:\\KisakiSynthetic"
+        },
+        "urlConfig": {
+          "url": "https://example.invalid/game",
+          "browserPath": "",
+          "monitorMode": "process",
+          "monitorPath": "Game.exe"
+        },
+        "scriptConfig": {
+          "workingDirectory": "C:\\KisakiSynthetic",
+          "command": ["echo synthetic"],
+          "monitorMode": "file",
+          "monitorPath": "C:\\KisakiSynthetic\\Game.exe"
+        },
+        "useMagpie": false
+      },
+      "utils": {
+        "markPath": "",
+        "rootPath": ""
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000002",
+      "path": {
+        "gamePath": "C:\\KisakiSynthetic",
+        "savePaths": []
+      },
+      "launcher": {
+        "mode": "url",
+        "fileConfig": {
+          "path": "C:\\KisakiSynthetic\\Game.exe",
+          "args": [],
+          "monitorMode": "folder",
+          "monitorPath": "C:\\KisakiSynthetic"
+        },
+        "urlConfig": {
+          "url": "https://example.invalid/game",
+          "browserPath": "",
+          "monitorMode": "process",
+          "monitorPath": "Game.exe"
+        },
+        "scriptConfig": {
+          "workingDirectory": "C:\\KisakiSynthetic",
+          "command": ["echo synthetic"],
+          "monitorMode": "file",
+          "monitorPath": "C:\\KisakiSynthetic\\Game.exe"
+        },
+        "useMagpie": false
+      },
+      "utils": {
+        "markPath": "",
+        "rootPath": ""
+      }
+    },
+    {
+      "_id": "00000000-0000-4000-8000-000000000003",
+      "path": {
+        "gamePath": "C:\\KisakiSynthetic",
+        "savePaths": []
+      },
+      "launcher": {
+        "mode": "script",
+        "fileConfig": {
+          "path": "C:\\KisakiSynthetic\\Game.exe",
+          "args": [],
+          "monitorMode": "folder",
+          "monitorPath": "C:\\KisakiSynthetic"
+        },
+        "urlConfig": {
+          "url": "https://example.invalid/game",
+          "browserPath": "",
+          "monitorMode": "process",
+          "monitorPath": "Game.exe"
+        },
+        "scriptConfig": {
+          "workingDirectory": "C:\\KisakiSynthetic",
+          "command": ["echo synthetic"],
+          "monitorMode": "file",
+          "monitorPath": "C:\\KisakiSynthetic\\Game.exe"
+        },
+        "useMagpie": false
+      },
+      "utils": {
+        "markPath": "",
+        "rootPath": ""
+      }
+    }
+  ],
+  "gameCollections": [
+    {
+      "_id": "synthetic-collection",
+      "name": "Synthetic collection",
+      "sort": 0,
+      "sortBy": "custom",
+      "sortOrder": "asc",
+      "secondarySort": null,
+      "games": ["00000000-0000-4000-8000-000000000002", "00000000-0000-4000-8000-000000000001"]
+    },
+    {
+      "_id": "synthetic-collection-optional",
+      "name": "Synthetic optional fields",
+      "sort": 1,
+      "games": ["00000000-0000-4000-8000-000000000003", "synthetic-missing-game"]
+    }
+  ]
+}

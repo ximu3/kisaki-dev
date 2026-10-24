@@ -1,0 +1,658 @@
+{
+  "sourceRef": "v1.14.0",
+  "commit": "356b7183e8463e7c60d84a72502d0055e55a19fd",
+  "databaseVersion": 7,
+  "tables": {
+    "tb_books": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "cover_path",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "file_path",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "last_read_position",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "reading_percentage",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "author",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "is_deleted",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "create_time",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "update_time",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "rating",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "group_id",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "file_md5",
+          "type": "TEXT",
+          "primaryKey": false
+        }
+      ]
+    },
+    "tb_themes": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "background_color",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "text_color",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "background_image_path",
+          "type": "TEXT",
+          "primaryKey": false
+        }
+      ]
+    },
+    "tb_styles": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "font_size",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "font_family",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "line_height",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "letter_spacing",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "word_spacing",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "paragraph_spacing",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "side_margin",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "top_margin",
+          "type": "REAL",
+          "primaryKey": false
+        },
+        {
+          "name": "bottom_margin",
+          "type": "REAL",
+          "primaryKey": false
+        }
+      ]
+    },
+    "tb_notes": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "book_id",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "content",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "cfi",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "chapter",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "type",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "color",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "create_time",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "update_time",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "reader_note",
+          "type": "TEXT",
+          "primaryKey": false
+        }
+      ]
+    },
+    "tb_reading_time": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "book_id",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "date",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "reading_time",
+          "type": "INTEGER",
+          "primaryKey": false
+        }
+      ]
+    },
+    "tb_groups": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "parent_id",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "is_deleted",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "create_time",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "update_time",
+          "type": "TEXT",
+          "primaryKey": false
+        }
+      ]
+    }
+  },
+  "sourceCodeExecuted": false,
+  "sources": [
+    {
+      "path": "lib/dao/database.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/dao/database.dart",
+      "status": 200,
+      "bytes": 14569,
+      "sha256": "c5e577d151d8de3c34d34d4bc04856350ab60897eeacd50e9989368ba6507319",
+      "checkedAt": "2026-10-17T10:35:37.468634+00:00"
+    },
+    {
+      "path": "lib/dao/book.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/dao/book.dart",
+      "status": 200,
+      "bytes": 3005,
+      "sha256": "e76935bf35ad5c5e77fb2b11db8aea7584b3eb06203c0c13d4b3e6054499eda3",
+      "checkedAt": "2026-10-17T10:35:37.468634+00:00"
+    },
+    {
+      "path": "lib/dao/book_note.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/dao/book_note.dart",
+      "status": 200,
+      "bytes": 4818,
+      "sha256": "c44d32d1de8b75321e2bfdabb48d353799a9d5404b23f1811f3f9454d3d726d1",
+      "checkedAt": "2026-10-17T10:35:37.469635+00:00"
+    },
+    {
+      "path": "lib/dao/reading_time.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/dao/reading_time.dart",
+      "status": 200,
+      "bytes": 13739,
+      "sha256": "77629e282044bdac619e17b9482d9685bf818843a5411c8caf9d4daac95710b0",
+      "checkedAt": "2026-10-17T10:35:37.480633+00:00"
+    },
+    {
+      "path": "lib/dao/tag.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/dao/tag.dart",
+      "status": 200,
+      "bytes": 5745,
+      "sha256": "8fc8bd7f5eba7e0cc13c14e776b86a85a6114547855a54e5111156074e23bbc3",
+      "checkedAt": "2026-10-17T10:35:37.777298+00:00"
+    },
+    {
+      "path": "lib/models/book.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/book.dart",
+      "status": 200,
+      "bytes": 3544,
+      "sha256": "db71172bd065942fe6f5d091275688e5cc42d109ef300b611c4c0f012a8777a3",
+      "checkedAt": "2026-10-17T10:35:37.843972+00:00"
+    },
+    {
+      "path": "lib/models/book_note.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/book_note.dart",
+      "status": 200,
+      "bytes": 1768,
+      "sha256": "2cba7193cc28cc2d7f775e6c4084d49d156178a32973a6d32530811c2cfa9aad",
+      "checkedAt": "2026-10-17T10:35:37.776291+00:00"
+    },
+    {
+      "path": "lib/models/reading_time.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/reading_time.dart",
+      "status": 200,
+      "bytes": 1584,
+      "sha256": "89d4205e8e5a97d2dd7d618f12f2c61572c9942e610b8930bad06deb4f0ca46b",
+      "checkedAt": "2026-10-17T10:35:37.771452+00:00"
+    },
+    {
+      "path": "lib/models/bookmark.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/bookmark.dart",
+      "status": 200,
+      "bytes": 953,
+      "sha256": "c8d756853471d9a002bbd428f7f92d0654d0ac3bf72ae5f09d6ec643f43307ad",
+      "checkedAt": "2026-10-17T10:35:38.345564+00:00"
+    },
+    {
+      "path": "lib/models/tag.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/tag.dart",
+      "status": 200,
+      "bytes": 1087,
+      "sha256": "217567569fe3b8ebc1fc01f7b6e8a599a21f8b349687c5e8756ddfd6d444bf64",
+      "checkedAt": "2026-10-17T10:35:38.169643+00:00"
+    },
+    {
+      "path": "lib/models/tb_group.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/models/tb_group.dart",
+      "status": 200,
+      "bytes": 445,
+      "sha256": "571fb999def3e70c865b507a70c6e3b123ab87baf78dcf2c02e28e6e318c7c16",
+      "checkedAt": "2026-10-17T10:35:38.194642+00:00"
+    },
+    {
+      "path": "lib/providers/tb_groups.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/tb_groups.dart",
+      "status": 200,
+      "bytes": 3996,
+      "sha256": "47e77aae796d465147365f5f7f63311c3bf7f7c6f274e89940a7c76f70b0fe07",
+      "checkedAt": "2026-10-17T10:35:38.153642+00:00"
+    },
+    {
+      "path": "lib/providers/total_reading_time.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/total_reading_time.dart",
+      "status": 200,
+      "bytes": 540,
+      "sha256": "8a2926b2b63993ccc8bb23669914ba0457c33f530b412300e3594829899014b7",
+      "checkedAt": "2026-10-17T10:35:38.463157+00:00"
+    },
+    {
+      "path": "lib/providers/sync.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/sync.dart",
+      "status": 200,
+      "bytes": 26166,
+      "sha256": "f75bcce35facb8799561f3aa5d91c1043f5220313bd4c665253ca48ebbeecf14",
+      "checkedAt": "2026-10-17T10:35:38.479925+00:00"
+    },
+    {
+      "path": "lib/service/notes/export_notes.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/service/notes/export_notes.dart",
+      "status": 200,
+      "bytes": 4965,
+      "sha256": "575063b31980e377eda0516f4e3fec52329878936273830253582b65f604270b",
+      "checkedAt": "2026-10-17T10:35:38.512925+00:00"
+    },
+    {
+      "path": "lib/service/database_sync_manager.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/service/database_sync_manager.dart",
+      "status": 200,
+      "bytes": 13465,
+      "sha256": "04b22789e3066f7b5a76003cd0de71c7811fa11452b373c931b56dba38ca51b6",
+      "checkedAt": "2026-10-17T10:35:38.646925+00:00"
+    },
+    {
+      "path": "lib/service/md5_service.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/service/md5_service.dart",
+      "status": 200,
+      "bytes": 3169,
+      "sha256": "4ebf73ed59143672180e9d93a7a99296bc635d50d7a94639d14d74ede122bf38",
+      "checkedAt": "2026-10-17T10:35:38.769207+00:00"
+    },
+    {
+      "path": "lib/service/book.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/service/book.dart",
+      "status": 200,
+      "bytes": 21148,
+      "sha256": "85be7919fe0354c82b94298c76334ab265aca46166a6e37a65b6c29937907ccd",
+      "checkedAt": "2026-10-17T10:35:38.786208+00:00"
+    },
+    {
+      "path": "lib/utils/import_book.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/utils/import_book.dart",
+      "status": 200,
+      "bytes": 896,
+      "sha256": "dfbcf90522abf08d2a027f4406dae9167d5411d9e253fbc31751b3e8e4e7992d",
+      "checkedAt": "2026-10-17T10:35:38.815207+00:00"
+    },
+    {
+      "path": "lib/utils/get_path/get_base_path.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/utils/get_path/get_base_path.dart",
+      "status": 200,
+      "bytes": 3294,
+      "sha256": "1f85725131afb5eb2ba4b39c401700c8c9e2b9483bd8a49196d3ab9ac705563c",
+      "checkedAt": "2026-10-17T10:35:38.955941+00:00"
+    },
+    {
+      "path": "lib/utils/get_path/databases_path.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/utils/get_path/databases_path.dart",
+      "status": 200,
+      "bytes": 671,
+      "sha256": "6d9abcd2e386f512e8d51274d8c6e515fcadcc1324d7bdad7df9404cd02fa1b1",
+      "checkedAt": "2026-10-17T10:35:39.079899+00:00"
+    },
+    {
+      "path": "lib/page/book_player/epub_player.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/page/book_player/epub_player.dart",
+      "status": 200,
+      "bytes": 40646,
+      "sha256": "83c8f534868fc7007fefea8ba40ad1480985c7b24a4f8136cb04a54aea305d3c",
+      "checkedAt": "2026-10-17T10:35:39.183088+00:00"
+    },
+    {
+      "path": "lib/service/book_player/book_player_server.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/service/book_player/book_player_server.dart",
+      "status": 200,
+      "bytes": 5903,
+      "sha256": "6d0827d0a2ab449587264d460ebf60e00d7c3337e17a0d1997ce0add3ee20d6a",
+      "checkedAt": "2026-10-17T10:35:39.126105+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/view.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/view.js",
+      "status": 200,
+      "bytes": 19903,
+      "sha256": "174174784ebfa63c01fa582edf334d672f97494639b05a629cff87074d07b315",
+      "checkedAt": "2026-10-17T10:35:39.266688+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/epubcfi.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/epubcfi.js",
+      "status": 200,
+      "bytes": 13029,
+      "sha256": "c16f71a2f48f386cb76cfaf0f60eacc19174de6b9e5a30a1988957d394578f27",
+      "checkedAt": "2026-10-17T10:35:39.390065+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/book.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/book.js",
+      "status": 200,
+      "bytes": 73966,
+      "sha256": "4142c57c7a58133c7e3313f70223a68c7ca51e3fda3811d3b9a34f265c62223e",
+      "checkedAt": "2026-10-17T10:35:39.442071+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/epub.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/epub.js",
+      "status": 200,
+      "bytes": 48370,
+      "sha256": "9bd9379153d47663860ea9dbd8e1982727419b60b90ea57fa1bb35389b43d61f",
+      "checkedAt": "2026-10-17T10:35:39.502159+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/pdf.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/pdf.js",
+      "status": 200,
+      "bytes": 16661,
+      "sha256": "295083e2d65357afc455fba1aa5be3785938665e7895a73e3c1b023301ace111",
+      "checkedAt": "2026-10-17T10:35:39.662694+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/comic-book.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/comic-book.js",
+      "status": 200,
+      "bytes": 1669,
+      "sha256": "a55a3179835067761f3859c6b2e1cc943b73125beb65a6de8f53d63363bd258d",
+      "checkedAt": "2026-10-17T10:35:39.700599+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/fb2.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/fb2.js",
+      "status": 200,
+      "bytes": 11580,
+      "sha256": "139b4448ca4e042ccd77bfdace48df7c72db4d3d1d43ad74043da1264514464b",
+      "checkedAt": "2026-10-17T10:35:39.831370+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/mobi.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/mobi.js",
+      "status": 200,
+      "bytes": 46799,
+      "sha256": "42785978747c620f573b961d1061cfade9d0bc22d493fee661773d8fd33ff647",
+      "checkedAt": "2026-10-17T10:35:39.894534+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/overlayer.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/overlayer.js",
+      "status": 200,
+      "bytes": 9499,
+      "sha256": "967952c367f413f8d938c8c741070e477a5662bcffdecb15139df74ae0d2fb9d",
+      "checkedAt": "2026-10-17T10:35:40.062366+00:00"
+    },
+    {
+      "path": "assets/foliate-js/index.html",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/index.html",
+      "status": 200,
+      "bytes": 2712,
+      "sha256": "2a025628e3d3d52650721310e32bd54ecfa970227b8114f797a0fceb6f971bbe",
+      "checkedAt": "2026-10-17T10:35:40.287248+00:00"
+    },
+    {
+      "path": "assets/foliate-js/package.json",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/package.json",
+      "status": 200,
+      "bytes": 1100,
+      "sha256": "aa28d567dbc3e203087af2c38783308d82991ff12aeb7621db2e7eb38ce15873",
+      "checkedAt": "2026-10-17T10:35:40.133794+00:00"
+    },
+    {
+      "path": "pubspec.yaml",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/pubspec.yaml",
+      "status": 200,
+      "bytes": 5017,
+      "sha256": "ebf56a4408b2f8755dc84cb42c9364b2b3f2713f81848a640b95442d1c6ac99e",
+      "checkedAt": "2026-10-17T10:35:40.196049+00:00"
+    },
+    {
+      "path": "lib/page/book_detail.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/page/book_detail.dart",
+      "status": 200,
+      "bytes": 32559,
+      "sha256": "5f507d4170b0ba9881bdeacbb4f98692788eb49a434348065e32c01a57a8591d",
+      "checkedAt": "2026-10-17T10:35:40.634067+00:00"
+    },
+    {
+      "path": "lib/widgets/bookshelf/book_bottom_sheet.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/widgets/bookshelf/book_bottom_sheet.dart",
+      "status": 200,
+      "bytes": 11356,
+      "sha256": "db3d12a550e07bcd9dc7c46ac0e3bf206a2b6e89ea944c95826d5540000e5ade",
+      "checkedAt": "2026-10-17T10:35:40.503206+00:00"
+    },
+    {
+      "path": "lib/page/book_player/minute_clock.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/page/book_player/minute_clock.dart",
+      "status": 200,
+      "bytes": 1758,
+      "sha256": "2ecaf997d46026aa457a1bc1038aeda282fde66c2518bfedad2a92fb32d3a61b",
+      "checkedAt": "2026-10-17T10:35:40.787959+00:00"
+    },
+    {
+      "path": "lib/providers/bookmark.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/bookmark.dart",
+      "status": 200,
+      "bytes": 2840,
+      "sha256": "0160a4ee108e7c75a9c8cb6bdd33647077b193e7fd3ed6b1ebac6e4798eb0bc9",
+      "checkedAt": "2026-10-17T10:35:40.682860+00:00"
+    },
+    {
+      "path": "lib/utils/convert_string_to_uint8list.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/utils/convert_string_to_uint8list.dart",
+      "status": 200,
+      "bytes": 196,
+      "sha256": "b97626efa5cd72802a2919eb9d9a3b90a5033671aad1b28ea711dc6d55e913e9",
+      "checkedAt": "2026-10-17T10:35:40.900566+00:00"
+    },
+    {
+      "path": "lib/page/reading_page.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/page/reading_page.dart",
+      "status": 200,
+      "bytes": 34886,
+      "sha256": "bfe31b2d11f80973cad8e1745166937f578504e34ccf0b47524bf2bdf5e9e508",
+      "checkedAt": "2026-10-17T10:35:40.938370+00:00"
+    },
+    {
+      "path": "lib/providers/reading_completion_provider.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/reading_completion_provider.dart",
+      "status": 200,
+      "bytes": 861,
+      "sha256": "ff7e280528a7b4f8ba3dd11c36803e561dfc6208f2c5a3d6ed262c0ee6763015",
+      "checkedAt": "2026-10-17T10:35:40.991312+00:00"
+    },
+    {
+      "path": "lib/providers/book_filters.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/book_filters.dart",
+      "status": 200,
+      "bytes": 533,
+      "sha256": "f6dc363db2445199307081bc802e418545c73bbf353850cb75d56acefdf2f80d",
+      "checkedAt": "2026-10-17T10:35:41.090142+00:00"
+    },
+    {
+      "path": "lib/widgets/bookshelf/book_cover.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/widgets/bookshelf/book_cover.dart",
+      "status": 200,
+      "bytes": 4739,
+      "sha256": "8177fc693049b5158e709e102b0cb92f9ced16bed906729bd33adb6c85be2cb6",
+      "checkedAt": "2026-10-17T10:35:41.512816+00:00"
+    },
+    {
+      "path": "lib/providers/current_reading.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/current_reading.dart",
+      "status": 200,
+      "bytes": 1251,
+      "sha256": "eebbb1daf0c8868d7000d83d8d8f585bf018bc5e1f1bcce8971af8aa92a84f73",
+      "checkedAt": "2026-10-17T10:35:41.366349+00:00"
+    },
+    {
+      "path": "assets/foliate-js/src/fixed-layout.js",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/fixed-layout.js",
+      "status": 200,
+      "bytes": 11016,
+      "sha256": "c30564438be9d19ad8d4da9bca7feaca170dcac8e93296ddab3d30cb99c060c4",
+      "checkedAt": "2026-10-17T10:35:41.412199+00:00"
+    },
+    {
+      "path": "lib/providers/book_list.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/providers/book_list.dart",
+      "status": 200,
+      "bytes": 6094,
+      "sha256": "4a080a03bf75775372a29255ecbdacd2bbff8f383c018e513670d3168b43bd9a",
+      "checkedAt": "2026-10-17T10:35:41.399143+00:00"
+    },
+    {
+      "path": "lib/widgets/book_notes/book_note_tile.dart",
+      "url": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/lib/widgets/book_notes/book_note_tile.dart",
+      "status": 200,
+      "bytes": 4042,
+      "sha256": "87d07c3a07481f549ba40271290ab79f90ad30892c12eb95162d130db32f9d84",
+      "checkedAt": "2026-10-17T10:35:41.737174+00:00"
+    }
+  ]
+}

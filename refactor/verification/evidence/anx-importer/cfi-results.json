@@ -1,0 +1,100 @@
+{
+  "evidenceClass": "pinned-cfi-data-module-and-synthetic-dom-probe",
+  "sourceModule": "https://raw.githubusercontent.com/Anxcye/anx-reader/356b7183e8463e7c60d84a72502d0055e55a19fd/assets/foliate-js/src/epubcfi.js",
+  "sourceSha256": "c16f71a2f48f386cb76cfaf0f60eacc19174de6b9e5a30a1988957d394578f27",
+  "executedPinnedDataModule": true,
+  "sourceApplicationExecuted": false,
+  "productionReaderExecuted": false,
+  "dom": "@xmldom/xmldom 0.8.11 with a bounded Range endpoint model",
+  "passed": 19,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Pinned package CFI names the actual spine item",
+      "passed": true
+    },
+    {
+      "name": "Second spine item has its own package address",
+      "passed": true
+    },
+    {
+      "name": "Pinned fromRange preserves a UTF-16 range over the supplementary character",
+      "passed": true
+    },
+    {
+      "name": "Package path resolves to the expected itemref",
+      "passed": true
+    },
+    {
+      "name": "Pinned CFI endpoints resolve to the same original text node",
+      "passed": true
+    },
+    {
+      "name": "Resolved source quote is preserved exactly",
+      "passed": true
+    },
+    {
+      "name": "Range collapses into two complete native anchor values",
+      "passed": true
+    },
+    {
+      "name": "Source comparison preserves endpoint order",
+      "passed": true
+    },
+    {
+      "name": "Native boundary validation rejects a half-surrogate endpoint",
+      "passed": true
+    },
+    {
+      "name": "Native boundary validation rejects an oversized offset",
+      "passed": true
+    },
+    {
+      "name": "Source serializer escapes commas inside ID assertions",
+      "passed": true
+    },
+    {
+      "name": "Escaped assertion still resolves the same text node",
+      "passed": true
+    },
+    {
+      "name": "Adjacent text and CDATA share a logical CFI text chunk",
+      "passed": true
+    },
+    {
+      "name": "Repeated quote does not require first-match searching",
+      "passed": true
+    },
+    {
+      "name": "Source fixed-page address is explicitly synthetic",
+      "passed": true
+    },
+    {
+      "name": "Synthetic fixed-page index remains zero based",
+      "passed": true
+    },
+    {
+      "name": "Fixed EPUB has a real package layout declaration",
+      "passed": true
+    },
+    {
+      "name": "Fixed EPUB page base resolves to its actual second spine item",
+      "passed": true
+    },
+    {
+      "name": "Source archive bytes were not changed",
+      "passed": true
+    }
+  ],
+  "anchors": {
+    "full": "epubcfi(/6/2[spine-one]!/4/2[p1],/1:0,/1:4)",
+    "nativeStart": "epubcfi(/6/2[spine-one]!/4/2[p1]/1:0)",
+    "nativeEnd": "epubcfi(/6/2[spine-one]!/4/2[p1]/1:4)"
+  },
+  "limits": [
+    "No real browser Range or rendered selection test.",
+    "No source application or Kana jump.",
+    "These unchanged synthetic source trees do not prove arbitrary injected or translated DOM compatibility.",
+    "The source parser is not a production untrusted-input validator."
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "evidenceClass": "synthetic-source-bytes-and-proposal-models",
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "versions": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "pypdf": "6.10.0"
+  },
+  "inputFiles": 14,
+  "passed": 89,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Actual SQLite header identifies the database container",
+      "passed": true
+    },
+    {
+      "name": "Schema version and required columns match the declared family",
+      "passed": true
+    },
+    {
+      "name": "Source database passes SQLite integrity check",
+      "passed": true
+    },
+    {
+      "name": "tb_books is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "tb_themes is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "tb_styles is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "tb_notes is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "tb_reading_time is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "tb_groups is a real readable table",
+      "passed": true
+    },
+    {
+      "name": "Read-only connection rejects source writes",
+      "passed": true
+    },
+    {
+      "name": "wrong-version.db does not match the supported family",
+      "passed": true
+    },
+    {
+      "name": "foreign.db does not match the supported family",
+      "passed": true
+    },
+    {
+      "name": "Downloaded database7 snapshot has identical synthetic bytes",
+      "passed": true
+    },
+    {
+      "name": "Source integer IDs remain exact above JavaScript Number precision",
+      "passed": true
+    },
+    {
+      "name": "Same titles do not collapse distinct source records",
+      "passed": true
+    },
+    {
+      "name": "Deleted source book is excluded from the default selection",
+      "passed": true
+    },
+    {
+      "name": "Cloud-only book retains metadata without a fake local file",
+      "passed": true
+    },
+    {
+      "name": "Unknown note owner is not guessed from other books",
+      "passed": true
+    },
+    {
+      "name": "Half-star rating converts to the native score",
+      "passed": true
+    },
+    {
+      "name": "Five-star upper bound converts to 100",
+      "passed": true
+    },
+    {
+      "name": "Zero is unscored rather than a native zero score",
+      "passed": true
+    },
+    {
+      "name": "Nullable stored rating follows the source unscored default",
+      "passed": true
+    },
+    {
+      "name": "Negative rating is rejected",
+      "passed": true
+    },
+    {
+      "name": "Over-range rating is rejected without clamping",
+      "passed": true
+    },
+    {
+      "name": "Non-finite rating is rejected",
+      "passed": true
+    },
+    {
+      "name": "Source finished filter is only a percentage projection",
+      "passed": true
+    },
+    {
+      "name": "Even a full percentage supplies no completion date or count",
+      "passed": true
+    },
+    {
+      "name": "Source Book has no independent favorite or current arrangement",
+      "passed": true
+    },
+    {
+      "name": "Below-threshold percentage supplies no minimum completion",
+      "passed": true
+    },
+    {
+      "name": "The source 98 percent threshold initializes one unknown-date Work record",
+      "passed": true
+    },
+    {
+      "name": "A full percentage still supplies only one minimum completion",
+      "passed": true
+    },
+    {
+      "name": "Existing one-record history is preserved",
+      "passed": true
+    },
+    {
+      "name": "Existing repeated-completion history is preserved",
+      "passed": true
+    },
+    {
+      "name": "Part scope adopts a flag without Work completion history",
+      "passed": true
+    },
+    {
+      "name": "Unknown book grain does not become a Work completion",
+      "passed": true
+    },
+    {
+      "name": "Invalid or missing percentages do not create completion records",
+      "passed": true
+    },
+    {
+      "name": "Per-book total sums all distinct daily rows",
+      "passed": true
+    },
+    {
+      "name": "Same-day legacy rows are not silently discarded",
+      "passed": true
+    },
+    {
+      "name": "Unknown date does not invalidate an otherwise valid cumulative value",
+      "passed": true
+    },
+    {
+      "name": "Explicit zero and absent reading data remain different",
+      "passed": true
+    },
+    {
+      "name": "Multiple selected books can be grouped before one Work adoption",
+      "passed": true
+    },
+    {
+      "name": "Additional duration replaces the source total minus actual activity",
+      "passed": true
+    },
+    {
+      "name": "Negative time is rejected",
+      "passed": true
+    },
+    {
+      "name": "Fractional time is rejected",
+      "passed": true
+    },
+    {
+      "name": "Time conversion overflow is rejected",
+      "passed": true
+    },
+    {
+      "name": "Stored reading-time rows contain no complete activity interval",
+      "passed": true
+    },
+    {
+      "name": "Root group does not create a user collection",
+      "passed": true
+    },
+    {
+      "name": "Nested group preserves its full readable path",
+      "passed": true
+    },
+    {
+      "name": "Same leaf name under another parent remains a separate group",
+      "passed": true
+    },
+    {
+      "name": "Cyclic group path is rejected",
+      "passed": true
+    },
+    {
+      "name": "Dangling parent does not become a guessed root",
+      "passed": true
+    },
+    {
+      "name": "Deleted group is excluded",
+      "passed": true
+    },
+    {
+      "name": "Parent collection includes direct books only",
+      "passed": true
+    },
+    {
+      "name": "Child collection preserves its own direct book",
+      "passed": true
+    },
+    {
+      "name": "Reserved style sentinels recover actual tag names",
+      "passed": true
+    },
+    {
+      "name": "Ordinary font style does not become a tag",
+      "passed": true
+    },
+    {
+      "name": "Repeated tag relation remains one native membership",
+      "passed": true
+    },
+    {
+      "name": "Dangling tag reference is isolated",
+      "passed": true
+    },
+    {
+      "name": "Fractional REAL reference is not truncated to another book",
+      "passed": true
+    },
+    {
+      "name": "Bookmark color is a progress string instead of an annotation color",
+      "passed": true
+    },
+    {
+      "name": "Highlight quote and literal reader comment remain separate",
+      "passed": true
+    },
+    {
+      "name": "Unknown note type still has preservable text",
+      "passed": true
+    },
+    {
+      "name": "Official GBK text is not silently decoded as UTF-8",
+      "passed": true
+    },
+    {
+      "name": "Official CSV exposes exactly nine declared columns",
+      "passed": true
+    },
+    {
+      "name": "GBK CSV preserves Chinese, commas and quotes",
+      "passed": true
+    },
+    {
+      "name": "CSV newlines and formula punctuation remain literal text",
+      "passed": true
+    },
+    {
+      "name": "Identical CSV rows stay distinct without source IDs",
+      "passed": true
+    },
+    {
+      "name": "CSV has no source ID, file hash or CFI to reconstruct positions",
+      "passed": true
+    },
+    {
+      "name": "CSV bookmark percentage is not interpreted as a hex color",
+      "passed": true
+    },
+    {
+      "name": "Markdown export is UTF-8 text with its own structure",
+      "passed": true
+    },
+    {
+      "name": "Plain export retains its body without inferred book metadata",
+      "passed": true
+    },
+    {
+      "name": "Exact source file path resolves under the selected root",
+      "passed": true
+    },
+    {
+      "name": "Parent escape is rejected",
+      "passed": true
+    },
+    {
+      "name": "Foreign absolute drive path is not silently followed",
+      "passed": true
+    },
+    {
+      "name": "Unconverted EPUB digest matches the corresponding bytes",
+      "passed": true
+    },
+    {
+      "name": "Original TXT digest is not falsely treated as converted EPUB digest",
+      "passed": true
+    },
+    {
+      "name": "Converted example retains the original import digest",
+      "passed": true
+    },
+    {
+      "name": "Adoptable cover contains real decodable image bytes",
+      "passed": true
+    },
+    {
+      "name": "PDF fixture contains three actual source pages",
+      "passed": true
+    },
+    {
+      "name": "Bare source CFI maps to the physical PDF page",
+      "passed": true
+    },
+    {
+      "name": "PDF generated text-layer CFI is not a page-only address",
+      "passed": true
+    },
+    {
+      "name": "Invalid odd synthetic page step is rejected",
+      "passed": true
+    },
+    {
+      "name": "Out-of-range source page is not clamped",
+      "passed": true
+    },
+    {
+      "name": "Comic page order follows source UTF-16 lexical ordering",
+      "passed": true
+    },
+    {
+      "name": "Source comic extension filter excludes uppercase PNG",
+      "passed": true
+    },
+    {
+      "name": "Comic synthetic CFI identifies the exact member",
+      "passed": true
+    },
+    {
+      "name": "Comic member bytes remain actual image data",
+      "passed": true
+    },
+    {
+      "name": "Copied PDF bytes are identical to the inspected earlier synthetic fixture",
+      "passed": true
+    },
+    {
+      "name": "Every synthetic input matches its original manifest digest",
+      "passed": true
+    }
+  ],
+  "allInputsUnchanged": true,
+  "limits": [
+    "No actual Anx app export, Flutter runtime, WebDAV sync or native Kisaki write.",
+    "Date totals are tested only as cumulative values, not activity intervals.",
+    "CFI module checks are separate from these database and fixed-page models.",
+    "Path checks are bounded examples, not a complete hostile-filesystem implementation."
+  ]
+}

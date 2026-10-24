@@ -1,0 +1,1838 @@
+{
+  "checkedAt": "2026-10-19T05:32:44.133Z",
+  "compositionReceiptSha256": "62d3cc965512acdcb0d27a733a70c98ce03e4eb237def2692bfdeeeab7446a67",
+  "source": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-pq-4000.mkv",
+    "sha256": "d1016d8f697ce0ac15d0909c296ab2d1305afe13e8d25b94d110c26dc385360d"
+  },
+  "sdrSource": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\gray-bt709-sdr.mkv",
+    "sha256": "34b7abd4740db32a7f7af2c72efdec256e5107ac63c267a05a0a2292603942e6",
+    "arguments": [
+      "-v",
+      "error",
+      "-nostdin",
+      "-y",
+      "-f",
+      "lavfi",
+      "-i",
+      "color=gray:s=224x64:r=1",
+      "-frames:v",
+      "1",
+      "-color_range",
+      "tv",
+      "-color_primaries",
+      "bt709",
+      "-color_trc",
+      "bt709",
+      "-colorspace",
+      "bt709",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-qp",
+      "0",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads",
+      "1",
+      "-fflags",
+      "+bitexact",
+      "-flags:v",
+      "+bitexact",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\gray-bt709-sdr.mkv"
+    ]
+  },
+  "generator": {
+    "path": "C:\\Windows\\System32\\ffmpeg.exe",
+    "sha256": "04e1307997530f9cf2fe35cba2ca7e8875ca91da02f89d6c7243df819c94ad00",
+    "arguments": {}
+  },
+  "scriptSha256": "6e1581def7093ef168cce11cfbb3b4cb3046cdd15d41e2908692032e4a8bb707",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "displaySettingsChanged": false,
+  "ownShaderUsed": false,
+  "cases": [
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "418"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"auto\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-auto-bt.2020-0.rgba16f",
+            "sha256": "81745b9aa6bed9e64113050c0fe52e052a4313f33ba11c69841fe61dd85c5be2"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-auto-bt.2020-1.rgba16f",
+            "sha256": "919998c74a492486f771c9e823849741099e4201fd10c5d0c1c13100cad021a9"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "clip",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "418"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "clip"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-clip-bt.2020-0.rgba16f",
+            "sha256": "81745b9aa6bed9e64113050c0fe52e052a4313f33ba11c69841fe61dd85c5be2"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-clip-bt.2020-1.rgba16f",
+            "sha256": "919998c74a492486f771c9e823849741099e4201fd10c5d0c1c13100cad021a9"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "hable",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "418"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "hable"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"hable\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 9.5367431640625e-7,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-hable-bt.2020-0.rgba16f",
+            "sha256": "f8824069dfa4ee174e7f959bda8bdfc1378aee9e56ea55e12c6b601de514c154"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 9.5367431640625e-7,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-418-hable-bt.2020-1.rgba16f",
+            "sha256": "1fb67b8b56e988eee0fba6d49ec00133816f98df84bf5b85df46589c7d2d981d"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 4000,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "4000"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"4000\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"auto\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-4000-auto-bt.2020-0.rgba16f",
+            "sha256": "81745b9aa6bed9e64113050c0fe52e052a4313f33ba11c69841fe61dd85c5be2"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-linear-4000-auto-bt.2020-1.rgba16f",
+            "sha256": "919998c74a492486f771c9e823849741099e4201fd10c5d0c1c13100cad021a9"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "pq",
+      "peakNits": 418,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "pq"
+        ],
+        [
+          "target-peak",
+          "418"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"pq\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"auto\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.00003981590270996094,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-pq-418-auto-bt.2020-0.rgba16f",
+            "sha256": "5ee953cb6808c401a9433a15dc9ad3a8898874eeb8c7ab52853ac6abdedee0a8"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.000006377696990966797,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-pq-418-auto-bt.2020-1.rgba16f",
+            "sha256": "a5b58a1612ae6f6a96e310cc4af1a92c9cafa42e9a813fb05c98cb9a858468f9"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "srgb"
+        ],
+        [
+          "target-peak",
+          "203"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "scriptSource": "assert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"srgb\"))\nassert(mp.set_property(\"target-peak\", \"203\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"tone-mapping\", \"auto\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.commandv(\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/black-pq-4000.mkv\"))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-srgb-203-auto-bt.2020-0.rgba16f",
+            "sha256": "81745b9aa6bed9e64113050c0fe52e052a4313f33ba11c69841fe61dd85c5be2"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\black-srgb-203-auto-bt.2020-1.rgba16f",
+            "sha256": "919998c74a492486f771c9e823849741099e4201fd10c5d0c1c13100cad021a9"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-bt.2020-0.rgba16f",
+            "sha256": "4f2c85e9038f784d5f846fb30a5fe34829544b5cdde5bda23c5e22cf28212473"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-bt.2020-1.rgba16f",
+            "sha256": "25782de8848d8a51789405b952419787884d95bafe8b27ed38633f55962badce"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "clip",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "clip"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"clip\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-clip-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-clip-bt.2020-0.rgba16f",
+            "sha256": "3612ba7454e62f1b68bfa8b1cf444958e47484a635eced0a0979171b4614b33b"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-clip-bt.2020-1.rgba16f",
+            "sha256": "7e841a14c9af73ec60a2fddff90e716e641e8996aebdfb0faa104b1e8ed1c25f"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "hable",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "hable"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"hable\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-hable-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-hable-bt.2020-0.rgba16f",
+            "sha256": "413af95fd2175bee9570fad9f90e3c326efa13de8fcac0d610c43c8100601640"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-hable-bt.2020-1.rgba16f",
+            "sha256": "b93210f93e7dbfb7dd2e95c0fcf82c1eddf20d0d2ca69fb62729d545d77261db"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "linear",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "linear"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"linear\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-linear-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-linear-bt.2020-0.rgba16f",
+            "sha256": "432969cc598585946c39a5695f3e9930d7cbcacaf9256c7f82c18e079dca05bd"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-linear-bt.2020-1.rgba16f",
+            "sha256": "fb0ac850b13f3f178f29db94966f69af6bd1c7d5569be0ce6eee210bb20b2fd3"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "mobius",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "mobius"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"mobius\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-mobius-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-mobius-bt.2020-0.rgba16f",
+            "sha256": "32dccca314d149243464e71194d060f8f5972f9769f88cb87656c4c02585bf5b"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 1.0546875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-mobius-bt.2020-1.rgba16f",
+            "sha256": "dc6490c77042d239d2ec154f1a70178bd024d5df1555d92a1b215f234b5f3e5c"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 202,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "202"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"202\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-202-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-202-auto-bt.2020-0.rgba16f",
+            "sha256": "0bc1cd07826d9d4e32d5f1084c2f460e784bfc0cbc0db210a5209f3643d77fe5"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-202-auto-bt.2020-1.rgba16f",
+            "sha256": "b33a53e97bdf61ec39e17bc33982828bb3185eb8090150f82f81c3d9acd4fff3"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "203"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"203\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-203-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-203-auto-bt.2020-0.rgba16f",
+            "sha256": "25d6833012d3780c97d99b7fc3bf866885123b136d396098c44b37cdafe5e1d7"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-203-auto-bt.2020-1.rgba16f",
+            "sha256": "ed44a590a4cac825df5832687fdce9c36c1461d9a5b2154d52d9282840377614"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "pq",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "pq"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "pq",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"pq\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-pq-100-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.5078125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-pq-100-auto-bt.2020-0.rgba16f",
+            "sha256": "1f31649f16a35d6fb1f95587e9c954eb78951fe8fddc55f0a639e599e5d01ae9"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.5078125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-pq-100-auto-bt.2020-1.rgba16f",
+            "sha256": "c455eaceb83d9cb7763f3dfc699fddc560a1884f05ae3dd2693334ac4f82b5a0"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "srgb"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "srgb",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"srgb\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-srgb-100-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.99951171875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-srgb-100-auto-bt.2020-0.rgba16f",
+            "sha256": "cdda9a21fd98e8c4b7147d2855336ae02d0a8b3e4ffab042d9923e7443326db4"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.99951171875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-srgb-100-auto-bt.2020-1.rgba16f",
+            "sha256": "3c871489d420fb279910162904a42644876bc99050560397026eb6ac39f6158d"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-linear-100-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 0.9228515625,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-bt.2020-0.rgba16f",
+            "sha256": "77548c51c4cf357c5b512be2491775f37ff76733b82359d2bb2c193c24fb0ef7"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 0.7744140625,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-bt.2020-1.rgba16f",
+            "sha256": "d3bc10e36d2ce8b73eb8dbab0825eebcb6ed75a49ba3c107da6b41eccbe8e332"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "203"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"203\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-linear-203-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.89794921875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-203-auto-bt.2020-0.rgba16f",
+            "sha256": "72ed7b8397f254267e1c08450c307b04e84a58e503ca8de81df38d4850cf9ed2"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.5205078125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-203-auto-bt.2020-1.rgba16f",
+            "sha256": "1b03ae4e77914ae1dff6fbd9a7436f7483330fd51996865266190eba4419f410"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.2020"
+        ],
+        [
+          "target-trc",
+          "srgb"
+        ],
+        [
+          "target-peak",
+          "203"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "osdConfigured": true,
+        "targetTrc": "srgb",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true,
+        "subtitleSelected": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"srgb\"))\nassert(mp.set_property(\"target-peak\", \"203\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-srgb-203-auto-bt.2020.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.93359375,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-srgb-203-auto-bt.2020-0.rgba16f",
+            "sha256": "f1905501abeaead7926a7d44ecfecd4f9f83c7ffd48599e52ef1a50d9dc7a4fb"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.72998046875,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-srgb-203-auto-bt.2020-1.rgba16f",
+            "sha256": "2b8bba91241eef668483651ef186d33e0945da02fba714ed1e5056830c644f9d"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.709",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.709"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.709",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "ready": true,
+        "subtitleSelected": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.709\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-auto-bt.709.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-bt.709-0.rgba16f",
+            "sha256": "9254082df75454f7feba8eaec766c0495821950ed7e46fa1f6f9f7344cf76630"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-bt.709-1.rgba16f",
+            "sha256": "413e1329821c0b839bdcac1cc78c34a9217316fefc1b0aa0a6e8964b07cc7a8c"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.709",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.709"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.709",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.709\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-linear-100-auto-bt.709.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 0.9228515625,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-bt.709-0.rgba16f",
+            "sha256": "13f948ac78d6be5399e31a1908a0a04a56b92d151b5350bc0c8c9b8c96587fcf"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 0.845703125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-bt.709-1.rgba16f",
+            "sha256": "bbf3b856f73a0843d4c394630a11178193f2373684fea3ee16e881e995c3bf8f"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "display-p3",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "display-p3"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "display-p3",
+        "blendSubtitles": "no",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"display-p3\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles-linear-100-auto-display-p3.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-display-p3-0.rgba16f",
+            "sha256": "90fc33fee7ab70c9df80acea8200b04eb7f9a68631c69f727f62d4b156a5c919"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 1,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-linear-100-auto-display-p3-1.rgba16f",
+            "sha256": "1a25ac060d58c26db4f254d3faab1bbd3f1a4d22ecd511a18f874cd6789fcc8a"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "display-p3",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "display-p3"
+        ],
+        [
+          "target-trc",
+          "linear"
+        ],
+        [
+          "target-peak",
+          "100"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "targetPrim": "display-p3",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear"
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"display-p3\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-linear-100-auto-display-p3.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 219,
+          "maximumFinite": 0.9228515625,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-display-p3-0.rgba16f",
+            "sha256": "d20e8432fd6ab5381909be2a7e1d91c083a77a8c6e417cf77ecac352a5b7cccc"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 78,
+          "maximumFinite": 0.8095703125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-linear-100-auto-display-p3-1.rgba16f",
+            "sha256": "17cf99b5d8ea7143473bb67d3d982dc681680115dbaab6052723dff56f73d518"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.709",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "options": [
+        [
+          "target-prim",
+          "bt.709"
+        ],
+        [
+          "target-trc",
+          "srgb"
+        ],
+        [
+          "target-peak",
+          "203"
+        ],
+        [
+          "hdr-compute-peak",
+          "no"
+        ],
+        [
+          "gamut-mapping-mode",
+          "clip"
+        ],
+        [
+          "tone-mapping",
+          "auto"
+        ],
+        [
+          "background",
+          "color"
+        ],
+        [
+          "background-color",
+          "#000000"
+        ],
+        [
+          "video-aspect-override",
+          "4:3"
+        ]
+      ],
+      "observations": {
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "srgb",
+        "targetPrim": "bt.709",
+        "blendSubtitles": "no",
+        "sourceTransfer": "bt.1886",
+        "sourcePrimaries": "bt.709",
+        "ready": true
+      },
+      "scriptSource": "assert(mp.set_property(\"tone-mapping\", \"auto\"))\nlocal utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.709\"))\nassert(mp.set_property(\"target-trc\", \"srgb\"))\nassert(mp.set_property(\"target-peak\", \"203\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/sdr-subtitles-srgb-203-auto-bt.709.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\"), sourcePrimaries = mp.get_property(\"video-params/primaries\"), sourceTransfer = mp.get_property(\"video-params/gamma\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/gray-bt709-sdr.mkv\", \"replace\", -1, file_options}))\n",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "nonFinite": 0,
+          "maximumFinite": 0.93408203125,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-srgb-203-auto-bt.709-0.rgba16f",
+            "sha256": "8035898bf97de23683d0ec34fc0dd30e6b2f38f894d020818c08919cb869207e"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "nonFinite": 0,
+          "maximumFinite": 0.8681640625,
+          "nonOpaque": 0,
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\sdr-subtitles-srgb-203-auto-bt.709-1.rgba16f",
+            "sha256": "b67ca928939b6b18747c99a1e8ee6578baef86d0d548365048c8b05070a032c4"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-23T04:03:33.437285+00:00",
+  "composeVersion": "5.6.0",
+  "literalRuntimeValuesPreserved": true,
+  "defaultParserChangedFields": ["EXAMPLE_BANGUMI_SECRET", "EXAMPLE_ANILIST_SECRET"],
+  "renderedDollarEscapingAccountedFor": true,
+  "serviceCount": 1,
+  "imageIsOwnedPlaceholder": true,
+  "configurationMountReadOnly": true,
+  "configurationMountDoesNotCreateHostPath": true,
+  "hostLoopbackBinding": true,
+  "stopGracePeriod": "30s",
+  "healthcheck": {
+    "test": [
+      "CMD",
+      "node",
+      "-e",
+      "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.status===200?0:1)).catch(()=>process.exit(1))"
+    ],
+    "timeout": "5s",
+    "interval": "30s",
+    "retries": 3,
+    "start_period": "5s"
+  },
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\compose inputs-jksy6fhj",
+  "diagnostics": "",
+  "controlDiagnostics": "",
+  "sourceReceiptSha256": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+  "sources": {
+    "compose.yaml": "2a747a76f2ae85e997d5ed16471a976e2df93fac8118252e4994e46afb9b9531",
+    ".env.example": "9ca5f3b0e2a438168e8b717067caa178b5ef4e5360ac93d1bee5ea09c0c5cdec",
+    "runtime.example.env": "88b3cc0ba1c6be056c8daa6c8f0c593914b6ab27f89b2d89453128de3a73ca35",
+    "compose.py": "f096c550ae00a3d48110ebbf6da1a0a3ade9436500e08180fc8b04293a095436"
+  },
+  "dockerEngineUsed": false,
+  "containerStarted": false,
+  "imageBuilt": false,
+  "realCredentialsUsed": false,
+  "composeConfigExpandedIntoPublicEvidence": false
+}

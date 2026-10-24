@@ -1,0 +1,786 @@
+{
+  "versions": {
+    "node": "24.14.0",
+    "acorn": "8.15.0",
+    "ada": "3.4.2",
+    "amaro": "1.1.7",
+    "ares": "1.34.6",
+    "brotli": "1.0.9",
+    "cldr": "47.0",
+    "icu": "77.1",
+    "llhttp": "9.3.0",
+    "merve": "1.0.0",
+    "modules": "145",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.68.0",
+    "openssl": "0.0.0",
+    "simdjson": "4.2.4",
+    "simdutf": "7.7.0",
+    "sqlite": "3.51.2",
+    "tz": "2025b",
+    "undici": "7.21.0",
+    "unicode": "16.0",
+    "uv": "1.51.0",
+    "uvwasi": "0.0.23",
+    "v8": "14.6.202.31-electron.0",
+    "zlib": "1.3.1",
+    "zstd": "1.6.0",
+    "electron": "41.2.0",
+    "chrome": "146.0.7680.179"
+  },
+  "result": {
+    "status": "passed",
+    "results": [
+      {
+        "count": 1000,
+        "mode": "fixed",
+        "synchronousMs": 13.099999999627471,
+        "jumpSynchronousMs": 0.19999999925494194,
+        "initial": {
+          "visible": [
+            {
+              "index": 0,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 1,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 2,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 3,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 4,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 5,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 6,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 7,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 8,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 9,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 10,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 11,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 12,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 13,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 14,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 21,
+          "scrollTop": 0,
+          "totalSize": 32000
+        },
+        "jumped": {
+          "visible": [
+            {
+              "index": 980,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 981,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 982,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 983,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 984,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 985,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 986,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 987,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 988,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 989,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 990,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 991,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 992,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 993,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 994,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 26,
+          "scrollTop": 31360,
+          "totalSize": 32000
+        },
+        "initialCalls": {
+          "estimates": 2000,
+          "keys": 2000
+        },
+        "afterJumpCalls": {
+          "estimates": 2000,
+          "keys": 2000
+        },
+        "heapBytes": 1971460
+      },
+      {
+        "count": 10000,
+        "mode": "fixed",
+        "synchronousMs": 4,
+        "jumpSynchronousMs": 0,
+        "initial": {
+          "visible": [
+            {
+              "index": 0,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 1,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 2,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 3,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 4,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 5,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 6,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 7,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 8,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 9,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 10,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 11,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 12,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 13,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 14,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 21,
+          "scrollTop": 0,
+          "totalSize": 320000
+        },
+        "jumped": {
+          "visible": [
+            {
+              "index": 9980,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 9981,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 9982,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 9983,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 9984,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 9985,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 9986,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 9987,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 9988,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 9989,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 9990,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 9991,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 9992,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 9993,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 9994,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 26,
+          "scrollTop": 319360,
+          "totalSize": 320000
+        },
+        "initialCalls": {
+          "estimates": 20000,
+          "keys": 20000
+        },
+        "afterJumpCalls": {
+          "estimates": 20000,
+          "keys": 20000
+        },
+        "heapBytes": 2667676
+      },
+      {
+        "count": 50000,
+        "mode": "fixed",
+        "synchronousMs": 14,
+        "jumpSynchronousMs": 0.09999999962747097,
+        "initial": {
+          "visible": [
+            {
+              "index": 0,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 1,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 2,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 3,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 4,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 5,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 6,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 7,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 8,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 9,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 10,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 11,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 12,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 13,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 14,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 21,
+          "scrollTop": 0,
+          "totalSize": 1600000
+        },
+        "jumped": {
+          "visible": [
+            {
+              "index": 49980,
+              "top": 0,
+              "bottom": 32
+            },
+            {
+              "index": 49981,
+              "top": 32,
+              "bottom": 64
+            },
+            {
+              "index": 49982,
+              "top": 64,
+              "bottom": 96
+            },
+            {
+              "index": 49983,
+              "top": 96,
+              "bottom": 128
+            },
+            {
+              "index": 49984,
+              "top": 128,
+              "bottom": 160
+            },
+            {
+              "index": 49985,
+              "top": 160,
+              "bottom": 192
+            },
+            {
+              "index": 49986,
+              "top": 192,
+              "bottom": 224
+            },
+            {
+              "index": 49987,
+              "top": 224,
+              "bottom": 256
+            },
+            {
+              "index": 49988,
+              "top": 256,
+              "bottom": 288
+            },
+            {
+              "index": 49989,
+              "top": 288,
+              "bottom": 320
+            },
+            {
+              "index": 49990,
+              "top": 320,
+              "bottom": 352
+            },
+            {
+              "index": 49991,
+              "top": 352,
+              "bottom": 384
+            },
+            {
+              "index": 49992,
+              "top": 384,
+              "bottom": 416
+            },
+            {
+              "index": 49993,
+              "top": 416,
+              "bottom": 448
+            },
+            {
+              "index": 49994,
+              "top": 448,
+              "bottom": 480
+            }
+          ],
+          "mountedRows": 26,
+          "scrollTop": 1599360,
+          "totalSize": 1600000
+        },
+        "initialCalls": {
+          "estimates": 100000,
+          "keys": 100000
+        },
+        "afterJumpCalls": {
+          "estimates": 100000,
+          "keys": 100000
+        },
+        "heapBytes": 5634970
+      },
+      {
+        "count": 50000,
+        "mode": "variable",
+        "synchronousMs": 18.299999998882413,
+        "jumpSynchronousMs": 0.09999999962747097,
+        "initial": {
+          "visible": [
+            {
+              "index": 0,
+              "top": 0,
+              "bottom": 24
+            },
+            {
+              "index": 1,
+              "top": 32,
+              "bottom": 63
+            },
+            {
+              "index": 2,
+              "top": 64,
+              "bottom": 102
+            },
+            {
+              "index": 3,
+              "top": 96,
+              "bottom": 141
+            },
+            {
+              "index": 4,
+              "top": 128,
+              "bottom": 180
+            },
+            {
+              "index": 5,
+              "top": 160,
+              "bottom": 219
+            },
+            {
+              "index": 6,
+              "top": 192,
+              "bottom": 258
+            },
+            {
+              "index": 7,
+              "top": 224,
+              "bottom": 248
+            },
+            {
+              "index": 8,
+              "top": 256,
+              "bottom": 287
+            },
+            {
+              "index": 9,
+              "top": 288,
+              "bottom": 326
+            },
+            {
+              "index": 10,
+              "top": 320,
+              "bottom": 365
+            },
+            {
+              "index": 11,
+              "top": 352,
+              "bottom": 404
+            },
+            {
+              "index": 12,
+              "top": 384,
+              "bottom": 443
+            },
+            {
+              "index": 13,
+              "top": 416,
+              "bottom": 482
+            },
+            {
+              "index": 14,
+              "top": 448,
+              "bottom": 472
+            }
+          ],
+          "mountedRows": 21,
+          "scrollTop": 0,
+          "totalSize": 1600000
+        },
+        "jumped": {
+          "visible": [
+            {
+              "index": 49979,
+              "top": -32,
+              "bottom": 34
+            },
+            {
+              "index": 49980,
+              "top": 0,
+              "bottom": 24
+            },
+            {
+              "index": 49981,
+              "top": 32,
+              "bottom": 63
+            },
+            {
+              "index": 49982,
+              "top": 64,
+              "bottom": 102
+            },
+            {
+              "index": 49983,
+              "top": 96,
+              "bottom": 141
+            },
+            {
+              "index": 49984,
+              "top": 128,
+              "bottom": 180
+            },
+            {
+              "index": 49985,
+              "top": 160,
+              "bottom": 219
+            },
+            {
+              "index": 49986,
+              "top": 192,
+              "bottom": 258
+            },
+            {
+              "index": 49987,
+              "top": 224,
+              "bottom": 248
+            },
+            {
+              "index": 49988,
+              "top": 256,
+              "bottom": 287
+            },
+            {
+              "index": 49989,
+              "top": 288,
+              "bottom": 326
+            },
+            {
+              "index": 49990,
+              "top": 320,
+              "bottom": 365
+            },
+            {
+              "index": 49991,
+              "top": 352,
+              "bottom": 404
+            },
+            {
+              "index": 49992,
+              "top": 384,
+              "bottom": 443
+            },
+            {
+              "index": 49993,
+              "top": 416,
+              "bottom": 482
+            },
+            {
+              "index": 49994,
+              "top": 448,
+              "bottom": 472
+            }
+          ],
+          "mountedRows": 26,
+          "scrollTop": 1599360,
+          "totalSize": 1600000
+        },
+        "initialCalls": {
+          "estimates": 100000,
+          "keys": 100000
+        },
+        "afterJumpCalls": {
+          "estimates": 100000,
+          "keys": 100000
+        },
+        "heapBytes": 4797420
+      }
+    ],
+    "resizeAnchor": {
+      "before": {
+        "index": 3999,
+        "top": -32,
+        "bottom": 6
+      },
+      "after": {
+        "index": 3999,
+        "top": -32,
+        "bottom": 6
+      }
+    },
+    "grid": [
+      {
+        "columns": 5,
+        "logicalRows": 10050,
+        "mountedRows": 17,
+        "mountedCards": 85
+      },
+      {
+        "columns": 3,
+        "logicalRows": 16750,
+        "mountedRows": 17,
+        "mountedCards": 51
+      }
+    ],
+    "disposed": true
+  }
+}

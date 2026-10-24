@@ -1,0 +1,177 @@
+{
+  "purpose": "source evidence for organization, not native feasibility execution",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "mpvPublishedAt": "2025-12-21T19:17:10Z",
+  "clientApiVersion": "2.5",
+  "symbols": {
+    "mpv-client": {
+      "mpv_command_node_async": 1008,
+      "mpv_get_property_async": 1169,
+      "mpv_set_property_async": 1109,
+      "mpv_observe_property": 1227,
+      "mpv_wait_event": 89,
+      "mpv_set_wakeup_callback": 92,
+      "mpv_free_node_contents": 713,
+      "mpv_terminate_destroy": 533
+    },
+    "mpv-render": {
+      "mpv_render_context_create": 32,
+      "mpv_render_context_set_update_callback": 35,
+      "mpv_render_context_update": 260,
+      "mpv_render_context_render": 34,
+      "mpv_render_context_free": 89,
+      "MPV_RENDER_API_TYPE_OPENGL": 52,
+      "MPV_RENDER_API_TYPE_SW": 53
+    }
+  },
+  "nativeProjectsBuilt": false,
+  "nativeBackendsExecuted": false,
+  "gpuOrElectronTransferExecuted": false,
+  "sources": [
+    {
+      "name": "mpv-release",
+      "url": "https://api.github.com/repos/mpv-player/mpv/releases/tags/v0.41.0",
+      "finalUrl": "https://api.github.com/repos/mpv-player/mpv/releases/tags/v0.41.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:39:59.937811+00:00",
+      "bytes": 20403,
+      "sha256": "f101e678023b8b01ca1bdf8ac17bc0e94abc0b64d5c917300229b2abc4d8b784"
+    },
+    {
+      "name": "mpv-tag",
+      "url": "https://api.github.com/repos/mpv-player/mpv/git/ref/tags/v0.41.0",
+      "finalUrl": "https://api.github.com/repos/mpv-player/mpv/git/ref/tags/v0.41.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:39:59.924831+00:00",
+      "bytes": 333,
+      "sha256": "c1794509aa9b8cd6150acab0e4446929024c93dab885fd92fc10eefd7764bc4f"
+    },
+    {
+      "name": "mpv-tag-object",
+      "url": "https://api.github.com/repos/mpv-player/mpv/git/tags/2c219aa822df18a1b7fd9abe3e151cd93ad67307",
+      "finalUrl": "https://api.github.com/repos/mpv-player/mpv/git/tags/2c219aa822df18a1b7fd9abe3e151cd93ad67307",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:39:59.930269+00:00",
+      "bytes": 2538,
+      "sha256": "a80e2fc8b74ca5864617b5a73f33971c640e31d99de7fc0678c1e69f56449ed6"
+    },
+    {
+      "name": "mpv-client",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:39:59.900820+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c"
+    },
+    {
+      "name": "mpv-render",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.342722+00:00",
+      "bytes": 34271,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55"
+    },
+    {
+      "name": "node-api",
+      "url": "https://nodejs.org/docs/latest-v24.x/api/n-api.html",
+      "finalUrl": "https://nodejs.org/docs/latest-v24.x/api/n-api.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.425147+00:00",
+      "bytes": 451563,
+      "sha256": "5b1c6342737c10b5891a6af3087373502e32c9d2c0cb326fa94bb5dd1fcb8c3d"
+    },
+    {
+      "name": "napi-rs-start",
+      "url": "https://napi.rs/docs/introduction/getting-started",
+      "finalUrl": "https://napi.rs/docs/introduction/getting-started",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.713628+00:00",
+      "bytes": 65310,
+      "sha256": "bc9c46d4928181dd6c63e7555a938e666eecc8874bb81ac444a45550aa20a25f"
+    },
+    {
+      "name": "napi-rs-threads",
+      "url": "https://napi.rs/docs/concepts/threadsafe-function",
+      "finalUrl": "https://napi.rs/docs/concepts/threadsafe-function",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.705201+00:00",
+      "bytes": 166727,
+      "sha256": "3f4e90a1178458d85c11661a430496a5e5501a124cb7e4f51dceb7895c918699"
+    },
+    {
+      "name": "napi-rs-lifetime",
+      "url": "https://napi.rs/docs/concepts/understanding-lifetime",
+      "finalUrl": "https://napi.rs/docs/concepts/understanding-lifetime",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.710628+00:00",
+      "bytes": 121512,
+      "sha256": "958c3418363e2d1320947b574da80aace209a5117f4259acbe58d8514c7fb0ce"
+    },
+    {
+      "name": "napi-rs-packages",
+      "url": "https://napi.rs/docs/cli/create-npm-dirs",
+      "finalUrl": "https://napi.rs/docs/cli/create-npm-dirs",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:00.776347+00:00",
+      "bytes": 55027,
+      "sha256": "cf2aae1c9d069e813aff6db3b118d5a1d6609ee869fba1de6d6410d81e21bae4"
+    },
+    {
+      "name": "cargo-workspaces",
+      "url": "https://doc.rust-lang.org/cargo/reference/workspaces.html",
+      "finalUrl": "https://doc.rust-lang.org/cargo/reference/workspaces.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:01.174722+00:00",
+      "bytes": 38056,
+      "sha256": "e40bb2c80864709a6ae4662bd8b8d9a39923e69e022b3d08b10afb876055cc97"
+    },
+    {
+      "name": "cargo-package-layout",
+      "url": "https://doc.rust-lang.org/cargo/guide/project-layout.html",
+      "finalUrl": "https://doc.rust-lang.org/cargo/guide/project-layout.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:01.182637+00:00",
+      "bytes": 26484,
+      "sha256": "b8034cc43ac11a27d0759c532a18b8c9ad6ef1648155b7ca1b6cc0b40696d769"
+    },
+    {
+      "name": "rust-modules",
+      "url": "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html",
+      "finalUrl": "https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:01.170713+00:00",
+      "bytes": 29685,
+      "sha256": "31ac545bbcd202489efac63159c7532a182018f887525303420e2f725f46e9a2"
+    },
+    {
+      "name": "gnome-extension-layout",
+      "url": "https://gjs.guide/extensions/overview/anatomy.html",
+      "finalUrl": "https://gjs.guide/extensions/overview/anatomy.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:01.507941+00:00",
+      "bytes": 96892,
+      "sha256": "9a2f74efa47ab4f706586f94734e7b159cbfbbb10ff48e446607b630d335e0d3"
+    },
+    {
+      "name": "kwin-script-layout",
+      "url": "https://develop.kde.org/docs/plasma/kwin/",
+      "finalUrl": "https://develop.kde.org/docs/plasma/kwin/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:02.308391+00:00",
+      "bytes": 93022,
+      "sha256": "f6e994d6ae3d1eedaaecb2707c12bc90c1a7391d32d4b74bb35bbe1b61c6f8c7"
+    },
+    {
+      "name": "electron-texture",
+      "url": "https://www.electronjs.org/docs/latest/api/shared-texture",
+      "finalUrl": "https://www.electronjs.org/docs/latest/api/shared-texture",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:40:01.718038+00:00",
+      "bytes": 41762,
+      "sha256": "c893985c548efe3ee67fb4b344133bf2dca86db8f5a634150694b7454430d546"
+    }
+  ]
+}

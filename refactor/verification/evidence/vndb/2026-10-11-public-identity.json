@@ -1,0 +1,296 @@
+[
+  {
+    "name": "individual-producer",
+    "observedAt": "2026-10-11T19:48:16.5824677+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/producer",
+    "request": {
+      "filters": ["type", "=", "in"],
+      "results": 1,
+      "fields": "name,original,type",
+      "sort": "id"
+    },
+    "status": 200,
+    "response": {
+      "more": true,
+      "results": [
+        {
+          "id": "p15",
+          "name": "Satomi Shiba",
+          "original": "里見しば",
+          "type": "in"
+        }
+      ]
+    }
+  },
+  {
+    "name": "staff-alias-results",
+    "observedAt": "2026-10-11T19:48:17.3354891+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "filters": ["id", "=", "s81"],
+      "results": 3,
+      "fields": "aid,ismain,name,original",
+      "sort": "id"
+    },
+    "status": 200,
+    "response": {
+      "more": true,
+      "results": [
+        {
+          "aid": 11409,
+          "id": "s81",
+          "ismain": false,
+          "name": "Komekiri Yui",
+          "original": "米霧 唯"
+        },
+        {
+          "aid": 11554,
+          "id": "s81",
+          "ismain": false,
+          "name": "Koiwai Sayuri",
+          "original": "小岩井 小百合"
+        },
+        {
+          "aid": 1158,
+          "id": "s81",
+          "ismain": false,
+          "name": "Konatsu Sumire",
+          "original": "小夏 スミレ"
+        }
+      ]
+    }
+  },
+  {
+    "name": "staff-main-result",
+    "observedAt": "2026-10-11T19:48:18.0773979+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "filters": ["and", ["ismain", "=", 1], ["id", "=", "s81"]],
+      "fields": "aid,ismain,name,original,aliases{aid,name,latin,ismain}",
+      "results": 1
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "aid": 158,
+          "aliases": [
+            {
+              "aid": 11409,
+              "ismain": false,
+              "latin": "Komekiri Yui",
+              "name": "米霧 唯"
+            },
+            {
+              "aid": 11554,
+              "ismain": false,
+              "latin": "Koiwai Sayuri",
+              "name": "小岩井 小百合"
+            },
+            {
+              "aid": 1158,
+              "ismain": false,
+              "latin": "Konatsu Sumire",
+              "name": "小夏 スミレ"
+            },
+            {
+              "aid": 1384,
+              "ismain": false,
+              "latin": "Shirakawa Hibiki",
+              "name": "白河 響"
+            },
+            {
+              "aid": 158,
+              "ismain": true,
+              "latin": "Asakawa Yuu",
+              "name": "浅川 悠"
+            },
+            {
+              "aid": 1769,
+              "ismain": false,
+              "latin": "Haruka",
+              "name": "はるか"
+            },
+            {
+              "aid": 1770,
+              "ismain": false,
+              "latin": "Hazakura Ryouko",
+              "name": "羽桜 涼子"
+            },
+            {
+              "aid": 1771,
+              "ismain": false,
+              "latin": "Shinomiya Kiyomi",
+              "name": "篠宮 聖美"
+            },
+            {
+              "aid": 1947,
+              "ismain": false,
+              "latin": "Munekawa Kyou",
+              "name": "宗川 梗"
+            },
+            {
+              "aid": 2012,
+              "ismain": false,
+              "latin": "Fujimi Kiriko",
+              "name": "藤見 桐子"
+            },
+            {
+              "aid": 2013,
+              "ismain": false,
+              "latin": "Hongou Noriko",
+              "name": "木柳 のり子"
+            },
+            {
+              "aid": 2014,
+              "ismain": false,
+              "latin": "Nakagawa Ayako",
+              "name": "中川 彩子"
+            },
+            {
+              "aid": 2015,
+              "ismain": false,
+              "latin": "Takamine Mutsumi",
+              "name": "高嶺 睦美"
+            },
+            {
+              "aid": 2016,
+              "ismain": false,
+              "latin": "Ureshino Sachiko",
+              "name": "嬉野 祥子"
+            },
+            {
+              "aid": 2017,
+              "ismain": false,
+              "latin": "Yuzuki Azusa",
+              "name": "柚木 あずさ"
+            },
+            {
+              "aid": 2019,
+              "ismain": false,
+              "latin": "Kamisaka Rio",
+              "name": "上坂 莉緒"
+            },
+            {
+              "aid": 2021,
+              "ismain": false,
+              "latin": "Koga Yuki",
+              "name": "古閑 ゆき"
+            },
+            {
+              "aid": 2023,
+              "ismain": false,
+              "latin": "Naoshima Fuji",
+              "name": "直島 ふじ"
+            },
+            {
+              "aid": 2024,
+              "ismain": false,
+              "latin": "Niuchi Kiri",
+              "name": "新内 紀里"
+            },
+            {
+              "aid": 30444,
+              "ismain": false,
+              "latin": "Mizusawa Tsukina",
+              "name": "水沢 月菜"
+            },
+            {
+              "aid": 3189,
+              "ismain": false,
+              "latin": "Fuyumiya Mea",
+              "name": "冬宮 メア"
+            },
+            {
+              "aid": 4794,
+              "ismain": false,
+              "latin": "Akisora Mai",
+              "name": "秋空 真衣"
+            },
+            {
+              "aid": 4795,
+              "ismain": false,
+              "latin": "Hano Rin",
+              "name": "巴乃 凛"
+            },
+            {
+              "aid": 4796,
+              "ismain": false,
+              "latin": "Yamabuki Yuna",
+              "name": "山吹 結菜"
+            },
+            {
+              "aid": 883,
+              "ismain": false,
+              "latin": "Urakasumi Shino",
+              "name": "浦霞 紫乃"
+            },
+            {
+              "aid": 969,
+              "ismain": false,
+              "latin": "Kamishiro Misaki",
+              "name": "神代 岬"
+            },
+            {
+              "aid": 970,
+              "ismain": false,
+              "latin": "Sumitani Naomi",
+              "name": "隅谷 直海"
+            },
+            {
+              "aid": 9849,
+              "ismain": false,
+              "latin": "Kamiwada Mito",
+              "name": "上和田 美都"
+            }
+          ],
+          "id": "s81",
+          "ismain": true,
+          "name": "Asakawa Yuu",
+          "original": "浅川 悠"
+        }
+      ]
+    }
+  },
+  {
+    "name": "individual-release-participation",
+    "observedAt": "2026-10-11T11:49:08.3723283+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/release",
+    "request": {
+      "fields": "title,vns{id,title},producers{id,name,type,developer,publisher}",
+      "filters": ["producer", "=", ["id", "=", "p15"]],
+      "sort": "id",
+      "results": 1
+    },
+    "status": 200,
+    "response": {
+      "more": true,
+      "results": [
+        {
+          "id": "r40",
+          "producers": [
+            {
+              "developer": true,
+              "id": "p15",
+              "name": "Satomi Shiba",
+              "publisher": true,
+              "type": "in"
+            }
+          ],
+          "title": "TRUE REMEMBRANCE-remake-",
+          "vns": [
+            {
+              "id": "v103",
+              "title": "TRUE REMEMBRANCE"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

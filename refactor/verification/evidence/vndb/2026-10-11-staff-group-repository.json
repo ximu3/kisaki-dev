@@ -1,0 +1,163 @@
+[
+  {
+    "name": "group-and-repository-staff-api",
+    "observedAt": "2026-10-11T13:24:29.0304734+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "results": 2,
+      "filters": ["and", ["or", ["id", "=", "s557"], ["id", "=", "s12140"]], ["ismain", "=", 1]],
+      "sort": "id",
+      "fields": "name,original,lang,gender"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "gender": null,
+          "id": "s557",
+          "lang": "ja",
+          "name": "Elements Garden",
+          "original": null
+        },
+        {
+          "gender": null,
+          "id": "s12140",
+          "lang": "ja",
+          "name": "Maoudamashii",
+          "original": "魔王魂"
+        }
+      ]
+    }
+  },
+  {
+    "name": "staff-page-type",
+    "observedAt": "2026-10-11T13:24:30.0983952+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/s557",
+    "status": 200,
+    "extracted": {
+      "value": "Group",
+      "id": "s557",
+      "label": "Type"
+    },
+    "htmlRow": "<tr><td class=\"key\">Type</td><td>Group</td></tr>"
+  },
+  {
+    "name": "staff-page-type",
+    "observedAt": "2026-10-11T13:24:31.0143119+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/s12140",
+    "status": 200,
+    "extracted": {
+      "value": "Repository",
+      "id": "s12140",
+      "label": "Type"
+    },
+    "htmlRow": "<tr><td class=\"key\">Type</td><td>Repository</td></tr>"
+  },
+  {
+    "name": "repository-original-staff-credit",
+    "observedAt": "2026-10-11T13:24:31.7607228+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "results": 1,
+      "filters": ["id", "=", "v3727"],
+      "fields": "title,staff{id,name,original,role,eid,note}"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "id": "v3727",
+          "staff": [
+            {
+              "eid": null,
+              "id": "s619",
+              "name": "Sumeragi Kohaku",
+              "note": null,
+              "original": "すめらぎ 琥珀",
+              "role": "art"
+            },
+            {
+              "eid": null,
+              "id": "s9674",
+              "name": "Rengoku Teien",
+              "note": "BGM",
+              "original": "煉獄庭園",
+              "role": "music"
+            },
+            {
+              "eid": null,
+              "id": "s10270",
+              "name": "TAM Music Factory",
+              "note": "BGM",
+              "original": null,
+              "role": "music"
+            },
+            {
+              "eid": null,
+              "id": "s11576",
+              "name": "The MatchMakers",
+              "note": "SE",
+              "original": "ザ・マッチメイカァズ",
+              "role": "staff"
+            },
+            {
+              "eid": null,
+              "id": "s12140",
+              "name": "Maoudamashii",
+              "note": "BGM",
+              "original": "魔王魂",
+              "role": "music"
+            },
+            {
+              "eid": null,
+              "id": "s2137",
+              "name": "Kumatora Tatsumi",
+              "note": "Coloring",
+              "original": "熊虎 たつみ",
+              "role": "staff"
+            },
+            {
+              "eid": null,
+              "id": "s40626",
+              "name": "Kogorou",
+              "note": null,
+              "original": "小五郎",
+              "role": "scenario"
+            },
+            {
+              "eid": null,
+              "id": "s42526",
+              "name": "ko-zo-",
+              "note": "Special thanks",
+              "original": null,
+              "role": "staff"
+            },
+            {
+              "eid": null,
+              "id": "s42527",
+              "name": "s.y",
+              "note": "Special thanks",
+              "original": null,
+              "role": "staff"
+            },
+            {
+              "eid": null,
+              "id": "s7343",
+              "name": "Pianos DauGe",
+              "note": "BGM",
+              "original": "ピアノ屋ダゲ",
+              "role": "music"
+            }
+          ],
+          "title": "Iraira Yoku Bou 3 - Shiranui Hen -"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,9 @@
+* text=auto eol=lf
+# Retained evidence digests identify the original bytes, including line endings.
+refactor/verification/evidence/** -text
+*.png binary
+*.ico binary
+*.icns binary
+*.woff2 binary
+*.zip binary
+*.node binary

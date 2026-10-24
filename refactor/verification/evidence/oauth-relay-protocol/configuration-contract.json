@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-23T04:03:33.004Z",
+  "exampleAccepted": true,
+  "rejected": [
+    "literal secret in configuration",
+    "default scope outside allowlist",
+    "public origin containing a path",
+    "same upstream registration in another application",
+    "localhost in a literal loopback rule",
+    "missing secret environment reference"
+  ],
+  "validator": {
+    "name": "ajv",
+    "version": "8.20.0",
+    "entrySha256": "908e9670b478b2ba126802a221b7e47006f50cf467e2c5dd7935d3dbef10a20a"
+  },
+  "sources": {
+    "../../../design/projects/oauth-relay/config.example.json": "131f6bd44ef11d1e0d2bfe78470affca0fd8876b625130b4a0ac616b8475d09b",
+    "../../../design/projects/oauth-relay/config.schema.json": "5bbff0f316dc5297354d69bf213dfdbe5c17ea72afe0c37ed83437cb2dea9394",
+    "check-config.mjs": "e59cc6b0087b6f463f2b94f31ad14dbbba10c315a31f8c304553c926d92e9f9c"
+  },
+  "realEnvironmentSecretsRead": false,
+  "productionConfigurationImplemented": false
+}

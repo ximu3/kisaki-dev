@@ -1,0 +1,1 @@
+<!DOCTYPE movie [<!ENTITY payload SYSTEM "https://example.invalid/never-request">]><movie><title>&payload;</title></movie>

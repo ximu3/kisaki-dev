@@ -1,0 +1,622 @@
+{
+  "sourceApplicationExecuted": false,
+  "sourceCodeExecuted": false,
+  "catalogs": [
+    {
+      "locale": "en",
+      "domainFiles": 29,
+      "leaves": 2605,
+      "functionLeaves": 268,
+      "expressionLeaves": 0,
+      "sourceFiles": [
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/actions.ts",
+          "bytes": 727,
+          "sha256": "de8788ebafbce22ad73853dcb1f3ad4874d05b717c961be85bebb24f272285c4"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/activity.ts",
+          "bytes": 2362,
+          "sha256": "17e076ec7e2c2dd81c2a944a2b11a9ef32ab4a14b17483cac1cb23f5abf9bbdd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/add-entry.ts",
+          "bytes": 811,
+          "sha256": "7bebfc009f4581cccd9a587f0d73d2c1ae2595704bb605a2ecba117b3b2deb75"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/anime.ts",
+          "bytes": 7246,
+          "sha256": "65de08d7c904e1d818d869f40788cc4701f5ae9f87ea5d58a7a01b6686731c31"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/app.ts",
+          "bytes": 1098,
+          "sha256": "6c51aff6cf3ca98f60ed4a2f67b86cfe3a35df6bad35b1df96c6b64bf6d41279"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/automation.ts",
+          "bytes": 5170,
+          "sha256": "57cbf07f39ab1f5335759be873b33b1d7fef9276cdb0667c6ae871a3b2bb156e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/comic.ts",
+          "bytes": 5542,
+          "sha256": "472fb874f9ee7000401e69bbd36b9bb3c55d2694b6fe0055b1d1706e3e2525bc"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/deeplink.ts",
+          "bytes": 723,
+          "sha256": "f5b2e178b7d3b8a5e845125bc1c4e1bfa1d80f75e105ab9a9d553e1e84467038"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/extension.ts",
+          "bytes": 15972,
+          "sha256": "93a6685f8e16fcdf9e39fde7907becac0448b36878c2cf03f910da86bb6d1196"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/feedback.ts",
+          "bytes": 319,
+          "sha256": "a35b4d44c864496378675852a47ef62f1484f15a16bbe4c295f7e0913ad3a5c7"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/filter.ts",
+          "bytes": 1194,
+          "sha256": "01ed54748a5c97f5113c3f1e322c86b220496bd8f049fb2cb5e350e454470cc8"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/game.ts",
+          "bytes": 5371,
+          "sha256": "cd57869a41e51a153d4cf13aea455e4d7a24f6344c4b427437fa9a84c18ec49f"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/ingest.ts",
+          "bytes": 4078,
+          "sha256": "b0c300cecaf57ed90d1e6f70e696c4baf4e3203bb2b05b29a38a42a35d86afbf"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/library.ts",
+          "bytes": 35158,
+          "sha256": "0e35396e749ecd4648dfa1cd68b6ae12198e4d1029517d38f968667189e646b0"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/media.ts",
+          "bytes": 250,
+          "sha256": "b6f72b91f584d9a04137baf249c7e1c318870aea5186704767e6b24ce88484a8"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/merge.ts",
+          "bytes": 851,
+          "sha256": "e1c7e625ab3439aabc13af9df5c1817f269a5040d4c477315010023fa2c371ac"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/nav.ts",
+          "bytes": 675,
+          "sha256": "0b5f9b4aa37d21d62ffa971623406855a74fa07cef56d5d467fcd83c934f4b8c"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/novel.ts",
+          "bytes": 5278,
+          "sha256": "e77f96fb5603d8fa1894ecd674608cf7b41d3b677f53908e6100821588f020e3"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/reader.ts",
+          "bytes": 4136,
+          "sha256": "b2c3202534b030bcee7d6f32ecaa9bf222f60f976ef25e32e65837b73e822187"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/scanner.ts",
+          "bytes": 10018,
+          "sha256": "a36b38afe67ea12d8c05c2d8c097f37e42ddae1be2b548f86b4359bf94046e2e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/scraper.ts",
+          "bytes": 5857,
+          "sha256": "9f4cb9c9c67664002a6d764df26ce597b96a9e06ef992337ef8e859c7e817ae3"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/settings.ts",
+          "bytes": 818,
+          "sha256": "a5555217af460a626e865920d330c028193a75b258bedaa03be9e81c66910dff"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/sorting.ts",
+          "bytes": 197,
+          "sha256": "0f14896560d65b979d84ac13b77488bcc721a96c5f730ae61d4efe53a1939b91"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/states.ts",
+          "bytes": 447,
+          "sha256": "0d292fab46fffba3fc5b7642905217c282849c9f1ab31745afe54dd81d4e662c"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/statistics.ts",
+          "bytes": 2626,
+          "sha256": "8abce546e781f43901ec441f864add0ec02a4f6f563267953254c2f6ec21ab6c"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/task.ts",
+          "bytes": 5665,
+          "sha256": "bb9a8a7670b7219d3857b705b9f80f444ba942a5d9160179ae0f46f12add3544"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/ui.ts",
+          "bytes": 3150,
+          "sha256": "ad5689d91c8cbd05ae314442b6843c8e985b01648bba509845fd332119181d91"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/updater.ts",
+          "bytes": 2270,
+          "sha256": "d9ae00e1dadae1dc3b99ec0af58cda253d14b9763919c8ad10c4a794b415e651"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/en/values.ts",
+          "bytes": 382,
+          "sha256": "69c30f58ab3cddc82f7991592d917896d2aee9b11cca9ce3a294ed896d89eb9e"
+        }
+      ]
+    },
+    {
+      "locale": "zh-hans",
+      "domainFiles": 29,
+      "leaves": 2605,
+      "functionLeaves": 268,
+      "expressionLeaves": 0,
+      "sourceFiles": [
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/actions.ts",
+          "bytes": 821,
+          "sha256": "b976b9add1fa1555550068a5e8805049b0a62868a72612661065a492432aa3b9"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/activity.ts",
+          "bytes": 2231,
+          "sha256": "215a97fd3332a3533e10fff95a795211e8ae2767711635577a08dc6acf26d8bf"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/add-entry.ts",
+          "bytes": 807,
+          "sha256": "4e825c58743d3214110f93db7df55798dd24f2f23769965d0bc5cca5041fa30e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/anime.ts",
+          "bytes": 6683,
+          "sha256": "542def38600fa838f9d88ee91aa280b7e55ea01ad60803f804887022cedb94af"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/app.ts",
+          "bytes": 1073,
+          "sha256": "992a6aa196e83edac0d3e07d6d56efcee2ea7f27537ae76b23b2a2f7f9251f42"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/automation.ts",
+          "bytes": 4953,
+          "sha256": "f3ef666eda0ff1d0edb7f8537569b2c909331f8166e9ba4837631748700ee904"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/comic.ts",
+          "bytes": 5158,
+          "sha256": "0268d6e083bcff9bcc1dd3a187f80dc37fb4fa64f1710718d3e2c53f713bea56"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/deeplink.ts",
+          "bytes": 794,
+          "sha256": "fc5abaa97c824b329033a9117c96577a76bd09627f57b76d4cfe4d9ab70b813e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/extension.ts",
+          "bytes": 14516,
+          "sha256": "19237f45235d2294a1b7c5df934b5a9fd9eeb69a297df9a57cd9d9c4b9c9100f"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/feedback.ts",
+          "bytes": 400,
+          "sha256": "191ad93bd2fd33626772a8221a448b7a387c9dfce3df06847c7ab187a4783b8e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/filter.ts",
+          "bytes": 1133,
+          "sha256": "e76576caeaa159ecd15c1d58d76739fb3852b5ffae378d497487ca8771cf5ddd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/game.ts",
+          "bytes": 5082,
+          "sha256": "c9782787ae1c31834d85213c61ebd1f4c1b84a804a4751c2a12face6c3d4ecdd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/ingest.ts",
+          "bytes": 3690,
+          "sha256": "27dfae3d1522aec138ef250c8bb5fa25944d753f78ec297f95688fb104fcbdff"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/library.ts",
+          "bytes": 31901,
+          "sha256": "c2230151e1e4dfad1b62e5f7bc56c06eb688dcbaf2d4b0aea20346f0e8043c74"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/media.ts",
+          "bytes": 189,
+          "sha256": "e36a0122690c6c40b5eb992cac316c5da1a053e149842949ea34d6352679ac57"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/merge.ts",
+          "bytes": 791,
+          "sha256": "2d5ebda5a47e8de099e9acc1b596e24d59ff1175e401138ce1a33d82c5d3c2f6"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/nav.ts",
+          "bytes": 705,
+          "sha256": "9c1a694e2fc57b03c1c8d061f79464c22bfe2f4d9932995212dd1bd8bed0c870"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/novel.ts",
+          "bytes": 4899,
+          "sha256": "3abd3fed0976d259289ff0b8bf4f012c308c65b33cad8c94dd41db19b73567cd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/reader.ts",
+          "bytes": 4189,
+          "sha256": "a78b5b78340d1feac19498a87689c7d0d6e7743f33db7ce8c1575ea796c165d7"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/scanner.ts",
+          "bytes": 9484,
+          "sha256": "bd4da69db85ec4884f83ab2f06bb9736954139597a6c04a2ccf6219a26c48648"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/scraper.ts",
+          "bytes": 5389,
+          "sha256": "bd35f3f1d79ba1929bb57cdf0dcb8c7d7dd2cfb1993c7f7fd3b59ec428ee3146"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/settings.ts",
+          "bytes": 763,
+          "sha256": "1129c8c31e9c32a965fd02ff483fb0eeafe433c28d4ddace39daf4596829766a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/sorting.ts",
+          "bytes": 251,
+          "sha256": "8400b342fe8ed215d819d4545ff0caaaab77d756fee9aa46f162930f840c0cfd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/states.ts",
+          "bytes": 533,
+          "sha256": "c41e2e06c9fb3014eb75a18ac2053961e0a9154d7212f86a57cc7f640dac1e5c"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/statistics.ts",
+          "bytes": 2315,
+          "sha256": "016ee222e9db428b231d0363c5cf62733ce2f2171421fbc4fd5d7a0fe40a5dc6"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/task.ts",
+          "bytes": 5416,
+          "sha256": "174082ce1a39c64a078ea2bb5337706e63e6d62e19319196fe3ee4adcfc5556d"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/ui.ts",
+          "bytes": 3188,
+          "sha256": "6bfac4a46183f0edbd764c788248564b9110ee49c907ec89c5cfba71d8bc63cd"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/updater.ts",
+          "bytes": 2178,
+          "sha256": "c4db26162e33dbc8c91373ca4ca07d90025b5c8efb9df5ffc3f716186eb36d33"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hans/values.ts",
+          "bytes": 375,
+          "sha256": "82e7f86779b92834cb39a1d26c5d46033eaab153fab8381461267f88dcfe5749"
+        }
+      ]
+    },
+    {
+      "locale": "zh-hant",
+      "domainFiles": 29,
+      "leaves": 2605,
+      "functionLeaves": 268,
+      "expressionLeaves": 0,
+      "sourceFiles": [
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/actions.ts",
+          "bytes": 830,
+          "sha256": "c728ce26ffd10258876fe06fe3c0575746295e46db452e3b74ead3915df623a6"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/activity.ts",
+          "bytes": 2258,
+          "sha256": "2aba129ed4c39bacc8c6bfa666d84abbbf1fc288b3499ad8ebe8fb387010439f"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/add-entry.ts",
+          "bytes": 807,
+          "sha256": "8c79a938771918dd9d313730884fdfd3107e92b8aa7a4ec3b1db3516b5933249"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/anime.ts",
+          "bytes": 6740,
+          "sha256": "dc103b95844c6f2ad53ec3a7797e84f1531aa72d88afaa6c41c9d35817c83c65"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/app.ts",
+          "bytes": 1085,
+          "sha256": "7b92a2d5f4fe14c92e5b76693dadbd494c4f8bd32d23b60e8a4290d1158783c3"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/automation.ts",
+          "bytes": 4983,
+          "sha256": "0ef29f639cc918d7d8056495467c409b0bbd8db6296adf65955d40fcddeee015"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/comic.ts",
+          "bytes": 5221,
+          "sha256": "e820c67e9339640cc60e77a34bd960d4446650377b7cc1f45ba9116ef5b009a8"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/deeplink.ts",
+          "bytes": 806,
+          "sha256": "e4f9556ec9f88be418b76c2f33ba79830bfd46755bc87a9a5bc36cef3cce80e9"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/extension.ts",
+          "bytes": 15493,
+          "sha256": "caf343ad8873c125eae820e470b4ffdb798a6e4dc45aec510a611007b2ff34e8"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/feedback.ts",
+          "bytes": 400,
+          "sha256": "c9fbf68b9d1df087403b4e2602ed198a0c1d1e7e84041e2263ef3d719888de11"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/filter.ts",
+          "bytes": 1133,
+          "sha256": "284108d55a341f37538403a98613c10473f640d661ea7de15bc0553f436697ec"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/game.ts",
+          "bytes": 5139,
+          "sha256": "6163da6659284653b7fa3a25822285f19fdc9eda49f505bb509c5b57571a55c1"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/ingest.ts",
+          "bytes": 3741,
+          "sha256": "7ac9f376ec6cde51b49229b404016df00581319c63a9b3fd9ae6784afd12b969"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/library.ts",
+          "bytes": 31923,
+          "sha256": "1e24a04a8f3004b164b369e8b9a00d1f4a3fc58b4959f8b2e367ab212a139b56"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/media.ts",
+          "bytes": 189,
+          "sha256": "57942c7458100fdfe0b928d06fc4b0e403b763c825e487ea00e5ccf490e2e54a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/merge.ts",
+          "bytes": 791,
+          "sha256": "f7ac93f581dc5bd9dfe9b563f24c6bc778443145fdd27bfb308df53f8c55c447"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/nav.ts",
+          "bytes": 711,
+          "sha256": "87828501c2eee7ab4c01d6a3471621b300bb9bc762c9ea8df434d0164fc3be2a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/novel.ts",
+          "bytes": 4962,
+          "sha256": "d741bd834107dfa475da7a7743d38394d1c88dfeb7a54f4e608a1109a7f4f98d"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/reader.ts",
+          "bytes": 4204,
+          "sha256": "b4b2a0f2707e958d27891d65dee0a83d1822c95ec36145a55edd8c161406ff21"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/scanner.ts",
+          "bytes": 9523,
+          "sha256": "29eb058270d012a27e7195852eda890990b5cc413a58bef4a1fa8d49d3017284"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/scraper.ts",
+          "bytes": 5425,
+          "sha256": "910e52cea7c3d08d8967923e89442e8f5ae96369bccf480d5ec522714c31c5f3"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/settings.ts",
+          "bytes": 778,
+          "sha256": "f0144f1cbc1cc5bf22acf6d8e08d734e9e4ff6d600e246a5dbc77937369ec851"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/sorting.ts",
+          "bytes": 251,
+          "sha256": "99d1fa9521573ea54e5597c3c42a9a1b3e3a93004d869b2fac846be6c29b06ac"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/states.ts",
+          "bytes": 533,
+          "sha256": "e00ff814f5d2138b1ce45e3a686cf2b79ad666899730083738fbde00fc163824"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/statistics.ts",
+          "bytes": 2315,
+          "sha256": "cba47ad2245e3626ecc0cf1b142ebf51a943214f17f67af550101624bc183f1b"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/task.ts",
+          "bytes": 5557,
+          "sha256": "b66ad1e43df7c28e2bb02499d1294a8bf5c3f8e82538a0dba676b91179680126"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/ui.ts",
+          "bytes": 3206,
+          "sha256": "f9100a3a88ffce0488fdaf148823b89f3ede6cf392c05ab55c365007ea4d0f97"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/updater.ts",
+          "bytes": 2253,
+          "sha256": "81008d5bb8a8308b9e8cfa091cc2d84b33c9382542f4b37f282527762b21ce79"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/zh-hant/values.ts",
+          "bytes": 375,
+          "sha256": "7e64a25babb76462f485b7117411a7fec3f08fda95c9b44d7bf05bf02fdca0b0"
+        }
+      ]
+    },
+    {
+      "locale": "ja",
+      "domainFiles": 29,
+      "leaves": 2605,
+      "functionLeaves": 268,
+      "expressionLeaves": 0,
+      "sourceFiles": [
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/actions.ts",
+          "bytes": 911,
+          "sha256": "393d03ab7ee585a583260985339b6f42ed623686e107c8cdd95f123898dc7d17"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/activity.ts",
+          "bytes": 3109,
+          "sha256": "9a9b63a6610e72434973d22bfb9bbd1dd29ea0339c91923db2fcb8655da1d68b"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/add-entry.ts",
+          "bytes": 960,
+          "sha256": "cb4755c61c2c45f349e6f639e3bbcce8cf1f4d1f78aef99b1e7ce3d5074c0dd5"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/anime.ts",
+          "bytes": 8050,
+          "sha256": "65ab85b349e95e542857c56dba190d015cafead3f454757079f6c3daa14ee488"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/app.ts",
+          "bytes": 1349,
+          "sha256": "a5b471dab63ae9debcd002356f59621f2fe4f9295a1e95bd00aa2809391cf72e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/automation.ts",
+          "bytes": 5880,
+          "sha256": "d13a7b431d5de4c834e790cf3365af93bf9840f72b232a5c4434357f3a6abc8a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/comic.ts",
+          "bytes": 6356,
+          "sha256": "960501c9d75620161886da36eaa84fac000772532572cb2f8a1b27d7e1c03f48"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/deeplink.ts",
+          "bytes": 962,
+          "sha256": "92581fea4fef72decfd038cc746a5d13802a600488dca6c9e93c2e471a9a2ffa"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/extension.ts",
+          "bytes": 18762,
+          "sha256": "31c9daca907700702d2cc0c16ee7812b7889338ded9ebc742aab778c4dfbbeab"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/feedback.ts",
+          "bytes": 514,
+          "sha256": "a1901e861f58e6969fb555d3cdcbe61167886443abd2f66bc25a3e7fa42ed4e2"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/filter.ts",
+          "bytes": 1311,
+          "sha256": "da04a868e7acaf6d95f3915aade7edd58a1eccff6c844e56eec4037e1665fa7d"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/game.ts",
+          "bytes": 6412,
+          "sha256": "ab1bede318c6f29d105355d27777dd206d6527561b33c9b118b2375b8c3321fb"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/ingest.ts",
+          "bytes": 4326,
+          "sha256": "15c9c15893b1636f186ed7ae0cb3cad0077eeeef8221f48632bd6658bec48c63"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/library.ts",
+          "bytes": 38806,
+          "sha256": "57268ce4aee3092f58be6352ebbb77c613b49cd4f32b0552862cde368bb58972"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/media.ts",
+          "bytes": 195,
+          "sha256": "dac5314aedbe0698a4c960067ede4b4467a42db5f5c5d967e5e3da3be5a3b1b6"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/merge.ts",
+          "bytes": 974,
+          "sha256": "fbd1ff72520227b58e1dd6768ac03c7db258d2ef42a209e00e9babc0fdb02e80"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/nav.ts",
+          "bytes": 928,
+          "sha256": "8a8cf1faf2364e28f7264b58c7d3a88ef130be1720d294b5a485bafef767d66b"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/novel.ts",
+          "bytes": 5965,
+          "sha256": "eccf3e906c38fca2eb71a4a2576a73868e8ed9a9d8869fff08bcb1652709c80a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/reader.ts",
+          "bytes": 4954,
+          "sha256": "b0b6ab7877514fc2e1970f8a35b6416b7900a6a8de053d7b7e5ac84e677d2d4d"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/scanner.ts",
+          "bytes": 12641,
+          "sha256": "5f2c68632c60be3ccd16ef37d9c888f3125321743c8b3bc69d3cb25d04a2cde2"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/scraper.ts",
+          "bytes": 7104,
+          "sha256": "73f9e206daca48ca53072c78f29b64eecc83f4d5f66b143fc42ae606cf034010"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/settings.ts",
+          "bytes": 880,
+          "sha256": "1c342b9908a95564294a19ae40077b46d9a986275e834d13e71b87ea5195854c"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/sorting.ts",
+          "bytes": 269,
+          "sha256": "0e95b78921493a5fabbfb7631942564318c8fe77669ee37f3604fa193a5fdbbb"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/states.ts",
+          "bytes": 587,
+          "sha256": "edd630258512a0da3fb628461ca5ba917bbde71805a7853ae16855e120629d02"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/statistics.ts",
+          "bytes": 2538,
+          "sha256": "7c918799f695fbd1d9cc32de44735843451c0981c00e17da18ac10d3d090010a"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/task.ts",
+          "bytes": 6424,
+          "sha256": "83dd7c6eba6c782294b8135ecc0045287a001340ff3d004606e4cbb1b5f25328"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/ui.ts",
+          "bytes": 3606,
+          "sha256": "17177ed5f065640dda4a68797a0176758d2363ac4c8ee79d9956c6f78211467e"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/updater.ts",
+          "bytes": 2944,
+          "sha256": "d0752a47731cfcea3167778afc5d5ec3282512ee2b1c9c1096bcf35c9b3e8e58"
+        },
+        {
+          "path": "apps/desktop/src/shared/i18n/messages/ja/values.ts",
+          "bytes": 407,
+          "sha256": "2bc73648c20adf7f02bdf1a506a2d4cb8623a5e185a3e861689b00c177244c10"
+        }
+      ]
+    }
+  ]
+}

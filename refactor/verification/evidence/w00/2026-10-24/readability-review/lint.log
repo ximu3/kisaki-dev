@@ -1,0 +1,4 @@
+$ eslint . --max-warnings 0 && depcruise --config .dependency-cruiser.json clients tools
+
+✔ no dependency violations found (163 modules, 280 dependencies cruised)
+

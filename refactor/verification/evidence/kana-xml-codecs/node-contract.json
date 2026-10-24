@@ -1,0 +1,3983 @@
+{
+  "checkedAt": "2026-10-20T12:20:58.890Z",
+  "node": "v24.11.1",
+  "sources": {
+    "cases.mjs": "eba6034f7a140b51427d21cbde689352e5d6ff10d0700299c64e5961e05757f8",
+    "convert.mjs": "c1340ae9372a8b29dd7ede40e331f0e75c11865c3e030c613c4b91795583b0f9",
+    "run-node.mjs": "59d15019a2ef233f4b1e0a049c8a1646393b822b119482f931b9de55881fa193"
+  },
+  "inputs": {
+    "fixturesSha256": "38899d6a40e4d259ad058f2a49f02ebe72cf4e970fa5fd100e587566a88c0831",
+    "codecWasmSha256": "e7e132336f187fa8c5ef16df2a1d5be7ebf91648d9e83bfde12989e0da4dce52",
+    "originalCodecWasmSha256": "cba3a435fd45c832f98e759171081f61f7ae3ec23c383d5cc8db4f0da79df2d9",
+    "xmlWasmSha256": "91b024cfbc875839a026bd5c0fee26a8d5b7cec3791a53557f2b13c371740347"
+  },
+  "candidateSize": {
+    "wasmBytes": 913809,
+    "wasmGzipBytes": 655536
+  },
+  "originalCandidate": {
+    "cp932": {
+      "checkedMappings": 7915,
+      "mismatches": 6
+    },
+    "cases": [
+      {
+        "name": "UTF-8",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 151,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 151,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "UTF-16LE",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 9,
+            "outputCapacity": 16,
+            "outputChunks": 43,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 9,
+            "outputCapacity": 257,
+            "outputChunks": 43,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 296,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 296,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "UTF-16BE",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 9,
+            "outputCapacity": 16,
+            "outputChunks": 43,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 9,
+            "outputCapacity": 257,
+            "outputChunks": 43,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 296,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 296,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "UTF-32LE",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 10,
+            "outputCapacity": 16,
+            "outputChunks": 84,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 10,
+            "outputCapacity": 257,
+            "outputChunks": 84,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 588,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 588,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "UTF-32BE",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 147,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 10,
+            "outputCapacity": 16,
+            "outputChunks": 84,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 10,
+            "outputCapacity": 257,
+            "outputChunks": 84,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 588,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 588,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-1",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 151,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 151,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-9",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 152,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 152,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 152,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 152,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 152,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 152,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 152,
+            "peakInput": 149,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 152,
+            "peakInput": 149,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-2",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 151,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 151,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-5",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 150,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 150,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 150,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 150,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-7",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 157,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 157,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 151,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 157,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 157,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 157,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 157,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 157,
+            "peakInput": 151,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 157,
+            "peakInput": 151,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-8859-15",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 152,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 152,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 152,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 152,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 152,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 152,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 152,
+            "peakInput": 149,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 152,
+            "peakInput": 149,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "windows-1251",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 161,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 154,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 161,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 154,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 161,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 161,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 161,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 161,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 161,
+            "peakInput": 154,
+            "outputCapacity": 16,
+            "outputChunks": 11,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 161,
+            "peakInput": 154,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "windows-1252",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 156,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 153,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 156,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 153,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 156,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 156,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 156,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 156,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 156,
+            "peakInput": 153,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 156,
+            "peakInput": 153,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "KOI8-R",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 146,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 146,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 146,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 146,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "KOI8-U",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 1,
+            "outputCapacity": 16,
+            "outputChunks": 148,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 154,
+            "peakInput": 1,
+            "outputCapacity": 257,
+            "outputChunks": 148,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 154,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 154,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 148,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 154,
+            "peakInput": 148,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "Shift_JIS",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 157,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 157,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 157,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 157,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 157,
+            "peakInput": 8,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 157,
+            "peakInput": 8,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 157,
+            "peakInput": 153,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 157,
+            "peakInput": 153,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "CP932",
+        "originalBytesLibxml2Matched": false,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 145,
+            "treeMatched": false
+          },
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 145,
+            "treeMatched": false
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 75,
+            "treeMatched": false
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 75,
+            "treeMatched": false
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": false
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": false
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 149,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": false
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 149,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": false
+          }
+        ]
+      },
+      {
+        "name": "EUC-JP",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 150,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 150,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 150,
+            "peakInput": 147,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 150,
+            "peakInput": 147,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-2022-JP",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 155,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 155,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 77,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 8,
+            "outputCapacity": 16,
+            "outputChunks": 23,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 155,
+            "peakInput": 8,
+            "outputCapacity": 257,
+            "outputChunks": 23,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 158,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 155,
+            "peakInput": 158,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "GB2312",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 147,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 147,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 147,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 147,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 147,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 147,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 147,
+            "peakInput": 145,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 147,
+            "peakInput": 145,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "GBK",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 144,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 140,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 144,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 140,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 144,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 71,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 144,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 71,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 144,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 144,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 144,
+            "peakInput": 142,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 144,
+            "peakInput": 142,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "GB18030",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 146,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 153,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 146,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 4,
+            "outputCapacity": 16,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 153,
+            "peakInput": 4,
+            "outputCapacity": 257,
+            "outputChunks": 75,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 153,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 151,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 153,
+            "peakInput": 151,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "Big5",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 151,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 8,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 151,
+            "peakInput": 8,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 147,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 151,
+            "peakInput": 147,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "Big5-HKSCS",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 156,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 156,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 149,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 156,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 156,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 76,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 156,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 156,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 22,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 156,
+            "peakInput": 152,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 156,
+            "peakInput": 152,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "EUC-KR",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 144,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 150,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 74,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 150,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 150,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 150,
+            "peakInput": 147,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 150,
+            "peakInput": 147,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "CP949",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 1,
+            "bytes": 149,
+            "peakInput": 2,
+            "outputCapacity": 16,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 1,
+            "bytes": 149,
+            "peakInput": 2,
+            "outputCapacity": 257,
+            "outputChunks": 143,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 149,
+            "peakInput": 3,
+            "outputCapacity": 16,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 2,
+            "bytes": 149,
+            "peakInput": 3,
+            "outputCapacity": 257,
+            "outputChunks": 73,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 149,
+            "peakInput": 7,
+            "outputCapacity": 16,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 149,
+            "peakInput": 7,
+            "outputCapacity": 257,
+            "outputChunks": 21,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 149,
+            "peakInput": 146,
+            "outputCapacity": 16,
+            "outputChunks": 10,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 149,
+            "peakInput": 146,
+            "outputCapacity": 257,
+            "outputChunks": 1,
+            "treeMatched": true
+          }
+        ]
+      },
+      {
+        "name": "ISO-2022-JP-long",
+        "originalBytesLibxml2Matched": true,
+        "attempts": [
+          {
+            "chunk": 7,
+            "bytes": 75064,
+            "peakInput": 9,
+            "outputCapacity": 16,
+            "outputChunks": 12867,
+            "treeMatched": true
+          },
+          {
+            "chunk": 7,
+            "bytes": 75064,
+            "peakInput": 9,
+            "outputCapacity": 257,
+            "outputChunks": 12867,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 75064,
+            "peakInput": 4098,
+            "outputCapacity": 16,
+            "outputChunks": 5008,
+            "treeMatched": true
+          },
+          {
+            "chunk": 4096,
+            "bytes": 75064,
+            "peakInput": 4098,
+            "outputCapacity": 257,
+            "outputChunks": 308,
+            "treeMatched": true
+          }
+        ]
+      }
+    ],
+    "comparisons": [
+      {
+        "encoding": "ISO-8859-1",
+        "bytes": [128],
+        "strict": {
+          "codePoints": ["U+0080"]
+        },
+        "native": {
+          "canonical": "windows-1252",
+          "codePoints": ["U+0080"]
+        }
+      },
+      {
+        "encoding": "ISO-8859-9",
+        "bytes": [128],
+        "strict": {
+          "codePoints": ["U+0080"]
+        },
+        "native": {
+          "canonical": "windows-1254",
+          "codePoints": ["U+20AC"]
+        }
+      },
+      {
+        "encoding": "Shift_JIS",
+        "bytes": [129, 96],
+        "strict": {
+          "codePoints": ["U+301C"]
+        },
+        "native": {
+          "canonical": "shift_jis",
+          "codePoints": ["U+FF5E"]
+        }
+      },
+      {
+        "encoding": "CP932",
+        "bytes": [129, 96],
+        "strict": {
+          "codePoints": ["U+301C"]
+        },
+        "native": {
+          "rejected": true,
+          "errorType": "RangeError"
+        }
+      },
+      {
+        "encoding": "GB2312",
+        "bytes": [129, 64],
+        "strict": {
+          "reason": "invalidEncoding"
+        },
+        "native": {
+          "canonical": "gbk",
+          "codePoints": ["U+4E02"]
+        }
+      },
+      {
+        "encoding": "Big5",
+        "bytes": [136, 98],
+        "strict": {
+          "reason": "invalidEncoding"
+        },
+        "native": {
+          "canonical": "big5",
+          "codePoints": ["U+F325"]
+        }
+      },
+      {
+        "encoding": "UTF-32LE",
+        "bytes": [0, 246, 1, 0],
+        "strict": {
+          "codePoints": ["U+1F600"]
+        },
+        "native": {
+          "rejected": true,
+          "errorType": "RangeError"
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "UTF-8",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 151,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 151,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "UTF-16LE",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 9,
+          "outputCapacity": 16,
+          "outputChunks": 43,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 9,
+          "outputCapacity": 257,
+          "outputChunks": 43,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 296,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 296,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "UTF-16BE",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 9,
+          "outputCapacity": 16,
+          "outputChunks": 43,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 9,
+          "outputCapacity": 257,
+          "outputChunks": 43,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 296,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 296,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "UTF-32LE",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 10,
+          "outputCapacity": 16,
+          "outputChunks": 84,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 10,
+          "outputCapacity": 257,
+          "outputChunks": 84,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 588,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 588,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "UTF-32BE",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 147,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 10,
+          "outputCapacity": 16,
+          "outputChunks": 84,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 10,
+          "outputCapacity": 257,
+          "outputChunks": 84,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 588,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 588,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-1",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 151,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 151,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-9",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 152,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 152,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 152,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 152,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 152,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 152,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 152,
+          "peakInput": 149,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 152,
+          "peakInput": 149,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-2",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 151,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 151,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-5",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 150,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 150,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 150,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 150,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-7",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 157,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 157,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 151,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 157,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 157,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 157,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 157,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 157,
+          "peakInput": 151,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 157,
+          "peakInput": 151,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-8859-15",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 152,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 152,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 152,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 152,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 152,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 152,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 152,
+          "peakInput": 149,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 152,
+          "peakInput": 149,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "windows-1251",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 161,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 154,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 161,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 154,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 161,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 161,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 161,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 161,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 161,
+          "peakInput": 154,
+          "outputCapacity": 16,
+          "outputChunks": 11,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 161,
+          "peakInput": 154,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "windows-1252",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 156,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 153,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 156,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 153,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 156,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 156,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 156,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 156,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 156,
+          "peakInput": 153,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 156,
+          "peakInput": 153,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "KOI8-R",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 146,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 146,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 146,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 146,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "KOI8-U",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 1,
+          "outputCapacity": 16,
+          "outputChunks": 148,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 154,
+          "peakInput": 1,
+          "outputCapacity": 257,
+          "outputChunks": 148,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 154,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 154,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 148,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 154,
+          "peakInput": 148,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "Shift_JIS",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 157,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 157,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 157,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 157,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 157,
+          "peakInput": 8,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 157,
+          "peakInput": 8,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 157,
+          "peakInput": 153,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 157,
+          "peakInput": 153,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "CP932",
+      "originalBytesLibxml2Matched": false,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 145,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 145,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 149,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 149,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "EUC-JP",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 150,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 150,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 150,
+          "peakInput": 147,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 150,
+          "peakInput": 147,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-2022-JP",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 155,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 155,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 77,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 8,
+          "outputCapacity": 16,
+          "outputChunks": 23,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 155,
+          "peakInput": 8,
+          "outputCapacity": 257,
+          "outputChunks": 23,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 158,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 155,
+          "peakInput": 158,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "GB2312",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 147,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 147,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 147,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 147,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 147,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 147,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 147,
+          "peakInput": 145,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 147,
+          "peakInput": 145,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "GBK",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 144,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 140,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 144,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 140,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 144,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 71,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 144,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 71,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 144,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 144,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 144,
+          "peakInput": 142,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 144,
+          "peakInput": 142,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "GB18030",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 146,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 153,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 146,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 4,
+          "outputCapacity": 16,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 153,
+          "peakInput": 4,
+          "outputCapacity": 257,
+          "outputChunks": 75,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 153,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 151,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 153,
+          "peakInput": 151,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "Big5",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 151,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 8,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 151,
+          "peakInput": 8,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 147,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 151,
+          "peakInput": 147,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "Big5-HKSCS",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 156,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 156,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 149,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 156,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 156,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 76,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 156,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 156,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 22,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 156,
+          "peakInput": 152,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 156,
+          "peakInput": 152,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "EUC-KR",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 144,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 150,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 74,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 150,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 150,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 150,
+          "peakInput": 147,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 150,
+          "peakInput": 147,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "CP949",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "bytes": 149,
+          "peakInput": 2,
+          "outputCapacity": 16,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 1,
+          "bytes": 149,
+          "peakInput": 2,
+          "outputCapacity": 257,
+          "outputChunks": 143,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 149,
+          "peakInput": 3,
+          "outputCapacity": 16,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 2,
+          "bytes": 149,
+          "peakInput": 3,
+          "outputCapacity": 257,
+          "outputChunks": 73,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 149,
+          "peakInput": 7,
+          "outputCapacity": 16,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 149,
+          "peakInput": 7,
+          "outputCapacity": 257,
+          "outputChunks": 21,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 149,
+          "peakInput": 146,
+          "outputCapacity": 16,
+          "outputChunks": 10,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 149,
+          "peakInput": 146,
+          "outputCapacity": 257,
+          "outputChunks": 1,
+          "treeMatched": true
+        }
+      ]
+    },
+    {
+      "name": "ISO-2022-JP-long",
+      "originalBytesLibxml2Matched": true,
+      "attempts": [
+        {
+          "chunk": 7,
+          "bytes": 75064,
+          "peakInput": 9,
+          "outputCapacity": 16,
+          "outputChunks": 12867,
+          "treeMatched": true
+        },
+        {
+          "chunk": 7,
+          "bytes": 75064,
+          "peakInput": 9,
+          "outputCapacity": 257,
+          "outputChunks": 12867,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 75064,
+          "peakInput": 4098,
+          "outputCapacity": 16,
+          "outputChunks": 5008,
+          "treeMatched": true
+        },
+        {
+          "chunk": 4096,
+          "bytes": 75064,
+          "peakInput": 4098,
+          "outputCapacity": 257,
+          "outputChunks": 308,
+          "treeMatched": true
+        }
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "name": "invalid-utf8",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unfinished-utf16",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "surrogate-utf32",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unfinished-gb18030",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "invalid-shift-jis",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unfinished-state-escape",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "not-gb2312",
+      "reason": "invalidEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unsupported-",
+      "reason": "unsupportedEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unsupported-unknown-codec",
+      "reason": "unsupportedEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unsupported-UTF-8//IGNORE",
+      "reason": "unsupportedEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "unsupported-UTF-8//TRANSLIT",
+      "reason": "unsupportedEncoding",
+      "decoderReleased": true
+    },
+    {
+      "name": "decoded-output-budget",
+      "reason": "resourceLimit",
+      "decoderReleased": true
+    },
+    {
+      "name": "cancel-between-output-chunks",
+      "reason": "cancelled",
+      "decoderReleased": true
+    }
+  ],
+  "comparisons": [
+    {
+      "encoding": "ISO-8859-1",
+      "bytes": [128],
+      "strict": {
+        "codePoints": ["U+0080"]
+      },
+      "native": {
+        "canonical": "windows-1252",
+        "codePoints": ["U+0080"]
+      }
+    },
+    {
+      "encoding": "ISO-8859-9",
+      "bytes": [128],
+      "strict": {
+        "codePoints": ["U+0080"]
+      },
+      "native": {
+        "canonical": "windows-1254",
+        "codePoints": ["U+20AC"]
+      }
+    },
+    {
+      "encoding": "Shift_JIS",
+      "bytes": [129, 96],
+      "strict": {
+        "codePoints": ["U+301C"]
+      },
+      "native": {
+        "canonical": "shift_jis",
+        "codePoints": ["U+FF5E"]
+      }
+    },
+    {
+      "encoding": "CP932",
+      "bytes": [129, 96],
+      "strict": {
+        "codePoints": ["U+FF5E"]
+      },
+      "native": {
+        "rejected": true,
+        "errorType": "RangeError"
+      }
+    },
+    {
+      "encoding": "GB2312",
+      "bytes": [129, 64],
+      "strict": {
+        "reason": "invalidEncoding"
+      },
+      "native": {
+        "canonical": "gbk",
+        "codePoints": ["U+4E02"]
+      }
+    },
+    {
+      "encoding": "Big5",
+      "bytes": [136, 98],
+      "strict": {
+        "reason": "invalidEncoding"
+      },
+      "native": {
+        "canonical": "big5",
+        "codePoints": ["U+F325"]
+      }
+    },
+    {
+      "encoding": "UTF-32LE",
+      "bytes": [0, 246, 1, 0],
+      "strict": {
+        "codePoints": ["U+1F600"]
+      },
+      "native": {
+        "rejected": true,
+        "errorType": "RangeError"
+      }
+    }
+  ],
+  "activeDecoders": 0,
+  "cp932": {
+    "checkedMappings": 7915,
+    "mismatches": 0
+  },
+  "wasmMemoryBytes": 2097152,
+  "limits": {
+    "fullXmlEncodingDetection": false,
+    "bomDeclarationConflicts": false,
+    "allLibiconvEncodings": false,
+    "fullReader": false,
+    "sourceOffsetsReinterpreted": false
+  }
+}

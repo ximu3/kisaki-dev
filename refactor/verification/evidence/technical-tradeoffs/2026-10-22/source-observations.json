@@ -1,0 +1,33 @@
+{
+  "versions": {
+    "solid-js": "1.9.16",
+    "@tanstack/solid-virtual": "3.13.48",
+    "@tanstack/virtual-core": "3.19.6",
+    "vite": "8.3.3",
+    "vite-plugin-solid": "2.11.14",
+    "birpc": "4.2.0",
+    "electron-vite": "6.0.0"
+  },
+  "sourceFileSha256": {
+    "birpc/package.json": "1f4124f3a8fd0aeeed7d7d9bbd63acfde161c7d6ace12b4766a31f4a1cd29b7b",
+    "birpc/dist/index.mjs": "c6da1d8c0b904eee09fa410bc162146bdc642ae39537c3658aab1082b6db35ce",
+    "birpc/dist/index.d.mts": "bec346abcaeba0d58a04096a63c610e66ff6e214389bcca54c75a20215b81824",
+    "electron-vite/package.json": "c5dd4392b59042a7ac9566b858fd08438c6114de817d4841ea78f68055cfe2fb",
+    "electron-vite/dist/index.d.ts": "78c4a0e214a3d5cb5f65c23286767bf7ceb024259e5eeb3e58b293587f161946",
+    "electron-vite/dist/chunks/lib-CLhLGLN3.js": "71332a3902dd12ead0dce804390daf13a3ecae88825525a1b57ba5d67b91b35d",
+    "electron-vite/dist/chunks/lib-DoUt4oMD.js": "2dbac04f176c651aa3372f268272556e94c2f4f45963acc52d3aa324e8e12bd8",
+    "@tanstack/solid-virtual/package.json": "803115858ccf54abb0e03d7f2682b981d93cbeaff3a9d7c2665f3ca37bf6cd85",
+    "@tanstack/solid-virtual/dist/esm/index.js": "81b0dd026afe9c3eff51c73a9f2ce2ab3dc6f424ed4db1a6d3902d56b9c7329b"
+  },
+  "rootDependenciesUnchanged": {
+    "package.json": true,
+    "pnpm-lock.yaml": true,
+    "pnpm-workspace.yaml": true
+  },
+  "sources": {
+    "tanstack": "https://tanstack.com/virtual/latest/docs/api/virtualizer",
+    "solidAdapter": "https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual",
+    "birpc": "https://github.com/antfu-collective/birpc",
+    "electronVite": "https://github.com/alex8088/electron-vite"
+  }
+}

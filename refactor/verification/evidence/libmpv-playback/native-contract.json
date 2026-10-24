@@ -1,0 +1,783 @@
+{
+  "cases": [
+    {
+      "renderFirst": false,
+      "sameCore": true,
+      "sameRenderContext": true,
+      "seekPosition": 0.5,
+      "firstEntry": "1",
+      "secondEntry": "2",
+      "failedLoadReply": 0,
+      "missingFileFailed": true,
+      "recoverySucceeded": true,
+      "heldFramesStable": true,
+      "events": [
+        {
+          "order": 1,
+          "type": 5,
+          "entry": "-1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 2,
+          "type": 25,
+          "entry": "-1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 3,
+          "type": 6,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 4,
+          "type": 8,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 5,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 6,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 8,
+          "type": 21,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 11,
+          "type": 5,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 12,
+          "type": 20,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 14,
+          "type": 21,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 15,
+          "type": 3,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 16,
+          "type": 5,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 17,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 18,
+          "type": 7,
+          "entry": "1",
+          "error": 0,
+          "reason": 2,
+          "hook": ""
+        },
+        {
+          "order": 19,
+          "type": 25,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 20,
+          "type": 25,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 22,
+          "type": 6,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 23,
+          "type": 8,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 24,
+          "type": 17,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 26,
+          "type": 21,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 27,
+          "type": 5,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 28,
+          "type": 17,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 29,
+          "type": 7,
+          "entry": "2",
+          "error": 0,
+          "reason": 2,
+          "hook": ""
+        },
+        {
+          "order": 30,
+          "type": 25,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 31,
+          "type": 25,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 33,
+          "type": 6,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 34,
+          "type": 7,
+          "entry": "3",
+          "error": -13,
+          "reason": 4,
+          "hook": ""
+        },
+        {
+          "order": 35,
+          "type": 25,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 36,
+          "type": 17,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 37,
+          "type": 11,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 38,
+          "type": 5,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 39,
+          "type": 25,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 40,
+          "type": 6,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 41,
+          "type": 8,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 42,
+          "type": 17,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 43,
+          "type": 17,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 45,
+          "type": 21,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        }
+      ],
+      "frames": [
+        {
+          "order": 7,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 9,
+          "flags": 3,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 10,
+          "flags": 3,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 13,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 21,
+          "flags": 3,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 25,
+          "flags": 1,
+          "bgr": [
+            255,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 32,
+          "flags": 3,
+          "bgr": [
+            255,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 44,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        }
+      ]
+    },
+    {
+      "renderFirst": true,
+      "sameCore": true,
+      "sameRenderContext": true,
+      "seekPosition": 0.5,
+      "firstEntry": "1",
+      "secondEntry": "2",
+      "failedLoadReply": 0,
+      "missingFileFailed": true,
+      "recoverySucceeded": true,
+      "heldFramesStable": true,
+      "events": [
+        {
+          "order": 1,
+          "type": 5,
+          "entry": "-1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 2,
+          "type": 25,
+          "entry": "-1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 3,
+          "type": 6,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 4,
+          "type": 8,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 6,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 7,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 8,
+          "type": 21,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 10,
+          "type": 5,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 11,
+          "type": 20,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 12,
+          "type": 21,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 13,
+          "type": 3,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 14,
+          "type": 5,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 15,
+          "type": 17,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 16,
+          "type": 7,
+          "entry": "1",
+          "error": 0,
+          "reason": 2,
+          "hook": ""
+        },
+        {
+          "order": 17,
+          "type": 25,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 19,
+          "type": 25,
+          "entry": "1",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 20,
+          "type": 6,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 21,
+          "type": 8,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 23,
+          "type": 17,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 24,
+          "type": 21,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 25,
+          "type": 5,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 26,
+          "type": 17,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 27,
+          "type": 7,
+          "entry": "2",
+          "error": 0,
+          "reason": 2,
+          "hook": ""
+        },
+        {
+          "order": 28,
+          "type": 25,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 30,
+          "type": 25,
+          "entry": "2",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 31,
+          "type": 6,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 32,
+          "type": 7,
+          "entry": "3",
+          "error": -13,
+          "reason": 4,
+          "hook": ""
+        },
+        {
+          "order": 33,
+          "type": 25,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_after_end_file"
+        },
+        {
+          "order": 34,
+          "type": 17,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 35,
+          "type": 11,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 36,
+          "type": 5,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 37,
+          "type": 25,
+          "entry": "3",
+          "error": 0,
+          "reason": -1,
+          "hook": "on_before_start_file"
+        },
+        {
+          "order": 38,
+          "type": 6,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 39,
+          "type": 8,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 41,
+          "type": 17,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 42,
+          "type": 17,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        },
+        {
+          "order": 43,
+          "type": 21,
+          "entry": "4",
+          "error": 0,
+          "reason": -1,
+          "hook": ""
+        }
+      ],
+      "frames": [
+        {
+          "order": 5,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 9,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 18,
+          "flags": 3,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        },
+        {
+          "order": 22,
+          "flags": 1,
+          "bgr": [
+            255,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 29,
+          "flags": 3,
+          "bgr": [
+            255,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 40,
+          "flags": 1,
+          "bgr": [
+            0,
+            0,
+            254
+          ]
+        }
+      ]
+    }
+  ],
+  "checkedAt": "2026-10-18T14:37:19.200361+00:00",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "executableSha256": "18abb3e1302d310b8655aa37547245e68b51c54f75393983c968384bcf44c289",
+  "sharedProducerSha256": "caf1b71a62853e2334586d690d62137015c377501eccf4e89f4ffc0154e6c9c6",
+  "generatorSha256": "04e1307997530f9cf2fe35cba2ca7e8875ca91da02f89d6c7243df819c94ad00",
+  "samples": [
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\playback\\red.mkv",
+      "sha256": "7e8002266f2f19661a3aadd7a742221dafd2f52a1ae5e8f7c4f7e1ded2e8db32"
+    },
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\playback\\blue.mkv",
+      "sha256": "7b8af919077294f75d77c3273cf42b1b1b4715ed0887d77a13f4f11de9c00107"
+    }
+  ],
+  "sources": {
+    "Cargo.toml": "aa77daa2950ff4b2e70041b185cef8e24c3101acadd51bc582a0166ca31af970",
+    "Cargo.lock": "a4d7b588b37ecea91991a4d160e881c5667617b25a8359571b80111204ed0317",
+    "build.rs": "25ea072c2dcd00b5c33954a349219b61f1137e428357ed02f1f3794419daefc6",
+    "main.rs": "b390edb714d81d0b848e76b99ef273f15d77d61d5c21e655f08a69ce7e826673",
+    "playback.cpp": "db68813e4021b5684c168d7ff63790df1ba1844700d58bae08dfd61ea7f8056a",
+    "run.py": "cddbc2efcdf6f96ce672d22f65752c59886b440f1cb961d326024d4b848201b1"
+  },
+  "nativeD3d11PlaybackExecuted": true,
+  "nodeDeliveryExecuted": false,
+  "electronDeliveryExecuted": false,
+  "hardwareDecodingExecuted": false,
+  "physicalHdrDisplayVerified": false,
+  "stderr": ""
+}

@@ -1,0 +1,466 @@
+{
+  "checkedOn": "2026-10-17",
+  "status": "design-confirmed",
+  "source": {
+    "project": "Playnite",
+    "baselineVersion": "10.62",
+    "commit": "ecee01452a25db1fb2674a69f883d298d4c7be8a",
+    "librarySchemaVersion": 4,
+    "liteDbVersion": "4.1.4",
+    "steamExtensionCommit": "886468f65724e6fd104f3a09847a17ba57cfb430"
+  },
+  "input": {
+    "basename": "playnite.zip",
+    "bytes": 147561380,
+    "sha256Before": "f2e18f2ca1d55ed82b6694db09896c2d6475cfd0bde007bc91c1d06d9b72e0ba",
+    "sha256After": "f2e18f2ca1d55ed82b6694db09896c2d6475cfd0bde007bc91c1d06d9b72e0ba",
+    "privateDatabaseFilesWritten": false
+  },
+  "actual": {
+    "databaseVersion": 4,
+    "liteDbVersion": "4.1.4.0",
+    "readonlyMemoryStreams": true,
+    "databases": {
+      "ageratings.db": {
+        "AgeRating": 3
+      },
+      "categories.db": {},
+      "companies.db": {
+        "Company": 146
+      },
+      "completionstatuses.db": {
+        "CompletionStatus": 8,
+        "CompletionStatusSettings": 1
+      },
+      "emulators.db": {},
+      "features.db": {
+        "GameFeature": 61
+      },
+      "games.db": {
+        "Game": 96
+      },
+      "genres.db": {
+        "Genre": 23
+      },
+      "platforms.db": {
+        "Platform": 75
+      },
+      "regions.db": {
+        "Region": 4
+      },
+      "series.db": {
+        "Series": 2
+      },
+      "sources.db": {
+        "GameSource": 1
+      },
+      "tags.db": {
+        "Tag": 646
+      }
+    },
+    "games": 96,
+    "fieldTypes": {
+      "GameId": {
+        "String": 96
+      },
+      "PluginId": {
+        "Guid": 96
+      },
+      "Playtime": {
+        "Int64": 96
+      },
+      "PlayCount": {
+        "Int64": 96
+      },
+      "UserScore": {
+        "Missing": 96
+      },
+      "Favorite": {
+        "Boolean": 96
+      },
+      "Hidden": {
+        "Boolean": 96
+      },
+      "CompletionStatusId": {
+        "Guid": 96
+      },
+      "LastActivity": {
+        "DateTime": 33,
+        "Missing": 63
+      },
+      "Added": {
+        "DateTime": 96
+      },
+      "Notes": {
+        "Missing": 96
+      },
+      "Description": {
+        "String": 85,
+        "Missing": 11
+      },
+      "GameActions": {
+        "Array": 34,
+        "Missing": 62
+      },
+      "InstallDirectory": {
+        "String": 95,
+        "Missing": 1
+      },
+      "CoverImage": {
+        "String": 78,
+        "Missing": 18
+      },
+      "Icon": {
+        "String": 86,
+        "Missing": 10
+      },
+      "BackgroundImage": {
+        "String": 84,
+        "Missing": 12
+      },
+      "Roms": {
+        "Missing": 96
+      },
+      "IncludeLibraryPluginAction": {
+        "Boolean": 96
+      }
+    },
+    "coverage": {
+      "nonemptyNotes": 0,
+      "nonemptyDescription": 85,
+      "nonemptyInstallDirectory": 95,
+      "nonemptyCoverImage": 78,
+      "nonemptyIcon": 86,
+      "nonemptyBackgroundImage": 84,
+      "explicitActions": 34,
+      "hasRoms": 0,
+      "steamIdentityRecords": 62,
+      "otherLibraryIdentityRecords": 0,
+      "playActions": 34,
+      "actionTypes": {
+        "\"File\"": 34
+      },
+      "trackingModes": {
+        "\"Default\"": 34
+      },
+      "imageReferences": 248,
+      "imageReferencesFound": 248,
+      "imageReferencesRead": 248,
+      "imageBytesRead": 98421743
+    }
+  },
+  "synthetic": {
+    "fixture": "synthetic-backup.zip",
+    "database": "synthetic-games.db",
+    "result": "synthetic-results.json",
+    "passed": 22,
+    "sha256": {
+      "database": "4f80cebed48fc2cefd21fbcaf00caab89a214a5678a1bed1490ebd15cde8c10a",
+      "archive": "c032af1b9fc87914a189e7931cc3af149d26cc4bb0aa21a54c15f7881ce4ea0a"
+    }
+  },
+  "reader": {
+    "sdk": "10.0.402",
+    "target": "win-x64",
+    "nativeAot": true,
+    "bytes": 4891648,
+    "readOnlyMemory": true,
+    "stdinTypedTransportTestedOn": "synthetic-only",
+    "usesBsonMapper": false,
+    "acceptsQueryExpressions": false,
+    "warnings": [
+      {
+        "code": "NU1904",
+        "advisory": "https://github.com/advisories/GHSA-3x49-g6rc-c284",
+        "scope": "Affected object-mapping path is not called; source type markers remain data."
+      },
+      {
+        "code": "IL3050",
+        "count": 8,
+        "method": "LiteDB.BsonExpression.ParseSingleExpression",
+        "scope": "Dynamic array expressions are not exposed; fixed FindAll enumeration tested."
+      }
+    ]
+  },
+  "limitations": [
+    "Actual sample has no user scores, notes, categories, emulator profiles or ROMs.",
+    "Image references and complete byte reads verified; full image decoding not tested.",
+    "No Playnite extension history format was parsed.",
+    "No native Kisaki import implementation, launch command execution or formal database writes tested.",
+    "Five remaining desktop targets still require native build and runtime verification."
+  ],
+  "publicSources": [
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Backup.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.553Z",
+      "bytes": 19009,
+      "sha256": "e667ec129e37c024131c0a9079aafac03382e52c38c7baed4060b90e0e730e8a"
+    },
+    {
+      "url": "https://api.github.com/repos/JosefNemec/Playnite/git/trees/ecee01452a25db1fb2674a69f883d298d4c7be8a?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.560Z",
+      "bytes": 423774,
+      "sha256": "e41a7e40f66e453eed1440a4d2e9e644f1db2a302565a34a1da9ff285d5c8c21"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/Game.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.589Z",
+      "bytes": 67854,
+      "sha256": "fd046ce4fc9f7d65e9f25c2f2a22b35b662ffe54ab5d97874faebefe7b714817"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Tests/Playnite.Tests/BackupTests.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.599Z",
+      "bytes": 3150,
+      "sha256": "99a8911564589897c03764f3105cd663b65d0171c455053bfa9e423644d5531d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Database/GameDatabase.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.599Z",
+      "bytes": 65499,
+      "sha256": "6ac9427cbac142bf9de1bb1511c11b32602778d7774fefd9c01a7e841a9e7ba7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/GameAction.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.605Z",
+      "bytes": 12369,
+      "sha256": "bb36da76a902dbc729e9554784cbb4e362b9f974684ca40ab2634ddef9d864ae"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Database/Collections/ItemCollection.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.605Z",
+      "bytes": 23007,
+      "sha256": "71e092c1fd1f298074c4573f555b44fdc30050b89a1c8396d3a84470692c007e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/CompletionStatus.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.613Z",
+      "bytes": 994,
+      "sha256": "0289ad56ff11f1929849fe7b2e0efc0c72035bf5714c49e55131682b3b167382"
+    },
+    {
+      "url": "https://api.github.com/repos/JosefNemec/Playnite/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.619Z",
+      "bytes": 6483,
+      "sha256": "4f2c2a8edeb77369b8d3a391be8ddf15bcf829a85e6560d14e2b95cf88ac198e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Playnite.csproj",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:57:20.787Z",
+      "bytes": 5401,
+      "sha256": "01ae4b172c99719884b184802d5d5b7bcc1844b27425fa0d2a841585f08843f7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/DatabaseObject.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:01:55.738Z",
+      "bytes": 4022,
+      "sha256": "d7c775764c57ce1667f1b581c359ddbc57436deb52fef89a45edae51ce12c10e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Database/DatabaseSettings.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:01:55.738Z",
+      "bytes": 354,
+      "sha256": "42a1b0853722c6a9e3e70164e4e589b224ce209c7260756eacff43947b826fac"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/Emulator.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:01:55.759Z",
+      "bytes": 24694,
+      "sha256": "a9c6f92e75e772d90d6622250b11ba3851add057ca9223f4b6d6e6f52668b4f4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Database/Collections/CompletionStatusesCollection.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:01:55.892Z",
+      "bytes": 2972,
+      "sha256": "331f10b47fc28b812cec4257ff0cfe8ca22c9e06b3875418d6de4d4f1f93e950"
+    },
+    {
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:28.623Z",
+      "bytes": 1100901,
+      "sha256": "8ba714cf0020d35ff4a3cb163376df2f4ccaf8e6e1d7021fcb1bd7dd628299d2"
+    },
+    {
+      "url": "https://api.github.com/repos/litedb-org/LiteDB/git/trees/v4.1.4?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:28.754Z",
+      "bytes": 80035,
+      "sha256": "721cdb7bd8ce1c32d60d414ea5a0e8539660bfbcfa8cc5d330cfc7644c2740bf"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Database/LiteDatabase.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:57.244Z",
+      "bytes": 9063,
+      "sha256": "2798daa004f7e7e64582be9d97565d9ce26852e8ef530952b0c8e1fe1116a703"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Engine/LiteEngine.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:57.300Z",
+      "bytes": 9944,
+      "sha256": "a6cf076afd8fd5bdf2c9e1b4cddd43707f8bc453565bddbb84d166e2ba23e152"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Engine/Engine/Find.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:57.301Z",
+      "bytes": 3435,
+      "sha256": "0cfc09ef6a8c5ac4abacf24b919ac81888c5ec215cf9ec82e379f2db3621a5a0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Utils/ConnectionString.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:04:57.301Z",
+      "bytes": 5041,
+      "sha256": "c27c58248b0c4a3e02820f7ba224c55aaf4e0b9a23fa58e7178df9ca9a8c00cc"
+    },
+    {
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.402/dotnet-sdk-10.0.402-win-x64.zip",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:05:52.525Z",
+      "bytes": 300755826,
+      "sha512": "ae4fd528cb7e9f6af6aaf7de36715a69f761f183744f1bb3025d19f5a92447090ec561410e46266c1d10a63781ed6f3de771760bc76c876d87daabc367b898cd",
+      "kind": "temporary-verification-toolchain"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Utils/FileOptions.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:06:30.632Z",
+      "bytes": 944,
+      "sha256": "75f751c576c90675fa7dcd81bd6d9c1e9831e761e647cb8504387a896b893d5b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Engine/Disks/StreamDiskService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:06:30.639Z",
+      "bytes": 4580,
+      "sha256": "3c3e6d5336eed99e894acfef4cd6d1a9fa63d7d31dcdef8e7f663a23b05faf48"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/litedb-org/LiteDB/v4.1.4/LiteDB/Document/BsonType.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:06:30.819Z",
+      "bytes": 456,
+      "sha256": "c8e9e2a8b18a1d755110b0e37368fc7ad03a3eeb37b8a54dfb378ec50e3f3b77"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Controllers/GameControllerFactory.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:11:45.623Z",
+      "bytes": 6966,
+      "sha256": "59899c4107e8efafc342bed9344df4e0f19b528d02eff8977eef61323fddb910"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/ExpandableVariables.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:11:45.668Z",
+      "bytes": 2663,
+      "sha256": "2dc265223b75509afae5758cf5c74dc3210a66535a3a333c8deb10148d97b8b1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Controllers/GenericGameController.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:11:45.738Z",
+      "bytes": 36098,
+      "sha256": "aee687216e1d2f1a91b2bf3599e0af9bdeb5c8de2ecd197e8e7d75dcd684a468"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Database/Collections/GamesCollection.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:11:45.756Z",
+      "bytes": 7456,
+      "sha256": "eb033c94b4b2aa0c60013ec8e3291ab564aee0ebacc8c45343b4cbb8fc5653df"
+    },
+    {
+      "url": "https://api.github.com/repos/JosefNemec/PlayniteExtensions/git/trees/master?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:14:37.487Z",
+      "bytes": 310164,
+      "sha256": "581acce27e269708d03beaf6f3a6b44101fca0e9c7b61d178f581d3974777c97"
+    },
+    {
+      "url": "https://api.github.com/repos/JosefNemec/PlayniteExtensions/commits/master",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:16:31.291Z",
+      "bytes": 7496,
+      "sha256": "850ddbbb11618e4d3f872d664c95de8db8f2e98e6bc771b42d40a8cbea545066"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/PlayniteExtensions/886468f65724e6fd104f3a09847a17ba57cfb430/source/Libraries/SteamLibrary/SteamLibrary.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:16:31.837Z",
+      "bytes": 4208,
+      "sha256": "a27f3043fa87dfe0246f77d54bb456796191a87baf7d674682e80e376f08036a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/PlayniteExtensions/886468f65724e6fd104f3a09847a17ba57cfb430/source/Libraries/SteamLibrary/extension.yaml",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:16:32.029Z",
+      "bytes": 166,
+      "sha256": "c8331d642a2f4508dfe17d9ccff7d26eeabaf501cba67279e1cf63ac1b06287c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/PlayniteSDK/Models/ReleaseDate.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:16:40.043Z",
+      "bytes": 9113,
+      "sha256": "90b5ca728261d47e8db18ba2354ad7e39f0399d4b18a60b509edb52766202ac9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Extensions/GameExtensions.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:16:40.282Z",
+      "bytes": 17354,
+      "sha256": "1552a1bcbb14fe2f2dda42a5a8791495a05fee64e1442583ee9d8c3529971bec"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/PlayniteExtensions/886468f65724e6fd104f3a09847a17ba57cfb430/source/Libraries/SteamLibrary/SteamGameController.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:23:30.757Z",
+      "bytes": 7136,
+      "sha256": "7134ecb63619a560bc8fb86d898cb898375c1046897548bc633bf841879102a9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite.DesktopApp/Windows/GameEditWindow.xaml",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:27:33.506Z",
+      "bytes": 87779,
+      "sha256": "6f70687ff5ca3b8a6c70d5c4c60ec0655cb345b4b34ed178e4fce8b753e199f7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Common/ProcessStarter.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:27:33.663Z",
+      "bytes": 7087,
+      "sha256": "2588e3282355153c95863e37c4081723af16ff684ead242681e96f08ff750b3f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/JosefNemec/Playnite/ecee01452a25db1fb2674a69f883d298d4c7be8a/source/Playnite/Common/ProcessMonitor.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:27:50.359Z",
+      "bytes": 5473,
+      "sha256": "ce1ec95deb16f3e8309480d06c24d4827e6fa4807a59146ba60ef9422f318bcd"
+    }
+  ],
+  "cleanup": {
+    "temporaryToolsRemoved": false,
+    "reason": "Automatic approval rejected recursive deletion: blocked by policy.",
+    "privateDatabaseCopiesWritten": false
+  }
+}

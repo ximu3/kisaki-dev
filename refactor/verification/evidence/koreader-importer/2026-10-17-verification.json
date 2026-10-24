@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 28,
+  "extension": "KOReader Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceRef": "v2026.07.1",
+  "commit": "9192014d8bd82a91dc1012473be0f238dedfdb54",
+  "baseCommit": "6e4bc81af4e04f78d81677a323a780a71b29702a",
+  "mupdfVersion": "1.27.2",
+  "mupdfCommit": "73d3100d46d8a9ad634f6ef035bbe78f0f947886",
+  "statisticsVersion": 20221111,
+  "releaseEvidence": {
+    "url": "https://api.github.com/repos/koreader/koreader/releases/tags/v2026.07.1",
+    "htmlUrl": "https://github.com/koreader/koreader/releases/tag/v2026.07.1",
+    "status": 200,
+    "checkedAt": "2026-10-17T11:14:01.850637+00:00",
+    "bytes": 37334,
+    "sha256": "d63abcbc42ca11d284324c5ff763ec632beb862641367d0650b890025078aa52",
+    "publishedAt": "2026-08-01T11:10:30Z",
+    "prerelease": false
+  },
+  "sourceFiles": 43,
+  "sourceContract": "source-contract.json",
+  "dependencyContract": "dependency-contract.json",
+  "fixtureManifest": "fixture-manifest.json",
+  "sourceApplicationExecuted": false,
+  "luaCodeExecuted": false,
+  "astParserLibraryExecuted": true,
+  "sourceRendererExecuted": false,
+  "productionImporterExecuted": false,
+  "inputFiles": 33,
+  "checks": {
+    "luaData": 32,
+    "byteAndMapping": 107,
+    "totalPassed": 139,
+    "failed": 0,
+    "allInputsUnchanged": true
+  },
+  "results": ["lua-results.json", "synthetic-results.json"],
+  "notClaimed": [
+    "Real KOReader user data or application execution.",
+    "Exact pinned MuPDF binary, PDF.js or Kana round trip.",
+    "XPointer conversion, unknown legacy annotations or approximate page offsets.",
+    "Missing geometry reconstructed from JSON, title or quote matching.",
+    "Source raw page records as actual continuous activity intervals.",
+    "Native Kisaki writes and all-platform independent extension artifacts."
+  ],
+  "inputSelection": "Book directory and optional KOReader data directory; detect supported inputs within the selected roots. Official note exports use a separate file input."
+}

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Game>
+    <ID>11111111-1111-4111-8111-111111111111</ID>
+    <DatabaseID>700001</DatabaseID>
+    <Title>Aster: Memory</Title>
+    <SortTitle>Aster Memory</SortTitle>
+    <Platform>Windows</Platform>
+    <ApplicationPath>Games\Aster\play.exe</ApplicationPath>
+    <RootFolder>Games\Aster</RootFolder>
+    <CommandLine>--language "zh CN" --literal "a&amp;b"</CommandLine>
+    <Notes>Source description.
+Literal &lt;placeholder&gt; &amp; personal edits are possible.</Notes>
+    <StarRatingFloat>3.75</StarRatingFloat>
+    <StarRating>3</StarRating>
+    <CommunityStarRating>4.9</CommunityStarRating>
+    <Favorite>true</Favorite>
+    <Completed>true</Completed>
+    <PlayCount>17</PlayCount>
+    <PlayTime>3661</PlayTime>
+    <LastPlayedDate>2026-10-01T22:30:00+08:00</LastPlayedDate>
+    <DateAdded>2020-01-02T23:30:00-05:00</DateAdded>
+    <ReleaseDate>2008-08-28T00:00:00+09:00</ReleaseDate>
+    <Genre>Visual Novel; Adventure</Genre>
+    <PlayMode>Single Player</PlayMode>
+    <Series>Aster</Series>
+    <Developer>Example Studio</Developer>
+    <Rating>Not Rated</Rating>
+    <Status>Imported from a local folder</Status>
+    <Hide>false</Hide>
+  </Game>
+  <Game>
+    <ID>22222222-2222-4222-8222-222222222222</ID>
+    <DatabaseID>700002</DatabaseID>
+    <Title>Aster Return</Title>
+    <Platform>Windows</Platform>
+    <ApplicationPath>steam://rungameid/123456</ApplicationPath>
+    <StarRatingFloat>0</StarRatingFloat>
+    <StarRating>5</StarRating>
+    <CommunityStarRating>4.8</CommunityStarRating>
+    <Favorite>false</Favorite>
+    <Completed>true</Completed>
+    <Progress>Done / Dropped</Progress>
+    <PlayTime>0</PlayTime>
+    <PlayCount>9</PlayCount>
+  </Game>
+  <Game>
+    <ID>33333333-3333-4333-8333-333333333333</ID>
+    <Title>Quiet 星</Title>
+    <Platform>Windows</Platform>
+    <ApplicationPath />
+    <Progress>My shelf / Replay someday</Progress>
+    <PlayTime>9007199254740992</PlayTime>
+    <UnknownFutureField>Do not infer a native field</UnknownFutureField>
+  </Game>
+  <AdditionalApplication>
+    <Id>aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1</Id>
+    <GameID>11111111-1111-4111-8111-111111111111</GameID>
+    <Name>Primary version</Name>
+    <ApplicationPath>Games\Aster\play.exe</ApplicationPath>
+    <CommandLine>--language "zh CN" --literal "a&amp;b"</CommandLine>
+    <AutoRunBefore>false</AutoRunBefore>
+    <AutoRunAfter>false</AutoRunAfter>
+    <UseEmulator>false</UseEmulator>
+    <PlayTime>3661</PlayTime>
+    <PlayCount>17</PlayCount>
+    <Version>Main</Version>
+  </AdditionalApplication>
+  <AdditionalApplication>
+    <Id>aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2</Id>
+    <GameID>11111111-1111-4111-8111-111111111111</GameID>
+    <Name>Second playable version</Name>
+    <ApplicationPath>Games\Aster\other.exe</ApplicationPath>
+    <AutoRunBefore>false</AutoRunBefore>
+    <AutoRunAfter>false</AutoRunAfter>
+    <UseEmulator>false</UseEmulator>
+    <PlayTime>600</PlayTime>
+    <Version>Alternate</Version>
+    <Region>Japan</Region>
+  </AdditionalApplication>
+  <AdditionalApplication>
+    <Id>aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3</Id>
+    <GameID>11111111-1111-4111-8111-111111111111</GameID>
+    <Name>Setup helper</Name>
+    <ApplicationPath>Tools\helper.cmd</ApplicationPath>
+    <AutoRunBefore>true</AutoRunBefore>
+    <AutoRunAfter>false</AutoRunAfter>
+    <UseEmulator>false</UseEmulator>
+    <PlayTime>20</PlayTime>
+    <WaitForExit>true</WaitForExit>
+  </AdditionalApplication>
+  <CustomField>
+    <GameID>11111111-1111-4111-8111-111111111111</GameID>
+    <Name>Personal memo</Name>
+    <Value>Two lines
+with &lt;literal&gt; text.</Value>
+  </CustomField>
+  <CustomField>
+    <GameID>22222222-2222-4222-8222-222222222222</GameID>
+    <Name>Shelf</Name>
+    <Value>Wishlist; maybe</Value>
+  </CustomField>
+</LaunchBox>

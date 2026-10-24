@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "status": "design-confirmed",
+  "projects": [
+    {
+      "ordinal": 31,
+      "project": "language-zh-hans",
+      "extensionId": "kisaki.language.zh-hans",
+      "translationId": "simplified-chinese",
+      "locale": "zh-Hans",
+      "name": "简体中文",
+      "editorialBaseline": "Mainland Simplified Chinese",
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "status": "design-confirmed"
+    },
+    {
+      "ordinal": 32,
+      "project": "language-zh-hant",
+      "extensionId": "kisaki.language.zh-hant",
+      "translationId": "traditional-chinese",
+      "locale": "zh-Hant",
+      "name": "繁體中文",
+      "editorialBaseline": "Taiwan Traditional Chinese, explicitly selected by the user",
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "status": "design-confirmed"
+    },
+    {
+      "ordinal": 33,
+      "project": "language-ja",
+      "extensionId": "kisaki.language.ja",
+      "translationId": "japanese",
+      "locale": "ja",
+      "name": "日本語",
+      "editorialBaseline": "Natural Japanese UI labels and polite explanatory sentences",
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "status": "design-confirmed"
+    }
+  ],
+  "traditionalChineseWording": "Taiwan usage explicitly selected by the user",
+  "checks": {
+    "sharedTotalPassed": 133,
+    "failed": 0,
+    "representativeKeysPerLocale": 37,
+    "inputFiles": 5
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "icu": "77.1",
+    "typescript": "6.0.3"
+  },
+  "dependencies": [
+    {
+      "name": "intl-messageformat",
+      "version": "12.1.3",
+      "license": "BSD-3-Clause",
+      "entryBytes": 11253,
+      "entrySha256": "3ceb9d7ec736c5d3e4efb05b76878f633b80d3315d1ce75cdf15984d1269e78d"
+    },
+    {
+      "name": "@formatjs/icu-messageformat-parser",
+      "version": "3.5.21",
+      "license": "MIT",
+      "entryBytes": 45919,
+      "entrySha256": "f7bf90326363a7019be2f9b2f05acc2149a27b15e1c33adde91d09ae3f902a08"
+    },
+    {
+      "name": "@formatjs/intl-localematcher",
+      "version": "0.9.0",
+      "license": "MIT",
+      "entryBytes": 63272,
+      "entrySha256": "8231e86893c5341360f06bf438791708f88d69f1a4cf0871ebf0d6f4cb9b56eb"
+    }
+  ],
+  "nativeHostExecuted": false,
+  "browserOrWebviewExecuted": false,
+  "officialTranslationsComplete": false,
+  "evidence": [
+    "dependency-contract.json",
+    "fixture-manifest.json",
+    "existing-catalog-inventory.json",
+    "probe-results.json",
+    "generated-contract.test.ts"
+  ],
+  "notClaimed": [
+    "Full official message catalogs or complete editorial review.",
+    "The production i18n implementation or public SDK type generator.",
+    "Real browser, Webview, native menu or multi-window behavior.",
+    "Actual installation, updates, recovery timers or six-platform packages."
+  ]
+}

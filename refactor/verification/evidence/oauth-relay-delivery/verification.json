@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-21T08:00:30.150947+00:00",
+  "savedArtifactHashesMatch": true,
+  "savedReceiptHashesMatch": true,
+  "composeLiteralValuesPreserved": true,
+  "defaultParserChangedFields": 2,
+  "nodeShutdownCases": 2,
+  "baseImagePlatforms": ["linux/amd64", "linux/arm64"],
+  "supportingSources": [
+    {
+      "url": "https://raw.githubusercontent.com/docker/compose/v5.6.0/cmd/compose/config.go",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\compose-command.txt",
+      "sha256": "5a15bf03e276d9945a96b8b11a646a3bff7a146d1a36a22216b075848c76a502"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.22.0/lib/_http_server.js",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\node-http.txt",
+      "sha256": "cd81e1020a8f2b3f6731b2db28648d889ec99db4fbff45ed608821bcc4209be9"
+    }
+  ],
+  "receipts": {
+    "source-input.json": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+    "compose-contract.json": "6e09e3d6c6c0c2dd3a312db5e8eed8745a440c9fa9e0d0431ddc60bca2e10b0d",
+    "lifecycle-contract.json": "1b78de13dd1bdd65303f6603da5fa17c31ab16da3a24ba966610ab9f6a784705",
+    "initial-observations.json": "c827683ef0e6bae3d1356880ec42e1cac5815fabdf751bd7b5a7e9abdaea0d8d"
+  },
+  "blueprints": {
+    "Dockerfile": "9b92d4744cd37c734caa2219bf83724d306a2306d82205d411c1b41e6d5b1785",
+    ".dockerignore": "81f8972a67311848d763134c14fd19f28914261b2678998717f0f42deb00fdfa",
+    "compose.yaml": "2a747a76f2ae85e997d5ed16471a976e2df93fac8118252e4994e46afb9b9531",
+    ".env.example": "9ca5f3b0e2a438168e8b717067caa178b5ef4e5360ac93d1bee5ea09c0c5cdec"
+  },
+  "verificationSha256": "3b106b19d130ad056d98fa0ed41030ab6bfd94d1af6c3b1492948b42655e1d07",
+  "networkRequestsExecuted": false,
+  "nativeFixturesRerun": false,
+  "imageBuilt": false,
+  "containerStarted": false,
+  "realCredentialsUsed": false
+}

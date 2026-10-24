@@ -1,0 +1,764 @@
+{
+  "verifiedAt": "2026-10-21T10:10:48.625Z",
+  "kind": "Source API verification; not a production extension test",
+  "fixtureMovie": 129,
+  "applicationOriginConfirmedByUser": true,
+  "authorizationPerformedWithExplicitUserPermission": true,
+  "credentialPersistence": false,
+  "accountProfilePersisted": false,
+  "requestCount": 58,
+  "requests": [
+    {
+      "label": "createRequestToken",
+      "method": "POST",
+      "endpoint": "/4/auth/request_token",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "createConfirmedApplicationRequest",
+      "method": "POST",
+      "endpoint": "/4/auth/request_token",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "exchangeUserAccessToken",
+      "method": "POST",
+      "endpoint": "/4/auth/access_token",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "convertUserTokenToSession",
+      "method": "POST",
+      "endpoint": "/3/authentication/session/convert/4",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": true
+    },
+    {
+      "label": "accountWithV3Session",
+      "method": "GET",
+      "endpoint": "/3/account",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "accountWithUserBearer",
+      "method": "GET",
+      "endpoint": "/3/account",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "fixtureMovie",
+      "method": "GET",
+      "endpoint": "/3/movie/129",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "fixtureInitialAccountState",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "favoriteOn",
+      "method": "POST",
+      "endpoint": "/3/account/{id}/favorite",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "favoriteOnReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "favoriteMoviesReadback",
+      "method": "GET",
+      "endpoint": "/3/account/{id}/favorite/movies",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "favoriteOff",
+      "method": "POST",
+      "endpoint": "/3/account/{id}/favorite",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "favoriteOffReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "watchlistBeforeRating",
+      "method": "POST",
+      "endpoint": "/3/account/{id}/watchlist",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "watchlistBeforeRatingReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "rating0.5",
+      "method": "POST",
+      "endpoint": "/3/movie/129/rating",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "rating0.5Readback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "rating8.5",
+      "method": "POST",
+      "endpoint": "/3/movie/129/rating",
+      "httpStatus": 201,
+      "providerStatus": 12,
+      "success": true
+    },
+    {
+      "label": "rating8.5Readback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "rating10",
+      "method": "POST",
+      "endpoint": "/3/movie/129/rating",
+      "httpStatus": 201,
+      "providerStatus": 12,
+      "success": true
+    },
+    {
+      "label": "rating10Readback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "rating10Readback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "ratedMoviesReadback",
+      "method": "GET",
+      "endpoint": "/3/account/{id}/rated/movies",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "selectedWatchlistAfterRating",
+      "method": "POST",
+      "endpoint": "/3/account/{id}/watchlist",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "selectedRatingAndWatchlistReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "watchlistMoviesReadback",
+      "method": "GET",
+      "endpoint": "/3/account/{id}/watchlist/movies",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "watchlistOff",
+      "method": "POST",
+      "endpoint": "/3/account/{id}/watchlist",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "watchlistOffReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "deleteFixtureRating",
+      "method": "DELETE",
+      "endpoint": "/3/movie/129/rating",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "ratingDeleteReadback",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "personalCleanupInspect",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "personalFixtureRestored",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "createPrivateFixtureList",
+      "method": "POST",
+      "endpoint": "/4/list",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "addFixtureToPrivateList",
+      "method": "POST",
+      "endpoint": "/4/list/{id}/items",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "readPrivateFixtureList",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "deletePrivateFixtureList",
+      "method": "DELETE",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "privateFixtureListAfterDelete",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 404,
+      "providerStatus": 34,
+      "success": false
+    },
+    {
+      "label": "ownerListEnumerationAfterDelete",
+      "method": "GET",
+      "endpoint": "/4/account/{id}/lists",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "createPrivateFixtureForFieldCheck",
+      "method": "POST",
+      "endpoint": "/4/list",
+      "httpStatus": 201,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "addPrivateFixtureForFieldCheck",
+      "method": "POST",
+      "endpoint": "/4/list/{id}/items",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "readPrivateFixtureFieldShape",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "deleteUnexpectedVisibilityFixture",
+      "method": "DELETE",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "unexpectedVisibilityFixtureAfterDelete",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 404,
+      "providerStatus": 34,
+      "success": false
+    },
+    {
+      "label": "enumerationAfterUnexpectedVisibilityDelete",
+      "method": "GET",
+      "endpoint": "/4/account/{id}/lists",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "enumerateWebsitePrivateFixture",
+      "method": "GET",
+      "endpoint": "/4/account/{id}/lists",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "websitePrivateFixtureDetails",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "addMovieToWebsitePrivateFixture",
+      "method": "POST",
+      "endpoint": "/4/list/{id}/items",
+      "httpStatus": 200,
+      "providerStatus": 1,
+      "success": true
+    },
+    {
+      "label": "websitePrivateFixtureItemReadback",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "websiteFixtureOwnerEnumeration",
+      "method": "GET",
+      "endpoint": "/4/account/{id}/lists",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "privateListReadWithApplicationOnly",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "deleteWebsitePrivateFixture",
+      "method": "DELETE",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "websiteFixtureAfterDelete",
+      "method": "GET",
+      "endpoint": "/4/list/{id}",
+      "httpStatus": 404,
+      "providerStatus": 34,
+      "success": false
+    },
+    {
+      "label": "ownerListsAfterAllFixtureDeletion",
+      "method": "GET",
+      "endpoint": "/4/account/{id}/lists",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "finalPersonalStateBeforeRevocation",
+      "method": "GET",
+      "endpoint": "/3/movie/129/account_states",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": null
+    },
+    {
+      "label": "revokeCreatedV3Session",
+      "method": "DELETE",
+      "endpoint": "/3/authentication/session",
+      "httpStatus": 200,
+      "providerStatus": null,
+      "success": true
+    },
+    {
+      "label": "verifyCreatedV3SessionRevoked",
+      "method": "GET",
+      "endpoint": "/3/account",
+      "httpStatus": 401,
+      "providerStatus": 3,
+      "success": false
+    },
+    {
+      "label": "revokeCreatedUserToken",
+      "method": "DELETE",
+      "endpoint": "/4/auth/access_token",
+      "httpStatus": 200,
+      "providerStatus": 13,
+      "success": true
+    },
+    {
+      "label": "verifyCreatedUserTokenRevoked",
+      "method": "GET",
+      "endpoint": "/3/account",
+      "httpStatus": 401,
+      "providerStatus": 3,
+      "success": false
+    }
+  ],
+  "assertions": [
+    {
+      "name": "v4AuthorizationAndV3SessionSameAccount",
+      "passed": true
+    },
+    {
+      "name": "favoriteOnAccepted",
+      "passed": true
+    },
+    {
+      "name": "favoriteOnReadback",
+      "passed": true,
+      "detail": {
+        "rating": false,
+        "favorite": true,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "favoriteListContainsFixture",
+      "passed": true
+    },
+    {
+      "name": "favoriteOffAccepted",
+      "passed": true
+    },
+    {
+      "name": "favoriteOffReadback",
+      "passed": true,
+      "detail": {
+        "rating": false,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "watchlistBeforeRatingAccepted",
+      "passed": true
+    },
+    {
+      "name": "watchlistBeforeRatingReadback",
+      "passed": true,
+      "detail": {
+        "rating": false,
+        "favorite": false,
+        "watchlist": true
+      }
+    },
+    {
+      "name": "rating0.5Accepted",
+      "passed": true
+    },
+    {
+      "name": "rating0.5Readback",
+      "passed": true,
+      "detail": {
+        "rating": 0.5,
+        "favorite": false,
+        "watchlist": true
+      }
+    },
+    {
+      "name": "rating8.5Accepted",
+      "passed": true
+    },
+    {
+      "name": "rating8.5Readback",
+      "passed": true,
+      "detail": {
+        "rating": 8.5,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "rating10Accepted",
+      "passed": true
+    },
+    {
+      "name": "rating10Readback",
+      "passed": true,
+      "detail": {
+        "rating": 10,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "ratedListContainsFixture",
+      "passed": true
+    },
+    {
+      "name": "selectedWatchlistAfterRatingAccepted",
+      "passed": true
+    },
+    {
+      "name": "selectedRatingAndWatchlistReadback",
+      "passed": true,
+      "detail": {
+        "rating": 10,
+        "favorite": false,
+        "watchlist": true
+      }
+    },
+    {
+      "name": "watchlistContainsFixture",
+      "passed": true
+    },
+    {
+      "name": "watchlistOffAccepted",
+      "passed": true
+    },
+    {
+      "name": "watchlistOffReadback",
+      "passed": true,
+      "detail": {
+        "rating": 10,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "ratingDeleteAccepted",
+      "passed": true
+    },
+    {
+      "name": "ratingDeleteReadback",
+      "passed": true,
+      "detail": {
+        "rating": false,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "personalFixtureRestored",
+      "passed": true,
+      "detail": {
+        "rating": false,
+        "favorite": false,
+        "watchlist": false
+      }
+    },
+    {
+      "name": "privateListCreated",
+      "passed": true
+    },
+    {
+      "name": "privateListFixtureAdded",
+      "passed": true
+    },
+    {
+      "name": "privateListOwnerRead",
+      "passed": false
+    },
+    {
+      "name": "privateListRemoved",
+      "passed": true,
+      "detail": {
+        "deleteHttpStatus": 200,
+        "readHttpStatus": 404
+      }
+    },
+    {
+      "name": "privateListAbsentFromEnumeration",
+      "passed": true
+    },
+    {
+      "name": "websiteFixtureConfirmedPrivateBeforeAdding",
+      "passed": true
+    },
+    {
+      "name": "websitePrivateFixtureItemAccepted",
+      "passed": true
+    },
+    {
+      "name": "privateListContentReadWithUserToken",
+      "passed": true
+    },
+    {
+      "name": "privateListEnumeratedForOwner",
+      "passed": true
+    },
+    {
+      "name": "privateListApplicationOnlyRejected",
+      "passed": false,
+      "detail": {
+        "httpStatus": 200
+      }
+    },
+    {
+      "name": "websitePrivateFixtureCleaned",
+      "passed": true
+    },
+    {
+      "name": "finalPersonalStateClean",
+      "passed": true
+    }
+  ],
+  "sourceConclusions": {
+    "v4AndV3Identity": true,
+    "personalFieldRoundTrips": true,
+    "privateOwnerListReading": true,
+    "allFixturesAndCreatedAuthorizationsCleaned": true
+  },
+  "observations": [
+    {
+      "name": "createListPublicFalseReturnedPublicTrue",
+      "requestedPublic": false,
+      "returnedPublic": true,
+      "firstAttempt": "Compound assertion failed; the response body was not retained.",
+      "secondAttempt": "Narrow field check observed public=true.",
+      "cleanup": "Both API-created lists deleted and returned 404."
+    },
+    {
+      "name": "applicationReadTokenAccessedOwnerPrivateFixture",
+      "httpStatus": 200,
+      "scope": "Only the tested application-owner/user combination. No cross-account conclusion."
+    },
+    {
+      "name": "ratingWatchlistReadbackOrder",
+      "observations": [
+        {
+          "rating": 0.5,
+          "watchlist": true
+        },
+        {
+          "rating": 8.5,
+          "watchlist": false
+        },
+        {
+          "rating": 10,
+          "watchlist": false
+        }
+      ],
+      "scope": "The first 0.5 rating readback still reported watchlist=true; the subsequent 8.5 and 10 readbacks reported false. No account setting was changed."
+    },
+    {
+      "name": "privateListPublicFieldTypes",
+      "value": {
+        "detailsPublicValue": false,
+        "detailsPublicType": "boolean",
+        "enumerationPublicValue": 0,
+        "enumerationPublicType": "number",
+        "contentPage": 1,
+        "contentTotalPages": 1,
+        "accountPage": 1,
+        "accountTotalPages": 1
+      }
+    },
+    {
+      "name": "listDeleteDocumentPathDifference",
+      "documentPath": "/4/{list_id}",
+      "executedPath": "/4/list/{list_id}",
+      "httpStatus": 200
+    }
+  ],
+  "cleanup": {
+    "personalRecords": {
+      "rating": false,
+      "favorite": false,
+      "watchlist": false
+    },
+    "privateListDeleteAccepted": true,
+    "privateListUnavailable": true,
+    "privateListAbsentFromEnumeration": true,
+    "secondListDeleteAccepted": true,
+    "secondListUnavailable": true,
+    "secondListAbsentFromEnumeration": true,
+    "thirdListDeleteAccepted": true,
+    "thirdListUnavailable": true,
+    "thirdListAbsentFromEnumeration": true,
+    "v3SessionDeleted": true,
+    "v3SessionRejected": true,
+    "userTokenDeleted": true,
+    "userTokenRejected": true
+  },
+  "scope": {
+    "listsCreatedForVerification": 3,
+    "apiCreatedLists": 2,
+    "websiteCreatedPrivateLists": 1,
+    "existingListsModified": false,
+    "existingPersonalRecordsModified": false,
+    "accountPreferencesModified": false,
+    "privateListCrossAccountAuthorizationTested": false,
+    "multiplePageDatasetTested": false,
+    "productionExtensionExecuted": false
+  }
+}

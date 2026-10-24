@@ -1,0 +1,130 @@
+{
+  "checkedAt": "2026-10-19T09:14:04.446Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "platform": "win32",
+  "arch": "x64",
+  "checks": {
+    "isolation": {
+      "sameOriginInspection": true,
+      "bookScriptsBlocked": true,
+      "hostStyleUnaffected": true,
+      "authorizedImageLoaded": true,
+      "productionSanitizerTested": false
+    },
+    "nativeCrossDocumentRange": {
+      "collapsed": true,
+      "startsInSecondDocument": true
+    },
+    "selection": {
+      "realPointerCrossedFrames": true,
+      "pointerCapture": true,
+      "pointerMoves": 8,
+      "sourceOffsets": {
+        "start": {
+          "chapter": 0,
+          "offset": 5
+        },
+        "end": {
+          "chapter": 1,
+          "offset": 16
+        }
+      },
+      "quote": "er one: 甲乙😀丙丁 and ruby.\nChapter two: 戊己庚",
+      "localHighlightCount": 2,
+      "geometryChanged": true,
+      "sourceUnchanged": true,
+      "verticalLayout": "vertical-rl",
+      "keyboardAutoscrollClipboardAndReopenTested": false,
+      "standardCfiRoundTripTested": false
+    },
+    "zip": {
+      "version": "2.24.0",
+      "inputBytes": 8388859,
+      "readBytes": 65733,
+      "requests": 4,
+      "memberDecoded": true
+    },
+    "pdf": {
+      "version": "6.4.299",
+      "workerUsed": true,
+      "inputBytes": 8389332,
+      "readBytes": 66260,
+      "requests": 2,
+      "cropBox": [
+        20,
+        40,
+        180,
+        260
+      ],
+      "userUnit": 2,
+      "rotate": 90,
+      "rendered": true,
+      "inkPixels": 1351,
+      "textExtracted": true,
+      "viewportRoundTrip": true,
+      "transportAbortedOnDestroy": true,
+      "fullTextLayerSelectionAndMemoryLimitTested": false
+    }
+  },
+  "violations": [
+    "font-src"
+  ],
+  "scope": "Isolated Windows Chromium browser-mechanism proof, not a complete reader or format-conformance test",
+  "externalRequests": [],
+  "sourceRequests": [
+    {
+      "route": "/bytes/large.zip",
+      "begin": 8323302,
+      "end": 8388859
+    },
+    {
+      "route": "/bytes/large.zip",
+      "begin": 8388722,
+      "end": 8388837
+    },
+    {
+      "route": "/bytes/large.zip",
+      "begin": 8388648,
+      "end": 8388678
+    },
+    {
+      "route": "/bytes/large.zip",
+      "begin": 8388691,
+      "end": 8388722
+    },
+    {
+      "route": "/bytes/doc.pdf",
+      "begin": 0,
+      "end": 32768
+    },
+    {
+      "route": "/bytes/doc.pdf",
+      "begin": 8355840,
+      "end": 8389332
+    }
+  ],
+  "sources": {
+    "reading-probe.html": "33f0779518a546baca8f0addad99380a569c3d4642b83af51c642fc319d2c19b",
+    "reading-probe.mjs": "d911502f927972e801d73670a3b14c3b0f3b070126a6edccdea8302608424bad",
+    "reading-electron.cjs": "dcb7616efc9deaffe5779c20f9fe4f988b4c9377ccb2a4b1752b35deebc1826c",
+    "run-reading-probe.py": "c31d5a1f9ad99ad0fc3c863a1324d99b02747eef11cd6646865efb599d09f094"
+  },
+  "dependencies": {
+    "pdf": {
+      "version": "6.4.299",
+      "tarballSha256": "86269b40170eb41740ea05ad2102d71d33de4f122b34eb2f478be0ea7779c415"
+    },
+    "zip": {
+      "version": "2.24.0",
+      "tarballSha256": "37fe939b7eaf1edc0291fd11c9de5b0814f91b259951489f95ed6f18f5c2db46"
+    }
+  },
+  "fixtures": {
+    "doc.pdf": "d8a21f86be8a093709fa1e03295cb28e01f5bbd10cc969876adb4c80bf4a42ab",
+    "large.zip": "5177826ae3324e9606f038a4a88eed5b146b5990ff347d2fedbfc5706118364d"
+  },
+  "kanaImplementationExecuted": false,
+  "rarDecoderExecuted": false,
+  "mobiDecoderExecuted": false
+}

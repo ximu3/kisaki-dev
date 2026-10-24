@@ -1,0 +1,344 @@
+{
+  "checkedAt": "2026-10-18T10:09:54.451902+00:00",
+  "revisions": {
+    "design": "41f6a645068483470267271e1d09966ca3b9f413",
+    "probe": "01e2533f3143b8940857ca419b0b367f583e05ca"
+  },
+  "comparisons": [
+    {
+      "path": "include/mpv/render.h",
+      "sameFile": false,
+      "diff": [
+        "--- \n",
+        "+++ \n",
+        "@@ -50,4 +50,5 @@\n",
+        "  * ------------------",
+        "  *",
+        "+ * Direct3D 11: via MPV_RENDER_API_TYPE_D3D11, see render_d3d11.h header.",
+        "  * OpenGL: via MPV_RENDER_API_TYPE_OPENGL, see render_gl.h header.",
+        "  * Software: via MPV_RENDER_API_TYPE_SW, see section \"Software renderer\"",
+        "@@ -214,6 +215,7 @@\n",
+        "      * Type: int*",
+        "      * This implies the depth of the surface passed to the render function in",
+        "-     * bits per channel. If omitted or set to 0, the renderer will assume 8.",
+        "-     * Typically used to control dithering.",
+        "+     * bits per channel. If omitted or set to 0, the renderer will use the",
+        "+     * depth of the texture format with the Direct3D 11 backend, and assume 8",
+        "+     * otherwise. Typically used to control dithering.",
+        "      */",
+        "     MPV_RENDER_PARAM_DEPTH = 5,",
+        "@@ -423,4 +425,15 @@\n",
+        "      */",
+        "     MPV_RENDER_PARAM_SW_POINTER = 20,",
+        "+    /**",
+        "+     * Required parameters for initializing the Direct3D 11 renderer. Valid",
+        "+     * for mpv_render_context_create().",
+        "+     * Type: mpv_d3d11_init_params*",
+        "+     */",
+        "+    MPV_RENDER_PARAM_D3D11_INIT_PARAMS = 21,",
+        "+    /**",
+        "+     * Describes a D3D11 render target. Valid for mpv_render_context_render().",
+        "+     * Type: mpv_d3d11_fbo*",
+        "+     */",
+        "+    MPV_RENDER_PARAM_D3D11_FBO = 22,",
+        " } mpv_render_param_type;",
+        " ",
+        "@@ -465,4 +478,6 @@\n",
+        "  * Predefined values for MPV_RENDER_PARAM_API_TYPE.",
+        "  */",
+        "+// See render_d3d11.h",
+        "+#define MPV_RENDER_API_TYPE_D3D11 \"d3d11\"",
+        " // See render_gl.h",
+        " #define MPV_RENDER_API_TYPE_OPENGL \"opengl\""
+      ]
+    },
+    {
+      "path": "include/mpv/render_gl.h",
+      "sameFile": true
+    },
+    {
+      "path": "video/out/vo_libmpv.c",
+      "sameFile": false,
+      "diff": [
+        "--- \n",
+        "+++ \n",
+        "@@ -360,5 +360,5 @@\n",
+        "             struct mp_rect src, dst;",
+        "             struct mp_osd_res osd;",
+        "-            mp_get_src_dst_rects(ctx->log, ctx->vo_opts, ctx->vo->driver->caps,",
+        "+            mp_get_src_dst_rects(ctx->log, ctx->vo_opts, ctx->renderer->driver_caps,",
+        "                                 &ctx->img_params, vp_w, abs(vp_h),",
+        "                                 1.0, &src, &dst, &osd);"
+      ]
+    },
+    {
+      "path": "video/out/gpu/libmpv_gpu.c",
+      "sameFile": false,
+      "diff": [
+        "--- \n",
+        "+++ \n",
+        "@@ -7,4 +7,7 @@\n",
+        " ",
+        " static const struct libmpv_gpu_context_fns *context_backends[] = {",
+        "+#if HAVE_D3D11",
+        "+    &libmpv_gpu_context_d3d11,",
+        "+#endif",
+        " #if HAVE_GL",
+        "     &libmpv_gpu_context_gl,",
+        "@@ -182,4 +185,6 @@\n",
+        "     int depth = *(int *)get_mpv_render_param(params, MPV_RENDER_PARAM_DEPTH,",
+        "                                              &(int){0});",
+        "+    if (!depth)",
+        "+        depth = tex->params.format->component_depth[0];",
+        "     gl_video_set_fb_depth(p->renderer, depth);",
+        " "
+      ]
+    },
+    {
+      "path": "player/screenshot.c",
+      "sameFile": false,
+      "diff": [
+        "--- \n",
+        "+++ \n",
+        "@@ -34,4 +34,5 @@\n",
+        " #include \"misc/thread_tools.h\"",
+        " #include \"common/msg.h\"",
+        "+#include \"demux/demux.h\"",
+        " #include \"options/path.h\"",
+        " #include \"video/mp_image.h\"",
+        "@@ -41,4 +42,5 @@\n",
+        " #include \"video/sws_utils.h\"",
+        " #include \"sub/osd.h\"",
+        "+#include \"stream/stream.h\"",
+        " ",
+        " #include \"video/csputils.h\"",
+        "@@ -67,12 +69,4 @@\n",
+        "         .log = mp_log_new(mpctx, mpctx->log, \"screenshot\")",
+        "     };",
+        "-}",
+        "-",
+        "-static char *stripext(void *talloc_ctx, const char *s)",
+        "-{",
+        "-    const char *end = strrchr(s, '.');",
+        "-    if (!end)",
+        "-        end = s + strlen(s);",
+        "-    return talloc_asprintf(talloc_ctx, \"%.*s\", (int)(end - s), s);",
+        " }",
+        " ",
+        "@@ -176,14 +170,21 @@\n",
+        "         case 'f':",
+        "         case 'F': {",
+        "-            char *video_file = NULL;",
+        "-            if (mpctx->filename)",
+        "-                video_file = mp_basename(mpctx->filename);",
+        "-",
+        "-            if (!video_file)",
+        "-                video_file = \"NO_FILE\";",
+        "-",
+        "-            char *name = video_file;",
+        "+            const char *name;",
+        "+            if (!mpctx->filename) {",
+        "+                name = \"NO_FILE\";",
+        "+            } else if (mpctx->demuxer && mpctx->demuxer->server_filename) {",
+        "+                name = mpctx->demuxer->server_filename;",
+        "+            } else {",
+        "+                if (bstr_endswith0(bstr0(mpctx->filename), \"/\")) {",
+        "+                    name = mpctx->filename;",
+        "+                } else {",
+        "+                    name = mp_basename(mpctx->filename);",
+        "+                }",
+        "+                if (mp_is_url(bstr0(mpctx->filename)))",
+        "+                    name = mp_url_unescape(res, name);",
+        "+            }",
+        "+",
+        "             if (fmt == 'F')",
+        "-                name = stripext(res, video_file);",
+        "+                name = bstrto0(res, mp_strip_ext(bstr0(name)));",
+        "             append_filename(&res, name);",
+        "             break;",
+        "@@ -232,11 +233,18 @@\n",
+        "         case 't': {",
+        "             char tfmt = *template;",
+        "-            if (!tfmt)",
+        "+            // Translate common extensions to the closest alternative.",
+        "+            size_t i = strcspn(\"sklPaAbBcCdDeFgGhHIjmMnprRStTuUVwWxXyYzZ%\", (char[]){tfmt, '\\0'});",
+        "+            tfmt =             \"sHIpaAbBcCdDeFgGhHIjmMnprRStTuUVwWxXyYzZ%\"[i];",
+        "+            if (!tfmt || !local_time)",
+        "                 goto error_exit;",
+        "             template++;",
+        "-            char fmtstr[] = {'%', tfmt, '\\0'};",
+        "             char buffer[80];",
+        "-            if (strftime(buffer, sizeof(buffer), fmtstr, local_time) == 0)",
+        "-                buffer[0] = '\\0';",
+        "+            if (tfmt == 's') {",
+        "+                snprintf(buffer, sizeof(buffer), \"%\"PRId64, (int64_t)raw_time);",
+        "+            } else {",
+        "+                char fmtstr[] = {'%', tfmt, '\\0'};",
+        "+                if (strftime(buffer, sizeof(buffer), fmtstr, local_time) == 0)",
+        "+                    buffer[0] = '\\0';",
+        "+            }",
+        "             append_filename(&res, buffer);",
+        "             break;",
+        "@@ -301,7 +309,4 @@\n",
+        "             dir = mp_get_user_path(t, ctx->mpctx->global, dir);",
+        "             fname = mp_path_join(NULL, dir, fname);",
+        "-",
+        "-            mp_mkdirp(dir);",
+        "-",
+        "             talloc_free(t);",
+        "         }",
+        "@@ -378,5 +383,5 @@\n",
+        " ",
+        "     // vo_get_current_frame() can return a hardware frame, which we have to download first.",
+        "-    if (image && image->fmt.flags & MP_IMGFLAG_HWACCEL) {",
+        "+    if (image && IMGFMT_IS_HWACCEL(image->imgfmt)) {",
+        "         struct mp_image *nimage = mp_image_hw_download(image, NULL);",
+        "         talloc_free(image);",
+        "@@ -489,6 +494,5 @@\n",
+        "     struct image_writer_opts opts = *mpctx->opts->screenshot_image_opts;",
+        " ",
+        "-    char *ext = mp_splitext(filename, NULL);",
+        "-    int format = image_writer_format_from_ext(ext);",
+        "+    int format = image_writer_format_from_ext(mp_get_ext(bstr0(filename)));",
+        "     if (format)",
+        "         opts.format = format;"
+      ]
+    },
+    {
+      "path": "options/m_config_frontend.c",
+      "sameFile": true
+    },
+    {
+      "path": "video/out/vo_libmpv.c",
+      "function": "mpv_render_context_create",
+      "sameBody": true,
+      "sha256": {
+        "design": "ba659553268049b2a751cca33e9395bfc9f0d3512236ae2b7c36d6f852c80a17",
+        "probe": "ba659553268049b2a751cca33e9395bfc9f0d3512236ae2b7c36d6f852c80a17"
+      }
+    },
+    {
+      "path": "video/out/vo_libmpv.c",
+      "function": "mpv_render_context_render",
+      "sameBody": false,
+      "sha256": {
+        "design": "8c0f31797a6dfcd097b3c2e5d77e5818c32c439b240367ec422277f8d222f6af",
+        "probe": "e3d269b56160c27f7b01ea4a4b37baef57e986dbc8b1caa76d76104c4ae2f705"
+      }
+    },
+    {
+      "path": "video/out/vo_libmpv.c",
+      "function": "mpv_render_context_free",
+      "sameBody": true,
+      "sha256": {
+        "design": "829da9a04f724a6468fffc5dd92f90c27ca79312b88941020b36193191c409f4",
+        "probe": "829da9a04f724a6468fffc5dd92f90c27ca79312b88941020b36193191c409f4"
+      }
+    },
+    {
+      "path": "player/screenshot.c",
+      "function": "cmd_screenshot_raw",
+      "sameBody": true,
+      "sha256": {
+        "design": "c59b8ffa5d2ea7732091cde369df42380614b4ab69ee594064f5632e7c474345",
+        "probe": "c59b8ffa5d2ea7732091cde369df42380614b4ab69ee594064f5632e7c474345"
+      }
+    },
+    {
+      "path": "options/m_config_frontend.c",
+      "function": "m_config_set_option_raw",
+      "sameBody": true,
+      "sha256": {
+        "design": "a559f7498ce0d29ed34c25ce604f5aae3e47413cb8c54436430c13d1277bdb7c",
+        "probe": "a559f7498ce0d29ed34c25ce604f5aae3e47413cb8c54436430c13d1277bdb7c"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "include/mpv/render.h",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "include/mpv/render_gl.h",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render_gl.h",
+      "status": 200,
+      "sha256": "48662c0ed9872a14dd9e1684105c97f69f94a0414709c254c5d372adc41d2e69"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "video/out/vo_libmpv.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/vo_libmpv.c",
+      "status": 200,
+      "sha256": "505bb1c9ec219a966e24da4839b2c68a91411ddcb649f648e29160ccfd0bdebf"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "video/out/gpu/libmpv_gpu.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/gpu/libmpv_gpu.c",
+      "status": 200,
+      "sha256": "084ad8d07055cb41c7d009cca07e7874fe9262203f2e28c42c5aaee461f045e6"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "player/screenshot.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/screenshot.c",
+      "status": 200,
+      "sha256": "f7b3cea7e6f86b3dca76e6fccbcff65c8d82d49f83dc61c602ca7d22f5369bf4"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "options/m_config_frontend.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/options/m_config_frontend.c",
+      "status": 200,
+      "sha256": "88d9962f8bb6aacee79d6e4da9bc9a23dc086099023839d7b8fe118fe2fb0d5f"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "include/mpv/render.h",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h",
+      "status": 200,
+      "sha256": "f2550aa29b2e9b20988bd954b4383e9fa05fd9e40d1669fbc6edf2afac603f15"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "include/mpv/render_gl.h",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render_gl.h",
+      "status": 200,
+      "sha256": "48662c0ed9872a14dd9e1684105c97f69f94a0414709c254c5d372adc41d2e69"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/vo_libmpv.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/vo_libmpv.c",
+      "status": 200,
+      "sha256": "02dd9ba5ac5c20830dd77fe67ce5f18ecea298aa1e36f5686f92ed52306905b4"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "video/out/gpu/libmpv_gpu.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/libmpv_gpu.c",
+      "status": 200,
+      "sha256": "d14137230a2ddd9a5dbf0cbdbe85478208b68a3f2e0a4c186c34266ef27cce60"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "player/screenshot.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/player/screenshot.c",
+      "status": 200,
+      "sha256": "04cacb714368d1ed330aa1857bf62967fe047e00b222818db62e079aeb709318"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "options/m_config_frontend.c",
+      "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/options/m_config_frontend.c",
+      "status": 200,
+      "sha256": "88d9962f8bb6aacee79d6e4da9bc9a23dc086099023839d7b8fe118fe2fb0d5f"
+    }
+  ],
+  "provesDesignRevisionExecuted": false
+}

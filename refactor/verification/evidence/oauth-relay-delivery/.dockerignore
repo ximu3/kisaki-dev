@@ -1,0 +1,16 @@
+.git
+node_modules
+dist
+coverage
+tests
+docs
+release-notes
+runtime
+.env
+.env.*
+*.env
+config.json
+config.*.json
+*.log
+*.pem
+*.key

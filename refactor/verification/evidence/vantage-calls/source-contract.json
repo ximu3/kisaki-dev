@@ -1,0 +1,122 @@
+{
+  "purpose": "call-contract source evidence, not native execution",
+  "designStatus": "proposal",
+  "vantageAddonExecuted": false,
+  "permissionPromptExecuted": false,
+  "nativeObservationSchedulingVerified": false,
+  "windowGeometryVerified": false,
+  "macos13ShadowExclusionVerified": false,
+  "captureTimeoutCalibrated": false,
+  "sources": [
+    {
+      "name": "node-api",
+      "url": "https://nodejs.org/docs/latest-v24.x/api/n-api.md",
+      "finalUrl": "https://nodejs.org/docs/latest-v24.x/api/n-api.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.260705+00:00",
+      "bytes": 245885,
+      "sha256": "cddfaf96c6ac228a63f65aa5cfbfd1f2ab171028bb84083e80c3b2d3e4a56feb",
+      "presentMarkers": ["napi_fatal_exception", "napi_add_async_cleanup_hook"]
+    },
+    {
+      "name": "node-abort",
+      "url": "https://nodejs.org/docs/latest-v24.x/api/globals.md",
+      "finalUrl": "https://nodejs.org/docs/latest-v24.x/api/globals.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.200310+00:00",
+      "bytes": 33023,
+      "sha256": "68b26b51fab8a4119f49a24f78aede9f959eca736c9379898d900090f6f1a831",
+      "presentMarkers": ["AbortSignal.timeout(delay)", "AbortSignal.any(signals)"]
+    },
+    {
+      "name": "macos-screen-request",
+      "url": "https://developer.apple.com/documentation/coregraphics/cgrequestscreencaptureaccess().md",
+      "finalUrl": "https://developer.apple.com/documentation/coregraphics/cgrequestscreencaptureaccess().md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.411596+00:00",
+      "bytes": 775,
+      "sha256": "f2d950f14ab588925634e1e93ef3edd1983bac74e9903f46bba704d8a28607ae",
+      "presentMarkers": ["CGRequestScreenCaptureAccess", "10.15.0"]
+    },
+    {
+      "name": "macos-screen-preflight",
+      "url": "https://developer.apple.com/documentation/coregraphics/cgpreflightscreencaptureaccess().md",
+      "finalUrl": "https://developer.apple.com/documentation/coregraphics/cgpreflightscreencaptureaccess().md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.596742+00:00",
+      "bytes": 785,
+      "sha256": "0dbbf050924aecb2d3be1cc3ddc59e30181b73dc4366f0ba05481a42e8cacd56",
+      "presentMarkers": ["CGPreflightScreenCaptureAccess", "Bool"]
+    },
+    {
+      "name": "macos-cursor",
+      "url": "https://developer.apple.com/documentation/screencapturekit/scstreamconfiguration/showscursor.md",
+      "finalUrl": "https://developer.apple.com/documentation/screencapturekit/scstreamconfiguration/showscursor.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.512128+00:00",
+      "bytes": 944,
+      "sha256": "76acd658dc0891cfb2a16dae7a43720a272729bc211c982c795349260c2951f0",
+      "presentMarkers": ["showsCursor", "12.3.0"]
+    },
+    {
+      "name": "macos-window-shadow",
+      "url": "https://developer.apple.com/documentation/screencapturekit/scstreamconfiguration/ignoreshadowssinglewindow.md",
+      "finalUrl": "https://developer.apple.com/documentation/screencapturekit/scstreamconfiguration/ignoreshadowssinglewindow.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.574619+00:00",
+      "bytes": 1004,
+      "sha256": "db139aba5f591a788d1d4cfb07351d8ab162077d6f577ea449a2ae17cb0a9a64",
+      "presentMarkers": ["ignoreShadowsSingleWindow", "14.0.0"]
+    },
+    {
+      "name": "macos-content-rect",
+      "url": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/contentrect.md",
+      "finalUrl": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/contentrect.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.727536+00:00",
+      "bytes": 904,
+      "sha256": "e7a6fd922c4d44a056f49e8200ce8048770d31dd49ae574e9e75187271654b6f",
+      "presentMarkers": ["contentRect", "12.3.0"]
+    },
+    {
+      "name": "macos-scale-factor",
+      "url": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/scalefactor.md",
+      "finalUrl": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/scalefactor.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.821608+00:00",
+      "bytes": 899,
+      "sha256": "56e011c9c148bf54d8758d9160d70dab3a74915048ac44ff96a499fe35572c0a",
+      "presentMarkers": ["scaleFactor", "12.3.0"]
+    },
+    {
+      "name": "macos-frame-status",
+      "url": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/status.md",
+      "finalUrl": "https://developer.apple.com/documentation/screencapturekit/scstreamframeinfo/status.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.884203+00:00",
+      "bytes": 868,
+      "sha256": "4513da5514f8d612657d895f7172a3ec52bb4dc7f7c07bc9d16c479974eae453",
+      "presentMarkers": ["SCStreamFrameInfo", "12.3.0"]
+    },
+    {
+      "name": "mutter-42-window",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/data/dbus-interfaces/org.gnome.Mutter.ScreenCast.xml",
+      "finalUrl": "https://raw.githubusercontent.com/GNOME/mutter/42.0/data/dbus-interfaces/org.gnome.Mutter.ScreenCast.xml",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:52.896653+00:00",
+      "bytes": 7882,
+      "sha256": "c719cf12374dccdb78b8a50cdfde3738fddf297965c1606ca79471849558d156",
+      "presentMarkers": ["RecordWindow", "cursor-mode", "hidden"]
+    },
+    {
+      "name": "kwin-5.24-window",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:51:53.039271+00:00",
+      "bytes": 17940,
+      "sha256": "f66faf4c728873573778e084ab78defa3a7a6e06e1ff63510f6e223f4711f90f",
+      "presentMarkers": ["CaptureWindow", "checkPermissions", "screenShotFlagsFromOptions"]
+    }
+  ]
+}

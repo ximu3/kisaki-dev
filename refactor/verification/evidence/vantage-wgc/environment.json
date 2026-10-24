@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-10-21T09:33:44.2261803Z",
+  "recordedAfterProbe": true,
+  "os": {
+    "Caption": "Microsoft Windows 10 专业版",
+    "Version": "10.0.19045",
+    "BuildNumber": "19045",
+    "OSArchitecture": "64 位"
+  },
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+  "cargo": "cargo 1.90.0 (840b83a10 2025-07-30)"
+}

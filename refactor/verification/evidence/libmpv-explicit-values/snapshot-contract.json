@@ -1,0 +1,16 @@
+{
+  "purpose": "JavaScript snapshot fixture only; no actual MpvConversionError or addon",
+  "nodeVersion": "v24.11.1",
+  "checkedAt": "2026-10-18T04:53:07.971Z",
+  "bufferSliceAliasingObserved": true,
+  "onlyVisibleBytesCaptured": true,
+  "capturedBackingBufferHasExactLength": true,
+  "laterInputMutationDidNotChangeSnapshot": true,
+  "repeatedCopiesIndependent": true,
+  "defaultInspectionDidNotExposeSnapshot": true,
+  "nativeAddonExecuted": false,
+  "nativeLifetimeVerified": false,
+  "conversionErrorImplementationVerified": false,
+  "observationTerminationVerified": false,
+  "screenshotOrGpuExecuted": false
+}

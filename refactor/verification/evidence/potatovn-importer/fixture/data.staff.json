@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "20000000-0000-0000-0000-000000000501",
+    "Ids": ["s101", "102", null, null, null, null, null, null, null],
+    "JapaneseName": "Synthetic creator",
+    "ChineseName": null,
+    "EnglishName": null,
+    "Gender": 0,
+    "Career": [],
+    "ImagePath": ".\\Images\\staff.png",
+    "ImageUrl": null,
+    "Description": "Synthetic staff description",
+    "BirthDate": null,
+    "Games": [
+      {
+        "GameId": "20000000-0000-0000-0000-000000000001",
+        "Relation": []
+      }
+    ],
+    "RequirePvnSync": false
+  }
+]

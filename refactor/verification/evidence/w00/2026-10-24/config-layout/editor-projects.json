@@ -1,0 +1,60 @@
+{
+  "typescript": "6.0.3",
+  "results": [
+    {
+      "file": "src/main/entry.ts",
+      "configuration": "config/typescript/tsconfig.main.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "src/preload/main.ts",
+      "configuration": "config/typescript/tsconfig.preload.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "src/renderer/windows/main/entry.tsx",
+      "configuration": "config/typescript/tsconfig.renderer.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "src/extension-host/entry.ts",
+      "configuration": "config/typescript/tsconfig.extension-host.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "src/shared/runtime-manifest.ts",
+      "configuration": "config/typescript/tsconfig.shared.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tools/build/programs.ts",
+      "configuration": "config/typescript/tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "config/vite/vite.config.renderer.ts",
+      "configuration": "config/typescript/tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "config/vitest/vitest.config.browser.ts",
+      "configuration": "config/typescript/tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "config/playwright/playwright.config.performance.ts",
+      "configuration": "config/typescript/tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/e2e/windows.test.ts",
+      "configuration": "config/typescript/tsconfig.tests.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "src/main/app/portable.test.ts",
+      "configuration": "config/typescript/tsconfig.tests.json",
+      "diagnostics": 0
+    }
+  ]
+}

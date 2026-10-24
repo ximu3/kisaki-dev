@@ -1,0 +1,62 @@
+--- a/arcread.cpp
++++ b/arcread.cpp
+@@ -1,4 +1,8 @@
+ #include "rar.hpp"
++extern "C" void kana_raw_name(int,int,int,const unsigned char*,unsigned,unsigned);
++extern "C" void kana_name_length(double);
++extern "C" void kana_decoded_name(const wchar_t*,unsigned);
++extern "C" void kana_raw_target(const unsigned char*,unsigned);
+ 
+ size_t Archive::ReadHeader()
+ {
+@@ -341,6 +345,7 @@
+         size_t ReadNameSize=Min(NameSize,MAXPATHSIZE);
+         std::string FileName(ReadNameSize,0);
+         Raw.GetB((byte *)&FileName[0],ReadNameSize);
++        if (FileBlock) kana_raw_name(Format==RARFMT50 ? 5 : 3,hd->HostOS,hd->Flags,(const unsigned char*)FileName.data(),ReadNameSize,NameSize);
+ 
+         if (FileBlock)
+         {
+@@ -360,6 +365,7 @@
+             ArcCharToWide(FileName.data(),hd->FileName,ACTW_OEM);
+ 
+ #ifndef SFX_MODULE
++          kana_decoded_name(hd->FileName.data(),hd->FileName.size());
+           ConvertNameCase(hd->FileName);
+ #endif
+           ConvertFileHeader(hd);
+@@ -849,7 +855,9 @@
+             hd->UnpVer=VER_UNKNOWN;
+ 
+         hd->HostOS=(byte)Raw.GetV();
+-        size_t NameSize=(size_t)Raw.GetV();
++        uint64 SourceNameSize=Raw.GetV();
++        if (FileBlock) kana_name_length((double)SourceNameSize);
++        size_t NameSize=(size_t)SourceNameSize;
+         hd->Inherited=(ShortBlock.Flags & HFL_INHERITED)!=0;
+ 
+         hd->HSType=HSYS_UNKNOWN;
+@@ -885,6 +893,7 @@
+         size_t ReadNameSize=Min(NameSize,MAXPATHSIZE);
+         std::string FileName(ReadNameSize,0);
+         Raw.GetB((byte *)&FileName[0],ReadNameSize);
++        if (FileBlock) kana_raw_name(Format==RARFMT50 ? 5 : 3,hd->HostOS,hd->Flags,(const unsigned char*)FileName.data(),ReadNameSize,NameSize);
+ 
+         UtfToWide(FileName.data(),hd->FileName);
+ 
+@@ -896,6 +905,7 @@
+         if (FileBlock)
+         {
+ #ifndef SFX_MODULE
++          kana_decoded_name(hd->FileName.data(),hd->FileName.size());
+           ConvertNameCase(hd->FileName);
+ #endif
+           ConvertFileHeader(hd);
+@@ -1181,6 +1191,7 @@
+               hd->RedirType=RedirType;
+               hd->DirTarget=(Flags & FHEXTRA_REDIR_DIR)!=0;
+               Raw->GetB(&UtfName[0],NameSize);
++              kana_raw_target((const unsigned char*)UtfName.data(),NameSize);
+               UtfToWide(&UtfName[0],hd->RedirName);
+ #ifdef _WIN_ALL
+               UnixSlashToDos(hd->RedirName,hd->RedirName);

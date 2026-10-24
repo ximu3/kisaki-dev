@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-20T14:26:16.101Z",
+  "node": "v24.11.1",
+  "purpose": "One integration check; existing isolated format suites were not rerun.",
+  "sources": {
+    "prepare.py": "eb71855098243a3fbbbfcd50c8e876c1a74221f281a6cf904e1cccfbc6bd1d86",
+    "run.mjs": "2ead0a344d6213dfc43aaa7e113c845a6a0a44b430831bc1087328685e0d1771"
+  },
+  "inputs": {
+    "parser": "446aca195f43176c5f1f487cd1ed5eff104896c4497cf9693307a5bc0150ec94",
+    "encodingMaps": "f2a72005acf7a52ebd00270cf64903a70a299be16091543d82d6795eef2a2a4b",
+    "caseFolding": "0c81e435f336bcecc5672b1a663138aed44db9cbe6e712b7bdc0edabcd091b8c",
+    "unicodeOrder": "f3f4405b3a4cf4da8a96f0a4025ec0311a5863d6c34376d2cf9bc103448a4bdb",
+    "mapper": "3a6db746550d95602877f1aae9c0a5973466311d5f5446a1d8717a8d9775f054",
+    "ordering": "520101218939111113b463c724398ea6f035272e87af23504ba6b966d3f160cb",
+    "zipPackage": "6b58893f23ae7210a3ae5b62966a788811d1bf4f94ebd29dd2ddbface102c89a",
+    "archive": "97609dee804e0bccee140252de7c17d9a0beaed9a7fe3e6afdeae57e9c0c0813"
+  },
+  "textCases": [
+    {
+      "query": "STRASSE",
+      "quote": "Straße",
+      "range": {
+        "start": {
+          "byteOffset": 3,
+          "textOffset": 0
+        },
+        "end": {
+          "byteOffset": 15,
+          "textOffset": 1
+        }
+      }
+    },
+    {
+      "query": "CAFÉ",
+      "quote": "Café",
+      "range": {
+        "start": {
+          "byteOffset": 24,
+          "textOffset": 0
+        },
+        "end": {
+          "byteOffset": 31,
+          "textOffset": 1
+        }
+      }
+    }
+  ],
+  "archivePages": ["pages/2.dat", "pages/10.png"],
+  "directoryPages": ["pages/2.dat", "pages/10.png"],
+  "zipClosed": true,
+  "limits": {
+    "renderedTextEligibility": false,
+    "allImageTypes": false,
+    "imagePixelsDecoded": false,
+    "largeBookPerformance": false,
+    "fullReader": false
+  }
+}

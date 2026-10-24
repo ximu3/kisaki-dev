@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-21T09:09:26.333828+00:00",
+  "capture": {
+    "width": 224,
+    "height": 152,
+    "framesSeen": 1,
+    "rgbaBytes": 136192,
+    "cursorDisabled": true,
+    "fixtureWasForeground": false,
+    "poolClosed": true,
+    "sessionClosed": true,
+    "windowDestroyed": true,
+    "samples": [
+      [255, 0, 0, 255],
+      [2, 255, 3, 255],
+      [0, 0, 255, 255],
+      [255, 255, 255, 255]
+    ],
+    "captureFormat": "rgba16float",
+    "toneMapping": "Direct2D",
+    "alphaMode": "straight",
+    "hdrSamples": [
+      [230, 230, 230, 255],
+      [244, 244, 244, 255],
+      [250, 250, 250, 255]
+    ]
+  },
+  "binary": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\wgc-target\\debug\\vantage-wgc-probe.exe",
+  "binarySha256": "72f05fbd8eca444750aefb841ff22862c9786a1a38946759684a8a9f353fef03",
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\wgc-dvy8aq91",
+  "pixelSha256": "6dd2c24312060850e1aea56740a3b543e5e66d5aff4f0812e43f31591013f371",
+  "pngSha256": "48c3641ecee56604d0c366d968689ef946460fe2b21e58498796174e009ce206",
+  "sources": {
+    "Cargo.toml": "524b73059abdf8b3371780dacc326bbf69d97d713a9c331e19fcaf5e088bf2df",
+    "Cargo.lock": "8a0a2e720b00b1ce6aca7d20bd71f7ef7afad22f342ae6df60ef031b0ad412ac",
+    "build.rs": "af2858d3367ae469e611d3d6a10d6366abf8e3d8c2f732e0d4590c31a824d3f4",
+    "main.rs": "12eb8efd53b12b61da85f16800886d652f5781f91a1bd94f0dfac3a8b19c07b3",
+    "capture.cpp": "f08cc7275cfe0c17afb8bb20cb91ba6352b6dbee72a1120e645a3a32e678eb7b",
+    "color.cpp": "70826cbc9b18c84eab46a60ccac1d01f624ee02a2b0d184fb881620b6558b299",
+    "color.h": "c876fe4c6bdef5677ef13c3f596d32b73a87e847e9af3338e82ac43c0ef10eb4",
+    "run.py": "212f884b60fe6095d232ec50671ed85cc84cd275f819e6cbd6a46f7ecd4509b9"
+  },
+  "processExitCode": 0,
+  "stderr": "",
+  "windowsWgcExecuted": true,
+  "ownedD3D11WindowOnly": true,
+  "displaySettingsChanged": false,
+  "macosExecuted": false,
+  "linuxExecuted": false,
+  "productionVantageImplemented": false,
+  "cancellationRaceTested": false,
+  "hdrCaptureTested": false,
+  "nativeHdrToneMapTested": true,
+  "mixedPrivilegeTested": false
+}

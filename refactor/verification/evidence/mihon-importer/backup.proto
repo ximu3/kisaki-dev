@@ -1,0 +1,79 @@
+syntax = "proto2";
+package mihonproof;
+
+// A source-derived projection for design evidence, not a runtime import contract.
+message Backup {
+  repeated BackupManga backupManga = 1;
+  repeated BackupCategory backupCategories = 2;
+  repeated BackupSource backupSources = 101;
+}
+message BackupManga {
+  required int64 source = 1;
+  required string url = 2;
+  optional string title = 3 [default = ""];
+  optional string artist = 4;
+  optional string author = 5;
+  optional string description = 6;
+  repeated string genre = 7;
+  optional int32 status = 8 [default = 0];
+  optional string thumbnailUrl = 9;
+  optional int64 dateAdded = 13 [default = 0];
+  optional int32 viewer = 14 [default = 0];
+  repeated BackupChapter chapters = 16;
+  repeated int64 categories = 17;
+  repeated BackupTracking tracking = 18;
+  optional bool favorite = 100 [default = true];
+  optional int32 chapterFlags = 101 [default = 0];
+  optional int32 viewerFlags = 103;
+  repeated BackupHistory history = 104;
+  optional int32 updateStrategy = 105 [default = 0];
+  optional int64 favoriteModifiedAt = 107;
+  repeated string excludedScanlators = 108;
+  optional string notes = 110 [default = ""];
+  optional bool initialized = 111 [default = false];
+  optional bytes memo = 112;
+  optional int64 nextUpdate = 113 [default = 0];
+}
+message BackupChapter {
+  required string url = 1;
+  required string name = 2;
+  optional string scanlator = 3;
+  optional bool read = 4 [default = false];
+  optional bool bookmark = 5 [default = false];
+  optional int64 lastPageRead = 6 [default = 0];
+  optional int64 dateFetch = 7 [default = 0];
+  optional int64 dateUpload = 8 [default = 0];
+  optional float chapterNumber = 9 [default = 0];
+  optional int64 sourceOrder = 10 [default = 0];
+  optional bytes memo = 13;
+}
+message BackupHistory {
+  required string url = 1;
+  required int64 lastRead = 2;
+  optional int64 readDuration = 3 [default = 0];
+}
+message BackupTracking {
+  required int32 syncId = 1;
+  required int64 libraryId = 2;
+  optional int32 mediaIdInt = 3 [default = 0];
+  optional string trackingUrl = 4 [default = ""];
+  optional string title = 5 [default = ""];
+  optional float lastChapterRead = 6 [default = 0];
+  optional int32 totalChapters = 7 [default = 0];
+  optional float score = 8 [default = 0];
+  optional int32 status = 9 [default = 0];
+  optional int64 startedReadingDate = 10 [default = 0];
+  optional int64 finishedReadingDate = 11 [default = 0];
+  optional bool private = 12 [default = false];
+  optional int64 mediaId = 100 [default = 0];
+}
+message BackupCategory {
+  required string name = 1;
+  optional int64 order = 2 [default = 0];
+  optional int64 id = 3 [default = 0];
+  optional int64 flags = 100 [default = 0];
+}
+message BackupSource {
+  optional string name = 1 [default = ""];
+  required int64 sourceId = 2;
+}

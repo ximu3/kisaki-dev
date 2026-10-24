@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-21T05:04:26.135046+00:00",
+  "host": {
+    "system": "Windows",
+    "version": "10.0.19045",
+    "machine": "AMD64"
+  },
+  "probeSha256": "778a57f801b38471467db59756203694b36b0219e2436e5d12c2e28bc2a5dbda",
+  "buildReceiptSha256": "96b17cf93dd7a047a56d5b8fc6517303b00d115ac744dd7c07b5748f98bb25f0",
+  "dependenciesReceiptSha256": "7480c8882532565cb852688d2e23ce145f0c9c68584a08be451d42b14ca2cb18",
+  "childExitCode": 0,
+  "libraryLoads": 1,
+  "explicitLibraryUnloads": 0,
+  "coresCreatedAndClosed": 5,
+  "concurrentCoreIsolation": true,
+  "survivingCoreAfterPeerClose": true,
+  "weakClientSharesOnlyItsCore": true,
+  "repeatedCreationWithResidentLibrary": true,
+  "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "dllSha256": "096f5fc768ff36556563ded5a0851728971d2fca3d40a642106d12964fe11d17",
+  "runtimeDllCount": 229,
+  "clientHeaderSha256": "3da9b8c61c3fb4e2d76bd248cebf72f3ee830331411b71a76adbd5e05660cc50",
+  "apiVersion": {
+    "major": 2,
+    "minor": 6
+  },
+  "nodeAddonExecuted": false,
+  "nodeWorkerExitExecuted": false,
+  "graphicsExecuted": false,
+  "historicalReloadFailureDiagnosed": false,
+  "releaseBuildVerified": false
+}

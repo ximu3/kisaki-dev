@@ -1,0 +1,100 @@
+{
+  "checkedAt": "2026-10-18T15:00:20.126974+00:00",
+  "before": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "testedDisplay": "G24H2",
+  "active": {
+    "source": "\\\\.\\DISPLAY2",
+    "name": "G24H2",
+    "refreshHz": 143.999,
+    "advancedColorSupported": true,
+    "advancedColorEnabled": true,
+    "wideColorEnforced": false,
+    "advancedColorForceDisabled": false,
+    "bitsPerColorChannel": 8,
+    "colorEncoding": 0,
+    "sdrWhiteNits": 240.0,
+    "mode": {
+      "width": 2560,
+      "height": 1440,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "after": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "originalStateRestored": true,
+  "sourceSha256": "ab147478551b04a8e4c01cdf60932bebbf10facb4974f258de13556e4e8ce1ff"
+}

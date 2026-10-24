@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-20T14:10:01.662Z",
+  "platform": "win32",
+  "playwrightVersion": "1.62.1",
+  "harnessSha256": "8518ce4466bced2ed98cbef0e678559a25d702b209a821a29311066ea9b65300",
+  "browserBaselineSha256": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+  "allOwnedBrowsersClosed": true,
+  "serverClosed": true,
+  "unexpectedRoutes": [],
+  "scriptSha256": "24c7df7df58ce39a2c9ab5faf3b2fb1c31a8f9f23b63013c37b9ea34a927d0c6",
+  "source": "Owned fixed-plain.azw3 document 0, split width 1",
+  "method": "Replace the initialized HTML documentElement with a constructed HTML root",
+  "comparison": "Retain the initialized root; copy source attributes and construct children with source bindings",
+  "runs": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "executableSha256": "b798f9e53a98d29eb7f36f8c409f905d3184780a04d2bcb56989067194784bd1",
+      "replacement": {
+        "bodyBox": [480, 640],
+        "rootBox": [480, 640],
+        "frameBox": [480, 640],
+        "computedBody": ["480px", "640px"],
+        "oneAnimationFrameAwaited": true
+      },
+      "retainedRootPassedAllFixedCases": 18
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "executableSha256": "9571c9a49d6d4de3e4c3b14e2e4bd6521e5b879f4ab6c95143e2098cb66e6618",
+      "replacement": {
+        "bodyBox": [480, 640],
+        "rootBox": [480, 640],
+        "frameBox": [480, 640],
+        "computedBody": ["480px", "640px"],
+        "oneAnimationFrameAwaited": true
+      },
+      "retainedRootPassedAllFixedCases": 18
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "executableSha256": "02098f76165779067df02881660593d25da6b8e3e11e052f9459f5ae1f94a1fc",
+      "replacement": {
+        "bodyBox": [0, 0],
+        "rootBox": [0, 0],
+        "frameBox": [480, 640],
+        "computedBody": ["480px", "640px"],
+        "oneAnimationFrameAwaited": true
+      },
+      "retainedRootPassedAllFixedCases": 18
+    }
+  ],
+  "generalWebKitOrSafariClaim": false
+}

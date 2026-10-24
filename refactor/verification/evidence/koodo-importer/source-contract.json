@@ -1,0 +1,695 @@
+{
+  "schemaVersion": 1,
+  "sourceRef": "v2.4.6",
+  "repository": "koodo-reader/koodo-reader",
+  "commit": "1fd0cc7f151916447d396e0c8a2c036180992cab",
+  "evidenceClass": "pinned-source-static-analysis",
+  "sourceCodeExecuted": false,
+  "schemaVersionField": "No format version inferred; inspect necessary table and column shapes.",
+  "tables": {
+    "notes": {
+      "sourcePath": "src/assets/lib/kookit-extra-browser.min.js",
+      "sourceOffset": 159077,
+      "columns": [
+        {
+          "name": "key",
+          "declaredType": "text",
+          "primaryKey": true
+        },
+        {
+          "name": "bookKey",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "date",
+          "declaredType": "object",
+          "primaryKey": false
+        },
+        {
+          "name": "chapter",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "chapterIndex",
+          "declaredType": "integer",
+          "primaryKey": false
+        },
+        {
+          "name": "text",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "cfi",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "range",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "notes",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "percentage",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "color",
+          "declaredType": "integer",
+          "primaryKey": false
+        },
+        {
+          "name": "tag",
+          "declaredType": "array",
+          "primaryKey": false
+        }
+      ]
+    },
+    "bookmarks": {
+      "sourcePath": "src/assets/lib/kookit-extra-browser.min.js",
+      "sourceOffset": 159449,
+      "columns": [
+        {
+          "name": "key",
+          "declaredType": "text",
+          "primaryKey": true
+        },
+        {
+          "name": "bookKey",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "cfi",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "label",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "percentage",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "chapter",
+          "declaredType": "text",
+          "primaryKey": false
+        }
+      ]
+    },
+    "books": {
+      "sourcePath": "src/assets/lib/kookit-extra-browser.min.js",
+      "sourceOffset": 159680,
+      "columns": [
+        {
+          "name": "key",
+          "declaredType": "text",
+          "primaryKey": true
+        },
+        {
+          "name": "name",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "author",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "description",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "md5",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "cover",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "format",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "publisher",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "size",
+          "declaredType": "integer",
+          "primaryKey": false
+        },
+        {
+          "name": "page",
+          "declaredType": "integer",
+          "primaryKey": false
+        },
+        {
+          "name": "path",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "charset",
+          "declaredType": "text",
+          "primaryKey": false
+        }
+      ]
+    },
+    "words": {
+      "sourcePath": "src/assets/lib/kookit-extra-browser.min.js",
+      "sourceOffset": 160413,
+      "columns": [
+        {
+          "name": "key",
+          "declaredType": "text",
+          "primaryKey": true
+        },
+        {
+          "name": "bookKey",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "date",
+          "declaredType": "object",
+          "primaryKey": false
+        },
+        {
+          "name": "word",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "sentence",
+          "declaredType": "text",
+          "primaryKey": false
+        },
+        {
+          "name": "chapter",
+          "declaredType": "text",
+          "primaryKey": false
+        }
+      ]
+    }
+  },
+  "declaredConfigKeys": [
+    "themeColors",
+    "readingTime",
+    "appVersion",
+    "cloudSyncTime",
+    "lastSyncTime",
+    "recentBooks",
+    "koreaderBooks",
+    "recentAdd",
+    "deletedBooks",
+    "favoriteBooks",
+    "shelfList",
+    "txtParsers",
+    "aiModelConfig",
+    "readingStats",
+    "noteTags",
+    "recordLocation",
+    "thirdpartyToken",
+    "sortedShelfList",
+    "kindleDeviceList",
+    "thirdpartyToken",
+    "opdsCatalogs",
+    "opdsCatalogList"
+  ],
+  "readerMethods": [
+    {
+      "name": "handleRenderChapter",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 137047,
+      "sourceLength": 5853,
+      "sha256": "a81f41d1c5d00430b6dd6496dad801ede49334f8a77c3ea1b77c0a5a6907657b"
+    },
+    {
+      "name": "handleRecord",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 147071,
+      "sourceLength": 2103,
+      "sha256": "845bfbd6d60d1e803a63e88513ef29cf7438e1554c01dd0d3e7fb0541787b63c"
+    },
+    {
+      "name": "goToPosition",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 284088,
+      "sourceLength": 1380,
+      "sha256": "80af264b61c3bd205ecbbf8559c82bbdb1ddea5fbd0314ebeaa01dab1baef817"
+    },
+    {
+      "name": "getPosition",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 303567,
+      "sourceLength": 39,
+      "sha256": "13b00ff926886baf7d3f9c7faf0c94cf460fd18e25ba0aa44af89f4925919380"
+    },
+    {
+      "name": "getHighlightCoords",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 304651,
+      "sourceLength": 204,
+      "sha256": "28a9c944bf05970e2f0dca67932b3a52a2999ab1e8a2ee2d6f6ca848eb39d2bb"
+    },
+    {
+      "name": "createOneNote",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 305991,
+      "sourceLength": 797,
+      "sha256": "5ed7f081387cf1f88127c01cd07cc992428dea735e7f209ca469734544a8e361"
+    },
+    {
+      "name": "getAnnotationData",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 538517,
+      "sourceLength": 272,
+      "sha256": "6e1b8028e8ff04560ff9f2df90361ec39f5218901ed276d0dd4a4e996e543c52"
+    },
+    {
+      "name": "restoreAnnotation",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 538789,
+      "sourceLength": 1348,
+      "sha256": "ce810858f575e5b5a51b0ac7479062d11497f746a2155600a0bd5af39f338384"
+    },
+    {
+      "name": "getPositionByChapter",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 551230,
+      "sourceLength": 253,
+      "sha256": "48c3527a22233172949decbe03872cf4d009837e3a908c59b1dbcaf54bca1069"
+    },
+    {
+      "name": "goToPosition",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 551821,
+      "sourceLength": 1043,
+      "sha256": "907c5c722bdabcc652dc4a6e03bacae00d14253661bb9a202b6dca30c0115976"
+    },
+    {
+      "name": "recordByChapter",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 556358,
+      "sourceLength": 872,
+      "sha256": "688fa31afa079cd246768df7458e3ea1af892ac896a2eb616e6a2a98a01eb853"
+    },
+    {
+      "name": "handleRecord",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 557744,
+      "sourceLength": 830,
+      "sha256": "98ca116d63e9a440a9b19abea1ed5df7cf6dfacdfc6b843dd7b8551397bf9d89"
+    },
+    {
+      "name": "getHighlightCoords",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 560851,
+      "sourceLength": 1423,
+      "sha256": "c14c9c8bf511ac7b30505d93801e7bf63b0269da11bfbbf4d661758442e051e3"
+    },
+    {
+      "name": "restoreAnnotation",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 563397,
+      "sourceLength": 159,
+      "sha256": "3eefeb5b472e3a822f83154cec179159d08275c842d08996abf6506b63ec9529"
+    },
+    {
+      "name": "getAnnotationData",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 563556,
+      "sourceLength": 100,
+      "sha256": "b8dcfcf8195e5bed9c0becf49fcb6fce8132d616c812470daf2e78e5d6374752"
+    },
+    {
+      "name": "createOneNote",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 564113,
+      "sourceLength": 524,
+      "sha256": "a90eb3f2ccfe36fe0e17a005dc467b856cd7299fa63bf5a8e6884c9d40d748aa"
+    },
+    {
+      "name": "getPositionByChapter",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 612225,
+      "sourceLength": 253,
+      "sha256": "48c3527a22233172949decbe03872cf4d009837e3a908c59b1dbcaf54bca1069"
+    },
+    {
+      "name": "goToPosition",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 612816,
+      "sourceLength": 962,
+      "sha256": "7042ee221e3a415480f639c2cf77fc726b938298d617569f9bf8fed578afa004"
+    },
+    {
+      "name": "recordByChapter",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 617156,
+      "sourceLength": 284,
+      "sha256": "5a01e0ad62128c1ff57624a85e8c54befa1418cac2f4caa44193cfa2a993e31e"
+    },
+    {
+      "name": "handleComicRecordByIndex",
+      "sourcePath": "src/assets/lib/kookit.min.js",
+      "sourceOffset": 617440,
+      "sourceLength": 475,
+      "sha256": "ac3705a05ef49aa51b5a2f4f6bb3d5b49e97f3042c9d669d6ccec3b3f2b15a5f"
+    }
+  ],
+  "sources": [
+    {
+      "path": "package.json",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/package.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.540Z",
+      "bytes": 9294,
+      "sha256": "ab2ae9c104c89f01b76c92203602f82013cf37d2078173695add8a1ae3c2ad3d"
+    },
+    {
+      "path": "preload.js",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/preload.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.427Z",
+      "bytes": 8815,
+      "sha256": "54a6e3317be5e9cec163044b916dc694f7a6114e843655d6c4057b67b244d159"
+    },
+    {
+      "path": "src/assets/lib/kookit-extra-browser.min.js",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/assets/lib/kookit-extra-browser.min.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.283Z",
+      "bytes": 239438,
+      "sha256": "a87e9a10dcb88dd7d546700dd49a5f93cc96650963403902137c09e71dc3cadb"
+    },
+    {
+      "path": "src/assets/lib/kookit-extra.min.mjs",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/assets/lib/kookit-extra.min.mjs",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.434Z",
+      "bytes": 111902,
+      "sha256": "662741a88a8aac2dbbdde78434c6e74dd4ea988db01814fa3ccf45069319068d"
+    },
+    {
+      "path": "src/assets/lib/kookit.min.js",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/assets/lib/kookit.min.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.489Z",
+      "bytes": 685940,
+      "sha256": "ffe6d64af4196632ed9ab4e870211a5bd04b9336b28ddfb6c14ae5d6b066fd4e"
+    },
+    {
+      "path": "src/components/bookCardItem/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/bookCardItem/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.777Z",
+      "bytes": 7218,
+      "sha256": "10ff4b36e6cda6d242e4bf5ae101df7c5ff445ec7d2b3331213641e0cfb61a2b"
+    },
+    {
+      "path": "src/components/bookItem/useBookItem.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/bookItem/useBookItem.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.761Z",
+      "bytes": 7757,
+      "sha256": "365dfdbc05482d75c9294c88e59d522e1ffb37142f2c94c4e5f39a6e4ca48781"
+    },
+    {
+      "path": "src/components/dialogs/actionDialog/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/dialogs/actionDialog/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.719Z",
+      "bytes": 12003,
+      "sha256": "2b63844201cf671d876dc4e8644005e643e6d095170ae5b5355d6b97cd393b05"
+    },
+    {
+      "path": "src/components/dialogs/annotationDialog/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/dialogs/annotationDialog/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.242Z",
+      "bytes": 24859,
+      "sha256": "dccb5bd1fece746226b06d937af342e970f3b4f499a27051bdbc026456940648"
+    },
+    {
+      "path": "src/components/dialogs/editDialog/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/dialogs/editDialog/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.135Z",
+      "bytes": 13834,
+      "sha256": "8444fb1b610dfa2cf0eeaa6ff50b07d0920dc18f94dcffbec1725f54b8a9a652"
+    },
+    {
+      "path": "src/components/dialogs/markAction/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/dialogs/markAction/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.972Z",
+      "bytes": 3256,
+      "sha256": "a58f62157515dfbc00c27b5d465ede590368f76f31de5b66756aacc59791499f"
+    },
+    {
+      "path": "src/components/importLocal/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/importLocal/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.397Z",
+      "bytes": 41518,
+      "sha256": "092c38743d206153935307508bf54e5c9fe2651381ba984eca6e32f26cef7ca1"
+    },
+    {
+      "path": "src/components/popups/popupNote/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/components/popups/popupNote/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.558Z",
+      "bytes": 8576,
+      "sha256": "0921d5110e45516ddfc5d34fbcd8d15e659b9424dd5dadde31d7c97aafb24cae"
+    },
+    {
+      "path": "src/containers/panels/operationPanel/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/containers/panels/operationPanel/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.539Z",
+      "bytes": 8287,
+      "sha256": "2830aea962387bac9f325d1a915fc5cfd6cb5ee19119dfa00c6d8474b65c2513"
+    },
+    {
+      "path": "src/containers/panels/progressPanel/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/containers/panels/progressPanel/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.547Z",
+      "bytes": 8467,
+      "sha256": "f70a7e7bb8b0f92a69ffce6e5433267388cf250733040dfc4459557ef3aec050"
+    },
+    {
+      "path": "src/containers/sidebar/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/containers/sidebar/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.018Z",
+      "bytes": 20483,
+      "sha256": "153f0120861ef992f9cc4369cb3f062d6614fb8ffa490c121a1253cdcdc40b11"
+    },
+    {
+      "path": "src/containers/viewer/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/containers/viewer/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.576Z",
+      "bytes": 25848,
+      "sha256": "e244cd49226be1922c6f14e4292b721235640c66df25b7ee1b5bb9ca43949044"
+    },
+    {
+      "path": "src/models/Book.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/Book.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.381Z",
+      "bytes": 805,
+      "sha256": "573d0b2eda157f29bc50cff3f8ad84544d8d96bd4b363918d7e84ee66b79b4f7"
+    },
+    {
+      "path": "src/models/BookLocation.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/BookLocation.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.568Z",
+      "bytes": 721,
+      "sha256": "d7f1f327a6aefe4c357edda42d96b7d87621a22a967f33282751902f5f356cd8"
+    },
+    {
+      "path": "src/models/Bookmark.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/Bookmark.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.310Z",
+      "bytes": 454,
+      "sha256": "7d4ab607b97c12ca85b806331b104432ded8b3aa1af211348185cc6887699a5e"
+    },
+    {
+      "path": "src/models/DictHistory.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/DictHistory.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.733Z",
+      "bytes": 593,
+      "sha256": "8e9cabfbcc923b39bbc96e6f38b9c283c7171081fdc7b62f4408d42deeee9739"
+    },
+    {
+      "path": "src/models/HtmlBook.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/HtmlBook.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.602Z",
+      "bytes": 608,
+      "sha256": "b28f50863eb46c2eb77095da78c05c50d02492059df29608c7611a6be30ee97b"
+    },
+    {
+      "path": "src/models/Note.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/models/Note.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.381Z",
+      "bytes": 962,
+      "sha256": "22f31d3eeec0db44f4a7b69ce5bb596ea7affac80f23fb521adde94135cc2752"
+    },
+    {
+      "path": "src/pages/reader/component.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/pages/reader/component.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.199Z",
+      "bytes": 30007,
+      "sha256": "1c209a4b6e587225d8b12beb96eee23d13a5fb6ebac9655c2fbb9510b7c6c17e"
+    },
+    {
+      "path": "src/store/actions/book.tsx",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/store/actions/book.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:45.001Z",
+      "bytes": 1263,
+      "sha256": "67443221521c3243f4f691a5a500976b09d83142d0b721b6cf765c4580abfa08"
+    },
+    {
+      "path": "src/utils/common.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/common.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.416Z",
+      "bytes": 68193,
+      "sha256": "77250d3a188a7bda5b922204414c366aa039834daaaacb2fe7570e9ecc089d58"
+    },
+    {
+      "path": "src/utils/file/backup.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/backup.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.643Z",
+      "bytes": 13166,
+      "sha256": "870419e0615e7f2e1fa2ee98ac7d2ccf0356ee9d62007f3b5494b382ecd16d66"
+    },
+    {
+      "path": "src/utils/file/bookUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/bookUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.000Z",
+      "bytes": 24749,
+      "sha256": "e2aa950143efbc7eb5d482eb056040b6f9b7314d5157cbc0c3d304047089d31d"
+    },
+    {
+      "path": "src/utils/file/configUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/configUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.090Z",
+      "bytes": 19724,
+      "sha256": "3bfd81906027644b0e89b4d9e6705ec98749ba101a5acb3ffa0d78be0c0c85df"
+    },
+    {
+      "path": "src/utils/file/coverUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/coverUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.089Z",
+      "bytes": 15407,
+      "sha256": "e8d05130e0cb157873512c9638bb200e7c7af2d3df71759df15b1ba1feea27bc"
+    },
+    {
+      "path": "src/utils/file/export.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/export.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.837Z",
+      "bytes": 28118,
+      "sha256": "72813e2412bb2c5295ef1d10729ae77281f57377dc570e5fd88f65daa1cef64f"
+    },
+    {
+      "path": "src/utils/file/importData.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/importData.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.868Z",
+      "bytes": 10436,
+      "sha256": "a7053c255b754fade95f1984c5f23fba3da67b7e229ca813f360a6ba4014b6af"
+    },
+    {
+      "path": "src/utils/file/localFile.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/localFile.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.020Z",
+      "bytes": 19601,
+      "sha256": "aeb91549595bf9d3c38b42ffd8850c87864c065b74a4f219fd26dc4cfd50ed6b"
+    },
+    {
+      "path": "src/utils/file/sqlUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/file/sqlUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.856Z",
+      "bytes": 2006,
+      "sha256": "be031e5132808c9aa86e063001e25e21ab4512a341535565bc7ace434621c76d"
+    },
+    {
+      "path": "src/utils/main/backup-util.js",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/main/backup-util.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.713Z",
+      "bytes": 12668,
+      "sha256": "9561e0a1b19d73dcb3640b7629490433de4ad0a4998f7b20c25702aa7367108b"
+    },
+    {
+      "path": "src/utils/reader/launchUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/reader/launchUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.312Z",
+      "bytes": 4553,
+      "sha256": "264435cd60845908252936365f61a1b28878ae6d5c42788d5be4b80e3ed6b8c3"
+    },
+    {
+      "path": "src/utils/reader/mouseEvent.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/reader/mouseEvent.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.319Z",
+      "bytes": 15429,
+      "sha256": "438e9c63afd96aeff43f540d5e1bbb5675e1eb8f834280bc6e6514eb4c325aee"
+    },
+    {
+      "path": "src/utils/reader/noteUtil.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/reader/noteUtil.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:44.163Z",
+      "bytes": 2204,
+      "sha256": "6b26b760b49d94658f5970932a6fba4b004f0157a908f3c25917faa224ace233"
+    },
+    {
+      "path": "src/utils/storage/databaseService.ts",
+      "url": "https://raw.githubusercontent.com/koodo-reader/koodo-reader/1fd0cc7f151916447d396e0c8a2c036180992cab/src/utils/storage/databaseService.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T10:11:43.875Z",
+      "bytes": 11664,
+      "sha256": "e176950a2223d4fb778a672d135b509c02e034046a8dd80bcbf1b458eb1c09a6"
+    }
+  ]
+}

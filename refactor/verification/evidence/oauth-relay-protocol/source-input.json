@@ -1,0 +1,146 @@
+{
+  "preparedAt": "2026-10-21T06:38:12.487308+00:00",
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn",
+  "packages": [
+    {
+      "name": "hono",
+      "version": "4.13.13",
+      "registry": {
+        "url": "https://registry.npmjs.org/hono/4.13.13",
+        "finalUrl": "https://registry.npmjs.org/hono/4.13.13",
+        "status": 200,
+        "bytes": 20137,
+        "sha256": "0d73b35a70b2782c7a50269fecff99c52f615f15999bc487fa59315b31efc56e"
+      },
+      "archive": {
+        "url": "https://registry.npmjs.org/hono/-/hono-4.13.13.tgz",
+        "finalUrl": "https://registry.npmjs.org/hono/-/hono-4.13.13.tgz",
+        "status": 200,
+        "bytes": 245272,
+        "sha256": "3c656fb527641e841e1c4dae1d2faa238a4e17dde37f1620d5b72172caaddac0"
+      },
+      "integrity": "sha512-CQ46U0ZkAGmbT/4UxdzzGJpacP2IeKgY4a5/tOI9AABbpOMfK739wfDXmv1usCk+3RkKj1hQy4/fjhiwa2xlrA==",
+      "entry": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\node_modules\\hono\\dist\\index.js",
+      "entrySha256": "a18108f10e31afeda6c1489a3dc6588c45966d4800ff6361f7cc77e0159154be",
+      "packageSha256": "169a02072e32d85aacb089ad14b62b027d975479d811f741771fbd0f559fb5c9"
+    },
+    {
+      "name": "@hono/node-server",
+      "version": "2.1.5",
+      "registry": {
+        "url": "https://registry.npmjs.org/@hono%2fnode-server/2.1.5",
+        "finalUrl": "https://registry.npmjs.org/@hono%2fnode-server/2.1.5",
+        "status": 200,
+        "bytes": 3489,
+        "sha256": "379b59d54319e5ccc7276e3bb263832797be396962e12f1a1aeeb53803ea575c"
+      },
+      "archive": {
+        "url": "https://registry.npmjs.org/@hono/node-server/-/node-server-2.1.5.tgz",
+        "finalUrl": "https://registry.npmjs.org/@hono/node-server/-/node-server-2.1.5.tgz",
+        "status": 200,
+        "bytes": 37872,
+        "sha256": "bbe77a0002b58c161a7a040312b39307c6b0ba1f8604c4ab590d4ed77d01fdbb"
+      },
+      "integrity": "sha512-MgP/I06GdvsilDspMk/qmRzpk8LOUStP6jFAbSRi40W09DhoyUn+Mj7eyKICPqeYKybOjVFLVIAQzvu1bfIa7Q==",
+      "entry": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\node_modules\\@hono\\node-server\\dist\\index.mjs",
+      "entrySha256": "6fa5ab4d3cb10b5c1aad67b226b3d7b34dfe8367d3d45694d9ac03483a8add19",
+      "packageSha256": "28b7c255c6c7ae6b994ceae9326211b6c6877c4746adb85b780b759ce1ceba41"
+    }
+  ],
+  "sources": [
+    {
+      "name": "oauth-core",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\oauth-core.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc6749.txt",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc6749.txt",
+      "status": 200,
+      "bytes": 163498,
+      "sha256": "f204fc8661d6c92d2ec6e0b54808f961a9ad26e792f57f312d9528335519bd71"
+    },
+    {
+      "name": "pkce",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\pkce.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.txt",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc7636.txt",
+      "status": 200,
+      "bytes": 39482,
+      "sha256": "1972e5d81cbaba7066cfd46374207bc2b4546b085ed5dd9b034e79e023e0ca31"
+    },
+    {
+      "name": "native-apps",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\native-apps.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc8252.txt",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc8252.txt",
+      "status": 200,
+      "bytes": 49680,
+      "sha256": "4233c0650ec7e7918c20e0fde2dc565f85e2aa2d4c18123e3cd834295c2f68d0"
+    },
+    {
+      "name": "oauth-security",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\oauth-security.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.txt",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc9700.txt",
+      "status": 200,
+      "bytes": 124673,
+      "sha256": "9919d061d40a97886ca866b51c69389b6c81c65cd4b979056c14fdbebfcf622a"
+    },
+    {
+      "name": "bangumi",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\bangumi.txt",
+      "url": "https://raw.githubusercontent.com/bangumi/api/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md",
+      "finalUrl": "https://raw.githubusercontent.com/bangumi/api/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md",
+      "status": 200,
+      "bytes": 6071,
+      "sha256": "c8c0495c5fa3090b1a1c418320974dd9f087b05e22c39571fa20c4844c9d21af"
+    },
+    {
+      "name": "anilist",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\anilist.txt",
+      "url": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/auth/authorization-code.md",
+      "finalUrl": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/auth/authorization-code.md",
+      "status": 200,
+      "bytes": 2611,
+      "sha256": "2ed2b2e6cf4ed6c1dc28e76ac7a1cb940f792ed603cd1ab73f4c04cc61f0c7bf"
+    },
+    {
+      "name": "anilist-javascript",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\anilist-javascript.txt",
+      "url": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/snippets/auth/authorization-code/javascript.js",
+      "finalUrl": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/snippets/auth/authorization-code/javascript.js",
+      "status": 200,
+      "bytes": 600,
+      "sha256": "11bcea3b3f1f0fa6f6424545734589377593d61518cb10fbc644090d017536cf"
+    },
+    {
+      "name": "google-discovery",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\google-discovery.txt",
+      "url": "https://accounts.google.com/.well-known/openid-configuration",
+      "finalUrl": "https://accounts.google.com/.well-known/openid-configuration",
+      "status": 200,
+      "bytes": 1399,
+      "sha256": "f86b185fd428f81d7efaa83ec256693b3abedb57ddfcc6a826f5f396b4827f02"
+    },
+    {
+      "name": "google-web",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\google-web.txt",
+      "url": "https://developers.google.com/identity/protocols/oauth2/web-server",
+      "finalUrl": "https://developers.google.com/identity/protocols/oauth2/web-server",
+      "status": 200,
+      "bytes": 414811,
+      "sha256": "dc5b956d0107190353dcaa6508b175603d4394557292011f2a125645577dcdab"
+    },
+    {
+      "name": "hono-node",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\hono-node.txt",
+      "url": "https://hono.dev/docs/getting-started/nodejs",
+      "finalUrl": "https://hono.dev/docs/getting-started/nodejs",
+      "status": 200,
+      "bytes": 113397,
+      "sha256": "33abfc1404d5794bfa6da9a75fafc737df44d5bf1873bd51d6b3e742ed4a2b4d"
+    }
+  ],
+  "prepareSha256": "519017933ca9097c45d11af1e0b900ed687e958a88aaed36724882a28d8ee455",
+  "workspaceDependenciesChanged": false,
+  "installScriptsExecuted": false,
+  "productionDependencyTupleFrozen": false
+}

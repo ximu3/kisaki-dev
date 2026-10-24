@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 26,
+  "extension": "Koodo Reader Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceRef": "v2.4.6",
+  "commit": "1fd0cc7f151916447d396e0c8a2c036180992cab",
+  "releaseEvidence": {
+    "url": "https://api.github.com/repos/koodo-reader/koodo-reader/releases/tags/v2.4.6",
+    "htmlUrl": "https://github.com/koodo-reader/koodo-reader/releases/tag/v2.4.6",
+    "status": 200,
+    "checkedAt": "2026-10-17T10:15:26.570971+00:00",
+    "bytes": 47690,
+    "sha256": "8df341caae3a41d86a5691b33f0a576f29b80a55fc812c1c0f4c64c62b07934d",
+    "publishedAt": "2026-10-07T00:29:56Z",
+    "prerelease": false
+  },
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "sourceFiles": 39,
+  "sourceContract": "source-contract.json",
+  "dependencyContract": "dependency-contract.json",
+  "inputFiles": 23,
+  "fixtureManifest": "fixture-manifest.json",
+  "checks": {
+    "byteAndMapping": 103,
+    "pdfRaster": 9,
+    "totalPassed": 145,
+    "failed": 0,
+    "allInputsUnchanged": true,
+    "durationAdoptionModels": 33
+  },
+  "results": ["synthetic-results.json", "render-results.json", "duration-results.json"],
+  "pdfVisualReview": {
+    "pageCount": 3,
+    "reviewer": "Codex",
+    "inspected": true,
+    "normalizedQuadsMatchRaster": true
+  },
+  "notClaimed": [
+    "Real user backup or official application export execution.",
+    "Production Kisaki profile, record, file, note or annotation writes.",
+    "Kana jump or source PDF.js rendering execution.",
+    "General EPUB or other rendered-text coordinate recovery.",
+    "PDF page-only resume with unknown source reading mode.",
+    "Editable Fabric ink, old JSON full libraries or all historic formats.",
+    "All-platform independent extension artifacts."
+  ],
+  "durationRevision": {
+    "date": "2026-10-17",
+    "reason": "User requested cumulative reading time as additional duration instead of overview notes.",
+    "workTypes": ["game", "anime", "comic", "novel"],
+    "field": "additional_duration_ms",
+    "koodoSource": "readingTime",
+    "dailySummaryImported": false,
+    "overviewNoteCreated": false,
+    "status": "confirmed"
+  }
+}

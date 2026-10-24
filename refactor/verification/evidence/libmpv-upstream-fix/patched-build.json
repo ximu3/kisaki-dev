@@ -1,0 +1,43 @@
+{
+  "builtAt": "2026-10-19T07:03:26.605222+00:00",
+  "variant": "patched",
+  "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "sourceRemote": "https://github.com/mpv-player/mpv.git",
+  "sourceStatus": "M video/out/gpu/video_shaders.c",
+  "sourceDiff": "diff --git a/video/out/gpu/video_shaders.c b/video/out/gpu/video_shaders.c\nindex b763989..1a2f792 100644\n--- a/video/out/gpu/video_shaders.c\n+++ b/video/out/gpu/video_shaders.c\n@@ -827,7 +827,7 @@ static void pass_tone_map(struct gl_shader_cache *sc,\n     GLSLF(\"float coeff = max(sig[sig_idx] - %f, 1e-6) / \\n\"\n           \"              max(sig[sig_idx], 1.0);        \\n\"\n           \"coeff = %f * pow(coeff / %f, %f);            \\n\"\n-          \"color.rgb *= sig[sig_idx] / sig_orig;        \\n\"\n+          \"color.rgb *= (sig_orig != 0.0 ? sig[sig_idx] / sig_orig : 0.0);        \\n\"\n           \"color.rgb = mix(color.rgb, %f * sig, coeff); \\n\",\n           0.18 / dst_scale, 0.90, dst_scale, 0.20, dst_scale);\n }",
+  "patchSha256": "2a76d386261c4312e47b10f1336efbf8fba08e381c1038e98ebb8161879b41f9",
+  "buildScriptSha256": "88678b4bbe13739475e5c9877b0ed4ca6b671ebda8324c3220238c01d3f7729d",
+  "testWrapperSha256": "fefe45a09a2e7656246780e7481f0600fc9497b44812c7f21406b8071583c6cf",
+  "dependenciesSha256": "7480c8882532565cb852688d2e23ce145f0c9c68584a08be451d42b14ca2cb18",
+  "options": [
+    "--buildtype=release",
+    "--wrap-mode=nodownload",
+    "--auto-features=disabled",
+    "-Dlibmpv=true",
+    "-Dcplayer=false",
+    "-Dbuild-date=false",
+    "-Dtests=true",
+    "-Dlibavdevice=enabled",
+    "-Dlua=luajit",
+    "-Dwin32-threads=enabled",
+    "-Dd3d11=enabled",
+    "-Dshaderc=enabled",
+    "-Dspirv-cross=enabled",
+    "-Dgl=disabled"
+  ],
+  "dll": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\engine-build\\runtime\\patched\\libmpv-2.dll",
+    "sha256": "096f5fc768ff36556563ded5a0851728971d2fca3d40a642106d12964fe11d17"
+  },
+  "artifacts": {
+    "configure-patched.log": "a45929c90fcefdc926cc2fc791c05db80b9733c7eb0f905ea0d38b2b7f0f5fd8",
+    "compile-patched.log": "904482a1c57db3f9e9566e676647690ac1ca9a62f537d06674c5f459a023c8bb",
+    "tests-patched.log": "a95c21553fdc0e8d9f8fe490955608801eb9a9989e8fb211f7971bc0c726863b",
+    "build-patched\\config.h": "358d537ac170846aa95319215b37b73f323314907d7214c34c737ef219477e3e",
+    "build-patched\\meson-info\\intro-buildoptions.json": "b345a743a0e91d6090895c99b28e54eec4de73a451577e622f856bb2b0cc08cb",
+    "build-patched\\meson-info\\intro-dependencies.json": "abc29f6b5dda580f0bda3b248de771069473f7f93946f8812246196fde6a65fa",
+    "build-patched\\meson-logs\\testlog-python.json": "5f5306d66e2d77727733659d46585a5b3444951ba16d4ba940aade0470dbde70"
+  },
+  "testOutput": "ninja: Entering directory `F:/project/3/kisaki/node_modules/.cache/libmpv-design/engine-build/build-patched'\n[1/51] Generating test/samples/audio.flac with a custom command\n[2/51] Generating test/samples/video.mkv with a custom command\n[3/51] Generating test/samples/eng_default.mkv with a custom command\n[4/51] Generating test/samples/eng_default_forced.mkv with a custom command\n[5/51] Generating test/samples/sdh_default with a custom command\n[6/51] Generating test/samples/sdh_mixed with a custom command\n[7/51] Generating test/samples/sdh_mismatch with a custom command\n[8/51] Generating test/samples/sdh_all with a custom command\n[9/51] Generating test/samples/eng_forced_matching_audio.mkv with a custom command\n[10/51] Generating test/samples/eng_forced_matching_audio_region.mkv with a custom command\n[11/51] Generating test/samples/eng_forced_no_matching_audio.mkv with a custom command\n[12/51] Generating test/samples/eng_forced_always_audio.mkv with a custom command\n[13/51] Generating test/samples/eng_no_default.mkv with a custom command\n[14/51] Generating test/samples/locale.mkv with a custom command\n[15/51] Generating test/samples/locale_forced.mkv with a custom command\n[16/51] Generating test/samples/locale_complex.mkv with a custom command\n[17/51] Generating test/samples/multiprogram.ts with a custom command\n[18/51] Generating test/samples/multilang2.mkv with a custom command\n[19/51] Generating test/samples/multilang.mkv with a custom command\n[20/51] Generating test/samples/sdh_null with a custom command (wrapped by meson because command contains newlines)\n[21/51] Generating test/samples/sdh_null_text with a custom command (wrapped by meson because command contains newlines)\n[22/51] Generating common/version.h with a custom command (wrapped by meson because command contains newlines)\n 1/41 mpv:chmap                                                     OK              0.12s\n 2/41 mpv:swresample                                                OK              2.46s\n 3/41 mpv:gl-video                                                  OK              0.13s\n 4/41 mpv:json                                                      OK              0.11s\n 5/41 mpv:linked-list                                               OK              0.11s\n 6/41 mpv:timer                                                     OK              0.14s\n 7/41 mpv:format                                                    OK              0.12s\n 8/41 mpv:language                                                  OK              0.11s\n 9/41 mpv:codepoint-width                                           OK              0.11s\n10/41 mpv:paths                                                     OK              0.12s\n11/41 libmpv - mpv:libmpv-test-file-loading                         OK              5.18s\n12/41 libmpv - mpv:libmpv-test-lavfi-complex                        OK              5.20s\n13/41 libmpv - mpv:libmpv-test-options                              OK              0.16s\n14/41 libmpv - mpv:libmpv-test-aes-ctr                              OK              0.33s\n15/41 libmpv - mpv:libmpv-test-eng_default.mkv                      OK              0.18s\n16/41 libmpv - mpv:libmpv-test-eng_default_forced.mkv               OK              0.17s\n17/41 libmpv - mpv:libmpv-test-eng_forced_matching_audio.mkv        OK              0.17s\n18/41 libmpv - mpv:libmpv-test-eng_forced_matching_audio_region.mkv OK              0.18s\n19/41 libmpv - mpv:libmpv-test-eng_forced_no_matching_audio.mkv     OK              0.17s\n20/41 libmpv - mpv:libmpv-test-eng_forced_always_audio.mkv          OK              0.19s\n21/41 libmpv - mpv:libmpv-test-eng_no_default.mkv                   OK              0.20s\n22/41 libmpv - mpv:libmpv-test-locale.mkv                           OK              0.19s\n23/41 libmpv - mpv:libmpv-test-locale_forced.mkv                    OK              0.18s\n24/41 libmpv - mpv:libmpv-test-locale_complex.mkv                   OK              0.23s\n25/41 libmpv - mpv:libmpv-test-multilang.mkv                        OK              0.25s\n26/41 libmpv - mpv:libmpv-test-multilang2.mkv                       OK              0.21s\n27/41 libmpv - mpv:libmpv-test-multiprogram.ts                      OK              0.30s\n28/41 libmpv - mpv:libmpv-test-sdh_default                          OK              0.21s\n29/41 libmpv - mpv:libmpv-test-sdh_default_harder                   OK              0.21s\n30/41 libmpv - mpv:libmpv-test-sdh_mixed                            OK              0.22s\n31/41 libmpv - mpv:libmpv-test-sdh_mixed_harder                     OK              0.21s\n32/41 libmpv - mpv:libmpv-test-sdh_all                              OK              0.22s\n33/41 libmpv - mpv:libmpv-test-sdh_all_harder                       OK              0.23s\n34/41 libmpv - mpv:libmpv-test-sdh_mismatch                         OK              0.25s\n35/41 libmpv - mpv:libmpv-test-sdh_mismatch_harder                  OK              0.23s\n36/41 libmpv - mpv:libmpv-test-sdh_null                             OK              0.21s\n37/41 libmpv - mpv:libmpv-test-sdh_null_harder                      OK              0.22s\n38/41 libmpv - mpv:libmpv-test-sdh_null_text                        OK              0.22s\n39/41 libmpv - mpv:libmpv-test-sdh_null_text_harder                 OK              0.22s\n40/41 libmpv - mpv:libmpv-encode                                    OK              0.21s\n41/41 libmpv - mpv:libmpv-lifetime                                  OK              3.89s\n\nOk:                41  \nFail:              0   \n\nFull log written to F:/project/3/kisaki/node_modules/.cache/libmpv-design/engine-build/build-patched/meson-logs/testlog-python.txt\n",
+  "productionEngineModified": false
+}

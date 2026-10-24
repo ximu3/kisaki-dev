@@ -1,0 +1,2470 @@
+{
+  "checkedAt": "2026-10-20T14:09:46.115Z",
+  "node": "v24.11.1",
+  "harnessSha256": "e4027d8635053a32ae236fb22312552e3dce8482ef2ef686cee4f03470efc84c",
+  "sourceInputSha256": "2aac9e8934ac7b8b7e0ae643cc2e1a541e5de7d7a2f2beea01be4b513fbe00be",
+  "inputs": {
+    "adapter": "fbc33a42d4c011aa54df29a31b8aea04fff5dff8c18b793a5bc8b660c07d9c38",
+    "parse5": "446aca195f43176c5f1f487cd1ed5eff104896c4497cf9693307a5bc0150ec94",
+    "encodingMaps": "f2a72005acf7a52ebd00270cf64903a70a299be16091543d82d6795eef2a2a4b",
+    "mapper": "3a6db746550d95602877f1aae9c0a5973466311d5f5446a1d8717a8d9775f054"
+  },
+  "runs": [
+    {
+      "name": "fixed-plain.azw3",
+      "sourceSha256": "be0218f6ab00a1ed5821ef3692b2f7fab295db6ba13bc535f921f90d64f4cd3e",
+      "compression": 1,
+      "recordLengths": [4096, 4096, 2456],
+      "trailingFlags": 3,
+      "rawBytes": 10648,
+      "rawSha256": "17e0f35d0691546f1b446f5bd58792dd1f84b4953482e8f0cf30a9fcb11c1afd",
+      "flows": [
+        {
+          "start": 0,
+          "end": 10382
+        },
+        {
+          "start": 10382,
+          "end": 10648
+        }
+      ],
+      "fixedLayout": true,
+      "direction": "ltr",
+      "viewport": {
+        "width": 480,
+        "height": 640
+      },
+      "documents": [
+        {
+          "documentIndex": 0,
+          "filename": "fixed-plain.azw3.0.html",
+          "bytes": 9482,
+          "sha256": "b5b2f444b85c2fb5b101b8d5c2898bbfee789f87e89324556274e09674ad432a",
+          "skeleton": {
+            "index": 0,
+            "name": "SKEL0000000000",
+            "numFrag": 2,
+            "offset": 0,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 318,
+              "index": 0,
+              "offset": 0,
+              "length": 9068
+            },
+            {
+              "insertOffset": 9386,
+              "index": 1,
+              "offset": 9068,
+              "length": 80
+            }
+          ],
+          "text": "第一页：甲😀乙 & é。",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9466,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "art",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 200,
+              "height": 240,
+              "address": {
+                "documentIndex": 0,
+                "byteOffset": 9386
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 1,
+          "filename": "fixed-plain.azw3.1.html",
+          "bytes": 422,
+          "sha256": "681bc5781acd66633a369ce49613275bf75b0d82f0dfcb5738b0732fda9deabd",
+          "skeleton": {
+            "index": 1,
+            "name": "SKEL0000000001",
+            "numFrag": 1,
+            "offset": 9482,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 9800,
+              "index": 2,
+              "offset": 0,
+              "length": 88
+            }
+          ],
+          "text": "",
+          "hasNonWhitespaceSourceText": false,
+          "anchors": [
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 406,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "whole-image",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 480,
+              "height": 640,
+              "address": {
+                "documentIndex": 1,
+                "byteOffset": 318
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 2,
+          "filename": "fixed-plain.azw3.2.html",
+          "bytes": 478,
+          "sha256": "175520cd8f4f95585e3652347451cb0a3ca24621365b2f5e7cada828c66edf92",
+          "skeleton": {
+            "index": 2,
+            "name": "SKEL0000000002",
+            "numFrag": 1,
+            "offset": 9904,
+            "length": 335
+          },
+          "fragments": [
+            {
+              "insertOffset": 10223,
+              "index": 3,
+              "offset": 0,
+              "length": 143
+            }
+          ],
+          "text": "末页：結び𠮷。内部链接",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 344,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 442,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 462,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 1
+            }
+          ],
+          "images": [],
+          "links": ["kindle:pos:fid:0003:off:0000000000"],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 319
+            }
+          ]
+        }
+      ],
+      "imageSha256": "23156f01cdea919929cb463cbc996413436ed064754d03de550e428d36a9d1ab",
+      "cssSha256": "7a1e6305c83f7f2f35899d02eb6dd7d8547aae189087fdbf724269c5ada2b6c2",
+      "rawResourceBytes": 3180
+    },
+    {
+      "name": "fixed-palmdoc.azw3",
+      "sourceSha256": "8b85bf35873f34d60ffe5f0dcc7db4bce8a1f19e8692656a7757b2614e586ec0",
+      "compression": 2,
+      "recordLengths": [4096, 4096, 2456],
+      "trailingFlags": 3,
+      "rawBytes": 10648,
+      "rawSha256": "17e0f35d0691546f1b446f5bd58792dd1f84b4953482e8f0cf30a9fcb11c1afd",
+      "flows": [
+        {
+          "start": 0,
+          "end": 10382
+        },
+        {
+          "start": 10382,
+          "end": 10648
+        }
+      ],
+      "fixedLayout": true,
+      "direction": "ltr",
+      "viewport": {
+        "width": 480,
+        "height": 640
+      },
+      "documents": [
+        {
+          "documentIndex": 0,
+          "filename": "fixed-palmdoc.azw3.0.html",
+          "bytes": 9482,
+          "sha256": "b5b2f444b85c2fb5b101b8d5c2898bbfee789f87e89324556274e09674ad432a",
+          "skeleton": {
+            "index": 0,
+            "name": "SKEL0000000000",
+            "numFrag": 2,
+            "offset": 0,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 318,
+              "index": 0,
+              "offset": 0,
+              "length": 9068
+            },
+            {
+              "insertOffset": 9386,
+              "index": 1,
+              "offset": 9068,
+              "length": 80
+            }
+          ],
+          "text": "第一页：甲😀乙 & é。",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9466,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "art",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 200,
+              "height": 240,
+              "address": {
+                "documentIndex": 0,
+                "byteOffset": 9386
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 1,
+          "filename": "fixed-palmdoc.azw3.1.html",
+          "bytes": 422,
+          "sha256": "681bc5781acd66633a369ce49613275bf75b0d82f0dfcb5738b0732fda9deabd",
+          "skeleton": {
+            "index": 1,
+            "name": "SKEL0000000001",
+            "numFrag": 1,
+            "offset": 9482,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 9800,
+              "index": 2,
+              "offset": 0,
+              "length": 88
+            }
+          ],
+          "text": "",
+          "hasNonWhitespaceSourceText": false,
+          "anchors": [
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 406,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "whole-image",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 480,
+              "height": 640,
+              "address": {
+                "documentIndex": 1,
+                "byteOffset": 318
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 2,
+          "filename": "fixed-palmdoc.azw3.2.html",
+          "bytes": 478,
+          "sha256": "175520cd8f4f95585e3652347451cb0a3ca24621365b2f5e7cada828c66edf92",
+          "skeleton": {
+            "index": 2,
+            "name": "SKEL0000000002",
+            "numFrag": 1,
+            "offset": 9904,
+            "length": 335
+          },
+          "fragments": [
+            {
+              "insertOffset": 10223,
+              "index": 3,
+              "offset": 0,
+              "length": 143
+            }
+          ],
+          "text": "末页：結び𠮷。内部链接",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 344,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 442,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 462,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 1
+            }
+          ],
+          "images": [],
+          "links": ["kindle:pos:fid:0003:off:0000000000"],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 319
+            }
+          ]
+        }
+      ],
+      "imageSha256": "23156f01cdea919929cb463cbc996413436ed064754d03de550e428d36a9d1ab",
+      "cssSha256": "7a1e6305c83f7f2f35899d02eb6dd7d8547aae189087fdbf724269c5ada2b6c2",
+      "rawResourceBytes": 3180
+    },
+    {
+      "name": "fixed-rtl.azw3",
+      "sourceSha256": "ae41a09c3c34f5b5da80076f37dd3ef675d37bafe8dd28a32ecb640e4601acf1",
+      "compression": 2,
+      "recordLengths": [4096, 4096, 2456],
+      "trailingFlags": 3,
+      "rawBytes": 10648,
+      "rawSha256": "17e0f35d0691546f1b446f5bd58792dd1f84b4953482e8f0cf30a9fcb11c1afd",
+      "flows": [
+        {
+          "start": 0,
+          "end": 10382
+        },
+        {
+          "start": 10382,
+          "end": 10648
+        }
+      ],
+      "fixedLayout": true,
+      "direction": "rtl",
+      "viewport": {
+        "width": 480,
+        "height": 640
+      },
+      "documents": [
+        {
+          "documentIndex": 0,
+          "filename": "fixed-rtl.azw3.0.html",
+          "bytes": 9482,
+          "sha256": "b5b2f444b85c2fb5b101b8d5c2898bbfee789f87e89324556274e09674ad432a",
+          "skeleton": {
+            "index": 0,
+            "name": "SKEL0000000000",
+            "numFrag": 2,
+            "offset": 0,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 318,
+              "index": 0,
+              "offset": 0,
+              "length": 9068
+            },
+            {
+              "insertOffset": 9386,
+              "index": 1,
+              "offset": 9068,
+              "length": 80
+            }
+          ],
+          "text": "第一页：甲😀乙 & é。",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9466,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "art",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 200,
+              "height": 240,
+              "address": {
+                "documentIndex": 0,
+                "byteOffset": 9386
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 1,
+          "filename": "fixed-rtl.azw3.1.html",
+          "bytes": 422,
+          "sha256": "681bc5781acd66633a369ce49613275bf75b0d82f0dfcb5738b0732fda9deabd",
+          "skeleton": {
+            "index": 1,
+            "name": "SKEL0000000001",
+            "numFrag": 1,
+            "offset": 9482,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 9800,
+              "index": 2,
+              "offset": 0,
+              "length": 88
+            }
+          ],
+          "text": "",
+          "hasNonWhitespaceSourceText": false,
+          "anchors": [
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 406,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "whole-image",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 480,
+              "height": 640,
+              "address": {
+                "documentIndex": 1,
+                "byteOffset": 318
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 2,
+          "filename": "fixed-rtl.azw3.2.html",
+          "bytes": 478,
+          "sha256": "175520cd8f4f95585e3652347451cb0a3ca24621365b2f5e7cada828c66edf92",
+          "skeleton": {
+            "index": 2,
+            "name": "SKEL0000000002",
+            "numFrag": 1,
+            "offset": 9904,
+            "length": 335
+          },
+          "fragments": [
+            {
+              "insertOffset": 10223,
+              "index": 3,
+              "offset": 0,
+              "length": 143
+            }
+          ],
+          "text": "末页：結び𠮷。内部链接",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 344,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 442,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 462,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 1
+            }
+          ],
+          "images": [],
+          "links": ["kindle:pos:fid:0003:off:0000000000"],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 319
+            }
+          ]
+        }
+      ],
+      "imageSha256": "23156f01cdea919929cb463cbc996413436ed064754d03de550e428d36a9d1ab",
+      "cssSha256": "7a1e6305c83f7f2f35899d02eb6dd7d8547aae189087fdbf724269c5ada2b6c2",
+      "rawResourceBytes": 3180
+    },
+    {
+      "name": "fixed-missing-viewport.azw3",
+      "sourceSha256": "94bfdfadcee606555e4be7ba048ca47f19d616d1d8446b764ee3d90c62b9c972",
+      "compression": 1,
+      "recordLengths": [4096, 4096, 2456],
+      "trailingFlags": 3,
+      "rawBytes": 10648,
+      "rawSha256": "17e0f35d0691546f1b446f5bd58792dd1f84b4953482e8f0cf30a9fcb11c1afd",
+      "flows": [
+        {
+          "start": 0,
+          "end": 10382
+        },
+        {
+          "start": 10382,
+          "end": 10648
+        }
+      ],
+      "fixedLayout": true,
+      "direction": "ltr",
+      "viewport": {
+        "failure": "invalidDocument"
+      },
+      "documents": [
+        {
+          "documentIndex": 0,
+          "filename": "fixed-missing-viewport.azw3.0.html",
+          "bytes": 9482,
+          "sha256": "b5b2f444b85c2fb5b101b8d5c2898bbfee789f87e89324556274e09674ad432a",
+          "skeleton": {
+            "index": 0,
+            "name": "SKEL0000000000",
+            "numFrag": 2,
+            "offset": 0,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 318,
+              "index": 0,
+              "offset": 0,
+              "length": 9068
+            },
+            {
+              "insertOffset": 9386,
+              "index": 1,
+              "offset": 9068,
+              "length": 80
+            }
+          ],
+          "text": "第一页：甲😀乙 & é。",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9466,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "art",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 200,
+              "height": 240,
+              "address": {
+                "documentIndex": 0,
+                "byteOffset": 9386
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 1,
+          "filename": "fixed-missing-viewport.azw3.1.html",
+          "bytes": 422,
+          "sha256": "681bc5781acd66633a369ce49613275bf75b0d82f0dfcb5738b0732fda9deabd",
+          "skeleton": {
+            "index": 1,
+            "name": "SKEL0000000001",
+            "numFrag": 1,
+            "offset": 9482,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 9800,
+              "index": 2,
+              "offset": 0,
+              "length": 88
+            }
+          ],
+          "text": "",
+          "hasNonWhitespaceSourceText": false,
+          "anchors": [
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 406,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "whole-image",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 480,
+              "height": 640,
+              "address": {
+                "documentIndex": 1,
+                "byteOffset": 318
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 2,
+          "filename": "fixed-missing-viewport.azw3.2.html",
+          "bytes": 478,
+          "sha256": "175520cd8f4f95585e3652347451cb0a3ca24621365b2f5e7cada828c66edf92",
+          "skeleton": {
+            "index": 2,
+            "name": "SKEL0000000002",
+            "numFrag": 1,
+            "offset": 9904,
+            "length": 335
+          },
+          "fragments": [
+            {
+              "insertOffset": 10223,
+              "index": 3,
+              "offset": 0,
+              "length": 143
+            }
+          ],
+          "text": "末页：結び𠮷。内部链接",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 344,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 442,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 462,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 1
+            }
+          ],
+          "images": [],
+          "links": ["kindle:pos:fid:0003:off:0000000000"],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 319
+            }
+          ]
+        }
+      ],
+      "imageSha256": "23156f01cdea919929cb463cbc996413436ed064754d03de550e428d36a9d1ab",
+      "cssSha256": "7a1e6305c83f7f2f35899d02eb6dd7d8547aae189087fdbf724269c5ada2b6c2",
+      "rawResourceBytes": 3180
+    },
+    {
+      "name": "fixed-zero-viewport.azw3",
+      "sourceSha256": "0f5eb13c30d0902a1f42e2d193d9ce614979381f2f07403948e44bf85eb25fcb",
+      "compression": 1,
+      "recordLengths": [4096, 4096, 2456],
+      "trailingFlags": 3,
+      "rawBytes": 10648,
+      "rawSha256": "17e0f35d0691546f1b446f5bd58792dd1f84b4953482e8f0cf30a9fcb11c1afd",
+      "flows": [
+        {
+          "start": 0,
+          "end": 10382
+        },
+        {
+          "start": 10382,
+          "end": 10648
+        }
+      ],
+      "fixedLayout": true,
+      "direction": "ltr",
+      "viewport": {
+        "failure": "invalidDocument"
+      },
+      "documents": [
+        {
+          "documentIndex": 0,
+          "filename": "fixed-zero-viewport.azw3.0.html",
+          "bytes": 9482,
+          "sha256": "b5b2f444b85c2fb5b101b8d5c2898bbfee789f87e89324556274e09674ad432a",
+          "skeleton": {
+            "index": 0,
+            "name": "SKEL0000000000",
+            "numFrag": 2,
+            "offset": 0,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 318,
+              "index": 0,
+              "offset": 0,
+              "length": 9068
+            },
+            {
+              "insertOffset": 9386,
+              "index": 1,
+              "offset": 9068,
+              "length": 80
+            }
+          ],
+          "text": "第一页：甲😀乙 & é。",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9362,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9366,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9369,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9370,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9375,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9376,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9377,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9379,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9466,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 0,
+              "byteOffset": 9474,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "art",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 200,
+              "height": 240,
+              "address": {
+                "documentIndex": 0,
+                "byteOffset": 9386
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 1,
+          "filename": "fixed-zero-viewport.azw3.1.html",
+          "bytes": 422,
+          "sha256": "681bc5781acd66633a369ce49613275bf75b0d82f0dfcb5738b0732fda9deabd",
+          "skeleton": {
+            "index": 1,
+            "name": "SKEL0000000001",
+            "numFrag": 1,
+            "offset": 9482,
+            "length": 334
+          },
+          "fragments": [
+            {
+              "insertOffset": 9800,
+              "index": 2,
+              "offset": 0,
+              "length": 88
+            }
+          ],
+          "text": "",
+          "hasNonWhitespaceSourceText": false,
+          "anchors": [
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 317,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 406,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 1,
+              "byteOffset": 414,
+              "textOffset": 1
+            }
+          ],
+          "images": [
+            {
+              "id": "whole-image",
+              "src": "kindle:embed:0001?mime=image/jpeg",
+              "width": 480,
+              "height": 640,
+              "address": {
+                "documentIndex": 1,
+                "byteOffset": 318
+              }
+            }
+          ],
+          "links": [],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": []
+        },
+        {
+          "documentIndex": 2,
+          "filename": "fixed-zero-viewport.azw3.2.html",
+          "bytes": 478,
+          "sha256": "175520cd8f4f95585e3652347451cb0a3ca24621365b2f5e7cada828c66edf92",
+          "skeleton": {
+            "index": 2,
+            "name": "SKEL0000000002",
+            "numFrag": 1,
+            "offset": 9904,
+            "length": 335
+          },
+          "fragments": [
+            {
+              "insertOffset": 10223,
+              "index": 3,
+              "offset": 0,
+              "length": 143
+            }
+          ],
+          "text": "末页：結び𠮷。内部链接",
+          "hasNonWhitespaceSourceText": true,
+          "anchors": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 318,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 344,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 347,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 350,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 353,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 356,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 359,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 363,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 442,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 445,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 448,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 451,
+              "textOffset": 1
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 462,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 0
+            },
+            {
+              "documentIndex": 2,
+              "byteOffset": 470,
+              "textOffset": 1
+            }
+          ],
+          "images": [],
+          "links": ["kindle:pos:fid:0003:off:0000000000"],
+          "styles": ["kindle:flow:0001?mime=text/css"],
+          "linkTargets": [
+            {
+              "documentIndex": 2,
+              "byteOffset": 319
+            }
+          ]
+        }
+      ],
+      "imageSha256": "23156f01cdea919929cb463cbc996413436ed064754d03de550e428d36a9d1ab",
+      "cssSha256": "7a1e6305c83f7f2f35899d02eb6dd7d8547aae189087fdbf724269c5ada2b6c2",
+      "rawResourceBytes": 3180
+    }
+  ],
+  "viewportCases": [
+    {
+      "value": "480x640",
+      "result": {
+        "width": 480,
+        "height": 640
+      }
+    },
+    {
+      "value": "0480x0640",
+      "result": {
+        "width": 480,
+        "height": 640
+      }
+    },
+    {
+      "value": "",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    },
+    {
+      "value": "0x640",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    },
+    {
+      "value": "480x0",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    },
+    {
+      "value": "-1x640",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    },
+    {
+      "value": "480.0x640",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    },
+    {
+      "value": "480x640junk",
+      "result": {
+        "failure": "invalidDocument"
+      }
+    }
+  ],
+  "restoredEndpoints": 330,
+  "compressionAndDirectionPreserveDocuments": true,
+  "independentWriter": true,
+  "independentRawDecoder": false,
+  "fullReader": false,
+  "kindleDeviceCompatibility": false
+}

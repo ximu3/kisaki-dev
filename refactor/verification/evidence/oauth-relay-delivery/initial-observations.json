@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-10-21T07:50:45.749309+00:00",
+  "scope": "Initial fixture assertions before the documented corrections",
+  "lifecycle": {
+    "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\lifecycle-initial.mjs",
+    "sha256": "c99da81cf14a3f827fa49a3ff9424e3c4783867f16f0ecebbb52bbd57a834d9c",
+    "mode": "drain",
+    "forcedObserved": true,
+    "forcedExpected": false,
+    "initialGraceMs": 1000
+  },
+  "compose": {
+    "expectedRawDollarInRenderedOutput": true,
+    "observedDollarEscaping": true
+  },
+  "realCredentialsUsed": false
+}

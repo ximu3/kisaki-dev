@@ -1,0 +1,101 @@
+{
+  "observedOn": "2026-10-17",
+  "containsCredentials": false,
+  "containsAccountIdentifiers": false,
+  "containsPrivateText": false,
+  "application": {
+    "name": "Kisaki",
+    "clientId": "d2130481662895284e997a0662dfd21e",
+    "clientIdIsPublic": true,
+    "homepage": "https://github.com/ximu3/kisaki",
+    "registeredRedirect": "http://127.0.0.1:49152/itch/callback",
+    "registrationVerified": true
+  },
+  "authorization": {
+    "flow": "authorization_code",
+    "pkce": "S256",
+    "requestedScopes": ["profile:me", "profile:owned", "profile:games", "profile:collections"],
+    "phase": "connected",
+    "tokenStatus": 200,
+    "profileStatus": 200,
+    "credentialsStatus": 200,
+    "grantedScopes": ["profile:me", "profile:owned", "profile:games", "profile:collections"],
+    "identityVerified": true,
+    "invalidScopeAttempt": {
+      "removedScope": "collection:view",
+      "authorizationError": "invalid scope",
+      "tokenIssued": false
+    }
+  },
+  "reads": {
+    "ownedKeys": {
+      "status": 200,
+      "page": 1,
+      "perPage": 2,
+      "responseShape": {
+        "kind": "object",
+        "keyCount": 0,
+        "firstRowKeys": []
+      },
+      "secondPageStatus": 200,
+      "secondPageShape": {
+        "kind": "object",
+        "keyCount": 0,
+        "firstRowKeys": []
+      }
+    },
+    "editableProjects": {
+      "status": 200,
+      "responseShape": {
+        "kind": "object",
+        "keyCount": 0,
+        "firstRowKeys": []
+      }
+    },
+    "collections": {
+      "status": 200,
+      "count": 1,
+      "publicCount": 1,
+      "privateCount": 0,
+      "declaredGameCounts": [20],
+      "memberReads": [
+        {
+          "status": 403,
+          "hasErrors": true,
+          "responseKeys": ["errors"]
+        }
+      ],
+      "detailStatus": 200
+    },
+    "identityRecheck": {
+      "status": 200,
+      "sameAccount": true
+    }
+  },
+  "writesToUserRecords": 0,
+  "cleanup": {
+    "closed": true,
+    "revokeStatus": 200
+  },
+  "publicCollectionRead": {
+    "profileLinkAbsent": true,
+    "status": 200,
+    "gameCardCount": 20,
+    "uniqueGameCount": 20,
+    "apiDeclaredCount": 20,
+    "publicCountMatchesApi": true,
+    "noAuthenticationSent": true,
+    "paginationControls": [],
+    "usedLoggedInPageOnlyToLocatePublicLink": true,
+    "classificationVerified": false,
+    "countMeaning": "Project cards counted with source game terminology; this does not establish the number of games."
+  },
+  "receiverChecks": [
+    {
+      "respondingAfterCleanup": false
+    },
+    {
+      "respondingAfterCleanup": false
+    }
+  ]
+}

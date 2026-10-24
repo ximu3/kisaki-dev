@@ -1,0 +1,41 @@
+{
+  "observedOn": "2026-10-17",
+  "containsAccountIdentifiers": false,
+  "containsCredentials": false,
+  "publicSample": {
+    "url": "https://www.goodreads.com/assets/sample_export.csv",
+    "status": 200,
+    "bytes": 741,
+    "headerFields": [
+      "Title",
+      "Author",
+      "ISBN",
+      "My Rating",
+      "Average Rating",
+      "Publisher",
+      "Binding",
+      "Year Published",
+      "Original Publication Year",
+      "Date Read",
+      "Date Added",
+      "Shelves",
+      "Bookshelves",
+      "My Review"
+    ],
+    "dataRows": 4,
+    "purposeVerified": "Official import sample, not a verified current export",
+    "currentExportSchemaVerified": false
+  },
+  "authenticatedPage": {
+    "path": "/review/import",
+    "libraryWasEmpty": true,
+    "exportControlPresent": false,
+    "exportMessageMeaning": "Add books before exporting",
+    "supportedFormatsDialogInspected": true,
+    "recordsCreated": 0,
+    "recordsModified": 0,
+    "exportDownloaded": false
+  },
+  "phase": "Initial read-only inspection before authorized test data",
+  "followUp": "2026-10-17-test-results.json"
+}

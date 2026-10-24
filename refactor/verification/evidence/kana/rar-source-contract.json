@@ -1,0 +1,84 @@
+{
+  "checkedAt": "2026-10-19T09:42:20.510632+00:00",
+  "sources": [
+    {
+      "name": "rarlab-changes.html",
+      "url": "https://www.rarlab.com/rarnew.htm",
+      "finalUrl": "https://www.rarlab.com/rarnew.htm",
+      "status": 200,
+      "bytes": 76591,
+      "sha256": "575cdc8a87533e7a40d9b9ba41e7eee5faa13c73248d812dca2c2ab336e41026"
+    },
+    {
+      "name": "rarlab-downloads.html",
+      "url": "https://www.rarlab.com/download.htm",
+      "finalUrl": "https://www.rarlab.com/download.htm",
+      "status": 200,
+      "bytes": 18374,
+      "sha256": "b672d2c883cdd89ba2b2048d1fe1bdec8ae9f8c9a9da7fb98a7b911350d89397"
+    },
+    {
+      "name": "sevenzip-license.txt",
+      "url": "https://www.7-zip.org/license.txt",
+      "finalUrl": "https://www.7-zip.org/license.txt",
+      "status": 200,
+      "bytes": 6031,
+      "sha256": "3a184aa13dc8ad30734e28ff901b478ccbcb5b41be52427a5e7609c8fd9e5ddb"
+    },
+    {
+      "name": "rars-readme.md",
+      "url": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/README.md",
+      "finalUrl": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/README.md",
+      "status": 200,
+      "bytes": 2450,
+      "sha256": "16cb2e34ee6b49bb2a034406e3fbfe83adbe729a7ccb678c1c88ed153d56d003"
+    },
+    {
+      "name": "rars-wasm-readme.md",
+      "url": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/crates/rars-wasm/README.md",
+      "finalUrl": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/crates/rars-wasm/README.md",
+      "status": 200,
+      "bytes": 8827,
+      "sha256": "982e300085f9a48e51c40dee697175d32513bdc3a6b1088ab34dc9f6d25c1d61"
+    },
+    {
+      "name": "rars-wasm.rs",
+      "url": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/crates/rars-wasm/src/lib.rs",
+      "finalUrl": "https://raw.githubusercontent.com/bitplane/rars/c07b3e68b564489202afc0ac9fa1ab5ff82db6a6/crates/rars-wasm/src/lib.rs",
+      "status": 200,
+      "bytes": 40499,
+      "sha256": "cf3c1667a657306c6aec494076febd2577199f6f445ccf9accc90e0f846675ae"
+    },
+    {
+      "name": "rars-npm.json",
+      "url": "https://registry.npmjs.org/@bitplane/rars/0.11.0",
+      "finalUrl": "https://registry.npmjs.org/@bitplane/rars/0.11.0",
+      "status": 200,
+      "bytes": 2427,
+      "sha256": "78d4b2c5e5c355d8b7967da88862d622bb5e6ab801864fddcef5f4721dc7b47f"
+    },
+    {
+      "name": "unrar-rs-docs.html",
+      "url": "https://docs.rs/unrar-rs/0.12.0/unrar_rs/",
+      "finalUrl": "https://docs.rs/unrar-rs/0.12.0/unrar_rs/",
+      "status": 200,
+      "bytes": 60581,
+      "sha256": "9c690522562dad27e64c85f1d5848599d5bde1bf70c6dae8215707e3265f6791"
+    },
+    {
+      "name": "unrar-rs-crate.json",
+      "url": "https://crates.io/api/v1/crates/unrar-rs/0.12.0",
+      "finalUrl": "https://crates.io/api/v1/crates/unrar-rs/0.12.0",
+      "status": 200,
+      "bytes": 1433,
+      "sha256": "df338f2f4c99016e0e81400c057fe610ac4f71a127749ede91fcfa6d71e62c14"
+    }
+  ],
+  "rarsVersion": "0.11.0",
+  "rarsCommit": "c07b3e68b564489202afc0ac9fa1ab5ff82db6a6",
+  "unrarRsVersion": "0.12.0",
+  "unrarBaseline": "7.23",
+  "decoderExecuted": false,
+  "wasmBridgeExecuted": false,
+  "performanceComparisonExecuted": false
+}

@@ -1,0 +1,24 @@
+{
+  "purpose": "owned-child Windows process access and lifetime evidence",
+  "checkedAt": "2026-10-17T14:05:40.709037+00:00",
+  "system": "Windows",
+  "machine": "AMD64",
+  "pythonVersion": "3.12.1",
+  "checks": {
+    "processKnownAliveWithObservationHandle": true,
+    "sameLiveProcessPathDeniedWithoutQueryRight": true,
+    "pathReadWithLimitedQueryRight": true,
+    "executableName": "python.exe",
+    "originalHandleObservedExit": true,
+    "originalQueryHandleReadableAfterExit": true,
+    "exitCode": 7
+  },
+  "nativeAddonBuilt": false,
+  "vantageApiExecuted": false,
+  "pidReuseExercised": false,
+  "windowBackendExecuted": false,
+  "captureExecuted": false,
+  "externalTargetsReadOrControlled": false,
+  "forcedTerminationExecuted": false,
+  "nativeHandlesClosed": 2
+}

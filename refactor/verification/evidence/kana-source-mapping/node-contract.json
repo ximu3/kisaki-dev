@@ -1,0 +1,1322 @@
+{
+  "checkedAt": "2026-10-20T12:16:04.067Z",
+  "node": "v24.11.1",
+  "sources": {
+    "cases.mjs": "a61b1ddf01c7aed87f1f1d21f26aa6efb765b5ee8e5ea4af2646f7130eb3e61d",
+    "markup.mjs": "3a6db746550d95602877f1aae9c0a5973466311d5f5446a1d8717a8d9775f054",
+    "run-node.mjs": "cc34566cd49dc8d3b25bb7880aa9314e1cca02c17f9e8fd00af225cc3e40db95"
+  },
+  "inputs": {
+    "parse5BundleSha256": "446aca195f43176c5f1f487cd1ed5eff104896c4497cf9693307a5bc0150ec94",
+    "encodingMapsSha256": "f2a72005acf7a52ebd00270cf64903a70a299be16091543d82d6795eef2a2a4b"
+  },
+  "cases": [
+    {
+      "name": "plain-and-astral",
+      "sourceSha256": "b48cc8e4ecd8c1b1a881f22f56d5692c6f818d23c4a25747b3b4fe34ea4e797c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 2,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 7,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        }
+      ]
+    },
+    {
+      "name": "references",
+      "sourceSha256": "ed666666860caab95e4886ca43a48767a80e6bfcf712a48596c691c4b16dfd5b",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 2,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 7,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        }
+      ]
+    },
+    {
+      "name": "crlf-and-carriage-return",
+      "sourceSha256": "57544f14d6126afad9e9d9ffdbddc19b4d27efc59d29324d8901c8649235d45f",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 8,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 8
+        },
+        {
+          "chunk": 2,
+          "textUnits": 8,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 8
+        },
+        {
+          "chunk": 7,
+          "textUnits": 8,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 8
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 8,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 8
+        }
+      ]
+    },
+    {
+      "name": "less-than-replay",
+      "sourceSha256": "dc94574a5e28cd16052b884a2fcb0945138f84b9137cfa60e9c3049164695027",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 7,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 7
+        },
+        {
+          "chunk": 2,
+          "textUnits": 7,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 7
+        },
+        {
+          "chunk": 7,
+          "textUnits": 7,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 7
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 7,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 7
+        }
+      ]
+    },
+    {
+      "name": "less-than-at-eof",
+      "sourceSha256": "2e7b3396532abf58d1e4951f579c3b1b9f6700703e58fd53c36c6f279c77ff17",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 2,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 2,
+          "textUnits": 2,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 7,
+          "textUnits": 2,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 2,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        }
+      ]
+    },
+    {
+      "name": "end-tag-at-eof",
+      "sourceSha256": "c9b0443b18d7efb50ac4421d4f2fc2d539274e8a4ab771271a0795da1fead12c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "textarea-replay",
+      "sourceSha256": "e348fd7cb3f8d3b6539179dbd8f2bf2ae0da1e351299021dadccdb130a6db8e9",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 15,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 14
+        },
+        {
+          "chunk": 2,
+          "textUnits": 15,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 14
+        },
+        {
+          "chunk": 7,
+          "textUnits": 15,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 14
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 15,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 14
+        }
+      ]
+    },
+    {
+      "name": "title-replay",
+      "sourceSha256": "cd4c12f4ed0944be8d758437bf1ef3773b86ad10987d21fff89d39c3d4031a4d",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 18,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 18
+        },
+        {
+          "chunk": 2,
+          "textUnits": 18,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 18
+        },
+        {
+          "chunk": 7,
+          "textUnits": 18,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 18
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 18,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 18
+        }
+      ]
+    },
+    {
+      "name": "rawtext-replay",
+      "sourceSha256": "29197f433f9c1704e6405724ea479792c8f12f64a14b99d44aad946631af8d35",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 13,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 2,
+          "textUnits": 13,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 7,
+          "textUnits": 13,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 13,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        }
+      ]
+    },
+    {
+      "name": "script-replay",
+      "sourceSha256": "776f7abcea2bf7fecd067bab7fbe9d963c42b1238ddcd1c66fc08609dafbc27c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 24,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 24
+        },
+        {
+          "chunk": 2,
+          "textUnits": 24,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 24
+        },
+        {
+          "chunk": 7,
+          "textUnits": 24,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 24
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 24,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 24
+        }
+      ]
+    },
+    {
+      "name": "script-double-escape",
+      "sourceSha256": "385fa75492b679ddf68dbdb6b3a4c5efe6caada449b56ae176d57bd874762f3c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 32,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 32
+        },
+        {
+          "chunk": 2,
+          "textUnits": 32,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 32
+        },
+        {
+          "chunk": 7,
+          "textUnits": 32,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 32
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 32,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 32
+        }
+      ]
+    },
+    {
+      "name": "script-replacement",
+      "sourceSha256": "5e9a6dd4a4c2136e89a94ca73eecf259ef82923afda7729068b8622205ada993",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 17,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 2,
+          "textUnits": 17,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 7,
+          "textUnits": 17,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 17,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        }
+      ]
+    },
+    {
+      "name": "foreign-cdata",
+      "sourceSha256": "6b1ddc2b3d8fcf337361010be908d6b16fcbb8b122a44940091601faa23efaee",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 2,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 7,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 11,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 11
+        }
+      ]
+    },
+    {
+      "name": "foreign-cdata-eof",
+      "sourceSha256": "52e37c7ae33e28bb8459920e91923e76001f6deec44e2c775e96570731d334e1",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "foreign-content",
+      "sourceSha256": "150e214518090b30d7358fbe1284e78d6aef8619387d4af3ccf7cf46d8cadafc",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 4,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 2,
+          "textUnits": 4,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 7,
+          "textUnits": 4,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 4,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        }
+      ]
+    },
+    {
+      "name": "foreign-null-replacement",
+      "sourceSha256": "08dc92750f6ce6ac725573e08f7904ac6582fd58e6c138cb2ccc314acd381009",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "math-content",
+      "sourceSha256": "091b517b0b0cf7edbd65b5193af9f8e977ae382047ca6672fe5c832e43e9b6a1",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 2,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 7,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        }
+      ]
+    },
+    {
+      "name": "foster-parenting",
+      "sourceSha256": "0ed40a04a02ce28c1c84cd7e0b097c594f38dd4031901070b1c77086350754fa",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 17,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 2,
+          "textUnits": 17,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 7,
+          "textUnits": 17,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 17,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 17
+        }
+      ]
+    },
+    {
+      "name": "formatting-reconstruction",
+      "sourceSha256": "9609db5e6fb99ba36ec29e282fe75e69dbffdb7e2106f0143da35abaa8a05470",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 2,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 7,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 4
+        }
+      ]
+    },
+    {
+      "name": "adoption-agency",
+      "sourceSha256": "d01a0149fb181644995f03a663d44e41b69307a51f74e295f55eb96e08c7a62e",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 1,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "nested-anchors",
+      "sourceSha256": "cc0055be4bc5dbd242efc372703f372b5c2bd14209fa89efeb4901252603e6b5",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "implied-paragraphs",
+      "sourceSha256": "650cb47a84abb74327a5cdfa7a945d9484a10cfc3bf92c2676d4d842a880aae1",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 2,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 7,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        }
+      ]
+    },
+    {
+      "name": "implicit-table-elements",
+      "sourceSha256": "43987b1e0c28c4b5d8a3c998b5907b874d3db697e8e2cff117891f275d8674f8",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 2,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 2,
+          "textUnits": 2,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 7,
+          "textUnits": 2,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 2,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        }
+      ]
+    },
+    {
+      "name": "select-filtering",
+      "sourceSha256": "275ddf1d3ee4e4b63a159485cc66b459176aa29d238650ac24ede40f37edb78a",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 13,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 2,
+          "textUnits": 13,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 7,
+          "textUnits": 13,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 13,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 13
+        }
+      ]
+    },
+    {
+      "name": "duplicate-attributes",
+      "sourceSha256": "e83f2c0bc8fd1a6976e64a537ad04d04fdd0f91739e3c8ce7f5e68b97e1db964",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 2,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 7,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        }
+      ]
+    },
+    {
+      "name": "merged-body-tags",
+      "sourceSha256": "87285a54c6c61fe288466b35911224c31378c68c439ded192450afa008d20f59",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 2,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 7,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 2,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 2
+        }
+      ]
+    },
+    {
+      "name": "template-content",
+      "sourceSha256": "595474e5885a1b5997940399efed10a3bec300458051aa7e437f1db935fa305c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 5,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 5,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 5,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 5,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "noscript-disabled",
+      "sourceSha256": "8160c29d0777099673b23ec56afc92ba6ee45fb596ae0daa3249299fb8d043cf",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 2,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 7,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 4,
+          "tags": 3,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 4
+        }
+      ]
+    },
+    {
+      "name": "leading-newline-pre",
+      "sourceSha256": "3acd73cd617c1b4010116deb91ace3bd586b380f3e636b5c9569f247c410788c",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 8,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 2,
+          "textUnits": 8,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 7,
+          "textUnits": 8,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 8,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        }
+      ]
+    },
+    {
+      "name": "null-in-data",
+      "sourceSha256": "474f6a241aad899111331a618542218947ba3776ae970e2c20ed2aeba63f0fac",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 6,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 2,
+          "textUnits": 6,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 7,
+          "textUnits": 6,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 6,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 5
+        }
+      ]
+    },
+    {
+      "name": "literal-ampersands",
+      "sourceSha256": "12fb454ca6d472f4d01aa0bc57af80012090729267171a5d05504161a18b1104",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 30,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 30
+        },
+        {
+          "chunk": 2,
+          "textUnits": 30,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 30
+        },
+        {
+          "chunk": 7,
+          "textUnits": 30,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 30
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 30,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 30
+        }
+      ]
+    },
+    {
+      "name": "head-and-body-repair",
+      "sourceSha256": "9d79d9cd0a66ae3f097b9ef565ec0819269a6e36ce921517f6973f6198ff60cb",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 9,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 9
+        },
+        {
+          "chunk": 2,
+          "textUnits": 9,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 9
+        },
+        {
+          "chunk": 7,
+          "textUnits": 9,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 9
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 9,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 9
+        }
+      ]
+    },
+    {
+      "name": "frameset-replaces-body",
+      "sourceSha256": "ff62178e36eb92a7b6800e40aa092e2879d514bc342fe2f4c28725fa2f09383a",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 1,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 2,
+          "textUnits": 1,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 7,
+          "textUnits": 1,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 1,
+          "tags": 4,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        }
+      ]
+    },
+    {
+      "name": "comments-and-doctype",
+      "sourceSha256": "6c6093b63e464198c879f418f5ecbabea0e71635acdd0a4d3b7ffa43e8ae555b",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 2,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 7,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 3,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 3
+        }
+      ]
+    },
+    {
+      "name": "eof-in-markup",
+      "sourceSha256": "9dfc87b419448d801316a3a02127f3381d02413c76eeb6c84410cb3638310483",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 2,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 7,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 1,
+          "tags": 1,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 1
+        }
+      ]
+    },
+    {
+      "name": "supplementary-replay",
+      "sourceSha256": "1714a0f433ac6fe21005daa0066be08deabb5e7d961ac78ee2529e87237fd471",
+      "unchangedTree": true,
+      "stableMap": true,
+      "attempts": [
+        {
+          "chunk": 1,
+          "textUnits": 10,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 10
+        },
+        {
+          "chunk": 2,
+          "textUnits": 10,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 10
+        },
+        {
+          "chunk": 7,
+          "textUnits": 10,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 10
+        },
+        {
+          "chunk": 4096,
+          "textUnits": 10,
+          "tags": 2,
+          "duplicatedElementOrigins": 0,
+          "retainedTextUnits": 10
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "restoredEndpoints": 2420,
+    "rejectedInteriorBytes": 372,
+    "fosteredTextRetainsSourceOrder": true
+  },
+  "limits": {
+    "fullHtmlConformance": false,
+    "fullReader": false,
+    "stylesAndVisibility": false,
+    "largeBookIndex": false
+  }
+}

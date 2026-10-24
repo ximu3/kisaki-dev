@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-19T11:12:30.366101+00:00",
+  "version": "6.0.12",
+  "build": "6e9f6885cb17a3d6c8fd488a5cff730f50aba61d",
+  "url": "https://storage.googleapis.com/webassembly/emscripten-releases-builds/win/6e9f6885cb17a3d6c8fd488a5cff730f50aba61d/wasm-binaries.zip",
+  "archiveBytes": 700727317,
+  "sha256": "51ac2e51a2c6eeba09fa04418496750662b5c1f022665814b0ee8f557c8328c9",
+  "compiler": "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-rar\\emscripten-6.0.12\\install\\emscripten",
+  "config": "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-rar\\emscripten-config.py",
+  "python": "D:\\scoop\\apps\\python\\current\\python.exe",
+  "node": "D:\\nodejs\\node.exe",
+  "systemEnvironmentChanged": false,
+  "sourceArchive": {
+    "url": "https://www.rarlab.com/rar/unrarsrc-7.2.7.tar.gz",
+    "sha256": "01d903a7dcf413cb2925696d7796e48e38d471f79bfe7ef3ad2aebf6c12dbefd",
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-design\\sources\\unrarsrc-7.2.7.tar.gz"
+  }
+}

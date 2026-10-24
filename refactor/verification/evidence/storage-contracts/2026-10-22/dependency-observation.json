@@ -1,0 +1,51 @@
+{
+  "observedOn": "2026-10-22",
+  "timeZone": "Asia/Shanghai",
+  "systemNode": {
+    "version": "24.11.1",
+    "moduleAbi": "137"
+  },
+  "electronProbe": {
+    "electron": "41.2.0",
+    "node": "24.14.0",
+    "moduleAbi": "145",
+    "betterSqlite3": "12.11.1",
+    "sqlite": "3.53.2",
+    "drizzleOrm": "0.45.2",
+    "installedDrizzleKit": "0.31.10"
+  },
+  "officialReleases": [
+    {
+      "tag": "v1.0.0-rc.5",
+      "prerelease": true,
+      "publishedAt": "2026-10-21T18:54:47Z",
+      "url": "https://github.com/drizzle-team/drizzle-orm/releases/tag/v1.0.0-rc.5"
+    },
+    {
+      "tag": "0.45.4",
+      "prerelease": false,
+      "publishedAt": "2026-10-08T10:47:32Z",
+      "url": "https://github.com/drizzle-team/drizzle-orm/releases/tag/0.45.4"
+    },
+    {
+      "tag": "0.45.3",
+      "prerelease": false,
+      "publishedAt": "2026-09-21T10:02:25Z",
+      "url": "https://github.com/drizzle-team/drizzle-orm/releases/tag/0.45.3"
+    }
+  ],
+  "registryObservation": {
+    "kitRcTag": "1.0.0-rc.5",
+    "kitLatestTag": "0.31.11",
+    "outcome": "Metadata requests did not complete reliably; no Drizzle 1.x package was installed or verified."
+  },
+  "appleDeclaration": {
+    "path": "bsd/sys/stdio.h",
+    "sha": "bf60d7784c1ffb984602717303e26068029b9a93",
+    "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/stdio.h"
+  },
+  "limitations": [
+    "The SQL probe is not Drizzle 1.x migration or codec validation.",
+    "The Win32 probe does not validate a packaged Node-API adapter or other operating systems."
+  ]
+}

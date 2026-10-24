@@ -1,0 +1,11 @@
+--- a/video/out/gpu/video_shaders.c
++++ b/video/out/gpu/video_shaders.c
+@@ -827,7 +827,7 @@
+     GLSLF("float coeff = max(sig[sig_idx] - %f, 1e-6) / \n"
+           "              max(sig[sig_idx], 1.0);        \n"
+           "coeff = %f * pow(coeff / %f, %f);            \n"
+-          "color.rgb *= sig[sig_idx] / sig_orig;        \n"
++          "color.rgb *= (sig_orig != 0.0 ? sig[sig_idx] / sig_orig : 0.0);        \n"
+           "color.rgb = mix(color.rgb, %f * sig, coeff); \n",
+           0.18 / dst_scale, 0.90, dst_scale, 0.20, dst_scale);
+ }

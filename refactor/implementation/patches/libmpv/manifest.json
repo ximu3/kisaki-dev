@@ -1,0 +1,34 @@
+{
+  "repository": "https://github.com/mpv-player/mpv.git",
+  "commit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "patches": [
+    {
+      "file": "black-tone-map.patch",
+      "sha256": "2a76d386261c4312e47b10f1336efbf8fba08e381c1038e98ebb8161879b41f9",
+      "purpose": "Avoid a zero denominator when tone mapping black subtitle colors.",
+      "changedFiles": [
+        {
+          "path": "video/out/gpu/video_shaders.c",
+          "beforeSha256": "b60130a8f3ead493ce34b511b579062a390efc29d616c97f5637370bf2f1c0cd",
+          "afterSha256": "35e8c1ea52c2f1b6be69ee1905a2f32291c512751ade35b80c8504f3f1ca2dd0"
+        }
+      ],
+      "verification": "../../../verification/evidence/libmpv-upstream-fix/verification.md",
+      "removalCondition": "The selected upstream commit contains an equivalent fix and passes the regression matrix without this patch."
+    },
+    {
+      "file": "screenshot-source.patch",
+      "sha256": "a71f6fed21e0a5754f76cf5c0df9e34126488e0330332fc5259ffeb79d316f57",
+      "purpose": "Report whether screenshot-raw pixels came from the video output or the software path.",
+      "changedFiles": [
+        {
+          "path": "player/screenshot.c",
+          "beforeSha256": "04cacb714368d1ed330aa1857bf62967fe047e00b222818db62e079aeb709318",
+          "afterSha256": "6d5bbe353c97f114c6eee305495e676b83c330cd6a1b44f464018b541ded8ccf"
+        }
+      ],
+      "verification": "../../../verification/evidence/contract-closure/2026-10-22/README.md#screenshot",
+      "removalCondition": "The selected upstream provides equivalent per-result provenance and passes normal GPU, explicit software and forced fallback tests without this patch."
+    }
+  ]
+}

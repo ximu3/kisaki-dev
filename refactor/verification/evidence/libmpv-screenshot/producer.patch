@@ -1,0 +1,11 @@
+--- a/producer.cpp
++++ b/producer.cpp
+@@ -534,7 +534,7 @@
+                 }
+             }
+             if (loaded && original && !screenshot_requested) {
+-                const char* command[] = {"screenshot-raw", "video", nullptr};
++                const char* command[] = {"screenshot-raw", "subtitles", "rgba", nullptr};
+                 require(api.command(core.handle, 2, command) >= 0, "Probe screenshot submission failed.");
+                 screenshot_requested = true;
+             }

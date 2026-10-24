@@ -1,0 +1,11 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tools.tsbuildinfo",
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["../../tools/**/*.ts", "../../*.config.ts", "../**/*.ts"],
+  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+}

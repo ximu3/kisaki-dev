@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The native consumer exports this endpoint; the KWin script calls it. -->
+<node>
+  <interface name="dev.ximu.Vantage.KWinClient1">
+    <method name="Open">
+      <arg name="protocol" type="s" direction="in"/>
+      <arg name="incarnation" type="s" direction="in"/>
+      <arg name="channel" type="s" direction="out"/>
+    </method>
+    <method name="PublishSnapshot">
+      <arg name="channel" type="s" direction="in"/>
+      <arg name="snapshot" type="a{sv}" direction="in"/>
+    </method>
+    <method name="TakeRequest">
+      <arg name="channel" type="s" direction="in"/>
+      <arg name="request" type="a{sv}" direction="out"/>
+    </method>
+    <method name="Complete">
+      <arg name="channel" type="s" direction="in"/>
+      <arg name="request_id" type="s" direction="in"/>
+      <arg name="result" type="a{sv}" direction="in"/>
+    </method>
+    <method name="Close">
+      <arg name="channel" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

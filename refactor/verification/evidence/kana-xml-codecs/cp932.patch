@@ -1,0 +1,17 @@
+--- a/lib/cp932.h
++++ b/lib/cp932.h
+@@ -104,3 +104,14 @@ cp932_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+       s2 = s[1];
+       if ((s2 >= 0x40 && s2 <= 0x7e) || (s2 >= 0x80 && s2 <= 0xfc)) {
++        /* Follow Microsoft's published CP932 decode table for these six positions. */
++        if (s1 == 0x81) {
++          switch (s2) {
++            case 0x60: *pwc = 0xff5e; return 2;
++            case 0x61: *pwc = 0x2225; return 2;
++            case 0x7c: *pwc = 0xff0d; return 2;
++            case 0x91: *pwc = 0xffe0; return 2;
++            case 0x92: *pwc = 0xffe1; return 2;
++            case 0xca: *pwc = 0xffe2; return 2;
++          }
++        }
+         unsigned char t1 = (s1 < 0xe0 ? s1-0x81 : s1-0xc1);

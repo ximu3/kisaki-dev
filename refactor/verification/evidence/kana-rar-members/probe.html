@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Archive member reference verification</title>
+<script type="module">
+  globalThis.runCase = (input) =>
+    new Promise((resolve, reject) => {
+      const worker = new Worker('/probe-worker.mjs', { type: 'module' })
+      const timeout = setTimeout(() => {
+        worker.terminate()
+        reject(new Error('Member probe timed out'))
+      }, 15000)
+      worker.onmessage = ({ data }) => {
+        clearTimeout(timeout)
+        worker.terminate()
+        if (data.ok) resolve(data)
+        else reject(new Error(data.reason + ': ' + data.detail))
+      }
+      worker.onerror = () => {
+        clearTimeout(timeout)
+        worker.terminate()
+        reject(new Error('Member worker failed'))
+      }
+      worker.postMessage(input)
+    })
+</script>

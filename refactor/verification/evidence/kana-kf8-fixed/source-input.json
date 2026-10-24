@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-10-20T13:47:11.361037+00:00",
+  "writer": {
+    "repository": "https://github.com/behringer24/mobi",
+    "commit": "7a6319c07ad8f3ae828a533b6bfcea367e49a0cf",
+    "archive": "https://codeload.github.com/behringer24/mobi/tar.gz/7a6319c07ad8f3ae828a533b6bfcea367e49a0cf",
+    "sha256": "de952ef4b3a3e92bddc5c63ee89960f1cff6c58d0754dc5982e77816d819db91",
+    "license": "MIT",
+    "modified": false
+  },
+  "goVersion": "go version go1.24.6 windows/amd64",
+  "goExecutableSha256": "65839ac908894ff5dd762d8ed40162990b99a1794a2f6af2535ee61cb81d1306",
+  "sources": {
+    "fixture.go": "28d7eb375240ccd36d8c19cab255e5c71836c9bb2b87160d4e16fe4a9d75cdf4",
+    "prepare.py": "96518795782080a47d8d631f29207df2e522e4d1d131d683bd731707d0ef07f1"
+  },
+  "moduleFile": "module kana-fixed-fixture\n\ngo 1.21\n\nrequire (\n\tgithub.com/behringer24/mobi v0.0.0\n\tgolang.org/x/text v0.21.0\n)\n\nreplace github.com/behringer24/mobi => ../mobi-7a6319c07ad8f3ae828a533b6bfcea367e49a0cf\n",
+  "moduleSums": "golang.org/x/text v0.21.0 h1:zyQAAkrwaneQ066sspRyJaG9VNi/YJ1NfzcGB3hZ/qo=\ngolang.org/x/text v0.21.0/go.mod h1:4IBbMaMmOPCJ8SecivzSH54+73PCFmPWxNTLm+vZkEQ=\n",
+  "writerInputs": {
+    ".envrc": "10150d347d1df455db171fafbbe4e22c98e21726662f299f13ecb062c6de5490",
+    ".gitignore": "794a79e931e5c7982204232cf3158e39148c9da64b9b3fe20a311bf757977ea8",
+    "chunks.go": "b2a7eb358c4ed16d87237c5f7b2869d88d44d7eb349eefd081e448a66ae0ed4b",
+    "examples_test.go": "e5c6398eb7feee50b2ccb3fcbfa232d02c8311af6609635c5567f3e9a5b63f1b",
+    "go.mod": "021d9bbc696696765106234c9be2454ac1f22ce38840299d82bd51ecc49338cd",
+    "go.sum": "f3e79543f7fc7fcd8e803f45678b520a57839a2c5258405036b688799f480fa1",
+    "LICENSE": "b4224aa1b9fa85a336627b82cd90a98a63e0582136f7098fc5c6580e91478303",
+    "locales.go": "bb940c59d5733fb99b91107928f4a0cb8fa4128aef3e1d3470554ac267926efb",
+    "mobi.go": "c01aecb881ba9e20f94d4d9e356a8100e0f0d53ef8f23b3388807827fb2ae290",
+    "mobi_test.go": "574c8428badd8d684f40410205c3d78a482a897b750622cfa9aec2cf0046eb98",
+    "README.md": "032991e52ab1458c293efbfb9bd1291ef631e53d41ce9a2a26b58064a6699bf2",
+    "shell.nix": "ea53a01365a839103f7be5967baaffe766e012dae795f6a95dd8480e588092e8",
+    "templating.go": "d209af4b33501c608d882c969d0c4d4fc2bb52b368db25081eb2ef225dbad7f3",
+    "util.go": "76993d4a4185a775497afd2ff71f1ed36e6c62865153fa77f16098e72c12d0b3",
+    "jfif\\jfif.go": "fa6cce12e5ebdd48beef0944064955c9d055200833ec65a7d1406acf6c5070e3",
+    "pdb\\headers.go": "996648b8ec6e0eb82290609eacc2fa9b310bb9e9c5a6066f53dc2e13617efda8",
+    "pdb\\pdb.go": "6c979228461a0c97ceecf94cf0d623abf3c8e6fc61f8a09280c19c600765ce7a",
+    "pdb\\record.go": "bff385db6ca4a5a14a5bee73a3697f5ea3865d6394a6876f13274b15fa69c4b5",
+    "pdb\\util.go": "b5a63ae777f1af423b7c348289897757cd39a644c48ca1350ca66e9c084d8a35",
+    "records\\cncx.go": "efd839fcecd42f7f54b8b71697cac9b6c8f317d379610dd32b475cdaca93d4f8",
+    "records\\exth.go": "f66380235331ecf5351010b117385168eb3d3848b421926be2ef73505f42611c",
+    "records\\fdst.go": "ebc952760671f22d9a992696ae8d944ffb1b96fc2dd84c147e5ee4e10fac977f",
+    "records\\image.go": "969fd90ab0cd7c222fdfc55a4fb63e42bfa6c293d448d62bdac70a34a672fccb",
+    "records\\index.go": "af81cf04a8b883ff4c9d599bb68e77b85d09dbdd11f9fd3c7e3d7caf3f72f033",
+    "records\\indx.go": "699d7e5c0230e23ec2f6beeeadab8787e86ab5625b7bb13dfe86cb6301ca8c8e",
+    "records\\null.go": "686fcd280d48d9b42ed6c65a817568fe6e365b62910e954ac8a034969aa54cc9",
+    "records\\palmdoc.go": "8fa1958aa32756297c5280ff5bbecf84fab5ecd78f775f2c9fb389d6d16444ef",
+    "records\\palmdoc_test.go": "00f62ec7dd59fa11a1351fcc41ee73ea6f500b07c6a6a527b508d042bf9cf4ef",
+    "records\\records.go": "b2ee0db7fd028c19586c403c1dabfa948ce040b6be64b92e1062f6d0b41a44c4",
+    "records\\tbs.go": "f8b0d4f4299963a6382ff631a08ae0924eb6f0b835bdfed357239c9753e1b236",
+    "records\\tbs_test.go": "0dc77c16c370526bdbec0581a1e8c0cae1cc0ee49458d434c4060eb770be3444",
+    "records\\text.go": "6e474c0321b8647f6cb5b2307348021702948f0b2bf1fc59500e374f5d9b982c",
+    "records\\util.go": "4fd117b1a5062f4a48c83e0687501f5bc827b128cd939efa94db472e6f3fb0f2",
+    "types\\exth.go": "6feba95cdc854815b8beb6bc7df269191740257e5d4fcd030fda4f26a33fb478",
+    "types\\fdst.go": "78e1df556e9c91fb8a48ff703e58ebeb172275b59754925cb490978b96d40940",
+    "types\\fixed.go": "0a1e6a6b0963ea60c466c5347814bc11e44a42298b6376af8d6a9d12812d5c87",
+    "types\\indx.go": "dc90eb4f4337ca98b5845bc1e2fb3a7ab9d518b89f0324366f7a6b87ebcfb977",
+    "types\\mobi.go": "fd7d8d61f3fe1800478c86262fce002c4256430842c9682083d927fec02e1a92",
+    "types\\types.go": "b4991548834ca24f84105258dacba4e362ac3a331ff5a7bf4c4dff813d3625a9",
+    ".github\\workflows\\check.yml": "00b223ce690a57802afc162e5a82395e03562c936e5f22dbae7edaa268e274ac"
+  },
+  "fixtureExecutableSha256": "6b77d1493136684eb304c5be1618a469e5651aa22ff830b6662a64ca2514947e",
+  "expectedSha256": "dc43ad40c83770be8d57e05742888f9bfc61911e9b2a8e9720ec16487bfe3063",
+  "files": [
+    {
+      "bytes": 24501,
+      "compressed": false,
+      "name": "fixed-plain.azw3",
+      "pages": 3,
+      "resolution": "480x640",
+      "rightToLeft": false,
+      "sha256": "be0218f6ab00a1ed5821ef3692b2f7fab295db6ba13bc535f921f90d64f4cd3e"
+    },
+    {
+      "bytes": 16685,
+      "compressed": true,
+      "name": "fixed-palmdoc.azw3",
+      "pages": 3,
+      "resolution": "480x640",
+      "rightToLeft": false,
+      "sha256": "8b85bf35873f34d60ffe5f0dcc7db4bce8a1f19e8692656a7757b2614e586ec0"
+    },
+    {
+      "bytes": 16717,
+      "compressed": true,
+      "name": "fixed-rtl.azw3",
+      "pages": 3,
+      "resolution": "480x640",
+      "rightToLeft": true,
+      "sha256": "ae41a09c3c34f5b5da80076f37dd3ef675d37bafe8dd28a32ecb640e4601acf1"
+    },
+    {
+      "bytes": 24489,
+      "compressed": false,
+      "name": "fixed-missing-viewport.azw3",
+      "pages": 3,
+      "resolution": "",
+      "rightToLeft": false,
+      "sha256": "94bfdfadcee606555e4be7ba048ca47f19d616d1d8446b764ee3d90c62b9c972"
+    },
+    {
+      "bytes": 24501,
+      "compressed": false,
+      "name": "fixed-zero-viewport.azw3",
+      "pages": 3,
+      "resolution": "0x640",
+      "rightToLeft": false,
+      "sha256": "0f5eb13c30d0902a1f42e2d193d9ce614979381f2f07403948e44bf85eb25fcb"
+    }
+  ],
+  "productionDependency": false,
+  "workspaceDependenciesChanged": false,
+  "kindleDeviceCompatibilityChecked": false
+}

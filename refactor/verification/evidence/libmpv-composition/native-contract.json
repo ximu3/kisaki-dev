@@ -1,0 +1,931 @@
+{
+  "checkedAt": "2026-10-19T05:04:36.752Z",
+  "node": "v24.11.1",
+  "sources": {
+    "run.cjs": "e3bfe5f89fe896150154810e82be85efe5332f2fec82f8ab14bf9d2d6dcbf027",
+    "Cargo.toml": "0acf65f9c74c2dca60b9cfa473be403e57d4942376ed3b5eaabaf2d53d365951",
+    "Cargo.lock": "81f8ba281213e445fdb1f10ff8ab8d9fe10b67d05aad9a4cbb6049acc4bfce00",
+    "build.rs": "d75661e02a657b1aa159cf1fbd20ccf585e17d394660758126e5561ab4ecb7c8",
+    "main.rs": "98c502c6f41005d76dc013f605353d0ba6e3dec011f0752188b3543761e69f22",
+    "convert.cpp": "c9a7a781b14acb0a2189b7b6b8e6e427512e67ba52ea5bb6ce8bf8135040b6b4"
+  },
+  "sharedSources": {
+    "libmpv-gpu/producer.cpp": "caf1b71a62853e2334586d690d62137015c377501eccf4e89f4ffc0154e6c9c6",
+    "libmpv-gpu/binding.rs": "012d740a276289b669d45057efa0cb6087e5cc9a33e2dd0561a96b833aa2cfff"
+  },
+  "fixtureReceiptSha256": "b9a0e4416313ca8cbcc51afec1fe24e40b5f5de451cbf226daddfcc5751adf22",
+  "inputFiles": {
+    "steps": {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "sha256": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52"
+    },
+    "colors": {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\colors-pq-4000.mkv",
+      "sha256": "f0f1bb2dd3cebb56426ce30b4390ea8b5796eea6292168bd5e34dbbd45e1dfa7"
+    }
+  },
+  "subtitles": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\composition.ass",
+    "sha256": "12dcc94d8f66c8051bfe0d6a723f73c442635dcf9b40df092283326d9cc49e50",
+    "source": "[Script Info]\nScriptType: v4.00+\nPlayResX: 63\nPlayResY: 47\nScaledBorderAndShadow: yes\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Default,Arial,18,&H00FFFFFF,&H000000FF,&H00000000,&H40000000,0,0,0,0,100,100,0,0,1,1,0,7,0,0,0,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\nDialogue: 0,0:00:00.00,0:01:00.00,Default,,0,0,0,,{\\an7\\pos(3,33)\\bord0\\shad0\\1c&H00FF00&\\1a&H40&\\p1}m 0 0 l 18 0 l 18 8 l 0 8\nDialogue: 1,0:00:00.00,0:01:00.00,Default,,0,0,0,,{\\an7\\pos(23,26)\\bord1\\shad0\\1c&HFFFFFF&\\1a&H20&}A\n"
+  },
+  "overlayData": "{\\an7\\pos(43,4)\\bord0\\shad0\\1c&H0000FF&\\1a&H40&\\p1}m 0 0 l 16 0 l 16 8 l 0 8",
+  "negativeControlShader": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\video-only.glsl",
+    "sha256": "cee9ec256c9df78ee3512e7353f94fde5a5c1ca2214a3b15e7e4ddcced7e5634",
+    "source": "//!HOOK OUTPUT\n//!BIND HOOKED\nvec4 hook() {\n    vec4 value = HOOKED_tex(HOOKED_pos);\n    return vec4(value.rgb * 0.5, value.a);\n}\n"
+  },
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "helperSha256": "bcde32832a8da517e73ac8f820a4cd53f17d3a18a46d1090e37f6a8779e4fec0",
+  "allReturnedFramesReleased": true,
+  "displaySettingsChanged": false,
+  "hardwareDecodeEnabled": false,
+  "hostDisplayVerified": false,
+  "productionOutputImplemented": false,
+  "cases": [
+    {
+      "peakNits": 418,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "base",
+      "subtitle": false,
+      "osd": false,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "ready": true,
+        "subtitleSelected": false,
+        "osdConfigured": false,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no"
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == false)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/base.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "8180f64937fcfac0689d7c05572e13155eb249f02613330cfa4fef467f958491",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-0.rgba16f",
+            "sha256": "79768306672dcb1bd861300cefa37a55d7d9375aeebac58ee98d5338ca539ca7"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-0-80.input.rgba16f",
+                "sha256": "79768306672dcb1bd861300cefa37a55d7d9375aeebac58ee98d5338ca539ca7"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-0-80.output.rgba16f",
+                "sha256": "9381edb73901cae9991488cb462d1ab8bf74118eb16a77ece99464ce7afa7435"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-0-240.input.rgba16f",
+                "sha256": "79768306672dcb1bd861300cefa37a55d7d9375aeebac58ee98d5338ca539ca7"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-0-240.output.rgba16f",
+                "sha256": "4b7902576724e8dd9027479f94c942f7ca20e69d3cc2c034f86bfd9663c908af"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-1.rgba16f",
+            "sha256": "10972eb7c5da493c5f8c79b18675fc51e3bed53a28c432f83d9e541ce6877762"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-1-80.input.rgba16f",
+                "sha256": "10972eb7c5da493c5f8c79b18675fc51e3bed53a28c432f83d9e541ce6877762"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-1-80.output.rgba16f",
+                "sha256": "adb57531a085200cbb91e6bdcc46017f7ec75cbf199ae97a64639b5abc433df7"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-1-240.input.rgba16f",
+                "sha256": "10972eb7c5da493c5f8c79b18675fc51e3bed53a28c432f83d9e541ce6877762"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\base-1-240.output.rgba16f",
+                "sha256": "7717d1ef1386b16f1476868f4d102838c4222d1354c28a4b9baa212cad11af1e"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "subtitles",
+      "subtitle": true,
+      "osd": false,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": false
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/subtitles.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "9ee54ea7ff380f572c7d1508771f2c506b54ba8e211adb2c2fffc500fbea12c7",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-0.rgba16f",
+            "sha256": "def8fc72a608999e6c0fc7c5bf0e29956c25d233a5621dc7ed4330621b55830a"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-0-80.input.rgba16f",
+                "sha256": "def8fc72a608999e6c0fc7c5bf0e29956c25d233a5621dc7ed4330621b55830a"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-0-80.output.rgba16f",
+                "sha256": "ed3b903f7af9f790c1ad8c3b8c307b31924be64ad934bb136f80f37c87d6b1d8"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-0-240.input.rgba16f",
+                "sha256": "def8fc72a608999e6c0fc7c5bf0e29956c25d233a5621dc7ed4330621b55830a"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-0-240.output.rgba16f",
+                "sha256": "120343301a7613595ed59c3d6f4eb0ab66c493ec73e6688e81ab1c928d5e8908"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-1.rgba16f",
+            "sha256": "ec1781aeffde438ff5858e225ede4a306913b877e0be46a10bf5a917ef929847"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-1-80.input.rgba16f",
+                "sha256": "ec1781aeffde438ff5858e225ede4a306913b877e0be46a10bf5a917ef929847"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-1-80.output.rgba16f",
+                "sha256": "f0459522de5b1b774a5a6d8f23557d536819d6122f209a478377e7e574b4b2a8"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-1-240.input.rgba16f",
+                "sha256": "ec1781aeffde438ff5858e225ede4a306913b877e0be46a10bf5a917ef929847"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\subtitles-1-240.output.rgba16f",
+                "sha256": "08e1bf59e7938525455920b9516b3d0f3f1d83b120f773cf983aa3b5dee97bb0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "osd",
+      "subtitle": false,
+      "osd": true,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "ready": true,
+        "subtitleSelected": false,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no"
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == false)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/osd.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "1134509dbff65e05dcfe63d836351e29f70cbcd32c69f3a734b5ddf2d0146745",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-0.rgba16f",
+            "sha256": "578e72d18710d87b4be08b79dffb4fbbc880d9e475aa2527871f9407dc330ba9"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-0-80.input.rgba16f",
+                "sha256": "578e72d18710d87b4be08b79dffb4fbbc880d9e475aa2527871f9407dc330ba9"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-0-80.output.rgba16f",
+                "sha256": "9496ec7df5f872e95984e80df143dd8dedc8de4ae214ee8e49bff432d4a701e6"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-0-240.input.rgba16f",
+                "sha256": "578e72d18710d87b4be08b79dffb4fbbc880d9e475aa2527871f9407dc330ba9"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-0-240.output.rgba16f",
+                "sha256": "9d2659d6cc2fc164e662582f369cdf881ed1375ec68699d5afc725560a0749a4"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-1.rgba16f",
+            "sha256": "dea3c3b49d361591a97a48992207a42d813581ebf6ff0ac47ff4a6b3e3276dad"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-1-80.input.rgba16f",
+                "sha256": "dea3c3b49d361591a97a48992207a42d813581ebf6ff0ac47ff4a6b3e3276dad"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-1-80.output.rgba16f",
+                "sha256": "924fe4ce9617984aea273231d6b9fcbb82cdb065fe185eb206aa4b564bab199f"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-1-240.input.rgba16f",
+                "sha256": "dea3c3b49d361591a97a48992207a42d813581ebf6ff0ac47ff4a6b3e3276dad"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\osd-1-240.output.rgba16f",
+                "sha256": "2b77cd3f233a9921af114cdb04f05be560ddc29888251498f167af59176763c2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "both",
+      "subtitle": true,
+      "osd": true,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "blendSubtitles": "no",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020"
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/both.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "d9773715c797ce09fa4be443c503dff440f561dba7432d233d77afa509ec76e7",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-0.rgba16f",
+            "sha256": "db5affe7976c787fd868e17f9f2b1cc4d66a56345a62beecf8f0016b42dde2c5"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-0-80.input.rgba16f",
+                "sha256": "db5affe7976c787fd868e17f9f2b1cc4d66a56345a62beecf8f0016b42dde2c5"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-0-80.output.rgba16f",
+                "sha256": "9757f0e5fb4177c5db97ec0c4f7db064e7f9db9d8767816ab91b5de74d1ddc82"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-0-240.input.rgba16f",
+                "sha256": "db5affe7976c787fd868e17f9f2b1cc4d66a56345a62beecf8f0016b42dde2c5"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-0-240.output.rgba16f",
+                "sha256": "220fcd76832069e690a9257c4ea5cab79db9bf8ba20cb1f4e50e46fad39cb69b"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-1.rgba16f",
+            "sha256": "4bd29e423eeeb4e7a79b331077181c04445edaf2050712af55ca7ccd8e7eb125"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-1-80.input.rgba16f",
+                "sha256": "4bd29e423eeeb4e7a79b331077181c04445edaf2050712af55ca7ccd8e7eb125"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-1-80.output.rgba16f",
+                "sha256": "14849abf87f54216a009cf7c42effa20b2411ad2b16cd6893477bca720209766"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-1-240.input.rgba16f",
+                "sha256": "4bd29e423eeeb4e7a79b331077181c04445edaf2050712af55ca7ccd8e7eb125"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-1-240.output.rgba16f",
+                "sha256": "c9c61b273bb248e24e96acea860a2ea46d330768eb5a3a06dd08222048777654"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "output-hook",
+      "subtitle": true,
+      "osd": true,
+      "hook": true,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no"
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nassert(mp.set_property(\"glsl-shaders\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/video-only.glsl\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/output-hook.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "8361e84a83f152f564227a75b3551401cd3d99d32f49cca934613fb9112229c9",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\output-hook-0.rgba16f",
+            "sha256": "b0a70a4a529614e6285723df9332a32bbbbeb18ca90ea271d85da826839841cb"
+          },
+          "conversions": []
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\output-hook-1.rgba16f",
+            "sha256": "b2cfa2d7efafc6687d661d07fb92a6c636fb05bd7b836fc5283ed177aa438500"
+          },
+          "conversions": []
+        }
+      ]
+    },
+    {
+      "peakNits": 100,
+      "primaries": "bt.2020",
+      "kind": "steps",
+      "name": "both-low-peak",
+      "subtitle": true,
+      "osd": true,
+      "nativeNitsPerUnit": 100,
+      "observations": {
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.2020",
+        "blendSubtitles": "no",
+        "ready": true,
+        "subtitleSelected": true
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.2020\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"100\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/both-low-peak.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/steps-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "ed9454ae891bee7ab9e7f833c6e656bc196c037bd489ac7f8538dd88e502aa9a",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-0.rgba16f",
+            "sha256": "4f2c85e9038f784d5f846fb30a5fe34829544b5cdde5bda23c5e22cf28212473"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 1.25,
+              "width": 63,
+              "height": 47,
+              "factor": 1.25,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-0-80.input.rgba16f",
+                "sha256": "4f2c85e9038f784d5f846fb30a5fe34829544b5cdde5bda23c5e22cf28212473"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-0-80.output.rgba16f",
+                "sha256": "a3ec4e786265c671a74019df4fceb5efe061a66b9590e23ecc4a34a793086b56"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.4166666666666667,
+              "width": 63,
+              "height": 47,
+              "factor": 0.416666657,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-0-240.input.rgba16f",
+                "sha256": "4f2c85e9038f784d5f846fb30a5fe34829544b5cdde5bda23c5e22cf28212473"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-0-240.output.rgba16f",
+                "sha256": "bb8b6c446cea8e935c113b65ee8a7159bb2c845054fb24515f5e519e3aa17e76"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-1.rgba16f",
+            "sha256": "25782de8848d8a51789405b952419787884d95bafe8b27ed38633f55962badce"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 1.25,
+              "width": 31,
+              "height": 23,
+              "factor": 1.25,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-1-80.input.rgba16f",
+                "sha256": "25782de8848d8a51789405b952419787884d95bafe8b27ed38633f55962badce"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-1-80.output.rgba16f",
+                "sha256": "7b867f116896f96c96ec95e95122cd4a642f9f8b8cfa35f1b452955c3b33f1c1"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.4166666666666667,
+              "width": 31,
+              "height": 23,
+              "factor": 0.416666657,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-1-240.input.rgba16f",
+                "sha256": "25782de8848d8a51789405b952419787884d95bafe8b27ed38633f55962badce"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\both-low-peak-1-240.output.rgba16f",
+                "sha256": "f3fde2a74245902224ac9b07f4e238d3536f47fc319b89dafc8ae51d36856ddb"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "bt.709",
+      "kind": "colors",
+      "name": "srgb-linear",
+      "subtitle": true,
+      "osd": true,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "osdConfigured": true,
+        "targetTrc": "linear",
+        "targetPrim": "bt.709",
+        "blendSubtitles": "no",
+        "ready": true,
+        "subtitleSelected": true
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"bt.709\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/srgb-linear.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/colors-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "77ceef061875cb77ccca3cd8003a29864f982bfb0a30b9452e92060e9d15de93",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-0.rgba16f",
+            "sha256": "d4483ff3711825001a4d2dbcab8d3f8ee59ea79880701c98a181e9ff9c097a54"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-0-80.input.rgba16f",
+                "sha256": "d4483ff3711825001a4d2dbcab8d3f8ee59ea79880701c98a181e9ff9c097a54"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-0-80.output.rgba16f",
+                "sha256": "4b0a266abaebb95214e4886057ae13770148abc40d5415cc1ed0d4efb78b2e7f"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-0-240.input.rgba16f",
+                "sha256": "d4483ff3711825001a4d2dbcab8d3f8ee59ea79880701c98a181e9ff9c097a54"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-0-240.output.rgba16f",
+                "sha256": "d72c2504ce2bfe79ddc4abfd7b6be2c31f81ff29cbb94ac1715e9ce3aa18b970"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-1.rgba16f",
+            "sha256": "29a3fdb5a42ce36a3819b49ca838332f4fdb5c907ed24bbfa29ba580525a3c09"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-1-80.input.rgba16f",
+                "sha256": "29a3fdb5a42ce36a3819b49ca838332f4fdb5c907ed24bbfa29ba580525a3c09"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-1-80.output.rgba16f",
+                "sha256": "17a7bb19a6da059c15458108259563c8c0e2502855001193ce59ec00a20994dc"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-1-240.input.rgba16f",
+                "sha256": "29a3fdb5a42ce36a3819b49ca838332f4fdb5c907ed24bbfa29ba580525a3c09"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\srgb-linear-1-240.output.rgba16f",
+                "sha256": "13678f68f2101dc89c40ef6eed875b77762fb78f4c91eabe3d832bd860574198"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "peakNits": 418,
+      "primaries": "display-p3",
+      "kind": "colors",
+      "name": "p3-linear",
+      "subtitle": true,
+      "osd": true,
+      "nativeNitsPerUnit": 203,
+      "observations": {
+        "targetPrim": "display-p3",
+        "blendSubtitles": "no",
+        "ready": true,
+        "subtitleSelected": true,
+        "osdConfigured": true,
+        "targetTrc": "linear"
+      },
+      "scriptSource": "local utils = require(\"mp.utils\")\nassert(mp.set_property(\"target-prim\", \"display-p3\"))\nassert(mp.set_property(\"target-trc\", \"linear\"))\nassert(mp.set_property(\"target-peak\", \"418\"))\nassert(mp.set_property(\"hdr-compute-peak\", \"no\"))\nassert(mp.set_property(\"gamut-mapping-mode\", \"clip\"))\nassert(mp.set_property(\"background\", \"color\"))\nassert(mp.set_property(\"background-color\", \"#000000\"))\nassert(mp.set_property(\"video-aspect-override\", \"4:3\"))\nassert(mp.set_property(\"sub-visibility\", \"yes\"))\nlocal overlay = nil\noverlay = mp.create_osd_overlay(\"ass-events\")\noverlay.res_x = 63; overlay.res_y = 47; overlay.z = 100\noverlay.data = \"{\\\\an7\\\\pos(43,4)\\\\bord0\\\\shad0\\\\1c&H0000FF&\\\\1a&H40&\\\\p1}m 0 0 l 16 0 l 16 8 l 0 8\"\noverlay:update()\nmp.register_event(\"file-loaded\", function()\n  local selected = false\n  for _, track in ipairs(mp.get_property_native(\"track-list\")) do\n    if track.type == \"sub\" and track.selected then selected = true end\n  end\n  assert(selected == true)\n  local file = assert(io.open(\"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/p3-linear.ready.json\", \"w\"))\n  file:write(utils.format_json({ ready = true, subtitleSelected = selected, osdConfigured = overlay ~= nil,\n    targetTrc = mp.get_property(\"target-trc\"), targetPrim = mp.get_property(\"target-prim\"),\n    blendSubtitles = mp.get_property(\"blend-subtitles\") }))\n  file:close()\nend)\nlocal file_options = { [\"sub-auto\"] = \"no\" }\nfile_options[\"sub-file\"] = \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/composition/composition.ass\"\nassert(mp.command_native({\"loadfile\", \"F:/project/3/kisaki/node_modules/.cache/libmpv-design/tonemapping/colors-pq-4000.mkv\", \"replace\", -1, file_options}))\n",
+      "scriptSha256": "5944761375e34220d05cee9fc75a7704758eddbfc31355b7cfcd5932595c9107",
+      "samples": [
+        {
+          "width": 63,
+          "height": 47,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-0.rgba16f",
+            "sha256": "4ca05cfdbcf648a561282b076bba8f9640930a83475fecf4e25715e989874ee6"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 63,
+              "height": 47,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-0-80.input.rgba16f",
+                "sha256": "4ca05cfdbcf648a561282b076bba8f9640930a83475fecf4e25715e989874ee6"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-0-80.output.rgba16f",
+                "sha256": "fae37b0ca08193b54848115e60ae0ac97a89dd6634038d106a63af8ec863e995"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 63,
+              "height": 47,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-0-240.input.rgba16f",
+                "sha256": "4ca05cfdbcf648a561282b076bba8f9640930a83475fecf4e25715e989874ee6"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-0-240.output.rgba16f",
+                "sha256": "1a108f3b7e2f5f315135fc2aabd0f68c3ec84769af42692c58d591edfda6c515"
+              }
+            }
+          ]
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "device": {
+            "vendor": 4318,
+            "device": 10400,
+            "adapterLuid": "0000000000018675"
+          },
+          "raw": {
+            "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-1.rgba16f",
+            "sha256": "5e75b960a68e444e0a3f5f90008705576cd729b26927aa4f649ca567daceeea5"
+          },
+          "conversions": [
+            {
+              "nitsPerUnit": 80,
+              "requestedFactor": 2.5375,
+              "width": 31,
+              "height": 23,
+              "factor": 2.5374999,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-1-80.input.rgba16f",
+                "sha256": "5e75b960a68e444e0a3f5f90008705576cd729b26927aa4f649ca567daceeea5"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-1-80.output.rgba16f",
+                "sha256": "a3d8182d85154216f9925288a63ffb2494376cde93588edca0c56c39a24d2d6f"
+              }
+            },
+            {
+              "nitsPerUnit": 240,
+              "requestedFactor": 0.8458333333333333,
+              "width": 31,
+              "height": 23,
+              "factor": 0.845833361,
+              "featureLevel": 45056,
+              "gpuConverted": true,
+              "input": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-1-240.input.rgba16f",
+                "sha256": "5e75b960a68e444e0a3f5f90008705576cd729b26927aa4f649ca567daceeea5"
+              },
+              "output": {
+                "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\composition\\p3-linear-1-240.output.rgba16f",
+                "sha256": "99242b03183266cf7a1d85c48b23547ce162db18bf53c69eea9117a72acc534d"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

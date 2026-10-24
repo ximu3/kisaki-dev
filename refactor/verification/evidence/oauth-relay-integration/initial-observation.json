@@ -1,0 +1,10 @@
+{
+  "recordedAt": "2026-10-21T08:17:58.656293+00:00",
+  "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\integration-afhghpbq\\request-initial.mjs",
+  "scriptSha256": "325bc8d5b3216a437c89bc3ba1e50adf32443e416e8bf055e6634f54d845b5e1",
+  "case": "response-deadline",
+  "expectedErrorCode": "ABORT_ERR",
+  "observedErrorCode": "ECONNRESET",
+  "assertionFailed": true,
+  "realProviderRequests": false
+}

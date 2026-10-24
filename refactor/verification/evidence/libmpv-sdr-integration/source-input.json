@@ -1,0 +1,102 @@
+{
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze",
+  "addon": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\gpu-target\\libmpv-gpu-probe.node",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "dll": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\engine-build\\runtime\\patched\\libmpv-2.dll",
+    "sha256": "096f5fc768ff36556563ded5a0851728971d2fca3d40a642106d12964fe11d17"
+  },
+  "electron": {
+    "version": "44.5.1",
+    "source": "https://github.com/electron/electron/releases/download/v44.5.1/electron-v44.5.1-win32-x64.zip",
+    "archiveSha256": "9b382492dcfee91f8f9e92c91f7972550a1b95d2299cac72279dab33a600d7db",
+    "runtime": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\electron-44.5.1",
+    "selectedConsumerVersion": true
+  },
+  "electronExeSha256": "49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa",
+  "sourceColors": [
+    [255, 0, 0],
+    [0, 255, 0],
+    [0, 0, 255],
+    [128, 64, 32],
+    [255, 255, 255],
+    [0, 0, 0]
+  ],
+  "p3Expected": [
+    [234, 51, 35],
+    [117, 251, 76],
+    [0, 0, 245],
+    [120, 67, 39],
+    [255, 255, 255],
+    [0, 0, 0]
+  ],
+  "hdrRequestedNits": [0.1, 10, 100, 203, 400, 1000, 4000],
+  "cases": [
+    {
+      "name": "srgb",
+      "target": "srgb",
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb\\observed.json",
+      "points": [
+        [0.16666666666666666, 0.25],
+        [0.5, 0.25],
+        [0.8333333333333334, 0.25],
+        [0.16666666666666666, 0.75],
+        [0.5, 0.75],
+        [0.8333333333333334, 0.75]
+      ],
+      "userData": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb\\profile",
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb\\result.json"
+    },
+    {
+      "name": "p3",
+      "target": "display-p3",
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\p3\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\p3\\observed.json",
+      "points": [
+        [0.16666666666666666, 0.25],
+        [0.5, 0.25],
+        [0.8333333333333334, 0.25],
+        [0.16666666666666666, 0.75],
+        [0.5, 0.75],
+        [0.8333333333333334, 0.75]
+      ],
+      "userData": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\p3\\profile",
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\p3\\result.json"
+    },
+    {
+      "name": "hdr-srgb",
+      "target": "srgb",
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\hdr-srgb\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\hdr-srgb\\observed.json",
+      "points": [
+        [0.07142857142857142, 0.3],
+        [0.21428571428571427, 0.3],
+        [0.35714285714285715, 0.3],
+        [0.5, 0.3],
+        [0.6428571428571429, 0.3],
+        [0.7857142857142857, 0.3],
+        [0.9285714285714286, 0.3],
+        [0.1, 0.82]
+      ],
+      "userData": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\hdr-srgb\\profile",
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\hdr-srgb\\result.json"
+    }
+  ],
+  "files": {
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png": "2b38b464e0cfae190ac8b58c2633f393a4e9f25096d677a806b89142141c092e",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\overlay.ass": "23f11fc24c4513da8a603a4cb3a236e7d7425957dddf927f97427cf3a6b76102",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb\\start.lua": "98ccd149410c5d102639b8ae38ad720098ee1aae98eb7781a35051bb8607fc8f",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\p3\\start.lua": "40acc384c37b3631145daa457b01bdbdacafeaf7e90968b0a0058084b7b44c05",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\hdr-srgb\\start.lua": "9defc0413296d0fc5283147b1d1cd69d39beb5d091ef340628c113586e272629"
+  },
+  "originalProbeSources": {
+    "producer.cpp": "caf1b71a62853e2334586d690d62137015c377501eccf4e89f4ffc0154e6c9c6",
+    "binding.rs": "012d740a276289b669d45057efa0cb6087e5cc9a33e2dd0561a96b833aa2cfff"
+  },
+  "prepareSha256": "db04e2004e6f4b7a449dcc9d93e9d59fb6d2099f89f1ab2dd9e697a2a74353ca"
+}

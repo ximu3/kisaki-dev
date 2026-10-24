@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-21T06:47:25.231538+00:00",
+  "googleClientCommit": "6ac9ab4fd49d64d8315f16d7f2757da04fbeb579",
+  "commitLookup": {
+    "url": "https://api.github.com/repos/googleapis/google-auth-library-nodejs/commits?path=src/auth/oauth2client.ts&per_page=1",
+    "finalUrl": "https://api.github.com/repos/googleapis/google-auth-library-nodejs/commits?path=src/auth/oauth2client.ts&per_page=1",
+    "status": 200,
+    "bytes": 13358,
+    "sha256": "0dfaf7302ec1a70b84b9563d108fafac95b4e8c26cf568c7d1a3d432022b4440"
+  },
+  "sources": [
+    {
+      "name": "google-client",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\google-client.txt",
+      "url": "https://raw.githubusercontent.com/googleapis/google-auth-library-nodejs/6ac9ab4fd49d64d8315f16d7f2757da04fbeb579/src/auth/oauth2client.ts",
+      "finalUrl": "https://raw.githubusercontent.com/googleapis/google-auth-library-nodejs/6ac9ab4fd49d64d8315f16d7f2757da04fbeb579/src/auth/oauth2client.ts",
+      "status": 200,
+      "bytes": 51404,
+      "sha256": "de696d086482dcc7bcef4977aaa6cd885b8cc61f211796b6c81c9344c068b8d2"
+    },
+    {
+      "name": "revocation-standard",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\revocation-standard.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc7009.txt",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc7009.txt",
+      "status": 200,
+      "bytes": 23517,
+      "sha256": "b2f346d5a87ba9d7f09047901257a65f7ac0b26352095969c25821afab447829"
+    }
+  ],
+  "realProviderOperationsExecuted": false
+}

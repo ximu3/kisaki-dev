@@ -1,0 +1,441 @@
+{
+  "synthetic": true,
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "luaCodeExecuted": false,
+  "pdfGeometryBasis": "Pinned MuPDF 1.27.2 formulas and actual synthetic PDF boxes; no exact source renderer execution",
+  "inputFiles": 33,
+  "checks": [
+    {
+      "name": "Current annotations, not alternate provider backups",
+      "passed": true
+    },
+    {
+      "name": "Lua empty-string override remains a known empty source field",
+      "passed": true
+    },
+    {
+      "name": "Custom source title overrides the source original",
+      "passed": true
+    },
+    {
+      "name": "Authors split only on actual newlines",
+      "passed": true
+    },
+    {
+      "name": "Source keywords remain ordinary terms",
+      "passed": true
+    },
+    {
+      "name": "Source abandoned means On hold",
+      "passed": true
+    },
+    {
+      "name": "Reading maps to the current active arrangement",
+      "passed": true
+    },
+    {
+      "name": "Complete has no current arrangement",
+      "passed": true
+    },
+    {
+      "name": "Absent status stays unknown",
+      "passed": true
+    },
+    {
+      "name": "Unknown status is not guessed",
+      "passed": true
+    },
+    {
+      "name": "One-star rating is 20",
+      "passed": true
+    },
+    {
+      "name": "Four-star rating is 80",
+      "passed": true
+    },
+    {
+      "name": "Five-star rating is 100",
+      "passed": true
+    },
+    {
+      "name": "Nil rating is unrated in a known summary",
+      "passed": true
+    },
+    {
+      "name": "Zero rating is not a zero score",
+      "passed": true
+    },
+    {
+      "name": "Missing summary is distinct from known unrated",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid KOReader star value 2.5",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid KOReader star value -1",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid KOReader star value 6",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid KOReader star value True",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid KOReader star value nan",
+      "passed": true
+    },
+    {
+      "name": "Complete initializes one unknown-date Work record",
+      "passed": true
+    },
+    {
+      "name": "Review modification date does not become a completion date",
+      "passed": true
+    },
+    {
+      "name": "Existing completion history is preserved",
+      "passed": true
+    },
+    {
+      "name": "A complete Part contributes only its flag",
+      "passed": true
+    },
+    {
+      "name": "One hundred percent is not an explicit complete status",
+      "passed": true
+    },
+    {
+      "name": "Missing file does not block a known completion fact",
+      "passed": true
+    },
+    {
+      "name": "Persisted manual order is used",
+      "passed": true
+    },
+    {
+      "name": "Source scan rules do not expand persisted members",
+      "passed": true
+    },
+    {
+      "name": "Collated collections have only a member snapshot",
+      "passed": true
+    },
+    {
+      "name": "Reserved favorites membership is known true",
+      "passed": true
+    },
+    {
+      "name": "Complete supplied favorites snapshot can express false",
+      "passed": true
+    },
+    {
+      "name": "Default collection is not the favorites collection",
+      "passed": true
+    },
+    {
+      "name": "Source review remains private plain text",
+      "passed": true
+    },
+    {
+      "name": "Explicit old-to-new root maps an actual file",
+      "passed": true
+    },
+    {
+      "name": "Reject paths outside the chosen old root",
+      "passed": true
+    },
+    {
+      "name": "Reject parent traversal before normalization",
+      "passed": true
+    },
+    {
+      "name": "Detached metadata survives without a matching file",
+      "passed": true
+    },
+    {
+      "name": "Companion cover is actual image bytes",
+      "passed": true
+    },
+    {
+      "name": "Partial MD5 starts at byte zero despite the negative shift",
+      "passed": true
+    },
+    {
+      "name": "Unsampled changes can retain the same partial MD5",
+      "passed": true
+    },
+    {
+      "name": "Full MD5 still distinguishes unsampled changes",
+      "passed": true
+    },
+    {
+      "name": "Source partial checksum pdf-book.pdf",
+      "passed": true
+    },
+    {
+      "name": "Source partial checksum comic-book.cbz",
+      "passed": true
+    },
+    {
+      "name": "Source partial checksum novel.epub",
+      "passed": true
+    },
+    {
+      "name": "SQLite file header",
+      "passed": true
+    },
+    {
+      "name": "Current statistics schema version",
+      "passed": true
+    },
+    {
+      "name": "SQLite fixture integrity",
+      "passed": true
+    },
+    {
+      "name": "Source-derived columns book",
+      "passed": true
+    },
+    {
+      "name": "Source-derived columns page_stat_data",
+      "passed": true
+    },
+    {
+      "name": "Source-derived columns numbers",
+      "passed": true
+    },
+    {
+      "name": "Query-only snapshot refuses writes",
+      "passed": true
+    },
+    {
+      "name": "Database identifiers retain 64-bit precision",
+      "passed": true
+    },
+    {
+      "name": "Source title alone is not unique",
+      "passed": true
+    },
+    {
+      "name": "Title, authors and partial hash identify one source statistics row",
+      "passed": true
+    },
+    {
+      "name": "Raw page records preserve fifteen seconds",
+      "passed": true
+    },
+    {
+      "name": "Source rescaling view truncates those records to fourteen seconds",
+      "passed": true
+    },
+    {
+      "name": "Five seconds rescaled to two pages becomes four in the source view",
+      "passed": true
+    },
+    {
+      "name": "Distinct books aggregate once before Work adoption",
+      "passed": true
+    },
+    {
+      "name": "Known empty raw records mean zero in the declared raw-record metric",
+      "passed": true
+    },
+    {
+      "name": "Cached total is not added or substituted",
+      "passed": true
+    },
+    {
+      "name": "One invalid duration prevents a partial Book total",
+      "passed": true
+    },
+    {
+      "name": "New Work uses the selected total as initial additional time",
+      "passed": true
+    },
+    {
+      "name": "Existing Work subtracts its actual saved activity",
+      "passed": true
+    },
+    {
+      "name": "Source total smaller than saved activity is refused",
+      "passed": true
+    },
+    {
+      "name": "Activity recorded in flight remains additional to the frozen adoption",
+      "passed": true
+    },
+    {
+      "name": "Current JSON single-book envelope",
+      "passed": true
+    },
+    {
+      "name": "Current JSON multi-book envelope",
+      "passed": true
+    },
+    {
+      "name": "JSON optional checksum is full-file MD5",
+      "passed": true
+    },
+    {
+      "name": "JSON export timestamp differs from annotation creation",
+      "passed": true
+    },
+    {
+      "name": "JSON display page can be a Roman label",
+      "passed": true
+    },
+    {
+      "name": "JSON omits endpoints and PDF geometry",
+      "passed": true
+    },
+    {
+      "name": "Reject unknown JSON export version",
+      "passed": true
+    },
+    {
+      "name": "Reject unrelated JSON structure",
+      "passed": true
+    },
+    {
+      "name": "Markdown preserves the whole source file",
+      "passed": true
+    },
+    {
+      "name": "TXT user markup remains literal source text",
+      "passed": true
+    },
+    {
+      "name": "EPUB XPointer is not an EPUB CFI",
+      "passed": true
+    },
+    {
+      "name": "Unconverted EPUB text is still available",
+      "passed": true
+    },
+    {
+      "name": "Actual PDF page count",
+      "passed": true
+    },
+    {
+      "name": "Crop, rotation and UserUnit determine native bounds",
+      "passed": true
+    },
+    {
+      "name": "Every line keeps its own quadrilateral",
+      "passed": true
+    },
+    {
+      "name": "Inclusive pbox right endpoint is x+w-1",
+      "passed": true
+    },
+    {
+      "name": "Native quad order is clockwise from upper left",
+      "passed": true
+    },
+    {
+      "name": "Multi-page ext retains both physical pages",
+      "passed": true
+    },
+    {
+      "name": "UserUnit page normalizes its source native geometry",
+      "passed": true
+    },
+    {
+      "name": "Incomplete multi-page geometry is not partly adopted",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid pbox {'x': 0, 'y': 0, 'w': 1, 'h': 20}",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid pbox {'x': -1, 'y': 0, 'w': 5, 'h': 5}",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid pbox {'x': 250, 'y': 0, 'w': 20, 'h': 5}",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid pbox {'x': 0, 'y': 0, 'w': nan, 'h': 5}",
+      "passed": true
+    },
+    {
+      "name": "Page bookmark ignores display pageno and pageref",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid physical page 0",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid physical page -1",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid physical page 4",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid physical page 1.5",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid physical page True",
+      "passed": true
+    },
+    {
+      "name": "Region zoom is removed in native coordinates",
+      "passed": true
+    },
+    {
+      "name": "Region endpoint zoom conflict is rejected",
+      "passed": true
+    },
+    {
+      "name": "Known page origin can supply a fixed-page resume point",
+      "passed": true
+    },
+    {
+      "name": "Nonzero approximate page position is not claimed as exact resume",
+      "passed": true
+    },
+    {
+      "name": "MuPDF CBZ includes uppercase extensions and uses numeric ordering",
+      "passed": true
+    },
+    {
+      "name": "One-based CBZ page four maps to the full actual member path",
+      "passed": true
+    },
+    {
+      "name": "Refuse uncertain source order collation-tie.cbz",
+      "passed": true
+    },
+    {
+      "name": "Refuse uncertain source order numeric-overflow.cbz",
+      "passed": true
+    },
+    {
+      "name": "Refuse uncertain source order unicode-order.cbz",
+      "passed": true
+    },
+    {
+      "name": "Native-unsupported source pages are not dropped before indexing",
+      "passed": true
+    },
+    {
+      "name": "All fixture inputs remain unchanged",
+      "passed": true
+    }
+  ],
+  "passed": 107,
+  "failed": 0,
+  "allInputsUnchanged": true
+}

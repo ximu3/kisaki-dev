@@ -1,0 +1,951 @@
+{
+  "checkedAt": "2026-10-20T12:16:54.931Z",
+  "platform": "win32",
+  "playwrightVersion": "1.62.1",
+  "harnessSha256": "fcd9017c62988ec7845cabe25dd8cec2c4a8592d1e23c9831b5431e587ee8ae6",
+  "browserBaselineSha256": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+  "allOwnedBrowsersClosed": true,
+  "serverClosed": true,
+  "inputs": {
+    "/mapping/markup.mjs": "3a6db746550d95602877f1aae9c0a5973466311d5f5446a1d8717a8d9775f054",
+    "/mapping/cases.mjs": "a61b1ddf01c7aed87f1f1d21f26aa6efb765b5ee8e5ea4af2646f7130eb3e61d",
+    "/mapping/browser.mjs": "7c80e408c28346fa526ecd880564bbe14f981a6327521a6779a03ff7339bd5c2",
+    "/mapping/parse5.mjs": "446aca195f43176c5f1f487cd1ed5eff104896c4497cf9693307a5bc0150ec94",
+    "/mapping/maps.json": "f2a72005acf7a52ebd00270cf64903a70a299be16091543d82d6795eef2a2a4b"
+  },
+  "runs": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "executableSha256": "b798f9e53a98d29eb7f36f8c409f905d3184780a04d2bcb56989067194784bd1",
+      "pageErrors": [],
+      "externalRequests": [],
+      "cases": [
+        {
+          "name": "plain-and-astral",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "references",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "crlf-and-carriage-return",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "end-tag-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "textarea-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "title-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "rawtext-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-double-escape",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-null-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "math-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foster-parenting",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "formatting-reconstruction",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "adoption-agency",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "nested-anchors",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implied-paragraphs",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implicit-table-elements",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "select-filtering",
+          "nativeTreeMatched": false,
+          "splitWidths": [1, 3, 11],
+          "parsedTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "Aignored-tag"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "nativeTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "A"
+                              },
+                              {
+                                "name": "div",
+                                "namespace": "http://www.w3.org/1999/xhtml",
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "#text",
+                                    "text": "ignored-tag"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "duplicate-attributes",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "merged-body-tags",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "template-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "noscript-disabled",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "leading-newline-pre",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "null-in-data",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "literal-ampersands",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "head-and-body-repair",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "frameset-replaces-body",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "comments-and-doctype",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "eof-in-markup",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "supplementary-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        }
+      ],
+      "checkedRanges": 903,
+      "fullReader": false,
+      "visualLayoutChecked": false
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "executableSha256": "9571c9a49d6d4de3e4c3b14e2e4bd6521e5b879f4ab6c95143e2098cb66e6618",
+      "pageErrors": [],
+      "externalRequests": [],
+      "cases": [
+        {
+          "name": "plain-and-astral",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "references",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "crlf-and-carriage-return",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "end-tag-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "textarea-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "title-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "rawtext-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-double-escape",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-null-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "math-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foster-parenting",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "formatting-reconstruction",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "adoption-agency",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "nested-anchors",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implied-paragraphs",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implicit-table-elements",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "select-filtering",
+          "nativeTreeMatched": false,
+          "splitWidths": [1, 3, 11],
+          "parsedTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "Aignored-tag"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "nativeTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "A"
+                              },
+                              {
+                                "name": "div",
+                                "namespace": "http://www.w3.org/1999/xhtml",
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "#text",
+                                    "text": "ignored-tag"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "duplicate-attributes",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "merged-body-tags",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "template-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "noscript-disabled",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "leading-newline-pre",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "null-in-data",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "literal-ampersands",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "head-and-body-repair",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "frameset-replaces-body",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "comments-and-doctype",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "eof-in-markup",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "supplementary-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        }
+      ],
+      "checkedRanges": 903,
+      "fullReader": false,
+      "visualLayoutChecked": false
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "executableSha256": "02098f76165779067df02881660593d25da6b8e3e11e052f9459f5ae1f94a1fc",
+      "pageErrors": [],
+      "externalRequests": [],
+      "cases": [
+        {
+          "name": "plain-and-astral",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "references",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "crlf-and-carriage-return",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "less-than-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "end-tag-at-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "textarea-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "title-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "rawtext-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-double-escape",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "script-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-cdata-eof",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foreign-null-replacement",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "math-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "foster-parenting",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "formatting-reconstruction",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "adoption-agency",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "nested-anchors",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implied-paragraphs",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "implicit-table-elements",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "select-filtering",
+          "nativeTreeMatched": false,
+          "splitWidths": [1, 3, 11],
+          "parsedTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "Aignored-tag"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "nativeTree": {
+            "name": "#document",
+            "children": [
+              {
+                "name": "html",
+                "namespace": "http://www.w3.org/1999/xhtml",
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "head",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "namespace": "http://www.w3.org/1999/xhtml",
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "select",
+                        "namespace": "http://www.w3.org/1999/xhtml",
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "A"
+                              },
+                              {
+                                "name": "div",
+                                "namespace": "http://www.w3.org/1999/xhtml",
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "#text",
+                                    "text": "ignored-tag"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "option",
+                            "namespace": "http://www.w3.org/1999/xhtml",
+                            "attributes": [],
+                            "children": [
+                              {
+                                "name": "#text",
+                                "text": "B"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "duplicate-attributes",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "merged-body-tags",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "template-content",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "noscript-disabled",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "leading-newline-pre",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "null-in-data",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "literal-ampersands",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "head-and-body-repair",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "frameset-replaces-body",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "comments-and-doctype",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "eof-in-markup",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        },
+        {
+          "name": "supplementary-replay",
+          "nativeTreeMatched": true,
+          "splitWidths": [1, 3, 11]
+        }
+      ],
+      "checkedRanges": 903,
+      "fullReader": false,
+      "visualLayoutChecked": false
+    }
+  ]
+}

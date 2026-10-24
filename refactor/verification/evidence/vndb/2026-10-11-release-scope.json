@@ -1,0 +1,893 @@
+[
+  {
+    "name": "work-development-summary",
+    "observedAt": "2026-10-11T12:14:13.9314137+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "results": 1,
+      "fields": "title,olang,released,developers{id,name,type}",
+      "filters": ["id", "=", "v17"]
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "developers": [
+            {
+              "id": "p8",
+              "name": "KID",
+              "type": "co"
+            },
+            {
+              "id": "p19579",
+              "name": "SDR Project",
+              "type": "co"
+            }
+          ],
+          "id": "v17",
+          "olang": "ja",
+          "released": "2002-08-29",
+          "title": "Ever17 -the out of infinity-"
+        }
+      ]
+    }
+  },
+  {
+    "name": "official-complete-original-language-releases",
+    "observedAt": "2026-10-11T12:14:14.6850210+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/release",
+    "request": {
+      "page": 1,
+      "sort": "released",
+      "results": 100,
+      "fields": "title,released,official,patch,languages{lang,main},vns{id,rtype},producers{id,name,type,developer,publisher},platforms",
+      "filters": [
+        "and",
+        ["vn", "=", ["id", "=", "v17"]],
+        ["lang", "=", "ja"],
+        ["official", "=", 1],
+        ["patch", "!=", 1],
+        ["rtype", "=", "complete"]
+      ]
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "id": "r280",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["drc"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2002-08-29",
+          "title": "Ever17 -The Out of Infinity-",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2427",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p2068",
+              "name": "Electronic Arts",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2002-08-29",
+          "title": "Ever17 -The Out of Infinity- Regular Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2479",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p2068",
+              "name": "Electronic Arts",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2002-08-29",
+          "title": "Ever17 -The Out of Infinity- First Press Limited Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r196",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2003-05-16",
+          "title": "Ever17 -The Out of Infinity-",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r281",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["drc"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p19579",
+              "name": "SDR Project",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2003-11-27",
+          "title": "Ever17 -the out of infinity- PREMIUM EDITION",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2407",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p19579",
+              "name": "SDR Project",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p2068",
+              "name": "Electronic Arts",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2003-11-27",
+          "title": "Ever17 -The Out of Infinity- Premium Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r198",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p5",
+              "name": "SUCCESS",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2004-10-28",
+          "title": "SuperLite 2000 Ren'ai Adventure - Ever17 ~The Out of Infinity~ Premium Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r282",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["drc"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2004-11-11",
+          "title": "Ever17 -The Out of Infinity- Premium Edition (DreKore)",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r4500",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2005-06-17",
+          "title": "Ever17 -The Out of Infinity- Premium Edition (DVD Edition)",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r626",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2008-04-04",
+          "title": "Infinity Plus",
+          "vns": [
+            {
+              "id": "v13",
+              "rtype": "complete"
+            },
+            {
+              "id": "v17",
+              "rtype": "complete"
+            },
+            {
+              "id": "v247",
+              "rtype": "complete"
+            },
+            {
+              "id": "v248",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r5956",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2008-09-19",
+          "title": "Ever17 -The Out of Infinity- (Ren'ai Game Selection)",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2508",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2008-10-09",
+          "title": "Infinity Plus",
+          "vns": [
+            {
+              "id": "v13",
+              "rtype": "complete"
+            },
+            {
+              "id": "v17",
+              "rtype": "complete"
+            },
+            {
+              "id": "v247",
+              "rtype": "complete"
+            },
+            {
+              "id": "v248",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2408",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2008-10-23",
+          "title": "Ren'ai Game Selection - Ever17 ~The Out of Infinity~ Premium Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2798",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psp"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2009-03-12",
+          "title": "Ever17 -The Out of Infinity- Premium Edition - Limited Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r2921",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psp"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2009-03-12",
+          "title": "Ever17 -The Out of Infinity- Premium Edition - Regular Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r26788",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psp"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2009-08-13",
+          "title": "Infinity Plus Portable",
+          "vns": [
+            {
+              "id": "v13",
+              "rtype": "complete"
+            },
+            {
+              "id": "v17",
+              "rtype": "complete"
+            },
+            {
+              "id": "v247",
+              "rtype": "complete"
+            },
+            {
+              "id": "v248",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r12056",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psp"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2010-08-26",
+          "title": "Ever17 -The Out of Infinity- Premium Edition - Best Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r31949",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2011",
+          "title": "Ever17 -The Out of Infinity- Download Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r24277",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2012-12-21",
+          "title": "Infinity Selection",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            },
+            {
+              "id": "v5950",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r31951",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2012-12-21",
+          "title": "Infinity Selection - Download Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            },
+            {
+              "id": "v5950",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r25912",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["and"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2013-01-23",
+          "title": "Ever17 -The Out of Infinity-",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r25911",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ios"],
+          "producers": [
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p543",
+              "name": "CYBERFRONT",
+              "publisher": true,
+              "type": "co"
+            }
+          ],
+          "released": "2013-02-07",
+          "title": "Ever17 -The Out of Infinity-",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        },
+        {
+          "id": "r34387",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "producers": [
+            {
+              "developer": false,
+              "id": "p146",
+              "name": "MAGES.",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p19579",
+              "name": "SDR Project",
+              "publisher": false,
+              "type": "co"
+            },
+            {
+              "developer": false,
+              "id": "p2025",
+              "name": "DMM.com LLC",
+              "publisher": true,
+              "type": "co"
+            },
+            {
+              "developer": true,
+              "id": "p8",
+              "name": "KID",
+              "publisher": false,
+              "type": "co"
+            }
+          ],
+          "released": "2014-05-30",
+          "title": "Ever17 -The Out of Infinity- Download Edition",
+          "vns": [
+            {
+              "id": "v17",
+              "rtype": "complete"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

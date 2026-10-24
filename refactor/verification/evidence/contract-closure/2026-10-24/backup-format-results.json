@@ -1,0 +1,51 @@
+{
+  "checkedOn": "2026-10-24",
+  "scope": "Synthetic ZIP container and canonical encoding examples only; not production archive validation, ZIP64 limits, persistence barriers or recovery.",
+  "checks": [
+    "Entry paths are in their declared UTF-8 order",
+    "Node and Python produce the same canonical UTF-8 bytes",
+    "The empty directory has a fixed literal encoding",
+    "Empty file and empty directory remain distinct",
+    "stored: complete member set and CRCs",
+    "stored: manifest and ordinary file bytes round-trip",
+    "stored: non-ASCII member uses the UTF-8 flag",
+    "deflated: complete member set and CRCs",
+    "deflated: manifest and ordinary file bytes round-trip",
+    "deflated: non-ASCII member uses the UTF-8 flag",
+    "ZIP order, compression and timestamps do not define tree identity"
+  ],
+  "checkCount": 11,
+  "treeRows": [
+    [
+      "",
+      "directory"
+    ],
+    [
+      "empty",
+      "directory"
+    ],
+    [
+      "存档.sav",
+      "file",
+      13,
+      "75c9d4c5cc04ceefe7fc52c55531fadeb67f762312c7f8c90bb5f94b471a5724"
+    ]
+  ],
+  "canonicalUtf8": "[[\"\",\"directory\"],[\"empty\",\"directory\"],[\"存档.sav\",\"file\",13,\"75c9d4c5cc04ceefe7fc52c55531fadeb67f762312c7f8c90bb5f94b471a5724\"]]",
+  "treeDigest": "16b164c6ebfcdcba82a3fe43e5455f8337dbd304319399b64644bd1a8f598f7e",
+  "archives": [
+    {
+      "name": "stored",
+      "sha256": "b73f8c041e4900c4b0ad070756e723d904a7fe742cf8ecba9315b47f2eb6ba64",
+      "treeDigest": "16b164c6ebfcdcba82a3fe43e5455f8337dbd304319399b64644bd1a8f598f7e"
+    },
+    {
+      "name": "deflated",
+      "sha256": "5df97bebc06eb0ad3f06ecedba2ec320eeb951d77571ba19581d499c82a6228e",
+      "treeDigest": "16b164c6ebfcdcba82a3fe43e5455f8337dbd304319399b64644bd1a8f598f7e"
+    }
+  ],
+  "status": "passed",
+  "formalHostExecuted": false,
+  "powerLossTested": false
+}

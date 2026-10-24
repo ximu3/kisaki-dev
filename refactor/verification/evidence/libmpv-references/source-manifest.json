@@ -1,0 +1,231 @@
+{
+  "reviewedOn": "2026-10-19",
+  "scope": "Selected rendering, output configuration, and color integration modules at resolved repository HEADs; not runtime validation, a release comparison, or a complete dependency audit.",
+  "projects": [
+    {
+      "repository": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "committedAt": "2026-10-18T21:23:15Z"
+    },
+    {
+      "repository": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "committedAt": "2026-08-30T17:32:24Z"
+    },
+    {
+      "repository": "KDE/mpvqt",
+      "commit": "556d67f0f5578cb2dc1dd92b588278771b05fe2b",
+      "committedAt": "2026-10-15T17:45:15Z"
+    },
+    {
+      "repository": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "committedAt": "2026-10-04T22:54:19Z"
+    }
+  ],
+  "sources": [
+    {
+      "repo": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "path": "iina/MPVController.swift",
+      "url": "https://raw.githubusercontent.com/iina/iina/024c89723a4c07b3acf191f4cab38c545819bdb3/iina/MPVController.swift",
+      "sha256": "9830fc623a11a9471b9c987790c62c71bc8c1f9753f8e95fbb0ff44672e28724"
+    },
+    {
+      "repo": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "path": "iina/VideoView.swift",
+      "url": "https://raw.githubusercontent.com/iina/iina/024c89723a4c07b3acf191f4cab38c545819bdb3/iina/VideoView.swift",
+      "sha256": "74c9e0b508e9299f862aa1e52f31f36327c20e2418f032445642f1cc50aa1c30"
+    },
+    {
+      "repo": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "path": "iina/ViewLayer.swift",
+      "url": "https://raw.githubusercontent.com/iina/iina/024c89723a4c07b3acf191f4cab38c545819bdb3/iina/ViewLayer.swift",
+      "sha256": "b9d4e9d83d6d2cc627d21ff64a03654477c582e4ae246351c7589f8150661918"
+    },
+    {
+      "repo": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "path": "iina/Display.swift",
+      "url": "https://raw.githubusercontent.com/iina/iina/024c89723a4c07b3acf191f4cab38c545819bdb3/iina/Display.swift",
+      "sha256": "bcf7b67403ad08a942213dea915dba74fb10e7f739d8e93baddceacbd695d55b"
+    },
+    {
+      "repo": "iina/iina",
+      "commit": "024c89723a4c07b3acf191f4cab38c545819bdb3",
+      "path": "iina/DisplayController.swift",
+      "url": "https://raw.githubusercontent.com/iina/iina/024c89723a4c07b3acf191f4cab38c545819bdb3/iina/DisplayController.swift",
+      "sha256": "8ed47c5db62a5dc97e2814633674a88f799e54fd721a584f672d9401832da5dc"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/windows/video_output.cc",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/windows/video_output.cc",
+      "sha256": "198cb59a97070b61df5ee8ae35ac3e0bc344f3174f6e4aaf7b77e7357d606548"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/windows/angle_surface_manager.cc",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/windows/angle_surface_manager.cc",
+      "sha256": "04eadbea88ce1d825a732c8ea96f9557bb19c275330f4abf7836950e7efd2e2a"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/linux/video_output.cc",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/linux/video_output.cc",
+      "sha256": "703825b5d2fa293277c3af9597bfad07cd3822c6d0e470f18c77fc018589e327"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/linux/texture_gl.cc",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/linux/texture_gl.cc",
+      "sha256": "f1a2812ee8759eb306a1567a7c175d0db24df7c9b1cdfc465e3583071a521265"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/common/darwin/Classes/plugin/VideoOutput.swift",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/common/darwin/Classes/plugin/VideoOutput.swift",
+      "sha256": "c66e30e5a0a08cc00ab1838fba80a2dcef8e4836e762909652b6da9bf2108eea"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/common/darwin/Classes/plugin/VideoOutputConfiguration.swift",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/common/darwin/Classes/plugin/VideoOutputConfiguration.swift",
+      "sha256": "9a45f4015cf6e0f0b646451b1f56542395e5325f0a274c53e71462cd0ab74866"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/TextureHW.swift",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/TextureHW.swift",
+      "sha256": "4df5b4f2948752a99c0c0bc99b874e5636a75bcf139e7b69b65aa22a44c57268"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/gl/TextureGLContext.swift",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/gl/TextureGLContext.swift",
+      "sha256": "602b7255f9a620578ad69502e85e387e2ed3c7d60716045192b463c895f2bd57"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/lib/src/video_controller/native_video_controller/real.dart",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/lib/src/video_controller/native_video_controller/real.dart",
+      "sha256": "575f3430ad78957fa2bdc712ee698756ca0c576c0827618e3ea968f08c87e8ac"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit/lib/src/player/native/player/real.dart",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit/lib/src/player/native/player/real.dart",
+      "sha256": "3e3553c08c6cdb7df36c7519c53e4e1d648bbe88b91875c000c03220abafdc00"
+    },
+    {
+      "repo": "KDE/mpvqt",
+      "commit": "556d67f0f5578cb2dc1dd92b588278771b05fe2b",
+      "path": "src/mpvrenderer.cpp",
+      "url": "https://raw.githubusercontent.com/KDE/mpvqt/556d67f0f5578cb2dc1dd92b588278771b05fe2b/src/mpvrenderer.cpp",
+      "sha256": "4dbeb2060846505c79289bc34915a062bf7f7d34b8cf8b648025938870acbfd7"
+    },
+    {
+      "repo": "KDE/mpvqt",
+      "commit": "556d67f0f5578cb2dc1dd92b588278771b05fe2b",
+      "path": "src/mpvcontroller.cpp",
+      "url": "https://raw.githubusercontent.com/KDE/mpvqt/556d67f0f5578cb2dc1dd92b588278771b05fe2b/src/mpvcontroller.cpp",
+      "sha256": "86469f347585ad0af908cac61f4d7d9cceaacc9adcc9b2675cbb9de39c36c586"
+    },
+    {
+      "repo": "KDE/mpvqt",
+      "commit": "556d67f0f5578cb2dc1dd92b588278771b05fe2b",
+      "path": "src/mpvabstractitem.cpp",
+      "url": "https://raw.githubusercontent.com/KDE/mpvqt/556d67f0f5578cb2dc1dd92b588278771b05fe2b/src/mpvabstractitem.cpp",
+      "sha256": "8700f1bb4021d161104c0b6fcee261ea66ba4ec1cef0c9cd302380080801e335"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-mpv.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-mpv.c",
+      "sha256": "b41406dac8d356f3a15cdce7374998156fdcfa8a48005299d854387c6dd110cc"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-video-area.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-video-area.c",
+      "sha256": "9b61f9a62c8d3aece8005b5c41840ee850b04946bf3f6358067352055634e932"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-player.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-player.c",
+      "sha256": "cd960fbabd6cbea0da18ac068f85f081ad20d8316a3698e04541aa5eb24b0dc8"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-player-options.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-player-options.c",
+      "sha256": "3559473abed638ae9cf864cc604dcdd1878fd335e5bebea0a6e008b462f8bf18"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/gl/OpenGLHelpers.swift",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/macos/media_kit_video/Sources/media_kit_video/plugin/gl/OpenGLHelpers.swift",
+      "sha256": "932e14ffdab38bf23440bd3e9cb5d75b0d7cb2a9e38666177ba22d84b829c8be"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit/lib/src/player/platform_player.dart",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit/lib/src/player/platform_player.dart",
+      "sha256": "f84a103df80d144042b52c9846179de25f014f62cc1d6a09e55d4f780978de5d"
+    },
+    {
+      "repo": "media-kit/media-kit",
+      "commit": "c533e446755f51cf53c7e57aea873f2aa5355f81",
+      "path": "media_kit_video/lib/src/video_controller/platform_video_controller.dart",
+      "url": "https://raw.githubusercontent.com/media-kit/media-kit/c533e446755f51cf53c7e57aea873f2aa5355f81/media_kit_video/lib/src/video_controller/platform_video_controller.dart",
+      "sha256": "20879ee1e66eb35dcd742ce5e8f04e088bb0feee4272180b77057f00c0bfeac2"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-model.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-model.c",
+      "sha256": "9fdce9dbf8b8125c55b3817b4b58d46826757f1c30370e3b29c0fbfc6e30fb91"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-view.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-view.c",
+      "sha256": "e9c88b4981ce48197926d678c57620b959f8207ff1ade18b11048fe5dc5d58af"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-def.h",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-def.h",
+      "sha256": "bd43da2ba6274aeca36728f535cdf3d6cb501199b1b3e293c7f299374acacf40"
+    },
+    {
+      "repo": "celluloid-player/celluloid",
+      "commit": "c2c9200af476f63d0f1c3c8fd339f78a21c0e50c",
+      "path": "src/celluloid-controller.c",
+      "url": "https://raw.githubusercontent.com/celluloid-player/celluloid/c2c9200af476f63d0f1c3c8fd339f78a21c0e50c/src/celluloid-controller.c",
+      "sha256": "d5a5adc3d40a1285ad44488f41babcc722234c22341dd9d8ce273914764ec514"
+    }
+  ]
+}

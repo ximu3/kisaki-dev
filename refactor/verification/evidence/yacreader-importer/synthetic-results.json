@@ -1,0 +1,476 @@
+{
+  "evidenceClass": "synthetic-byte-and-mapping-probe",
+  "sourceApplicationExecuted": false,
+  "qtOrCppExecuted": false,
+  "productionImporterExecuted": false,
+  "inputFiles": 32,
+  "passed": 116,
+  "failed": 0,
+  "allInputsUnchanged": true,
+  "checks": [
+    {
+      "name": "All fixture bytes match the recorded manifest",
+      "passed": true
+    },
+    {
+      "name": "The full library is the ten-table family",
+      "passed": true
+    },
+    {
+      "name": "VACUUM backup retains every table and selected row",
+      "passed": true
+    },
+    {
+      "name": "Metadata export is a separate two-table family",
+      "passed": true
+    },
+    {
+      "name": "Export contains the 59 source-selected fields without id",
+      "passed": true
+    },
+    {
+      "name": "Export omits an unedited read book",
+      "passed": true
+    },
+    {
+      "name": "Export includes four qualifying records, including metadata without a file",
+      "passed": true
+    },
+    {
+      "name": "Export does not assert absent favorites or reading lists are empty",
+      "passed": true
+    },
+    {
+      "name": "CTAS export loses comic_info primary keys and defaults",
+      "passed": true
+    },
+    {
+      "name": "PRAGMA user_version is not the YACReader schema version",
+      "passed": true
+    },
+    {
+      "name": "Source SQLite writes are blocked",
+      "passed": true
+    },
+    {
+      "name": "Reject unknown-version.ydb",
+      "passed": true
+    },
+    {
+      "name": "Reject missing-relationship-table.ydb",
+      "passed": true
+    },
+    {
+      "name": "Reject source-view.ydb",
+      "passed": true
+    },
+    {
+      "name": "Reject not-sqlite.ydb",
+      "passed": true
+    },
+    {
+      "name": "Declared hash uniqueness is retained in the source contract",
+      "passed": true
+    },
+    {
+      "name": "Root folder's documented self-reference is valid",
+      "passed": true
+    },
+    {
+      "name": "Disconnected comic relation is reported at the affected row",
+      "passed": true
+    },
+    {
+      "name": "Two adjacent identifiers beyond JavaScript safe integer remain distinct",
+      "passed": true
+    },
+    {
+      "name": "Two physical files share one personal-record row",
+      "passed": true
+    },
+    {
+      "name": "Source grouping does not count duplicate physical copies twice",
+      "passed": true
+    },
+    {
+      "name": "Another library's equal id remains a distinct input identity",
+      "passed": true
+    },
+    {
+      "name": "Author fields split on newlines",
+      "passed": true
+    },
+    {
+      "name": "A comma inside a stored tag is preserved",
+      "passed": true
+    },
+    {
+      "name": "Notes and reviews remain distinct selected text",
+      "passed": true
+    },
+    {
+      "name": "A numeric ComicVine suffix alone is not a verified public URL",
+      "passed": true
+    },
+    {
+      "name": "Source date text has no retained original precision",
+      "passed": true
+    },
+    {
+      "name": "Rating conversion 0",
+      "passed": true
+    },
+    {
+      "name": "Rating conversion 1",
+      "passed": true
+    },
+    {
+      "name": "Rating conversion 4.5",
+      "passed": true
+    },
+    {
+      "name": "Rating conversion 5",
+      "passed": true
+    },
+    {
+      "name": "Rating conversion None",
+      "passed": true
+    },
+    {
+      "name": "Reject rating -1",
+      "passed": true
+    },
+    {
+      "name": "Reject rating 5.1",
+      "passed": true
+    },
+    {
+      "name": "Reject rating nan",
+      "passed": true
+    },
+    {
+      "name": "Reject rating inf",
+      "passed": true
+    },
+    {
+      "name": "Reject rating '4'",
+      "passed": true
+    },
+    {
+      "name": "Reject rating True",
+      "passed": true
+    },
+    {
+      "name": "Existing score is preserved by default",
+      "passed": true
+    },
+    {
+      "name": "Explicit unrated zero clears a score",
+      "passed": true
+    },
+    {
+      "name": "Unknown score does not clear an existing score",
+      "passed": true
+    },
+    {
+      "name": "Read initializes one unknown-date completion on empty history",
+      "passed": true
+    },
+    {
+      "name": "Read does not append to existing completion history",
+      "passed": true
+    },
+    {
+      "name": "Unread does not delete completion history",
+      "passed": true
+    },
+    {
+      "name": "A part read flag stays a part flag",
+      "passed": true
+    },
+    {
+      "name": "An unresolved content scope creates no completion",
+      "passed": true
+    },
+    {
+      "name": "Non-boolean source read flag is not coerced",
+      "passed": true
+    },
+    {
+      "name": "No source table supplies reading activities or duration",
+      "passed": true
+    },
+    {
+      "name": "Last-open time remains a single seconds timestamp",
+      "passed": true
+    },
+    {
+      "name": "Favorites use the documented built-in id",
+      "passed": true
+    },
+    {
+      "name": "A non-favorite physical copy does not negate its shared candidate's favorite",
+      "passed": true
+    },
+    {
+      "name": "Labels attach to physical comic ids",
+      "passed": true
+    },
+    {
+      "name": "An empty label remains selectable",
+      "passed": true
+    },
+    {
+      "name": "Parent list has direct members then its ordered children",
+      "passed": true
+    },
+    {
+      "name": "Child list keeps its parent context",
+      "passed": true
+    },
+    {
+      "name": "An empty list becomes an empty manual collection",
+      "passed": true
+    },
+    {
+      "name": "Multiple copies collapse only after mapping to the same target",
+      "passed": true
+    },
+    {
+      "name": "Reject hierarchy cycle-list.ydb",
+      "passed": true
+    },
+    {
+      "name": "Reject hierarchy dangling-list.ydb",
+      "passed": true
+    },
+    {
+      "name": "A single leading slash means library-root-relative",
+      "passed": true
+    },
+    {
+      "name": "Reject library path /../outside.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject library path //server/share.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject library path C:/other.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject library path /Arc/../other.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject library path /Arc\\other.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject library path /Arc/file:stream",
+      "passed": true
+    },
+    {
+      "name": "Reject library path /Arc//other.cbz",
+      "passed": true
+    },
+    {
+      "name": "A filename/path mismatch is reported",
+      "passed": true
+    },
+    {
+      "name": "Missing media is separate from the valid source record",
+      "passed": true
+    },
+    {
+      "name": "Source hash is SHA1 of prefix concatenated with decimal size",
+      "passed": true
+    },
+    {
+      "name": "Different tails can have equal YACReader pseudo hashes",
+      "passed": true
+    },
+    {
+      "name": "Comic cover is decoded from the exact source hash filename",
+      "passed": true
+    },
+    {
+      "name": "Folder cover has separate ownership",
+      "passed": true
+    },
+    {
+      "name": "Archive storage order is not the source page order",
+      "passed": true
+    },
+    {
+      "name": "Spread heuristic moves page1011 before page12",
+      "passed": true
+    },
+    {
+      "name": "A spread is one source page, not two",
+      "passed": true
+    },
+    {
+      "name": "Directory/numerical ordering would differ from archive heuristic",
+      "passed": true
+    },
+    {
+      "name": "Heuristic is bypassed at 1000 pages",
+      "passed": true
+    },
+    {
+      "name": "Bookmark zero is the first actual member",
+      "passed": true
+    },
+    {
+      "name": "Bookmark nine uses heuristic page ten",
+      "passed": true
+    },
+    {
+      "name": "Current page ten is one-based and agrees with bookmark nine",
+      "passed": true
+    },
+    {
+      "name": "Empty bookmark slot minus one creates no annotation",
+      "passed": true
+    },
+    {
+      "name": "Duplicate bookmark slots in one record do not multiply points",
+      "passed": true
+    },
+    {
+      "name": "Unopened default currentPage one creates no resume position",
+      "passed": true
+    },
+    {
+      "name": "Opened first page is valid",
+      "passed": true
+    },
+    {
+      "name": "Reject out-of-range or invalid bookmark -2",
+      "passed": true
+    },
+    {
+      "name": "Reject out-of-range or invalid bookmark 12",
+      "passed": true
+    },
+    {
+      "name": "Reject out-of-range or invalid bookmark 100",
+      "passed": true
+    },
+    {
+      "name": "Reject out-of-range or invalid bookmark 1.5",
+      "passed": true
+    },
+    {
+      "name": "Reject out-of-range or invalid bookmark True",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid one-based resume 0",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid one-based resume -1",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid one-based resume 13",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping collation-tie.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping case-tie.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping unknown-format.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping unicode-order.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping duplicate-member.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject ambiguous source page mapping traversal.cbz",
+      "passed": true
+    },
+    {
+      "name": "Source suffix filtering does not require a dot",
+      "passed": true
+    },
+    {
+      "name": "The source __MACOSX exclusion is case-sensitive",
+      "passed": true
+    },
+    {
+      "name": "TAR storage order is independently mapped to member identity",
+      "passed": true
+    },
+    {
+      "name": "PDF uses three physical pages",
+      "passed": true
+    },
+    {
+      "name": "PDF bookmark two means physical page three",
+      "passed": true
+    },
+    {
+      "name": "PDF CropBox and rotation do not change page identity",
+      "passed": true
+    },
+    {
+      "name": "Copied PDF exactly matches the already rendered synthetic asset",
+      "passed": true
+    },
+    {
+      "name": "EPUB source image pages retain original spine indices",
+      "passed": true
+    },
+    {
+      "name": "Repeated EPUB image bytes remain distinct spine occurrences",
+      "passed": true
+    },
+    {
+      "name": "EPUB third source page maps to spine item four",
+      "passed": true
+    },
+    {
+      "name": "Reflow EPUB page addressing is not guessed",
+      "passed": true
+    },
+    {
+      "name": "Missing EPUB page does not silently shift indices",
+      "passed": true
+    },
+    {
+      "name": "XML declarations are not executed",
+      "passed": true
+    },
+    {
+      "name": "Malformed optional score is rejected independently",
+      "passed": true
+    },
+    {
+      "name": "Malformed optional read flag is rejected independently",
+      "passed": true
+    },
+    {
+      "name": "Malformed personal fields do not erase usable bibliographic text",
+      "passed": true
+    },
+    {
+      "name": "All 32 input files remain byte-identical after verification",
+      "passed": true
+    }
+  ]
+}

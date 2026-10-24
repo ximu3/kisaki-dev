@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Game>
+    <ID>44444444-4444-4444-8444-444444444444</ID>
+    <DatabaseID>700003</DatabaseID>
+    <Title>Aster: Memory</Title>
+    <Platform>Disc System</Platform>
+    <ApplicationPath>Games\ROMs\aster (Disc 1).iso</ApplicationPath>
+    <Emulator>eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee</Emulator>
+    <CommandLine />
+    <StarRatingFloat>4.25</StarRatingFloat>
+    <Favorite>true</Favorite>
+    <Progress>Active / In Progress</Progress>
+    <PlayTime>120</PlayTime>
+    <PlayCount>2</PlayCount>
+  </Game>
+</LaunchBox>

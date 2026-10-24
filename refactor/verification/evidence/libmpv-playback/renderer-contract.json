@@ -1,0 +1,213 @@
+{
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "capabilities": {
+    "webgpu": true,
+    "mediaStreamTrackGenerator": true,
+    "videoTrackGenerator": false,
+    "dynamicRangeHigh": true,
+    "videoDynamicRangeHigh": false,
+    "visibility": "visible"
+  },
+  "display": {
+    "id": 3231594088,
+    "label": "G24H2",
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 2048,
+      "height": 1152
+    },
+    "colorSpace": "{primaries:P3, transfer:SRGB, matrix:RGB, range:FULL}"
+  },
+  "forcedColorProfile": "",
+  "primaryDisplayId": 3231594088,
+  "displays": [
+    {
+      "id": 170885731,
+      "label": "TL160ADMP11-0",
+      "bounds": {
+        "x": 2048,
+        "y": -316,
+        "width": 1068,
+        "height": 1708
+      }
+    },
+    {
+      "id": 3231594088,
+      "label": "G24H2",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2048,
+        "height": 1152
+      }
+    }
+  ],
+  "cases": [
+    {
+      "input": "sdr-reference",
+      "nativePixel": [
+        0.58056640625,
+        0.58056640625,
+        0.58056640625,
+        1
+      ],
+      "format": null,
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "webgpu": {
+        "supported": true,
+        "samples": [
+          [
+            0.8408203125,
+            0.58544921875,
+            0.48828125,
+            1
+          ],
+          [
+            0.6767578125,
+            0.78955078125,
+            0.60302734375,
+            1
+          ],
+          [
+            0.60400390625,
+            0.4638671875,
+            0.80419921875,
+            1
+          ],
+          [
+            0.78564453125,
+            0.78564453125,
+            0.78564453125,
+            1
+          ]
+        ],
+        "format": "rgba16float",
+        "toneMapping": {
+          "mode": "extended"
+        }
+      },
+      "releaseCount": 1,
+      "nativeEncodedWhiteNits": 202.76226483759663
+    },
+    {
+      "input": "pq-1000-nit-reference",
+      "nativePixel": [
+        0.751953125,
+        0.751953125,
+        0.751953125,
+        1
+      ],
+      "format": null,
+      "colorSpace": {
+        "fullRange": true,
+        "matrix": "rgb",
+        "primaries": "bt2020",
+        "transfer": "pq"
+      },
+      "webgpu": {
+        "supported": true,
+        "samples": [
+          [
+            0.8818359375,
+            0.8818359375,
+            0.8818359375,
+            1
+          ],
+          [
+            0.8818359375,
+            0.8818359375,
+            0.8818359375,
+            1
+          ],
+          [
+            0.8818359375,
+            0.8818359375,
+            0.8818359375,
+            1
+          ],
+          [
+            0.8818359375,
+            0.8818359375,
+            0.8818359375,
+            1
+          ]
+        ],
+        "format": "rgba16float",
+        "toneMapping": {
+          "mode": "extended"
+        }
+      },
+      "releaseCount": 1,
+      "nativeEncodedWhiteNits": 1001.1567900232928
+    }
+  ],
+  "gpuFeatureStatus": {
+    "2d_canvas": "enabled",
+    "direct_rendering_display_compositor": "disabled_off_ok",
+    "gpu_compositing": "enabled",
+    "multiple_raster_threads": "enabled_on",
+    "opengl": "enabled_on",
+    "rasterization": "enabled",
+    "raw_draw": "disabled_off_ok",
+    "skia_graphite": "disabled_off",
+    "trees_in_viz": "disabled_off",
+    "video_decode": "enabled",
+    "video_encode": "enabled",
+    "webgl": "enabled",
+    "webgpu": "enabled",
+    "webnn": "disabled_off"
+  },
+  "nativeD3d11ImportExecuted": true,
+  "visibleWindowCreated": true,
+  "physicalHdrDisplayVerified": false,
+  "checkedAt": "2026-10-18T15:00:19.686975+00:00",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "sample": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\playback\\pq-1000-nit.mkv",
+    "sha256": "fe342d06249eefc4decbd5930105d19d98c34861df8600196ba742d98b500783",
+    "pqLumaCode": 723,
+    "bitDepth": 10,
+    "codec": "hevc",
+    "metadata": [
+      {
+        "side_data_type": "Mastering display metadata",
+        "red_x": "35400/50000",
+        "red_y": "14600/50000",
+        "green_x": "8500/50000",
+        "green_y": "39850/50000",
+        "blue_x": "6550/50000",
+        "blue_y": "2300/50000",
+        "white_point_x": "15635/50000",
+        "white_point_y": "16450/50000",
+        "min_luminance": "50/10000",
+        "max_luminance": "10000000/10000"
+      },
+      {
+        "side_data_type": "Content light level metadata",
+        "max_content": 1000,
+        "max_average": 1000
+      }
+    ]
+  },
+  "generatorSha256": "04e1307997530f9cf2fe35cba2ca7e8875ca91da02f89d6c7243df819c94ad00",
+  "nativeHdrReferenceVerified": true,
+  "webGpuImportExecuted": true,
+  "webGpuColorConversionVerified": false,
+  "hdrRangePreservationVerified": false,
+  "sources": {
+    "renderer-main.cjs": "80bc84c9ec33fc961173510035049dc5bff14ed73fa7d5e2885558a5562ae0e3",
+    "renderer-preload.cjs": "e1fc8769defff0a99950d7c2f58c4758abfa126c249f12584b215c83e24cac5b",
+    "renderer.html": "471404db7114489f1a450de12d16282bd216b64257594176c88e2f9da6e78a69",
+    "run-renderer.py": "a575281e1ac03a406843c9cc09c9d3687b82eb262bc797c6e8c39e9d1e2b813d"
+  },
+  "stdout": "\n",
+  "stderr": ""
+}

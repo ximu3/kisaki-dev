@@ -1,0 +1,5313 @@
+{
+  "checkedAt": "2026-10-20T06:43:26.457Z",
+  "platform": "win32",
+  "playwrightVersion": "1.62.1",
+  "sources": {
+    "probe.mjs": "d3d0bd4e3a75c4d7cd7e91a5e18c2506411bda0722b4bb79bc8e7d9b6e892b08",
+    "run.cjs": "70daab0f44b3e5f2f305e1adea3831793d1a1dba8b9368bb7bdbddc27b0b5b22"
+  },
+  "baselineSha256": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+  "engines": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "native": [
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        }
+      ],
+      "spacers": [
+        {
+          "mode": "horizontal-tb",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "horizontal-tb",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 20,
+              "width": 280,
+              "height": 60,
+              "top": 20,
+              "right": 580,
+              "bottom": 80,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 20,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 80,
+              "width": 280,
+              "height": 60,
+              "top": 80,
+              "right": 280,
+              "bottom": 140,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 80,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 200,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 260,
+              "bottom": 820,
+              "left": 200
+            },
+            "dx": -20,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 140,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 200,
+              "bottom": 400,
+              "left": 140
+            },
+            "dx": -80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 20,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 80,
+              "bottom": 820,
+              "left": 20
+            },
+            "dx": 20,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 80,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 140,
+              "bottom": 400,
+              "left": 80
+            },
+            "dx": 80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 33,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        }
+      ],
+      "hosts": [
+        {
+          "tag": "div",
+          "supported": true
+        },
+        {
+          "tag": "section",
+          "supported": true
+        },
+        {
+          "tag": "ul",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "ol",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "li",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "table",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tbody",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tr",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "td",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        }
+      ],
+      "fullReaderExecuted": false,
+      "publicationTested": false,
+      "externalRequests": 0,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "clipboardWritten": false,
+      "sourceFormatMappingImplemented": false
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "native": [
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:column",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "always",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:column",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "always",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:column",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "always",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        }
+      ],
+      "spacers": [
+        {
+          "mode": "horizontal-tb",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "horizontal-tb",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 80,
+              "width": 280,
+              "height": 60,
+              "top": 80,
+              "right": 280,
+              "bottom": 140,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 80,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 80,
+              "width": 280,
+              "height": 60,
+              "top": 80,
+              "right": 280,
+              "bottom": 140,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 80,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 580,
+              "bottom": 60,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 140,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 200,
+              "bottom": 400,
+              "left": 140
+            },
+            "dx": -80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 140,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 200,
+              "bottom": 400,
+              "left": 140
+            },
+            "dx": -80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 220,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 280,
+              "bottom": 820,
+              "left": 220
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 80,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 140,
+              "bottom": 400,
+              "left": 80
+            },
+            "dx": 80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 80,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 140,
+              "bottom": 400,
+              "left": 80
+            },
+            "dx": 80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 60,
+              "bottom": 820,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 31.149993896484375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 0,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        }
+      ],
+      "hosts": [
+        {
+          "tag": "div",
+          "supported": true
+        },
+        {
+          "tag": "section",
+          "supported": true
+        },
+        {
+          "tag": "ul",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "ol",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "li",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "table",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tbody",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tr",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "td",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        }
+      ],
+      "fullReaderExecuted": false,
+      "publicationTested": false,
+      "externalRequests": 0,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "clipboardWritten": false,
+      "sourceFormatMappingImplemented": false
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "native": [
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 1.5,
+              "width": 280,
+              "height": 60,
+              "top": 1.5,
+              "right": 580,
+              "bottom": 61.5,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 1.5,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 1.5,
+              "width": 280,
+              "height": 60,
+              "top": 1.5,
+              "right": 580,
+              "bottom": 61.5,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 1.5,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "horizontal-tb",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 120,
+              "top": 0,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 218.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 278.5,
+              "bottom": 820,
+              "left": 218.5
+            },
+            "dx": -1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 218.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 278.5,
+              "bottom": 820,
+              "left": 218.5
+            },
+            "dx": -1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-rl",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 160,
+              "y": 0,
+              "width": 120,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 160
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": 0,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:column",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 1.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 61.5,
+              "bottom": 820,
+              "left": 1.5
+            },
+            "dx": 1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:page",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:always",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:all",
+          "syntaxSupported": false,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "page-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "page",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "-webkit-column-break-before:always",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 1.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 61.5,
+              "bottom": 820,
+              "left": 1.5
+            },
+            "dx": 1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:left",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "left",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "break-before:right",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "right",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        },
+        {
+          "mode": "vertical-lr",
+          "declaration": "column-span:all",
+          "syntaxSupported": true,
+          "result": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 120,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          }
+        }
+      ],
+      "spacers": [
+        {
+          "mode": "horizontal-tb",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 1.5,
+              "width": 280,
+              "height": 60,
+              "top": 1.5,
+              "right": 580,
+              "bottom": 61.5,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 1.5,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 60,
+              "width": 280,
+              "height": 60,
+              "top": 60,
+              "right": 280,
+              "bottom": 120,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 60,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 1.5,
+              "width": 280,
+              "height": 60,
+              "top": 1.5,
+              "right": 580,
+              "bottom": 61.5,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 1.5,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "horizontal-tb",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 1.5,
+              "width": 280,
+              "height": 60,
+              "top": 1.5,
+              "right": 580,
+              "bottom": 61.5,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 1.5,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 0,
+              "y": 80,
+              "width": 280,
+              "height": 60,
+              "top": 80,
+              "right": 280,
+              "bottom": 140,
+              "left": 0
+            },
+            "dx": 0,
+            "dy": 80,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 60,
+              "top": 0,
+              "right": 280,
+              "bottom": 60,
+              "left": 0
+            },
+            "second": {
+              "x": 300,
+              "y": 20,
+              "width": 280,
+              "height": 60,
+              "top": 20,
+              "right": 580,
+              "bottom": 80,
+              "left": 300
+            },
+            "dx": 300,
+            "dy": 20,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 218.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 278.5,
+              "bottom": 820,
+              "left": 218.5
+            },
+            "dx": -1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 160,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 220,
+              "bottom": 400,
+              "left": 160
+            },
+            "dx": -60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 218.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 278.5,
+              "bottom": 820,
+              "left": 218.5
+            },
+            "dx": -1.5,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-rl",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 218.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 278.5,
+              "bottom": 820,
+              "left": 218.5
+            },
+            "dx": -1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 140,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 200,
+              "bottom": 400,
+              "left": 140
+            },
+            "dx": -80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 220,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 280,
+              "bottom": 400,
+              "left": 220
+            },
+            "second": {
+              "x": 200,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 260,
+              "bottom": 820,
+              "left": 200
+            },
+            "dx": -20,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 0,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 1.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 61.5,
+              "bottom": 820,
+              "left": 1.5
+            },
+            "dx": 1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 60,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 120,
+              "bottom": 400,
+              "left": 60
+            },
+            "dx": 60,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 60,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 1.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 61.5,
+              "bottom": 820,
+              "left": 1.5
+            },
+            "dx": 1.5,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "0px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        },
+        {
+          "mode": "vertical-lr",
+          "margin": 20,
+          "nativeReference": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 1.5,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 61.5,
+              "bottom": 820,
+              "left": 1.5
+            },
+            "dx": 1.5,
+            "dy": 420,
+            "breakBefore": "column",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 1.5,
+            "fragmentIndex": 1
+          },
+          "before": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 80,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 140,
+              "bottom": 400,
+              "left": 80
+            },
+            "dx": 80,
+            "dy": 0,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 80,
+            "fragmentIndex": 0
+          },
+          "after": {
+            "first": {
+              "x": 0,
+              "y": 0,
+              "width": 60,
+              "height": 400,
+              "top": 0,
+              "right": 60,
+              "bottom": 400,
+              "left": 0
+            },
+            "second": {
+              "x": 20,
+              "y": 420,
+              "width": 60,
+              "height": 400,
+              "top": 420,
+              "right": 80,
+              "bottom": 820,
+              "left": 20
+            },
+            "dx": 20,
+            "dy": 420,
+            "breakBefore": "auto",
+            "marginBlockStart": "20px",
+            "color": "rgb(255, 0, 0)",
+            "fontWeight": "700",
+            "textInset": 36.005859375,
+            "sourceText": "AB",
+            "childIds": ["a", "b"],
+            "sourceSiblingSelector": true,
+            "targetBlockOffset": 20,
+            "fragmentIndex": 1
+          },
+          "manualAssignment": "manual",
+          "assignedSourceNodes": 2,
+          "generalFragmentationImplemented": false
+        }
+      ],
+      "hosts": [
+        {
+          "tag": "div",
+          "supported": true
+        },
+        {
+          "tag": "section",
+          "supported": true
+        },
+        {
+          "tag": "ul",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "ol",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "li",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "table",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tbody",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "tr",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        },
+        {
+          "tag": "td",
+          "supported": false,
+          "errorName": "NotSupportedError"
+        }
+      ],
+      "fullReaderExecuted": false,
+      "publicationTested": false,
+      "externalRequests": 0,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "clipboardWritten": false,
+      "sourceFormatMappingImplemented": false
+    }
+  ]
+}

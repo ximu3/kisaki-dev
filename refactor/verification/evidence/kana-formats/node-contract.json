@@ -1,0 +1,2585 @@
+{
+  "recordedAt": "2026-10-19T12:28:40.226765+00:00",
+  "node": "v24.11.1",
+  "results": {
+    "mobi": {
+      "runs": [
+        {
+          "name": "sample-cp1252.mobi",
+          "sourceSha256": "e77aa8f99d65f12bc7b5d71f272a2a4a8f36fe6d5c00e9b95c8a926b145ad088",
+          "branches": [
+            {
+              "record": 0,
+              "version": 6,
+              "compression": 2,
+              "encoding": 1252,
+              "textRecords": 22,
+              "recordByteLengths": [
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096,
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 3332
+              ],
+              "rawBytes": 89348,
+              "rawSha256": "3f53f73fb33aca66668256097ec195b1c89a3c250a1eeec45534cd65a26a37b6",
+              "rawMd5": "14118d6e0c526b307b94cec17d8d5395",
+              "trailingFlags": 2,
+              "declaredTextBytes": 89348,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null
+            }
+          ],
+          "independentRawMd5": "14118d6e0c526b307b94cec17d8d5395",
+          "independentRawMatched": true
+        },
+        {
+          "name": "sample-multimedia.mobi",
+          "sourceSha256": "a301cce8187f1f1ea9562196c46328ca75585da280d4b742827cebd4698697c9",
+          "branches": [
+            {
+              "record": 0,
+              "version": 7,
+              "compression": 2,
+              "encoding": 65001,
+              "textRecords": 28,
+              "recordByteLengths": [
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096,
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 1563
+              ],
+              "rawBytes": 112155,
+              "rawSha256": "64697be5c8a5a2f6e2d4856755afa4f2b8c169d79ee26d6f4d872e3f7158fb43",
+              "rawMd5": "9810178941433662f6f099b9dc5f526f",
+              "trailingFlags": 3,
+              "declaredTextBytes": 112155,
+              "comboBoundary": 47,
+              "fixedLayout": null,
+              "originalResolution": null
+            },
+            {
+              "record": 47,
+              "version": 8,
+              "compression": 2,
+              "encoding": 65001,
+              "textRecords": 27,
+              "recordByteLengths": [
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096,
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 2400
+              ],
+              "rawBytes": 108896,
+              "rawSha256": "42df62e0933c4954ff8a2681e985a26041eb14ebf47d4e7c55b2e254a3d96e39",
+              "rawMd5": "3f5586c0d20cd93544b86b09b3cf7ddd",
+              "trailingFlags": 3,
+              "declaredTextBytes": 108896,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null,
+              "documents": [
+                {
+                  "documentIndex": 0,
+                  "rawFile": "sample-multimedia.mobi.47.0.html",
+                  "bytes": 2186,
+                  "sha256": "e4b0abac2f1ad53bfdb0c337e5c08772e52f16ff9fd7141775a35424a20efbce",
+                  "skeleton": {
+                    "index": 0,
+                    "name": "SKEL0000000000",
+                    "numFrag": 1,
+                    "offset": 0,
+                    "length": 333
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 319,
+                      "index": 0,
+                      "offset": 0,
+                      "length": 1853
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 0,
+                      "sourceEnd": 333
+                    },
+                    {
+                      "sourceStart": 333,
+                      "sourceEnd": 2186,
+                      "insertion": 319
+                    }
+                  ]
+                },
+                {
+                  "documentIndex": 1,
+                  "rawFile": "sample-multimedia.mobi.47.1.html",
+                  "bytes": 106710,
+                  "sha256": "327f4d9d948ae8500e71a53eb1da5f1e73a190d69f5e0c0502c4e32b45cf7460",
+                  "skeleton": {
+                    "index": 1,
+                    "name": "SKEL0000000001",
+                    "numFrag": 15,
+                    "offset": 2186,
+                    "length": 354
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 2336,
+                      "index": 1,
+                      "offset": 0,
+                      "length": 9
+                    },
+                    {
+                      "insertOffset": 2523,
+                      "index": 2,
+                      "offset": 9,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 10784,
+                      "index": 3,
+                      "offset": 8270,
+                      "length": 8287
+                    },
+                    {
+                      "insertOffset": 19071,
+                      "index": 4,
+                      "offset": 16557,
+                      "length": 8235
+                    },
+                    {
+                      "insertOffset": 27306,
+                      "index": 5,
+                      "offset": 24792,
+                      "length": 8255
+                    },
+                    {
+                      "insertOffset": 35561,
+                      "index": 6,
+                      "offset": 33047,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 43822,
+                      "index": 7,
+                      "offset": 41308,
+                      "length": 8236
+                    },
+                    {
+                      "insertOffset": 52058,
+                      "index": 8,
+                      "offset": 49544,
+                      "length": 8198
+                    },
+                    {
+                      "insertOffset": 60256,
+                      "index": 9,
+                      "offset": 57742,
+                      "length": 8208
+                    },
+                    {
+                      "insertOffset": 68464,
+                      "index": 10,
+                      "offset": 65950,
+                      "length": 8214
+                    },
+                    {
+                      "insertOffset": 76678,
+                      "index": 11,
+                      "offset": 74164,
+                      "length": 8290
+                    },
+                    {
+                      "insertOffset": 84968,
+                      "index": 12,
+                      "offset": 82454,
+                      "length": 8192
+                    },
+                    {
+                      "insertOffset": 93160,
+                      "index": 13,
+                      "offset": 90646,
+                      "length": 8244
+                    },
+                    {
+                      "insertOffset": 101404,
+                      "index": 14,
+                      "offset": 98890,
+                      "length": 7461
+                    },
+                    {
+                      "insertOffset": 108877,
+                      "index": 15,
+                      "offset": 106351,
+                      "length": 5
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 2186,
+                      "sourceEnd": 2540
+                    },
+                    {
+                      "sourceStart": 2540,
+                      "sourceEnd": 2549,
+                      "insertion": 150
+                    },
+                    {
+                      "sourceStart": 2549,
+                      "sourceEnd": 10810,
+                      "insertion": 337
+                    },
+                    {
+                      "sourceStart": 10810,
+                      "sourceEnd": 19097,
+                      "insertion": 8598
+                    },
+                    {
+                      "sourceStart": 19097,
+                      "sourceEnd": 27332,
+                      "insertion": 16885
+                    },
+                    {
+                      "sourceStart": 27332,
+                      "sourceEnd": 35587,
+                      "insertion": 25120
+                    },
+                    {
+                      "sourceStart": 35587,
+                      "sourceEnd": 43848,
+                      "insertion": 33375
+                    },
+                    {
+                      "sourceStart": 43848,
+                      "sourceEnd": 52084,
+                      "insertion": 41636
+                    },
+                    {
+                      "sourceStart": 52084,
+                      "sourceEnd": 60282,
+                      "insertion": 49872
+                    },
+                    {
+                      "sourceStart": 60282,
+                      "sourceEnd": 68490,
+                      "insertion": 58070
+                    },
+                    {
+                      "sourceStart": 68490,
+                      "sourceEnd": 76704,
+                      "insertion": 66278
+                    },
+                    {
+                      "sourceStart": 76704,
+                      "sourceEnd": 84994,
+                      "insertion": 74492
+                    },
+                    {
+                      "sourceStart": 84994,
+                      "sourceEnd": 93186,
+                      "insertion": 82782
+                    },
+                    {
+                      "sourceStart": 93186,
+                      "sourceEnd": 101430,
+                      "insertion": 90974
+                    },
+                    {
+                      "sourceStart": 101430,
+                      "sourceEnd": 108891,
+                      "insertion": 99218
+                    },
+                    {
+                      "sourceStart": 108891,
+                      "sourceEnd": 108896,
+                      "insertion": 106691
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "independentRawMd5": "3f5586c0d20cd93544b86b09b3cf7ddd",
+          "independentRawMatched": true
+        },
+        {
+          "name": "sample-ncx.mobi",
+          "sourceSha256": "bb33217f3369d8ca6c5a373ca8e21a151be5494f5de6623aa9e7f42fb5fed743",
+          "branches": [
+            {
+              "record": 0,
+              "version": 6,
+              "compression": 2,
+              "encoding": 65001,
+              "textRecords": 1,
+              "recordByteLengths": [289],
+              "rawBytes": 289,
+              "rawSha256": "c0cc52c0411f6de38839978b4ad2ada9b892f6159da186fc0c17c5278ee4f0f4",
+              "rawMd5": "0c81327ded02331eff9e023ad62a9748",
+              "trailingFlags": 3,
+              "declaredTextBytes": 289,
+              "comboBoundary": 12,
+              "fixedLayout": null,
+              "originalResolution": null
+            },
+            {
+              "record": 12,
+              "version": 8,
+              "compression": 2,
+              "encoding": 65001,
+              "textRecords": 1,
+              "recordByteLengths": [1032],
+              "rawBytes": 1032,
+              "rawSha256": "be55c6ff2ab4aa3b9bbc2587cd46736b405885782c35767c53b3b8290fe0dcfc",
+              "rawMd5": "448a891b3bd94fb78045704fbb5988cc",
+              "trailingFlags": 3,
+              "declaredTextBytes": 1032,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null,
+              "documents": [
+                {
+                  "documentIndex": 0,
+                  "rawFile": "sample-ncx.mobi.12.0.html",
+                  "bytes": 298,
+                  "sha256": "349754770f1701c073169855d4fd6d4a2bd1ed20a8adb08dbcf8f0cf42f04185",
+                  "skeleton": {
+                    "index": 0,
+                    "name": "SKEL0000000000",
+                    "numFrag": 1,
+                    "offset": 0,
+                    "length": 238
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 224,
+                      "index": 0,
+                      "offset": 0,
+                      "length": 60
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 0,
+                      "sourceEnd": 238
+                    },
+                    {
+                      "sourceStart": 238,
+                      "sourceEnd": 298,
+                      "insertion": 224
+                    }
+                  ]
+                },
+                {
+                  "documentIndex": 1,
+                  "rawFile": "sample-ncx.mobi.12.1.html",
+                  "bytes": 307,
+                  "sha256": "1a58a89bc900bac27cb95f2e5eab442cf9c1bffada2c083fc1df505092cf89f1",
+                  "skeleton": {
+                    "index": 1,
+                    "name": "SKEL0000000001",
+                    "numFrag": 1,
+                    "offset": 298,
+                    "length": 241
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 525,
+                      "index": 1,
+                      "offset": 0,
+                      "length": 66
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 298,
+                      "sourceEnd": 539
+                    },
+                    {
+                      "sourceStart": 539,
+                      "sourceEnd": 605,
+                      "insertion": 227
+                    }
+                  ]
+                },
+                {
+                  "documentIndex": 2,
+                  "rawFile": "sample-ncx.mobi.12.2.html",
+                  "bytes": 427,
+                  "sha256": "9373131b60e9c54b094487f2f8f91cc5aed202cbebc99a3f735114cc8028e115",
+                  "skeleton": {
+                    "index": 2,
+                    "name": "SKEL0000000002",
+                    "numFrag": 1,
+                    "offset": 605,
+                    "length": 242
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 833,
+                      "index": 2,
+                      "offset": 0,
+                      "length": 185
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 605,
+                      "sourceEnd": 847
+                    },
+                    {
+                      "sourceStart": 847,
+                      "sourceEnd": 1032,
+                      "insertion": 228
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "independentRawMd5": "448a891b3bd94fb78045704fbb5988cc",
+          "independentRawMatched": true
+        },
+        {
+          "name": "sample-obfuscated-fonts.mobi",
+          "sourceSha256": "34fc67043eeeaa6563481d6ea2fea1b5349cb73e459a1f10e3aa09186f56302e",
+          "branches": [
+            {
+              "record": 0,
+              "version": 8,
+              "compression": 2,
+              "encoding": 65001,
+              "textRecords": 4,
+              "recordByteLengths": [4096, 4096, 4096, 1562],
+              "rawBytes": 13850,
+              "rawSha256": "7c1c70e5164b042c04e34989e8d3f68e03747827a10f10e2b717540ed55b3c0c",
+              "rawMd5": "20c60c1766bdc00ae49cfd0631bff2c4",
+              "trailingFlags": 1,
+              "declaredTextBytes": 13850,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null,
+              "documents": [
+                {
+                  "documentIndex": 0,
+                  "rawFile": "sample-obfuscated-fonts.mobi.0.0.html",
+                  "bytes": 12958,
+                  "sha256": "c18f764250c0a7e2a63fdc40b58e4d775ffa9b5ce22993b3fe2a9ea32f6bbee9",
+                  "skeleton": {
+                    "index": 0,
+                    "name": "SKEL0000000000",
+                    "numFrag": 3,
+                    "offset": 0,
+                    "length": 460
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 436,
+                      "index": 0,
+                      "offset": 0,
+                      "length": 4086
+                    },
+                    {
+                      "insertOffset": 4522,
+                      "index": 1,
+                      "offset": 4086,
+                      "length": 4138
+                    },
+                    {
+                      "insertOffset": 8660,
+                      "index": 2,
+                      "offset": 8224,
+                      "length": 4274
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 0,
+                      "sourceEnd": 460
+                    },
+                    {
+                      "sourceStart": 460,
+                      "sourceEnd": 4546,
+                      "insertion": 436
+                    },
+                    {
+                      "sourceStart": 4546,
+                      "sourceEnd": 8684,
+                      "insertion": 4522
+                    },
+                    {
+                      "sourceStart": 8684,
+                      "sourceEnd": 12958,
+                      "insertion": 8660
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "independentRawMd5": "20c60c1766bdc00ae49cfd0631bff2c4",
+          "independentRawMatched": true
+        },
+        {
+          "name": "sample-unicode-huffdic.mobi",
+          "sourceSha256": "560dda58429878a64f73381ffddfcf1a59809e7c669a5222666257df8976a68f",
+          "branches": [
+            {
+              "record": 0,
+              "version": 6,
+              "compression": 17480,
+              "encoding": 65001,
+              "textRecords": 28,
+              "recordByteLengths": [
+                4079, 4091, 4062, 4096, 4074, 4072, 4079, 4088, 3922, 4088, 4083, 4092, 4063, 4078,
+                4093, 3865, 3838, 4096, 4041, 4007, 4045, 4093, 4093, 4072, 4096, 4066, 4064, 2265
+              ],
+              "rawBytes": 111701,
+              "rawSha256": "5b71c8e745d6a9d0e7d2df6913722dee4d02b88eddc985122365598b0fb9c003",
+              "rawMd5": "1af83dea18b300e3b60338a9389eb4df",
+              "trailingFlags": 3,
+              "declaredTextBytes": 111701,
+              "comboBoundary": 46,
+              "fixedLayout": null,
+              "originalResolution": null
+            },
+            {
+              "record": 46,
+              "version": 8,
+              "compression": 17480,
+              "encoding": 65001,
+              "textRecords": 27,
+              "recordByteLengths": [
+                4089, 4091, 4095, 4079, 4071, 4095, 4032, 4082, 4096, 4095, 4096, 4088, 4095, 4092,
+                4084, 4096, 4095, 4096, 4096, 4090, 4080, 4077, 4083, 4091, 4077, 4088, 2082
+              ],
+              "rawBytes": 108331,
+              "rawSha256": "3da1a1c2e82fd0d257f4ca8208827564ed3e2fdbc9195963ce537483e777595d",
+              "rawMd5": "7e18714ea6470149d2a56b71517286f4",
+              "trailingFlags": 3,
+              "declaredTextBytes": 108331,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null,
+              "documents": [
+                {
+                  "documentIndex": 0,
+                  "rawFile": "sample-unicode-huffdic.mobi.46.0.html",
+                  "bytes": 1621,
+                  "sha256": "4811c6e4bac8d51c610f945c69a9d0fa9c4988023ecd102ecabe071271b5ae33",
+                  "skeleton": {
+                    "index": 0,
+                    "name": "SKEL0000000000",
+                    "numFrag": 1,
+                    "offset": 0,
+                    "length": 319
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 305,
+                      "index": 0,
+                      "offset": 0,
+                      "length": 1302
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 0,
+                      "sourceEnd": 319
+                    },
+                    {
+                      "sourceStart": 319,
+                      "sourceEnd": 1621,
+                      "insertion": 305
+                    }
+                  ]
+                },
+                {
+                  "documentIndex": 1,
+                  "rawFile": "sample-unicode-huffdic.mobi.46.1.html",
+                  "bytes": 106710,
+                  "sha256": "327f4d9d948ae8500e71a53eb1da5f1e73a190d69f5e0c0502c4e32b45cf7460",
+                  "skeleton": {
+                    "index": 1,
+                    "name": "SKEL0000000001",
+                    "numFrag": 15,
+                    "offset": 1621,
+                    "length": 354
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 1771,
+                      "index": 1,
+                      "offset": 0,
+                      "length": 9
+                    },
+                    {
+                      "insertOffset": 1958,
+                      "index": 2,
+                      "offset": 9,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 10219,
+                      "index": 3,
+                      "offset": 8270,
+                      "length": 8287
+                    },
+                    {
+                      "insertOffset": 18506,
+                      "index": 4,
+                      "offset": 16557,
+                      "length": 8235
+                    },
+                    {
+                      "insertOffset": 26741,
+                      "index": 5,
+                      "offset": 24792,
+                      "length": 8255
+                    },
+                    {
+                      "insertOffset": 34996,
+                      "index": 6,
+                      "offset": 33047,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 43257,
+                      "index": 7,
+                      "offset": 41308,
+                      "length": 8236
+                    },
+                    {
+                      "insertOffset": 51493,
+                      "index": 8,
+                      "offset": 49544,
+                      "length": 8198
+                    },
+                    {
+                      "insertOffset": 59691,
+                      "index": 9,
+                      "offset": 57742,
+                      "length": 8208
+                    },
+                    {
+                      "insertOffset": 67899,
+                      "index": 10,
+                      "offset": 65950,
+                      "length": 8214
+                    },
+                    {
+                      "insertOffset": 76113,
+                      "index": 11,
+                      "offset": 74164,
+                      "length": 8290
+                    },
+                    {
+                      "insertOffset": 84403,
+                      "index": 12,
+                      "offset": 82454,
+                      "length": 8192
+                    },
+                    {
+                      "insertOffset": 92595,
+                      "index": 13,
+                      "offset": 90646,
+                      "length": 8244
+                    },
+                    {
+                      "insertOffset": 100839,
+                      "index": 14,
+                      "offset": 98890,
+                      "length": 7461
+                    },
+                    {
+                      "insertOffset": 108312,
+                      "index": 15,
+                      "offset": 106351,
+                      "length": 5
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 1621,
+                      "sourceEnd": 1975
+                    },
+                    {
+                      "sourceStart": 1975,
+                      "sourceEnd": 1984,
+                      "insertion": 150
+                    },
+                    {
+                      "sourceStart": 1984,
+                      "sourceEnd": 10245,
+                      "insertion": 337
+                    },
+                    {
+                      "sourceStart": 10245,
+                      "sourceEnd": 18532,
+                      "insertion": 8598
+                    },
+                    {
+                      "sourceStart": 18532,
+                      "sourceEnd": 26767,
+                      "insertion": 16885
+                    },
+                    {
+                      "sourceStart": 26767,
+                      "sourceEnd": 35022,
+                      "insertion": 25120
+                    },
+                    {
+                      "sourceStart": 35022,
+                      "sourceEnd": 43283,
+                      "insertion": 33375
+                    },
+                    {
+                      "sourceStart": 43283,
+                      "sourceEnd": 51519,
+                      "insertion": 41636
+                    },
+                    {
+                      "sourceStart": 51519,
+                      "sourceEnd": 59717,
+                      "insertion": 49872
+                    },
+                    {
+                      "sourceStart": 59717,
+                      "sourceEnd": 67925,
+                      "insertion": 58070
+                    },
+                    {
+                      "sourceStart": 67925,
+                      "sourceEnd": 76139,
+                      "insertion": 66278
+                    },
+                    {
+                      "sourceStart": 76139,
+                      "sourceEnd": 84429,
+                      "insertion": 74492
+                    },
+                    {
+                      "sourceStart": 84429,
+                      "sourceEnd": 92621,
+                      "insertion": 82782
+                    },
+                    {
+                      "sourceStart": 92621,
+                      "sourceEnd": 100865,
+                      "insertion": 90974
+                    },
+                    {
+                      "sourceStart": 100865,
+                      "sourceEnd": 108326,
+                      "insertion": 99218
+                    },
+                    {
+                      "sourceStart": 108326,
+                      "sourceEnd": 108331,
+                      "insertion": 106691
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "independentRawMd5": "7e18714ea6470149d2a56b71517286f4",
+          "independentRawMatched": true
+        },
+        {
+          "name": "sample-unicode-uncompressed.mobi",
+          "sourceSha256": "9419834c41bf2e7e9ccb78a870e679d56dc4a0a380c5afae3168a2fb5827412d",
+          "branches": [
+            {
+              "record": 0,
+              "version": 6,
+              "compression": 1,
+              "encoding": 65001,
+              "textRecords": 28,
+              "recordByteLengths": [
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096,
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 1109
+              ],
+              "rawBytes": 111701,
+              "rawSha256": "5b71c8e745d6a9d0e7d2df6913722dee4d02b88eddc985122365598b0fb9c003",
+              "rawMd5": "1af83dea18b300e3b60338a9389eb4df",
+              "trailingFlags": 3,
+              "declaredTextBytes": 111701,
+              "comboBoundary": 42,
+              "fixedLayout": null,
+              "originalResolution": null
+            },
+            {
+              "record": 42,
+              "version": 8,
+              "compression": 1,
+              "encoding": 65001,
+              "textRecords": 27,
+              "recordByteLengths": [
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096,
+                4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 4096, 1837
+              ],
+              "rawBytes": 108333,
+              "rawSha256": "b3afb3edbd270ad024004792fc6c3c424c9fe545eb1f0638e303f990d0cf5e83",
+              "rawMd5": "02cf5a2f37faee76dfcafaefe4fd27cf",
+              "trailingFlags": 3,
+              "declaredTextBytes": 108333,
+              "comboBoundary": null,
+              "fixedLayout": null,
+              "originalResolution": null,
+              "documents": [
+                {
+                  "documentIndex": 0,
+                  "rawFile": "sample-unicode-uncompressed.mobi.42.0.html",
+                  "bytes": 1623,
+                  "sha256": "cf8756295c0b98c502fc56d0ffcf9b8c3ae4a88577b3c7632bfc768bfd749c09",
+                  "skeleton": {
+                    "index": 0,
+                    "name": "SKEL0000000000",
+                    "numFrag": 1,
+                    "offset": 0,
+                    "length": 321
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 307,
+                      "index": 0,
+                      "offset": 0,
+                      "length": 1302
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 0,
+                      "sourceEnd": 321
+                    },
+                    {
+                      "sourceStart": 321,
+                      "sourceEnd": 1623,
+                      "insertion": 307
+                    }
+                  ]
+                },
+                {
+                  "documentIndex": 1,
+                  "rawFile": "sample-unicode-uncompressed.mobi.42.1.html",
+                  "bytes": 106710,
+                  "sha256": "327f4d9d948ae8500e71a53eb1da5f1e73a190d69f5e0c0502c4e32b45cf7460",
+                  "skeleton": {
+                    "index": 1,
+                    "name": "SKEL0000000001",
+                    "numFrag": 15,
+                    "offset": 1623,
+                    "length": 354
+                  },
+                  "fragments": [
+                    {
+                      "insertOffset": 1773,
+                      "index": 1,
+                      "offset": 0,
+                      "length": 9
+                    },
+                    {
+                      "insertOffset": 1960,
+                      "index": 2,
+                      "offset": 9,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 10221,
+                      "index": 3,
+                      "offset": 8270,
+                      "length": 8287
+                    },
+                    {
+                      "insertOffset": 18508,
+                      "index": 4,
+                      "offset": 16557,
+                      "length": 8235
+                    },
+                    {
+                      "insertOffset": 26743,
+                      "index": 5,
+                      "offset": 24792,
+                      "length": 8255
+                    },
+                    {
+                      "insertOffset": 34998,
+                      "index": 6,
+                      "offset": 33047,
+                      "length": 8261
+                    },
+                    {
+                      "insertOffset": 43259,
+                      "index": 7,
+                      "offset": 41308,
+                      "length": 8236
+                    },
+                    {
+                      "insertOffset": 51495,
+                      "index": 8,
+                      "offset": 49544,
+                      "length": 8198
+                    },
+                    {
+                      "insertOffset": 59693,
+                      "index": 9,
+                      "offset": 57742,
+                      "length": 8208
+                    },
+                    {
+                      "insertOffset": 67901,
+                      "index": 10,
+                      "offset": 65950,
+                      "length": 8214
+                    },
+                    {
+                      "insertOffset": 76115,
+                      "index": 11,
+                      "offset": 74164,
+                      "length": 8290
+                    },
+                    {
+                      "insertOffset": 84405,
+                      "index": 12,
+                      "offset": 82454,
+                      "length": 8192
+                    },
+                    {
+                      "insertOffset": 92597,
+                      "index": 13,
+                      "offset": 90646,
+                      "length": 8244
+                    },
+                    {
+                      "insertOffset": 100841,
+                      "index": 14,
+                      "offset": 98890,
+                      "length": 7461
+                    },
+                    {
+                      "insertOffset": 108314,
+                      "index": 15,
+                      "offset": 106351,
+                      "length": 5
+                    }
+                  ],
+                  "pieces": [
+                    {
+                      "sourceStart": 1623,
+                      "sourceEnd": 1977
+                    },
+                    {
+                      "sourceStart": 1977,
+                      "sourceEnd": 1986,
+                      "insertion": 150
+                    },
+                    {
+                      "sourceStart": 1986,
+                      "sourceEnd": 10247,
+                      "insertion": 337
+                    },
+                    {
+                      "sourceStart": 10247,
+                      "sourceEnd": 18534,
+                      "insertion": 8598
+                    },
+                    {
+                      "sourceStart": 18534,
+                      "sourceEnd": 26769,
+                      "insertion": 16885
+                    },
+                    {
+                      "sourceStart": 26769,
+                      "sourceEnd": 35024,
+                      "insertion": 25120
+                    },
+                    {
+                      "sourceStart": 35024,
+                      "sourceEnd": 43285,
+                      "insertion": 33375
+                    },
+                    {
+                      "sourceStart": 43285,
+                      "sourceEnd": 51521,
+                      "insertion": 41636
+                    },
+                    {
+                      "sourceStart": 51521,
+                      "sourceEnd": 59719,
+                      "insertion": 49872
+                    },
+                    {
+                      "sourceStart": 59719,
+                      "sourceEnd": 67927,
+                      "insertion": 58070
+                    },
+                    {
+                      "sourceStart": 67927,
+                      "sourceEnd": 76141,
+                      "insertion": 66278
+                    },
+                    {
+                      "sourceStart": 76141,
+                      "sourceEnd": 84431,
+                      "insertion": 74492
+                    },
+                    {
+                      "sourceStart": 84431,
+                      "sourceEnd": 92623,
+                      "insertion": 82782
+                    },
+                    {
+                      "sourceStart": 92623,
+                      "sourceEnd": 100867,
+                      "insertion": 90974
+                    },
+                    {
+                      "sourceStart": 100867,
+                      "sourceEnd": 108328,
+                      "insertion": 99218
+                    },
+                    {
+                      "sourceStart": 108328,
+                      "sourceEnd": 108333,
+                      "insertion": 106691
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "independentRawMd5": "02cf5a2f37faee76dfcafaefe4fd27cf",
+          "independentRawMatched": true
+        }
+      ],
+      "oldBranchCompressionCrossCheck": true,
+      "fullReaderExecuted": false,
+      "independentRawDecoderExecuted": false,
+      "independentExpectedHashesUsed": true,
+      "displayMarkupRewritten": false
+    },
+    "markup": {
+      "runs": [
+        {
+          "name": "sample-cp1252.mobi.0.raw",
+          "encoding": "windows-1252",
+          "type": "mobi",
+          "sourceBytes": 89348,
+          "sourceUnits": 26810,
+          "checkedAddresses": 53620,
+          "rejectedInsideBytes": 298,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 7802,
+          "reopenedInsertions": 7802
+        },
+        {
+          "name": "sample-multimedia.mobi.0.raw",
+          "encoding": "utf-8",
+          "type": "mobi",
+          "sourceBytes": 112155,
+          "sourceUnits": 30513,
+          "checkedAddresses": 61026,
+          "rejectedInsideBytes": 3467,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 10275,
+          "reopenedInsertions": 10275
+        },
+        {
+          "name": "sample-multimedia.mobi.47.0.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 0,
+          "sourceBytes": 2186,
+          "sourceUnits": 1101,
+          "checkedAddresses": 2202,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 302,
+          "reopenedInsertions": 302
+        },
+        {
+          "name": "sample-multimedia.mobi.47.1.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 1,
+          "sourceBytes": 106710,
+          "sourceUnits": 30212,
+          "checkedAddresses": 60424,
+          "rejectedInsideBytes": 301,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 7605,
+          "reopenedInsertions": 7605
+        },
+        {
+          "name": "sample-ncx.mobi.0.raw",
+          "encoding": "utf-8",
+          "type": "mobi",
+          "sourceBytes": 289,
+          "sourceUnits": 121,
+          "checkedAddresses": 242,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 48,
+          "reopenedInsertions": 48
+        },
+        {
+          "name": "sample-ncx.mobi.12.0.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 0,
+          "sourceBytes": 298,
+          "sourceUnits": 30,
+          "checkedAddresses": 60,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 15,
+          "reopenedInsertions": 15
+        },
+        {
+          "name": "sample-ncx.mobi.12.1.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 1,
+          "sourceBytes": 307,
+          "sourceUnits": 30,
+          "checkedAddresses": 60,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 15,
+          "reopenedInsertions": 15
+        },
+        {
+          "name": "sample-ncx.mobi.12.2.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 2,
+          "sourceBytes": 427,
+          "sourceUnits": 67,
+          "checkedAddresses": 134,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 27,
+          "reopenedInsertions": 27
+        },
+        {
+          "name": "sample-obfuscated-fonts.mobi.0.0.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 0,
+          "sourceBytes": 12958,
+          "sourceUnits": 4324,
+          "checkedAddresses": 8648,
+          "rejectedInsideBytes": 43,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 1131,
+          "reopenedInsertions": 1131
+        },
+        {
+          "name": "sample-unicode-huffdic.mobi.0.raw",
+          "encoding": "utf-8",
+          "type": "mobi",
+          "sourceBytes": 111701,
+          "sourceUnits": 30260,
+          "checkedAddresses": 60520,
+          "rejectedInsideBytes": 3467,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 10185,
+          "reopenedInsertions": 10185
+        },
+        {
+          "name": "sample-unicode-huffdic.mobi.46.0.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 0,
+          "sourceBytes": 1621,
+          "sourceUnits": 813,
+          "checkedAddresses": 1626,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 210,
+          "reopenedInsertions": 210
+        },
+        {
+          "name": "sample-unicode-huffdic.mobi.46.1.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 1,
+          "sourceBytes": 106710,
+          "sourceUnits": 30212,
+          "checkedAddresses": 60424,
+          "rejectedInsideBytes": 301,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 7605,
+          "reopenedInsertions": 7605
+        },
+        {
+          "name": "sample-unicode-uncompressed.mobi.0.raw",
+          "encoding": "utf-8",
+          "type": "mobi",
+          "sourceBytes": 111701,
+          "sourceUnits": 30260,
+          "checkedAddresses": 60520,
+          "rejectedInsideBytes": 3467,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 10185,
+          "reopenedInsertions": 10185
+        },
+        {
+          "name": "sample-unicode-uncompressed.mobi.42.0.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 0,
+          "sourceBytes": 1623,
+          "sourceUnits": 813,
+          "checkedAddresses": 1626,
+          "rejectedInsideBytes": 0,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 210,
+          "reopenedInsertions": 210
+        },
+        {
+          "name": "sample-unicode-uncompressed.mobi.42.1.html",
+          "encoding": "utf-8",
+          "type": "kf8",
+          "documentIndex": 1,
+          "sourceBytes": 106710,
+          "sourceUnits": 30212,
+          "checkedAddresses": 60424,
+          "rejectedInsideBytes": 301,
+          "multiUnitEntity": 0,
+          "rejectedSurrogates": 0,
+          "zeroWidthSourceUnits": 0,
+          "sourceAndDisplayOrderDiffer": false,
+          "originalInsertions": 7605,
+          "reopenedInsertions": 7605
+        },
+        {
+          "name": "controlled.html",
+          "encoding": "utf-8",
+          "type": "mobi",
+          "controlled": true,
+          "sourceBytes": 236,
+          "sourceUnits": 62,
+          "checkedAddresses": 124,
+          "rejectedInsideBytes": 6,
+          "multiUnitEntity": 2,
+          "rejectedSurrogates": 2,
+          "zeroWidthSourceUnits": 1,
+          "sourceAndDisplayOrderDiffer": true,
+          "originalInsertions": 12,
+          "reopenedInsertions": 12
+        }
+      ],
+      "parserInternalSeamUsed": "Tokenizer emissions + _insertCharacters + treeAdapter",
+      "fullMarkupMappingProved": false,
+      "displayReaderExecuted": false,
+      "allAssertionsPassed": true
+    },
+    "xml": {
+      "normal": [
+        {
+          "name": "source.fb2",
+          "chunk": 1,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source.fb2",
+          "chunk": 2,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source.fb2",
+          "chunk": 7,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source.fb2",
+          "chunk": 64,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source-utf16.fb2",
+          "chunk": 1,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source-utf16.fb2",
+          "chunk": 2,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source-utf16.fb2",
+          "chunk": 7,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "source-utf16.fb2",
+          "chunk": 64,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "internal-entity.fb2",
+          "chunk": 1,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "internal-entity.fb2",
+          "chunk": 2,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "internal-entity.fb2",
+          "chunk": 7,
+          "matchedIndependentTree": true
+        },
+        {
+          "name": "internal-entity.fb2",
+          "chunk": 64,
+          "matchedIndependentTree": true
+        }
+      ],
+      "cases": [
+        {
+          "name": "ordinary-doctype",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "ordinary-doctype",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "ignored-external-subset",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 1
+        },
+        {
+          "name": "ignored-external-subset",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 1
+        },
+        {
+          "name": "external-subset-unknown-entity",
+          "chunk": 1,
+          "ok": false,
+          "failure": 3,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-subset-unknown-entity",
+          "chunk": 17,
+          "ok": false,
+          "failure": 3,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-general-entity",
+          "chunk": 1,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-general-entity",
+          "chunk": 17,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-parameter-entity",
+          "chunk": 1,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-parameter-entity",
+          "chunk": 17,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-declaration-unused",
+          "chunk": 1,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "external-declaration-unused",
+          "chunk": 17,
+          "ok": false,
+          "failure": 2,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "internal-parameter-entity",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "internal-parameter-entity",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "entity-in-attribute",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "entity-in-attribute",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "undefined-entity",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 11,
+          "skippedSubsets": null
+        },
+        {
+          "name": "undefined-entity",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 11,
+          "skippedSubsets": null
+        },
+        {
+          "name": "recursive-entity",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 12,
+          "skippedSubsets": null
+        },
+        {
+          "name": "recursive-entity",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 12,
+          "skippedSubsets": null
+        },
+        {
+          "name": "invalid-utf8",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 4,
+          "skippedSubsets": null
+        },
+        {
+          "name": "invalid-utf8",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 4,
+          "skippedSubsets": null
+        },
+        {
+          "name": "illegal-reference",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 14,
+          "skippedSubsets": null
+        },
+        {
+          "name": "illegal-reference",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 14,
+          "skippedSubsets": null
+        },
+        {
+          "name": "unclosed-element",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 7,
+          "skippedSubsets": null
+        },
+        {
+          "name": "unclosed-element",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 7,
+          "skippedSubsets": null
+        },
+        {
+          "name": "undeclared-prefix",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 27,
+          "skippedSubsets": null
+        },
+        {
+          "name": "undeclared-prefix",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 27,
+          "skippedSubsets": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 8,
+          "skippedSubsets": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 8,
+          "skippedSubsets": null
+        },
+        {
+          "name": "depth-budget",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "depth-budget",
+          "chunk": 17,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "node-budget",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "node-budget",
+          "chunk": 17,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "text-budget",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "text-budget",
+          "chunk": 17,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "skippedSubsets": null
+        },
+        {
+          "name": "unknown-encoding",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 18,
+          "skippedSubsets": null
+        },
+        {
+          "name": "unknown-encoding",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 18,
+          "skippedSubsets": null
+        },
+        {
+          "name": "xml-latin1-is-not-windows1252",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "xml-latin1-is-not-windows1252",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "declared-windows1251",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "declared-windows1251",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "declared-windows1252",
+          "chunk": 1,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "declared-windows1252",
+          "chunk": 17,
+          "ok": true,
+          "failure": null,
+          "nativeError": null,
+          "skippedSubsets": 0
+        },
+        {
+          "name": "utf8-bom-declaration-conflict",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "skippedSubsets": null
+        },
+        {
+          "name": "utf8-bom-declaration-conflict",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "skippedSubsets": null
+        },
+        {
+          "name": "utf16-bom-declaration-conflict",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "skippedSubsets": null
+        },
+        {
+          "name": "utf16-bom-declaration-conflict",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "skippedSubsets": null
+        },
+        {
+          "name": "entity-amplification-budget",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 43,
+          "skippedSubsets": null
+        },
+        {
+          "name": "entity-amplification-budget",
+          "chunk": 17,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 43,
+          "skippedSubsets": null
+        }
+      ],
+      "memoryBytes": 16777216,
+      "allAssertionsPassed": true,
+      "candidateOnly": true
+    },
+    "names": {
+      "runs": [
+        {
+          "name": "unicode.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 18,
+                "bytes": [
+                  232, 161, 168, 227, 129, 160, 227, 130, 136, 47, 240, 159, 152, 128, 46, 112, 110,
+                  103
+                ],
+                "decodedUnits": [34920, 12384, 12424, 47, 128512, 46, 112, 110, 103]
+              },
+              "dllName": "表だよ/😀.png",
+              "admitted": {
+                "name": "表だよ/😀.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "unix-backslash.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [97, 92, 98, 46, 112, 110, 103],
+                "decodedUnits": [97, 92, 98, 46, 112, 110, 103]
+              },
+              "dllName": "a\\b.png",
+              "admitted": {
+                "name": "a\\b.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "windows-backslash.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [97, 92, 98, 46, 112, 110, 103],
+                "decodedUnits": [97, 92, 98, 46, 112, 110, 103]
+              },
+              "dllName": "a_b.png",
+              "admitted": {
+                "failure": "invalidName"
+              }
+            }
+          ]
+        },
+        {
+          "name": "embedded-nul.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [97, 0, 98, 46, 112, 110, 103],
+                "decodedUnits": [97]
+              },
+              "dllName": "a",
+              "admitted": {
+                "failure": "invalidName"
+              }
+            }
+          ]
+        },
+        {
+          "name": "invalid-utf8.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [97, 192, 175, 46, 112, 110, 103],
+                "decodedUnits": [97, 47, 46, 112, 110, 103]
+              },
+              "dllName": "a/.png",
+              "admitted": {
+                "failure": "invalidEncoding"
+              }
+            }
+          ]
+        },
+        {
+          "name": "absolute.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 12,
+                "bytes": [47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+                "decodedUnits": [47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103]
+              },
+              "dllName": "/outside.png",
+              "admitted": {
+                "failure": "outsideArchive"
+              }
+            }
+          ]
+        },
+        {
+          "name": "parent-escape.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 14,
+                "bytes": [46, 46, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+                "decodedUnits": [46, 46, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103]
+              },
+              "dllName": "../outside.png",
+              "admitted": {
+                "failure": "outsideArchive"
+              }
+            }
+          ]
+        },
+        {
+          "name": "percent-literal.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 16,
+                "bytes": [112, 97, 103, 101, 115, 47, 37, 50, 101, 37, 50, 101, 46, 112, 110, 103],
+                "decodedUnits": [
+                  112, 97, 103, 101, 115, 47, 37, 50, 101, 37, 50, 101, 46, 112, 110, 103
+                ]
+              },
+              "dllName": "pages/%2e%2e.png",
+              "admitted": {
+                "name": "pages/%2e%2e.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "composed.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 6,
+                "bytes": [195, 169, 46, 112, 110, 103],
+                "decodedUnits": [233, 46, 112, 110, 103]
+              },
+              "dllName": "é.png",
+              "admitted": {
+                "name": "é.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "decomposed.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [101, 204, 129, 46, 112, 110, 103],
+                "decodedUnits": [101, 769, 46, 112, 110, 103]
+              },
+              "dllName": "é.png",
+              "admitted": {
+                "name": "é.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "drive-path.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 2,
+                "declared": 14,
+                "bytes": [67, 58, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+                "decodedUnits": [67, 58, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103]
+              },
+              "dllName": "C:/outside.png",
+              "admitted": {
+                "failure": "outsideArchive"
+              }
+            }
+          ]
+        },
+        {
+          "name": "windows-reserved.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 2,
+                "declared": 7,
+                "bytes": [67, 79, 78, 46, 112, 110, 103],
+                "decodedUnits": [67, 79, 78, 46, 112, 110, 103]
+              },
+              "dllName": "CON.png",
+              "admitted": {
+                "name": "CON.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "mapped-unix-bytes.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 13,
+                "bytes": [114, 97, 119, 238, 130, 130, 239, 191, 190, 46, 112, 110, 103],
+                "decodedUnits": [114, 97, 119, 57474, 65534, 46, 112, 110, 103]
+              },
+              "dllName": "raw￾.png",
+              "admitted": {
+                "name": "raw￾.png"
+              }
+            }
+          ]
+        },
+        {
+          "name": "oversized-name-length.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 1,
+                "flags": 2,
+                "declared": 4294967297,
+                "bytes": [97],
+                "decodedUnits": [97]
+              },
+              "dllName": "a",
+              "admitted": {
+                "failure": "nameTruncated"
+              }
+            }
+          ]
+        },
+        {
+          "name": "test_read_format_rar_unicode.rar",
+          "names": [
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 37408,
+                "declared": 111,
+                "bytes": [
+                  149, 92, 130, 190, 130, 230, 92, 144, 86, 130, 181, 130, 162, 131, 116, 131, 72,
+                  131, 139, 131, 95, 92, 144, 86, 139, 75, 131, 101, 131, 76, 131, 88, 131, 103, 32,
+                  131, 104, 131, 76, 131, 133, 131, 129, 131, 147, 131, 103, 46, 116, 120, 116, 0,
+                  136, 104, 104, 96, 48, 136, 48, 92, 170, 176, 101, 87, 48, 68, 48, 213, 48, 168,
+                  169, 48, 235, 48, 192, 48, 92, 170, 176, 101, 143, 137, 198, 48, 173, 48, 162,
+                  185, 48, 200, 48, 32, 201, 48, 170, 173, 48, 229, 48, 225, 48, 243, 48, 128, 200,
+                  48, 46, 116, 120, 0, 116
+                ],
+                "decodedUnits": [
+                  34920, 12384, 12424, 92, 26032, 12375, 12356, 12501, 12457, 12523, 12480, 92,
+                  26032, 35215, 12486, 12461, 12473, 12488, 32, 12489, 12461, 12517, 12513, 12531,
+                  12488, 46, 116, 120, 116
+                ]
+              },
+              "dllName": "表だよ/新しいフォルダ/新規テキスト ドキュメント.txt",
+              "admitted": {
+                "name": "表だよ/新しいフォルダ/新規テキスト ドキュメント.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 37408,
+                "declared": 110,
+                "bytes": [
+                  149, 92, 130, 190, 130, 230, 92, 138, 191, 142, 154, 146, 183, 130, 162, 131, 116,
+                  131, 64, 131, 67, 131, 139, 150, 188, 108, 111, 110, 103, 45, 102, 105, 108, 101,
+                  110, 97, 109, 101, 45, 105, 110, 45, 138, 191, 142, 154, 46, 116, 120, 116, 0,
+                  136, 104, 104, 96, 48, 136, 48, 92, 170, 34, 111, 87, 91, 119, 149, 68, 48, 170,
+                  213, 48, 161, 48, 164, 48, 235, 48, 128, 13, 84, 108, 111, 110, 0, 103, 45, 102,
+                  105, 0, 108, 101, 110, 97, 0, 109, 101, 45, 105, 10, 110, 45, 34, 111, 87, 91, 0,
+                  46, 116, 120, 116
+                ],
+                "decodedUnits": [
+                  34920, 12384, 12424, 92, 28450, 23383, 38263, 12356, 12501, 12449, 12452, 12523,
+                  21517, 108, 111, 110, 103, 45, 102, 105, 108, 101, 110, 97, 109, 101, 45, 105,
+                  110, 45, 28450, 23383, 46, 116, 120, 116
+                ]
+              },
+              "dllName": "表だよ/漢字長いファイル名long-filename-in-漢字.txt",
+              "admitted": {
+                "name": "表だよ/漢字長いファイル名long-filename-in-漢字.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 37600,
+                "declared": 46,
+                "bytes": [
+                  149, 92, 130, 190, 130, 230, 92, 144, 86, 130, 181, 130, 162, 131, 116, 131, 72,
+                  131, 139, 131, 95, 0, 136, 104, 104, 96, 48, 136, 48, 92, 170, 176, 101, 87, 48,
+                  68, 48, 213, 48, 168, 169, 48, 235, 48, 192, 48
+                ],
+                "decodedUnits": [
+                  34920, 12384, 12424, 92, 26032, 12375, 12356, 12501, 12457, 12523, 12480
+                ]
+              },
+              "dllName": "表だよ/新しいフォルダ",
+              "admitted": {
+                "name": "表だよ/新しいフォルダ"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 37600,
+                "declared": 14,
+                "bytes": [149, 92, 130, 190, 130, 230, 0, 136, 104, 104, 96, 48, 136, 48],
+                "decodedUnits": [34920, 12384, 12424]
+              },
+              "dllName": "表だよ",
+              "admitted": {
+                "name": "表だよ"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 3,
+                "flags": 33312,
+                "declared": 40,
+                "bytes": [
+                  232, 161, 168, 227, 129, 160, 227, 130, 136, 92, 227, 131, 149, 227, 130, 161,
+                  227, 130, 164, 227, 131, 171, 0, 136, 104, 104, 96, 48, 136, 48, 92, 170, 213, 48,
+                  161, 48, 164, 48, 235, 48
+                ],
+                "decodedUnits": [34920, 12384, 12424, 92, 12501, 12449, 12452, 12523]
+              },
+              "dllName": "表だよ/ファイル",
+              "admitted": {
+                "name": "表だよ/ファイル"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 3,
+                "flags": 32800,
+                "declared": 32,
+                "bytes": [
+                  97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
+                  114, 115, 227, 131, 134, 227, 130, 185, 227, 131, 136, 46, 116, 120, 116
+                ],
+                "decodedUnits": [
+                  97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
+                  114, 115, 12486, 12473, 12488, 46, 116, 120, 116
+                ]
+              },
+              "dllName": "abcdefghijklmnopqrsテスト.txt",
+              "admitted": {
+                "failure": "legacyEncodingRequired"
+              },
+              "explicitUtf8": {
+                "name": "abcdefghijklmnopqrsテスト.txt"
+              }
+            }
+          ]
+        },
+        {
+          "name": "test_read_format_rar5_unicode.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 12,
+                "bytes": [240, 159, 145, 139, 240, 159, 140, 142, 46, 116, 120, 116],
+                "decodedUnits": [128075, 127758, 46, 116, 120, 116]
+              },
+              "dllName": "👋🌎.txt",
+              "admitted": {
+                "name": "👋🌎.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 29,
+                "bytes": [
+                  226, 146, 189, 226, 147, 144, 226, 147, 161, 226, 147, 147, 32, 226, 147, 129,
+                  226, 147, 152, 226, 147, 157, 226, 147, 154, 46, 116, 120, 116
+                ],
+                "decodedUnits": [
+                  9405, 9424, 9441, 9427, 32, 9409, 9432, 9437, 9434, 46, 116, 120, 116
+                ]
+              },
+              "dllName": "Ⓗⓐⓡⓓ Ⓛⓘⓝⓚ.txt",
+              "admitted": {
+                "name": "Ⓗⓐⓡⓓ Ⓛⓘⓝⓚ.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 53,
+                "bytes": [
+                  240, 157, 146, 174, 240, 157, 147, 142, 240, 157, 147, 130, 240, 157, 146, 183,
+                  240, 157, 145, 156, 240, 157, 147, 129, 240, 157, 146, 190, 240, 157, 146, 184,
+                  32, 240, 157, 144, 191, 240, 157, 146, 190, 240, 157, 147, 131, 240, 157, 147,
+                  128, 46, 116, 120, 116
+                ],
+                "decodedUnits": [
+                  119982, 120014, 120002, 119991, 119900, 120001, 119998, 119992, 32, 119871,
+                  119998, 120003, 120000, 46, 116, 120, 116
+                ]
+              },
+              "dllName": "𝒮𝓎𝓂𝒷𝑜𝓁𝒾𝒸 𝐿𝒾𝓃𝓀.txt",
+              "admitted": {
+                "name": "𝒮𝓎𝓂𝒷𝑜𝓁𝒾𝒸 𝐿𝒾𝓃𝓀.txt"
+              }
+            }
+          ]
+        },
+        {
+          "name": "test_read_format_rar4_solid_encrypted_filenames.rar",
+          "names": [
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 38084,
+                "declared": 5,
+                "bytes": [97, 46, 116, 120, 116],
+                "decodedUnits": [97, 46, 116, 120, 116]
+              },
+              "dllName": "a.txt",
+              "admitted": {
+                "name": "a.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 38100,
+                "declared": 5,
+                "bytes": [98, 46, 116, 120, 116],
+                "decodedUnits": [98, 46, 116, 120, 116]
+              },
+              "dllName": "b.txt",
+              "admitted": {
+                "name": "b.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 38100,
+                "declared": 5,
+                "bytes": [99, 46, 116, 120, 116],
+                "decodedUnits": [99, 46, 116, 120, 116]
+              },
+              "dllName": "c.txt",
+              "admitted": {
+                "name": "c.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 3,
+                "host": 2,
+                "flags": 38100,
+                "declared": 5,
+                "bytes": [100, 46, 116, 120, 116],
+                "decodedUnits": [100, 46, 116, 120, 116]
+              },
+              "dllName": "d.txt",
+              "admitted": {
+                "name": "d.txt"
+              }
+            }
+          ]
+        },
+        {
+          "name": "test_read_format_rar5_solid_encrypted_filenames.rar",
+          "names": [
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 5,
+                "bytes": [97, 46, 116, 120, 116],
+                "decodedUnits": [97, 46, 116, 120, 116]
+              },
+              "dllName": "a.txt",
+              "admitted": {
+                "name": "a.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 5,
+                "bytes": [98, 46, 116, 120, 116],
+                "decodedUnits": [98, 46, 116, 120, 116]
+              },
+              "dllName": "b.txt",
+              "admitted": {
+                "name": "b.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 5,
+                "bytes": [99, 46, 116, 120, 116],
+                "decodedUnits": [99, 46, 116, 120, 116]
+              },
+              "dllName": "c.txt",
+              "admitted": {
+                "name": "c.txt"
+              }
+            },
+            {
+              "original": {
+                "format": 5,
+                "host": 0,
+                "flags": 3,
+                "declared": 5,
+                "bytes": [100, 46, 116, 120, 116],
+                "decodedUnits": [100, 46, 116, 120, 116]
+              },
+              "dllName": "d.txt",
+              "admitted": {
+                "name": "d.txt"
+              }
+            }
+          ]
+        }
+      ],
+      "malformedUnicode": {
+        "original": {
+          "format": 3,
+          "host": 3,
+          "flags": 37568,
+          "declared": 5,
+          "bytes": [98, 0, 0, 128, 65],
+          "decodedUnits": [65]
+        },
+        "dllName": "A",
+        "admitted": {
+          "failure": "invalidEncoding"
+        }
+      },
+      "legacy": {
+        "original": {
+          "format": 3,
+          "host": 3,
+          "flags": 37056,
+          "declared": 8,
+          "bytes": [99, 97, 102, 130, 46, 116, 120, 116],
+          "decodedUnits": [99, 97, 102, 65534, 57474, 46, 116, 120, 116]
+        },
+        "dllName": "caf￾.txt",
+        "admitted": {
+          "failure": "legacyEncodingRequired"
+        },
+        "cp437": {
+          "name": "café.txt"
+        },
+        "windows1252": {
+          "name": "caf‚.txt"
+        }
+      },
+      "node": "24.11.1",
+      "nativeWindows1252CodePoints": [128, 130],
+      "fixedWindows1252CodePoints": [8364, 8218],
+      "candidateOnly": true,
+      "allAssertionsPassed": true,
+      "fullLegacyEncodingPolicyChosen": false
+    },
+    "cfi": {
+      "cases": [
+        {
+          "name": "comments-cdata-pi-share-one-source-text-slot",
+          "passed": true
+        },
+        {
+          "name": "escaped-assertion-identifies-original-element",
+          "passed": true
+        },
+        {
+          "name": "duplicate-spine-occurrences-remain-distinct",
+          "passed": true
+        },
+        {
+          "name": "text-assertion-crosses-element-boundary",
+          "passed": true
+        },
+        {
+          "name": "side-bias-is-preserved",
+          "passed": true
+        },
+        {
+          "name": "empty-text-slot-1",
+          "passed": true
+        },
+        {
+          "name": "empty-text-slot-3",
+          "passed": true
+        },
+        {
+          "name": "empty-text-slot-5",
+          "passed": true
+        },
+        {
+          "name": "virtual-element-0",
+          "passed": true
+        },
+        {
+          "name": "virtual-element-6",
+          "passed": true
+        },
+        {
+          "name": "range-expands-into-two-complete-points",
+          "passed": true
+        },
+        {
+          "name": "nested-object-indirection-honors-source-fragment",
+          "passed": true
+        },
+        {
+          "name": "spatial-terminal-is-preserved",
+          "passed": true
+        },
+        {
+          "name": "temporal-and-spatial-syntax-is-preserved",
+          "passed": true
+        },
+        {
+          "name": "percent-is-not-cfi-unescaping",
+          "passed": true
+        },
+        {
+          "name": "assertion-mismatch-does-not-search",
+          "passed": true
+        },
+        {
+          "name": "id-mismatch-does-not-rebind",
+          "passed": true
+        },
+        {
+          "name": "half-surrogate",
+          "passed": true
+        },
+        {
+          "name": "offset-outside-text",
+          "passed": true
+        },
+        {
+          "name": "missing-source-node",
+          "passed": true
+        },
+        {
+          "name": "nonterminal-side-bias",
+          "passed": true
+        },
+        {
+          "name": "side-bias-with-spatial-offset",
+          "passed": true
+        },
+        {
+          "name": "spatial-outside-page",
+          "passed": true
+        },
+        {
+          "name": "range-cannot-carry-side-bias",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-24",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-25",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-26",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-27",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-28",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-29",
+          "passed": true
+        },
+        {
+          "name": "invalid-syntax-30",
+          "passed": true
+        },
+        {
+          "name": "serialized-point-restores-after-fresh-parse",
+          "passed": true
+        }
+      ],
+      "allAssertionsPassed": true,
+      "completeCfiConformanceProved": false,
+      "mediaPlaybackExecuted": false
+    }
+  },
+  "sources": {
+    "build-names.py": "0e40da6eee3772b53c3dc9a6d8520cd25359341ea90dad44c4dff5e423b41a16",
+    "build-xml.py": "8624cff016f75464ae182ca23c01c7e49ce7236684beb67d3c18648ebf73cc17",
+    "cfi-cases.mjs": "a25cdef24bdd70fa08692924fec62e47916b1c4e96c4f53dfd7a0455dff04f25",
+    "cfi-node.mjs": "a56db8198a78edbd18b3c6b686cf1da00dfa75a96c0d942a0958e391dc419438",
+    "cfi.mjs": "cb51bfe78f10910829c0c7f16cc3a7307463859532a9c69d4ddc8a2ebf3bef0b",
+    "markup-map.mjs": "4c249e5e9c1031ae16ace395e6800dd9508935136f53052cfd28c54bacdfafc2",
+    "markup-node.mjs": "dc3009f4ad868bb76c373aa02ba511d20d409b0f488b40d13406a2ebaf85c799",
+    "mobi-probe.mjs": "a1339c29dcdb04cad76390b05662cb2bf734d2f959b8ab8ae8720895052f0f98",
+    "names-node.mjs": "23947d9a0abc05097e58e9bae4b43d2f8f21ec1e679046cdad9be4ffe2dd61ab",
+    "names-parser.mjs": "0bd3ec907b36437f830bb78e83d6ec25e94beac8362906527a1d956a66419efc",
+    "prepare-encodings.py": "091a36b54382bedcf9ae58ef050f2d069ba559b5f362070ef2cd064dc60275af",
+    "prepare-epub.py": "d027fa69ca8d264c422155f18a6712afcd489a92fe66162970766df7fba699b5",
+    "prepare-html.py": "24bf86032560212d799fbcf52a90a0aa3379262e3179b56fec29eaff66b2ef9c",
+    "prepare-inputs.py": "a8438dd25f54e93f18caf9c154bc03f362afa3accee0b40620d5b750cf7248b5",
+    "prepare-mobi.py": "206ddac7802e60a97f3cd5d6fcf16cedda80a98ff29ae9b00a223d44f3dc789b",
+    "prepare-names.py": "419d47cf3ba40dfb4d675aa94220fe8a27a2a4c7c84a2e2c9a0728d9957de69d",
+    "probe-worker.mjs": "c4ed997d7dbf82fbd01e00bfd2ed295a117085727971d87db712f2adfa799761",
+    "run-browser.py": "5b623d0195fe65d21c828557e5ca14b254006d0d62960ca342101e6264cfc914",
+    "run-node.py": "ade74578aa448a302ad51ab17759ece874d6ade54f497d394c53ad1ce3efba4f",
+    "xml-cases.mjs": "ca4edf7f4c5d1be19a202c0f938d3689dc0848fc1f0f009c3e6300766ac07492",
+    "xml-node.mjs": "94361d1612b8279cbe8dba9ed7727a1e6f7d95859758faa24694e3073a988b57",
+    "xml-parser.mjs": "c5c11a4549576b4565a9fccde255db2a4994a0fda742ac89b411d3baba3891a5"
+  },
+  "inputs": {
+    "source-input.json": "7d95d3f08a658a2baf619cb414034f397c70ce75e6463f8bf318325edd0dbad5",
+    "mobi-adapter-input.json": "255e1723c9545a28ff9e65137eec3b729e4b68ff12af5d0237af94e83c0d57bb",
+    "html-input.json": "fc8ab1a9e6d438a496932ce34be17f0395e839b16041d1fbb42ecf8375f4836b",
+    "encoding-input.json": "677a58237db91ba798a2a73b4a7ee5330ea34a3d2fa799c57808af00dbbfb53a",
+    "xml-build-contract.json": "cb56893f7b891b7caedad9e4a32860e1da25c3d2e1f407c953efc23ca17f863a",
+    "names-build-contract.json": "44209f0de76c2ca68a517fec8fccd7b7637534075c870a62446e238293dec3cd",
+    "names-fixture-input.json": "96730b22e16302ebc5f7e2c471c49e5a0b9b076ceb472ea74a614712f5fe5bd5",
+    "epub-fixture-input.json": "e7337f33972b900c04a1e5ac6ea611cf53c8e74de995caff2811bd43e814f916"
+  },
+  "candidateOnly": true
+}

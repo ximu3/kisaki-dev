@@ -1,0 +1,692 @@
+{
+  "checkedAt": "2026-10-15T07:40:23.386Z",
+  "scope": "Anonymous public metadata and official contract inspection; no account credentials, user authorization, private writes, or chapter-image downloads.",
+  "documentationCommit": "60a3bb3c9f25675435a479c925d857015201739e",
+  "openApiVersion": "5.13.1",
+  "documents": [
+    {
+      "file": "auth-discovery.json",
+      "url": "https://auth.mangadex.org/realms/mangadex/.well-known/openid-configuration",
+      "status": 200,
+      "bytes": 5958,
+      "sha256": "65338c982d83ade8c78593ff758127f6a510df7ff43961afc030ef213f40515c"
+    },
+    {
+      "file": "02-authentication__index.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/02-authentication%2Findex.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 2919,
+      "sha256": "b56bbfc3df05cb9916f33a9dec4c574a7cbd70af7e51ea2635637d8f1a1ddc53"
+    },
+    {
+      "file": "02-authentication__personal-clients.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/02-authentication%2Fpersonal-clients.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 4987,
+      "sha256": "3802bceec74cb42e972eded9dc8b3943f4432fc1039f9ba02cdbb542e877799a"
+    },
+    {
+      "file": "02-authentication__public-clients.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/02-authentication%2Fpublic-clients.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 217,
+      "sha256": "2fa1811b6feb934c2ec33745ab75e81fc25d11baee1584b9841c9ec898f6b91d"
+    },
+    {
+      "file": "04-chapter__feed.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/04-chapter%2Ffeed.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 6466,
+      "sha256": "41cde974fb1efa792516f7924967b659eca7c56fc7feea3199d2b77ad739fc66"
+    },
+    {
+      "file": "2-limitations.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/2-limitations.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 10854,
+      "sha256": "e4d92d4961f5065bd0178b1a2e3e2c372cf086ce9f1e39efc01fe4340bb01d69"
+    },
+    {
+      "file": "3-enumerations.md",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/3-enumerations.md/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 11909,
+      "sha256": "7f0c796060ab3df17fc88d4d102bfbdc364857728d0b9dd231f1b6e974b51d8c"
+    },
+    {
+      "file": "static__api.yaml",
+      "url": "https://gitlab.com/api/v4/projects/mangadex-pub%2Fmangadex-api-docs/repository/files/static%2Fapi.yaml/raw?ref=60a3bb3c9f25675435a479c925d857015201739e",
+      "status": 200,
+      "bytes": 195189,
+      "sha256": "004031ccdfc4b66727dd1f85d09b5300cf60235bbab2de6f6ea4816094bd6d33"
+    }
+  ],
+  "publicChecks": [
+    {
+      "name": "manga-search",
+      "path": "/manga?title=Yotsuba&limit=3&contentRating%5B%5D=safe&includes%5B%5D=author&includes%5B%5D=artist&includes%5B%5D=cover_art&order%5Brelevance%5D=desc",
+      "status": 200,
+      "bytes": 16912,
+      "sha256": "1358cebd5bfb10342f44deda9edd08432c92e8cbbd31e812b5606aba41ce5ee2"
+    },
+    {
+      "name": "manga-detail",
+      "path": "/manga/58be6aa6-06cb-4ca5-bd20-f1392ce451fb?includes%5B%5D=author&includes%5B%5D=artist&includes%5B%5D=cover_art",
+      "status": 200,
+      "bytes": 10463,
+      "sha256": "74bc03bfe7a27add47e86d3746b792ee33d7804272d581c74eb7e07fc0e0d6b9"
+    },
+    {
+      "name": "manga-aggregate",
+      "path": "/manga/58be6aa6-06cb-4ca5-bd20-f1392ce451fb/aggregate?includeUnavailable=1",
+      "status": 200,
+      "bytes": 40644,
+      "sha256": "17f53090a6ca028cf067a7d6d9e3588ac3fbd7b85baf17a714b1d01a81c9de2e"
+    },
+    {
+      "name": "manga-feed",
+      "path": "/manga/58be6aa6-06cb-4ca5-bd20-f1392ce451fb/feed?limit=25&order%5Bchapter%5D=asc&order%5Bvolume%5D=asc&includeUnavailable=1",
+      "status": 200,
+      "bytes": 14739,
+      "sha256": "5553e3e1775dba4919a78239ffde02b0ddffe8b723801c9d932feae9b7e27a5c"
+    },
+    {
+      "name": "duplicate-chapters",
+      "path": "/chapter?ids%5B%5D=0f66be46-a72d-42b4-b865-95cee48c8fd3&ids%5B%5D=ca29787e-8d6c-4e74-8937-6bde34667837&limit=10&includeUnavailable=1",
+      "status": 200,
+      "bytes": 1241,
+      "sha256": "ee68e32f2cd35c069f1df0fd8633a034d115b1b7a21741ebec0019b748b2eab5"
+    },
+    {
+      "name": "manga-covers",
+      "path": "/cover?manga%5B%5D=58be6aa6-06cb-4ca5-bd20-f1392ce451fb&limit=5",
+      "status": 200,
+      "bytes": 2128,
+      "sha256": "a929eb29d5b06a10f1c8aa99479503b1454500d86a3a6395a2deabc5db337f38"
+    },
+    {
+      "name": "author-detail",
+      "path": "/author/e3d5ec0e-9ecb-4ac6-86b2-59ddad281b5b",
+      "status": 200,
+      "bytes": 1965,
+      "sha256": "d02622aadc18f8d252167e95a99f3575953f7cb349c10ec7491771eab80278bc"
+    },
+    {
+      "name": "clamp-author-search",
+      "path": "/author?name=CLAMP&limit=5",
+      "status": 200,
+      "bytes": 2669,
+      "sha256": "92a5f252d23e340d85b01e5145d3e0841180f307439cba3a69c9843f57772d01"
+    }
+  ],
+  "authentication": {
+    "issuer": "https://auth.mangadex.org/realms/mangadex",
+    "authorizationEndpoint": "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/auth",
+    "tokenEndpoint": "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+    "personalClientGrantAccordingToDocs": "password",
+    "personalClientOwnerOnly": true,
+    "publicClientRegistrationAccordingToDocs": "not available",
+    "personalGrantMfaInteractionAccordingToDocs": false
+  },
+  "mangaSearch": {
+    "total": 22,
+    "items": [
+      {
+        "id": "58be6aa6-06cb-4ca5-bd20-f1392ce451fb",
+        "title": {
+          "ja-ro": "Yotsuba to!"
+        },
+        "originalLanguage": "ja"
+      },
+      {
+        "id": "d2f73eb0-6bbb-4000-8234-8e64bf79c417",
+        "title": {
+          "en": "Yotsuba&! - Yotsuba and \"!\" (Doujinshi)"
+        },
+        "originalLanguage": "ja"
+      },
+      {
+        "id": "63c49a00-4537-4915-96a8-319b59bb7d4e",
+        "title": {
+          "en": "5Toubun no Hanayome - A flirty story where Yotsuba finds a 4-leaf clover and informs Fuutarou (Doujinshi)"
+        },
+        "originalLanguage": "ja"
+      }
+    ]
+  },
+  "manga": {
+    "id": "58be6aa6-06cb-4ca5-bd20-f1392ce451fb",
+    "fields": [
+      "title",
+      "altTitles",
+      "description",
+      "isLocked",
+      "links",
+      "officialLinks",
+      "originalLanguage",
+      "lastVolume",
+      "lastChapter",
+      "publicationDemographic",
+      "status",
+      "year",
+      "contentRating",
+      "tags",
+      "state",
+      "chapterNumbersResetOnNewVolume",
+      "createdAt",
+      "updatedAt",
+      "version",
+      "availableTranslatedLanguages",
+      "latestUploadedChapter"
+    ],
+    "title": {
+      "ja-ro": "Yotsuba to!"
+    },
+    "originalLanguage": "ja",
+    "status": "hiatus",
+    "year": 2003,
+    "lastChapter": "",
+    "lastVolume": "",
+    "chapterNumbersResetOnNewVolume": false,
+    "relationships": [
+      {
+        "id": "e3d5ec0e-9ecb-4ac6-86b2-59ddad281b5b",
+        "type": "author",
+        "name": "Azuma Kiyohiko"
+      },
+      {
+        "id": "e3d5ec0e-9ecb-4ac6-86b2-59ddad281b5b",
+        "type": "artist",
+        "name": "Azuma Kiyohiko"
+      },
+      {
+        "id": "28c01b3f-0f5c-4a15-a0da-4d39431ec86e",
+        "type": "cover_art"
+      },
+      {
+        "id": "313682fc-c512-4a1c-8c66-33ad0121c505",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "4b3d263d-92a7-4be2-991f-3adf24053713",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "53838e07-076f-43f3-8b82-6cc861060b00",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "667d78cf-462a-4586-9532-e79154278c9a",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "b5b7169d-464b-4dd1-b7b0-a271fa54a1be",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "d164aa71-c70b-4174-98f0-18d86cfceac3",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "d2f73eb0-6bbb-4000-8234-8e64bf79c417",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "d4496b92-b1bc-411f-ad36-b74a359887bc",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "d8adcc66-b2a3-4c0c-a8b4-c6f2f0538b90",
+        "type": "manga",
+        "related": "shared_universe"
+      },
+      {
+        "id": "df5821b1-4000-4d5f-a444-f1c1f6e7abf6",
+        "type": "manga",
+        "related": "preserialization"
+      },
+      {
+        "id": "eb3e0972-0513-4dd6-a4e3-50f989a8e689",
+        "type": "manga",
+        "related": "doujinshi"
+      },
+      {
+        "id": "eecb13f7-a424-4290-a7d6-a52fae97938f",
+        "type": "manga",
+        "related": "doujinshi"
+      }
+    ]
+  },
+  "aggregate": {
+    "volumeCount": 16,
+    "logicalGroups": 133,
+    "duplicateGroups": [
+      {
+        "volume": "1",
+        "chapter": "1",
+        "id": "0f66be46-a72d-42b4-b865-95cee48c8fd3",
+        "others": [
+          "ca29787e-8d6c-4e74-8937-6bde34667837",
+          "d40d8369-3773-45e6-b2a8-0b63c52b1aab",
+          "ff4789a7-af82-4584-aab2-2610fb9675a2",
+          "3b6c371c-3aca-4fdd-8d02-d96ede5fd175",
+          "ff4f79de-6102-4610-8327-539904cfe549",
+          "3191e274-0344-4d56-9dd7-134d07cdfeb9",
+          "09796dae-e083-460c-991b-53b5d1e40f27",
+          "6804e4c7-6db6-40cd-93ce-17e2b45b1f1d",
+          "a3de73a0-ec90-42f1-bdb2-8ab7d95fa2c0"
+        ],
+        "isUnavailable": false,
+        "count": 10
+      },
+      {
+        "volume": "1",
+        "chapter": "2",
+        "id": "0ec34879-e5db-45b7-b89e-cb992e9b1404",
+        "others": [
+          "2b6ebd8a-cefd-4bba-b4be-d2a9bcb1b85e",
+          "ad2401b5-fd1d-4c9f-aea1-e244ee58c5b9",
+          "bbd83b0a-369b-4f26-84ff-242e355dfcdb",
+          "db997bf2-91b3-469b-8917-e3ed79c0e9c0",
+          "3e58c47a-2b60-4ee4-807a-f63a9cf22443",
+          "36f4b98a-9252-4ff5-abf5-24a88042a2fe",
+          "790b55b5-8abc-4ee8-957b-d0b4cb14e136",
+          "b5bbbcda-b23d-4c55-a747-4c054d325fa6",
+          "27d92b7c-12b9-4f08-bcc4-2406afe9718c"
+        ],
+        "isUnavailable": false,
+        "count": 10
+      },
+      {
+        "volume": "1",
+        "chapter": "3",
+        "id": "0aa79081-365a-4fca-bbfb-70daf5eebb38",
+        "others": [
+          "24281857-6861-49a6-a125-47735fcff084",
+          "e29a6fe8-e995-4e82-9c55-c53306373d31",
+          "a1a13ab1-1ec7-4341-a920-5296b54b6662",
+          "7fc7d8a1-f2ae-4675-9830-89f23b2b2a54",
+          "c7340e65-9e14-4ec1-80e0-295e1784f638",
+          "b7e99ecb-cd8f-4611-b0c2-367830d61318",
+          "a847649c-dd22-449d-87ab-00de115bcd0e",
+          "f2a5d2c4-bad9-43d1-8680-bcb18a0ee382"
+        ],
+        "isUnavailable": false,
+        "count": 9
+      }
+    ],
+    "unnumbered": []
+  },
+  "feed": {
+    "total": 782,
+    "sampled": 25,
+    "samples": [
+      {
+        "id": "3b6c371c-3aca-4fdd-8d02-d96ede5fd175",
+        "volume": "1",
+        "chapter": "1",
+        "title": null,
+        "translatedLanguage": "tr",
+        "pages": 53,
+        "isUnavailable": false,
+        "publishAt": "2021-10-17T11:16:38+00:00"
+      },
+      {
+        "id": "ff4f79de-6102-4610-8327-539904cfe549",
+        "volume": "1",
+        "chapter": "1",
+        "title": "Yotsuba & Moving",
+        "translatedLanguage": "en",
+        "pages": 51,
+        "isUnavailable": false,
+        "publishAt": "2026-09-09T20:46:20+00:00"
+      },
+      {
+        "id": "0f66be46-a72d-42b4-b865-95cee48c8fd3",
+        "volume": "1",
+        "chapter": "1",
+        "title": null,
+        "translatedLanguage": "vi",
+        "pages": 49,
+        "isUnavailable": false,
+        "publishAt": "2024-12-01T03:03:00+00:00"
+      },
+      {
+        "id": "ca29787e-8d6c-4e74-8937-6bde34667837",
+        "volume": "1",
+        "chapter": "1",
+        "title": "",
+        "translatedLanguage": "pt-br",
+        "pages": 54,
+        "isUnavailable": false,
+        "publishAt": "2020-08-15T18:37:41+00:00"
+      }
+    ]
+  },
+  "duplicateChapters": [
+    {
+      "id": "ca29787e-8d6c-4e74-8937-6bde34667837",
+      "volume": "1",
+      "chapter": "1",
+      "title": "",
+      "translatedLanguage": "pt-br",
+      "pages": 54,
+      "isUnavailable": false
+    },
+    {
+      "id": "0f66be46-a72d-42b4-b865-95cee48c8fd3",
+      "volume": "1",
+      "chapter": "1",
+      "title": null,
+      "translatedLanguage": "vi",
+      "pages": 49,
+      "isUnavailable": false
+    }
+  ],
+  "covers": {
+    "total": 16,
+    "samples": [
+      {
+        "id": "28c01b3f-0f5c-4a15-a0da-4d39431ec86e",
+        "volume": "16",
+        "locale": "ja",
+        "fields": [
+          "description",
+          "volume",
+          "fileName",
+          "locale",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      },
+      {
+        "id": "f2104cb0-c510-412a-93d4-cee24e3f961e",
+        "volume": "8",
+        "locale": "ja",
+        "fields": [
+          "description",
+          "volume",
+          "fileName",
+          "locale",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      },
+      {
+        "id": "233f870f-38fb-4f5b-90c9-e0b41011027c",
+        "volume": "15",
+        "locale": "ja",
+        "fields": [
+          "description",
+          "volume",
+          "fileName",
+          "locale",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      },
+      {
+        "id": "5bc09baa-978c-4fb0-8fa4-fe0ddffbec0d",
+        "volume": "9",
+        "locale": "ja",
+        "fields": [
+          "description",
+          "volume",
+          "fileName",
+          "locale",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      },
+      {
+        "id": "6f92ba2b-9144-4f9e-b506-93f5deef6f99",
+        "volume": "12",
+        "locale": "ja",
+        "fields": [
+          "description",
+          "volume",
+          "fileName",
+          "locale",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      }
+    ]
+  },
+  "author": {
+    "id": "e3d5ec0e-9ecb-4ac6-86b2-59ddad281b5b",
+    "fields": [
+      "name",
+      "imageUrl",
+      "biography",
+      "twitter",
+      "pixiv",
+      "melonBook",
+      "fanBox",
+      "booth",
+      "namicomi",
+      "nicoVideo",
+      "skeb",
+      "fantia",
+      "tumblr",
+      "youtube",
+      "weibo",
+      "naver",
+      "website",
+      "createdAt",
+      "updatedAt",
+      "version"
+    ],
+    "name": "Azuma Kiyohiko",
+    "biographyLanguages": ["en"],
+    "relationships": [
+      {
+        "type": "manga",
+        "id": "884913f1-ea0b-46e7-9a53-e4ec8fb82f86"
+      },
+      {
+        "type": "manga",
+        "id": "f01e7615-d36e-4c08-8823-200ac78fe54b"
+      },
+      {
+        "type": "manga",
+        "id": "e1aded31-c46f-41ab-a814-71f48b1d1fc6"
+      }
+    ]
+  },
+  "creatorGroup": {
+    "total": 1,
+    "candidates": [
+      {
+        "id": "60bc549c-f2ac-488e-9b83-c840a76d17ce",
+        "type": "author",
+        "name": "CLAMP",
+        "fields": [
+          "name",
+          "imageUrl",
+          "biography",
+          "twitter",
+          "pixiv",
+          "melonBook",
+          "fanBox",
+          "booth",
+          "namicomi",
+          "nicoVideo",
+          "skeb",
+          "fantia",
+          "tumblr",
+          "youtube",
+          "weibo",
+          "naver",
+          "website",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ],
+        "biographyClassifiesAs": "Manga studio with named members; no structured person or organization type."
+      }
+    ]
+  },
+  "schemaFields": {
+    "MangaAttributes": [
+      "title",
+      "altTitles",
+      "description",
+      "isLocked",
+      "links",
+      "officialLinks",
+      "originalLanguage",
+      "lastVolume",
+      "lastChapter",
+      "publicationDemographic",
+      "status",
+      "year",
+      "contentRating",
+      "chapterNumbersResetOnNewVolume",
+      "availableTranslatedLanguages",
+      "latestUploadedChapter",
+      "tags",
+      "state",
+      "version",
+      "createdAt",
+      "updatedAt"
+    ],
+    "AuthorAttributes": [
+      "name",
+      "imageUrl",
+      "biography",
+      "twitter",
+      "pixiv",
+      "melonBook",
+      "fanBox",
+      "booth",
+      "nicoVideo",
+      "skeb",
+      "fantia",
+      "tumblr",
+      "youtube",
+      "weibo",
+      "naver",
+      "namicomi",
+      "website",
+      "version",
+      "createdAt",
+      "updatedAt"
+    ],
+    "ChapterAttributes": [
+      "title",
+      "volume",
+      "chapter",
+      "pages",
+      "translatedLanguage",
+      "uploader",
+      "externalUrl",
+      "version",
+      "createdAt",
+      "updatedAt",
+      "publishAt",
+      "readableAt",
+      "isUnavailable"
+    ],
+    "CoverAttributes": [
+      "volume",
+      "fileName",
+      "description",
+      "locale",
+      "version",
+      "createdAt",
+      "updatedAt"
+    ],
+    "CustomListAttributes": ["name", "visibility", "version"],
+    "ChapterReadMarkerBatch": ["chapterIdsRead", "chapterIdsUnread"]
+  },
+  "personalContracts": {
+    "statuses": {
+      "type": "string",
+      "nullable": true,
+      "enum": ["reading", "on_hold", "plan_to_read", "dropped", "re_reading", "completed"]
+    },
+    "ratingInput": {
+      "type": "object",
+      "properties": {
+        "rating": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        }
+      }
+    },
+    "ratingDeletionSupported": true,
+    "ratingQueryRequiresMangaIds": true,
+    "readMarkerInput": {
+      "title": "ChapterReadMarkersBatch",
+      "type": "object",
+      "properties": {
+        "chapterIdsRead": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        "chapterIdsUnread": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": ["chapterIdsRead"]
+        },
+        {
+          "required": ["chapterIdsUnread"]
+        }
+      ],
+      "x-examples": {
+        "example-read": {
+          "chapterIdsRead": [1, 2, 3]
+        },
+        "example-unread": {
+          "chapterIdsUnread": [1, 2, 3]
+        },
+        "example-mixed": {
+          "chapterIdsRead": [1, 2, 3],
+          "chapterIdsUnread": [1, 2, 3]
+        }
+      }
+    },
+    "readMarkerHistoryParameter": {
+      "schema": {
+        "type": "boolean"
+      },
+      "name": "updateHistory",
+      "in": "query",
+      "required": false,
+      "description": "Adding this will cause the chapter to be stored in the user's reading history"
+    },
+    "followedManga": true,
+    "ownLists": true,
+    "followedLists": true
+  }
+}

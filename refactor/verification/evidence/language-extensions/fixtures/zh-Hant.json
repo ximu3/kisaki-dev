@@ -1,0 +1,48 @@
+{
+  "actions": {
+    "save": "儲存",
+    "cancel": "取消",
+    "remove": "移除",
+    "delete": "刪除",
+    "browse": "瀏覽…"
+  },
+  "library": {
+    "entities": {
+      "game": "遊戲",
+      "anime": "動畫",
+      "comic": "漫畫",
+      "novel": "小說",
+      "character": "角色",
+      "person": "人物",
+      "organization": "組織"
+    },
+    "collection": "合集",
+    "favorite": "喜愛",
+    "metadataProfile": "資料方案",
+    "added": "已新增 {name}",
+    "kind": "{kind, select, game {遊戲} anime {動畫} comic {漫畫} novel {小說} other {作品}}"
+  },
+  "records": {
+    "setStatus": "設定狀態",
+    "recordCurrent": "記錄本次完成…",
+    "history": "完成紀錄…",
+    "addPast": "補登完成紀錄…",
+    "unknownDate": "日期未記錄",
+    "active": { "game": "在玩", "anime": "在看", "comic": "在讀", "novel": "在讀" },
+    "running": "執行中",
+    "additionalDuration": "附加時間",
+    "completionCount": "{count, plural, =0 {沒有完成紀錄} other {完成 {count, number} 次}}"
+  },
+  "selection": {
+    "count": "已選取 {count, number} 項",
+    "position": "第 {position, number} 項",
+    "shared": "{name} 等 {count, number} 人"
+  },
+  "feedback": {
+    "updated": "更新於 {when, date, short}",
+    "retry": "無法載入 {name}。請重試。",
+    "value": "值：{value}",
+    "escaped": "輸入字面文字 '{name}'",
+    "literalMarkup": "<b>{name}</b>"
+  }
+}

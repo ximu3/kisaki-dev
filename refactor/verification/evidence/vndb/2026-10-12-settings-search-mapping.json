@@ -1,0 +1,604 @@
+{
+  "checkedOn": "2026-10-12",
+  "scope": "Public search comparisons, static translation-data inspection, and isolated setting projections. No authentication token, personal list, remote write, or downloaded-script execution.",
+  "searchRequests": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/vn",
+        "body": {
+          "reverse": false,
+          "results": 10,
+          "fields": "title",
+          "sort": "searchrank",
+          "page": 1,
+          "filters": ["search", "=", "fate"]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": true,
+        "results": [
+          {
+            "id": "v31477",
+            "title": "Fated"
+          },
+          {
+            "id": "v59971",
+            "title": "Fated Mate"
+          },
+          {
+            "id": "v15808",
+            "title": "Fate/Zero"
+          },
+          {
+            "id": "v7602",
+            "title": "Fate/EXTRA"
+          },
+          {
+            "id": "v12779",
+            "title": "Fate/Otome"
+          },
+          {
+            "id": "v31811",
+            "title": "Fateline"
+          },
+          {
+            "id": "v34876",
+            "title": "Fate King"
+          },
+          {
+            "id": "v47370",
+            "title": "FATELESS"
+          },
+          {
+            "id": "v55735",
+            "title": "FATE　FULL"
+          },
+          {
+            "id": "v19119",
+            "title": "Fate/EXTELLA"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/character",
+        "body": {
+          "reverse": false,
+          "results": 10,
+          "fields": "name,original",
+          "sort": "searchrank",
+          "page": 1,
+          "filters": ["search", "=", "Rin"]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": true,
+        "results": [
+          {
+            "id": "c1532",
+            "name": "Rin",
+            "original": "鈴"
+          },
+          {
+            "id": "c7956",
+            "name": "Rin",
+            "original": "リン"
+          },
+          {
+            "id": "c8220",
+            "name": "Rin",
+            "original": "凛"
+          },
+          {
+            "id": "c9103",
+            "name": "Rin",
+            "original": "リン"
+          },
+          {
+            "id": "c12783",
+            "name": "Rin",
+            "original": "リン"
+          },
+          {
+            "id": "c15317",
+            "name": "Rin",
+            "original": "りん"
+          },
+          {
+            "id": "c20578",
+            "name": "Rin",
+            "original": "鈴"
+          },
+          {
+            "id": "c22068",
+            "name": "Rin",
+            "original": "燐"
+          },
+          {
+            "id": "c25665",
+            "name": "Rin",
+            "original": "凛"
+          },
+          {
+            "id": "c29194",
+            "name": "Rin",
+            "original": "凛"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/staff",
+        "body": {
+          "reverse": false,
+          "results": 10,
+          "fields": "name,original,aid,ismain",
+          "sort": "searchrank",
+          "page": 1,
+          "filters": ["search", "=", "Asakawa"]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "aid": 56399,
+            "id": "s10956",
+            "ismain": false,
+            "name": "Asakawa",
+            "original": "浅川"
+          },
+          {
+            "aid": 158,
+            "id": "s81",
+            "ismain": true,
+            "name": "Asakawa Yuu",
+            "original": "浅川 悠"
+          },
+          {
+            "aid": 56473,
+            "id": "s46115",
+            "ismain": true,
+            "name": "Asakawa Asagi",
+            "original": "浅川 浅葱"
+          },
+          {
+            "aid": 13916,
+            "id": "s10956",
+            "ismain": false,
+            "name": "Asakawa Shina",
+            "original": "浅川 しな"
+          },
+          {
+            "aid": 33123,
+            "id": "s26733",
+            "ismain": true,
+            "name": "Asakawa Masakazu",
+            "original": null
+          },
+          {
+            "aid": 58742,
+            "id": "s47811",
+            "ismain": true,
+            "name": "Asakawa Koushi",
+            "original": "浅川 甲史"
+          },
+          {
+            "aid": 58740,
+            "id": "s47809",
+            "ismain": true,
+            "name": "Asakawa Takeshi",
+            "original": "浅川 岳史"
+          },
+          {
+            "aid": 33144,
+            "id": "s26754",
+            "ismain": true,
+            "name": "Asakawa Shouichi",
+            "original": "浅川正一"
+          },
+          {
+            "aid": 35789,
+            "id": "s28989",
+            "ismain": true,
+            "name": "Sasakawa Chie",
+            "original": "笹川 チエ"
+          },
+          {
+            "aid": 3634,
+            "id": "s1648",
+            "ismain": false,
+            "name": "Sasakawa Kisetsu",
+            "original": "笹川 綺雪"
+          }
+        ]
+      }
+    }
+  ],
+  "websiteComparisons": [
+    {
+      "kind": "v",
+      "query": "fate",
+      "websiteIds": [
+        "v31477",
+        "v59971",
+        "v15808",
+        "v7602",
+        "v12779",
+        "v55735",
+        "v34876",
+        "v47370",
+        "v31811",
+        "v19119"
+      ],
+      "apiIds": [
+        "v31477",
+        "v59971",
+        "v15808",
+        "v7602",
+        "v12779",
+        "v31811",
+        "v34876",
+        "v47370",
+        "v55735",
+        "v19119"
+      ],
+      "identical": false,
+      "more": true,
+      "request": {
+        "method": "GET",
+        "url": "https://vndb.org/v?sq=fate"
+      },
+      "httpStatus": 200,
+      "responseExcerpt": "Only the first ten result identities in page order are retained above; full HTML is omitted.",
+      "htmlSha256": "1c2d843c3ed0ddaaca2460136f113528df27ac207cf2d4e3a9562a8f985efd53"
+    },
+    {
+      "kind": "c",
+      "query": "Rin",
+      "websiteIds": [
+        "c136400",
+        "c174652",
+        "c74996",
+        "c1532",
+        "c7956",
+        "c8220",
+        "c9103",
+        "c12783",
+        "c15317",
+        "c20578"
+      ],
+      "apiIds": [
+        "c1532",
+        "c7956",
+        "c8220",
+        "c9103",
+        "c12783",
+        "c15317",
+        "c20578",
+        "c22068",
+        "c25665",
+        "c29194"
+      ],
+      "identical": false,
+      "more": true,
+      "request": {
+        "method": "GET",
+        "url": "https://vndb.org/c?q=Rin"
+      },
+      "httpStatus": 200,
+      "responseExcerpt": "Only the first ten result identities in page order are retained above; full HTML is omitted.",
+      "htmlSha256": "c6f4663937229f30fca1ca39023fa919649ff2328fdec421a76623280775205d"
+    },
+    {
+      "kind": "s",
+      "query": "Asakawa",
+      "websiteIds": [
+        "s10956",
+        "s81",
+        "s46115",
+        "s26733",
+        "s10956",
+        "s47811",
+        "s47809",
+        "s26754",
+        "s28989",
+        "s1648"
+      ],
+      "apiIds": [
+        "s10956",
+        "s81",
+        "s46115",
+        "s10956",
+        "s26733",
+        "s47811",
+        "s47809",
+        "s26754",
+        "s28989",
+        "s1648"
+      ],
+      "identical": false,
+      "more": false,
+      "request": {
+        "method": "GET",
+        "url": "https://vndb.org/s?q=Asakawa"
+      },
+      "httpStatus": 200,
+      "responseExcerpt": "Only the first ten result identities in page order are retained above; full HTML is omitted.",
+      "htmlSha256": "8d53c43b9d6bebf837b324a99e782342520047aabd40a8e23f9852f6c7fca181"
+    }
+  ],
+  "sourceReferences": [
+    {
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/API.pm",
+      "httpStatus": 200,
+      "gitBlobSha": "64ea08e892e81265a57b6c5beb7e9bcb0f373d4e",
+      "sha256": "d6adb5f7b2b4ddc9f1e7b215d05a0c21f3fa10ea591a6045e84a3fb8a6cbb9f6"
+    },
+    {
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/VN/List.pm",
+      "httpStatus": 200,
+      "gitBlobSha": "19f339419af9bc42617377c88dbd251b4fe04a1b",
+      "sha256": "21e63a26779e5c66fac11382165f27e36014a1526a4c2c439d12b309e78943de"
+    },
+    {
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/Chars/List.pm",
+      "httpStatus": 200,
+      "gitBlobSha": "9323a399fdc9f3a8c05923c30c42c58a5e17cb99",
+      "sha256": "15d163b9b9ebbbe4c5e9ee465fe73988dc97bb235cd5d5b47a763f79001d2ab9"
+    },
+    {
+      "url": "https://code.blicky.net/yorhel/vndb/src/branch/master/lib/VNWeb/Staff/List.pm",
+      "httpStatus": 200,
+      "gitBlobSha": "8f2ed2aedff854453013896f124c9085b8be53d3",
+      "sha256": "2b0e728a9dec2c41cdc3d86bf028b47920b918364c63d948a1a1d990bc375886"
+    }
+  ],
+  "translationMaterial": {
+    "sourceUrl": "https://update.greasyfork.org/scripts/445990/1315038/VNDBTranslatorLib_.js",
+    "projectPage": "https://greasyfork.org/en/scripts/445990-vndbtranslatorlib",
+    "httpStatus": 200,
+    "sha256": "dc7491c024ef416e00c5cc99bd0c281dcc325889a2ede5886aa93e9867f63fef",
+    "version": "5.0.0",
+    "versionId": 1315038,
+    "declaredLicense": "MIT",
+    "staticLiteralPairs": 5438,
+    "uniqueEnglishKeys": 5438,
+    "uncertaintyMarkedValues": 3,
+    "duplicateChineseNameGroups": 99,
+    "examples": [
+      {
+        "source": "Romance",
+        "translation": "恋爱"
+      },
+      {
+        "source": "Science Fiction",
+        "translation": "科幻"
+      },
+      {
+        "source": "Hair",
+        "translation": "毛发"
+      },
+      {
+        "source": "Eyes",
+        "translation": "眼睛"
+      },
+      {
+        "source": "Brown",
+        "translation": "棕色"
+      },
+      {
+        "source": "Short",
+        "translation": "矮小/短"
+      },
+      {
+        "source": "Long",
+        "translation": "长"
+      }
+    ],
+    "coverage": [
+      {
+        "id": "v11",
+        "adopted": 195,
+        "exactMappingMatches": 190,
+        "uncertaintyMarkedMatches": 0
+      },
+      {
+        "id": "v17",
+        "adopted": 198,
+        "exactMappingMatches": 195,
+        "uncertaintyMarkedMatches": 0
+      }
+    ],
+    "traitCoverage": [
+      {
+        "id": "c15",
+        "adopted": 97,
+        "bothGroupAndTraitMapped": 97
+      },
+      {
+        "id": "c42",
+        "adopted": 52,
+        "bothGroupAndTraitMapped": 52
+      }
+    ],
+    "codeExecuted": false,
+    "interpretation": "Exact dictionary hits are not a translation-quality guarantee. Name collisions may include UI phrases or true synonyms and require context review before packaging.",
+    "fullThirdPartyFileStoredInRepository": false
+  },
+  "rangeCases": [
+    {
+      "range": {
+        "min": 0,
+        "max": 3
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 195
+        },
+        {
+          "workId": "v17",
+          "tags": 198
+        }
+      ]
+    },
+    {
+      "range": {
+        "min": 1,
+        "max": 3
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 185
+        },
+        {
+          "workId": "v17",
+          "tags": 188
+        }
+      ]
+    },
+    {
+      "range": {
+        "min": 2,
+        "max": 3
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 135
+        },
+        {
+          "workId": "v17",
+          "tags": 102
+        }
+      ]
+    },
+    {
+      "range": {
+        "min": 1,
+        "max": 2
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 56
+        },
+        {
+          "workId": "v17",
+          "tags": 107
+        }
+      ]
+    },
+    {
+      "range": {
+        "min": 2,
+        "max": 2
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 6
+        },
+        {
+          "workId": "v17",
+          "tags": 21
+        }
+      ]
+    },
+    {
+      "range": {
+        "min": 0,
+        "max": 0
+      },
+      "counts": [
+        {
+          "workId": "v11",
+          "tags": 0
+        },
+        {
+          "workId": "v17",
+          "tags": 0
+        }
+      ]
+    }
+  ],
+  "invalidRanges": [
+    {
+      "input": {
+        "min": -1,
+        "max": 3
+      },
+      "writeValidation": "reject"
+    },
+    {
+      "input": {
+        "min": 0,
+        "max": 4
+      },
+      "writeValidation": "reject"
+    },
+    {
+      "input": {
+        "min": 2,
+        "max": 1
+      },
+      "writeValidation": "reject"
+    },
+    {
+      "input": {
+        "min": "2",
+        "max": 3
+      },
+      "writeValidation": "reject"
+    }
+  ],
+  "boundaryCases": [
+    {
+      "rating": 1.99,
+      "range": {
+        "min": 2,
+        "max": 3
+      },
+      "adopted": false
+    },
+    {
+      "rating": 2,
+      "range": {
+        "min": 2,
+        "max": 3
+      },
+      "adopted": true
+    },
+    {
+      "rating": 2.01,
+      "range": {
+        "min": 2,
+        "max": 3
+      },
+      "adopted": true
+    }
+  ],
+  "tagIdentityExample": {
+    "originalName": "Romance",
+    "mappedName": "恋爱",
+    "originalNameKey": "romance",
+    "mappedNameKey": "恋爱",
+    "sameIdentityByNameKey": false
+  },
+  "limitations": [
+    "Search samples do not exhaust paginated VN or character results.",
+    "Only current source code and anonymous webpage defaults were compared.",
+    "The complete curated dictionary has not been packaged or quality-validated.",
+    "No authenticated account test has been performed."
+  ]
+}

@@ -1,0 +1,17 @@
+node_modules/
+.turbo/
+.cache/
+.local/
+/artifacts/
+dist/
+out/
+target/
+test-results/
+playwright-report/
+.vitest/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.husky/_/

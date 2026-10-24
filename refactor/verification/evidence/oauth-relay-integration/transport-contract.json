@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-21T08:09:17.006Z",
+  "node": "v24.22.0",
+  "undici": "7.29.1",
+  "sourceReceiptSha256": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+  "nodeExeSha256": "ba93f9a70bd86fce3ebbb39ec758501458453467aa92a34a0a3602d1e3fc2b9c",
+  "scriptSha256": "e9b9583cc2628da393497d4a450a94ef15206541c74db2d739bef56235ed3bc9",
+  "observations": [
+    {
+      "case": "redirect",
+      "controlTargetRequests": 1,
+      "controlMethod": "POST",
+      "controlSyntheticBodyPreserved": true,
+      "manualStatus": 307,
+      "manualAdditionalTargetRequests": 0,
+      "sourceRequests": 2,
+      "redirectBodyReleased": true
+    },
+    {
+      "case": "compressed-response",
+      "wireBytes": 339,
+      "declaredContentLength": 339,
+      "fixtureDecodedBytes": 262195,
+      "decodedBytesObserved": 32768,
+      "limitBytes": 16384,
+      "readerCancelled": true,
+      "requestAborted": true,
+      "bodyParsed": false,
+      "sourceRequests": 1
+    }
+  ],
+  "listenersClosed": 2,
+  "realProviderRequests": false,
+  "realCredentialsUsed": false,
+  "browserExecuted": false,
+  "productionRelayImplemented": false,
+  "clientPersistenceVerified": false
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movie>
+  <title>星海的约定</title><originaltitle>星海の約束</originaltitle>
+  <ratings><rating name="public" max="10" default="true"><value>9.4</value><votes>500</votes></rating></ratings>
+  <userrating>8</userrating><plot>第一段。&#10;&#10;第二段 &amp; 原样文字。</plot>
+  <runtime>90</runtime><playcount>3</playcount><lastplayed>2026-09-15</lastplayed>
+  <uniqueid type="tmdb" default="true">123456789</uniqueid><id>local-default-id</id>
+  <genre>动画</genre><genre>科幻</genre><tag>重看</tag>
+  <set><name>星海系列</name><overview>来源合辑说明。</overview></set>
+  <premiered>2020-01-01</premiered><studio>来源制作组</studio>
+  <actor><name>同名演员</name><role>角色名 (voice)</role></actor>
+  <thumb aspect="poster">星海-poster.png</thumb><fanart><thumb>星海-fanart.png</thumb></fanart>
+  <resume><position>1.25</position><total>2</total></resume>
+  <streamdetails><video><durationinseconds>9999</durationinseconds></video></streamdetails>
+</movie>

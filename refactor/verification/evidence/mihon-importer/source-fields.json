@@ -1,0 +1,715 @@
+[
+  {
+    "tag": "v0.21.2",
+    "model": "Backup",
+    "sha256": "d0e7aaf6016c06cee0f901a50423b23c2e20c9b4f5e4c151d43e7029032dc66c",
+    "fields": [
+      {
+        "number": 1,
+        "name": "backupManga",
+        "kotlinType": "List<BackupManga>"
+      },
+      {
+        "number": 2,
+        "name": "backupCategories",
+        "kotlinType": "List<BackupCategory>"
+      },
+      {
+        "number": 101,
+        "name": "backupSources",
+        "kotlinType": "List<BackupSource>"
+      },
+      {
+        "number": 104,
+        "name": "backupPreferences",
+        "kotlinType": "List<BackupPreference>"
+      },
+      {
+        "number": 105,
+        "name": "backupSourcePreferences",
+        "kotlinType": "List<BackupSourcePreferences>"
+      },
+      {
+        "number": 106,
+        "name": "backupExtensionStores",
+        "kotlinType": "List<BackupExtensionStore>"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupManga",
+    "sha256": "3ed554d40e44889a157b43fd18f298ef5750070924ec1f03fbfc0c5e0f5694b8",
+    "fields": [
+      {
+        "number": 1,
+        "name": "source",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 2,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 3,
+        "name": "title",
+        "kotlinType": "String"
+      },
+      {
+        "number": 4,
+        "name": "artist",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 5,
+        "name": "author",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 6,
+        "name": "description",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 7,
+        "name": "genre",
+        "kotlinType": "List<String>"
+      },
+      {
+        "number": 8,
+        "name": "status",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 9,
+        "name": "thumbnailUrl",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 13,
+        "name": "dateAdded",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 14,
+        "name": "viewer",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 16,
+        "name": "chapters",
+        "kotlinType": "List<BackupChapter>"
+      },
+      {
+        "number": 17,
+        "name": "categories",
+        "kotlinType": "List<Long>"
+      },
+      {
+        "number": 18,
+        "name": "tracking",
+        "kotlinType": "List<BackupTracking>"
+      },
+      {
+        "number": 100,
+        "name": "favorite",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 101,
+        "name": "chapterFlags",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 103,
+        "name": "viewer_flags",
+        "kotlinType": "Int?"
+      },
+      {
+        "number": 104,
+        "name": "history",
+        "kotlinType": "List<BackupHistory>"
+      },
+      {
+        "number": 105,
+        "name": "updateStrategy",
+        "kotlinType": "UpdateStrategy"
+      },
+      {
+        "number": 107,
+        "name": "favoriteModifiedAt",
+        "kotlinType": "Long?"
+      },
+      {
+        "number": 108,
+        "name": "excludedScanlators",
+        "kotlinType": "List<String>"
+      },
+      {
+        "number": 110,
+        "name": "notes",
+        "kotlinType": "String"
+      },
+      {
+        "number": 111,
+        "name": "initialized",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 112,
+        "name": "memo",
+        "kotlinType": "ByteArray"
+      },
+      {
+        "number": 113,
+        "name": "nextUpdate",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupChapter",
+    "sha256": "078ec6faa435053ae97754ee11a4483932df803452ab825c1b8699ea53cb0a31",
+    "fields": [
+      {
+        "number": 1,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 3,
+        "name": "scanlator",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 4,
+        "name": "read",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 5,
+        "name": "bookmark",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 6,
+        "name": "lastPageRead",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 7,
+        "name": "dateFetch",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 8,
+        "name": "dateUpload",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 9,
+        "name": "chapterNumber",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 10,
+        "name": "sourceOrder",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 13,
+        "name": "memo",
+        "kotlinType": "ByteArray"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupHistory",
+    "sha256": "61e9be2c6638ad53299f5b7dfaa4e1c4e7b66e7e558da0cb5788cc00f212e728",
+    "fields": [
+      {
+        "number": 1,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "lastRead",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 3,
+        "name": "readDuration",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupTracking",
+    "sha256": "aeb35510c13e54fd85ba0b61038d4a26481e7dd674078b8a182aba3ceebb3fdf",
+    "fields": [
+      {
+        "number": 1,
+        "name": "syncId",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 2,
+        "name": "libraryId",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 3,
+        "name": "mediaIdInt",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 4,
+        "name": "trackingUrl",
+        "kotlinType": "String"
+      },
+      {
+        "number": 5,
+        "name": "title",
+        "kotlinType": "String"
+      },
+      {
+        "number": 6,
+        "name": "lastChapterRead",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 7,
+        "name": "totalChapters",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 8,
+        "name": "score",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 9,
+        "name": "status",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 10,
+        "name": "startedReadingDate",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 11,
+        "name": "finishedReadingDate",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 12,
+        "name": "private",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 100,
+        "name": "mediaId",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupCategory",
+    "sha256": "f13dd4c9b49bcf9e914add0990e164812a50201403a663bf3b27356f76e9a94b",
+    "fields": [
+      {
+        "number": 1,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "order",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 3,
+        "name": "id",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 100,
+        "name": "flags",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.21.2",
+    "model": "BackupSource",
+    "sha256": "6bfe980f5e07fbf7148185dd0959b42bc9fb0acfd0ca57246988c5839de3881f",
+    "fields": [
+      {
+        "number": 1,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "sourceId",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "Backup",
+    "sha256": "10bb4e24c0fcafdc8fbfe85e27bdb4ce7d6d548b2bf6d6eb0641491d33373bb2",
+    "fields": [
+      {
+        "number": 1,
+        "name": "backupManga",
+        "kotlinType": "List<BackupManga>"
+      },
+      {
+        "number": 2,
+        "name": "backupCategories",
+        "kotlinType": "List<BackupCategory>"
+      },
+      {
+        "number": 100,
+        "name": "backupBrokenSources",
+        "kotlinType": "List<BrokenBackupSource>"
+      },
+      {
+        "number": 101,
+        "name": "backupSources",
+        "kotlinType": "List<BackupSource>"
+      },
+      {
+        "number": 104,
+        "name": "backupPreferences",
+        "kotlinType": "List<BackupPreference>"
+      },
+      {
+        "number": 105,
+        "name": "backupSourcePreferences",
+        "kotlinType": "List<BackupSourcePreferences>"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupManga",
+    "sha256": "eb3c9b4aa178fd38869975c0ef135fc2b40408685e5ff56a6c442bcdc218fc9f",
+    "fields": [
+      {
+        "number": 1,
+        "name": "source",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 2,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 3,
+        "name": "title",
+        "kotlinType": "String"
+      },
+      {
+        "number": 4,
+        "name": "artist",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 5,
+        "name": "author",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 6,
+        "name": "description",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 7,
+        "name": "genre",
+        "kotlinType": "List<String>"
+      },
+      {
+        "number": 8,
+        "name": "status",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 9,
+        "name": "thumbnailUrl",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 13,
+        "name": "dateAdded",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 14,
+        "name": "viewer",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 16,
+        "name": "chapters",
+        "kotlinType": "List<BackupChapter>"
+      },
+      {
+        "number": 17,
+        "name": "categories",
+        "kotlinType": "List<Long>"
+      },
+      {
+        "number": 18,
+        "name": "tracking",
+        "kotlinType": "List<BackupTracking>"
+      },
+      {
+        "number": 100,
+        "name": "favorite",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 101,
+        "name": "chapterFlags",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 102,
+        "name": "brokenHistory",
+        "kotlinType": "List<BrokenBackupHistory>"
+      },
+      {
+        "number": 103,
+        "name": "viewer_flags",
+        "kotlinType": "Int?"
+      },
+      {
+        "number": 104,
+        "name": "history",
+        "kotlinType": "List<BackupHistory>"
+      },
+      {
+        "number": 105,
+        "name": "updateStrategy",
+        "kotlinType": "UpdateStrategy"
+      },
+      {
+        "number": 106,
+        "name": "lastModifiedAt",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 107,
+        "name": "favoriteModifiedAt",
+        "kotlinType": "Long?"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupChapter",
+    "sha256": "3586f39be0fe263d678b16130549d057750cc7e67381c461e16ce8c3b4d7de22",
+    "fields": [
+      {
+        "number": 1,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 3,
+        "name": "scanlator",
+        "kotlinType": "String?"
+      },
+      {
+        "number": 4,
+        "name": "read",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 5,
+        "name": "bookmark",
+        "kotlinType": "Boolean"
+      },
+      {
+        "number": 6,
+        "name": "lastPageRead",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 7,
+        "name": "dateFetch",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 8,
+        "name": "dateUpload",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 9,
+        "name": "chapterNumber",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 10,
+        "name": "sourceOrder",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 11,
+        "name": "lastModifiedAt",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupHistory",
+    "sha256": "6cfc1a76de048696b7962ed615f7490edda7d6e944b66f38a53afa5059b541b4",
+    "fields": [
+      {
+        "number": 1,
+        "name": "url",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "lastRead",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 3,
+        "name": "readDuration",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupTracking",
+    "sha256": "9edd2cd9c62f73c1303e9e92d8b08fb8128178bac70b77bfd17f1c9bf48d4c2f",
+    "fields": [
+      {
+        "number": 1,
+        "name": "syncId",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 2,
+        "name": "libraryId",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 3,
+        "name": "mediaIdInt",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 4,
+        "name": "trackingUrl",
+        "kotlinType": "String"
+      },
+      {
+        "number": 5,
+        "name": "title",
+        "kotlinType": "String"
+      },
+      {
+        "number": 6,
+        "name": "lastChapterRead",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 7,
+        "name": "totalChapters",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 8,
+        "name": "score",
+        "kotlinType": "Float"
+      },
+      {
+        "number": 9,
+        "name": "status",
+        "kotlinType": "Int"
+      },
+      {
+        "number": 10,
+        "name": "startedReadingDate",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 11,
+        "name": "finishedReadingDate",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 100,
+        "name": "mediaId",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupCategory",
+    "sha256": "5c23f40dd32393f5f9360cecccf76d7b407900c4352ea7a994e36cecaa4b9bd8",
+    "fields": [
+      {
+        "number": 1,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "order",
+        "kotlinType": "Long"
+      },
+      {
+        "number": 100,
+        "name": "flags",
+        "kotlinType": "Long"
+      }
+    ]
+  },
+  {
+    "tag": "v0.15.3",
+    "model": "BackupSource",
+    "sha256": "35a1febbed8d8dbeea98d8b2930e402c48c1a8dbb269cf0bec1d354ac65a6291",
+    "fields": [
+      {
+        "number": 1,
+        "name": "name",
+        "kotlinType": "String"
+      },
+      {
+        "number": 2,
+        "name": "sourceId",
+        "kotlinType": "Long"
+      }
+    ]
+  }
+]

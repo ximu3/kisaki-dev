@@ -1,0 +1,460 @@
+{
+  "sourceRef": "v2026.07.1",
+  "commit": "9192014d8bd82a91dc1012473be0f238dedfdb54",
+  "baseCommit": "6e4bc81af4e04f78d81677a323a780a71b29702a",
+  "mupdfVersion": "1.27.2",
+  "mupdfCommit": "73d3100d46d8a9ad634f6ef035bbe78f0f947886",
+  "statisticsVersion": 20221111,
+  "statisticsTables": {
+    "book": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "primaryKey": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "authors",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "notes",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "last_open",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "highlights",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "pages",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "series",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "language",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "md5",
+          "type": "TEXT",
+          "primaryKey": false
+        },
+        {
+          "name": "total_read_time",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "total_read_pages",
+          "type": "INTEGER",
+          "primaryKey": false
+        }
+      ]
+    },
+    "page_stat_data": {
+      "columns": [
+        {
+          "name": "id_book",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "page",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "start_time",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "duration",
+          "type": "INTEGER",
+          "primaryKey": false
+        },
+        {
+          "name": "total_pages",
+          "type": "INTEGER",
+          "primaryKey": false
+        }
+      ]
+    },
+    "numbers": {
+      "columns": [
+        {
+          "name": "number",
+          "type": "INTEGER",
+          "primaryKey": true
+        }
+      ]
+    }
+  },
+  "jsonExportVersion": "json/1.0.0",
+  "sourceCodeExecuted": false,
+  "sources": [
+    {
+      "path": "plugins/exporter.koplugin/base.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/base.lua",
+      "status": 200,
+      "bytes": 5141,
+      "sha256": "f4cf0490c3b85dd574ecd97eefc8f5e8a26be9aea7144292b99f225e02479dab",
+      "checkedAt": "2026-10-17T11:04:48.535743+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/main.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/main.lua",
+      "status": 200,
+      "bytes": 18960,
+      "sha256": "179d0b5e0b6dbd5a01173e2af5d781e8de84fa25351e732663019f25891059a6",
+      "checkedAt": "2026-10-17T11:04:48.583958+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/clip.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/clip.lua",
+      "status": 200,
+      "bytes": 13800,
+      "sha256": "cba3a90b184dcb6d4367595229ce0ce272a1bae491699d59a49b16fdd9dcba67",
+      "checkedAt": "2026-10-17T11:04:48.542743+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/target/json.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/target/json.lua",
+      "status": 200,
+      "bytes": 2779,
+      "sha256": "cfe9571b2e0b2abe274eafb5af4fdcda3ac01fa519118219010611905d9347a8",
+      "checkedAt": "2026-10-17T11:04:48.584954+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/target/markdown.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/target/markdown.lua",
+      "status": 200,
+      "bytes": 4688,
+      "sha256": "4f74803220755fae3c4eff5ed9cfde7121ef4fedf0832cd66995f345260ef1f4",
+      "checkedAt": "2026-10-17T11:04:48.940522+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/target/text.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/target/text.lua",
+      "status": 200,
+      "bytes": 1752,
+      "sha256": "4feec0ddbde224fa2370bc9dea8097b8178f4108b96a9a353adfc9b5dc5bb132",
+      "checkedAt": "2026-10-17T11:04:48.964571+00:00"
+    },
+    {
+      "path": "plugins/exporter.koplugin/target/html.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/exporter.koplugin/target/html.lua",
+      "status": 200,
+      "bytes": 1911,
+      "sha256": "34a2868f07c1dc56ec58975e7e84a89a68a0baff9a98e0ca73b77f094d5a43a5",
+      "checkedAt": "2026-10-17T11:04:49.056048+00:00"
+    },
+    {
+      "path": "plugins/statistics.koplugin/main.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/statistics.koplugin/main.lua",
+      "status": 200,
+      "bytes": 135831,
+      "sha256": "da6db5e381bcfdaf05053d23bf75781166cc713b14076a65fcd2c527067fd088",
+      "checkedAt": "2026-10-17T11:04:48.964052+00:00"
+    },
+    {
+      "path": "plugins/statistics.koplugin/readerprogress.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/plugins/statistics.koplugin/readerprogress.lua",
+      "status": 200,
+      "bytes": 18073,
+      "sha256": "2edf8d29ef8374d921cb14cfb2f928c42c05b7259683b4566be05a7dbf9643d9",
+      "checkedAt": "2026-10-17T11:04:49.360537+00:00"
+    },
+    {
+      "path": "frontend/docsettings.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/docsettings.lua",
+      "status": 200,
+      "bytes": 25909,
+      "sha256": "2ac292560866b8ecae40cfd8afa7bc79adf84d62711619ab3e476edaa82a0ad0",
+      "checkedAt": "2026-10-17T11:04:49.352015+00:00"
+    },
+    {
+      "path": "frontend/luasettings.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/luasettings.lua",
+      "status": 200,
+      "bytes": 7896,
+      "sha256": "3483f15c8f3ec6a4e2a3a6196683f6446a91c5782acf6be375298a934ed91b8c",
+      "checkedAt": "2026-10-17T11:04:49.375544+00:00"
+    },
+    {
+      "path": "frontend/dump.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/dump.lua",
+      "status": 200,
+      "bytes": 2394,
+      "sha256": "016dd15917b707d351f549f43b3e271710acd7f78bdc0ac85198880e3c11bcc5",
+      "checkedAt": "2026-10-17T11:04:49.588860+00:00"
+    },
+    {
+      "path": "frontend/util.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/util.lua",
+      "status": 200,
+      "bytes": 59774,
+      "sha256": "22cb44f83479fe0e427d3c1aade8fcbf47402360060c21dba5a5a2fddde8e20b",
+      "checkedAt": "2026-10-17T11:04:49.779773+00:00"
+    },
+    {
+      "path": "frontend/readcollection.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/readcollection.lua",
+      "status": 200,
+      "bytes": 12898,
+      "sha256": "abe882609f8203639c1f3a1c975b29b52a51ad80c12143ba894f5c6a59628ce1",
+      "checkedAt": "2026-10-17T11:04:49.753021+00:00"
+    },
+    {
+      "path": "frontend/readhistory.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/readhistory.lua",
+      "status": 200,
+      "bytes": 11898,
+      "sha256": "b6da914f0b49bc2b84fb4f4b8970f44874601fe9763639be062dc7abf8e90d4e",
+      "checkedAt": "2026-10-17T11:04:49.942728+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerannotation.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerannotation.lua",
+      "status": 200,
+      "bytes": 22953,
+      "sha256": "bc33dc66bc63b92ecf9537fdd0f1b3dc41d50f30c945e2fd0dddc357bbf4d1f9",
+      "checkedAt": "2026-10-17T11:04:49.993003+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerhighlight.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerhighlight.lua",
+      "status": 200,
+      "bytes": 115984,
+      "sha256": "a2e45bcaf245db2e6c001801223d9d3f36d9dd7deb3597b124a9602361968554",
+      "checkedAt": "2026-10-17T11:04:50.146038+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerbookmark.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerbookmark.lua",
+      "status": 200,
+      "bytes": 66199,
+      "sha256": "755c3f91901f370c44c21546784ddc1c8efb043e9ce7aa4a6a95b82c898d91ec",
+      "checkedAt": "2026-10-17T11:04:50.219181+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerpaging.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerpaging.lua",
+      "status": 200,
+      "bytes": 48831,
+      "sha256": "d110f266d90ceb48699c85118f74c0c8d213e50dd2d6c2301a7c499abc65fcd7",
+      "checkedAt": "2026-10-17T11:04:50.326561+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerrolling.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerrolling.lua",
+      "status": 200,
+      "bytes": 92745,
+      "sha256": "4af978e7d81fa91d8f3a93096b9c656edf0a7c47078a305ea35ac87d9d72d68c",
+      "checkedAt": "2026-10-17T11:04:50.312561+00:00"
+    },
+    {
+      "path": "frontend/apps/reader/modules/readerstatus.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/reader/modules/readerstatus.lua",
+      "status": 200,
+      "bytes": 8034,
+      "sha256": "c46458fd10dddc3ab3221f50c25c1a958f6ddb56f098b8b67227d9e85eed0017",
+      "checkedAt": "2026-10-17T11:04:50.539190+00:00"
+    },
+    {
+      "path": "frontend/ui/widget/bookstatuswidget.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/ui/widget/bookstatuswidget.lua",
+      "status": 200,
+      "bytes": 19520,
+      "sha256": "89ae2264767dbf3da9e95a03fcfae5eb6fe5aa0c73b4e8d3cf8dd5252cf6a8b5",
+      "checkedAt": "2026-10-17T11:04:50.597213+00:00"
+    },
+    {
+      "path": "frontend/ui/widget/booklist.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/ui/widget/booklist.lua",
+      "status": 200,
+      "bytes": 14340,
+      "sha256": "4b98d35e0a529ec6d0c18cde47c14517ad841acc97d1027a1a655737ca9db469",
+      "checkedAt": "2026-10-17T11:04:50.694244+00:00"
+    },
+    {
+      "path": "frontend/apps/filemanager/filemanagerbookinfo.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/filemanager/filemanagerbookinfo.lua",
+      "status": 200,
+      "bytes": 49318,
+      "sha256": "6fa10a875490d5829ddb0990fb65c53ac4e3d2fb7b8320d5a6237bfde2a14cb2",
+      "checkedAt": "2026-10-17T11:04:50.729792+00:00"
+    },
+    {
+      "path": "frontend/document/pdfdocument.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/document/pdfdocument.lua",
+      "status": 200,
+      "bytes": 15644,
+      "sha256": "963cbae1a42e5cb163361e89585a47ca2994477cac5741da743d314fa2b5fe60",
+      "checkedAt": "2026-10-17T11:04:50.932704+00:00"
+    },
+    {
+      "path": "frontend/document/credocument.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/document/credocument.lua",
+      "status": 200,
+      "bytes": 86072,
+      "sha256": "b3f7c7510dc8f36fb50141e498a5f67dd890a35c2ec4fcd7b3ff462fc618ce69",
+      "checkedAt": "2026-10-17T11:04:51.050861+00:00"
+    },
+    {
+      "path": "frontend/document/koptinterface.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/document/koptinterface.lua",
+      "status": 200,
+      "bytes": 61035,
+      "sha256": "6e1df97a2dd655dd31030447d87ff671fa3ff3f74bfbb3b535018c0180d205f4",
+      "checkedAt": "2026-10-17T11:04:51.107364+00:00"
+    },
+    {
+      "path": "frontend/document/document.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/document/document.lua",
+      "status": 200,
+      "bytes": 21108,
+      "sha256": "fbc8a11e4a5321c4b86742f9d699839a56ebe125edf6030f85f8ef57789c4129",
+      "checkedAt": "2026-10-17T11:04:51.147032+00:00"
+    },
+    {
+      "path": "frontend/document/documentregistry.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/document/documentregistry.lua",
+      "status": 200,
+      "bytes": 9975,
+      "sha256": "2d5d43d9d7f0ebefafb575d2d08ba63eab867d77d682a2c27c79c568c287838a",
+      "checkedAt": "2026-10-17T11:04:51.356602+00:00"
+    },
+    {
+      "path": "spec/unit/exporter_plugin_main_spec.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/spec/unit/exporter_plugin_main_spec.lua",
+      "status": 200,
+      "bytes": 3539,
+      "sha256": "9b99e042b6c2327a7ca3e0c4e9ebbb1a764f38294251ad183cedb8862d66b7f7",
+      "checkedAt": "2026-10-17T11:04:51.482602+00:00"
+    },
+    {
+      "path": "spec/unit/docsettings_spec.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/spec/unit/docsettings_spec.lua",
+      "status": 200,
+      "bytes": 12282,
+      "sha256": "cd9a709c6c8064904e6852357aabd80cb89095f07cd7e964596b9f84150f1245",
+      "checkedAt": "2026-10-17T11:04:51.552601+00:00"
+    },
+    {
+      "path": "frontend/apps/filemanager/filemanagerutil.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/frontend/apps/filemanager/filemanagerutil.lua",
+      "status": 200,
+      "bytes": 18769,
+      "sha256": "1d2a9840aa9294c7723760165feceae3228397bfbaebe93f488e0e6bed4c3e6a",
+      "checkedAt": "2026-10-17T11:04:51.453603+00:00"
+    },
+    {
+      "path": ".gitmodules",
+      "url": "https://raw.githubusercontent.com/koreader/koreader/9192014d8bd82a91dc1012473be0f238dedfdb54/.gitmodules",
+      "status": 200,
+      "bytes": 575,
+      "sha256": "4c19a90cf7544dae99cb3d216a9a18b7a5a83ced25a2ba93da70f181cb57acfb",
+      "checkedAt": "2026-10-17T11:04:51.740629+00:00"
+    },
+    {
+      "path": "base/ffi/mupdf.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/ffi/mupdf.lua",
+      "status": 200,
+      "bytes": 41630,
+      "sha256": "1d6627890135a97ecb22e725400c91645c4d21b43eca4eb8088d1e0cf6c1896d",
+      "checkedAt": "2026-10-17T11:04:51.858995+00:00"
+    },
+    {
+      "path": "base/ffi/MD5.lua",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/ffi/MD5.lua",
+      "status": 200,
+      "bytes": 604,
+      "sha256": "fb751e8a65e21dec8fe0440d052f76663f87b895d0797d78ab9a233c469ec623",
+      "checkedAt": "2026-10-17T11:04:51.909981+00:00"
+    },
+    {
+      "path": "base/wrap-mupdf.c",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/wrap-mupdf.c",
+      "status": 200,
+      "bytes": 7281,
+      "sha256": "99aa1a0bcdf3195ea044d41fe9e4af1ba2e0cd3b5be4d15d4be5e0a289a73ec6",
+      "checkedAt": "2026-10-17T11:04:51.940251+00:00"
+    },
+    {
+      "path": "base/thirdparty/mupdf/CMakeLists.txt",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/thirdparty/mupdf/CMakeLists.txt",
+      "status": 200,
+      "bytes": 3862,
+      "sha256": "9f4bedd805bf229de00e0f8499760b2d033b63e985fc6e4fc98aaca875646b03",
+      "checkedAt": "2026-10-17T11:04:52.134652+00:00"
+    },
+    {
+      "path": "base/thirdparty/mupdf/mupdf_cbz_chapter_support.patch",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/thirdparty/mupdf/mupdf_cbz_chapter_support.patch",
+      "status": 200,
+      "bytes": 3896,
+      "sha256": "76d9fd27a8da9dbabd68bcf1a7029a8db7350dc282aeb12ce8ac1ece4f578857",
+      "checkedAt": "2026-10-17T11:04:52.158677+00:00"
+    },
+    {
+      "path": "base/thirdparty/mupdf/webp-upstream-697749.patch",
+      "url": "https://raw.githubusercontent.com/koreader/koreader-base/6e4bc81af4e04f78d81677a323a780a71b29702a/thirdparty/mupdf/webp-upstream-697749.patch",
+      "status": 200,
+      "bytes": 14308,
+      "sha256": "e70a025f912b572342b226275fd28ae9c9fcb9c31a40906ad6af9f1c4124eb51",
+      "checkedAt": "2026-10-17T11:04:52.222264+00:00"
+    },
+    {
+      "path": "mupdf/source/cbz/mucbz.c",
+      "url": "https://raw.githubusercontent.com/ArtifexSoftware/mupdf/73d3100d46d8a9ad634f6ef035bbe78f0f947886/source/cbz/mucbz.c",
+      "status": 200,
+      "bytes": 8218,
+      "sha256": "b3a71f2b45a67fa6097bdca58e29a00da092c1b0621c5da3b189c31c1b5c45c5",
+      "checkedAt": "2026-10-17T11:04:52.341629+00:00"
+    },
+    {
+      "path": "mupdf/source/pdf/pdf-page.c",
+      "url": "https://raw.githubusercontent.com/ArtifexSoftware/mupdf/73d3100d46d8a9ad634f6ef035bbe78f0f947886/source/pdf/pdf-page.c",
+      "status": 200,
+      "bytes": 53428,
+      "sha256": "f8dde0651616fe8b5133b7c1edd7e16e0a28fb3758be46afd8567041c3d34836",
+      "checkedAt": "2026-10-17T11:04:52.559630+00:00"
+    },
+    {
+      "path": "mupdf/source/fitz/stext-device.c",
+      "url": "https://raw.githubusercontent.com/ArtifexSoftware/mupdf/73d3100d46d8a9ad634f6ef035bbe78f0f947886/source/fitz/stext-device.c",
+      "status": 200,
+      "bytes": 84489,
+      "sha256": "26458385486feeae64584e3f382d0ba3e9ce53dc0205385822d131913cc75e57",
+      "checkedAt": "2026-10-17T11:04:52.589507+00:00"
+    },
+    {
+      "path": "mupdf/source/fitz/string.c",
+      "url": "https://raw.githubusercontent.com/ArtifexSoftware/mupdf/73d3100d46d8a9ad634f6ef035bbe78f0f947886/source/fitz/string.c",
+      "status": 200,
+      "bytes": 23767,
+      "sha256": "c72981bc65c7f78e91ee1ec4fc9e641b9cf821fb7a601f1865b867fdb8a67fc5",
+      "checkedAt": "2026-10-17T11:04:52.625978+00:00"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-19T13:21:07.221585+00:00",
+  "references": [
+    {
+      "url": "https://drafts.csswg.org/css-font-loading/",
+      "resolvedUrl": "https://drafts.csswg.org/css-font-loading/",
+      "sha256": "80ba73ddba9def3692b3f3a9ba95bef9bd04b748582dca2dcca6b047ed9c0733",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/01.html",
+      "anchors": ["font-face-set-ready"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://fetch.spec.whatwg.org/",
+      "resolvedUrl": "https://fetch.spec.whatwg.org/",
+      "sha256": "63b0a018753c330adf1e40417524eb70ea02d4d3e123bcb39b6770f23bad911b",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/02.html",
+      "anchors": ["cors-safelisted-response-header-name"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "resolvedUrl": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "sha256": "d431760660ea44e130f6e919dab216df2d0b3a490567a98089267523368fe1e5",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/03.html",
+      "anchors": ["name-range-requests"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/clipboard-apis/",
+      "resolvedUrl": "https://www.w3.org/TR/clipboard-apis/",
+      "sha256": "64ff9e279103212d7287137569bf593e73c0501fe6ccb6db824d0b1295bd65da",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/04.html",
+      "anchors": ["clipboard-event-api"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/css-lists-3/",
+      "resolvedUrl": "https://www.w3.org/TR/css-lists-3/",
+      "sha256": "f898eb5b58818862a598d23d225da2ca3a58396b7bb32c9515c2cc8e31470ccf",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/05.html",
+      "anchors": ["inheriting-counters"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/css-writing-modes-4/",
+      "resolvedUrl": "https://www.w3.org/TR/css-writing-modes-4/",
+      "sha256": "30a59de49343d984c8570e2c1a5fa5bda511dda4f2e83841c862caa99d155fcd",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/06.html",
+      "anchors": ["logical-directions"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/epub-rs-33/",
+      "resolvedUrl": "https://www.w3.org/TR/epub-rs-33/",
+      "sha256": "2e8d4400d1cce9080e729df8292d8795b4d76cb1a20be2387a263bcfbcd7ca9e",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/07.html",
+      "anchors": ["sec-fixed-layouts", "sec-pkg-doc-spine"],
+      "missingAnchors": []
+    },
+    {
+      "url": "https://www.w3.org/TR/selectors/",
+      "resolvedUrl": "https://www.w3.org/TR/selectors/",
+      "sha256": "5d3b3f7e1fcc562dcec1a01ad2c5651e9f0bac294b255a75352e9df202604e6d",
+      "cachePath": "node_modules/.cache/kana-layout-boundaries/references/08.html",
+      "anchors": ["structural-pseudos"],
+      "missingAnchors": []
+    }
+  ]
+}

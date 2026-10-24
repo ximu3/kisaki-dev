@@ -1,0 +1,1995 @@
+{
+  "checkedAt": "2026-10-20T05:10:19.836Z",
+  "platform": "win32",
+  "node": "v24.11.1",
+  "playwrightVersion": "1.62.1",
+  "engines": [
+    {
+      "name": "chromium",
+      "browserVersion": "149.0.7827.55",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.0.0 Safari/537.36",
+      "externalPageRequests": 0,
+      "capabilities": {
+        "columnWrap": true,
+        "columnHeight": true,
+        "explicitColumnBreak": true,
+        "webkitColumnAxis": false,
+        "webkitColumnProgression": false,
+        "caretPosition": true,
+        "caretRange": true,
+        "selectionModify": true,
+        "clipboardItem": true,
+        "nodeInPage": false
+      },
+      "events": [
+        {
+          "allowScripts": false,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [
+            {
+              "type": "pointerdown",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "pointerdown",
+              "target": "reference",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "reference",
+              "trusted": true
+            }
+          ],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": true
+        },
+        {
+          "allowScripts": true,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [
+            {
+              "type": "pointerdown",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "pointerdown",
+              "target": "reference",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "reference",
+              "trusted": true
+            }
+          ],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": true
+        }
+      ],
+      "layouts": [
+        {
+          "name": "horizontal-native",
+          "mode": "horizontal-tb",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [4, 386],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-ordinary",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 550,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 550,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-wrapped",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 250,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": -50,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-nested-fixed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 550,
+            "y": 400,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 550,
+            "y": 800,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 400,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-nested-auto",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 550,
+            "y": 400,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 550,
+            "y": 800,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 400,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-normal",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-reversed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-ordinary",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 0,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 0,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-wrapped",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-lr-nested-fixed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 0,
+            "y": 400,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 0,
+            "y": 800,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 400,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-nested-auto",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 0,
+            "y": 400,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 0,
+            "y": 800,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 400,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-normal",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-reversed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        }
+      ],
+      "projections": [
+        {
+          "mode": "horizontal-tb",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 180
+            },
+            {
+              "start": 180,
+              "end": 361
+            }
+          ],
+          "savedOffset": 270,
+          "savedCodePoint": 12425,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [168, 192],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-rl",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-lr",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        }
+      ],
+      "clipboardWritten": false,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "fullReaderExecuted": false
+    },
+    {
+      "name": "firefox",
+      "browserVersion": "153.0",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0",
+      "externalPageRequests": 0,
+      "capabilities": {
+        "columnWrap": false,
+        "columnHeight": false,
+        "explicitColumnBreak": false,
+        "webkitColumnAxis": false,
+        "webkitColumnProgression": false,
+        "caretPosition": true,
+        "caretRange": true,
+        "selectionModify": true,
+        "clipboardItem": true,
+        "nodeInPage": false
+      },
+      "events": [
+        {
+          "allowScripts": false,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [
+            {
+              "type": "pointerdown",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "pointerdown",
+              "target": "reference",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "reference",
+              "trusted": true
+            }
+          ],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": true
+        },
+        {
+          "allowScripts": true,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [
+            {
+              "type": "pointerdown",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "pointerdown",
+              "target": "reference",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "reference",
+              "trusted": true
+            }
+          ],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": true
+        }
+      ],
+      "layouts": [
+        {
+          "name": "horizontal-native",
+          "mode": "horizontal-tb",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "second": {
+            "x": 0,
+            "y": 30,
+            "width": 280,
+            "height": 30
+          },
+          "third": {
+            "x": 0,
+            "y": 60,
+            "width": 280,
+            "height": 30
+          },
+          "dx": 0,
+          "dy": 30,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [4.5, 385.5],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-ordinary",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-wrapped",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-nested-fixed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-nested-auto",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-normal",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-reversed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 520,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 490,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-ordinary",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-wrapped",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-nested-fixed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-nested-auto",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 1,
+            "gutterViolations": 0,
+            "yExtent": [0, 2000],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-normal",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-reversed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 30,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 60,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 30,
+          "dy": 0,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 4,
+            "gutterViolations": 79,
+            "yExtent": [0, 400],
+            "pageStripMatches": false
+          }
+        }
+      ],
+      "projections": [
+        {
+          "mode": "horizontal-tb",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 180
+            },
+            {
+              "start": 180,
+              "end": 361
+            }
+          ],
+          "savedOffset": 270,
+          "savedCodePoint": 12425,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [168, 192],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-rl",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-lr",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        }
+      ],
+      "clipboardWritten": false,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "fullReaderExecuted": false
+    },
+    {
+      "name": "webkit",
+      "browserVersion": "26.5",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",
+      "externalPageRequests": 0,
+      "capabilities": {
+        "columnWrap": false,
+        "columnHeight": false,
+        "explicitColumnBreak": true,
+        "webkitColumnAxis": true,
+        "webkitColumnProgression": false,
+        "caretPosition": true,
+        "caretRange": true,
+        "selectionModify": true,
+        "clipboardItem": true,
+        "nodeInPage": false
+      },
+      "events": [
+        {
+          "allowScripts": false,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": false
+        },
+        {
+          "allowScripts": true,
+          "sourceText": "Readable book text",
+          "providedImageWidth": 80,
+          "providedStylesheetLoaded": true,
+          "events": [
+            {
+              "type": "pointerdown",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "action",
+              "trusted": true
+            },
+            {
+              "type": "pointerdown",
+              "target": "reference",
+              "trusted": true
+            },
+            {
+              "type": "click",
+              "target": "reference",
+              "trusted": true
+            }
+          ],
+          "bookExecutionCount": 0,
+          "hostBackground": "rgb(250, 250, 250)",
+          "nodeAvailableInContent": false,
+          "proposedPassed": true
+        }
+      ],
+      "layouts": [
+        {
+          "name": "horizontal-native",
+          "mode": "horizontal-tb",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 280,
+            "height": 30
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [4, 386],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-ordinary",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 550,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 550,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-wrapped",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 550,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 550,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-rl-nested-fixed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 250,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": -50,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-nested-auto",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 250,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": -50,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-normal",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 250,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": -50,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-rl-webkit-reversed",
+          "mode": "vertical-rl",
+          "first": {
+            "x": 550,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 250,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": -50,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": -300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-lr-ordinary",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 0,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 0,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-wrapped",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 0,
+            "y": 420,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 0,
+            "y": 840,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 0,
+          "dy": 420,
+          "physicalSideBySide": false,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": false,
+            "pages": 2,
+            "gutterViolations": 40,
+            "yExtent": [0, 1240],
+            "pageStripMatches": false
+          }
+        },
+        {
+          "name": "vertical-lr-nested-fixed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-lr-nested-auto",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-normal",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        },
+        {
+          "name": "vertical-lr-webkit-reversed",
+          "mode": "vertical-lr",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "third": {
+            "x": 600,
+            "y": 0,
+            "width": 30,
+            "height": 400
+          },
+          "dx": 300,
+          "dy": 0,
+          "physicalSideBySide": true,
+          "naturalFlow": {
+            "characters": 792,
+            "sourceUnchanged": true,
+            "allGlyphsHaveGeometry": true,
+            "pageIndexesNondecreasing": true,
+            "pages": 5,
+            "gutterViolations": 0,
+            "yExtent": [0, 400],
+            "pageStripMatches": true
+          }
+        }
+      ],
+      "projections": [
+        {
+          "mode": "horizontal-tb",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 180
+            },
+            {
+              "start": 180,
+              "end": 361
+            }
+          ],
+          "savedOffset": 270,
+          "savedCodePoint": 12425,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [168, 192],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-rl",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        },
+        {
+          "mode": "vertical-lr",
+          "sourceCharacters": 792,
+          "domProjections": 2,
+          "sourceUnchanged": true,
+          "correctPhysicalOrder": true,
+          "initialVisibleRanges": [
+            {
+              "start": 0,
+              "end": 179
+            },
+            {
+              "start": 179,
+              "end": 357
+            }
+          ],
+          "savedOffset": 268,
+          "savedCodePoint": 31379,
+          "reflowedPage": 3,
+          "reflowedGroupStart": 2,
+          "savedTargetVisibleExactlyOnce": true,
+          "sourceHitOffsets": [167, 191],
+          "logicalExcerptLength": 24,
+          "frameRects": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            },
+            {
+              "x": 300,
+              "y": 0,
+              "width": 280,
+              "height": 400
+            }
+          ],
+          "accessibilityExposureImplemented": false,
+          "pointerSelectionAcrossProjectionsExecuted": false
+        }
+      ],
+      "clipboardWritten": false,
+      "actualSafariExecuted": false,
+      "actualWebKitGtkExecuted": false,
+      "fullReaderExecuted": false
+    }
+  ],
+  "unauthorizedResourceRequests": [],
+  "sources": {
+    "run.cjs": "dab5abf291b3c6387fe8bafa0debd048253debe181fc2da9c109bf3a908a1f82",
+    "probe.mjs": "c99ccb43cc5bdd1529f1b12625dfecf5a8369b890171185fbfcb39f316809431",
+    "prepare.py": "447226ad9b5bbb63e855774f510c2833549217fad416d25450dcf6b1c064f8fe",
+    "source-input.json": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4"
+  }
+}

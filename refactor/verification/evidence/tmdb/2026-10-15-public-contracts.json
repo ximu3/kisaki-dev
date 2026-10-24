@@ -1,0 +1,4511 @@
+{
+  "schemaVersion": 1,
+  "checkedOn": "2026-10-15",
+  "purpose": "Public contract and scope evidence for the initial TMDB design discussion.",
+  "designStatus": "design-confirmed-source-and-runtime-verification-pending",
+  "currentOfficialExtensionCount": 34,
+  "verificationBoundary": {
+    "authenticatedApiReads": false,
+    "personalAccountAccess": false,
+    "remoteWrites": false,
+    "publicHtmlRead": true,
+    "officialOpenApiRead": true,
+    "responseSamples": "Official specification examples, not authenticated live API responses.",
+    "hashMeaning": "SHA-256 of UTF-8 encoded decoded response text, not compressed wire bytes."
+  },
+  "requests": [
+    {
+      "id": "tmdb-spec",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:05.006Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+      "decodedTextBytes": 3054059,
+      "decodedBodySha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "2026-03-23T14:27:00.500Z",
+        "etag": "W/\"2e99eb-x/pn2IKFos4wkWD5O5P5vajbvTc\"",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "99",
+        "x-ratelimit-reset": "1790860295"
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=ja-JP",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:59.526Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=ja-JP",
+      "decodedTextBytes": 236264,
+      "decodedBodySha256": "52b9c4206d7103e27f627c86fb7976e2096105b906444dbde3a83be21484ee82",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"52b9c4206d7103e27f627c86fb7976e2\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-zh-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=zh-CN",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.349Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=zh-CN",
+      "decodedTextBytes": 230206,
+      "decodedBodySha256": "615233df85f06fd7465e4733d565c69d76864d92cfa43fa266580af9af60722f",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"615233df85f06fd7465e4733d565c69d\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-en-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.350Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=en-US",
+      "decodedTextBytes": 223311,
+      "decodedBodySha256": "4cb99f0ed00f34b8b6d060f4b8faf15cb2a938216aca0942e05a0151b8543220",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"4cb99f0ed00f34b8b6d060f4b8faf15c\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-doc-index",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/llms.txt",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:38:07.288Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/llms.txt",
+      "decodedTextBytes": 5404,
+      "decodedBodySha256": "da85379018fc7120de3de3e184b63d5d7f143e0b8dc553c715f20f668cfb92f2",
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-index",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/llms.txt",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.376Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/llms.txt",
+      "decodedTextBytes": 1680,
+      "decodedBodySha256": "572401b6b59b188add2e8a0a9c3fe7bdf0098e8b7cca99dddd6e3d5535743a8e",
+      "responseHeaders": {
+        "content-type": "text/plain; charset=utf-8",
+        "etag": "W/\"690-Kt2lrWRgl1EFL2e718fvhYwoe94\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-app-auth",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/authentication-application.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.429Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/authentication-application.md",
+      "decodedTextBytes": 1286,
+      "decodedBodySha256": "ecc6b42381b08735079d0e2099d349c8eb47bdf1901d8feac50e7228b63eb4a2",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"a27a2a0c7a9272d3570d02b70341c8a9f271b8dd:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v3-user-auth",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/authentication-how-do-i-generate-a-session-id.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.584Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/authentication-how-do-i-generate-a-session-id.md",
+      "decodedTextBytes": 2077,
+      "decodedBodySha256": "12338306e0b0aadf1b257eda3d59a5e800aa75ebc2c706a000050a4abb8d4ab0",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"557234568d004fb26e81a0250b247ca60b19273e:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-user-auth",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/docs/authentication-user.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.578Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/docs/authentication-user.md",
+      "decodedTextBytes": 1703,
+      "decodedBodySha256": "69e2054d5537727dcbe16255d7f092ceb64f88014729f1fc95fe2b92393d847a",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"2859fd480e5009ac5b497174bc7f33a4003e0532:expanded|8917b4cb\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-list-details",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/reference/list-details.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.944Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/reference/list-details.md",
+      "decodedTextBytes": 29690,
+      "decodedBodySha256": "a42d14f09f0aa8d65014ccbc3bcb2da68c09a9befe17c18607e393a799ff6813",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"8fb37f9cf950ea4b03823fc489247fe54d33e481-5d31a410142ec44b813459c6902970c5233fc9d6-r1-o1759350659607:expanded|8917b4cb\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-languages",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/languages.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.846Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/languages.md",
+      "decodedTextBytes": 1430,
+      "decodedBodySha256": "a990255e7fec224c12e9488bd141756598b1c3f13de837f9ce2191f9d53073d0",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"d8c312c4899baca91219f21ea4a87f3d23f776ed:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-image-languages",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/image-languages.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.842Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/image-languages.md",
+      "decodedTextBytes": 2316,
+      "decodedBodySha256": "85b7944eda1ce8454531b9978f69e46b4d71183e8e2580cdc782a7aeec836794",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"6a2057ab32dd046b88cbd037aa3a6d1bd78defb1:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-image-basics",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/image-basics.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:24.859Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/image-basics.md",
+      "decodedTextBytes": 1699,
+      "decodedBodySha256": "987586333cf0ee2f213270439491a37dabd2460399464c5d53363e7d447a09f8",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"84187c8a519292c4e99450e6c0ac75348d7b6a4e:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-faq",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/faq.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.206Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/faq.md",
+      "decodedTextBytes": 4471,
+      "decodedBodySha256": "18186c79a4a6d14eb719880e2300836a9845160220502a4ee57c87815827eabe",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"6a1f4094709c1a17ba00cdc298dc872521730e9b:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-rate-limits",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/docs/rate-limiting.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.216Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/docs/rate-limiting.md",
+      "decodedTextBytes": 743,
+      "decodedBodySha256": "216975cfdd9e46fa77efa2ace3c61c34512009754cd39e9671808bd08e90d999",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "W/\"88bc00e5c486e3847754e89046da36dede237a4e:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-series",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.625Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867?language=en-US",
+      "decodedTextBytes": 174502,
+      "decodedBodySha256": "08f34add14b264021b5593b17122fe356428e719c77e92d7959f4fbd6d53926a",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"08f34add14b264021b5593b17122fe35\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-season2",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/2?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.480Z",
+      "status": 404,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/2?language=en-US",
+      "decodedTextBytes": 85662,
+      "decodedBodySha256": "15430299b956a12372a21685bcfa0cff755d9084e0431a4bf23d54df455ea59a",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8"
+      },
+      "interpretation": "The guessed standard season-2 route returned 404. Successful series, standard season-1 and production-group pages show that episodes 29-38 currently use standard season-1 episode coordinates; this is not absence of the second production season."
+    },
+    {
+      "id": "tmdb-frieren-season1-cast",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1/cast?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.956Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1/cast?language=en-US",
+      "decodedTextBytes": 573709,
+      "decodedBodySha256": "751f39d7709716fd53bb92321cd961e3268468c2a241822d8541e0b76adc4ee9",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"751f39d7709716fd53bb92321cd961e3\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-yourname-zh",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/movie/372058?language=zh-CN",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:25.947Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/movie/372058?language=zh-CN",
+      "decodedTextBytes": 163073,
+      "decodedBodySha256": "a6186da58c64619cd6320a597da3e253f85ead71193670903640308f53ec156c",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"a6186da58c64619cd6320a597da3e253\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-yourname-cast",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/movie/372058/cast?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:39:26.054Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/movie/372058/cast?language=en-US",
+      "decodedTextBytes": 299287,
+      "decodedBodySha256": "2d5da4dc1395089367390f018bce0e0699f026076bf90036c51b496eb952645b",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"2d5da4dc1395089367390f018bce0e06\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-groups",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/episode_groups?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:06.839Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/episode_groups?language=en-US",
+      "decodedTextBytes": 93088,
+      "decodedBodySha256": "ff3f662bb764788f52561fcf467379c83057e5762e76b497e6205951267b485d",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"ff3f662bb764788f52561fcf467379c8\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-anime-guidelines",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/bible/tv?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:06.835Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/bible/tv?language=en-US",
+      "decodedTextBytes": 95937,
+      "decodedBodySha256": "96e7c046db2ff191c60fb542406f9b503e1ae666d6f798c039b62633b8381aa2",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"96e7c046db2ff191c60fb542406f9b50\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-new-content-guidelines",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/bible/new_content?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:06.836Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/bible/new_content?language=en-US",
+      "decodedTextBytes": 118276,
+      "decodedBodySha256": "fe08a9106d3eb2ba7192d0b7c10fbbd05e1804946fca1cb1196955d5574437ee",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"fe08a9106d3eb2ba7192d0b7c10fbbd0\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "frieren-official-season2-start",
+      "source": "Frieren official anime website",
+      "url": "https://frieren-anime.jp/news/4739/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:06.903Z",
+      "status": 403,
+      "finalUrl": "https://frieren-anime.jp/news/4739/",
+      "decodedTextBytes": 5533,
+      "decodedBodySha256": "bff889dd0bef9b727704ed6ff24f5235ebbf25f8e994d3ee929927de0c0fab1a",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Direct request hit access protection. Official article text was available through indexed web results; it explicitly identifies episode 29 as the first episode of production season 2."
+    },
+    {
+      "id": "tmdb-v4-request-token",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/auth-create-request-token.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:07.616Z",
+      "status": 404,
+      "finalUrl": "https://developer.themoviedb.org/reference/auth-create-request-token.md",
+      "decodedTextBytes": 244,
+      "decodedBodySha256": "a37405574012d183cd995dfbc31edb85a152f2f8fe7e716774bcfd48429db812",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "W/\"f4-FgWFso8mV9m3ZXwCirDqrQr7lVk\""
+      },
+      "interpretation": "The v4 user guide links to an unversioned documentation route that returned 404; the versioned v4 route succeeded."
+    },
+    {
+      "id": "tmdb-v4-access-token",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/auth-create-access-token.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:07.856Z",
+      "status": 404,
+      "finalUrl": "https://developer.themoviedb.org/reference/auth-create-access-token.md",
+      "decodedTextBytes": 244,
+      "decodedBodySha256": "a37405574012d183cd995dfbc31edb85a152f2f8fe7e716774bcfd48429db812",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "W/\"f4-FgWFso8mV9m3ZXwCirDqrQr7lVk\""
+      },
+      "interpretation": "The v4 user guide links to an unversioned documentation route that returned 404; the versioned v4 route succeeded."
+    },
+    {
+      "id": "tmdb-frieren-season-groups",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:55.900Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc?language=en-US",
+      "decodedTextBytes": 93556,
+      "decodedBodySha256": "43e8edc9b123eed72ed6906844cd99c6e32c1aae74d28b0d0227465286a6fc83",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"43e8edc9b123eed72ed6906844cd99c6\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-cour-groups",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/episode_group/64f988c1ffc9de00c4a24917?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:55.916Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/episode_group/64f988c1ffc9de00c4a24917?language=en-US",
+      "decodedTextBytes": 93530,
+      "decodedBodySha256": "b9535d6eebf326692e37840167e3d4d826167bd77798cb2a031451fea847214b",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"b9535d6eebf326692e37840167e3d4d8\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-request-token-versioned",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/reference/auth-create-request-token.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:55.976Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/reference/auth-create-request-token.md",
+      "decodedTextBytes": 3900,
+      "decodedBodySha256": "d1d71b18f056565326653af51b37adec097bd8263b29571d577deb64ec952f86",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"34aaf573180dfe27d28139e91c04632236c9cbdd-5d31a410142ec44b813459c6902970c5233fc9d6-r1-o1759350660054:expanded|8917b4cb\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-access-token-versioned",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/reference/auth-create-access-token.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:56.082Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/reference/auth-create-access-token.md",
+      "decodedTextBytes": 4191,
+      "decodedBodySha256": "18b702576de7039fac372a8fcd542c36acc5d222571c2e7d7f72ed2b868e0325",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"0274049653b140d16e14ed82af72a1f8c2d9a45a-5d31a410142ec44b813459c6902970c5233fc9d6-r1-o1759350659534:expanded|8917b4cb\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-spec",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/openapi/tmdb-api.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:56.432Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/openapi/tmdb-api.json",
+      "decodedTextBytes": 181524,
+      "decodedBodySha256": "6fb2190042b8ee2dcc9ab684eb8472d1686023ec3ea7d1d87d5765b2cc6b9bb4",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "2025-10-01T20:30:58.262Z",
+        "etag": "W/\"2c514-OuiT9k8bgovxccKohIT3glv78R0\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-session-from-v4",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:42:56.666Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token.md",
+      "decodedTextBytes": 3119,
+      "decodedBodySha256": "34702df7df88550dc48a6e0bc60e24575a80b30f44678c58de4633d84bfe180f",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"29b3acf42f8f56e4710c89efe9e6019294089c91-237dea65580c83d480e9c8b5d535c319e1e57d79-r1-o1774276025413:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-production-season1",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc/group/679231fba8ce3489ceb57f02?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:09.227Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc/group/679231fba8ce3489ceb57f02?language=en-US",
+      "decodedTextBytes": 197656,
+      "decodedBodySha256": "b2379e5d5e25f1fd45a6ba63bf4bb81eeff3dbe375a8c690272469d455db6d10",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"b2379e5d5e25f1fd45a6ba63bf4bb81e\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-frieren-production-season2",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc/group/695a8bc96d2b236ebdd7c4f9?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:09.226Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/episode_group/679231eba8ce3489ceb57efc/group/695a8bc96d2b236ebdd7c4f9?language=en-US",
+      "decodedTextBytes": 131887,
+      "decodedBodySha256": "ab85c3333cf3165d736a172126567f242b97d99315dcbb0e1522302dbb9ed8e3",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"ab85c3333cf3165d736a172126567f24\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-season-account-contract",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/tv-season-account-states.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:09.703Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/tv-season-account-states.md",
+      "decodedTextBytes": 4500,
+      "decodedBodySha256": "47bb85ce9aa49a9f2c066e68dcc7a1cdcf4308cfe8683a5477354215a4e305a6",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"03ee6b98ad6170ad1c0105753bc688d6968f3287-237dea65580c83d480e9c8b5d535c319e1e57d79-r1-o1774276025188:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-series-account-contract",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/tv-series-account-states.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:09.728Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/tv-series-account-states.md",
+      "decodedTextBytes": 2981,
+      "decodedBodySha256": "6cfb850ce55bf55e47cdf990834219b64a118f847c02fe643b34653026eb3041",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"a6aae64394c86c9dd24d6ac02a7d386f58441261-237dea65580c83d480e9c8b5d535c319e1e57d79-r1-o1774276024769:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-episode-groups-contract",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/tv-episode-group-details.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:10.221Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/tv-episode-group-details.md",
+      "decodedTextBytes": 49719,
+      "decodedBodySha256": "08deeb706c16651701d4d2d3471662430973f98d997800718bd7805caadf4893",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"144ecae161f54228d4d4bb6419578a8330142ddd-237dea65580c83d480e9c8b5d535c319e1e57d79-r1-o1774276025655:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-animation-genre-contract",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/reference/genre-movie-list.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:10.265Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/reference/genre-movie-list.md",
+      "decodedTextBytes": 2951,
+      "decodedBodySha256": "6e96447a58015bbd638ce12c0e5239cd51dacc74669d0d2481a83ce6a0721903",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"519c2c51b62ad09cb165f5d593eb93c80b576214-237dea65580c83d480e9c8b5d535c319e1e57d79-r1-o1774276025233:expanded|1675bb95\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    },
+    {
+      "id": "tmdb-v4-list-add-contract",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/v4/reference/list-add-items.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T12:45:10.419Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/v4/reference/list-add-items.md",
+      "decodedTextBytes": 4266,
+      "decodedBodySha256": "1d9b4e9be1c7b020f87d3371ac1a9fcafa863882b05dd536126a50edfd56958a",
+      "responseHeaders": {
+        "content-type": "text/markdown; charset=utf-8",
+        "etag": "\"643fc82f5c0f75d1f3a5070caf43d72db30a9f13-5d31a410142ec44b813459c6902970c5233fc9d6-r1-o1759350661555:expanded|8917b4cb\""
+      },
+      "interpretation": "Public documentation or page retrieved."
+    }
+  ],
+  "apiInventory": {
+    "v3PathCount": 148,
+    "v4PathCount": 18,
+    "seasonRatingWritePaths": [],
+    "episodeGroupReadPath": "/3/tv/episode_group/{tv_episode_group_id}"
+  },
+  "contracts": [
+    {
+      "apiVersion": 3,
+      "path": "/3/search/movie",
+      "method": "get",
+      "operationId": "search-movie",
+      "description": "Search for movies by their original, translated and alternative titles.",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "include_adult",
+          "in": "query",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "primary_release_year",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        },
+        {
+          "name": "region",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "year",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/search/tv",
+      "method": "get",
+      "operationId": "search-tv",
+      "description": "Search for TV shows by their original, translated and also known as names.",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "first_air_date_year",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        },
+        {
+          "name": "include_adult",
+          "in": "query",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        },
+        {
+          "name": "year",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "origin_country": {
+              "type": "array"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "first_air_date": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/search/person",
+      "method": "get",
+      "operationId": "search-person",
+      "description": "Search for people by their name and also known as names.",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "include_adult",
+          "in": "query",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "known_for": {
+              "type": "array",
+              "itemFields": {
+                "adult": {
+                  "type": "boolean"
+                },
+                "backdrop_path": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "original_language": {
+                  "type": "string"
+                },
+                "original_title": {
+                  "type": "string"
+                },
+                "overview": {
+                  "type": "string"
+                },
+                "poster_path": {
+                  "type": "string"
+                },
+                "media_type": {
+                  "type": "string"
+                },
+                "genre_ids": {
+                  "type": "array"
+                },
+                "popularity": {
+                  "type": "number"
+                },
+                "release_date": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "boolean"
+                },
+                "vote_average": {
+                  "type": "number"
+                },
+                "vote_count": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/search/company",
+      "method": "get",
+      "operationId": "search-company",
+      "description": "Search for companies by their original and alternative names.",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/find/{external_id}",
+      "method": "get",
+      "operationId": "find-by-id",
+      "description": "Find data by external ID's.",
+      "parameters": [
+        {
+          "name": "external_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "external_source",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "enum": [
+            "imdb_id",
+            "facebook_id",
+            "instagram_id",
+            "tvdb_id",
+            "tiktok_id",
+            "twitter_id",
+            "wikidata_id",
+            "youtube_id"
+          ]
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "movie_results": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "media_type": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "person_results": {
+          "type": "array"
+        },
+        "tv_results": {
+          "type": "array"
+        },
+        "tv_episode_results": {
+          "type": "array"
+        },
+        "tv_season_results": {
+          "type": "array"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}",
+      "method": "get",
+      "operationId": "movie-details",
+      "description": "Get the top level details of a movie by ID.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "append_to_response",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "adult": {
+          "type": "boolean"
+        },
+        "backdrop_path": {
+          "type": "string"
+        },
+        "belongs_to_collection": {
+          "type": "object",
+          "fields": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "backdrop_path": {
+              "type": "string"
+            }
+          }
+        },
+        "budget": {
+          "type": "integer"
+        },
+        "genres": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "homepage": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "imdb_id": {
+          "type": "string"
+        },
+        "origin_country": {
+          "type": "array"
+        },
+        "original_language": {
+          "type": "string"
+        },
+        "original_title": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string"
+        },
+        "popularity": {
+          "type": "number"
+        },
+        "poster_path": {
+          "type": "string"
+        },
+        "production_companies": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "production_countries": {
+          "type": "array",
+          "itemFields": {
+            "iso_3166_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "release_date": {
+          "type": "string"
+        },
+        "revenue": {
+          "type": "integer"
+        },
+        "runtime": {
+          "type": "integer"
+        },
+        "spoken_languages": {
+          "type": "array",
+          "itemFields": {
+            "english_name": {
+              "type": "string"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "video": {
+          "type": "boolean"
+        },
+        "vote_average": {
+          "type": "number"
+        },
+        "vote_count": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/credits",
+      "method": "get",
+      "operationId": "movie-credits",
+      "description": "",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "cast": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "cast_id": {
+              "type": "integer"
+            },
+            "character": {
+              "type": "string"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            }
+          }
+        },
+        "crew": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "department": {
+              "type": "string"
+            },
+            "job": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/images",
+      "method": "get",
+      "operationId": "movie-images",
+      "description": "Get the images that belong to a movie.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "include_image_language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "backdrops": {
+          "type": "array",
+          "itemFields": {
+            "aspect_ratio": {
+              "type": "number"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "iso_639_1": {
+              "type": "unspecified"
+            },
+            "file_path": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            }
+          }
+        },
+        "id": {
+          "type": "integer"
+        },
+        "logos": {
+          "type": "array",
+          "itemFields": {
+            "aspect_ratio": {
+              "type": "number"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "file_path": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            }
+          }
+        },
+        "posters": {
+          "type": "array",
+          "itemFields": {
+            "aspect_ratio": {
+              "type": "number"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "file_path": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/translations",
+      "method": "get",
+      "operationId": "movie-translations",
+      "description": "Get the translations for a movie.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "translations": {
+          "type": "array",
+          "itemFields": {
+            "iso_3166_1": {
+              "type": "string"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "english_name": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "fields": {
+                "homepage": {
+                  "type": "string"
+                },
+                "overview": {
+                  "type": "string"
+                },
+                "runtime": {
+                  "type": "integer"
+                },
+                "tagline": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/account_states",
+      "method": "get",
+      "operationId": "movie-account-states",
+      "description": "Get the rating, watchlist and favourite status of an account.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "favorite": {
+          "type": "boolean"
+        },
+        "rated": {
+          "type": "object",
+          "fields": {
+            "value": {
+              "type": "integer"
+            }
+          }
+        },
+        "watchlist": {
+          "type": "boolean"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/rating",
+      "method": "post",
+      "operationId": "movie-add-rating",
+      "description": "Rate a movie and save it to your rated list.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/movie/{movie_id}/rating",
+      "method": "delete",
+      "operationId": "movie-delete-rating",
+      "description": "Delete a user rating.",
+      "parameters": [
+        {
+          "name": "movie_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}",
+      "method": "get",
+      "operationId": "tv-series-details",
+      "description": "Get the details of a TV show.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "append_to_response",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "adult": {
+          "type": "boolean"
+        },
+        "backdrop_path": {
+          "type": "string"
+        },
+        "created_by": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "profile_path": {
+              "type": "string"
+            }
+          }
+        },
+        "episode_run_time": {
+          "type": "array"
+        },
+        "first_air_date": {
+          "type": "string"
+        },
+        "genres": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "homepage": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "in_production": {
+          "type": "boolean"
+        },
+        "languages": {
+          "type": "array"
+        },
+        "last_air_date": {
+          "type": "string"
+        },
+        "last_episode_to_air": {
+          "type": "object",
+          "fields": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "air_date": {
+              "type": "string"
+            },
+            "episode_number": {
+              "type": "integer"
+            },
+            "production_code": {
+              "type": "string"
+            },
+            "runtime": {
+              "type": "integer"
+            },
+            "season_number": {
+              "type": "integer"
+            },
+            "show_id": {
+              "type": "integer"
+            },
+            "still_path": {
+              "type": "string"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "next_episode_to_air": {
+          "type": "unspecified"
+        },
+        "networks": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "number_of_episodes": {
+          "type": "integer"
+        },
+        "number_of_seasons": {
+          "type": "integer"
+        },
+        "origin_country": {
+          "type": "array"
+        },
+        "original_language": {
+          "type": "string"
+        },
+        "original_name": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string"
+        },
+        "popularity": {
+          "type": "number"
+        },
+        "poster_path": {
+          "type": "string"
+        },
+        "production_companies": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "production_countries": {
+          "type": "array",
+          "itemFields": {
+            "iso_3166_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "seasons": {
+          "type": "array",
+          "itemFields": {
+            "air_date": {
+              "type": "string"
+            },
+            "episode_count": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "season_number": {
+              "type": "integer"
+            },
+            "vote_average": {
+              "type": "integer"
+            }
+          }
+        },
+        "spoken_languages": {
+          "type": "array",
+          "itemFields": {
+            "english_name": {
+              "type": "string"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "vote_average": {
+          "type": "number"
+        },
+        "vote_count": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/aggregate_credits",
+      "method": "get",
+      "operationId": "tv-series-aggregate-credits",
+      "description": "Get the aggregate credits (cast and crew) that have been added to a TV show.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "cast": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "itemFields": {
+                "credit_id": {
+                  "type": "string"
+                },
+                "character": {
+                  "type": "string"
+                },
+                "episode_count": {
+                  "type": "integer"
+                }
+              }
+            },
+            "total_episode_count": {
+              "type": "integer"
+            },
+            "order": {
+              "type": "integer"
+            }
+          }
+        },
+        "crew": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "jobs": {
+              "type": "array",
+              "itemFields": {
+                "credit_id": {
+                  "type": "string"
+                },
+                "job": {
+                  "type": "string"
+                },
+                "episode_count": {
+                  "type": "integer"
+                }
+              }
+            },
+            "department": {
+              "type": "string"
+            },
+            "total_episode_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/episode_groups",
+      "method": "get",
+      "operationId": "tv-series-episode-groups",
+      "description": "Get the episode groups that have been added to a TV show.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "description": {
+              "type": "string"
+            },
+            "episode_count": {
+              "type": "integer"
+            },
+            "group_count": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "network": {
+              "type": "object",
+              "fields": {
+                "id": {
+                  "type": "integer"
+                },
+                "logo_path": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "origin_country": {
+                  "type": "string"
+                }
+              }
+            },
+            "type": {
+              "type": "integer"
+            }
+          }
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/episode_group/{tv_episode_group_id}",
+      "method": "get",
+      "operationId": "tv-episode-group-details",
+      "description": "Get the details of a TV episode group.",
+      "parameters": [
+        {
+          "name": "tv_episode_group_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "description": {
+          "type": "string"
+        },
+        "episode_count": {
+          "type": "integer"
+        },
+        "group_count": {
+          "type": "integer"
+        },
+        "groups": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            },
+            "episodes": {
+              "type": "array",
+              "itemFields": {
+                "air_date": {
+                  "type": "string"
+                },
+                "episode_number": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "overview": {
+                  "type": "string"
+                },
+                "production_code": {
+                  "type": "string"
+                },
+                "runtime": {
+                  "type": "unspecified"
+                },
+                "season_number": {
+                  "type": "integer"
+                },
+                "show_id": {
+                  "type": "integer"
+                },
+                "still_path": {
+                  "type": "string"
+                },
+                "vote_average": {
+                  "type": "number"
+                },
+                "vote_count": {
+                  "type": "integer"
+                },
+                "order": {
+                  "type": "integer"
+                }
+              }
+            },
+            "locked": {
+              "type": "boolean"
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "network": {
+          "type": "object",
+          "fields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/account_states",
+      "method": "get",
+      "operationId": "tv-series-account-states",
+      "description": "Get the rating, watchlist and favourite status.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "favorite": {
+          "type": "boolean"
+        },
+        "rated": {
+          "type": "object",
+          "fields": {
+            "value": {
+              "type": "integer"
+            }
+          }
+        },
+        "watchlist": {
+          "type": "boolean"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/rating",
+      "method": "post",
+      "operationId": "tv-series-add-rating",
+      "description": "Rate a TV show and save it to your rated list.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/rating",
+      "method": "delete",
+      "operationId": "tv-series-delete-rating",
+      "description": "",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}",
+      "method": "get",
+      "operationId": "tv-season-details",
+      "description": "Query the details of a TV season.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "append_to_response",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "_id": {
+          "type": "string"
+        },
+        "air_date": {
+          "type": "string"
+        },
+        "episodes": {
+          "type": "array",
+          "itemFields": {
+            "air_date": {
+              "type": "string"
+            },
+            "episode_number": {
+              "type": "integer"
+            },
+            "episode_type": {
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "production_code": {
+              "type": "string"
+            },
+            "runtime": {
+              "type": "integer"
+            },
+            "season_number": {
+              "type": "integer"
+            },
+            "show_id": {
+              "type": "integer"
+            },
+            "still_path": {
+              "type": "string"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "crew": {
+              "type": "array",
+              "itemFields": {
+                "department": {
+                  "type": "string"
+                },
+                "job": {
+                  "type": "string"
+                },
+                "credit_id": {
+                  "type": "string"
+                },
+                "adult": {
+                  "type": "boolean"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "known_for_department": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "original_name": {
+                  "type": "string"
+                },
+                "popularity": {
+                  "type": "number"
+                },
+                "profile_path": {
+                  "type": "string"
+                }
+              }
+            },
+            "guest_stars": {
+              "type": "array",
+              "itemFields": {
+                "character": {
+                  "type": "string"
+                },
+                "credit_id": {
+                  "type": "string"
+                },
+                "order": {
+                  "type": "integer"
+                },
+                "adult": {
+                  "type": "boolean"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "known_for_department": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "original_name": {
+                  "type": "string"
+                },
+                "popularity": {
+                  "type": "number"
+                },
+                "profile_path": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "networks": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "logo_path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "origin_country": {
+              "type": "string"
+            }
+          }
+        },
+        "overview": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "poster_path": {
+          "type": "string"
+        },
+        "season_number": {
+          "type": "integer"
+        },
+        "vote_average": {
+          "type": "number"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/aggregate_credits",
+      "method": "get",
+      "operationId": "tv-season-aggregate-credits",
+      "description": "Get the aggregate credits (cast and crew) that have been added to a TV season.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "cast": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "itemFields": {
+                "credit_id": {
+                  "type": "string"
+                },
+                "character": {
+                  "type": "string"
+                },
+                "episode_count": {
+                  "type": "integer"
+                }
+              }
+            },
+            "total_episode_count": {
+              "type": "integer"
+            },
+            "order": {
+              "type": "integer"
+            }
+          }
+        },
+        "crew": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "unspecified"
+            },
+            "jobs": {
+              "type": "array",
+              "itemFields": {
+                "credit_id": {
+                  "type": "string"
+                },
+                "job": {
+                  "type": "string"
+                },
+                "episode_count": {
+                  "type": "integer"
+                }
+              }
+            },
+            "department": {
+              "type": "string"
+            },
+            "total_episode_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/account_states",
+      "method": "get",
+      "operationId": "tv-season-account-states",
+      "description": "Get the rating, watchlist and favourite status.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "id": {
+              "type": "integer"
+            },
+            "episode_number": {
+              "type": "integer"
+            },
+            "rated": {
+              "type": "object",
+              "fields": {
+                "value": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}",
+      "method": "get",
+      "operationId": "tv-episode-details",
+      "description": "Query the details of a TV episode.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "episode_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "append_to_response",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "air_date": {
+          "type": "string"
+        },
+        "crew": {
+          "type": "array",
+          "itemFields": {
+            "department": {
+              "type": "string"
+            },
+            "job": {
+              "type": "string"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            }
+          }
+        },
+        "episode_number": {
+          "type": "integer"
+        },
+        "guest_stars": {
+          "type": "array",
+          "itemFields": {
+            "character": {
+              "type": "string"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            },
+            "adult": {
+              "type": "boolean"
+            },
+            "gender": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "known_for_department": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "original_name": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "profile_path": {
+              "type": "string"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "production_code": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "integer"
+        },
+        "season_number": {
+          "type": "integer"
+        },
+        "still_path": {
+          "type": "string"
+        },
+        "vote_average": {
+          "type": "number"
+        },
+        "vote_count": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/account_states",
+      "method": "get",
+      "operationId": "tv-episode-account-states",
+      "description": "Get the rating, watchlist and favourite status.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "episode_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "favorite": {
+          "type": "boolean"
+        },
+        "rated": {
+          "type": "object",
+          "fields": {
+            "value": {
+              "type": "integer"
+            }
+          }
+        },
+        "watchlist": {
+          "type": "boolean"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/rating",
+      "method": "post",
+      "operationId": "tv-episode-add-rating",
+      "description": "Rate a TV episode and save it to your rated list.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "episode_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/rating",
+      "method": "delete",
+      "operationId": "tv-episode-delete-rating",
+      "description": "Delete your rating on a TV episode.",
+      "parameters": [
+        {
+          "name": "series_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "guest_session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "season_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "episode_number",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/person/{person_id}",
+      "method": "get",
+      "operationId": "person-details",
+      "description": "Query the top level details of a person.",
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "append_to_response",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "adult": {
+          "type": "boolean"
+        },
+        "also_known_as": {
+          "type": "array"
+        },
+        "biography": {
+          "type": "string"
+        },
+        "birthday": {
+          "type": "string"
+        },
+        "deathday": {
+          "type": "unspecified"
+        },
+        "gender": {
+          "type": "integer"
+        },
+        "homepage": {
+          "type": "unspecified"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "imdb_id": {
+          "type": "string"
+        },
+        "known_for_department": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "place_of_birth": {
+          "type": "string"
+        },
+        "popularity": {
+          "type": "number"
+        },
+        "profile_path": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/person/{person_id}/translations",
+      "method": "get",
+      "operationId": "translations",
+      "description": "Get the translations that belong to a person.",
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "translations": {
+          "type": "array",
+          "itemFields": {
+            "iso_3166_1": {
+              "type": "string"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "english_name": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "fields": {
+                "biography": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/person/{person_id}/combined_credits",
+      "method": "get",
+      "operationId": "person-combined-credits",
+      "description": "Get the combined movie and TV credits that belong to a person.",
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "cast": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "character": {
+              "type": "string"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            },
+            "media_type": {
+              "type": "string"
+            }
+          }
+        },
+        "crew": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "number"
+            },
+            "vote_count": {
+              "type": "integer"
+            },
+            "credit_id": {
+              "type": "string"
+            },
+            "department": {
+              "type": "string"
+            },
+            "job": {
+              "type": "string"
+            },
+            "media_type": {
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/company/{company_id}",
+      "method": "get",
+      "operationId": "company-details",
+      "description": "Get the company details by ID.",
+      "parameters": [
+        {
+          "name": "company_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "description": {
+          "type": "string"
+        },
+        "headquarters": {
+          "type": "string"
+        },
+        "homepage": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "logo_path": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "origin_country": {
+          "type": "string"
+        },
+        "parent_company": {
+          "type": "unspecified"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/company/{company_id}/alternative_names",
+      "method": "get",
+      "operationId": "company-alternative-names",
+      "description": "Get the company details by ID.",
+      "parameters": [
+        {
+          "name": "company_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/network/{network_id}",
+      "method": "get",
+      "operationId": "network-details",
+      "description": "",
+      "parameters": [
+        {
+          "name": "network_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "headquarters": {
+          "type": "string"
+        },
+        "homepage": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "logo_path": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "origin_country": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/network/{network_id}/alternative_names",
+      "method": "get",
+      "operationId": "details-copy",
+      "description": "Get the alternative names of a network.",
+      "parameters": [
+        {
+          "name": "network_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "id": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/account/{account_id}/favorite",
+      "method": "post",
+      "operationId": "account-add-favorite",
+      "description": "Mark a movie or TV show as a favourite.",
+      "parameters": [
+        {
+          "name": "account_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/account/{account_id}/watchlist",
+      "method": "post",
+      "operationId": "account-add-to-watchlist",
+      "description": "Add a movie or TV show to your watchlist.",
+      "parameters": [
+        {
+          "name": "account_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/list/{list_id}",
+      "method": "delete",
+      "operationId": "list-delete",
+      "description": "Delete a list.",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/list/{list_id}",
+      "method": "get",
+      "operationId": "list-details",
+      "description": "",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "created_by": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "favorite_count": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "media_type": {
+              "type": "string"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "integer"
+            },
+            "vote_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "item_count": {
+          "type": "integer"
+        },
+        "iso_639_1": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "poster_path": {
+          "type": "string"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/list/{list_id}/add_item",
+      "method": "post",
+      "operationId": "list-add-movie",
+      "description": "Add a movie to a list.",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "session_id",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responseFields": {
+        "status_code": {
+          "type": "integer"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 3,
+      "path": "/3/authentication/session/convert/4",
+      "method": "post",
+      "operationId": "authentication-create-session-from-v4-token",
+      "description": "",
+      "responseFields": {
+        "success": {
+          "type": "boolean"
+        },
+        "session_id": {
+          "type": "string"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/auth/request_token",
+      "method": "post",
+      "operationId": "auth-create-request-token",
+      "description": "",
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "request_token": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/auth/access_token",
+      "method": "post",
+      "operationId": "auth-create-access-token",
+      "description": "",
+      "responseFields": {
+        "account_id": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_message": {
+          "type": "string"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/auth/access_token",
+      "method": "delete",
+      "operationId": "auth-logout",
+      "description": "Log out of a session.",
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/account/{account_object_id}/lists",
+      "method": "get",
+      "operationId": "account-lists",
+      "description": "Get the custom lists that a user has created.",
+      "parameters": [
+        {
+          "name": "account_object_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "account_object_id": {
+              "type": "string"
+            },
+            "adult": {
+              "type": "integer"
+            },
+            "average_rating": {
+              "type": "number"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "featured": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "iso_3166_1": {
+              "type": "string"
+            },
+            "iso_639_1": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "number_of_items": {
+              "type": "integer"
+            },
+            "public": {
+              "type": "integer"
+            },
+            "revenue": {
+              "type": "string"
+            },
+            "runtime": {
+              "type": "integer"
+            },
+            "sort_by": {
+              "type": "integer"
+            },
+            "updated_at": {
+              "type": "string"
+            }
+          }
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/list/{list_id}",
+      "method": "get",
+      "operationId": "list-details",
+      "description": "Retrieve a list by id.",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "average_rating": {
+          "type": "number"
+        },
+        "backdrop_path": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "adult": {
+              "type": "boolean"
+            },
+            "backdrop_path": {
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "original_language": {
+              "type": "string"
+            },
+            "original_title": {
+              "type": "string"
+            },
+            "overview": {
+              "type": "string"
+            },
+            "poster_path": {
+              "type": "string"
+            },
+            "media_type": {
+              "type": "string"
+            },
+            "genre_ids": {
+              "type": "array"
+            },
+            "popularity": {
+              "type": "number"
+            },
+            "release_date": {
+              "type": "string"
+            },
+            "video": {
+              "type": "boolean"
+            },
+            "vote_average": {
+              "type": "integer"
+            },
+            "vote_count": {
+              "type": "integer"
+            }
+          }
+        },
+        "comments": {
+          "type": "object",
+          "fields": {
+            "movie:617127": {
+              "type": "unspecified"
+            },
+            "movie:986056": {
+              "type": "unspecified"
+            },
+            "movie:822119": {
+              "type": "unspecified"
+            },
+            "movie:533535": {
+              "type": "unspecified"
+            },
+            "movie:609681": {
+              "type": "unspecified"
+            },
+            "movie:447365": {
+              "type": "unspecified"
+            },
+            "movie:640146": {
+              "type": "unspecified"
+            },
+            "movie:505642": {
+              "type": "unspecified"
+            },
+            "movie:616037": {
+              "type": "unspecified"
+            },
+            "movie:453395": {
+              "type": "unspecified"
+            },
+            "movie:634649": {
+              "type": "unspecified"
+            },
+            "movie:524434": {
+              "type": "unspecified"
+            },
+            "movie:566525": {
+              "type": "unspecified"
+            },
+            "movie:497698": {
+              "type": "unspecified"
+            },
+            "movie:429617": {
+              "type": "unspecified"
+            },
+            "movie:299534": {
+              "type": "unspecified"
+            },
+            "movie:299537": {
+              "type": "unspecified"
+            },
+            "movie:363088": {
+              "type": "unspecified"
+            },
+            "movie:299536": {
+              "type": "unspecified"
+            },
+            "movie:284054": {
+              "type": "unspecified"
+            }
+          }
+        },
+        "created_by": {
+          "type": "object",
+          "fields": {
+            "avatar_path": {
+              "type": "string"
+            },
+            "gravatar_hash": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            }
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "iso_3166_1": {
+          "type": "string"
+        },
+        "iso_639_1": {
+          "type": "string"
+        },
+        "item_count": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_ids": {
+          "type": "object",
+          "fields": {}
+        },
+        "page": {
+          "type": "integer"
+        },
+        "poster_path": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "revenue": {
+          "type": "integer"
+        },
+        "runtime": {
+          "type": "integer"
+        },
+        "sort_by": {
+          "type": "string"
+        },
+        "total_pages": {
+          "type": "integer"
+        },
+        "total_results": {
+          "type": "integer"
+        }
+      },
+      "requestFields": [],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/list/{list_id}",
+      "method": "put",
+      "operationId": "list-update",
+      "description": "Update the details of a list.",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/list/{list_id}/items",
+      "method": "post",
+      "operationId": "list-add-items",
+      "description": "Add items to a list.",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "media_type": {
+              "type": "string"
+            },
+            "media_id": {
+              "type": "integer"
+            },
+            "success": {
+              "type": "boolean"
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/list/{list_id}/items",
+      "method": "delete",
+      "operationId": "list-remove-items",
+      "description": "Remove items from a list",
+      "parameters": [
+        {
+          "name": "list_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "media_type": {
+              "type": "string"
+            },
+            "media_id": {
+              "type": "integer"
+            },
+            "success": {
+              "type": "boolean"
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    },
+    {
+      "apiVersion": 4,
+      "path": "/4/list/{list_id}/items",
+      "method": "put",
+      "operationId": "list-update-items",
+      "description": "Update an individual item on a list",
+      "responseFields": {
+        "status_message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "itemFields": {
+            "media_type": {
+              "type": "string"
+            },
+            "media_id": {
+              "type": "integer"
+            },
+            "success": {
+              "type": "boolean"
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "status_code": {
+          "type": "integer"
+        }
+      },
+      "requestFields": ["RAW_BODY"],
+      "source": "tmdb-v4-spec"
+    }
+  ],
+  "publicPageObservations": [
+    {
+      "request": "tmdb-frieren-series",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End (TV Series 2023) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Now Streaming",
+        "Watch Now",
+        "Frieren: Beyond Journey&#39;s End (2023)",
+        "Living means being known and remembered by someone.",
+        "Overview",
+        "Series Cast",
+        "Last Season",
+        "Season 1",
+        "2023 • 38 Episodes",
+        "Social"
+      ],
+      "memberEpisodePaths": ["/tv/209867/season/1/episode/38"]
+    },
+    {
+      "request": "tmdb-frieren-en-page",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End: Season 1 (2023) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Season 1 (2023)",
+        "&#8592; Back to season list",
+        "Episodes 38",
+        "The Journey&#39;s End",
+        "It Didn&#39;t Have to Be Magic...",
+        "Killing Magic",
+        "The Land Where Souls Rest",
+        "Phantoms of the Dead",
+        "The Hero of the Village",
+        "Like a Fairy Tale"
+      ],
+      "memberEpisodePaths": [
+        "/tv/209867/season/1/episode/1",
+        "/tv/209867/season/1/episode/2",
+        "/tv/209867/season/1/episode/3",
+        "/tv/209867/season/1/episode/4",
+        "/tv/209867/season/1/episode/5",
+        "/tv/209867/season/1/episode/6",
+        "/tv/209867/season/1/episode/7",
+        "/tv/209867/season/1/episode/8",
+        "/tv/209867/season/1/episode/9",
+        "/tv/209867/season/1/episode/10",
+        "/tv/209867/season/1/episode/11",
+        "/tv/209867/season/1/episode/12",
+        "/tv/209867/season/1/episode/13",
+        "/tv/209867/season/1/episode/14",
+        "/tv/209867/season/1/episode/15",
+        "/tv/209867/season/1/episode/16",
+        "/tv/209867/season/1/episode/17",
+        "/tv/209867/season/1/episode/18",
+        "/tv/209867/season/1/episode/19",
+        "/tv/209867/season/1/episode/20",
+        "/tv/209867/season/1/episode/21",
+        "/tv/209867/season/1/episode/22",
+        "/tv/209867/season/1/episode/23",
+        "/tv/209867/season/1/episode/24",
+        "/tv/209867/season/1/episode/25",
+        "/tv/209867/season/1/episode/26",
+        "/tv/209867/season/1/episode/27",
+        "/tv/209867/season/1/episode/28",
+        "/tv/209867/season/1/episode/29",
+        "/tv/209867/season/1/episode/30",
+        "/tv/209867/season/1/episode/31",
+        "/tv/209867/season/1/episode/32",
+        "/tv/209867/season/1/episode/33",
+        "/tv/209867/season/1/episode/34",
+        "/tv/209867/season/1/episode/35",
+        "/tv/209867/season/1/episode/36",
+        "/tv/209867/season/1/episode/37",
+        "/tv/209867/season/1/episode/38"
+      ]
+    },
+    {
+      "request": "tmdb-frieren-season-groups",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End (TV Series 2023- ) - Seasons (Production) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Frieren: Beyond Journey&#39;s End (2023)",
+        "&#8592; Back to episode groups",
+        "Seasons (Production)",
+        "3 Groups, 64 Episodes",
+        "Specials",
+        "26 Episodes",
+        "Season 1",
+        "28 Episodes",
+        "Season 2",
+        "10 Episodes"
+      ]
+    },
+    {
+      "request": "tmdb-frieren-cour-groups",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End (TV Series 2023- ) - Cours (TV) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Frieren: Beyond Journey&#39;s End (2023)",
+        "&#8592; Back to episode groups",
+        "Cours (TV)",
+        "3 Groups, 38 Episodes",
+        "Cour 1",
+        "16 Episodes",
+        "Cour 2",
+        "12 Episodes",
+        "Cour 3",
+        "10 Episodes"
+      ]
+    },
+    {
+      "request": "tmdb-frieren-production-season1",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End (TV Series 2023- ) - Season 1 - (Seasons) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Frieren: Beyond Journey&#39;s End (2023)",
+        "&#8592; Back to &lsquo;Seasons&rsquo; groups",
+        "Season 1 (Seasons)",
+        "28 Episodes"
+      ],
+      "memberEpisodePaths": [
+        "/tv/209867/season/1/episode/1",
+        "/tv/209867/season/1/episode/2",
+        "/tv/209867/season/1/episode/3",
+        "/tv/209867/season/1/episode/4",
+        "/tv/209867/season/1/episode/5",
+        "/tv/209867/season/1/episode/6",
+        "/tv/209867/season/1/episode/7",
+        "/tv/209867/season/1/episode/8",
+        "/tv/209867/season/1/episode/9",
+        "/tv/209867/season/1/episode/10",
+        "/tv/209867/season/1/episode/11",
+        "/tv/209867/season/1/episode/12",
+        "/tv/209867/season/1/episode/13",
+        "/tv/209867/season/1/episode/14",
+        "/tv/209867/season/1/episode/15",
+        "/tv/209867/season/1/episode/16",
+        "/tv/209867/season/1/episode/17",
+        "/tv/209867/season/1/episode/18",
+        "/tv/209867/season/1/episode/19",
+        "/tv/209867/season/1/episode/20",
+        "/tv/209867/season/1/episode/21",
+        "/tv/209867/season/1/episode/22",
+        "/tv/209867/season/1/episode/23",
+        "/tv/209867/season/1/episode/24",
+        "/tv/209867/season/1/episode/25",
+        "/tv/209867/season/1/episode/26",
+        "/tv/209867/season/1/episode/27",
+        "/tv/209867/season/1/episode/28"
+      ]
+    },
+    {
+      "request": "tmdb-frieren-production-season2",
+      "pageTitle": "Frieren: Beyond Journey&#39;s End (TV Series 2023- ) - Season 2 - (Seasons) &#8212; The Movie Database (TMDB)",
+      "headingObservations": [
+        "Frieren: Beyond Journey&#39;s End (2023)",
+        "&#8592; Back to &lsquo;Seasons&rsquo; groups",
+        "Season 2 (Seasons)",
+        "10 Episodes"
+      ],
+      "memberEpisodePaths": [
+        "/tv/209867/season/1/episode/29",
+        "/tv/209867/season/1/episode/30",
+        "/tv/209867/season/1/episode/31",
+        "/tv/209867/season/1/episode/32",
+        "/tv/209867/season/1/episode/33",
+        "/tv/209867/season/1/episode/34",
+        "/tv/209867/season/1/episode/35",
+        "/tv/209867/season/1/episode/36",
+        "/tv/209867/season/1/episode/37",
+        "/tv/209867/season/1/episode/38"
+      ]
+    },
+    {
+      "request": "tmdb-yourname-zh",
+      "observation": "The public movie page for movie/372058 returned a Chinese title and overview section."
+    }
+  ],
+  "indexedOfficialObservations": [
+    {
+      "url": "https://frieren-anime.jp/news/4739/",
+      "publishedDate": "2026-01-19",
+      "access": "indexed-official-article",
+      "observation": "The official anime website identifies episode 29 as the first episode of the second production season; direct HTTP retrieval was blocked."
+    }
+  ],
+  "scopeFindings": [
+    "The inspected standard TMDB season 1 contains 38 episodes, while an existing Production episode-group set has 28-episode and 10-episode production-season groups.",
+    "The alternative Cours group partitions the same regular episodes into 16, 12 and 10; group existence does not establish that every group is a separate work.",
+    "The production-season subgroups reference the standard episode paths, including season/1/episode/29 through season/1/episode/38 for production season 2.",
+    "The TV Season account_states description mentions rating, watchlist and favourite status, but its actual schema contains id and per-episode rated results only.",
+    "The inspected v3 inventory has rating writes for movie, TV series and TV episode, with no season or episode-group rating write.",
+    "Native Part records contain completion flags, not personal ratings; a source episode rating cannot be treated as completion.",
+    "Movie and TV series account fields can only be projected to native works with equivalent scope.",
+    "v4 custom lists accept movie and tv members and support private owner access; a single v4 user authorization can be converted to a v3 session for needed v3 operations.",
+    "TV search results do not contain episode groups. Episode-group sets are listed under a known TV series, and their subgroups and episodes require a separate detail read."
+  ],
+  "nativeContracts": [
+    "../../../design/domains/anime.md",
+    "../../../design/domains/records.md",
+    "../../../design/extensions/providers.md",
+    "../../../design/extensions/private-data.md",
+    "../../../design/extensions/catalog.md"
+  ]
+}

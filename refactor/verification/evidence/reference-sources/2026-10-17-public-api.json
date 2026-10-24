@@ -1,0 +1,2957 @@
+{
+  "observedOn": "2026-10-17",
+  "containsCredentials": false,
+  "containsPrivateText": false,
+  "requestCount": 59,
+  "requests": [
+    {
+      "source": "NDL Search",
+      "label": "ndl-sao-isbn",
+      "url": "https://ndlsearch.ndl.go.jp/api/opensearch?isbn=9784048677608&cnt=3",
+      "file": "ndl-sao-isbn.xml",
+      "status": 200,
+      "method": "GET",
+      "observedOn": "2026-10-17",
+      "bytes": 8795,
+      "sha256": "cf4de58b3636c4173e5e819f5639a4ea39372027852dafe7e9c59084a9a0c793"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-frieren",
+      "url": "https://www.wikidata.org/wiki/Special:EntityData/Q98642652.json",
+      "file": "wd-frieren.json",
+      "status": 200,
+      "method": "GET",
+      "observedOn": "2026-10-17",
+      "bytes": 208729,
+      "sha256": "fc291916fb7651161f2c4c7c2f2afc180735ebcf587bbb6c96f0cef3b8476f73"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-vn-catalog",
+      "url": "https://itch.io/games/genre-visual-novel",
+      "file": "itch-vn-catalog.html",
+      "status": 429,
+      "method": "GET",
+      "observedOn": "2026-10-17",
+      "bytes": 166,
+      "sha256": "5bb1c8a8390c284e9a4634c04eee34dfd08759d66d2b613b0631ab10e2f1f3d9"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-sao-ndl-v3",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784048677608%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:53:37.675Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784048677608%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 65531,
+      "sha256": "f84c71c6f002cb215192dac3373620851230ee9594ea365cdf20305ed394c946",
+      "headers": {
+        "etag": "W/\"682e693434d34ecb7863afe0cb0df0ea9d29e49f21c5594986c18b98ddd17b48\""
+      },
+      "file": "ndl-sao-ndl-v3.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-sao-single",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=itemno%3D%22R100000002-I000010078222%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:55:11.737Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=itemno%3D%22R100000002-I000010078222%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 13306,
+      "sha256": "3ca986f33ae0899d565aae6dd9f55954d81e60c75e8a399d675ec15bcca637e6",
+      "headers": {
+        "etag": "W/\"2716cd419c90b9274fa21557980dd950e6822a975b308fc0447f9b0c221f5b77\""
+      },
+      "file": "ndl-sao-single.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-kawahara-authority",
+      "url": "http://id.ndl.go.jp/auth/entity/01151473",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:55:13.250Z",
+      "status": 200,
+      "finalUrl": "https://id.ndl.go.jp/auth/ndlna/01151473",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 14519,
+      "sha256": "f7127b6817ecce00c8d7e7b5c0bc8494611423c75fdda93297089c0fbf3f3818",
+      "headers": {
+        "etag": "1784599718",
+        "last-modified": "Tue, 21 Jul 2026 02:08:38 GMT"
+      },
+      "file": "ndl-kawahara-authority.html"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-frieren-author",
+      "url": "https://www.wikidata.org/wiki/Special:EntityData/Q38277627.json",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:55:13.890Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/wiki/Special:EntityData/Q38277627.json",
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 30629,
+      "sha256": "4736fe5b59494a4db4ba9f675f122f685dd703e1e944fed63d04aaa45f6eba6c",
+      "headers": {
+        "last-modified": "Fri, 02 Oct 2026 23:51:52 GMT"
+      },
+      "file": "wd-frieren-author.json"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-ddlc",
+      "url": "https://teamsalvato.itch.io/ddlc",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:55:26.258Z",
+      "status": 200,
+      "finalUrl": "https://teamsalvato.itch.io/ddlc",
+      "contentType": "text/html",
+      "bytes": 34761,
+      "sha256": "542bd4d9e0be73aa7228cfa4825408c31eac4c85e6bb9e945dbc5138e1487386",
+      "headers": {},
+      "file": "itch-ddlc.html"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-kawahara-json",
+      "url": "https://id.ndl.go.jp/auth/ndlna/01151473.json",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:56:19.693Z",
+      "status": 200,
+      "finalUrl": "https://id.ndl.go.jp/auth/ndlna/01151473.json",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1516,
+      "sha256": "d4d6f219f787dba05dc6517f6f352b3101e204a2e9f03135945e14fdb2a62fb6",
+      "headers": {
+        "etag": "1784599718",
+        "last-modified": "Tue, 21 Jul 2026 02:08:38 GMT"
+      },
+      "file": "ndl-kawahara-json.json"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-public-client",
+      "url": "https://static.itch.io/api.js",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:56:20.434Z",
+      "status": 200,
+      "finalUrl": "https://static.itch.io/api.js",
+      "contentType": "application/x-javascript",
+      "bytes": 1620,
+      "sha256": "df616560c0a155e2274155f794e817425e27c0858c998b50adaa3a90774c864e",
+      "headers": {
+        "etag": "\"6a8dc6a4-29b\"",
+        "last-modified": "Tue, 25 Aug 2026 16:45:24 GMT"
+      },
+      "file": "itch-public-client.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-yotsuba-page1",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:58:15.315Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2&onlyBib=true",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 19308,
+      "sha256": "4a11d13387f9d80223788f551b7f8d61ff394ddf1029c2b0e1319798efca9234",
+      "headers": {
+        "etag": "W/\"b81c465bff19ff936546b24f71210a2931dee270b836a3b7c1ba5902ad0c190c\""
+      },
+      "file": "ndl-yotsuba-page1.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-yotsuba-page2",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2&startRecord=3&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:58:17.391Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2&startRecord=3&onlyBib=true",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 14400,
+      "sha256": "d332cdfa5582318b9342c8bd4b799afcfcc30f0edc222b06dbb1d4296a33c7fa",
+      "headers": {
+        "etag": "W/\"d481e83de20d02173eec8ed5db5a16c4b0c21bd118094767c266279478eec966\""
+      },
+      "file": "ndl-yotsuba-page2.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-kiminonawa-first",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784041026229%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "method": "GET",
+      "observedOn": "2026-10-17",
+      "status": null,
+      "errorKind": "timeout"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-ddlc-data",
+      "url": "https://teamsalvato.itch.io/ddlc/data.json",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:59:28.311Z",
+      "status": 200,
+      "finalUrl": "https://teamsalvato.itch.io/ddlc/data.json",
+      "contentType": "application/json",
+      "bytes": 925,
+      "sha256": "0e1adb43683f27a9c831f3a2d9c918ff047ceb05f39118bd6960cd3606b80159",
+      "headers": {},
+      "file": "itch-ddlc-data.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-contracts",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P31%7CP279%7CP50%7CP110%7CP123%7CP178%7CP57%7CP58%7CP161%7CP725%7CP674%7CP144%7CP4969%7CP155%7CP156%7CP527%7CP361%7CP747%7CP136%7CP407%7CP364%7CP577%7CP580%7CP582%7CP569%7CP570%7CP571%7CP576%7CP21%7CP18%7CP154%7CP856%7CP1448%7CP1705%7CP1476%7CP1810%7CP3831%7CP453%7CP518%7CP4087%7CP5732%7CP5849%7CP7294%7CP349&props=labels%7Cdescriptions%7Cclaims%7Cdatatype&languages=en%7Czh-hans%7Cja",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:59:28.680Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P31%7CP279%7CP50%7CP110%7CP123%7CP178%7CP57%7CP58%7CP161%7CP725%7CP674%7CP144%7CP4969%7CP155%7CP156%7CP527%7CP361%7CP747%7CP136%7CP407%7CP364%7CP577%7CP580%7CP582%7CP569%7CP570%7CP571%7CP576%7CP21%7CP18%7CP154%7CP856%7CP1448%7CP1705%7CP1476%7CP1810%7CP3831%7CP453%7CP518%7CP4087%7CP5732%7CP5849%7CP7294%7CP349&props=labels%7Cdescriptions%7Cclaims%7Cdatatype&languages=en%7Czh-hans%7Cja",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 2502309,
+      "sha256": "8d83bcc9cc204e976201b5df630d7d64c928d2229aabfa62d32fe8a68b8e5680",
+      "headers": {},
+      "file": "wd-property-contracts.json"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-kiminonawa-retry",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784041026229%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T03:59:29.866Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784041026229%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 20736,
+      "sha256": "3fc5f77ef011ec36299d785a5800c25f9963a9beb89edea1a132269cca39ca27",
+      "headers": {
+        "etag": "W/\"201390d88eb0d2e84c943d0d4b7c1bb58376112adaf978c05703cb05f2ed0e80\""
+      },
+      "file": "ndl-kiminonawa-retry.xml"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-clannad-search",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Clannad&language=en&uselang=en&limit=4",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:02:02.949Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Clannad&language=en&uselang=en&limit=4",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1717,
+      "sha256": "cef0b80c3f929578438389f0db81cf4a828561ccb5864d01118c9b41e0841a74",
+      "headers": {},
+      "file": "wd-clannad-search.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-sao-search",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Sword+Art+Online&language=en&uselang=en&limit=4",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:02:03.750Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Sword+Art+Online&language=en&uselang=en&limit=4",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1935,
+      "sha256": "89c6b56f2429d042059352305695523e83e0c425138bd7b093439b21c3f4da44",
+      "headers": {},
+      "file": "wd-sao-search.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-kyoto-search",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Kyoto+Animation&language=en&uselang=en&limit=4",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:02:04.866Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Kyoto+Animation&language=en&uselang=en&limit=4",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1983,
+      "sha256": "02145eace0f325a2fe305a2e55db08cbfe6a0a6bc41db8a4df0cb8a89b7a2100",
+      "headers": {},
+      "file": "wd-kyoto-search.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-frieren-search",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Frieren&language=en&uselang=en&limit=4",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:02:06.511Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Frieren&language=en&uselang=en&limit=4",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1791,
+      "sha256": "5b79205a6963ce75a1b76104fcccfbd08f91ce44435c6cfbcc7eb573875e47ef",
+      "headers": {},
+      "file": "wd-frieren-search.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-types-and-relations",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q115792176%7CQ138804866%7CQ38277627%7CQ105258125%7CQ123579237%7CQ135034038%7CQ21198342%7CQ5%7CQ7889%7CQ43229%7CQ95074%7CQ8261%7CQ5398426%7CQ639669%7CQ104144455%7CQ121302212&props=labels%7Cclaims%7Caliases%7Cdescriptions&languages=en%7Czh-hans%7Czh-hant%7Cja",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:02:07.512Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q115792176%7CQ138804866%7CQ38277627%7CQ105258125%7CQ123579237%7CQ135034038%7CQ21198342%7CQ5%7CQ7889%7CQ43229%7CQ95074%7CQ8261%7CQ5398426%7CQ639669%7CQ104144455%7CQ121302212&props=labels%7Cclaims%7Caliases%7Cdescriptions&languages=en%7Czh-hans%7Czh-hant%7Cja",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 838996,
+      "sha256": "8b4e91ffaddca845c263c40873b52ed40bdf3c42d157dc637c46d59df7fe6c63",
+      "headers": {},
+      "file": "wd-types-and-relations.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-core-scope",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q110607%7CQ1037699%7CQ27863%7CQ877325%7CQ130377145%7CQ130377146%7CQ138806497%7CQ63952888%7CQ104213567%7CQ27888335%7CQ115693088%7CQ1114515%7CQ3050815%7CQ87576284%7CQ80447738%7CQ3658341&props=labels%7Cclaims%7Caliases%7Cdescriptions&languages=en%7Czh-hans%7Czh-hant%7Cja",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:03:18.710Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q110607%7CQ1037699%7CQ27863%7CQ877325%7CQ130377145%7CQ130377146%7CQ138806497%7CQ63952888%7CQ104213567%7CQ27888335%7CQ115693088%7CQ1114515%7CQ3050815%7CQ87576284%7CQ80447738%7CQ3658341&props=labels%7Cclaims%7Caliases%7Cdescriptions&languages=en%7Czh-hans%7Czh-hant%7Cja",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 413708,
+      "sha256": "220713738d5bc96d2435c6cc31c8fc4763dc265a661b83e9c9fb879c6fe07856",
+      "headers": {},
+      "file": "wd-core-scope.json"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-ddlc-embed",
+      "url": "https://itch.io/embed/106599",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:05:42.846Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/embed/106599",
+      "contentType": "text/html",
+      "bytes": 7938,
+      "sha256": "0fe3bd0a97bbc677dbc6fbc20f376c3a9884b9d46a96e2c336a137ead6f47d3c",
+      "headers": {},
+      "file": "itch-ddlc-embed.html"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-episodes",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q136698348%7CQ138717434%7CQ138717435%7CQ100269041%7CQ20650540%7CQ1107679&props=labels%7Cclaims%7Cdescriptions&languages=en%7Czh-hans%7Cja",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:06:20.854Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q136698348%7CQ138717434%7CQ138717435%7CQ100269041%7CQ20650540%7CQ1107679&props=labels%7Cclaims%7Cdescriptions&languages=en%7Czh-hans%7Cja",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 90444,
+      "sha256": "3817e9c25982e52d02a60d2303e7682cec61b9ef62a66b18bb8f87bd2e22f6e0",
+      "headers": {},
+      "file": "wd-episodes.json"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-yotsuba-isbn",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784840224664%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:06:22.347Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=isbn%3D%229784840224664%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=3&onlyBib=true",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 334,
+      "sha256": "e971d1f4c7d82b20330a4640dd8a2f36a7ceb13287c8426e9e92edb1e69e4c79",
+      "headers": {
+        "etag": "\"0b48a69c31db7ebf12f51c41ba6b042687ef9afcf124fc5561e4baafd809c373\""
+      },
+      "file": "ndl-yotsuba-isbn.xml"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-author-reverse",
+      "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fwork+%3Fproperty+WHERE+%7B+VALUES+%3Fproperty+%7B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP50%3E+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP110%3E+%7D+%3Fwork+%3Fproperty+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ38277627%3E+.+%7D+ORDER+BY+%3Fwork+%3Fproperty+LIMIT+50&format=json",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:10:54.782Z",
+      "status": 200,
+      "finalUrl": "https://query.wikidata.org/sparql?query=SELECT+%3Fwork+%3Fproperty+WHERE+%7B+VALUES+%3Fproperty+%7B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP50%3E+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP110%3E+%7D+%3Fwork+%3Fproperty+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ38277627%3E+.+%7D+ORDER+BY+%3Fwork+%3Fproperty+LIMIT+50&format=json",
+      "contentType": "application/sparql-results+json;charset=utf-8",
+      "bytes": 7350,
+      "sha256": "7f2489ee85a5f5141f9f61876b589ec65ac91e128ce01aeb80a2da418bcf6fb6",
+      "headers": {},
+      "file": "wd-author-reverse.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-field-properties",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P1559%7CP1932%7CP170%7CP272%7CP750%7CP2047%7CP1104%7CP1113%7CP2635%7CP1545%7CP4908%7CP4086%7CP1733%7CP3180%7CP5794%7CP4947%7CP4983%7CP8729%7CP8731%7CP13484%7CP1552&props=labels%7Cdescriptions%7Cclaims%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:10:56.169Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P1559%7CP1932%7CP170%7CP272%7CP750%7CP2047%7CP1104%7CP1113%7CP2635%7CP1545%7CP4908%7CP4086%7CP1733%7CP3180%7CP5794%7CP4947%7CP4983%7CP8729%7CP8731%7CP13484%7CP1552&props=labels%7Cdescriptions%7Cclaims%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 933844,
+      "sha256": "9dcd05acf6962b8cc4554a6d45b0d2c2f5933e44e0a06034dcf88d12e14a8ba8",
+      "headers": {},
+      "file": "wd-field-properties.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-comic-parts",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q139603319%7CQ139603331%7CQ139605035&props=labels%7Cclaims%7Cdescriptions&languages=en%7Cja",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:12:19.250Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q139603319%7CQ139603331%7CQ139605035&props=labels%7Cclaims%7Cdescriptions&languages=en%7Cja",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 46655,
+      "sha256": "e6f7f612189cccc424b65fb42de9a2331de35c9ba9eacc3ba9a9178de628dec2",
+      "headers": {},
+      "file": "wd-comic-parts.json"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-server-doc",
+      "url": "https://itch.io/docs/api/serverside",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:12:20.167Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/docs/api/serverside",
+      "contentType": "text/html",
+      "bytes": 84661,
+      "sha256": "341971df08f4af45b51c08ae35b9eea2e552f57d5140a1ad8214579738116ea3",
+      "headers": {},
+      "file": "itch-server-doc.html"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-ddlc-search",
+      "url": "https://itch.io/search?q=Doki+Doki+Literature+Club",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:14:41.937Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/search?q=Doki+Doki+Literature+Club",
+      "contentType": "text/html",
+      "bytes": 117472,
+      "sha256": "8d0780a4bcedc1fd85159a981e191f85379b4147d2aba5a3d03782af477397ff",
+      "headers": {},
+      "file": "itch-ddlc-search.html"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-1",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P31%7CP495%7CP407%7CP4087%7CP1476%7CP1433%7CP50%7CP8731%7CP136%7CP2671%7CP5732%7CP5849%7CP856%7CP1984%7CP11149%7CP11176%7CP4969%7CP2360%7CP11259%7CP11348%7CP11476%7CP1434%7CP8345%7CP10688%7CP214%7CP674%7CP110%7CP8885%7CP11494%7CP373%7CP2002%7CP6839%7CP2635%7CP580%7CP123%7CP1881%7CP2354%7CP577%7CP166%7CP5905%7CP11408%7CP7648%7CP8513%7CP11363%7CP6947%7CP6262%7CP3589%7CP12048%7CP6367%7CP154&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:52.698Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P31%7CP495%7CP407%7CP4087%7CP1476%7CP1433%7CP50%7CP8731%7CP136%7CP2671%7CP5732%7CP5849%7CP856%7CP1984%7CP11149%7CP11176%7CP4969%7CP2360%7CP11259%7CP11348%7CP11476%7CP1434%7CP8345%7CP10688%7CP214%7CP674%7CP110%7CP8885%7CP11494%7CP373%7CP2002%7CP6839%7CP2635%7CP580%7CP123%7CP1881%7CP2354%7CP577%7CP166%7CP5905%7CP11408%7CP7648%7CP8513%7CP11363%7CP6947%7CP6262%7CP3589%7CP12048%7CP6367%7CP154&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6451,
+      "sha256": "7da0d361d309219eb3e21ed14019dd6f98a390651f0fe14ad741bacef40d35f0",
+      "headers": {},
+      "file": "wd-property-labels-1.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-2",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P3847%7CP14051%7CP5737%7CP12361%7CP973%7CP2572%7CP14262%7CP13236%7CP8419%7CP227%7CP144%7CP364%7CP345%7CP272%7CP4983%7CP480%7CP5387%7CP8013%7CP11460%7CP57%7CP725%7CP4835%7CP1874%7CP12005%7CP5099%7CP1258%7CP8670%7CP58%7CP86%7CP1811%7CP1113%7CP4784%7CP435%7CP1712%7CP12544%7CP12683%7CP11330%7CP2437%7CP527%7CP5659%7CP1267%7CP7017%7CP2603%7CP2047%7CP13902%7CP2529%7CP8600%7CP11016%7CP750%7CP2637&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:53.262Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P3847%7CP14051%7CP5737%7CP12361%7CP973%7CP2572%7CP14262%7CP13236%7CP8419%7CP227%7CP144%7CP364%7CP345%7CP272%7CP4983%7CP480%7CP5387%7CP8013%7CP11460%7CP57%7CP725%7CP4835%7CP1874%7CP12005%7CP5099%7CP1258%7CP8670%7CP58%7CP86%7CP1811%7CP1113%7CP4784%7CP435%7CP1712%7CP12544%7CP12683%7CP11330%7CP2437%7CP527%7CP5659%7CP1267%7CP7017%7CP2603%7CP2047%7CP13902%7CP2529%7CP8600%7CP11016%7CP750%7CP2637&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6396,
+      "sha256": "ffe87a9741320db7e6df85f815e57eeff3578b27f6d4fd34e188add9317540bd",
+      "headers": {},
+      "file": "wd-property-labels-2.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-3",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P170%7CP2670%7CP1407%7CP1235%7CP106%7CP21%7CP27%7CP269%7CP4985%7CP1559%7CP734%7CP1814%7CP691%7CP101%7CP1412%7CP213%7CP12854%7CP4862%7CP2607%7CP9707%7CP7400%7CP10832%7CP11357%7CP648%7CP12430%7CP2963%7CP1982%7CP11227%7CP11353%7CP4084%7CP13053%7CP5649%7CP8179%7CP7293%7CP244%7CP1280%7CP1015%7CP1006%7CP1207%7CP349%7CP800%7CP10387%7CP13049%7CP434%7CP2605%7CP6886%7CP9322%7CP8189%7CP268%7CP735&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:54.559Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P170%7CP2670%7CP1407%7CP1235%7CP106%7CP21%7CP27%7CP269%7CP4985%7CP1559%7CP734%7CP1814%7CP691%7CP101%7CP1412%7CP213%7CP12854%7CP4862%7CP2607%7CP9707%7CP7400%7CP10832%7CP11357%7CP648%7CP12430%7CP2963%7CP1982%7CP11227%7CP11353%7CP4084%7CP13053%7CP5649%7CP8179%7CP7293%7CP244%7CP1280%7CP1015%7CP1006%7CP1207%7CP349%7CP800%7CP10387%7CP13049%7CP434%7CP2605%7CP6886%7CP9322%7CP8189%7CP268%7CP735&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6502,
+      "sha256": "efba8605cb01475a603bb561329f0cad90ad304a211ee8780494ebb10c681140",
+      "headers": {},
+      "file": "wd-property-labels-3.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-4",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P569%7CP19%7CP7638%7CP6298%7CP6921%7CP10400%7CP14487%7CP17%7CP127%7CP1705%7CP749%7CP8063%7CP12088%7CP910%7CP3417%7CP461%7CP1963%7CP279%7CP1889%7CP1552%7CP361%7CP1424%7CP1245%7CP1343%7CP1417%7CP3222%7CP949%7CP3827%7CP2579%7CP1051%7CP2283%7CP1225%7CP2581%7CP4733%7CP4613%7CP5008%7CP2521%7CP3321%7CP5198%7CP5869%7CP3241%7CP5247%7CP5555%7CP6573%7CP6900%7CP1296%7CP7033%7CP7007%7CP486%7CP672&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:55.583Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P569%7CP19%7CP7638%7CP6298%7CP6921%7CP10400%7CP14487%7CP17%7CP127%7CP1705%7CP749%7CP8063%7CP12088%7CP910%7CP3417%7CP461%7CP1963%7CP279%7CP1889%7CP1552%7CP361%7CP1424%7CP1245%7CP1343%7CP1417%7CP3222%7CP949%7CP3827%7CP2579%7CP1051%7CP2283%7CP1225%7CP2581%7CP4733%7CP4613%7CP5008%7CP2521%7CP3321%7CP5198%7CP5869%7CP3241%7CP5247%7CP5555%7CP6573%7CP6900%7CP1296%7CP7033%7CP7007%7CP486%7CP672&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6575,
+      "sha256": "1a6b0116282fd500cb2a2f5e2da55479e23da60165290e3d4ac3c3e2ea28c23e",
+      "headers": {},
+      "file": "wd-property-labels-4.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-5",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P7497%7CP7703%7CP7314%7CP3916%7CP8408%7CP1542%7CP443%7CP1256%7CP3553%7CP1709%7CP8512%7CP7807%7CP2892%7CP1748%7CP5806%7CP7329%7CP8785%7CP8895%7CP8168%7CP129%7CP1036%7CP4212%7CP1344%7CP9084%7CP10283%7CP4527%7CP8313%7CP8972%7CP8814%7CP10757%7CP2184%7CP10565%7CP5034%7CP2163%7CP1114%7CP5337%7CP9495%7CP10376%7CP11955%7CP3911%7CP2347%7CP6058%7CP12385%7CP18%7CP1269%7CP646%7CP12596%7CP1034%7CP7775%7CP12800&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:56.612Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P7497%7CP7703%7CP7314%7CP3916%7CP8408%7CP1542%7CP443%7CP1256%7CP3553%7CP1709%7CP8512%7CP7807%7CP2892%7CP1748%7CP5806%7CP7329%7CP8785%7CP8895%7CP8168%7CP129%7CP1036%7CP4212%7CP1344%7CP9084%7CP10283%7CP4527%7CP8313%7CP8972%7CP8814%7CP10757%7CP2184%7CP10565%7CP5034%7CP2163%7CP1114%7CP5337%7CP9495%7CP10376%7CP11955%7CP3911%7CP2347%7CP6058%7CP12385%7CP18%7CP1269%7CP646%7CP12596%7CP1034%7CP7775%7CP12800&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6531,
+      "sha256": "68e1b5a6d8a6206803a000ac2832338212ca3a4594b4c4b177a90f99451dc7b4",
+      "headers": {},
+      "file": "wd-property-labels-5.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-6",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2737%7CP989%7CP11493%7CP9272%7CP13176%7CP13591%7CP181%7CP6385%7CP11924%7CP12861%7CP13750%7CP13772%7CP14541%7CP14470%7CP6771%7CP7284%7CP2263%7CP9162%7CP1151%7CP508%7CP487%7CP998%7CP1014%7CP3106%7CP3365%7CP1617%7CP3612%7CP2167%7CP5125%7CP5429%7CP6104%7CP5250%7CP6352%7CP6541%7CP3095%7CP6849%7CP1382%7CP7952%7CP6706%7CP4073%7CP7749%7CP8672%7CP4342%7CP8309%7CP6293%7CP8514%7CP3235%7CP4467%7CP9368%7CP6200&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:57.686Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2737%7CP989%7CP11493%7CP9272%7CP13176%7CP13591%7CP181%7CP6385%7CP11924%7CP12861%7CP13750%7CP13772%7CP14541%7CP14470%7CP6771%7CP7284%7CP2263%7CP9162%7CP1151%7CP508%7CP487%7CP998%7CP1014%7CP3106%7CP3365%7CP1617%7CP3612%7CP2167%7CP5125%7CP5429%7CP6104%7CP5250%7CP6352%7CP6541%7CP3095%7CP6849%7CP1382%7CP7952%7CP6706%7CP4073%7CP7749%7CP8672%7CP4342%7CP8309%7CP6293%7CP8514%7CP3235%7CP4467%7CP9368%7CP6200&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6602,
+      "sha256": "ef8816eb410824abfa3d6b551073d7edef3054a11f59543a2961c4331667d71c",
+      "headers": {},
+      "file": "wd-property-labels-6.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-7",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P11947%7CP4953%7CP5357%7CP12695%7CP9497%7CP11514%7CP8225%7CP12999%7CP12873%7CP5551%7CP9346%7CP3984%7CP1149%7CP13332%7CP13300%7CP13687%7CP6186%7CP13796%7CP14003%7CP13967%7CP6694%7CP6680%7CP8540%7CP8647%7CP13613%7CP3509%7CP950%7CP14483%7CP4254%7CP5437%7CP6417%7CP1687%7CP7771%7CP8519%7CP1368%7CP7502%7CP11012%7CP11567%7CP4801%7CP9223%7CP8979%7CP8061%7CP2004%7CP4427%7CP8072%7CP9885%7CP8539%7CP12086%7CP8834%7CP10730&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:16:58.839Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P11947%7CP4953%7CP5357%7CP12695%7CP9497%7CP11514%7CP8225%7CP12999%7CP12873%7CP5551%7CP9346%7CP3984%7CP1149%7CP13332%7CP13300%7CP13687%7CP6186%7CP13796%7CP14003%7CP13967%7CP6694%7CP6680%7CP8540%7CP8647%7CP13613%7CP3509%7CP950%7CP14483%7CP4254%7CP5437%7CP6417%7CP1687%7CP7771%7CP8519%7CP1368%7CP7502%7CP11012%7CP11567%7CP4801%7CP9223%7CP8979%7CP8061%7CP2004%7CP4427%7CP8072%7CP9885%7CP8539%7CP12086%7CP8834%7CP10730&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6754,
+      "sha256": "dbf36f4f5adb246d253ee165936a7ca1616bac6b147abe0a3e09f17496bc3490",
+      "headers": {},
+      "file": "wd-property-labels-7.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-8",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P12721%7CP11093%7CP13397%7CP7084%7CP1535%7CP14350%7CP14924%7CP2924%7CP5160%7CP13204%7CP12451%7CP5063%7CP2612%7CP8472%7CP7982%7CP9374%7CP9318%7CP7305%7CP10438%7CP9983%7CP9850%7CP4223%7CP10719%7CP9475%7CP11686%7CP12839%7CP13059%7CP4549%7CP12658%7CP13141%7CP13297%7CP13161%7CP13160%7CP13317%7CP13255%7CP8383%7CP7666%7CP14439%7CP3479%7CP3569%7CP3219%7CP13703%7CP6817%7CP460%7CP425%7CP867%7CP935%7CP1043%7CP4946%7CP8629&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:00.013Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P12721%7CP11093%7CP13397%7CP7084%7CP1535%7CP14350%7CP14924%7CP2924%7CP5160%7CP13204%7CP12451%7CP5063%7CP2612%7CP8472%7CP7982%7CP9374%7CP9318%7CP7305%7CP10438%7CP9983%7CP9850%7CP4223%7CP10719%7CP9475%7CP11686%7CP12839%7CP13059%7CP4549%7CP12658%7CP13141%7CP13297%7CP13161%7CP13160%7CP13317%7CP13255%7CP8383%7CP7666%7CP14439%7CP3479%7CP3569%7CP3219%7CP13703%7CP6817%7CP460%7CP425%7CP867%7CP935%7CP1043%7CP4946%7CP8629&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6927,
+      "sha256": "35607e715dea9cca04292ca447a32fa3a55354aa6963290f2ac36962be8d76ee",
+      "headers": {},
+      "file": "wd-property-labels-8.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-9",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P8490%7CP11137%7CP452%7CP9037%7CP1052%7CP8458%7CP12107%7CP11810%7CP4652%7CP8283%7CP9827%7CP14073%7CP1441%7CP4085%7CP1884%7CP1340%7CP5800%7CP1080%7CP11736%7CP5648%7CP5847%7CP5107%7CP13031%7CP6327%7CP13390%7CP9652%7CP1449%7CP802%7CP1066%7CP13195%7CP6296%7CP7013%7CP13632%7CP1576%7CP11250%7CP2563%7CP3828%7CP520%7CP8839%7CP14750%7CP3342%7CP451%7CP400%7CP404%7CP408%7CP1733%7CP3180%7CP178%7CP1933%7CP437&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:01.063Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P8490%7CP11137%7CP452%7CP9037%7CP1052%7CP8458%7CP12107%7CP11810%7CP4652%7CP8283%7CP9827%7CP14073%7CP1441%7CP4085%7CP1884%7CP1340%7CP5800%7CP1080%7CP11736%7CP5648%7CP5847%7CP5107%7CP13031%7CP6327%7CP13390%7CP9652%7CP1449%7CP802%7CP1066%7CP13195%7CP6296%7CP7013%7CP13632%7CP1576%7CP11250%7CP2563%7CP3828%7CP520%7CP8839%7CP14750%7CP3342%7CP451%7CP400%7CP404%7CP408%7CP1733%7CP3180%7CP178%7CP1933%7CP437&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6508,
+      "sha256": "d19efca7591522314bbf7fa3dfe1ebede857e2921411015ad26af297cf700f96",
+      "headers": {},
+      "file": "wd-property-labels-9.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-10",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P5290%7CP287%7CP4965%7CP6267%7CP6337%7CP5944%7CP5999%7CP6554%7CP600%7CP2816%7CP4769%7CP7597%7CP7886%7CP852%7CP3575%7CP8084%7CP8351%7CP9075%7CP306%7CP479%7CP9870%7CP10096%7CP7117%7CP10371%7CP5794%7CP10996%7CP11072%7CP6774%7CP9968%7CP11400%7CP11418%7CP10030%7CP11196%7CP11688%7CP12054%7CP2512%7CP7707%7CP7591%7CP12291%7CP12332%7CP12561%7CP11001%7CP12001%7CP10354%7CP10453%7CP12570%7CP12215%7CP5494%7CP11771%7CP13554&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:02.240Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P5290%7CP287%7CP4965%7CP6267%7CP6337%7CP5944%7CP5999%7CP6554%7CP600%7CP2816%7CP4769%7CP7597%7CP7886%7CP852%7CP3575%7CP8084%7CP8351%7CP9075%7CP306%7CP479%7CP9870%7CP10096%7CP7117%7CP10371%7CP5794%7CP10996%7CP11072%7CP6774%7CP9968%7CP11400%7CP11418%7CP10030%7CP11196%7CP11688%7CP12054%7CP2512%7CP7707%7CP7591%7CP12291%7CP12332%7CP12561%7CP11001%7CP12001%7CP10354%7CP10453%7CP12570%7CP12215%7CP5494%7CP11771%7CP13554&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6528,
+      "sha256": "6f2cd62a7517c6b473ac9b4dc982bfb631b874188ef40e1bbea1c9ec3c5f36fc",
+      "headers": {},
+      "file": "wd-property-labels-10.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-11",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P14020%7CP8019%7CP6195%7CP9877%7CP2864%7CP444%7CP10501%7CP3138%7CP462%7CP1970%7CP3143%7CP1985%7CP2465%7CP4086%7CP2508%7CP1562%7CP2509%7CP5032%7CP5845%7CP5786%7CP8729%7CP4947%7CP4282%7CP12096%7CP2704%7CP12241%7CP11495%7CP12427%7CP11349%7CP5646%7CP12477%7CP12489%7CP12196%7CP12492%7CP6127%7CP14449%7CP7222%7CP14826%7CP5846%7CP5792%7CP2408%7CP7212%7CP7439%7CP11732%7CP2013%7CP2397%7CP8687%7CP13484%7CP921%7CP159&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:03.261Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P14020%7CP8019%7CP6195%7CP9877%7CP2864%7CP444%7CP10501%7CP3138%7CP462%7CP1970%7CP3143%7CP1985%7CP2465%7CP4086%7CP2508%7CP1562%7CP2509%7CP5032%7CP5845%7CP5786%7CP8729%7CP4947%7CP4282%7CP12096%7CP2704%7CP12241%7CP11495%7CP12427%7CP11349%7CP5646%7CP12477%7CP12489%7CP12196%7CP12492%7CP6127%7CP14449%7CP7222%7CP14826%7CP5846%7CP5792%7CP2408%7CP7212%7CP7439%7CP11732%7CP2013%7CP2397%7CP8687%7CP13484%7CP921%7CP159&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6483,
+      "sha256": "72855233f7536a104059469051703288a548a6c82810ae35a4b9e7047697111a",
+      "headers": {},
+      "file": "wd-property-labels-11.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-12",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P571%7CP1454%7CP1983%7CP3225%7CP4773%7CP1128%7CP271%7CP793%7CP5491%7CP1448%7CP1056%7CP355%7CP11490%7CP11496%7CP131%7CP2003%7CP11806%7CP11689%7CP12080%7CP582%7CP179%7CP11039%7CP13424%7CP14825%7CP1074%7CP1299%7CP1375%7CP14225%7CP3275%7CP8298%7CP4908%7CP156%7CP155%7CP11564%7CP13636%7CP7937%7CP478%7CP747%7CP1085%7CP1032%7CP10225%7CP736%7CP655%7CP9191%7CP98%7CP291%7CP212%7CP957%7CP12351%7CP5749&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:04.451Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P571%7CP1454%7CP1983%7CP3225%7CP4773%7CP1128%7CP271%7CP793%7CP5491%7CP1448%7CP1056%7CP355%7CP11490%7CP11496%7CP131%7CP2003%7CP11806%7CP11689%7CP12080%7CP582%7CP179%7CP11039%7CP13424%7CP14825%7CP1074%7CP1299%7CP1375%7CP14225%7CP3275%7CP8298%7CP4908%7CP156%7CP155%7CP11564%7CP13636%7CP7937%7CP478%7CP747%7CP1085%7CP1032%7CP10225%7CP736%7CP655%7CP9191%7CP98%7CP291%7CP212%7CP957%7CP12351%7CP5749&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 6471,
+      "sha256": "c22e824d08cce2c7c130be53449671725f86ab123043c8286b5ccea5d8c05a64",
+      "headers": {},
+      "file": "wd-property-labels-12.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-property-labels-13",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2969%7CP243%7CP675%7CP629%7CP6216%7CP3931&props=labels%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:17:05.345Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2969%7CP243%7CP675%7CP629%7CP6216%7CP3931&props=labels%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 812,
+      "sha256": "30b8c91e3a13c4a5d461ab809d4973e94c4c93afe4794777a40477dbb5ff1c04",
+      "headers": {},
+      "file": "wd-property-labels-13.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-volume-index",
+      "url": "https://query.wikidata.org/sparql?query=SELECT+%3Froot+%3Fvolume+%3Fnumber+WHERE+%7B+VALUES+%3Froot+%7B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ98642652%3E+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ27863%3E+%7D+%3Fvolume+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP179%3E+%3Froot+%3B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP478%3E+%3Fnumber+.+%7D+ORDER+BY+%3Froot+%3Fvolume+LIMIT+100&format=json",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:21:55.573Z",
+      "status": 200,
+      "finalUrl": "https://query.wikidata.org/sparql?query=SELECT+%3Froot+%3Fvolume+%3Fnumber+WHERE+%7B+VALUES+%3Froot+%7B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ98642652%3E+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2FQ27863%3E+%7D+%3Fvolume+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP179%3E+%3Froot+%3B+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2FP478%3E+%3Fnumber+.+%7D+ORDER+BY+%3Froot+%3Fvolume+LIMIT+100&format=json",
+      "contentType": "application/sparql-results+json;charset=utf-8",
+      "bytes": 4776,
+      "sha256": "114d84a2957769fd7363aa8f509f323e94247a95888ee7b8534420e1956f2edf",
+      "headers": {},
+      "file": "wd-volume-index.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-part-types",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q125632018%7CQ7725634%7CQ3331189%7CQ102364578%7CQ7727%7CQ11574%7CQ25235&props=labels%7Cclaims%7Cdescriptions&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:21:56.560Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q125632018%7CQ7725634%7CQ3331189%7CQ102364578%7CQ7727%7CQ11574%7CQ25235&props=labels%7Cclaims%7Cdescriptions&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 203300,
+      "sha256": "5172a4b27eb79be5b165297dfe06b30b75eaf4cd250a992a8d5df754c55df357",
+      "headers": {},
+      "file": "wd-part-types.json"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-public-collection-page2",
+      "url": "https://itch.io/c/776164/visual-novels?page=2",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:22:55.459Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/c/776164/visual-novels?page=2",
+      "contentType": "text/html",
+      "bytes": 24563,
+      "sha256": "750413cc98be3a73b4f152c2bfc905adfd7e3871aada6f080620acf5d4ad5081",
+      "headers": {},
+      "file": "itch-public-collection-page2.html"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-public-collection-page3",
+      "url": "https://itch.io/c/776164/visual-novels?page=3",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:22:56.120Z",
+      "status": 404,
+      "finalUrl": "https://itch.io/c/776164/visual-novels?page=3",
+      "contentType": "text/html",
+      "bytes": 6771,
+      "sha256": "c058b843cba66b6426346016d2ef3c93741a1dbd3ebe7da880fa7fe84b8701e8",
+      "headers": {},
+      "file": "itch-public-collection-page3.html"
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-ddlc-cover",
+      "url": "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzU4NjAxMi5naWY=/original/%2Fz0let.gif",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:22:57.117Z",
+      "status": 200,
+      "contentType": "image/gif",
+      "bytes": 719690,
+      "sha256": "3487b523df6a70b4b27764a3e218b10e9a2b0d73a668671115e722397deb6478",
+      "file": "itch-ddlc-cover.gif",
+      "gifSignature": "GIF89a",
+      "width": 315,
+      "height": 250
+    },
+    {
+      "source": "itch.io",
+      "label": "itch-public-collection-page1",
+      "url": "https://itch.io/c/776164/visual-novels",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:23:39.234Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/c/776164/visual-novels",
+      "contentType": "text/html",
+      "bytes": 53602,
+      "sha256": "a6926d1c9fc7e5e2d2ec8d5a86abc2a1c88c56dd2e06fd1461ea482dab6af405",
+      "headers": {},
+      "file": "itch-public-collection-page1.html"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-current-spec",
+      "url": "https://ndlsearch.ndl.go.jp/file/help/api/specifications/ndlsearch_api_20260925.pdf",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:25:11.527Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/file/help/api/specifications/ndlsearch_api_20260925.pdf",
+      "contentType": "application/pdf",
+      "bytes": 718004,
+      "sha256": "0937bc1636f1c2d3e1de9a3a022c646d43005e922d63c460fb1864fad007667f",
+      "headers": {
+        "etag": "W/\"fdaecd241d9e1054eef6a6b4697d6089\"",
+        "last-modified": "Mon, 28 Sep 2026 06:31:38 GMT"
+      },
+      "file": "ndl-current-spec.pdf"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-cover-ended",
+      "url": "https://ndlsearch.ndl.go.jp/news/20260401_thumbnail",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:25:11.840Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/news/20260401_thumbnail",
+      "contentType": "text/html;charset=utf-8",
+      "bytes": 89908,
+      "sha256": "be22a852f798fbb6c02b97a35a05c800c760249fd5543dcc799b447aff164543",
+      "headers": {
+        "etag": "W/\"15f34-++V2U/Vso0NxpLJomFGwwbybHBw\""
+      },
+      "file": "ndl-cover-ended.html"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-data-access",
+      "url": "https://www.wikidata.org/wiki/Wikidata:Data_access",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:25:13.146Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/wiki/Wikidata:Data_access",
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 143876,
+      "sha256": "ae21c7092ce48ce31d4b3f36f63101e0346e90a228cfe239458f326d7b9d91de",
+      "headers": {
+        "last-modified": "Thu, 15 Oct 2026 16:25:04 GMT"
+      },
+      "file": "wd-data-access.html"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-credit-properties",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P86%7CP162%7CP98%7CP287%7CP1431%7CP655&props=labels%7Cdescriptions%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:34:40.626Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P86%7CP162%7CP98%7CP287%7CP1431%7CP655&props=labels%7Cdescriptions%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1807,
+      "sha256": "ee9d04032e90e151c4b3cd04c80316525f762c9abf60f01aa9b3d03413298cf8",
+      "headers": {},
+      "file": "wd-credit-properties.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-miku-search",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Hatsune+Miku&language=en&uselang=en&limit=4",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:35:48.164Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbsearchentities&search=Hatsune+Miku&language=en&uselang=en&limit=4",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1887,
+      "sha256": "19d2eb177d9f8d45ccb46fa76d9c61116bffdaa0e4b20451d1382109354ad9ea",
+      "headers": {},
+      "file": "wd-miku-search.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-character-properties",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2048%7CP2067%7CP1853%7CP3629&props=labels%7Cdescriptions%7Cdatatype&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:35:49.089Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=P2048%7CP2067%7CP1853%7CP3629&props=labels%7Cdescriptions%7Cdatatype&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 957,
+      "sha256": "17477657cd9d4ae06c44d7209edc9377bf341abd196a5f6c8e658185e12deae1",
+      "headers": {},
+      "file": "wd-character-properties.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-character-and-voicebank",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q552682%7CQ112748598&props=labels%7Cclaims%7Cdescriptions&languages=en%7Cja%7Czh-hans",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:36:13.664Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q552682%7CQ112748598&props=labels%7Cclaims%7Cdescriptions&languages=en%7Cja%7Czh-hans",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 108796,
+      "sha256": "367edf37b843e12e5819fccc6877778f70f584ca92a657b9f4106624801067d9",
+      "headers": {},
+      "file": "wd-character-and-voicebank.json"
+    },
+    {
+      "source": "Wikidata",
+      "label": "wd-character-type-units",
+      "url": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q125130106%7CQ134612820%7CQ174728%7CQ11570&props=labels%7Cclaims%7Cdescriptions&languages=en",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:40:06.833Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?format=json&maxlag=5&action=wbgetentities&ids=Q125130106%7CQ134612820%7CQ174728%7CQ11570&props=labels%7Cclaims%7Cdescriptions&languages=en",
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 101000,
+      "sha256": "cf7c4a9a53497a4f65153e6d987a57311b6e2aa5455b34943dd4f5213a35b397",
+      "headers": {},
+      "file": "wd-character-type-units.json"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-yotsuba-creator",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+creator%3D%22%E3%81%82%E3%81%9A%E3%81%BE%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:44:17.442Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+creator%3D%22%E3%81%82%E3%81%9A%E3%81%BE%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=2",
+      "contentType": "text/xml;charset=UTF-8",
+      "bytes": 26931,
+      "sha256": "dda18645d3f129e6fc2a404d1942c175cf8e5559487ce2a93c11a2dccd79f90d",
+      "headers": {
+        "etag": "W/\"5da77a109a753b8add9546ad1de1e6ec1cf3d88d118cacc509e3640d0f2fee92\""
+      },
+      "file": "ndl-yotsuba-creator.xml"
+    },
+    {
+      "source": "NDL Search",
+      "label": "ndl-yotsuba-creator-complete",
+      "url": "https://ndlsearch.ndl.go.jp/api/sru?operation=searchRetrieve&version=1.2&query=title%3D%22%E3%82%88%E3%81%A4%E3%81%B0%E3%81%A8%22+AND+creator%3D%22%E3%81%82%E3%81%9A%E3%81%BE%22+AND+dpid%3D%22iss-ndl-opac%22&recordSchema=dcndl_v3&recordPacking=xml&maximumRecords=100&onlyBib=true",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:45:21.022Z",
+      "status": null,
+      "errorKind": "timeout"
+    }
+  ],
+  "ndl": {
+    "saoRawBook": {
+      "records": "1",
+      "diagnosticUris": [],
+      "resources": [
+        {
+          "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I000010078222#material",
+          "title": ["ソードアート・オンライン. 1 (アインクラッド)"],
+          "volume": ["1 (アインクラッド)"],
+          "volumeTitle": [],
+          "extent": ["352p ; 15cm"],
+          "issued": ["2009"],
+          "date": ["2009.4"],
+          "language": ["jpn"],
+          "originalLanguage": [],
+          "abstractCount": 0,
+          "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/01151473"]
+        }
+      ]
+    },
+    "schemaEnvelope": ["info:srw/schema/1/dc-v1.1"],
+    "requestedSchema": "dcndl_v3",
+    "searchPages": [
+      {
+        "records": "31",
+        "next": "3",
+        "diagnosticUris": [],
+        "resources": [
+          {
+            "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I025761267#material",
+            "title": [
+              "建築家が見たマンガの世界. よつばと!・ジョジョの奇妙な冒険・ヱヴァンゲリヲン新劇場版・ペルソナ4の経済編"
+            ],
+            "volume": [
+              "よつばと!・ジョジョの奇妙な冒険・ヱヴァンゲリヲン新劇場版・ペルソナ4の経済編"
+            ],
+            "volumeTitle": [],
+            "extent": ["199p ; 19cm"],
+            "issued": ["2014"],
+            "date": ["2014.9"],
+            "language": ["jpn"],
+            "originalLanguage": [],
+            "abstractCount": 0,
+            "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/001184120"]
+          },
+          {
+            "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I025167947#material",
+            "title": [
+              "心にひびくマンガの名言 : 人生の大切なことはマンガがすべて教えてくれる. 5",
+              "大切なことに気づく : ちびまる子ちゃん/バガボンド/よつばと!/FAIRY TAIL/もやしもん/ジャングル大帝など"
+            ],
+            "volume": ["5"],
+            "volumeTitle": [],
+            "extent": ["45p ; 29cm"],
+            "issued": ["2014"],
+            "date": ["2014.2"],
+            "language": ["jpn"],
+            "originalLanguage": [],
+            "abstractCount": 1,
+            "creatorAuthorityRefs": []
+          }
+        ]
+      },
+      {
+        "records": "31",
+        "next": "5",
+        "diagnosticUris": [],
+        "resources": [
+          {
+            "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I026095599#material",
+            "title": ["小さなお花屋さん〈よつば登場!〉"],
+            "volume": [],
+            "volumeTitle": [],
+            "extent": ["67p ; 15cm"],
+            "issued": ["2015"],
+            "date": ["2015.3"],
+            "language": ["jpn"],
+            "originalLanguage": [],
+            "abstractCount": 0,
+            "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/001195577"]
+          },
+          {
+            "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I023978637#material",
+            "title": ["とーちゃんだからできる魔法の子育てBOOK : 漫画『よつばと!』にも学ぶ"],
+            "volume": [],
+            "volumeTitle": [],
+            "extent": ["160p ; 21cm"],
+            "issued": ["2012"],
+            "date": ["2012.10"],
+            "language": ["jpn"],
+            "originalLanguage": [],
+            "abstractCount": 0,
+            "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/01042751"]
+          }
+        ]
+      }
+    ],
+    "standalone": {
+      "records": "1",
+      "diagnosticUris": [],
+      "resources": [
+        {
+          "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I027336932#material",
+          "title": ["小説君の名は。"],
+          "volume": [],
+          "volumeTitle": [],
+          "extent": ["262p ; 15cm"],
+          "issued": ["2016"],
+          "date": ["2016.6"],
+          "language": ["jpn"],
+          "originalLanguage": [],
+          "abstractCount": 0,
+          "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/00919585"]
+        }
+      ]
+    },
+    "coverServiceEndedOn": "2026-03-31",
+    "coverNotice": "https://ndlsearch.ndl.go.jp/news/20260401_thumbnail",
+    "authorAuthorityIsDistinctService": true,
+    "comicWithCreator": {
+      "records": "23",
+      "next": "3",
+      "diagnosticUris": [],
+      "resources": [
+        {
+          "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I024768750#material",
+          "title": ["FiND YOTSUBA : 「よつばと!」カレンダー写真集"],
+          "volume": [],
+          "volumeTitle": [],
+          "extent": ["90p ; 25×26cm"],
+          "issued": ["2013"],
+          "date": ["2013.8"],
+          "language": ["jpn"],
+          "originalLanguage": [],
+          "abstractCount": 0,
+          "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/01127453"]
+        },
+        {
+          "id": "https://ndlsearch.ndl.go.jp/books/R100000002-I000008398267#material",
+          "title": ["よつばとしろとくろのどうぶつ"],
+          "volume": [],
+          "volumeTitle": [],
+          "extent": ["1冊 (ページ付なし) ; 19cm"],
+          "issued": ["2006"],
+          "date": ["2006.12"],
+          "language": ["jpn", "eng"],
+          "originalLanguage": [],
+          "abstractCount": 0,
+          "creatorAuthorityRefs": ["http://id.ndl.go.jp/auth/entity/00799575"]
+        }
+      ]
+    },
+    "metadataRights": [
+      {
+        "namespace": "http://ndl.go.jp/dcndl/terms/",
+        "resource": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "comicCompleteQuery": {
+      "status": null
+    }
+  },
+  "itch": {
+    "publicGameId": 106599,
+    "publicJsonKeys": [
+      "suggested_price",
+      "links",
+      "cover_image",
+      "tags",
+      "price",
+      "id",
+      "title",
+      "authors",
+      "screenshots"
+    ],
+    "embedResolvesProject": true,
+    "publicNameSearch": true,
+    "publicCollectionPagination": {
+      "firstStatus": 200,
+      "firstCount": 30,
+      "secondStatus": 200,
+      "secondCount": 11,
+      "nextAfterLastStatus": 404,
+      "firstPageRecheckStatus": 200,
+      "uniqueAcrossTwo": 41,
+      "hasNextOnLastPage": true
+    },
+    "cover": {
+      "source": "itch.io",
+      "label": "itch-ddlc-cover",
+      "url": "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzU4NjAxMi5naWY=/original/%2Fz0let.gif",
+      "method": "GET",
+      "observedAt": "2026-10-17T04:22:57.117Z",
+      "status": 200,
+      "contentType": "image/gif",
+      "bytes": 719690,
+      "sha256": "3487b523df6a70b4b27764a3e218b10e9a2b0d73a668671115e722397deb6478",
+      "file": "itch-ddlc-cover.gif",
+      "gifSignature": "GIF89a",
+      "width": 315,
+      "height": 250
+    },
+    "screenshotOriginalUrls": [
+      "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzgyMTM2Ni5wbmc=/original/jNmXrp.png",
+      "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzgyMTM2OC5wbmc=/original/J7O6aZ.png",
+      "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzgyMTM2Ny5wbmc=/original/U%2B%2BAPc.png",
+      "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzgyMTM2OS5wbmc=/original/kDcrd%2B.png",
+      "https://img.itch.zone/aW1hZ2UvMTA2NTk5LzgyMTM3MC5wbmc=/original/%2BlhbOa.png"
+    ],
+    "personalEvidence": "2026-10-17-itch-personal.json"
+  },
+  "wikidata": {
+    "examples": [
+      {
+        "id": "Q98642652",
+        "label": "Frieren",
+        "types": ["Q21198342"],
+        "selectedClaims": {
+          "P8731": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": "118586",
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q110607",
+        "label": "Clannad",
+        "types": ["Q7889"],
+        "selectedClaims": {
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q27863",
+        "label": "Sword Art Online",
+        "types": ["Q104213567"],
+        "selectedClaims": {
+          "P8731": [
+            {
+              "rank": "deprecated",
+              "snaktype": "value",
+              "value": "11757",
+              "qualifierProperties": ["P2241"]
+            },
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": "51479",
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q1037699",
+        "label": "Clannad",
+        "types": ["Q20650540"],
+        "selectedClaims": {
+          "P364": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q877325",
+        "label": "Kyoto Animation",
+        "types": ["Q1107679"],
+        "selectedClaims": {
+          "P571": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "time": "+1981-01-01T00:00:00Z",
+                "timezone": 0,
+                "before": 0,
+                "after": 0,
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q130377145",
+        "label": "Frieren, season 1",
+        "types": ["Q100269041"],
+        "selectedClaims": {
+          "P364": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q104144455",
+        "label": "Frieren",
+        "types": ["Q3050815", "Q87576284", "Q80447738", "Q3658341"],
+        "selectedClaims": {}
+      },
+      {
+        "id": "Q139603319",
+        "label": "Frieren: Beyond Journey's End, Volume 1",
+        "types": ["Q7725634"],
+        "selectedClaims": {
+          "P478": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": "1",
+              "qualifierProperties": []
+            }
+          ],
+          "P7937": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 8274,
+                "id": "Q8274"
+              },
+              "qualifierProperties": []
+            },
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 125632018,
+                "id": "Q125632018"
+              },
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q139603331",
+        "label": "Frieren: Beyond Journey's End, Vol. 1",
+        "types": ["Q3331189"],
+        "selectedClaims": {
+          "P629": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 139603319,
+                "id": "Q139603319"
+              },
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 1860,
+                "id": "Q1860"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q139605035",
+        "label": "Frieren: Beyond Journey's End, Volume 2",
+        "types": ["Q7725634"],
+        "selectedClaims": {
+          "P478": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": "2",
+              "qualifierProperties": []
+            }
+          ],
+          "P7937": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 8274,
+                "id": "Q8274"
+              },
+              "qualifierProperties": []
+            },
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 125632018,
+                "id": "Q125632018"
+              },
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q552682",
+        "label": "Hatsune Miku",
+        "types": ["Q125130106"],
+        "selectedClaims": {
+          "P571": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "time": "+2007-08-31T00:00:00Z",
+                "timezone": 0,
+                "before": 0,
+                "after": 0,
+                "precision": 11,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              },
+              "qualifierProperties": ["P3831"]
+            }
+          ],
+          "P2048": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "amount": "+158",
+                "unit": "http://www.wikidata.org/entity/Q174728"
+              },
+              "qualifierProperties": []
+            }
+          ],
+          "P2067": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "amount": "+42",
+                "unit": "http://www.wikidata.org/entity/Q11570"
+              },
+              "qualifierProperties": []
+            }
+          ],
+          "P407": [
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 5287,
+                "id": "Q5287"
+              },
+              "qualifierProperties": []
+            },
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 1860,
+                "id": "Q1860"
+              },
+              "qualifierProperties": []
+            },
+            {
+              "rank": "normal",
+              "snaktype": "value",
+              "value": {
+                "entity-type": "item",
+                "numeric-id": 7850,
+                "id": "Q7850"
+              },
+              "qualifierProperties": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "Q112748598",
+        "label": "Hatsune Miku",
+        "types": ["Q134612820"],
+        "selectedClaims": {}
+      }
+    ],
+    "seasonEpisodeCount": 28,
+    "sourceEpisodeSampleIds": ["Q136698348", "Q138717434", "Q138717435"],
+    "comicContentVolumeCount": 15,
+    "novelVolumeIndexResultCount": 0,
+    "reverseAuthorRowCount": 31,
+    "chapterCandidatesActuallyVolumeAndEdition": true,
+    "comicPublicationDatesHaveVolumeAndIsbnQualifiers": true,
+    "seasonVoiceCount": 40,
+    "seasonVoicesWithoutLanguageQualifier": 40,
+    "presetAudit": {
+      "NDL": [
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "comics.md",
+          "section": "parts-volume",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "parts-volume",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "parts-volume",
+          "field": "releaseDate"
+        },
+        {
+          "file": "comics.md",
+          "section": "parts-volume",
+          "field": "declaredPageCount"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "novels.md",
+          "section": "parts-volume",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "parts-volume",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "parts-volume",
+          "field": "releaseDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "parts-volume",
+          "field": "declaredPageCount"
+        }
+      ],
+      "itch": [],
+      "Wikidata": [
+        {
+          "file": "anime.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "anime.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "anime.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "anime.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "anime.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "entry",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "anime.md",
+          "section": "relations",
+          "field": "workRelations"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-novel",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-character",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-character",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "birthDate"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "deathDate"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-person",
+          "field": "gender"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "aliases"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "externalLinks"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "foundedDate"
+        },
+        {
+          "file": "anime.md",
+          "section": "related-organization",
+          "field": "dissolvedDate"
+        },
+        {
+          "file": "characters.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "characters.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "characters.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "characters.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "characters.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "characters.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-novel",
+          "field": "externalLinks"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "aliases"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "externalLinks"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "birthDate"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "deathDate"
+        },
+        {
+          "file": "characters.md",
+          "section": "related-person",
+          "field": "gender"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "comics.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "comics.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "entry",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "comics.md",
+          "section": "relations",
+          "field": "workRelations"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-novel",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-character",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-character",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "birthDate"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "deathDate"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-person",
+          "field": "gender"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "aliases"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "externalLinks"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "foundedDate"
+        },
+        {
+          "file": "comics.md",
+          "section": "related-organization",
+          "field": "dissolvedDate"
+        },
+        {
+          "file": "games.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "games.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "games.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "games.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "games.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "relations",
+          "field": "workRelations"
+        },
+        {
+          "file": "games.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "games.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "games.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "games.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "games.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "games.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "games.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "games.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "novels.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "novels.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "entry",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "novels.md",
+          "section": "relations",
+          "field": "workRelations"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-character",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "birthDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "birthDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "deathDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "deathDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "gender"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-person",
+          "field": "gender"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "name"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "aliases"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "externalLinks"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "foundedDate"
+        },
+        {
+          "file": "novels.md",
+          "section": "related-organization",
+          "field": "dissolvedDate"
+        },
+        {
+          "file": "organizations.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "organizations.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "organizations.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "organizations.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "organizations.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "organizations.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "organizations.md",
+          "section": "entry",
+          "field": "foundedDate"
+        },
+        {
+          "file": "organizations.md",
+          "section": "entry",
+          "field": "dissolvedDate"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "externalLinks"
+        },
+        {
+          "file": "organizations.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "scope",
+          "field": "简体中文"
+        },
+        {
+          "file": "persons.md",
+          "section": "scope",
+          "field": "繁体中文"
+        },
+        {
+          "file": "persons.md",
+          "section": "scope",
+          "field": "英文"
+        },
+        {
+          "file": "persons.md",
+          "section": "scope",
+          "field": "日文"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "externalLinks"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "birthDate"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "deathDate"
+        },
+        {
+          "file": "persons.md",
+          "section": "entry",
+          "field": "gender"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-game",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-game",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "externalLinks"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-anime",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "externalLinks"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-comic",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "externalLinks"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-novel",
+          "field": "originalLanguages"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-character",
+          "field": "name"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-character",
+          "field": "aliases"
+        },
+        {
+          "file": "persons.md",
+          "section": "related-character",
+          "field": "externalLinks"
+        }
+      ]
+    },
+    "characterTypeAndUnits": [
+      {
+        "id": "Q125130106",
+        "label": "Vocaloid character",
+        "parents": ["Q386208", "Q141201212", "Q24236999", "Q152402"]
+      },
+      {
+        "id": "Q134612820",
+        "label": "voice bank",
+        "parents": ["Q188860", "Q682626"]
+      },
+      {
+        "id": "Q174728",
+        "label": "centimetre",
+        "parents": []
+      },
+      {
+        "id": "Q11570",
+        "label": "kilogram",
+        "parents": []
+      }
+    ]
+  }
+}

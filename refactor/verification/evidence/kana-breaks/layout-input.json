@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-20T07:01:45.003136+00:00",
+  "metadataUrl": "https://registry.npmjs.org/@vivliostyle/core/2.45.2",
+  "version": "2.45.2",
+  "licenseIdentifier": "AGPL-3.0",
+  "gitHead": "8f31c04f2dd3a3d992016cec21cf69acf221a821",
+  "integrity": "sha512-PIvmTSLWHYANbIVAtJrb5Uio5cTm1NGK67UuxdifMv9XgYSkOd5LTuYlUgUICuubDLra9CUp6wEJ+gUDFBxiyA==",
+  "tarballSha256": "114d4fb8deb5bdafc2aeb2baa983e38c869ff7103ae4f4c4e1550726dd99df58",
+  "bundleSha256": "feb6ee4a5314484a7a34f601f7332e2f0834d7785e49571cfac0cc1c5b899162",
+  "licenseIncludedInPackage": false,
+  "upstreamLicenseUrl": "https://raw.githubusercontent.com/vivliostyle/vivliostyle.js/8f31c04f2dd3a3d992016cec21cf69acf221a821/LICENSE",
+  "upstreamLicenseSha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6",
+  "prepareSha256": "14e65e9a73ac361bc29320287e46ccb8867efd82a8ffb95c3c1edbc313f9174a",
+  "packageScriptsExecuted": false,
+  "workspaceDependenciesChanged": false
+}

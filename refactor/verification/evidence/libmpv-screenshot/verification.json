@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-21T06:30:33.798914+00:00",
+  "comparisons": {
+    "srgb": {
+      "screenshotToFrameMaxError": 0,
+      "independentReferenceMaxError": 0
+    },
+    "p3": {
+      "screenshotToFrameMaxError": 0,
+      "independentReferenceMaxError": 0
+    },
+    "hdr-srgb": {
+      "screenshotToFrameMaxError": 0
+    },
+    "hdr-software": {
+      "screenshotToFrameMaxError": 54
+    }
+  },
+  "sourcePqBytes": [16, 77, 130, 148, 167, 192, 230],
+  "softwareToSourcePqMaxError": 0,
+  "softwareScreenshotMatchesManagedSdr": false,
+  "screenshotReceiptSha256": "bd51b1504145530298f2fedcf64e979e9984b2edcd8cc379cece415d770e29d5",
+  "verifySha256": "d1cbe3f27c753fd841b16d9e846ac41924b479892db2234466a128e6cfaafa50"
+}

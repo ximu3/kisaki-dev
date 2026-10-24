@@ -1,0 +1,363 @@
+{
+  "checkedAt": "2026-10-20T13:05:04.855Z",
+  "aliases": 292,
+  "canonical": [
+    "ARMSCII-8",
+    "BIG5",
+    "BIG5-HKSCS",
+    "CP1131",
+    "CP1133",
+    "CP1250",
+    "CP1251",
+    "CP1252",
+    "CP1253",
+    "CP1254",
+    "CP1255",
+    "CP1256",
+    "CP1257",
+    "CP1258",
+    "CP850",
+    "CP862",
+    "CP866",
+    "CP874",
+    "CP932",
+    "CP936",
+    "CP949",
+    "CP950",
+    "EUC-CN",
+    "EUC-JP",
+    "EUC-KR",
+    "EUC-TW",
+    "GB18030",
+    "GBK",
+    "GB_1988-80",
+    "GEORGIAN-ACADEMY",
+    "GEORGIAN-PS",
+    "HP-ROMAN8",
+    "HZ",
+    "ISO-2022-CN",
+    "ISO-2022-CN-EXT",
+    "ISO-2022-JP",
+    "ISO-2022-JP-1",
+    "ISO-2022-JP-2",
+    "ISO-2022-JP-MS",
+    "ISO-2022-KR",
+    "ISO-8859-1",
+    "ISO-8859-10",
+    "ISO-8859-11",
+    "ISO-8859-13",
+    "ISO-8859-14",
+    "ISO-8859-15",
+    "ISO-8859-16",
+    "ISO-8859-2",
+    "ISO-8859-3",
+    "ISO-8859-4",
+    "ISO-8859-5",
+    "ISO-8859-6",
+    "ISO-8859-7",
+    "ISO-8859-8",
+    "ISO-8859-9",
+    "JIS_C6220-1969-RO",
+    "JIS_X0201",
+    "JOHAB",
+    "KOI8-R",
+    "KOI8-RU",
+    "KOI8-T",
+    "KOI8-U",
+    "MACARABIC",
+    "MACCENTRALEUROPE",
+    "MACCROATIAN",
+    "MACCYRILLIC",
+    "MACGREEK",
+    "MACHEBREW",
+    "MACICELAND",
+    "MACROMAN",
+    "MACROMANIA",
+    "MACTHAI",
+    "MACTURKISH",
+    "MACUKRAINE",
+    "MULELAO-1",
+    "NEXTSTEP",
+    "PT154",
+    "RK1048",
+    "SHIFT_JIS",
+    "TCVN",
+    "TIS-620",
+    "UCS-2",
+    "UCS-2BE",
+    "UCS-2LE",
+    "UCS-4",
+    "UCS-4BE",
+    "UCS-4LE",
+    "US-ASCII",
+    "UTF-16",
+    "UTF-16BE",
+    "UTF-16LE",
+    "UTF-32",
+    "UTF-32BE",
+    "UTF-32LE",
+    "UTF-7",
+    "UTF-8",
+    "VISCII"
+  ],
+  "excluded": [
+    {
+      "alias": "ISO_646.IRV:1991",
+      "canonical": "US-ASCII"
+    },
+    {
+      "alias": "UCS-2-INTERNAL",
+      "canonical": "UCS-2-INTERNAL"
+    },
+    {
+      "alias": "UCS-2-SWAPPED",
+      "canonical": "UCS-2-SWAPPED"
+    },
+    {
+      "alias": "UCS-4-INTERNAL",
+      "canonical": "UCS-4-INTERNAL"
+    },
+    {
+      "alias": "UCS-4-SWAPPED",
+      "canonical": "UCS-4-SWAPPED"
+    },
+    {
+      "alias": "ISO_8859-1:1987",
+      "canonical": "ISO-8859-1"
+    },
+    {
+      "alias": "ISO_8859-2:1987",
+      "canonical": "ISO-8859-2"
+    },
+    {
+      "alias": "ISO_8859-3:1988",
+      "canonical": "ISO-8859-3"
+    },
+    {
+      "alias": "ISO_8859-4:1988",
+      "canonical": "ISO-8859-4"
+    },
+    {
+      "alias": "ISO_8859-5:1988",
+      "canonical": "ISO-8859-5"
+    },
+    {
+      "alias": "ISO_8859-6:1987",
+      "canonical": "ISO-8859-6"
+    },
+    {
+      "alias": "ISO_8859-7:1987",
+      "canonical": "ISO-8859-7"
+    },
+    {
+      "alias": "ISO_8859-7:2003",
+      "canonical": "ISO-8859-7"
+    },
+    {
+      "alias": "ISO_8859-8:1988",
+      "canonical": "ISO-8859-8"
+    },
+    {
+      "alias": "ISO_8859-9:1989",
+      "canonical": "ISO-8859-9"
+    },
+    {
+      "alias": "ISO_8859-10:1992",
+      "canonical": "ISO-8859-10"
+    },
+    {
+      "alias": "ISO_8859-14:1998",
+      "canonical": "ISO-8859-14"
+    },
+    {
+      "alias": "ISO_8859-15:1998",
+      "canonical": "ISO-8859-15"
+    },
+    {
+      "alias": "ISO_8859-16:2001",
+      "canonical": "ISO-8859-16"
+    },
+    {
+      "alias": "850",
+      "canonical": "CP850"
+    },
+    {
+      "alias": "862",
+      "canonical": "CP862"
+    },
+    {
+      "alias": "866",
+      "canonical": "CP866"
+    },
+    {
+      "alias": "TCVN5712-1:1993",
+      "canonical": "TCVN"
+    },
+    {
+      "alias": "GB18030:2005",
+      "canonical": "GB18030"
+    },
+    {
+      "alias": "GB18030:2022",
+      "canonical": "GB18030:2022"
+    },
+    {
+      "alias": "BIG5-HKSCS:1999",
+      "canonical": "BIG5-HKSCS:1999"
+    },
+    {
+      "alias": "BIG5-HKSCS:2001",
+      "canonical": "BIG5-HKSCS:2001"
+    },
+    {
+      "alias": "BIG5-HKSCS:2004",
+      "canonical": "BIG5-HKSCS:2004"
+    },
+    {
+      "alias": "BIG5-HKSCS:2008",
+      "canonical": "BIG5-HKSCS"
+    },
+    {
+      "alias": "c99",
+      "canonical": "C99",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "java",
+      "canonical": "JAVA",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "iso-ir-87",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis0208",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_c6226-1983",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0208",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0208-1983",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0208-1990",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "x0208",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "csiso87jisx0208",
+      "canonical": "JIS_X0208",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "iso-ir-159",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0212",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0212-1990",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "jis_x0212.1990-0",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "x0212",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "csiso159jisx02121990",
+      "canonical": "JIS_X0212",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "chinese",
+      "canonical": "GB_2312-80",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "gb_2312-80",
+      "canonical": "GB_2312-80",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "iso-ir-58",
+      "canonical": "GB_2312-80",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "csiso58gb231280",
+      "canonical": "GB_2312-80",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "cn-gb-isoir165",
+      "canonical": "ISO-IR-165",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "iso-ir-165",
+      "canonical": "ISO-IR-165",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "iso-ir-149",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "korean",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "ksc_5601",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "ks_c_5601-1987",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "ks_c_5601-1989",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    },
+    {
+      "alias": "csksc56011987",
+      "canonical": "KSC_5601",
+      "reason": "not an accepted self-describing XML encoding"
+    }
+  ],
+  "scriptSha256": "babe1eb41f2848d7415764d0be8a383ff9d3886e56baf84d427f8be239505d91",
+  "registrySha256": "6216cfbde79ab2380591a43944e80681c7ee9aed496e5470c55a38b3e4ca38af"
+}

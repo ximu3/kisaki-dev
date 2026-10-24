@@ -1,0 +1,50 @@
+[
+  {
+    "name": "@kisaki3/appearance",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/desktop-contracts",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-api",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-cli",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-distribution",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-sdk",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/rpc",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  },
+  {
+    "name": "@kisaki3/ui",
+    "version": "0.1.0-dev.0",
+    "onlyManifestChange": "scripts.typecheck",
+    "exportsAndDependenciesUnchanged": true
+  }
+]

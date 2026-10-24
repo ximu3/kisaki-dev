@@ -1,0 +1,3123 @@
+{
+  "checkedAt": "2026-10-15T11:17:45.813Z",
+  "purpose": "Comparative evaluation of the original 30 online source candidates. The 18-source retention decision was accepted by the user on 2026-10-15.",
+  "scope": {
+    "onlineSources": 30,
+    "retainedRecommendation": 18,
+    "excludedRecommendation": 12,
+    "novelFocus": "Japanese light novels and their official translations",
+    "privateAccountSignIn": false,
+    "privateWrites": false,
+    "imageDownloads": false,
+    "longTermUptimeMeasurement": false,
+    "importerPruningCompleted": false
+  },
+  "sources": [
+    {
+      "catalogNumber": 1,
+      "name": "VNDB",
+      "recommendation": "retain",
+      "documentRequests": ["vndb-doc"],
+      "sampleRequests": ["vndb-tsuki-valid"],
+      "existingEvidence": ["../vndb/identity.md", "../vndb/common-metadata.md"]
+    },
+    {
+      "catalogNumber": 2,
+      "name": "Bangumi",
+      "recommendation": "retain",
+      "documentRequests": ["bangumi-spec"],
+      "sampleRequests": ["bgm-frieren-search", "bgm-clannad-search", "bgm-tsuki-direct"],
+      "existingEvidence": ["../bangumi/ordinary-fields.md", "../bangumi/subject-scope.md"]
+    },
+    {
+      "catalogNumber": 3,
+      "name": "YMGal",
+      "recommendation": "retain",
+      "documentRequests": ["ymgal-doc", "ymgal-docs-repository"],
+      "sampleRequests": ["ymgal-tsuki-api", "ymgal-clannad-api"],
+      "existingEvidence": ["../ymgal/public-contracts.md", "../ymgal/metadata-mapping.md"]
+    },
+    {
+      "catalogNumber": 4,
+      "name": "MangaDex",
+      "recommendation": "retain",
+      "documentRequests": [],
+      "sampleRequests": ["mangadex-yotsuba-detail"],
+      "existingEvidence": ["../mangadex/public-contracts.md", "../mangadex/metadata-mapping.md"]
+    },
+    {
+      "catalogNumber": 5,
+      "name": "TMDB",
+      "recommendation": "retain",
+      "documentRequests": ["tmdb-spec"],
+      "sampleRequests": ["tmdb-frieren-page", "tmdb-frieren-zh-page", "tmdb-frieren-en-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 6,
+      "name": "SteamGridDB",
+      "recommendation": "retain",
+      "documentRequests": ["steamgriddb-spec"],
+      "sampleRequests": ["steamgriddb-clannad-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 7,
+      "name": "Steam",
+      "recommendation": "retain",
+      "documentRequests": ["steam-player-doc"],
+      "sampleRequests": ["steam-clannad-en", "steam-clannad-zh", "steam-clannad-ja"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 8,
+      "name": "IGDB",
+      "recommendation": "retain",
+      "documentRequests": ["igdb-doc"],
+      "sampleRequests": ["igdb-clannad-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 9,
+      "name": "MyAnimeList",
+      "recommendation": "retain",
+      "documentRequests": ["mal-doc", "mal-auth-doc"],
+      "sampleRequests": ["mal-frieren-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 10,
+      "name": "AniList",
+      "recommendation": "retain",
+      "documentRequests": ["anilist-terms", "anilist-apps"],
+      "sampleRequests": ["anilist-frieren", "anilist-sao-and-clamp"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 11,
+      "name": "Google Books",
+      "recommendation": "retain",
+      "documentRequests": ["google-books-discovery"],
+      "sampleRequests": [
+        "gbooks-sao-en",
+        "gbooks-sao-ja",
+        "gbooks-sao-zh",
+        "gbooks-public-sao-ja",
+        "gbooks-public-sao-zh",
+        "gbooks-public-sao-en"
+      ],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 12,
+      "name": "NeoDB",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["neodb-spec"],
+      "sampleRequests": ["neodb-frieren-search", "neodb-frieren-detail"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 13,
+      "name": "RanobeDB",
+      "recommendation": "retain",
+      "documentRequests": ["ranobedb-doc", "ranobedb-repository"],
+      "sampleRequests": [
+        "ranobe-sao-detail",
+        "ranobe-sao-book1",
+        "ranobe-bookworm-detail",
+        "ranobe-rezero"
+      ],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 14,
+      "name": "MangaUpdates",
+      "recommendation": "retain",
+      "documentRequests": ["mangaupdates-spec"],
+      "sampleRequests": ["mu-yotsuba-detail", "mu-author-azuma", "mu-author-clamp-detail"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 15,
+      "name": "ANN",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["ann-doc"],
+      "sampleRequests": ["ann-frieren-search"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 16,
+      "name": "Annict",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": [
+        "annict-doc",
+        "annict-doc-current",
+        "annict-auth",
+        "annict-rest",
+        "annict-graphql",
+        "annict-works",
+        "annict-episodes",
+        "annict-repository"
+      ],
+      "sampleRequests": ["annict-frieren-info", "annict-frieren-episodes"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 17,
+      "name": "Kitsu",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["kitsu-spec", "kitsu-server-repository"],
+      "sampleRequests": [
+        "kitsu-frieren-search",
+        "kitsu-frieren-characters",
+        "kitsu-frieren-staff",
+        "kitsu-frieren-episodes"
+      ],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 18,
+      "name": "Shikimori",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["shikimori-doc"],
+      "sampleRequests": ["shikimori-frieren-search", "shikimori-frieren-detail"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 19,
+      "name": "AniDB",
+      "recommendation": "retain",
+      "documentRequests": ["anidb-doc"],
+      "sampleRequests": ["anidb-title-export-full"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 20,
+      "name": "TheTVDB",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["thetvdb-spec", "thetvdb-access"],
+      "sampleRequests": ["tvdb-frieren-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 21,
+      "name": "SIMKL",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["simkl-spec", "simkl-rules"],
+      "sampleRequests": [],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 22,
+      "name": "Open Library",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["openlibrary-doc"],
+      "sampleRequests": ["ol-sao", "ol-sao-isbn", "ol-sao-work"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 23,
+      "name": "NDL Search",
+      "recommendation": "retain",
+      "documentRequests": ["ndl-doc"],
+      "sampleRequests": ["ndl-sao", "ndl-sao-isbn"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 24,
+      "name": "MangaBaka",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["mangabaka-doc", "mangabaka-changelog", "mangabaka-explorer"],
+      "sampleRequests": ["mangabaka-yotsuba-search"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 25,
+      "name": "BOOKWALKER Japan",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": [],
+      "sampleRequests": [
+        "bookwalker-jp-home",
+        "bookwalker-jp-search",
+        "bookwalker-jp-sao1",
+        "bookwalker-jp-sao-series"
+      ],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 26,
+      "name": "BookWalker Global",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": [],
+      "sampleRequests": [
+        "bookwalker-global-home",
+        "bookwalker-global-about",
+        "bookwalker-global-sao-search",
+        "bookwalker-data-root"
+      ],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 27,
+      "name": "itch.io",
+      "recommendation": "retain",
+      "documentRequests": ["itch-doc", "itch-oauth"],
+      "sampleRequests": ["itch-vn-catalog"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 28,
+      "name": "Wikidata",
+      "recommendation": "retain",
+      "documentRequests": ["wikidata-doc"],
+      "sampleRequests": ["wikidata-frieren-search", "wikidata-frieren-entity"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 29,
+      "name": "Fanart.tv",
+      "recommendation": "retain",
+      "documentRequests": ["fanart-client-readme", "fanart-doc-current"],
+      "sampleRequests": ["fanart-frieren-page"],
+      "existingEvidence": []
+    },
+    {
+      "catalogNumber": 30,
+      "name": "Syoboi Calendar",
+      "recommendation": "exclude-from-official-scope",
+      "documentRequests": ["syoboi-help", "syoboi-json-help"],
+      "sampleRequests": ["syoboi-frieren-valid", "syoboi-frieren-detail"],
+      "existingEvidence": []
+    }
+  ],
+  "requests": [
+    {
+      "id": "vndb-doc",
+      "source": "VNDB",
+      "url": "https://api.vndb.org/kana",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:04.964Z",
+      "status": 200,
+      "finalUrl": "https://api.vndb.org/kana",
+      "decodedTextBytes": 113821,
+      "decodedBodySha256": "17d93260f1c2f66e0c32b9eb096644dd3d08986d79b8c6f8ae59e5a2a7f6591e",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "bangumi-spec",
+      "source": "Bangumi",
+      "url": "https://raw.githubusercontent.com/bangumi/api/master/open-api/v0.yaml",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:05.004Z",
+      "status": 200,
+      "finalUrl": "https://raw.githubusercontent.com/bangumi/api/master/open-api/v0.yaml",
+      "decodedTextBytes": 113279,
+      "decodedBodySha256": "5a7ddb7ddec132293b1aa08102e6ac63e31b2925574658e927d6f931df2519da",
+      "responseHeaders": {
+        "content-type": "text/plain; charset=utf-8",
+        "etag": "W/\"a4aef7c66fb1f39808a3ff2a38c5f854574fdd1c717e2a1a52d842e74fbf7f44\""
+      }
+    },
+    {
+      "id": "ymgal-doc",
+      "source": "YMGal",
+      "url": "https://www.ymgal.games/developer",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:05.005Z",
+      "status": 200,
+      "finalUrl": "https://www.ymgal.games/developer",
+      "decodedTextBytes": 69450,
+      "decodedBodySha256": "039072895f9c96c511a0ecd0e981acdddef646d3945ada3ba680eb5ddc560fc1",
+      "responseHeaders": {
+        "content-type": "text/html",
+        "last-modified": "Wed, 05 Aug 2026 11:41:49 GMT",
+        "etag": "W/\"6a73217d-10f4a\""
+      }
+    },
+    {
+      "id": "tmdb-spec",
+      "source": "TMDB",
+      "url": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:05.006Z",
+      "status": 200,
+      "finalUrl": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+      "decodedTextBytes": 3054059,
+      "decodedBodySha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "2026-03-23T14:27:00.500Z",
+        "etag": "W/\"2e99eb-x/pn2IKFos4wkWD5O5P5vajbvTc\"",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "99",
+        "x-ratelimit-reset": "1790860295"
+      }
+    },
+    {
+      "id": "steamgriddb-spec",
+      "source": "SteamGridDB",
+      "url": "https://www.steamgriddb.com/static/openapi.yml",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:06.544Z",
+      "status": 200,
+      "finalUrl": "https://www.steamgriddb.com/static/openapi.yml",
+      "decodedTextBytes": 59095,
+      "decodedBodySha256": "7d390f6e6f52b0eb048cafc2bfe230039d5852c6254a31a78a420a7a2ea5631d",
+      "responseHeaders": {
+        "content-type": "application/octet-stream",
+        "last-modified": "Sat, 20 Jul 2024 20:13:56 GMT",
+        "etag": "\"669c1a84-e6d7\""
+      }
+    },
+    {
+      "id": "igdb-doc",
+      "source": "IGDB",
+      "url": "https://api-docs.igdb.com/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:06.545Z",
+      "status": 200,
+      "finalUrl": "https://api-docs.igdb.com/",
+      "decodedTextBytes": 1289516,
+      "decodedBodySha256": "7784e76fe691cee2a227148add2d85c677bba59233a41f07f45509b0932ac941",
+      "responseHeaders": {
+        "content-type": "text/html",
+        "last-modified": "Thu, 01 Oct 2026 11:56:22 GMT"
+      }
+    },
+    {
+      "id": "steam-player-doc",
+      "source": "Steam",
+      "url": "https://partner.steamgames.com/doc/webapi/IPlayerService",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:06.545Z",
+      "status": 200,
+      "finalUrl": "https://partner.steamgames.com/doc/webapi/IPlayerService",
+      "decodedTextBytes": 121390,
+      "decodedBodySha256": "3503a6bbc3dd13a31818297ddb088ffe4341d80eef821af9056e44b387ce7a36",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8",
+        "last-modified": "Thu, 15 Oct 2026 10:31:25 GMT"
+      }
+    },
+    {
+      "id": "mal-doc",
+      "source": "MyAnimeList",
+      "url": "https://myanimelist.net/apiconfig/references/api/v2",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:06.546Z",
+      "status": 200,
+      "finalUrl": "https://myanimelist.net/apiconfig/references/api/v2",
+      "decodedTextBytes": 1297898,
+      "decodedBodySha256": "3977653e430e2eb4e76e1ee349a6a53ec5d287744ed1535e4b5881206ca2cbdd",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "anilist-terms",
+      "source": "AniList",
+      "url": "https://docs.anilist.co/guide/terms-of-use",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:07.344Z",
+      "status": 200,
+      "finalUrl": "https://docs.anilist.co/guide/terms-of-use",
+      "decodedTextBytes": 51753,
+      "decodedBodySha256": "07e2687b1385f7a2d2790007dfbae9ce85ba1dd28275fdd3e1648a01a7c2dae4",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "google-books-discovery",
+      "source": "Google Books",
+      "url": "https://books.googleapis.com/$discovery/rest?version=v1",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:07.345Z",
+      "status": 200,
+      "finalUrl": "https://books.googleapis.com/$discovery/rest?version=v1",
+      "decodedTextBytes": 176817,
+      "decodedBodySha256": "a72adaadc1dabe6f9536106008967c0702196b6194acaa8da889a90f2082cc10",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      }
+    },
+    {
+      "id": "neodb-spec",
+      "source": "NeoDB",
+      "url": "https://neodb.social/api/openapi.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:07.346Z",
+      "status": 200,
+      "finalUrl": "https://neodb.social/api/openapi.json",
+      "decodedTextBytes": 172117,
+      "decodedBodySha256": "02179ff7e469519ed282b1433bc9ebd7b8cb45e93f20349dcb500a1984217d9f",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ranobedb-doc",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/docs/v0",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:07.347Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/docs/v0",
+      "decodedTextBytes": 50513,
+      "decodedBodySha256": "2bf82a2fba07b84f7de8d371a4ddf21956aaf517b0298fbc9acaf1c03a4d17a4",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "mangaupdates-spec",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/openapi.yaml",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:08.638Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/openapi.yaml",
+      "decodedTextBytes": 354928,
+      "decodedBodySha256": "12acb479d7c5c1a877f5dd31c9f7691cb185a6aee9796b91d68b05ef97c73202",
+      "responseHeaders": {
+        "content-type": "application/octet-stream",
+        "last-modified": "Sun, 11 Oct 2026 19:55:49 GMT",
+        "etag": "\"6acbe9c5-56a70\""
+      }
+    },
+    {
+      "id": "annict-doc",
+      "source": "Annict",
+      "url": "https://developers.annict.com/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:08.639Z",
+      "status": 404,
+      "finalUrl": "https://developers.annict.com/",
+      "decodedTextBytes": 1647,
+      "decodedBodySha256": "afd35bdce57a02124e23e423d07fa1081e958cf0d36decfd2f42f9a143e1fb6e",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8",
+        "etag": "W/\"6ab8e4d1-66f\""
+      },
+      "interpretation": "The old documentation URL returned a migration notice linking to Wikino. Current documentation was then read."
+    },
+    {
+      "id": "ann-doc",
+      "source": "ANN",
+      "url": "https://www.animenewsnetwork.com/encyclopedia/api.php",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:08.640Z",
+      "status": 200,
+      "finalUrl": "https://www.animenewsnetwork.com/encyclopedia/api.php",
+      "decodedTextBytes": 86375,
+      "decodedBodySha256": "439107a71893c93c9e46575cdb052ea654e675a804c8d4d4c33bd780da962a75",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "kitsu-spec",
+      "source": "Kitsu",
+      "url": "https://raw.githubusercontent.com/hummingbird-me/api-docs/openapi3/api/kitsu.yml",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:08.640Z",
+      "status": 200,
+      "finalUrl": "https://raw.githubusercontent.com/hummingbird-me/api-docs/openapi3/api/kitsu.yml",
+      "decodedTextBytes": 36233,
+      "decodedBodySha256": "2e1118fcb8c31a4452fe70f1997c1e32e2fed35cf44a8cc1856f5ea47355822e",
+      "responseHeaders": {
+        "content-type": "text/plain; charset=utf-8",
+        "etag": "W/\"85be8bdc4c0104cf0231243165244b580457fc68b39e1679b33059b51ed1f2d1\""
+      }
+    },
+    {
+      "id": "shikimori-doc",
+      "source": "Shikimori",
+      "url": "https://shikimori.io/api/doc",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:09.568Z",
+      "status": 200,
+      "finalUrl": "https://shikimori.io/api/doc",
+      "decodedTextBytes": 27973,
+      "decodedBodySha256": "4eb99eab9201efe89be8bd5b8690a175cde85de246bf7ae909c7e1874466c738",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"4eb99eab9201efe89be8bd5b8690a175\""
+      }
+    },
+    {
+      "id": "anidb-doc",
+      "source": "AniDB",
+      "url": "https://wiki.anidb.net/HTTP_API_Definition",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:09.569Z",
+      "status": 403,
+      "finalUrl": "https://wiki.anidb.net/HTTP_API_Definition",
+      "decodedTextBytes": 5017,
+      "decodedBodySha256": "554f91bd08f379e42ca1f38f0acd5225029edec9e6240916805ff303be353ba6",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Wiki access was blocked in this environment. The official title data export was independently readable."
+    },
+    {
+      "id": "thetvdb-spec",
+      "source": "TheTVDB",
+      "url": "https://thetvdb.github.io/v4-api/swagger.yml",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:09.569Z",
+      "status": 200,
+      "finalUrl": "https://thetvdb.github.io/v4-api/swagger.yml",
+      "decodedTextBytes": 115347,
+      "decodedBodySha256": "5d7caa274c72c96a3176571d69a8539460b71fcca247e1ba3ecedc1e638edfef",
+      "responseHeaders": {
+        "content-type": "text/yaml",
+        "last-modified": "Sat, 11 May 2024 18:58:37 GMT",
+        "etag": "W/\"663fbfdd-1c293\""
+      }
+    },
+    {
+      "id": "thetvdb-access",
+      "source": "TheTVDB",
+      "url": "https://www.thetvdb.com/api-information",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:09.570Z",
+      "status": 200,
+      "finalUrl": "https://www.thetvdb.com/api-information",
+      "decodedTextBytes": 21973,
+      "decodedBodySha256": "ded8d3ca44fed80e44685eff075b4defa056f0829ba955c30702500ab54ccf78",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "ndl-doc",
+      "source": "NDL Search",
+      "url": "https://ndlsearch.ndl.go.jp/help/api/specifications",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:10.247Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/help/api/specifications",
+      "decodedTextBytes": 135334,
+      "decodedBodySha256": "e50e38e96f33ef77358fd865fedbf826a835b3d1cf09bd690e91fb87383e8039",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"210a6-unKOrNWPrY7ZE9NRPA/aaw4e30k\""
+      }
+    },
+    {
+      "id": "simkl-spec",
+      "source": "SIMKL",
+      "url": "https://api.simkl.org/openapi.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:10.247Z",
+      "status": 200,
+      "finalUrl": "https://api.simkl.org/openapi.json",
+      "decodedTextBytes": 1206090,
+      "decodedBodySha256": "1b29a43b5553a741bb01c75ac6e482a9532623fecbf3c887bfafe8f8982f6bd8",
+      "responseHeaders": {
+        "content-type": "application/json",
+        "last-modified": "Wed, 14 Oct 2026 20:04:55 GMT",
+        "etag": "W/\"laGudbrJF_NncUHF\""
+      }
+    },
+    {
+      "id": "mangabaka-doc",
+      "source": "MangaBaka",
+      "url": "https://mangabaka.org/data/api",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:10.248Z",
+      "status": 200,
+      "finalUrl": "https://mangabaka.org/data/api",
+      "decodedTextBytes": 153053,
+      "decodedBodySha256": "8ba63afb8e47f48a010840bab34572cccb7d80b46c26985e5f3dcdcc3e86c0eb",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "openlibrary-doc",
+      "source": "Open Library",
+      "url": "https://openlibrary.org/developers/api",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:10.248Z",
+      "status": 200,
+      "finalUrl": "https://openlibrary.org/developers/api",
+      "decodedTextBytes": 61030,
+      "decodedBodySha256": "2b365f98cacb9f1af4007fbe114b73462641cd93a8b844dd30b9b225ce14f730",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "bookwalker-global-home",
+      "source": "BookWalker Global",
+      "url": "https://global.bookwalker.jp/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:11.263Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.com/",
+      "decodedTextBytes": 707292,
+      "decodedBodySha256": "d1a2f331a6ec86e9ff55448c525e2ca7558d671ddcc03aac3342361c22201b2a",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "bookwalker-jp-home",
+      "source": "BOOKWALKER Japan",
+      "url": "https://bookwalker.jp/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:11.264Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.jp/",
+      "decodedTextBytes": 1149918,
+      "decodedBodySha256": "eacb775b6cb7bbd22cbd607b67215b411512fc5f99d9dd92b9ee7fed229d0aec",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "itch-doc",
+      "source": "itch.io",
+      "url": "https://itch.io/docs/api/serverside",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:11.264Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/docs/api/serverside",
+      "decodedTextBytes": 84661,
+      "decodedBodySha256": "b9b1c41e5eefdc73fd29ee976ba7ab515d1215361ee276228e4dfc650b17a892",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "wikidata-doc",
+      "source": "Wikidata",
+      "url": "https://www.wikidata.org/wiki/Wikidata:Data_access",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:11.265Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/wiki/Wikidata:Data_access",
+      "decodedTextBytes": 143752,
+      "decodedBodySha256": "92a03d93ebfe96d69f263a9122e5eb38acfaad9f9cf3f6076eb7e860036e3aa1",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8",
+        "last-modified": "Wed, 14 Oct 2026 11:06:51 GMT"
+      }
+    },
+    {
+      "id": "fanart-doc",
+      "source": "Fanart.tv",
+      "url": "https://fanart.tv/api-docs/api-v3/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:13.619Z",
+      "status": 403,
+      "finalUrl": "https://fanart.tv/api-docs/api-v3/",
+      "decodedTextBytes": 5394,
+      "decodedBodySha256": "2c7259679e3e4a963ed0336d07dd66d609137ce76f6492d62a835ba0fa4f1d90",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "syoboi-doc",
+      "source": "Syoboi Calendar",
+      "url": "https://cal.syoboi.jp/db.php",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:13.620Z",
+      "status": 200,
+      "finalUrl": "https://cal.syoboi.jp/db.php",
+      "decodedTextBytes": 131,
+      "decodedBodySha256": "bb682a83717edd42d47b269f8748c6e41b71d3f4ce71da44599e31246d9a7e96",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8"
+      },
+      "interpretation": "Endpoint requested without a command during discovery; not a data availability test."
+    },
+    {
+      "id": "ranobe-sao",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:14.851Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=5",
+      "decodedTextBytes": 2440,
+      "decodedBodySha256": "f78e1716faf1ac2da905e0f6eff6037f13ab55600f702f15294b286230d099c5",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "gbooks-sao-ja",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3&langRestrict=ja&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:14.892Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3&langRestrict=ja&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "fc1b6c955147536c51818554490065e90a629231a38991b5fd29e86c63a8830a",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "gbooks-sao-en",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22Sword%20Art%20Online%22&langRestrict=en&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:14.893Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22Sword%20Art%20Online%22&langRestrict=en&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "abd3b2c7f47c5f877f7931793abf6675934bc47737bf13e7afbff758dcfa0cf3",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "gbooks-sao-zh",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E5%88%80%E5%8A%8D%E7%A5%9E%E5%9F%9F&langRestrict=zh&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:14.894Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E5%88%80%E5%8A%8D%E7%A5%9E%E5%9F%9F&langRestrict=zh&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "6c5f0109c678853fa1eade121db3be410a6546597b378b6f88994383d04ed318",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "ranobe-bookworm",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/series?q=Ascendance%20of%20a%20Bookworm&limit=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.390Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/series?q=Ascendance%20of%20a%20Bookworm&limit=5",
+      "decodedTextBytes": 2842,
+      "decodedBodySha256": "b3f2c9bfd534e40166ddcb46656d0bf09214b488b9f0cd6fb0d07ac7c6945b72",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "gbooks-bookworm-en",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22Ascendance%20of%20a%20Bookworm%22&langRestrict=en&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.391Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22Ascendance%20of%20a%20Bookworm%22&langRestrict=en&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "50c4d43b490e1109fd82075da68086a869f79947bcd940052b23349f7331d741",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "gbooks-bookworm-ja",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E6%9C%AC%E5%A5%BD%E3%81%8D%E3%81%AE%E4%B8%8B%E5%89%8B%E4%B8%8A&langRestrict=ja&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.391Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E6%9C%AC%E5%A5%BD%E3%81%8D%E3%81%AE%E4%B8%8B%E5%89%8B%E4%B8%8A&langRestrict=ja&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "fa40e9dcbeb63f68b1aeed712e56ca5651d6e30b5689a99b7f5f5d55839e38da",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "gbooks-bookworm-zh",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E5%B0%8F%E6%9B%B8%E7%97%B4%E7%9A%84%E4%B8%8B%E5%89%8B%E4%B8%8A&langRestrict=zh&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.391Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%E5%B0%8F%E6%9B%B8%E7%97%B4%E7%9A%84%E4%B8%8B%E5%89%8B%E4%B8%8A&langRestrict=zh&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "cd23b6bbef59e1dac8db99050a1579bf8672915cecdcb0beb1d55241faa8d3b2",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "ol-sao",
+      "source": "Open Library",
+      "url": "https://openlibrary.org/search.json?title=Sword%20Art%20Online&limit=5&fields=key,title,author_name,language,isbn,edition_count,first_publish_year",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.692Z",
+      "status": 200,
+      "finalUrl": "https://openlibrary.org/search.json?title=Sword%20Art%20Online&limit=5&fields=key,title,author_name,language,isbn,edition_count,first_publish_year",
+      "decodedTextBytes": 1791,
+      "decodedBodySha256": "d0c875e4c73794d5b56ad39c659588448d44ce6b7f6a94e3b707f7b8d720b968",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ndl-sao",
+      "source": "NDL Search",
+      "url": "https://ndlsearch.ndl.go.jp/api/opensearch?title=%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3&cnt=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.693Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/opensearch?title=%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3&cnt=5",
+      "decodedTextBytes": 11993,
+      "decodedBodySha256": "5c25548c772ff62604d7e035fdd898582c65628731d70c050711ac5a8a3971ad",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8",
+        "etag": "W/\"2470b857dfdb44abd8aa01436ad991b3c952038b0e4c8ede528b102cf852d91b\""
+      }
+    },
+    {
+      "id": "gbooks-sao-isbn-ja",
+      "source": "Google Books",
+      "url": "https://www.googleapis.com/books/v1/volumes?q=isbn%3A9784048677608&maxResults=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.694Z",
+      "status": 429,
+      "finalUrl": "https://www.googleapis.com/books/v1/volumes?q=isbn%3A9784048677608&maxResults=5",
+      "decodedTextBytes": 1306,
+      "decodedBodySha256": "56c251bc79fb311de91d0b6cf7447f445edb8a8d09358e8c16a7daeab8cc3f53",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8"
+      },
+      "interpretation": "Anonymous API request was blocked by the default project daily quota. Public book pages were separately inspected."
+    },
+    {
+      "id": "ranobe-rezero",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/series?q=Re%3AZero&limit=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:31:15.694Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/series?q=Re%3AZero&limit=5",
+      "decodedTextBytes": 2965,
+      "decodedBodySha256": "ec1d4c67f10e5c79538aed9f41c1c2bd75d8efc11d1065c94c62cbe9b33c9b61",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "bgm-frieren-search",
+      "source": "Bangumi",
+      "url": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "method": "POST",
+      "request": {
+        "keyword": "葬送的芙莉莲",
+        "filter": {
+          "type": [2]
+        }
+      },
+      "checkedAt": "2026-10-15T10:34:22.285Z",
+      "status": 200,
+      "finalUrl": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "decodedTextBytes": 22398,
+      "decodedBodySha256": "96727d3215d05207658d9df59ac587d9861851c8c931c4a5b79fdcf6b5dcc5de",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "bgm-tsuki-search",
+      "source": "Bangumi",
+      "url": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "method": "POST",
+      "request": {
+        "keyword": "月に寄りそう乙女の作法",
+        "filter": {
+          "type": [4]
+        }
+      },
+      "checkedAt": "2026-10-15T10:34:22.327Z",
+      "status": 200,
+      "finalUrl": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "decodedTextBytes": 6672,
+      "decodedBodySha256": "5a1ad51b22043af0fe091a7e126f77e9f2aa3d5482fb79453909310fe04d6401",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "anilist-frieren",
+      "source": "AniList",
+      "url": "https://graphql.anilist.co",
+      "method": "POST",
+      "request": {
+        "query": "query { Media(search:\"Sousou no Frieren\",type:ANIME) { id idMal title { romaji english native } format countryOfOrigin description(asHtml:false) episodes startDate { year month day } coverImage { large } bannerImage characters(perPage:3) { pageInfo { total } edges { role node { id name { full native } } voiceActors(language:JAPANESE) { id name { full native } } } } staff(perPage:3) { pageInfo { total } edges { role node { id name { full native } } } } relations { edges { relationType node { id type format title { native } } } } } }"
+      },
+      "checkedAt": "2026-10-15T10:34:22.328Z",
+      "status": 200,
+      "finalUrl": "https://graphql.anilist.co/",
+      "decodedTextBytes": 3154,
+      "decodedBodySha256": "fe8fc77f1373c9af859ddd7c546a9c5cc314b3f03a687bd7dc4b3879ba65ef51",
+      "responseHeaders": {
+        "content-type": "application/json",
+        "x-ratelimit-limit": "30",
+        "x-ratelimit-remaining": "29"
+      }
+    },
+    {
+      "id": "vndb-tsuki-search",
+      "source": "VNDB",
+      "url": "https://api.vndb.org/kana/vn",
+      "method": "POST",
+      "request": {
+        "filters": ["search", "=", "Tsuki ni Yorisou Otome no Sahou"],
+        "fields": "title,titles,description,olang,developers.name",
+        "results": 3
+      },
+      "checkedAt": "2026-10-15T10:34:22.329Z",
+      "status": 400,
+      "finalUrl": "https://api.vndb.org/kana/vn",
+      "decodedTextBytes": 79,
+      "decodedBodySha256": "5484f8ca828cebcfb2f6711351135bc33bd76166afb4fe0d2a757bbaa1f5fc90",
+      "responseHeaders": {
+        "content-type": "text"
+      },
+      "interpretation": "Invalid evaluation query: title subfields were omitted. Corrected by vndb-tsuki-valid; not a source outage."
+    },
+    {
+      "id": "kitsu-frieren-search",
+      "source": "Kitsu",
+      "url": "https://kitsu.app/api/edge/anime?filter%5Btext%5D=Sousou%20no%20Frieren&page%5Blimit%5D=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:23.270Z",
+      "status": 200,
+      "finalUrl": "https://kitsu.app/api/edge/anime?filter%5Btext%5D=Sousou%20no%20Frieren&page%5Blimit%5D=3",
+      "decodedTextBytes": 16656,
+      "decodedBodySha256": "aab61bbd7a445db3d51cf9988dd90c288d44625011a69a4352ca0b0daae68fc1",
+      "responseHeaders": {
+        "content-type": "application/vnd.api+json",
+        "etag": "W/\"aab61bbd7a445db3d51cf9988dd90c28\""
+      }
+    },
+    {
+      "id": "shikimori-frieren-search",
+      "source": "Shikimori",
+      "url": "https://shikimori.io/api/animes?search=Sousou%20no%20Frieren&limit=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:23.271Z",
+      "status": 200,
+      "finalUrl": "https://shikimori.io/api/animes?search=Sousou%20no%20Frieren&limit=3",
+      "decodedTextBytes": 1572,
+      "decodedBodySha256": "a7a327b011d8cf71c9bf60c6e3fd99abd01413dd26d7338c81e806ab016cc4cc",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"a7a327b011d8cf71c9bf60c6e3fd99ab\""
+      }
+    },
+    {
+      "id": "mu-yotsuba-search",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/v1/series/search",
+      "method": "POST",
+      "request": {
+        "search": "Yotsuba",
+        "perpage": 3
+      },
+      "checkedAt": "2026-10-15T10:34:23.272Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/v1/series/search",
+      "decodedTextBytes": 27683,
+      "decodedBodySha256": "b51248c783d639d23161354f3f1598ed8d7a87648190cee3806854d4fa980068",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "neodb-frieren-search",
+      "source": "NeoDB",
+      "url": "https://neodb.social/api/catalog/search?query=%E8%91%AC%E9%80%81%E7%9A%84%E8%8A%99%E8%8E%89%E8%8E%B2&category=tv",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:23.273Z",
+      "status": 200,
+      "finalUrl": "https://neodb.social/api/catalog/search?query=%E8%91%AC%E9%80%81%E7%9A%84%E8%8A%99%E8%8E%89%E8%8E%B2&category=tv",
+      "decodedTextBytes": 42550,
+      "decodedBodySha256": "6042d34d0df4d07dc3973f03491c086e01a41efd9268d0daac934573f6d92f58",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "id": "steam-clannad-en",
+      "source": "Steam",
+      "url": "https://store.steampowered.com/api/appdetails?appids=324160&l=english",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:24.049Z",
+      "status": 200,
+      "finalUrl": "https://store.steampowered.com/api/appdetails?appids=324160&l=english",
+      "decodedTextBytes": 14028,
+      "decodedBodySha256": "b96d8524c7b232bef6784ecabcbfc2bef4144183571e9debc83729f3ec783330",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Thu, 15 Oct 2026 10:00:00 GMT"
+      }
+    },
+    {
+      "id": "steam-clannad-zh",
+      "source": "Steam",
+      "url": "https://store.steampowered.com/api/appdetails?appids=324160&l=schinese",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:24.050Z",
+      "status": 200,
+      "finalUrl": "https://store.steampowered.com/api/appdetails?appids=324160&l=schinese",
+      "decodedTextBytes": 11983,
+      "decodedBodySha256": "a7b95da59d580ab11effba304efd09186e21e891f3ca3bbaa575dd13d640db35",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Thu, 15 Oct 2026 10:00:00 GMT"
+      }
+    },
+    {
+      "id": "mangabaka-api-root",
+      "source": "MangaBaka",
+      "url": "https://api.mangabaka.org/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:24.051Z",
+      "status": 200,
+      "finalUrl": "https://mangabaka.org/data/api",
+      "decodedTextBytes": 153053,
+      "decodedBodySha256": "8ba63afb8e47f48a010840bab34572cccb7d80b46c26985e5f3dcdcc3e86c0eb",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "steam-clannad-ja",
+      "source": "Steam",
+      "url": "https://store.steampowered.com/api/appdetails?appids=324160&l=japanese",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:24.051Z",
+      "status": 200,
+      "finalUrl": "https://store.steampowered.com/api/appdetails?appids=324160&l=japanese",
+      "decodedTextBytes": 14193,
+      "decodedBodySha256": "f1ad418dd0779c3b6f890429b42dff0865fd4660feaa15bf6719e81c0769aa46",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Thu, 15 Oct 2026 10:00:00 GMT"
+      }
+    },
+    {
+      "id": "mangadex-yotsuba-detail",
+      "source": "MangaDex",
+      "url": "https://api.mangadex.org/manga/58be6aa6-06cb-4ca5-bd20-f1392ce451fb?includes%5B%5D=cover_art",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:26.047Z",
+      "status": 200,
+      "finalUrl": "https://api.mangadex.org/manga/58be6aa6-06cb-4ca5-bd20-f1392ce451fb?includes%5B%5D=cover_art",
+      "decodedTextBytes": 7997,
+      "decodedBodySha256": "e862328cd3a7ecbd41d524d8b1f353cf72fc53075a2a8992e17aac52495aff96",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "annict-doc-current",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/topics/5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:26.048Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/topics/5",
+      "decodedTextBytes": 28775,
+      "decodedBodySha256": "e50a558ccb232a718dcbcbd20e99d9eecbf98d5d067bc83d12b91904a8d308ba",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "fanart-doc-current",
+      "source": "Fanart.tv",
+      "url": "https://api.fanart.tv",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:26.049Z",
+      "status": 403,
+      "finalUrl": "https://api.fanart.tv/",
+      "decodedTextBytes": 5328,
+      "decodedBodySha256": "2ac8da0b292121011709d21a2de496fc8482fa2345a788c07f7ef5161100549c",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "syoboi-frieren-search",
+      "source": "Syoboi Calendar",
+      "url": "https://cal.syoboi.jp/db.php?Command=TitleLookup&Fields=TID,Title,ShortTitle,TitleEN,FirstYear,FirstMonth,Keywords,Comment&TID=&Title=%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:34:26.049Z",
+      "status": 200,
+      "finalUrl": "https://cal.syoboi.jp/db.php?Command=TitleLookup&Fields=TID,Title,ShortTitle,TitleEN,FirstYear,FirstMonth,Keywords,Comment&TID=&Title=%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3",
+      "decodedTextBytes": 203,
+      "decodedBodySha256": "fcd48b08feccbbb65a0cc3edb3b27f405e957c8209a7cc454e07415834fb6da7",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8"
+      },
+      "interpretation": "Invalid evaluation query: TitleLookup requires a TID. Corrected using the documented TitleSearch route."
+    },
+    {
+      "id": "annict-auth",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/354",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.798Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/354",
+      "decodedTextBytes": 58502,
+      "decodedBodySha256": "55188a195fa4e26655da4ada0b9d67cee159f55baf1205264ef5b761f7147fde",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "vndb-tsuki-valid",
+      "source": "VNDB",
+      "url": "https://api.vndb.org/kana/vn",
+      "method": "POST",
+      "request": {
+        "filters": ["search", "=", "Tsuki ni Yorisou Otome no Sahou"],
+        "fields": "title,titles.lang,titles.title,titles.main,description,developers.name",
+        "results": 3
+      },
+      "checkedAt": "2026-10-15T10:37:52.798Z",
+      "status": 200,
+      "finalUrl": "https://api.vndb.org/kana/vn",
+      "decodedTextBytes": 4767,
+      "decodedBodySha256": "3db3b031609bf076c816e1d0a2eafe31efcccecaaca9115f42f9f5a265f8cc50",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "annict-graphql",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/358",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.840Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/358",
+      "decodedTextBytes": 72229,
+      "decodedBodySha256": "0c45c4f64452b72ce32e5192816f864ccfc448aa6d73123d64e5486218879664",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "annict-reference",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/362",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.841Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/362",
+      "decodedTextBytes": 66819,
+      "decodedBodySha256": "9b9d1a8f502dbce6b2ff862bd1c0651e2f77afc0409a24cb9664490826f56c0e",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "ymgal-tsuki-page",
+      "source": "YMGal",
+      "url": "https://www.ymgal.games/ga31147",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.841Z",
+      "status": 200,
+      "finalUrl": "https://www.ymgal.games/ga31147",
+      "decodedTextBytes": 86929,
+      "decodedBodySha256": "5fc636be274ae953b7c4b520735bd96b82c0ad52763062507f22eaa25f4d3969",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8"
+      }
+    },
+    {
+      "id": "annict-works",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/364",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.842Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/364",
+      "decodedTextBytes": 92148,
+      "decodedBodySha256": "ac714c2d99dc14049b77cce3bd43a8ac39b063301ff705cc0bb52031e3cc9e25",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "ranobe-sao-detail",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/series/1234",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.842Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/series/1234",
+      "decodedTextBytes": 19120,
+      "decodedBodySha256": "90b211d776ce4f07c5d9245e99cbac8433ac30d5703b5694f81f85082f504312",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ranobe-sao-book1",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/book/5151",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:52.843Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/book/5151",
+      "decodedTextBytes": 18587,
+      "decodedBodySha256": "a585da67b18397567624fe4d1d54acb00cb70a0822d58df11b563ef867a2ef8f",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "annict-episodes",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/365",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:53.586Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/365",
+      "decodedTextBytes": 89484,
+      "decodedBodySha256": "1348d11c23d0163cf099dc2c53fb0d5bf3cfffd9585c24191527a7e483116a62",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "annict-rest",
+      "source": "Annict",
+      "url": "https://wikino.app/s/annict/pages/363",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:53.587Z",
+      "status": 200,
+      "finalUrl": "https://wikino.app/s/annict/pages/363",
+      "decodedTextBytes": 92106,
+      "decodedBodySha256": "cd3747da47e2c72c4b24fa8f9ad540a78b975927122d2b6ef29284efd37e190c",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "fanart-client-readme",
+      "source": "Fanart.tv",
+      "url": "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/README.md",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:53.587Z",
+      "status": 200,
+      "finalUrl": "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/README.md",
+      "decodedTextBytes": 14169,
+      "decodedBodySha256": "b73f2aaaaf32698f6a1a0ec9fde4f7c845e7aa3777de7aded7bd9dcc9c191e1f",
+      "responseHeaders": {
+        "content-type": "text/plain; charset=utf-8",
+        "etag": "W/\"6aba744b9f9f1e306bd3d669c2821b33299662d5b875c45504fdf5ebba158417\""
+      }
+    },
+    {
+      "id": "simkl-rules",
+      "source": "SIMKL",
+      "url": "https://api.simkl.org/api-rules",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:53.588Z",
+      "status": 200,
+      "finalUrl": "https://api.simkl.org/api-rules",
+      "decodedTextBytes": 721450,
+      "decodedBodySha256": "21ac92be49234e41eed0e96f44137dec32351ef49bb879c1a2e966498babd17e",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8",
+        "etag": "W/\"eemg45x3lcf4kz\""
+      }
+    },
+    {
+      "id": "syoboi-help",
+      "source": "Syoboi Calendar",
+      "url": "https://docs.cal.syoboi.jp/spec/db.php/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.107Z",
+      "status": 200,
+      "finalUrl": "https://docs.cal.syoboi.jp/spec/db.php/",
+      "decodedTextBytes": 22127,
+      "decodedBodySha256": "91a871738494c2747bdcc047493342ef74a19bc53bc4b6629346caa8251a9b99",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "itch-oauth",
+      "source": "itch.io",
+      "url": "https://itch.io/docs/api/oauth",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.108Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/docs/api/oauth",
+      "decodedTextBytes": 50548,
+      "decodedBodySha256": "aa9d9966ebdce7e78173589eba506543eea985378853199a3ebcba9b48a3044a",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "syoboi-json-help",
+      "source": "Syoboi Calendar",
+      "url": "https://docs.cal.syoboi.jp/spec/json.php/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.108Z",
+      "status": 200,
+      "finalUrl": "https://docs.cal.syoboi.jp/spec/json.php/",
+      "decodedTextBytes": 18846,
+      "decodedBodySha256": "000482bc035601431668e586686a6ff10d60b79145fee01634005f4ae9dc7b72",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "anilist-apps",
+      "source": "AniList",
+      "url": "https://anilist.co/apps",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.109Z",
+      "status": 200,
+      "finalUrl": "https://anilist.co/apps",
+      "decodedTextBytes": 4673,
+      "decodedBodySha256": "4c15b35518937420c6e78edb85a0a4acf3af2d61014dd18482391e208aef1857",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "gbooks-public-sao-ja",
+      "source": "Google Books",
+      "url": "https://books.google.com/books?id=CPlnPgAACAAJ&hl=en",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.298Z",
+      "status": 200,
+      "finalUrl": "https://books.google.com/books?id=CPlnPgAACAAJ&hl=en",
+      "decodedTextBytes": 29852,
+      "decodedBodySha256": "b8cb5d47d8ad38ab3c50ebb75fb70a5238c2891ad78fb92abe5783bc4131c020",
+      "responseHeaders": {
+        "content-type": "text/html; charset=ISO-8859-1"
+      }
+    },
+    {
+      "id": "ranobe-bookworm-detail",
+      "source": "RanobeDB",
+      "url": "https://ranobedb.org/api/v0/series/4239",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.298Z",
+      "status": 200,
+      "finalUrl": "https://ranobedb.org/api/v0/series/4239",
+      "decodedTextBytes": 28411,
+      "decodedBodySha256": "a234f0c72fae68c2f1622b2b3f63c515cfa108aa0e2d564a5e3455984075af8c",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "gbooks-public-sao-zh",
+      "source": "Google Books",
+      "url": "https://books.google.com/books?id=y2orDwAAQBAJ&hl=en",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.299Z",
+      "status": 200,
+      "finalUrl": "https://books.google.com/books?id=y2orDwAAQBAJ&hl=en",
+      "decodedTextBytes": 42065,
+      "decodedBodySha256": "7ca706bbf25f44fadf2748715f7b016297798087898fd41eacb82b2b84d5e440",
+      "responseHeaders": {
+        "content-type": "text/html; charset=ISO-8859-1"
+      }
+    },
+    {
+      "id": "gbooks-public-sao-en",
+      "source": "Google Books",
+      "url": "https://books.google.com/books?id=fBZVDgAAQBAJ&hl=zh-CN",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.300Z",
+      "status": 200,
+      "finalUrl": "https://books.google.com/books?id=fBZVDgAAQBAJ&hl=zh-CN",
+      "decodedTextBytes": 42101,
+      "decodedBodySha256": "73edbbc2548d1d662d8a0b76b6344ff63a69f11c0b1c85a4879d2d354c6aefc3",
+      "responseHeaders": {
+        "content-type": "text/html; charset=GB2312"
+      }
+    },
+    {
+      "id": "bookwalker-jp-search",
+      "source": "BOOKWALKER Japan",
+      "url": "https://bookwalker.jp/search/?word=%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%201&qcat=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.940Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.jp/search/?word=%E3%82%BD%E3%83%BC%E3%83%89%E3%82%A2%E3%83%BC%E3%83%88%E3%83%BB%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%201&qcat=3",
+      "decodedTextBytes": 285587,
+      "decodedBodySha256": "8ea2e0960b6802ebab22fe4ac541dcc013a76a3a98dbb85f0f429064f379e804",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "bookwalker-global-search",
+      "source": "BookWalker Global",
+      "url": "https://bookwalker.com/search?q=Sword%20Art%20Online",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.941Z",
+      "status": 404,
+      "finalUrl": "https://bookwalker.com/search?q=Sword%20Art%20Online",
+      "decodedTextBytes": 84079,
+      "decodedBodySha256": "0247699e10317d56d30c3dc07c6ca597e6b3f5aa37768392b8ae1005b69a020d",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      },
+      "interpretation": "An incorrect search route returned 404; the observed form uses /browse?search=."
+    },
+    {
+      "id": "mangabaka-changelog",
+      "source": "MangaBaka",
+      "url": "https://mangabaka.org/data/api/changelog",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:54.941Z",
+      "status": 200,
+      "finalUrl": "https://mangabaka.org/data/api/changelog",
+      "decodedTextBytes": 1114770,
+      "decodedBodySha256": "05adb4204a297dcab1c11f5732b37ce9eed6cbf3d3d069368d507b0c9fbb6dcd",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "ann-frieren-search",
+      "source": "ANN",
+      "url": "https://cdn.animenewsnetwork.com/encyclopedia/api.xml?anime=~Frieren",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:55.297Z",
+      "status": 200,
+      "finalUrl": "https://cdn.animenewsnetwork.com/encyclopedia/api.xml?anime=~Frieren",
+      "decodedTextBytes": 72713,
+      "decodedBodySha256": "35437ff2d4d4b5b6b5de0095bccd310f07fa430f2ae0d8808503c887d3ec9347",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8"
+      }
+    },
+    {
+      "id": "syoboi-frieren-valid",
+      "source": "Syoboi Calendar",
+      "url": "https://cal.syoboi.jp/json.php?Req=TitleSearch&Search=%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3&Limit=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:55.298Z",
+      "status": 200,
+      "finalUrl": "https://cal.syoboi.jp/json.php?Req=TitleSearch&Search=%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3&Limit=3",
+      "decodedTextBytes": 792,
+      "decodedBodySha256": "1a813a4a3aa479a5851dd60e5bfddbeb295108912b0749ff4e616143656bdaa3",
+      "responseHeaders": {
+        "content-type": "application/json;"
+      }
+    },
+    {
+      "id": "shikimori-frieren-detail",
+      "source": "Shikimori",
+      "url": "https://shikimori.io/api/animes/52991",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:55.299Z",
+      "status": 200,
+      "finalUrl": "https://shikimori.io/api/animes/52991",
+      "decodedTextBytes": 8332,
+      "decodedBodySha256": "a3c7a62eadba2ae37327908748b280dd2d48ea06c7101821c1faef6f476d5c09",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"a3c7a62eadba2ae37327908748b280dd\""
+      }
+    },
+    {
+      "id": "mangabaka-explorer",
+      "source": "MangaBaka",
+      "url": "https://mangabaka.org/data/api/explorer",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:55.300Z",
+      "status": 200,
+      "finalUrl": "https://mangabaka.org/data/api/explorer",
+      "decodedTextBytes": 123506,
+      "decodedBodySha256": "b1936f0cea24c72b439d64b4c49c8b4ea04037fb09ea478d2d83289b4b81a2a6",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "neodb-frieren-detail",
+      "source": "NeoDB",
+      "url": "https://neodb.social/api/tv/season/5pbd4BxJ5TYmRhqDaWMYoD",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:58.292Z",
+      "status": 200,
+      "finalUrl": "https://neodb.social/api/tv/season/5pbd4BxJ5TYmRhqDaWMYoD",
+      "decodedTextBytes": 12896,
+      "decodedBodySha256": "0fa993b15022401a775209076946b39c109b5bb5018111119f834b6c4969b678",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "id": "steamgriddb-clannad-page",
+      "source": "SteamGridDB",
+      "url": "https://www.steamgriddb.com/game/5505/grids",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:58.293Z",
+      "status": 200,
+      "finalUrl": "https://www.steamgriddb.com/game/5505/grids",
+      "decodedTextBytes": 2329,
+      "decodedBodySha256": "58cea8e70cb525b5d958952c9ddc44afe6809896d966aa909818b49d38512a54",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "igdb-clannad-page",
+      "source": "IGDB",
+      "url": "https://www.igdb.com/games/clannad",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:58.294Z",
+      "status": 403,
+      "finalUrl": "https://www.igdb.com/games/clannad",
+      "decodedTextBytes": 5494,
+      "decodedBodySha256": "bff1cff8969f84711a1d65a121e5b36247a144d0189dbd1439a50af8fefc0a7b",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "tvdb-frieren-page",
+      "source": "TheTVDB",
+      "url": "https://thetvdb.com/series/sousou-no-frieren",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:58.294Z",
+      "status": 200,
+      "finalUrl": "https://thetvdb.com/series/sousou-no-frieren",
+      "decodedTextBytes": 223985,
+      "decodedBodySha256": "a59fe7d9f234af39a0b402f28e656310f0ab84a5d013fec94bc67995a1d25e6d",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "tmdb-frieren-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=ja-JP",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:59.526Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=ja-JP",
+      "decodedTextBytes": 236264,
+      "decodedBodySha256": "52b9c4206d7103e27f627c86fb7976e2096105b906444dbde3a83be21484ee82",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"52b9c4206d7103e27f627c86fb7976e2\""
+      }
+    },
+    {
+      "id": "wikidata-frieren-search",
+      "source": "Wikidata",
+      "url": "https://www.wikidata.org/w/api.php?action=wbsearchentities&search=Frieren&language=en&uselang=zh&format=json&limit=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:37:59.526Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/w/api.php?action=wbsearchentities&search=Frieren&language=en&uselang=zh&format=json&limit=3",
+      "decodedTextBytes": 1585,
+      "decodedBodySha256": "5d809fc6ed3afc7e0ac50ffaedc34ab57fa674904738ba412f355fb49bc6c728",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "id": "mu-yotsuba-detail",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/v1/series/23606352927",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:45.204Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/v1/series/23606352927",
+      "decodedTextBytes": 12114,
+      "decodedBodySha256": "3f55fdd8b7fb7f15c5fdc24ece168c0c12b674bf2bf3e4c68e422e93d43abef0",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "mangabaka-yotsuba-search",
+      "source": "MangaBaka",
+      "url": "https://api.mangabaka.org/v1/series/search?q=Yotsuba",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:45.244Z",
+      "status": 200,
+      "finalUrl": "https://api.mangabaka.org/v1/series/search?q=Yotsuba",
+      "decodedTextBytes": 141868,
+      "decodedBodySha256": "d48435023b1fdbb17333c1a82380c718fdb80e04c3b446144500a548b1e8bd24",
+      "responseHeaders": {
+        "content-type": "application/json",
+        "last-modified": "Thu, 15 Oct 2026 10:43:04 GMT"
+      }
+    },
+    {
+      "id": "mangabaka-spec",
+      "source": "MangaBaka",
+      "url": "https://api.mangabaka.org/v1/openapi.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:45.245Z",
+      "status": 404,
+      "finalUrl": "https://api.mangabaka.org/v1/openapi.json",
+      "decodedTextBytes": 36,
+      "decodedBodySha256": "19aff0546c6233326b842eb2b8ac3d438a5cc0f7ffc7006fef8e69aac30655f6",
+      "responseHeaders": {
+        "content-type": "application/json"
+      },
+      "interpretation": "A guessed specification URL returned 404; the documented explorer and actual search endpoint were reachable."
+    },
+    {
+      "id": "jikan-frieren-detail",
+      "source": "MAL via Jikan",
+      "url": "https://api.jikan.moe/v4/anime/52991/full",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:45.246Z",
+      "outcome": "request failed",
+      "errorType": "TypeError",
+      "interpretation": "Network request failed in this environment. No conclusion about global Jikan availability or MAL API availability."
+    },
+    {
+      "id": "mal-frieren-page",
+      "source": "MyAnimeList",
+      "url": "https://myanimelist.net/anime/52991/Sousou_no_Frieren",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:55.909Z",
+      "status": 200,
+      "finalUrl": "https://myanimelist.net/anime/52991/Sousou_no_Frieren",
+      "decodedTextBytes": 219960,
+      "decodedBodySha256": "7e8ef9f31e179fdfafda95f3245939a564330bf6c4dae8f801bdde86a44523a8",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "mal-auth-doc",
+      "source": "MyAnimeList",
+      "url": "https://myanimelist.net/apiconfig/references/authorization",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:55.910Z",
+      "status": 200,
+      "finalUrl": "https://myanimelist.net/apiconfig/references/authorization",
+      "decodedTextBytes": 25342,
+      "decodedBodySha256": "e150254457ae75763e04ce8bb62ae836d6d25dd8da7dcc1c711bbfb20b952502",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "wikidata-frieren-entity",
+      "source": "Wikidata",
+      "url": "https://www.wikidata.org/wiki/Special:EntityData/Q98642652.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:55.910Z",
+      "status": 200,
+      "finalUrl": "https://www.wikidata.org/wiki/Special:EntityData/Q98642652.json",
+      "decodedTextBytes": 208729,
+      "decodedBodySha256": "fc291916fb7651161f2c4c7c2f2afc180735ebcf587bbb6c96f0cef3b8476f73",
+      "responseHeaders": {
+        "content-type": "application/json; charset=UTF-8",
+        "last-modified": "Tue, 29 Sep 2026 12:41:44 GMT"
+      }
+    },
+    {
+      "id": "syoboi-frieren-detail",
+      "source": "Syoboi Calendar",
+      "url": "https://cal.syoboi.jp/db.php?Command=TitleLookup&TID=6776",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:55.911Z",
+      "status": 200,
+      "finalUrl": "https://cal.syoboi.jp/db.php?Command=TitleLookup&TID=6776",
+      "decodedTextBytes": 3513,
+      "decodedBodySha256": "9eb54809be4b0c970ea0b34bb4b97904d18bbca7362ed8e0346516485ef51a73",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8"
+      }
+    },
+    {
+      "id": "bookwalker-data-root",
+      "source": "BookWalker Global",
+      "url": "https://data.bookwalker.com/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:57.934Z",
+      "status": 403,
+      "finalUrl": "https://data.bookwalker.com/",
+      "decodedTextBytes": 5462,
+      "decodedBodySha256": "55bcc11ac0963699a44416683b6914a31fc916520e7e7e3e06395a9072d5f362",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "bookwalker-global-sao-search",
+      "source": "BookWalker Global",
+      "url": "https://bookwalker.com/browse?search=Sword%20Art%20Online",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:57.935Z",
+      "status": 403,
+      "finalUrl": "https://bookwalker.com/browse?search=Sword%20Art%20Online",
+      "decodedTextBytes": 5638,
+      "decodedBodySha256": "72171be95e2e04541fa50d234fdce5f123122b7b236bc899c2e2a31c1cec706c",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "bookwalker-global-about",
+      "source": "BookWalker Global",
+      "url": "https://bookwalker.com/about",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:57.936Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.com/about",
+      "decodedTextBytes": 199206,
+      "decodedBodySha256": "5cf6630144fdcea19fa0b3e58e5aa8347a79f39aec4db15c6eefd0df94f0069d",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "vndb-tsuki-links",
+      "source": "VNDB",
+      "url": "https://api.vndb.org/kana/vn",
+      "method": "POST",
+      "request": {
+        "filters": ["id", "=", "v10680"],
+        "fields": "title,extlinks.url",
+        "results": 1
+      },
+      "checkedAt": "2026-10-15T10:42:57.936Z",
+      "status": 200,
+      "finalUrl": "https://api.vndb.org/kana/vn",
+      "decodedTextBytes": 460,
+      "decodedBodySha256": "79f9e19c8346dfb0ab040d27627cad55a4705ca5dd66b8b351cf45d2e66a0ed0",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "bgm-tsuki-nsfw-search",
+      "source": "Bangumi",
+      "url": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "method": "POST",
+      "request": {
+        "keyword": "近月少女的礼仪",
+        "filter": {
+          "type": [4],
+          "nsfw": true
+        }
+      },
+      "checkedAt": "2026-10-15T10:42:58.824Z",
+      "status": 200,
+      "finalUrl": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "decodedTextBytes": 6337,
+      "decodedBodySha256": "c3e4f9d1697df1e6cdc8692e3b8680b9f145ba221d0413308db7a926029f7a97",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ndl-sao-isbn",
+      "source": "NDL Search",
+      "url": "https://ndlsearch.ndl.go.jp/api/opensearch?isbn=9784048677608&cnt=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:58.825Z",
+      "status": 200,
+      "finalUrl": "https://ndlsearch.ndl.go.jp/api/opensearch?isbn=9784048677608&cnt=3",
+      "decodedTextBytes": 8795,
+      "decodedBodySha256": "cf4de58b3636c4173e5e819f5639a4ea39372027852dafe7e9c59084a9a0c793",
+      "responseHeaders": {
+        "content-type": "text/xml;charset=UTF-8",
+        "etag": "W/\"ad2f8e26c31fb0286a90c7587b834a3a5c11f28b198d8a7c3ee386561fb04d4b\""
+      }
+    },
+    {
+      "id": "ol-sao-isbn",
+      "source": "Open Library",
+      "url": "https://openlibrary.org/isbn/9780316371247.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:42:58.826Z",
+      "status": 200,
+      "finalUrl": "https://openlibrary.org/books/OL25855976M.json",
+      "decodedTextBytes": 2461,
+      "decodedBodySha256": "7e40054556ff65a542bce286f4db03b549aed487ef720d2261789ec47bee0ad5",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "kitsu-frieren-characters",
+      "source": "Kitsu",
+      "url": "https://kitsu.app/api/edge/anime/46474/characters?page%5Blimit%5D=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:41.638Z",
+      "status": 200,
+      "finalUrl": "https://kitsu.app/api/edge/anime/46474/characters?page%5Blimit%5D=3",
+      "decodedTextBytes": 233,
+      "decodedBodySha256": "e149d840d5e9a93a234d030519b225c51f94f02f5cff625872d46d572df90763",
+      "responseHeaders": {
+        "content-type": "application/vnd.api+json",
+        "etag": "W/\"e149d840d5e9a93a234d030519b225c5\""
+      }
+    },
+    {
+      "id": "kitsu-frieren-staff",
+      "source": "Kitsu",
+      "url": "https://kitsu.app/api/edge/anime/46474/staff?page%5Blimit%5D=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:41.682Z",
+      "status": 200,
+      "finalUrl": "https://kitsu.app/api/edge/anime/46474/staff?page%5Blimit%5D=3",
+      "decodedTextBytes": 223,
+      "decodedBodySha256": "51b098052d16d498cc3bce5f936923b7f10afe7c258933b47e4affc23cf4f85c",
+      "responseHeaders": {
+        "content-type": "application/vnd.api+json",
+        "etag": "W/\"51b098052d16d498cc3bce5f936923b7\""
+      }
+    },
+    {
+      "id": "kitsu-frieren-episodes",
+      "source": "Kitsu",
+      "url": "https://kitsu.app/api/edge/anime/46474/episodes?page%5Blimit%5D=3",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:41.683Z",
+      "status": 200,
+      "finalUrl": "https://kitsu.app/api/edge/anime/46474/episodes?page%5Blimit%5D=3",
+      "decodedTextBytes": 5405,
+      "decodedBodySha256": "863f22a9e94dd573f029c38e51dea57bd6b6c80c0f70f66c7749bd898fc6bf45",
+      "responseHeaders": {
+        "content-type": "application/vnd.api+json",
+        "etag": "W/\"863f22a9e94dd573f029c38e51dea57b\""
+      }
+    },
+    {
+      "id": "mu-author-azuma",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/v1/authors/5044830093",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:41.683Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/v1/authors/5044830093",
+      "decodedTextBytes": 1534,
+      "decodedBodySha256": "de563463b0e8f4bb761008c517ff6a9928a69695186eacb00ac1d21f00dce58b",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "mu-author-clamp-search",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/v1/authors/search",
+      "method": "POST",
+      "request": {
+        "search": "CLAMP",
+        "perpage": 25
+      },
+      "checkedAt": "2026-10-15T10:50:42.256Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/v1/authors/search",
+      "decodedTextBytes": 4943,
+      "decodedBodySha256": "9e0c4d3b3729e55ea6767ea04f9959c28030662c5bb64b563d2088efe6b40b90",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ol-sao-work",
+      "source": "Open Library",
+      "url": "https://openlibrary.org/works/OL17283107W.json",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:42.258Z",
+      "status": 200,
+      "finalUrl": "https://openlibrary.org/works/OL17283107W.json",
+      "decodedTextBytes": 1088,
+      "decodedBodySha256": "7d3da7be97ce6ed1ed39aadfd6c9ded8b4c9583312057b7de38d917d5f63e112",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "bookwalker-jp-sao-series",
+      "source": "BOOKWALKER Japan",
+      "url": "https://bookwalker.jp/series/56430/list/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:42.259Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.jp/series/56430/list/",
+      "decodedTextBytes": 457202,
+      "decodedBodySha256": "e9525285f1587ef77d732e7768763916479164dbded68b14cc3125ad069c0121",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "bookwalker-jp-sao1",
+      "source": "BOOKWALKER Japan",
+      "url": "https://bookwalker.jp/dee3fcbcd2-ee0a-4c27-b944-8b0aa397ea02/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:42.260Z",
+      "status": 200,
+      "finalUrl": "https://bookwalker.jp/dee3fcbcd2-ee0a-4c27-b944-8b0aa397ea02/",
+      "decodedTextBytes": 468039,
+      "decodedBodySha256": "341085980e7dea2117ac3a280f68002e6f63dc5a3585dabb51492fc147017036",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "id": "tmdb-frieren-zh-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=zh-CN",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.349Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=zh-CN",
+      "decodedTextBytes": 230206,
+      "decodedBodySha256": "615233df85f06fd7465e4733d565c69d76864d92cfa43fa266580af9af60722f",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"615233df85f06fd7465e4733d565c69d\""
+      }
+    },
+    {
+      "id": "tmdb-frieren-en-page",
+      "source": "TMDB",
+      "url": "https://www.themoviedb.org/tv/209867/season/1?language=en-US",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.350Z",
+      "status": 200,
+      "finalUrl": "https://www.themoviedb.org/tv/209867/season/1?language=en-US",
+      "decodedTextBytes": 223311,
+      "decodedBodySha256": "4cb99f0ed00f34b8b6d060f4b8faf15cb2a938216aca0942e05a0151b8543220",
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8",
+        "etag": "W/\"4cb99f0ed00f34b8b6d060f4b8faf15c\""
+      }
+    },
+    {
+      "id": "fanart-frieren-page",
+      "source": "Fanart.tv",
+      "url": "https://fanart.tv/series/424536/frieren-beyond-journeys-end/",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.351Z",
+      "status": 403,
+      "finalUrl": "https://fanart.tv/series/424536/frieren-beyond-journeys-end/",
+      "decodedTextBytes": 5514,
+      "decodedBodySha256": "6f5e1b567b548896d603d60dc695ed74bef3f91c447434a7704a4bb7c02adf5a",
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "interpretation": "Access protection prevented this request in the evaluation environment; not treated as proof of global failure."
+    },
+    {
+      "id": "itch-vn-catalog",
+      "source": "itch.io",
+      "url": "https://itch.io/games/genre-visual-novel",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:50:43.352Z",
+      "status": 200,
+      "finalUrl": "https://itch.io/games/genre-visual-novel",
+      "decodedTextBytes": 102457,
+      "decodedBodySha256": "446b07dabe8b92dfd393ace6dc8d9fbc8dde676bf90cf8bfb6e130cf8c98f520",
+      "responseHeaders": {
+        "content-type": "text/html"
+      }
+    },
+    {
+      "id": "ymgal-tsuki-api",
+      "source": "YMGal",
+      "url": "https://www.ymgal.games/open/archive?gid=31147",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:54:24.645Z",
+      "status": 200,
+      "finalUrl": "https://www.ymgal.games/open/archive?gid=31147",
+      "decodedTextBytes": 16084,
+      "decodedBodySha256": "058fe70a8fe1540b7ca5978531fd4551dd8744d18d01b4f257a9e9e7f3feae8c",
+      "responseHeaders": {
+        "content-type": "application/json;charset=utf-8"
+      }
+    },
+    {
+      "id": "ymgal-clannad-search",
+      "source": "YMGal",
+      "url": "https://www.ymgal.games/open/archive/search-game?mode=list&keyword=CLANNAD&pageNum=1&pageSize=5",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:54:25.129Z",
+      "status": 200,
+      "finalUrl": "https://www.ymgal.games/open/archive/search-game?mode=list&keyword=CLANNAD&pageNum=1&pageSize=5",
+      "decodedTextBytes": 1777,
+      "decodedBodySha256": "ab19c9dc0153a9887b99aaecd4e49beb197db90832c406ecfd5b968c13996e40",
+      "responseHeaders": {
+        "content-type": "application/json;charset=utf-8"
+      }
+    },
+    {
+      "id": "bgm-tsuki-direct",
+      "source": "Bangumi",
+      "url": "https://api.bgm.tv/v0/subjects/44123",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:54:25.436Z",
+      "status": 404,
+      "finalUrl": "https://api.bgm.tv/v0/subjects/44123",
+      "decodedTextBytes": 189,
+      "decodedBodySha256": "fbfb39143db9d5ebfd9295b911d7f7ce9b1bc267a14af8fcecb3c4c3844043c4",
+      "responseHeaders": {
+        "content-type": "application/json"
+      },
+      "interpretation": "Anonymous detail was unavailable despite the catalog listing. This does not establish that the title is absent."
+    },
+    {
+      "id": "bgm-clannad-search",
+      "source": "Bangumi",
+      "url": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "method": "POST",
+      "request": {
+        "keyword": "CLANNAD",
+        "filter": {
+          "type": [4]
+        }
+      },
+      "checkedAt": "2026-10-15T10:54:26.039Z",
+      "status": 200,
+      "finalUrl": "https://api.bgm.tv/v0/search/subjects?limit=3",
+      "decodedTextBytes": 15601,
+      "decodedBodySha256": "25102ee7d69a22183659dc6bf070c4357ca7c70e81aa22d5ce93c985a5db9255",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ymgal-clannad-api",
+      "source": "YMGal",
+      "url": "https://www.ymgal.games/open/archive?gid=10008",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:55:44.292Z",
+      "status": 200,
+      "finalUrl": "https://www.ymgal.games/open/archive?gid=10008",
+      "decodedTextBytes": 26987,
+      "decodedBodySha256": "c42513bd0ace7f5bdca1dd12dd6963ec079d93deec47c6ee7496dbcb31ead7d0",
+      "responseHeaders": {
+        "content-type": "application/json;charset=utf-8"
+      }
+    },
+    {
+      "id": "mu-author-clamp-detail",
+      "source": "MangaUpdates",
+      "url": "https://api.mangaupdates.com/v1/authors/40579282294",
+      "method": "GET",
+      "checkedAt": "2026-10-15T10:58:13.390Z",
+      "status": 200,
+      "finalUrl": "https://api.mangaupdates.com/v1/authors/40579282294",
+      "decodedTextBytes": 2215,
+      "decodedBodySha256": "4598f76a5cc186efe849dae7fb440eb439ad0cb3c40931a781dacb672b0e9c02",
+      "responseHeaders": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "id": "ranobedb-repository",
+      "source": "RanobeDB",
+      "url": "https://api.github.com/repos/Blastose/ranobedb",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:00:20.864Z",
+      "status": 200,
+      "finalUrl": "https://api.github.com/repos/Blastose/ranobedb",
+      "decodedTextBytes": 5185,
+      "decodedBodySha256": "abecbdb9121f626792733bdb4c3f69ae75371d851c2af8b9af0ff373f3d9ea89",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Sun, 04 Oct 2026 23:32:08 GMT",
+        "etag": "W/\"5766a8f7d67ca5291f2b6a1d9457b9733f150445126b9a61a3e61eec12ec24f7\"",
+        "x-ratelimit-limit": "60",
+        "x-ratelimit-remaining": "57",
+        "x-ratelimit-reset": "1792063357"
+      }
+    },
+    {
+      "id": "ymgal-docs-repository",
+      "source": "YMGal",
+      "url": "https://api.github.com/repos/ymgal/docs",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:00:21.544Z",
+      "status": 200,
+      "finalUrl": "https://api.github.com/repos/ymgal/docs",
+      "decodedTextBytes": 5672,
+      "decodedBodySha256": "f444d144f6db209465504cd90ebb3367795e7c6a7599e08c43ac6233764b1a03",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Tue, 08 Sep 2026 03:45:44 GMT",
+        "etag": "W/\"f655eed4b2c5dbc8a5e74b8cff525d8cc60411f5b700399d21b14fd234b46e7b\"",
+        "x-ratelimit-limit": "60",
+        "x-ratelimit-remaining": "56",
+        "x-ratelimit-reset": "1792063357"
+      }
+    },
+    {
+      "id": "kitsu-server-repository",
+      "source": "Kitsu",
+      "url": "https://api.github.com/repos/hummingbird-me/kitsu-server",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:00:21.847Z",
+      "status": 200,
+      "finalUrl": "https://api.github.com/repos/hummingbird-me/kitsu-server",
+      "decodedTextBytes": 6901,
+      "decodedBodySha256": "2ce15fc6490ca4daf1c5d2167f29c56d2ddada692eb8590a76038e1f9cb1f3c4",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Mon, 14 Sep 2026 14:02:27 GMT",
+        "etag": "W/\"e7b77f825a25f0774024d484e924caa0e6d69d2e1808be1ad13bc82ae93e1e70\"",
+        "x-ratelimit-limit": "60",
+        "x-ratelimit-remaining": "55",
+        "x-ratelimit-reset": "1792063357"
+      }
+    },
+    {
+      "id": "annict-repository",
+      "source": "Annict",
+      "url": "https://api.github.com/repos/annict/annict",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:00:22.165Z",
+      "status": 200,
+      "finalUrl": "https://api.github.com/repos/annict/annict",
+      "decodedTextBytes": 6061,
+      "decodedBodySha256": "3d3b1e213c50612bb1e47a5a300df8664a5f2861a5031b9a5748dbd35cb7c605",
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "last-modified": "Tue, 13 Oct 2026 02:47:32 GMT",
+        "etag": "W/\"122cf363043159f1d009231b54a38992a8f2564544348ebb894bc1e306cd964a\"",
+        "x-ratelimit-limit": "60",
+        "x-ratelimit-remaining": "54",
+        "x-ratelimit-reset": "1792063357"
+      }
+    },
+    {
+      "id": "goodreads-export-doc",
+      "source": "Goodreads Importer",
+      "url": "https://help.goodreads.com/s/article/How-do-I-import-or-export-my-books-1553870934590",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:00:22.502Z",
+      "status": 404,
+      "finalUrl": "https://help.goodreads.com/s/article/How-do-I-import-or-export-my-books-1553870934590",
+      "decodedTextBytes": 62452,
+      "decodedBodySha256": "b0762b88a17d8b54c7f7a0d4db3a3d4691511dcd8ac48ada36e0ffc54e3b947a",
+      "responseHeaders": {
+        "content-type": "text/html;charset=UTF-8",
+        "last-modified": "Wed, 15 Oct 2025 11:00:41 GMT"
+      }
+    },
+    {
+      "id": "anilist-sao-and-clamp",
+      "source": "AniList",
+      "url": "https://graphql.anilist.co",
+      "method": "POST",
+      "request": {
+        "query": "query { novel:Media(search:\"Sword Art Online\",type:MANGA,format:NOVEL) { id idMal format title { romaji english native } description(asHtml:false) volumes chapters characters(perPage:2) { edges { role node { id name { full native } } } } staff(perPage:2) { edges { role node { id name { full native } } } } } group:Staff(search:\"CLAMP\") { id name { full native } gender description(asHtml:false) } }"
+      },
+      "checkedAt": "2026-10-15T11:02:32.800Z",
+      "status": 200,
+      "finalUrl": "https://graphql.anilist.co/",
+      "decodedTextBytes": 2965,
+      "decodedBodySha256": "fc0a432e52b407008f6688c5a2848d6df893b55fdfbfebabd45b2dd20311c1f5",
+      "responseHeaders": {
+        "content-type": "application/json",
+        "x-ratelimit-limit": "30",
+        "x-ratelimit-remaining": "29"
+      }
+    },
+    {
+      "id": "annict-frieren-info",
+      "source": "Annict",
+      "url": "https://annict.com/works/10079/info",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:02:33.549Z",
+      "status": 200,
+      "finalUrl": "https://annict.com/works/10079/info",
+      "decodedTextBytes": 28355,
+      "decodedBodySha256": "3b735702fc8368751bc4272aa5faa20bf33410d34fb6fc91c3d776715db00d79",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "annict-frieren-episodes",
+      "source": "Annict",
+      "url": "https://annict.com/works/10079/episodes",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:02:34.207Z",
+      "status": 200,
+      "finalUrl": "https://annict.com/works/10079/episodes",
+      "decodedTextBytes": 34730,
+      "decodedBodySha256": "82609f406355470287e89e59886c12f1c783b2875d02648d2d54c6655ef47b28",
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "anidb-title-export-full",
+      "source": "AniDB",
+      "url": "https://anidb.net/api/anime-titles.xml.gz",
+      "method": "GET",
+      "checkedAt": "2026-10-15T11:03:53.163Z",
+      "status": 200,
+      "responseHeaders": {
+        "content-type": "application/gzip",
+        "last-modified": "Thu, 15 Oct 2026 03:00:07 GMT"
+      },
+      "compressedBytes": 1880806,
+      "compressedBodySha256": "43b10aebf716274d4b9bf6ea3b65adaf75fb793ce0b4be187200fcd545bf77ef",
+      "xmlBytes": 8016296,
+      "interpretation": "Published title metadata only; this does not validate registered-client HTTP/UDP or private MyList operations."
+    }
+  ],
+  "observations": {
+    "publicApplicationAccess": {
+      "checkedAt": "2026-10-15T10:55:44.288Z",
+      "source": "YMGal",
+      "authStatus": 200,
+      "authenticated": true,
+      "scope": "public",
+      "credentialSource": "Public example in the official developer document",
+      "personalAccount": false
+    },
+    "clannad": {
+      "bangumi": {
+        "id": 13,
+        "languageObserved": "ja",
+        "description": {
+          "length": 402,
+          "sha256": "4a445b39196e890ba6448393bac54bc695fa720209b8ff489a2e3b21a91c84d5",
+          "hasHan": true,
+          "hasKana": true
+        }
+      },
+      "ymgal": {
+        "id": 10008,
+        "languageObserved": "zh-Hans",
+        "description": {
+          "length": 207,
+          "sha256": "ce6fcf2bf76741a54c5376814202b581e5f993d225bec5c80dd0161281b9c231",
+          "hasHan": true,
+          "hasKana": false
+        },
+        "characters": 22,
+        "staff": 23
+      },
+      "steam": {
+        "appId": 324160,
+        "englishDescriptionEqualsJapaneseRequestedDescription": true,
+        "chineseShortDescription": {
+          "length": 63,
+          "sha256": "9fecd5c3f455dd7cd04d6b7d66c9654d6ce14f439250b668b9869aee6168f13e",
+          "hasHan": true,
+          "hasKana": false
+        }
+      }
+    },
+    "googleBooks": {
+      "discoveryRevision": "20261012",
+      "titleType": "string",
+      "descriptionType": "string",
+      "languageType": "string",
+      "languageMeaning": "Best language for this volume (based on content). It is the two-letter ISO 639-1 code such as 'fr', 'en', etc.",
+      "globalParameters": [
+        "access_token",
+        "uploadType",
+        "key",
+        "prettyPrint",
+        "fields",
+        "callback",
+        "upload_protocol",
+        "alt",
+        "$.xgafv",
+        "oauth_token",
+        "quotaUser"
+      ],
+      "listParameters": [
+        "projection",
+        "showPreorders",
+        "filter",
+        "langRestrict",
+        "partner",
+        "startIndex",
+        "maxAllowedMaturityRating",
+        "libraryRestrict",
+        "download",
+        "maxResults",
+        "source",
+        "orderBy",
+        "printType",
+        "q"
+      ],
+      "hasSeriesMethods": true,
+      "seriesMethodsAuthenticatedNotTested": true,
+      "anonymousQuotaFailure": {
+        "reason": "RATE_LIMIT_EXCEEDED",
+        "quotaMetric": "books.googleapis.com/default",
+        "quotaLimit": "defaultPerDayPerProject",
+        "quotaLimitValue": "0"
+      },
+      "publicPages": [
+        {
+          "requestId": "gbooks-public-sao-ja",
+          "volumeId": "CPlnPgAACAAJ",
+          "observedContentLanguage": "ja",
+          "isbn13": "9784048677608",
+          "description": {
+            "length": 349,
+            "sha256": "98291951b222941baab2176ad72e3093bc40a7c5acdfd77a9db9fd71ffa083fe",
+            "hasHan": true,
+            "hasKana": true
+          },
+          "observationMethod": "Public book page inspected; not a successful Volume API response."
+        },
+        {
+          "requestId": "gbooks-public-sao-zh",
+          "volumeId": "y2orDwAAQBAJ",
+          "observedContentLanguage": "zh-Hant",
+          "isbn13": "9789862373996",
+          "description": {
+            "length": 174,
+            "sha256": "870d5d28c15eb9cf97213489be6d07d2e1fdfa8eed076fce0898378a902e218f",
+            "hasHan": true,
+            "hasKana": false
+          },
+          "observationMethod": "Public book page inspected; not a successful Volume API response."
+        },
+        {
+          "requestId": "gbooks-public-sao-en",
+          "volumeId": "fBZVDgAAQBAJ",
+          "observedContentLanguage": "en",
+          "isbn13": "9780316560856",
+          "description": {
+            "length": 900,
+            "sha256": "6496dc577449a5ba0cf609d592b3f0b4abcff6a3c0efd51091e16609b3ce96a4",
+            "hasHan": false,
+            "hasKana": false
+          },
+          "observationMethod": "Public book page inspected; not a successful Volume API response."
+        }
+      ]
+    },
+    "lightNovels": {
+      "ranobe": [
+        {
+          "id": 1234,
+          "title": "Sword Art Online",
+          "originalTitle": "ソードアート・オンライン",
+          "originalLanguage": "ja",
+          "titleLanguages": ["ja", "en", "fr"],
+          "description": {
+            "length": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "hasHan": false,
+            "hasKana": false
+          },
+          "books": [
+            {
+              "id": 5151,
+              "order": 1,
+              "type": "main"
+            },
+            {
+              "id": 5505,
+              "order": 2,
+              "type": "main"
+            },
+            {
+              "id": 5839,
+              "order": 3,
+              "type": "main"
+            },
+            {
+              "id": 6270,
+              "order": 4,
+              "type": "main"
+            },
+            {
+              "id": 6653,
+              "order": 5,
+              "type": "main"
+            },
+            {
+              "id": 7023,
+              "order": 6,
+              "type": "main"
+            },
+            {
+              "id": 7421,
+              "order": 7,
+              "type": "main"
+            },
+            {
+              "id": 7893,
+              "order": 8,
+              "type": "main"
+            },
+            {
+              "id": 8571,
+              "order": 9,
+              "type": "main"
+            },
+            {
+              "id": 9129,
+              "order": 10,
+              "type": "main"
+            },
+            {
+              "id": 9923,
+              "order": 11,
+              "type": "main"
+            },
+            {
+              "id": 10457,
+              "order": 12,
+              "type": "main"
+            },
+            {
+              "id": 11072,
+              "order": 13,
+              "type": "main"
+            },
+            {
+              "id": 12527,
+              "order": 14,
+              "type": "main"
+            },
+            {
+              "id": 13181,
+              "order": 15,
+              "type": "main"
+            },
+            {
+              "id": 15591,
+              "order": 16,
+              "type": "main"
+            },
+            {
+              "id": 17333,
+              "order": 17,
+              "type": "main"
+            },
+            {
+              "id": 18138,
+              "order": 18,
+              "type": "main"
+            },
+            {
+              "id": 19585,
+              "order": 19,
+              "type": "main"
+            },
+            {
+              "id": 21307,
+              "order": 20,
+              "type": "main"
+            },
+            {
+              "id": 24966,
+              "order": 21,
+              "type": "main"
+            },
+            {
+              "id": 27602,
+              "order": 22,
+              "type": "main"
+            },
+            {
+              "id": 28168,
+              "order": 23,
+              "type": "main"
+            },
+            {
+              "id": 29269,
+              "order": 24,
+              "type": "main"
+            },
+            {
+              "id": 30977,
+              "order": 25,
+              "type": "main"
+            },
+            {
+              "id": 33399,
+              "order": 26,
+              "type": "main"
+            },
+            {
+              "id": 36583,
+              "order": 27,
+              "type": "main"
+            },
+            {
+              "id": 42321,
+              "order": 28,
+              "type": "main"
+            },
+            {
+              "id": 52696,
+              "order": 29,
+              "type": "main"
+            }
+          ],
+          "staffRoles": ["author", "artist", "translator", "narrator"]
+        },
+        {
+          "id": 5151,
+          "title": "Sword Art Online 1: Aincrad",
+          "description": {
+            "length": 959,
+            "sha256": "972f50160a2cd0fa633b79b578b18f0b923d41a05b6335f9532de461d17f31a8",
+            "hasHan": false,
+            "hasKana": false
+          },
+          "japaneseDescription": {
+            "length": 501,
+            "sha256": "830043b408fc89863f13178efb487522bae0009993a538c3c27fca4838a4edfd",
+            "hasHan": true,
+            "hasKana": true
+          },
+          "titleLanguages": ["ja", "en", "de"],
+          "editions": [
+            {
+              "id": 0,
+              "language": null,
+              "staffRoles": ["author", "artist"]
+            },
+            {
+              "id": 1,
+              "language": "en",
+              "staffRoles": ["translator", "narrator"]
+            }
+          ],
+          "releases": [
+            {
+              "id": 10222,
+              "language": "ja",
+              "format": "print",
+              "isbn13": "9784048677608",
+              "pages": 352
+            },
+            {
+              "id": 10223,
+              "language": "en",
+              "format": "print",
+              "isbn13": "9780316371247",
+              "pages": null
+            },
+            {
+              "id": 10221,
+              "language": "ja",
+              "format": "digital",
+              "isbn13": null,
+              "pages": 374
+            },
+            {
+              "id": 10224,
+              "language": "en",
+              "format": "digital",
+              "isbn13": "9780316560856",
+              "pages": null
+            },
+            {
+              "id": 110094,
+              "language": "de",
+              "format": "digital",
+              "isbn13": "9783842043930",
+              "pages": 336
+            },
+            {
+              "id": 110093,
+              "language": "de",
+              "format": "print",
+              "isbn13": "9783842011144",
+              "pages": 336
+            },
+            {
+              "id": 10225,
+              "language": "en",
+              "format": "print",
+              "isbn13": "9781975318550",
+              "pages": null
+            },
+            {
+              "id": 10226,
+              "language": "en",
+              "format": "audio",
+              "isbn13": "9781975337186",
+              "pages": null
+            }
+          ]
+        }
+      ],
+      "bookwormBooks": 33,
+      "anilist": {
+        "id": 51479,
+        "malId": 21479,
+        "format": "NOVEL",
+        "title": {
+          "romaji": "Sword Art Online",
+          "english": "Sword Art Online",
+          "native": "ソードアート・オンライン"
+        },
+        "description": {
+          "length": 886,
+          "sha256": "0c6112a38feb600aa33496608ea8dbcf6232f1900ecc98488e9eb03e7d04093e",
+          "hasHan": false,
+          "hasKana": false
+        },
+        "declaredVolumes": null,
+        "declaredChapters": null,
+        "sampledCharacters": [
+          {
+            "id": 36765,
+            "role": "MAIN"
+          },
+          {
+            "id": 36828,
+            "role": "MAIN"
+          }
+        ]
+      },
+      "openLibrary": {
+        "edition": "/books/OL25855976M",
+        "work": "/works/OL17283107W",
+        "workTitle": "Sword Art Online刀劍神域 (1)",
+        "workRepresentsOneVolume": true
+      }
+    },
+    "manga": {
+      "mangadex": {
+        "id": "58be6aa6-06cb-4ca5-bd20-f1392ce451fb",
+        "title": {
+          "ja-ro": "Yotsuba to!"
+        },
+        "descriptionLanguages": ["en", "ru", "uk", "pt-br"],
+        "alternativeTitleLanguages": ["vi", "es", "ja", "zh", "ko", "ru", "uk", "en", "ar"],
+        "status": "hiatus"
+      },
+      "mangaUpdates": {
+        "id": 23606352927,
+        "title": "Yotsuba to!",
+        "description": {
+          "length": 849,
+          "sha256": "f24a9f76b2dcd5213299b96d412baee7f51a56163dbde7523ee4a46072623066",
+          "hasHan": false,
+          "hasKana": false
+        },
+        "status": "16 Volumes (Ongoing)",
+        "authors": [
+          {
+            "id": 5044830093,
+            "name": "AZUMA Kiyohiko",
+            "role": "Author"
+          },
+          {
+            "id": 5044830093,
+            "name": "AZUMA Kiyohiko",
+            "role": "Artist"
+          }
+        ],
+        "publishers": [
+          {
+            "id": 8104054329,
+            "name": "ADV",
+            "type": "English",
+            "note": "5 Volumes; Defunct"
+          },
+          {
+            "id": 53519101084,
+            "name": "Gempak",
+            "type": "English",
+            "note": "14 Volumes; Ongoing"
+          },
+          {
+            "id": 72534527311,
+            "name": "Media Works",
+            "type": "Original",
+            "note": ""
+          },
+          {
+            "id": 52425676473,
+            "name": "Yen Press",
+            "type": "English",
+            "note": "16 Volumes; Ongoing"
+          }
+        ]
+      },
+      "mangabaka": {
+        "id": 6766,
+        "title": "Yotsuba&!",
+        "authors": ["Kiyohiko Azuma"],
+        "secondaryTitleLanguages": ["ko"],
+        "upstreamSourceNames": [
+          "anilist",
+          "anime_planet",
+          "anime_news_network",
+          "kitsu",
+          "manga_updates",
+          "my_anime_list",
+          "shikimori"
+        ],
+        "publishers": [
+          {
+            "id": 1596,
+            "name": "ADV",
+            "language": "en",
+            "type": "English",
+            "note": null
+          },
+          {
+            "id": 5244,
+            "name": "ASCII Media Works",
+            "language": "ja",
+            "type": "Original",
+            "note": null
+          },
+          {
+            "id": 4133,
+            "name": "Gempak",
+            "language": "en",
+            "type": "English",
+            "note": "14 Volumes; Ongoing"
+          },
+          {
+            "id": 4657,
+            "name": "Norma Editorial",
+            "language": "es",
+            "type": "Other",
+            "note": null
+          },
+          {
+            "id": 18,
+            "name": "Yen Press",
+            "language": "en",
+            "type": "English",
+            "note": "15 Volumes; Ongoing"
+          }
+        ]
+      }
+    },
+    "kitsu": [
+      {
+        "requestId": "kitsu-frieren-characters",
+        "returnedCount": 0,
+        "reportedCount": 0,
+        "samples": []
+      },
+      {
+        "requestId": "kitsu-frieren-staff",
+        "returnedCount": 0,
+        "reportedCount": 0,
+        "samples": []
+      },
+      {
+        "requestId": "kitsu-frieren-episodes",
+        "returnedCount": 3,
+        "reportedCount": 28,
+        "samples": [
+          {
+            "id": "353471",
+            "type": "episodes",
+            "titles": {
+              "en": "The Journey's End"
+            },
+            "description": {
+              "length": 188,
+              "sha256": "944c9ca305dd5074d593e676b9f5b1ac4c9d8cdb04fd6b8ffe621c99ff4e42c1",
+              "hasHan": false,
+              "hasKana": false
+            },
+            "attributeKeys": [
+              "createdAt",
+              "updatedAt",
+              "synopsis",
+              "description",
+              "titles",
+              "canonicalTitle",
+              "seasonNumber",
+              "number",
+              "relativeNumber",
+              "airdate",
+              "length",
+              "thumbnail"
+            ]
+          },
+          {
+            "id": "353472",
+            "type": "episodes",
+            "titles": {
+              "en": "It Didn't Have to Be Magic..."
+            },
+            "description": {
+              "length": 106,
+              "sha256": "367edd9cd97dcad950059e3e506e7285e02c210d7b4440b90140dce1e8ff1ed0",
+              "hasHan": false,
+              "hasKana": false
+            },
+            "attributeKeys": [
+              "createdAt",
+              "updatedAt",
+              "synopsis",
+              "description",
+              "titles",
+              "canonicalTitle",
+              "seasonNumber",
+              "number",
+              "relativeNumber",
+              "airdate",
+              "length",
+              "thumbnail"
+            ]
+          },
+          {
+            "id": "356650",
+            "type": "episodes",
+            "titles": {
+              "en": "Killing Magic"
+            },
+            "description": {
+              "length": 143,
+              "sha256": "d8e590deb8b5823cca61afea49d3789a3ec3cb5fffa34ac398519381ba84d01e",
+              "hasHan": false,
+              "hasKana": false
+            },
+            "attributeKeys": [
+              "createdAt",
+              "updatedAt",
+              "synopsis",
+              "description",
+              "titles",
+              "canonicalTitle",
+              "seasonNumber",
+              "number",
+              "relativeNumber",
+              "airdate",
+              "length",
+              "thumbnail"
+            ]
+          }
+        ]
+      }
+    ],
+    "neodb": {
+      "id": "5pbd4BxJ5TYmRhqDaWMYoD",
+      "titleLanguages": ["zh-cn", "ja", "en", "fr", "es"],
+      "descriptionLanguages": ["zh-cn", "pt-br", "de", "es", "fr", "en", "it"],
+      "multipleDescriptionsInSameLanguage": 3,
+      "creditCount": 6
+    },
+    "creatorTyping": {
+      "mangaUpdates": {
+        "id": 40579282294,
+        "name": "CLAMP",
+        "gender": "Female",
+        "keys": [
+          "id",
+          "name",
+          "url",
+          "associated",
+          "image",
+          "actualname",
+          "birthday",
+          "birthplace",
+          "bloodtype",
+          "gender",
+          "status",
+          "status_date",
+          "genres",
+          "stats",
+          "social",
+          "comments",
+          "last_updated",
+          "admin"
+        ],
+        "description": {
+          "length": 1150,
+          "sha256": "d69f0db9d74f19f9e128bc897c668ca43faabe325686aa8ff7cb2339c7653eaa",
+          "hasHan": false,
+          "hasKana": false
+        },
+        "describesGroup": true
+      },
+      "anilist": {
+        "id": 96877,
+        "name": {
+          "full": "CLAMP",
+          "native": null
+        },
+        "gender": null,
+        "description": {
+          "length": 1190,
+          "sha256": "55bc8e771bbe8cdbfba26458577ba886a90a5acf505efed3722e6101364c43d1",
+          "hasHan": true,
+          "hasKana": true
+        },
+        "resourceType": "Staff"
+      }
+    },
+    "anidb": {
+      "titleObjectCount": 17055,
+      "lastModified": "Thu, 15 Oct 2026 03:00:07 GMT",
+      "registeredClientProtocolsTested": false,
+      "titleSamples": [
+        {
+          "id": "5101",
+          "languages": ["x-jat", "de", "ja", "zh-Hans", "en", "bg", "ru", "fa", "ar", "th", "ko"]
+        },
+        {
+          "id": "8692",
+          "languages": [
+            "ja",
+            "en",
+            "x-jat",
+            "fr",
+            "de",
+            "ru",
+            "uk",
+            "he",
+            "ar",
+            "fa",
+            "ko",
+            "zh-Hans",
+            "zh",
+            "zh-Hant"
+          ]
+        },
+        {
+          "id": "17617",
+          "languages": [
+            "fr",
+            "it",
+            "pt-BR",
+            "pt",
+            "en",
+            "es-419",
+            "de",
+            "es",
+            "pl",
+            "x-jat",
+            "ru",
+            "uk",
+            "he",
+            "th",
+            "ja",
+            "zh-Hans",
+            "zh-Hant"
+          ]
+        }
+      ]
+    },
+    "nativeMal": {
+      "version": "2",
+      "endpoints": [
+        "/anime",
+        "/anime/{anime_id}",
+        "/anime/{anime_id}/my_list_status",
+        "/anime/ranking",
+        "/anime/season/{year}/{season}",
+        "/anime/suggestions",
+        "/forum/boards",
+        "/forum/topic/{topic_id}",
+        "/forum/topics",
+        "/manga",
+        "/manga/{manga_id}",
+        "/manga/{manga_id}/my_list_status",
+        "/manga/ranking",
+        "/users/{user_name}",
+        "/users/{user_name}/animelist",
+        "/users/{user_name}/mangalist"
+      ]
+    },
+    "repositories": [
+      {
+        "requestId": "ranobedb-repository",
+        "name": "Blastose/ranobedb",
+        "archived": false,
+        "pushedAt": "2026-10-04T23:32:04Z",
+        "defaultBranch": "main"
+      },
+      {
+        "requestId": "ymgal-docs-repository",
+        "name": "ymgal/docs",
+        "archived": false,
+        "pushedAt": "2026-08-05T09:27:35Z",
+        "defaultBranch": "main"
+      },
+      {
+        "requestId": "kitsu-server-repository",
+        "name": "hummingbird-me/kitsu-server",
+        "archived": false,
+        "pushedAt": "2026-06-20T19:44:05Z",
+        "defaultBranch": "the-future"
+      },
+      {
+        "requestId": "annict-repository",
+        "name": "annict/annict",
+        "archived": false,
+        "pushedAt": "2026-10-15T01:53:35Z",
+        "defaultBranch": "develop"
+      }
+    ]
+  },
+  "indexedOfficialPageObservations": [
+    {
+      "source": "AniList",
+      "url": "https://anilist.co/apps",
+      "observation": "The official community-app page lists desktop clients including Taiga and Trackma. This is not authorization for Kisaki."
+    },
+    {
+      "source": "Fanart.tv",
+      "url": "https://fanart.tv/series/424536/frieren-beyond-journeys-end/",
+      "observation": "Official-page search result showed HD ClearLOGO, poster, clear art, character art, TV thumbs, background and 4K background categories. The native authenticated API was not tested."
+    },
+    {
+      "source": "SteamGridDB",
+      "url": "https://www.steamgriddb.com/game/5505/grids",
+      "observation": "Official-page search result listed grids, hero, logos and icons for CLANNAD. Counts are a page snapshot, not a coverage benchmark."
+    },
+    {
+      "source": "BookWalker Global",
+      "url": "https://data.bookwalker.com/database",
+      "observation": "Catalog metadata was visible in official-domain search results. Direct access was blocked and no stable developer contract was established."
+    }
+  ],
+  "otherWebsite": {
+    "name": "Goodreads",
+    "role": "CSV export importer, not one of the 30 metadata/platform providers",
+    "documentRequest": "goodreads-export-doc",
+    "entryUrl": "https://www.goodreads.com/review/import",
+    "observation": "The old help URL was not readable directly and the import/export entry required sign-in. No private export was performed; this is not evidence that export was discontinued."
+  },
+  "acceptedDecision": {
+    "date": "2026-10-15",
+    "retainedSources": 18,
+    "removedSources": 12,
+    "officialExtensionsAfterSourcePruning": 36,
+    "importers": 15,
+    "languageExtensions": 3
+  }
+}

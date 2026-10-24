@@ -1,0 +1,19 @@
+[package]
+name = "libmpv-gpu-probe"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+path = "binding.rs"
+
+[dependencies]
+napi = { version = "=3.14.2", features = ["napi8"] }
+napi-derive = "=3.6.12"
+
+[build-dependencies]
+napi-build = "=2.6.0"
+cc = "=1.7.0"
+
+[workspace]

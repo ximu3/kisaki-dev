@@ -1,0 +1,1021 @@
+{
+  "observedOn": "2026-10-16",
+  "scope": "Source verification for the Google Books and RanobeDB proposal; Google account identity, refresh, public access, and limited shelf writes verified",
+  "containsCredentials": false,
+  "containsPrivateLibraryContents": false,
+  "publicRequests": [
+    {
+      "label": "google-discovery",
+      "url": "https://books.googleapis.com/$discovery/rest?version=v1",
+      "status": 200,
+      "sha256": "bbb476f4130e32997d82ef427bdac64e1a9c427d0d13dfc8b4700f982a3f65d7",
+      "keys": [
+        "auth",
+        "ownerDomain",
+        "icons",
+        "version_module",
+        "description",
+        "kind",
+        "resources",
+        "discoveryVersion",
+        "schemas",
+        "mtlsRootUrl",
+        "name",
+        "baseUrl",
+        "title",
+        "revision",
+        "id",
+        "parameters",
+        "version",
+        "protocol",
+        "batchPath",
+        "rootUrl",
+        "documentationLink",
+        "ownerName",
+        "servicePath",
+        "fullyEncodeReservedExpansion",
+        "basePath"
+      ]
+    },
+    {
+      "label": "google-sao-en",
+      "url": "https://www.googleapis.com/books/v1/volumes/fBZVDgAAQBAJ",
+      "status": 429,
+      "sha256": "193569d644384a8f1303b61dd2d7a6c7c4da2781cb259de11881c6a49f1a04b0",
+      "keys": ["error"]
+    },
+    {
+      "label": "ranobe-series-sao",
+      "url": "https://ranobedb.org/api/v0/series/1234",
+      "status": 200,
+      "sha256": "b2535056fd2f1ac8e15982d2b1638671c7151e88be8037d099f273f0898dccda",
+      "keys": ["series"]
+    },
+    {
+      "label": "ranobe-book-sao1",
+      "url": "https://ranobedb.org/api/v0/book/5151",
+      "status": 200,
+      "sha256": "a585da67b18397567624fe4d1d54acb00cb70a0822d58df11b563ef867a2ef8f",
+      "keys": ["book"]
+    },
+    {
+      "label": "ranobe-series-search-1",
+      "url": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=2&page=1",
+      "status": 200,
+      "sha256": "af03e6c0726da38b876f85ea6bb2d3393b94300fc71d540b88285351b0b1dfd9",
+      "keys": ["series", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-series-search-2",
+      "url": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=2&page=2",
+      "status": 200,
+      "sha256": "a85d65712f0894960d1a2d8a4664a816810eeff1ee753be31fe664d493f598c6",
+      "keys": ["series", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-staff-clamp",
+      "url": "https://ranobedb.org/api/v0/staff?q=CLAMP&limit=5",
+      "status": 200,
+      "sha256": "10ebaf169ac993758910d591a583586cc947a6dde5c78cf8cac56549b4eae629",
+      "keys": ["staff", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-staff-reki",
+      "url": "https://ranobedb.org/api/v0/staff/1238",
+      "status": 200,
+      "sha256": "56c49ae54f5711ec0b36e4c1c56e0d71e6c72a0deb1fe693800f6e5f0a51571f",
+      "keys": ["staff"]
+    },
+    {
+      "label": "ranobe-staff-abec",
+      "url": "https://ranobedb.org/api/v0/staff/589",
+      "status": 200,
+      "sha256": "e4c5fb688325af7c3d1a6f09cde3ec4b48b1a7d28b37f717b2e709b683876829",
+      "keys": ["staff"]
+    },
+    {
+      "label": "ranobe-publisher-kadokawa",
+      "url": "https://ranobedb.org/api/v0/publisher/9",
+      "status": 200,
+      "sha256": "e4963a7712ad1a411b475efa9df83616e1d3ef74cdb54014fa8d353294e33c5e",
+      "keys": ["publisher"]
+    },
+    {
+      "label": "ranobe-publisher-dengeki",
+      "url": "https://ranobedb.org/api/v0/publisher/19",
+      "status": 200,
+      "sha256": "d954f487edd025f35aefb2edc84f626ea0d4e83eb6d68b3894ced1cfba813506",
+      "keys": ["publisher"]
+    },
+    {
+      "label": "ranobe-release-ja",
+      "url": "https://ranobedb.org/api/v0/release/10222",
+      "status": 200,
+      "sha256": "1af1e5cedd78c75ab7ddea0939146bdc58e20a69e357e4283bcad4028797f274",
+      "keys": ["release"]
+    },
+    {
+      "label": "ranobe-release-omnibus",
+      "url": "https://ranobedb.org/api/v0/release/10225",
+      "status": 200,
+      "sha256": "ddc853743c7e52c466d87309e2f7c6215e27163eb2710b98db7f56a23fecd67b",
+      "keys": ["release"]
+    },
+    {
+      "label": "ranobe-series-progressive",
+      "url": "https://ranobedb.org/api/v0/series/2508",
+      "status": 200,
+      "sha256": "ca882f76cda40f89730cee3ad3f5541345e561f123e31b304a7910c50046d7cc",
+      "keys": ["series"]
+    },
+    {
+      "label": "ranobe-search-3",
+      "url": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=2&page=3",
+      "status": 200,
+      "sha256": "00521dba13cd815cec8d2273aeb6734fb8a8294c0f3a334c8734c5fd6d905401",
+      "keys": ["series", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-search-4",
+      "url": "https://ranobedb.org/api/v0/series?q=Sword%20Art%20Online&limit=2&page=4",
+      "status": 200,
+      "sha256": "4777c40ca15fc2c48df1923b67004c0227005b7917133abf6dc9e2e9d0c54053",
+      "keys": ["series", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-series-standalone",
+      "url": "https://ranobedb.org/api/v0/series?q=I%20Want%20to%20Eat%20Your%20Pancreas&limit=2",
+      "status": 200,
+      "sha256": "b4f69c8bbc47b01532e42d40122c0639b31d2d7c78aab07d691ff54a34f78463",
+      "keys": ["series", "count", "currentPage", "totalPages"]
+    },
+    {
+      "label": "ranobe-tags",
+      "url": "https://ranobedb.org/api/v0/tags?limit=2&page=1",
+      "status": 200,
+      "sha256": "4e31f4126c7ac7bf2a0fe2617e52e6f1e4908bca1b95a1bebb8eaa0a255c2e44",
+      "keys": ["tags", "count", "totalPages", "currentPage"]
+    },
+    {
+      "label": "ranobe-staff-clamp-detail",
+      "url": "https://ranobedb.org/api/v0/staff/6414",
+      "status": 200,
+      "sha256": "9127df282ccfa1670480d1487f80b99f2d392b5e3d508d35adb8a1dea1334cba",
+      "contentType": "application/json"
+    },
+    {
+      "label": "ranobe-user-me-noauth",
+      "url": "https://ranobedb.org/api/v0/user/me",
+      "status": 401,
+      "sha256": "79a04bbc4964d05da928456d96f1bb6eac9d38c25386ba28c44ca792c6d8a753",
+      "contentType": "application/json"
+    },
+    {
+      "label": "ranobe-book-standalone-detail",
+      "url": "https://ranobedb.org/api/v0/book/19970",
+      "status": 200,
+      "sha256": "06d40e2b129a75197b88c5a6ffa61737739418d31f21d15ebea26d3248dfbbfd",
+      "contentType": "application/json"
+    },
+    {
+      "label": "ranobe-book-sao1-page",
+      "url": "https://ranobedb.org/book/5151",
+      "status": 200,
+      "sha256": "7484dd0fba47f797cd1a5dfbbeadb097b9f4426aece984c1a88d006ce24857d7",
+      "contentType": "text/html"
+    },
+    {
+      "label": "ranobe-series-standalone-detail",
+      "url": "https://ranobedb.org/api/v0/series/6694",
+      "status": 200,
+      "sha256": "09f0221c86f32acc57d87cfba39e5bb2e553bdb56664c211e2ab7192d2d288fa",
+      "contentType": "application/json"
+    },
+    {
+      "label": "ranobe-series-spice-search",
+      "url": "https://ranobedb.org/api/v0/series?q=Spice%20and%20Wolf&limit=10",
+      "status": 200,
+      "sha256": "9a8a4a362ceaa2d91981ba0c53d07355968e86d55482ba7f6ce6407a252fc19a",
+      "contentType": "application/json"
+    },
+    {
+      "label": "ranobe-series-spice",
+      "url": "https://ranobedb.org/api/v0/series/677",
+      "status": 200,
+      "sha256": "5e480ae46d82e3c5cb01a2fe6247637c6422a1562deb1555f68a879f07c846b3",
+      "contentType": "application/json"
+    },
+    {
+      "label": "google-sao-en-authorized",
+      "path": "/books/v1/volumes/fBZVDgAAQBAJ?includeNonComicsSeries=true&fields=id,kind,volumeInfo",
+      "status": 200,
+      "sha256": "b8aa1a83df0477234bfe51a5b7665bde311d326620b7a95c4620cd98912f1bda"
+    },
+    {
+      "label": "google-sao-zh-authorized",
+      "path": "/books/v1/volumes/y2orDwAAQBAJ?includeNonComicsSeries=true&fields=id,kind,volumeInfo",
+      "status": 200,
+      "sha256": "4a7291ea87fbcfa4b117476b66f8dc8ed5d1f1b328bf12b2e927dff94f0b2230"
+    },
+    {
+      "label": "google-sao-ja-authorized",
+      "path": "/books/v1/volumes/CPlnPgAACAAJ?includeNonComicsSeries=true&fields=id,kind,volumeInfo",
+      "status": 200,
+      "sha256": "cba5f65f8877ffa38f430bce9167f22a912f508113f791ed4cc39634f0228219"
+    },
+    {
+      "label": "google-sao-series",
+      "path": "/books/v1/series/get?series_id=NpBJHAAAABB-jM",
+      "status": 200,
+      "sha256": "471b90b23fe87b7e85658bdcc0c9e9b8ee4f3e8f58b9fd6500444d6abb1324a8"
+    },
+    {
+      "label": "google-sao-membership-1",
+      "path": "/books/v1/series/membership/get?series_id=NpBJHAAAABB-jM&page_size=2",
+      "status": 200,
+      "sha256": "ed6b736b3dadb979905d7535e44969bb087a82a9d574605366c1af9faccdf3b9"
+    },
+    {
+      "label": "google-sao-membership-2",
+      "path": "/books/v1/series/membership/get?series_id=NpBJHAAAABB-jM&page_size=40&page_token=[cursor]&fields=kind,member(id,volumeInfo),nextPageToken",
+      "status": 200,
+      "sha256": "98c040ec36cf5b15e77a9200858992cce64717b7bd4da8a61596437402dbf818"
+    },
+    {
+      "label": "google-standalone-search",
+      "path": "/books/v1/volumes?q=isbn%3A9781642750331&maxResults=10&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-frieren-search",
+      "path": "/books/v1/volumes?q=intitle%3A%22Frieren%3A%20Beyond%20Journey's%20End%22&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-known-isbn-search",
+      "path": "/books/v1/volumes?q=isbn:9780316560856&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-key-sao-series",
+      "path": "/books/v1/series/get?series_id=NpBJHAAAABB-jM",
+      "status": 401,
+      "mode": "apiKeyOnly",
+      "sha256": "c7046dcf540ef0f37e7e94c78b13648e24e181a0de5749c6eea13b227f966846",
+      "errorReasons": ["required"],
+      "errorStatus": "UNAUTHENTICATED"
+    },
+    {
+      "label": "google-key-sao-membership",
+      "path": "/books/v1/series/membership/get?series_id=NpBJHAAAABB-jM&page_size=2&fields=kind,member(id,volumeInfo),nextPageToken",
+      "status": 401,
+      "mode": "apiKeyOnly",
+      "sha256": "83c5246e5da89a23262994dce18e647c43c0e087a2bac771959e512f902cd63f",
+      "errorReasons": ["required"],
+      "errorStatus": "UNAUTHENTICATED"
+    },
+    {
+      "label": "google-key-known-isbn-search",
+      "path": "/books/v1/volumes?q=isbn:9780316560856&maxResults=5",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-key-sao-volume",
+      "path": "/books/v1/volumes/fBZVDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "74e0f416651c6c88023ad6e9f3ede166af03fd0b761777d69fd04831d1dba99c"
+    },
+    {
+      "label": "google-key-title-search",
+      "path": "/books/v1/volumes?q=Sword%20Art%20Online&maxResults=5",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "32cb807def759ba039cdee363de022ed09fa875c2773774ddaaa8d404623b7dc"
+    },
+    {
+      "label": "google-pancreas-novel-print",
+      "path": "/books/v1/volumes/IqGQEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "8a0377efc483e85e0326e20585ac578cab2c7d1fa8518b20c61acd8adf76d3ed"
+    },
+    {
+      "label": "google-pancreas-manga-complete",
+      "path": "/books/v1/volumes/RqGQEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "71e1fd4721f2edb52ec3d0698a44dea1391fdcb50591209a2826c048dbb9bd86"
+    },
+    {
+      "label": "google-pancreas-manga-digital",
+      "path": "/books/v1/volumes/YF9-DwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "852102161cbfa8927ed398fd319874597d594bb14dfba327d2fc2cdf25de67d3"
+    },
+    {
+      "label": "google-pancreas-novel-digital",
+      "path": "/books/v1/volumes/Hr92DwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "d4a67efece0d1737dab612ef9a496a1cb4a5b86b207be3e202bb44cb50378761"
+    },
+    {
+      "label": "google-frieren-broad-search",
+      "path": "/books/v1/volumes?q=Frieren&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "0eefe603127b8270f11df2518c0aff4e5881fbfd0433eda2315aa86d9a1b5131"
+    },
+    {
+      "label": "google-frieren-volume-1",
+      "path": "/books/v1/volumes/i3E2EAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "d7f7c952e892717991207822270270360b4208dd5847fcf4e67e2323eb9287e5"
+    },
+    {
+      "label": "google-standalone-series",
+      "path": "/books/v1/series/get?series_id=dxeYHAAAABDuCM",
+      "status": 200,
+      "sha256": "ee8180ee9e2afd95e41423c4d4e4e24675466b6d776549510e79807a0ad5c9dc"
+    },
+    {
+      "label": "google-frieren-membership",
+      "path": "/books/v1/series/membership/get?series_id=vKusHAAAABARtM&page_size=40&fields=kind,member(id,volumeInfo),nextPageToken",
+      "status": 200,
+      "sha256": "ff39e499425922022f413e683a65d26df650395cdd976a75ab835126e85eab72"
+    },
+    {
+      "label": "google-frieren-series",
+      "path": "/books/v1/series/get?series_id=vKusHAAAABARtM",
+      "status": 200,
+      "sha256": "8c4767c315c81eab25c269fd59a45c858839044cfb31f7c325be26e3989797a8"
+    },
+    {
+      "label": "google-standalone-membership",
+      "path": "/books/v1/series/membership/get?series_id=dxeYHAAAABDuCM&page_size=40&fields=kind,member(id,volumeInfo),nextPageToken",
+      "status": 200,
+      "sha256": "aca6e06c1071d8a6f911c2b3960684d4c1576f4a5dbd53da0351311407063d04"
+    },
+    {
+      "label": "google-sao-member-6xZVDgAAQBAJ",
+      "path": "/books/v1/volumes/6xZVDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "ba48e762b95ec7f0c9afad4cf46439eb6e74a4d12cb7a2546866b850e163d6c3"
+    },
+    {
+      "label": "google-sao-member-WhdVDgAAQBAJ",
+      "path": "/books/v1/volumes/WhdVDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "31831700a586900cda187272c734639bd020c80b87edcc23d9b6835abc52d315"
+    },
+    {
+      "label": "google-sao-member-oRZVDgAAQBAJ",
+      "path": "/books/v1/volumes/oRZVDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "144c28e88c2174640239ae5fcb90f41e1e5cefd3e44f988e0e0927dc6318a27d"
+    },
+    {
+      "label": "google-sao-member-i_FrDgAAQBAJ",
+      "path": "/books/v1/volumes/i_FrDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "43b74c88d07ddbbcbe5c51362ac594de77a1026354316b2d43a4774eb237b8f9"
+    },
+    {
+      "label": "google-sao-member-HhDhDgAAQBAJ",
+      "path": "/books/v1/volumes/HhDhDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "1f1f841d22ee66791beec9a22ff5142094815eeb43fbf71cd0ee8002183daf63"
+    },
+    {
+      "label": "google-sao-member--vFrDgAAQBAJ",
+      "path": "/books/v1/volumes/-vFrDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "3fd74fb94a2c51194a39453ba0a3c6ed1f51a64f4558af03e0fa0688fffd5cf5"
+    },
+    {
+      "label": "google-sao-member--Q_hDgAAQBAJ",
+      "path": "/books/v1/volumes/-Q_hDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "1d21d02c5a22269efe924d464fb043de46a2dea7862341ac7c2143cad4f2f3a8"
+    },
+    {
+      "label": "google-sao-member-1fFrDgAAQBAJ",
+      "path": "/books/v1/volumes/1fFrDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "b7f1522764782e0c7744f7fc9ab85a6e08d75b3f1e95acf01444d431e5d76029"
+    },
+    {
+      "label": "google-sao-member-H_JrDgAAQBAJ",
+      "path": "/books/v1/volumes/H_JrDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "b224b5f689267bc7a75e392fa91f08e4e538695c8923262a7c10b448e112f53b"
+    },
+    {
+      "label": "google-sao-member-oO8vDwAAQBAJ",
+      "path": "/books/v1/volumes/oO8vDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "10828d27b1d6319c70f4785617f35128563e3b6e765e98735a018a44ebd00b70"
+    },
+    {
+      "label": "google-sao-member-QxDhDgAAQBAJ",
+      "path": "/books/v1/volumes/QxDhDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "2784b31ab6e56b0be5cc0bc352f94c70060bd66764ef9fcfd999ad412ab50603"
+    },
+    {
+      "label": "google-sao-member-aBDhDgAAQBAJ",
+      "path": "/books/v1/volumes/aBDhDgAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "0e29dc14e7d9c6400fec12cbe479dfd18933c92f132e57d1010458be48626a4d"
+    },
+    {
+      "label": "google-sao-member-NPyPDwAAQBAJ",
+      "path": "/books/v1/volumes/NPyPDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "3f83733ba8708c933103cb740afd74d525ca2b0b2afd077235695555e7c09bf5"
+    },
+    {
+      "label": "google-sao-member-Lp6rDwAAQBAJ",
+      "path": "/books/v1/volumes/Lp6rDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "74fb8734a5f0eb7e5f36424ac55d556e28da4ae46484d65cbd2dc6cf7506c7bb"
+    },
+    {
+      "label": "google-sao-member-CQpUDwAAQBAJ",
+      "path": "/books/v1/volumes/CQpUDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "62f404282f1ea9cf62f2d38006dc674328e3f3c413b3249f1586d305da7f20d1"
+    },
+    {
+      "label": "google-sao-member-lHFBDwAAQBAJ",
+      "path": "/books/v1/volumes/lHFBDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "cd80e7a27a125184e998f996b47f2f0ddf871a59b7ceceb26b42e9c8364a0416"
+    },
+    {
+      "label": "google-sao-member-mNPrDwAAQBAJ",
+      "path": "/books/v1/volumes/mNPrDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "6d16712ab0acebee5e45843e1cae68b74cc4f30f428e7fb75f06976e31da6186"
+    },
+    {
+      "label": "google-sao-member-GBMMEAAAQBAJ",
+      "path": "/books/v1/volumes/GBMMEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "df6c2df7d6708071acd23b7943b1c265ac445da849ab73e4e6e613f56ffd29c0"
+    },
+    {
+      "label": "google-sao-member-6pbSDwAAQBAJ",
+      "path": "/books/v1/volumes/6pbSDwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "f3a364b5a3901f79ab31ca7d0dc79d417f0e8aed582d67aedb3a03977f0dc387"
+    },
+    {
+      "label": "google-sao-member-x5K8DwAAQBAJ",
+      "path": "/books/v1/volumes/x5K8DwAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "cdd9ee84ddaa0b81da3595ab07d2ebd46259cdcc9345f2f8a36addf6bf631a58"
+    },
+    {
+      "label": "google-sao-member-yZ9BEAAAQBAJ",
+      "path": "/books/v1/volumes/yZ9BEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "ce6d273bbe760f467a9ca9fa8d63d16bc2953b0f5be528ca87e73820fcd94f08"
+    },
+    {
+      "label": "google-sao-member-HuxeEAAAQBAJ",
+      "path": "/books/v1/volumes/HuxeEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "d222923863481ffdf1b466a8e445644b38b6405d300d409ed03a5fe50854fb13"
+    },
+    {
+      "label": "google-sao-member-vUihEAAAQBAJ",
+      "path": "/books/v1/volumes/vUihEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "97b1114663ec9139e5c2276b1eb94230f86f96bf1741dc346190d9439bb2aed1"
+    },
+    {
+      "label": "google-sao-member-nbN3EAAAQBAJ",
+      "path": "/books/v1/volumes/nbN3EAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "a4b4b40457a1ced03557cf011ac6355ac2ec3a7ba20cbaddf8d492953940efc9"
+    },
+    {
+      "label": "google-sao-member-1pRKEQAAQBAJ",
+      "path": "/books/v1/volumes/1pRKEQAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "ef767a9468602cbc4218a2a95eadc8b536e7ea11d95b9d0c36530f2d8254df52"
+    },
+    {
+      "label": "google-sao-member-VmTBEAAAQBAJ",
+      "path": "/books/v1/volumes/VmTBEAAAQBAJ?includeNonComicsSeries=true&fields=id,volumeInfo(title,language,categories,industryIdentifiers,seriesInfo,pageCount)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "cbc5e3612130300018c6f5ad7446bcdf7fd83cc8640fb663125a7448579aca40"
+    },
+    {
+      "label": "google-indexed-isbn-search",
+      "path": "/books/v1/volumes?q=isbn%3A9783842060739&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-isbn-plain-query",
+      "path": "/books/v1/volumes?q=9780316560856&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    },
+    {
+      "label": "google-jp-isbn-query",
+      "path": "/books/v1/volumes?q=isbn%3A9784048677608&maxResults=5&fields=kind,totalItems,items(id,volumeInfo)",
+      "status": 200,
+      "mode": "apiKeyOnly",
+      "sha256": "63fcc31ba96510003dfab4f3bd1831b7b83a634e833b2be2ed217885525b582c"
+    }
+  ],
+  "googleBooks": {
+    "discoveryRevision": "20261013",
+    "booksApiScopes": ["https://www.googleapis.com/auth/books"],
+    "desktopClient": {
+      "name": "Kisaki",
+      "type": "Desktop",
+      "created": true,
+      "existingWebClientChanged": false,
+      "exchangeRequiresDesktopClientSecret": true
+    },
+    "projectApiKey": {
+      "name": "Kisaki Books API",
+      "created": true,
+      "apiRestrictions": ["Books API"],
+      "hasServiceAccountBinding": false,
+      "credentialRecorded": false
+    },
+    "authorization": {
+      "booksScope": {
+        "exchangeStatus": 200,
+        "pkce": "S256",
+        "dynamicLoopback": true,
+        "hasRefreshToken": true,
+        "refreshStatus": 200
+      },
+      "accountIdentity": {
+        "bookshelfListAndGetSelfLinkPresent": false,
+        "booksOnlyTokeninfoStatus": 200,
+        "booksOnlyTokeninfoHasUserId": false,
+        "additionalScopesApproved": ["openid", "email"],
+        "additionalGrantStatus": "verified",
+        "verifiedStableIdentity": true,
+        "signatureVerified": true,
+        "nonceVerified": true,
+        "emailPresent": true,
+        "emailVerified": true,
+        "grantedScopes": [
+          "https://www.googleapis.com/auth/userinfo.email",
+          "openid",
+          "https://www.googleapis.com/auth/books"
+        ],
+        "refreshStatus": 200,
+        "sameAccountVerifiedAfterRefresh": true,
+        "authenticatedLibraryReadStatus": 200
+      },
+      "applicationVerificationCompleted": false,
+      "unverifiedApplicationNoticeObserved": true,
+      "temporaryReceiversClosed": true,
+      "temporaryCredentialHandlesReleased": true
+    },
+    "access": {
+      "unauthenticatedWithoutProjectKeyVolumeStatus": 429,
+      "apiKeyOnlyVolumeStatus": 200,
+      "apiKeyOnlySeriesStatus": 401,
+      "apiKeyOnlyMembershipStatus": 401,
+      "booksOAuthSeriesStatus": 200,
+      "booksOAuthMembershipStatus": 200
+    },
+    "samples": {
+      "saoVersions": [
+        {
+          "volumeId": "CPlnPgAACAAJ",
+          "language": "ja",
+          "pages": 352,
+          "isbn13": "9784048677608",
+          "hasSeriesInfo": false
+        },
+        {
+          "volumeId": "y2orDwAAQBAJ",
+          "language": "zh-TW",
+          "pages": 339,
+          "isbn13": "9789862373996",
+          "hasSeriesInfo": false
+        },
+        {
+          "volumeId": "fBZVDgAAQBAJ",
+          "language": "en",
+          "pages": 256,
+          "isbn13": "9780316560856",
+          "hasSeriesInfo": true
+        }
+      ],
+      "saoSeries": {
+        "seriesId": "NpBJHAAAABB-jM",
+        "type": "ORDERED_COMICS_SERIES",
+        "memberCount": 27,
+        "pages": 2,
+        "allDetailsRead": true,
+        "allDetailsStatus": 200,
+        "allLanguages": "en",
+        "displayNumberGap": "22",
+        "number23OrderNumber": 22
+      },
+      "authorCollection": {
+        "seriesId": "dxeYHAAAABDuCM",
+        "title": "The Yoru Sumino Collection",
+        "type": "ORDERED_COMICS_SERIES",
+        "memberCount": 7,
+        "containsIndependentNovels": true
+      },
+      "comicSeries": {
+        "seriesId": "vKusHAAAABARtM",
+        "title": "Frieren: Beyond Journey’s End",
+        "type": "ORDERED_COMICS_SERIES",
+        "memberCount": 14
+      },
+      "novelAndManga": [
+        {
+          "volumeId": "IqGQEAAAQBAJ",
+          "titleMarksLightNovel": true,
+          "categoriesIncludeManga": true,
+          "isbn13": "9781642750331",
+          "pages": 260
+        },
+        {
+          "volumeId": "Hr92DwAAQBAJ",
+          "medium": "novel",
+          "isbn13": "9781642754889",
+          "pages": 257,
+          "seriesIsAuthorCollection": true
+        },
+        {
+          "volumeId": "RqGQEAAAQBAJ",
+          "medium": "manga",
+          "isbn13": "9781642750324",
+          "pages": 442
+        },
+        {
+          "volumeId": "YF9-DwAAQBAJ",
+          "medium": "manga",
+          "isbn13": "9781642754896",
+          "pages": 442
+        }
+      ],
+      "seriesBanner": {
+        "sameAcrossThreeSeries": true,
+        "status": 200,
+        "contentType": "image/jpeg",
+        "bytes": 47059,
+        "visuallyInspected": true,
+        "content": "Generic blue comic collage, not work-specific artwork"
+      }
+    },
+    "search": {
+      "nameSearchSucceeded": true,
+      "saoReportedTotal": 167,
+      "frierenReportedTotal": 336,
+      "knownExistingIsbnQueriesReturnedZero": [
+        "9780316560856",
+        "9781642750331",
+        "9783842060739",
+        "9784048677608"
+      ],
+      "zeroResultsDoNotProveRecordMissing": true
+    },
+    "personalContracts": {
+      "bookShelfCount": 10,
+      "shelvesTested": [0, 2, 3, 4],
+      "testedShelvesAccess": "PUBLIC",
+      "readingShelvesMutuallyExclusive": false,
+      "favoriteDuplicateAddCreatedDuplicate": false,
+      "writes": 9,
+      "allWriteStatuses": 200,
+      "cleanupVerified": true,
+      "allShelvesEmptyAfterCleanup": true,
+      "writeEvidence": "2026-10-16-google-books-writes.json",
+      "reviewReadInContract": true,
+      "nonEmptyReviewReadVerified": false,
+      "reviewWriteInDiscovery": false,
+      "bookshelfCreateRenameDeleteInDiscovery": false,
+      "remoteWritesOutsideApprovedVolume": false
+    }
+  },
+  "ranobeDb": {
+    "sourceCommit": "c86288de2343c49425204a4a0c3bc75b9160a176",
+    "sourceFiles": [
+      {
+        "path": "src/hooks.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/hooks.server.ts",
+        "sha256": "c182039142cb9bdc407b1fb48d9771a1ded0129c1a547eec217a3e5cfae30c7f"
+      },
+      {
+        "path": "src/routes/api/v0/user/me/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/user/me/+server.ts",
+        "sha256": "5481ca0e54a343cdcc65b63c7569d1c0a4aa2710aa16178d19af1e8fd8239891"
+      },
+      {
+        "path": "src/routes/api/v0/user/book/[id=integer]/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/user/book/[id=integer]/+server.ts",
+        "sha256": "a2a26c932f33b74e1e357904ccd113570b2cf6214560010041a18e2fd8dbf9d7"
+      },
+      {
+        "path": "src/routes/api/v0/user/series/[id=integer]/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/user/series/[id=integer]/+server.ts",
+        "sha256": "41d26cdce5c1307faa4179149fb9fe00c5a17640e2b6bb4a43cf8c9c10d39f9a"
+      },
+      {
+        "path": "src/routes/api/v0/series/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/series/+server.ts",
+        "sha256": "e249d7e07c77334e619e682378b3e69166439faa918ad228d518bfcbce037f24"
+      },
+      {
+        "path": "src/routes/api/v0/book/[id]/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/book/[id]/+server.ts",
+        "sha256": "1acbc77784d676cce0f3d27e16cce2b1988e3a94fbab9e2cb14373b12560f464"
+      },
+      {
+        "path": "src/lib/server/zod/schema.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/zod/schema.ts",
+        "sha256": "bb7ad1de507a4059b531468fcd6ffcb3938ca6345adebe018de1c736ce729f0e"
+      },
+      {
+        "path": "tests/auth/pat.spec.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/tests/auth/pat.spec.ts",
+        "sha256": "09950f487ff67565615730dcb27017b7da4c499484e4c4efd1936993aff8fbc9"
+      },
+      {
+        "path": "src/routes/series/[id=integer]/+page.svelte",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/series/[id=integer]/+page.svelte",
+        "sha256": "3e7d81254a6aee2503e4c1392468c057dc86b13abc5d4a5b90970a1e783660f1"
+      },
+      {
+        "path": "src/lib/components/series/id/Series.svelte",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/components/series/id/Series.svelte",
+        "sha256": "d7fbbc0b2ecb1050cb7f623c61f1abc63e8e9cac7927a4fca268fc807b613634"
+      },
+      {
+        "path": "src/routes/editing-guidelines/series/+page.svelte",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/editing-guidelines/series/+page.svelte",
+        "sha256": "5a637625bae9f39b6acdcb4a3225ef7d6455fab55a4d76bd7822c38ce086d32a"
+      },
+      {
+        "path": "src/lib/components/markdown/markdownRules.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/components/markdown/markdownRules.ts",
+        "sha256": "103a2c1424561bf0ee7585ada07928a4a0388262999137a137f1185af00bc48f"
+      },
+      {
+        "path": "src/lib/server/db/user/user.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/db/user/user.ts",
+        "sha256": "80d00865f3337865a0a9c0111fdebfb138d74482a095d984af4e39b057dd0981"
+      },
+      {
+        "path": "src/routes/login/+page.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/login/+page.server.ts",
+        "sha256": "7c432a01972c4280d17b0e8d0c7e7c9beafc1f147ed4c3f053d06e03350198f4"
+      },
+      {
+        "path": "src/lib/server/lucia/lucia.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/lucia/lucia.ts",
+        "sha256": "732054d988ef389b2fa7641643f06e84ae5ab31ce2525255cf08f393b44fa14c"
+      },
+      {
+        "path": "src/lib/server/cf.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/cf.ts",
+        "sha256": "2dfe47f4ced3d1491d5e20dfade23c006baef9d377e771fda6494f2d77fd7355"
+      },
+      {
+        "path": "src/routes/user/[id=integer]/list/books/+page.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/user/[id=integer]/list/books/+page.server.ts",
+        "sha256": "95e21c084314e06cbf5c8173beea422c5f0a017b4e2af9a76a6afe6ae6eab5b1"
+      },
+      {
+        "path": "src/routes/user/[id=integer]/list/series/+page.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/user/[id=integer]/list/series/+page.server.ts",
+        "sha256": "222b0b239a96cf8a38031c5def9a4ce2fa5a6314f70f65c3544e12430777cbc3"
+      },
+      {
+        "path": "src/routes/book/[id=integer]/+page.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/book/[id=integer]/+page.server.ts",
+        "sha256": "16a4aee6e423864835795cd29707665d2b9cabac22128658ba7e5cd69691e85c"
+      },
+      {
+        "path": "src/routes/series/[id=integer]/+page.server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/series/[id=integer]/+page.server.ts",
+        "sha256": "29d0981b6de79c510ee0473c0dbbc7a7ce2ed275761b0c40f3e180cbe2337a67"
+      },
+      {
+        "path": "src/routes/api/v0/series/[id]/+server.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/api/v0/series/[id]/+server.ts",
+        "sha256": "5bc24810dcf69821e906ceb6d1b254c010a12fd66a8b48856bafcaf0515f3e58"
+      },
+      {
+        "path": "src/lib/server/db/books/books.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/db/books/books.ts",
+        "sha256": "12fc1ed3b60eee8edd415ecec37b1a33bdc9e80e723bec6c3515bbffc60e6aa4"
+      },
+      {
+        "path": "src/lib/server/db/series/series.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/db/series/series.ts",
+        "sha256": "014c48ec7e380b271cbaa2f06d5a801e6ba754ce6d341ca7631be2af155728ec"
+      },
+      {
+        "path": "src/lib/server/db/user/profile-private-error.ts",
+        "url": "https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/lib/server/db/user/profile-private-error.ts",
+        "sha256": "9fe8c8f9a83efd8fcb74d0c68ec47d380f9c3900fb257e3397ca8ad6da263676"
+      }
+    ],
+    "detailEnvelopes": ["series", "book", "release", "staff", "publisher"],
+    "examples": {
+      "sao": {
+        "seriesId": 1234,
+        "mainBookCount": 29,
+        "originalLanguage": "ja",
+        "bookId": 5151,
+        "authorStaffId": 1238,
+        "illustratorStaffId": 589,
+        "illustratorCreditAliasId": 12811,
+        "originalPrintReleaseId": 10222,
+        "originalPrintPages": 352,
+        "originalDigitalReleaseId": 10221,
+        "originalDigitalPages": 374,
+        "omnibusReleaseId": 10225,
+        "omnibusMemberCount": 20
+      },
+      "standalone": {
+        "seriesId": 6694,
+        "bookId": 19970,
+        "completed": true,
+        "mainBookCount": 1,
+        "automaticStandaloneInference": false
+      },
+      "mixedStaff": {
+        "staffId": 6414,
+        "name": "CLAMP",
+        "structuredSubjectDiscriminator": false
+      },
+      "relation": {
+        "seriesId": 677,
+        "relatedSeriesId": 6039,
+        "type": "spin-off"
+      },
+      "partialDate": {
+        "encoded": 20100499,
+        "precision": "month",
+        "value": "2010-04"
+      },
+      "tags": {
+        "requestedLimit": 2,
+        "returnedCount": 24,
+        "totalPages": 7,
+        "declaredTotal": "166"
+      }
+    },
+    "image": {
+      "url": "https://images.ranobedb.org/UjgIjSdErVD1nzmp.jpg",
+      "headStatus": 200,
+      "contentType": "image/jpeg",
+      "bytes": 52337,
+      "seriesRepresentative": "website uses series.books[0].image",
+      "imageFlagsAreNotWorkFlags": true
+    },
+    "personalApi": {
+      "docsStillSayReadOnly": true,
+      "patMeRouteExists": true,
+      "patWriteRoutes": ["book", "series", "staff", "publisher", "release"],
+      "patAuthenticationPathPrefix": "/api/v0/user",
+      "patListReadRouteFound": false,
+      "patRecordGetRouteFound": false,
+      "putUsesFullFormShape": true,
+      "authenticatedLiveReadVerified": false,
+      "remoteWrites": 0,
+      "sourceMeReturnsLists": false,
+      "publicDetailRoutesPassListUserId": false,
+      "publicDetailRoutesReturnCompletePersonalForm": false
+    },
+    "websitePersonalData": {
+      "transport": "SvelteKit page __data.json; separate from the public v0 API",
+      "anonymousRequestCount": 9,
+      "publicListPagination": [
+        {
+          "kind": "books",
+          "pages": [
+            {
+              "status": 200,
+              "page": 1,
+              "totalPages": 3,
+              "count": 70,
+              "returned": 24
+            },
+            {
+              "status": 200,
+              "page": 2,
+              "totalPages": 3,
+              "count": 70,
+              "returned": 24
+            },
+            {
+              "status": 200,
+              "page": 3,
+              "totalPages": 3,
+              "count": 70,
+              "returned": 22
+            }
+          ],
+          "totalReturned": 70,
+          "uniqueIds": 70
+        },
+        {
+          "kind": "series",
+          "pages": [
+            {
+              "status": 200,
+              "page": 1,
+              "totalPages": 4,
+              "count": 73,
+              "returned": 24
+            },
+            {
+              "status": 200,
+              "page": 2,
+              "totalPages": 4,
+              "count": 73,
+              "returned": 24
+            },
+            {
+              "status": 200,
+              "page": 3,
+              "totalPages": 4,
+              "count": 73,
+              "returned": 24
+            },
+            {
+              "status": 200,
+              "page": 4,
+              "totalPages": 4,
+              "count": 73,
+              "returned": 1
+            }
+          ],
+          "totalReturned": 73,
+          "uniqueIds": 73
+        }
+      ],
+      "anonymousDetailFormShapesVerified": ["userListForm", "userListSeriesForm"],
+      "authenticatedFormReadsVerifiedBy": "source code only",
+      "authenticatedLiveReadVerified": false,
+      "sessionCookieName": "auth_session",
+      "loginRequiresTurnstile": true,
+      "sessionLifetimeDays": 30,
+      "renewalThresholdDays": 15,
+      "credentialsObtained": false,
+      "remoteWrites": 0
+    },
+    "terminalScope": {
+      "metadata": true,
+      "personalImport": false,
+      "personalSync": false,
+      "reason": "Public personal API lacks complete list and record reads; website session and page-data integration is outside the chosen scope, not deferred implementation."
+    }
+  }
+}

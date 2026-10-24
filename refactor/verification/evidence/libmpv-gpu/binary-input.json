@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-10-18T11:17:30.522002+00:00",
+  "electron": {
+    "version": "44.5.1",
+    "source": "https://github.com/electron/electron/releases/download/v44.5.1/electron-v44.5.1-win32-x64.zip",
+    "archiveSha256": "9b382492dcfee91f8f9e92c91f7972550a1b95d2299cac72279dab33a600d7db",
+    "runtime": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\electron-44.5.1",
+    "selectedConsumerVersion": true
+  },
+  "angle": {
+    "headersCommit": "b82a564646a26535ccedfa7a69134c0fd6654ac2",
+    "headers": [
+      {
+        "path": "EGL/egl.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/EGL/egl.h",
+        "sha256": "b9669499729432653659b99ec9e92f3defed9207c480ec7926024f424e693f9a"
+      },
+      {
+        "path": "EGL/eglext.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/EGL/eglext.h",
+        "sha256": "92fe2e491f9374afb88e9c8d96be7288f33f27db97d06610ba5671ea732f8aae"
+      },
+      {
+        "path": "EGL/eglext_angle.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/EGL/eglext_angle.h",
+        "sha256": "3191e2abb070f099ce37c542d1702eb893da133baad0a0d3b340d986a219e152"
+      },
+      {
+        "path": "EGL/eglplatform.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/EGL/eglplatform.h",
+        "sha256": "b748729767798d85ecf8e1923552879328a76d572327b641ce737549b391cc9c"
+      },
+      {
+        "path": "GLES3/gl3.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/GLES3/gl3.h",
+        "sha256": "b56feb7c5a1de8ed0be161fa5205900f24d15d16fe72005ef68d236c3c39982d"
+      },
+      {
+        "path": "GLES3/gl3platform.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/GLES3/gl3platform.h",
+        "sha256": "a9e060dae5a2b11c5a889b679692b7089a10a7e03ebfbb6cf28217f6e322fb08"
+      },
+      {
+        "path": "KHR/khrplatform.h",
+        "source": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/include/KHR/khrplatform.h",
+        "sha256": "e206a6931f98ffe1c5c7ece69c4f94bbe1c9279243f40cbe7782848a0d3fa2de"
+      }
+    ],
+    "probeBinariesFrom": "existing Electron 41.2.0 installation",
+    "selectedForLibraryRelease": false,
+    "directory": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\producer-angle-electron-41.2.0",
+    "files": {
+      "libEGL.dll": "d96e3731a45bd60af2410e482dda3bcadec20879b080328b755e2fb21f22455d",
+      "libGLESv2.dll": "2b8c2d0da9e5b2e7af3a0518ae309765c5569316aef25c6593598db82679bb40",
+      "d3dcompiler_47.dll": "c8e25abd3d45dfb55966a74613258c39b4a83ea2ac77f2f80903499f4d5c03f0"
+    }
+  },
+  "sample": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\quadrants.ppm",
+    "sha256": "e4488831896519e049583da63a5ed930783290fb569af7964e9dd125f875aa67",
+    "width": 63,
+    "height": 47
+  },
+  "movie": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\clock-sample.mkv",
+    "sha256": "5cf10e6b1010e324386bda4f4571e660afcfe9fc9c2a7fa0f8f46b307c9b687d",
+    "seconds": 1.5,
+    "generator": "ffmpeg version 6.1.1-essentials_build-www.gyan.dev Copyright (c) 2000-2023 the FFmpeg developers",
+    "generatorSha256": "04e1307997530f9cf2fe35cba2ca7e8875ca91da02f89d6c7243df819c94ad00"
+  },
+  "alphaSamples": [
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\opaque.png",
+      "sha256": "1ce8366031a440cf27e4d21aed7407dd210c2d66027f9d1516d1141f55b0398b",
+      "alpha": 255
+    },
+    {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\half-alpha.png",
+      "sha256": "48bd01213df046262102b1b3d20827fc21495a71ab81a2328ae6eeabd634ec74",
+      "alpha": 128
+    }
+  ],
+  "independentAnglePackagingVerified": false,
+  "directD3d11Headers": {
+    "commit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+    "files": [
+      {
+        "path": "client.h",
+        "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/client.h",
+        "sha256": "3da9b8c61c3fb4e2d76bd248cebf72f3ee830331411b71a76adbd5e05660cc50"
+      },
+      {
+        "path": "render.h",
+        "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h",
+        "sha256": "f2550aa29b2e9b20988bd954b4383e9fa05fd9e40d1669fbc6edf2afac603f15"
+      },
+      {
+        "path": "render_d3d11.h",
+        "source": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render_d3d11.h",
+        "sha256": "7b880453ee3c780b0d0f1c3f8ecaa1d23b289522f4c687e6857c8475f4a3f6fb"
+      }
+    ],
+    "selectedForRelease": false
+  }
+}

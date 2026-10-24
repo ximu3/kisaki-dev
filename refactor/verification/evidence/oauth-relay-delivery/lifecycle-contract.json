@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-10-21T07:50:48.959Z",
+  "cases": [
+    {
+      "mode": "drain",
+      "node": "v24.22.0",
+      "type": "closed",
+      "forced": false,
+      "activeRequests": 0,
+      "activeTasks": 0,
+      "listenerClosed": true,
+      "cleanupNotifications": 1,
+      "elapsedMs": 78,
+      "processExit": {
+        "code": 0,
+        "signal": null
+      },
+      "requestResult": {
+        "status": 200,
+        "body": {
+          "complete": true
+        }
+      },
+      "upstreamAborted": false,
+      "stderr": ""
+    },
+    {
+      "mode": "deadline",
+      "node": "v24.22.0",
+      "type": "closed",
+      "forced": true,
+      "activeRequests": 0,
+      "activeTasks": 0,
+      "listenerClosed": true,
+      "cleanupNotifications": 1,
+      "elapsedMs": 117,
+      "processExit": {
+        "code": 0,
+        "signal": null
+      },
+      "requestResult": {
+        "connectionClosed": true
+      },
+      "upstreamAborted": true,
+      "stderr": ""
+    }
+  ],
+  "sourceReceiptSha256": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+  "scriptSha256": "0ab2f2e08aef8a5889d18f3c6a835c6007e6b4c9c7f38859e523d44e7f898a73",
+  "nativePosixSignalExecuted": false,
+  "dockerStopExecuted": false,
+  "actualProviderRequests": false,
+  "productionRelayImplemented": false
+}

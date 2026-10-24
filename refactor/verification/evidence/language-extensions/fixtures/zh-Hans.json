@@ -1,0 +1,48 @@
+{
+  "actions": {
+    "save": "保存",
+    "cancel": "取消",
+    "remove": "移除",
+    "delete": "删除",
+    "browse": "浏览…"
+  },
+  "library": {
+    "entities": {
+      "game": "游戏",
+      "anime": "动画",
+      "comic": "漫画",
+      "novel": "小说",
+      "character": "角色",
+      "person": "人物",
+      "organization": "组织"
+    },
+    "collection": "合集",
+    "favorite": "喜爱",
+    "metadataProfile": "资料方案",
+    "added": "已添加 {name}",
+    "kind": "{kind, select, game {游戏} anime {动画} comic {漫画} novel {小说} other {作品}}"
+  },
+  "records": {
+    "setStatus": "设置状态",
+    "recordCurrent": "记录本次完成…",
+    "history": "完成记录…",
+    "addPast": "补录完成记录…",
+    "unknownDate": "日期未记录",
+    "active": { "game": "在玩", "anime": "在看", "comic": "在读", "novel": "在读" },
+    "running": "正在运行",
+    "additionalDuration": "附加时长",
+    "completionCount": "{count, plural, =0 {没有完成记录} other {完成 {count, number} 次}}"
+  },
+  "selection": {
+    "count": "已选择 {count, number} 项",
+    "position": "第 {position, number} 项",
+    "shared": "{name} 等 {count, number} 人"
+  },
+  "feedback": {
+    "updated": "更新于 {when, date, short}",
+    "retry": "无法加载 {name}。请重试。",
+    "value": "值：{value}",
+    "escaped": "输入字面文本 '{name}'",
+    "literalMarkup": "<b>{name}</b>"
+  }
+}

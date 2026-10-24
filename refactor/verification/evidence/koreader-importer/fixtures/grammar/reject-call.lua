@@ -1,0 +1,1 @@
+return { x = os.execute("never") }

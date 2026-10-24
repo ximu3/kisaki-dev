@@ -1,0 +1,1874 @@
+{
+  "node": "v24.11.1",
+  "runs": [
+    {
+      "node": "v24.11.1",
+      "backend": "angle",
+      "angleLoadedBefore": false,
+      "angleLoadedAfter": true,
+      "cases": [
+        {
+          "setup": {
+            "before": false,
+            "script": ""
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": false,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": false,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+            "bytes": 12032
+          }
+        },
+        {
+          "setup": {
+            "before": true,
+            "script": ""
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": true,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": true,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+            "bytes": 12032
+          }
+        },
+        {
+          "setup": {
+            "before": true,
+            "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\startup.lua"
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": true,
+              "startupScript": true,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": true,
+              "startupScript": true,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "angle",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+            "bytes": 12032
+          }
+        }
+      ]
+    },
+    {
+      "node": "v24.11.1",
+      "backend": "d3d11",
+      "angleLoadedBefore": false,
+      "angleLoadedAfter": false,
+      "cases": [
+        {
+          "setup": {
+            "before": false,
+            "script": ""
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": false,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": false,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "ab0d816693fd39bdff43ef891e3c19b5d09e46f92ca202ab37be59c78fcffc2c",
+            "bytes": 12032
+          }
+        },
+        {
+          "setup": {
+            "before": true,
+            "script": ""
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": true,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": true,
+              "startupScript": false,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+            "bytes": 12032
+          }
+        },
+        {
+          "setup": {
+            "before": true,
+            "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\startup.lua"
+          },
+          "frames": [
+            {
+              "width": 63,
+              "height": 47,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "63",
+              "screenshotHeight": "47",
+              "screenshotStride": "256",
+              "screenshotBytes": "12032",
+              "rendererBeforeInitialize": true,
+              "startupScript": true,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+            },
+            {
+              "width": 31,
+              "height": 23,
+              "vendor": 4318,
+              "device": 10400,
+              "adapterLuid": "0000000000018522",
+              "flags": "3",
+              "targetTime": "0",
+              "screenshotWidth": "0",
+              "screenshotHeight": "0",
+              "screenshotStride": "0",
+              "screenshotBytes": "0",
+              "rendererBeforeInitialize": true,
+              "startupScript": true,
+              "coreDestroyed": true,
+              "rawVoChangeSucceeded": true,
+              "grayBeforeChange": 128,
+              "grayAfterChange": 55,
+              "backend": "d3d11",
+              "pixelFormat": "bgra8unorm",
+              "target": "srgb",
+              "samples": [
+                [
+                  0,
+                  0,
+                  255,
+                  255
+                ],
+                [
+                  0,
+                  255,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                [
+                  255,
+                  255,
+                  255,
+                  255
+                ]
+              ],
+              "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+            }
+          ],
+          "screenshot": {
+            "format": "bgr0",
+            "samples": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+            "bytes": 12032
+          }
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "setup": {
+        "before": false,
+        "script": ""
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": false,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": false,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+        "bytes": 12032
+      },
+      "backend": "angle"
+    },
+    {
+      "setup": {
+        "before": true,
+        "script": ""
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": true,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": true,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+        "bytes": 12032
+      },
+      "backend": "angle"
+    },
+    {
+      "setup": {
+        "before": true,
+        "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\startup.lua"
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": true,
+          "startupScript": true,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": true,
+          "startupScript": true,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "angle",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+        "bytes": 12032
+      },
+      "backend": "angle"
+    },
+    {
+      "setup": {
+        "before": false,
+        "script": ""
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": false,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": false,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "ab0d816693fd39bdff43ef891e3c19b5d09e46f92ca202ab37be59c78fcffc2c",
+        "bytes": 12032
+      },
+      "backend": "d3d11"
+    },
+    {
+      "setup": {
+        "before": true,
+        "script": ""
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": true,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": true,
+          "startupScript": false,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+        "bytes": 12032
+      },
+      "backend": "d3d11"
+    },
+    {
+      "setup": {
+        "before": true,
+        "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\startup.lua"
+      },
+      "frames": [
+        {
+          "width": 63,
+          "height": 47,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "63",
+          "screenshotHeight": "47",
+          "screenshotStride": "256",
+          "screenshotBytes": "12032",
+          "rendererBeforeInitialize": true,
+          "startupScript": true,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "dee1fd47673b6a302b035b5f5a247eeb499c73aae962374bbc5b60c7ef307490"
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "vendor": 4318,
+          "device": 10400,
+          "adapterLuid": "0000000000018522",
+          "flags": "3",
+          "targetTime": "0",
+          "screenshotWidth": "0",
+          "screenshotHeight": "0",
+          "screenshotStride": "0",
+          "screenshotBytes": "0",
+          "rendererBeforeInitialize": true,
+          "startupScript": true,
+          "coreDestroyed": true,
+          "rawVoChangeSucceeded": true,
+          "grayBeforeChange": 128,
+          "grayAfterChange": 55,
+          "backend": "d3d11",
+          "pixelFormat": "bgra8unorm",
+          "target": "srgb",
+          "samples": [
+            [
+              0,
+              0,
+              255,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              255,
+              255,
+              255,
+              255
+            ]
+          ],
+          "sha256": "61c8191c49449e1c44cf484ca499cb67d3b41921a06be205745fc75ffd7090a5"
+        }
+      ],
+      "screenshot": {
+        "format": "bgr0",
+        "samples": [
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "sha256": "95144e2d5cdc4b68e58c8b3d622a8d62a82b09891faf95e3a24b0fb270afd993",
+        "bytes": 12032
+      },
+      "backend": "d3d11"
+    }
+  ],
+  "framePressure": {
+    "cases": [
+      {
+        "capacity": 2,
+        "produced": 2,
+        "skipped": 44,
+        "heldFramesStable": true,
+        "maxPosition": 1.4329999999999998,
+        "elapsedSeconds": 1.5017968,
+        "firstTargetRaw": "121955200",
+        "clockAtTargetNs": "136704800",
+        "clockAtTargetUs": "136707",
+        "audioCodec": "pcm_s16le",
+        "targetTimeUnit": "nanoseconds"
+      },
+      {
+        "capacity": 3,
+        "produced": 3,
+        "skipped": 43,
+        "heldFramesStable": true,
+        "maxPosition": 1.4329999999999998,
+        "elapsedSeconds": 1.4899697,
+        "firstTargetRaw": "86151600",
+        "clockAtTargetNs": "100810200",
+        "clockAtTargetUs": "100813",
+        "audioCodec": "pcm_s16le",
+        "targetTimeUnit": "nanoseconds"
+      }
+    ],
+    "angleLibrariesLoaded": false
+  },
+  "formats": {
+    "results": [
+      {
+        "target": "scrgb",
+        "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\quadrants.ppm",
+        "pixelFormat": "rgba16float",
+        "values": [
+          [
+            0.020294189453125,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0.020294189453125,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0.020294189453125,
+            1
+          ],
+          [
+            0.020294189453125,
+            0.020294189453125,
+            0.020294189453125,
+            1
+          ],
+          [
+            0.0043792724609375,
+            0.0043792724609375,
+            0.0043792724609375,
+            1
+          ]
+        ],
+        "scrgb80NitsCompatible": false,
+        "expectedReferenceWhite": 2.5375
+      },
+      {
+        "target": "pq",
+        "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\quadrants.ppm",
+        "pixelFormat": "rgba16float",
+        "values": [
+          [
+            0.5322265625,
+            0.326904296875,
+            0.219970703125,
+            1
+          ],
+          [
+            0.468017578125,
+            0.57177734375,
+            0.34716796875,
+            1
+          ],
+          [
+            0.28955078125,
+            0.19677734375,
+            0.56884765625,
+            1
+          ],
+          [
+            0.58056640625,
+            0.58056640625,
+            0.58056640625,
+            1
+          ],
+          [
+            0.427734375,
+            0.427734375,
+            0.427734375,
+            1
+          ]
+        ]
+      },
+      {
+        "target": "transparent",
+        "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\opaque.png",
+        "pixelFormat": "bgra8unorm",
+        "values": [
+          [
+            0,
+            0,
+            255,
+            255
+          ],
+          [
+            0,
+            255,
+            0,
+            255
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            255,
+            255,
+            255
+          ],
+          [
+            128,
+            128,
+            128,
+            255
+          ]
+        ]
+      },
+      {
+        "target": "transparent",
+        "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\half-alpha.png",
+        "pixelFormat": "bgra8unorm",
+        "values": [
+          [
+            0,
+            0,
+            128,
+            128
+          ],
+          [
+            0,
+            128,
+            0,
+            128
+          ],
+          [
+            128,
+            0,
+            0,
+            128
+          ],
+          [
+            128,
+            128,
+            128,
+            128
+          ],
+          [
+            64,
+            64,
+            64,
+            128
+          ]
+        ]
+      },
+      {
+        "target": "blank",
+        "source": "",
+        "pixelFormat": "bgra8unorm",
+        "values": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ]
+        ]
+      }
+    ],
+    "pqWhiteNits": 202.76226483759663,
+    "encodedPremultiplicationMatches": true,
+    "angleLibrariesLoaded": false
+  },
+  "checkedAt": "2026-10-18T12:33:57.357540+00:00",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "nativeGpuExecuted": true,
+  "electronImportExecuted": false,
+  "independentAnglePackagingVerified": false,
+  "hardwareDecodingExecuted": false,
+  "hdrTargetPixelsExecuted": true,
+  "hdrSourceToneMappingVerified": false,
+  "physicalHdrDisplayVerified": false,
+  "directD3d11RenderApiExecuted": true,
+  "nativeSettingsGuardImplemented": false,
+  "sources": {
+    "Cargo.toml": "47649808252254847b832594c84d37f6eaec20e72aa35d7869f7fcd348a1898d",
+    "Cargo.lock": "ed8a812f46a6b6431703e85a6044671ff33a0f64103458f3a280e98ec85ae6fa",
+    "build.rs": "078f0688d9444869412c805ae872805ea99a9410ca0dcff4373b2b7497fcff68",
+    "binding.rs": "012d740a276289b669d45057efa0cb6087e5cc9a33e2dd0561a96b833aa2cfff",
+    "producer.cpp": "caf1b71a62853e2334586d690d62137015c377501eccf4e89f4ffc0154e6c9c6",
+    "native-probe.mjs": "88aa48ac4f5234f0eaccca310c024504f60af73aead7095399abfbf8700f2bc7",
+    "pressure-probe.mjs": "abec54eb41f64fc7407c182375f5418ae3264e525c4d87b07f34cfc624c3bbc1",
+    "format-probe.mjs": "ef0b957e3fff0e564733c545a5354945cbad8f4726cababa20191554567155a2",
+    "run.py": "4cc478289e2f509ddfef079e28946d87c5407e234223a636596528900b59c9c1"
+  },
+  "stderr": ""
+}

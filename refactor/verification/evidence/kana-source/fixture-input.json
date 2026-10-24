@@ -1,0 +1,153 @@
+{
+  "recordedAt": "2026-10-19T11:30:13.243171+00:00",
+  "origin": "self-authored controlled files; not published books",
+  "generatorSha256": "a16959d438ac96eeacd4955a41cc1a0612cf740a798bc576a2579c7359d03508",
+  "schema": {
+    "repository": "https://github.com/gribuser/fb2",
+    "commit": "4d3740e319039911c30d291abb0c8b26ec99703b",
+    "files": [
+      {
+        "name": "FictionBook.xsd",
+        "source": "https://raw.githubusercontent.com/gribuser/fb2/4d3740e319039911c30d291abb0c8b26ec99703b/FictionBook.xsd",
+        "sha256": "db2c0a239f4654db808d580b4d835fda9b41df09c169556116c4092ca47865b3"
+      },
+      {
+        "name": "FictionBookLinks.xsd",
+        "source": "https://raw.githubusercontent.com/gribuser/fb2/4d3740e319039911c30d291abb0c8b26ec99703b/FictionBookLinks.xsd",
+        "sha256": "f4697d9a42f191a9030b74f7611dd340b0298860b5eb30e67ea6560b52ff6af6"
+      },
+      {
+        "name": "FictionBookGenres.xsd",
+        "source": "https://raw.githubusercontent.com/gribuser/fb2/4d3740e319039911c30d291abb0c8b26ec99703b/FictionBookGenres.xsd",
+        "sha256": "4e412d345b72c633a763e4c49f1e7c198e9f21b74b6be53d2d844d7b90133722"
+      },
+      {
+        "name": "FictionBookLang.xsd",
+        "source": "https://raw.githubusercontent.com/gribuser/fb2/4d3740e319039911c30d291abb0c8b26ec99703b/FictionBookLang.xsd",
+        "sha256": "4873a0ec10a86a68c8e511ded5fdbb71f1cc8d7319bc71a791cd13575db51158"
+      }
+    ],
+    "validator": {
+      "lxml": [6, 1, 0, 0],
+      "libxml": [2, 11, 9]
+    }
+  },
+  "cases": [
+    {
+      "name": "utf8.txt",
+      "bytes": 43,
+      "sha256": "a6abcecb1f787fcb37582a09a6a4d9df6c69b5484d6c8f12f80cc4eea1f9d1ec",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "utf16le.txt",
+      "bytes": 48,
+      "sha256": "84b3bb31e5b924fecb5a67363c536ec07ea293a9b30ace588caff95c801e401a",
+      "format": "txt",
+      "encoding": "utf-16le"
+    },
+    {
+      "name": "utf16be.txt",
+      "bytes": 48,
+      "sha256": "7fe1add6eebce261071bfdf6d0f0a429cecdc0d81081eea0def0a3efdc4134a6",
+      "format": "txt",
+      "encoding": "utf-16be"
+    },
+    {
+      "name": "shift-jis.txt",
+      "bytes": 22,
+      "sha256": "dae099768a9adc9fba8403caea47e2bd67ad76126a3974918d0a7cd840b25513",
+      "format": "txt",
+      "encoding": "shift_jis"
+    },
+    {
+      "name": "gb18030.txt",
+      "bytes": 20,
+      "sha256": "b59176facc75703b77a33252d85aebfeef547ec3180ad18006f76e74ce70dec0",
+      "format": "txt",
+      "encoding": "gb18030"
+    },
+    {
+      "name": "windows1252.txt",
+      "bytes": 19,
+      "sha256": "229775d55bbee7799a84610797066ca36f6545281d486bfb766565ea03e896d5",
+      "format": "txt",
+      "encoding": "windows-1252"
+    },
+    {
+      "name": "iso2022jp.txt",
+      "bytes": 38,
+      "sha256": "2984816671be0dff8efc37c06f0188e2b57ba5640f8d6874cebd1b62dc0c6662",
+      "format": "txt",
+      "encoding": "iso-2022-jp"
+    },
+    {
+      "name": "utf8-replacement.txt",
+      "bytes": 8,
+      "sha256": "5232d89709860703f343edd1b89c6d2530712af907e3e4f26481fcac7371995b",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "utf16-replacement.txt",
+      "bytes": 9,
+      "sha256": "ff9b11bb63f2049badd6fa4c5773db60e88afe910d6feceb02f4f210dc782d66",
+      "format": "txt",
+      "encoding": "utf-16le"
+    },
+    {
+      "name": "empty.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "bom-only.txt",
+      "bytes": 3,
+      "sha256": "f1945cd6c19e56b3c1c78943ef5ec18116907a4ca1efc40a57d48ab1db7adfc5",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "middle-bom.txt",
+      "bytes": 8,
+      "sha256": "3c9686c92899c8132a1540d39a04a598e6d9bf8da1b22f2988a606e08d6ada89",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "opposite-bom.txt",
+      "bytes": 4,
+      "sha256": "917969f59013b83cba09f3faaf4ef6aa14c0bc42e851f2fb2656bf3c87ffad04",
+      "format": "txt",
+      "encoding": "utf-16le"
+    },
+    {
+      "name": "source.fb2",
+      "bytes": 1035,
+      "sha256": "d5906a82603c016ae50bb8028d7cbedbf93e62f0b55d1f5856a8e35e4b9a1fe7",
+      "format": "fb2",
+      "encoding": "utf-8",
+      "schemaValid": true
+    },
+    {
+      "name": "source-utf16.fb2",
+      "bytes": 1934,
+      "sha256": "bb24cb643c722dbdab7cde7ec7f511942aa49eccecf754dba0b961004bb58632",
+      "format": "fb2",
+      "encoding": "utf-16le",
+      "schemaValid": true
+    },
+    {
+      "name": "internal-entity.fb2",
+      "bytes": 1084,
+      "sha256": "bbf2e4236fcaf484b4bdf00ea04c42d15189dbc5d0602fafd7346b824a688728",
+      "format": "fb2",
+      "encoding": "utf-8",
+      "schemaValid": true
+    }
+  ],
+  "expectationsSha256": "2b2167ddcdf59bff4cdbd1abb284a163ed39640eaff3c1242812c9362f4ab3fd"
+}

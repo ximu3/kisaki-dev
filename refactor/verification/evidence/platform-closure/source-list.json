@@ -1,0 +1,246 @@
+[
+  {
+    "name": "mac-libproc-header",
+    "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/libsyscall/wrappers/libproc/libproc.h"
+  },
+  {
+    "name": "mac-libproc",
+    "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/libsyscall/wrappers/libproc/libproc.c"
+  },
+  {
+    "name": "mac-proc-info",
+    "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/bsd/sys/proc_info.h"
+  },
+  {
+    "name": "mac-process-events",
+    "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/bsd/kern/kern_event.c"
+  },
+  {
+    "name": "mac-ax-header",
+    "url": "https://raw.githubusercontent.com/Hammerspoon/hammerspoon/23e387e2805a9890066366e0ac96c71b27f0cfd5/Hammerspoon/HSuicore.h"
+  },
+  {
+    "name": "mac-ax-use",
+    "url": "https://raw.githubusercontent.com/Hammerspoon/hammerspoon/23e387e2805a9890066366e0ac96c71b27f0cfd5/Hammerspoon/HSuicore.m"
+  },
+  {
+    "name": "mac-iosurface-use",
+    "url": "https://raw.githubusercontent.com/obsproject/obs-studio/31.0.0/libobs-opengl/gl-cocoa.m"
+  },
+  {
+    "name": "kwin5-script",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scripting.cpp"
+  },
+  {
+    "name": "kwin6-script",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scripting.cpp"
+  },
+  {
+    "name": "kwin5-workspace",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/workspace_wrapper.h"
+  },
+  {
+    "name": "kwin6-workspace",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/workspace_wrapper.h"
+  },
+  {
+    "name": "kwin5-window",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/toplevel.h"
+  },
+  {
+    "name": "kwin6-window",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/window.h"
+  },
+  {
+    "name": "kwin5-service",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/utils/serviceutils.h"
+  },
+  {
+    "name": "kwin5-capture",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp"
+  },
+  {
+    "name": "kwin6-capture",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotdbusinterface2.cpp"
+  },
+  {
+    "name": "kservice-trader",
+    "url": "https://raw.githubusercontent.com/KDE/kservice/v5.92.0/src/services/kapplicationtrader.cpp"
+  },
+  {
+    "name": "gnome-introspect",
+    "url": "https://raw.githubusercontent.com/GNOME/gnome-shell/42.0/js/misc/introspect.js"
+  },
+  {
+    "name": "mutter-window",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/core/window.c"
+  },
+  {
+    "name": "mutter-x11-properties",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/x11/window-props.c"
+  },
+  {
+    "name": "mutter-x11-window",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/x11/window-x11.c"
+  },
+  {
+    "name": "mutter-cast-session",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast-session.c"
+  },
+  {
+    "name": "mutter-cast-protocol",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/data/dbus-interfaces/org.gnome.Mutter.ScreenCast.xml"
+  },
+  {
+    "name": "libwnck-xres",
+    "url": "https://raw.githubusercontent.com/GNOME/libwnck/43.0/libwnck/xutils.c"
+  },
+  {
+    "name": "mesa-gbm-header",
+    "url": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/mesa-22.0.0/src/gbm/main/gbm.h"
+  },
+  {
+    "name": "mesa-egl-gbm",
+    "url": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/mesa-22.0.0/src/egl/drivers/dri2/platform_drm.c"
+  },
+  {
+    "name": "egl-dmabuf",
+    "url": "https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import.txt"
+  },
+  {
+    "name": "egl-modifiers",
+    "url": "https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import_modifiers.txt"
+  },
+  {
+    "name": "electron-texture",
+    "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc"
+  },
+  {
+    "name": "mutter-display",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/core/display.c"
+  },
+  {
+    "name": "kwin5-dbus-conversion",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scriptingutils.h"
+  },
+  {
+    "name": "kwin6-dbus-conversion",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scriptingutils.h"
+  },
+  {
+    "name": "kwin6-x11",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/x11window.cpp"
+  },
+  {
+    "name": "kwin5-x11",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/x11client.cpp"
+  },
+  {
+    "name": "kwin6-capture-render",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshot.cpp"
+  },
+  {
+    "name": "kwin5-capture-render",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshot.cpp"
+  },
+  {
+    "name": "kwin5-dbus-values",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scriptingutils.cpp"
+  },
+  {
+    "name": "kwin6-dbus-values",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scriptingutils.cpp"
+  },
+  {
+    "name": "kwin5-toplevel",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/toplevel.cpp"
+  },
+  {
+    "name": "kwin5-wayland",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/waylandclient.cpp"
+  },
+  {
+    "name": "kwin6-wayland",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/waylandwindow.cpp"
+  },
+  {
+    "name": "mutter-pipewire",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast-stream-src.c"
+  },
+  {
+    "name": "mutter-cast-server",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast.c"
+  },
+  {
+    "name": "kservice-cache",
+    "url": "https://raw.githubusercontent.com/KDE/kservice/v5.92.0/src/kbuildsycoca/kbuildsycoca_main.cpp"
+  },
+  {
+    "name": "gnome-45-upgrade",
+    "url": "https://gjs.guide/extensions/upgrading/gnome-shell-45.html"
+  },
+  {
+    "name": "d2d-tone-map",
+    "url": "https://learn.microsoft.com/en-us/windows/win32/direct2d/hdr-tone-map-effect"
+  },
+  {
+    "name": "d2d-white-level",
+    "url": "https://learn.microsoft.com/en-us/windows/win32/direct2d/white-level-adjustment-effect"
+  },
+  {
+    "name": "gnome-tags",
+    "url": "https://api.github.com/repos/GNOME/gnome-shell/tags?per_page=5"
+  },
+  {
+    "name": "mutter-tags",
+    "url": "https://api.github.com/repos/GNOME/mutter/tags?per_page=5"
+  },
+  {
+    "name": "d2d-sample-commit",
+    "url": "https://api.github.com/repos/microsoft/Windows-universal-samples/commits?path=Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp&per_page=1"
+  },
+  {
+    "name": "gnome51-introspect",
+    "url": "https://raw.githubusercontent.com/GNOME/gnome-shell/51.1/js/misc/introspect.js"
+  },
+  {
+    "name": "mutter51-cast",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/backends/meta-screen-cast-session.c"
+  },
+  {
+    "name": "mutter51-window",
+    "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/core/window.c"
+  },
+  {
+    "name": "kwin6-screenshot-layer",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotlayer.cpp"
+  },
+  {
+    "name": "d2d-reference",
+    "url": "https://raw.githubusercontent.com/microsoft/Windows-universal-samples/dca302ef956bb9a2653da4e3d925de4bbf4fa174/Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp"
+  },
+  {
+    "name": "kwin6-render-target",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/core/rendertarget.h"
+  },
+  {
+    "name": "kwin6-render-target-code",
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/core/rendertarget.cpp"
+  },
+  {
+    "name": "mpv-render-gl",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render_gl.h"
+  },
+  {
+    "name": "mac-running-app",
+    "url": "https://developer.apple.com/tutorials/data/documentation/appkit/nsrunningapplication.md"
+  },
+  {
+    "name": "mpv-gl-context",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/opengl/common.c"
+  },
+  {
+    "name": "mpv-gl-render",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/opengl/libmpv_gl.c"
+  }
+]

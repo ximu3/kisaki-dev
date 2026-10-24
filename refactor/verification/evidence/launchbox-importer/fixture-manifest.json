@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-only",
+  "sourceApplicationExecuted": false,
+  "nativeImporterExecuted": false,
+  "playSessionsFixture": "Unsupported-format presence only; no invented source row schema.",
+  "inertPathFixtures": "Text bytes with executable/ROM-like names; never launched.",
+  "files": [
+    {
+      "path": "fixtures/broken.xml",
+      "bytes": 29,
+      "sha256": "37bece6df315a53ea6098fc8350c63d11be647e058676f22b22b2257061d5dcb"
+    },
+    {
+      "path": "fixtures/case-distinction.xml",
+      "bytes": 91,
+      "sha256": "e962da8edaca8052eb7e824e7990d1633c5fa50d8c754bb440f3368e66446f5a"
+    },
+    {
+      "path": "fixtures/data-root.7z",
+      "bytes": 2077,
+      "sha256": "af007144dd92316c46adfdf63299ea2b2687c3f22b56b0f387cb2c51f93ba041"
+    },
+    {
+      "path": "fixtures/doctype.xml",
+      "bytes": 131,
+      "sha256": "7ba3701f9dd1ab8bd36f678e65d6fdb916ff22bb77a7ced1de7c5dbc863165e4"
+    },
+    {
+      "path": "fixtures/duplicate-game.xml",
+      "bytes": 317,
+      "sha256": "2a25917d6a2cefbe650e3245dde01903ca025514fc525c1505f4a111517c2182"
+    },
+    {
+      "path": "fixtures/duplicate-scalar.xml",
+      "bytes": 122,
+      "sha256": "726727a638d269182e75f7427a49eb36bf8f06a3eb38fe965cf912da00d5c63d"
+    },
+    {
+      "path": "fixtures/installation/Data/Emulators.xml",
+      "bytes": 687,
+      "sha256": "ad9f87a9f8e7c6530b24098d8fa01e397a131e3208125d60bcfac50b10f4eef5"
+    },
+    {
+      "path": "fixtures/installation/Data/Platforms/Disc System.xml",
+      "bytes": 567,
+      "sha256": "87dc6b4f628b2daab4822603fb9664718893e6464c4cc8ccc0ba1474fe58fdde"
+    },
+    {
+      "path": "fixtures/installation/Data/Platforms/Windows.xml",
+      "bytes": 3812,
+      "sha256": "fb67cdd8e32722a3305dd2b84f173b632295cdb04ca0173ef3b8916d93393430"
+    },
+    {
+      "path": "fixtures/installation/Data/Platforms.xml",
+      "bytes": 405,
+      "sha256": "6ef6dc8faa6a7bf9c79db9b4ac27eb852f0c4b7aa621555d581a72609bb28790"
+    },
+    {
+      "path": "fixtures/installation/Data/Playlists/Dynamic.xml",
+      "bytes": 510,
+      "sha256": "003e3c68f37939d675fce0264d4e23cc1e496baeb6fc5ee85e2f6b009c93cf6b"
+    },
+    {
+      "path": "fixtures/installation/Data/Playlists/Manual.xml",
+      "bytes": 1093,
+      "sha256": "a678d994dee68a0a8f3071da60286727764930cd20fa601572812547d9f5e2fa"
+    },
+    {
+      "path": "fixtures/installation/Emulators/fixture.exe",
+      "bytes": 40,
+      "sha256": "fecbb2a31d970a0acb829db692b1b733ffea4f999097e9272064329e80dbdb1d"
+    },
+    {
+      "path": "fixtures/installation/Games/Aster/other.exe",
+      "bytes": 40,
+      "sha256": "fecbb2a31d970a0acb829db692b1b733ffea4f999097e9272064329e80dbdb1d"
+    },
+    {
+      "path": "fixtures/installation/Games/Aster/play.exe",
+      "bytes": 40,
+      "sha256": "fecbb2a31d970a0acb829db692b1b733ffea4f999097e9272064329e80dbdb1d"
+    },
+    {
+      "path": "fixtures/installation/Games/ROMs/aster (Disc 1).iso",
+      "bytes": 40,
+      "sha256": "fecbb2a31d970a0acb829db692b1b733ffea4f999097e9272064329e80dbdb1d"
+    },
+    {
+      "path": "fixtures/installation/Images/Disc System/Box - Front/aster (Disc 1).png",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+    },
+    {
+      "path": "fixtures/installation/Images/Windows/Box - Front/Aster_ Memory-01.png",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+    },
+    {
+      "path": "fixtures/installation/Images/Windows/Box - Front/Aster_ Memory-02.png",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+    },
+    {
+      "path": "fixtures/installation/Tools/helper.cmd",
+      "bytes": 40,
+      "sha256": "fecbb2a31d970a0acb829db692b1b733ffea4f999097e9272064329e80dbdb1d"
+    },
+    {
+      "path": "fixtures/newer-unmapped/PlaySessions/2026.jsonl",
+      "bytes": 82,
+      "sha256": "45103eaa4a054d38ffeb7d06bb283565995b6773b19df9151960b725e6029a58"
+    },
+    {
+      "path": "fixtures/reordered-platform.xml",
+      "bytes": 1223,
+      "sha256": "d40633d3c4c406ffd234fc0fd52ff93003c5c0ac7b2d3edb1eb4c7cfda7fc87b"
+    },
+    {
+      "path": "fixtures/utf16-platform.xml",
+      "bytes": 404,
+      "sha256": "187d51cfa1db52bb178e875474118d8b846674c506c61119d79e06c7f9e6003a"
+    },
+    {
+      "path": "fixtures/wrapped-data.7z",
+      "bytes": 2079,
+      "sha256": "d44f7f91f31ac20d835d246235248f05f3de20feefe9bf2470578ed6cdb09a25"
+    },
+    {
+      "path": "fixtures/wrong-namespace.xml",
+      "bytes": 48,
+      "sha256": "290c58014a339c58f7b64576b3c9809f676434fa72944c586e3733ac9b06b39b"
+    },
+    {
+      "path": "fixtures/wrong-root.xml",
+      "bytes": 62,
+      "sha256": "ec7e491669157c6efe1be87ee7124808647b05f7bb925faf9e1cc1184a79eb4d"
+    }
+  ]
+}

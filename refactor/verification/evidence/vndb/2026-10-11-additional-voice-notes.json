@@ -1,0 +1,1130 @@
+{
+  "name": "additional-voice-note-conventions",
+  "observedAt": "2026-10-11T12:55:48.7019714+00:00",
+  "method": "POST",
+  "endpoint": "https://api.vndb.org/kana/vn",
+  "request": {
+    "results": 3,
+    "fields": "title,olang,va{note,staff{id,name,original,lang},character{id,name}}",
+    "filters": ["or", ["id", "=", "v7679"], ["id", "=", "v7809"], ["id", "=", "v18131"]]
+  },
+  "status": 200,
+  "response": {
+    "more": false,
+    "results": [
+      {
+        "id": "v7679",
+        "olang": "ja",
+        "title": "Super Dangan Ronpa 2 Sayonara Zetsubou Gakuen",
+        "va": [
+          {
+            "character": {
+              "id": "c6612",
+              "name": "Togami Byakuya"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s74",
+              "lang": "ja",
+              "name": "Ishida Akira",
+              "original": "石田 彰"
+            }
+          },
+          {
+            "character": {
+              "id": "c6617",
+              "name": "Kuzuryuu Fuyuhiko"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s88",
+              "lang": "ja",
+              "name": "Kishio Daisuke",
+              "original": "岸尾 だいすけ"
+            }
+          },
+          {
+            "character": {
+              "id": "c6619",
+              "name": "Nanami Chiaki"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s237",
+              "lang": "ja",
+              "name": "Hanazawa Kana",
+              "original": "花澤 香菜"
+            }
+          },
+          {
+            "character": {
+              "id": "c6622",
+              "name": "Koizumi Mahiru"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s246",
+              "lang": "ja",
+              "name": "Kobayashi Yuu",
+              "original": "小林 ゆう"
+            }
+          },
+          {
+            "character": {
+              "id": "c6614",
+              "name": "Souda Kazuichi"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s251",
+              "lang": "ja",
+              "name": "Hosoya Yoshimasa",
+              "original": "細谷 佳正"
+            }
+          },
+          {
+            "character": {
+              "id": "c6613",
+              "name": "Tanaka Gandamu"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s370",
+              "lang": "ja",
+              "name": "Sugita Tomokazu",
+              "original": "杉田 智和"
+            }
+          },
+          {
+            "character": {
+              "id": "c6616",
+              "name": "Nidai Nekomaru"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s377",
+              "lang": "ja",
+              "name": "Yasumoto Hiroki",
+              "original": "安元 洋貴"
+            }
+          },
+          {
+            "character": {
+              "id": "c6615",
+              "name": "Hanamura Teruteru"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s393",
+              "lang": "ja",
+              "name": "Fukuyama Jun",
+              "original": "福山 潤"
+            }
+          },
+          {
+            "character": {
+              "id": "c6621",
+              "name": "Saionji Hiyoko"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s429",
+              "lang": "en",
+              "name": "Kira Buckland",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6611",
+              "name": "Komaeda Nagito"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s611",
+              "lang": "ja",
+              "name": "Ogata Megumi",
+              "original": "緒方 恵美"
+            }
+          },
+          {
+            "character": {
+              "id": "c6626",
+              "name": "Monokuma"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s618",
+              "lang": "ja",
+              "name": "Ooyama Nobuyo",
+              "original": "大山 のぶ代"
+            }
+          },
+          {
+            "character": {
+              "id": "c6610",
+              "name": "Hinata Hajime"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s620",
+              "lang": "ja",
+              "name": "Takayama Minami",
+              "original": "高山 みなみ"
+            }
+          },
+          {
+            "character": {
+              "id": "c6624",
+              "name": "Mioda Ibuki"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s622",
+              "lang": "ja",
+              "name": "Koshimizu Ami",
+              "original": "小清水 亜美"
+            }
+          },
+          {
+            "character": {
+              "id": "c6627",
+              "name": "Monomi"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s623",
+              "lang": "ja",
+              "name": "Sasuga Takako",
+              "original": "貴家 堂子"
+            }
+          },
+          {
+            "character": {
+              "id": "c6618",
+              "name": "Owari Akane"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s625",
+              "lang": "ja",
+              "name": "Park Romi",
+              "original": "朴 璐美"
+            }
+          },
+          {
+            "character": {
+              "id": "c6625",
+              "name": "Pekoyama Peko"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s626",
+              "lang": "ja",
+              "name": "Mitsuishi Kotono",
+              "original": "三石 琴乃"
+            }
+          },
+          {
+            "character": {
+              "id": "c6621",
+              "name": "Saionji Hiyoko"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s627",
+              "lang": "ja",
+              "name": "Mimori Suzuko",
+              "original": "三森 すずこ"
+            }
+          },
+          {
+            "character": {
+              "id": "c6620",
+              "name": "Sonia Nevermind"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s629",
+              "lang": "ja",
+              "name": "Arakawa Miho",
+              "original": "荒川 美穂"
+            }
+          },
+          {
+            "character": {
+              "id": "c6623",
+              "name": "Tsumiki Mikan"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s630",
+              "lang": "ja",
+              "name": "Kayano Ai",
+              "original": "茅野 愛衣"
+            }
+          },
+          {
+            "character": {
+              "id": "c6614",
+              "name": "Souda Kazuichi"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s6209",
+              "lang": "en",
+              "name": "Kyle Hebert",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6623",
+              "name": "Tsumiki Mikan"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s6370",
+              "lang": "en",
+              "name": "Stephanie Sheh",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6624",
+              "name": "Mioda Ibuki"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s8473",
+              "lang": "en",
+              "name": "Julie Ann Taylor",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6616",
+              "name": "Nidai Nekomaru"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s8476",
+              "lang": "en",
+              "name": "Patrick Seitz",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6626",
+              "name": "Monokuma"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s9378",
+              "lang": "en",
+              "name": "Brian Beacock",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6612",
+              "name": "Togami Byakuya"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s9384",
+              "lang": "en",
+              "name": "Jason Wishnov",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6611",
+              "name": "Komaeda Nagito"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s9380",
+              "lang": "en",
+              "name": "Bryce Papenbrook",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6610",
+              "name": "Hinata Hajime"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10065",
+              "lang": "en",
+              "name": "Johnny Yong Bosch",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6618",
+              "name": "Owari Akane"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10067",
+              "lang": "en",
+              "name": "Wendee Lee",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6622",
+              "name": "Koizumi Mahiru"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10068",
+              "lang": "en",
+              "name": "Carrie Keranen",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6625",
+              "name": "Pekoyama Peko"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10074",
+              "lang": "en",
+              "name": "Janice Kawaye",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6619",
+              "name": "Nanami Chiaki"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10376",
+              "lang": "en",
+              "name": "Christine Cabanos",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6627",
+              "name": "Monomi"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10377",
+              "lang": "en",
+              "name": "Rebecca Forstadt",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6615",
+              "name": "Hanamura Teruteru"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10378",
+              "lang": "en",
+              "name": "Todd Haberkorn",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6620",
+              "name": "Sonia Nevermind"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10379",
+              "lang": "en",
+              "name": "Natalie Hoover",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6617",
+              "name": "Kuzuryuu Fuyuhiko"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10380",
+              "lang": "en",
+              "name": "Derek Stephen Prince",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c6613",
+              "name": "Tanaka Gandamu"
+            },
+            "note": "English (Uncredited)",
+            "staff": {
+              "id": "s10381",
+              "lang": "en",
+              "name": "Chris Tergliafera",
+              "original": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "v7809",
+        "olang": "ja",
+        "title": "Kyokugen Dasshutsu ADV - Zennin Shibou Desu",
+        "va": [
+          {
+            "character": {
+              "id": "c17599",
+              "name": "Kurashiki Akane"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s43",
+              "lang": "ja",
+              "name": "Sawashiro Miyuki",
+              "original": "沢城 みゆき"
+            }
+          },
+          {
+            "character": {
+              "id": "c17613",
+              "name": "Alice"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s78",
+              "lang": "ja",
+              "name": "Tanaka Atsuko",
+              "original": "田中 敦子"
+            }
+          },
+          {
+            "character": {
+              "id": "c17617",
+              "name": "K"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s103",
+              "lang": "ja",
+              "name": "Ono Daisuke",
+              "original": "小野 大輔"
+            }
+          },
+          {
+            "character": {
+              "id": "c17625",
+              "name": "K"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s103",
+              "lang": "ja",
+              "name": "Ono Daisuke",
+              "original": "小野 大輔"
+            }
+          },
+          {
+            "character": {
+              "id": "c17605",
+              "name": "Yotsuba"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s104",
+              "lang": "ja",
+              "name": "Tamura Yukari",
+              "original": "田村 ゆかり"
+            }
+          },
+          {
+            "character": {
+              "id": "c17618",
+              "name": "Dio"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s251",
+              "lang": "ja",
+              "name": "Hosoya Yoshimasa",
+              "original": "細谷 佳正"
+            }
+          },
+          {
+            "character": {
+              "id": "c14006",
+              "name": "Luna"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s468",
+              "lang": "ja",
+              "name": "Noto Mamiko",
+              "original": "能登 麻美子"
+            }
+          },
+          {
+            "character": {
+              "id": "c17619",
+              "name": "Quark"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s500",
+              "lang": "ja",
+              "name": "Kugimiya Rie",
+              "original": "釘宮 理恵"
+            }
+          },
+          {
+            "character": {
+              "id": "c17615",
+              "name": "GAULEM Type Male - Kansai Model no. 506"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s8388",
+              "lang": "ja",
+              "name": "Matsumoto Shinobu",
+              "original": "松本 忍"
+            }
+          },
+          {
+            "character": {
+              "id": "c14006",
+              "name": "Luna"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s8478",
+              "lang": "en",
+              "name": "Laura Bailey",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c14000",
+              "name": "Phi"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s8797",
+              "lang": "ja",
+              "name": "Omigawa Chiaki",
+              "original": "小見川 千明"
+            }
+          },
+          {
+            "character": {
+              "id": "c17624",
+              "name": "Kurashiki Akane"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s8823",
+              "lang": "ja",
+              "name": "Sakakibara Yoshiko",
+              "original": "榊原 良子"
+            }
+          },
+          {
+            "character": {
+              "id": "c17619",
+              "name": "Quark"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s9382",
+              "lang": "en",
+              "name": "Erin Fitzgerald",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17614",
+              "name": "Zero San-Sei"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s9661",
+              "lang": "en",
+              "name": "Cindy Robinson",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17617",
+              "name": "K"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s9663",
+              "lang": "en",
+              "name": "Travis Willingham",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17625",
+              "name": "K"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s9663",
+              "lang": "en",
+              "name": "Travis Willingham",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17605",
+              "name": "Yotsuba"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10067",
+              "lang": "en",
+              "name": "Wendee Lee",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c14000",
+              "name": "Phi"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10073",
+              "lang": "en",
+              "name": "Karen Strassman",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17624",
+              "name": "Kurashiki Akane"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10455",
+              "lang": "en",
+              "name": "Barbara Goodson",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17603",
+              "name": "Tenmyouji"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10564",
+              "lang": "en",
+              "name": "J. B. Blanc",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17611",
+              "name": "Kyle Klim"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10565",
+              "lang": "en",
+              "name": "Troy Baker",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17618",
+              "name": "Dio"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10568",
+              "lang": "en",
+              "name": "Liam O'Brien",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17603",
+              "name": "Tenmyouji"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s10569",
+              "lang": "ja",
+              "name": "Naya Rokurou",
+              "original": "納谷 六朗"
+            }
+          },
+          {
+            "character": {
+              "id": "c17614",
+              "name": "Zero San-Sei"
+            },
+            "note": "Japanese",
+            "staff": {
+              "id": "s10708",
+              "lang": "ja",
+              "name": "Tarako",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17615",
+              "name": "GAULEM Type Male - Kansai Model no. 506"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s10947",
+              "lang": "en",
+              "name": "Dave B. Mitchell",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17599",
+              "name": "Kurashiki Akane"
+            },
+            "note": "English (The Nonary Games port)",
+            "staff": {
+              "id": "s10970",
+              "lang": "en",
+              "name": "Rena Strober",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17599",
+              "name": "Kurashiki Akane"
+            },
+            "note": "English (original release)",
+            "staff": {
+              "id": "s15820",
+              "lang": "en",
+              "name": "Ali Hillis",
+              "original": null
+            }
+          },
+          {
+            "character": {
+              "id": "c17613",
+              "name": "Alice"
+            },
+            "note": "English",
+            "staff": {
+              "id": "s20422",
+              "lang": "en",
+              "name": "Peggy O’Neal",
+              "original": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "v18131",
+        "olang": "ja",
+        "title": "Maitetsu",
+        "va": [
+          {
+            "character": {
+              "id": "c39210",
+              "name": "Houshou Kisaki"
+            },
+            "note": null,
+            "staff": {
+              "id": "s610",
+              "lang": "ja",
+              "name": "Ueda Akane",
+              "original": "上田 朱音"
+            }
+          },
+          {
+            "character": {
+              "id": "c42285",
+              "name": "Migita Soutetsu"
+            },
+            "note": null,
+            "staff": {
+              "id": "s8865",
+              "lang": "ja",
+              "name": "Kashino Ki",
+              "original": "樫野 樹"
+            }
+          },
+          {
+            "character": {
+              "id": "c39790",
+              "name": "Hayase Fukami"
+            },
+            "note": null,
+            "staff": {
+              "id": "s896",
+              "lang": "ja",
+              "name": "Sakura Emi",
+              "original": "佐倉 江美"
+            }
+          },
+          {
+            "character": {
+              "id": "c5500",
+              "name": "Sumi"
+            },
+            "note": null,
+            "staff": {
+              "id": "s896",
+              "lang": "ja",
+              "name": "Sakura Emi",
+              "original": "佐倉 江美"
+            }
+          },
+          {
+            "character": {
+              "id": "c87976",
+              "name": "Houshou Mototada"
+            },
+            "note": null,
+            "staff": {
+              "id": "s930",
+              "lang": "ja",
+              "name": "Nishioka Kengo",
+              "original": "西岡 賢吾"
+            }
+          },
+          {
+            "character": {
+              "id": "c39208",
+              "name": "Minokasa Nagi"
+            },
+            "note": null,
+            "staff": {
+              "id": "s936",
+              "lang": "ja",
+              "name": "Hayase Yayoi",
+              "original": "早瀬 ゃょぃ"
+            }
+          },
+          {
+            "character": {
+              "id": "c60829",
+              "name": "Teppou Utare Tanuki"
+            },
+            "note": null,
+            "staff": {
+              "id": "s936",
+              "lang": "ja",
+              "name": "Hayase Yayoi",
+              "original": "早瀬 ゃょぃ"
+            }
+          },
+          {
+            "character": {
+              "id": "c93671",
+              "name": "Urakami Kazuki"
+            },
+            "note": null,
+            "staff": {
+              "id": "s980",
+              "lang": "ja",
+              "name": "Tachibana Mao",
+              "original": "橘 まお"
+            }
+          },
+          {
+            "character": {
+              "id": "c5502",
+              "name": "Sawai Tooru"
+            },
+            "note": null,
+            "staff": {
+              "id": "s981",
+              "lang": "ja",
+              "name": "Mutsu Izuru",
+              "original": "陸奥 出流"
+            }
+          },
+          {
+            "character": {
+              "id": "c87978",
+              "name": "Akai Kiyoharu"
+            },
+            "note": null,
+            "staff": {
+              "id": "s981",
+              "lang": "ja",
+              "name": "Mutsu Izuru",
+              "original": "陸奥 出流"
+            }
+          },
+          {
+            "character": {
+              "id": "c88408",
+              "name": "Michiko"
+            },
+            "note": null,
+            "staff": {
+              "id": "s1540",
+              "lang": "ja",
+              "name": "Ashiwara Chika",
+              "original": "蒼原 千佳"
+            }
+          },
+          {
+            "character": {
+              "id": "c19059",
+              "name": "Emi"
+            },
+            "note": null,
+            "staff": {
+              "id": "s196",
+              "lang": "ja",
+              "name": "Kiritani Hana",
+              "original": "桐谷 華"
+            }
+          },
+          {
+            "character": {
+              "id": "c39202",
+              "name": "Hachiroku"
+            },
+            "note": null,
+            "staff": {
+              "id": "s196",
+              "lang": "ja",
+              "name": "Kiritani Hana",
+              "original": "桐谷 華"
+            }
+          },
+          {
+            "character": {
+              "id": "c39201",
+              "name": "Hinai Paulette"
+            },
+            "note": null,
+            "staff": {
+              "id": "s11",
+              "lang": "ja",
+              "name": "Aji Sanma",
+              "original": "あじ 秋刀魚"
+            }
+          },
+          {
+            "character": {
+              "id": "c87977",
+              "name": "Niiroku"
+            },
+            "note": null,
+            "staff": {
+              "id": "s280",
+              "lang": "ja",
+              "name": "Fujimori Yukina",
+              "original": "藤森 ゆき奈"
+            }
+          },
+          {
+            "character": {
+              "id": "c39200",
+              "name": "Migita Hibiki"
+            },
+            "note": null,
+            "staff": {
+              "id": "s284",
+              "lang": "ja",
+              "name": "Himari",
+              "original": "ヒマリ"
+            }
+          },
+          {
+            "character": {
+              "id": "c5501",
+              "name": "Arishima Alice"
+            },
+            "note": null,
+            "staff": {
+              "id": "s284",
+              "lang": "ja",
+              "name": "Himari",
+              "original": "ヒマリ"
+            }
+          },
+          {
+            "character": {
+              "id": "c39209",
+              "name": "Migita Makura"
+            },
+            "note": null,
+            "staff": {
+              "id": "s28",
+              "lang": "ja",
+              "name": "Kawashima Rino",
+              "original": "かわしま りの"
+            }
+          },
+          {
+            "character": {
+              "id": "c39211",
+              "name": "Reina"
+            },
+            "note": null,
+            "staff": {
+              "id": "s440",
+              "lang": "ja",
+              "name": "Anzu Mitsu",
+              "original": "杏子 御津"
+            }
+          },
+          {
+            "character": {
+              "id": "c5499",
+              "name": "Sawai Natsuha"
+            },
+            "note": null,
+            "staff": {
+              "id": "s440",
+              "lang": "ja",
+              "name": "Anzu Mitsu",
+              "original": "杏子 御津"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

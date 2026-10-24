@@ -1,0 +1,83 @@
+{
+  "purpose": "source review for confirmed principal call semantics; no native execution or complete public contract",
+  "designStatus": "call-semantics-confirmed",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "publicValueRepresentationComplete": false,
+  "nativeProjectsBuilt": false,
+  "nativeCallsExecuted": false,
+  "screenshotLayoutsExecuted": false,
+  "gpuOrElectronTransferExecuted": false,
+  "sources": [
+    {
+      "name": "client",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-17T15:24:21.354864+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c",
+      "markers": {
+        "MPV_FORMAT_INT64": 703,
+        "MPV_ERROR_PROPERTY_UNAVAILABLE": 335,
+        "mpv_command_node_async": 1008,
+        "mpv_abort_async_command": 1041,
+        "MPV_EVENT_QUEUE_OVERFLOW": 1363,
+        "mpv_observe_property": 1227
+      }
+    },
+    {
+      "name": "render",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "checkedAt": "2026-10-17T15:24:21.172820+00:00",
+      "bytes": 34271,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+      "markers": {
+        "mpv_render_context_free": 89,
+        "MPV_RENDER_API_TYPE_OPENGL": 52
+      }
+    },
+    {
+      "name": "commands",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/input.rst",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/input.rst",
+      "status": 200,
+      "checkedAt": "2026-10-17T15:24:21.088697+00:00",
+      "bytes": 181703,
+      "sha256": "ee424502462d34e50e9235ba99f2d74dde2ba8824e6fac7b5c149743afe1bd31",
+      "markers": {
+        "screenshot-raw": 1472,
+        "Asynchronous command details": 2057
+      }
+    },
+    {
+      "name": "screenshot",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/screenshot.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/screenshot.c",
+      "status": 200,
+      "checkedAt": "2026-10-17T15:24:21.153365+00:00",
+      "bytes": 19203,
+      "sha256": "f7b3cea7e6f86b3dca76e6fccbcff65c8d82d49f83dc61c602ca7d22f5369bf4",
+      "markers": {
+        "void cmd_screenshot_raw": 559,
+        "node_map_add_int64(res, \"stride\"": 581,
+        ".size = img->stride[0] * img->h": 587
+      }
+    },
+    {
+      "name": "node-values",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/misc/node.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/misc/node.c",
+      "status": 200,
+      "checkedAt": "2026-10-17T15:24:21.393509+00:00",
+      "bytes": 5768,
+      "sha256": "f01c7a8637bccfb54511fef3dc94c811f09212271f36cee09c19a3b91274af93",
+      "markers": {
+        "struct mpv_node *node_map_badd": 54,
+        "not check for already existing entries under the same key": 46
+      }
+    }
+  ]
+}

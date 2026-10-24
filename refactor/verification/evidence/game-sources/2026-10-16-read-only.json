@@ -1,0 +1,3375 @@
+{
+  "checkedOn": "2026-10-16",
+  "status": "design-confirmed-runtime-unverified",
+  "sources": ["Steam", "IGDB"],
+  "verification": {
+    "sourceReadRequests": 57,
+    "sourceMethods": {
+      "GET": 21,
+      "POST": 36
+    },
+    "authenticationRequests": 2,
+    "applicationTokenIssued": true,
+    "remoteLibraryWritesPerformed": false,
+    "credentialsPersisted": false,
+    "privateAccountIdentifiersPersisted": false,
+    "fullPersonalListsPersisted": false,
+    "rawResponseBodiesPersisted": false,
+    "assetHeadRequests": 8,
+    "fullImageDecodeTested": false,
+    "extensionRuntimeTested": false
+  },
+  "methods": {
+    "apiTimeoutMs": 20000,
+    "redirects": "rejected",
+    "igdbMinimumStartIntervalMs": 300,
+    "requestProjection": "Paths, statuses, necessary public fields and private-list aggregates only. Credentials and private query values are omitted.",
+    "sourceReadPostSemantics": "IGDB POST requests query metadata; the separate Twitch POST exchanges supplied application credentials for an app token."
+  },
+  "facts": {
+    "steam": {
+      "ownedLibrary": {
+        "identityVerified": true,
+        "declaredCount": 42,
+        "returnedCount": 42,
+        "positiveRead": true,
+        "personalListSaved": false,
+        "defaultScope": {
+          "includePlayedFreeGames": true,
+          "includeFreeSub": false,
+          "includeFamilyLicenses": false,
+          "skipUnvettedApps": false,
+          "returnedCount": 42
+        }
+      },
+      "wishlist": {
+        "returnedCount": 50,
+        "countEndpoint": 50,
+        "keys": ["appid", "date_added", "priority"],
+        "personalListSaved": false
+      },
+      "emptyFilteredOwned": {
+        "gameCount": 0,
+        "gamesFieldAbsent": true,
+        "scope": "Explicitly empty app-id filter, not an empty-account or private-account fixture."
+      },
+      "nameSuggestions": {
+        "maximumObserved": 10,
+        "extraPagingParametersChangedIds": false,
+        "reportedTotalEqualsReturnedSample": true
+      },
+      "types": {
+        "soundtrack": "music",
+        "mangaProduct": "dlc",
+        "demo": "demo"
+      },
+      "clannadDates": {
+        "storeDate": "2015-11-23",
+        "explicitOriginalDate": "2004-04-28",
+        "originalDateProvidedBy": "IStoreBrowseService/GetItems release.original_release_date"
+      },
+      "localeBehavior": {
+        "simplifiedChineseTextDifferent": true,
+        "japaneseTextMatchesEnglish": true,
+        "traditionalChineseTextMatchesEnglish": true
+      },
+      "images": {
+        "sourceAssetsReturned": true,
+        "primary": ["header", "main_capsule", "library_capsule"],
+        "backdrop": ["library_hero", "raw_page_background"],
+        "icon": "community_icon",
+        "titleLogoNotReturned": true
+      },
+      "durationAdoptionFixture": {
+        "localActivityMs": 10800000,
+        "currentAdditionalMs": 7200000,
+        "sourceMinutes": 600,
+        "adoptedAdditionalMs": 25200000
+      }
+    },
+    "igdb": {
+      "steamMapping": {
+        "steamAppId": 324160,
+        "igdbGameId": 262492,
+        "scope": "Port",
+        "parentChain": [262492, 262489, 262473, 9607],
+        "automaticParentIdentityCollapse": false
+      },
+      "gameNameSearch": {
+        "caseSensitiveExactUppercaseEmpty": true,
+        "fullTextClannadCount": 11
+      },
+      "companyNameSearch": {
+        "searchClauseKeyCount": 0,
+        "searchClauseNintendoCount": 0,
+        "caseInsensitiveExactKeyCount": 1,
+        "nintendoFilterCount": 47,
+        "pageCounts": [20, 20, 7]
+      },
+      "characters": {
+        "clannadCount": 0,
+        "classifiedCharacterSamples": 3,
+        "unclassifiedPlaceholderObserved": {
+          "id": 2,
+          "name": "Additional voices",
+          "fullRecordVerified": true
+        }
+      },
+      "companyInvolvement": {
+        "count": 64,
+        "developerCount": 64,
+        "publisherCount": 14,
+        "portingCount": 0,
+        "supportingCount": 0,
+        "allCompanyIdsMatch": true,
+        "distinctGames": 64,
+        "keys": ["company", "developer", "game", "id", "porting", "publisher", "supporting"]
+      },
+      "externalReferences": {
+        "listed": 6,
+        "resolvedByIds": 4,
+        "missingIds": [41013, 1304831],
+        "ownershipQueryUsed": true
+      },
+      "imageTypes": {
+        "namedTypes": 16,
+        "logoPositive": true,
+        "artworkIconPositive": true,
+        "coverAndLogoIconQueriesEmpty": true,
+        "originalJpgUrlCanReturnPng": true
+      },
+      "eroticTheme": {
+        "id": 42,
+        "name": "Erotic"
+      },
+      "credentialInputWasClientSecret": true
+    }
+  },
+  "apiRequests": [
+    {
+      "label": "twitch-provided-token-validation",
+      "path": "/oauth2/validate",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:07:04.225Z",
+      "status": 401,
+      "contentType": "application/json",
+      "bytes": 48,
+      "summary": {
+        "clientMatches": false,
+        "hasUserId": false,
+        "expiresIn": null,
+        "scopesCount": null
+      }
+    },
+    {
+      "label": "steam-owned-library",
+      "path": "/IPlayerService/GetOwnedGames/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:07:04.209Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 14065,
+      "summary": {
+        "responsePresent": true,
+        "declaredCount": 42,
+        "returnedCount": 42,
+        "gameKeys": [
+          "appid",
+          "content_descriptorids",
+          "has_community_visible_stats",
+          "has_leaderboards",
+          "img_icon_url",
+          "name",
+          "playtime_2weeks",
+          "playtime_deck_forever",
+          "playtime_disconnected",
+          "playtime_forever",
+          "playtime_linux_forever",
+          "playtime_mac_forever",
+          "playtime_windows_forever",
+          "rtime_last_played"
+        ],
+        "integerNonnegativePlaytimes": true,
+        "zeroPlaytimeCount": 15,
+        "distinctApps": 42
+      }
+    },
+    {
+      "label": "twitch-app-token",
+      "path": "/oauth2/token",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:07:41.698Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 93,
+      "summary": {
+        "tokenIssued": true,
+        "tokenType": "bearer",
+        "expiresIn": 4791230
+      }
+    },
+    {
+      "label": "igdb-clannad-base",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:07:42.233Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "igdb-clannad-search",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:08:13.749Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 1504,
+      "summary": {
+        "count": 11,
+        "records": [
+          {
+            "id": 262492,
+            "name": "Clannad",
+            "slug": "clannad--2",
+            "gameType": 11,
+            "parentGame": 262489
+          },
+          {
+            "id": 9607,
+            "name": "Clannad",
+            "slug": "clannad",
+            "gameType": 0
+          },
+          {
+            "id": 262494,
+            "name": "Clannad",
+            "slug": "clannad--3",
+            "gameType": 11,
+            "parentGame": 262473
+          },
+          {
+            "id": 166664,
+            "name": "Clannad: Lost Winter",
+            "slug": "clannad-lost-winter",
+            "gameType": 0
+          },
+          {
+            "id": 34052,
+            "name": "Clannad Side Stories",
+            "slug": "clannad-side-stories",
+            "gameType": 0
+          },
+          {
+            "id": 166663,
+            "name": "Clannad Key Trilogy Premium Box",
+            "slug": "clannad-key-trilogy-premium-box",
+            "gameType": 3
+          },
+          {
+            "id": 262473,
+            "name": "Clannad",
+            "slug": "clannad--1",
+            "gameType": 11,
+            "parentGame": 9607
+          },
+          {
+            "id": 127487,
+            "name": "Clannad: Hikari Mimamoru Sakamichi de - First Volume",
+            "slug": "clannad-hikari-mimamoru-sakamichi-de-first-volume",
+            "gameType": 6,
+            "parentGame": 34052
+          },
+          {
+            "id": 262489,
+            "name": "Clannad Full Voice",
+            "slug": "clannad-full-voice",
+            "gameType": 11,
+            "parentGame": 262473
+          },
+          {
+            "id": 138157,
+            "name": "Clannad: The Past Path",
+            "slug": "clannad-the-past-path",
+            "gameType": 0
+          },
+          {
+            "id": 127496,
+            "name": "Clannad: Hikari Mimamoru Sakamichi de - Last Volume",
+            "slug": "clannad-hikari-mimamoru-sakamichi-de-last-volume",
+            "gameType": 6,
+            "parentGame": 34052
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-account-identity",
+      "path": "/ISteamUser/GetPlayerSummaries/v2/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:08:13.751Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 662,
+      "summary": {
+        "count": 1,
+        "expectedIdentityMatched": true,
+        "keys": [
+          "avatar",
+          "avatarfull",
+          "avatarhash",
+          "avatarmedium",
+          "communityvisibilitystate",
+          "lastlogoff",
+          "personaname",
+          "personastate",
+          "personastateflags",
+          "primaryclanid",
+          "profilestate",
+          "profileurl",
+          "steamid",
+          "timecreated"
+        ],
+        "visibilityStates": [3]
+      }
+    },
+    {
+      "label": "steam-supported-interfaces",
+      "path": "/ISteamWebAPIUtil/GetSupportedAPIList/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:08:13.750Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 82733,
+      "summary": {
+        "interfaces": [
+          {
+            "name": "ISteamUser",
+            "methods": [
+              {
+                "name": "GetPlayerSummaries",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "steamids",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "name": "GetPlayerSummaries",
+                "version": 2,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "steamids",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "name": "ResolveVanityURL",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "vanityurl",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "url_type",
+                    "type": "int32",
+                    "optional": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ISteamUserStats",
+            "methods": []
+          },
+          {
+            "name": "IPlayerService",
+            "methods": [
+              {
+                "name": "GetOwnedGames",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "steamid",
+                    "type": "uint64",
+                    "optional": false
+                  },
+                  {
+                    "name": "include_appinfo",
+                    "type": "bool",
+                    "optional": false
+                  },
+                  {
+                    "name": "include_played_free_games",
+                    "type": "bool",
+                    "optional": false
+                  },
+                  {
+                    "name": "appids_filter",
+                    "type": "uint32",
+                    "optional": false
+                  },
+                  {
+                    "name": "include_free_sub",
+                    "type": "bool",
+                    "optional": false
+                  },
+                  {
+                    "name": "skip_unvetted_apps",
+                    "type": "bool",
+                    "optional": true
+                  },
+                  {
+                    "name": "language",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "name": "include_extended_appinfo",
+                    "type": "bool",
+                    "optional": false
+                  },
+                  {
+                    "name": "include_family_licenses",
+                    "type": "bool",
+                    "optional": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "IWishlistService",
+            "methods": [
+              {
+                "name": "GetWishlistSortedFiltered",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "steamid",
+                    "type": "uint64",
+                    "optional": false
+                  },
+                  {
+                    "name": "context",
+                    "type": "{message}",
+                    "optional": false
+                  },
+                  {
+                    "name": "data_request",
+                    "type": "{message}",
+                    "optional": false
+                  },
+                  {
+                    "name": "sort_order",
+                    "type": "{enum}",
+                    "optional": true
+                  },
+                  {
+                    "name": "filters",
+                    "type": "{message}",
+                    "optional": false
+                  },
+                  {
+                    "name": "start_index",
+                    "type": "int32",
+                    "optional": true
+                  },
+                  {
+                    "name": "page_size",
+                    "type": "int32",
+                    "optional": true
+                  },
+                  {
+                    "name": "share_token",
+                    "type": "string",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "name": "GetWishlist",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "steamid",
+                    "type": "uint64",
+                    "optional": false
+                  }
+                ]
+              },
+              {
+                "name": "GetWishlistItemCount",
+                "version": 1,
+                "httpMethod": "GET",
+                "parameters": [
+                  {
+                    "name": "steamid",
+                    "type": "uint64",
+                    "optional": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-full",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:09:15.355Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 3104,
+      "summary": {
+        "count": 1,
+        "record": {
+          "id": 9607,
+          "name": "Clannad",
+          "keys": [
+            "alternative_names",
+            "artworks",
+            "checksum",
+            "collections",
+            "cover",
+            "created_at",
+            "external_games",
+            "first_release_date",
+            "game_engines",
+            "game_localizations",
+            "game_modes",
+            "game_type",
+            "genres",
+            "id",
+            "involved_companies",
+            "language_supports",
+            "name",
+            "platforms",
+            "player_perspectives",
+            "ports",
+            "rating",
+            "rating_count",
+            "release_dates",
+            "screenshots",
+            "similar_games",
+            "slug",
+            "storyline",
+            "summary",
+            "tags",
+            "themes",
+            "total_rating",
+            "total_rating_count",
+            "updated_at",
+            "url",
+            "videos",
+            "websites"
+          ],
+          "arrays": {
+            "alternative_names": 1,
+            "artworks": 1,
+            "external_games": 6,
+            "game_engines": 1,
+            "game_modes": 1,
+            "genres": 2,
+            "involved_companies": 3,
+            "platforms": 2,
+            "player_perspectives": 1,
+            "release_dates": 2,
+            "screenshots": 9,
+            "similar_games": 10,
+            "tags": 5,
+            "themes": 3,
+            "videos": 1,
+            "websites": 5,
+            "ports": 1,
+            "language_supports": 2,
+            "game_localizations": 1,
+            "collections": 1
+          },
+          "firstReleaseDate": 1083110400,
+          "gameType": 0,
+          "summaryLength": 550,
+          "storylineLength": 770
+        }
+      }
+    },
+    {
+      "label": "igdb-game-types",
+      "path": "/v4/game_types",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:09:15.659Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2418,
+      "summary": {
+        "count": 15,
+        "records": [
+          {
+            "id": 3,
+            "type": "Bundle"
+          },
+          {
+            "id": 1,
+            "type": "DLC"
+          },
+          {
+            "id": 6,
+            "type": "Episode"
+          },
+          {
+            "id": 4,
+            "type": "Standalone Expansion"
+          },
+          {
+            "id": 5,
+            "type": "Mod"
+          },
+          {
+            "id": 8,
+            "type": "Remake"
+          },
+          {
+            "id": 11,
+            "type": "Port"
+          },
+          {
+            "id": 7,
+            "type": "Season"
+          },
+          {
+            "id": 12,
+            "type": "Fork"
+          },
+          {
+            "id": 14,
+            "type": "Update"
+          },
+          {
+            "id": 10,
+            "type": "Expanded Game"
+          },
+          {
+            "id": 13,
+            "type": "Pack / Addon"
+          },
+          {
+            "id": 9,
+            "type": "Remaster"
+          },
+          {
+            "id": 2,
+            "type": "Expansion"
+          },
+          {
+            "id": 0,
+            "type": "Main Game"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-external-steam-source",
+      "path": "/v4/external_game_sources",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:09:15.970Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 160,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 1,
+            "name": "Steam",
+            "keys": ["checksum", "created_at", "id", "name", "updated_at"]
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-characters",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:09:16.263Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "steam-store-clannad-en",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:10:27.848Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 14028,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "achievements",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "dlc",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "metacritic",
+          "movies",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "recommendations",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 324160,
+          "type": "game",
+          "name": "CLANNAD",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "Nov 23, 2015"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "English, Simplified Chinese",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "dlc": [509081, 519110, 615930, 416930],
+          "descriptionLengths": {
+            "short": 214,
+            "detailed": 1243,
+            "about": 1243
+          },
+          "descriptionHashes": {
+            "short": "28c6add99f766eb498395b1df422dab402f5e5d0a54e310a2e7c5f79170a6a88",
+            "detailed": "b964d4e7700741ead4edf53e59bc90200a0f3ce28ec186fa9c97825e310b4c97"
+          },
+          "screenshotCount": 11,
+          "movieCount": 1,
+          "genres": [
+            {
+              "id": "25",
+              "description": "Adventure"
+            },
+            {
+              "id": "4",
+              "description": "Casual"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "Single-player"
+            },
+            {
+              "id": 22,
+              "description": "Steam Achievements"
+            },
+            {
+              "id": 29,
+              "description": "Steam Trading Cards"
+            },
+            {
+              "id": 23,
+              "description": "Steam Cloud"
+            },
+            {
+              "id": 62,
+              "description": "Family Sharing"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "steam-search-clannad",
+      "path": "/api/storesearch",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:10:27.850Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 2509,
+      "summary": {
+        "keys": ["total", "items"],
+        "total": 7,
+        "count": 7,
+        "items": [
+          {
+            "id": 324160,
+            "name": "CLANNAD",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 420100,
+            "name": "CLANNAD Side Stories",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 416930,
+            "name": "CLANNAD - Original Soundtrack",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 519110,
+            "name": "CLANNAD - Anthology Manga",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 615930,
+            "name": "CLANNAD - 10th Anniversary Artbook",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 509081,
+            "name": "CLANNAD - Mabinogi Arrange Album",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          },
+          {
+            "id": 952900,
+            "name": "Tomoyo After - CLANNAD/Tomoyo After Piano Arrange Album \"Piano no Mori\"",
+            "type": "app",
+            "keys": [
+              "id",
+              "metascore",
+              "name",
+              "platforms",
+              "price",
+              "streamingvideo",
+              "tiny_image",
+              "type"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-store-clannad-zh",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:10:27.849Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 11983,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "achievements",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "dlc",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "metacritic",
+          "movies",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "recommendations",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 324160,
+          "type": "game",
+          "name": "CLANNAD",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "2015 年 11 月 23 日"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "英语, 简体中文",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "dlc": [509081, 519110, 615930, 416930],
+          "descriptionLengths": {
+            "short": 63,
+            "detailed": 214,
+            "about": 214
+          },
+          "descriptionHashes": {
+            "short": "9fecd5c3f455dd7cd04d6b7d66c9654d6ce14f439250b668b9869aee6168f13e",
+            "detailed": "7047a5827f158cab420b06900563a99d92b2aaa65aeb3c7b748ea69884110491"
+          },
+          "screenshotCount": 11,
+          "movieCount": 1,
+          "genres": [
+            {
+              "id": "25",
+              "description": "冒险"
+            },
+            {
+              "id": "4",
+              "description": "休闲"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "单人"
+            },
+            {
+              "id": 22,
+              "description": "Steam 成就"
+            },
+            {
+              "id": 29,
+              "description": "Steam 集换式卡牌"
+            },
+            {
+              "id": 23,
+              "description": "Steam 云"
+            },
+            {
+              "id": 62,
+              "description": "家庭共享"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "igdb-steam-clannad-bridge",
+      "path": "/v4/external_games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:10:27.850Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 312,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 10304,
+            "game": 262492,
+            "uid": "324160",
+            "url": "https://store.steampowered.com/app/324160",
+            "externalSource": 1,
+            "keys": [
+              "checksum",
+              "created_at",
+              "external_game_source",
+              "game",
+              "id",
+              "name",
+              "uid",
+              "updated_at",
+              "url",
+              "year"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-tifa-character-search",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:10:28.154Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 266,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 8030,
+            "name": "Tifa",
+            "keys": ["checksum", "created_at", "games", "id", "name", "slug", "updated_at", "url"],
+            "games": [1221],
+            "descriptionLength": 0
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-wishlist",
+      "path": "/IWishlistService/GetWishlist/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:12:04.229Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 2768,
+      "summary": {
+        "responsePresent": true,
+        "responseKeys": ["items"],
+        "count": 50,
+        "itemKeys": ["appid", "date_added", "priority"],
+        "distinctApps": 50,
+        "hasExplicitZeroCount": false
+      }
+    },
+    {
+      "label": "steam-wishlist-count",
+      "path": "/IWishlistService/GetWishlistItemCount/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:12:04.230Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 25,
+      "summary": {
+        "responsePresent": true,
+        "count": 50,
+        "responseKeys": ["count"]
+      }
+    },
+    {
+      "label": "igdb-key-company-search",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:12:04.530Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "igdb-character-positive",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:12:04.840Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2474,
+      "summary": {
+        "count": 3,
+        "records": [
+          {
+            "id": 1,
+            "name": "Urdnot Wrex",
+            "keys": [
+              "character_gender",
+              "character_species",
+              "checksum",
+              "created_at",
+              "games",
+              "id",
+              "mug_shot",
+              "name",
+              "slug",
+              "updated_at",
+              "url"
+            ],
+            "games": [73],
+            "gender": 2,
+            "species": 2,
+            "mugShot": 3842,
+            "descriptionLength": 0
+          },
+          {
+            "id": 6,
+            "name": "Commander Shepard (female)",
+            "keys": [
+              "character_gender",
+              "character_species",
+              "checksum",
+              "created_at",
+              "description",
+              "games",
+              "id",
+              "mug_shot",
+              "name",
+              "slug",
+              "updated_at",
+              "url"
+            ],
+            "games": [73, 74],
+            "gender": 1,
+            "species": 1,
+            "mugShot": 3514,
+            "descriptionLength": 664
+          },
+          {
+            "id": 9,
+            "name": "Garrus Vakarian",
+            "keys": [
+              "character_gender",
+              "character_species",
+              "checksum",
+              "created_at",
+              "description",
+              "games",
+              "id",
+              "mug_shot",
+              "name",
+              "slug",
+              "updated_at",
+              "url"
+            ],
+            "games": [73, 74],
+            "gender": 0,
+            "species": 2,
+            "mugShot": 3851,
+            "descriptionLength": 579
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-ports",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:12:04.230Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 1512,
+      "summary": {
+        "count": 4,
+        "records": [
+          {
+            "id": 262473,
+            "cover": 325128,
+            "first_release_date": 1140652800,
+            "involved_companies": [227665, 227666, 227667],
+            "name": "Clannad",
+            "parent_game": 9607,
+            "release_dates": [505806],
+            "game_type": {
+              "id": 11,
+              "type": "Port"
+            }
+          },
+          {
+            "id": 262489,
+            "cover": 325112,
+            "first_release_date": 1204243200,
+            "involved_companies": [227680, 227681],
+            "name": "Clannad Full Voice",
+            "parent_game": 262473,
+            "release_dates": [505834],
+            "game_type": {
+              "id": 11,
+              "type": "Port"
+            }
+          },
+          {
+            "id": 262492,
+            "cover": 325129,
+            "external_games": [10304],
+            "first_release_date": 1448236800,
+            "involved_companies": [227684, 227685],
+            "name": "Clannad",
+            "parent_game": 262489,
+            "release_dates": [505835],
+            "game_type": {
+              "id": 11,
+              "type": "Port"
+            }
+          },
+          {
+            "id": 262494,
+            "cover": 325127,
+            "external_games": [2585316, 2588911, 1127362, 2084906, 2597425, 2688182],
+            "first_release_date": 1212019200,
+            "involved_companies": [227693, 227694, 227695],
+            "name": "Clannad",
+            "parent_game": 262473,
+            "release_dates": [505841, 505842, 505844, 505845, 505846, 505847, 505848, 505843],
+            "game_type": {
+              "id": 11,
+              "type": "Port"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-search-broad",
+      "path": "/api/storesearch",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:13:38.352Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 3621,
+      "summary": {
+        "keys": ["total", "items"],
+        "total": 10,
+        "count": 10,
+        "ids": [
+          3393110, 1172470, 1808500, 2288340, 4126040, 2073620, 3240220, 2593290, 2141910, 270880
+        ]
+      }
+    },
+    {
+      "label": "steam-store-clannad-ja",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:13:38.351Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 14193,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "achievements",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "dlc",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "metacritic",
+          "movies",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "recommendations",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 324160,
+          "type": "game",
+          "name": "CLANNAD",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "2015年11月23日"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "英語, 中国語（簡体字）",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "dlc": [509081, 519110, 615930, 416930],
+          "descriptionLengths": {
+            "short": 214,
+            "detailed": 1243,
+            "about": 1243
+          },
+          "descriptionHashes": {
+            "short": "28c6add99f766eb498395b1df422dab402f5e5d0a54e310a2e7c5f79170a6a88",
+            "detailed": "b964d4e7700741ead4edf53e59bc90200a0f3ce28ec186fa9c97825e310b4c97"
+          },
+          "screenshotCount": 11,
+          "movieCount": 1,
+          "genres": [
+            {
+              "id": "25",
+              "description": "アドベンチャー"
+            },
+            {
+              "id": "4",
+              "description": "カジュアル"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "シングルプレイヤー"
+            },
+            {
+              "id": 22,
+              "description": "Steam実績"
+            },
+            {
+              "id": 29,
+              "description": "Steamトレーディングカード"
+            },
+            {
+              "id": 23,
+              "description": "Steamクラウド"
+            },
+            {
+              "id": 62,
+              "description": "ファミリーシェアリング"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "steam-store-clannad-hant",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:13:38.351Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 14060,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "achievements",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "dlc",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "metacritic",
+          "movies",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "recommendations",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 324160,
+          "type": "game",
+          "name": "CLANNAD",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "2015 年 11 月 23 日"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "英文, 簡體中文",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "dlc": [509081, 519110, 615930, 416930],
+          "descriptionLengths": {
+            "short": 214,
+            "detailed": 1243,
+            "about": 1243
+          },
+          "descriptionHashes": {
+            "short": "28c6add99f766eb498395b1df422dab402f5e5d0a54e310a2e7c5f79170a6a88",
+            "detailed": "b964d4e7700741ead4edf53e59bc90200a0f3ce28ec186fa9c97825e310b4c97"
+          },
+          "screenshotCount": 11,
+          "movieCount": 1,
+          "genres": [
+            {
+              "id": "25",
+              "description": "冒險"
+            },
+            {
+              "id": "4",
+              "description": "休閒"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "單人"
+            },
+            {
+              "id": 22,
+              "description": "Steam 成就"
+            },
+            {
+              "id": 29,
+              "description": "Steam 交換卡片"
+            },
+            {
+              "id": 23,
+              "description": "Steam 雲端"
+            },
+            {
+              "id": 62,
+              "description": "親友同享"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "steam-owned-empty-filter",
+      "path": "/IPlayerService/GetOwnedGames/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:13:38.350Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 29,
+      "summary": {
+        "responseKeys": ["game_count"],
+        "declaredCount": 0,
+        "hasGames": false,
+        "returnedCount": 0
+      }
+    },
+    {
+      "label": "igdb-character-genders",
+      "path": "/v4/character_genders",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:13:38.667Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 476,
+      "summary": {
+        "count": 3,
+        "records": [
+          {
+            "id": 0,
+            "name": "Male",
+            "created_at": 1738022400,
+            "updated_at": 1738022400,
+            "checksum": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "id": 1,
+            "name": "Female",
+            "created_at": 1738022400,
+            "updated_at": 1738022400,
+            "checksum": "550e8400-e29b-41d4-a716-446655440001"
+          },
+          {
+            "id": 2,
+            "name": "Other",
+            "created_at": 1738022400,
+            "updated_at": 1738022400,
+            "checksum": "550e8400-e29b-41d4-a716-446655440002"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-expanded",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:13:38.352Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 9362,
+      "summary": {
+        "count": 1,
+        "record": {
+          "id": 9607,
+          "name": "Clannad",
+          "gameType": {
+            "id": 0,
+            "type": "Main Game",
+            "created_at": 1743587713,
+            "updated_at": 1743587713,
+            "checksum": "0d2fcd35-9e5b-aaaf-bf20-806697c0d452"
+          },
+          "cover": {
+            "id": 325079,
+            "alpha_channel": false,
+            "animated": false,
+            "game": 9607,
+            "height": 1798,
+            "image_id": "co6ytz",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co6ytz.jpg",
+            "width": 1349,
+            "checksum": "b4243d50-de47-75d6-01c6-2414dafaa550",
+            "image_type": 8
+          },
+          "artworks": [
+            {
+              "id": 16544,
+              "alpha_channel": false,
+              "animated": false,
+              "game": 9607,
+              "height": 1080,
+              "image_id": "arcrk",
+              "url": "//images.igdb.com/igdb/image/upload/t_thumb/arcrk.jpg",
+              "width": 1920,
+              "checksum": "35c046ee-e7a3-fbcc-1f0c-3a9783349cc0",
+              "artwork_type": 1,
+              "image_type": 1
+            }
+          ],
+          "alternativeNames": [
+            {
+              "id": 123585,
+              "comment": "Stylized title",
+              "game": 9607,
+              "name": "CLANNAD",
+              "checksum": "8f1a888e-2e37-51d2-2191-02c8be78293a"
+            }
+          ],
+          "localizations": [
+            {
+              "id": 4707,
+              "name": "クラナド",
+              "game": 9607,
+              "region": 3,
+              "created_at": 1668429460,
+              "updated_at": 1669085206,
+              "checksum": "77de15a1-9486-f799-15f8-35cc19ea8926"
+            }
+          ],
+          "companies": [
+            {
+              "id": 88691,
+              "company": 22937,
+              "created_at": 1576713600,
+              "developer": false,
+              "game": 9607,
+              "porting": false,
+              "publisher": true,
+              "supporting": false,
+              "updated_at": 1576713600,
+              "checksum": "56d2d0c6-3064-00ed-7c5c-69103ce05ae7"
+            },
+            {
+              "id": 227662,
+              "company": 3031,
+              "created_at": 1692671993,
+              "developer": true,
+              "game": 9607,
+              "porting": false,
+              "publisher": false,
+              "supporting": false,
+              "updated_at": 1692701506,
+              "checksum": "0bee06bb-d86e-4b67-5b35-7d7fdcd2ccb3"
+            },
+            {
+              "id": 227682,
+              "company": 2648,
+              "created_at": 1692695611,
+              "developer": false,
+              "game": 9607,
+              "porting": false,
+              "publisher": true,
+              "supporting": false,
+              "updated_at": 1692701506,
+              "checksum": "928a105a-510f-82f2-ab1c-87dd5c67c094"
+            }
+          ],
+          "releaseDates": [
+            {
+              "id": 505803,
+              "created_at": 1692671993,
+              "date": 1083110400,
+              "game": 9607,
+              "human": "Apr 28, 2004",
+              "m": 4,
+              "platform": 6,
+              "updated_at": 1739901736,
+              "y": 2004,
+              "checksum": "d7b886c4-369d-f0d0-ab61-b8da7e6e7749",
+              "status": 6,
+              "date_format": 0,
+              "release_region": 5
+            },
+            {
+              "id": 505802,
+              "created_at": 1692671993,
+              "date": 1200441600,
+              "game": 9607,
+              "human": "Jan 16, 2008",
+              "m": 1,
+              "platform": 55,
+              "updated_at": 1739901736,
+              "y": 2008,
+              "checksum": "2312879b-e67e-6df8-6480-e2b06e19dea6",
+              "status": 6,
+              "date_format": 0,
+              "release_region": 5
+            }
+          ],
+          "externalGames": [
+            {
+              "id": 1931168,
+              "created_at": 1598355344,
+              "game": 9607,
+              "uid": "B07PNGSC5Q",
+              "updated_at": 1764595009,
+              "url": "https://amazon.co.jp/dp/B07PNGSC5Q",
+              "media": 2,
+              "platform": 130,
+              "countries": [392],
+              "checksum": "f8388cb0-facb-564c-399b-7709a40c9886",
+              "external_game_source": 20,
+              "game_release_format": 2
+            },
+            {
+              "id": 135984,
+              "created_at": 1502465705,
+              "game": 9607,
+              "name": "Clannad",
+              "uid": "23249",
+              "updated_at": 1764595009,
+              "url": "https://www.giantbomb.com/games/3030-23249/",
+              "year": 2004,
+              "checksum": "ce3991c7-8758-49fb-3b45-ac4088b5ffd3",
+              "external_game_source": 3
+            },
+            {
+              "id": 1930368,
+              "created_at": 1598354893,
+              "game": 9607,
+              "uid": "B07CCN9VFF",
+              "updated_at": 1764595009,
+              "url": "https://amazon.co.jp/dp/B07CCN9VFF",
+              "media": 2,
+              "platform": 48,
+              "countries": [392],
+              "checksum": "a3c90baf-3bbc-6c2b-3692-3a8339bcb483",
+              "external_game_source": 20,
+              "game_release_format": 2
+            },
+            {
+              "id": 247129,
+              "created_at": 1519314888,
+              "game": 9607,
+              "name": "CLANNAD",
+              "uid": "21088",
+              "updated_at": 1764179585,
+              "url": "https://www.twitch.tv/directory/game/CLANNAD",
+              "checksum": "1d1f0bab-c67e-7a6d-ccea-1ce4dfa25370",
+              "external_game_source": 14
+            }
+          ],
+          "websites": [
+            {
+              "id": 127031,
+              "game": 9607,
+              "trusted": false,
+              "url": "https://key.visualarts.gr.jp/product/clannad/",
+              "checksum": "381e3242-9200-2826-dbff-79b537c36541",
+              "type": 1
+            },
+            {
+              "id": 127035,
+              "game": 9607,
+              "trusted": true,
+              "url": "https://www.reddit.com/r/clannad",
+              "checksum": "5cd07825-98a8-e050-ce1a-457e873eba03",
+              "type": 14
+            },
+            {
+              "id": 127033,
+              "game": 9607,
+              "trusted": true,
+              "url": "https://en.wikipedia.org/wiki/Clannad_(visual_novel)",
+              "checksum": "d850a489-de01-419a-8fce-85f439c0126b",
+              "type": 3
+            },
+            {
+              "id": 127032,
+              "game": 9607,
+              "trusted": false,
+              "url": "https://clannad.fandom.com/wiki/Clannad",
+              "checksum": "9f839b28-a566-9a37-87a8-c9c27998ad10",
+              "type": 2
+            },
+            {
+              "id": 681747,
+              "game": 9607,
+              "trusted": true,
+              "url": "https://www.twitch.tv/directory/category/clannad",
+              "checksum": "282854bc-ec8c-69aa-21bd-dc408243d7c4",
+              "type": 6
+            }
+          ],
+          "languageSupports": [
+            {
+              "id": 782597,
+              "game": 9607,
+              "language": 16,
+              "language_support_type": 3,
+              "created_at": 1692976698,
+              "updated_at": 1693188391,
+              "checksum": "1081569a-dd19-31c5-0416-a48bbddb67ee"
+            },
+            {
+              "id": 754497,
+              "game": 9607,
+              "language": 16,
+              "language_support_type": 2,
+              "created_at": 1692671993,
+              "updated_at": 1692701506,
+              "checksum": "c3ecb058-aef1-d3bf-0d77-05807de1820e"
+            }
+          ],
+          "screenshotCount": 9
+        }
+      }
+    },
+    {
+      "label": "igdb-company-nintendo-search",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:13:38.960Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "steam-store-clannad-soundtrack",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:15:02.672Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 2653,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "fullgame",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 416930,
+          "type": "music",
+          "name": "CLANNAD - Original Soundtrack",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "Jun 22, 2022"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "English, Japanese<strong>*</strong><br><strong>*</strong>languages with full audio support",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "fullgame": {
+            "appid": "324160",
+            "name": "CLANNAD"
+          },
+          "descriptionLengths": {
+            "short": 32,
+            "detailed": 65,
+            "about": 65
+          },
+          "descriptionHashes": {
+            "short": "0b8c2d7615365bd562b1673ecaa6aeb9eb0c01bae119dfb76ff2ddc4c73dff17",
+            "detailed": "51d2c11faa6aa542a7fdf119fa52855eb5d769755886a8b149a68e5d32af3dfe"
+          },
+          "screenshotCount": 1,
+          "movieCount": 0,
+          "genres": [
+            {
+              "id": "25",
+              "description": "Adventure"
+            },
+            {
+              "id": "4",
+              "description": "Casual"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "steam-search-danganronpa",
+      "path": "/api/storesearch",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:15:02.673Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 1045,
+      "summary": {
+        "total": 3,
+        "count": 3,
+        "items": [
+          {
+            "id": 567640,
+            "name": "Danganronpa V3: Killing Harmony",
+            "type": "app"
+          },
+          {
+            "id": 707390,
+            "name": "Danganronpa V3: Killing Harmony OST",
+            "type": "app"
+          },
+          {
+            "id": 589120,
+            "name": "Danganronpa V3: Killing Harmony Demo Ver.",
+            "type": "app"
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-store-clannad-manga",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:15:02.672Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 3239,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "detailed_description",
+          "developers",
+          "fullgame",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "name",
+          "package_groups",
+          "packages",
+          "pc_requirements",
+          "platforms",
+          "price_overview",
+          "publishers",
+          "ratings",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 519110,
+          "type": "dlc",
+          "name": "CLANNAD - Anthology Manga",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "Mar 31, 2017"
+          },
+          "developers": ["VisualArts/Key"],
+          "publishers": ["Sekai Project"],
+          "languageMarkup": "English",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "fullgame": {
+            "appid": "324160",
+            "name": "CLANNAD"
+          },
+          "descriptionLengths": {
+            "short": 142,
+            "detailed": 157,
+            "about": 157
+          },
+          "descriptionHashes": {
+            "short": "bf6cee7e274ccc20e1be8a7d23f09f6c97ef33125cab046157e13bda73e18ca6",
+            "detailed": "4c352a8aa089a44519747413f9b620f8c177a5317b147043ec2e0ffeeb26e734"
+          },
+          "screenshotCount": 1,
+          "movieCount": 0,
+          "genres": [
+            {
+              "id": "25",
+              "description": "Adventure"
+            },
+            {
+              "id": "4",
+              "description": "Casual"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "Single-player"
+            },
+            {
+              "id": 21,
+              "description": "Downloadable Content"
+            },
+            {
+              "id": 62,
+              "description": "Family Sharing"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "igdb-clannad-external-records",
+      "path": "/v4/external_games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:15:02.979Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 1345,
+      "summary": {
+        "count": 4,
+        "records": [
+          {
+            "id": 135984,
+            "game": 9607,
+            "uid": "23249",
+            "externalSource": 3,
+            "url": "https://www.giantbomb.com/games/3030-23249/"
+          },
+          {
+            "id": 247129,
+            "game": 9607,
+            "uid": "21088",
+            "externalSource": 14,
+            "url": "https://www.twitch.tv/directory/game/CLANNAD"
+          },
+          {
+            "id": 1930368,
+            "game": 9607,
+            "uid": "B07CCN9VFF",
+            "externalSource": 20,
+            "url": "https://amazon.co.jp/dp/B07CCN9VFF"
+          },
+          {
+            "id": 1931168,
+            "game": 9607,
+            "uid": "B07PNGSC5Q",
+            "externalSource": 20,
+            "url": "https://amazon.co.jp/dp/B07PNGSC5Q"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-company-nintendo-name-filter",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:15:02.671Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2536,
+      "summary": {
+        "count": 20,
+        "records": [
+          {
+            "id": 70,
+            "name": "Nintendo",
+            "start_date": -2533161600,
+            "start_date_format": 0
+          },
+          {
+            "id": 300,
+            "name": "Nintendo Creative Department",
+            "start_date_format": 7
+          },
+          {
+            "id": 421,
+            "name": "Nintendo Entertainment Analysis & Development",
+            "start_date": 631065600,
+            "start_date_format": 2
+          },
+          {
+            "id": 652,
+            "name": "Nintendo Australia",
+            "start_date_format": 7
+          },
+          {
+            "id": 768,
+            "name": "Nintendo Software Technology",
+            "start_date": 915062400,
+            "start_date_format": 2
+          },
+          {
+            "id": 773,
+            "name": "Nintendo EAD Tokyo Software Development Group No.1",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 866,
+            "name": "Nintendo SPD Production Group No. 2",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1048,
+            "name": "Nintendo EAD Software Development Group No.4",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1103,
+            "name": "Nintendo EAD Software Development Group No.1",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1246,
+            "name": "Nintendo EAD Software Development Group No.2",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1276,
+            "name": "Nintendo SPD Software Development Group",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1366,
+            "name": "Nintendo EAD Software Development Group No.3",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 1774,
+            "name": "Nintendo R&D2",
+            "start_date": 31449600,
+            "start_date_format": 2
+          },
+          {
+            "id": 1809,
+            "name": "Nintendo R&D1",
+            "start_date": 31449600,
+            "start_date_format": 2
+          },
+          {
+            "id": 1977,
+            "name": "Nintendo SPD Production Group No. 4",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 2167,
+            "name": "Nintendo SPD Production Group No. 3",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 2342,
+            "name": "Nintendo EAD Software Development Group No.5",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 2674,
+            "name": "Nintendo SPD Production Group No. 1",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          },
+          {
+            "id": 2850,
+            "name": "Nintendo of America",
+            "start_date": 315532800,
+            "start_date_format": 0
+          },
+          {
+            "id": 2935,
+            "name": "Nintendo SPD",
+            "start_date": 1064880000,
+            "start_date_format": 0
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-image-types",
+      "path": "/v4/image_types",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:15:03.287Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2681,
+      "summary": {
+        "count": 16,
+        "records": [
+          {
+            "id": 1,
+            "name": "Artwork",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "908e1f07-80df-603d-feca-f1a0f352e97b"
+          },
+          {
+            "id": 5,
+            "name": "Game logo (white)",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "83eb19d6-0ee3-fc8e-e7d3-956e949b99b0"
+          },
+          {
+            "id": 6,
+            "name": "Game logo (black)",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "8e4caeed-5eac-d5ed-3ac1-dc367c51ddb4"
+          },
+          {
+            "id": 8,
+            "name": "Main cover",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "7d7063a0-2fa1-eacc-ac23-fd6f8411b3be"
+          },
+          {
+            "id": 9,
+            "name": "Historical cover",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "7a5750db-1aca-5b90-1b73-1f0cf262a9bd"
+          },
+          {
+            "id": 10,
+            "name": "Alternative cover",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "cdb2bb3f-567c-8eeb-4d04-9bcf68c250a5"
+          },
+          {
+            "id": 11,
+            "name": "Square cover",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "ffda3b44-0570-4df8-f424-50b8cd7760e4"
+          },
+          {
+            "id": 12,
+            "name": "Infographic",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "8aaf5c4f-913d-ea9b-b8bd-090a1da3a48c"
+          },
+          {
+            "id": 14,
+            "name": "Historical logo",
+            "created_at": 1780666029,
+            "updated_at": 1780666031,
+            "checksum": "71c9ac3c-de04-ea1a-19e6-fd15f9b22de4"
+          },
+          {
+            "id": 15,
+            "name": "Historical icon",
+            "created_at": 1780666029,
+            "updated_at": 1780666031,
+            "checksum": "ccda76f5-5d77-537b-0bb8-ed07bd6e6bcc"
+          },
+          {
+            "id": 16,
+            "name": "Historical artwork",
+            "created_at": 1780666029,
+            "updated_at": 1780666031,
+            "checksum": "c1ba48b4-4230-4392-16b8-7fb7cbdab094"
+          },
+          {
+            "id": 7,
+            "name": "Game logo (color)",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "63b1e754-f5ec-4d30-0d97-db5bfd764162"
+          },
+          {
+            "id": 13,
+            "name": "Icon",
+            "created_at": 1780666028,
+            "updated_at": 1780666031,
+            "checksum": "49afefe9-dd63-9f40-7be0-d88fb3db5f3b"
+          },
+          {
+            "id": 2,
+            "name": "Key art without logo",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "a7ba29a5-6d39-482f-eb72-8866bc1c8a5b"
+          },
+          {
+            "id": 3,
+            "name": "Key art with logo",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "e3868578-31d4-5f5c-61b0-4b957fe0112d"
+          },
+          {
+            "id": 4,
+            "name": "Concept art",
+            "created_at": 1780311933,
+            "updated_at": 1780311933,
+            "checksum": "5cf779dc-40c2-39e9-4701-d450e44fc8e7"
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-missing-app",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:16:12.278Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 31,
+      "summary": {
+        "success": false,
+        "keys": [],
+        "app": null
+      }
+    },
+    {
+      "label": "steam-store-demo",
+      "path": "/api/appdetails",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:16:12.277Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 8770,
+      "summary": {
+        "success": true,
+        "keys": [
+          "about_the_game",
+          "background",
+          "background_raw",
+          "capsule_image",
+          "capsule_imagev5",
+          "categories",
+          "content_descriptors",
+          "controller_support",
+          "detailed_description",
+          "developers",
+          "fullgame",
+          "genres",
+          "header_image",
+          "is_free",
+          "legal_notice",
+          "linux_requirements",
+          "mac_requirements",
+          "metacritic",
+          "movies",
+          "name",
+          "package_groups",
+          "pc_requirements",
+          "platforms",
+          "publishers",
+          "ratings",
+          "release_date",
+          "required_age",
+          "screenshots",
+          "short_description",
+          "steam_appid",
+          "support_info",
+          "supported_languages",
+          "type",
+          "website"
+        ],
+        "app": {
+          "id": 589120,
+          "type": "demo",
+          "name": "Danganronpa V3: Killing Harmony Demo Ver.",
+          "releaseDate": {
+            "coming_soon": false,
+            "date": "Aug 25, 2017"
+          },
+          "developers": ["Spike Chunsoft Co., Ltd."],
+          "publishers": ["Spike Chunsoft Co., Ltd."],
+          "languageMarkup": "English<strong>*</strong>, Simplified Chinese, Traditional Chinese, Japanese<strong>*</strong>, French<br><strong>*</strong>languages with full audio support",
+          "contentDescriptors": {
+            "ids": [],
+            "notes": null
+          },
+          "requiredAge": 0,
+          "fullgame": {
+            "appid": "567640",
+            "name": "Danganronpa V3: Killing Harmony"
+          },
+          "descriptionLengths": {
+            "short": 295,
+            "detailed": 1253,
+            "about": 1253
+          },
+          "descriptionHashes": {
+            "short": "f06cb1961717bac5ffa368daeebaa9faeb6ac2a4ebc56ffb7186f6efe57aa1a7",
+            "detailed": "b7021e8ff15513f7d8bae83e6ba85f188b958c3f6d5b09001d52e0c94fdfabbe"
+          },
+          "screenshotCount": 5,
+          "movieCount": 1,
+          "genres": [
+            {
+              "id": "25",
+              "description": "Adventure"
+            }
+          ],
+          "categories": [
+            {
+              "id": 2,
+              "description": "Single-player"
+            },
+            {
+              "id": 10,
+              "description": "Game demo"
+            },
+            {
+              "id": 22,
+              "description": "Steam Achievements"
+            },
+            {
+              "id": 28,
+              "description": "Full controller support"
+            },
+            {
+              "id": 29,
+              "description": "Steam Trading Cards"
+            },
+            {
+              "id": 23,
+              "description": "Steam Cloud"
+            },
+            {
+              "id": 62,
+              "description": "Family Sharing"
+            }
+          ],
+          "imageFields": [
+            "header_image",
+            "capsule_image",
+            "capsule_imagev5",
+            "background",
+            "background_raw"
+          ]
+        }
+      }
+    },
+    {
+      "label": "igdb-clannad-companies",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:12.277Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 3978,
+      "summary": {
+        "count": 3,
+        "records": [
+          {
+            "id": 22937,
+            "name": "Visual Art's Motto",
+            "keys": [
+              "change_date_format",
+              "checksum",
+              "created_at",
+              "description",
+              "id",
+              "logo",
+              "name",
+              "parent",
+              "published",
+              "slug",
+              "start_date_format",
+              "status",
+              "updated_at",
+              "url",
+              "websites"
+            ],
+            "descriptionLength": 78,
+            "startDateFormat": 7,
+            "status": 0,
+            "logo": 3294,
+            "websites": [3511],
+            "developedCount": 0,
+            "publishedCount": 5
+          },
+          {
+            "id": 2648,
+            "name": "Visual Arts",
+            "keys": [
+              "change_date_format",
+              "checksum",
+              "company_type_histories",
+              "country",
+              "created_at",
+              "description",
+              "developed",
+              "id",
+              "logo",
+              "name",
+              "parent",
+              "published",
+              "slug",
+              "start_date",
+              "start_date_format",
+              "status",
+              "updated_at",
+              "url",
+              "websites"
+            ],
+            "descriptionLength": 370,
+            "startDate": 669945600,
+            "startDateFormat": 0,
+            "status": 0,
+            "logo": 3292,
+            "websites": [230, 3509],
+            "developedCount": 3,
+            "publishedCount": 45
+          },
+          {
+            "id": 3031,
+            "name": "Key",
+            "keys": [
+              "change_date_format",
+              "checksum",
+              "company_type_histories",
+              "country",
+              "created_at",
+              "description",
+              "developed",
+              "id",
+              "logo",
+              "name",
+              "parent",
+              "published",
+              "slug",
+              "start_date",
+              "start_date_format",
+              "status",
+              "updated_at",
+              "url",
+              "websites"
+            ],
+            "descriptionLength": 141,
+            "startDate": 900979200,
+            "startDateFormat": 0,
+            "status": 0,
+            "logo": 485,
+            "websites": [745],
+            "developedCount": 64,
+            "publishedCount": 14
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-logo-positive",
+      "path": "/v4/logos",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:12.893Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 600,
+      "summary": {
+        "count": 2,
+        "records": [
+          {
+            "id": 1,
+            "game": 7351,
+            "imageType": 6,
+            "width": 1161,
+            "height": 600,
+            "alpha": true,
+            "animated": false,
+            "imageId": "ar3lzz",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/ar3lzz.jpg"
+          },
+          {
+            "id": 2,
+            "game": 7351,
+            "imageType": 5,
+            "width": 1161,
+            "height": 600,
+            "alpha": true,
+            "animated": false,
+            "imageId": "ar3m00",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/ar3m00.jpg"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-logos",
+      "path": "/v4/logos",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:12.583Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "igdb-icon-cover-positive",
+      "path": "/v4/covers",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:13.180Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "steam-search-unmatched",
+      "path": "/api/storesearch",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:16:41.537Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 22,
+      "summary": {
+        "total": 0,
+        "count": 0,
+        "keys": ["total", "items"]
+      }
+    },
+    {
+      "label": "steam-search-broad-page",
+      "path": "/api/storesearch",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:16:41.536Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 3621,
+      "summary": {
+        "total": 10,
+        "count": 10,
+        "ids": [
+          3393110, 1172470, 1808500, 2288340, 4126040, 2073620, 3240220, 2593290, 2141910, 270880
+        ]
+      }
+    },
+    {
+      "label": "igdb-company-key-name-filter",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:41.536Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 45,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 3031,
+            "name": "Key"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-company-nintendo-page2",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:41.841Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 1439,
+      "summary": {
+        "count": 20,
+        "records": [
+          {
+            "id": 4034,
+            "name": "Nintendo of Europe"
+          },
+          {
+            "id": 5953,
+            "name": "Nintendo IRD"
+          },
+          {
+            "id": 7902,
+            "name": "Nintendo Entertainment Planning & Development"
+          },
+          {
+            "id": 13332,
+            "name": "Nintendo R&D3"
+          },
+          {
+            "id": 19595,
+            "name": "Nintendo Hong Kong"
+          },
+          {
+            "id": 19598,
+            "name": "Nintendo of Korea"
+          },
+          {
+            "id": 26043,
+            "name": "Nintendo SDK Development Team"
+          },
+          {
+            "id": 26044,
+            "name": "Nintendo European Research & Development"
+          },
+          {
+            "id": 26587,
+            "name": "Nintendo 64 Decompilation Project"
+          },
+          {
+            "id": 32471,
+            "name": "Nintendo R&D4"
+          },
+          {
+            "id": 36212,
+            "name": "Nintendo Software Planning & Development"
+          },
+          {
+            "id": 43272,
+            "name": "Nintendo Game Seminar"
+          },
+          {
+            "id": 45192,
+            "name": "Nintendo EAD Tokyo Software Development Group No.2"
+          },
+          {
+            "id": 45209,
+            "name": "Nintendo EPD Production Group No. 3"
+          },
+          {
+            "id": 45210,
+            "name": "Nintendo EPD Production Group No. 4"
+          },
+          {
+            "id": 45211,
+            "name": "Nintendo EPD Production Group No. 5"
+          },
+          {
+            "id": 45212,
+            "name": "Nintendo EPD Production Group No. 7"
+          },
+          {
+            "id": 45213,
+            "name": "Nintendo EPD Production Group No. 8"
+          },
+          {
+            "id": 45214,
+            "name": "Nintendo EPD Production Group No. 9"
+          },
+          {
+            "id": 45215,
+            "name": "Nintendo EPD Production Group No. 10"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-key-involvement",
+      "path": "/v4/involved_companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:42.140Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 10266,
+      "summary": {
+        "count": 64,
+        "developerCount": 64,
+        "publisherCount": 14,
+        "portingCount": 0,
+        "supportingCount": 0,
+        "allCompanyIdsMatch": true,
+        "distinctGames": 64,
+        "keys": ["company", "developer", "game", "id", "porting", "publisher", "supporting"]
+      }
+    },
+    {
+      "label": "igdb-icons-logo-positive",
+      "path": "/v4/logos",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:16:42.445Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0,
+        "records": []
+      }
+    },
+    {
+      "label": "steam-store-browse-assets",
+      "path": "/IStoreBrowseService/GetItems/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:21:51.587Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 2258,
+      "summary": {
+        "keys": ["response"],
+        "responseKeys": ["store_items"],
+        "items": [
+          {
+            "appid": 324160,
+            "id": 324160,
+            "name": "CLANNAD",
+            "type": 0,
+            "keys": [
+              "appid",
+              "assets",
+              "basic_info",
+              "best_purchase_option",
+              "categories",
+              "id",
+              "item_type",
+              "name",
+              "release",
+              "store_url_path",
+              "store_url_slug",
+              "success",
+              "type",
+              "visible"
+            ],
+            "assets": {
+              "asset_url_format": "steam/apps/324160/${FILENAME}?t=1777413875",
+              "main_capsule": "82f40dd0261ac2a8205eb77973cfdbea5d0318e0/capsule_616x353.jpg",
+              "main_capsule_2x": "82f40dd0261ac2a8205eb77973cfdbea5d0318e0/capsule_616x353_2x.jpg",
+              "small_capsule": "15acf6c435c47abbb48078793f7bb80b7a2d67be/capsule_231x87.jpg",
+              "small_capsule_2x": "15acf6c435c47abbb48078793f7bb80b7a2d67be/capsule_231x87_2x.jpg",
+              "header": "b36506d2d34dfa4efa90cb82edfdf5687adfadc5/header.jpg",
+              "header_2x": "b36506d2d34dfa4efa90cb82edfdf5687adfadc5/header_2x.jpg",
+              "page_background": "page_bg_generated_v6b.jpg",
+              "hero_capsule": "d3fe1ad846c07fffaad620a2c8a8b0ecd80d6aa7/hero_capsule.jpg",
+              "hero_capsule_2x": "d3fe1ad846c07fffaad620a2c8a8b0ecd80d6aa7/hero_capsule_2x.jpg",
+              "library_capsule": "library_600x900.jpg",
+              "library_capsule_2x": "library_600x900_2x.jpg",
+              "library_hero": "b93841b3a9ea8b995fa20db6792ea80a3c52d919/library_hero.jpg",
+              "library_hero_2x": "b93841b3a9ea8b995fa20db6792ea80a3c52d919/library_hero_2x.jpg",
+              "community_icon": "a0a3402116db76d90040bf18c452632ed7dd52bc",
+              "page_background_path": "app/324160?t=1777413875",
+              "raw_page_background": "page_bg_raw.jpg",
+              "last_modified": 1777413875
+            },
+            "basicInfoKeys": ["short_description", "publishers", "developers"],
+            "release": {
+              "steam_release_date": 1448308779,
+              "original_release_date": 1083135600
+            },
+            "creatorReferencesAreCommunityAccounts": true
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-icons-artwork-positive",
+      "path": "/v4/artworks",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:21:51.588Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 658,
+      "summary": {
+        "count": 2,
+        "records": [
+          {
+            "id": 243038,
+            "game": 2180,
+            "imageType": 13,
+            "width": 128,
+            "height": 128,
+            "alpha": false,
+            "animated": false,
+            "imageId": "ar57j2",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/ar57j2.jpg"
+          },
+          {
+            "id": 243051,
+            "game": 1079,
+            "imageType": 13,
+            "width": 48,
+            "height": 48,
+            "alpha": false,
+            "animated": false,
+            "imageId": "ar57jf",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/ar57jf.jpg"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-characters-page",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:21:51.890Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 295,
+      "summary": {
+        "count": 3,
+        "records": [
+          {
+            "id": 5,
+            "games": [73, 74],
+            "name": "Jeff \"Joker\" Moreau"
+          },
+          {
+            "id": 6,
+            "games": [73, 74],
+            "name": "Commander Shepard (female)"
+          },
+          {
+            "id": 7,
+            "games": [73],
+            "name": "Admiral Steven Hackett"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-missing-game",
+      "path": "/v4/games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:21:52.201Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 2,
+      "summary": {
+        "count": 0
+      }
+    },
+    {
+      "label": "igdb-company-nintendo-count",
+      "path": "/v4/companies/count",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:21:52.500Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 19,
+      "summary": {
+        "count": 47
+      }
+    },
+    {
+      "label": "igdb-erotic-theme",
+      "path": "/v4/themes",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:21:52.797Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 46,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 42,
+            "name": "Erotic"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-company-nintendo-last-page",
+      "path": "/v4/companies",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:22:39.304Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 458,
+      "summary": {
+        "count": 7,
+        "records": [
+          {
+            "id": 46552,
+            "name": "Nintendo European Research and Development"
+          },
+          {
+            "id": 46665,
+            "name": "Nintendo Tokyo Office"
+          },
+          {
+            "id": 52325,
+            "name": "NintendoFan"
+          },
+          {
+            "id": 65520,
+            "name": "Nintendo EPD Production Group No. 6"
+          },
+          {
+            "id": 66007,
+            "name": "Nintendo Cube"
+          },
+          {
+            "id": 69059,
+            "name": "Nintendo bro385"
+          },
+          {
+            "id": 73545,
+            "name": "Nintendo EPD Co-Production Group"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-character-first-page",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:22:39.606Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 270,
+      "summary": {
+        "count": 3,
+        "records": [
+          {
+            "id": 1,
+            "games": [73],
+            "name": "Urdnot Wrex"
+          },
+          {
+            "id": 2,
+            "games": [73, 536, 74],
+            "name": "Additional voices"
+          },
+          {
+            "id": 3,
+            "games": [73],
+            "name": "Ashley Williams"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-public-company-logo",
+      "path": "/v4/company_logos",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:22:39.907Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 292,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 485,
+            "width": 1000,
+            "height": 737,
+            "alpha": true,
+            "animated": false,
+            "imageId": "rzhpja0ndmf27gnlc5iz",
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/rzhpja0ndmf27gnlc5iz.jpg"
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-clannad-character-count",
+      "path": "/v4/characters/count",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:26:59.743Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 18,
+      "summary": {
+        "count": 0
+      }
+    },
+    {
+      "label": "igdb-clannad-owned-external-records",
+      "path": "/v4/external_games",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:26:59.429Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 612,
+      "summary": {
+        "count": 4,
+        "records": [
+          {
+            "id": 135984,
+            "game": 9607,
+            "uid": "23249",
+            "url": "https://www.giantbomb.com/games/3030-23249/",
+            "external_game_source": 3
+          },
+          {
+            "id": 247129,
+            "game": 9607,
+            "uid": "21088",
+            "url": "https://www.twitch.tv/directory/game/CLANNAD",
+            "external_game_source": 14
+          },
+          {
+            "id": 1930368,
+            "game": 9607,
+            "uid": "B07CCN9VFF",
+            "url": "https://amazon.co.jp/dp/B07CCN9VFF",
+            "external_game_source": 20
+          },
+          {
+            "id": 1931168,
+            "game": 9607,
+            "uid": "B07PNGSC5Q",
+            "url": "https://amazon.co.jp/dp/B07PNGSC5Q",
+            "external_game_source": 20
+          }
+        ]
+      }
+    },
+    {
+      "label": "igdb-character-placeholder",
+      "path": "/v4/characters",
+      "method": "POST",
+      "checkedAt": "2026-10-16T08:37:25.610Z",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 321,
+      "summary": {
+        "count": 1,
+        "records": [
+          {
+            "id": 2,
+            "name": "Additional voices",
+            "keys": ["checksum", "created_at", "games", "id", "name", "slug", "updated_at", "url"],
+            "hasMugShot": false
+          }
+        ]
+      }
+    },
+    {
+      "label": "steam-owned-default-scope",
+      "path": "/IPlayerService/GetOwnedGames/v1/",
+      "method": "GET",
+      "checkedAt": "2026-10-16T08:37:25.608Z",
+      "status": 200,
+      "contentType": "application/json; charset=UTF-8",
+      "bytes": 14065,
+      "summary": {
+        "responseKeys": ["game_count", "games"],
+        "declaredCount": 42,
+        "returnedCount": 42,
+        "familySharedReturned": false
+      }
+    }
+  ],
+  "assetHeads": [
+    {
+      "label": "steam-header",
+      "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324160/b36506d2d34dfa4efa90cb82edfdf5687adfadc5/header.jpg?t=1777413875",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": "25996"
+    },
+    {
+      "label": "steam-background",
+      "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324160/page_bg_raw.jpg?t=1777413875",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": "375705"
+    },
+    {
+      "label": "igdb-original-cover",
+      "url": "https://images.igdb.com/igdb/image/upload/t_original/co6ytz.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": null
+    },
+    {
+      "label": "igdb-logo-png",
+      "url": "https://images.igdb.com/igdb/image/upload/t_original/ar3lzz.png",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": null
+    },
+    {
+      "label": "igdb-icon-original",
+      "url": "https://images.igdb.com/igdb/image/upload/t_original/ar57j2.jpg",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": null
+    },
+    {
+      "label": "steam-library-hero",
+      "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324160/b93841b3a9ea8b995fa20db6792ea80a3c52d919/library_hero_2x.jpg?t=1777413875",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": "416124"
+    },
+    {
+      "label": "steam-library-cover",
+      "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324160/library_600x900_2x.jpg?t=1777413875",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": "154432"
+    },
+    {
+      "label": "steam-community-icon",
+      "url": "https://media.steampowered.com/steamcommunity/public/images/apps/324160/a0a3402116db76d90040bf18c452632ed7dd52bc.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": "1176"
+    }
+  ],
+  "publicDocumentation": [
+    {
+      "url": "https://api-docs.igdb.com/",
+      "status": 200,
+      "bytes": 1289516,
+      "sha256": "3079939ebda434cd5c7a01d34c0bd1c9d3ef892dc9ce9f96426376559c0cae23"
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/webapi_overview"
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/webapi/IPlayerService"
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/store/application"
+    },
+    {
+      "url": "https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/"
+    }
+  ],
+  "remainingVerification": [
+    "Steam inaccessible-private and genuinely empty accounts, family-share scope and large lists.",
+    "Complete extension execution, UI, native ingest, explicit playtime adoption, image decoding and cancellation."
+  ]
+}

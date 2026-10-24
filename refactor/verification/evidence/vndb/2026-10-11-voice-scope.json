@@ -1,0 +1,1333 @@
+[
+  {
+    "name": "work-voice-cast",
+    "observedAt": "2026-10-11T20:21:04.7664536+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "results": 1,
+      "fields": "title,olang,released,va{note,staff{id,aid,name,original,lang},character{id,name}}",
+      "filters": ["id", "=", "v11"]
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "id": "v11",
+          "olang": "ja",
+          "released": "2004-01-30",
+          "title": "Fate/stay night",
+          "va": [
+            {
+              "character": {
+                "id": "c42",
+                "name": "Kotomine Kirei"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 32,
+                "id": "s9",
+                "lang": "ja",
+                "name": "Nakata Jouji",
+                "original": "中田 譲治"
+              }
+            },
+            {
+              "character": {
+                "id": "c15",
+                "name": "Emiya Shirou"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 55,
+                "id": "s15",
+                "lang": "ja",
+                "name": "Sugiyama Noriaki",
+                "original": "杉山 紀彰"
+              }
+            },
+            {
+              "character": {
+                "id": "c33",
+                "name": "Saber"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 57,
+                "id": "s16",
+                "lang": "ja",
+                "name": "Kawasumi Ayako",
+                "original": "川澄 綾子"
+              }
+            },
+            {
+              "character": {
+                "id": "c54",
+                "name": "Saber Alter"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 57,
+                "id": "s16",
+                "lang": "ja",
+                "name": "Kawasumi Ayako",
+                "original": "川澄 綾子"
+              }
+            },
+            {
+              "character": {
+                "id": "c34",
+                "name": "Toosaka Rin"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 58,
+                "id": "s17",
+                "lang": "ja",
+                "name": "Ueda Kana",
+                "original": "植田 佳奈"
+              }
+            },
+            {
+              "character": {
+                "id": "c36",
+                "name": "Archer"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 137,
+                "id": "s66",
+                "lang": "ja",
+                "name": "Suwabe Jun'ichi",
+                "original": "諏訪部 順一"
+              }
+            },
+            {
+              "character": {
+                "id": "c35",
+                "name": "Matou Sakura"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 145,
+                "id": "s71",
+                "lang": "ja",
+                "name": "Shitaya Noriko",
+                "original": "下屋 則子"
+              }
+            },
+            {
+              "character": {
+                "id": "c53",
+                "name": "Dark Sakura"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 145,
+                "id": "s71",
+                "lang": "ja",
+                "name": "Shitaya Noriko",
+                "original": "下屋 則子"
+              }
+            },
+            {
+              "character": {
+                "id": "c38",
+                "name": "Lancer"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 150,
+                "id": "s76",
+                "lang": "ja",
+                "name": "Kanna Nobutoshi",
+                "original": "神奈 延年"
+              }
+            },
+            {
+              "character": {
+                "id": "c45",
+                "name": "Caster"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 154,
+                "id": "s78",
+                "lang": "ja",
+                "name": "Tanaka Atsuko",
+                "original": "田中 敦子"
+              }
+            },
+            {
+              "character": {
+                "id": "c39",
+                "name": "Rider"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 158,
+                "id": "s81",
+                "lang": "ja",
+                "name": "Asakawa Yuu",
+                "original": "浅川 悠"
+              }
+            },
+            {
+              "character": {
+                "id": "c41",
+                "name": "Matou Shinji"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 270,
+                "id": "s132",
+                "lang": "ja",
+                "name": "Kamiya Hiroshi",
+                "original": "神谷 浩史"
+              }
+            },
+            {
+              "character": {
+                "id": "c47",
+                "name": "Gilgamesh"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 419,
+                "id": "s249",
+                "lang": "ja",
+                "name": "Seki Tomokazu",
+                "original": "関 智一"
+              }
+            },
+            {
+              "character": {
+                "id": "c49",
+                "name": "Assassin"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 422,
+                "id": "s252",
+                "lang": "ja",
+                "name": "Miki Shin'ichirou",
+                "original": "三木 眞一郎"
+              }
+            },
+            {
+              "character": {
+                "id": "c50",
+                "name": "True Assassin"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 498,
+                "id": "s294",
+                "lang": "ja",
+                "name": "Inada Tetsu",
+                "original": "稲田 徹"
+              }
+            },
+            {
+              "character": {
+                "id": "c37",
+                "name": "Illyasviel von Einzbern"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 824,
+                "id": "s440",
+                "lang": "ja",
+                "name": "Kadowaki Mai",
+                "original": "門脇 舞以"
+              }
+            },
+            {
+              "character": {
+                "id": "c41606",
+                "name": "Makidera Kaede"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1403,
+                "id": "s794",
+                "lang": "ja",
+                "name": "Yuimoto Michiru",
+                "original": "結下 みちる"
+              }
+            },
+            {
+              "character": {
+                "id": "c43",
+                "name": "Fujimura Taiga"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1569,
+                "id": "s886",
+                "lang": "ja",
+                "name": "Itou Miki",
+                "original": "伊藤 美紀"
+              }
+            },
+            {
+              "character": {
+                "id": "c48",
+                "name": "Ryuudou Issei"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1570,
+                "id": "s887",
+                "lang": "ja",
+                "name": "Madono Mitsuaki",
+                "original": "真殿 光昭"
+              }
+            },
+            {
+              "character": {
+                "id": "c52",
+                "name": "Mitsuzuri Ayako"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1571,
+                "id": "s888",
+                "lang": "ja",
+                "name": "Mizusawa Fumie",
+                "original": "水沢 史絵"
+              }
+            },
+            {
+              "character": {
+                "id": "c44",
+                "name": "Kuzuki Souichirou"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1572,
+                "id": "s889",
+                "lang": "ja",
+                "name": "Nakata Kazuhiro",
+                "original": "中多 和宏"
+              }
+            },
+            {
+              "character": {
+                "id": "c40",
+                "name": "Berserker"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1573,
+                "id": "s890",
+                "lang": "ja",
+                "name": "Saizen Tadahisa",
+                "original": "西前 忠久"
+              }
+            },
+            {
+              "character": {
+                "id": "c55",
+                "name": "Dark Berserker"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1573,
+                "id": "s890",
+                "lang": "ja",
+                "name": "Saizen Tadahisa",
+                "original": "西前 忠久"
+              }
+            },
+            {
+              "character": {
+                "id": "c51",
+                "name": "Matou Zouken"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 1576,
+                "id": "s892",
+                "lang": "ja",
+                "name": "Tsukayama Masane",
+                "original": "津嘉山 正種"
+              }
+            },
+            {
+              "character": {
+                "id": "c96619",
+                "name": "Emiya Kiritsugu"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 3074,
+                "id": "s1941",
+                "lang": "ja",
+                "name": "Koyama Rikiya",
+                "original": "小山 力也"
+              }
+            },
+            {
+              "character": {
+                "id": "c41607",
+                "name": "Himuro Kane"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 4644,
+                "id": "s3204",
+                "lang": "ja",
+                "name": "Nakagawa Rie",
+                "original": "中川 里江"
+              }
+            },
+            {
+              "character": {
+                "id": "c41603",
+                "name": "Leysritt"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 5131,
+                "id": "s3635",
+                "lang": "ja",
+                "name": "Miyagawa Miho",
+                "original": "宮川 美保"
+              }
+            },
+            {
+              "character": {
+                "id": "c41594",
+                "name": "Hotaruzuka Otoko"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 6334,
+                "id": "s4688",
+                "lang": "ja",
+                "name": "Noda Junko",
+                "original": "野田 順子"
+              }
+            },
+            {
+              "character": {
+                "id": "c41605",
+                "name": "Saegusa Yukika"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 10262,
+                "id": "s7988",
+                "lang": "ja",
+                "name": "Nakao Eri",
+                "original": "中尾 衣里"
+              }
+            },
+            {
+              "character": {
+                "id": "c41602",
+                "name": "Sella"
+              },
+              "note": "Realta Nua",
+              "staff": {
+                "aid": 16317,
+                "id": "s3415",
+                "lang": "ja",
+                "name": "Terada Haruhi",
+                "original": "寺田 はるひ"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "work-releases-voice-state",
+    "observedAt": "2026-10-11T20:21:05.5223582+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/release",
+    "request": {
+      "results": 100,
+      "fields": "title,released,official,patch,languages{lang,main},vns{id,rtype},platforms,voiced",
+      "page": 1,
+      "filters": [
+        "and",
+        ["vn", "=", ["id", "=", "v11"]],
+        ["lang", "=", "ja"],
+        ["official", "=", 1],
+        ["patch", "!=", 1],
+        ["rtype", "=", "complete"]
+      ],
+      "sort": "released"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "id": "r350",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2004-01-30",
+          "title": "Fate/Stay Night - First Press Limited Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 1
+        },
+        {
+          "id": "r745",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2004-03-26",
+          "title": "Fate/Stay Night - Regular Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 1
+        },
+        {
+          "id": "r352",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2006-03-29",
+          "title": "Fate/Stay Night - DVD Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 1
+        },
+        {
+          "id": "r353",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "released": "2007-04-19",
+          "title": "Fate/Stay Night [Realta Nua] - Extra Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r1858",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "released": "2007-04-19",
+          "title": "Fate/Stay Night [Realta Nua] - Regular Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r10819",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ps2"],
+          "released": "2009-06-18",
+          "title": "Fate/Stay Night [Realta Nua] (PlayStation2 the Best)",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r21752",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psv"],
+          "released": "2012-11-29",
+          "title": "Fate/Stay Night [Realta Nua]",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r31469",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2014-01-30",
+          "title": "Fate/Stay Night + Fate/Hollow Ataraxia Set",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            },
+            {
+              "id": "v50",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 1
+        },
+        {
+          "id": "r36304",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["psv"],
+          "released": "2014-09-18",
+          "title": "Fate/Stay Night [Realta Nua] (Playstation Vita the Best)",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r35585",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["ios"],
+          "released": "2015-04-18",
+          "title": "Fate/Stay Night [Realta Nua] Fate",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r39937",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["and"],
+          "released": "2015-05-29",
+          "title": "Fate/stay night [Realta Nua]",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r64699",
+          "languages": [
+            {
+              "lang": "ja",
+              "main": true
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2019-06-28",
+          "title": "Fate/Stay Night + Fate/Hollow Ataraxia Set - Reprint Edition",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            },
+            {
+              "id": "v50",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 1
+        },
+        {
+          "id": "r118913",
+          "languages": [
+            {
+              "lang": "en",
+              "main": false
+            },
+            {
+              "lang": "ja",
+              "main": true
+            },
+            {
+              "lang": "zh-Hans",
+              "main": false
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["win"],
+          "released": "2024-08-07",
+          "title": "Fate/stay night REMASTERED",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": 4
+        },
+        {
+          "id": "r118914",
+          "languages": [
+            {
+              "lang": "en",
+              "main": false
+            },
+            {
+              "lang": "ja",
+              "main": true
+            },
+            {
+              "lang": "zh-Hans",
+              "main": false
+            }
+          ],
+          "official": true,
+          "patch": false,
+          "platforms": ["swi"],
+          "released": "2024-08-07",
+          "title": "Fate/stay night REMASTERED",
+          "vns": [
+            {
+              "id": "v11",
+              "rtype": "complete"
+            }
+          ],
+          "voiced": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "additional-work-voice-cast",
+    "observedAt": "2026-10-11T12:21:20.7393412+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "filters": ["id", "=", "v7014"],
+      "results": 1,
+      "fields": "title,olang,va{note,staff{id,aid,name,original,lang},character{id,name}}"
+    },
+    "status": 200,
+    "response": {
+      "more": false,
+      "results": [
+        {
+          "id": "v7014",
+          "olang": "ja",
+          "title": "Dangan Ronpa: Kibou no Gakuen to Zetsubou no Koukousei",
+          "va": [
+            {
+              "character": {
+                "id": "c10199",
+                "name": "Fukawa Touko"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 101,
+                "id": "s43",
+                "lang": "ja",
+                "name": "Sawashiro Miyuki",
+                "original": "沢城 みゆき"
+              }
+            },
+            {
+              "character": {
+                "id": "c47550",
+                "name": "Genocider Shou"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 101,
+                "id": "s43",
+                "lang": "ja",
+                "name": "Sawashiro Miyuki",
+                "original": "沢城 みゆき"
+              }
+            },
+            {
+              "character": {
+                "id": "c10190",
+                "name": "Ishimaru Kiyotaka"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 103,
+                "id": "s45",
+                "lang": "ja",
+                "name": "Toriumi Kousuke",
+                "original": "鳥海 浩輔"
+              }
+            },
+            {
+              "character": {
+                "id": "c10193",
+                "name": "Kuwata Leon"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 108,
+                "id": "s50",
+                "lang": "ja",
+                "name": "Sakurai Takahiro",
+                "original": "櫻井 孝宏"
+              }
+            },
+            {
+              "character": {
+                "id": "c10191",
+                "name": "Togami Byakuya"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 148,
+                "id": "s74",
+                "lang": "ja",
+                "name": "Ishida Akira",
+                "original": "石田 彰"
+              }
+            },
+            {
+              "character": {
+                "id": "c10190",
+                "name": "Ishimaru Kiyotaka"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 180,
+                "id": "s101",
+                "lang": "en",
+                "name": "Sean Chiplock",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10194",
+                "name": "Yamada Hifumi"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 232,
+                "id": "s122",
+                "lang": "ja",
+                "name": "Yamaguchi Kappei",
+                "original": "山口 勝平"
+              }
+            },
+            {
+              "character": {
+                "id": "c10200",
+                "name": "Oogami Sakura"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 487,
+                "id": "s290",
+                "lang": "ja",
+                "name": "Kujira",
+                "original": "くじら"
+              }
+            },
+            {
+              "character": {
+                "id": "c10194",
+                "name": "Yamada Hifumi"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 628,
+                "id": "s368",
+                "lang": "en",
+                "name": "Lucien Dodge",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10203",
+                "name": "Fujisaki Chihiro"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 688,
+                "id": "s387",
+                "lang": "ja",
+                "name": "Miyata Kouki",
+                "original": "宮田 幸季"
+              }
+            },
+            {
+              "character": {
+                "id": "c47555",
+                "name": "Alter Ego"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 688,
+                "id": "s387",
+                "lang": "ja",
+                "name": "Miyata Kouki",
+                "original": "宮田 幸季"
+              }
+            },
+            {
+              "character": {
+                "id": "c10192",
+                "name": "Oowada Mondo"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 718,
+                "id": "s397",
+                "lang": "ja",
+                "name": "Nakai Kazuya",
+                "original": "中井 和哉"
+              }
+            },
+            {
+              "character": {
+                "id": "c10198",
+                "name": "Asahina Aoi"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 904,
+                "id": "s475",
+                "lang": "ja",
+                "name": "Saitou Chiwa",
+                "original": "斎藤 千和"
+              }
+            },
+            {
+              "character": {
+                "id": "c7828",
+                "name": "Naegi Makoto"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1108,
+                "id": "s611",
+                "lang": "ja",
+                "name": "Ogata Megumi",
+                "original": "緒方 恵美"
+              }
+            },
+            {
+              "character": {
+                "id": "c10201",
+                "name": "Celestia Ludenberg"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1110,
+                "id": "s613",
+                "lang": "ja",
+                "name": "Shiina Hekiru",
+                "original": "椎名 へきる"
+              }
+            },
+            {
+              "character": {
+                "id": "c10202",
+                "name": "Enoshima Junko"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1111,
+                "id": "s614",
+                "lang": "ja",
+                "name": "Toyoguchi Megumi",
+                "original": "豊口 めぐみ"
+              }
+            },
+            {
+              "character": {
+                "id": "c10195",
+                "name": "Hagakure Yasuhiro"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1112,
+                "id": "s615",
+                "lang": "ja",
+                "name": "Matsukaze Masaya",
+                "original": "松風 雅也"
+              }
+            },
+            {
+              "character": {
+                "id": "c10197",
+                "name": "Kirigiri Kyouko"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1113,
+                "id": "s616",
+                "lang": "ja",
+                "name": "Hikasa Youko",
+                "original": "日笠 陽子"
+              }
+            },
+            {
+              "character": {
+                "id": "c10196",
+                "name": "Maizono Sayaka"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1114,
+                "id": "s617",
+                "lang": "ja",
+                "name": "Oomoto Makiko",
+                "original": "大本 眞基子"
+              }
+            },
+            {
+              "character": {
+                "id": "c6626",
+                "name": "Monokuma"
+              },
+              "note": "Japanese",
+              "staff": {
+                "aid": 1115,
+                "id": "s618",
+                "lang": "ja",
+                "name": "Ooyama Nobuyo",
+                "original": "大山 のぶ代"
+              }
+            },
+            {
+              "character": {
+                "id": "c10200",
+                "name": "Oogami Sakura"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11942,
+                "id": "s9374",
+                "lang": "en",
+                "name": "Jessica Gee-George",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10193",
+                "name": "Kuwata Leon"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11943,
+                "id": "s9375",
+                "lang": "en",
+                "name": "Grant George",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10192",
+                "name": "Oowada Mondo"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11945,
+                "id": "s9377",
+                "lang": "en",
+                "name": "Keith Silverstein",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c6626",
+                "name": "Monokuma"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11946,
+                "id": "s9378",
+                "lang": "en",
+                "name": "Brian Beacock",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10196",
+                "name": "Maizono Sayaka"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11947,
+                "id": "s9379",
+                "lang": "en",
+                "name": "Dorothy Ann Elias-Fahn",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10203",
+                "name": "Fujisaki Chihiro"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11947,
+                "id": "s9379",
+                "lang": "en",
+                "name": "Dorothy Ann Elias-Fahn",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c47555",
+                "name": "Alter Ego"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11947,
+                "id": "s9379",
+                "lang": "en",
+                "name": "Dorothy Ann Elias-Fahn",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10199",
+                "name": "Fukawa Touko"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11949,
+                "id": "s9381",
+                "lang": "en",
+                "name": "Amanda Celine Miller",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10202",
+                "name": "Enoshima Junko"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11949,
+                "id": "s9381",
+                "lang": "en",
+                "name": "Amanda Celine Miller",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10202",
+                "name": "Enoshima Junko"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11950,
+                "id": "s9382",
+                "lang": "en",
+                "name": "Erin Fitzgerald",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c47550",
+                "name": "Genocider Shou"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11950,
+                "id": "s9382",
+                "lang": "en",
+                "name": "Erin Fitzgerald",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10197",
+                "name": "Kirigiri Kyouko"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11951,
+                "id": "s9383",
+                "lang": "en",
+                "name": "Erika Harlacher",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10191",
+                "name": "Togami Byakuya"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11952,
+                "id": "s9384",
+                "lang": "en",
+                "name": "Jason Wishnov",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10195",
+                "name": "Hagakure Yasuhiro"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11953,
+                "id": "s9385",
+                "lang": "en",
+                "name": "Kaiji Tang",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10201",
+                "name": "Celestia Ludenberg"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 11954,
+                "id": "s9386",
+                "lang": "en",
+                "name": "Marieve Herington",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c7828",
+                "name": "Naegi Makoto"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 12359,
+                "id": "s9380",
+                "lang": "en",
+                "name": "Bryce Papenbrook",
+                "original": null
+              }
+            },
+            {
+              "character": {
+                "id": "c10198",
+                "name": "Asahina Aoi"
+              },
+              "note": "English (Uncredited)",
+              "staff": {
+                "aid": 13345,
+                "id": "s9376",
+                "lang": "en",
+                "name": "Cassandra Morris",
+                "original": null
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

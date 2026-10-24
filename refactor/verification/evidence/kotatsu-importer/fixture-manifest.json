@@ -1,0 +1,130 @@
+{
+  "synthetic": true,
+  "sourceFamily": "Official Kotatsu v9.4.1, application version code 1033",
+  "media": "Synthetic image bytes reused from earlier Koodo fixtures; no manga pages downloaded.",
+  "backupEntries": [
+    "index",
+    "history",
+    "categories",
+    "favourites",
+    "settings",
+    "reader_grid",
+    "bookmarks",
+    "sources",
+    "scrobbling",
+    "statistics",
+    "saved_filters"
+  ],
+  "files": [
+    {
+      "path": "fixtures/backup.zip",
+      "bytes": 3811,
+      "sha256": "a687ce8a5a392346895dfc57843ce5ab47ddfb5ccabac0e38a321d3f883a6f9c"
+    },
+    {
+      "path": "fixtures/invalid/arbitrary-pattern.cbz",
+      "bytes": 843,
+      "sha256": "e9d2e4e6cdee4f1f17a12d957e13b78d6ea838b0a004117e8097da655535944b"
+    },
+    {
+      "path": "fixtures/invalid/duplicate-index-key.json",
+      "bytes": 34,
+      "sha256": "bd462295e52f895ac51ac0611951d913bac45ba682d08c1df32e0378297ed867"
+    },
+    {
+      "path": "fixtures/invalid/duplicate-json-key.zip",
+      "bytes": 178,
+      "sha256": "4e4172e7165456417a1d28515d675e5849b03ab04583d56e9895e4a3472a2b58"
+    },
+    {
+      "path": "fixtures/invalid/duplicate-member.zip",
+      "bytes": 340,
+      "sha256": "f88a1976272cd55ae25a4b46efb974d2ed61b8378fb09c0e04f749eea4bc022d"
+    },
+    {
+      "path": "fixtures/invalid/duplicate-page.cbz",
+      "bytes": 1096,
+      "sha256": "458f5be17cce90809aa0748bfab5c8a0f8a4f716bed08623a127ed04e4d33d24"
+    },
+    {
+      "path": "fixtures/invalid/escaping-index.json",
+      "bytes": 727,
+      "sha256": "5b2fb60eba8b88408dbeaec8f7039e77d7340b68107b83a9bbfc5d0f01be02ef"
+    },
+    {
+      "path": "fixtures/invalid/missing-page.cbz",
+      "bytes": 1096,
+      "sha256": "c6badb087c69987332d70c7fe39ce6ac28ae78b55e7a2bad2f7a799c97bcb97c"
+    },
+    {
+      "path": "fixtures/invalid/non-zip.bin",
+      "bytes": 21,
+      "sha256": "ad1e85fbebe0058d2711cde544bd6cd6262a82f5c08bc0c5b88b1161e49f0d91"
+    },
+    {
+      "path": "fixtures/invalid/other-app.zip",
+      "bytes": 875,
+      "sha256": "7672062c3d6d0bd07bb82410d35d95424989af8d5ef00e675e7d455594601931"
+    },
+    {
+      "path": "fixtures/invalid/oversized-entry.zip",
+      "bytes": 1305,
+      "sha256": "eb67f1de476a4dd30e05f1de7b21a743b50a229caad8291e02874fda6e2b40a9"
+    },
+    {
+      "path": "fixtures/invalid/traversal.zip",
+      "bytes": 281,
+      "sha256": "b07a61d2e24eb087473db9a8015ecede0de306e175ab3be103632a87b9c7ac5f"
+    },
+    {
+      "path": "fixtures/invalid/unknown-version.zip",
+      "bytes": 877,
+      "sha256": "ad9807a3c62981c49eab4e99841bee8e510954132fb44732475f6ee287712d13"
+    },
+    {
+      "path": "fixtures/invalid/unsupported-json.zip",
+      "bytes": 184,
+      "sha256": "f2cefb3a17a341d2fe2f14b831baaba539f0e3eae0db5e76c3614dd147a7a62f"
+    },
+    {
+      "path": "fixtures/media/natural-order.cbz",
+      "bytes": 1246,
+      "sha256": "fbf054149235397c1c2ef30a025fbbae4d7618db73dd60ed346462962d290f69"
+    },
+    {
+      "path": "fixtures/media/source-image-universe.cbz",
+      "bytes": 518,
+      "sha256": "09583bb1627bff1d80e8204c4bc37b8e659869ac9aec4c71e40aa56d1e1f554c"
+    },
+    {
+      "path": "fixtures/media/star-travel.cbz",
+      "bytes": 2032,
+      "sha256": "8d2c4db43f088b309991704446147f7980167f8a628c6caad68c86cefc8b7e43"
+    },
+    {
+      "path": "fixtures/media/unknown-mime.cbz",
+      "bytes": 628,
+      "sha256": "37d2d2e1596dc04f25b266f7c013a87caf8f20076503c340febaf4e8eea8ac92"
+    },
+    {
+      "path": "fixtures/media/volume-series/0_first.cbz",
+      "bytes": 846,
+      "sha256": "0a07ac7ef653cc606d9827130a735acbf8a0b8d8fcab4fb0e368b4ce98746480"
+    },
+    {
+      "path": "fixtures/media/volume-series/cover.png",
+      "bytes": 124,
+      "sha256": "086a30c2591d1b30eeaa2941ab0c8b9a56b20c6b845d593be6364a941f0a32c7"
+    },
+    {
+      "path": "fixtures/media/volume-series/index.json",
+      "bytes": 724,
+      "sha256": "6e2d73ff6f0a819730672b3e4dd99c0d610981149da1237c030d9eafc7ab7c47"
+    },
+    {
+      "path": "fixtures/partial-no-statistics.zip",
+      "bytes": 3585,
+      "sha256": "84b63992c900105405291bb06703770a257c6b316c1674549561cc6709504190"
+    }
+  ]
+}

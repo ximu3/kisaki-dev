@@ -1,0 +1,1 @@
+return { valid = "fine", bad = "\255" }

@@ -1,0 +1,202 @@
+{
+  "current": {
+    "backupManga": [
+      {
+        "source": "9223372036854775807",
+        "url": "https://mangadex.org/title/11111111-1111-4111-8111-111111111111",
+        "title": "星光日记",
+        "artist": "同名作者",
+        "author": "作者与社团",
+        "description": "公开简介",
+        "genre": ["校园", "日常"],
+        "status": 2,
+        "dateAdded": "1740787200000",
+        "categories": ["7"],
+        "notes": "第一轮读后感。\n\n**很喜欢这一章。**",
+        "chapters": [
+          {
+            "url": "https://mangadex.org/chapter/22222222-2222-4222-8222-222222222222",
+            "name": "Chapter 1",
+            "scanlator": "Group",
+            "read": true,
+            "bookmark": true,
+            "lastPageRead": "1",
+            "chapterNumber": 1
+          },
+          {
+            "url": "https://mangadex.org/chapter/33333333-3333-4333-8333-333333333333",
+            "name": "Chapter 1",
+            "scanlator": "Other",
+            "read": false,
+            "lastPageRead": "0",
+            "chapterNumber": 1
+          },
+          {
+            "url": "/chapter/13-5",
+            "name": "番外",
+            "chapterNumber": 13.5,
+            "read": true,
+            "lastPageRead": "9223372036854775807"
+          }
+        ],
+        "history": [
+          {
+            "url": "https://mangadex.org/chapter/22222222-2222-4222-8222-222222222222",
+            "lastRead": "1740873600000",
+            "readDuration": "5400000"
+          },
+          {
+            "url": "/chapter/13-5",
+            "lastRead": "0",
+            "readDuration": "1000"
+          }
+        ],
+        "tracking": [
+          {
+            "syncId": 1,
+            "libraryId": "998",
+            "mediaId": "123",
+            "trackingUrl": "https://myanimelist.net/manga/123",
+            "score": 8,
+            "status": 2,
+            "finishedReadingDate": "1740787200000"
+          },
+          {
+            "syncId": 2,
+            "libraryId": "777",
+            "mediaId": "456",
+            "trackingUrl": "https://anilist.co/manga/456",
+            "score": 85,
+            "status": 6
+          },
+          {
+            "syncId": 3,
+            "libraryId": "111",
+            "mediaId": "789",
+            "score": 8,
+            "status": 1
+          },
+          {
+            "syncId": 7,
+            "libraryId": "0",
+            "mediaId": "123456789012",
+            "score": 8.7,
+            "status": 0
+          }
+        ]
+      },
+      {
+        "source": "0",
+        "url": "本地作品",
+        "title": "本地作品",
+        "categories": ["7"],
+        "chapters": [
+          {
+            "url": "本地作品/第1卷.cbz",
+            "name": "第1卷",
+            "read": true,
+            "bookmark": true,
+            "lastPageRead": "1",
+            "chapterNumber": 1
+          },
+          {
+            "url": "本地作品/第2卷",
+            "name": "第2卷",
+            "lastPageRead": "0",
+            "chapterNumber": 2
+          }
+        ]
+      },
+      {
+        "source": "-9223372036854775808",
+        "url": "/unlisted/1",
+        "title": "库外阅读记录",
+        "favorite": false,
+        "chapters": [
+          {
+            "url": "/read/1",
+            "name": "1",
+            "read": true,
+            "lastPageRead": "0"
+          }
+        ]
+      }
+    ],
+    "backupCategories": [
+      {
+        "name": "重读",
+        "order": "7",
+        "id": "999"
+      },
+      {
+        "name": "待整理",
+        "order": "9",
+        "id": "7"
+      }
+    ],
+    "backupSources": [
+      {
+        "name": "同名来源",
+        "sourceId": "9223372036854775807"
+      },
+      {
+        "name": "同名来源",
+        "sourceId": "-9223372036854775808"
+      },
+      {
+        "name": "本地",
+        "sourceId": "0"
+      }
+    ]
+  },
+  "old": {
+    "backupManga": [
+      {
+        "source": "9223372036854775807",
+        "url": "/manga/old",
+        "title": "旧备份",
+        "categories": ["3"],
+        "chapters": [
+          {
+            "url": "/old/1",
+            "name": "Chapter 1",
+            "read": true,
+            "bookmark": true,
+            "lastPageRead": "1",
+            "chapterNumber": 1
+          }
+        ],
+        "tracking": [
+          {
+            "syncId": 3,
+            "libraryId": "23",
+            "mediaIdInt": 789,
+            "score": 8,
+            "status": 1
+          },
+          {
+            "syncId": 2,
+            "libraryId": "24",
+            "mediaId": "456",
+            "score": 85,
+            "status": 2
+          }
+        ]
+      }
+    ],
+    "backupCategories": [
+      {
+        "name": "重读",
+        "order": "3"
+      }
+    ],
+    "backupSources": [
+      {
+        "name": "旧来源",
+        "sourceId": "9223372036854775807"
+      }
+    ]
+  },
+  "pages": ["10.png", "2.png", "1.png"],
+  "syntheticOnly": true
+}

@@ -1,0 +1,71 @@
+--- a/player/screenshot.c
++++ b/player/screenshot.c
+@@ -343,7 +343,7 @@
+ }
+ 
+ static struct mp_image *screenshot_get(struct MPContext *mpctx, int mode,
+-                                       bool high_depth)
++                                       bool high_depth, bool *software)
+ {
+     struct mp_image *image = NULL;
+     const struct image_writer_opts *imgopts = mpctx->opts->screenshot_image_opts;
+@@ -426,6 +426,8 @@
+     if (use_sw && mode != 0)
+         add_osd(mpctx, image, mode);
+     mp_image_params_guess_csp(&image->params);
++    if (software)
++        *software = use_sw;
+     return image;
+ }
+ 
+@@ -474,9 +476,10 @@
+ 
+ // mode is the same as in screenshot_get()
+ static struct mp_image *screenshot_get_rgb(struct MPContext *mpctx, int mode,
+-                                           bool high_depth, enum mp_imgfmt format)
+-{
+-    struct mp_image *mpi = screenshot_get(mpctx, mode, high_depth);
++                                           bool high_depth, enum mp_imgfmt format,
++                                           bool *software)
++{
++    struct mp_image *mpi = screenshot_get(mpctx, mode, high_depth, software);
+     if (!mpi)
+         return NULL;
+     struct mp_image *res = convert_image(mpi, format, mpctx->global,
+@@ -497,7 +500,7 @@
+     if (format)
+         opts.format = format;
+     bool high_depth = image_writer_high_depth(&opts);
+-    struct mp_image *image = screenshot_get(mpctx, mode, high_depth);
++    struct mp_image *image = screenshot_get(mpctx, mode, high_depth, NULL);
+     if (!image) {
+         mp_cmd_msg(cmd, MSGL_ERR, "Taking screenshot failed.");
+         cmd->success = false;
+@@ -541,7 +544,7 @@
+     struct image_writer_opts *opts = mpctx->opts->screenshot_image_opts;
+     bool high_depth = image_writer_high_depth(opts);
+ 
+-    struct mp_image *image = screenshot_get(mpctx, mode, high_depth);
++    struct mp_image *image = screenshot_get(mpctx, mode, high_depth, NULL);
+ 
+     if (image) {
+         char *filename = gen_fname(cmd, image_writer_file_ext(opts));
+@@ -572,8 +575,9 @@
+     mp_assert(idx >= 0 && idx <= 3);
+ 
+     bool high_depth = formats[idx] == IMGFMT_RGBA64;
++    bool software = false;
+     struct mp_image *img = screenshot_get_rgb(mpctx, cmd->args[0].v.i,
+-                                              high_depth, formats[idx]);
++                                              high_depth, formats[idx], &software);
+     if (!img) {
+         cmd->success = false;
+         return;
+@@ -584,6 +588,7 @@
+     node_map_add_int64(res, "h", img->h);
+     node_map_add_int64(res, "stride", img->stride[0]);
+     node_map_add_string(res, "format", format_names[idx]);
++    node_map_add_string(res, "source", software ? "software" : "vo");
+     struct mpv_byte_array *ba =
+         node_map_add(res, "data", MPV_FORMAT_BYTE_ARRAY)->u.ba;
+     *ba = (struct mpv_byte_array){

@@ -1,0 +1,161 @@
+{
+  "scope": "Anonymous, read-only directory research. API projections omit creator identities and full descriptions or member comments. Website counts were inspected on the public pages; no production website parser or account writes were exercised.",
+  "schemaReference": "https://raw.githubusercontent.com/bangumi/api/a7055f2dca7286d6963aaa7928345eeca6293e2b/open-api/v0.yaml",
+  "sourceFiles": {
+    "observedAt": "2026-10-13T09:09:24.105Z",
+    "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+    "records": [
+      {
+        "path": "internal/model/index.go",
+        "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/internal/model/index.go",
+        "status": 200,
+        "sha256": "4b9f18193439f8f0498a3644bfaded249cfc862b874ea7348a30447bc0ffc126",
+        "lines": 40
+      },
+      {
+        "path": "web/handler/index/index.go",
+        "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/index/index.go",
+        "status": 200,
+        "sha256": "03bf49462451c6a031911ed276b67a26e86739bfcf7757a17397a2fd0011e002",
+        "lines": 302
+      },
+      {
+        "path": "web/handler/index/subject.go",
+        "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/index/subject.go",
+        "status": 200,
+        "sha256": "ee50996dd29ceb987db547d9913ae1fe35be8e9966c94aec157c7924121a4d2e",
+        "lines": 94
+      },
+      {
+        "path": "web/res/index.go",
+        "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/res/index.go",
+        "status": 200,
+        "sha256": "fac1293f1059a7b0dcf29c0d009af2d3ef09f51c88c8885a335619ce115e1bf9",
+        "lines": 58
+      },
+      {
+        "path": "internal/auth/rule_nsfw.go",
+        "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/internal/auth/rule_nsfw.go",
+        "status": 200,
+        "sha256": "22122070ea5414b81c0c0e556e1175915f29b99597d805df7700d751268600bb",
+        "lines": 36
+      }
+    ]
+  },
+  "requests": [
+    {
+      "observedAt": "2026-10-13T09:10:20.649Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/indices/49551"
+      },
+      "status": 200,
+      "responseProjection": {
+        "keys": [
+          "created_at",
+          "updated_at",
+          "creator",
+          "title",
+          "desc",
+          "total",
+          "id",
+          "stat",
+          "nsfw",
+          "ban"
+        ],
+        "id": 49551,
+        "title": "2023 个人年度单回",
+        "total": 13,
+        "nsfw": false,
+        "descriptionLength": 17,
+        "descriptionSha256": "8bde20d1570626aa3f5930882ae7e75f040d6c2b75fe2d8add0d9528232d62a5"
+      }
+    },
+    {
+      "observedAt": "2026-10-13T09:10:20.681Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/indices/49551/subjects?limit=2&offset=0"
+      },
+      "status": 200,
+      "responseProjection": {
+        "keys": ["data", "total", "limit", "offset"],
+        "total": 0,
+        "limit": 2,
+        "offset": 0,
+        "items": []
+      }
+    },
+    {
+      "observedAt": "2026-10-13T09:10:20.682Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/indices/63502"
+      },
+      "status": 200,
+      "responseProjection": {
+        "keys": [
+          "created_at",
+          "updated_at",
+          "creator",
+          "title",
+          "desc",
+          "total",
+          "id",
+          "stat",
+          "nsfw",
+          "ban"
+        ],
+        "id": 63502,
+        "title": "大亮额头",
+        "total": 39,
+        "nsfw": false,
+        "descriptionLength": 63,
+        "descriptionSha256": "55307e8a7e7201a95a021e7997b92a79a2ad9900252c2d39168be6aacafabc06"
+      }
+    },
+    {
+      "observedAt": "2026-10-13T09:10:20.682Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/indices/63502/subjects?limit=2&offset=0"
+      },
+      "status": 200,
+      "responseProjection": {
+        "keys": ["data", "total", "limit", "offset"],
+        "total": 0,
+        "limit": 2,
+        "offset": 0,
+        "items": []
+      }
+    }
+  ],
+  "websiteObservations": [
+    {
+      "url": "https://bgm.tv/index/49551",
+      "observedOn": "2026-10-13",
+      "totalShown": 13,
+      "categoryCounts": {
+        "episodes": 13
+      },
+      "memberResource": "episode",
+      "parentSubjectLinksPresent": true
+    },
+    {
+      "url": "https://bgm.tv/index/63502",
+      "observedOn": "2026-10-13",
+      "totalShown": 39,
+      "categoryCounts": {
+        "characters": 39
+      },
+      "memberResource": "character"
+    }
+  ],
+  "conclusions": {
+    "emptySubjectListDoesNotEstablishEmptyDirectory": true,
+    "websiteMemberResourcesExtendBeyondSubjects": true,
+    "productionParserVerified": false,
+    "authenticatedAccessVerified": false,
+    "remoteWritesPerformed": false
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "recordedAt": "2026-10-19T11:43:13.798305+00:00",
+  "expat": {
+    "version": "2.9.0",
+    "commit": "e127b43ac1f514e0b320508893aa338ecd5e72be",
+    "candidateOnly": true
+  },
+  "libmobi": {
+    "commit": "906274205c11944b628da1c553b255acb1af7c55",
+    "usage": "fixtures and independent expected hashes; library not adopted"
+  },
+  "inputs": [
+    {
+      "name": "expat.tar.gz",
+      "source": "https://codeload.github.com/libexpat/libexpat/tar.gz/e127b43ac1f514e0b320508893aa338ecd5e72be",
+      "bytes": 8485257,
+      "sha256": "28762fc7654966a4d8f9ed399db766913c0ffb569c980709538fdf2d7710dad5"
+    },
+    {
+      "name": "mobi/sample-cp1252.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-cp1252.mobi",
+      "bytes": 108476,
+      "sha256": "e77aa8f99d65f12bc7b5d71f272a2a4a8f36fe6d5c00e9b95c8a926b145ad088"
+    },
+    {
+      "name": "mobi/sample-ncx.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-ncx.mobi",
+      "bytes": 28999,
+      "sha256": "bb33217f3369d8ca6c5a373ca8e21a151be5494f5de6623aa9e7f42fb5fed743"
+    },
+    {
+      "name": "mobi/sample-unicode-huffdic.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-unicode-huffdic.mobi",
+      "bytes": 484776,
+      "sha256": "560dda58429878a64f73381ffddfcf1a59809e7c669a5222666257df8976a68f"
+    },
+    {
+      "name": "mobi/sample-unicode-uncompressed.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-unicode-uncompressed.mobi",
+      "bytes": 658770,
+      "sha256": "9419834c41bf2e7e9ccb78a870e679d56dc4a0a380c5afae3168a2fb5827412d"
+    },
+    {
+      "name": "mobi/sample-multimedia.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-multimedia.mobi",
+      "bytes": 565041,
+      "sha256": "a301cce8187f1f1ea9562196c46328ca75585da280d4b742827cebd4698697c9"
+    },
+    {
+      "name": "mobi/sample-obfuscated-fonts.mobi",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/samples/sample-obfuscated-fonts.mobi",
+      "bytes": 84412,
+      "sha256": "34fc67043eeeaa6563481d6ea2fea1b5349cb73e459a1f10e3aa09186f56302e"
+    },
+    {
+      "name": "libmobi/tests/test.sh.in",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/test.sh.in",
+      "bytes": 5455,
+      "sha256": "e23f4cb1f55a6805d85167394e7885c5fa72a6757ae1726e65d8a72b7ba8a331"
+    },
+    {
+      "name": "libmobi/COPYING",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/COPYING",
+      "bytes": 7651,
+      "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+    },
+    {
+      "name": "libmobi/README.md",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/README.md",
+      "bytes": 5074,
+      "sha256": "fe44fd5000a525f147744c7f32845e958293f7d2da198f0e7cfbe6be44e3316b"
+    },
+    {
+      "name": "libmobi/tests/md5/1cddff555949348d7ca76c367e01b90a_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/1cddff555949348d7ca76c367e01b90a_markup.md5",
+      "bytes": 303,
+      "sha256": "bf0e0cfbe8f655f3a0e0768083e8a15a521d938dc49910bbc8f20ec3f48c18fb"
+    },
+    {
+      "name": "libmobi/tests/md5/1cddff555949348d7ca76c367e01b90a_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/1cddff555949348d7ca76c367e01b90a_rawml.md5",
+      "bytes": 33,
+      "sha256": "5efac335484660b9ab52935ae3dfd9d329995de36cee33c17ad12ec95b0366b6"
+    },
+    {
+      "name": "libmobi/tests/md5/25f2ef9bd45ffa68e8eaf6ecad0ca5a4_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/25f2ef9bd45ffa68e8eaf6ecad0ca5a4_markup.md5",
+      "bytes": 303,
+      "sha256": "4c2aa1ae7e232b572838ca283e6b88f2bb6f3437f0bdd9224e8fb479683a5729"
+    },
+    {
+      "name": "libmobi/tests/md5/25f2ef9bd45ffa68e8eaf6ecad0ca5a4_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/25f2ef9bd45ffa68e8eaf6ecad0ca5a4_rawml.md5",
+      "bytes": 33,
+      "sha256": "939867cdcd69ae362d8525f2dd309f023e5b6cbf1ecf4a6d512af323ff1c77a8"
+    },
+    {
+      "name": "libmobi/tests/md5/29876458364495f42187000189b6b15b_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/29876458364495f42187000189b6b15b_markup.md5",
+      "bytes": 246,
+      "sha256": "696c526e0d4fd68e9aaf69c32e59543ba793233945f01524c829bdfc5af6578b"
+    },
+    {
+      "name": "libmobi/tests/md5/29876458364495f42187000189b6b15b_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/29876458364495f42187000189b6b15b_rawml.md5",
+      "bytes": 33,
+      "sha256": "71db2dde33db650d9a12f6a8dbb6e76f816595527eacda780c218cc04ca08e30"
+    },
+    {
+      "name": "libmobi/tests/md5/31c42c70c3503fde5353c89ffa4e67ea_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/31c42c70c3503fde5353c89ffa4e67ea_markup.md5",
+      "bytes": 405,
+      "sha256": "f6863586c86a63aec617a996528d82d1e4b62212f19584a3ea4e4d8dc484e15a"
+    },
+    {
+      "name": "libmobi/tests/md5/31c42c70c3503fde5353c89ffa4e67ea_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/31c42c70c3503fde5353c89ffa4e67ea_rawml.md5",
+      "bytes": 33,
+      "sha256": "a160cb683f3d802925d7e38ba84b758ca212212de54ff4d177f3d4b8f50d159e"
+    },
+    {
+      "name": "libmobi/tests/md5/3248d6140918d441d8050861a05a85cb_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/3248d6140918d441d8050861a05a85cb_markup.md5",
+      "bytes": 201,
+      "sha256": "691e6700402eb15d79578cb899c6b1d50091c2e82c76911eb42390f230f40405"
+    },
+    {
+      "name": "libmobi/tests/md5/3248d6140918d441d8050861a05a85cb_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/3248d6140918d441d8050861a05a85cb_rawml.md5",
+      "bytes": 33,
+      "sha256": "6afaa17382625f0acb552d5a8c7bc283ec1e85bb2156248b8ede0a274e728f9d"
+    },
+    {
+      "name": "libmobi/tests/md5/520361f44c43edfae98f44cbf57b3fce_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/520361f44c43edfae98f44cbf57b3fce_markup.md5",
+      "bytes": 303,
+      "sha256": "4c2aa1ae7e232b572838ca283e6b88f2bb6f3437f0bdd9224e8fb479683a5729"
+    },
+    {
+      "name": "libmobi/tests/md5/520361f44c43edfae98f44cbf57b3fce_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/520361f44c43edfae98f44cbf57b3fce_rawml.md5",
+      "bytes": 33,
+      "sha256": "939867cdcd69ae362d8525f2dd309f023e5b6cbf1ecf4a6d512af323ff1c77a8"
+    },
+    {
+      "name": "libmobi/tests/md5/53eac2194ef1addee323d2a7d149ddff_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/53eac2194ef1addee323d2a7d149ddff_markup.md5",
+      "bytes": 481551,
+      "sha256": "d02a5d6250ecefab73e270c677d6a4c4361c48f7af3e8252d351e65e50122778"
+    },
+    {
+      "name": "libmobi/tests/md5/53eac2194ef1addee323d2a7d149ddff_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/53eac2194ef1addee323d2a7d149ddff_rawml.md5",
+      "bytes": 33,
+      "sha256": "bdb7abd79fcb8c2ea102cd6121e547af2c8a508a766480e03402cc0e011836db"
+    },
+    {
+      "name": "libmobi/tests/md5/5601259794edfe7e62283c6672c7fda0_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/5601259794edfe7e62283c6672c7fda0_markup.md5",
+      "bytes": 295,
+      "sha256": "55570f7c3c7d31d3bdbcea6450cd82905712e4bf2c0200b377a692edf09fb4dc"
+    },
+    {
+      "name": "libmobi/tests/md5/5601259794edfe7e62283c6672c7fda0_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/5601259794edfe7e62283c6672c7fda0_rawml.md5",
+      "bytes": 33,
+      "sha256": "f34debbcf441a10c0927a31bd0704581d29975cf91e2edabb87cfdfe662f532e"
+    },
+    {
+      "name": "libmobi/tests/md5/565e31312a70c5129f6674d540c46561_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/565e31312a70c5129f6674d540c46561_markup.md5",
+      "bytes": 351,
+      "sha256": "b56a1a988b7f9786e2b568f9e36bd8dfa1dcf10059de6cb25ec1a6784804e3f2"
+    },
+    {
+      "name": "libmobi/tests/md5/565e31312a70c5129f6674d540c46561_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/565e31312a70c5129f6674d540c46561_rawml.md5",
+      "bytes": 33,
+      "sha256": "f8c319fe6a5f5435d69c247562d0f3bed2db254a2fa25457da76f8b224473e82"
+    },
+    {
+      "name": "libmobi/tests/md5/6798753f94feba073622f02c8c88e713_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/6798753f94feba073622f02c8c88e713_markup.md5",
+      "bytes": 150,
+      "sha256": "2f0f8328515a7af20270336133b9add0e334b433d6785487f7c4c8e25e4916a8"
+    },
+    {
+      "name": "libmobi/tests/md5/6798753f94feba073622f02c8c88e713_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/6798753f94feba073622f02c8c88e713_rawml.md5",
+      "bytes": 33,
+      "sha256": "89ac2aa8c4cd3257e1be7cd4e98d7a7fa5a35722f49f4671de26f6cc7cfc8b6a"
+    },
+    {
+      "name": "libmobi/tests/md5/7c1d5645d7f19fb25ca84e533671d3ac_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/7c1d5645d7f19fb25ca84e533671d3ac_markup.md5",
+      "bytes": 456,
+      "sha256": "702df8e06e756d93e0085599f63ec6451c07ca10da7270b17b8cbbe87e28d69c"
+    },
+    {
+      "name": "libmobi/tests/md5/7c1d5645d7f19fb25ca84e533671d3ac_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/7c1d5645d7f19fb25ca84e533671d3ac_rawml.md5",
+      "bytes": 33,
+      "sha256": "5ad5dfab666aad4baa45bc6e0e019c05010d2097261f42540dbea5096feec851"
+    },
+    {
+      "name": "libmobi/tests/md5/83bdd0740a44ffb24a4b946889b6e7fb_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/83bdd0740a44ffb24a4b946889b6e7fb_markup.md5",
+      "bytes": 251,
+      "sha256": "3c055d6531a95483a5daf6ae63dad26ab8d821750ba5babe193fe4a8b2895c83"
+    },
+    {
+      "name": "libmobi/tests/md5/83bdd0740a44ffb24a4b946889b6e7fb_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/83bdd0740a44ffb24a4b946889b6e7fb_rawml.md5",
+      "bytes": 33,
+      "sha256": "357d7547fdb0c2f735f0dbea1be799231630a9a42fa53256f62e649c5a79a104"
+    },
+    {
+      "name": "libmobi/tests/md5/8c19552d979685f3ada9b751d0f8ec56_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/8c19552d979685f3ada9b751d0f8ec56_markup.md5",
+      "bytes": 201,
+      "sha256": "0971f67f02bbec1e489f1f894042fb60ba8525a9438960d5a168899b291d21b2"
+    },
+    {
+      "name": "libmobi/tests/md5/8c19552d979685f3ada9b751d0f8ec56_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/8c19552d979685f3ada9b751d0f8ec56_rawml.md5",
+      "bytes": 33,
+      "sha256": "a6ff54c45e962f8a0a1e6d73cf9bc89a276076c9754a9b77e8ef4ba5dbf671ca"
+    },
+    {
+      "name": "libmobi/tests/md5/c19b31e6351f3e2ef7b48795ee980ee7_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/c19b31e6351f3e2ef7b48795ee980ee7_markup.md5",
+      "bytes": 351,
+      "sha256": "f111319fc057b8891983b47c04bfd0e4176dea8e2491bf002705b583ce08efe8"
+    },
+    {
+      "name": "libmobi/tests/md5/c19b31e6351f3e2ef7b48795ee980ee7_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/c19b31e6351f3e2ef7b48795ee980ee7_rawml.md5",
+      "bytes": 33,
+      "sha256": "2bbb77763afbfd63ed9c0a7e0869069933245f5d98ac65ae317e371fb42ad347"
+    },
+    {
+      "name": "libmobi/tests/md5/f31eb84c62beac0ac14afd408b13e466_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/f31eb84c62beac0ac14afd408b13e466_markup.md5",
+      "bytes": 150,
+      "sha256": "6c7890bf05b80e4740ee099d59525348c11fdcafd71e6fd2aeaf20d4c0b8d638"
+    },
+    {
+      "name": "libmobi/tests/md5/f31eb84c62beac0ac14afd408b13e466_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/f31eb84c62beac0ac14afd408b13e466_rawml.md5",
+      "bytes": 33,
+      "sha256": "eb25d006dd3d35c2bef435948daf95c6a021632fcbda57827ce1a9446f0f9869"
+    },
+    {
+      "name": "libmobi/tests/md5/fbeb1b0c399840f6be14f358eb629ba0_markup.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/fbeb1b0c399840f6be14f358eb629ba0_markup.md5",
+      "bytes": 453,
+      "sha256": "ffa1d38200fdaf9ced93a6222a3ce6748ca3e689f20541864e4d60d89d12030e"
+    },
+    {
+      "name": "libmobi/tests/md5/fbeb1b0c399840f6be14f358eb629ba0_rawml.md5",
+      "source": "https://raw.githubusercontent.com/bfabiszewski/libmobi/906274205c11944b628da1c553b255acb1af7c55/tests/md5/fbeb1b0c399840f6be14f358eb629ba0_rawml.md5",
+      "bytes": 33,
+      "sha256": "336de8b9c535a9ee848249593e9b04e7ec9fd8091d798fe69adf5c85c95a5945"
+    },
+    {
+      "name": "sources/expat-api.html",
+      "source": "https://libexpat.github.io/doc/api/latest/",
+      "bytes": 162570,
+      "sha256": "15775170b806b255475a0e7e9ca8b39b95d1f581682fcd17ca91a71663b899b5"
+    },
+    {
+      "name": "sources/epub-cfi.html",
+      "source": "https://w3c.github.io/epub-specs/epub33/epubcfi/",
+      "bytes": 60842,
+      "sha256": "fab2c47de88a1bcea1a25979e45e963dd0275693ca7e663a90f75a83fb9d03e9"
+    },
+    {
+      "name": "sources/epub-reading-systems.html",
+      "source": "https://www.w3.org/TR/epub-rs-33/",
+      "bytes": 512841,
+      "sha256": "2e8d4400d1cce9080e729df8292d8795b4d76cb1a20be2387a263bcfbcd7ca9e"
+    },
+    {
+      "name": "sources/epub.html",
+      "source": "https://www.w3.org/TR/epub-33/",
+      "bytes": 1514545,
+      "sha256": "f927cf3182598c552037445837b73faee346f97d4a396059440830e49e737d99"
+    },
+    {
+      "name": "sources/rar5.html",
+      "source": "https://www.rarlab.com/technote.htm",
+      "bytes": 33179,
+      "sha256": "e18581d50673c34e83d14436ba4d14caf15a9e85d74a12024771f71753560f06"
+    }
+  ]
+}

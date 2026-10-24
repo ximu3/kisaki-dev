@@ -1,0 +1,24 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
+    "types": ["node", "vite/client"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "paths": {
+      "@native": ["../../native/node/index.ts"]
+    }
+  },
+  "include": [
+    "../../tests/**/*.ts",
+    "../../tests/**/*.tsx",
+    "../../src/shared/**/*.ts",
+    "../../src/renderer/environment.d.ts",
+    "../../src/**/*.test.ts",
+    "../../src/**/*.test.tsx",
+    "../../native/node/**/*.test.ts",
+    "../../tools/**/*.test.ts"
+  ]
+}

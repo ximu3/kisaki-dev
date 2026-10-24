@@ -1,0 +1,520 @@
+{
+  "fixtures/detached/missing.sdr/metadata.epub.lua": {
+    "$lua": [
+      ["doc_path", "/old/books/missing.epub"],
+      [
+        "doc_props",
+        {
+          "$lua": [
+            ["title", "没有随附文件的书"],
+            ["authors", "丁作者"]
+          ]
+        }
+      ],
+      [
+        "summary",
+        {
+          "$lua": [
+            ["status", "complete"],
+            ["rating", 5],
+            ["note", "文件缺失不应丢弃书评。"]
+          ]
+        }
+      ],
+      [
+        "annotations",
+        {
+          "$lua": []
+        }
+      ]
+    ]
+  },
+  "fixtures/library/comic-book.sdr/metadata.cbz.lua": {
+    "$lua": [
+      ["doc_path", "/old/books/comic-book.cbz"],
+      ["partial_md5_checksum", "9fb8983c0cf5fbf6a661033ecacb2b84"],
+      [
+        "doc_props",
+        {
+          "$lua": [
+            ["title", "漫游图卷"],
+            ["authors", "丙画师"]
+          ]
+        }
+      ],
+      [
+        "summary",
+        {
+          "$lua": [
+            ["status", "abandoned"],
+            ["rating", 1]
+          ]
+        }
+      ],
+      ["last_page", 4],
+      [
+        "page_positions",
+        {
+          "$lua": [[4, 0.5]]
+        }
+      ],
+      [
+        "annotations",
+        {
+          "$lua": [
+            [
+              1,
+              {
+                "$lua": [
+                  ["page", 4],
+                  ["pageno", 4],
+                  ["text", "第十张图"],
+                  ["datetime", "2026-09-05 12:00:00"]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  },
+  "fixtures/library/novel.sdr/metadata.epub.lua": {
+    "$lua": [
+      ["doc_path", "/old/books/novel.epub"],
+      ["partial_md5_checksum", "488e8beab1410974b8f7d05aa3476196"],
+      [
+        "doc_props",
+        {
+          "$lua": [
+            ["title", "星光旅记"],
+            ["authors", "丁作者"]
+          ]
+        }
+      ],
+      [
+        "summary",
+        {
+          "$lua": [["status", "reading"]]
+        }
+      ],
+      ["percent_finished", 1],
+      ["last_xpointer", "/body/DocFragment[2]/body/p[1].4"],
+      ["cre_dom_version", 20240101],
+      [
+        "annotations",
+        {
+          "$lua": [
+            [
+              1,
+              {
+                "$lua": [
+                  ["page", "/body/DocFragment[2]/body/p[1].0"],
+                  ["pos0", "/body/DocFragment[2]/body/p[1].0"],
+                  ["pos1", "/body/DocFragment[2]/body/p[1].4"],
+                  ["drawer", "lighten"],
+                  ["text", "星光🌙"],
+                  ["note", "原文摘录仍可保留。"],
+                  ["datetime", "2026-09-06 12:00:00"]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  },
+  "fixtures/library/pdf-book.sdr/custom_metadata.lua": {
+    "$lua": [
+      [
+        "custom_props",
+        {
+          "$lua": [
+            ["title", "星海纪事·修订名"],
+            ["description", ""],
+            ["authors", "甲作者\n乙作者"]
+          ]
+        }
+      ]
+    ]
+  },
+  "fixtures/library/pdf-book.sdr/metadata.pdf.lua": {
+    "$lua": [
+      ["doc_path", "/old/books/pdf-book.pdf"],
+      ["partial_md5_checksum", "14792ed1dd20cbc78e0cff1a2113b50d"],
+      [
+        "doc_props",
+        {
+          "$lua": [
+            ["title", "星海纪事"],
+            ["authors", "甲作者\n乙作者"],
+            ["description", "原始文件简介"],
+            ["keywords", "太空\n旅程"],
+            ["language", "zh"],
+            ["publisher", "虚构出版社"],
+            ["series", "合辑"]
+          ]
+        }
+      ],
+      [
+        "summary",
+        {
+          "$lua": [
+            ["status", "complete"],
+            ["rating", 4],
+            ["note", "后来补写的 *书评*\n保留原文。"],
+            ["modified", "2026-10-12"]
+          ]
+        }
+      ],
+      ["last_page", 3],
+      [
+        "page_positions",
+        {
+          "$lua": [[3, 0]]
+        }
+      ],
+      ["percent_finished", 1],
+      [
+        "annotations",
+        {
+          "$lua": [
+            [
+              1,
+              {
+                "$lua": [
+                  ["page", 1],
+                  ["pageno", 1],
+                  ["pageref", "i"],
+                  ["drawer", "lighten"],
+                  ["color", "yellow"],
+                  ["text", "第一行\n第二行"],
+                  ["note", "保留 *字面星号*"],
+                  ["datetime", "2026-09-01 12:00:00"],
+                  [
+                    "pos0",
+                    {
+                      "$lua": [["page", 1]]
+                    }
+                  ],
+                  [
+                    "pos1",
+                    {
+                      "$lua": [["page", 1]]
+                    }
+                  ],
+                  [
+                    "pboxes",
+                    {
+                      "$lua": [
+                        [
+                          1,
+                          {
+                            "$lua": [
+                              ["x", 20],
+                              ["y", 25],
+                              ["w", 91],
+                              ["h", 16]
+                            ]
+                          }
+                        ],
+                        [
+                          2,
+                          {
+                            "$lua": [
+                              ["x", 20],
+                              ["y", 50],
+                              ["w", 111],
+                              ["h", 16]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              2,
+              {
+                "$lua": [
+                  ["page", 2],
+                  ["drawer", "underscore"],
+                  ["text", "跨页摘录"],
+                  ["datetime", "2026-09-02 12:00:00"],
+                  [
+                    "pos0",
+                    {
+                      "$lua": [["page", 2]]
+                    }
+                  ],
+                  [
+                    "pos1",
+                    {
+                      "$lua": [["page", 3]]
+                    }
+                  ],
+                  [
+                    "ext",
+                    {
+                      "$lua": [
+                        [
+                          2,
+                          {
+                            "$lua": [
+                              [
+                                "pos0",
+                                {
+                                  "$lua": [["page", 2]]
+                                }
+                              ],
+                              [
+                                "pos1",
+                                {
+                                  "$lua": [["page", 2]]
+                                }
+                              ],
+                              [
+                                "pboxes",
+                                {
+                                  "$lua": [
+                                    [
+                                      1,
+                                      {
+                                        "$lua": [
+                                          ["x", 25],
+                                          ["y", 20],
+                                          ["w", 16],
+                                          ["h", 91]
+                                        ]
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          3,
+                          {
+                            "$lua": [
+                              [
+                                "pos0",
+                                {
+                                  "$lua": [["page", 3]]
+                                }
+                              ],
+                              [
+                                "pos1",
+                                {
+                                  "$lua": [["page", 3]]
+                                }
+                              ],
+                              [
+                                "pboxes",
+                                {
+                                  "$lua": [
+                                    [
+                                      1,
+                                      {
+                                        "$lua": [
+                                          ["x", 50],
+                                          ["y", 40],
+                                          ["w", 31],
+                                          ["h", 181]
+                                        ]
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              3,
+              {
+                "$lua": [
+                  ["page", 2],
+                  ["pageno", 99],
+                  ["pageref", "封二"],
+                  ["text", "页书签"],
+                  ["note", "从物理页定位"],
+                  ["datetime", "2026-09-03 12:00:00"]
+                ]
+              }
+            ],
+            [
+              4,
+              {
+                "$lua": [
+                  ["page", 1],
+                  ["drawer", "lighten"],
+                  ["text", ""],
+                  ["note", "区域批注"],
+                  ["datetime", "2026-09-04 12:00:00"],
+                  [
+                    "pos0",
+                    {
+                      "$lua": [
+                        ["page", 1],
+                        ["x", 40],
+                        ["y", 50],
+                        ["zoom", 2]
+                      ]
+                    }
+                  ],
+                  [
+                    "pos1",
+                    {
+                      "$lua": [
+                        ["page", 1],
+                        ["x", 220],
+                        ["y", 80],
+                        ["zoom", 2]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      [
+        "annotations_rolling",
+        {
+          "$lua": [
+            [
+              1,
+              {
+                "$lua": [
+                  ["page", "/body/DocFragment[1]/body/p[1].0"],
+                  ["text", "Inactive provider backup"]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      [
+        "highlight",
+        {
+          "$lua": [["legacy", "Not another current annotation set"]]
+        }
+      ]
+    ]
+  },
+  "fixtures/settings/collection.lua": {
+    "$lua": [
+      [
+        "favorites",
+        {
+          "$lua": [
+            [
+              "settings",
+              {
+                "$lua": [["order", 1]]
+              }
+            ],
+            [
+              1,
+              {
+                "$lua": [
+                  ["file", "/old/books/pdf-book.pdf"],
+                  ["order", 2]
+                ]
+              }
+            ],
+            [
+              2,
+              {
+                "$lua": [
+                  ["file", "/old/books/novel.epub"],
+                  ["order", 1]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      [
+        "旅途",
+        {
+          "$lua": [
+            [
+              "settings",
+              {
+                "$lua": [
+                  ["order", 2],
+                  ["default", true],
+                  [
+                    "folders",
+                    {
+                      "$lua": [
+                        [
+                          "/not-authorized",
+                          {
+                            "$lua": [["subfolders", true]]
+                          }
+                        ]
+                      ]
+                    }
+                  ],
+                  ["filter", "unread"]
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "$lua": [
+                  ["file", "/old/books/pdf-book.pdf"],
+                  ["order", 2]
+                ]
+              }
+            ],
+            [
+              2,
+              {
+                "$lua": [
+                  ["file", "/old/books/comic-book.cbz"],
+                  ["order", 1]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      [
+        "按书名排列",
+        {
+          "$lua": [
+            [
+              "settings",
+              {
+                "$lua": [
+                  ["order", 3],
+                  ["collate", "strcoll"]
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "$lua": [["file", "/old/books/novel.epub"]]
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  }
+}

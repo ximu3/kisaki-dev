@@ -1,0 +1,87 @@
+{
+  "checkedOn": "2026-10-12",
+  "purpose": "Authenticated read-only inspection of the user-provided VNDB token. Only sanitized summaries are retained.",
+  "authentication": {
+    "httpStatus": 200,
+    "accountIdentityShapeValid": true,
+    "permissions": ["listread", "listwrite"],
+    "tokenPersisted": false,
+    "accountIdPersisted": false,
+    "usernamePersisted": false
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "endpoint": "https://api.vndb.org/kana/authinfo",
+      "httpStatus": 200,
+      "retainedResponse": "Identity shape and permissions only; identity values omitted."
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.vndb.org/kana/ulist_labels",
+      "httpStatus": 200,
+      "retainedResponse": "Counts and structural observations only; label names omitted."
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://api.vndb.org/kana/ulist",
+      "request": {
+        "user": "<authenticated account; redacted>",
+        "fields": "vote,started,finished,labels.id",
+        "sort": "id",
+        "reverse": false,
+        "results": 100,
+        "page": 1
+      },
+      "httpStatus": 200,
+      "responseSummary": {
+        "returned": 0,
+        "more": false
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://api.vndb.org/kana/ulist",
+      "request": {
+        "user": "<authenticated account; redacted>",
+        "filters": [],
+        "fields": "",
+        "sort": "id",
+        "reverse": false,
+        "results": 1,
+        "page": 1,
+        "count": true
+      },
+      "httpStatus": 200,
+      "responseSummary": {
+        "returned": 0,
+        "count": 0,
+        "more": false
+      }
+    }
+  ],
+  "labels": {
+    "returnedDefinitionCount": 8,
+    "privateDefinitionCount": 1,
+    "virtualNoLabelPresent": true,
+    "privateVirtualNoLabel": true,
+    "privateNonvirtualLabelCount": 0,
+    "customLabelCount": 0,
+    "arbitraryUserLabelNamesRetained": false
+  },
+  "verified": [
+    "The supplied token authenticates and reports the required read permission.",
+    "Authenticated label definitions include the private virtual no-label definition with ID 0.",
+    "The selected record fields are accepted by the API.",
+    "The account currently returns an empty API list, independently confirmed by a minimal-field count query."
+  ],
+  "notExercised": [
+    "Actual status, rating, or date values on an existing record.",
+    "Custom labels or nonvirtual private labels and private list records.",
+    "Continuation to a second page or ID-filtered synchronization batches.",
+    "Empty-list causes outside the API response, including website-only placeholders for deleted VNs.",
+    "Remote writes, cleanup, round-trip persistence, visibility changes, concurrent changes, or the implemented extension runtime."
+  ],
+  "remoteWrites": 0,
+  "privateRecordBodiesPersisted": false
+}

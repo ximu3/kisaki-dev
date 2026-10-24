@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-10-21T08:18:02.674Z",
+  "node": "v24.22.0",
+  "undici": "7.29.1",
+  "sourceReceiptSha256": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+  "nodeExeSha256": "ba93f9a70bd86fce3ebbb39ec758501458453467aa92a34a0a3602d1e3fc2b9c",
+  "scriptSha256": "f9347621baedafc23648c170233db0bef319dce117ae31c8581926818e996a4e",
+  "observations": [
+    {
+      "case": "misdirected-request",
+      "fetchRequests": 2,
+      "status": 421,
+      "wireBytes": 25,
+      "decodedBytes": 25,
+      "completed": true,
+      "responseDestroyed": true,
+      "decoderDestroyed": null,
+      "nativeRequests": 1
+    },
+    {
+      "case": "redirect",
+      "status": 307,
+      "wireBytes": 0,
+      "decodedBytes": 0,
+      "completed": true,
+      "responseDestroyed": true,
+      "decoderDestroyed": null,
+      "nativeRequests": 1,
+      "targetRequests": 0
+    },
+    {
+      "case": "compressed-response",
+      "limitBytes": 16384,
+      "status": 200,
+      "wireBytes": 306,
+      "decodedBytes": 32768,
+      "completed": false,
+      "responseDestroyed": true,
+      "decoderDestroyed": true,
+      "nativeRequests": 1,
+      "bodyParsed": false
+    },
+    {
+      "case": "response-deadline",
+      "deadlineMs": 100,
+      "status": 200,
+      "wireBytes": 0,
+      "decodedBytes": 0,
+      "completed": false,
+      "responseDestroyed": true,
+      "decoderDestroyed": null,
+      "nativeErrorCode": "ECONNRESET",
+      "deadlineAborted": true,
+      "nativeRequests": 1,
+      "upstreamClosedBeforeEnd": true
+    }
+  ],
+  "listenersClosed": 2,
+  "httpsExecuted": false,
+  "realProviderRequests": false,
+  "realCredentialsUsed": false,
+  "productionRelayImplemented": false
+}

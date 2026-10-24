@@ -1,0 +1,1824 @@
+{
+  "checkedOn": "2026-10-16",
+  "status": "design-confirmed-runtime-unverified",
+  "sources": ["SteamGridDB", "Fanart.tv"],
+  "startedAt": "2026-10-16T06:09:47.006Z",
+  "finishedAt": "2026-10-16T06:44:49.940Z",
+  "verification": {
+    "authenticatedApiReads": true,
+    "apiRequestCount": 31,
+    "apiMethods": ["GET"],
+    "remoteWritesPerformed": false,
+    "credentialsPersisted": false,
+    "personalCollectionAccessPerformed": false,
+    "sourceApiMetadataReadOnly": true,
+    "imageHeadRequests": 13,
+    "boundedImagePrefixRequests": 5,
+    "fullImageDecodeTested": false,
+    "icoConversionImplemented": false,
+    "videoPreviewImplemented": false,
+    "extensionRuntimeTested": false
+  },
+  "methods": {
+    "maximumConcurrentReads": 3,
+    "requestTimeoutMs": 20000,
+    "redirects": "rejected",
+    "apiCredentials": "Sent only to the respective API origin. Never sent to image CDNs.",
+    "bodyRetention": "Only selected public fields, counts and request outcomes are saved. Raw source bodies and credential values are not included."
+  },
+  "publicDocumentRequests": [
+    {
+      "id": "steamgriddb-openapi",
+      "url": "https://www.steamgriddb.com/static/openapi.yml",
+      "status": 200,
+      "checkedAt": "2026-10-16T06:05:00.375Z",
+      "bytes": 59095,
+      "sha256": "7d390f6e6f52b0eb048cafc2bfe230039d5852c6254a31a78a420a7a2ea5631d"
+    },
+    {
+      "id": "fanart-api-html",
+      "url": "https://api.fanart.tv/",
+      "status": 403,
+      "checkedAt": "2026-10-16T06:05:01.169Z",
+      "bytes": 5286,
+      "sha256": "6fc987f7ea2c76b5aa72bd815f7e5e9fb85e8d25629b43e376b7f3d7b4286c36"
+    },
+    {
+      "id": "fanart-repo-tree",
+      "url": "https://api.github.com/repos/fanart-tv/fanart.tv-api/git/trees/master?recursive=1",
+      "status": 404,
+      "checkedAt": "2026-10-16T06:05:01.695Z",
+      "bytes": 110,
+      "sha256": "8c177a38af7c68d455e9554231def022cc2bcf62c1d3dab3626aaf5c319a5e04"
+    },
+    {
+      "id": "fanart-repo-tree-main",
+      "url": "https://api.github.com/repos/fanart-tv/fanart.tv-api/git/trees/main?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-16T06:07:26.631Z",
+      "bytes": 4939,
+      "sha256": "0814b650e283263665e0fed10394bd6970e9104a4b98e65bdaa4f1938ce48e21"
+    },
+    {
+      "id": "fanart-client-readme",
+      "url": "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/README.md",
+      "status": 200,
+      "checkedAt": "2026-10-16T06:07:27.271Z",
+      "bytes": 14169,
+      "sha256": "b73f2aaaaf32698f6a1a0ec9fde4f7c845e7aa3777de7aded7bd9dcc9c191e1f"
+    },
+    {
+      "id": "fanart-client-source",
+      "url": "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/src/index.js",
+      "status": 200,
+      "checkedAt": "2026-10-16T06:13:58.237Z",
+      "bytes": 11237,
+      "sha256": "a0e6ba8284f7fc76065b74fb3f071a0a3489bda9871334ba28abf794057201ed"
+    },
+    {
+      "id": "fanart-client-types",
+      "url": "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/src/index.d.ts",
+      "status": 200,
+      "checkedAt": "2026-10-16T06:13:58.530Z",
+      "bytes": 7714,
+      "sha256": "b7c0519f7bd45b4609e36865e6b10ef7113809e6136aa968547553445fd24c13"
+    }
+  ],
+  "facts": {
+    "steamgriddb": {
+      "specVersion": "2.10.0",
+      "game": {
+        "id": 5505,
+        "name": "CLANNAD",
+        "types": ["steam"],
+        "releaseDateUnix": 1083135600,
+        "verified": true
+      },
+      "steamBridge": {
+        "requestedAppId": 324160,
+        "returnedGameId": 5505,
+        "declaredSteamIds": ["324160"],
+        "platformMetadataUsedAsNativeWorkFields": false
+      },
+      "search": {
+        "clannadResults": [
+          {
+            "id": 5505,
+            "name": "CLANNAD"
+          },
+          {
+            "id": 9809,
+            "name": "CLANNAD Side Stories"
+          }
+        ],
+        "broadResultCount": 10,
+        "fateResultCount": 10,
+        "pageParameterChangedResult": false,
+        "limitParameterChangedResult": false,
+        "emptyQueryResultCount": 0,
+        "paginationDeclaredForNameSearch": false
+      },
+      "firstPages": [
+        {
+          "kind": "grids",
+          "page": 0,
+          "total": 27,
+          "limit": 3,
+          "returned": 3,
+          "ids": [96355, 96354, 132608],
+          "firstRecordFields": [
+            "id",
+            "score",
+            "style",
+            "width",
+            "height",
+            "nsfw",
+            "humor",
+            "notes",
+            "mime",
+            "language",
+            "url",
+            "thumb",
+            "lock",
+            "epilepsy",
+            "upvotes",
+            "downvotes",
+            "author"
+          ],
+          "authorFields": ["name", "steam64", "avatar"]
+        },
+        {
+          "kind": "heroes",
+          "page": 0,
+          "total": 1,
+          "limit": 3,
+          "returned": 1,
+          "ids": [106078],
+          "firstRecordFields": [
+            "id",
+            "score",
+            "style",
+            "width",
+            "height",
+            "nsfw",
+            "humor",
+            "notes",
+            "mime",
+            "language",
+            "url",
+            "thumb",
+            "lock",
+            "epilepsy",
+            "upvotes",
+            "downvotes",
+            "author"
+          ],
+          "authorFields": ["name", "steam64", "avatar"]
+        },
+        {
+          "kind": "logos",
+          "page": 0,
+          "total": 3,
+          "limit": 3,
+          "returned": 3,
+          "ids": [4732, 164624, 85000],
+          "firstRecordFields": [
+            "id",
+            "score",
+            "style",
+            "width",
+            "height",
+            "nsfw",
+            "humor",
+            "notes",
+            "mime",
+            "language",
+            "url",
+            "thumb",
+            "lock",
+            "epilepsy",
+            "upvotes",
+            "downvotes",
+            "author"
+          ],
+          "authorFields": ["name", "steam64", "avatar"]
+        },
+        {
+          "kind": "icons",
+          "page": 0,
+          "total": 16,
+          "limit": 3,
+          "returned": 3,
+          "ids": [56300, 56305, 87993],
+          "firstRecordFields": [
+            "id",
+            "score",
+            "style",
+            "width",
+            "height",
+            "nsfw",
+            "humor",
+            "notes",
+            "mime",
+            "language",
+            "url",
+            "thumb",
+            "lock",
+            "epilepsy",
+            "upvotes",
+            "downvotes",
+            "author"
+          ],
+          "authorFields": ["name", "steam64", "avatar"]
+        }
+      ],
+      "gridPages": {
+        "page0Ids": [96355, 96354, 132608],
+        "page1Ids": [38248, 371195, 371194],
+        "fullPageCount": 27,
+        "reportedTotal": 27,
+        "terminalPage": 9,
+        "terminalCount": 0
+      },
+      "grids": {
+        "dimensions": ["600x900", "1024x1024", "920x430", "512x512"],
+        "languages": ["ja", "en"],
+        "mimes": {
+          "image/png": 22,
+          "image/webp": 1,
+          "image/jpeg": 4
+        },
+        "allCount": 27,
+        "staticNonNsfwNonHumorNonEpilepsyCount": 25
+      },
+      "icons": {
+        "distinctFileCount": 5,
+        "reportedTotal": 16,
+        "pngOnlyCount": 3,
+        "pageIds": [[56300, 56305, 87993], [79974, 1497], []],
+        "mimes": {
+          "image/png": 3,
+          "image/vnd.microsoft.icon": 2
+        },
+        "countCaveat": "Reported total is not a distinct-file count for this sample. It equals 3 PNG assets plus 9 and 4 ICO directory entries; the upstream counting implementation was not inspected."
+      },
+      "animatedSample": {
+        "id": 132608,
+        "declaredMime": "image/webp",
+        "declaredSize": {
+          "width": 600,
+          "height": 900
+        },
+        "originalHeaderVerified": true,
+        "thumbnailContentType": "video/webm"
+      },
+      "schemaDifferences": [
+        "The current search response contains game records directly in data; the OpenAPI example/schema nests the response envelope in each array item.",
+        "Actual game/artwork responses include useful fields absent from the inspected schema, including release_date, image dimensions, mime, language and flags.",
+        "ICO resources report source width/height as zero; directory entries contain positive dimensions."
+      ]
+    },
+    "fanart": {
+      "version": "v3.2",
+      "credentialModeTested": "client-key only; no project api-key header was sent",
+      "movie": {
+        "name": "Your Name.",
+        "tmdbId": "372058",
+        "imdbId": "tt5311514",
+        "imageCount": 57,
+        "families": {
+          "hdmovieclearart": {
+            "count": 3,
+            "reportedCount": 3,
+            "languages": ["ja", "en", "ru"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 3,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "130711",
+              "width": "1000",
+              "height": "562",
+              "language": "ja",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdmovielogo": {
+            "count": 7,
+            "reportedCount": 7,
+            "languages": ["en", "ja", "ru", "zh"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 7,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179358",
+              "width": "800",
+              "height": "310",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "movie4kbackground": {
+            "count": 2,
+            "reportedCount": 2,
+            "languages": [""],
+            "seasonTags": [],
+            "imagesWithoutSeason": 2,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "453043",
+              "width": "3840",
+              "height": "2160",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "moviebackground": {
+            "count": 12,
+            "reportedCount": 12,
+            "languages": [""],
+            "seasonTags": [],
+            "imagesWithoutSeason": 12,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "173208",
+              "width": "1920",
+              "height": "1080",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "moviebanner": {
+            "count": 3,
+            "reportedCount": 3,
+            "languages": ["en", "ru", "ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 3,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "173211",
+              "width": "1000",
+              "height": "185",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "moviedisc": {
+            "count": 8,
+            "reportedCount": 8,
+            "languages": ["es", "ja", "en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 8,
+            "fields": [
+              "added",
+              "disc",
+              "disc_type",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
+            "firstImage": {
+              "id": "210331",
+              "width": "1000",
+              "height": "1000",
+              "language": "es",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "movieposter": {
+            "count": 17,
+            "reportedCount": 17,
+            "languages": ["00", "ja", "en", "ru"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 17,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "173198",
+              "width": "1000",
+              "height": "1426",
+              "language": "00",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "moviethumb": {
+            "count": 5,
+            "reportedCount": 5,
+            "languages": ["en", "ru"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 5,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "173796",
+              "width": "1000",
+              "height": "562",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          }
+        }
+      },
+      "movieAlias": {
+        "imdbRequest": "tt5311514",
+        "returnedTmdbId": "372058",
+        "returnedImdbId": "tt5311514"
+      },
+      "frieren": {
+        "name": "Frieren: Beyond Journey's End",
+        "tvdbId": "424536",
+        "imageCount": 63,
+        "families": {
+          "characterart": {
+            "count": 4,
+            "reportedCount": 4,
+            "languages": ["00"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 4,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179343",
+              "width": "512",
+              "height": "512",
+              "language": "00",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdclearart": {
+            "count": 4,
+            "reportedCount": 4,
+            "languages": ["en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 4,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179329",
+              "width": "1000",
+              "height": "562",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdtvlogo": {
+            "count": 9,
+            "reportedCount": 9,
+            "languages": ["en", "ja", "zh", "es"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 9,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179151",
+              "width": "800",
+              "height": "310",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "seasonposter": {
+            "count": 2,
+            "reportedCount": 2,
+            "languages": ["en"],
+            "seasonTags": ["all"],
+            "imagesWithoutSeason": 0,
+            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "firstImage": {
+              "id": "182758",
+              "width": "1000",
+              "height": "1426",
+              "language": "en",
+              "season": "all",
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "show4kbackground": {
+            "count": 8,
+            "reportedCount": 8,
+            "languages": [""],
+            "seasonTags": [],
+            "imagesWithoutSeason": 8,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "201041",
+              "width": "3840",
+              "height": "2160",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "showbackground": {
+            "count": 13,
+            "reportedCount": 13,
+            "languages": [""],
+            "seasonTags": [],
+            "imagesWithoutSeason": 13,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179754",
+              "width": "1920",
+              "height": "1080",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvbanner": {
+            "count": 3,
+            "reportedCount": 3,
+            "languages": ["en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 3,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179342",
+              "width": "1000",
+              "height": "185",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvposter": {
+            "count": 13,
+            "reportedCount": 13,
+            "languages": ["ja", "en", "00"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 13,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179755",
+              "width": "1000",
+              "height": "1426",
+              "language": "ja",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvsquare": {
+            "count": 2,
+            "reportedCount": 2,
+            "languages": ["en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 2,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "201493",
+              "width": "1000",
+              "height": "1000",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvthumb": {
+            "count": 5,
+            "reportedCount": 5,
+            "languages": ["ja", "en", "es"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 5,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "179753",
+              "width": "1000",
+              "height": "562",
+              "language": "ja",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          }
+        }
+      },
+      "attackOnTitan": {
+        "name": "Attack on Titan",
+        "tvdbId": "267440",
+        "families": {
+          "characterart": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": ["en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "81971",
+              "width": "512",
+              "height": "512",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "clearart": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": ["en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "28645",
+              "width": "1",
+              "height": "1",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "clearlogo": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": ["ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "27643",
+              "width": "1",
+              "height": "1",
+              "language": "ja",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdclearart": {
+            "count": 23,
+            "reportedCount": 23,
+            "languages": ["en", "ja", "es", "fr"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 23,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "29384",
+              "width": "1000",
+              "height": "562",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdtvlogo": {
+            "count": 13,
+            "reportedCount": 13,
+            "languages": ["en", "es", "fr", "ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 13,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "39467",
+              "width": "800",
+              "height": "310",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "seasonbanner": {
+            "count": 2,
+            "reportedCount": 2,
+            "languages": ["es"],
+            "seasonTags": ["1", "2"],
+            "imagesWithoutSeason": 0,
+            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "firstImage": {
+              "id": "74855",
+              "width": "1000",
+              "height": "185",
+              "language": "es",
+              "season": "1",
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "seasonposter": {
+            "count": 37,
+            "reportedCount": 37,
+            "languages": ["en", "es", "fr", "ja", "zh"],
+            "seasonTags": ["1", "2", "3", "4", "all"],
+            "imagesWithoutSeason": 6,
+            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "firstImage": {
+              "id": "116655",
+              "width": "1000",
+              "height": "1426",
+              "language": "en",
+              "season": "1",
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "seasonthumb": {
+            "count": 5,
+            "reportedCount": 5,
+            "languages": ["es", "en"],
+            "seasonTags": ["1", "2"],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "firstImage": {
+              "id": "74852",
+              "width": "1000",
+              "height": "562",
+              "language": "es",
+              "season": "1",
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "show4kbackground": {
+            "count": 3,
+            "reportedCount": 3,
+            "languages": [""],
+            "seasonTags": [],
+            "imagesWithoutSeason": 3,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "208921",
+              "width": "3840",
+              "height": "2160",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "showbackground": {
+            "count": 37,
+            "reportedCount": 37,
+            "languages": ["", "en"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 37,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "50614",
+              "width": "1920",
+              "height": "1080",
+              "language": "",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvbanner": {
+            "count": 11,
+            "reportedCount": 11,
+            "languages": ["en", "es", "fr", "ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 11,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "29536",
+              "width": "1000",
+              "height": "185",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvposter": {
+            "count": 23,
+            "reportedCount": 23,
+            "languages": ["en", "00", "es", "ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 23,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "48174",
+              "width": "1000",
+              "height": "1426",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "tvthumb": {
+            "count": 18,
+            "reportedCount": 18,
+            "languages": ["en", "es", "fr", "ja"],
+            "seasonTags": [],
+            "imagesWithoutSeason": 18,
+            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "firstImage": {
+              "id": "68703",
+              "width": "1000",
+              "height": "562",
+              "language": "en",
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          }
+        }
+      },
+      "aimer": {
+        "name": "Aimer",
+        "artistId": "9388cee2-7d57-4598-905f-106019b267d3",
+        "imageCount": 13,
+        "rootImageCount": 3,
+        "albumCount": 10,
+        "albumShape": "array",
+        "families": {
+          "artistbackground": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": [],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "firstImage": {
+              "id": "352927",
+              "width": "1920",
+              "height": "1080",
+              "language": null,
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "artistthumb": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": [],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "firstImage": {
+              "id": "438760",
+              "width": "1000",
+              "height": "1000",
+              "language": null,
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          },
+          "hdmusiclogo": {
+            "count": 1,
+            "reportedCount": 1,
+            "languages": [],
+            "seasonTags": [],
+            "imagesWithoutSeason": 1,
+            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "firstImage": {
+              "id": "352926",
+              "width": "800",
+              "height": "310",
+              "language": null,
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          }
+        },
+        "typeEvidence": "https://musicbrainz.org/artist/9388cee2-7d57-4598-905f-106019b267d3",
+        "typeEvidenceRole": "Research fixture only; not an added runtime MusicBrainz provider or lookup dependency."
+      },
+      "artistExample": {
+        "name": "Evanescence",
+        "artistId": "f4a31f0a-51dd-4fa7-986d-3095c40c5ed9",
+        "fields": [
+          "albums",
+          "artist4kbackground",
+          "artist4kbackground_count",
+          "artistbackground",
+          "artistbackground_count",
+          "artistthumb",
+          "artistthumb_count",
+          "hdmusiclogo",
+          "hdmusiclogo_count",
+          "image_count",
+          "mbid_id",
+          "musicbanner",
+          "musicbanner_count",
+          "musiclogo",
+          "musiclogo_count",
+          "name"
+        ],
+        "albumCount": 45,
+        "artistKindProvided": false
+      },
+      "label": {
+        "name": "Profile Records",
+        "labelId": "e832b688-546b-45e3-83e5-9f8db5dcde1d",
+        "families": {
+          "musiclabel": {
+            "count": 2,
+            "reportedCount": 2,
+            "languages": [],
+            "seasonTags": [],
+            "imagesWithoutSeason": 2,
+            "fields": ["added", "colour", "height", "id", "likes", "url", "width"],
+            "firstImage": {
+              "id": "120425",
+              "width": "400",
+              "height": "270",
+              "language": null,
+              "season": null,
+              "urlHost": "assets.fanart.tv"
+            }
+          }
+        }
+      },
+      "sourceImageAuthorOrLicenseProvided": false,
+      "limitations": [
+        "No name-search method was found in the current official API/client surface.",
+        "Season labels include concrete numbers, all, and missing values; show-wide images do not prove a native season match.",
+        "The artist response does not classify Person versus Group.",
+        "image_count can include album artwork and is not the candidate count for a native person field.",
+        "Freshness tiers are documented, but project-key-only comparison and exact delay boundaries were not tested."
+      ],
+      "attributionFieldAudit": {
+        "imageObjectsChecked": 491,
+        "authorOrLicenseFieldsFound": []
+      }
+    }
+  },
+  "apiRequests": [
+    {
+      "id": 1,
+      "source": "steamgriddb",
+      "label": "sgdb-key-and-game",
+      "method": "GET",
+      "path": "/games/id/5505",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:09:47.007Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 978,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 2,
+      "source": "fanart",
+      "label": "fanart-personal-key-and-movie",
+      "method": "GET",
+      "path": "/movies/372058",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:09:47.032Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 1246,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 5,
+      "source": "steamgriddb",
+      "label": "sgdb-platform-data",
+      "method": "GET",
+      "path": "/games/id/5505",
+      "query": {
+        "platformdata": "steam"
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:57.366Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 682,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 3,
+      "source": "steamgriddb",
+      "label": "sgdb-search-clannad",
+      "method": "GET",
+      "path": "/search/autocomplete/CLANNAD",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:57.364Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 691,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 4,
+      "source": "steamgriddb",
+      "label": "sgdb-steam-bridge",
+      "method": "GET",
+      "path": "/games/steam/324160",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:57.365Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 701,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 7,
+      "source": "steamgriddb",
+      "label": "sgdb-heroes-page0",
+      "method": "GET",
+      "path": "/heroes/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.067Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 201,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 6,
+      "source": "steamgriddb",
+      "label": "sgdb-grids-page0",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.066Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 211,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 8,
+      "source": "steamgriddb",
+      "label": "sgdb-logos-page0",
+      "method": "GET",
+      "path": "/logos/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.067Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 214,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 11,
+      "source": "steamgriddb",
+      "label": "sgdb-animated-grids",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "animated",
+        "nsfw": "false",
+        "humor": "any",
+        "epilepsy": "false",
+        "limit": 3,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.282Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 195,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 9,
+      "source": "steamgriddb",
+      "label": "sgdb-icons-page0",
+      "method": "GET",
+      "path": "/icons/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.281Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 208,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 10,
+      "source": "steamgriddb",
+      "label": "sgdb-grids-page1",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 1
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.281Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 212,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 13,
+      "source": "steamgriddb",
+      "label": "sgdb-missing-game",
+      "method": "GET",
+      "path": "/games/id/999999999",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.493Z",
+      "status": 404,
+      "contentType": "application/json",
+      "elapsedMs": 203,
+      "sourceSuccess": false,
+      "errorFieldPresent": true
+    },
+    {
+      "id": 12,
+      "source": "steamgriddb",
+      "label": "sgdb-empty-search",
+      "method": "GET",
+      "path": "/search/autocomplete/KisakiProbeNoSuchGame20261016",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:13:58.493Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 221,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 14,
+      "source": "fanart",
+      "label": "fanart-movie-imdb",
+      "method": "GET",
+      "path": "/movies/tt5311514",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:13:58.493Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 710,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 17,
+      "source": "fanart",
+      "label": "fanart-label-example",
+      "method": "GET",
+      "path": "/music/labels/e832b688-546b-45e3-83e5-9f8db5dcde1d",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:13:59.204Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 583,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 15,
+      "source": "fanart",
+      "label": "fanart-frieren",
+      "method": "GET",
+      "path": "/tv/424536",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:13:59.203Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 594,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 16,
+      "source": "fanart",
+      "label": "fanart-artist-example",
+      "method": "GET",
+      "path": "/music/f4a31f0a-51dd-4fa7-986d-3095c40c5ed9",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:13:59.204Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 614,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 18,
+      "source": "fanart",
+      "label": "fanart-missing-movie",
+      "method": "GET",
+      "path": "/movies/999999999",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:13:59.818Z",
+      "status": 404,
+      "contentType": "application/json",
+      "elapsedMs": 224,
+      "sourceSuccess": null,
+      "errorFieldPresent": true
+    },
+    {
+      "id": 19,
+      "source": "steamgriddb",
+      "label": "sgdb-grids-all-clannad",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 50,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:40.883Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 637,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 21,
+      "source": "steamgriddb",
+      "label": "sgdb-icons-all-clannad",
+      "method": "GET",
+      "path": "/icons/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 50,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:40.885Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 639,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 20,
+      "source": "steamgriddb",
+      "label": "sgdb-grids-final-empty",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 9
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:40.884Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 642,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 23,
+      "source": "steamgriddb",
+      "label": "sgdb-broad-search",
+      "method": "GET",
+      "path": "/search/autocomplete/a",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:41.527Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 208,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 22,
+      "source": "steamgriddb",
+      "label": "sgdb-icons-png",
+      "method": "GET",
+      "path": "/icons/game/5505",
+      "query": {
+        "mimes": "image/png",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 50,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:41.526Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 209,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 24,
+      "source": "steamgriddb",
+      "label": "sgdb-search-fate",
+      "method": "GET",
+      "path": "/search/autocomplete/Fate",
+      "query": {},
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:19:41.527Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 212,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 25,
+      "source": "fanart",
+      "label": "fanart-aimer",
+      "method": "GET",
+      "path": "/music/9388cee2-7d57-4598-905f-106019b267d3",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:22:29.431Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 999,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 27,
+      "source": "steamgriddb",
+      "label": "sgdb-fate-search-page1",
+      "method": "GET",
+      "path": "/search/autocomplete/Fate",
+      "query": {
+        "page": 1
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:22:29.432Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 1009,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 26,
+      "source": "fanart",
+      "label": "fanart-attack-on-titan",
+      "method": "GET",
+      "path": "/tv/267440",
+      "query": {},
+      "authRole": "client-key",
+      "checkedAt": "2026-10-16T06:22:29.432Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 1198,
+      "sourceSuccess": null,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 28,
+      "source": "steamgriddb",
+      "label": "sgdb-fate-search-limit50",
+      "method": "GET",
+      "path": "/search/autocomplete/Fate",
+      "query": {
+        "limit": 50
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:22:30.630Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 214,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 30,
+      "source": "steamgriddb",
+      "label": "sgdb-icons-page2",
+      "method": "GET",
+      "path": "/icons/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 2
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:22:30.631Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 377,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 29,
+      "source": "steamgriddb",
+      "label": "sgdb-icons-page1",
+      "method": "GET",
+      "path": "/icons/game/5505",
+      "query": {
+        "types": "static,animated",
+        "nsfw": "any",
+        "humor": "any",
+        "epilepsy": "any",
+        "limit": 3,
+        "page": 1
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:22:30.631Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 379,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    },
+    {
+      "id": 31,
+      "source": "steamgriddb",
+      "label": "sgdb-grids-standard-safe",
+      "method": "GET",
+      "path": "/grids/game/5505",
+      "query": {
+        "types": "static",
+        "nsfw": "false",
+        "humor": "false",
+        "epilepsy": "false",
+        "limit": 50,
+        "page": 0
+      },
+      "authRole": "Bearer",
+      "checkedAt": "2026-10-16T06:22:31.010Z",
+      "status": 200,
+      "contentType": "application/json",
+      "elapsedMs": 212,
+      "sourceSuccess": true,
+      "errorFieldPresent": false
+    }
+  ],
+  "assetHeadProbes": [
+    {
+      "label": "sgdb-grid-thumb",
+      "url": "https://cdn2.steamgriddb.com/thumb/1beee17092491efde88b00b9d2863255.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 53480,
+      "checkedAt": "2026-10-16T06:29:05.830Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-grid-original",
+      "url": "https://cdn2.steamgriddb.com/grid/1beee17092491efde88b00b9d2863255.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": 509894,
+      "checkedAt": "2026-10-16T06:29:05.951Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-hero-original",
+      "url": "https://cdn2.steamgriddb.com/hero/d5a613cfc943537cc7047cc74791d26b.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 1419878,
+      "checkedAt": "2026-10-16T06:29:06.117Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-logo-original",
+      "url": "https://cdn2.steamgriddb.com/logo/fd1d83de2517a02d4e221ede9a681432.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": 14580,
+      "checkedAt": "2026-10-16T06:29:06.682Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-animated-original",
+      "url": "https://cdn2.steamgriddb.com/grid/d1ee9761f9ab11bc5df167c2c0323c4b.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "contentLength": 325982,
+      "checkedAt": "2026-10-16T06:29:06.868Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-icon-original",
+      "url": "https://cdn2.steamgriddb.com/icon/72783ce95b1ffdeeef297ca54b6a1259.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": 404551,
+      "checkedAt": "2026-10-16T06:29:06.895Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-movie-poster-original",
+      "url": "https://assets.fanart.tv/fanart/your-name-5845df3ac3d16.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 641250,
+      "checkedAt": "2026-10-16T06:29:07.776Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-movie-logo-original",
+      "url": "https://assets.fanart.tv/fanart/your-name-587d8cb5bef81.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": 71358,
+      "checkedAt": "2026-10-16T06:29:07.777Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "sgdb-animated-thumb",
+      "url": "https://cdn2.steamgriddb.com/thumb/d1ee9761f9ab11bc5df167c2c0323c4b.webm",
+      "status": 200,
+      "contentType": "video/webm",
+      "contentLength": 137257,
+      "checkedAt": "2026-10-16T06:29:08.370Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-aimer-thumb",
+      "url": "https://assets.fanart.tv/fanart/aimer-67a3a0556bb37.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 171016,
+      "checkedAt": "2026-10-16T06:29:08.894Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-poster-preview",
+      "url": "https://assets.fanart.tv/preview/your-name-5845df3ac3d16.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 15569,
+      "checkedAt": "2026-10-16T06:29:08.899Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-label-logo",
+      "url": "https://assets.fanart.tv/fanart/labels/e832b688-546b-45e3-83e5-9f8db5dcde1d/musiclabel/profile-records-53633ee474306.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": 5489,
+      "checkedAt": "2026-10-16T06:29:09.429Z",
+      "credentialsSent": false
+    },
+    {
+      "label": "fanart-poster-bigpreview",
+      "url": "https://assets.fanart.tv/bigpreview/your-name-5845df3ac3d16.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": 47887,
+      "checkedAt": "2026-10-16T06:29:09.955Z",
+      "credentialsSent": false
+    }
+  ],
+  "assetPrefixProbes": [
+    {
+      "label": "sgdb-static-png",
+      "status": 206,
+      "bytesRead": 65536,
+      "contentType": "image/png",
+      "credentialsSent": false,
+      "format": "png",
+      "width": 600,
+      "height": 900,
+      "animated": false,
+      "url": "https://cdn2.steamgriddb.com/grid/1beee17092491efde88b00b9d2863255.png",
+      "method": "GET",
+      "range": "bytes=0-65535"
+    },
+    {
+      "label": "sgdb-animated-webp",
+      "status": 206,
+      "bytesRead": 65536,
+      "contentType": "image/webp",
+      "credentialsSent": false,
+      "format": "webp",
+      "width": 600,
+      "height": 900,
+      "animated": true,
+      "url": "https://cdn2.steamgriddb.com/grid/d1ee9761f9ab11bc5df167c2c0323c4b.webp",
+      "method": "GET",
+      "range": "bytes=0-65535"
+    },
+    {
+      "label": "fanart-preview",
+      "status": 206,
+      "bytesRead": 15569,
+      "contentType": "image/jpeg",
+      "credentialsSent": false,
+      "format": "jpeg",
+      "width": null,
+      "height": null,
+      "animated": null,
+      "url": "https://assets.fanart.tv/preview/your-name-5845df3ac3d16.jpg",
+      "method": "GET",
+      "range": "bytes=0-65535"
+    }
+  ],
+  "iconContainerProbes": [
+    {
+      "assetId": 87993,
+      "status": 206,
+      "contentType": "image/x-icon",
+      "sourceWidth": 0,
+      "sourceHeight": 0,
+      "sourceMime": "image/vnd.microsoft.icon",
+      "containerValid": true,
+      "entryCount": 9,
+      "entries": [
+        {
+          "width": 16,
+          "height": 16,
+          "bitDepth": 32,
+          "bytes": 1128,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "bitDepth": 32,
+          "bytes": 2440,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "bitDepth": 32,
+          "bytes": 4264,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "bitDepth": 32,
+          "bytes": 9640,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 64,
+          "height": 64,
+          "bitDepth": 32,
+          "bytes": 16936,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 72,
+          "height": 72,
+          "bitDepth": 32,
+          "bytes": 21640,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 96,
+          "height": 96,
+          "bitDepth": 32,
+          "bytes": 38056,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 128,
+          "height": 128,
+          "bitDepth": 32,
+          "bytes": 67624,
+          "embeddedPrefix": "outside-prefix"
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bitDepth": 32,
+          "bytes": 270376,
+          "embeddedPrefix": "outside-prefix"
+        }
+      ],
+      "bytesRead": 65536,
+      "credentialsSent": false,
+      "url": "https://cdn2.steamgriddb.com/icon/f03eddc548053e4178ba1b3251c2e051.ico",
+      "method": "GET",
+      "range": "bytes=0-65535"
+    },
+    {
+      "assetId": 1497,
+      "status": 206,
+      "contentType": "image/x-icon",
+      "sourceWidth": 0,
+      "sourceHeight": 0,
+      "sourceMime": "image/vnd.microsoft.icon",
+      "containerValid": true,
+      "entryCount": 4,
+      "entries": [
+        {
+          "width": 16,
+          "height": 16,
+          "bitDepth": 32,
+          "bytes": 1128,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "bitDepth": 32,
+          "bytes": 4264,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "bitDepth": 32,
+          "bytes": 9640,
+          "embeddedPrefix": "dib-or-other"
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bitDepth": 24,
+          "bytes": 204840,
+          "embeddedPrefix": "dib-or-other"
+        }
+      ],
+      "bytesRead": 65536,
+      "credentialsSent": false,
+      "url": "https://cdn2.steamgriddb.com/icon/55c567fd4395ecef6d936cf77b8d5b2b.ico",
+      "method": "GET",
+      "range": "bytes=0-65535"
+    }
+  ],
+  "primarySources": [
+    "https://www.steamgriddb.com/static/openapi.yml",
+    "https://www.steamgriddb.com/api/v2",
+    "https://github.com/fanart-tv/fanart.tv-api",
+    "https://raw.githubusercontent.com/fanart-tv/fanart.tv-api/main/README.md",
+    "https://api.fanart.tv/",
+    "https://fanart.tv/get-an-api-key/"
+  ],
+  "localImplementationObservation": {
+    "steamgriddb": {
+      "files": [
+        "extensions/steamgriddb/src/host/media/game/provider.ts",
+        "extensions/steamgriddb/src/host/api/client.ts",
+        "extensions/steamgriddb/src/host/config/defaults.ts"
+      ],
+      "existingDefaults": {
+        "includeNsfw": false,
+        "timeoutMs": 20000,
+        "retryCount": 2
+      },
+      "observedRestrictions": [
+        "Only static artwork is requested.",
+        "Grid requests are restricted to the existing configured 600x900 cover dimensions.",
+        "Artwork reads make one listing request without subsequent pages.",
+        "Name resolution selects a year match or the first search result."
+      ],
+      "scope": "Read-only source inspection. These observations are not accepted rules for the replacement design, and no running extension settings were changed."
+    }
+  },
+  "remainingVerification": [
+    "Fanart project-key and combined-key access, and documented freshness boundaries.",
+    "SteamGridDB platform bridges other than the Steam mapping already exercised.",
+    "Complete extension execution, ICO conversion, image-only preview and final attachment adoption."
+  ]
+}

@@ -1,0 +1,1000 @@
+{
+  "checkedAt": "2026-10-20T07:26:55.659Z",
+  "upstreamCommit": "78914aef4466eb960965702401634c2cb348e9b1",
+  "upstreamCodeModified": false,
+  "actualDesktopFoliateExecuted": false,
+  "actualWebKitGtkExecuted": false,
+  "actualSafariExecuted": false,
+  "archiveExtractionExecuted": false,
+  "kanaImplementationExecuted": false,
+  "sources": {
+    "foliate.cjs": "f1e131d9fafea7a15ba61c9a1fca107e7b98d727c67f9fbc0e65d5f8953120f7",
+    "../kana-browser-scope/source-input.json": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+    "../kana-foliate-review/source-input.json": "4591407f1adf511fe8eaf952a69e00e68c5cfbe2f8618e261d9b048da4f93299"
+  },
+  "upstreamSources": {
+    "epub.js": "dfe347495039e9b5991478986ec6b7713cf9efbcd8f475a77ef7b967c5176298",
+    "epubcfi.js": "e1a688ad5c84bf31f33cef467f92c7a6d060a0f17ec37c1d3c048e9c7b1cf645",
+    "paginator.js": "51cec81572d5d182e231fe68ce9c3b5489a0976b36172060516336ba893565ea"
+  },
+  "engines": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "results": [
+        {
+          "placement": "external",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "column",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: column; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 600,
+            "bottom": 60,
+            "left": 300
+          },
+          "stride": 300,
+          "nextFragment": true,
+          "internalPagesIncludingEdgeSlots": 4
+        },
+        {
+          "placement": "external",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "column",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: column; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 300,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 600,
+            "bottom": 60,
+            "left": 300
+          },
+          "stride": 300,
+          "nextFragment": true,
+          "internalPagesIncludingEdgeSlots": 4
+        },
+        {
+          "placement": "style-element",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-element",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": ["body { margin: 0px; font: 20px / 1 serif; }", "div { block-size: 60px; }"],
+          "attribute": "break-before:page",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": ["body { margin: 0px; font: 20px / 1 serif; }", "div { block-size: 60px; }"],
+          "attribute": "page-break-before:always",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:left",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "left",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: left; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:right",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "right",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: right; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:auto",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "auto",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: auto; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        }
+      ],
+      "externalRequests": 0,
+      "errors": []
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "results": [
+        {
+          "placement": "external",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "auto",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "auto",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-element",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-element",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": ["body { margin: 0px; font: 20px / 1 serif; }", "div { block-size: 60px; }"],
+          "attribute": "break-before:page",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": ["body { margin: 0px; font: 20px / 1 serif; }", "div { block-size: 60px; }"],
+          "attribute": "page-break-before:always",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:left",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "left",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: left; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:right",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "right",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: right; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:auto",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "auto",
+          "styles": [
+            "body { margin: 0px; font: 20px / 1 serif; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: auto; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        }
+      ],
+      "externalRequests": 0,
+      "errors": []
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "results": [
+        {
+          "placement": "external",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "column",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: column; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 300,
+            "y": 1,
+            "width": 300,
+            "height": 60,
+            "top": 1,
+            "right": 600,
+            "bottom": 61,
+            "left": 300
+          },
+          "stride": 300,
+          "nextFragment": true,
+          "internalPagesIncludingEdgeSlots": 4
+        },
+        {
+          "placement": "external",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "column",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: column; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 300,
+            "y": 1,
+            "width": 300,
+            "height": 60,
+            "top": 1,
+            "right": 600,
+            "bottom": 61,
+            "left": 300
+          },
+          "stride": 300,
+          "nextFragment": true,
+          "internalPagesIncludingEdgeSlots": 4
+        },
+        {
+          "placement": "style-element",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-element",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: page; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "break-before:page",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }"
+          ],
+          "attribute": "break-before:page",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "style-attribute",
+          "declaration": "page-break-before:always",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "page",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }"
+          ],
+          "attribute": "page-break-before:always",
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:left",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "left",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: left; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:right",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "right",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: right; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        },
+        {
+          "placement": "external",
+          "declaration": "break-before:auto",
+          "sourceText": "AB",
+          "writingMode": "horizontal-tb",
+          "computedBreakBefore": "auto",
+          "styles": [
+            "body { margin: 0px; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 20px; line-height: 1; font-family: serif; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }",
+            "div { block-size: 60px; }",
+            "#b { break-before: auto; }"
+          ],
+          "attribute": null,
+          "first": {
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 60,
+            "top": 0,
+            "right": 300,
+            "bottom": 60,
+            "left": 0
+          },
+          "second": {
+            "x": 0,
+            "y": 60,
+            "width": 300,
+            "height": 60,
+            "top": 60,
+            "right": 300,
+            "bottom": 120,
+            "left": 0
+          },
+          "stride": 300,
+          "nextFragment": false,
+          "internalPagesIncludingEdgeSlots": 3
+        }
+      ],
+      "externalRequests": 0,
+      "errors": []
+    }
+  ]
+}

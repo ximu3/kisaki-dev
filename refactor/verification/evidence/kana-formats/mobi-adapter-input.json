@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/johnfactotum/foliate-js/blob/78914aef4466eb960965702401634c2cb348e9b1/mobi.js",
+  "originalSha256": "016526df13a9f11ee6671a8c74346e1cf41fe6bdfe50165fdcbf744f015694f3",
+  "adaptedSha256": "fbc33a42d4c011aa54df29a31b8aea04fff5dff8c18b793a5bc8b660c07d9c38",
+  "license": "MIT",
+  "changes": [
+    "Add explicit raw branch opening for tests without constructing a reader",
+    "Export the unchanged index and byte helper functions for the reconstruction probe"
+  ],
+  "productionCodeAdopted": false
+}

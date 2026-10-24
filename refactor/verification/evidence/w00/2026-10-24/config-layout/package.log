@@ -1,0 +1,135 @@
+$ turbo run package --filter=@kisaki3/desktop -- "--target" "windows-x64"
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/desktop
+   • Running package in 1 package
+   • Remote caching disabled
+
+@kisaki3/appearance:build: cache hit, replaying logs 9ac3736aca6a45bc
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: tsconfig.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\build-tzwscg\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\build-tzwscg\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\build-tzwscg\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\build-tzwscg\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 537ms
+@kisaki3/ui:build: cache hit, replaying logs 66fc2c34677228e3
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: tsconfig.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\build-882qr8\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\build-882qr8\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 836ms
+@kisaki3/desktop:package: cache bypass, force executing c8cbf7851a561f95
+@kisaki3/desktop:package: $ tsx tools/package/cli.ts "--target" "windows-x64"
+@kisaki3/desktop:package: info: component 'rust-std' for target 'x86_64-pc-windows-msvc' is up to date
+@kisaki3/desktop:package:     Finished `release` profile [optimized] target(s) in 0.13s
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: ✓ 2 modules transformed.
+@kisaki3/desktop:package: ✓ 3 modules transformed.
+@kisaki3/desktop:package: ✓ 13 modules transformed.
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/extension-host/entry.js  0.34 kB │ gzip: 0.24 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/main/entry.js  15.39 kB │ gzip: 5.09 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: ✓ built in 1.09s
+@kisaki3/desktop:package: ✓ built in 115ms
+@kisaki3/desktop:package: ✓ built in 1.07s
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: ✓ 3 modules transformed.
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: ✓ built in 23ms
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: ✓ 19 modules transformed.
+@kisaki3/desktop:package: ✓ 3 modules transformed.
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: ✓ built in 26ms
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:package: transforming...
+@kisaki3/desktop:package: ✓ 3 modules transformed.
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: ✓ built in 520ms
+@kisaki3/desktop:package: rendering chunks...
+@kisaki3/desktop:package: computing gzip size...
+@kisaki3/desktop:package: out/windows-x64.staging-ajASku/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+@kisaki3/desktop:package: 
+@kisaki3/desktop:package: ✓ built in 24ms
+@kisaki3/desktop:package:   • electron-builder  version=26.15.3 os=10.0.19045
+@kisaki3/desktop:package:   • loaded configuration  file=F:\project\kisaki\clients\desktop\app\out\package-CkQwYW\electron-builder.yml
+@kisaki3/desktop:package:   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=F:\project\kisaki\clients\desktop\app
+@kisaki3/desktop:package:   • skipped dependencies rebuild  reason=npmRebuild is set to false
+@kisaki3/desktop:package:   • packaging       platform=win32 arch=x64 electron=44.5.1 appOutDir=dist\windows-x64.staging-uXMNfo\win-unpacked
+@kisaki3/desktop:package:   • downloaded      label=electron progress=100%
+@kisaki3/desktop:package:   • downloaded electron zip extracted successfully  output=F:\project\kisaki\clients\desktop\app\dist\windows-x64.staging-uXMNfo\win-unpacked
+@kisaki3/desktop:package:   • searching for node modules  pm=pnpm searchDir=F:\project\kisaki\clients\desktop\app\out\package-CkQwYW
+@kisaki3/desktop:package:   • updating asar integrity executable resource  executablePath=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • executing @electron/fuses  electronPath=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • signing with signtool.exe  path=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • building        target=zip arch=x64 file=dist\windows-x64.staging-uXMNfo\Kisaki-0.1.0-dev.0-windows-x64.zip
+@kisaki3/desktop:package:   • electron-builder  version=26.15.3 os=10.0.19045
+@kisaki3/desktop:package:   • loaded configuration  file=F:\project\kisaki\clients\desktop\app\out\package-CkQwYW\electron-builder.yml
+@kisaki3/desktop:package:   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=F:\project\kisaki\clients\desktop\app
+@kisaki3/desktop:package:   • skipped dependencies rebuild  reason=npmRebuild is set to false
+@kisaki3/desktop:package:   • packaging       platform=win32 arch=x64 electron=44.5.1 appOutDir=dist\windows-x64.staging-uXMNfo\win-unpacked
+@kisaki3/desktop:package:   • downloaded      label=electron progress=100%
+@kisaki3/desktop:package:   • downloaded electron zip extracted successfully  output=F:\project\kisaki\clients\desktop\app\dist\windows-x64.staging-uXMNfo\win-unpacked
+@kisaki3/desktop:package:   • searching for node modules  pm=pnpm searchDir=F:\project\kisaki\clients\desktop\app\out\package-CkQwYW
+@kisaki3/desktop:package:   • updating asar integrity executable resource  executablePath=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • executing @electron/fuses  electronPath=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • signing with signtool.exe  path=dist\windows-x64.staging-uXMNfo\win-unpacked\Kisaki.exe
+@kisaki3/desktop:package:   • building        target=nsis file=dist\windows-x64.staging-uXMNfo\Kisaki-0.1.0-dev.0-windows-x64.exe archs=x64 oneClick=false perMachine=false
+@kisaki3/desktop:package:   • signing with signtool.exe  path=dist\windows-x64.staging-uXMNfo\win-unpacked\resources\elevate.exe
+@kisaki3/desktop:package:   • signing with signtool.exe  path=dist\windows-x64.staging-uXMNfo\Kisaki-0.1.0-dev.0-windows-x64.__uninstaller.exe
+@kisaki3/desktop:package:   • signing with signtool.exe  path=dist\windows-x64.staging-uXMNfo\Kisaki-0.1.0-dev.0-windows-x64.exe
+@kisaki3/desktop:package:   • building block map  blockMapFile=dist\windows-x64.staging-uXMNfo\Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap
+@kisaki3/desktop:package: F:\project\kisaki\clients\desktop\app\dist\windows-x64\artifacts.json
+
+ Tasks:    3 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    2m13.543s 
+

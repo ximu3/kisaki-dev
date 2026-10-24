@@ -1,0 +1,182 @@
+{
+  "synthetic": true,
+  "sourceFamily": "KOReader v2026.07.1 current sidecar, JSON exporter and statistics 20221111",
+  "mediaOrigin": "Unchanged, previously inspected synthetic Koodo inputs",
+  "fullMd5": {
+    "pdf-book.pdf": "1148f01a540ff7d7355d6c1860918442",
+    "comic-book.cbz": "9fb8983c0cf5fbf6a661033ecacb2b84",
+    "novel.epub": "488e8beab1410974b8f7d05aa3476196"
+  },
+  "partialMd5": {
+    "pdf-book.pdf": "14792ed1dd20cbc78e0cff1a2113b50d",
+    "comic-book.cbz": "9fb8983c0cf5fbf6a661033ecacb2b84",
+    "novel.epub": "488e8beab1410974b8f7d05aa3476196"
+  },
+  "files": [
+    {
+      "path": "fixtures/detached/missing.sdr/metadata.epub.lua",
+      "bytes": 298,
+      "sha256": "817ca4d6c4e4ab9f400c100455caad02629e14606996b2b7aa8b77a066e4f439"
+    },
+    {
+      "path": "fixtures/exports/multiple.json",
+      "bytes": 1066,
+      "sha256": "be1ee1f15d76a30e54bf66c805a7f3e0b1fee4519dd9215e3727d17e97c4366f"
+    },
+    {
+      "path": "fixtures/exports/notes.md",
+      "bytes": 56,
+      "sha256": "15f9abd85f9e937c44e8d7845e1e682acbffe3d3f68079dc79c30f6e52366db3"
+    },
+    {
+      "path": "fixtures/exports/notes.txt",
+      "bytes": 55,
+      "sha256": "c2e863acc6b6c5116f71145a19882329997ef7a564acaed637dee5246ad8dab2"
+    },
+    {
+      "path": "fixtures/exports/single.json",
+      "bytes": 525,
+      "sha256": "6369156f2b1d8ba09525f63f44872f9fd01244bd6ce069b34ad16e475dc759ed"
+    },
+    {
+      "path": "fixtures/grammar/invalid-text.lua",
+      "bytes": 39,
+      "sha256": "c7c24706d6f71e08c58c3d60b7db0fc1179cd89bc2711369fe93b0573e963599"
+    },
+    {
+      "path": "fixtures/grammar/reject-arithmetic.lua",
+      "bytes": 20,
+      "sha256": "a7c78adb2e89e91044dd86f279790c960fdd79470938bfaf71671f46add041ea"
+    },
+    {
+      "path": "fixtures/grammar/reject-assignment.lua",
+      "bytes": 16,
+      "sha256": "d2f6a594d5b462fd8680427e9ec45cbf52e9cf47c713556fabfc7ef6229dde20"
+    },
+    {
+      "path": "fixtures/grammar/reject-call.lua",
+      "bytes": 34,
+      "sha256": "3a4ffde57f78429305d333b9c7d005dd0b644b4af2f9dad18ab2ef83c54e4338"
+    },
+    {
+      "path": "fixtures/grammar/reject-computed-key.lua",
+      "bytes": 22,
+      "sha256": "f0f560c9099882938fb086a914b486fad5a481a9c4891d76cde3cd4c54f56b76"
+    },
+    {
+      "path": "fixtures/grammar/reject-deep.lua",
+      "bytes": 463,
+      "sha256": "39d263b3a3648781581de09abc05d422a26b72fc484776b0c1137d44f0b18030"
+    },
+    {
+      "path": "fixtures/grammar/reject-duplicate-nil.lua",
+      "bytes": 25,
+      "sha256": "ff816e0983aeb7f237eea4d94ac3ee84be1ed6a40a2c56db554e624b77d165bd"
+    },
+    {
+      "path": "fixtures/grammar/reject-duplicate.lua",
+      "bytes": 21,
+      "sha256": "f15e5f3a8e453f10c988a11a87280c7fe65e9b8164600169f2ed8ea3cc06f6e6"
+    },
+    {
+      "path": "fixtures/grammar/reject-function.lua",
+      "bytes": 38,
+      "sha256": "120c9f4ae72d85b5f5b7b926f043c776bf197454e8c2bd57fec933fe449ae3e3"
+    },
+    {
+      "path": "fixtures/grammar/reject-infinite.lua",
+      "bytes": 20,
+      "sha256": "d9b67b8e07179dfa36c2b797f6d3d4c8257e0c1ee57479c6470897732d2e2958"
+    },
+    {
+      "path": "fixtures/grammar/reject-multi-return.lua",
+      "bytes": 13,
+      "sha256": "c9943952ffe141d5e1d744cbd26277902539b1ab4363919b3ed59e80b8f68a49"
+    },
+    {
+      "path": "fixtures/grammar/reject-nul.lua",
+      "bytes": 19,
+      "sha256": "367efad2af47231d684b8471dfb111ef0632a6b623af856f16acdb6fe349e4d1"
+    },
+    {
+      "path": "fixtures/grammar/reject-require.lua",
+      "bytes": 22,
+      "sha256": "dd01d077979cd2c1033bdd6b58d1c05d833920e625770460fc9d8615f857aa29"
+    },
+    {
+      "path": "fixtures/grammar/valid.lua",
+      "bytes": 266,
+      "sha256": "40fce4d80b1459e879e5efe0ae342ba38da6bd7d91b6b87b3a856fb4e92adb69"
+    },
+    {
+      "path": "fixtures/invalid/collation-tie.cbz",
+      "bytes": 440,
+      "sha256": "99daca9794a3b960e4df10390d4d54170ac68b4ccfeee04a5e0d20761201d3ac"
+    },
+    {
+      "path": "fixtures/invalid/numeric-overflow.cbz",
+      "bytes": 456,
+      "sha256": "10f606d5fda13a2c03b1e7d15f32ab7314b15f6d2cfa5b472029ccea1ef5e5d2"
+    },
+    {
+      "path": "fixtures/invalid/unicode-order.cbz",
+      "bytes": 442,
+      "sha256": "7bc5e2e573ffb21fe282bd5924008002238d075ef7e87a18350f8c4125d1474c"
+    },
+    {
+      "path": "fixtures/invalid/unsupported-page.cbz",
+      "bytes": 646,
+      "sha256": "6bec6b53ae1bd0a37320ab79c256e10e75337d4b8b41a84ab13f9364a973e570"
+    },
+    {
+      "path": "fixtures/library/comic-book.cbz",
+      "bytes": 976,
+      "sha256": "136e43a8421b2299d757baf9dc4e00f7d0bcae2cafbbe5f895b3ba6f559e5e2d"
+    },
+    {
+      "path": "fixtures/library/comic-book.sdr/metadata.cbz.lua",
+      "bytes": 462,
+      "sha256": "89c9eef6a70bb31b102036157c68c44994745b0398e6a160a75363cf90e774f0"
+    },
+    {
+      "path": "fixtures/library/novel.epub",
+      "bytes": 1632,
+      "sha256": "1958e2b9b200aeb445606b3876f6184cd228c55bd26df25acfc719f2940de935"
+    },
+    {
+      "path": "fixtures/library/novel.sdr/metadata.epub.lua",
+      "bytes": 674,
+      "sha256": "90b7b81a07614719f738cc06dd442579b52b10e1e3ae35203f3e6541ba067c08"
+    },
+    {
+      "path": "fixtures/library/pdf-book.pdf",
+      "bytes": 2065,
+      "sha256": "fc8fba6982d97b6c9c3e0dde3a9dc25ba80413846ab63fdf710004ce2b401209"
+    },
+    {
+      "path": "fixtures/library/pdf-book.sdr/cover.png",
+      "bytes": 124,
+      "sha256": "086a30c2591d1b30eeaa2941ab0c8b9a56b20c6b845d593be6364a941f0a32c7"
+    },
+    {
+      "path": "fixtures/library/pdf-book.sdr/custom_metadata.lua",
+      "bytes": 160,
+      "sha256": "9dc520fc42dcdb315218629adc80520a704b130cdd8c15dd6f9e0005c80243dc"
+    },
+    {
+      "path": "fixtures/library/pdf-book.sdr/metadata.pdf.lua",
+      "bytes": 2127,
+      "sha256": "7b18789b94fb5f62a5440d9b0b3488ae0c4d3bb5eb532bd79dc79fa3449cf2a7"
+    },
+    {
+      "path": "fixtures/settings/collection.lua",
+      "bytes": 636,
+      "sha256": "5fac52fbbb2d124dac39321968c89be90454394f0be05287bd6957eb69840265"
+    },
+    {
+      "path": "fixtures/settings/statistics.sqlite3",
+      "bytes": 28672,
+      "sha256": "84d071396ebd13725d7155e93c6e885ae5ccce036158a5b892ce76910eef7556"
+    }
+  ]
+}

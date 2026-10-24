@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-19T10:28:06.207855+00:00",
+  "sources": [
+    {
+      "name": "casefold.txt",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/CaseFolding.txt",
+      "finalUrl": "https://www.unicode.org/Public/18.0.0/ucd/CaseFolding.txt",
+      "status": 200,
+      "bytes": 88776,
+      "sha256": "a004797658a457bec4dc11683e39f69249ea3b595b752dbea6721c4c9f587b0d"
+    },
+    {
+      "name": "css-text.html",
+      "url": "https://www.w3.org/TR/css-text-3/",
+      "finalUrl": "https://www.w3.org/TR/css-text-3/",
+      "status": 200,
+      "bytes": 540326,
+      "sha256": "17c26f1b41455947f106dac81736944b12da328ee4892c7c5b601f5b65ced55a"
+    },
+    {
+      "name": "css-ruby.html",
+      "url": "https://www.w3.org/TR/css-ruby-1/",
+      "finalUrl": "https://www.w3.org/TR/css-ruby-1/",
+      "status": 200,
+      "bytes": 357906,
+      "sha256": "a88a39e6600c022698c414e9bb2a66b138801fda2d974fbd684d1f1c43e6ab50"
+    },
+    {
+      "name": "unicode-normalization.html",
+      "url": "https://www.unicode.org/reports/tr15/",
+      "finalUrl": "https://www.unicode.org/reports/tr15/",
+      "status": 200,
+      "bytes": 141588,
+      "sha256": "efcf19da85342bd87fb93b590975ca422597243f2e19c6cb46e941d0d2d48d73"
+    },
+    {
+      "name": "capture.md",
+      "url": "https://raw.githubusercontent.com/electron/electron/v44.5.1/docs/api/web-contents.md",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/v44.5.1/docs/api/web-contents.md",
+      "status": 200,
+      "bytes": 94928,
+      "sha256": "25beaecc51a3b4cf2200db25939855442ff08bfad94445a83b87c88abf75e1a3"
+    },
+    {
+      "name": "native-image.md",
+      "url": "https://raw.githubusercontent.com/electron/electron/v44.5.1/docs/api/native-image.md",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/v44.5.1/docs/api/native-image.md",
+      "status": 200,
+      "bytes": 15823,
+      "sha256": "ac29430ab88efa31fdc8265fc512c5aca7c3d6ad5233a290a3a49c9e3166ba73"
+    }
+  ],
+  "caseFoldingVersion": "18.0.0",
+  "foldMappings": 1606,
+  "kanaExecuted": false
+}

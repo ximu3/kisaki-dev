@@ -1,0 +1,239 @@
+{
+  "scope": "every client.h function, not every parameter combination or all mpv headers",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "nativeExecuted": false,
+  "functions": [
+    {
+      "name": "mpv_client_api_version",
+      "category": "public",
+      "responsibility": "getClientApiVersion"
+    },
+    {
+      "name": "mpv_error_string",
+      "category": "ownedInternal",
+      "responsibility": "safe error metadata; native messages are not classification keys"
+    },
+    {
+      "name": "mpv_free",
+      "category": "ownedInternal",
+      "responsibility": "native memory ownership"
+    },
+    {
+      "name": "mpv_client_name",
+      "category": "public",
+      "responsibility": "actual client identity snapshots"
+    },
+    {
+      "name": "mpv_client_id",
+      "category": "public",
+      "responsibility": "actual client identity snapshots"
+    },
+    {
+      "name": "mpv_create",
+      "category": "public",
+      "responsibility": "createMpv initialization"
+    },
+    {
+      "name": "mpv_initialize",
+      "category": "public",
+      "responsibility": "createMpv initialization"
+    },
+    {
+      "name": "mpv_destroy",
+      "category": "ownedInternal",
+      "responsibility": "detach owned clients after their work is settled"
+    },
+    {
+      "name": "mpv_terminate_destroy",
+      "category": "public",
+      "responsibility": "Mpv.close"
+    },
+    {
+      "name": "mpv_create_client",
+      "category": "proposal",
+      "responsibility": "Mpv-owned named clients; raw strong/weak choice stays private"
+    },
+    {
+      "name": "mpv_create_weak_client",
+      "category": "proposal",
+      "responsibility": "Mpv-owned named clients; raw strong/weak choice stays private"
+    },
+    {
+      "name": "mpv_load_config_file",
+      "category": "public",
+      "responsibility": "loadConfigFile; native partial-application semantics"
+    },
+    {
+      "name": "mpv_get_time_ns",
+      "category": "public",
+      "responsibility": "getTimeNs"
+    },
+    {
+      "name": "mpv_get_time_us",
+      "category": "mapped",
+      "responsibility": "nanosecond clock can be expressed in microseconds"
+    },
+    {
+      "name": "mpv_free_node_contents",
+      "category": "ownedInternal",
+      "responsibility": "native memory ownership"
+    },
+    {
+      "name": "mpv_set_option",
+      "category": "public",
+      "responsibility": "createMpv initialization"
+    },
+    {
+      "name": "mpv_set_option_string",
+      "category": "mapped",
+      "responsibility": "explicit string-valued initialization option"
+    },
+    {
+      "name": "mpv_command",
+      "category": "mapped",
+      "responsibility": "one structured command API with independent value representations"
+    },
+    {
+      "name": "mpv_command_node",
+      "category": "mapped",
+      "responsibility": "one structured command API with independent value representations"
+    },
+    {
+      "name": "mpv_command_ret",
+      "category": "mapped",
+      "responsibility": "one structured command API with independent value representations"
+    },
+    {
+      "name": "mpv_command_string",
+      "category": "notExposedParser",
+      "responsibility": "textual command parser is not a second public input grammar; structured flags remain available"
+    },
+    {
+      "name": "mpv_command_async",
+      "category": "mapped",
+      "responsibility": "one structured command API with independent value representations"
+    },
+    {
+      "name": "mpv_command_node_async",
+      "category": "mapped",
+      "responsibility": "one structured command API with independent value representations"
+    },
+    {
+      "name": "mpv_abort_async_command",
+      "category": "ownedInternal",
+      "responsibility": "best-effort native abort after AbortSignal cancellation"
+    },
+    {
+      "name": "mpv_set_property",
+      "category": "mapped",
+      "responsibility": "setProperty with explicit input representation"
+    },
+    {
+      "name": "mpv_set_property_string",
+      "category": "mapped",
+      "responsibility": "setProperty with explicit input representation"
+    },
+    {
+      "name": "mpv_del_property",
+      "category": "mapped",
+      "responsibility": "structured del command"
+    },
+    {
+      "name": "mpv_set_property_async",
+      "category": "mapped",
+      "responsibility": "setProperty with explicit input representation"
+    },
+    {
+      "name": "mpv_get_property",
+      "category": "public",
+      "responsibility": "getProperty; complete low-level format selection remains a separate audit"
+    },
+    {
+      "name": "mpv_get_property_string",
+      "category": "public",
+      "responsibility": "getPropertyText plain or osd"
+    },
+    {
+      "name": "mpv_get_property_osd_string",
+      "category": "public",
+      "responsibility": "getPropertyText plain or osd"
+    },
+    {
+      "name": "mpv_get_property_async",
+      "category": "public",
+      "responsibility": "getProperty; complete low-level format selection remains a separate audit"
+    },
+    {
+      "name": "mpv_observe_property",
+      "category": "public",
+      "responsibility": "observeProperty; value-less notification mode remains a separate audit"
+    },
+    {
+      "name": "mpv_unobserve_property",
+      "category": "ownedInternal",
+      "responsibility": "independent subscription cleanup"
+    },
+    {
+      "name": "mpv_event_name",
+      "category": "ownedInternal",
+      "responsibility": "typed event name mapping"
+    },
+    {
+      "name": "mpv_event_to_node",
+      "category": "mapped",
+      "responsibility": "direct C event records preserve codes omitted by event_to_node"
+    },
+    {
+      "name": "mpv_request_event",
+      "category": "ownedInternal",
+      "responsibility": "event selection without disabling replies or core shutdown"
+    },
+    {
+      "name": "mpv_request_log_messages",
+      "category": "public",
+      "responsibility": "observeLogs and finite initializationLogs"
+    },
+    {
+      "name": "mpv_wait_event",
+      "category": "ownedInternal",
+      "responsibility": "native event pump and wakeup scheduling"
+    },
+    {
+      "name": "mpv_wakeup",
+      "category": "ownedInternal",
+      "responsibility": "native event pump and wakeup scheduling"
+    },
+    {
+      "name": "mpv_set_wakeup_callback",
+      "category": "ownedInternal",
+      "responsibility": "native event pump and wakeup scheduling"
+    },
+    {
+      "name": "mpv_wait_async_requests",
+      "category": "ownedInternal",
+      "responsibility": "cleanup after outstanding native requests"
+    },
+    {
+      "name": "mpv_hook_add",
+      "category": "proposal",
+      "responsibility": "addHook awaits task handlers; guarded native continuation stays private"
+    },
+    {
+      "name": "mpv_hook_continue",
+      "category": "proposal",
+      "responsibility": "addHook awaits task handlers; guarded native continuation stays private"
+    },
+    {
+      "name": "mpv_get_wakeup_pipe",
+      "category": "deprecated",
+      "responsibility": "Node uses wakeup integration; no borrowed raw file descriptor"
+    }
+  ],
+  "remaining": [
+    "low-level property formats",
+    "value-less property notifications",
+    "complete command/option/property catalogues",
+    "Stream CB interface",
+    "Render API and platform interoperability"
+  ]
+}

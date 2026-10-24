@@ -1,0 +1,1717 @@
+{
+  "scope": "Anonymous public read probes; first-page samples retain more flags and do not prove complete reverse relation enumeration.",
+  "requests": [
+    {
+      "key": "staff-vns",
+      "observedAt": "2026-10-13T04:58:54.210Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/vn",
+        "body": {
+          "filters": ["staff", "=", ["id", "=", "s81"]],
+          "fields": "title,staff{id,aid,eid,role},va{staff{id,aid},character{id}}",
+          "sort": "id",
+          "results": 1
+        }
+      },
+      "status": 200,
+      "response": {
+        "more": true,
+        "results": [
+          {
+            "id": "v11",
+            "staff": [
+              {
+                "aid": 34237,
+                "eid": 0,
+                "id": "s27646",
+                "role": "qa"
+              },
+              {
+                "aid": 34237,
+                "eid": 0,
+                "id": "s27646",
+                "role": "staff"
+              },
+              {
+                "aid": 34238,
+                "eid": 0,
+                "id": "s27647",
+                "role": "qa"
+              },
+              {
+                "aid": 34239,
+                "eid": 0,
+                "id": "s27648",
+                "role": "translator"
+              },
+              {
+                "aid": 34239,
+                "eid": 0,
+                "id": "s27648",
+                "role": "qa"
+              },
+              {
+                "aid": 34239,
+                "eid": 0,
+                "id": "s27648",
+                "role": "staff"
+              },
+              {
+                "aid": 34247,
+                "eid": 0,
+                "id": "s27656",
+                "role": "staff"
+              },
+              {
+                "aid": 34248,
+                "eid": 0,
+                "id": "s27657",
+                "role": "staff"
+              },
+              {
+                "aid": 34278,
+                "eid": 0,
+                "id": "s27683",
+                "role": "qa"
+              },
+              {
+                "aid": 34278,
+                "eid": 0,
+                "id": "s27683",
+                "role": "staff"
+              },
+              {
+                "aid": 34282,
+                "eid": 0,
+                "id": "s27687",
+                "role": "staff"
+              },
+              {
+                "aid": 34290,
+                "eid": 0,
+                "id": "s27693",
+                "role": "qa"
+              },
+              {
+                "aid": 34438,
+                "eid": 0,
+                "id": "s27826",
+                "role": "qa"
+              },
+              {
+                "aid": 34438,
+                "eid": 0,
+                "id": "s27826",
+                "role": "staff"
+              },
+              {
+                "aid": 34963,
+                "eid": 0,
+                "id": "s28283",
+                "role": "staff"
+              },
+              {
+                "aid": 34964,
+                "eid": 0,
+                "id": "s28284",
+                "role": "qa"
+              },
+              {
+                "aid": 34964,
+                "eid": 0,
+                "id": "s28284",
+                "role": "staff"
+              },
+              {
+                "aid": 34965,
+                "eid": 0,
+                "id": "s28285",
+                "role": "qa"
+              },
+              {
+                "aid": 34966,
+                "eid": 0,
+                "id": "s28286",
+                "role": "qa"
+              },
+              {
+                "aid": 34967,
+                "eid": 0,
+                "id": "s28287",
+                "role": "qa"
+              },
+              {
+                "aid": 34968,
+                "eid": 0,
+                "id": "s28288",
+                "role": "staff"
+              },
+              {
+                "aid": 34969,
+                "eid": 0,
+                "id": "s28289",
+                "role": "qa"
+              },
+              {
+                "aid": 34970,
+                "eid": 0,
+                "id": "s28290",
+                "role": "qa"
+              },
+              {
+                "aid": 34971,
+                "eid": 0,
+                "id": "s28291",
+                "role": "staff"
+              },
+              {
+                "aid": 34972,
+                "eid": 0,
+                "id": "s28292",
+                "role": "staff"
+              },
+              {
+                "aid": 34973,
+                "eid": 0,
+                "id": "s28293",
+                "role": "staff"
+              },
+              {
+                "aid": 34974,
+                "eid": 0,
+                "id": "s28294",
+                "role": "staff"
+              },
+              {
+                "aid": 1,
+                "eid": 1,
+                "id": "s1",
+                "role": "scenario"
+              },
+              {
+                "aid": 4,
+                "eid": 1,
+                "id": "s4",
+                "role": "scenario"
+              },
+              {
+                "aid": 376,
+                "eid": 1,
+                "id": "s215",
+                "role": "scenario"
+              },
+              {
+                "aid": 1456,
+                "eid": 1,
+                "id": "s822",
+                "role": "scenario"
+              },
+              {
+                "aid": 1552,
+                "eid": 1,
+                "id": "s873",
+                "role": "music"
+              },
+              {
+                "aid": 1562,
+                "eid": 1,
+                "id": "s881",
+                "role": "songs"
+              },
+              {
+                "aid": 15384,
+                "eid": 1,
+                "id": "s12182",
+                "role": "staff"
+              },
+              {
+                "aid": 48095,
+                "eid": 1,
+                "id": "s39345",
+                "role": "music"
+              },
+              {
+                "aid": 48096,
+                "eid": 1,
+                "id": "s39346",
+                "role": "music"
+              },
+              {
+                "aid": 48097,
+                "eid": 1,
+                "id": "s39347",
+                "role": "music"
+              },
+              {
+                "aid": 51384,
+                "eid": 1,
+                "id": "s42072",
+                "role": "staff"
+              },
+              {
+                "aid": 1542,
+                "eid": 2,
+                "id": "s866",
+                "role": "staff"
+              },
+              {
+                "aid": 1543,
+                "eid": 2,
+                "id": "s866",
+                "role": "music"
+              },
+              {
+                "aid": 1547,
+                "eid": 2,
+                "id": "s868",
+                "role": "music"
+              },
+              {
+                "aid": 1550,
+                "eid": 2,
+                "id": "s871",
+                "role": "music"
+              },
+              {
+                "aid": 1555,
+                "eid": 2,
+                "id": "s875",
+                "role": "songs"
+              },
+              {
+                "aid": 1566,
+                "eid": 2,
+                "id": "s883",
+                "role": "songs"
+              },
+              {
+                "aid": 1568,
+                "eid": 2,
+                "id": "s885",
+                "role": "songs"
+              },
+              {
+                "aid": 14988,
+                "eid": 2,
+                "id": "s11879",
+                "role": "staff"
+              },
+              {
+                "aid": 15083,
+                "eid": 2,
+                "id": "s11965",
+                "role": "staff"
+              },
+              {
+                "aid": 38998,
+                "eid": 2,
+                "id": "s5310",
+                "role": "music"
+              },
+              {
+                "aid": 55445,
+                "eid": 2,
+                "id": "s45443",
+                "role": "music"
+              },
+              {
+                "aid": 34575,
+                "eid": 3,
+                "id": "s27950",
+                "role": "translator"
+              },
+              {
+                "aid": 34575,
+                "eid": 3,
+                "id": "s27950",
+                "role": "qa"
+              },
+              {
+                "aid": 34575,
+                "eid": 3,
+                "id": "s27950",
+                "role": "staff"
+              },
+              {
+                "aid": 34577,
+                "eid": 3,
+                "id": "s27952",
+                "role": "qa"
+              },
+              {
+                "aid": 34577,
+                "eid": 3,
+                "id": "s27952",
+                "role": "staff"
+              },
+              {
+                "aid": 34578,
+                "eid": 3,
+                "id": "s27953",
+                "role": "qa"
+              },
+              {
+                "aid": 35005,
+                "eid": 3,
+                "id": "s28317",
+                "role": "qa"
+              },
+              {
+                "aid": 46982,
+                "eid": 3,
+                "id": "s38329",
+                "role": "staff"
+              },
+              {
+                "aid": 40195,
+                "eid": 4,
+                "id": "s32887",
+                "role": "qa"
+              },
+              {
+                "aid": 42447,
+                "eid": 4,
+                "id": "s34590",
+                "role": "staff"
+              },
+              {
+                "aid": 47631,
+                "eid": 4,
+                "id": "s38950",
+                "role": "translator"
+              },
+              {
+                "aid": 47632,
+                "eid": 4,
+                "id": "s38951",
+                "role": "editor"
+              },
+              {
+                "aid": 47633,
+                "eid": 4,
+                "id": "s38952",
+                "role": "staff"
+              },
+              {
+                "aid": 47634,
+                "eid": 4,
+                "id": "s38953",
+                "role": "qa"
+              },
+              {
+                "aid": 47635,
+                "eid": 4,
+                "id": "s38954",
+                "role": "qa"
+              },
+              {
+                "aid": 47636,
+                "eid": 4,
+                "id": "s38955",
+                "role": "qa"
+              },
+              {
+                "aid": 47637,
+                "eid": 4,
+                "id": "s38956",
+                "role": "qa"
+              },
+              {
+                "aid": 47638,
+                "eid": 4,
+                "id": "s38957",
+                "role": "qa"
+              },
+              {
+                "aid": 42472,
+                "eid": 5,
+                "id": "s34615",
+                "role": "staff"
+              },
+              {
+                "aid": 47831,
+                "eid": 5,
+                "id": "s39123",
+                "role": "staff"
+              },
+              {
+                "aid": 48099,
+                "eid": 5,
+                "id": "s39349",
+                "role": "director"
+              },
+              {
+                "aid": 48100,
+                "eid": 5,
+                "id": "s39350",
+                "role": "staff"
+              },
+              {
+                "aid": 48101,
+                "eid": 5,
+                "id": "s39351",
+                "role": "staff"
+              },
+              {
+                "aid": 48102,
+                "eid": 5,
+                "id": "s39352",
+                "role": "staff"
+              },
+              {
+                "aid": 48103,
+                "eid": 5,
+                "id": "s39353",
+                "role": "staff"
+              },
+              {
+                "aid": 48128,
+                "eid": 5,
+                "id": "s39378",
+                "role": "staff"
+              },
+              {
+                "aid": 62664,
+                "eid": 5,
+                "id": "s50932",
+                "role": "staff"
+              },
+              {
+                "aid": 47831,
+                "eid": 6,
+                "id": "s39123",
+                "role": "staff"
+              },
+              {
+                "aid": 32412,
+                "eid": 7,
+                "id": "s26171",
+                "role": "translator"
+              },
+              {
+                "aid": 32412,
+                "eid": 7,
+                "id": "s26171",
+                "role": "qa"
+              },
+              {
+                "aid": 39694,
+                "eid": 7,
+                "id": "s32449",
+                "role": "staff"
+              },
+              {
+                "aid": 47614,
+                "eid": 7,
+                "id": "s38935",
+                "role": "staff"
+              },
+              {
+                "aid": 47615,
+                "eid": 7,
+                "id": "s38936",
+                "role": "staff"
+              },
+              {
+                "aid": 47616,
+                "eid": 7,
+                "id": "s38937",
+                "role": "staff"
+              },
+              {
+                "aid": 47617,
+                "eid": 7,
+                "id": "s38938",
+                "role": "staff"
+              },
+              {
+                "aid": 47618,
+                "eid": 7,
+                "id": "s38939",
+                "role": "staff"
+              },
+              {
+                "aid": 47620,
+                "eid": 7,
+                "id": "s38941",
+                "role": "staff"
+              },
+              {
+                "aid": 47624,
+                "eid": 7,
+                "id": "s38945",
+                "role": "staff"
+              },
+              {
+                "aid": 48106,
+                "eid": 7,
+                "id": "s39356",
+                "role": "translator"
+              },
+              {
+                "aid": 48108,
+                "eid": 7,
+                "id": "s39358",
+                "role": "staff"
+              },
+              {
+                "aid": 48110,
+                "eid": 7,
+                "id": "s39360",
+                "role": "staff"
+              },
+              {
+                "aid": 48112,
+                "eid": 7,
+                "id": "s39362",
+                "role": "qa"
+              },
+              {
+                "aid": 48114,
+                "eid": 7,
+                "id": "s39364",
+                "role": "qa"
+              },
+              {
+                "aid": 48116,
+                "eid": 7,
+                "id": "s39366",
+                "role": "qa"
+              },
+              {
+                "aid": 48117,
+                "eid": 7,
+                "id": "s39367",
+                "role": "qa"
+              },
+              {
+                "aid": 48118,
+                "eid": 7,
+                "id": "s39368",
+                "role": "qa"
+              },
+              {
+                "aid": 48119,
+                "eid": 7,
+                "id": "s39369",
+                "role": "qa"
+              },
+              {
+                "aid": 48120,
+                "eid": 7,
+                "id": "s39370",
+                "role": "qa"
+              },
+              {
+                "aid": 48121,
+                "eid": 7,
+                "id": "s39371",
+                "role": "qa"
+              },
+              {
+                "aid": 48122,
+                "eid": 7,
+                "id": "s39372",
+                "role": "qa"
+              },
+              {
+                "aid": 48123,
+                "eid": 7,
+                "id": "s39373",
+                "role": "qa"
+              },
+              {
+                "aid": 48124,
+                "eid": 7,
+                "id": "s39374",
+                "role": "qa"
+              },
+              {
+                "aid": 32412,
+                "eid": 8,
+                "id": "s26171",
+                "role": "translator"
+              },
+              {
+                "aid": 32412,
+                "eid": 8,
+                "id": "s26171",
+                "role": "qa"
+              },
+              {
+                "aid": 47621,
+                "eid": 8,
+                "id": "s38942",
+                "role": "translator"
+              },
+              {
+                "aid": 48104,
+                "eid": 8,
+                "id": "s39354",
+                "role": "staff"
+              },
+              {
+                "aid": 48105,
+                "eid": 8,
+                "id": "s39355",
+                "role": "staff"
+              },
+              {
+                "aid": 48107,
+                "eid": 8,
+                "id": "s39357",
+                "role": "staff"
+              },
+              {
+                "aid": 48109,
+                "eid": 8,
+                "id": "s39359",
+                "role": "staff"
+              },
+              {
+                "aid": 48113,
+                "eid": 8,
+                "id": "s39363",
+                "role": "qa"
+              },
+              {
+                "aid": 48115,
+                "eid": 8,
+                "id": "s39365",
+                "role": "qa"
+              },
+              {
+                "aid": 48125,
+                "eid": 8,
+                "id": "s39375",
+                "role": "qa"
+              },
+              {
+                "aid": 48126,
+                "eid": 8,
+                "id": "s39376",
+                "role": "qa"
+              },
+              {
+                "aid": 48127,
+                "eid": 8,
+                "id": "s39377",
+                "role": "qa"
+              },
+              {
+                "aid": 42447,
+                "eid": 9,
+                "id": "s34590",
+                "role": "staff"
+              },
+              {
+                "aid": 42450,
+                "eid": 9,
+                "id": "s34593",
+                "role": "staff"
+              },
+              {
+                "aid": 42467,
+                "eid": 9,
+                "id": "s34610",
+                "role": "editor"
+              },
+              {
+                "aid": 42467,
+                "eid": 9,
+                "id": "s34610",
+                "role": "staff"
+              },
+              {
+                "aid": 47633,
+                "eid": 9,
+                "id": "s38952",
+                "role": "staff"
+              },
+              {
+                "aid": 54015,
+                "eid": 9,
+                "id": "s44327",
+                "role": "translator"
+              },
+              {
+                "aid": 54015,
+                "eid": 9,
+                "id": "s44327",
+                "role": "editor"
+              },
+              {
+                "aid": 54015,
+                "eid": 9,
+                "id": "s44327",
+                "role": "staff"
+              },
+              {
+                "aid": 54016,
+                "eid": 9,
+                "id": "s44328",
+                "role": "staff"
+              },
+              {
+                "aid": 54017,
+                "eid": 9,
+                "id": "s44329",
+                "role": "staff"
+              },
+              {
+                "aid": 54018,
+                "eid": 9,
+                "id": "s44330",
+                "role": "staff"
+              },
+              {
+                "aid": 54019,
+                "eid": 9,
+                "id": "s44331",
+                "role": "staff"
+              },
+              {
+                "aid": 54020,
+                "eid": 9,
+                "id": "s44332",
+                "role": "qa"
+              },
+              {
+                "aid": 54020,
+                "eid": 9,
+                "id": "s44332",
+                "role": "staff"
+              },
+              {
+                "aid": 54021,
+                "eid": 9,
+                "id": "s44333",
+                "role": "staff"
+              },
+              {
+                "aid": 54022,
+                "eid": 9,
+                "id": "s44334",
+                "role": "translator"
+              },
+              {
+                "aid": 54023,
+                "eid": 9,
+                "id": "s44335",
+                "role": "staff"
+              },
+              {
+                "aid": 54024,
+                "eid": 9,
+                "id": "s44336",
+                "role": "staff"
+              },
+              {
+                "aid": 54025,
+                "eid": 9,
+                "id": "s44337",
+                "role": "staff"
+              },
+              {
+                "aid": 54026,
+                "eid": 9,
+                "id": "s44338",
+                "role": "staff"
+              },
+              {
+                "aid": 54027,
+                "eid": 9,
+                "id": "s44339",
+                "role": "qa"
+              },
+              {
+                "aid": 54028,
+                "eid": 9,
+                "id": "s44340",
+                "role": "qa"
+              },
+              {
+                "aid": 54029,
+                "eid": 9,
+                "id": "s44341",
+                "role": "qa"
+              },
+              {
+                "aid": 54030,
+                "eid": 9,
+                "id": "s44342",
+                "role": "qa"
+              },
+              {
+                "aid": 54031,
+                "eid": 9,
+                "id": "s44343",
+                "role": "qa"
+              },
+              {
+                "aid": 54032,
+                "eid": 9,
+                "id": "s44344",
+                "role": "qa"
+              },
+              {
+                "aid": 54033,
+                "eid": 9,
+                "id": "s44345",
+                "role": "staff"
+              },
+              {
+                "aid": 54034,
+                "eid": 9,
+                "id": "s44346",
+                "role": "staff"
+              },
+              {
+                "aid": 54035,
+                "eid": 9,
+                "id": "s44347",
+                "role": "staff"
+              },
+              {
+                "aid": 54036,
+                "eid": 9,
+                "id": "s44348",
+                "role": "staff"
+              },
+              {
+                "aid": 54037,
+                "eid": 9,
+                "id": "s44349",
+                "role": "staff"
+              },
+              {
+                "aid": 54038,
+                "eid": 9,
+                "id": "s44350",
+                "role": "staff"
+              },
+              {
+                "aid": 51059,
+                "eid": 10,
+                "id": "s41804",
+                "role": "editor"
+              },
+              {
+                "aid": 51059,
+                "eid": 10,
+                "id": "s41804",
+                "role": "staff"
+              },
+              {
+                "aid": 51212,
+                "eid": 10,
+                "id": "s41923",
+                "role": "staff"
+              },
+              {
+                "aid": 56573,
+                "eid": 10,
+                "id": "s46188",
+                "role": "translator"
+              },
+              {
+                "aid": 56573,
+                "eid": 10,
+                "id": "s46188",
+                "role": "editor"
+              },
+              {
+                "aid": 56574,
+                "eid": 10,
+                "id": "s45989",
+                "role": "translator"
+              },
+              {
+                "aid": 56574,
+                "eid": 10,
+                "id": "s45989",
+                "role": "editor"
+              },
+              {
+                "aid": 56574,
+                "eid": 10,
+                "id": "s45989",
+                "role": "qa"
+              },
+              {
+                "aid": 56574,
+                "eid": 10,
+                "id": "s45989",
+                "role": "staff"
+              },
+              {
+                "aid": 56575,
+                "eid": 10,
+                "id": "s46189",
+                "role": "staff"
+              },
+              {
+                "aid": 56576,
+                "eid": 10,
+                "id": "s46190",
+                "role": "translator"
+              },
+              {
+                "aid": 56577,
+                "eid": 10,
+                "id": "s46191",
+                "role": "translator"
+              },
+              {
+                "aid": 56578,
+                "eid": 10,
+                "id": "s46192",
+                "role": "editor"
+              },
+              {
+                "aid": 56579,
+                "eid": 10,
+                "id": "s46193",
+                "role": "editor"
+              },
+              {
+                "aid": 56580,
+                "eid": 10,
+                "id": "s46194",
+                "role": "editor"
+              },
+              {
+                "aid": 56580,
+                "eid": 10,
+                "id": "s46194",
+                "role": "qa"
+              },
+              {
+                "aid": 56581,
+                "eid": 10,
+                "id": "s46195",
+                "role": "translator"
+              },
+              {
+                "aid": 56582,
+                "eid": 10,
+                "id": "s46196",
+                "role": "staff"
+              },
+              {
+                "aid": 56583,
+                "eid": 10,
+                "id": "s46197",
+                "role": "staff"
+              },
+              {
+                "aid": 63409,
+                "eid": 11,
+                "id": "s51468",
+                "role": "editor"
+              },
+              {
+                "aid": 63409,
+                "eid": 11,
+                "id": "s51468",
+                "role": "staff"
+              },
+              {
+                "aid": 63410,
+                "eid": 11,
+                "id": "s51469",
+                "role": "editor"
+              },
+              {
+                "aid": 63410,
+                "eid": 11,
+                "id": "s51469",
+                "role": "staff"
+              },
+              {
+                "aid": 63411,
+                "eid": 11,
+                "id": "s51470",
+                "role": "translator"
+              },
+              {
+                "aid": 63412,
+                "eid": 11,
+                "id": "s51471",
+                "role": "qa"
+              },
+              {
+                "aid": 63413,
+                "eid": 11,
+                "id": "s51472",
+                "role": "qa"
+              },
+              {
+                "aid": 63414,
+                "eid": 11,
+                "id": "s51473",
+                "role": "qa"
+              },
+              {
+                "aid": 63415,
+                "eid": 11,
+                "id": "s51474",
+                "role": "qa"
+              },
+              {
+                "aid": 63416,
+                "eid": 11,
+                "id": "s51475",
+                "role": "qa"
+              },
+              {
+                "aid": 63417,
+                "eid": 11,
+                "id": "s51476",
+                "role": "qa"
+              },
+              {
+                "aid": 63418,
+                "eid": 11,
+                "id": "s51477",
+                "role": "qa"
+              },
+              {
+                "aid": 63419,
+                "eid": 11,
+                "id": "s51478",
+                "role": "qa"
+              },
+              {
+                "aid": 63420,
+                "eid": 11,
+                "id": "s51479",
+                "role": "qa"
+              },
+              {
+                "aid": 63421,
+                "eid": 11,
+                "id": "s51480",
+                "role": "qa"
+              },
+              {
+                "aid": 63422,
+                "eid": 11,
+                "id": "s51481",
+                "role": "staff"
+              },
+              {
+                "aid": 1,
+                "eid": null,
+                "id": "s1",
+                "role": "staff"
+              },
+              {
+                "aid": 2,
+                "eid": null,
+                "id": "s2",
+                "role": "scenario"
+              },
+              {
+                "aid": 2,
+                "eid": null,
+                "id": "s2",
+                "role": "director"
+              },
+              {
+                "aid": 2,
+                "eid": null,
+                "id": "s2",
+                "role": "staff"
+              },
+              {
+                "aid": 142,
+                "eid": null,
+                "id": "s68",
+                "role": "chardesign"
+              },
+              {
+                "aid": 142,
+                "eid": null,
+                "id": "s68",
+                "role": "art"
+              },
+              {
+                "aid": 142,
+                "eid": null,
+                "id": "s68",
+                "role": "staff"
+              },
+              {
+                "aid": 376,
+                "eid": null,
+                "id": "s215",
+                "role": "staff"
+              },
+              {
+                "aid": 978,
+                "eid": null,
+                "id": "s521",
+                "role": "art"
+              },
+              {
+                "aid": 978,
+                "eid": null,
+                "id": "s521",
+                "role": "staff"
+              },
+              {
+                "aid": 1271,
+                "eid": null,
+                "id": "s715",
+                "role": "staff"
+              },
+              {
+                "aid": 1542,
+                "eid": null,
+                "id": "s866",
+                "role": "staff"
+              },
+              {
+                "aid": 1543,
+                "eid": null,
+                "id": "s866",
+                "role": "music"
+              },
+              {
+                "aid": 1550,
+                "eid": null,
+                "id": "s871",
+                "role": "music"
+              },
+              {
+                "aid": 1561,
+                "eid": null,
+                "id": "s880",
+                "role": "songs"
+              },
+              {
+                "aid": 1567,
+                "eid": null,
+                "id": "s884",
+                "role": "songs"
+              },
+              {
+                "aid": 6301,
+                "eid": null,
+                "id": "s4660",
+                "role": "staff"
+              },
+              {
+                "aid": 8991,
+                "eid": null,
+                "id": "s6920",
+                "role": "art"
+              },
+              {
+                "aid": 9562,
+                "eid": null,
+                "id": "s7426",
+                "role": "staff"
+              },
+              {
+                "aid": 12340,
+                "eid": null,
+                "id": "s721",
+                "role": "staff"
+              },
+              {
+                "aid": 13494,
+                "eid": null,
+                "id": "s10642",
+                "role": "art"
+              },
+              {
+                "aid": 13691,
+                "eid": null,
+                "id": "s10786",
+                "role": "staff"
+              },
+              {
+                "aid": 15082,
+                "eid": null,
+                "id": "s11964",
+                "role": "staff"
+              },
+              {
+                "aid": 15083,
+                "eid": null,
+                "id": "s11965",
+                "role": "staff"
+              },
+              {
+                "aid": 15110,
+                "eid": null,
+                "id": "s11989",
+                "role": "staff"
+              },
+              {
+                "aid": 25978,
+                "eid": null,
+                "id": "s68",
+                "role": "staff"
+              },
+              {
+                "aid": 28166,
+                "eid": null,
+                "id": "s22717",
+                "role": "staff"
+              },
+              {
+                "aid": 28168,
+                "eid": null,
+                "id": "s22719",
+                "role": "art"
+              },
+              {
+                "aid": 28168,
+                "eid": null,
+                "id": "s22719",
+                "role": "staff"
+              },
+              {
+                "aid": 38998,
+                "eid": null,
+                "id": "s5310",
+                "role": "music"
+              },
+              {
+                "aid": 38998,
+                "eid": null,
+                "id": "s5310",
+                "role": "staff"
+              },
+              {
+                "aid": 42471,
+                "eid": null,
+                "id": "s34614",
+                "role": "staff"
+              },
+              {
+                "aid": 42472,
+                "eid": null,
+                "id": "s34615",
+                "role": "staff"
+              },
+              {
+                "aid": 48090,
+                "eid": null,
+                "id": "s39340",
+                "role": "staff"
+              },
+              {
+                "aid": 48091,
+                "eid": null,
+                "id": "s39341",
+                "role": "staff"
+              },
+              {
+                "aid": 48092,
+                "eid": null,
+                "id": "s39342",
+                "role": "staff"
+              },
+              {
+                "aid": 48093,
+                "eid": null,
+                "id": "s39343",
+                "role": "art"
+              },
+              {
+                "aid": 48094,
+                "eid": null,
+                "id": "s39344",
+                "role": "art"
+              },
+              {
+                "aid": 48098,
+                "eid": null,
+                "id": "s39348",
+                "role": "staff"
+              },
+              {
+                "aid": 48130,
+                "eid": null,
+                "id": "s39380",
+                "role": "staff"
+              },
+              {
+                "aid": 48131,
+                "eid": null,
+                "id": "s39381",
+                "role": "staff"
+              },
+              {
+                "aid": 54934,
+                "eid": null,
+                "id": "s45064",
+                "role": "art"
+              },
+              {
+                "aid": 54935,
+                "eid": null,
+                "id": "s35633",
+                "role": "staff"
+              }
+            ],
+            "title": "Fate/stay night",
+            "va": [
+              {
+                "character": {
+                  "id": "c42"
+                },
+                "staff": {
+                  "aid": 32,
+                  "id": "s9"
+                }
+              },
+              {
+                "character": {
+                  "id": "c15"
+                },
+                "staff": {
+                  "aid": 55,
+                  "id": "s15"
+                }
+              },
+              {
+                "character": {
+                  "id": "c33"
+                },
+                "staff": {
+                  "aid": 57,
+                  "id": "s16"
+                }
+              },
+              {
+                "character": {
+                  "id": "c54"
+                },
+                "staff": {
+                  "aid": 57,
+                  "id": "s16"
+                }
+              },
+              {
+                "character": {
+                  "id": "c34"
+                },
+                "staff": {
+                  "aid": 58,
+                  "id": "s17"
+                }
+              },
+              {
+                "character": {
+                  "id": "c36"
+                },
+                "staff": {
+                  "aid": 137,
+                  "id": "s66"
+                }
+              },
+              {
+                "character": {
+                  "id": "c35"
+                },
+                "staff": {
+                  "aid": 145,
+                  "id": "s71"
+                }
+              },
+              {
+                "character": {
+                  "id": "c53"
+                },
+                "staff": {
+                  "aid": 145,
+                  "id": "s71"
+                }
+              },
+              {
+                "character": {
+                  "id": "c38"
+                },
+                "staff": {
+                  "aid": 150,
+                  "id": "s76"
+                }
+              },
+              {
+                "character": {
+                  "id": "c45"
+                },
+                "staff": {
+                  "aid": 154,
+                  "id": "s78"
+                }
+              },
+              {
+                "character": {
+                  "id": "c39"
+                },
+                "staff": {
+                  "aid": 158,
+                  "id": "s81"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41"
+                },
+                "staff": {
+                  "aid": 270,
+                  "id": "s132"
+                }
+              },
+              {
+                "character": {
+                  "id": "c47"
+                },
+                "staff": {
+                  "aid": 419,
+                  "id": "s249"
+                }
+              },
+              {
+                "character": {
+                  "id": "c49"
+                },
+                "staff": {
+                  "aid": 422,
+                  "id": "s252"
+                }
+              },
+              {
+                "character": {
+                  "id": "c50"
+                },
+                "staff": {
+                  "aid": 498,
+                  "id": "s294"
+                }
+              },
+              {
+                "character": {
+                  "id": "c37"
+                },
+                "staff": {
+                  "aid": 824,
+                  "id": "s440"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41606"
+                },
+                "staff": {
+                  "aid": 1403,
+                  "id": "s794"
+                }
+              },
+              {
+                "character": {
+                  "id": "c43"
+                },
+                "staff": {
+                  "aid": 1569,
+                  "id": "s886"
+                }
+              },
+              {
+                "character": {
+                  "id": "c48"
+                },
+                "staff": {
+                  "aid": 1570,
+                  "id": "s887"
+                }
+              },
+              {
+                "character": {
+                  "id": "c52"
+                },
+                "staff": {
+                  "aid": 1571,
+                  "id": "s888"
+                }
+              },
+              {
+                "character": {
+                  "id": "c44"
+                },
+                "staff": {
+                  "aid": 1572,
+                  "id": "s889"
+                }
+              },
+              {
+                "character": {
+                  "id": "c40"
+                },
+                "staff": {
+                  "aid": 1573,
+                  "id": "s890"
+                }
+              },
+              {
+                "character": {
+                  "id": "c55"
+                },
+                "staff": {
+                  "aid": 1573,
+                  "id": "s890"
+                }
+              },
+              {
+                "character": {
+                  "id": "c51"
+                },
+                "staff": {
+                  "aid": 1576,
+                  "id": "s892"
+                }
+              },
+              {
+                "character": {
+                  "id": "c96619"
+                },
+                "staff": {
+                  "aid": 3074,
+                  "id": "s1941"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41607"
+                },
+                "staff": {
+                  "aid": 4644,
+                  "id": "s3204"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41603"
+                },
+                "staff": {
+                  "aid": 5131,
+                  "id": "s3635"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41594"
+                },
+                "staff": {
+                  "aid": 6334,
+                  "id": "s4688"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41605"
+                },
+                "staff": {
+                  "aid": 10262,
+                  "id": "s7988"
+                }
+              },
+              {
+                "character": {
+                  "id": "c41602"
+                },
+                "staff": {
+                  "aid": 16317,
+                  "id": "s3415"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "producer-releases",
+      "observedAt": "2026-10-13T04:58:54.508Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/release",
+        "body": {
+          "filters": ["producer", "=", ["id", "=", "p15"]],
+          "fields": "title,vns{id,title},producers{id,developer,publisher}",
+          "sort": "id",
+          "results": 1
+        }
+      },
+      "status": 200,
+      "response": {
+        "more": true,
+        "results": [
+          {
+            "id": "r40",
+            "producers": [
+              {
+                "developer": true,
+                "id": "p15",
+                "publisher": true
+              }
+            ],
+            "title": "TRUE REMEMBRANCE-remake-",
+            "vns": [
+              {
+                "id": "v103",
+                "title": "TRUE REMEMBRANCE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "character-vns",
+      "observedAt": "2026-10-13T04:58:55.241Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.vndb.org/kana/character",
+        "body": {
+          "filters": ["id", "=", "c42"],
+          "fields": "name,vns{id,title,role,spoiler,release{id,official,languages{lang}}}",
+          "results": 1
+        }
+      },
+      "status": 200,
+      "response": {
+        "more": false,
+        "results": [
+          {
+            "id": "c42",
+            "name": "Kotomine Kirei",
+            "vns": [
+              {
+                "id": "v11",
+                "release": null,
+                "role": "primary",
+                "spoiler": 0,
+                "title": "Fate/stay night"
+              },
+              {
+                "id": "v50",
+                "release": null,
+                "role": "appears",
+                "spoiler": 2,
+                "title": "Fate/hollow ataraxia"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

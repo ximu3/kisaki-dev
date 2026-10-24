@@ -1,0 +1,459 @@
+{
+  "checkedOn": "2026-10-16",
+  "source": "TMDB",
+  "authenticatedApiTested": false,
+  "accountWritesPerformed": false,
+  "apiContract": {
+    "url": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+    "decodedBodySha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b",
+    "priorEvidence": "2026-10-15-public-contracts.json"
+  },
+  "requests": [
+    {
+      "id": "movie-primary",
+      "url": "https://www.themoviedb.org/bible/movie/59f3b16d9251414f20000001?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T04:17:16.689Z",
+      "bytes": 117451,
+      "sha256": "b82c05f137cb3b0b27d7a7a9a48ea2c00de28c398a058ae6830068afe7d3b571"
+    },
+    {
+      "id": "movie-release-dates",
+      "url": "https://www.themoviedb.org/bible/movie/59f3b16d9251414f20000009?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T04:17:16.739Z",
+      "bytes": 96881,
+      "sha256": "498d72a93a730cb24dce6814e0c94a9a4b1548b19382b9b3f1edcc8af3877110"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "/3/movie/{movie_id}",
+      "operationId": "movie-details",
+      "responseFields": [
+        "adult",
+        "backdrop_path",
+        "belongs_to_collection",
+        "budget",
+        "genres",
+        "homepage",
+        "id",
+        "imdb_id",
+        "origin_country",
+        "original_language",
+        "original_title",
+        "overview",
+        "popularity",
+        "poster_path",
+        "production_companies",
+        "production_countries",
+        "release_date",
+        "revenue",
+        "runtime",
+        "spoken_languages",
+        "status",
+        "tagline",
+        "title",
+        "video",
+        "vote_average",
+        "vote_count"
+      ],
+      "nestedFields": {
+        "belongs_to_collection": ["id", "name", "poster_path", "backdrop_path"],
+        "genres": ["id", "name"],
+        "production_companies": ["id", "logo_path", "name", "origin_country"],
+        "production_countries": ["iso_3166_1", "name"],
+        "spoken_languages": ["english_name", "iso_639_1", "name"]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/images",
+      "operationId": "movie-images",
+      "responseFields": ["backdrops", "id", "logos", "posters"],
+      "nestedFields": {
+        "backdrops": [
+          "aspect_ratio",
+          "height",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width"
+        ],
+        "logos": [
+          "aspect_ratio",
+          "height",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width"
+        ],
+        "posters": [
+          "aspect_ratio",
+          "height",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width"
+        ]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/keywords",
+      "operationId": "movie-keywords",
+      "responseFields": ["id", "keywords"],
+      "nestedFields": {
+        "keywords": ["id", "name"]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/release_dates",
+      "operationId": "movie-release-dates",
+      "responseFields": ["id", "results"],
+      "nestedFields": {
+        "results": ["iso_3166_1", "release_dates"]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/alternative_titles",
+      "operationId": "movie-alternative-titles",
+      "responseFields": ["id", "titles"],
+      "nestedFields": {
+        "titles": ["iso_3166_1", "title", "type"]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/translations",
+      "operationId": "movie-translations",
+      "responseFields": ["id", "translations"],
+      "nestedFields": {
+        "translations": ["iso_3166_1", "iso_639_1", "name", "english_name", "data"]
+      }
+    },
+    {
+      "path": "/3/movie/{movie_id}/external_ids",
+      "operationId": "movie-external-ids",
+      "responseFields": [
+        "id",
+        "imdb_id",
+        "wikidata_id",
+        "facebook_id",
+        "instagram_id",
+        "twitter_id"
+      ],
+      "nestedFields": {}
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}",
+      "operationId": "tv-season-details",
+      "responseFields": [
+        "_id",
+        "air_date",
+        "episodes",
+        "name",
+        "networks",
+        "overview",
+        "id",
+        "poster_path",
+        "season_number",
+        "vote_average"
+      ],
+      "nestedFields": {
+        "episodes": [
+          "air_date",
+          "episode_number",
+          "episode_type",
+          "id",
+          "name",
+          "overview",
+          "production_code",
+          "runtime",
+          "season_number",
+          "show_id",
+          "still_path",
+          "vote_average",
+          "vote_count",
+          "crew",
+          "guest_stars"
+        ],
+        "networks": ["id", "logo_path", "name", "origin_country"]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/images",
+      "operationId": "tv-season-images",
+      "responseFields": ["id", "posters"],
+      "nestedFields": {
+        "posters": [
+          "aspect_ratio",
+          "height",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width"
+        ]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/translations",
+      "operationId": "tv-season-translations",
+      "responseFields": ["id", "translations"],
+      "nestedFields": {
+        "translations": ["iso_3166_1", "iso_639_1", "name", "english_name", "data"]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/aggregate_credits",
+      "operationId": "tv-season-aggregate-credits",
+      "responseFields": ["cast", "crew", "id"],
+      "nestedFields": {
+        "cast": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "roles",
+          "total_episode_count",
+          "order"
+        ],
+        "crew": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "jobs",
+          "department",
+          "total_episode_count"
+        ]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}",
+      "operationId": "tv-episode-details",
+      "responseFields": [
+        "air_date",
+        "crew",
+        "episode_number",
+        "guest_stars",
+        "name",
+        "overview",
+        "id",
+        "production_code",
+        "runtime",
+        "season_number",
+        "still_path",
+        "vote_average",
+        "vote_count"
+      ],
+      "nestedFields": {
+        "crew": [
+          "department",
+          "job",
+          "credit_id",
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path"
+        ],
+        "guest_stars": [
+          "character",
+          "credit_id",
+          "order",
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path"
+        ]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/images",
+      "operationId": "tv-episode-images",
+      "responseFields": ["id", "stills"],
+      "nestedFields": {
+        "stills": [
+          "aspect_ratio",
+          "height",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width"
+        ]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/translations",
+      "operationId": "tv-episode-translations",
+      "responseFields": ["id", "translations"],
+      "nestedFields": {
+        "translations": ["iso_3166_1", "iso_639_1", "name", "english_name", "data"]
+      }
+    },
+    {
+      "path": "/3/credit/{credit_id}",
+      "operationId": "credit-details",
+      "responseFields": ["credit_type", "department", "job", "media", "media_type", "id", "person"],
+      "nestedFields": {
+        "media": [
+          "adult",
+          "backdrop_path",
+          "id",
+          "name",
+          "original_language",
+          "original_name",
+          "overview",
+          "poster_path",
+          "media_type",
+          "genre_ids",
+          "popularity",
+          "first_air_date",
+          "vote_average",
+          "vote_count",
+          "origin_country",
+          "character",
+          "episodes",
+          "seasons"
+        ],
+        "person": [
+          "adult",
+          "id",
+          "name",
+          "original_name",
+          "media_type",
+          "popularity",
+          "gender",
+          "known_for_department",
+          "profile_path"
+        ]
+      }
+    },
+    {
+      "path": "/3/person/{person_id}/combined_credits",
+      "operationId": "person-combined-credits",
+      "responseFields": ["cast", "crew", "id"],
+      "nestedFields": {
+        "cast": [
+          "adult",
+          "backdrop_path",
+          "genre_ids",
+          "id",
+          "original_language",
+          "original_title",
+          "overview",
+          "popularity",
+          "poster_path",
+          "release_date",
+          "title",
+          "video",
+          "vote_average",
+          "vote_count",
+          "character",
+          "credit_id",
+          "order",
+          "media_type"
+        ],
+        "crew": [
+          "adult",
+          "backdrop_path",
+          "genre_ids",
+          "id",
+          "original_language",
+          "original_title",
+          "overview",
+          "popularity",
+          "poster_path",
+          "release_date",
+          "title",
+          "video",
+          "vote_average",
+          "vote_count",
+          "credit_id",
+          "department",
+          "job",
+          "media_type"
+        ]
+      }
+    },
+    {
+      "path": "/3/discover/movie",
+      "operationId": "discover-movie",
+      "responseFields": ["page", "results", "total_pages", "total_results"],
+      "nestedFields": {
+        "results": [
+          "adult",
+          "backdrop_path",
+          "genre_ids",
+          "id",
+          "original_language",
+          "original_title",
+          "overview",
+          "popularity",
+          "poster_path",
+          "release_date",
+          "title",
+          "video",
+          "vote_average",
+          "vote_count"
+        ]
+      }
+    },
+    {
+      "path": "/3/discover/tv",
+      "operationId": "discover-tv",
+      "responseFields": ["page", "results", "total_pages", "total_results"],
+      "nestedFields": {
+        "results": [
+          "backdrop_path",
+          "first_air_date",
+          "genre_ids",
+          "id",
+          "name",
+          "origin_country",
+          "original_language",
+          "original_name",
+          "overview",
+          "popularity",
+          "poster_path",
+          "vote_average",
+          "vote_count"
+        ]
+      }
+    },
+    {
+      "path": "/3/configuration/jobs",
+      "operationId": "configuration-jobs",
+      "responseFields": [],
+      "nestedFields": {}
+    }
+  ],
+  "findings": {
+    "primaryReleaseDate": "TMDB chooses a primary date using a theatrical-first precedence, followed by premiere and other release types; it is not necessarily the earliest public release.",
+    "movieRuntime": "The contribution guide requests original runtime including credits, rounded up to whole minutes for each translation.",
+    "releasedStatus": "The guide says a bot changes a movie to Released four days before the world premiere; this is not a reliable direct mapping to native finished release status.",
+    "adultFlag": "The guide defines adult primarily for hardcore pornography, not all sensitive content.",
+    "creditScope": "Credit details can contain actual seasons with season_number and show_id. TV credits must be scoped before creating native season participation.",
+    "seasonAssets": "Season image responses contain posters only, while movie images have posters, backdrops and logos. Episode images contain stills.",
+    "collection": "Movie collection membership is not itself a typed sequel/prequel/remake relation."
+  },
+  "currentContract": "../../../design/extensions/sources/tmdb.md"
+}

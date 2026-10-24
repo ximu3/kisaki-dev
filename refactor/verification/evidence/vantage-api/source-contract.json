@@ -1,0 +1,111 @@
+{
+  "purpose": "source evidence for public values and operation semantics",
+  "designStatus": "public-values-confirmed",
+  "nativeAddonBuilt": false,
+  "vantageApiExecuted": false,
+  "windowBackendExecuted": false,
+  "captureExecuted": false,
+  "platformMatrixCompleted": false,
+  "sources": [
+    {
+      "name": "windows-open-process",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.037952+00:00",
+      "bytes": 56805,
+      "sha256": "631787698c5fa9368f38665a9f32057d5e71c4fb2ab7562dacddf7a7f0a7cb89",
+      "presentMarkers": ["OpenProcess", "dwDesiredAccess"]
+    },
+    {
+      "name": "windows-process-path",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-queryfullprocessimagenamew",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-queryfullprocessimagenamew",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:38.999526+00:00",
+      "bytes": 53365,
+      "sha256": "89d08ca1f854ae2b38c9db12c6d3424ac943b4f198f2ed9141c902f27c3de9e0",
+      "presentMarkers": ["QueryFullProcessImageNameW", "PROCESS_QUERY_LIMITED_INFORMATION"]
+    },
+    {
+      "name": "windows-foreground",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getforegroundwindow",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getforegroundwindow",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.009534+00:00",
+      "bytes": 51793,
+      "sha256": "b53a44b3e9ca0716ac647fd8e9a3a1ae3ed0331b75012b7f5044b6379bec2e71",
+      "presentMarkers": ["GetForegroundWindow", "NULL"]
+    },
+    {
+      "name": "windows-focus",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.049643+00:00",
+      "bytes": 55325,
+      "sha256": "cc8ca03854c420c450c45e890a3e42eee53f8bafd71bf710ea09d474ece2ead7",
+      "presentMarkers": ["SetForegroundWindow", "restric"]
+    },
+    {
+      "name": "windows-terminate",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.378283+00:00",
+      "bytes": 54843,
+      "sha256": "ae2452d8263c525fa2d279b4251ab185247de91b18d679efbb3083856dd7b028",
+      "presentMarkers": ["TerminateProcess", "asynchronous"]
+    },
+    {
+      "name": "windows-close",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/winmsg/wm-close",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/winmsg/wm-close",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.376058+00:00",
+      "bytes": 49532,
+      "sha256": "fab7addfb9605c7e98702211333ad99594155c51e5930b5fc4618ecc5d0f6b6f",
+      "presentMarkers": ["WM_CLOSE", "confirmation"]
+    },
+    {
+      "name": "linux-pidfd",
+      "url": "https://man7.org/linux/man-pages/man2/pidfd_open.2.html",
+      "finalUrl": "https://man7.org/linux/man-pages/man2/pidfd_open.2.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:40.246993+00:00",
+      "bytes": 18141,
+      "sha256": "d34301a2f18869b774ad5c5dc3ef0e93988b903deb13bdc41cbbd60bce9c5bab",
+      "presentMarkers": ["pidfd_open", "PIDFD_NONBLOCK"]
+    },
+    {
+      "name": "linux-comm",
+      "url": "https://man7.org/linux/man-pages/man5/proc_pid_comm.5.html",
+      "finalUrl": "https://man7.org/linux/man-pages/man5/proc_pid_comm.5.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:40.095568+00:00",
+      "bytes": 7866,
+      "sha256": "31e04c6a114f24a1146d38174edb40ef20f7c84c0d17a8604adb036b3479d4b2",
+      "presentMarkers": ["TASK_COMM_LEN", "truncated"]
+    },
+    {
+      "name": "macos-foreground",
+      "url": "https://developer.apple.com/documentation/appkit/nsworkspace/frontmostapplication.md",
+      "finalUrl": "https://developer.apple.com/documentation/appkit/nsworkspace/frontmostapplication.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.891891+00:00",
+      "bytes": 963,
+      "sha256": "dedd70aeffde6c6136491378539d8f32f099d1ac77480bdd027166c8aebcafbe",
+      "presentMarkers": ["frontmostApplication", "NSRunningApplication"]
+    },
+    {
+      "name": "macos-executable",
+      "url": "https://developer.apple.com/documentation/appkit/nsrunningapplication/executableurl.md",
+      "finalUrl": "https://developer.apple.com/documentation/appkit/nsrunningapplication/executableurl.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T14:05:39.898013+00:00",
+      "bytes": 770,
+      "sha256": "0afcec061a229a55d5118e6d31f671cb0bd93d39ca7bbb2dd3c26c7650fceff9",
+      "presentMarkers": ["executableURL", "URL?"]
+    }
+  ]
+}

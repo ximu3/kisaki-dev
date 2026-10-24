@@ -1,0 +1,37 @@
+[
+  {
+    "configuration": "tsconfig.extension-host.json",
+    "files": 7,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.main.json",
+    "files": 18,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.preload.json",
+    "files": 11,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.renderer.json",
+    "files": 12,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.shared.json",
+    "files": 6,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.tests.json",
+    "files": 23,
+    "sourceCoveragePreserved": true
+  },
+  {
+    "configuration": "tsconfig.tools.json",
+    "files": 37,
+    "sourceCoveragePreserved": true
+  }
+]

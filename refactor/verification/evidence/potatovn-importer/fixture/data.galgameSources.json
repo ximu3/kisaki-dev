@@ -1,0 +1,152 @@
+[
+  {
+    "Id": "20000000-0000-0000-0000-000000000201",
+    "Name": "Synthetic local library A",
+    "SourceType": 1,
+    "Path": "C:\\Synthetic Library A",
+    "ImagePath": ".\\Images\\library.png",
+    "Galgames": [
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000101",
+        "Galgame": "20000000-0000-0000-0000-000000000001",
+        "Path": "C:\\Synthetic Library A\\One",
+        "LocalConfig": {
+          "ExePath": "C:\\Synthetic Library A\\One\\game.exe",
+          "ExeArguments": "--label \"A & B\" 100%",
+          "ProcessName": "synthetic-game",
+          "TextPath": null,
+          "RunAsAdmin": false,
+          "RunInLocaleEmulator": false,
+          "HighDpi": false,
+          "DetectedSavePath": {
+            "Mapping": {
+              "Root": "C:\\Synthetic Library A\\One",
+              "Tag": "%GameRoot%"
+            },
+            "ParsedPath": "%GameRoot%\\save"
+          },
+          "SavePath": null,
+          "LastSuccessfulLaunchTime": "0001-01-01T00:00:00"
+        }
+      },
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000102",
+        "Galgame": "20000000-0000-0000-0000-000000000002",
+        "Path": "C:\\Synthetic Library A\\Two",
+        "LocalConfig": {
+          "ExePath": "C:\\Synthetic Library A\\Two\\game.exe",
+          "ExeArguments": null,
+          "ProcessName": null,
+          "TextPath": null,
+          "RunAsAdmin": false,
+          "RunInLocaleEmulator": false,
+          "HighDpi": false,
+          "DetectedSavePath": null,
+          "SavePath": "C:\\Synthetic Cloud\\Two",
+          "LastSuccessfulLaunchTime": "2025-07-04T18:00:00"
+        }
+      }
+    ],
+    "SortOrder": 0,
+    "SaveMetaBackup": true
+  },
+  {
+    "Id": "20000000-0000-0000-0000-000000000202",
+    "Name": "Synthetic local library B",
+    "SourceType": 1,
+    "Path": "D:\\Synthetic Library B",
+    "Galgames": [
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000103",
+        "Galgame": "20000000-0000-0000-0000-000000000002",
+        "Path": "D:\\Synthetic Library B\\Two",
+        "LocalConfig": {
+          "ExePath": "D:\\Synthetic Library B\\Two\\launcher.exe",
+          "ExeArguments": "all arguments in one item",
+          "ProcessName": "synthetic-two",
+          "TextPath": null,
+          "RunAsAdmin": true,
+          "RunInLocaleEmulator": false,
+          "HighDpi": false,
+          "DetectedSavePath": null,
+          "SavePath": null,
+          "LastSuccessfulLaunchTime": "0001-01-01T00:00:00"
+        }
+      },
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000104",
+        "Galgame": "20000000-0000-0000-0000-000000000003",
+        "Path": "D:\\Synthetic Library B\\Three",
+        "LocalConfig": {
+          "ExePath": "D:\\Synthetic Library B\\Three\\game.exe",
+          "ExeArguments": "not used in Locale Emulator mode",
+          "ProcessName": null,
+          "TextPath": null,
+          "RunAsAdmin": false,
+          "RunInLocaleEmulator": true,
+          "HighDpi": false,
+          "DetectedSavePath": null,
+          "SavePath": null,
+          "LastSuccessfulLaunchTime": "0001-01-01T00:00:00"
+        }
+      }
+    ],
+    "SortOrder": 1
+  },
+  {
+    "Id": "20000000-0000-0000-0000-000000000203",
+    "Name": "Synthetic archive library",
+    "SourceType": 2,
+    "Path": "C:\\Synthetic Archives",
+    "Galgames": [
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000105",
+        "Galgame": "20000000-0000-0000-0000-000000000004",
+        "Path": "C:\\Synthetic Archives\\Four.7z",
+        "LocalConfig": null
+      }
+    ],
+    "SortOrder": 2
+  },
+  {
+    "Id": "20000000-0000-0000-0000-000000000204",
+    "Name": "Steam",
+    "SourceType": 4,
+    "Path": "E:\\Synthetic Steam\\steamapps",
+    "Galgames": [
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000106",
+        "Galgame": "20000000-0000-0000-0000-000000000005",
+        "Path": "E:\\Synthetic Steam\\steamapps\\common\\Five",
+        "LocalConfig": {
+          "ExePath": null,
+          "ExeArguments": null,
+          "ProcessName": "synthetic-steam",
+          "TextPath": null,
+          "RunAsAdmin": false,
+          "RunInLocaleEmulator": false,
+          "HighDpi": false,
+          "DetectedSavePath": null,
+          "SavePath": null,
+          "LastSuccessfulLaunchTime": "0001-01-01T00:00:00"
+        }
+      }
+    ],
+    "SortOrder": 3
+  },
+  {
+    "Id": "20000000-0000-0000-0000-000000000205",
+    "Name": "Synthetic virtual library",
+    "SourceType": 3,
+    "Path": "synthetic-virtual",
+    "Galgames": [
+      {
+        "EntryId": "20000000-0000-0000-0000-000000000107",
+        "Galgame": "20000000-0000-0000-0000-000000000006",
+        "Path": "",
+        "LocalConfig": null
+      }
+    ],
+    "SortOrder": 4
+  }
+]

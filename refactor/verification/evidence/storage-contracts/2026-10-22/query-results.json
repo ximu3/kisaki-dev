@@ -1,0 +1,3577 @@
+{
+  "runtime": {
+    "electron": "41.2.0",
+    "node": "24.14.0",
+    "modules": "145",
+    "platform": "win32",
+    "arch": "x64",
+    "osRelease": "10.0.19045",
+    "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics        ",
+    "logicalCores": 32,
+    "memoryGiB": 31.176,
+    "betterSqlite3": "12.11.1",
+    "drizzleOrm": "0.45.2",
+    "journalMode": "wal",
+    "synchronous": "full",
+    "sqlite": "3.53.2"
+  },
+  "sampleCount": 31,
+  "results": [
+    {
+      "counts": {
+        "entries": 1000,
+        "entryTags": 8000,
+        "personWorks": 2288,
+        "collectionMembers": 333
+      },
+      "queries": [
+        {
+          "name": "novel-far-range",
+          "firstReadMs": 0.897,
+          "medianMs": 0.037,
+          "p95Ms": 0.043,
+          "maxMs": 0.05,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 62,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            }
+          ]
+        },
+        {
+          "name": "same-relation-filter",
+          "firstReadMs": 0.389,
+          "medianMs": 0.26,
+          "p95Ms": 0.266,
+          "maxMs": 0.267,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 47,
+              "detail": "SEARCH p USING COVERING INDEX person_works_matching (work_id=? AND role=? AND character_id<?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-union-range",
+          "firstReadMs": 0.97,
+          "medianMs": 0.672,
+          "p95Ms": 0.722,
+          "maxMs": 0.731,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 36,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 40,
+              "parent": 36,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 53,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 55,
+              "parent": 53,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 56,
+              "parent": 55,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 59,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 67,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 69,
+              "parent": 67,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 77,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 79,
+              "parent": 77,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 99,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 103,
+              "parent": 99,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 123,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-range",
+          "firstReadMs": 0.681,
+          "medianMs": 0.65,
+          "p95Ms": 0.669,
+          "maxMs": 0.694,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            },
+            {
+              "id": 56,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 60,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 75,
+              "parent": 73,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 76,
+              "parent": 75,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 79,
+              "parent": 76,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 97,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 99,
+              "parent": 97,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 107,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 109,
+              "parent": 107,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 119,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 4"
+            },
+            {
+              "id": 123,
+              "parent": 119,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "cjk-substring-range",
+          "firstReadMs": 0.194,
+          "medianMs": 0.172,
+          "p95Ms": 0.288,
+          "maxMs": 0.3,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-window",
+          "firstReadMs": 1.187,
+          "medianMs": 1.055,
+          "p95Ms": 1.082,
+          "maxMs": 1.105,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-10)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 37,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 41,
+              "parent": 37,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 54,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 56,
+              "parent": 54,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 57,
+              "parent": 56,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 60,
+              "parent": 57,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 68,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 78,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 80,
+              "parent": 78,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 88,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 90,
+              "parent": 88,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 100,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 104,
+              "parent": 100,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 120,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 135,
+              "parent": 2,
+              "notused": 67,
+              "detail": "SCAN (subquery-10)"
+            },
+            {
+              "id": 172,
+              "parent": 0,
+              "notused": 67,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-rank",
+          "firstReadMs": 1.073,
+          "medianMs": 1.057,
+          "p95Ms": 1.099,
+          "maxMs": 1.129,
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MULTI-INDEX OR"
+            },
+            {
+              "id": 6,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 1"
+            },
+            {
+              "id": 37,
+              "parent": 6,
+              "notused": 71,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key<?)"
+            },
+            {
+              "id": 43,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 2"
+            },
+            {
+              "id": 63,
+              "parent": 43,
+              "notused": 70,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key=? AND id<?)"
+            },
+            {
+              "id": 93,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 97,
+              "parent": 93,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 110,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 112,
+              "parent": 110,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 113,
+              "parent": 112,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 116,
+              "parent": 113,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 124,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 126,
+              "parent": 124,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 134,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 136,
+              "parent": 134,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 144,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 146,
+              "parent": 144,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 156,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 160,
+              "parent": 156,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-indexed-set-range",
+          "firstReadMs": 0.293,
+          "medianMs": 0.193,
+          "p95Ms": 0.208,
+          "maxMs": 0.266,
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 13,
+              "parent": 11,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 15,
+              "parent": 13,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 19,
+              "parent": 15,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 24,
+              "parent": 15,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 51,
+              "parent": 15,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 60,
+              "parent": 13,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 61,
+              "parent": 60,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 63,
+              "parent": 61,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 64,
+              "parent": 63,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 66,
+              "parent": 64,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 70,
+              "parent": 66,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 74,
+              "parent": 66,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 85,
+              "parent": 64,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 89,
+              "parent": 85,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 93,
+              "parent": 85,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 127,
+              "parent": 61,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 128,
+              "parent": 127,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 130,
+              "parent": 128,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 134,
+              "parent": 130,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 138,
+              "parent": 130,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 149,
+              "parent": 128,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 153,
+              "parent": 149,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 157,
+              "parent": 149,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 263,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-indexed-set-range",
+          "firstReadMs": 0.576,
+          "medianMs": 0.492,
+          "p95Ms": 0.513,
+          "maxMs": 0.543,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 3"
+            },
+            {
+              "id": 17,
+              "parent": 14,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 19,
+              "parent": 17,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 23,
+              "parent": 19,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 28,
+              "parent": 19,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 55,
+              "parent": 19,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 64,
+              "parent": 17,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 68,
+              "parent": 67,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 74,
+              "parent": 70,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 78,
+              "parent": 70,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 89,
+              "parent": 68,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 93,
+              "parent": 89,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 97,
+              "parent": 89,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 132,
+              "parent": 131,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 134,
+              "parent": 132,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 138,
+              "parent": 134,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 142,
+              "parent": 134,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 153,
+              "parent": 132,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 157,
+              "parent": 153,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 161,
+              "parent": 153,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 225,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 235,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 270,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 274,
+              "parent": 270,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-set",
+          "firstReadMs": 0.348,
+          "medianMs": 0.297,
+          "p95Ms": 0.321,
+          "maxMs": 0.337,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-9)"
+            },
+            {
+              "id": 8,
+              "parent": 5,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 12,
+              "parent": 5,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 14,
+              "parent": 12,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 16,
+              "parent": 14,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 20,
+              "parent": 16,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 25,
+              "parent": 16,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 52,
+              "parent": 16,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 61,
+              "parent": 14,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 62,
+              "parent": 61,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 64,
+              "parent": 62,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 71,
+              "parent": 67,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 75,
+              "parent": 67,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 86,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 90,
+              "parent": 86,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 94,
+              "parent": 86,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 128,
+              "parent": 62,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 129,
+              "parent": 128,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 131,
+              "parent": 129,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 135,
+              "parent": 131,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 139,
+              "parent": 131,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 150,
+              "parent": 129,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 154,
+              "parent": 150,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 158,
+              "parent": 150,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 260,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 275,
+              "parent": 2,
+              "notused": 61,
+              "detail": "SCAN (subquery-9)"
+            },
+            {
+              "id": 312,
+              "parent": 0,
+              "notused": 61,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "partial-date-json-range",
+          "firstReadMs": 0.897,
+          "medianMs": 0.615,
+          "p95Ms": 0.637,
+          "maxMs": 0.65,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE work_dates"
+            },
+            {
+              "id": 3,
+              "parent": 2,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 4,
+              "parent": 3,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 6,
+              "parent": 4,
+              "notused": 216,
+              "detail": "SCAN games"
+            },
+            {
+              "id": 21,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 23,
+              "parent": 21,
+              "notused": 216,
+              "detail": "SCAN animes"
+            },
+            {
+              "id": 38,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 40,
+              "parent": 38,
+              "notused": 216,
+              "detail": "SCAN comics"
+            },
+            {
+              "id": 55,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 57,
+              "parent": 55,
+              "notused": 216,
+              "detail": "SCAN novels"
+            },
+            {
+              "id": 79,
+              "parent": 0,
+              "notused": 216,
+              "detail": "SCAN e"
+            },
+            {
+              "id": 85,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON d (entry_id=?)"
+            },
+            {
+              "id": 102,
+              "parent": 0,
+              "notused": 54,
+              "detail": "SEARCH d USING AUTOMATIC PARTIAL COVERING INDEX (entry_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        }
+      ],
+      "atomicAdoption": {
+        "rollbackBeforeHandled": true,
+        "commitTogether": true,
+        "multipleCreateRollback": true
+      },
+      "eventLoop": {
+        "resolutionMs": 10,
+        "p95Ms": 20.021,
+        "maxMs": 20.021
+      },
+      "backgroundWrites": 35,
+      "eventLoopQueries": [
+        "novel-far-range",
+        "same-relation-filter",
+        "cjk-substring-range",
+        "dynamic-indexed-set-range",
+        "unclassified-indexed-set-range",
+        "dynamic-locate-indexed-set",
+        "partial-date-json-range"
+      ]
+    },
+    {
+      "counts": {
+        "entries": 10000,
+        "entryTags": 80000,
+        "personWorks": 22864,
+        "collectionMembers": 3333
+      },
+      "queries": [
+        {
+          "name": "novel-far-range",
+          "firstReadMs": 2.201,
+          "medianMs": 0.382,
+          "p95Ms": 0.405,
+          "maxMs": 0.407,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 62,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            }
+          ]
+        },
+        {
+          "name": "same-relation-filter",
+          "firstReadMs": 4.043,
+          "medianMs": 2.934,
+          "p95Ms": 2.954,
+          "maxMs": 2.964,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 47,
+              "detail": "SEARCH p USING COVERING INDEX person_works_matching (work_id=? AND role=? AND character_id<?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-union-range",
+          "firstReadMs": 12.614,
+          "medianMs": 9.414,
+          "p95Ms": 9.462,
+          "maxMs": 9.466,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 36,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 40,
+              "parent": 36,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 53,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 55,
+              "parent": 53,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 56,
+              "parent": 55,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 59,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 67,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 69,
+              "parent": 67,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 77,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 79,
+              "parent": 77,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 99,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 103,
+              "parent": 99,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 123,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-range",
+          "firstReadMs": 9.011,
+          "medianMs": 8.727,
+          "p95Ms": 8.764,
+          "maxMs": 8.871,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            },
+            {
+              "id": 56,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 60,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 75,
+              "parent": 73,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 76,
+              "parent": 75,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 79,
+              "parent": 76,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 97,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 99,
+              "parent": 97,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 107,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 109,
+              "parent": 107,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 119,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 4"
+            },
+            {
+              "id": 123,
+              "parent": 119,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "cjk-substring-range",
+          "firstReadMs": 2.066,
+          "medianMs": 2.059,
+          "p95Ms": 2.086,
+          "maxMs": 2.124,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-window",
+          "firstReadMs": 14.556,
+          "medianMs": 14.21,
+          "p95Ms": 14.321,
+          "maxMs": 14.33,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-10)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 37,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 41,
+              "parent": 37,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 54,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 56,
+              "parent": 54,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 57,
+              "parent": 56,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 60,
+              "parent": 57,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 68,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 78,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 80,
+              "parent": 78,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 88,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 90,
+              "parent": 88,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 100,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 104,
+              "parent": 100,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 120,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 135,
+              "parent": 2,
+              "notused": 67,
+              "detail": "SCAN (subquery-10)"
+            },
+            {
+              "id": 172,
+              "parent": 0,
+              "notused": 67,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-rank",
+          "firstReadMs": 14.366,
+          "medianMs": 14.37,
+          "p95Ms": 14.425,
+          "maxMs": 14.465,
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MULTI-INDEX OR"
+            },
+            {
+              "id": 6,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 1"
+            },
+            {
+              "id": 37,
+              "parent": 6,
+              "notused": 71,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key<?)"
+            },
+            {
+              "id": 43,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 2"
+            },
+            {
+              "id": 63,
+              "parent": 43,
+              "notused": 70,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key=? AND id<?)"
+            },
+            {
+              "id": 93,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 97,
+              "parent": 93,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 110,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 112,
+              "parent": 110,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 113,
+              "parent": 112,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 116,
+              "parent": 113,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 124,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 126,
+              "parent": 124,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 134,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 136,
+              "parent": 134,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 144,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 146,
+              "parent": 144,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 156,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 160,
+              "parent": 156,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-indexed-set-range",
+          "firstReadMs": 1.178,
+          "medianMs": 0.919,
+          "p95Ms": 0.968,
+          "maxMs": 1.107,
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 13,
+              "parent": 11,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 15,
+              "parent": 13,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 19,
+              "parent": 15,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 24,
+              "parent": 15,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 51,
+              "parent": 15,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 60,
+              "parent": 13,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 61,
+              "parent": 60,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 63,
+              "parent": 61,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 64,
+              "parent": 63,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 66,
+              "parent": 64,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 70,
+              "parent": 66,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 74,
+              "parent": 66,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 85,
+              "parent": 64,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 89,
+              "parent": 85,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 93,
+              "parent": 85,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 127,
+              "parent": 61,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 128,
+              "parent": 127,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 130,
+              "parent": 128,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 134,
+              "parent": 130,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 138,
+              "parent": 130,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 149,
+              "parent": 128,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 153,
+              "parent": 149,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 157,
+              "parent": 149,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 263,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-indexed-set-range",
+          "firstReadMs": 5.489,
+          "medianMs": 5.491,
+          "p95Ms": 5.543,
+          "maxMs": 5.555,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 3"
+            },
+            {
+              "id": 17,
+              "parent": 14,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 19,
+              "parent": 17,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 23,
+              "parent": 19,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 28,
+              "parent": 19,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 55,
+              "parent": 19,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 64,
+              "parent": 17,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 68,
+              "parent": 67,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 74,
+              "parent": 70,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 78,
+              "parent": 70,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 89,
+              "parent": 68,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 93,
+              "parent": 89,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 97,
+              "parent": 89,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 132,
+              "parent": 131,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 134,
+              "parent": 132,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 138,
+              "parent": 134,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 142,
+              "parent": 134,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 153,
+              "parent": 132,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 157,
+              "parent": 153,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 161,
+              "parent": 153,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 225,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 235,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 270,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 274,
+              "parent": 270,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-set",
+          "firstReadMs": 1.573,
+          "medianMs": 1.449,
+          "p95Ms": 1.493,
+          "maxMs": 1.498,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-9)"
+            },
+            {
+              "id": 8,
+              "parent": 5,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 12,
+              "parent": 5,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 14,
+              "parent": 12,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 16,
+              "parent": 14,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 20,
+              "parent": 16,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 25,
+              "parent": 16,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 52,
+              "parent": 16,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 61,
+              "parent": 14,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 62,
+              "parent": 61,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 64,
+              "parent": 62,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 71,
+              "parent": 67,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 75,
+              "parent": 67,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 86,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 90,
+              "parent": 86,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 94,
+              "parent": 86,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 128,
+              "parent": 62,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 129,
+              "parent": 128,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 131,
+              "parent": 129,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 135,
+              "parent": 131,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 139,
+              "parent": 131,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 150,
+              "parent": 129,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 154,
+              "parent": 150,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 158,
+              "parent": 150,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 260,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 275,
+              "parent": 2,
+              "notused": 61,
+              "detail": "SCAN (subquery-9)"
+            },
+            {
+              "id": 312,
+              "parent": 0,
+              "notused": 61,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "partial-date-json-range",
+          "firstReadMs": 7.077,
+          "medianMs": 6.57,
+          "p95Ms": 6.608,
+          "maxMs": 6.677,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE work_dates"
+            },
+            {
+              "id": 3,
+              "parent": 2,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 4,
+              "parent": 3,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 6,
+              "parent": 4,
+              "notused": 216,
+              "detail": "SCAN games"
+            },
+            {
+              "id": 21,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 23,
+              "parent": 21,
+              "notused": 216,
+              "detail": "SCAN animes"
+            },
+            {
+              "id": 38,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 40,
+              "parent": 38,
+              "notused": 216,
+              "detail": "SCAN comics"
+            },
+            {
+              "id": 55,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 57,
+              "parent": 55,
+              "notused": 216,
+              "detail": "SCAN novels"
+            },
+            {
+              "id": 79,
+              "parent": 0,
+              "notused": 216,
+              "detail": "SCAN e"
+            },
+            {
+              "id": 85,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON d (entry_id=?)"
+            },
+            {
+              "id": 102,
+              "parent": 0,
+              "notused": 54,
+              "detail": "SEARCH d USING AUTOMATIC PARTIAL COVERING INDEX (entry_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        }
+      ],
+      "atomicAdoption": {
+        "rollbackBeforeHandled": true,
+        "commitTogether": true,
+        "multipleCreateRollback": true
+      },
+      "eventLoop": {
+        "resolutionMs": 10,
+        "p95Ms": 17.056,
+        "maxMs": 17.203
+      },
+      "backgroundWrites": 35,
+      "eventLoopQueries": [
+        "novel-far-range",
+        "same-relation-filter",
+        "cjk-substring-range",
+        "dynamic-indexed-set-range",
+        "unclassified-indexed-set-range",
+        "dynamic-locate-indexed-set",
+        "partial-date-json-range"
+      ]
+    },
+    {
+      "counts": {
+        "entries": 50000,
+        "entryTags": 400000,
+        "personWorks": 114288,
+        "collectionMembers": 16666
+      },
+      "queries": [
+        {
+          "name": "novel-far-range",
+          "firstReadMs": 12.585,
+          "medianMs": 2.489,
+          "p95Ms": 2.504,
+          "maxMs": 2.539,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 62,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            }
+          ]
+        },
+        {
+          "name": "same-relation-filter",
+          "firstReadMs": 25.521,
+          "medianMs": 19.407,
+          "p95Ms": 19.99,
+          "maxMs": 20.72,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 47,
+              "detail": "SEARCH p USING COVERING INDEX person_works_matching (work_id=? AND role=? AND character_id<?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-union-range",
+          "firstReadMs": 72.172,
+          "medianMs": 54.534,
+          "p95Ms": 57.569,
+          "maxMs": 58.816,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 36,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 40,
+              "parent": 36,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 53,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 55,
+              "parent": 53,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 56,
+              "parent": 55,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 59,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 67,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 69,
+              "parent": 67,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 77,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 79,
+              "parent": 77,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 55,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 99,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 103,
+              "parent": 99,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 123,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-range",
+          "firstReadMs": 52.028,
+          "medianMs": 49.477,
+          "p95Ms": 51.184,
+          "maxMs": 51.323,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 18,
+              "parent": 14,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            },
+            {
+              "id": 56,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 60,
+              "parent": 56,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 75,
+              "parent": 73,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 76,
+              "parent": 75,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 79,
+              "parent": 76,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 87,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 89,
+              "parent": 87,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 97,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 99,
+              "parent": 97,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 107,
+              "parent": 75,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 109,
+              "parent": 107,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 119,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 4"
+            },
+            {
+              "id": 123,
+              "parent": 119,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "cjk-substring-range",
+          "firstReadMs": 12.709,
+          "medianMs": 12.266,
+          "p95Ms": 13.28,
+          "maxMs": 13.484,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-window",
+          "firstReadMs": 87.528,
+          "medianMs": 84.203,
+          "p95Ms": 87.835,
+          "maxMs": 91.35,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-10)"
+            },
+            {
+              "id": 9,
+              "parent": 5,
+              "notused": 82,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=?)"
+            },
+            {
+              "id": 37,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 41,
+              "parent": 37,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 54,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 56,
+              "parent": 54,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 57,
+              "parent": 56,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 60,
+              "parent": 57,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 68,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 78,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 80,
+              "parent": 78,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 88,
+              "parent": 56,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 90,
+              "parent": 88,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 100,
+              "parent": 5,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 104,
+              "parent": 100,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 120,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 135,
+              "parent": 2,
+              "notused": 67,
+              "detail": "SCAN (subquery-10)"
+            },
+            {
+              "id": 172,
+              "parent": 0,
+              "notused": 67,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-rank",
+          "firstReadMs": 83.551,
+          "medianMs": 84.068,
+          "p95Ms": 86.709,
+          "maxMs": 87.011,
+          "plan": [
+            {
+              "id": 5,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MULTI-INDEX OR"
+            },
+            {
+              "id": 6,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 1"
+            },
+            {
+              "id": 37,
+              "parent": 6,
+              "notused": 71,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key<?)"
+            },
+            {
+              "id": 43,
+              "parent": 5,
+              "notused": 0,
+              "detail": "INDEX 2"
+            },
+            {
+              "id": 63,
+              "parent": 43,
+              "notused": 70,
+              "detail": "SEARCH e USING INDEX entries_type_order (type=? AND sort_key=? AND id<?)"
+            },
+            {
+              "id": 93,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 97,
+              "parent": 93,
+              "notused": 33,
+              "detail": "SEARCH v USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 110,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 112,
+              "parent": 110,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 113,
+              "parent": 112,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 116,
+              "parent": 113,
+              "notused": 33,
+              "detail": "SEARCH game_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 124,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 126,
+              "parent": 124,
+              "notused": 33,
+              "detail": "SEARCH anime_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 134,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 136,
+              "parent": 134,
+              "notused": 33,
+              "detail": "SEARCH comic_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 144,
+              "parent": 112,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 146,
+              "parent": 144,
+              "notused": 33,
+              "detail": "SEARCH novel_records USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 156,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 3"
+            },
+            {
+              "id": 160,
+              "parent": 156,
+              "notused": 39,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-indexed-set-range",
+          "firstReadMs": 6.243,
+          "medianMs": 5.433,
+          "p95Ms": 5.479,
+          "maxMs": 5.648,
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 11,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 13,
+              "parent": 11,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 15,
+              "parent": 13,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 19,
+              "parent": 15,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 24,
+              "parent": 15,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 51,
+              "parent": 15,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 60,
+              "parent": 13,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 61,
+              "parent": 60,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 63,
+              "parent": 61,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 64,
+              "parent": 63,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 66,
+              "parent": 64,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 70,
+              "parent": 66,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 74,
+              "parent": 66,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 85,
+              "parent": 64,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 89,
+              "parent": 85,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 93,
+              "parent": 85,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 127,
+              "parent": 61,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 128,
+              "parent": 127,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 130,
+              "parent": 128,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 134,
+              "parent": 130,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 138,
+              "parent": 130,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 149,
+              "parent": 128,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 153,
+              "parent": 149,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 157,
+              "parent": 149,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 263,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "name": "unclassified-indexed-set-range",
+          "firstReadMs": 34.1,
+          "medianMs": 32.511,
+          "p95Ms": 34.107,
+          "maxMs": 34.777,
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 224,
+              "detail": "SCAN e USING INDEX entries_order"
+            },
+            {
+              "id": 14,
+              "parent": 0,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 3"
+            },
+            {
+              "id": 17,
+              "parent": 14,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 19,
+              "parent": 17,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 23,
+              "parent": 19,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 28,
+              "parent": 19,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 55,
+              "parent": 19,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 64,
+              "parent": 17,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 68,
+              "parent": 67,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 70,
+              "parent": 68,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 74,
+              "parent": 70,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 78,
+              "parent": 70,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 89,
+              "parent": 68,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 93,
+              "parent": 89,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 97,
+              "parent": 89,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 132,
+              "parent": 131,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 134,
+              "parent": 132,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 138,
+              "parent": 134,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 142,
+              "parent": 134,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 153,
+              "parent": 132,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 157,
+              "parent": 153,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 161,
+              "parent": 153,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 225,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 235,
+              "parent": 17,
+              "notused": 0,
+              "detail": "CREATE BLOOM FILTER"
+            },
+            {
+              "id": 270,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 1"
+            },
+            {
+              "id": 274,
+              "parent": 270,
+              "notused": 55,
+              "detail": "SEARCH m USING COVERING INDEX members_reverse (entry_id=?)"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-locate-indexed-set",
+          "firstReadMs": 9.274,
+          "medianMs": 8.499,
+          "p95Ms": 9.096,
+          "maxMs": 9.133,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 5,
+              "parent": 2,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-9)"
+            },
+            {
+              "id": 8,
+              "parent": 5,
+              "notused": 91,
+              "detail": "SEARCH e USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 12,
+              "parent": 5,
+              "notused": 0,
+              "detail": "LIST SUBQUERY 2"
+            },
+            {
+              "id": 14,
+              "parent": 12,
+              "notused": 0,
+              "detail": "MERGE (UNION)"
+            },
+            {
+              "id": 16,
+              "parent": 14,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 20,
+              "parent": 16,
+              "notused": 48,
+              "detail": "SEARCH v USING COVERING INDEX evaluation_candidates (favorite=? AND rating>?)"
+            },
+            {
+              "id": 25,
+              "parent": 16,
+              "notused": 45,
+              "detail": "SEARCH w USING INTEGER PRIMARY KEY (rowid=?)"
+            },
+            {
+              "id": 52,
+              "parent": 16,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 61,
+              "parent": 14,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 62,
+              "parent": 61,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 64,
+              "parent": 62,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 65,
+              "parent": 64,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 67,
+              "parent": 65,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 71,
+              "parent": 67,
+              "notused": 56,
+              "detail": "SEARCH game_records USING COVERING INDEX game_status (status=?)"
+            },
+            {
+              "id": 75,
+              "parent": 67,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 86,
+              "parent": 65,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 90,
+              "parent": 86,
+              "notused": 56,
+              "detail": "SEARCH anime_records USING COVERING INDEX anime_status (status=?)"
+            },
+            {
+              "id": 94,
+              "parent": 86,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 128,
+              "parent": 62,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 129,
+              "parent": 128,
+              "notused": 0,
+              "detail": "MERGE (UNION ALL)"
+            },
+            {
+              "id": 131,
+              "parent": 129,
+              "notused": 0,
+              "detail": "LEFT"
+            },
+            {
+              "id": 135,
+              "parent": 131,
+              "notused": 56,
+              "detail": "SEARCH comic_records USING COVERING INDEX comic_status (status=?)"
+            },
+            {
+              "id": 139,
+              "parent": 131,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 150,
+              "parent": 129,
+              "notused": 0,
+              "detail": "RIGHT"
+            },
+            {
+              "id": 154,
+              "parent": 150,
+              "notused": 56,
+              "detail": "SEARCH novel_records USING COVERING INDEX novel_status (status=?)"
+            },
+            {
+              "id": 158,
+              "parent": 150,
+              "notused": 45,
+              "detail": "SEARCH t USING COVERING INDEX sqlite_autoindex_entry_tags_1 (entry_id=? AND tag_id=?)"
+            },
+            {
+              "id": 260,
+              "parent": 5,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 275,
+              "parent": 2,
+              "notused": 61,
+              "detail": "SCAN (subquery-9)"
+            },
+            {
+              "id": 312,
+              "parent": 0,
+              "notused": 61,
+              "detail": "SCAN ranked"
+            }
+          ]
+        },
+        {
+          "name": "partial-date-json-range",
+          "firstReadMs": 36.089,
+          "medianMs": 33.918,
+          "p95Ms": 34.319,
+          "maxMs": 34.635,
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE work_dates"
+            },
+            {
+              "id": 3,
+              "parent": 2,
+              "notused": 0,
+              "detail": "COMPOUND QUERY"
+            },
+            {
+              "id": 4,
+              "parent": 3,
+              "notused": 0,
+              "detail": "LEFT-MOST SUBQUERY"
+            },
+            {
+              "id": 6,
+              "parent": 4,
+              "notused": 216,
+              "detail": "SCAN games"
+            },
+            {
+              "id": 21,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 23,
+              "parent": 21,
+              "notused": 216,
+              "detail": "SCAN animes"
+            },
+            {
+              "id": 38,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 40,
+              "parent": 38,
+              "notused": 216,
+              "detail": "SCAN comics"
+            },
+            {
+              "id": 55,
+              "parent": 3,
+              "notused": 0,
+              "detail": "UNION ALL"
+            },
+            {
+              "id": 57,
+              "parent": 55,
+              "notused": 216,
+              "detail": "SCAN novels"
+            },
+            {
+              "id": 79,
+              "parent": 0,
+              "notused": 216,
+              "detail": "SCAN e"
+            },
+            {
+              "id": 85,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON d (entry_id=?)"
+            },
+            {
+              "id": 102,
+              "parent": 0,
+              "notused": 54,
+              "detail": "SEARCH d USING AUTOMATIC PARTIAL COVERING INDEX (entry_id=?)"
+            },
+            {
+              "id": 131,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        }
+      ],
+      "atomicAdoption": {
+        "rollbackBeforeHandled": true,
+        "commitTogether": true,
+        "multipleCreateRollback": true
+      },
+      "eventLoop": {
+        "resolutionMs": 10,
+        "p95Ms": 37.388,
+        "maxMs": 47.383
+      },
+      "backgroundWrites": 35,
+      "eventLoopQueries": [
+        "novel-far-range",
+        "same-relation-filter",
+        "cjk-substring-range",
+        "dynamic-indexed-set-range",
+        "unclassified-indexed-set-range",
+        "dynamic-locate-indexed-set",
+        "partial-date-json-range"
+      ]
+    }
+  ],
+  "scope": "Synthetic representative SQL shapes; current driver/runtime, not the full schema or Drizzle 1.x integration"
+}

@@ -1,0 +1,160 @@
+{
+  "evidenceClass": "cumulative-duration-proposal-model",
+  "scope": "Shared Work additional duration, Koodo book totals and Mihon chapter totals",
+  "productionApiExecuted": false,
+  "passed": 33,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Koodo recorded seconds convert exactly to milliseconds",
+      "passed": true
+    },
+    {
+      "name": "Explicit zero remains an adoptable duration",
+      "passed": true
+    },
+    {
+      "name": "Fractional source seconds are rejected",
+      "passed": true
+    },
+    {
+      "name": "Negative source seconds are rejected",
+      "passed": true
+    },
+    {
+      "name": "Boolean is not coerced into a duration",
+      "passed": true
+    },
+    {
+      "name": "Unit conversion must remain a safe integer",
+      "passed": true
+    },
+    {
+      "name": "Missing source bucket remains unknown",
+      "passed": true
+    },
+    {
+      "name": "Overlapping daily view is not added to the cumulative value",
+      "passed": true
+    },
+    {
+      "name": "Selected books mapped to one Work are aggregated before adoption",
+      "passed": true
+    },
+    {
+      "name": "Repeated identical source key contributes only once",
+      "passed": true
+    },
+    {
+      "name": "Conflicting duplicate source key blocks the duration",
+      "passed": true
+    },
+    {
+      "name": "Conflicting target for one source key is not silently chosen",
+      "passed": true
+    },
+    {
+      "name": "Aggregation overflow is rejected",
+      "passed": true
+    },
+    {
+      "name": "Existing additional duration is preserved by default",
+      "passed": true
+    },
+    {
+      "name": "Source ten hours minus three hours of activity sets seven hours",
+      "passed": true
+    },
+    {
+      "name": "Old additional value is replaced rather than incremented",
+      "passed": true
+    },
+    {
+      "name": "Repeated explicit adoption does not add another source total",
+      "passed": true
+    },
+    {
+      "name": "New activity after adoption remains independently counted",
+      "passed": true
+    },
+    {
+      "name": "New explicit adoption uses its new activity baseline",
+      "passed": true
+    },
+    {
+      "name": "Smaller source total preserves records instead of clamping",
+      "passed": true
+    },
+    {
+      "name": "Explicit zero may clear an additional value when no activity exists",
+      "passed": true
+    },
+    {
+      "name": "Unknown source total cannot clear the existing value",
+      "passed": true
+    },
+    {
+      "name": "Changed additional baseline reports conflict",
+      "passed": true
+    },
+    {
+      "name": "New Work adopts a total as its initial additional duration",
+      "passed": true
+    },
+    {
+      "name": "State, completions and resume position are unaffected",
+      "passed": true
+    },
+    {
+      "name": "Preparing adoption does not mutate its input record",
+      "passed": true
+    },
+    {
+      "name": "Mihon chapter totals retain their source millisecond unit",
+      "passed": true
+    },
+    {
+      "name": "Cleared last-read date does not discard cumulative time",
+      "passed": true
+    },
+    {
+      "name": "Repeated chapter history is not counted twice",
+      "passed": true
+    },
+    {
+      "name": "Both declared Mihon and Tachiyomi models expose readDuration",
+      "passed": true
+    },
+    {
+      "name": "64-bit duration above the native safe range is rejected",
+      "passed": true
+    },
+    {
+      "name": "Absent history supplies no inferred zero total",
+      "passed": true
+    },
+    {
+      "name": "All synthetic source inputs remain unchanged",
+      "passed": true
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "koodo-importer/fixtures/library/config/config.json",
+      "sha256": "bf65b3b25fa0da3a97b72ea3e95f3b2d203b3e1e1581091f165c6b5350f75295"
+    },
+    {
+      "path": "mihon-importer/fixture-data.json",
+      "sha256": "f6c2f412e5f35b72d45c96db2ef89704363b5b6613092ba8d80b17fdf3b2f4c1"
+    },
+    {
+      "path": "mihon-importer/source-fields.json",
+      "sha256": "6782cb966155e068ae5b476eb7b9d1b88ff4d04c092d0b4d0ee67ed6a8eb93c5"
+    }
+  ],
+  "limits": [
+    "These are explicit adoption models, not production database operations.",
+    "Existing SQLite, protobuf and PDF probes remain separate evidence.",
+    "UI, concurrent persistence and all four native Work branches require implementation acceptance."
+  ]
+}

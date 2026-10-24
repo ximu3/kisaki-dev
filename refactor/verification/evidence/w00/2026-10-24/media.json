@@ -1,0 +1,28 @@
+{
+  "target": "windows-x64",
+  "record": {
+    "tool": "ffprobe",
+    "version": "9.0.2",
+    "revision": 3,
+    "url": "https://github.com/ximu3/kisaki/releases/download/media-ffprobe-9.0.2-r3/ffprobe-9.0.2-r3-windows-x64.tar.gz",
+    "sha256": "94612aac90b8fbe3183ba1fb37469ff14cc5511a3557378eae0bd2926ba53b7a",
+    "files": {
+      "LICENSE": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+      "build.json": "367775a77e96b12d978ec6f10aa9a1f59d57c08a23ee94cb4e27cbcbd6116c5e",
+      "compiler-NOTICES": "bb12abe809c37226b14038c6aafe5db720f11b837010f4facf55ce6c039ef659",
+      "ffmpeg-source.tar.gz": "84960df915059e8754fef2cd7c9afeb614062b1b5458ec471eecee619ee04e98",
+      "ffprobe.exe": "c2aeb457fa04d86744d91dd226fc11ab7fdbc4e9ad2cfe74a5275019c185f9c4"
+    }
+  },
+  "runs": [
+    {
+      "directory": ".cache/media-build/windows-x64-dEzeAE",
+      "archiveSha256": "94612aac90b8fbe3183ba1fb37469ff14cc5511a3557378eae0bd2926ba53b7a"
+    },
+    {
+      "directory": ".cache/media-build/windows-x64-Wkug3p",
+      "archiveSha256": "94612aac90b8fbe3183ba1fb37469ff14cc5511a3557378eae0bd2926ba53b7a"
+    }
+  ],
+  "remoteStored": false
+}

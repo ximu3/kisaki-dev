@@ -1,0 +1,47 @@
+{
+  "observedOn": "2026-10-24",
+  "method": "Read-only GitHub connector reads and official repository pages; no source code executed and no dataset payload or account data consumed.",
+  "repositories": [
+    {
+      "name": "Anime-Lists/anime-lists",
+      "ref": "master",
+      "commit": "9ed90bf804bb24d58c99ea653e095194df494b52"
+    },
+    {
+      "name": "manami-project/anime-offline-database",
+      "ref": "master",
+      "commit": "96da26358c8e599a9c076818aee247c68cb69401",
+      "archived": true,
+      "metadataUrl": "https://api.github.com/repos/manami-project/anime-offline-database"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "Anime-Lists/anime-lists",
+      "commit": "9ed90bf804bb24d58c99ea653e095194df494b52",
+      "path": "README.md",
+      "gitBlobSha": "50a5d8ad22a716f98958f6506c4937ab3f96b59d",
+      "url": "https://github.com/Anime-Lists/anime-lists/blob/9ed90bf804bb24d58c99ea653e095194df494b52/README.md"
+    },
+    {
+      "repository": "manami-project/anime-offline-database",
+      "commit": "96da26358c8e599a9c076818aee247c68cb69401",
+      "path": "README.md",
+      "gitBlobSha": "9a46aa65c87546da00b8e8f75ccb76370787ee0c",
+      "url": "https://github.com/manami-project/anime-offline-database/blob/96da26358c8e599a9c076818aee247c68cb69401/README.md"
+    },
+    {
+      "repository": "manami-project/anime-offline-database",
+      "commit": "96da26358c8e599a9c076818aee247c68cb69401",
+      "path": "schemas/anime-offline-database-minified.schema.json",
+      "gitBlobSha": "e2fc495efe489a9ed161e78f79290699b6020ed6",
+      "url": "https://github.com/manami-project/anime-offline-database/blob/96da26358c8e599a9c076818aee247c68cb69401/schemas/anime-offline-database-minified.schema.json"
+    }
+  ],
+  "scope": {
+    "sourceContractsReviewed": true,
+    "datasetEntriesParsed": false,
+    "bangumiEpisodeMappingVerified": false,
+    "formalProviderExecuted": false
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "synthetic": true,
+  "sourceFamily": "Koodo v2.4.6 SQLite backup and note/highlight exports",
+  "pdf": {
+    "pageCount": 3,
+    "cropBox": [20, 30, 280, 210],
+    "rotations": [0, 90, 270],
+    "userUnits": [1, 1, 2],
+    "rectangles": [
+      [40, 170, 130, 155],
+      [40, 145, 150, 130]
+    ]
+  },
+  "files": [
+    {
+      "path": "fixtures/backup.zip",
+      "bytes": 7114,
+      "sha256": "3d8bb7b15ce647b50b1c479f7b663876a770af54f6808019a6f044d42bd90506"
+    },
+    {
+      "path": "fixtures/exports/batch-csv.zip",
+      "bytes": 1777,
+      "sha256": "58d1bac743abaf088e4bfc025acf7618d7ff8582d027e3cf352ca2c1eb333012"
+    },
+    {
+      "path": "fixtures/exports/batch-json.zip",
+      "bytes": 1868,
+      "sha256": "8c94e64a2d8062480f728638ce75cfe8fb1d95346dfc1e52c5748b5767b8c219"
+    },
+    {
+      "path": "fixtures/exports/highlights.csv",
+      "bytes": 1803,
+      "sha256": "424fbdb8d184f3e5655eacf29ff614fa9b7576f412220dc87fb0cab9b215061c"
+    },
+    {
+      "path": "fixtures/exports/highlights.json",
+      "bytes": 2406,
+      "sha256": "27538317afacf9510239f49a67986b0bcd377c84429e35fcd55f4052734d6100"
+    },
+    {
+      "path": "fixtures/exports/notes.csv",
+      "bytes": 1919,
+      "sha256": "d31f35d51085e4428a8045697ac17082e970a744ff343ac9f61d567209bf14c1"
+    },
+    {
+      "path": "fixtures/exports/notes.json",
+      "bytes": 2549,
+      "sha256": "016e9e2536301b1b6dea4be523cdd8dbab7cb97653ee22009fac4ea2f4f04ae3"
+    },
+    {
+      "path": "fixtures/invalid/annotation-sentinel.json",
+      "bytes": 59,
+      "sha256": "8279f8d41350363c69c278be58eabf37ffd8194b55eaf6992471be80001138f6"
+    },
+    {
+      "path": "fixtures/invalid/comic-collation-tie.cbz",
+      "bytes": 386,
+      "sha256": "7e0e81d288a651a65af4162a1a859d53a185a3023a0380a37b44bb71424948ea"
+    },
+    {
+      "path": "fixtures/invalid/malformed-config.json",
+      "bytes": 28,
+      "sha256": "bbed3b36d7f6d483f4f7e4dcf69e6b65eb8f55a1e3b8ca0196c99cdcf49e8c6d"
+    },
+    {
+      "path": "fixtures/invalid/multiple-roots.zip",
+      "bytes": 7306,
+      "sha256": "8d0da972b3b73bb8c58d0cf69e610c6b656ac0949b2574c7f133135f6fb385b8"
+    },
+    {
+      "path": "fixtures/invalid/old-json-backup.zip",
+      "bytes": 136,
+      "sha256": "9e51925e33e210960eb80be87129dab7e08e63a5dbd357ed1296def9a29821a8"
+    },
+    {
+      "path": "fixtures/invalid/path-traversal.zip",
+      "bytes": 146,
+      "sha256": "e1b7045ba56e0078f8ef5bf82c8deb1e2e6a4e26c9f0f1823e113412beea8457"
+    },
+    {
+      "path": "fixtures/library/book/12.epub",
+      "bytes": 1632,
+      "sha256": "1958e2b9b200aeb445606b3876f6184cd228c55bd26df25acfc719f2940de935"
+    },
+    {
+      "path": "fixtures/library/book/comic-book.cbz",
+      "bytes": 976,
+      "sha256": "136e43a8421b2299d757baf9dc4e00f7d0bcae2cafbbe5f895b3ba6f559e5e2d"
+    },
+    {
+      "path": "fixtures/library/book/pdf-book.pdf",
+      "bytes": 2065,
+      "sha256": "fc8fba6982d97b6c9c3e0dde3a9dc25ba80413846ab63fdf710004ce2b401209"
+    },
+    {
+      "path": "fixtures/library/config/bookmarks.db",
+      "bytes": 12288,
+      "sha256": "aa09cfb1a65de50ee2d4e8286233fae2c85dc8d142f246840548560362f73bea"
+    },
+    {
+      "path": "fixtures/library/config/books.db",
+      "bytes": 12288,
+      "sha256": "34a9c6e3ceb037113e8abaaf8dd97a10016ed0a67102b3c47afe68ad93a8a00a"
+    },
+    {
+      "path": "fixtures/library/config/config.json",
+      "bytes": 1267,
+      "sha256": "bf65b3b25fa0da3a97b72ea3e95f3b2d203b3e1e1581091f165c6b5350f75295"
+    },
+    {
+      "path": "fixtures/library/config/notes.db",
+      "bytes": 12288,
+      "sha256": "9bad4b694dbf489824a2d43842558220f953b744c08db6abdc65ff38ec442e53"
+    },
+    {
+      "path": "fixtures/library/config/words.db",
+      "bytes": 12288,
+      "sha256": "324d0eb43720f86da86ecf2f427ee94c88db0d9744b7bb75235b36a21ce93b63"
+    },
+    {
+      "path": "fixtures/library/cover/12.png",
+      "bytes": 124,
+      "sha256": "086a30c2591d1b30eeaa2941ab0c8b9a56b20c6b845d593be6364a941f0a32c7"
+    },
+    {
+      "path": "fixtures/library/cover/123.png",
+      "bytes": 124,
+      "sha256": "88535a432794894ca8cbb3f22882cd8004c609b3192e18bf0f14efd5ca9a859b"
+    }
+  ]
+}

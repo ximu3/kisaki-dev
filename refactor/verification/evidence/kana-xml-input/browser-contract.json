@@ -1,0 +1,5070 @@
+{
+  "checkedAt": "2026-10-19T17:07:36.907Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "externalRequests": 0,
+  "readerImplementationExecuted": false,
+  "comparison": {
+    "saxes": {
+      "comparisons": 72,
+      "matched": 57,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": 1
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": 17
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": 4096
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 1
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 17
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": 4096
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "©",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "©",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "©",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": 4096
+        }
+      ]
+    },
+    "xmldom": {
+      "comparisons": 24,
+      "matched": 15,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [["urn:x\u001fq", "2"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": null
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A\u0000B",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "ParseError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "©",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        }
+      ]
+    },
+    "fast-xml-parser-default": {
+      "comparisons": 24,
+      "matched": 8,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": " A&#65;&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A\nB\nC&#13;D",
+          "rootAttributes": [["a", "A\nB&#13;C"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A<em>inside</em>B",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "left&missing;right",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": ["a"],
+          "chunk": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [
+            ["urn:x\u001fq", "1"],
+            ["urn:x\u001fq", "2"]
+          ],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": null
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "AB",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "&#128;",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "undefined-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "&missing;",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "recursive-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "&a;",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A&nbsp;B&copy;C&NotEqualTilde;",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A&nbsp;B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A&nbsp;B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        }
+      ]
+    },
+    "fast-xml-parser-configured": {
+      "comparisons": 24,
+      "matched": 12,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A\nB\rC"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A<em>inside</em>B",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": false,
+          "matchesSourceContract": false,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "left&missing;right",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": ["a"],
+          "chunk": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [
+            ["urn:x\u001fq", "1"],
+            ["urn:x\u001fq", "2"]
+          ],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": null
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "undefined-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "&missing;",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "recursive-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "&a;",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "Error",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A&nbsp;B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "A&nbsp;B",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        }
+      ]
+    },
+    "expat": {
+      "comparisons": 72,
+      "matched": 72,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "AinsideB",
+          "rootAttributes": [],
+          "directElementNames": ["em"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "AinsideB",
+          "rootAttributes": [],
+          "directElementNames": ["em"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "AinsideB",
+          "rootAttributes": [],
+          "directElementNames": ["em"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "inside",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "inside",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "inside",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [["a", "A B"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [["a", "A B"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [["a", "A B"]],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 2,
+          "nativeError": 21,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 2,
+          "nativeError": 21,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 2,
+          "nativeError": 21,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 1
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 17
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 4096
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 1
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 17
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 4096
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 1
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 17
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 4096
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 27,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 27,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 27,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 8,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 8,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 8,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 14,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 14,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 14,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 12,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 12,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 12,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 7,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 7,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 7,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 0,
+          "nativeError": 11,
+          "catalogUses": 0,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": null,
+          "failure": 3,
+          "nativeError": 35,
+          "catalogUses": 0,
+          "skippedSubsets": 1,
+          "chunk": 4096
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 1
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 17
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "catalogUses": 1,
+          "skippedSubsets": 0,
+          "chunk": 4096
+        }
+      ]
+    },
+    "native-dom": {
+      "comparisons": 24,
+      "matched": 19,
+      "observations": [
+        {
+          "name": "characters-and-whitespace",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": " AA&B ",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "line-end-and-attribute-normalization",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A\nB\nC\rD",
+          "rootAttributes": [["a", "A B\rC"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "adjacent-text-cdata-comment-pi",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "abc",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-text-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "内部😀",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-markup-entity",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "AinsideB",
+          "rootAttributes": [],
+          "directElementNames": ["em"],
+          "chunk": null
+        },
+        {
+          "name": "internal-parameter-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "internal-default-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [["a", "A B"]],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unused-external-general-declaration",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "used-external-general-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "leftright",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-without-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "safe",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unknown-external-subset-needed-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "leftright",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "external-parameter-needed-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "leftright",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "unbound-namespace-prefix",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "duplicate-expanded-attribute",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "namespace-and-attribute",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "text",
+          "rootAttributes": [["urn:a\u001fq", "value"]],
+          "directElementNames": ["b"],
+          "chunk": null
+        },
+        {
+          "name": "invalid-character-reference",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xml-control-reference",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "",
+          "rootAttributes": [],
+          "directElementNames": [],
+          "chunk": null
+        },
+        {
+          "name": "undefined-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "recursive-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "incomplete-element",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xhtml-standard-catalog",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "A B©C≂̸",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-no-doctype-named-entity",
+          "ok": false,
+          "matchesSourceContract": true,
+          "errorName": "NativeParserError",
+          "failure": null,
+          "nativeError": null,
+          "chunk": null
+        },
+        {
+          "name": "xhtml-unknown-subset-named-entity",
+          "ok": true,
+          "matchesSourceContract": false,
+          "text": "AB",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        },
+        {
+          "name": "xhtml-internal-catalog-override",
+          "ok": true,
+          "matchesSourceContract": true,
+          "text": "local",
+          "rootAttributes": [],
+          "directElementNames": ["body"],
+          "chunk": null
+        }
+      ]
+    }
+  },
+  "catalog": {
+    "names": 2125,
+    "catalogUses": 1,
+    "mismatches": [],
+    "browserMatched": true
+  },
+  "byteAndBudget": {
+    "comparisons": 30,
+    "allAssertionsPassed": true,
+    "observations": [
+      {
+        "name": "utf8",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf8",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16le",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16le",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16be",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16be",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "xml-latin1",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "xml-latin1",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "windows1251",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "windows1251",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "windows1252",
+        "chunk": 1,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "windows1252",
+        "chunk": 31,
+        "ok": true,
+        "failure": 0,
+        "nativeError": 0,
+        "freshParserPassed": true
+      },
+      {
+        "name": "invalid-utf8",
+        "chunk": 1,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 4,
+        "freshParserPassed": true
+      },
+      {
+        "name": "invalid-utf8",
+        "chunk": 31,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 4,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf8-bom-conflict",
+        "chunk": 1,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 19,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf8-bom-conflict",
+        "chunk": 31,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 19,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16-bom-conflict",
+        "chunk": 1,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 19,
+        "freshParserPassed": true
+      },
+      {
+        "name": "utf16-bom-conflict",
+        "chunk": 31,
+        "ok": false,
+        "failure": 0,
+        "nativeError": 19,
+        "freshParserPassed": true
+      },
+      {
+        "name": "depth",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "depth",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "nodes",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "nodes",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "text",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "text",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "attribute",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "attribute",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "entity-declaration",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "entity-declaration",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "entity-expansion",
+        "chunk": 1,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      },
+      {
+        "name": "entity-expansion",
+        "chunk": 31,
+        "ok": false,
+        "failure": 1,
+        "nativeError": 35,
+        "freshParserPassed": true
+      }
+    ]
+  },
+  "interrupted": {
+    "terminatedAfterEnteringParser": true,
+    "completeResultDelivered": false,
+    "observationMs": 20
+  },
+  "worker": {
+    "type": "result",
+    "comparison": {
+      "saxes": {
+        "comparisons": 72,
+        "matched": 57,
+        "observations": [
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": 1
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": 17
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": 4096
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 1
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 17
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": 4096
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "©",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "©",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "©",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": 4096
+          }
+        ]
+      },
+      "xmldom": {
+        "comparisons": 24,
+        "matched": 15,
+        "observations": [
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [["urn:x\u001fq", "2"]],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": null
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A\u0000B",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "ParseError",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "©",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          }
+        ]
+      },
+      "fast-xml-parser-default": {
+        "comparisons": 24,
+        "matched": 8,
+        "observations": [
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": " A&#65;&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A\nB\nC&#13;D",
+            "rootAttributes": [["a", "A\nB&#13;C"]],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "内部😀",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A<em>inside</em>B",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "left&missing;right",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": ["a"],
+            "chunk": null
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [
+              ["urn:x\u001fq", "1"],
+              ["urn:x\u001fq", "2"]
+            ],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": null
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "AB",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "&#128;",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "undefined-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "&missing;",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "recursive-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "&a;",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A&nbsp;B&copy;C&NotEqualTilde;",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A&nbsp;B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A&nbsp;B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "local",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          }
+        ]
+      },
+      "fast-xml-parser-configured": {
+        "comparisons": 24,
+        "matched": 12,
+        "observations": [
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A\nB\rC"]],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "内部😀",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A<em>inside</em>B",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": false,
+            "matchesSourceContract": false,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "left&missing;right",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": ["a"],
+            "chunk": null
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "",
+            "rootAttributes": [
+              ["urn:x\u001fq", "1"],
+              ["urn:x\u001fq", "2"]
+            ],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "chunk": null
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "undefined-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "&missing;",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "recursive-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "&a;",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "chunk": null
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": "Error",
+            "failure": null,
+            "nativeError": null,
+            "chunk": null
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A&nbsp;B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": true,
+            "matchesSourceContract": false,
+            "text": "A&nbsp;B",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "local",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "chunk": null
+          }
+        ]
+      },
+      "expat": {
+        "comparisons": 72,
+        "matched": 72,
+        "observations": [
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "characters-and-whitespace",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": " AA&B ",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "line-end-and-attribute-normalization",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A\nB\nC\rD",
+            "rootAttributes": [["a", "A B\rC"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "adjacent-text-cdata-comment-pi",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "abc",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "内部😀",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "内部😀",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "internal-text-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "内部😀",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "AinsideB",
+            "rootAttributes": [],
+            "directElementNames": ["em"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "AinsideB",
+            "rootAttributes": [],
+            "directElementNames": ["em"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "internal-markup-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "AinsideB",
+            "rootAttributes": [],
+            "directElementNames": ["em"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "inside",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "inside",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "internal-parameter-entity",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "inside",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [["a", "A B"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [["a", "A B"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "internal-default-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [["a", "A B"]],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "unused-external-general-declaration",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 2,
+            "nativeError": 21,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 2,
+            "nativeError": 21,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "used-external-general-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 2,
+            "nativeError": 21,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 1
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 17
+          },
+          {
+            "name": "unknown-external-subset-without-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "safe",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 4096
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 1
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 17
+          },
+          {
+            "name": "unknown-external-subset-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 4096
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 1
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 17
+          },
+          {
+            "name": "external-parameter-needed-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 4096
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 27,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 27,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "unbound-namespace-prefix",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 27,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 8,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 8,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "duplicate-expanded-attribute",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 8,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "namespace-and-attribute",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "text",
+            "rootAttributes": [["urn:a\u001fq", "value"]],
+            "directElementNames": ["b"],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 14,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 14,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "invalid-character-reference",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 14,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "xml-control-reference",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "",
+            "rootAttributes": [],
+            "directElementNames": [],
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "undefined-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 12,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 12,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "recursive-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 12,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 7,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 7,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "incomplete-element",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 7,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-standard-catalog",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "A B©C≂̸",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-no-doctype-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 0,
+            "nativeError": 11,
+            "catalogUses": 0,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-unknown-subset-named-entity",
+            "ok": false,
+            "matchesSourceContract": true,
+            "errorName": null,
+            "failure": 3,
+            "nativeError": 35,
+            "catalogUses": 0,
+            "skippedSubsets": 1,
+            "chunk": 4096
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "local",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 1
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "local",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 17
+          },
+          {
+            "name": "xhtml-internal-catalog-override",
+            "ok": true,
+            "matchesSourceContract": true,
+            "text": "local",
+            "rootAttributes": [],
+            "directElementNames": ["body"],
+            "catalogUses": 1,
+            "skippedSubsets": 0,
+            "chunk": 4096
+          }
+        ]
+      }
+    },
+    "catalog": {
+      "names": 2125,
+      "catalogUses": 1,
+      "mismatches": [],
+      "browserMatched": null
+    },
+    "byteAndBudget": {
+      "comparisons": 30,
+      "allAssertionsPassed": true,
+      "observations": [
+        {
+          "name": "utf8",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf8",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16le",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16le",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16be",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16be",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "xml-latin1",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "xml-latin1",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "windows1251",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "windows1251",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "windows1252",
+          "chunk": 1,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "windows1252",
+          "chunk": 31,
+          "ok": true,
+          "failure": 0,
+          "nativeError": 0,
+          "freshParserPassed": true
+        },
+        {
+          "name": "invalid-utf8",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 4,
+          "freshParserPassed": true
+        },
+        {
+          "name": "invalid-utf8",
+          "chunk": 31,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 4,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf8-bom-conflict",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf8-bom-conflict",
+          "chunk": 31,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16-bom-conflict",
+          "chunk": 1,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "freshParserPassed": true
+        },
+        {
+          "name": "utf16-bom-conflict",
+          "chunk": 31,
+          "ok": false,
+          "failure": 0,
+          "nativeError": 19,
+          "freshParserPassed": true
+        },
+        {
+          "name": "depth",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "depth",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "nodes",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "nodes",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "text",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "text",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "attribute",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "attribute",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "entity-declaration",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "entity-declaration",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "entity-expansion",
+          "chunk": 1,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        },
+        {
+          "name": "entity-expansion",
+          "chunk": 31,
+          "ok": false,
+          "failure": 1,
+          "nativeError": 35,
+          "freshParserPassed": true
+        }
+      ]
+    },
+    "fb2": [
+      {
+        "name": "source.fb2",
+        "chunk": 1,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "source.fb2",
+        "chunk": 17,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "source.fb2",
+        "chunk": 4096,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "source-utf16.fb2",
+        "chunk": 1,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "source-utf16.fb2",
+        "chunk": 17,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "source-utf16.fb2",
+        "chunk": 4096,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "internal-entity.fb2",
+        "chunk": 1,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "internal-entity.fb2",
+        "chunk": 17,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      },
+      {
+        "name": "internal-entity.fb2",
+        "chunk": 4096,
+        "matchedIndependentTree": true,
+        "schemaValid": true
+      }
+    ],
+    "nativeDOMParserAvailable": false,
+    "nodeAvailable": false
+  },
+  "nodeInRenderer": false,
+  "browserSourceSha256": "841e8a68b0990a5720b7b750f4f6b45207ba3479b427712079249358d9d881b8",
+  "fb2ReceiptSha256": "3f07a7ebbc8328d2d03a927dbde332a64338dd8ad45fc5ac75d24a761696333e",
+  "runtimeReceiptSha256": "1bf0f3c2dd4931715504575dc71be7b231a2a304cb40783ad43dcba77abeedb2",
+  "sourceHashes": {
+    "boundaries.mjs": "b2fd6d8a6623d6b3045680070069a31aac981d829e6a8bb2699116c0ca4827b9",
+    "bridge.c": "43449c1826adf9ae716e0d2c7cfb58c25dd6eb508bb25f77eefd2ef6dbd8e71f",
+    "browser.cjs": "841e8a68b0990a5720b7b750f4f6b45207ba3479b427712079249358d9d881b8",
+    "build-contract.json": "841277b11d45c37ff8cc6a1fc77ad01dc55dea446353e3dd9005c9fb4ba7e6ab",
+    "build.py": "4a372282cf68ada01000b93bfc523bea328fb028ca7a5da475b753de2adf4ffa",
+    "cases.mjs": "b4b2e4d6b3e92a82fd0628ea5e50fbaf456aebdf813286eb7a7d50ebad6d7800",
+    "compare.mjs": "dac88768d130f807cf56fff50b6e99eb43b8e27c49cb33ea562aedaeaaa27585",
+    "parser.mjs": "ac9a4acea798a061fbbb4a4e61b8c5ae58fb0116580f4fdf392eece21094280a",
+    "prepare.py": "c3382ed70024ff11f3555be249b81f34a31f0bdc253e6d2ee7e3a72871593a7e",
+    "run-browser.py": "4eacfa04fe7eb98f8c8f26a6d87433288b65dc6e745b2c104a90f4a77158912b",
+    "run-node.mjs": "e93887296365a2b47c9d674e255983042beb758fbfec6c07d3949812c0654d1c",
+    "source-input.json": "0f53ea3b9d4a7e9945a42f394c8e560560c7f2577955e02eafd48b742ea45623",
+    "worker.mjs": "3a5250987ca0827a3827956136d6098bba80d3809405ccde3a7bab5c1834b21e"
+  }
+}

@@ -1,0 +1,433 @@
+{
+  "checkedAt": "2026-10-15T05:39:29.921Z",
+  "scope": "Public application authentication, bounded public metadata reads, and official dataset structure. No user authorization or personal-record writes.",
+  "sources": {
+    "documentationCommit": "1284ac90454b1e68c15a0fc3e94f6003a927f49b",
+    "datasetRepositoryCommit": "5f7408852fad840ea3d3399bc62146bb64ff34f6",
+    "documentation": [
+      {
+        "file": "ymgal-developer.html",
+        "url": "https://www.ymgal.games/developer",
+        "status": 200,
+        "bytes": 69450,
+        "sha256": "039072895f9c96c511a0ecd0e981acdddef646d3945ada3ba680eb5ddc560fc1"
+      }
+    ],
+    "dataRelease": {
+      "tag": "release-2026-10-09",
+      "url": "https://github.com/ymgal/data-export/releases/tag/release-2026-10-09",
+      "publishedAt": "2026-10-08T20:00:41Z",
+      "assets": [
+        {
+          "name": "exported_data.zip",
+          "bytes": 32617686,
+          "url": "https://github.com/ymgal/data-export/releases/download/release-2026-10-09/exported_data.zip"
+        }
+      ]
+    },
+    "dataset": {
+      "archiveSha256": "4aa2285a5d7fc9c63f7388a330504032a7a0f8daae71f5c7878793f2e5d35613",
+      "files": [
+        {
+          "file": "game.jsonl",
+          "bytes": 33050717,
+          "compressedBytes": 10228059,
+          "keys": [
+            "gid",
+            "developer_id",
+            "name",
+            "chinese_name",
+            "extension_name",
+            "website",
+            "have_chinese",
+            "type_desc",
+            "introduction",
+            "main_img",
+            "release_date",
+            "restricted",
+            "country",
+            "state",
+            "weights",
+            "more_entry",
+            "publish_version",
+            "publish_time",
+            "create_time",
+            "update_time"
+          ],
+          "scalar": {
+            "name": "加奈～いもうと～",
+            "gid": 10007
+          }
+        },
+        {
+          "file": "game_releases.jsonl",
+          "bytes": 28036822,
+          "compressedBytes": 3933934,
+          "keys": [
+            "id",
+            "gid",
+            "release_name",
+            "related_link",
+            "platform",
+            "release_date",
+            "release_language",
+            "restriction_level"
+          ],
+          "scalar": {
+            "id": 10961,
+            "gid": 10144
+          }
+        },
+        {
+          "file": "person.jsonl",
+          "bytes": 11255177,
+          "compressedBytes": 1514148,
+          "keys": [
+            "pid",
+            "name",
+            "chinese_name",
+            "extension_name",
+            "website",
+            "country",
+            "introduction",
+            "state",
+            "weights",
+            "main_img",
+            "birthday",
+            "gender",
+            "more_entry",
+            "publish_version",
+            "publish_time",
+            "create_time",
+            "update_time"
+          ],
+          "scalar": {
+            "pid": 10000,
+            "name": "いとう のいぢ",
+            "birthday": "1977-08-09"
+          }
+        },
+        {
+          "file": "organization.jsonl",
+          "bytes": 5895426,
+          "compressedBytes": 781774,
+          "keys": [
+            "org_id",
+            "name",
+            "extension_name",
+            "website",
+            "country",
+            "introduction",
+            "state",
+            "weights",
+            "main_img",
+            "birthday",
+            "more_entry",
+            "publish_version",
+            "publish_time",
+            "create_time",
+            "update_time",
+            "chinese_name"
+          ],
+          "scalar": {
+            "birthday": null,
+            "name": "默认机构"
+          }
+        },
+        {
+          "file": "character.jsonl",
+          "bytes": 56653186,
+          "compressedBytes": 12878192,
+          "keys": [
+            "cid",
+            "name",
+            "chinese_name",
+            "extension_name",
+            "main_img",
+            "gender",
+            "birthday",
+            "introduction",
+            "state",
+            "weights",
+            "more_entry",
+            "publish_version",
+            "publish_time",
+            "create_time",
+            "update_time"
+          ],
+          "scalar": {
+            "name": "茜ヶ崎 空",
+            "birthday": "3000-04-02",
+            "cid": 10000
+          }
+        },
+        {
+          "file": "game_character_relation.jsonl",
+          "bytes": 8452195,
+          "compressedBytes": 793563,
+          "keys": ["gid", "cid", "cv_id", "character_position"],
+          "scalar": {
+            "cid": 41165,
+            "gid": 10144
+          }
+        },
+        {
+          "file": "game_staff.jsonl",
+          "bytes": 14143329,
+          "compressedBytes": 2487224,
+          "keys": ["sid", "gid", "pid", "emp_name", "emp_desc", "job_name"],
+          "scalar": {
+            "pid": 22985,
+            "gid": 10144
+          }
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "check": "ymgal-public-application",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "check": "ymgal-game-search",
+      "status": 200,
+      "success": true,
+      "code": 0,
+      "pageKeys": ["result", "total", "hasNext", "pageNum", "pageSize"],
+      "total": 4,
+      "hasNext": true,
+      "items": [
+        {
+          "id": 31147,
+          "name": "月に寄りそう乙女の作法",
+          "chineseName": "近月少女的礼仪",
+          "orgId": 10041,
+          "releaseDate": "2012-10-26"
+        },
+        {
+          "id": 22952,
+          "name": "月に寄りそう乙女の作法２",
+          "chineseName": "近月少女的礼仪2",
+          "orgId": 10041,
+          "releaseDate": "2014-12-19"
+        }
+      ]
+    },
+    {
+      "check": "ymgal-game-detail",
+      "status": 200,
+      "success": true,
+      "code": 0,
+      "envelopeKeys": ["game", "cidMapping", "pidMapping"],
+      "keys": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "gid",
+        "developerId",
+        "haveChinese",
+        "typeDesc",
+        "releaseDate",
+        "restricted",
+        "country",
+        "website",
+        "characters",
+        "releases",
+        "staff",
+        "type",
+        "freeze"
+      ],
+      "scalar": {
+        "name": "月に寄りそう乙女の作法",
+        "chineseName": "近月少女的礼仪",
+        "gid": 31147,
+        "developerId": 10041,
+        "releaseDate": "2012-10-26",
+        "country": "",
+        "type": "GAME"
+      },
+      "relationSample": [
+        {
+          "cid": 19365,
+          "cvId": 11333,
+          "characterPosition": 1
+        },
+        {
+          "cid": 19366,
+          "cvId": 10954,
+          "characterPosition": 2
+        }
+      ],
+      "staffSample": [
+        {
+          "sid": 138634,
+          "pid": 11083,
+          "empName": "鈴平 ひろ",
+          "empDesc": "",
+          "jobName": "原画"
+        },
+        {
+          "sid": 138635,
+          "pid": 11236,
+          "empName": "西又 葵",
+          "empDesc": "",
+          "jobName": "原画"
+        },
+        {
+          "sid": 138636,
+          "pid": 11697,
+          "empName": "羽純 りお",
+          "empDesc": "",
+          "jobName": "原画"
+        }
+      ],
+      "releaseSample": [
+        {
+          "id": 118973,
+          "releaseName": "近月少女的礼仪",
+          "relatedLink": "https://hikarifield.co.jp/tsukiniyorisou/",
+          "platform": "Windows",
+          "releaseLanguage": "Chinese",
+          "restrictionLevel": "全年龄"
+        },
+        {
+          "id": 118974,
+          "releaseName": "A moon a sun and three macaroons",
+          "relatedLink": "https://drive.google.com/file/d/1vTyy7AY0MG6RWJmi-qLsgPERjmm44WiG/view?usp=sharing",
+          "platform": "Windows",
+          "releaseDate": "2021-07-05",
+          "releaseLanguage": "English",
+          "restrictionLevel": "未分级"
+        }
+      ],
+      "extraKeys": [],
+      "counts": {
+        "characters": 12,
+        "staff": 22,
+        "releases": 15
+      }
+    },
+    {
+      "check": "ymgal-character",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "cid",
+        "gender",
+        "birthday",
+        "type",
+        "freeze"
+      ],
+      "name": "小倉 朝日",
+      "date": "3000-01-06",
+      "gender": 1,
+      "extra": [],
+      "aliasSample": [
+        {
+          "name": "Ookura Yuusei",
+          "type": "",
+          "desc": ""
+        },
+        {
+          "name": "大蔵 遊星",
+          "type": "",
+          "desc": ""
+        }
+      ]
+    },
+    {
+      "check": "ymgal-person",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "pid",
+        "country",
+        "birthday",
+        "gender",
+        "website",
+        "type",
+        "freeze"
+      ],
+      "name": "中村 繪里子",
+      "date": "1981-11-19",
+      "gender": 2,
+      "extra": [],
+      "aliasSample": [
+        {
+          "name": "あかね 恋",
+          "type": "",
+          "desc": ""
+        },
+        {
+          "name": "羽間百合 恋",
+          "type": "",
+          "desc": ""
+        }
+      ]
+    },
+    {
+      "check": "ymgal-org",
+      "status": 200,
+      "success": true,
+      "keys": [
+        "publishVersion",
+        "publishTime",
+        "publisher",
+        "name",
+        "chineseName",
+        "extensionName",
+        "introduction",
+        "state",
+        "weights",
+        "mainImg",
+        "moreEntry",
+        "orgId",
+        "country",
+        "website",
+        "type",
+        "freeze"
+      ],
+      "name": "Navel",
+      "extra": [],
+      "aliasSample": [
+        {
+          "name": "ネーブル",
+          "type": "",
+          "desc": ""
+        }
+      ]
+    }
+  ]
+}

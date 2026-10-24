@@ -1,0 +1,139 @@
+{
+  "observedOn": "2026-10-17",
+  "fixture": "2026-10-17-test-library.csv",
+  "sha256": "b8c48066e694575fb1e1be329415a0dcc3841446a63f1ef21ef3dd263b941d32",
+  "containsAccountIdentifiers": false,
+  "containsCredentials": false,
+  "allPersonalValuesAreSynthetic": true,
+  "rowCount": 4,
+  "columns": [
+    "Book Id",
+    "Title",
+    "Author",
+    "Author l-f",
+    "Additional Authors",
+    "ISBN",
+    "ISBN13",
+    "My Rating",
+    "Publisher",
+    "Binding",
+    "Number of Pages",
+    "Year Published",
+    "Original Publication Year",
+    "Date Read",
+    "Date Added",
+    "Bookshelves",
+    "Bookshelves with positions",
+    "Exclusive Shelf",
+    "My Review",
+    "Spoiler",
+    "Private Notes",
+    "Read Count",
+    "Owned Copies"
+  ],
+  "rating": {
+    "input": 3.75,
+    "exported": "3.75"
+  },
+  "privateNotes": {
+    "input": "Kisaki import test, \"quoted\".\nSecond line.",
+    "exported": "Kisaki import test, \"quoted\".<br/>Second line."
+  },
+  "standaloneNovel": {
+    "bookId": "42180344",
+    "readingSessions": 2,
+    "finishedDates": ["2026-10-17", "2025"],
+    "exportedDateRead": "2026/10/17",
+    "exportedReadCount": 2
+  },
+  "initialToReadBook": {
+    "bookId": "18513556",
+    "exclusiveShelf": "to-read",
+    "readCount": 0
+  },
+  "cleanup": {
+    "completed": true,
+    "remainingBooks": 0,
+    "temporaryShelfRemoved": true,
+    "confirmedRemovedBookIds": ["42180344", "18513556", "511240", "40121378"],
+    "supplementalRecordRemoved": true,
+    "temporaryRatingAndNotesRemoved": true,
+    "defaultShelvesPreserved": true,
+    "method": "Individual HTML-dialog book removal; user confirmed deletion of the sole non-exclusive temporary shelf",
+    "researchTabsClosed": true
+  },
+  "counterexample": {
+    "bookId": "18513556",
+    "before": {
+      "exclusiveShelf": "to-read",
+      "readCount": 0,
+      "dateRead": ""
+    },
+    "after": {
+      "exclusiveShelf": "currently-reading",
+      "readCount": 1,
+      "dateRead": ""
+    },
+    "readCountIsCompletedCount": false
+  },
+  "didNotFinish": {
+    "bookId": "40121378",
+    "exclusiveShelf": "did-not-finish",
+    "readCount": 0,
+    "dateRead": ""
+  },
+  "secondFixture": {
+    "file": "2026-10-17-current-dnf.csv",
+    "sha256": "4bd71b0d08057d0bb11f9a2fa8d6bae773b025b2780cffe28e1784ce481fe180"
+  },
+  "createdLibraryRecords": 5,
+  "uniqueTestBookIds": ["42180344", "18513556", "511240", "40121378"],
+  "exportRequests": 5,
+  "verifiedFixtures": 4,
+  "datePrecision": {
+    "yearOnly": {
+      "input": "2025",
+      "exported": "2025/01/01",
+      "fixture": "2026-10-17-year-only.csv"
+    },
+    "monthOnly": {
+      "input": "2025-10",
+      "exported": "2025/10/01",
+      "fixture": "2026-10-17-month-only.csv"
+    },
+    "fullDate": {
+      "input": "2026-10-17",
+      "exported": "2026/10/17"
+    },
+    "precisionRetained": false
+  },
+  "failedMonthEditAttempt": {
+    "savedMonthVerified": false,
+    "exportMatchedYearOnly": true,
+    "repeatedAfterSuccessfulReadback": true
+  },
+  "publicReviewTextWritten": false,
+  "defaultShelvesVerified": ["to-read", "currently-reading", "read", "did-not-finish"],
+  "fixtures": [
+    {
+      "file": "2026-10-17-test-library.csv",
+      "bytes": 1434,
+      "sha256": "b8c48066e694575fb1e1be329415a0dcc3841446a63f1ef21ef3dd263b941d32"
+    },
+    {
+      "file": "2026-10-17-current-dnf.csv",
+      "bytes": 1485,
+      "sha256": "4bd71b0d08057d0bb11f9a2fa8d6bae773b025b2780cffe28e1784ce481fe180"
+    },
+    {
+      "file": "2026-10-17-year-only.csv",
+      "bytes": 534,
+      "sha256": "7bbc45037f73fa406586acf2236b58b185d5aabc03aa4c57b9bd5be7259ece88"
+    },
+    {
+      "file": "2026-10-17-month-only.csv",
+      "bytes": 534,
+      "sha256": "311af87d45940d90e039ebfb9437d5fea73ed9211318d0d28ccb77493c147cbf"
+    }
+  ]
+}

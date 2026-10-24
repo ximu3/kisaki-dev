@@ -1,0 +1,430 @@
+{
+  "versions": {
+    "node": "24.14.0",
+    "acorn": "8.15.0",
+    "ada": "3.4.2",
+    "amaro": "1.1.7",
+    "ares": "1.34.6",
+    "brotli": "1.0.9",
+    "cldr": "47.0",
+    "icu": "77.1",
+    "llhttp": "9.3.0",
+    "merve": "1.0.0",
+    "modules": "145",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.68.0",
+    "openssl": "0.0.0",
+    "simdjson": "4.2.4",
+    "simdutf": "7.7.0",
+    "sqlite": "3.51.2",
+    "tz": "2025b",
+    "undici": "7.21.0",
+    "unicode": "16.0",
+    "uv": "1.51.0",
+    "uvwasi": "0.0.23",
+    "v8": "14.6.202.31-electron.0",
+    "zlib": "1.3.1",
+    "zstd": "1.6.0",
+    "electron": "41.2.0",
+    "chrome": "146.0.7680.179"
+  },
+  "broadResourcePolicy": false,
+  "childPolicies": {
+    "a": "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: kisaki-resource://scope-a; font-src 'self' data: kisaki-resource://scope-a; media-src 'self' blob: https: kisaki-resource://scope-a; connect-src 'self' https: wss: kisaki-resource://scope-a; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors kisaki-probe://native kisaki-extension://view-a",
+    "b": "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: kisaki-resource://scope-b; font-src 'self' data: kisaki-resource://scope-b; media-src 'self' blob: https: kisaki-resource://scope-b; connect-src 'self' https: wss: kisaki-resource://scope-b; worker-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors kisaki-probe://native kisaki-extension://view-b"
+  },
+  "checks": {
+    "renderer": true,
+    "actualFrameAuthorized": true,
+    "wrongViewDenied": true,
+    "workerCrossViewDenied": true,
+    "remoteScriptNeverRequested": true,
+    "httpNeverRequested": true,
+    "externalNavigationDenied": true,
+    "otherViewNavigationDenied": true,
+    "packageNavigationAllowed": true,
+    "permissionCheckDenied": true,
+    "permissionRequestDenied": true
+  },
+  "passed": true,
+  "state": {
+    "status": "passed",
+    "nativePreload": true,
+    "reports": {
+      "b": {
+        "wrongResourceDenied": true,
+        "worker": {
+          "packageWorker": true,
+          "resourceDenied": true
+        }
+      },
+      "a": {
+        "reloaded": true
+      }
+    },
+    "origins": {
+      "a": "kisaki-extension://view-a",
+      "b": "kisaki-extension://view-b"
+    },
+    "connections": {
+      "a": 2,
+      "b": 1
+    },
+    "rejectedSources": 1,
+    "initialA": {
+      "originHasHost": true,
+      "noNodeGlobals": true,
+      "noNativeBridge": true,
+      "parentDomDenied": true,
+      "siblingDomDenied": true,
+      "inlineScriptDenied": true,
+      "evalDenied": true,
+      "popupDenied": true,
+      "topNavigationDenied": true,
+      "packageData": true,
+      "httpsData": true,
+      "ownedResource": true,
+      "remoteScriptDenied": true,
+      "blobScriptDenied": true,
+      "httpDenied": true,
+      "workerPackage": true,
+      "workerOwnedResource": true,
+      "serviceWorkerDenied": true,
+      "geolocationQueryDenied": true,
+      "geolocationRequestDenied": true
+    }
+  },
+  "evidence": {
+    "requests": [
+      {
+        "url": "kisaki-probe://native/index.html",
+        "resourceType": "mainFrame",
+        "frameUrl": "",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-probe://native/parent.js",
+        "resourceType": "script",
+        "frameUrl": "kisaki-probe://native/index.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-a/entry.html",
+        "resourceType": "subFrame",
+        "frameUrl": "",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-b/entry.html",
+        "resourceType": "subFrame",
+        "frameUrl": "",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-a/child.js",
+        "resourceType": "script",
+        "frameUrl": "kisaki-extension://view-a/entry.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-b/child.js",
+        "resourceType": "script",
+        "frameUrl": "kisaki-extension://view-b/entry.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-a/data.json",
+        "resourceType": "xhr",
+        "frameUrl": "kisaki-extension://view-a/entry.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-resource://scope-a/value",
+        "resourceType": "xhr",
+        "frameUrl": "kisaki-extension://view-a/entry.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-a/next.html",
+        "resourceType": "subFrame",
+        "frameUrl": "kisaki-extension://view-a/entry.html",
+        "cancel": false
+      },
+      {
+        "url": "kisaki-extension://view-a/child.js",
+        "resourceType": "script",
+        "frameUrl": "kisaki-extension://view-a/next.html",
+        "cancel": false
+      }
+    ],
+    "handled": [
+      {
+        "url": "kisaki-extension://view-a/entry.html",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-b/entry.html",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-a/child.js",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-b/child.js",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-a/data.json",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-b/worker.js",
+        "origin": null
+      },
+      {
+        "url": "https://fixture.test/data.json",
+        "origin": null
+      },
+      {
+        "url": "kisaki-resource://scope-a/value",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-a/worker.js",
+        "origin": null
+      },
+      {
+        "url": "kisaki-resource://scope-a/value?worker",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-a/next.html",
+        "origin": null
+      },
+      {
+        "url": "kisaki-extension://view-a/child.js",
+        "origin": null
+      }
+    ],
+    "permissions": [
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "",
+        "isMainFrame": true
+      },
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "",
+        "isMainFrame": true
+      },
+      {
+        "phase": "check",
+        "permission": "web-app-installation",
+        "requestingOrigin": "",
+        "isMainFrame": true
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "",
+        "isMainFrame": true
+      },
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "web-app-installation",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "media",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "web-app-installation",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "kisaki-probe://native/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "background-sync",
+        "requestingOrigin": "kisaki-extension://view-a/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "background-sync",
+        "requestingOrigin": "kisaki-extension://view-b/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "kisaki-extension://view-a/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "kisaki-extension://view-a/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "request",
+        "permission": "geolocation",
+        "requestingUrl": "kisaki-extension://view-a/entry.html",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "kisaki-extension://view-a/",
+        "isMainFrame": false
+      },
+      {
+        "phase": "check",
+        "permission": "geolocation",
+        "requestingOrigin": "kisaki-extension://view-a/",
+        "isMainFrame": false
+      }
+    ],
+    "navigations": [
+      {
+        "source": "",
+        "target": "kisaki-extension://view-a/entry.html",
+        "allowed": true,
+        "isMainFrame": false
+      },
+      {
+        "source": "",
+        "target": "kisaki-extension://view-b/entry.html",
+        "allowed": true,
+        "isMainFrame": false
+      },
+      {
+        "source": "kisaki-extension://view-a/entry.html",
+        "target": "kisaki-extension://view-b/entry.html",
+        "allowed": false,
+        "isMainFrame": false
+      },
+      {
+        "source": "kisaki-extension://view-a/entry.html",
+        "target": "kisaki-extension://view-a/next.html",
+        "allowed": true,
+        "isMainFrame": false
+      }
+    ],
+    "failedLoads": [
+      {
+        "errorCode": -30,
+        "errorDescription": "ERR_BLOCKED_BY_CSP",
+        "validatedURL": "https://fixture.test/external",
+        "isMainFrame": false
+      }
+    ],
+    "popups": [],
+    "console": [
+      {
+        "level": "error",
+        "message": "Executing inline script violates the following Content Security Policy directive 'script-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-PDSJA8WBJThQb68f1FsEtZv1qveupiDJUmXRzdfc/iE='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+        "sourceId": "kisaki-extension://view-a/entry.html"
+      },
+      {
+        "level": "error",
+        "message": "Executing inline script violates the following Content Security Policy directive 'script-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-PDSJA8WBJThQb68f1FsEtZv1qveupiDJUmXRzdfc/iE='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+        "sourceId": "kisaki-extension://view-b/entry.html"
+      },
+      {
+        "level": "error",
+        "message": "Blocked opening 'https://fixture.test/popup' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set.",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Unsafe attempt to initiate navigation for frame with origin 'kisaki-probe://native' from frame with URL 'kisaki-extension://view-a/entry.html'. The frame attempting navigation of the top-level window is sandboxed, but the flag of 'allow-top-navigation' or 'allow-top-navigation-by-user-activation' is not set.\n",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Connecting to 'kisaki-resource://scope-a/value' violates the following Content Security Policy directive: \"connect-src 'self' https: wss: kisaki-resource://scope-b\". The action has been blocked.",
+        "sourceId": "kisaki-extension://view-b/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Fetch API cannot load kisaki-resource://scope-a/value. Refused to connect because it violates the document's Content Security Policy.",
+        "sourceId": "kisaki-extension://view-b/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Loading the script 'https://fixture.test/remote.js' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Loading the script 'blob:kisaki-extension://view-a/a96bf632-b70c-45d9-a2b9-1f87d1f4b2b6' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Connecting to 'kisaki-resource://scope-a/value?worker' violates the following Content Security Policy directive: \"connect-src 'self' https: wss: kisaki-resource://scope-b\". The action has been blocked.",
+        "sourceId": "kisaki-extension://view-b/worker.js"
+      },
+      {
+        "level": "error",
+        "message": "Fetch API cannot load kisaki-resource://scope-a/value?worker. Refused to connect because it violates the document's Content Security Policy.",
+        "sourceId": "kisaki-extension://view-b/worker.js"
+      },
+      {
+        "level": "error",
+        "message": "Connecting to 'http://fixture.test/data.json' violates the following Content Security Policy directive: \"connect-src 'self' https: wss: kisaki-resource://scope-a\". The action has been blocked.",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Fetch API cannot load http://fixture.test/data.json. Refused to connect because it violates the document's Content Security Policy.",
+        "sourceId": "kisaki-extension://view-a/child.js"
+      },
+      {
+        "level": "error",
+        "message": "Framing 'https://fixture.test/' violates the following Content Security Policy directive: \"frame-src kisaki-extension:\". The request has been blocked.\n",
+        "sourceId": "kisaki-extension://view-b/"
+      },
+      {
+        "level": "error",
+        "message": "Executing inline script violates the following Content Security Policy directive 'script-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-PDSJA8WBJThQb68f1FsEtZv1qveupiDJUmXRzdfc/iE='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+        "sourceId": "kisaki-extension://view-a/next.html"
+      }
+    ]
+  }
+}

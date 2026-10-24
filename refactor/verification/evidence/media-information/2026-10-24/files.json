@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-24",
+  "files": {
+    "fixtures.py": {
+      "bytes": 4142,
+      "sha256": "11d4f0dd8cd07d1d5e11070485388ce6aea5eddf5204d34d2096e006cca9a5ec"
+    },
+    "native.py": {
+      "bytes": 6115,
+      "sha256": "adb11d25904ad33bf29db12f53ffd43884de639c73323999bf76f17d920cb5b6"
+    },
+    "README.md": {
+      "bytes": 1650,
+      "sha256": "cb8c3605f4ef3c93046da13c551ef58011d0a9e51831ca1822ce422692283219"
+    },
+    "results.json": {
+      "bytes": 71878,
+      "sha256": "5943a2b17a32372212d38b22be4a63ece372b9bf72073a024f68336877bedd1b"
+    },
+    "run.log": {
+      "bytes": 748,
+      "sha256": "d9f2e38dfbfd8f0c1957cf822c7564c7ea0ebc52099972809cc20aab413e6c06"
+    },
+    "run.py": {
+      "bytes": 10821,
+      "sha256": "56da8311a1c59761ce17f94f6cd1241c9d5428a497eef0f86c6c3002f0474750"
+    }
+  }
+}

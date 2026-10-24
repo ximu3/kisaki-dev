@@ -1,0 +1,299 @@
+{
+  "checkedOn": "2026-10-16",
+  "source": "TMDB",
+  "status": "directions-confirmed-details-unfinished",
+  "authenticatedApiTested": false,
+  "accountWritesPerformed": false,
+  "apiContract": {
+    "url": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+    "previousEvidence": "2026-10-15-public-contracts.json",
+    "decodedBodySha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b"
+  },
+  "requests": [
+    {
+      "id": "movie-cast",
+      "url": "https://www.themoviedb.org/bible/movie/59f3b16d9251414f20000003?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:07:52.563Z",
+      "sha256": "065c6f1b74641acda116e1c2b591b413769ee2121c4cfbee8963489c62cb6181",
+      "bytes": 98197
+    },
+    {
+      "id": "tv-cast",
+      "url": "https://www.themoviedb.org/bible/tv/59f73eb49251416e71000022?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:07:52.583Z",
+      "sha256": "5dada28af8e29b1ad8833fb2a19312a8c3a111ec936773617092e7528809768f",
+      "bytes": 92547
+    },
+    {
+      "id": "tv-production",
+      "url": "https://www.themoviedb.org/bible/tv/59f73eb49251416e71000025?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:07:52.575Z",
+      "sha256": "e84d6830a7dc2ab65d577851dc93cbef68ed6e424ada1bdf5a9afa8d12779d6a",
+      "bytes": 100140
+    },
+    {
+      "id": "tv-episodes",
+      "url": "https://www.themoviedb.org/bible/tv/59f743289251416e71000037?language=en-US",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:08:39.002Z",
+      "sha256": "8c763d92eaa7342265a78822d399a15a157a1dde6d55358465c04f7acdd566bb",
+      "bytes": 112453
+    }
+  ],
+  "contracts": [
+    {
+      "path": "/3/person/{person_id}",
+      "method": "GET",
+      "operationId": "person-details",
+      "parameters": ["person_id", "append_to_response", "language"],
+      "responseFields": [
+        "adult",
+        "also_known_as",
+        "biography",
+        "birthday",
+        "deathday",
+        "gender",
+        "homepage",
+        "id",
+        "imdb_id",
+        "known_for_department",
+        "name",
+        "place_of_birth",
+        "popularity",
+        "profile_path"
+      ],
+      "nestedFields": {}
+    },
+    {
+      "path": "/3/person/{person_id}/translations",
+      "method": "GET",
+      "operationId": "translations",
+      "parameters": ["person_id"],
+      "responseFields": ["id", "translations"],
+      "nestedFields": {
+        "translations": ["iso_3166_1", "iso_639_1", "name", "english_name", "data"]
+      }
+    },
+    {
+      "path": "/3/person/{person_id}/combined_credits",
+      "method": "GET",
+      "operationId": "person-combined-credits",
+      "parameters": ["person_id", "language"],
+      "responseFields": ["cast", "crew", "id"],
+      "nestedFields": {
+        "cast": [
+          "adult",
+          "backdrop_path",
+          "genre_ids",
+          "id",
+          "original_language",
+          "original_title",
+          "overview",
+          "popularity",
+          "poster_path",
+          "release_date",
+          "title",
+          "video",
+          "vote_average",
+          "vote_count",
+          "character",
+          "credit_id",
+          "order",
+          "media_type"
+        ],
+        "crew": [
+          "adult",
+          "backdrop_path",
+          "genre_ids",
+          "id",
+          "original_language",
+          "original_title",
+          "overview",
+          "popularity",
+          "poster_path",
+          "release_date",
+          "title",
+          "video",
+          "vote_average",
+          "vote_count",
+          "credit_id",
+          "department",
+          "job",
+          "media_type"
+        ]
+      }
+    },
+    {
+      "path": "/3/company/{company_id}",
+      "method": "GET",
+      "operationId": "company-details",
+      "parameters": ["company_id"],
+      "responseFields": [
+        "description",
+        "headquarters",
+        "homepage",
+        "id",
+        "logo_path",
+        "name",
+        "origin_country",
+        "parent_company"
+      ],
+      "nestedFields": {}
+    },
+    {
+      "path": "/3/company/{company_id}/alternative_names",
+      "method": "GET",
+      "operationId": "company-alternative-names",
+      "parameters": ["company_id"],
+      "responseFields": ["id", "results"],
+      "nestedFields": {
+        "results": ["name", "type"]
+      }
+    },
+    {
+      "path": "/3/network/{network_id}",
+      "method": "GET",
+      "operationId": "network-details",
+      "parameters": ["network_id"],
+      "responseFields": ["headquarters", "homepage", "id", "logo_path", "name", "origin_country"],
+      "nestedFields": {}
+    },
+    {
+      "path": "/3/network/{network_id}/alternative_names",
+      "method": "GET",
+      "operationId": "details-copy",
+      "parameters": ["network_id"],
+      "responseFields": ["id", "results"],
+      "nestedFields": {
+        "results": ["name", "type"]
+      }
+    },
+    {
+      "path": "/3/search/person",
+      "method": "GET",
+      "operationId": "search-person",
+      "parameters": ["query", "include_adult", "language", "page"],
+      "responseFields": ["page", "results", "total_pages", "total_results"],
+      "nestedFields": {
+        "results": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "known_for"
+        ]
+      }
+    },
+    {
+      "path": "/3/search/company",
+      "method": "GET",
+      "operationId": "search-company",
+      "parameters": ["query", "page"],
+      "responseFields": ["page", "results", "total_pages", "total_results"],
+      "nestedFields": {
+        "results": ["id", "logo_path", "name", "origin_country"]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/aggregate_credits",
+      "method": "GET",
+      "operationId": "tv-season-aggregate-credits",
+      "parameters": ["series_id", "language", "season_number"],
+      "responseFields": ["cast", "crew", "id"],
+      "nestedFields": {
+        "cast": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "roles",
+          "total_episode_count",
+          "order"
+        ],
+        "crew": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "jobs",
+          "department",
+          "total_episode_count"
+        ]
+      }
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/credits",
+      "method": "GET",
+      "operationId": "tv-episode-credits",
+      "parameters": ["series_id", "season_number", "language", "episode_number"],
+      "responseFields": ["cast", "crew", "guest_stars", "id"],
+      "nestedFields": {
+        "cast": [
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path",
+          "character",
+          "credit_id",
+          "order"
+        ],
+        "crew": [
+          "department",
+          "job",
+          "credit_id",
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path"
+        ],
+        "guest_stars": [
+          "character",
+          "credit_id",
+          "order",
+          "adult",
+          "gender",
+          "id",
+          "known_for_department",
+          "name",
+          "original_name",
+          "popularity",
+          "profile_path"
+        ]
+      }
+    }
+  ],
+  "findings": {
+    "person": "Person detail provides names, aliases, biography, dates, gender, profile and external references. Aliases have no per-name language label; translations do not make every name localized.",
+    "organization": "Company and network have separate resource namespaces and detail/alternative-name/image reads. The inspected public API offers company name search but no network name-search endpoint.",
+    "companyNaming": "The production-info guide requests Roman-script primary company names and allows original non-Roman names as alternatives; this does not identify the language of each alias.",
+    "productionCompanies": "The guide excludes distributors and funding-only credits from production_companies, but the response does not distinguish animation studio from other production responsibilities.",
+    "networks": "The guide describes original networks and explicitly scopes changing original networks by season; this is not a complete VOD availability list.",
+    "movieCast": "The movie cast guide restricts cast to the original version, excludes dubbed/extended versions and motion-capture performers, and marks voice work in character text.",
+    "tvCast": "Regular cast is defined per season. Episode guest-star guidance includes actors present in the original episode version. The API has no structured per-credit voice-language field.",
+    "castIdentity": "Person IDs identify people; character text and credit IDs do not establish independent Character identities."
+  },
+  "currentScopeContract": "../../../design/extensions/sources/tmdb.md#scope"
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "paths": { "@native": ["./clients/desktop/app/native/node/index.ts"] }
+  },
+  "include": ["clients/**/*.ts", "clients/**/*.tsx", "tools/**/*.ts"]
+}

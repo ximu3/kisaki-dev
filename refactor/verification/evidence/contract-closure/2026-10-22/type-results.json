@@ -1,0 +1,7 @@
+{
+  "extractedBlocks": 14,
+  "expectedRejections": 17,
+  "status": "passed",
+  "scope": "new setting, annotation, search and graph-part shapes; not the complete W02 API",
+  "runtimeValuesValidated": false
+}

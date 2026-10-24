@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-10-19T11:21:34.903446+00:00",
+  "rarfileCommit": "60c8513276ea462c39822db487c10111b9039442",
+  "inputs": [
+    {
+      "name": "rar3-symlink-unix.rar",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar3-symlink-unix.rar",
+      "bytes": 191,
+      "sha256": "146d979ca2a659e74712a8b259a47d198af8e94f95f94599ad7d31f0f0bb2a14"
+    },
+    {
+      "name": "rar3-symlink-unix.rar.exp",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar3-symlink-unix.rar.exp",
+      "bytes": 769,
+      "sha256": "9ee910cea3c610e96c602b7ac167073b9b8f031339b1891d88bcf842ccfb954e"
+    },
+    {
+      "name": "rar5-symlink-unix.rar",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-symlink-unix.rar",
+      "bytes": 195,
+      "sha256": "681bc8238f2085f99737a0c41a5595096863bb460075e3cf70cba0f7709aa9b7"
+    },
+    {
+      "name": "rar5-symlink-unix.rar.exp",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-symlink-unix.rar.exp",
+      "bytes": 1100,
+      "sha256": "9183e092b8b01dd414d95ee160534d36af6f9db0faddd9f8c456edf10a36f266"
+    },
+    {
+      "name": "rar5-symlink-win.rar",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-symlink-win.rar",
+      "bytes": 542,
+      "sha256": "f10df8bc1e2cf07a7ef127627e5cc526a872f97bbfc1c14145bbe8aececdabe0"
+    },
+    {
+      "name": "rar5-symlink-win.rar.exp",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-symlink-win.rar.exp",
+      "bytes": 3255,
+      "sha256": "ab0fe84d7d0b227204d98e9896b945547793dc787b2de8ffad35f2614dc7d44b"
+    },
+    {
+      "name": "rar5-hlink.rar",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-hlink.rar",
+      "bytes": 230,
+      "sha256": "c7c2db6fb021e89198da80d4b903d4a46b692c2f31fec64cb53c7e37af7a51f4"
+    },
+    {
+      "name": "rar5-hlink.rar.exp",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-hlink.rar.exp",
+      "bytes": 1080,
+      "sha256": "8d3e780deae5e91d3e7fd14786128d6f25b8e0d82a44a9d755e80b83fb3de5f7"
+    },
+    {
+      "name": "rar5-evil-symlink-traversal.rar",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-evil-symlink-traversal.rar",
+      "bytes": 143,
+      "sha256": "d94f084727eee41903d8292b0b89266014862a8436eb95d75c501a2882c0def1"
+    },
+    {
+      "name": "rar5-evil-symlink-traversal.rar.exp",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/files/rar5-evil-symlink-traversal.rar.exp",
+      "bytes": 732,
+      "sha256": "5ec6b34751b51519091a3b249de48cb8dfbf45688b484895b43e1f730caa09cd"
+    },
+    {
+      "name": "LICENSE",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/LICENSE",
+      "sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20"
+    },
+    {
+      "name": "test/test_extract.py",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/test_extract.py",
+      "sha256": "e762c67cab8347289b7847f022edcd4c49f6aa64d9059df9ea5e91a5d09faab9"
+    },
+    {
+      "name": "test/test_format.py",
+      "source": "https://raw.githubusercontent.com/markokr/rarfile/60c8513276ea462c39822db487c10111b9039442/test/test_format.py",
+      "sha256": "025930d7d61b1e9eca90ff78dcdcc22d7f35eb503738037ced8725394e1f33a2"
+    }
+  ],
+  "derivedCopy": {
+    "base": "rar5-hlink.rar",
+    "metadataChanges": 2,
+    "mutation": "Change redirection kind 4 to 5 and recompute affected header CRC32; payload unchanged",
+    "sha256": "454f04b41e69ce2c343b4c70f882f0043326f408c80c7bbae9267fe906a7b21a"
+  },
+  "commercialCompressorExecuted": false
+}

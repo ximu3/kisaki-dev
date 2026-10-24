@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Platform>
+    <Name>Windows</Name>
+    <Folder>Games\Windows</Folder>
+  </Platform>
+  <Platform>
+    <Name>Disc System</Name>
+    <Folder>Games\ROMs</Folder>
+  </Platform>
+  <PlatformFolder>
+    <Platform>Windows</Platform>
+    <MediaType>Box - Front</MediaType>
+    <FolderPath>Images\Windows\Box - Front</FolderPath>
+  </PlatformFolder>
+</LaunchBox>

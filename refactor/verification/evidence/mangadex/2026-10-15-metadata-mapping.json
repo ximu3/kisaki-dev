@@ -1,0 +1,241 @@
+{
+  "checkedAt": "2026-10-15T08:44:04.006Z",
+  "scope": "Public documentation and metadata fields only; no account access, private writes, image bytes, or rendered-site syntax claims.",
+  "documentationCommit": "60a3bb3c9f25675435a479c925d857015201739e",
+  "documents": [
+    {
+      "path": "03-manga/covers.md",
+      "status": 200,
+      "bytes": 1795,
+      "sha256": "4d19b115aa03c9669e981bbdd40c00a730ce708d6d5270fcaf4154b6a295226f"
+    },
+    {
+      "path": "03-manga/mdlist.md",
+      "status": 200,
+      "bytes": 8501,
+      "sha256": "6b1d1bfb6b0d6fe3a8ab6ab17d8f87f01b87ab380b39f6f2c38c5bca3dd7abfa"
+    },
+    {
+      "path": "03-manga/search.md",
+      "status": 200,
+      "bytes": 8442,
+      "sha256": "cec0aca4257934f1b8555503f8f779637178bf2e65bfb74325ebd144cae7ca0e"
+    },
+    {
+      "path": "01-concepts/pagination.md",
+      "status": 200,
+      "bytes": 1171,
+      "sha256": "d88d7e432b3edd05eccdb61549d231747c2f76e8e09f4058f865e85263071e54"
+    },
+    {
+      "path": "01-concepts/timestamps.md",
+      "status": 200,
+      "bytes": 2683,
+      "sha256": "422d318a0fd14347e18ef11035df0e753568991f46f1de9965ab01dc30262a03"
+    }
+  ],
+  "title": {
+    "ja-ro": "Yotsuba to!"
+  },
+  "originalLanguage": "ja",
+  "originalTitles": [
+    {
+      "ja": "よつばと！"
+    }
+  ],
+  "alternativeTitleLanguages": ["vi", "es", "ja", "zh", "ko", "ru", "uk", "en", "ar"],
+  "descriptionFormats": [
+    {
+      "language": "en",
+      "length": 346,
+      "doubleBars": false,
+      "spoilerTag": false,
+      "html": false
+    },
+    {
+      "language": "ru",
+      "length": 490,
+      "doubleBars": false,
+      "spoilerTag": false,
+      "html": false
+    },
+    {
+      "language": "uk",
+      "length": 330,
+      "doubleBars": false,
+      "spoilerTag": false,
+      "html": false
+    },
+    {
+      "language": "pt-br",
+      "length": 376,
+      "doubleBars": false,
+      "spoilerTag": false,
+      "html": false
+    }
+  ],
+  "links": {
+    "al": "30104",
+    "ap": "yotsuba",
+    "kt": "272",
+    "mu": "auem2hr",
+    "mal": "104",
+    "raw": "https://comic-walker.com/detail/KC_003331_S"
+  },
+  "officialLinks": null,
+  "tags": [
+    {
+      "id": "0a39b5a1-b235-4886-a747-1d05d216532d",
+      "name": {
+        "en": "Award Winning"
+      },
+      "description": {},
+      "group": "format"
+    },
+    {
+      "id": "4d32cc48-9f00-4cca-9b5a-a839f0764984",
+      "name": {
+        "en": "Comedy"
+      },
+      "description": {},
+      "group": "genre"
+    },
+    {
+      "id": "b1e97889-25b4-4258-b28b-cd7f4d28ea9b",
+      "name": {
+        "en": "Philosophical"
+      },
+      "description": {},
+      "group": "genre"
+    },
+    {
+      "id": "e5301a23-ebd9-49dd-a0cb-2add944c7fe9",
+      "name": {
+        "en": "Slice of Life"
+      },
+      "description": {},
+      "group": "genre"
+    }
+  ],
+  "schema": {
+    "mangaRelationships": [
+      "monochrome",
+      "main_story",
+      "adapted_from",
+      "based_on",
+      "prequel",
+      "side_story",
+      "doujinshi",
+      "same_franchise",
+      "shared_universe",
+      "sequel",
+      "spin_off",
+      "alternate_story",
+      "alternate_version",
+      "preserialization",
+      "colored",
+      "serialization"
+    ],
+    "tagFields": ["name", "description", "group", "version"],
+    "chapterFields": [
+      "title",
+      "volume",
+      "chapter",
+      "pages",
+      "translatedLanguage",
+      "uploader",
+      "externalUrl",
+      "version",
+      "createdAt",
+      "updatedAt",
+      "publishAt",
+      "readableAt",
+      "isUnavailable"
+    ],
+    "coverFields": [
+      "volume",
+      "fileName",
+      "description",
+      "locale",
+      "version",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "additionalProbe": {
+    "checkedAt": "2026-10-15T09:04:58.563Z",
+    "checks": [
+      {
+        "path": "/manga?title=Doraemon&limit=5&contentRating%5B%5D=safe&order%5Brelevance%5D=desc",
+        "status": 200
+      },
+      {
+        "path": "/cover?manga%5B%5D=58be6aa6-06cb-4ca5-bd20-f1392ce451fb&limit=100&order%5BcreatedAt%5D=desc",
+        "status": 200
+      }
+    ],
+    "search": {
+      "total": 42,
+      "candidates": [
+        {
+          "id": "e36da8b0-feca-46dd-9120-d5dc2f3feae8",
+          "title": {
+            "ja-ro": "Doraemon"
+          },
+          "reset": false
+        },
+        {
+          "id": "c9f61c57-44e9-4f0d-a738-bfab26c1b43a",
+          "title": {
+            "en": "Doraemon"
+          },
+          "reset": false
+        },
+        {
+          "id": "47dc4da4-ec9c-4dbf-a035-298cc3207f2f",
+          "title": {
+            "en": "The Complete Works of Fujiko F. Fujio - Doraemon"
+          },
+          "reset": false
+        },
+        {
+          "id": "28418ec9-822d-4dae-b912-74042bec04a5",
+          "title": {
+            "en": "Doraemon's learning series Doraemon's math fun strategy Understand area and volume"
+          },
+          "reset": false
+        },
+        {
+          "id": "5070cf5b-5b2b-42ad-9000-9a11d86b663f",
+          "title": {
+            "en": "Doraemon Encyclopedia"
+          },
+          "reset": false
+        }
+      ]
+    },
+    "covers": {
+      "total": 16,
+      "returned": 16,
+      "volumes": [
+        "16",
+        "8",
+        "15",
+        "9",
+        "12",
+        "4",
+        "7",
+        "6",
+        "2",
+        "5",
+        "3",
+        "13",
+        "11",
+        "10",
+        "14",
+        "1"
+      ],
+      "locales": ["ja"]
+    }
+  }
+}

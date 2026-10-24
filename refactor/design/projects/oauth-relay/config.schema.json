@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OAuth relay startup configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["publicOrigin", "applications"],
+  "properties": {
+    "publicOrigin": { "type": "string", "pattern": "^https://", "maxLength": 2048 },
+    "listen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "port"],
+      "properties": {
+        "host": { "type": "string", "minLength": 1, "maxLength": 255 },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "authorizationSeconds": { "$ref": "#/$defs/seconds" },
+        "exchangeSeconds": { "$ref": "#/$defs/seconds" },
+        "upstreamTimeoutSeconds": { "$ref": "#/$defs/seconds" },
+        "shutdownSeconds": { "$ref": "#/$defs/seconds" },
+        "maxSessions": { "$ref": "#/$defs/positiveInteger" },
+        "maxUpstreamRequests": { "$ref": "#/$defs/positiveInteger" },
+        "maxRequestBytes": { "$ref": "#/$defs/positiveInteger" },
+        "maxResponseBytes": { "$ref": "#/$defs/positiveInteger" }
+      }
+    },
+    "applications": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z][a-z0-9-]{0,63}$" },
+      "additionalProperties": { "$ref": "#/$defs/application" }
+    }
+  },
+  "$defs": {
+    "positiveInteger": { "type": "integer", "minimum": 1, "maximum": 2147483647 },
+    "seconds": { "type": "integer", "minimum": 1, "maximum": 2147483 },
+    "scopes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024,
+        "pattern": "^[\\u0021\\u0023-\\u005B\\u005D-\\u007E]+$"
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "required": ["clientId", "clientSecretEnv", "allowedScopes", "defaultScopes"],
+      "properties": {
+        "clientId": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "clientSecretEnv": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "allowedScopes": { "$ref": "#/$defs/scopes" },
+        "defaultScopes": { "$ref": "#/$defs/scopes" }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "allOf": [{ "$ref": "#/$defs/credentials" }],
+      "unevaluatedProperties": false
+    },
+    "google": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/credentials" },
+        {
+          "type": "object",
+          "required": ["authorization"],
+          "properties": {
+            "authorization": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["accessType", "includeGrantedScopes"],
+              "properties": {
+                "accessType": { "enum": ["online", "offline"] },
+                "includeGrantedScopes": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "redirect": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "uri"],
+          "properties": {
+            "kind": { "const": "fixed" },
+            "uri": { "type": "string", "minLength": 1, "maxLength": 2048 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "host", "path"],
+          "properties": {
+            "kind": { "const": "loopback" },
+            "host": { "enum": ["127.0.0.1", "::1"] },
+            "path": { "type": "string", "pattern": "^/[^?#]*$", "maxLength": 1024 }
+          }
+        }
+      ]
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["redirects", "providers"],
+      "properties": {
+        "redirects": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/redirect" } },
+        "corsOrigins": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^https://", "maxLength": 2048 }
+        },
+        "providers": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "bangumi": { "$ref": "#/$defs/registration" },
+            "anilist": { "$ref": "#/$defs/registration" },
+            "google": { "$ref": "#/$defs/google" }
+          }
+        }
+      }
+    }
+  }
+}

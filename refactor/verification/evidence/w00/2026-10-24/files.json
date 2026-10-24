@@ -1,0 +1,61 @@
+{
+  "recordedAt": "2026-10-24",
+  "files": {
+    "artifact-test.json": {
+      "bytes": 988,
+      "sha256": "5f8f0862fae4095455ab13b067aef27ae118347070a356b296ae911f7dff08ce"
+    },
+    "artifacts.json": {
+      "bytes": 753,
+      "sha256": "5a7347f534d799f2f06bd1ebf8936699ba987e3c69399c970622db3234455016"
+    },
+    "browser.log": {
+      "bytes": 241,
+      "sha256": "19a374519b1ffc64f930624dbedc44ab4e05054088da3405716a40aba3c6038d"
+    },
+    "check.log": {
+      "bytes": 18505,
+      "sha256": "ec44c628a389f27897a986a56dc2b49ac75c166e48c0ccd68a6c0ba8a7ed346f"
+    },
+    "consumers.json": {
+      "bytes": 1306,
+      "sha256": "0d520b2fa5b07838258024e6c6acf1b36f55e52e5b3e213c0c2871c59facf05d"
+    },
+    "desktop-build.json": {
+      "bytes": 22121,
+      "sha256": "cebaa062f9253b8221a8265ac1d0a2036f062dae02a4ec89e526ebfed472ac80"
+    },
+    "development.json": {
+      "bytes": 1010,
+      "sha256": "78c370d351a311a491e2c66aec53922df9456ee36f0cf4a56674855a53ef8034"
+    },
+    "e2e.json": {
+      "bytes": 8080,
+      "sha256": "213d0419be0fadd4077b08b11ca6ad0437899b07ad10ce549fbc43a7e6ff1c84"
+    },
+    "media.json": {
+      "bytes": 1161,
+      "sha256": "0e6f85c738cbd5f2a82389477d169ed631445d09e5d35c8c5862e5ffa1f863d9"
+    },
+    "native.log": {
+      "bytes": 329,
+      "sha256": "152c90cb0ee1f68d13aa12ce8f99d4cb7cb76ffcb131436c5c0155f8b00b852d"
+    },
+    "performance.json": {
+      "bytes": 24539,
+      "sha256": "0ebd1ed2045ef61bb7ad9e71452a37f4bffba6ec300d07c2c11e4326c0a56f2f"
+    },
+    "public-packages.json": {
+      "bytes": 2313,
+      "sha256": "a4fb5eb0bbf47f9df51dbf864e08b424c66488e57536b1138b3e8322e424d097"
+    },
+    "README.md": {
+      "bytes": 8314,
+      "sha256": "b67bd3daa39f1f74a908cea736f532fe86ab42cf9465f731f4a683779e4d8e0d"
+    },
+    "rust-check.log": {
+      "bytes": 1227,
+      "sha256": "354b422d8fe71e26d18d0a71187c1c540a66b458179756e90fbe8bda32db3624"
+    }
+  }
+}

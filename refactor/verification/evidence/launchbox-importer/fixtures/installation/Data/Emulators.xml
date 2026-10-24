@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Emulator>
+    <ID>eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee</ID>
+    <Title>Fixture Emulator</Title>
+    <ApplicationPath>Emulators\fixture.exe</ApplicationPath>
+    <CommandLine>--default</CommandLine>
+    <NoQuotes>false</NoQuotes>
+    <NoSpace>false</NoSpace>
+    <FileNameWithoutExtensionAndPath>false</FileNameWithoutExtensionAndPath>
+    <AutoExtract>false</AutoExtract>
+  </Emulator>
+  <EmulatorPlatform>
+    <Emulator>eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee</Emulator>
+    <Platform>Disc System</Platform>
+    <CommandLine>--core "cores\disc.dll" %romfile%</CommandLine>
+    <Default>true</Default>
+  </EmulatorPlatform>
+</LaunchBox>

@@ -1,0 +1,10 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo",
+    "types": []
+  },
+  "include": ["../../src/shared/**/*.ts"],
+  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+}

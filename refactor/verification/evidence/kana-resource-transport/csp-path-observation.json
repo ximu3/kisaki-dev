@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-20T10:04:04.570Z",
+  "engine": "firefox",
+  "baselineSha256": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+  "sources": {
+    "run.cjs": "11cd43471a6f868889c2d9adad71358d973351bc1cef003cf0227d53fc1cd2a0",
+    "worker.js": "97cc6fb9207bb81868c2092cb79e6efade1cc9408c6994bb2f62b43f0ddb76fd",
+    "host.js": "250f5bd6574968bffed264cb8c7f00da6936dbb877c367bffd1d2662f8ffe48e",
+    "fixture.cjs": "6fecba4a17f101513ce57bd877cd5a55f3b483a4b26a0ea2bba1aa4c519b9978",
+    "electron.cjs": "f4a53ec43a6228fa8e6a20f926098501444430837124e20e839fa51b9c474597"
+  },
+  "policy": "style/img/font restricted to each mount book directory",
+  "controlledFixtureOnly": true,
+  "observation": {
+    "message": "Error: page.evaluate: Transport changed fixture 0: [{\"key\":\"fontSize\",\"source\":\"19px\",\"routed\":\"16px\"},{\"key\":\"padding\",\"source\":\"3px\",\"routed\":\"7px\"},{\"key\":\"border\",\"source\":\"4px\",\"routed\":\"0px\"},{\"key\":\"imageOutline\",\"source\":\"rgb(120, 30, 80) solid 3px\",\"routed\":\"rgb(0, 0, 0) 3px\"},{\"key\":\"imageWidth\",\"source\":10,\"routed\":0},{\"key\":\"linkThickness\",\"source\":\"3px\",\"routed\":\"auto\"},{\"key\":\"linkWidth\",\"source\":120,\"routed\":31.050003051757812},{\"key\":\"svgFill\",\"source\":\"rgb(20, 130, 70)\",\"routed\":\"rgb(0, 0, 0)\"},{\"key\":\"svgOpacity\",\"source\":\"0.4\",\"routed\":\"1\"},{\"key\":\"custom\",\"source\":\"url(\\\"/book/styles/paper.svg\\\")\",\"routed\":\"none\"},{\"key\":\"inline\",\"source\":\"url(\\\"/book/paper.svg\\\")\",\"routed\":\"none\"},{\"key\":\"registered\",\"source\":\"url(\\\"/book/art/inline.svg\\\")\",\"routed\":\"none\"}]\nrunCases@http://127.0.0.1:55599/host.js:188:13\nasync*@debugger eval code line 311 > eval:1:17\nevaluate@debugger eval code:313:16\n@debugger eval code:1:44\n@debugger eval code:1:62\n",
+    "details": {
+      "reads": [
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/chapter.xhtml"
+        },
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/styles/main.css"
+        },
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/styles/svg.css"
+        },
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/art/paper.svg"
+        },
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/art/inline.svg"
+        },
+        {
+          "token": "cf981c4e-cc5d-4ae8-b40a-291a96de0521",
+          "path": "/book/art/symbol.svg"
+        }
+      ],
+      "bases": [
+        "http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/"
+      ],
+      "frames": [
+        "http://127.0.0.1:55599/reference/0/book/chapter.xhtml?type=html",
+        "http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/book/chapter.xhtml?type=html"
+      ]
+    },
+    "consoleErrors": [
+      "[JavaScript Error: \"Content-Security-Policy: The page’s settings blocked the loading of a resource (img-src) at http://127.0.0.1:55599/kana-content/worker.js because it violates the following directive: “img-src http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/book/”\" {file: \"http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/book/chapter.xhtml?type=html\" line: 0}]",
+      "[JavaScript Error: \"Content-Security-Policy: The page’s settings blocked the loading of a resource (img-src) at http://127.0.0.1:55599/kana-content/worker.js because it violates the following directive: “img-src http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/book/”\" {file: \"http://127.0.0.1:55599/kana-content/6ea93dd6-fbab-433e-b8fb-9850289ab2b5/cf981c4e-cc5d-4ae8-b40a-291a96de0521/book/chapter.xhtml?type=html\" line: 0}]"
+    ]
+  }
+}

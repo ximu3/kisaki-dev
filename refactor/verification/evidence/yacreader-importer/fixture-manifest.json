@@ -1,0 +1,165 @@
+{
+  "origin": "synthetic",
+  "files": [
+    {
+      "path": "fixtures/comics-info.ydb",
+      "bytes": 12288,
+      "sha256": "f45a74d198dddd0bc566c10093302104e33d729cf89b0ec1faa46b402c9664cd"
+    },
+    {
+      "path": "fixtures/full-backup.ydb",
+      "bytes": 61440,
+      "sha256": "af4b6ad324e6caf2a45415b241860fd97269d91ea565e4de0b52e11524c28291"
+    },
+    {
+      "path": "fixtures/invalid/cycle-list.ydb",
+      "bytes": 61440,
+      "sha256": "adbce67178be2558714dc771c4a0cad55da6ebf14411ba20b3cbed1bb3a27302"
+    },
+    {
+      "path": "fixtures/invalid/dangling-comic.ydb",
+      "bytes": 61440,
+      "sha256": "27e79df465369770f25ff5d2b45a848627d62bfbf80be19211c063dd8aaeff7a"
+    },
+    {
+      "path": "fixtures/invalid/dangling-list.ydb",
+      "bytes": 61440,
+      "sha256": "0fe14c9080f3af2cd13047627c3496e2b35913679eb2bd5908a53adf385fa2dd"
+    },
+    {
+      "path": "fixtures/invalid/malformed-personal.ydb",
+      "bytes": 61440,
+      "sha256": "2f4ce85ee053e97a924fafc3700ed0f0a1437a3839bdc86b6b74a80471510127"
+    },
+    {
+      "path": "fixtures/invalid/missing-relationship-table.ydb",
+      "bytes": 61440,
+      "sha256": "1a54aaf0836db981755b92063e92b7256333466209787afefb40ee9e4c1635de"
+    },
+    {
+      "path": "fixtures/invalid/not-sqlite.ydb",
+      "bytes": 14,
+      "sha256": "9eaed1a500d1c88f2a68f5ca13875fe38fc1b5f9b394555c8d34618d634f6586"
+    },
+    {
+      "path": "fixtures/invalid/source-view.ydb",
+      "bytes": 61440,
+      "sha256": "abf958fac8f0388af39723e8d47064705cb0b263f54e3a63db4f3ba3c7cdf6f5"
+    },
+    {
+      "path": "fixtures/invalid/unknown-version.ydb",
+      "bytes": 61440,
+      "sha256": "5bfd535019a52f8536ce18bb855943fc69d4063cd31607fb7eac9b2a60ca61ea"
+    },
+    {
+      "path": "fixtures/library/.yacreaderlibrary/covers/47e165e2235ac0114538b90d1511b8f47f9b232616577.jpg",
+      "bytes": 4272,
+      "sha256": "582a43cef317bb297b1674e241e63ebc5fe42f362f714ace2e772577f25b6ab7"
+    },
+    {
+      "path": "fixtures/library/.yacreaderlibrary/covers/folders/2.jpg",
+      "bytes": 4354,
+      "sha256": "9d118fecb42b984707e6d5907b51e483503b21abf0dae65f9c3d0b80f5b6e3f5"
+    },
+    {
+      "path": "fixtures/library/.yacreaderlibrary/library.ydb",
+      "bytes": 61440,
+      "sha256": "bda5a3ba16182c7257ecce45ad070afcc5ed1c3afec140675d273d76d8b5af6e"
+    },
+    {
+      "path": "fixtures/library/Arc/star.cbz",
+      "bytes": 16577,
+      "sha256": "83d137c2fc961308b627acb535384f06ce617667f45910b876d332708e393ebb"
+    },
+    {
+      "path": "fixtures/library/Arc/unopened.cbz",
+      "bytes": 1883,
+      "sha256": "46627f99c5eb77188235b43757bc66b3b0255821c562f621a02ca7f5880441db"
+    },
+    {
+      "path": "fixtures/library/Copies/star-copy.cbz",
+      "bytes": 16577,
+      "sha256": "83d137c2fc961308b627acb535384f06ce617667f45910b876d332708e393ebb"
+    },
+    {
+      "path": "fixtures/library/EPUB/fixed.epub",
+      "bytes": 4083,
+      "sha256": "24bd185a0225e09f4f20c5f52607eb32abd1e3dfb921470e21cf2792c87ed783"
+    },
+    {
+      "path": "fixtures/library/PDF/geometry.pdf",
+      "bytes": 2065,
+      "sha256": "fc8fba6982d97b6c9c3e0dde3a9dc25ba80413846ab63fdf710004ce2b401209"
+    },
+    {
+      "path": "fixtures/media-cases/case-tie.cbz",
+      "bytes": 1083,
+      "sha256": "de418c55893e1c6e41e5c3b7091a58ce4573fd2cfbd68e4b6890de20fb4d1de9"
+    },
+    {
+      "path": "fixtures/media-cases/collation-tie.cbz",
+      "bytes": 1085,
+      "sha256": "0f28aaca21db2db33addd72a401db90db3d9e0f7a630ca6bd41f9a099eb6159c"
+    },
+    {
+      "path": "fixtures/media-cases/duplicate-member.cbz",
+      "bytes": 1067,
+      "sha256": "9cf2e676ffaefc6e6b71788952b312bb495cd0ba5be9cc2dc562f43029c86fc2"
+    },
+    {
+      "path": "fixtures/media-cases/macos-case.cbz",
+      "bytes": 720,
+      "sha256": "aac630ebf48cfd73ccdfb6ee29b8e8debdaafd7571c97d783742f96847123a83"
+    },
+    {
+      "path": "fixtures/media-cases/missing-spine-image.epub",
+      "bytes": 2952,
+      "sha256": "2a688dcc638fb779d5b263c5c8c908fa009d0a8c50429bedbcddd1a4f607e476"
+    },
+    {
+      "path": "fixtures/media-cases/pages.cbt",
+      "bytes": 10240,
+      "sha256": "a770182e0166f11f299fad4e144c977fcfd80259ed2ee6e2ca8bf861b2110362"
+    },
+    {
+      "path": "fixtures/media-cases/partial-hash-a.bin",
+      "bytes": 524301,
+      "sha256": "5ca35114844b8ce862411ca2ed7b9514515d98c5e08a5edc78a4173fa45d5602"
+    },
+    {
+      "path": "fixtures/media-cases/partial-hash-b.bin",
+      "bytes": 524301,
+      "sha256": "a1b319a13c480f70b577afe6519133b1c41a5ee9ac81edce1175599443a12c52"
+    },
+    {
+      "path": "fixtures/media-cases/reflow.epub",
+      "bytes": 4082,
+      "sha256": "32b8a22d87bf16eb16f087e2adff8c1cef10ac7b6a648c4b87e4c0a73696b09e"
+    },
+    {
+      "path": "fixtures/media-cases/suffix-without-dot.cbz",
+      "bytes": 1079,
+      "sha256": "bdce963c6ac1f35c950b95c356c003773d824c2591f4ef2f6d02921589c0d11d"
+    },
+    {
+      "path": "fixtures/media-cases/traversal.cbz",
+      "bytes": 578,
+      "sha256": "31df942e9388bfb78fcd83c9f3b2db820bafc38c8c3d341fc352d8dd140afcc1"
+    },
+    {
+      "path": "fixtures/media-cases/unicode-order.cbz",
+      "bytes": 1087,
+      "sha256": "2f31399a87ed0303f1fabe8933293ba5aa4055cf34bc882ba1f337cbefa78a5e"
+    },
+    {
+      "path": "fixtures/media-cases/unknown-format.cbz",
+      "bytes": 692,
+      "sha256": "03762785442efbeb8a7e1a5cbb8ccda76ab25991258bff5807be88e612190644"
+    },
+    {
+      "path": "fixtures/other-library.ydb",
+      "bytes": 61440,
+      "sha256": "c9f2ff355a2a5ac3661e92f2ba1d6a510286d945e2dc18960759459ba30d5e7e"
+    }
+  ]
+}

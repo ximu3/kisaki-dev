@@ -1,0 +1,353 @@
+{
+  "name": "direct-work-relation-scope",
+  "observedAt": "2026-10-11T13:44:51.5856608+00:00",
+  "method": "POST",
+  "endpoint": "https://api.vndb.org/kana/vn",
+  "request": {
+    "fields": "title,relations{id,title,relation,relation_official}",
+    "filters": ["or", ["id", "=", "v17"], ["id", "=", "v11"]],
+    "results": 2
+  },
+  "status": 200,
+  "response": {
+    "more": false,
+    "results": [
+      {
+        "id": "v11",
+        "relations": [
+          {
+            "id": "v69043",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Rin to stay night"
+          },
+          {
+            "id": "v7",
+            "relation": "set",
+            "relation_official": true,
+            "title": "Tsukihime"
+          },
+          {
+            "id": "v50",
+            "relation": "fan",
+            "relation_official": true,
+            "title": "Fate/hollow ataraxia"
+          },
+          {
+            "id": "v7602",
+            "relation": "set",
+            "relation_official": true,
+            "title": "Fate/EXTRA"
+          },
+          {
+            "id": "v777",
+            "relation": "set",
+            "relation_official": true,
+            "title": "Mahoutsukai no Yoru"
+          },
+          {
+            "id": "v12779",
+            "relation": "preq",
+            "relation_official": false,
+            "title": "Fate/Otome"
+          },
+          {
+            "id": "v65507",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Ocha no Ma Eirei Gekijou -Parallel & At Home Comedy-"
+          },
+          {
+            "id": "v12706",
+            "relation": "fan",
+            "relation_official": false,
+            "title": "Hate/sty night"
+          },
+          {
+            "id": "v5647",
+            "relation": "seq",
+            "relation_official": false,
+            "title": "Fake/ever since"
+          },
+          {
+            "id": "v64299",
+            "relation": "char",
+            "relation_official": false,
+            "title": "FATE/COLUMNS NIGHT"
+          },
+          {
+            "id": "v53209",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Nugi Fate Quiz de Datsui! 5"
+          },
+          {
+            "id": "v62120",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Sakura ~Ryoujoku Seifuku Kikou~"
+          },
+          {
+            "id": "v53084",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Maid/stay night"
+          },
+          {
+            "id": "v64131",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Nyotai Mekuri - Fate Hen"
+          },
+          {
+            "id": "v62124",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Unchain the Night～Illyasuiel～"
+          },
+          {
+            "id": "v62117",
+            "relation": "char",
+            "relation_official": false,
+            "title": "BADEND no Sonogo ni..."
+          },
+          {
+            "id": "v53550",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Fate/IF Unlimited Card Works"
+          },
+          {
+            "id": "v7555",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Fate/Dear Night"
+          },
+          {
+            "id": "v62123",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Motto Sakura na Hibi"
+          },
+          {
+            "id": "v65016",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Happiness"
+          },
+          {
+            "id": "v9339",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Saber"
+          },
+          {
+            "id": "v9340",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Rider"
+          },
+          {
+            "id": "v12243",
+            "relation": "preq",
+            "relation_official": false,
+            "title": "The Law of Contradiction"
+          },
+          {
+            "id": "v9341",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Sakura"
+          },
+          {
+            "id": "v12463",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Fate/Side Moon"
+          },
+          {
+            "id": "v29977",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Luoye Dao - Xianxing Ban"
+          },
+          {
+            "id": "v9342",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Illya"
+          },
+          {
+            "id": "v64458",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Fate/parallele Welt"
+          },
+          {
+            "id": "v62918",
+            "relation": "char",
+            "relation_official": false,
+            "title": "DYSTOPIA -Fool on the City-"
+          },
+          {
+            "id": "v9343",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Caster"
+          },
+          {
+            "id": "v9344",
+            "relation": "char",
+            "relation_official": false,
+            "title": "My Pet Rin"
+          },
+          {
+            "id": "v9345",
+            "relation": "char",
+            "relation_official": false,
+            "title": "The Sacred Treasures/Fate"
+          },
+          {
+            "id": "v18204",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Krasnaja shapochka"
+          },
+          {
+            "id": "v5398",
+            "relation": "set",
+            "relation_official": false,
+            "title": "Heroic Spirit Assassin"
+          },
+          {
+            "id": "v9888",
+            "relation": "side",
+            "relation_official": false,
+            "title": "Happy Valentine's Day"
+          },
+          {
+            "id": "v15808",
+            "relation": "preq",
+            "relation_official": false,
+            "title": "Fate/Zero"
+          },
+          {
+            "id": "v62917",
+            "relation": "char",
+            "relation_official": false,
+            "title": "FEEL OF YOUR BODY"
+          },
+          {
+            "id": "v68597",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Shiuke Mix Remix"
+          },
+          {
+            "id": "v13288",
+            "relation": "side",
+            "relation_official": false,
+            "title": "Fate/Knight Rhapsody"
+          },
+          {
+            "id": "v14554",
+            "relation": "preq",
+            "relation_official": false,
+            "title": "Fate/Zero The Adventure"
+          },
+          {
+            "id": "v14957",
+            "relation": "char",
+            "relation_official": false,
+            "title": "I, Miku"
+          },
+          {
+            "id": "v16202",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Just Story"
+          },
+          {
+            "id": "v64253",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Bunsan Sei Minimum x Archer"
+          },
+          {
+            "id": "v23380",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Camera"
+          },
+          {
+            "id": "v68426",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Kakuri Gensou Shuto Tokyo"
+          },
+          {
+            "id": "v30132",
+            "relation": "ser",
+            "relation_official": false,
+            "title": "Fate/Empire of Dirt"
+          },
+          {
+            "id": "v40698",
+            "relation": "fan",
+            "relation_official": false,
+            "title": "Fate/Dream Coalescence"
+          },
+          {
+            "id": "v45083",
+            "relation": "preq",
+            "relation_official": false,
+            "title": "Fate/Zero the Visual Novel"
+          },
+          {
+            "id": "v58467",
+            "relation": "ser",
+            "relation_official": false,
+            "title": "Fate/Install"
+          },
+          {
+            "id": "v57775",
+            "relation": "set",
+            "relation_official": false,
+            "title": "Fate;Gate Epsilon"
+          }
+        ],
+        "title": "Fate/stay night"
+      },
+      {
+        "id": "v17",
+        "relations": [
+          {
+            "id": "v13",
+            "relation": "ser",
+            "relation_official": true,
+            "title": "Remember11 -the age of infinity-"
+          },
+          {
+            "id": "v19373",
+            "relation": "alt",
+            "relation_official": true,
+            "title": "Ever17"
+          },
+          {
+            "id": "v248",
+            "relation": "ser",
+            "relation_official": true,
+            "title": "Never7 -the end of infinity-"
+          },
+          {
+            "id": "v3794",
+            "relation": "seq",
+            "relation_official": false,
+            "title": "Ever17 CrossOver Impression"
+          }
+        ],
+        "title": "Ever17 -the out of infinity-"
+      }
+    ]
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "observedOn": "2026-10-16",
+  "target": {
+    "seriesId": 23606352927,
+    "title": "Yotsuba to!"
+  },
+  "authorizedScope": "Temporary rating and list-state tests with volume 2 / chapter 3 preservation check, followed by cleanup",
+  "steps": [
+    {
+      "label": "set-rating-0",
+      "path": "/series/23606352927/rating",
+      "method": "PUT",
+      "input": {
+        "rating": 0
+      },
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 404,
+        "ratingStatus": 404
+      }
+    },
+    {
+      "label": "set-rating-8.7",
+      "path": "/series/23606352927/rating",
+      "method": "PUT",
+      "input": {
+        "rating": 8.7
+      },
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 404,
+        "ratingStatus": 200,
+        "rating": 8.7
+      }
+    },
+    {
+      "label": "set-rating-8.75",
+      "path": "/series/23606352927/rating",
+      "method": "PUT",
+      "input": {
+        "rating": 8.75
+      },
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 404,
+        "ratingStatus": 200,
+        "rating": 8.8
+      }
+    },
+    {
+      "label": "clear-rating",
+      "path": "/series/23606352927/rating",
+      "method": "DELETE",
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 404,
+        "ratingStatus": 404
+      }
+    },
+    {
+      "label": "add-to-wish",
+      "path": "/lists/series",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 1
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 1,
+        "progress": {
+          "volume": 1,
+          "chapter": 1
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "reading-with-test-progress",
+      "path": "/lists/series/update",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 0,
+          "status": {
+            "volume": 2,
+            "chapter": 3
+          }
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 0,
+        "progress": {
+          "volume": 2,
+          "chapter": 3
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "move-to-complete",
+      "path": "/lists/series/update",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 2
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 2,
+        "progress": {
+          "volume": 2,
+          "chapter": 3
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "move-to-hold",
+      "path": "/lists/series/update",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 4
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 4,
+        "progress": {
+          "volume": 2,
+          "chapter": 3
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "move-to-unfinished",
+      "path": "/lists/series/update",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 3
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 3,
+        "progress": {
+          "volume": 2,
+          "chapter": 3
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "move-back-to-wish",
+      "path": "/lists/series/update",
+      "method": "POST",
+      "input": [
+        {
+          "series": {
+            "id": 23606352927
+          },
+          "list_id": 1
+        }
+      ],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 200,
+        "ratingStatus": 404,
+        "listId": 1,
+        "progress": {
+          "volume": 2,
+          "chapter": 3
+        },
+        "priority": 1
+      }
+    },
+    {
+      "label": "remove-test-list-item",
+      "path": "/lists/series/delete",
+      "method": "POST",
+      "input": [23606352927],
+      "httpStatus": 200,
+      "responseStatus": "success",
+      "observed": {
+        "itemStatus": 404,
+        "ratingStatus": 404
+      }
+    }
+  ],
+  "cleaned": true,
+  "nonemptyListRead": {
+    "status": 200,
+    "total": 1,
+    "returned": 1,
+    "recordKeys": ["series", "list_id", "status", "priority", "time_added"],
+    "metadataKeys": ["series", "user_rating"],
+    "listType": "hold"
+  },
+  "finalTarget": {
+    "itemStatus": 404,
+    "ratingStatus": 404
+  },
+  "finalLists": [
+    {
+      "listId": 0,
+      "status": 200,
+      "total": 0,
+      "returned": 0
+    },
+    {
+      "listId": 1,
+      "status": 200,
+      "total": 0,
+      "returned": 0
+    },
+    {
+      "listId": 2,
+      "status": 200,
+      "total": 0,
+      "returned": 0
+    },
+    {
+      "listId": 3,
+      "status": 200,
+      "total": 0,
+      "returned": 0
+    },
+    {
+      "listId": 4,
+      "status": 200,
+      "total": 0,
+      "returned": 0
+    }
+  ],
+  "emptyListsRestored": true,
+  "connectionCleanup": {
+    "closed": true,
+    "logoutStatus": 200
+  }
+}

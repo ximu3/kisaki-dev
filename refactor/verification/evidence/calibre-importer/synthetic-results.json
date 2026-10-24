@@ -1,0 +1,294 @@
+{
+  "checkedAt": "2026-10-17T08:13:34.305Z",
+  "scope": "Synthetic SQLite/OPF/EPUB and proposal conversion probes; no source application or Kisaki runtime execution.",
+  "runtime": {
+    "node": "v24.11.1"
+  },
+  "counts": {
+    "checks": 63,
+    "books": 5,
+    "customColumns": 8,
+    "sourceAnnotations": 6,
+    "selectedLiveAnnotations": 4,
+    "inputFiles": 10
+  },
+  "epubProbe": {
+    "member": "OEBPS/ch1.xhtml",
+    "sourceStart": "/2/4/2[p1]/1:0",
+    "sourceEnd": "/2/4/2[p1]/1:5",
+    "nativeStart": "epubcfi(/6/2[c1]!/4/2[p1]/1:0)",
+    "nativeEnd": "epubcfi(/6/2[c1]!/4/2[p1]/1:5)",
+    "quote": "星光与庭院"
+  },
+  "checks": [
+    {
+      "name": "metadata schema version is 28",
+      "passed": true
+    },
+    {
+      "name": "five independent source book rows are readable",
+      "passed": true
+    },
+    {
+      "name": "read-only handle rejects mutations",
+      "passed": true
+    },
+    {
+      "name": "extension loading cannot be enabled",
+      "passed": true
+    },
+    {
+      "name": "stored 7 means 3.5 stars and maps to 70",
+      "passed": true
+    },
+    {
+      "name": "stored zero is explicit unrated",
+      "passed": true
+    },
+    {
+      "name": "no rating link in a complete library means unrated",
+      "passed": true
+    },
+    {
+      "name": "missing optional OPF rating remains unknown",
+      "passed": true
+    },
+    {
+      "name": "invalid fractional stored rating is rejected",
+      "passed": true
+    },
+    {
+      "name": "negative stored rating is rejected",
+      "passed": true
+    },
+    {
+      "name": "comments remain bibliographic description",
+      "passed": true
+    },
+    {
+      "name": "edition duplicate shares ISBN but not source row id",
+      "passed": true
+    },
+    {
+      "name": "conflicting edition evaluations are not merged by row order",
+      "passed": true
+    },
+    {
+      "name": "boolean false is retained separately from absence",
+      "passed": true
+    },
+    {
+      "name": "multi-valued custom columns use their link table",
+      "passed": true
+    },
+    {
+      "name": "a comma in a stored label is not a separator",
+      "passed": true
+    },
+    {
+      "name": "computed column templates are not executed",
+      "passed": true
+    },
+    {
+      "name": "dynamic table ids cannot inject SQL",
+      "passed": true
+    },
+    {
+      "name": "date field uses selected source display timezone",
+      "passed": true
+    },
+    {
+      "name": "legitimate first day is preserved",
+      "passed": true
+    },
+    {
+      "name": "calibre undefined date means no date",
+      "passed": true
+    },
+    {
+      "name": "malformed date is rejected",
+      "passed": true
+    },
+    {
+      "name": "impossible calendar date is rejected instead of normalized",
+      "passed": true
+    },
+    {
+      "name": "explicit work count creates one dated and one undated fact",
+      "passed": true
+    },
+    {
+      "name": "part completion never becomes a work count",
+      "passed": true
+    },
+    {
+      "name": "zero count and a completion date conflict",
+      "passed": true
+    },
+    {
+      "name": "no selected completion facts create no history",
+      "passed": true
+    },
+    {
+      "name": "reader scope excludes the other user",
+      "passed": true
+    },
+    {
+      "name": "removed annotations are not resurrected",
+      "passed": true
+    },
+    {
+      "name": "four live selected annotation rows remain",
+      "passed": true
+    },
+    {
+      "name": "latest position is selected within one user and format",
+      "passed": true
+    },
+    {
+      "name": "position percent does not create a completion fact",
+      "passed": true
+    },
+    {
+      "name": "data rows resolve one present and two missing formats",
+      "passed": true
+    },
+    {
+      "name": "EPUB and PDF are separate format files",
+      "passed": true
+    },
+    {
+      "name": "source paths cannot escape the library",
+      "passed": true
+    },
+    {
+      "name": "absolute source paths are not treated as library members",
+      "passed": true
+    },
+    {
+      "name": "EPUB container has four actual members",
+      "passed": true
+    },
+    {
+      "name": "EPUB mimetype is correct",
+      "passed": true
+    },
+    {
+      "name": "highlight names the exact EPUB member",
+      "passed": true
+    },
+    {
+      "name": "source endpoints extract the actual synthetic quote",
+      "passed": true
+    },
+    {
+      "name": "source document path converts to standard package CFI",
+      "passed": true
+    },
+    {
+      "name": "end offset remains end-exclusive",
+      "passed": true
+    },
+    {
+      "name": "standard CFI resolves to the same text endpoint",
+      "passed": true
+    },
+    {
+      "name": "out-of-range endpoint is rejected",
+      "passed": true
+    },
+    {
+      "name": "surrogate pair cannot be split",
+      "passed": true
+    },
+    {
+      "name": "calibre viewport geometry is not a source text point",
+      "passed": true
+    },
+    {
+      "name": "missing spine item does not fall back to the first chapter",
+      "passed": true
+    },
+    {
+      "name": "MOBI quote and comment remain available for a Note",
+      "passed": true
+    },
+    {
+      "name": "empty unsupported bookmark has no fabricated Note body",
+      "passed": true
+    },
+    {
+      "name": "backup OPF carries five scoped annotation envelopes",
+      "passed": true
+    },
+    {
+      "name": "save-to-disk OPF does not invent database annotation fields",
+      "passed": true
+    },
+    {
+      "name": "OPF boolean is a JSON boolean",
+      "passed": true
+    },
+    {
+      "name": "OPF multi-value field remains a JSON array",
+      "passed": true
+    },
+    {
+      "name": "OPF datetime is a data wrapper and is never instantiated",
+      "passed": true
+    },
+    {
+      "name": "OPF book UUID is not ISBN",
+      "passed": true
+    },
+    {
+      "name": "OPF external entity declaration is rejected",
+      "passed": true
+    },
+    {
+      "name": "category notes use their own schema version",
+      "passed": true
+    },
+    {
+      "name": "category note scope is author and tag, not book",
+      "passed": true
+    },
+    {
+      "name": "calres URL matches the declared resource",
+      "passed": true
+    },
+    {
+      "name": "resource content hash matches its resource key",
+      "passed": true
+    },
+    {
+      "name": "note image bytes have PNG signature",
+      "passed": true
+    },
+    {
+      "name": "user category stores values and source fields, not book ids",
+      "passed": true
+    },
+    {
+      "name": "every synthetic input byte remains unchanged after reads",
+      "passed": true
+    }
+  ],
+  "inputSha256": {
+    "export/Stardust Garden.epub": "454eb722e0662644464dafc080a06c8b9c598a3094d9dcef1a66cdd520f1a1d5",
+    "export/Stardust Garden.jpg": "0b8d8b5f15046343fd32f451df93acc2bdd9e6373be478b968e4cad6b6647351",
+    "export/Stardust Garden.opf": "11f9563b2d3add3c8396ac2b98bc142365b9b01db373430a42a5fbf6b3dfd214",
+    "library/.calnotes/notes.db": "2d5b3862d941ef461ef4cabcf2da0fe6def3bab0b69e13e2c245d0d7de728512",
+    "library/.calnotes/resources/4a/sha1-4a9ff8a56594bd2e2852afdcb3c175dd06d8278c": "2fc77dcd566a264e290982c4a6571697ebade9d5655c24ed369f523cf2490603",
+    "library/metadata.db": "ad2d982b02c051fcb94a34ddb23fcd72c6cf34eae22526bc896779d6d851394c",
+    "library/Synthetic Author/Stardust Garden (1)/cover.jpg": "0b8d8b5f15046343fd32f451df93acc2bdd9e6373be478b968e4cad6b6647351",
+    "library/Synthetic Author/Stardust Garden (1)/metadata.opf": "3382e06f16abaf6a913dc4b313f652089323bad5cbd64817a7b4d89be6d991a3",
+    "library/Synthetic Author/Stardust Garden (1)/Stardust Garden.epub": "454eb722e0662644464dafc080a06c8b9c598a3094d9dcef1a66cdd520f1a1d5",
+    "manifest.json": "ca0b7febeb81e9f0a41cff895b810a12e1f13d7804a4b758b5e6008bb9b8e1d3"
+  },
+  "limitations": [
+    "The SQLite fixture contains selected ordinary source tables, not calibre FTS tables or triggers.",
+    "CFI checks cover this simple, unchanged XHTML tree only; full normalization, range forms and real viewer round trips remain implementation acceptance.",
+    "No real user export, WAL recovery, host writes, attachments preparation or extension UI was exercised."
+  ]
+}

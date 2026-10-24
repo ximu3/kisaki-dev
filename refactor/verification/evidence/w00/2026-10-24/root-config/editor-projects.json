@@ -1,0 +1,65 @@
+{
+  "typescript": "6.0.3",
+  "results": [
+    {
+      "file": "tools/hooks.ts",
+      "configuration": "tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tools/release/package-inputs.ts",
+      "configuration": "tsconfig.tools.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "commitlint.config.ts",
+      "configuration": "tsconfig.config.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "eslint.config.ts",
+      "configuration": "tsconfig.config.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "lint-staged.config.ts",
+      "configuration": "tsconfig.config.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "vitest.config.ts",
+      "configuration": "tsconfig.config.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "vitest.config.consumers.ts",
+      "configuration": "tsconfig.config.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/consumers/packages.test.ts",
+      "configuration": "tsconfig.tests.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/support/consumer.ts",
+      "configuration": "tsconfig.tests.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/tools/hooks/lifecycle.test.ts",
+      "configuration": "tsconfig.tests.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/tools/structure/boundaries.test.ts",
+      "configuration": "tsconfig.tests.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "tests/tools/structure/workspace.test.ts",
+      "configuration": "tsconfig.tests.json",
+      "diagnostics": 0
+    }
+  ]
+}

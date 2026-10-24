@@ -1,0 +1,38 @@
+{
+  "scope": "deterministic contract models and recorded native pixels; not production implementations",
+  "checks": [
+    "stable clock keeps one interval",
+    "backward correction preserves prior interval and omits gap",
+    "forward correction preserves prior interval and omits gap",
+    "tolerance boundary keeps anchor",
+    "all saved intervals preserve positive span and duration",
+    "unidentified volume reuses unique match",
+    "duplicate volume is ambiguous",
+    "missing matching rules cannot recreate existing volume",
+    "empty scope may initialize explicit member",
+    "fields-only adoption cannot create a part",
+    "srgb screenshot matches GPU samples",
+    "p3 screenshot matches GPU samples",
+    "hdr-srgb screenshot matches GPU samples",
+    "sRGB independent reference preserved",
+    "Display P3 independent reference preserved",
+    "forced fallback matches software pixels",
+    "forced fallback is observably different from SDR",
+    "host policy accepts verified GPU path",
+    "host policy rejects fallback with screenshot-sw disabled",
+    "host policy rejects missing and unknown provenance"
+  ],
+  "count": 20,
+  "clock": {
+    "normal": [[100000, 110000, 10000]],
+    "backward": [
+      [100000, 105000, 5000],
+      [90000, 95000, 5000]
+    ],
+    "forward": [
+      [100000, 105000, 5000],
+      [200000, 205000, 5000]
+    ]
+  },
+  "formalHostExecuted": false
+}

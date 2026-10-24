@@ -1,0 +1,207 @@
+[
+  {
+    "path": "clients/desktop/app/tools/build/cli.ts",
+    "bytes": 1182,
+    "sha256": "1453ed3f20d2b91bcd1549667e518a7fcde512824c2b3e1d622022640767702d"
+  },
+  {
+    "path": "clients/desktop/app/tools/build/coordinator.ts",
+    "bytes": 3435,
+    "sha256": "ce5e75099ed1562b3a6f73328de10fdaaf7c29daa1d43ce2b7ad1b5934dfee71"
+  },
+  {
+    "path": "clients/desktop/app/tools/build/identity.ts",
+    "bytes": 2937,
+    "sha256": "b88bb569ae474d4404f2e2c8a26134fbcbc89ecb532c26e0b060bfc4160be947"
+  },
+  {
+    "path": "clients/desktop/app/tools/build/programs.ts",
+    "bytes": 2577,
+    "sha256": "69879442bce652c35a7e6dd24ba799344b3e61288c7eb68077d6268a78e459ab"
+  },
+  {
+    "path": "clients/desktop/app/tools/clean.ts",
+    "bytes": 1486,
+    "sha256": "ac2453aa58ee6c583b96db1e237b7968ee9051dad2a2ef22dba0a40948d47212"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/cli.ts",
+    "bytes": 543,
+    "sha256": "3d16cf0cc752f7ea98c4d9728359632a1481bd0c9115a080fb203fbf1dd8b78c"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/dependencies.ts",
+    "bytes": 4460,
+    "sha256": "7fcfdeb0bb2992a404bc04982da7c9c8994154cda0bd12ecc8942eac988fea02"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/electron-process.ts",
+    "bytes": 2143,
+    "sha256": "e1e4afd55005f54d001c92d5883ffe73344ca25b68342b0b4be8ffb5fa6614ea"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/generation.ts",
+    "bytes": 2659,
+    "sha256": "72b96e9d9fb1bcc875786ce68aa716c5f7a683c18ece3b5a80f07faac1571f81"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/renderer.ts",
+    "bytes": 3798,
+    "sha256": "37e2f58b5cd2a04a7ab15aa42c9835dc081e7ea3eca00db696f114bbd627dd92"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/session.ts",
+    "bytes": 8093,
+    "sha256": "8392ad3800013fc20202bfaa268999b49745225834b5d177782c648a25826087"
+  },
+  {
+    "path": "clients/desktop/app/tools/dev/electron-executable.ts",
+    "bytes": 392,
+    "sha256": "e508cc3b33ae8eb3343257f15966ecaec334dc0b3c996ffbc79530199833602a"
+  },
+  {
+    "path": "clients/desktop/app/tools/native/build.ts",
+    "bytes": 1895,
+    "sha256": "868cbb55c197d2139d518e13eb575c494908707b97c4737b6f8f675a531e785f"
+  },
+  {
+    "path": "clients/desktop/app/tools/native/check.ts",
+    "bytes": 591,
+    "sha256": "545d683e1397414571c5ee74761eb5eeefbd6c6620672cea98ec09c7f257799b"
+  },
+  {
+    "path": "clients/desktop/app/tools/native/cli.ts",
+    "bytes": 829,
+    "sha256": "1e41f9a5f043061ca46cf3c41acfcc0ba176d11c521e00c9b5579909a8c5c70a"
+  },
+  {
+    "path": "clients/desktop/app/tools/native/declarations.ts",
+    "bytes": 652,
+    "sha256": "69f25cbe8eee28883abef9ebb2163b8d451467bca7eee1996343a9011b0148bd"
+  },
+  {
+    "path": "clients/desktop/app/tools/lib/output.ts",
+    "bytes": 1596,
+    "sha256": "bef7085c495722435b73e46d5d4dbebd8381b0c75a64c3c974ec5517f33e04cf"
+  },
+  {
+    "path": "clients/desktop/app/tools/package/cli.ts",
+    "bytes": 490,
+    "sha256": "e90c9ad1f5f82b6215353ce215ce26426f2298c9a07f107d28e65db09710c928"
+  },
+  {
+    "path": "clients/desktop/app/tools/package/packager.ts",
+    "bytes": 6517,
+    "sha256": "56d9a3ec09bdb83601c2e7711f4c36f642ce883a332233b365772d971bf23a2e"
+  },
+  {
+    "path": "clients/desktop/app/tools/lib/paths.ts",
+    "bytes": 470,
+    "sha256": "3c6d715e9444e059042d3681144ee331dea3663735d00ec2c5faee8e5f0e497e"
+  },
+  {
+    "path": "clients/desktop/app/tools/lib/process.ts",
+    "bytes": 1722,
+    "sha256": "c052dc8aa25b7a94c41f5240e9f83f44a2e8738af5bd362d0fa8056fc8048afc"
+  },
+  {
+    "path": "clients/desktop/app/tools/resources/cli.ts",
+    "bytes": 412,
+    "sha256": "50418e3c2fb4f5e299c36353beeb0793410ae0b08e11e90335bf983f52d5ff2a"
+  },
+  {
+    "path": "clients/desktop/app/tools/resources/fonts.ts",
+    "bytes": 1411,
+    "sha256": "8556c15da85c774f6cb1b35fb6aa3972908d76bde394a0cccb793490587cb965"
+  },
+  {
+    "path": "clients/desktop/app/tools/resources/prepare.ts",
+    "bytes": 2690,
+    "sha256": "26aa5c841df61b842186913298a2006b08546b4d56ca974c3b5a5a726a9e0bf5"
+  },
+  {
+    "path": "clients/desktop/app/tools/lib/sha256.ts",
+    "bytes": 232,
+    "sha256": "4d185e4b19c9cdf9dac4be5c992d860753ed87726c760a574fcf053440b5aafe"
+  },
+  {
+    "path": "clients/desktop/app/tools/lib/targets.ts",
+    "bytes": 1104,
+    "sha256": "e54cdbf918c400a99a34bcd1d8e46bdac641ebc064ed75a9b2a12c6dc5136fcc"
+  },
+  {
+    "path": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+    "bytes": 6389,
+    "sha256": "9a0df376d023057aa6ff6bf56878d56459c2c076cb0d93ada225b2b7775c2971"
+  },
+  {
+    "path": "clients/desktop/app/tests/browser/window.test.tsx",
+    "bytes": 1142,
+    "sha256": "89b9c4b7b086f0db48bbec5f8073b117bd2ccb7592d3a75eabbf492d2f1c2a03"
+  },
+  {
+    "path": "clients/desktop/app/tests/e2e/windows.test.ts",
+    "bytes": 1777,
+    "sha256": "44791649a47a4c0f7dd03d018b0c39fd11263f372389663c04221e5eca4545ea"
+  },
+  {
+    "path": "clients/desktop/app/tests/integration/database/abi.test.ts",
+    "bytes": 1431,
+    "sha256": "8c176c595b81ffd2023c9fc9cd908e77c08deb353bc1992dde4bc2193cb248f3"
+  },
+  {
+    "path": "clients/desktop/app/tests/integration/native/files.test.ts",
+    "bytes": 5406,
+    "sha256": "0952c74aad9c8ffbba687c073892c6ecfdf06a109794e8ee45fea4b938f3ac31"
+  },
+  {
+    "path": "clients/desktop/app/tests/performance/budgets.ts",
+    "bytes": 974,
+    "sha256": "a3dfd6e965c01ba79df158c285edeb74e92e743122faa2835544ca04c2b34186"
+  },
+  {
+    "path": "clients/desktop/app/tests/performance/startup.test.ts",
+    "bytes": 3577,
+    "sha256": "4f301edebfa7db4847714dc33fd31d9c19dc2f65ef7d13b4df08ec09d54e5e14"
+  },
+  {
+    "path": "clients/desktop/app/tests/support/artifact-workspace.ts",
+    "bytes": 2497,
+    "sha256": "db888d3f33c15b7b651628e5edeffd4f7957506d77f8d6ca26eefab71254ce29"
+  },
+  {
+    "path": "clients/desktop/app/tests/support/development-controller.ts",
+    "bytes": 827,
+    "sha256": "0efcd8e44bdb4659c167fd69c105e238d91d3908239c3bb0f7bf4a544f7bd686"
+  },
+  {
+    "path": "clients/desktop/app/tests/support/development-workspace.ts",
+    "bytes": 3193,
+    "sha256": "7fc04ec2a5a5bf4d8204c5c46ea9ee34f24cbd19cbf89a0e787986953ff2f79b"
+  },
+  {
+    "path": "clients/desktop/app/tests/support/electron.ts",
+    "bytes": 2079,
+    "sha256": "ad05c9232a78a2967c8c151e650627f78c7dc0344316746f79037f3b7e06498d"
+  },
+  {
+    "path": "clients/desktop/app/tests/support/window-observation.ts",
+    "bytes": 2447,
+    "sha256": "6e49731ee75cdb898955e67d797972701959e3433a1290846b3c08332b1ba85c"
+  },
+  {
+    "path": "clients/desktop/app/tests/tools/build/output.test.ts",
+    "bytes": 2235,
+    "sha256": "0614bc536ca8ad89a95907483fe99746d8caf4bcdfdc10d21a7cef11bac90726"
+  },
+  {
+    "path": "clients/desktop/app/tests/tools/dev/session.test.ts",
+    "bytes": 8394,
+    "sha256": "2ec5dd4ed7d3e3218155ef6e28704e3f7891752d6000d7e4438bd5cdd88abd16"
+  },
+  {
+    "path": "clients/desktop/app/tests/tools/resources/fonts.test.ts",
+    "bytes": 1845,
+    "sha256": "9469b06dcb859b26aed3d1aa7b51dbf496ddb62c1e384d5e1f915d5e79e3dea9"
+  }
+]

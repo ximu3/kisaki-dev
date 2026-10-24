@@ -1,0 +1,1900 @@
+{
+  "scope": "Public anonymous reads for source-grain design; responseProjection contains selected unchanged source fields, not complete responses.",
+  "schema": {
+    "url": "https://raw.githubusercontent.com/bangumi/api/master/open-api/v0.yaml",
+    "observedAt": "2026-10-13T04:46:07.496Z",
+    "status": 200,
+    "sha256": "5a7ddb7ddec132293b1aa08102e6ac63e31b2925574658e927d6f931df2519da",
+    "commit": "a7055f2dca7286d6963aaa7928345eeca6293e2b",
+    "subjectSeriesDescription": "是否为书籍系列的主条目",
+    "subjectBookCategory": {
+      "enum": [0, 1001, 1002, 1003],
+      "description": "书籍类型\n- `0` 为 其他\n- `1001` 为 漫画\n- `1002` 为 小说\n- `1003` 为 画集"
+    },
+    "episodeTypes": {
+      "enum": [0, 1, 2, 3, 4, 5, 6],
+      "description": "本篇 = 0\n特别篇 = 1\nOP = 2\nED = 3\n预告/宣传/广告 = 4\nMAD = 5\n其他 = 6"
+    },
+    "collectionTypes": {
+      "enum": [1, 2, 3, 4, 5],
+      "description": "- `1`: 想看\n- `2`: 看过\n- `3`: 在看\n- `4`: 搁置\n- `5`: 抛弃"
+    },
+    "collectionFields": [
+      "subject_id",
+      "subject_type",
+      "rate",
+      "type",
+      "comment",
+      "tags",
+      "ep_status",
+      "vol_status",
+      "updated_at",
+      "private",
+      "subject"
+    ],
+    "collectionUpdatedAtDescription": "本时间并不代表条目的收藏时间。修改评分，评价，章节观看状态等收藏信息时未更新此时间是一个 bug。请不要依赖此特性",
+    "collectionWriteMethods": ["post", "patch"],
+    "collectionWritableFields": [
+      "type",
+      "rate",
+      "ep_status",
+      "vol_status",
+      "comment",
+      "private",
+      "tags"
+    ],
+    "ratingDescription": "评分，`0` 表示删除评分"
+  },
+  "requests": [
+    {
+      "observedAt": "2026-10-13T04:46:58.942Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/subjects?limit=8&offset=0",
+        "body": {
+          "keyword": "キノの旅",
+          "sort": "match",
+          "filter": {
+            "type": [1]
+          }
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 104,
+        "limit": 8,
+        "offset": 0,
+        "data": [
+          {
+            "id": 7853,
+            "type": 1,
+            "name": "キノの旅 I -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13909,
+            "type": 1,
+            "name": "キノの旅 II -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13910,
+            "type": 1,
+            "name": "キノの旅 XIV -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13911,
+            "type": 1,
+            "name": "キノの旅 -the Beautiful World-",
+            "name_cn": "奇诺之旅",
+            "platform": "小说",
+            "series": true,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13913,
+            "type": 1,
+            "name": "キノの旅 III -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13914,
+            "type": 1,
+            "name": "キノの旅 IV -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13915,
+            "type": 1,
+            "name": "キノの旅 V -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 13916,
+            "type": 1,
+            "name": "キノの旅 VI -the Beautiful World-",
+            "name_cn": "",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:46:59.290Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/subjects?limit=8&offset=0",
+        "body": {
+          "keyword": "君の膵臓をたべたい",
+          "sort": "match",
+          "filter": {
+            "type": [1]
+          }
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 1000,
+        "limit": 8,
+        "offset": 0,
+        "data": [
+          {
+            "id": 141797,
+            "type": 1,
+            "name": "君の膵臓をたべたい",
+            "name_cn": "我想吃掉你的胰脏",
+            "platform": "小说",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 190972,
+            "type": 1,
+            "name": "君の膵臓をたべたい",
+            "name_cn": "我想吃掉你的胰脏",
+            "platform": "漫画",
+            "series": true,
+            "eps": 10,
+            "total_episodes": 10,
+            "volumes": 2
+          },
+          {
+            "id": 209222,
+            "type": 1,
+            "name": "君の膵臓をたべたい (上)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 217698,
+            "type": 1,
+            "name": "君の膵臓をたべたい (下)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 361954,
+            "type": 1,
+            "name": "劇場アニメ「君の膵臓をたべたい」公式ガイドブック",
+            "name_cn": "",
+            "platform": "公式书",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 1412,
+            "type": 1,
+            "name": "君のいる町 (01)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 8,
+            "total_episodes": 8,
+            "volumes": 0
+          },
+          {
+            "id": 4434,
+            "type": 1,
+            "name": "君のせいで僕は",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 6782,
+            "type": 1,
+            "name": "君のいる町 (02)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 10,
+            "total_episodes": 10,
+            "volumes": 0
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:46:59.681Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/subjects?limit=8&offset=0",
+        "body": {
+          "keyword": "よつばと",
+          "sort": "match",
+          "filter": {
+            "type": [1]
+          }
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 51,
+        "limit": 8,
+        "offset": 0,
+        "data": [
+          {
+            "id": 10086,
+            "type": 1,
+            "name": "よつばと!",
+            "name_cn": "四叶妹妹！",
+            "platform": "漫画",
+            "series": true,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 12231,
+            "type": 1,
+            "name": "よつばと! (10)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 29510,
+            "type": 1,
+            "name": "よつばと! (11)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 56575,
+            "type": 1,
+            "name": "よつばと! (01)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 56576,
+            "type": 1,
+            "name": "よつばと! (02)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 56577,
+            "type": 1,
+            "name": "よつばと! (03)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 56578,
+            "type": 1,
+            "name": "よつばと! (04)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          },
+          {
+            "id": 56579,
+            "type": 1,
+            "name": "よつばと! (05)",
+            "name_cn": "",
+            "platform": "漫画",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:00.057Z",
+      "request": {
+        "method": "POST",
+        "url": "https://api.bgm.tv/v0/search/subjects?limit=8&offset=0",
+        "body": {
+          "keyword": "葬送のフリーレン",
+          "sort": "match",
+          "filter": {
+            "type": [2]
+          }
+        }
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 5,
+        "limit": 8,
+        "offset": 0,
+        "data": [
+          {
+            "id": 400602,
+            "type": 2,
+            "name": "葬送のフリーレン",
+            "name_cn": "葬送的芙莉莲",
+            "platform": "TV",
+            "series": false,
+            "eps": 28,
+            "total_episodes": 28,
+            "volumes": 0
+          },
+          {
+            "id": 459283,
+            "type": 2,
+            "name": "葬送のフリーレン ～●●の魔法～",
+            "name_cn": "葬送的芙莉莲 ～●●的魔法～",
+            "platform": "WEB",
+            "series": false,
+            "eps": 11,
+            "total_episodes": 11,
+            "volumes": 0
+          },
+          {
+            "id": 515759,
+            "type": 2,
+            "name": "葬送のフリーレン 第2期",
+            "name_cn": "葬送的芙莉莲 第二季",
+            "platform": "TV",
+            "series": false,
+            "eps": 10,
+            "total_episodes": 10,
+            "volumes": 0
+          },
+          {
+            "id": 549563,
+            "type": 2,
+            "name": "葬送のフリーレン ～●●の魔法～2期",
+            "name_cn": "葬送的芙莉莲 ～●●的魔法～2期",
+            "platform": "WEB",
+            "series": false,
+            "eps": 11,
+            "total_episodes": 11,
+            "volumes": 0
+          },
+          {
+            "id": 638133,
+            "type": 2,
+            "name": "葬送のフリーレン 第3期【黄金郷編】",
+            "name_cn": "葬送的芙莉莲 第三季 黄金乡篇",
+            "platform": "TV",
+            "series": false,
+            "eps": 0,
+            "total_episodes": 0,
+            "volumes": 0
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:40.298Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/13911"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 13911,
+        "type": 1,
+        "name": "キノの旅 -the Beautiful World-",
+        "name_cn": "奇诺之旅",
+        "platform": "小说",
+        "series": true,
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:40.643Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/13911/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 209439,
+          "type": 1,
+          "name": "キノの旅 the Beautiful World",
+          "name_cn": "奇诺之旅 the Beautiful World",
+          "relation": "书籍"
+        },
+        {
+          "id": 31213,
+          "type": 1,
+          "name": "キノの旅 -the Beautiful World- 旅人の話 -You-",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 13920,
+          "type": 1,
+          "name": "キノの旅 -the Beautiful World- 記憶の国 -Their Memories-",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 13919,
+          "type": 1,
+          "name": "キノの旅 -the Beautiful World- わたしの国 -Own Will-",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 40566,
+          "type": 1,
+          "name": "学園キノ",
+          "name_cn": "学园奇诺",
+          "relation": "不同世界观"
+        },
+        {
+          "id": 84944,
+          "type": 4,
+          "name": "電撃文庫 FIGHTING CLIMAX",
+          "name_cn": "电击文库 格斗巅峰",
+          "relation": "角色出演"
+        },
+        {
+          "id": 130824,
+          "type": 1,
+          "name": "黒星紅白画集 noir",
+          "name_cn": "",
+          "relation": "画集"
+        },
+        {
+          "id": 136378,
+          "type": 1,
+          "name": "黒星紅白画集 rouge",
+          "name_cn": "",
+          "relation": "画集"
+        },
+        {
+          "id": 146296,
+          "type": 4,
+          "name": "電撃文庫 FIGHTING CLIMAX IGNITION",
+          "name_cn": "电击文库 巅峰格斗者再燃",
+          "relation": "游戏"
+        },
+        {
+          "id": 218309,
+          "type": 1,
+          "name": "キノの旅 the Beautiful World",
+          "name_cn": "奇诺之旅 the Beautiful World",
+          "relation": "书籍"
+        },
+        {
+          "id": 228714,
+          "type": 4,
+          "name": "电击文库：零境交错",
+          "name_cn": "",
+          "relation": "角色出演"
+        },
+        {
+          "id": 300374,
+          "type": 3,
+          "name": "REVERIE -サウンドスケッチ \"キノの旅\"-",
+          "name_cn": "",
+          "relation": "印象曲"
+        },
+        {
+          "id": 325121,
+          "type": 1,
+          "name": "キノの旅 the Beautiful World Best Selection",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 328426,
+          "type": 1,
+          "name": "電撃劇場文庫",
+          "name_cn": "电击剧场文库",
+          "relation": "番外篇"
+        },
+        {
+          "id": 335874,
+          "type": 1,
+          "name": "黒星紅白画集 blanc",
+          "name_cn": "",
+          "relation": "画集"
+        },
+        {
+          "id": 1084,
+          "type": 4,
+          "name": "電撃学園RPG Cross of Venus",
+          "name_cn": "电击学园RPG 女神的十字架",
+          "relation": "角色出演"
+        },
+        {
+          "id": 1948,
+          "type": 2,
+          "name": "キノの旅 -the Beautiful World-",
+          "name_cn": "奇诺之旅",
+          "relation": "动画"
+        },
+        {
+          "id": 7853,
+          "type": 1,
+          "name": "キノの旅 I -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 10582,
+          "type": 2,
+          "name": "キノの旅 何かをするために -life goes on.-",
+          "name_cn": "奇诺之旅 活着的目标 -活下去。-",
+          "relation": "动画"
+        },
+        {
+          "id": 13909,
+          "type": 1,
+          "name": "キノの旅 II -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13448,
+          "type": 2,
+          "name": "キノの旅 塔の国 -Free Lance-",
+          "name_cn": "奇诺之旅 塔之国 -自由创作-",
+          "relation": "动画"
+        },
+        {
+          "id": 13913,
+          "type": 1,
+          "name": "キノの旅 III -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 1949,
+          "type": 2,
+          "name": "キノの旅 病気の国 -For You-",
+          "name_cn": "奇诺之旅 疾病之国 -为了你-",
+          "relation": "动画"
+        },
+        {
+          "id": 13914,
+          "type": 1,
+          "name": "キノの旅 IV -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 211068,
+          "type": 2,
+          "name": "キノの旅 -the Beautiful World- the Animated Series",
+          "name_cn": "奇诺之旅",
+          "relation": "动画"
+        },
+        {
+          "id": 13915,
+          "type": 1,
+          "name": "キノの旅 V -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13916,
+          "type": 1,
+          "name": "キノの旅 VI -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13917,
+          "type": 1,
+          "name": "キノの旅 VII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13918,
+          "type": 1,
+          "name": "キノの旅 VIII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13921,
+          "type": 1,
+          "name": "キノの旅 IX -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13922,
+          "type": 1,
+          "name": "キノの旅 X -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13923,
+          "type": 1,
+          "name": "キノの旅 XI -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13924,
+          "type": 1,
+          "name": "キノの旅 XII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13925,
+          "type": 1,
+          "name": "キノの旅 XIII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 13910,
+          "type": 1,
+          "name": "キノの旅 XIV -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 31211,
+          "type": 1,
+          "name": "キノの旅 XV -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 50835,
+          "type": 1,
+          "name": "キノの旅 XVI -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 116382,
+          "type": 1,
+          "name": "キノの旅 XVII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 116383,
+          "type": 1,
+          "name": "キノの旅 XVIII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 149540,
+          "type": 1,
+          "name": "キノの旅 XIX -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 198052,
+          "type": 1,
+          "name": "キノの旅 XX -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 262019,
+          "type": 1,
+          "name": "キノの旅 XXI -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 318552,
+          "type": 1,
+          "name": "キノの旅 XXII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 324871,
+          "type": 1,
+          "name": "キノの旅 XXIII -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 570135,
+          "type": 1,
+          "name": "キノの旅 XXIV -the Beautiful World-",
+          "name_cn": "",
+          "relation": "单行本"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:40.991Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/7853"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 7853,
+        "type": 1,
+        "name": "キノの旅 I -the Beautiful World-",
+        "name_cn": "",
+        "platform": "小说",
+        "series": false,
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:41.320Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/7853/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 13911,
+          "type": 1,
+          "name": "キノの旅 -the Beautiful World-",
+          "name_cn": "奇诺之旅",
+          "relation": "系列"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:41.677Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/141797"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 141797,
+        "type": 1,
+        "name": "君の膵臓をたべたい",
+        "name_cn": "我想吃掉你的胰脏",
+        "platform": "小说",
+        "series": false,
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:42.025Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/141797/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 190972,
+          "type": 1,
+          "name": "君の膵臓をたべたい",
+          "name_cn": "我想吃掉你的胰脏",
+          "relation": "书籍"
+        },
+        {
+          "id": 210326,
+          "type": 6,
+          "name": "君の膵臓をたべたい",
+          "name_cn": "我想吃掉你的胰脏",
+          "relation": "三次元"
+        },
+        {
+          "id": 221736,
+          "type": 2,
+          "name": "君の膵臓をたべたい",
+          "name_cn": "我想吃掉你的胰脏",
+          "relation": "动画"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:42.360Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/10086"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 10086,
+        "type": 1,
+        "name": "よつばと!",
+        "name_cn": "四叶妹妹！",
+        "platform": "漫画",
+        "series": true,
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:42.698Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/10086/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 29480,
+          "type": 1,
+          "name": "365 Days of Danboard",
+          "name_cn": "",
+          "relation": "角色出演"
+        },
+        {
+          "id": 248137,
+          "type": 3,
+          "name": "よつばと♪",
+          "name_cn": "「よつばと!」イメージアルバム「よつばと♪」",
+          "relation": "印象曲"
+        },
+        {
+          "id": 30600,
+          "type": 1,
+          "name": "あずまんが大王",
+          "name_cn": "笑园漫画大王",
+          "relation": "角色出演"
+        },
+        {
+          "id": 190793,
+          "type": 2,
+          "name": "にゃんぼー！",
+          "name_cn": "喵楞！",
+          "relation": "衍生"
+        },
+        {
+          "id": 134567,
+          "type": 1,
+          "name": "FiND YOTSUBA ―「よつばと! 」カレンダー写真集―",
+          "name_cn": "",
+          "relation": "画集"
+        },
+        {
+          "id": 122560,
+          "type": 1,
+          "name": "よつばとしろとくろのどうぶつ",
+          "name_cn": "四叶与白色和黑色的动物",
+          "relation": "画集"
+        },
+        {
+          "id": 67142,
+          "type": 3,
+          "name": "よつばと♪ 組曲「冬将軍」",
+          "name_cn": "",
+          "relation": "印象曲"
+        },
+        {
+          "id": 56575,
+          "type": 1,
+          "name": "よつばと! (01)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56576,
+          "type": 1,
+          "name": "よつばと! (02)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56577,
+          "type": 1,
+          "name": "よつばと! (03)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56578,
+          "type": 1,
+          "name": "よつばと! (04)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56579,
+          "type": 1,
+          "name": "よつばと! (05)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56580,
+          "type": 1,
+          "name": "よつばと! (06)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56581,
+          "type": 1,
+          "name": "よつばと! (07)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56582,
+          "type": 1,
+          "name": "よつばと! (08)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 56583,
+          "type": 1,
+          "name": "よつばと! (09)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 12231,
+          "type": 1,
+          "name": "よつばと! (10)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 29510,
+          "type": 1,
+          "name": "よつばと! (11)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 66743,
+          "type": 1,
+          "name": "よつばと! (12)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 152009,
+          "type": 1,
+          "name": "よつばと! (13)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 239345,
+          "type": 1,
+          "name": "よつばと! (14)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 324763,
+          "type": 1,
+          "name": "よつばと! (15)",
+          "name_cn": "",
+          "relation": "单行本"
+        },
+        {
+          "id": 535998,
+          "type": 1,
+          "name": "よつばと! (16)",
+          "name_cn": "",
+          "relation": "单行本"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:43.040Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/56575"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 56575,
+        "type": 1,
+        "name": "よつばと! (01)",
+        "name_cn": "",
+        "platform": "漫画",
+        "series": false,
+        "eps": 0,
+        "total_episodes": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:43.385Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/56575/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 10086,
+          "type": 1,
+          "name": "よつばと!",
+          "name_cn": "四叶妹妹！",
+          "relation": "系列"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:43.578Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/400602"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 400602,
+        "type": 2,
+        "name": "葬送のフリーレン",
+        "name_cn": "葬送的芙莉莲",
+        "platform": "TV",
+        "series": false,
+        "eps": 28,
+        "total_episodes": 36,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:43.909Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/400602/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 459398,
+          "type": 1,
+          "name": "TVアニメ『葬送のフリーレン』公式スターティングガイド",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 660333,
+          "type": 1,
+          "name": "葬送のフリーレン／ミュージック・コレクション",
+          "name_cn": "",
+          "relation": "书籍"
+        },
+        {
+          "id": 622768,
+          "type": 3,
+          "name": "「葬送のフリーレン」BD&DVD Vol.1 初回特典「冒険者たちのお仕事選び」",
+          "name_cn": "",
+          "relation": "广播剧"
+        },
+        {
+          "id": 535646,
+          "type": 1,
+          "name": "小説 アニメ 葬送のフリーレン",
+          "name_cn": "",
+          "relation": "书籍"
+        },
+        {
+          "id": 515759,
+          "type": 2,
+          "name": "葬送のフリーレン 第2期",
+          "name_cn": "葬送的芙莉莲 第二季",
+          "relation": "续集"
+        },
+        {
+          "id": 501356,
+          "type": 1,
+          "name": "TVアニメ『葬送のフリーレン』公式ガイドブック ~王都からオイサーストまでの旅路~",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 477900,
+          "type": 3,
+          "name": "TVアニメ『葬送のフリーレン』Original Soundtrack",
+          "name_cn": "",
+          "relation": "原声集"
+        },
+        {
+          "id": 471330,
+          "type": 3,
+          "name": "TVアニメ『葬送のフリーレン』Original Soundtrack～Pre-release～",
+          "name_cn": "",
+          "relation": "原声集"
+        },
+        {
+          "id": 1817,
+          "type": 4,
+          "name": "마비노기",
+          "name_cn": "洛奇",
+          "relation": "联动"
+        },
+        {
+          "id": 459283,
+          "type": 2,
+          "name": "葬送のフリーレン ～●●の魔法～",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～",
+          "relation": "衍生"
+        },
+        {
+          "id": 456693,
+          "type": 2,
+          "name": "YOASOBI「勇者」 Official Music Video",
+          "name_cn": "",
+          "relation": "衍生"
+        },
+        {
+          "id": 456444,
+          "type": 3,
+          "name": "Anytime Anywhere",
+          "name_cn": "",
+          "relation": "片尾曲"
+        },
+        {
+          "id": 408344,
+          "type": 4,
+          "name": "나 혼자만 레벨업: ARISE",
+          "name_cn": "我独自升级: 起立",
+          "relation": "联动"
+        },
+        {
+          "id": 369189,
+          "type": 6,
+          "name": "葬送のフリーレン ～トークの魔法～",
+          "name_cn": "葬送的芙莉莲 ～谈话的魔法～",
+          "relation": "衍生"
+        },
+        {
+          "id": 305429,
+          "type": 1,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "relation": "书籍"
+        },
+        {
+          "id": 228217,
+          "type": 4,
+          "name": "第五人格",
+          "name_cn": "",
+          "relation": "联动"
+        },
+        {
+          "id": 4521,
+          "type": 4,
+          "name": "메이플스토리",
+          "name_cn": "冒险岛",
+          "relation": "联动"
+        },
+        {
+          "id": 457254,
+          "type": 3,
+          "name": "勇者",
+          "name_cn": "",
+          "relation": "片头曲"
+        },
+        {
+          "id": 608389,
+          "type": 1,
+          "name": "TVアニメ『葬送のフリーレン』副読本 (1) フリーレン&ヒンメルがわかる魔法",
+          "name_cn": "",
+          "relation": "其他"
+        },
+        {
+          "id": 471752,
+          "type": 3,
+          "name": "晴る",
+          "name_cn": "",
+          "relation": "片头曲"
+        },
+        {
+          "id": 608390,
+          "type": 1,
+          "name": "TVアニメ『葬送のフリーレン』副読本 (2) フェルン&シュタルクがわかる魔法",
+          "name_cn": "",
+          "relation": "其他"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:47:44.092Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/515759"
+      },
+      "status": 200,
+      "responseProjection": {
+        "id": 515759,
+        "type": 2,
+        "name": "葬送のフリーレン 第2期",
+        "name_cn": "葬送的芙莉莲 第二季",
+        "platform": "TV",
+        "series": false,
+        "eps": 10,
+        "total_episodes": 10,
+        "volumes": 0
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:47:44.599Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/subjects/515759/subjects"
+      },
+      "status": 200,
+      "responseProjection": [
+        {
+          "id": 305429,
+          "type": 1,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "relation": "书籍"
+        },
+        {
+          "id": 400602,
+          "type": 2,
+          "name": "葬送のフリーレン",
+          "name_cn": "葬送的芙莉莲",
+          "relation": "前传"
+        },
+        {
+          "id": 549563,
+          "type": 2,
+          "name": "葬送のフリーレン ～●●の魔法～2期",
+          "name_cn": "葬送的芙莉莲 ～●●的魔法～2期",
+          "relation": "衍生"
+        },
+        {
+          "id": 615503,
+          "type": 3,
+          "name": "The Story of Us",
+          "name_cn": "",
+          "relation": "片尾曲"
+        },
+        {
+          "id": 621059,
+          "type": 3,
+          "name": "lulu.",
+          "name_cn": "",
+          "relation": "片头曲"
+        },
+        {
+          "id": 621637,
+          "type": 3,
+          "name": "TVアニメ『葬送のフリーレン』Season2 Original Soundtrack",
+          "name_cn": "",
+          "relation": "原声集"
+        },
+        {
+          "id": 638133,
+          "type": 2,
+          "name": "葬送のフリーレン 第3期【黄金郷編】",
+          "name_cn": "葬送的芙莉莲 第三季 黄金乡篇",
+          "relation": "续集"
+        },
+        {
+          "id": 657875,
+          "type": 6,
+          "name": "葬送のフリーレン フィルムコンサート2026",
+          "name_cn": "",
+          "relation": "三次元"
+        },
+        {
+          "id": 660333,
+          "type": 1,
+          "name": "葬送のフリーレン／ミュージック・コレクション",
+          "name_cn": "",
+          "relation": "书籍"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-10-13T04:51:45.049Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/episodes?subject_id=400602&limit=20&offset=0"
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 36,
+        "limit": 20,
+        "offset": 0,
+        "data": [
+          {
+            "id": 1227087,
+            "type": 0,
+            "name": "冒険の終わり",
+            "name_cn": "冒险结束",
+            "sort": 1,
+            "ep": 1,
+            "airdate": "2023-09-29",
+            "duration": "00:26:00",
+            "duration_seconds": 1560,
+            "descriptionLength": 181,
+            "descriptionSha256": "d15a4f2084bb0c8e174a6a35082a8957cc322319e1d483f7c2063fefe00ee778"
+          },
+          {
+            "id": 1227088,
+            "type": 0,
+            "name": "別に魔法じゃなくたって…",
+            "name_cn": "不见得一定是靠魔法…",
+            "sort": 2,
+            "ep": 2,
+            "airdate": "2023-09-29",
+            "duration": "00:26:00",
+            "duration_seconds": 1560,
+            "descriptionLength": 183,
+            "descriptionSha256": "a62c7b83069f0a70f27b6e2d0823805b0ab454f4453c6c7dcf1c15453ba601ae"
+          },
+          {
+            "id": 1227089,
+            "type": 0,
+            "name": "人を殺す魔法",
+            "name_cn": "杀人魔法",
+            "sort": 3,
+            "ep": 3,
+            "airdate": "2023-09-29",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 187,
+            "descriptionSha256": "7a8ee1732eaf2b4fae45aabc95480bc5f8dbbd2114c466c95b25a15d2123e086"
+          },
+          {
+            "id": 1227090,
+            "type": 0,
+            "name": "魂の眠る地",
+            "name_cn": "灵魂长眠之地",
+            "sort": 4,
+            "ep": 4,
+            "airdate": "2023-09-29",
+            "duration": "00:26:00",
+            "duration_seconds": 1560,
+            "descriptionLength": 189,
+            "descriptionSha256": "76a924f7b547422149132d9b0538dbea1e9972953e7ddce985a8e0e62183c7d0"
+          },
+          {
+            "id": 1227091,
+            "type": 0,
+            "name": "死者の幻影",
+            "name_cn": "死者的幻影",
+            "sort": 5,
+            "ep": 5,
+            "airdate": "2023-10-06",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 191,
+            "descriptionSha256": "192cade06881ec2339010a36ba50a9b6663e2c831ad307cf86f5329b23e3cca6"
+          },
+          {
+            "id": 1227092,
+            "type": 0,
+            "name": "村の英雄",
+            "name_cn": "村子的英雄",
+            "sort": 6,
+            "ep": 6,
+            "airdate": "2023-10-13",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 172,
+            "descriptionSha256": "f0cd753d8efb1e66d9409bf22b0eb6ac6002e90edac1188106e41e01bf71a223"
+          },
+          {
+            "id": 1227093,
+            "type": 0,
+            "name": "おとぎ話のようなもの",
+            "name_cn": "童话般的事物",
+            "sort": 7,
+            "ep": 7,
+            "airdate": "2023-10-20",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 202,
+            "descriptionSha256": "519458b646e239ccb2993cadcd676d13ded36ee4de24f9a498f9e26cea7bf3f7"
+          },
+          {
+            "id": 1227094,
+            "type": 0,
+            "name": "葬送のフリーレン",
+            "name_cn": "葬送的芙莉莲",
+            "sort": 8,
+            "ep": 8,
+            "airdate": "2023-10-27",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 212,
+            "descriptionSha256": "c176bd3748af527ea65629813ed1ae0b734d297ecba8ad4619865e8b96df7e23"
+          },
+          {
+            "id": 1227095,
+            "type": 0,
+            "name": "断頭台のアウラ",
+            "name_cn": "断头台阿乌拉",
+            "sort": 9,
+            "ep": 9,
+            "airdate": "2023-11-03",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 174,
+            "descriptionSha256": "0f599a5e097397ea808cd91e5cede5d0ddc59bf523997068a8a08aa27eb64769"
+          },
+          {
+            "id": 1227096,
+            "type": 0,
+            "name": "強い魔法使い",
+            "name_cn": "强大的魔法使",
+            "sort": 10,
+            "ep": 10,
+            "airdate": "2023-11-10",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 171,
+            "descriptionSha256": "7dfa2e7429de48db98b041fe2b40685aa38fdf4a805901eec169d229775b5bfc"
+          },
+          {
+            "id": 1227097,
+            "type": 0,
+            "name": "北側諸国の冬",
+            "name_cn": "北方诸国的严冬",
+            "sort": 11,
+            "ep": 11,
+            "airdate": "2023-11-17",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 170,
+            "descriptionSha256": "bdf92907744df57be73becbe7d8ddc20c1c28118f2f2160d75ddaa7c3b22bf0f"
+          },
+          {
+            "id": 1227098,
+            "type": 0,
+            "name": "本物の勇者",
+            "name_cn": "真正的勇者",
+            "sort": 12,
+            "ep": 12,
+            "airdate": "2023-11-24",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 165,
+            "descriptionSha256": "9eb5e231927bb16b8cba6ecfce789b64568114485cddc3da3edc37984d9cb609"
+          },
+          {
+            "id": 1253347,
+            "type": 0,
+            "name": "同族嫌悪",
+            "name_cn": "同类厌恶",
+            "sort": 13,
+            "ep": 13,
+            "airdate": "2023-12-01",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 168,
+            "descriptionSha256": "9fb12439af4e5b8d65d0a51004d7712f65f8c75f9783bdd935fd54f880a610d0"
+          },
+          {
+            "id": 1253348,
+            "type": 0,
+            "name": "若者の特権",
+            "name_cn": "年轻人的特权",
+            "sort": 14,
+            "ep": 14,
+            "airdate": "2023-12-08",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 161,
+            "descriptionSha256": "7254d0382873d4727f67d8ecc6906554f881511baabd802e34872c19be2d604b"
+          },
+          {
+            "id": 1253349,
+            "type": 0,
+            "name": "厄介事の匂い",
+            "name_cn": "麻烦事的气味",
+            "sort": 15,
+            "ep": 15,
+            "airdate": "2023-12-15",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 179,
+            "descriptionSha256": "51597f7e60f906c1207b1b46f0ce6d8bab1f6d7a32c85aa7620e66aead1e4465"
+          },
+          {
+            "id": 1253350,
+            "type": 0,
+            "name": "長寿友達",
+            "name_cn": "长寿朋友",
+            "sort": 16,
+            "ep": 16,
+            "airdate": "2023-12-22",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 175,
+            "descriptionSha256": "b064f5be121415464422048c1a2f65a6b728dfcdaf4ff54d949a794196a3a497"
+          },
+          {
+            "id": 1253351,
+            "type": 0,
+            "name": "じゃあ元気で",
+            "name_cn": "那就多保重了",
+            "sort": 17,
+            "ep": 17,
+            "airdate": "2024-01-05",
+            "duration": "00:24:06",
+            "duration_seconds": 1446,
+            "descriptionLength": 191,
+            "descriptionSha256": "dd38d616d906bb9679c374f48d462330415e3f82b0fd4a690d8f5ae42438090e"
+          },
+          {
+            "id": 1253352,
+            "type": 0,
+            "name": "一級魔法使い選抜試験",
+            "name_cn": "一级魔法使选拔测验",
+            "sort": 18,
+            "ep": 18,
+            "airdate": "2024-01-12",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 173,
+            "descriptionSha256": "7d7c862490ed77a6c92e5429422b9d40be39e9f7d090aeebafc5aad1eb479b84"
+          },
+          {
+            "id": 1253353,
+            "type": 0,
+            "name": "入念な計画",
+            "name_cn": "精心安排的计划",
+            "sort": 19,
+            "ep": 19,
+            "airdate": "2024-01-19",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 180,
+            "descriptionSha256": "3fb6b0bd00c5befb6b30349589845c62c15563e7f72ec59b943e157ddaa32ed1"
+          },
+          {
+            "id": 1253354,
+            "type": 0,
+            "name": "必要な殺し",
+            "name_cn": "必要的杀戮",
+            "sort": 20,
+            "ep": 20,
+            "airdate": "2024-01-26",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 176,
+            "descriptionSha256": "5196611148523f811056182ace109894c1b950cfc9caabfc14ade85570d60b25"
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T04:51:45.389Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/episodes?subject_id=400602&limit=20&offset=20"
+      },
+      "status": 200,
+      "responseProjection": {
+        "total": 36,
+        "limit": 20,
+        "offset": 20,
+        "data": [
+          {
+            "id": 1253355,
+            "type": 0,
+            "name": "魔法の世界",
+            "name_cn": "魔法的世界",
+            "sort": 21,
+            "ep": 21,
+            "airdate": "2024-02-02",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 177,
+            "descriptionSha256": "c927825ffc19f05fa6a54b6969f37a9d25cb540210850d6d57fd51e4e7543ba7"
+          },
+          {
+            "id": 1253356,
+            "type": 0,
+            "name": "次からは敵同士",
+            "name_cn": "下次开始就是敌人",
+            "sort": 22,
+            "ep": 22,
+            "airdate": "2024-02-09",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 178,
+            "descriptionSha256": "909b8977e1b15871154da4bb12720281ba1ce703ee67262cc3dcbce220cd272a"
+          },
+          {
+            "id": 1253357,
+            "type": 0,
+            "name": "迷宮攻略",
+            "name_cn": "攻略迷宫",
+            "sort": 23,
+            "ep": 23,
+            "airdate": "2024-02-16",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 175,
+            "descriptionSha256": "1bdbb3407583c4127e3c56dc2204dffe53dab136e9b03c3ece9a5fc902b71608"
+          },
+          {
+            "id": 1253358,
+            "type": 0,
+            "name": "完璧な複製体",
+            "name_cn": "完美的复制体",
+            "sort": 24,
+            "ep": 24,
+            "airdate": "2024-02-23",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 176,
+            "descriptionSha256": "257c241decca5556fb1cdcb29a3097c4653e9c4882101ccae34f635818f49b19"
+          },
+          {
+            "id": 1257303,
+            "type": 0,
+            "name": "致命的な隙",
+            "name_cn": "致命破绽",
+            "sort": 25,
+            "ep": 25,
+            "airdate": "2024-03-01",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 171,
+            "descriptionSha256": "ebe97eabd2ad1f23ba6ebd23ae04e8f43f86763e8c61a048530a176d07e596c5"
+          },
+          {
+            "id": 1257304,
+            "type": 0,
+            "name": "魔法の高み",
+            "name_cn": "魔法的高深之处",
+            "sort": 26,
+            "ep": 26,
+            "airdate": "2024-03-08",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 177,
+            "descriptionSha256": "dd023d0555f0b9f4cacce075f1f8232f4aad900d082fb3a6d5134dc2de914efd"
+          },
+          {
+            "id": 1257305,
+            "type": 0,
+            "name": "人間の時代",
+            "name_cn": "人类的时代",
+            "sort": 27,
+            "ep": 27,
+            "airdate": "2024-03-15",
+            "duration": "00:24:30",
+            "duration_seconds": 1470,
+            "descriptionLength": 177,
+            "descriptionSha256": "a28290c037285ab65cd998f4a7e6fa877e54b71e8aaed3f8e6e8c48d48e86bed"
+          },
+          {
+            "id": 1257306,
+            "type": 0,
+            "name": "また会ったときに恥ずかしいからね",
+            "name_cn": "因为下次再见时会很难为情",
+            "sort": 28,
+            "ep": 28,
+            "airdate": "2024-03-22",
+            "duration": "00:24:23",
+            "duration_seconds": 1463,
+            "descriptionLength": 167,
+            "descriptionSha256": "7b127ff1dbb523cc44b09e38c5b3b5ac6dc3eb4480bca21b8b075d638f86d3bc"
+          },
+          {
+            "id": 1555467,
+            "type": 1,
+            "name": "葬送のフリーレン×ZIP！待望のアニメ化！魅力解剖SP",
+            "name_cn": "",
+            "sort": 1,
+            "ep": 0,
+            "airdate": "2023-09-24",
+            "duration": "30:00",
+            "duration_seconds": 1800,
+            "descriptionLength": 0,
+            "descriptionSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "id": 1253227,
+            "type": 1,
+            "name": "葬送のフリーレン ～フリーレンが見たくなる魔法～",
+            "name_cn": "",
+            "sort": 2,
+            "ep": 0,
+            "airdate": "2023-09-29",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 436,
+            "descriptionSha256": "26d52c55743f9b2db21473f13e2dca96f5913c27381222fb71f56a4002dd1851"
+          },
+          {
+            "id": 1581776,
+            "type": 1,
+            "name": "葬送のフリーレン ～トークの魔法～ 特別版",
+            "name_cn": "",
+            "sort": 3,
+            "ep": 0,
+            "airdate": "2023-12-04",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 0,
+            "descriptionSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "id": 1284023,
+            "type": 2,
+            "name": "勇者",
+            "name_cn": "",
+            "sort": 1,
+            "ep": 0,
+            "airdate": "",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 100,
+            "descriptionSha256": "c74ef36dad0f5c8aa21fc0b2665d44d9d836f27da9e91edce9a4fbb365ce3c9c"
+          },
+          {
+            "id": 1284024,
+            "type": 2,
+            "name": "晴る",
+            "name_cn": "",
+            "sort": 2,
+            "ep": 0,
+            "airdate": "",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 0,
+            "descriptionSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "id": 1284026,
+            "type": 3,
+            "name": "bliss",
+            "name_cn": "",
+            "sort": 0,
+            "ep": 0,
+            "airdate": "",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 94,
+            "descriptionSha256": "bb0bb391410e42e1aa9025513ea28101a468bbc5b64abf708a0c14fddc900112"
+          },
+          {
+            "id": 1284025,
+            "type": 3,
+            "name": "Anytime Anywhere (ver. 1)",
+            "name_cn": "",
+            "sort": 1,
+            "ep": 0,
+            "airdate": "",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 124,
+            "descriptionSha256": "21475481ae90874cd391f06f5deb4cd94d3ce7686b6d218c9cfca304a4183a23"
+          },
+          {
+            "id": 1287764,
+            "type": 3,
+            "name": "Anytime Anywhere (ver. 2)",
+            "name_cn": "",
+            "sort": 2,
+            "ep": 0,
+            "airdate": "",
+            "duration": "",
+            "duration_seconds": 0,
+            "descriptionLength": 0,
+            "descriptionSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    }
+  ],
+  "observations": {
+    "requestCount": 20,
+    "kinoVolumeCount": 24,
+    "yotsubaVolumeCount": 16,
+    "frierenEpisodes": {
+      "total": 36,
+      "uniqueIds": 36,
+      "typeCounts": {
+        "0": 28,
+        "1": 3,
+        "2": 2,
+        "3": 3
+      }
+    },
+    "unambiguousTalkProgramme": {
+      "episodeId": 1253227,
+      "sourceType": 1,
+      "page": "https://bgm.tv/ep/1253227",
+      "descriptionInterpretation": "The description introduces a pre-broadcast talk programme featuring the voice cast, production material and music recording footage."
+    }
+  }
+}

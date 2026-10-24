@@ -1,0 +1,14 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/main.tsbuildinfo",
+    "types": ["node"],
+    "paths": {
+      "@native": ["../../native/node/index.ts"]
+    },
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["../../src/main/**/*.ts", "../../src/shared/**/*.ts", "../../native/node/**/*.ts"],
+  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+}

@@ -1,0 +1,14 @@
+[package]
+name = "libmpv-playback-probe"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "libmpv-playback-probe"
+path = "main.rs"
+
+[build-dependencies]
+cc = "=1.7.0"
+
+[workspace]

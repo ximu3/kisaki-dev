@@ -1,0 +1,135 @@
+{
+  "purpose": "source evidence for organization, not OAuth flow execution",
+  "designStatus": "organization-confirmed",
+  "relayProjectCreated": false,
+  "containerImageBuilt": false,
+  "composeExecuted": false,
+  "relayHttpServerExecuted": false,
+  "simulatedProtocolExecuted": false,
+  "upstreamAuthorizationExecuted": false,
+  "clientConsumptionExecuted": false,
+  "currentDeploymentInspected": false,
+  "dependencyVersionsAndConfigLocked": false,
+  "sources": [
+    {
+      "name": "hono-node",
+      "url": "https://hono.dev/docs/getting-started/nodejs",
+      "finalUrl": "https://hono.dev/docs/getting-started/nodejs",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:22.965761+00:00",
+      "bytes": 113397,
+      "sha256": "33abfc1404d5794bfa6da9a75fafc737df44d5bf1873bd51d6b3e742ed4a2b4d",
+      "presentMarkers": ["@hono/node-server", "SIGTERM"]
+    },
+    {
+      "name": "hono-testing",
+      "url": "https://hono.dev/docs/guides/testing",
+      "finalUrl": "https://hono.dev/docs/guides/testing",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:22.955761+00:00",
+      "bytes": 92485,
+      "sha256": "e0e0e92b78411ef1ba758ccaf6183d5e4a2bed52a9cbf3e92f0c4d1c93c780d5",
+      "presentMarkers": ["app.request", "Response"]
+    },
+    {
+      "name": "oauth-core",
+      "url": "https://www.rfc-editor.org/rfc/rfc6749.html",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc6749.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.002625+00:00",
+      "bytes": 201745,
+      "sha256": "535362fa3b4ca668d4734c244c6ed8c811f2ccd7ea1612a4201e5d8922a74b4e",
+      "presentMarkers": ["authorization_code", "refresh_token", "redirect_uri"]
+    },
+    {
+      "name": "pkce",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.html",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc7636.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:22.981553+00:00",
+      "bytes": 50290,
+      "sha256": "1dd39bd17081e0ed18c2cf304b87c79061c51e505d2ff5e12ffbd0d182fe5b20",
+      "presentMarkers": ["S256", "code_verifier", "code_challenge"]
+    },
+    {
+      "name": "native-apps",
+      "url": "https://www.rfc-editor.org/rfc/rfc8252.html",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc8252.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.370415+00:00",
+      "bytes": 62914,
+      "sha256": "fdda8f9e27f3bb4bb119742f4752df5bdfa9f8d9d3a6595ea0c3f581e13bfc79",
+      "presentMarkers": ["loopback", "127.0.0.1"]
+    },
+    {
+      "name": "oauth-security",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.401416+00:00",
+      "bytes": 261599,
+      "sha256": "c00e2234fcd79581bc29669c60d693afaa42f67d9205bddee848f757ae975419",
+      "presentMarkers": ["exact string matching", "PKCE"]
+    },
+    {
+      "name": "bangumi-auth",
+      "url": "https://raw.githubusercontent.com/bangumi/api/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md",
+      "finalUrl": "https://raw.githubusercontent.com/bangumi/api/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.691305+00:00",
+      "bytes": 6071,
+      "sha256": "c8c0495c5fa3090b1a1c418320974dd9f087b05e22c39571fa20c4844c9d21af",
+      "presentMarkers": ["client_secret", "refresh_token"]
+    },
+    {
+      "name": "anilist-auth",
+      "url": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/auth/index.md",
+      "finalUrl": "https://raw.githubusercontent.com/AniList/docs/master/docs/guide/auth/index.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.515305+00:00",
+      "bytes": 3134,
+      "sha256": "1d33e2eda1de7a7c8d09e621dc99c0104dafa7942c6bb7251beed6cd3b9fcabe",
+      "presentMarkers": ["Refresh tokens", "OAuth2"]
+    },
+    {
+      "name": "google-web-auth",
+      "url": "https://developers.google.com/identity/protocols/oauth2/web-server",
+      "finalUrl": "https://developers.google.com/identity/protocols/oauth2/web-server",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:24.405990+00:00",
+      "bytes": 414811,
+      "sha256": "3db1b925d93615b0abcc5acbfdb85ae8d0f7f6543c324ae70ab1e56e00736f6c",
+      "presentMarkers": ["redirect_uri", "refresh_token", "https://oauth2.googleapis.com/token"]
+    },
+    {
+      "name": "docker-compose-model",
+      "url": "https://docs.docker.com/compose/intro/compose-application-model/",
+      "finalUrl": "https://docs.docker.com/compose/intro/compose-application-model/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:23.969305+00:00",
+      "bytes": 547157,
+      "sha256": "d8b7d1dc4fabbf5775d1ea47186f70ea43b6b1e66ce04298fb45b93d4a15910c",
+      "presentMarkers": ["compose.yaml", "services"]
+    },
+    {
+      "name": "docker-compose-environment",
+      "url": "https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/",
+      "finalUrl": "https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:24.428590+00:00",
+      "bytes": 546183,
+      "sha256": "3e0e3931c0b4fea8bd3570b70425a1fb7de8e93ada304e6000fa9c39d799533e",
+      "presentMarkers": ["environment", "env_file"]
+    },
+    {
+      "name": "docker-build-context",
+      "url": "https://docs.docker.com/build/concepts/context/",
+      "finalUrl": "https://docs.docker.com/build/concepts/context/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:51:24.097453+00:00",
+      "bytes": 668736,
+      "sha256": "588acdfe3cf3ea314d184efbc1e5201edd4921a9046ab71c254c2e9d4b445996",
+      "presentMarkers": [".dockerignore", "context"]
+    }
+  ]
+}

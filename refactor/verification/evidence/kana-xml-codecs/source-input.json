@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-20T12:10:24.796571+00:00",
+  "cases": 27,
+  "lxml": [6, 1, 0, 0],
+  "libxml2": [2, 11, 9],
+  "fixturesSha256": "38899d6a40e4d259ad058f2a49f02ebe72cf4e970fa5fd100e587566a88c0831",
+  "scriptSha256": "16296e3e5f6cec72bafe2ec45a0c5886b7142079ad24a270b8e75d653f03fc13",
+  "originalBytesLibxml2Matches": 26,
+  "cp932": {
+    "url": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT",
+    "sha256": "c9bc0b0cd42e0fbcb82a09635bb5abed86afbdd4abc9e76fa5716638217cb59f",
+    "definedMappings": 7915
+  },
+  "syntheticContentOnly": true
+}

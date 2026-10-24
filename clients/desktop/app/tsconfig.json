@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./config/typescript/tsconfig.shared.json" },
+    { "path": "./config/typescript/tsconfig.main.json" },
+    { "path": "./config/typescript/tsconfig.preload.json" },
+    { "path": "./config/typescript/tsconfig.renderer.json" },
+    { "path": "./config/typescript/tsconfig.extension-host.json" },
+    { "path": "./config/typescript/tsconfig.tools.json" },
+    { "path": "./config/typescript/tsconfig.tests.json" }
+  ]
+}

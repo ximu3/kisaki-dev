@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-21T07:21:10.561Z",
+  "runtime": "cua_repl Node runtime",
+  "moduleSha256": "bd9c9fd4c698cd420e0cd08fc0900eb756658bca13661b4b70bf9f46e5ce2bec",
+  "purpose": "Authorized provider binding verification, not a production relay",
+  "providers": [
+    {
+      "provider": "bangumi",
+      "clientType": "existing confidential client",
+      "cases": [
+        {
+          "mode": "correct",
+          "stateMatched": true,
+          "challengeMethod": "S256",
+          "verifierSent": true,
+          "authorizationElapsedMs": 171092,
+          "exchange": {
+            "httpStatus": 200,
+            "result": "token_issued",
+            "error": null,
+            "tokenFields": {
+              "accessToken": true,
+              "refreshToken": true,
+              "tokenType": true,
+              "expiresIn": true
+            },
+            "elapsedMs": 869,
+            "expiresInSeconds": 604800
+          },
+          "refresh": {
+            "httpStatus": 200,
+            "result": "token_issued",
+            "error": null,
+            "tokenFields": {
+              "accessToken": true,
+              "refreshToken": true,
+              "tokenType": true,
+              "expiresIn": true
+            },
+            "elapsedMs": 309,
+            "expiresInSeconds": 604800
+          }
+        },
+        {
+          "mode": "mismatched",
+          "stateMatched": true,
+          "challengeMethod": "S256",
+          "verifierSent": true,
+          "authorizationElapsedMs": 5435,
+          "exchange": {
+            "httpStatus": 200,
+            "result": "token_issued",
+            "error": null,
+            "tokenFields": {
+              "accessToken": true,
+              "refreshToken": true,
+              "tokenType": true,
+              "expiresIn": true
+            },
+            "elapsedMs": 513,
+            "expiresInSeconds": 604800
+          }
+        },
+        {
+          "mode": "omitted",
+          "stateMatched": true,
+          "challengeMethod": "S256",
+          "verifierSent": false,
+          "authorizationElapsedMs": 5236,
+          "exchange": {
+            "httpStatus": 200,
+            "result": "token_issued",
+            "error": null,
+            "tokenFields": {
+              "accessToken": true,
+              "refreshToken": true,
+              "tokenType": true,
+              "expiresIn": true
+            },
+            "elapsedMs": 838,
+            "expiresInSeconds": 604800
+          }
+        }
+      ],
+      "registrationChanged": true,
+      "originalCallbackRestored": true
+    }
+  ],
+  "listenerClosed": true,
+  "realProviderOperationsExecuted": true,
+  "personalRecordsModified": false,
+  "deploymentChanged": false,
+  "credentialsPersisted": false
+}

@@ -1,0 +1,913 @@
+{
+  "name": "work-edition-credits",
+  "observedAt": "2026-10-11T12:06:09.2505612+00:00",
+  "method": "POST",
+  "endpoint": "https://api.vndb.org/kana/vn",
+  "request": {
+    "fields": "title,titles{lang,title,latin,main,official},editions{eid,lang,name,official},staff{id,aid,name,original,eid,role,note}",
+    "filters": ["id", "=", "v17"],
+    "results": 1
+  },
+  "status": 200,
+  "response": {
+    "more": false,
+    "results": [
+      {
+        "editions": [
+          {
+            "eid": 0,
+            "lang": "en",
+            "name": "Hirameki International's translation",
+            "official": true
+          },
+          {
+            "eid": 1,
+            "lang": "en",
+            "name": "Rokumei City's translation (based on Hirameki International's translation)",
+            "official": false
+          },
+          {
+            "eid": 2,
+            "lang": null,
+            "name": "PSP edition",
+            "official": true
+          },
+          {
+            "eid": 3,
+            "lang": null,
+            "name": "Premium edition",
+            "official": true
+          },
+          {
+            "eid": 4,
+            "lang": "ru",
+            "name": "WinKiller Studio & SanLtd Team's translation",
+            "official": false
+          }
+        ],
+        "id": "v17",
+        "staff": [
+          {
+            "aid": 1008,
+            "eid": null,
+            "id": "s545",
+            "name": "Nakazawa Takumi",
+            "note": null,
+            "original": "中澤 工",
+            "role": "director"
+          },
+          {
+            "aid": 1008,
+            "eid": null,
+            "id": "s545",
+            "name": "Nakazawa Takumi",
+            "note": "Kid's common route, You's route",
+            "original": "中澤 工",
+            "role": "scenario"
+          },
+          {
+            "aid": 1008,
+            "eid": null,
+            "id": "s545",
+            "name": "Nakazawa Takumi",
+            "note": "ED movie",
+            "original": "中澤 工",
+            "role": "staff"
+          },
+          {
+            "aid": 1008,
+            "eid": 2,
+            "id": "s545",
+            "name": "Nakazawa Takumi",
+            "note": "Senior director",
+            "original": "中澤 工",
+            "role": "director"
+          },
+          {
+            "aid": 1008,
+            "eid": 2,
+            "id": "s545",
+            "name": "Nakazawa Takumi",
+            "note": "TIPS director",
+            "original": "中澤 工",
+            "role": "staff"
+          },
+          {
+            "aid": 1012,
+            "eid": null,
+            "id": "s548",
+            "name": "Uchikoshi Koutarou",
+            "note": "Main scenario, Coco's route",
+            "original": "打越 鋼太郎",
+            "role": "scenario"
+          },
+          {
+            "aid": 1012,
+            "eid": null,
+            "id": "s548",
+            "name": "Uchikoshi Koutarou",
+            "note": "Original concept, scenario composition",
+            "original": "打越 鋼太郎",
+            "role": "staff"
+          },
+          {
+            "aid": 1017,
+            "eid": null,
+            "id": "s552",
+            "name": "Abo Takeshi",
+            "note": "BGM",
+            "original": "阿保 剛",
+            "role": "music"
+          },
+          {
+            "aid": 1037,
+            "eid": null,
+            "id": "s566",
+            "name": "Kasahara Hiroko",
+            "note": "PS2/Dreamcast/PC ED \"Aqua Stripe\"",
+            "original": "笠原 弘子",
+            "role": "songs"
+          },
+          {
+            "aid": 1038,
+            "eid": null,
+            "id": "s567",
+            "name": "KAORI.",
+            "note": "PS2/Dreamcast/PC OP \"LeMU ~Harukanaru Lemuria Tairiku~\"",
+            "original": null,
+            "role": "songs"
+          },
+          {
+            "aid": 11548,
+            "eid": 2,
+            "id": "s9049",
+            "name": "Wakabayashi Ken",
+            "note": "Producer",
+            "original": "若林 健",
+            "role": "staff"
+          },
+          {
+            "aid": 11817,
+            "eid": null,
+            "id": "s9276",
+            "name": "Matsumoto Yuusuke",
+            "note": "Debug",
+            "original": "松本 裕介",
+            "role": "staff"
+          },
+          {
+            "aid": 13446,
+            "eid": null,
+            "id": "s10601",
+            "name": "Satou Daisuke",
+            "note": "Scripting, debugging",
+            "original": "佐藤 大助",
+            "role": "staff"
+          },
+          {
+            "aid": 13446,
+            "eid": 2,
+            "id": "s10601",
+            "name": "Satou Daisuke",
+            "note": null,
+            "original": "佐藤 大助",
+            "role": "director"
+          },
+          {
+            "aid": 13526,
+            "eid": 2,
+            "id": "s10667",
+            "name": "Satou Yasuyuki",
+            "note": "Directing support",
+            "original": "佐藤 康幸",
+            "role": "staff"
+          },
+          {
+            "aid": 15619,
+            "eid": null,
+            "id": "s12354",
+            "name": "Nishimura Takuya",
+            "note": "Assistant director",
+            "original": "西村 卓也",
+            "role": "director"
+          },
+          {
+            "aid": 15619,
+            "eid": null,
+            "id": "s12354",
+            "name": "Nishimura Takuya",
+            "note": "Scripting",
+            "original": "西村 卓也",
+            "role": "staff"
+          },
+          {
+            "aid": 15621,
+            "eid": null,
+            "id": "s12356",
+            "name": "Aizawa Kotarou",
+            "note": "Event CG coloring, system graphics",
+            "original": "相澤 こたろー",
+            "role": "staff"
+          },
+          {
+            "aid": 16389,
+            "eid": null,
+            "id": "s12983",
+            "name": "Kawamura Toshie",
+            "note": null,
+            "original": "川村 敏江",
+            "role": "art"
+          },
+          {
+            "aid": 16389,
+            "eid": null,
+            "id": "s12983",
+            "name": "Kawamura Toshie",
+            "note": "Event CG coloring",
+            "original": "川村 敏江",
+            "role": "staff"
+          },
+          {
+            "aid": 16390,
+            "eid": null,
+            "id": "s12984",
+            "name": "Ichikawa Hisayoshi",
+            "note": "Executive producer",
+            "original": "市川 久祥",
+            "role": "staff"
+          },
+          {
+            "aid": 16778,
+            "eid": null,
+            "id": "s13285",
+            "name": "Nyo",
+            "note": "Scripting",
+            "original": "にょ",
+            "role": "staff"
+          },
+          {
+            "aid": 16779,
+            "eid": null,
+            "id": "s13286",
+            "name": "Takano Masamichi",
+            "note": "Assistant director",
+            "original": "高野 正道",
+            "role": "director"
+          },
+          {
+            "aid": 16779,
+            "eid": null,
+            "id": "s13286",
+            "name": "Takano Masamichi",
+            "note": "Scripting",
+            "original": "高野 正道",
+            "role": "staff"
+          },
+          {
+            "aid": 16780,
+            "eid": 2,
+            "id": "s13287",
+            "name": "Kotoruri.",
+            "note": "System graphics",
+            "original": "ことるり。",
+            "role": "staff"
+          },
+          {
+            "aid": 16785,
+            "eid": 2,
+            "id": "s13292",
+            "name": "Hosoda Takaaki",
+            "note": "Line producer",
+            "original": "細田 貴昭",
+            "role": "staff"
+          },
+          {
+            "aid": 16867,
+            "eid": null,
+            "id": "s13367",
+            "name": "Kamegai Tsuneharu",
+            "note": "Development control",
+            "original": "亀谷 恒治",
+            "role": "staff"
+          },
+          {
+            "aid": 17199,
+            "eid": null,
+            "id": "s13653",
+            "name": "Nakayama Shin'ya",
+            "note": "Event CG coloring",
+            "original": "中山 伸也",
+            "role": "staff"
+          },
+          {
+            "aid": 18035,
+            "eid": null,
+            "id": "s14344",
+            "name": "Tamura Yuuichi",
+            "note": "Sales",
+            "original": "田村 雄一",
+            "role": "staff"
+          },
+          {
+            "aid": 19711,
+            "eid": null,
+            "id": "s15719",
+            "name": "Nakayama Hiroaki",
+            "note": "Programming",
+            "original": "仲山 裕昭",
+            "role": "staff"
+          },
+          {
+            "aid": 19768,
+            "eid": null,
+            "id": "s15764",
+            "name": "Nagai Taketo",
+            "note": "Map/3D graphics, item graphics, title logo, OP movie, insert movies",
+            "original": "永井 岳人",
+            "role": "staff"
+          },
+          {
+            "aid": 2499,
+            "eid": 2,
+            "id": "s1521",
+            "name": "Takase Shin",
+            "note": "Assistant producer",
+            "original": "高瀬 伸",
+            "role": "staff"
+          },
+          {
+            "aid": 2504,
+            "eid": null,
+            "id": "s1525",
+            "name": "Ichikawa Kazuhiro",
+            "note": "Producer, OP movie",
+            "original": "市川 和弘",
+            "role": "staff"
+          },
+          {
+            "aid": 28839,
+            "eid": 1,
+            "id": "s23259",
+            "name": "Arsym",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 28839,
+            "eid": 1,
+            "id": "s23259",
+            "name": "Arsym",
+            "note": "Graphics, Reverse engineering",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 28840,
+            "eid": 1,
+            "id": "s23260",
+            "name": "godotwashere",
+            "note": null,
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 28840,
+            "eid": 1,
+            "id": "s23260",
+            "name": "godotwashere",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 3060,
+            "eid": null,
+            "id": "s1928",
+            "name": "Takigawa Yuu",
+            "note": "CG general supervision",
+            "original": "滝川 悠",
+            "role": "staff"
+          },
+          {
+            "aid": 3061,
+            "eid": null,
+            "id": "s1928",
+            "name": "Takigawa Yuu",
+            "note": null,
+            "original": "多岐川 遊",
+            "role": "art"
+          },
+          {
+            "aid": 3061,
+            "eid": null,
+            "id": "s1928",
+            "name": "Takigawa Yuu",
+            "note": null,
+            "original": "多岐川 遊",
+            "role": "chardesign"
+          },
+          {
+            "aid": 3072,
+            "eid": null,
+            "id": "s1939",
+            "name": "Sasanari Kitarou",
+            "note": "Assistant director",
+            "original": "笹成 稀多郎",
+            "role": "director"
+          },
+          {
+            "aid": 3072,
+            "eid": null,
+            "id": "s1939",
+            "name": "Sasanari Kitarou",
+            "note": "Prologue, Takeshi's common route, Tsugumi's route, Sora's route",
+            "original": "笹成 稀多郎",
+            "role": "scenario"
+          },
+          {
+            "aid": 3072,
+            "eid": null,
+            "id": "s1939",
+            "name": "Sasanari Kitarou",
+            "note": "Scenario editing, script",
+            "original": "笹成 稀多郎",
+            "role": "staff"
+          },
+          {
+            "aid": 3073,
+            "eid": null,
+            "id": "s1940",
+            "name": "Umeda Nobuaki",
+            "note": "Sara's route",
+            "original": "梅田 伸明",
+            "role": "scenario"
+          },
+          {
+            "aid": 3073,
+            "eid": null,
+            "id": "s1940",
+            "name": "Umeda Nobuaki",
+            "note": "System graphics",
+            "original": "梅田 伸明",
+            "role": "staff"
+          },
+          {
+            "aid": 3073,
+            "eid": 0,
+            "id": "s1940",
+            "name": "Umeda Nobuaki",
+            "note": null,
+            "original": "梅田 伸明",
+            "role": "director"
+          },
+          {
+            "aid": 3073,
+            "eid": 3,
+            "id": "s1940",
+            "name": "Umeda Nobuaki",
+            "note": null,
+            "original": "梅田 伸明",
+            "role": "director"
+          },
+          {
+            "aid": 33056,
+            "eid": 1,
+            "id": "s26675",
+            "name": "StamblerRambler",
+            "note": "Playtesting",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 3355,
+            "eid": 2,
+            "id": "s2158",
+            "name": "Sawamura Shun",
+            "note": "ED composition",
+            "original": "沢村 竣",
+            "role": "music"
+          },
+          {
+            "aid": 34118,
+            "eid": 0,
+            "id": "s27541",
+            "name": "Ryan Payton",
+            "note": "Uncredited",
+            "original": null,
+            "role": "translator"
+          },
+          {
+            "aid": 34128,
+            "eid": 1,
+            "id": "s27550",
+            "name": "Ganesh",
+            "note": "Playtesting",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 34500,
+            "eid": 1,
+            "id": "s27878",
+            "name": "Aexis",
+            "note": "Graphics",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 34501,
+            "eid": 1,
+            "id": "s27879",
+            "name": "Akira",
+            "note": null,
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 34502,
+            "eid": 1,
+            "id": "s27880",
+            "name": "Ravus",
+            "note": null,
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 34503,
+            "eid": 1,
+            "id": "s27881",
+            "name": "Tara",
+            "note": null,
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 34504,
+            "eid": 1,
+            "id": "s27882",
+            "name": "Fuwante0",
+            "note": "Translation checking",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 34505,
+            "eid": 1,
+            "id": "s27883",
+            "name": "funwithgravity",
+            "note": "Translation checking",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 34506,
+            "eid": 1,
+            "id": "s27884",
+            "name": "BaamZahard",
+            "note": "Playtesting",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 34507,
+            "eid": 1,
+            "id": "s27885",
+            "name": "Butler",
+            "note": "Playtesting",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 34508,
+            "eid": 1,
+            "id": "s27886",
+            "name": "Neon",
+            "note": "Playtesting",
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 385,
+            "eid": null,
+            "id": "s223",
+            "name": "Matsuo Yukihiro",
+            "note": "Character sprites, BG",
+            "original": "松尾 ゆきひろ",
+            "role": "art"
+          },
+          {
+            "aid": 410,
+            "eid": 2,
+            "id": "s240",
+            "name": "Imai Asami",
+            "note": "OP \"It's a fine day\", ED \"The Azure ~Ao no Kioku~\"",
+            "original": "今井 麻美",
+            "role": "songs"
+          },
+          {
+            "aid": 5011,
+            "eid": 2,
+            "id": "s3525",
+            "name": "Ueno Kouji",
+            "note": "OP arrangement",
+            "original": "上野 浩司",
+            "role": "music"
+          },
+          {
+            "aid": 51385,
+            "eid": 2,
+            "id": "s42073",
+            "name": "Minami Toshikazu",
+            "note": "ED arrangement",
+            "original": "南 利一",
+            "role": "music"
+          },
+          {
+            "aid": 51386,
+            "eid": 2,
+            "id": "s42074",
+            "name": "Hashizume Akiko",
+            "note": "ED lyrics",
+            "original": "橋詰 亮子",
+            "role": "staff"
+          },
+          {
+            "aid": 5184,
+            "eid": null,
+            "id": "s3664",
+            "name": "Isoe Toshimichi",
+            "note": "OP arrangement",
+            "original": "磯江 俊道",
+            "role": "music"
+          },
+          {
+            "aid": 55902,
+            "eid": 4,
+            "id": "s45768",
+            "name": "Nik",
+            "note": "Reverse engineering",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 55903,
+            "eid": 4,
+            "id": "s45769",
+            "name": "dsp2003",
+            "note": "Project lead, Programming, Image & video editing",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 55903,
+            "eid": 4,
+            "id": "s45769",
+            "name": "dsp2003",
+            "note": null,
+            "original": null,
+            "role": "translator"
+          },
+          {
+            "aid": 56314,
+            "eid": 4,
+            "id": "s46038",
+            "name": "imagic",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 57250,
+            "eid": 4,
+            "id": "s46719",
+            "name": "Smarter",
+            "note": "Lead",
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 57250,
+            "eid": 4,
+            "id": "s46719",
+            "name": "Smarter",
+            "note": "Technical help",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 57250,
+            "eid": 4,
+            "id": "s46719",
+            "name": "Smarter",
+            "note": "OP/ED subs",
+            "original": null,
+            "role": "translator"
+          },
+          {
+            "aid": 57251,
+            "eid": 4,
+            "id": "s46720",
+            "name": "San3k",
+            "note": null,
+            "original": null,
+            "role": "editor"
+          },
+          {
+            "aid": 57252,
+            "eid": 4,
+            "id": "s46721",
+            "name": "MrLax",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 57253,
+            "eid": 4,
+            "id": "s46722",
+            "name": "Nothing_2_Lose",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 57254,
+            "eid": 4,
+            "id": "s46723",
+            "name": "TiKey",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 57255,
+            "eid": 4,
+            "id": "s46724",
+            "name": "Kyoko",
+            "note": "Special thanks",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 57256,
+            "eid": 4,
+            "id": "s46725",
+            "name": "Dan Organ",
+            "note": "Technical help, Special thanks",
+            "original": null,
+            "role": "staff"
+          },
+          {
+            "aid": 57257,
+            "eid": 4,
+            "id": "s46726",
+            "name": "katta",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 62891,
+            "eid": null,
+            "id": "s9708",
+            "name": "Nakazato Takeshi",
+            "note": "Storyboards, CG supervision",
+            "original": "中里 壮志",
+            "role": "staff"
+          },
+          {
+            "aid": 69905,
+            "eid": 4,
+            "id": "s56469",
+            "name": "Levyafan",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 69906,
+            "eid": 4,
+            "id": "s56470",
+            "name": "unihorn",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 69907,
+            "eid": 4,
+            "id": "s56471",
+            "name": "Tails_Doll",
+            "note": null,
+            "original": null,
+            "role": "qa"
+          },
+          {
+            "aid": 8090,
+            "eid": null,
+            "id": "s6156",
+            "name": "Takimoto Masashi",
+            "note": "Voice work sound supervisor",
+            "original": "たきもと まさし",
+            "role": "staff"
+          },
+          {
+            "aid": 827,
+            "eid": null,
+            "id": "s441",
+            "name": "Shikura Chiyomaru",
+            "note": "OP, ED composition",
+            "original": "志倉 千代丸",
+            "role": "music"
+          },
+          {
+            "aid": 827,
+            "eid": null,
+            "id": "s441",
+            "name": "Shikura Chiyomaru",
+            "note": "Casting, sound producer, OP & ED lyrics",
+            "original": "志倉 千代丸",
+            "role": "staff"
+          },
+          {
+            "aid": 827,
+            "eid": 2,
+            "id": "s441",
+            "name": "Shikura Chiyomaru",
+            "note": "OP composition",
+            "original": "志倉 千代丸",
+            "role": "music"
+          },
+          {
+            "aid": 827,
+            "eid": 2,
+            "id": "s441",
+            "name": "Shikura Chiyomaru",
+            "note": "OP lyrics",
+            "original": "志倉 千代丸",
+            "role": "staff"
+          },
+          {
+            "aid": 8632,
+            "eid": null,
+            "id": "s1475",
+            "name": "Koshimizu Takayuki",
+            "note": "Art direction, event CG coloring",
+            "original": "輿水 隆之",
+            "role": "staff"
+          },
+          {
+            "aid": 8667,
+            "eid": null,
+            "id": "s6657",
+            "name": "Yoshihara Katsumi",
+            "note": "ED arrangement",
+            "original": "吉原 かつみ",
+            "role": "music"
+          },
+          {
+            "aid": 9004,
+            "eid": null,
+            "id": "s6933",
+            "name": "bomi",
+            "note": "CG drawing assistant, character sprites, background mob character drawing,",
+            "original": "ぼみ",
+            "role": "art"
+          }
+        ],
+        "title": "Ever17 -the out of infinity-",
+        "titles": [
+          {
+            "lang": "en",
+            "latin": null,
+            "main": false,
+            "official": true,
+            "title": "Ever17 -out of infinity-"
+          },
+          {
+            "lang": "ja",
+            "latin": null,
+            "main": true,
+            "official": true,
+            "title": "Ever17 -the out of infinity-"
+          },
+          {
+            "lang": "zh-Hans",
+            "latin": "Shikong Lunhui",
+            "main": false,
+            "official": true,
+            "title": "时空轮回"
+          },
+          {
+            "lang": "zh-Hant",
+            "latin": "Shiguang de Jiban",
+            "main": false,
+            "official": true,
+            "title": "時光的羈絆"
+          }
+        ]
+      }
+    ]
+  }
+}

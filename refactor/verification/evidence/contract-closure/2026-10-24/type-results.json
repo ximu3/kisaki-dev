@@ -1,0 +1,19 @@
+{
+  "checkedOn": "2026-10-24",
+  "node": "v24.11.1",
+  "typescript": "Version 6.0.3",
+  "scope": "Extracted file-switch result and ExecutionFailure shapes with representative owner types; not runtime, complete Session declarations or public package verification.",
+  "expectedRejections": 8,
+  "sources": [
+    {
+      "path": "refactor/design/communication.md",
+      "sha256": "9376cdb4e2ee02e5eeb67c504d207f55c5b919aa4274612bc47a9d8cd180f041"
+    },
+    {
+      "path": "refactor/design/domains/sessions.md",
+      "sha256": "483b34c69b7bfbba8573beb5b6d674e83a7d6ea810e638dad2ed7a9f07c64dbf"
+    }
+  ],
+  "status": "passed",
+  "formalHostExecuted": false
+}

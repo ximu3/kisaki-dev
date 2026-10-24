@@ -1,0 +1,148 @@
+{
+  "checkedAt": "2026-10-18T08:52:52.713857+00:00",
+  "host": {
+    "system": "Windows",
+    "version": "10.0.19045",
+    "architecture": "AMD64"
+  },
+  "mpvVersion": "mpv v0.41.0-1205-g01e2533f3",
+  "apiVersion": {
+    "major": 2,
+    "minor": 6
+  },
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "properties": {
+    "pause:FLAG": {
+      "status": 0,
+      "value": 1
+    },
+    "pause:STRING": {
+      "status": 0,
+      "value": "yes"
+    },
+    "pause:OSD_STRING": {
+      "status": 0,
+      "value": "yes"
+    },
+    "volume:DOUBLE": {
+      "status": 0,
+      "value": 80.0
+    },
+    "volume:INT64": {
+      "status": 0,
+      "value": "80"
+    },
+    "volume:NODE": {
+      "status": 0,
+      "value": {
+        "format": 5,
+        "value": 80.0
+      }
+    },
+    "volume:NONE": {
+      "status": -9
+    },
+    "int64Node": {
+      "status": 0,
+      "value": {
+        "format": 4,
+        "value": "9007199254740993"
+      }
+    }
+  },
+  "propertyObservations": {
+    "initialInvalidation": {
+      "event": 22,
+      "error": 0,
+      "userdata": 101,
+      "name": "pause",
+      "format": 0,
+      "hasData": false
+    },
+    "changedInvalidation": {
+      "event": 22,
+      "error": 0,
+      "userdata": 101,
+      "name": "pause",
+      "format": 0,
+      "hasData": false
+    },
+    "integer": {
+      "event": 22,
+      "error": 0,
+      "userdata": 103,
+      "name": "volume",
+      "format": 4,
+      "hasData": true,
+      "value": "80"
+    },
+    "text": {
+      "event": 22,
+      "error": 0,
+      "userdata": 104,
+      "name": "pause",
+      "format": 1,
+      "hasData": true,
+      "value": "no"
+    },
+    "osdObservationError": -9
+  },
+  "clientModel": {
+    "ownerAndSiblingSharePause": true,
+    "secondCoreRetainsIndependentPause": true,
+    "peerRemainsUsableAfterClientDetach": true,
+    "clientQuitReachesOwningCore": true,
+    "secondCoreRemainsUsableAfterFirstCoreDestroyed": true
+  },
+  "streams": [
+    {
+      "case": "client-lifetime",
+      "registrationClientDestroyedBeforeLoad": true,
+      "duplicateRegistrationError": -4,
+      "readCalls": 7,
+      "seekCalls": 1,
+      "cancelled": false,
+      "closeCalls": 1,
+      "cancelCallbackDuringBlockedOpen": null,
+      "cancelCallbackDuringInitialSeek": null
+    },
+    {
+      "case": "blocked-read",
+      "registrationClientDestroyedBeforeLoad": true,
+      "duplicateRegistrationError": -4,
+      "readCalls": 1,
+      "seekCalls": 1,
+      "cancelled": true,
+      "closeCalls": 1,
+      "cancelCallbackDuringBlockedOpen": null,
+      "cancelCallbackDuringInitialSeek": null
+    },
+    {
+      "case": "blocked-open",
+      "registrationClientDestroyedBeforeLoad": true,
+      "duplicateRegistrationError": -4,
+      "readCalls": 0,
+      "seekCalls": 1,
+      "cancelled": true,
+      "closeCalls": 1,
+      "cancelCallbackDuringBlockedOpen": false,
+      "cancelCallbackDuringInitialSeek": null
+    },
+    {
+      "case": "blocked-initial-seek",
+      "registrationClientDestroyedBeforeLoad": true,
+      "duplicateRegistrationError": -4,
+      "readCalls": 0,
+      "seekCalls": 1,
+      "cancelled": true,
+      "closeCalls": 1,
+      "cancelCallbackDuringBlockedOpen": null,
+      "cancelCallbackDuringInitialSeek": false
+    }
+  ],
+  "nativeCApiExecuted": true,
+  "nodeAddonExecuted": false,
+  "javascriptProviderBridgeExecuted": false,
+  "graphicsExecuted": false,
+  "selectedReleaseBuildVerified": false
+}

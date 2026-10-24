@@ -1,0 +1,150 @@
+{
+  "passed": 22,
+  "tests": [
+    "five live records; deleted record absent",
+    "zero score remains a rated value",
+    "maximum score remains exact",
+    "explicit null and omitted score remain distinct in transport",
+    "personal favorite and false values survive",
+    "plain notes preserve lines and literal markup",
+    "partial date remains partial",
+    "64-bit seconds are not rounded through JSON",
+    "64-bit launch count remains separate",
+    "out-of-range duration can be detected before numeric adoption",
+    "UTC date retains the source instant",
+    "type marker is inert source text",
+    "binary and decimal values retain type",
+    "action enums retain the source string encoding",
+    "ROM and profile references survive",
+    "non-play action remains distinguishable",
+    "script text is decoded as data",
+    "backslash ZIP names resolve",
+    "custom state and emulator collections decode",
+    "managed image reference resolves and reads",
+    "category and tag collections retain references",
+    "source input bytes are unchanged"
+  ],
+  "before": {
+    "database": "4f80cebed48fc2cefd21fbcaf00caab89a214a5678a1bed1490ebd15cde8c10a",
+    "archive": "c032af1b9fc87914a189e7931cc3af149d26cc4bb0aa21a54c15f7881ce4ea0a"
+  },
+  "readerBytes": 4891648,
+  "syntheticArchive": {
+    "databaseVersion": 4,
+    "liteDbVersion": "4.1.4.0",
+    "readonlyMemoryStreams": true,
+    "databases": {
+      "games.db": {
+        "Game": 5
+      },
+      "completionstatuses.db": {
+        "CompletionStatus": 4
+      },
+      "emulators.db": {
+        "Emulator": 1
+      },
+      "categories.db": {
+        "Category": 1
+      },
+      "tags.db": {
+        "Tag": 1
+      }
+    },
+    "games": 5,
+    "fieldTypes": {
+      "GameId": {
+        "String": 5
+      },
+      "PluginId": {
+        "Guid": 5
+      },
+      "Playtime": {
+        "Int64": 5
+      },
+      "PlayCount": {
+        "Int64": 5
+      },
+      "UserScore": {
+        "Int32": 2,
+        "Null": 1,
+        "Missing": 2
+      },
+      "Favorite": {
+        "Boolean": 5
+      },
+      "Hidden": {
+        "Boolean": 5
+      },
+      "CompletionStatusId": {
+        "Guid": 5
+      },
+      "LastActivity": {
+        "Missing": 5
+      },
+      "Added": {
+        "DateTime": 5
+      },
+      "Notes": {
+        "String": 1,
+        "Missing": 4
+      },
+      "Description": {
+        "String": 1,
+        "Missing": 4
+      },
+      "GameActions": {
+        "Array": 4,
+        "Missing": 1
+      },
+      "InstallDirectory": {
+        "String": 1,
+        "Missing": 4
+      },
+      "CoverImage": {
+        "String": 1,
+        "Missing": 4
+      },
+      "Icon": {
+        "Missing": 5
+      },
+      "BackgroundImage": {
+        "Missing": 5
+      },
+      "Roms": {
+        "Missing": 4,
+        "Array": 1
+      },
+      "IncludeLibraryPluginAction": {
+        "Boolean": 5
+      }
+    },
+    "coverage": {
+      "nonemptyNotes": 1,
+      "nonemptyDescription": 1,
+      "nonemptyInstallDirectory": 1,
+      "nonemptyCoverImage": 1,
+      "nonemptyIcon": 0,
+      "nonemptyBackgroundImage": 0,
+      "explicitActions": 5,
+      "hasRoms": 1,
+      "steamIdentityRecords": 1,
+      "otherLibraryIdentityRecords": 0,
+      "playActions": 4,
+      "actionTypes": {
+        "\"File\"": 1,
+        "\"URL\"": 2,
+        "\"Emulator\"": 1,
+        "\"Script\"": 1
+      },
+      "trackingModes": {
+        "\"Default\"": 1,
+        "\"Directory\"": 1,
+        "Missing": 3
+      },
+      "imageReferences": 1,
+      "imageReferencesFound": 1,
+      "imageReferencesRead": 1,
+      "imageBytesRead": 68
+    }
+  }
+}

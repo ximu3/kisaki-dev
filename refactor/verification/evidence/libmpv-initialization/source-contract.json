@@ -1,0 +1,116 @@
+{
+  "purpose": "initialization proposal source receipts, not native verification",
+  "designStatus": "proposal",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "embeddedDefaults": {
+    "config": "no",
+    "idle": "yes",
+    "terminal": "no",
+    "input-terminal": "no",
+    "osc": "no",
+    "input-default-bindings": "no",
+    "input-vo-keyboard": "no",
+    "input-media-keys": "no",
+    "media-controls": "no"
+  },
+  "nativeAddonExecuted": false,
+  "optionApplicationVerified": false,
+  "initializationLogsVerified": false,
+  "cancellationAndCleanupVerified": false,
+  "managedRenderingBeforeInitializationVerified": false,
+  "scriptAndRenderingStartupVerified": false,
+  "sources": [
+    {
+      "name": "client-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:58.022027+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c",
+      "markers": {
+        "avoid doing concurrent accesses on the uninitialized": [472],
+        "semi-deprecated": [868],
+        "mpv_set_option": [435, 453, 454, 586, 883, 888, 892, 1067, 1965, 1966, 1967, 1968],
+        "mpv_initialize": [436, 449, 455, 490, 503, 556, 871, 1061, 1062, 1065, 1066, 1947, 1948],
+        "config-dir": [450, 453, 493]
+      }
+    },
+    {
+      "name": "client-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:58.029036+00:00",
+      "bytes": 69031,
+      "sha256": "7d3c4b6ed1c614169277c7faad9e7fa21e5bf4694d7a3961986defdebcaa60eb",
+      "markers": {
+        "m_config_set_profile(mpctx->mconfig, \"libmpv\", 0)": [615],
+        "m_config_set_option_node(ctx->mpctx->mconfig, bstr0(name), data, 0)": [1036],
+        "int r = mpv_set_option(ctx, name, format, data)": [1313],
+        "case MPV_ERROR_OPTION_NOT_FOUND: return MPV_ERROR_PROPERTY_NOT_FOUND": [1320],
+        "int mpv_initialize(mpv_handle *ctx)": [665]
+      }
+    },
+    {
+      "name": "embedded-defaults",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/etc/builtin.conf",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/etc/builtin.conf",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:57.942103+00:00",
+      "bytes": 2477,
+      "sha256": "b5bfe7c1dbffea233407c58c62836304578fd7a766b2f2b40a5e19b3ef00f321",
+      "markers": {
+        "[libmpv]": [21],
+        "config=no": [22],
+        "idle=yes": [23],
+        "terminal=no": [16, 24, 25]
+      }
+    },
+    {
+      "name": "core-initialization",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/main.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/main.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:58.417581+00:00",
+      "bytes": 14401,
+      "sha256": "c3bfca8c73543fc7beed2ce1f6856d0d2bfd5f0178af3149d592c7395788ff3e",
+      "markers": {
+        "mp_msg_set_early_logging(mpctx->global, true)": [348],
+        "mp_parse_cfgfiles(mpctx)": [360],
+        "mp_load_scripts(mpctx)": [432]
+      }
+    },
+    {
+      "name": "render-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:58.031588+00:00",
+      "bytes": 34271,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+      "markers": {
+        "at most 1 context": [551],
+        "mpv_render_context_free": [89, 119, 122, 548, 733, 751, 752],
+        "mpv_render_context_create": [
+          32, 104, 114, 132, 161, 167, 178, 195, 236, 243, 250, 263, 341, 347, 578, 737, 738
+        ]
+      }
+    },
+    {
+      "name": "render-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/vo_libmpv.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/vo_libmpv.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:20:58.213245+00:00",
+      "bytes": 22769,
+      "sha256": "505bb1c9ec219a966e24da4839b2c68a91411ddcb649f648e29160ccfd0bdebf",
+      "markers": {
+        "int mpv_render_context_create(": [164],
+        "ctx->global = mp_client_get_global(mpv)": [174],
+        "mp_set_main_render_context(ctx->client_api, ctx, true)": [220]
+      }
+    }
+  ]
+}

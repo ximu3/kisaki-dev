@@ -1,0 +1,88 @@
+{
+  "tables": [
+    {
+      "name": "ibm437",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP437.TXT",
+      "sha256": "6bad4dabcdf5940227c7d81fab130dcb18a77850b5d79de28b5dc4e047b0aaac"
+    },
+    {
+      "name": "ibm850",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT",
+      "sha256": "ffdcc3c1c72f1aef600a63547100ef3dc452a09ad84923d382085519751c7479"
+    },
+    {
+      "name": "ibm852",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP852.TXT",
+      "sha256": "440d098e9f2b79eeacbe2bbc1814960b6554c885740615047f5b528c2947afb6"
+    },
+    {
+      "name": "ibm855",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP855.TXT",
+      "sha256": "b77ca096db4ff4fb1323c33804271575ce15d778c8b983f28405438e73ca5925"
+    },
+    {
+      "name": "ibm857",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP857.TXT",
+      "sha256": "6396619b918ce2fe3c366630e5652b25153bbd4bb01c8109ba8f7ed8a261658d"
+    },
+    {
+      "name": "ibm860",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP860.TXT",
+      "sha256": "1b3f983eac02d9ae9fc28106f2f3476ca1e4b337c7287f1a004372e14dd11e6a"
+    },
+    {
+      "name": "ibm861",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP861.TXT",
+      "sha256": "51c7f3ef5a435e69637237be2a414aef8dfc4f891365b686ff8d56b681f32074"
+    },
+    {
+      "name": "ibm862",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP862.TXT",
+      "sha256": "054c7d796da8c57a437955948e156077f3cc1b85c8f240fc375150fea89b438a"
+    },
+    {
+      "name": "ibm863",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP863.TXT",
+      "sha256": "f467a2a652ce3f74bb3fa86c8767dd06cbde90edfb73bf3a5541ae4cbe806d7b"
+    },
+    {
+      "name": "ibm864",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP864.TXT",
+      "sha256": "113a62a7cdaba406cdf4091cf1f1e794387ee09a4d53f33b01c1178c35ec4f1b"
+    },
+    {
+      "name": "ibm865",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP865.TXT",
+      "sha256": "e31eeb03a39a5fbdd5e23de60a22af4219c9987de2088386855ab20f273f470a"
+    },
+    {
+      "name": "ibm869",
+      "source": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP869.TXT",
+      "sha256": "a98207634e459cbfe895e98a5e58c4f787283191d9cbfb977fec3207a2d85203"
+    },
+    {
+      "name": "windows-1252",
+      "source": "https://encoding.spec.whatwg.org/index-windows-1252.txt",
+      "sha256": "2c5fa192d566f92b8b9e6e116255b1f94016b4ece5b9dacb3b98be70b8c60795"
+    }
+  ],
+  "license": {
+    "source": "https://www.unicode.org/license.txt",
+    "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+  },
+  "mapsSha256": "cafadb272c1ab0d332d8d2f440c3c10b9ae6cef2b785eca51509f6bf4e966907",
+  "fixture": {
+    "name": "legacy-cp437.rar",
+    "base": "rar3-symlink-unix.rar",
+    "baseSha256": "146d979ca2a659e74712a8b259a47d198af8e94f95f94599ad7d31f0f0bb2a14",
+    "sha256": "239c9f114f8d8297d285c6d8b1eaa159e891b0b4229aa0d2ca47332e9de66028",
+    "mutation": "Rename first RAR3 member to CP437 bytes for café.txt; update only header CRC"
+  },
+  "invalidUnicodeFixture": {
+    "name": "invalid-legacy-unicode.rar",
+    "sha256": "660113f5d0e449074cfcb6b10b758d5a11207030a9f678b8f69dbb760ef33396",
+    "mutation": "Supply an incomplete mode-2 Unicode name with a valid header checksum; preserve the original payload"
+  },
+  "publicInputChangeProposed": true,
+  "acceptedContractChanged": false
+}

@@ -1,0 +1,472 @@
+{
+  "synthetic": true,
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "androidOrKotlinExecuted": false,
+  "inputFiles": 22,
+  "checks": [
+    {
+      "name": "Official backup has eleven extensionless root members",
+      "passed": true
+    },
+    {
+      "name": "Header is an array containing one index object",
+      "passed": true
+    },
+    {
+      "name": "Version code is an application version, fixed to this supported family",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model BackupIndex",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model MangaBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model TagBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model HistoryBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model FavouriteBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model CategoryBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model ScrobblingBackup",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture fields match pinned source model StatisticBackup",
+      "passed": true
+    },
+    {
+      "name": "App settings, reader grid, sources and saved filters are not opened",
+      "passed": true
+    },
+    {
+      "name": "Unknown optional section remains absent",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup other-app.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup unknown-version.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup duplicate-member.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup traversal.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup duplicate-json-key.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup unsupported-json.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup oversized-entry.zip",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid backup non-zip.bin",
+      "passed": true
+    },
+    {
+      "name": "Reject duplicate JSON chapter keys",
+      "passed": true
+    },
+    {
+      "name": "Reject excessive JSON depth",
+      "passed": true
+    },
+    {
+      "name": "Long IDs remain exact beyond JavaScript safe integers",
+      "passed": true
+    },
+    {
+      "name": "Negative source IDs are legitimate signed Long values",
+      "passed": true
+    },
+    {
+      "name": "Reject source identifier outside signed 64-bit range",
+      "passed": true
+    },
+    {
+      "name": "Boolean is not a source integer",
+      "passed": true
+    },
+    {
+      "name": "Non-finite float literal is parsed without changing string content",
+      "passed": true
+    },
+    {
+      "name": "NaN and Infinity inside user text remain ordinary text",
+      "passed": true
+    },
+    {
+      "name": "Embedded copies join into five actual source books",
+      "passed": true
+    },
+    {
+      "name": "Same-title books remain distinct",
+      "passed": true
+    },
+    {
+      "name": "Bookmark wrapper tags are source manga tags",
+      "passed": true
+    },
+    {
+      "name": "Repeated embedded tags are not duplicated",
+      "passed": true
+    },
+    {
+      "name": "Backup aliases preserve their real newline delimiter",
+      "passed": true
+    },
+    {
+      "name": "Backup author names use the real newline delimiter",
+      "passed": true
+    },
+    {
+      "name": "Reject mismatched outer and embedded book IDs",
+      "passed": true
+    },
+    {
+      "name": "Do not silently choose one conflicting identity copy",
+      "passed": true
+    },
+    {
+      "name": "Source publication state is distinct from personal status",
+      "passed": true
+    },
+    {
+      "name": "Source scrobbler IDs use this application's own mapping",
+      "passed": true
+    },
+    {
+      "name": "AniList raw COMPLETED maps to a minimum completion fact",
+      "passed": true
+    },
+    {
+      "name": "MAL raw reading is a distinct selected current value",
+      "passed": true
+    },
+    {
+      "name": "Shikimori rewatching means active for this manga cache",
+      "passed": true
+    },
+    {
+      "name": "Kitsu completed uses its own raw vocabulary",
+      "passed": true
+    },
+    {
+      "name": "Dropped has no native equivalent and does not clear current state",
+      "passed": true
+    },
+    {
+      "name": "Null cached status remains unknown",
+      "passed": true
+    },
+    {
+      "name": "Unknown service cannot borrow another service's status vocabulary",
+      "passed": true
+    },
+    {
+      "name": "Missing selected service does not fall back to another",
+      "passed": true
+    },
+    {
+      "name": "Normalized AniList rating rounds once to 67",
+      "passed": true
+    },
+    {
+      "name": "Normalized MAL rating maps to 80",
+      "passed": true
+    },
+    {
+      "name": "Normalized Kitsu rating maps to 85 without rescaling again",
+      "passed": true
+    },
+    {
+      "name": "Zero private rating means unrated",
+      "passed": true
+    },
+    {
+      "name": "Public book rating is not selected as a private score",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score NaN",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score Infinity",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score -Infinity",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score 1.01",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score -1",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid personal score True",
+      "passed": true
+    },
+    {
+      "name": "Completion initializes one unknown-date record",
+      "passed": true
+    },
+    {
+      "name": "Existing history does not receive a minimum snapshot again",
+      "passed": true
+    },
+    {
+      "name": "Completed Part only supplies its completion flag",
+      "passed": true
+    },
+    {
+      "name": "Rereading does not invent previous completion counts",
+      "passed": true
+    },
+    {
+      "name": "Progress one and publication FINISHED do not supply a tracked completion",
+      "passed": true
+    },
+    {
+      "name": "Cache row ID is distinct from platform work target ID",
+      "passed": true
+    },
+    {
+      "name": "Backup has no tracked completion date",
+      "passed": true
+    },
+    {
+      "name": "Private comment retains line breaks and literal markup",
+      "passed": true
+    },
+    {
+      "name": "Category association uses category_id",
+      "passed": true
+    },
+    {
+      "name": "Chosen hidden categories retain real members",
+      "passed": true
+    },
+    {
+      "name": "Empty explicit category remains an empty collection candidate",
+      "passed": true
+    },
+    {
+      "name": "Unused member sort_key and pinned do not claim a manual order",
+      "passed": true
+    },
+    {
+      "name": "Category sort_key belongs to the category sequence",
+      "passed": true
+    },
+    {
+      "name": "Unknown category does not match by title or array position",
+      "passed": true
+    },
+    {
+      "name": "Each saved statistics row represents a millisecond interval",
+      "passed": true
+    },
+    {
+      "name": "Pause-separated source rows remain two activities",
+      "passed": true
+    },
+    {
+      "name": "Source duration sum is 183456 milliseconds",
+      "passed": true
+    },
+    {
+      "name": "A complete statistics section with no rows for a known book has zero total",
+      "passed": true
+    },
+    {
+      "name": "Duplicate source primary key with identical content counts once",
+      "passed": true
+    },
+    {
+      "name": "Conflicting duplicate statistic is not resolved by taking the larger total",
+      "passed": true
+    },
+    {
+      "name": "Unknown start does not create an activity",
+      "passed": true
+    },
+    {
+      "name": "Explicit total-only mode can retain a duration with unknown start",
+      "passed": true
+    },
+    {
+      "name": "Known zero duration creates no empty activity",
+      "passed": true
+    },
+    {
+      "name": "Orphan statistic does not create a placeholder Work",
+      "passed": true
+    },
+    {
+      "name": "Negative duration is refused",
+      "passed": true
+    },
+    {
+      "name": "Future ending is refused without clamping",
+      "passed": true
+    },
+    {
+      "name": "Unsafe cumulative duration is refused",
+      "passed": true
+    },
+    {
+      "name": "New total-only adoption initializes additional time",
+      "passed": true
+    },
+    {
+      "name": "Existing total-only adoption subtracts actual saved activity",
+      "passed": true
+    },
+    {
+      "name": "Source total below saved activity is not adopted",
+      "passed": true
+    },
+    {
+      "name": "Indexed cover has actual image bytes",
+      "passed": true
+    },
+    {
+      "name": "Downloaded index retains the exact backup book identity",
+      "passed": true
+    },
+    {
+      "name": "Separate branches with equal chapter numbers remain separate",
+      "passed": true
+    },
+    {
+      "name": "Index chapter keys retain negative 64-bit identity",
+      "passed": true
+    },
+    {
+      "name": "Original zero-based page zero maps to the encoded first member",
+      "passed": true
+    },
+    {
+      "name": "Cover and another branch are excluded by the source chapter pattern",
+      "passed": true
+    },
+    {
+      "name": "Per-chapter CBZ keeps its actual file",
+      "passed": true
+    },
+    {
+      "name": "Per-chapter CBZ maps the third zero-based member",
+      "passed": true
+    },
+    {
+      "name": "Source local bookmark URI uses file+zip and names the same member",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid source page -1",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid source page 3",
+      "passed": true
+    },
+    {
+      "name": "Reject invalid source page True",
+      "passed": true
+    },
+    {
+      "name": "Missing chapter is not matched by displayed number",
+      "passed": true
+    },
+    {
+      "name": "Pixel scroll without source view dimensions is not normalized",
+      "passed": true
+    },
+    {
+      "name": "Reject uncertain indexed position missing-page.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject uncertain indexed position duplicate-page.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject uncertain indexed position arbitrary-pattern.cbz",
+      "passed": true
+    },
+    {
+      "name": "Reject escaping chapter file path",
+      "passed": true
+    },
+    {
+      "name": "Kotatsu comparator preserves leading-zero distinctions",
+      "passed": true
+    },
+    {
+      "name": "Source image universe includes native-unsupported or invalid image candidates",
+      "passed": true
+    },
+    {
+      "name": "Unknown Android MIME fallback is not silently dropped",
+      "passed": true
+    },
+    {
+      "name": "Source string comparator uses UTF-16 ordering",
+      "passed": true
+    },
+    {
+      "name": "Source natural comparator is case-sensitive",
+      "passed": true
+    },
+    {
+      "name": "Source natural comparator does not parse numeric chunks as C integers",
+      "passed": true
+    },
+    {
+      "name": "Bookmarks contain no private note, title or highlight quote",
+      "passed": true
+    },
+    {
+      "name": "Remote image URL alone is not a local media file",
+      "passed": true
+    },
+    {
+      "name": "All source fixture bytes remain unchanged",
+      "passed": true
+    }
+  ],
+  "passed": 115,
+  "failed": 0,
+  "allInputsUnchanged": true
+}

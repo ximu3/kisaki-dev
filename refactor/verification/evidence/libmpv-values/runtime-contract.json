@@ -1,0 +1,13 @@
+{
+  "purpose": "JavaScript encoding and data representation only; no proposed value classes or addon executed",
+  "nodeVersion": "v24.11.1",
+  "checkedAt": "2026-10-18T03:45:25.339Z",
+  "validUtf8RoundTrips": 6,
+  "rejectedInvalidUtf8Sequences": 4,
+  "loneSurrogateReplacementObserved": true,
+  "duplicateKeyLossInObjectAndMapObserved": true,
+  "nullPrototypeSpecialKeysPreserved": true,
+  "nativeAddonExecuted": false,
+  "proposedValueClassesExecuted": false,
+  "screenshotOrGpuExecuted": false
+}

@@ -1,0 +1,46 @@
+{
+  "name": "documented-public-label-example",
+  "observedAt": "2026-10-11T14:27:30.7238730+00:00",
+  "method": "GET",
+  "endpoint": "https://api.vndb.org/kana/ulist_labels?user=u1",
+  "status": 200,
+  "response": {
+    "labels": [
+      {
+        "id": 1,
+        "label": "Playing",
+        "private": false
+      },
+      {
+        "id": 2,
+        "label": "Finished",
+        "private": false
+      },
+      {
+        "id": 3,
+        "label": "Stalled",
+        "private": false
+      },
+      {
+        "id": 4,
+        "label": "Dropped",
+        "private": false
+      },
+      {
+        "id": 5,
+        "label": "Wishlist",
+        "private": false
+      },
+      {
+        "id": 6,
+        "label": "Blacklist",
+        "private": false
+      },
+      {
+        "id": 7,
+        "label": "Voted",
+        "private": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "synthetic": true,
+  "parser": "luaparse@0.3.1",
+  "luaCodeExecuted": false,
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "checks": [
+    {
+      "name": "UTF-8 literal bytes survive the Latin-1 parser bridge",
+      "passed": true
+    },
+    {
+      "name": "Decimal byte escapes decode as UTF-8",
+      "passed": true
+    },
+    {
+      "name": "Long bracket strings preserve newlines",
+      "passed": true
+    },
+    {
+      "name": "Nil-valued keys are absent",
+      "passed": true
+    },
+    {
+      "name": "Boolean and negative literals retain type",
+      "passed": true
+    },
+    {
+      "name": "Numeric and textual keys stay distinct",
+      "passed": true
+    },
+    {
+      "name": "Prototype-like keys are ordinary Map data",
+      "passed": true
+    },
+    {
+      "name": "Code-looking string remains inert data",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-arithmetic.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-assignment.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-call.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-computed-key.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-deep.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-duplicate-nil.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-duplicate.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-function.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-infinite.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-multi-return.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-nul.lua",
+      "passed": true
+    },
+    {
+      "name": "Reject reject-require.lua",
+      "passed": true
+    },
+    {
+      "name": "Invalid optional text does not invalidate other decoded fields",
+      "passed": true
+    },
+    {
+      "name": "Invalid UTF-8 is rejected when that text is adopted",
+      "passed": true
+    },
+    {
+      "name": "Input byte budget",
+      "passed": true
+    },
+    {
+      "name": "AST node budget",
+      "passed": true
+    },
+    {
+      "name": "String budget",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/detached/missing.sdr/metadata.epub.lua",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/library/comic-book.sdr/metadata.cbz.lua",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/library/novel.sdr/metadata.epub.lua",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/library/pdf-book.sdr/custom_metadata.lua",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/library/pdf-book.sdr/metadata.pdf.lua",
+      "passed": true
+    },
+    {
+      "name": "Parse current data fixtures/settings/collection.lua",
+      "passed": true
+    },
+    {
+      "name": "All fixture input bytes remain unchanged",
+      "passed": true
+    }
+  ],
+  "passed": 32,
+  "failed": 0,
+  "allInputsUnchanged": true
+}

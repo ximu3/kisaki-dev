@@ -1,0 +1,13 @@
+{
+  "purpose": "isolated Windows x64 C API probe, not a selected release dependency",
+  "preparedAt": "2026-10-18T08:29:24.225065+00:00",
+  "source": "https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20261018/mpv-dev-x86_64-20261018-git-01e2533f31.7z",
+  "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "publishedDigest": "sha256:d7f5621f42b6e161fe032df914a10bdece28a89df3e57c6c3e16a5a250929b5e",
+  "archiveBytes": 31595598,
+  "archiveSha256": "d7f5621f42b6e161fe032df914a10bdece28a89df3e57c6c3e16a5a250929b5e",
+  "dll": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\20261018\\extracted\\libmpv-2.dll",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "clientHeader": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\20261018\\extracted\\include\\mpv\\client.h",
+  "selectedForRelease": false
+}

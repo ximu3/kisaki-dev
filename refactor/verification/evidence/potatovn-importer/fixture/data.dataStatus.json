@@ -1,0 +1,21 @@
+{
+  "LargerFileSeparateUpgraded": true,
+  "GalgameSourceFormatUpgrade": true,
+  "GalgameSourceAddVirtualSource": true,
+  "MetaBackupPerSourceUpgrade": true,
+  "GalgameSourceRemoveableUpgrade": true,
+  "GalgameMultiInstallUpgrade": false,
+  "CategoryGameIndexUpgrade": true,
+  "CategoryAddLastPlayed": true,
+  "CategoryAddWantToPlay": true,
+  "GalgameDetectedSavePath": true,
+  "GameLiteDbUpgrade": false,
+  "CategoryLiteDbUpgrade": false,
+  "SourceLiteDbUpgrade": false,
+  "MultiStreamPageLiteDbUpgrade": false,
+  "ImportGalgame": false,
+  "ImportGalgameSource": false,
+  "ImportCategory": false,
+  "ImportStaff": false,
+  "ImportPageSettings": false
+}

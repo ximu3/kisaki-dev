@@ -1,0 +1,499 @@
+{
+  "readAt": "2026-10-21T09:24:34.032424+00:00",
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26",
+  "sources": [
+    {
+      "name": "mac-libproc-header",
+      "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/libsyscall/wrappers/libproc/libproc.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-libproc-header.txt",
+      "bytes": 7344,
+      "sha256": "f8567e8e8b0bb7a3522bb0982f8f1c3104df703ad9cd3e603dabd9ec76f68acd"
+    },
+    {
+      "name": "mac-libproc",
+      "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/libsyscall/wrappers/libproc/libproc.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-libproc.txt",
+      "bytes": 27616,
+      "sha256": "cb12a2c033036f07293dcfe3944e6fda017f3a530801d5f792b63327477ffacd"
+    },
+    {
+      "name": "mac-proc-info",
+      "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/bsd/sys/proc_info.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-proc-info.txt",
+      "bytes": 41921,
+      "sha256": "c514bb767a149abec1b138da0b425c2944f621996e4ce53cdfbbae2fb8a103a3"
+    },
+    {
+      "name": "mac-process-events",
+      "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8792.81.2/bsd/kern/kern_event.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-process-events.txt",
+      "bytes": 242051,
+      "sha256": "a331dcb8b523c536ee5970f33f29df918bb54183e600278b3470b6dc934b00ea"
+    },
+    {
+      "name": "mac-ax-header",
+      "url": "https://raw.githubusercontent.com/Hammerspoon/hammerspoon/23e387e2805a9890066366e0ac96c71b27f0cfd5/Hammerspoon/HSuicore.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-ax-header.txt",
+      "bytes": 6079,
+      "sha256": "1556382b4a61323e4fd35f13c2dec8cd239232545ea2d37be47cf9a6da789348"
+    },
+    {
+      "name": "mac-ax-use",
+      "url": "https://raw.githubusercontent.com/Hammerspoon/hammerspoon/23e387e2805a9890066366e0ac96c71b27f0cfd5/Hammerspoon/HSuicore.m",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-ax-use.txt",
+      "bytes": 30358,
+      "sha256": "64fe9999c605c59d23126266a579bfcf045b5883a9021ec3a5fa786845601ffb"
+    },
+    {
+      "name": "mac-iosurface-use",
+      "url": "https://raw.githubusercontent.com/obsproject/obs-studio/31.0.0/libobs-opengl/gl-cocoa.m",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-iosurface-use.txt",
+      "bytes": 13493,
+      "sha256": "76d70e39af4b1ebc1fc3cd35325651a90ece8270acc667aa439d01e49bd57862"
+    },
+    {
+      "name": "kwin5-script",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scripting.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-script.txt",
+      "bytes": 28763,
+      "sha256": "861178dae9e58ea5e26098a1a74ab9a4e439ee15f138f998f07f0de7a2701bff"
+    },
+    {
+      "name": "kwin6-script",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scripting.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-script.txt",
+      "bytes": 28777,
+      "sha256": "cf8239c804a72b22ee04fe17b74c87b1718acc3c811cc4a7e589893d5ae3d00c"
+    },
+    {
+      "name": "kwin5-workspace",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/workspace_wrapper.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-workspace.txt",
+      "bytes": 15512,
+      "sha256": "08cf96afcdc67de21e8b201a321ac279784df0242ec4748e10a0987828e0396d"
+    },
+    {
+      "name": "kwin6-workspace",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/workspace_wrapper.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-workspace.txt",
+      "bytes": 20047,
+      "sha256": "26bc8e415bd45db1e7f7e0e2bba3dc0bdafcce220c5500fde777b8ee5e886430"
+    },
+    {
+      "name": "kwin5-window",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/toplevel.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-window.txt",
+      "bytes": 29142,
+      "sha256": "97a8c3b350eca4d8d56b07430e942eda291712cbc430a98d567e26b3b1789133"
+    },
+    {
+      "name": "kwin6-window",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/window.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-window.txt",
+      "bytes": 74074,
+      "sha256": "0cc424bd3c4b31c0901f6666b8a69a94bdf15089022cfa9a4ed41dc85af26597"
+    },
+    {
+      "name": "kwin5-service",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/utils/serviceutils.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-service.txt",
+      "bytes": 2043,
+      "sha256": "ab2dc4eb8ddf1db831a9ad6ddc93b3ce81366d6ea6410f45cd57fb0115bdb39d"
+    },
+    {
+      "name": "kwin5-capture",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-capture.txt",
+      "bytes": 17940,
+      "sha256": "f66faf4c728873573778e084ab78defa3a7a6e06e1ff63510f6e223f4711f90f"
+    },
+    {
+      "name": "kwin6-capture",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-capture.txt",
+      "bytes": 17351,
+      "sha256": "879e13774906cde1b94a68ceb94f0ac27b0858b1c1b71548c1b2723e58ec4998"
+    },
+    {
+      "name": "kservice-trader",
+      "url": "https://raw.githubusercontent.com/KDE/kservice/v5.92.0/src/services/kapplicationtrader.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kservice-trader.txt",
+      "bytes": 4681,
+      "sha256": "7da56874fd04c01c7e1442f05949842531dac20e459be99e301dbe9ad4383309"
+    },
+    {
+      "name": "gnome-introspect",
+      "url": "https://raw.githubusercontent.com/GNOME/gnome-shell/42.0/js/misc/introspect.js",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\gnome-introspect.txt",
+      "bytes": 7818,
+      "sha256": "3b052c57c47169551e9f7229ce5839c1289132c8546a873afa2a4c370195f775"
+    },
+    {
+      "name": "mutter-window",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/core/window.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-window.txt",
+      "bytes": 266749,
+      "sha256": "cf4d2d2b616a88c5de3fcb09e9eb8f580a56c4ba59eca82e93b58f2f757b5eb5"
+    },
+    {
+      "name": "mutter-x11-properties",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/x11/window-props.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-x11-properties.txt",
+      "bytes": 71319,
+      "sha256": "e74024d1e75b182fbb07f0d5faa1c646620cf9dd9689e71e7b09cb570514e86c"
+    },
+    {
+      "name": "mutter-x11-window",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/x11/window-x11.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-x11-window.txt",
+      "bytes": 140640,
+      "sha256": "161dd3123669be7c2ec67ec02c542872fbb51b3b08d16a09751d5716c0c89297"
+    },
+    {
+      "name": "mutter-cast-session",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast-session.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-cast-session.txt",
+      "bytes": 27067,
+      "sha256": "cd15e5f1a5473a2492e08cdafb0f679242ec03d54b72cd5a170718f9d5451592"
+    },
+    {
+      "name": "mutter-cast-protocol",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/data/dbus-interfaces/org.gnome.Mutter.ScreenCast.xml",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-cast-protocol.txt",
+      "bytes": 7882,
+      "sha256": "c719cf12374dccdb78b8a50cdfde3738fddf297965c1606ca79471849558d156"
+    },
+    {
+      "name": "libwnck-xres",
+      "url": "https://raw.githubusercontent.com/GNOME/libwnck/43.0/libwnck/xutils.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\libwnck-xres.txt",
+      "bytes": 45363,
+      "sha256": "033a3fd23192f57aae309b8d27bb0e30ef76ebbb5f99eb41ce08d0eb59f3cc16"
+    },
+    {
+      "name": "mesa-gbm-header",
+      "url": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/mesa-22.0.0/src/gbm/main/gbm.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mesa-gbm-header.txt",
+      "bytes": 16920,
+      "sha256": "cb425f47c063b192b4b8432d6564d4fe1ae806527726f606ce1b2d47204da4a6"
+    },
+    {
+      "name": "mesa-egl-gbm",
+      "url": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/mesa-22.0.0/src/egl/drivers/dri2/platform_drm.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mesa-egl-gbm.txt",
+      "bytes": 24523,
+      "sha256": "03bc5dc2b10a1b66ab191122b4df0c80d63055af6e0511792647d75db8206398"
+    },
+    {
+      "name": "egl-dmabuf",
+      "url": "https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import.txt",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\egl-dmabuf.txt",
+      "bytes": 18727,
+      "sha256": "47074fe0b0b5a7b6812aa721387dcb924d10bf2c57a6a36f7bbe5f4198dac3f0"
+    },
+    {
+      "name": "egl-modifiers",
+      "url": "https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import_modifiers.txt",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\egl-modifiers.txt",
+      "bytes": 8935,
+      "sha256": "9616735482744e585f44c5ce6346fb1377a959443a35cf6c0ea4a319a6cc5b43"
+    },
+    {
+      "name": "electron-texture",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\electron-texture.txt",
+      "bytes": 33048,
+      "sha256": "dcfa5c570396d219f4e3c3d88061c7e33f47e934a380bc109abcb1bffe2988a9"
+    },
+    {
+      "name": "mutter-display",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/core/display.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-display.txt",
+      "bytes": 122478,
+      "sha256": "46208dc267f285e4ed32eec6d89a77e53b0bb8652a9196e08dc0b32ed0b60c2a"
+    },
+    {
+      "name": "kwin5-dbus-conversion",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scriptingutils.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-dbus-conversion.txt",
+      "bytes": 405,
+      "sha256": "f7c3adb5a50aa8c35f33a5769f08566e69664d2c2c9f09d488413cf0bd38b8c5"
+    },
+    {
+      "name": "kwin6-dbus-conversion",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scriptingutils.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-dbus-conversion.txt",
+      "bytes": 325,
+      "sha256": "0a4747f4807793d271e01fa6cd000f3678a4ac5b5205bb768c078fe71a42431a"
+    },
+    {
+      "name": "kwin6-x11",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/x11window.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-x11.txt",
+      "bytes": 153638,
+      "sha256": "96c9a9770cc767452d9c62c82d725cc987f25909751e7bdc6c09674a3ae7709e"
+    },
+    {
+      "name": "kwin5-x11",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/x11client.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-x11.txt",
+      "bytes": 178249,
+      "sha256": "627149629ed3ab3e594a4c7d36357e21e440c2dfdc224a6c516456726f831b47"
+    },
+    {
+      "name": "kwin6-capture-render",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshot.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-capture-render.txt",
+      "bytes": 8965,
+      "sha256": "d527530b4408787fc2e0ad350e4cb73ce7398fdf29bfcb3678a113db61427f12"
+    },
+    {
+      "name": "kwin5-capture-render",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshot.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-capture-render.txt",
+      "bytes": 14160,
+      "sha256": "f5d323ea4026acd32d4d0acd59d09c13ac427eaf2494d278412eb072616290fe"
+    },
+    {
+      "name": "kwin5-dbus-values",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/scripting/scriptingutils.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-dbus-values.txt",
+      "bytes": 2514,
+      "sha256": "922751b79176a255bca857dc1dbee399da79d93be8258bff484b0767ebedb03a"
+    },
+    {
+      "name": "kwin6-dbus-values",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/scripting/scriptingutils.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-dbus-values.txt",
+      "bytes": 2538,
+      "sha256": "336109ee55a7e2500a40321f1c889d64526297e8a7e14b549e4c40518b4dff9c"
+    },
+    {
+      "name": "kwin5-toplevel",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/toplevel.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-toplevel.txt",
+      "bytes": 17045,
+      "sha256": "8aac2f9b684512e2c8755475597ef139296a03794c13a2ac082f6d7300f05d53"
+    },
+    {
+      "name": "kwin5-wayland",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/waylandclient.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin5-wayland.txt",
+      "bytes": 8591,
+      "sha256": "f834571a46578647d6efeb1cbd013fbea20e61cac4bc42664be1083967d505b2"
+    },
+    {
+      "name": "kwin6-wayland",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/waylandwindow.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-wayland.txt",
+      "bytes": 6960,
+      "sha256": "06467827351badaffdd4108e6db64566ada8ccdf46704b8dc161caf421361893"
+    },
+    {
+      "name": "mutter-pipewire",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast-stream-src.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-pipewire.txt",
+      "bytes": 48275,
+      "sha256": "400b5cde13c60b835775adb62335d63b675f3b3457f62b2e569b2884c65fbc7d"
+    },
+    {
+      "name": "mutter-cast-server",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/42.0/src/backends/meta-screen-cast.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-cast-server.txt",
+      "bytes": 11949,
+      "sha256": "ecc003141561df8816197ffa391f7fe0814a2f1617559642438c9d0b30b84b21"
+    },
+    {
+      "name": "kservice-cache",
+      "url": "https://raw.githubusercontent.com/KDE/kservice/v5.92.0/src/kbuildsycoca/kbuildsycoca_main.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kservice-cache.txt",
+      "bytes": 4851,
+      "sha256": "1491ee93a08018e043274460cfdeeaf897ea05951dad5aba822d0dab9f4189d0"
+    },
+    {
+      "name": "gnome-45-upgrade",
+      "url": "https://gjs.guide/extensions/upgrading/gnome-shell-45.html",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\gnome-45-upgrade.txt",
+      "bytes": 82525,
+      "sha256": "302336aefb4db6d4c4de2ece7f4a1d9760d05baad0fb740f25ed1f4c6852ea14"
+    },
+    {
+      "name": "d2d-tone-map",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct2d/hdr-tone-map-effect",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\d2d-tone-map.txt",
+      "bytes": 50989,
+      "sha256": "30066894e88680f0821a9499f522fa63aa14624319c349a8360f22086a613b9a"
+    },
+    {
+      "name": "d2d-white-level",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct2d/white-level-adjustment-effect",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\d2d-white-level.txt",
+      "bytes": 54568,
+      "sha256": "b6d533cbbb4f67401809aaacd11aeda4a09d0fa53102a17629aab1c05e6fe72d"
+    },
+    {
+      "name": "gnome-tags",
+      "url": "https://api.github.com/repos/GNOME/gnome-shell/tags?per_page=5",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\gnome-tags.txt",
+      "bytes": 2058,
+      "sha256": "0dd9c4d574f583bb10edee4c4018a92d966b826ff4cb29988fbbea2caa829ebf"
+    },
+    {
+      "name": "mutter-tags",
+      "url": "https://api.github.com/repos/GNOME/mutter/tags?per_page=5",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter-tags.txt",
+      "bytes": 2291,
+      "sha256": "d985f21224da39a5a1e326d1d93cd4ba62915386c33c460181cc2fda2d72c8d4"
+    },
+    {
+      "name": "d2d-sample-commit",
+      "url": "https://api.github.com/repos/microsoft/Windows-universal-samples/commits?path=Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp&per_page=1",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\d2d-sample-commit.txt",
+      "bytes": 3799,
+      "sha256": "bf11cf468e4cdd13469906d06b9d99441c6961ab48e165e816bf89cc6901642d"
+    },
+    {
+      "name": "gnome51-introspect",
+      "url": "https://raw.githubusercontent.com/GNOME/gnome-shell/51.1/js/misc/introspect.js",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\gnome51-introspect.txt",
+      "bytes": 7659,
+      "sha256": "aab58cdf07ae19251e704334a158a074761476415379f2da90c1306864db276e"
+    },
+    {
+      "name": "mutter51-cast",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/backends/meta-screen-cast-session.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter51-cast.txt",
+      "bytes": 37486,
+      "sha256": "04e07a075b3739d22b67e96328b7a624a5355a35418f611540538ce95a727c91"
+    },
+    {
+      "name": "mutter51-window",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/core/window.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mutter51-window.txt",
+      "bytes": 286900,
+      "sha256": "ea6da40306f63ae910c6950b7307033b7d911b546feb338e71cc887546b27e66"
+    },
+    {
+      "name": "kwin6-screenshot-layer",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotlayer.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-screenshot-layer.txt",
+      "bytes": 977,
+      "sha256": "01c9226affe58eb1b0cc85b245670f35b2a3053539bd8973689a0b3c3c4f2920"
+    },
+    {
+      "name": "d2d-reference",
+      "url": "https://raw.githubusercontent.com/microsoft/Windows-universal-samples/dca302ef956bb9a2653da4e3d925de4bbf4fa174/Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\d2d-reference.txt",
+      "bytes": 31566,
+      "sha256": "c2eb253d5028ca63be75e440573aab2e6fc918d8ad77d1c9bbe94257f7d512da"
+    },
+    {
+      "name": "kwin6-render-target",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/core/rendertarget.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-render-target.txt",
+      "bytes": 1089,
+      "sha256": "3239b833422dde84a5e34bfd81d0dbb7723dd6529bf6f3620b899a4a5864ead1"
+    },
+    {
+      "name": "kwin6-render-target-code",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/core/rendertarget.cpp",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\kwin6-render-target-code.txt",
+      "bytes": 1494,
+      "sha256": "6cfb6fec11307be6dc5961e15c5007dffff255e6bdf2ef17d25b8b66f84ae100"
+    },
+    {
+      "name": "mpv-render-gl",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render_gl.h",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mpv-render-gl.txt",
+      "bytes": 7328,
+      "sha256": "48662c0ed9872a14dd9e1684105c97f69f94a0414709c254c5d372adc41d2e69"
+    },
+    {
+      "name": "mac-running-app",
+      "url": "https://developer.apple.com/tutorials/data/documentation/appkit/nsrunningapplication.md",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mac-running-app.txt",
+      "bytes": 7522,
+      "sha256": "cb39c5621ef2e7b1833aff9fb786d64bb1e3de23fcab35ec74eff477124eac76"
+    },
+    {
+      "name": "mpv-gl-context",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/opengl/common.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mpv-gl-context.txt",
+      "bytes": 23423,
+      "sha256": "aa1e4bdbb377c95f68401a8cfcf82bcced97a781dea8b84ddce331a1b65d8a19"
+    },
+    {
+      "name": "mpv-gl-render",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/opengl/libmpv_gl.c",
+      "status": 200,
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\closure-lbgvpa26\\mpv-gl-render.txt",
+      "bytes": 3388,
+      "sha256": "2ca91f2c9e191133d82a9aa9c038f4b3da886e2ca8eb0dbffafc4d53dc03a5e6"
+    }
+  ],
+  "scriptSha256": "b73d0506250637eaf8c3031462c314642981b28278b45acc1c84125a4292018f",
+  "sourceListSha256": "a922874159d6a6db3830a05d47b4f99fe3057e162a4c8d76d41fb6b474cdaeb1",
+  "macosExecuted": false,
+  "linuxExecuted": false,
+  "desktopRegistrationChanged": false
+}

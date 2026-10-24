@@ -1,0 +1,105 @@
+{
+  "syntheticOnly": true,
+  "files": [
+    {
+      "path": "movie/星海.nfo",
+      "bytes": 1047,
+      "sha256": "34399e022d1cf2fdab8dddce3e7cd5de6d79b406bdccd5a9ac8dee303bb1dcb2"
+    },
+    {
+      "path": "movie/星海-poster.png",
+      "bytes": 69,
+      "sha256": "670db4577cf990b20942674d25a58261311fbc64495800590e5914cfbad23624"
+    },
+    {
+      "path": "movie/星海-fanart.png",
+      "bytes": 69,
+      "sha256": "6ba021bbe56e62fac4e02af85017a680136d8fb5c4b0985704d13c69c2131604"
+    },
+    {
+      "path": "series/tvshow.nfo",
+      "bytes": 291,
+      "sha256": "1967a7a2d65e10588d0b0adadcb9308b9157a66169820e56b3b604e2a2f06e21"
+    },
+    {
+      "path": "series/合集 S01E01E02.nfo",
+      "bytes": 633,
+      "sha256": "0f2ca1f47343213c8e00f5ed4e29f8cdfb20d04a853ece12ba3a4adf285bf495"
+    },
+    {
+      "path": "series/合集 S01E01E02-S01E01.nfo",
+      "bytes": 297,
+      "sha256": "5e8e421932c27f212a12a64ec72c6d6eecb6faae2635e3f7f9c5f5a1ac689868"
+    },
+    {
+      "path": "series/合集 S01E01E02-S01E02.nfo",
+      "bytes": 296,
+      "sha256": "257ea58ae367fe84a26892a7f4478d8c0d8bb736bd9505d63f4ec1f4c815bc9f"
+    },
+    {
+      "path": "comic/v1-ComicInfo.xml",
+      "bytes": 717,
+      "sha256": "20d7bda99844be4906106e9bfee69979ab0807c28d7b395e2c992eace122a84f"
+    },
+    {
+      "path": "comic/v2-ComicInfo.xml",
+      "bytes": 943,
+      "sha256": "4e76802ff6de74d5de9eb77cb13f3ebf7a85d18eb0f4ab952f1e77b0bacc5221"
+    },
+    {
+      "path": "comic/v21-ComicInfo.xml",
+      "bytes": 1092,
+      "sha256": "2510db2198d1c3d83e646046e62763825c47c3767e88c3fd9eb4eae1b1da59ab"
+    },
+    {
+      "path": "comic/utf16-ComicInfo.xml",
+      "bytes": 1602,
+      "sha256": "d3b384ceef5634f6d3d49b805108d8c9f71ae21ae532cb26031af9fb9d4b1ef0"
+    },
+    {
+      "path": "comic/reordered.xml",
+      "bytes": 65,
+      "sha256": "d8a092ec12d8c5b44e4968018328f2d4450318b2136632cd9e6afaca1328dae1"
+    },
+    {
+      "path": "invalid/entity.nfo",
+      "bytes": 122,
+      "sha256": "8eb67c940fc62fe52824a83f8224c1fed8fcb1d86b3a0860464fc4bdcc8ec5cd"
+    },
+    {
+      "path": "invalid/malformed.nfo",
+      "bytes": 28,
+      "sha256": "56c638c2d382ee040d932e729e231929f28fbfd5f729b6c1f6b861342d22c0bd"
+    },
+    {
+      "path": "invalid/namespaced.xml",
+      "bytes": 75,
+      "sha256": "c50b0a3db9050eec71d9534fffd44fdec6cd89fdd128c626cb44b7fdbdf379bd"
+    },
+    {
+      "path": "comic/book.cbz",
+      "bytes": 1332,
+      "sha256": "378fdda6d15e2b879919da8323000daf4544ce08fe74fb0ab0dcbf0b292caddd"
+    },
+    {
+      "path": "comic/ambiguous.cbz",
+      "bytes": 2066,
+      "sha256": "9d3047353612eefa37079cf286577d5fb8a75d9718bc049d182c414571672f49"
+    },
+    {
+      "path": "comic/traversal.cbz",
+      "bytes": 1496,
+      "sha256": "973af4fc7f2383599a06a58ca44e0dd7164b1afa5289b666260f81e37c14bea9"
+    },
+    {
+      "path": "movie/星海.mkv",
+      "bytes": 885,
+      "sha256": "dcb53ad3d19fbc531d1debf6975c66694e80ecddc287a8191d8789a70b32cb99"
+    },
+    {
+      "path": "series/合集 S01E01E02.mkv",
+      "bytes": 885,
+      "sha256": "dcb53ad3d19fbc531d1debf6975c66694e80ecddc287a8191d8789a70b32cb99"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+name: oauth-relay
+
+services:
+  relay:
+    image: ${RELAY_IMAGE:?Set a verified image reference}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      RELAY_CONFIG: /etc/oauth-relay/config.json
+    env_file:
+      - path: ${RELAY_ENV_FILE:?Set the private runtime environment file}
+        required: true
+        format: raw
+    volumes:
+      - type: bind
+        source: ${RELAY_CONFIG_FILE:?Set the application configuration file}
+        target: /etc/oauth-relay/config.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - target: 3000
+        published: '${RELAY_HOST_PORT:-3000}'
+        host_ip: ${RELAY_BIND_ADDRESS:-127.0.0.1}
+        protocol: tcp
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.status===200?0:1)).catch(()=>process.exit(1))
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    stop_grace_period: 30s

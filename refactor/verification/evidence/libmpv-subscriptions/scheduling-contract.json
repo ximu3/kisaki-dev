@@ -1,0 +1,17 @@
+{
+  "purpose": "Node scheduling and listener return behavior only; no native bridge or proposed observer implementation",
+  "nodeVersion": "v24.11.1",
+  "checkedAt": "2026-10-18T05:36:56.809Z",
+  "inlineOrder": ["notification", "await-resumed"],
+  "microtaskOrder": ["notification", "await-resumed"],
+  "turnOrder": ["await-resumed", "notification"],
+  "callbackOrder": ["entered", "emit-returned", "finished"],
+  "originalSynchronousExceptionPreserved": true,
+  "capturedAsyncContextFacilityVerified": true,
+  "capturedCallbackAndReceiverPreserved": true,
+  "nativeAddonExecuted": false,
+  "proposedSubscriptionImplementationExecuted": false,
+  "nativeCallbackExceptionRouteExecuted": false,
+  "cancellationAndCloseVerified": false,
+  "queueCapacityVerified": false
+}

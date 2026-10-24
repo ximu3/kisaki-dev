@@ -1,0 +1,14 @@
+{
+  "origin": "self-authored controlled EPUB container",
+  "sha256": "2f6af8ceea8362756285619277ef6c2ca7c80dc761983f903d73005a7214914f",
+  "bytes": 1925,
+  "documents": {
+    "META-INF/container.xml": "31105a9e8dc5f9c8e9f972cb9499daf389dd83197ef01457d662868df9a1d43f",
+    "EPUB/package.opf": "937513d6f9d0a9a073ed76ca81184e017c5a09d5fd7184f66b10e3e81193ff2e",
+    "EPUB/one.xhtml": "7866de74373af33a38915c2f1b3573ca610254f99726f9a4ca64ca6ead8c6bf0",
+    "EPUB/two.xhtml": "788be3305ba7758d3bbc1998fbacfdb00804651fdf4116718d394a3a601ff038",
+    "EPUB/diagram.svg": "68e9509e148847aa223541b5205b84940910df6f6c7ebf66502e1aef9c81f384",
+    "EPUB/nav.xhtml": "93b3487771e4c53d1fa2c0eac5736f4d275fa0176193660a54f535190f421527"
+  },
+  "externalEpubCheckExecuted": false
+}

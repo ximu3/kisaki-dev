@@ -1,0 +1,1 @@
+return { x = function() return 1 end }

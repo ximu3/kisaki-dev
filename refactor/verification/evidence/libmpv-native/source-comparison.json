@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-18T08:34:16.688345+00:00",
+  "revisions": {
+    "design": "41f6a645068483470267271e1d09966ca3b9f413",
+    "probe": "01e2533f3143b8940857ca419b0b367f583e05ca"
+  },
+  "comparisons": {
+    "getproperty_fn": {
+      "sameBody": true,
+      "sha256": {
+        "design": "949e3f01300bac729a8ca0c262966fc6f9a3b9d7998e2c1bfbbd44ed3268c2fe",
+        "probe": "949e3f01300bac729a8ca0c262966fc6f9a3b9d7998e2c1bfbbd44ed3268c2fe"
+      }
+    },
+    "mpv_observe_property": {
+      "sameBody": true,
+      "sha256": {
+        "design": "dcafe5527e9a059bbf481d74d9834c3b5323004280fa183fa5743fb3491087ce",
+        "probe": "dcafe5527e9a059bbf481d74d9834c3b5323004280fa183fa5743fb3491087ce"
+      }
+    },
+    "mpv_stream_cb_add_ro": {
+      "sameBody": true,
+      "sha256": {
+        "design": "afb71841142a63e2d15fe9f2570c6c7858100fba8df79b1291ef34f4d26f4165",
+        "probe": "afb71841142a63e2d15fe9f2570c6c7858100fba8df79b1291ef34f4d26f4165"
+      }
+    },
+    "stream/stream_cb.c": {
+      "sameFile": true
+    }
+  },
+  "receipts": [
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "player/client.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "status": 200,
+      "sha256": "7d3c4b6ed1c614169277c7faad9e7fa21e5bf4694d7a3961986defdebcaa60eb"
+    },
+    {
+      "revision": "41f6a645068483470267271e1d09966ca3b9f413",
+      "path": "stream/stream_cb.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/stream/stream_cb.c",
+      "status": 200,
+      "sha256": "9aef5e190d21f552cb55d4718bdcf43fa06003739d84dbc54571916d4ad69158"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "player/client.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/player/client.c",
+      "status": 200,
+      "sha256": "56ed96e2b5d9131d4ac89d29e12c87ea9a34ef9018f0df46a735fa332d5f6e63"
+    },
+    {
+      "revision": "01e2533f3143b8940857ca419b0b367f583e05ca",
+      "path": "stream/stream_cb.c",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/01e2533f3143b8940857ca419b0b367f583e05ca/stream/stream_cb.c",
+      "status": 200,
+      "sha256": "9aef5e190d21f552cb55d4718bdcf43fa06003739d84dbc54571916d4ad69158"
+    }
+  ],
+  "provesDesignRevisionExecuted": false
+}

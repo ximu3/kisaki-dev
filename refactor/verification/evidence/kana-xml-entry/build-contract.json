@@ -1,0 +1,87 @@
+{
+  "checkedAt": "2026-10-20T13:05:04.752987+00:00",
+  "toolchainReceiptSha256": "759a673611ada0e749d3dc85d899dfec53e6d07bca4d012295b390e8650bc8b7",
+  "sources": {
+    "build.py": "2938910f30e0a38cbeaf3ed4cf4e063327fc8de77f562af6aad3c860563d360e",
+    "codec.c": "afa356bb63eda5c0a10ffc902b464efd051f65ad9550b97c3957fe454e50cae4",
+    "xml.c": "0d4f97c59802eee4b51f74440dac765e7b25e66265bc24fda297e691f37c3a04"
+  },
+  "inputs": {
+    "refactor\\verification\\evidence\\kana-xml-codecs\\bridge.c": "d203b85b86208c3ef27f24891e238b4d162ab2d0fcd68fd881122f0d9dd90d6c",
+    "refactor\\verification\\evidence\\kana-xml-input\\bridge.c": "43449c1826adf9ae716e0d2c7cfb58c25dd6eb508bb25f77eefd2ef6dbd8e71f",
+    "node_modules\\.cache\\kana-xml-codecs\\build\\private-lib\\iconv.c": "af028d1aeb837e05ecf8a6e3a480ef1497d2b5545a14985f463eea7b49280afe",
+    "node_modules\\.cache\\kana-xml-codecs\\build\\private-lib\\cp932.h": "d0bf7d51db6ae37812ec26cb74ec1cbc82366ab07b35d18c283432bd19224041",
+    "node_modules\\.cache\\kana-xml-codecs\\build\\config.h": "eced8217b328ac03a412f5c789d3cb5071131768178f4aefe8cf21f844af9d3b",
+    "node_modules\\.cache\\kana-xml-codecs\\build\\iconv.h": "34022e372aa3f67a2cf8ec7be4213cca98517d4a5e9f0bc382cc21e40c803947",
+    "node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlparse.c": "899afeaddf424a6f4bf9a0a77159248b485bf5c072475d547ef16c2942a86dd5",
+    "node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmltok.c": "44baab2a4970749f6f29992bbbc1b3c62239ef9ec2a20de96332ef4659b9e32d",
+    "node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlrole.c": "b1ad87cc3c0d4722358a7dfb1642df7f62066d1613a0a56dc9289e7112fb3f0c",
+    "node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xcs.c": "15759b35a51a35c59b2b8f5b07057578e3505dbbce57a5adaae9f2d113b4b852",
+    "node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\random_getentropy.c": "ba99df7b694ff0b62d2871cc13b87e75d1a715af6045102ee7aff120ec1ae332"
+  },
+  "arguments": {
+    "codec": [
+      "-O2",
+      "-std=c99",
+      "--no-entry",
+      "-sMODULARIZE=1",
+      "-sEXPORT_ES6=1",
+      "-sENVIRONMENT=web,worker,node",
+      "-sALLOW_MEMORY_GROWTH=1",
+      "-sMAXIMUM_MEMORY=67108864",
+      "-sEXPORTED_RUNTIME_METHODS=[\"HEAPU8\"]",
+      "-sINITIAL_MEMORY=2097152",
+      "-IF:\\project\\3\\kisaki\\node_modules\\.cache\\kana-xml-codecs\\build",
+      "-IF:\\project\\3\\kisaki\\node_modules\\.cache\\kana-xml-codecs\\libiconv-1.19\\srclib",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-xml-codecs\\build\\private-lib\\iconv.c",
+      "F:\\project\\3\\kisaki\\refactor\\verification\\evidence\\kana-xml-entry\\codec.c",
+      "-sEXPORTED_FUNCTIONS=[\"_kana_codec_open\", \"_kana_codec_convert\", \"_kana_codec_consumed\", \"_kana_codec_produced\", \"_kana_codec_close\", \"_kana_codec_active\", \"_kana_codec_list\", \"_malloc\", \"_free\"]",
+      "-o",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-xml-entry\\build\\codec.mjs"
+    ],
+    "xml": [
+      "-O2",
+      "-std=c99",
+      "--no-entry",
+      "-sMODULARIZE=1",
+      "-sEXPORT_ES6=1",
+      "-sENVIRONMENT=web,worker,node",
+      "-sALLOW_MEMORY_GROWTH=1",
+      "-sMAXIMUM_MEMORY=67108864",
+      "-sEXPORTED_RUNTIME_METHODS=[\"HEAPU8\"]",
+      "-sINITIAL_MEMORY=16777216",
+      "-DHAVE_EXPAT_CONFIG_H",
+      "-IF:\\project\\3\\kisaki\\refactor\\verification\\evidence\\kana-formats",
+      "-IF:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlparse.c",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmltok.c",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlrole.c",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xcs.c",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\random_getentropy.c",
+      "F:\\project\\3\\kisaki\\refactor\\verification\\evidence\\kana-xml-entry\\xml.c",
+      "-sEXPORTED_FUNCTIONS=[\"_kana_entry_declaration\", \"_kana_entry_open\", \"_kana_entry_active\", \"_kana_xml_feed\", \"_kana_xml_failure\", \"_kana_xml_error\", \"_kana_xml_catalog_uses\", \"_kana_xml_close\", \"_malloc\", \"_free\"]",
+      "-o",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-xml-entry\\build\\xml.mjs"
+    ]
+  },
+  "outputs": {
+    "codec.mjs": {
+      "bytes": 9134,
+      "sha256": "574388dafcb7212e6dd0feedb4899f7bc6ecf00f0b5cf36be2e6dd15e47c5498"
+    },
+    "codec.wasm": {
+      "bytes": 916623,
+      "sha256": "2be7f2bdeeaf6a601cccc973c3c16a2fc5f7d369a3f42506a5574b74ce1b76d9"
+    },
+    "xml.mjs": {
+      "bytes": 13513,
+      "sha256": "8879e44bc21302a9b2123dc03ac70d2432670ae3d8c5e38266cca9a0d3246dde"
+    },
+    "xml.wasm": {
+      "bytes": 147284,
+      "sha256": "b41da517d6aa36cc387f855a151ac7ab9a00c04c6781249bc1d882a521b9a015"
+    }
+  },
+  "previousProbesModified": false,
+  "productionImplementation": false
+}

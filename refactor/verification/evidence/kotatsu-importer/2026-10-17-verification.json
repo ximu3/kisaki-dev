@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 29,
+  "extension": "Kotatsu Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceRef": "v9.4.1",
+  "commit": "06a0b5829b8d5f214d60d5011d66ec1ccbd5630e",
+  "applicationId": "org.koitharu.kotatsu",
+  "applicationVersionCode": 1033,
+  "parserCommit": "4d1e521aef7e4d9f41c65adda5e274509e93807c",
+  "coilVersion": "3.3.0",
+  "coilCommit": "1731511f0c12ef556db7822a91b6ea03fa3f95a1",
+  "originEvidence": [
+    {
+      "url": "https://api.github.com/repos/KotatsuApp/Kotatsu",
+      "status": 200,
+      "checkedAt": "2026-10-17T11:47:28.921448+00:00",
+      "bytes": 6336,
+      "sha256": "130f69a55d2a30664b0afc63ba8f87a1162cef51c5160769b80f268f0e16a281",
+      "archived": true,
+      "defaultBranch": "devel"
+    },
+    {
+      "url": "https://api.github.com/repos/KotatsuApp/Kotatsu/git/ref/tags/v9.4.1",
+      "status": 200,
+      "checkedAt": "2026-10-17T11:47:29.371247+00:00",
+      "bytes": 345,
+      "sha256": "9123f3a70be3ce05f78035d928154643a34dd6650b61bb323a91a45d6301cf2d",
+      "object": {
+        "sha": "06a0b5829b8d5f214d60d5011d66ec1ccbd5630e",
+        "type": "commit",
+        "url": "https://api.github.com/repos/KotatsuApp/Kotatsu/git/commits/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/KotatsuApp/Kotatsu/releases/latest",
+      "status": 404,
+      "checkedAt": "2026-10-17T11:47:29.909129+00:00"
+    }
+  ],
+  "sourceFiles": 81,
+  "sourceContract": "source-contract.json",
+  "fixtureManifest": "fixture-manifest.json",
+  "sourceApplicationExecuted": false,
+  "androidOrKotlinExecuted": false,
+  "productionImporterExecuted": false,
+  "inputFiles": 22,
+  "checks": {
+    "byteAndMapping": 115,
+    "totalPassed": 115,
+    "failed": 0,
+    "allInputsUnchanged": true
+  },
+  "results": ["synthetic-results.json"],
+  "notClaimed": [
+    "Real Kotatsu backup, Android or Kotlin execution.",
+    "Live account access, source parser restoration or manga downloading.",
+    "Native Kisaki writes, annotation image adoption or Kana round trip.",
+    "Unrecorded viewport dimensions, arbitrary source regular expressions or unknown Android MIME classification.",
+    "All forks, unknown app-version formats or unindexed chapter identities.",
+    "All-platform independent extension artifacts."
+  ]
+}

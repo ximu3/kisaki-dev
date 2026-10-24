@@ -1,0 +1,83 @@
+{
+  "checkedOn": "2026-10-16",
+  "source": "TMDB",
+  "status": "extension-name-mapping-confirmed",
+  "authenticatedApiTested": false,
+  "sourceContract": {
+    "url": "https://developer.themoviedb.org/openapi/tmdb-api.json",
+    "decodedBodySha256": "1c709375fe994e58c5a35aba7c9abfa7f28aa7103ed6c2052ea5ab0b62af081b",
+    "priorEvidence": "2026-10-15-public-contracts.json"
+  },
+  "contracts": [
+    {
+      "path": "/3/search/multi",
+      "operationId": "search-multi",
+      "responseFields": ["page", "results", "total_pages", "total_results"],
+      "translationDataFields": []
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}",
+      "operationId": "tv-season-details",
+      "responseFields": [
+        "_id",
+        "air_date",
+        "episodes",
+        "name",
+        "networks",
+        "overview",
+        "id",
+        "poster_path",
+        "season_number",
+        "vote_average"
+      ],
+      "translationDataFields": [],
+      "seasonNameExample": "Season 1",
+      "seasonNumberExample": 1
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/translations",
+      "operationId": "tv-season-translations",
+      "responseFields": ["id", "translations"],
+      "translationDataFields": ["name", "overview"]
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/images",
+      "operationId": "tv-season-images",
+      "responseFields": ["id", "posters"],
+      "translationDataFields": []
+    },
+    {
+      "path": "/3/tv/{series_id}/season/{season_number}/external_ids",
+      "operationId": "tv-season-external-ids",
+      "responseFields": [
+        "id",
+        "freebase_mid",
+        "freebase_id",
+        "tvdb_id",
+        "tvrage_id",
+        "wikidata_id"
+      ],
+      "translationDataFields": []
+    }
+  ],
+  "nativeContract": {
+    "path": "../../../design/extensions/providers.md#identity",
+    "sourceEntryFields": ["type", "identity", "identification", "externalIdentities"],
+    "observation": "The existing SourceEntry does not need an additional display field for this case. Source-specific composition of actual parent and season names belongs to the TMDB adapter; ordinary name evidence remains distinct from identity proof and arbitrary presentation processing."
+  },
+  "findings": {
+    "search": "Multi search returns movie, TV and person objects, not season objects. An anime search can internally use TV hits to read standard seasons while emitting only Movie and Season candidates.",
+    "seasonName": "The official season-detail example names the object Season 1. A raw season label alone can be insufficient to distinguish candidates from different TV parents.",
+    "seasonFields": "Season details and translations supply actual name/overview/date, posters, episodes and networks. The season image endpoint returns posters, not season-specific backdrop or title-logo collections.",
+    "range": "TV remains read context only; no source entry, work binding or implicit identity equivalence is introduced."
+  },
+  "changesApplied": "SourceEntry fields remain unchanged. Formal provider wording now distinguishes source-context name mapping from query text, UI decoration and processor output. The TMDB extension owns one full-name rule reused by search, resolve and name reads.",
+  "confirmedRules": {
+    "acceptedOn": "2026-10-16",
+    "contract": "../../../design/extensions/sources/tmdb.md#search-and-names",
+    "search": "Reuse the existing anime Entry search method. Filter applicable Movie results, expand applicable TV hits into actual standard-season candidates, preserve bounded pagination and never return selectable TV or episode-group targets.",
+    "nameMapping": "The TMDB extension composes a complete season name from actual parent-title and season-name facts, and reuses that rule in search identification, resolve and requested name reads. No query text, decorative UI text or processor-generated name becomes source evidence.",
+    "correspondence": "The resulting name is a weak name clue subject to existing scope, uniqueness and conflict rules; full season identity remains unchanged and the parent TV is not an equivalent work identity.",
+    "seasonFields": "Use actual season-scoped fields and credits. Name composition does not permit inheritance of missing season overview, images, production companies, release state or total runtime from the parent TV record."
+  }
+}

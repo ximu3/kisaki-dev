@@ -1,0 +1,48 @@
+{
+  "actions": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "remove": "取り除く",
+    "delete": "削除",
+    "browse": "参照…"
+  },
+  "library": {
+    "entities": {
+      "game": "ゲーム",
+      "anime": "アニメ",
+      "comic": "マンガ",
+      "novel": "小説",
+      "character": "キャラクター",
+      "person": "人物",
+      "organization": "組織"
+    },
+    "collection": "コレクション",
+    "favorite": "お気に入り",
+    "metadataProfile": "メタデータプロファイル",
+    "added": "{name}を追加しました",
+    "kind": "{kind, select, game {ゲーム} anime {アニメ} comic {マンガ} novel {小説} other {作品}}"
+  },
+  "records": {
+    "setStatus": "状態を設定",
+    "recordCurrent": "完了を記録…",
+    "history": "完了記録…",
+    "addPast": "過去の完了を追加…",
+    "unknownDate": "日付未記録",
+    "active": { "game": "プレイ中", "anime": "視聴中", "comic": "読書中", "novel": "読書中" },
+    "running": "実行中",
+    "additionalDuration": "追加時間",
+    "completionCount": "{count, plural, =0 {完了記録なし} other {完了 {count, number} 回}}"
+  },
+  "selection": {
+    "count": "{count, number} 件を選択",
+    "position": "{position, number} 番目",
+    "shared": "{name} ほか、計 {count, number} 人"
+  },
+  "feedback": {
+    "updated": "更新日：{when, date, short}",
+    "retry": "{name}を読み込めませんでした。もう一度お試しください。",
+    "value": "値：{value}",
+    "escaped": "'{name}' をそのまま入力",
+    "literalMarkup": "<b>{name}</b>"
+  }
+}

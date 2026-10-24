@@ -1,0 +1,912 @@
+{
+  "checkedAt": "2026-10-20T12:16:03.298Z",
+  "node": "v24.11.1",
+  "purpose": "Audit the recorded partial probe; failures do not describe a shipped Kana implementation.",
+  "sources": {
+    "../kana-formats/markup-map.mjs": "4c249e5e9c1031ae16ace395e6800dd9508935136f53052cfd28c54bacdfafc2",
+    "cases.mjs": "a61b1ddf01c7aed87f1f1d21f26aa6efb765b5ee8e5ea4af2646f7130eb3e61d",
+    "baseline.mjs": "4cdc12ce1f5e0d8244511804eeea5885c4e8d4c1a1099c4f3c248174f2990e2c"
+  },
+  "cases": [
+    {
+      "name": "plain-and-astral",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 11
+        }
+      ]
+    },
+    {
+      "name": "references",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 11
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 11
+        }
+      ]
+    },
+    {
+      "name": "crlf-and-carriage-return",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 8
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 8
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 8
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 8
+        }
+      ]
+    },
+    {
+      "name": "less-than-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "less-than-at-eof",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "end-tag-at-eof",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "textarea-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "title-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "rawtext-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "script-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "script-double-escape",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "script-replacement",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 16
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 16
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 16
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 16
+        }
+      ]
+    },
+    {
+      "name": "foreign-cdata",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "foreign-cdata-eof",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    },
+    {
+      "name": "foreign-content",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 4
+        }
+      ]
+    },
+    {
+      "name": "foreign-null-replacement",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "HTML insertion changed lexical provenance"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "HTML insertion changed lexical provenance"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "HTML insertion changed lexical provenance"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "HTML insertion changed lexical provenance"
+        }
+      ]
+    },
+    {
+      "name": "math-content",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 2
+        }
+      ]
+    },
+    {
+      "name": "foster-parenting",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 17
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 17
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 17
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 17
+        }
+      ]
+    },
+    {
+      "name": "formatting-reconstruction",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 4
+        }
+      ]
+    },
+    {
+      "name": "adoption-agency",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 3
+        }
+      ]
+    },
+    {
+      "name": "nested-anchors",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 3
+        }
+      ]
+    },
+    {
+      "name": "implied-paragraphs",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 4
+        }
+      ]
+    },
+    {
+      "name": "implicit-table-elements",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 2
+        }
+      ]
+    },
+    {
+      "name": "select-filtering",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 13
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 13
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 13
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 13
+        }
+      ]
+    },
+    {
+      "name": "duplicate-attributes",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 1
+        }
+      ]
+    },
+    {
+      "name": "merged-body-tags",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 2
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 2
+        }
+      ]
+    },
+    {
+      "name": "template-content",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 3
+        }
+      ]
+    },
+    {
+      "name": "noscript-disabled",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 4
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 4
+        }
+      ]
+    },
+    {
+      "name": "leading-newline-pre",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 5
+        }
+      ]
+    },
+    {
+      "name": "null-in-data",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 5
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 5
+        }
+      ]
+    },
+    {
+      "name": "literal-ampersands",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "A source unit was projected twice"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "A source unit was projected twice"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "A source unit was projected twice"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "A source unit was projected twice"
+        }
+      ]
+    },
+    {
+      "name": "head-and-body-repair",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 9
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 9
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 9
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 9
+        }
+      ]
+    },
+    {
+      "name": "frameset-replaces-body",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 1
+        }
+      ]
+    },
+    {
+      "name": "comments-and-doctype",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 3
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 3
+        }
+      ]
+    },
+    {
+      "name": "eof-in-markup",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 2,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 7,
+          "parsed": true,
+          "units": 1
+        },
+        {
+          "chunk": 4096,
+          "parsed": true,
+          "units": 1
+        }
+      ]
+    },
+    {
+      "name": "supplementary-replay",
+      "attempts": [
+        {
+          "chunk": 1,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 2,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 7,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        },
+        {
+          "chunk": 4096,
+          "parsed": false,
+          "diagnostic": "Explicit tokenizer emission needs a source seam"
+        }
+      ]
+    }
+  ]
+}

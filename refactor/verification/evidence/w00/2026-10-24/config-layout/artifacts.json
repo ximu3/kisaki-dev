@@ -1,0 +1,24 @@
+{
+  "target": "windows-x64",
+  "version": "0.1.0-dev.0",
+  "buildId": "24e6a2632e7dba25272d7917fcfe0ea22ff29f758151576cf50cc9c19a56f92d",
+  "testOnly": false,
+  "files": [
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.exe",
+      "sha256": "ee50720c4cd0c9aa4f3ebe28fc15708c4097b3cfc630f2feed9ac8b9e41b497d"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap",
+      "sha256": "9e69c1538d5862f62ffccf5224687d40fcf30272ae0e4b9fd46a63690e58a63c"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.zip",
+      "sha256": "7ac1203428a59f33b3ea3b1510a88ef0a780607fc563679ae2e230e3493a8648"
+    },
+    {
+      "path": "latest.yml",
+      "sha256": "5a3b5f266147e1c30d261cb09a515619a090a53a9a4e0b602a09c4aef2db92e5"
+    }
+  ]
+}

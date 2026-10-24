@@ -1,0 +1,13 @@
+{
+  "name": "kisaki-design-candidates",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tanstack/solid-virtual": "3.13.48",
+    "solid-js": "1.9.16",
+    "vite": "8.3.3",
+    "vite-plugin-solid": "2.11.14",
+    "birpc": "4.2.0",
+    "electron-vite": "6.0.0"
+  }
+}

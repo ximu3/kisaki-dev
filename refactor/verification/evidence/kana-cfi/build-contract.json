@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-20T13:47:14.832928+00:00",
+  "baseInputReceiptSha256": "9d7748b833aa47406fbcf2522ecd6f2ed8442296e82d31a0295993374bd929ea",
+  "sources": {
+    "build.py": "fb3829c11eda25710ac3b49b3bd7d2d8e3dc2ecf3b4165f446e1879f77917ca3",
+    "source.c": "791197f582c41e6943c9d70a60743da765d60cab139b30837265b37a4d0f36ac"
+  },
+  "includedSources": {
+    "refactor\\verification\\evidence\\kana-xml-entry\\xml.c": "0d4f97c59802eee4b51f74440dac765e7b25e66265bc24fda297e691f37c3a04",
+    "refactor\\verification\\evidence\\kana-xml-input\\bridge.c": "43449c1826adf9ae716e0d2c7cfb58c25dd6eb508bb25f77eefd2ef6dbd8e71f"
+  },
+  "arguments": [
+    "-O2",
+    "-std=c99",
+    "--no-entry",
+    "-sMODULARIZE=1",
+    "-sEXPORT_ES6=1",
+    "-sENVIRONMENT=web,worker,node",
+    "-sALLOW_MEMORY_GROWTH=1",
+    "-sMAXIMUM_MEMORY=67108864",
+    "-sEXPORTED_RUNTIME_METHODS=[\"HEAPU8\"]",
+    "-sINITIAL_MEMORY=16777216",
+    "-DHAVE_EXPAT_CONFIG_H",
+    "-IF:\\project\\3\\kisaki\\refactor\\verification\\evidence\\kana-formats",
+    "-IF:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlparse.c",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmltok.c",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xmlrole.c",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\xcs.c",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-formats\\expat-source\\libexpat-e127b43ac1f514e0b320508893aa338ecd5e72be\\expat\\lib\\random_getentropy.c",
+    "F:\\project\\3\\kisaki\\refactor\\verification\\evidence\\kana-cfi\\source.c",
+    "-sEXPORTED_FUNCTIONS=[\"_kana_entry_declaration\", \"_kana_entry_open\", \"_kana_entry_active\", \"_kana_xml_feed\", \"_kana_xml_failure\", \"_kana_xml_error\", \"_kana_xml_catalog_uses\", \"_kana_xml_close\", \"_malloc\", \"_free\", \"_kana_cfi_id_attribute\"]",
+    "-o",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\kana-cfi\\xml.mjs"
+  ],
+  "outputs": {
+    "xml.mjs": {
+      "sha256": "2844e33c7871d63998e8f27971890890e600aa64bb04fbe9267ee6303db1d422",
+      "bytes": 13629
+    },
+    "xml.wasm": {
+      "sha256": "390b9efdefe612ab30408e8b1304028108b7054b189e7991325fe00548045f0f",
+      "bytes": 147345
+    }
+  }
+}

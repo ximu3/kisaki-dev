@@ -1,0 +1,7 @@
+{
+  "application": "F:\\project\\kisaki\\clients\\desktop\\app",
+  "repository": "F:\\project\\kisaki",
+  "output": "F:\\project\\kisaki\\clients\\desktop\\app\\out\\windows-x64",
+  "electron": "F:\\project\\kisaki\\node_modules\\.pnpm\\electron@44.5.1\\node_modules\\electron\\dist\\electron.exe",
+  "matches": true
+}

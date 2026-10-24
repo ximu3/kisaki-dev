@@ -1,0 +1,467 @@
+{
+  "checkedAt": "2026-10-21T05:25:02.133652+00:00",
+  "cases": [
+    {
+      "name": "srgb",
+      "electron": "44.5.1",
+      "node": "24.21.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "gpuDevices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5710,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "active": false
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "enabled",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "enabled",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "enabled",
+        "webgl": "enabled",
+        "webgpu": "enabled",
+        "webnn": "disabled_off"
+      },
+      "observed": {
+        "sourcePrimaries": "bt.709",
+        "sourceFormat": "rgb24",
+        "subtitle": false,
+        "primaries": "bt.709",
+        "transfer": "srgb",
+        "peak": "auto",
+        "sourceTransfer": "srgb"
+      },
+      "imported": [
+        {
+          "width": 63,
+          "height": 47,
+          "native": [
+            [255, 0, 0, 255],
+            [0, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "srgb": [
+            [255, 0, 0, 255],
+            [0, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "p3": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "bt709",
+            "transfer": "iec61966-2-1"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "native": [
+            [255, 0, 0, 255],
+            [0, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "srgb": [
+            [255, 0, 0, 255],
+            [0, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "p3": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "bt709",
+            "transfer": "iec61966-2-1"
+          }
+        }
+      ],
+      "wrongTag": null,
+      "allImportsReleased": true,
+      "completeMpvImplementation": false,
+      "nativeSettingsAppliedByOwnedFixture": true,
+      "visibleWindowCreated": false,
+      "physicalDisplayVerified": false,
+      "macosExecuted": false,
+      "linuxExecuted": false,
+      "screenshotSubtitlesExecuted": false
+    },
+    {
+      "name": "p3",
+      "electron": "44.5.1",
+      "node": "24.21.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "gpuDevices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5710,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "active": false
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "enabled",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "enabled",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "enabled",
+        "webgl": "enabled",
+        "webgpu": "enabled",
+        "webnn": "disabled_off"
+      },
+      "observed": {
+        "sourceFormat": "rgb24",
+        "primaries": "display-p3",
+        "transfer": "srgb",
+        "peak": "auto",
+        "sourceTransfer": "srgb",
+        "sourcePrimaries": "bt.709",
+        "subtitle": false
+      },
+      "imported": [
+        {
+          "width": 63,
+          "height": 47,
+          "native": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "srgb": [
+            [255, 0, 0, 255],
+            [2, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "p3": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "smpte432",
+            "transfer": "iec61966-2-1"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "native": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "srgb": [
+            [255, 0, 0, 255],
+            [2, 255, 0, 255],
+            [0, 0, 255, 255],
+            [128, 64, 32, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "p3": [
+            [234, 51, 35, 255],
+            [117, 251, 76, 255],
+            [0, 0, 245, 255],
+            [120, 67, 39, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "smpte432",
+            "transfer": "iec61966-2-1"
+          }
+        }
+      ],
+      "wrongTag": {
+        "srgb": [
+          [234, 51, 35, 255],
+          [117, 251, 76, 255],
+          [0, 0, 245, 255],
+          [120, 67, 39, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ],
+        "p3": [
+          [215, 69, 50, 255],
+          [153, 248, 104, 255],
+          [0, 0, 235, 255],
+          [113, 70, 45, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ],
+        "colorSpace": {
+          "fullRange": true,
+          "matrix": "rgb",
+          "primaries": "bt709",
+          "transfer": "iec61966-2-1"
+        }
+      },
+      "allImportsReleased": true,
+      "completeMpvImplementation": false,
+      "nativeSettingsAppliedByOwnedFixture": true,
+      "visibleWindowCreated": false,
+      "physicalDisplayVerified": false,
+      "macosExecuted": false,
+      "linuxExecuted": false,
+      "screenshotSubtitlesExecuted": false
+    },
+    {
+      "name": "hdr-srgb",
+      "electron": "44.5.1",
+      "node": "24.21.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "gpuDevices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5710,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 4318,
+          "deviceId": 10400,
+          "active": false
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "active": false
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "enabled",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "enabled",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "enabled",
+        "webgl": "enabled",
+        "webgpu": "enabled",
+        "webnn": "disabled_off"
+      },
+      "observed": {
+        "sourcePrimaries": "bt.2020",
+        "sourceFormat": "yuv420p10",
+        "subtitle": 1,
+        "primaries": "bt.709",
+        "transfer": "srgb",
+        "peak": "auto",
+        "sourceTransfer": "pq"
+      },
+      "imported": [
+        {
+          "width": 63,
+          "height": 47,
+          "native": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [255, 0, 0, 255]
+          ],
+          "srgb": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [255, 0, 0, 255]
+          ],
+          "p3": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [234, 51, 35, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "bt709",
+            "transfer": "iec61966-2-1"
+          }
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "native": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [255, 0, 0, 255]
+          ],
+          "srgb": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [255, 0, 0, 255]
+          ],
+          "p3": [
+            [1, 1, 1, 255],
+            [44, 44, 44, 255],
+            [137, 137, 137, 255],
+            [182, 183, 182, 255],
+            [218, 218, 218, 255],
+            [246, 246, 246, 255],
+            [255, 255, 255, 255],
+            [234, 51, 35, 255]
+          ],
+          "colorSpace": {
+            "fullRange": true,
+            "matrix": "rgb",
+            "primaries": "bt709",
+            "transfer": "iec61966-2-1"
+          }
+        }
+      ],
+      "wrongTag": null,
+      "allImportsReleased": true,
+      "completeMpvImplementation": false,
+      "nativeSettingsAppliedByOwnedFixture": true,
+      "visibleWindowCreated": false,
+      "physicalDisplayVerified": false,
+      "macosExecuted": false,
+      "linuxExecuted": false,
+      "screenshotSubtitlesExecuted": false
+    }
+  ],
+  "wrongTagMaxError": 117,
+  "sourceReceiptSha256": "f76472335bd138184e6e7060041ce1117e03247e149e1ab310c4a674b13552e8",
+  "sources": {
+    "prepare.py": "db04e2004e6f4b7a449dcc9d93e9d59fb6d2099f89f1ab2dd9e697a2a74353ca",
+    "run.py": "493db7f5253a669f158f1142dab95d0cbab27e4ccf7ea073b9377b3e0e041c33",
+    "main.cjs": "38bae73527f5f331ff10c32f38af73a11954056a2d5d1c55fe817dc223a53838",
+    "preload.cjs": "2d08ffd71941b31ecd75676ab088c6a7043d6226291e9398c85f8a759e397aab"
+  },
+  "actualScreenCaptureExecuted": false,
+  "physicalHdrDisplayVerified": false,
+  "nativeAddonRebuilt": false,
+  "macosExecuted": false,
+  "linuxExecuted": false
+}

@@ -1,0 +1,100 @@
+{
+  "Version": 2,
+  "Game": {
+    "Uuid": "20000000-0000-0000-0000-000000000002",
+    "Name": {
+      "Value": "Synthetic visual novel 2",
+      "IsLock": false
+    },
+    "OriginalName": {
+      "Value": "Synthetic original 2",
+      "IsLock": false
+    },
+    "ChineseName": {
+      "Value": "合成作品 2",
+      "IsLock": false
+    },
+    "CnName": "",
+    "Description": {
+      "Value": "Plain source description\n<literal text>",
+      "IsLock": false
+    },
+    "Developer": {
+      "Value": "Synthetic studio",
+      "IsLock": false
+    },
+    "Engine": {
+      "Value": "Synthetic engine",
+      "IsLock": false
+    },
+    "ExpectedPlayTime": {
+      "Value": "——",
+      "IsLock": false
+    },
+    "Rating": {
+      "Value": 9.5,
+      "IsLock": false
+    },
+    "ReleaseDate": {
+      "Value": "2020-01-01T00:00:00",
+      "IsLock": false
+    },
+    "ImagePath": {
+      "Value": ".\\cover.png",
+      "IsLock": false
+    },
+    "HeaderImagePath": {
+      "Value": ".\\old-header-name.png",
+      "IsLock": false
+    },
+    "HeaderImageUrl": null,
+    "PlayedTime": {
+      "2025/7/3": 30,
+      "7/4/2025": 45
+    },
+    "TotalPlayTime": 75,
+    "LastPlayTime": "2025-07-04T18:00:00",
+    "LastPlay": {
+      "Value": "2025-07-04",
+      "IsLock": false
+    },
+    "AddTime": "2025-07-01T12:00:00",
+    "PlayCount": 17,
+    "PlayType": 1,
+    "MyRate": 8,
+    "Comment": "",
+    "PrivateComment": false,
+    "Tags": {
+      "Value": ["Visual novel", "合成标签"],
+      "IsLock": false
+    },
+    "Ids": ["1002", "2002", null, null, null, "3002", null, null, null],
+    "IdForPlugins": {},
+    "Characters": [],
+    "PreferredInstallationId": "20000000-0000-0000-0000-000000000102",
+    "ExePath": "C:\\Synthetic Legacy\\ignored.exe",
+    "ExeArguments": "legacy argument",
+    "ProcessName": "legacy-process",
+    "Path": "C:\\Synthetic Legacy",
+    "SavePath": null,
+    "DetectedSavePath": null,
+    "EnableMagpie": false,
+    "MuteInBackground": false,
+    "KeyReMap": false,
+    "KeyMappings": [],
+    "PvnUpdate": false,
+    "PvnUploadProperties": 0
+  },
+  "Installation": {
+    "ExePath": "D:\\Synthetic Library B\\Two\\launcher.exe",
+    "ExeArguments": "all arguments in one item",
+    "ProcessName": "synthetic-two",
+    "TextPath": null,
+    "RunAsAdmin": true,
+    "RunInLocaleEmulator": false,
+    "HighDpi": false,
+    "DetectedSavePath": null,
+    "SavePath": null,
+    "LastSuccessfulLaunchTime": "0001-01-01T00:00:00"
+  }
+}

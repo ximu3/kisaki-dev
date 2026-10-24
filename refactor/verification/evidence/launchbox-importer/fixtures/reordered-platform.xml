@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Game>
+    <Hide>false</Hide>
+    <Status>Imported from a local folder</Status>
+    <Rating>Not Rated</Rating>
+    <Developer>Example Studio</Developer>
+    <Series>Aster</Series>
+    <PlayMode>Single Player</PlayMode>
+    <Genre>Visual Novel; Adventure</Genre>
+    <ReleaseDate>2008-08-28T00:00:00+09:00</ReleaseDate>
+    <DateAdded>2020-01-02T23:30:00-05:00</DateAdded>
+    <LastPlayedDate>2026-10-01T22:30:00+08:00</LastPlayedDate>
+    <PlayTime>3661</PlayTime>
+    <PlayCount>17</PlayCount>
+    <Completed>true</Completed>
+    <Favorite>true</Favorite>
+    <CommunityStarRating>4.9</CommunityStarRating>
+    <StarRating>3</StarRating>
+    <StarRatingFloat>3.75</StarRatingFloat>
+    <Notes>Source description.
+Literal &lt;placeholder&gt; &amp; personal edits are possible.</Notes>
+    <CommandLine>--language "zh CN" --literal "a&amp;b"</CommandLine>
+    <RootFolder>Games\Aster</RootFolder>
+    <ApplicationPath>Games\Aster\play.exe</ApplicationPath>
+    <Platform>Windows</Platform>
+    <SortTitle>Aster Memory</SortTitle>
+    <Title>Aster: Memory</Title>
+    <DatabaseID>700001</DatabaseID>
+    <ID>11111111-1111-4111-8111-111111111111</ID>
+  </Game>
+</LaunchBox>

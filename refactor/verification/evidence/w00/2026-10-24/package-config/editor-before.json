@@ -1,0 +1,33 @@
+{
+  "typescript": "6.0.3",
+  "results": [
+    {
+      "file": "clients/desktop/packages/appearance/src/index.ts",
+      "configuration": "F:/project/kisaki/clients/desktop/packages/appearance/tsconfig.json"
+    },
+    {
+      "file": "clients/desktop/packages/appearance/tools/build.ts",
+      "configuration": "/dev/null/inferredProject1*"
+    },
+    {
+      "file": "clients/desktop/packages/appearance/tsdown.config.ts",
+      "configuration": "/dev/null/inferredProject2*"
+    },
+    {
+      "file": "clients/desktop/packages/ui/src/index.ts",
+      "configuration": "F:/project/kisaki/clients/desktop/packages/ui/tsconfig.json"
+    },
+    {
+      "file": "clients/desktop/packages/ui/tools/build.ts",
+      "configuration": "/dev/null/inferredProject3*"
+    },
+    {
+      "file": "clients/desktop/packages/ui/tsdown.config.ts",
+      "configuration": "/dev/null/inferredProject4*"
+    },
+    {
+      "file": "clients/desktop/extensions/projects/bangumi/kisx.config.ts",
+      "configuration": "F:/project/kisaki/clients/desktop/extensions/projects/bangumi/tsconfig.json"
+    }
+  ]
+}

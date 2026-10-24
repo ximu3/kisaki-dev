@@ -1,0 +1,612 @@
+{
+  "sourceSha256": "62d3cc965512acdcb0d27a733a70c98ce03e4eb237def2692bfdeeeab7446a67",
+  "verifierSha256": "830387cf70a62189426abbf0c5a3b60e821a74337c75eccdea840822ab1ac7f7",
+  "conversions": 28,
+  "rgbComponentsChecked": 153714,
+  "maximumHalfUlpError": 1,
+  "checks": [
+    {
+      "case": "base",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.00335693359375,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "base",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009684562683105469,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "base",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.003857135772705078,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "base",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009603500366210938,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "subtitles",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.00335693359375,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "subtitles",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009684562683105469,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "subtitles",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.003857135772705078,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "subtitles",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009603500366210938,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "osd",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.00335693359375,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "osd",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009684562683105469,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "osd",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.003857135772705078,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "osd",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009603500366210938,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "both",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.00335693359375,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "both",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009684562683105469,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "both",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.003857135772705078,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 5.22265625
+    },
+    {
+      "case": "both",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0009603500366210938,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.7412109375
+    },
+    {
+      "case": "both-low-peak",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0008544921875,
+      "sourceNonFiniteComponents": 219,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.25
+    },
+    {
+      "case": "both-low-peak",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0002034306526184082,
+      "sourceNonFiniteComponents": 219,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.0
+    },
+    {
+      "case": "both-low-peak",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0008544921875,
+      "sourceNonFiniteComponents": 78,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.25
+    },
+    {
+      "case": "both-low-peak",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0002034306526184082,
+      "sourceNonFiniteComponents": 78,
+      "minimumComponent": 0.0,
+      "maximumComponent": 1.0
+    },
+    {
+      "case": "srgb-linear",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0019407272338867188,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.97509765625,
+      "maximumComponent": 2.533203125
+    },
+    {
+      "case": "srgb-linear",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0004781484603881836,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.324951171875,
+      "maximumComponent": 1.0
+    },
+    {
+      "case": "srgb-linear",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0019469261169433594,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.8466796875,
+      "maximumComponent": 2.38671875
+    },
+    {
+      "case": "srgb-linear",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0004862546920776367,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.2822265625,
+      "maximumComponent": 1.0
+    },
+    {
+      "case": "p3-linear",
+      "frame": 0,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.001922607421875,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.496337890625,
+      "maximumComponent": 2.375
+    },
+    {
+      "case": "p3-linear",
+      "frame": 0,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.00048422813415527344,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.1654052734375,
+      "maximumComponent": 1.0
+    },
+    {
+      "case": "p3-linear",
+      "frame": 1,
+      "nitsPerUnit": 80,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0017821788787841797,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.443115234375,
+      "maximumComponent": 2.171875
+    },
+    {
+      "case": "p3-linear",
+      "frame": 1,
+      "nitsPerUnit": 240,
+      "maximumHalfUlpError": 1,
+      "maximumAbsoluteError": 0.0004862546920776367,
+      "sourceNonFiniteComponents": 0,
+      "minimumComponent": -0.147705078125,
+      "maximumComponent": 1.0
+    }
+  ],
+  "layers": [
+    {
+      "frame": 0,
+      "subtitleChangedPixels": 225,
+      "osdChangedPixels": 136,
+      "videoControlPixels": 225,
+      "outputHookMissedSubtitlePixels": 186,
+      "outputHookMissedOsdPixels": 128
+    },
+    {
+      "frame": 1,
+      "subtitleChangedPixels": 69,
+      "osdChangedPixels": 44,
+      "videoControlPixels": 66,
+      "outputHookMissedSubtitlePixels": 54,
+      "outputHookMissedOsdPixels": 32
+    }
+  ],
+  "sourceFailures": [
+    {
+      "case": "both-low-peak",
+      "frame": 0,
+      "nonFiniteComponents": 219,
+      "nonFinitePixels": 73
+    },
+    {
+      "case": "both-low-peak",
+      "frame": 1,
+      "nonFiniteComponents": 78,
+      "nonFinitePixels": 26
+    }
+  ],
+  "diagnosticReceiptSha256": "3e9246da36c75ec746321c04dee6a804bd1d5b260376ebdbfd10520c049ce34a",
+  "blackSourceMetadata": [
+    {
+      "side_data_type": "Mastering display metadata",
+      "red_x": "35400/50000",
+      "red_y": "14600/50000",
+      "green_x": "8500/50000",
+      "green_y": "39850/50000",
+      "blue_x": "6550/50000",
+      "blue_y": "2300/50000",
+      "white_point_x": "15635/50000",
+      "white_point_y": "16450/50000",
+      "min_luminance": "50/10000",
+      "max_luminance": "40000000/10000"
+    },
+    {
+      "side_data_type": "Content light level metadata",
+      "max_content": 4000,
+      "max_average": 1000
+    }
+  ],
+  "diagnostics": [
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "clip",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 418,
+      "toneMapping": "hable",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 4000,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "pq",
+      "peakNits": 418,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "black",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "clip",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "hable",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "linear",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "mobius",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 202,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "pq",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "linear",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.2020",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "bt.709",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.709",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "subtitles",
+      "primaries": "display-p3",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "display-p3",
+      "transfer": "linear",
+      "peakNits": 100,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        219,
+        78
+      ]
+    },
+    {
+      "kind": "sdr-subtitles",
+      "primaries": "bt.709",
+      "transfer": "srgb",
+      "peakNits": 203,
+      "toneMapping": "auto",
+      "nonFiniteComponentsBySize": [
+        0,
+        0
+      ]
+    }
+  ],
+  "sdrSource": {
+    "pix_fmt": "yuv420p",
+    "color_range": "tv",
+    "color_primaries": "bt709",
+    "color_transfer": "bt709"
+  },
+  "sdrSourceReproducesLinearSubtitleFailure": true,
+  "wholeFrameGpuUnitConversionVerifiedForFiniteInputs": true,
+  "staticAssAndOsdIncluded": true,
+  "outputHookNegativeControlVerified": true,
+  "normalPlaybackValidationPassed": false,
+  "completeColorPipelineVerified": false,
+  "hostDisplayVerified": false,
+  "animatedAssVerified": false,
+  "productionOutputImplemented": false
+}

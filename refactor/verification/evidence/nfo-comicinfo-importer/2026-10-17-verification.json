@@ -1,0 +1,461 @@
+{
+  "checkedAt": "2026-10-17T08:43:44.145Z",
+  "status": "design-confirmed",
+  "ordinal": 24,
+  "realUserInput": false,
+  "baselines": {
+    "kodiStable": {
+      "tag": "21.3-Omega",
+      "commit": "a3a448d26b8d560a65655dab2cd122994dc4e146",
+      "publishedAt": "2025-10-31T17:21:33Z"
+    },
+    "kodiDevelopment": {
+      "commit": "8f6c50bd005f5b96426db93f8861cb063b2ebb21",
+      "commitDate": "2026-10-17T06:24:26Z",
+      "releaseClaim": false
+    },
+    "comicinfo": {
+      "commit": "99e1453a163c777b4b5320a68732f6f133ac7918",
+      "commitDate": "2026-06-23T01:59:38Z",
+      "stableSchemas": ["1.0", "2.0"],
+      "draftSchema": "2.1"
+    },
+    "comicrackPageContract": {
+      "commit": "7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7",
+      "scope": "Page index and archive ordering only; not a ComicRack library importer."
+    }
+  },
+  "sourceFiles": [
+    {
+      "project": "kodi",
+      "file": "xbmc/NfoFile.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/NfoFile.cpp",
+      "sha256": "03eb96279139e718c6bef012128b814a4a85928532e7b07f25d9bc2e8db90372",
+      "bytes": 5000
+    },
+    {
+      "project": "kodi",
+      "file": "xbmc/video/VideoInfoTag.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoInfoTag.cpp",
+      "sha256": "3dce7bc65b1fdb3a242fb85bf0c53bc57e24eec304f993b44d2d64f7bc062948",
+      "bytes": 58262
+    },
+    {
+      "project": "comicinfo",
+      "file": "schema/v2.0/ComicInfo.xsd",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/schema/v2.0/ComicInfo.xsd",
+      "sha256": "3d9109effff705014f5f6076d92b0ad8c8dad90d993f2592d744c10bad45311c",
+      "bytes": 7556
+    },
+    {
+      "project": "comicinfo",
+      "file": "README.md",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/README.md",
+      "sha256": "cc66f58d9f31fc32cb5e83265656768847e06aee2ce4ab12e386c49a01611709",
+      "bytes": 809
+    },
+    {
+      "project": "comicinfo",
+      "file": "CHANGELOG.md",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/CHANGELOG.md",
+      "sha256": "71528daac8375d5f910773ac44272d53603f8d649012ab1697424a11bb2a32c6",
+      "bytes": 388
+    },
+    {
+      "project": "kodi",
+      "file": "xbmc/video/VideoInfoScanner.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoInfoScanner.cpp",
+      "sha256": "e4a73fc42c60ad17630558e66bd1f49893887f8b7c7244b75b52fd9aa96a7d57",
+      "bytes": 93073
+    },
+    {
+      "project": "kodi",
+      "file": "xbmc/video/VideoDatabase.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoDatabase.cpp",
+      "sha256": "e76f4321f721dd7f3a0392958bb0f7260067d168115d9778d2bd2521e7b2a479",
+      "bytes": 463696
+    },
+    {
+      "project": "kodiNext",
+      "file": "xbmc/video/VideoInfoScanner.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/video/VideoInfoScanner.cpp",
+      "sha256": "35731ce5c4a29fb5d424e99881ed4ae4ac38c9dec8832648de4b3455e20a28d2",
+      "bytes": 122711
+    },
+    {
+      "project": "comicinfo",
+      "file": "drafts/v2.1/ComicInfo.xsd",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/drafts/v2.1/ComicInfo.xsd",
+      "sha256": "c7a925b75a5297ec66b19898f59597077326a6b812d5ce77b3035fc179d75ed9",
+      "bytes": 7948
+    },
+    {
+      "project": "comicinfo",
+      "file": "schema/v1.0/ComicInfo.xsd",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/schema/v1.0/ComicInfo.xsd",
+      "sha256": "b11aafbd1f5dee6bcb8508fcdc0893c0c63351124dcf7f8837a41b1fb814c7ed",
+      "bytes": 5013
+    },
+    {
+      "project": "comicinfo",
+      "file": "DOCUMENTATION.md",
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/DOCUMENTATION.md",
+      "sha256": "01c6f3c33b36ec4fa98dd8d121a1c2a2c0335bca74998a43aab3bb11d28fbda0",
+      "bytes": 6830
+    },
+    {
+      "project": "kodiNext",
+      "file": "xbmc/video/VideoInfoTag.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/video/VideoInfoTag.cpp",
+      "sha256": "c3b0f2b87e317c4dfe375ba6462a6ba82e863671eab429d6b653aca89f8b2f03",
+      "bytes": 66389
+    },
+    {
+      "project": "kodiNext",
+      "file": "xbmc/NfoFile.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/NfoFile.cpp",
+      "sha256": "2c43ab970619899c1b0030d73011398903149b10c16b5bbacbb76aae76c42241",
+      "bytes": 8258
+    },
+    {
+      "project": "kodi",
+      "file": "xbmc/application/ApplicationPlayerCallback.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/application/ApplicationPlayerCallback.cpp",
+      "sha256": "238d083baf1de818ff65cbab0d434b481f74c54d31096994c85e3c1486fa59d2",
+      "bytes": 10082
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/IO/Provider/ImageProvider.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/Provider/ImageProvider.cs",
+      "sha256": "3051a4ff28810fffee3d222e836f3129556efa172a8f43e0cff920929bb83175",
+      "bytes": 8759
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/ComicInfo.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicInfo.cs",
+      "sha256": "223dc37986de9b2b9bb2b25235e130192ef0f6303ad6bfba9e107646f570a32d",
+      "bytes": 31659
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/IO/ComicBookImageProvider.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/ComicBookImageProvider.cs",
+      "sha256": "93d5747c68f1c50c2318f9cbae1e3b09f16c106064100218f00865c77df2a7e5",
+      "bytes": 1804
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/ComicPageInfo.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageInfo.cs",
+      "sha256": "63130b7de827a147cacb538f55989daf58f088d9d9421b534801054fe18c5675",
+      "bytes": 6025
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/IO/Provider/Readers/Archive/ArchiveComicProvider.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/Provider/Readers/Archive/ArchiveComicProvider.cs",
+      "sha256": "5b8a1266dc2ebd2a25e66997e8b05f9234bc86aa28dd5e6e3af5458aa43f8bb2",
+      "bytes": 2573
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/ComicPageInfoCollection.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageInfoCollection.cs",
+      "sha256": "61fbff3081d5d0f5936220730182fa4743e370040928281e6513795b4782977f",
+      "bytes": 1584
+    },
+    {
+      "project": "comicrack",
+      "file": "cYo.Common/Text/ExtendedStringComparer.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/cYo.Common/Text/ExtendedStringComparer.cs",
+      "sha256": "9f92ffcf786a75fb272e1be2b68f82f109a90484f651194e4f3f5784220273dc",
+      "bytes": 5997
+    },
+    {
+      "project": "kodi",
+      "file": "xbmc/utils/SaveFileStateJob.cpp",
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/utils/SaveFileStateJob.cpp",
+      "sha256": "bf267c4abf7e4bff7cb8b99d59c7da48f97c94f9e4be089393429c71bc72b306",
+      "bytes": 9123
+    },
+    {
+      "project": "comicrack",
+      "file": "ComicRack.Engine/ComicPageType.cs",
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageType.cs",
+      "sha256": "496281f85f03a2151cab0ee014d45e38c4023520765cd675d99a108dc289ff5a",
+      "bytes": 445
+    }
+  ],
+  "publicRequests": [
+    {
+      "url": "https://api.github.com/repos/anansi-project/comicinfo",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:38:51.076Z",
+      "bytes": 6632,
+      "sha256": "2aa6a5f29dbdff96f304aa3635ac6d2eaf67f98b62fd311a6c29cf26638eb045"
+    },
+    {
+      "url": "https://api.github.com/repos/xbmc/xbmc/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:38:51.080Z",
+      "bytes": 3734,
+      "sha256": "54c6d03802736f1487abab8388bd35fe59625352cf72d088c8275c91633b8f77"
+    },
+    {
+      "url": "https://api.github.com/repos/anansi-project/comicinfo/releases/latest",
+      "status": 404,
+      "checkedAt": "2026-10-17T08:38:51.152Z",
+      "bytes": 130,
+      "sha256": "d9e37600354c1839f6b22cebde497e9d14750d2401a06c9a51b1619baf991613"
+    },
+    {
+      "url": "https://api.github.com/repos/xbmc/xbmc/git/ref/tags/21.3-Omega",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:38:56.748Z",
+      "bytes": 339,
+      "sha256": "0e321b307e63761b75ed1684da7385c36f4d279b7abb303f1acaab44ef0f6f13"
+    },
+    {
+      "url": "https://api.github.com/repos/anansi-project/comicinfo/commits/main",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:38:56.825Z",
+      "bytes": 4887,
+      "sha256": "2f37382e72294d42af4a747762b7875de2976af86bd7f5b02b1bcf7aaaf3855b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/NfoFile.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:07.774Z",
+      "bytes": 5000,
+      "sha256": "03eb96279139e718c6bef012128b814a4a85928532e7b07f25d9bc2e8db90372"
+    },
+    {
+      "url": "https://api.github.com/repos/anansi-project/comicinfo/git/trees/99e1453a163c777b4b5320a68732f6f133ac7918?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:07.897Z",
+      "bytes": 4997,
+      "sha256": "2b913d0e64fc586c32a1c357b49b3a4330d881f212cca5f1f33384eab96b64c7"
+    },
+    {
+      "url": "https://api.github.com/repos/xbmc/xbmc/commits/master",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:07.913Z",
+      "bytes": 14214,
+      "sha256": "88c04e9a247ee19e91f027832d1c60e626a3d7c267fa2f556fa09bbd2d12e98f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoInfoTag.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:07.950Z",
+      "bytes": 58262,
+      "sha256": "3dce7bc65b1fdb3a242fb85bf0c53bc57e24eec304f993b44d2d64f7bc062948"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/schema/v2.0/ComicInfo.xsd",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.166Z",
+      "bytes": 7556,
+      "sha256": "3d9109effff705014f5f6076d92b0ad8c8dad90d993f2592d744c10bad45311c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/README.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.170Z",
+      "bytes": 809,
+      "sha256": "cc66f58d9f31fc32cb5e83265656768847e06aee2ce4ab12e386c49a01611709"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/CHANGELOG.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.180Z",
+      "bytes": 388,
+      "sha256": "71528daac8375d5f910773ac44272d53603f8d649012ab1697424a11bb2a32c6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoInfoScanner.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.188Z",
+      "bytes": 93073,
+      "sha256": "e4a73fc42c60ad17630558e66bd1f49893887f8b7c7244b75b52fd9aa96a7d57"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/VideoDatabase.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.188Z",
+      "bytes": 463696,
+      "sha256": "e76f4321f721dd7f3a0392958bb0f7260067d168115d9778d2bd2521e7b2a479"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/video/VideoInfoScanner.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.191Z",
+      "bytes": 122711,
+      "sha256": "35731ce5c4a29fb5d424e99881ed4ae4ac38c9dec8832648de4b3455e20a28d2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/drafts/v2.1/ComicInfo.xsd",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.234Z",
+      "bytes": 7948,
+      "sha256": "c7a925b75a5297ec66b19898f59597077326a6b812d5ce77b3035fc179d75ed9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/schema/v1.0/ComicInfo.xsd",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.274Z",
+      "bytes": 5013,
+      "sha256": "b11aafbd1f5dee6bcb8508fcdc0893c0c63351124dcf7f8837a41b1fb814c7ed"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/anansi-project/comicinfo/99e1453a163c777b4b5320a68732f6f133ac7918/DOCUMENTATION.md",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.284Z",
+      "bytes": 6830,
+      "sha256": "01c6f3c33b36ec4fa98dd8d121a1c2a2c0335bca74998a43aab3bb11d28fbda0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/video/VideoInfoTag.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:39:26.370Z",
+      "bytes": 66389,
+      "sha256": "c3b0f2b87e317c4dfe375ba6462a6ba82e863671eab429d6b653aca89f8b2f03"
+    },
+    {
+      "url": "https://api.github.com/repos/maforget/ComicRackCE",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:07.561Z",
+      "bytes": 5373,
+      "sha256": "bdaae2227f9526d751c38022b2933135238a1658de9287f930ab3492d321f340"
+    },
+    {
+      "url": "https://api.github.com/repos/maforget/ComicRackCE/commits/master",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:07.908Z",
+      "bytes": 10651,
+      "sha256": "3357fb9623515207e3a2e75b57655b6806e9a407c4450bc248b8313bc4ab0664"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/8f6c50bd005f5b96426db93f8861cb063b2ebb21/xbmc/NfoFile.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:26.898Z",
+      "bytes": 8258,
+      "sha256": "2c43ab970619899c1b0030d73011398903149b10c16b5bbacbb76aae76c42241"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/application/ApplicationPlayerCallback.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:26.910Z",
+      "bytes": 10082,
+      "sha256": "238d083baf1de818ff65cbab0d434b481f74c54d31096994c85e3c1486fa59d2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/SaveFileStateJob.cpp",
+      "status": 404,
+      "checkedAt": "2026-10-17T08:40:26.923Z",
+      "bytes": 14,
+      "sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
+    },
+    {
+      "url": "https://api.github.com/repos/maforget/ComicRackCE/git/trees/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:27.114Z",
+      "bytes": 1050936,
+      "sha256": "ca1f139c3a59bc6c25402b8ac2a402a04823743e7ccb12735f6780bfc6b8f2ca"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/video/jobs/SaveFileStateJob.cpp",
+      "status": 404,
+      "checkedAt": "2026-10-17T08:40:50.349Z",
+      "bytes": 14,
+      "sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/Provider/ImageProvider.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:50.372Z",
+      "bytes": 8759,
+      "sha256": "3051a4ff28810fffee3d222e836f3129556efa172a8f43e0cff920929bb83175"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicInfo.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:50.375Z",
+      "bytes": 31659,
+      "sha256": "223dc37986de9b2b9bb2b25235e130192ef0f6303ad6bfba9e107646f570a32d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/ComicBookImageProvider.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:50.397Z",
+      "bytes": 1804,
+      "sha256": "93d5747c68f1c50c2318f9cbae1e3b09f16c106064100218f00865c77df2a7e5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageInfo.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:50.582Z",
+      "bytes": 6025,
+      "sha256": "63130b7de827a147cacb538f55989daf58f088d9d9421b534801054fe18c5675"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/IO/Provider/Readers/Archive/ArchiveComicProvider.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:40:50.619Z",
+      "bytes": 2573,
+      "sha256": "5b8a1266dc2ebd2a25e66997e8b05f9234bc86aa28dd5e6e3af5458aa43f8bb2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageInfoCollection.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:41:14.581Z",
+      "bytes": 1584,
+      "sha256": "61fbff3081d5d0f5936220730182fa4743e370040928281e6513795b4782977f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/cYo.Common/Text/ExtendedStringComparer.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:41:14.592Z",
+      "bytes": 5997,
+      "sha256": "9f92ffcf786a75fb272e1be2b68f82f109a90484f651194e4f3f5784220273dc"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xbmc/xbmc/a3a448d26b8d560a65655dab2cd122994dc4e146/xbmc/utils/SaveFileStateJob.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:41:14.593Z",
+      "bytes": 9123,
+      "sha256": "bf267c4abf7e4bff7cb8b99d59c7da48f97c94f9e4be089393429c71bc72b306"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/maforget/ComicRackCE/7fd9fd35a9cf829fffc6aa9cd0b44c7325df0cb7/ComicRack.Engine/ComicPageType.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:41:14.613Z",
+      "bytes": 445,
+      "sha256": "496281f85f03a2151cab0ee014d45e38c4023520765cd675d99a108dc289ff5a"
+    }
+  ],
+  "limitations": [
+    "No real user NFO or ComicInfo export, source app, or production Kisaki importer was run.",
+    "ComicInfo 2.1 is a pinned draft, not a stable release.",
+    "Kodi development fields and naming are pinned source observations, not a released Kodi 22 claim.",
+    "No real user export, source application, or production Kisaki migration was exercised.",
+    "XML text probe covers UTF-8 and BOM-marked UTF-16.",
+    "ComicRack page-order probe covers simple ASCII numeric member names only.",
+    "Resume tolerance is a synthetic fixture check, not the final player timing policy.",
+    "Pinned XSD validation complements field parsing; schema field order is not treated as a production import requirement."
+  ],
+  "syntheticVerification": {
+    "status": "passed",
+    "checks": 101,
+    "fixtureFiles": 20,
+    "runtime": {
+      "lxml": [6, 1, 0, 0],
+      "libxml": [2, 11, 9],
+      "videoDurationSeconds": 2,
+      "ffprobe": "6.1.1-essentials_build-www.gyan.dev"
+    },
+    "result": "synthetic-results.json",
+    "productionOrHostRun": false
+  }
+}

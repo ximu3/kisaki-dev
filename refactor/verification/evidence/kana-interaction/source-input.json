@@ -1,0 +1,43 @@
+{
+  "commit": "67b6676d3f936c5edea91d4d903385ef39dd25c0",
+  "files": [
+    {
+      "path": "src/reader/reader.js",
+      "url": "https://raw.githubusercontent.com/johnfactotum/foliate/67b6676d3f936c5edea91d4d903385ef39dd25c0/src/reader/reader.js",
+      "bytes": 21040,
+      "sha256": "54d20b98f61f90050a9322c715a68859a83665950022e632fb5f46d8aba773b9",
+      "cachePath": "node_modules/.cache/kana-interaction-reference/reader.js"
+    },
+    {
+      "path": "src/reader/reader.html",
+      "url": "https://raw.githubusercontent.com/johnfactotum/foliate/67b6676d3f936c5edea91d4d903385ef39dd25c0/src/reader/reader.html",
+      "bytes": 3386,
+      "sha256": "e1172018211382cbd0a0d73b5e140d9b8ff3eb17d5eec92530de0c556e1dc693",
+      "cachePath": "node_modules/.cache/kana-interaction-reference/reader.html"
+    },
+    {
+      "path": "src/foliate-js/footnotes.js",
+      "url": "https://raw.githubusercontent.com/johnfactotum/foliate-js/399248a67a8862ffb5e6463a33f9d52b317ca2eb/footnotes.js",
+      "bytes": 4161,
+      "sha256": "d377b45d2ac05290c42873612ec0a92e640938e8be8ed850a467133a883388de",
+      "cachePath": "node_modules/.cache/kana-interaction-reference/footnotes.js"
+    }
+  ],
+  "foliateJsCommit": "399248a67a8862ffb5e6463a33f9d52b317ca2eb",
+  "checkedAt": "2026-10-19T14:19:30.058630+00:00",
+  "review": "Source inspection only; no upstream app execution or code adoption",
+  "references": [
+    {
+      "url": "https://www.w3.org/TR/dpub-aria-1.1/#doc-noteref",
+      "use": "Distinguish a note reference by content semantics"
+    },
+    {
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/",
+      "use": "A selectable, interactive reference view is not merely a focusless tooltip; this APG pattern is work in progress"
+    },
+    {
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+      "use": "Focus entry, closing and return considerations; does not select a modal presentation for Kana"
+    }
+  ]
+}

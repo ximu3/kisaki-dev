@@ -1,0 +1,28 @@
+[
+  {
+    "name": "staff-note-role-subject-type",
+    "observedAt": "2026-10-11T13:39:14.8786180+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/s15719",
+    "status": 200,
+    "extracted": {
+      "value": "Person",
+      "id": "s15719",
+      "label": "Type"
+    },
+    "htmlRow": "<tr><td class=\"key\">Type</td><td>Person</td></tr>"
+  },
+  {
+    "name": "staff-note-role-subject-type",
+    "observedAt": "2026-10-11T13:39:15.6236979+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/s12984",
+    "status": 200,
+    "extracted": {
+      "value": "Person",
+      "id": "s12984",
+      "label": "Type"
+    },
+    "htmlRow": "<tr><td class=\"key\">Type</td><td>Person</td></tr>"
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "checkedAt": "2026-10-18T15:32:26.849403+00:00",
+  "before": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "active": {
+    "source": "\\\\.\\DISPLAY2",
+    "name": "G24H2",
+    "refreshHz": 143.999,
+    "advancedColorSupported": true,
+    "advancedColorEnabled": true,
+    "wideColorEnforced": false,
+    "advancedColorForceDisabled": false,
+    "bitsPerColorChannel": 8,
+    "colorEncoding": 0,
+    "sdrWhiteNits": 240.0,
+    "mode": {
+      "width": 2560,
+      "height": 1440,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "after": [
+    {
+      "source": "\\\\.\\DISPLAY1",
+      "name": "TL160ADMP11-0",
+      "refreshHz": 239.998,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1600,
+        "x": 2560,
+        "y": -473
+      }
+    },
+    {
+      "source": "\\\\.\\DISPLAY2",
+      "name": "G24H2",
+      "refreshHz": 143.999,
+      "advancedColorSupported": true,
+      "advancedColorEnabled": false,
+      "wideColorEnforced": false,
+      "advancedColorForceDisabled": false,
+      "bitsPerColorChannel": 8,
+      "colorEncoding": 0,
+      "sdrWhiteNits": 80.0,
+      "mode": {
+        "width": 2560,
+        "height": 1440,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "originalStateRestored": true,
+  "sources": {
+    "libmpv-playback\\display-check.py": "ab147478551b04a8e4c01cdf60932bebbf10facb4974f258de13556e4e8ce1ff",
+    "libmpv-display\\run-displays.py": "6b77274336bb4ba2ce1debcf7337921d75179c676530adbad1487c570f2d4c4a"
+  },
+  "receipts": {
+    "sdr-contract.json": "30e2c04d34d9a6d041d5c81d234164b9c28f34815998b66d3fcf389fcf1b3c2b",
+    "hdr-contract.json": "d2cef298b4ca8d9f8f286b4ffe722c3e587545abf50a94f7a61a74d13052c069"
+  }
+}

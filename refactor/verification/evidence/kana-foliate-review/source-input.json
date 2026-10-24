@@ -1,0 +1,220 @@
+{
+  "checkedAt": "2026-10-19T12:52:49.854749+00:00",
+  "commit": "78914aef4466eb960965702401634c2cb348e9b1",
+  "sameCommitAsEarlierMobiEvidence": true,
+  "upstreamCodeModified": false,
+  "license": "MIT",
+  "sources": [
+    {
+      "path": "LICENSE",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/LICENSE",
+      "bytes": 1070,
+      "sha256": "b621ffc351fe263bc9b09dd0bc1c9332fda9c462a3904c1e4f0b4d3236b9c28c"
+    },
+    {
+      "path": "README.md",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/README.md",
+      "bytes": 22828,
+      "sha256": "56f46064f70484ac8c0014c04352a8f093091822ae1f682c5d3af76647f1f0dd"
+    },
+    {
+      "path": "comic-book.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/comic-book.js",
+      "bytes": 1811,
+      "sha256": "7f3bf77561ca77300d5244015fcb1f73805787db246928074dc49fb56c88762e"
+    },
+    {
+      "path": "dict.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/dict.js",
+      "bytes": 7898,
+      "sha256": "9c5f7d9d87ebec302594178f8960539a4573830f9ef84c8a915f599047dcc4aa"
+    },
+    {
+      "path": "epub.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/epub.js",
+      "bytes": 43685,
+      "sha256": "dfe347495039e9b5991478986ec6b7713cf9efbcd8f475a77ef7b967c5176298"
+    },
+    {
+      "path": "epubcfi.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/epubcfi.js",
+      "bytes": 13233,
+      "sha256": "e1a688ad5c84bf31f33cef467f92c7a6d060a0f17ec37c1d3c048e9c7b1cf645"
+    },
+    {
+      "path": "eslint.config.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/eslint.config.js",
+      "bytes": 789,
+      "sha256": "01f0806b12bd71b4973cd4890fad3ba00830d82c283ac92a7947e8bd197cad80"
+    },
+    {
+      "path": "fb2.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/fb2.js",
+      "bytes": 12273,
+      "sha256": "09a7890bf191f1b6c6dd435fae2868b86c75e73e00731b0051c02f2a998a180a"
+    },
+    {
+      "path": "fixed-layout.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/fixed-layout.js",
+      "bytes": 12008,
+      "sha256": "7aee1d15d8e0479b8a6c59a20304b250dafc4c7dc158147a2b2c6bed9e180b4c"
+    },
+    {
+      "path": "footnotes.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/footnotes.js",
+      "bytes": 4161,
+      "sha256": "d377b45d2ac05290c42873612ec0a92e640938e8be8ed850a467133a883388de"
+    },
+    {
+      "path": "mobi.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/mobi.js",
+      "bytes": 47716,
+      "sha256": "016526df13a9f11ee6671a8c74346e1cf41fe6bdfe50165fdcbf744f015694f3"
+    },
+    {
+      "path": "opds.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/opds.js",
+      "bytes": 10672,
+      "sha256": "4b9f2a8f77ba191e1bb892032fd21a4e2ca14e5ff0b14239421d331556fa352f"
+    },
+    {
+      "path": "overlayer.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/overlayer.js",
+      "bytes": 7051,
+      "sha256": "d3d3396e3083277ccbd4f17c407621159b22a407107e43ce75ca3014578094fb"
+    },
+    {
+      "path": "package-lock.json",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/package-lock.json",
+      "bytes": 40859,
+      "sha256": "80669e4e5d148e4db1e817c239742f6af0c9f05b324ed8de181c40b4ac52a0e8"
+    },
+    {
+      "path": "package.json",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/package.json",
+      "bytes": 986,
+      "sha256": "270b27e72338f3d4b3e00db0c16f8dfb20354915ab3f15fe0d701fdc28244239"
+    },
+    {
+      "path": "paginator.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/paginator.js",
+      "bytes": 44222,
+      "sha256": "51cec81572d5d182e231fe68ce9c3b5489a0976b36172060516336ba893565ea"
+    },
+    {
+      "path": "pdf.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/pdf.js",
+      "bytes": 7089,
+      "sha256": "684da69d4366f2fee1e08423d02e727c32c553f2487bba661c6a1870b0508475"
+    },
+    {
+      "path": "progress.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/progress.js",
+      "bytes": 4255,
+      "sha256": "544f5e90babc0cb31c5caf971a5f06dd6249ec06600cb62f672fa7179811fde1"
+    },
+    {
+      "path": "quote-image.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/quote-image.js",
+      "bytes": 3127,
+      "sha256": "32df52ebce383bade52d84e7510270e3c192bea51db070f4458a44d3cacf05e7"
+    },
+    {
+      "path": "reader.html",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/reader.html",
+      "bytes": 7671,
+      "sha256": "6a942154307c200a51e31ee9bd2159a2a7318db779deb1576060fc5bd6c1e144"
+    },
+    {
+      "path": "reader.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/reader.js",
+      "bytes": 8883,
+      "sha256": "a31da690c0deea3f4865bc00798d4b839ccaa8811fe1ede2e8cc7ee4ab41e57e"
+    },
+    {
+      "path": "rollup.config.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/rollup.config.js",
+      "bytes": 1082,
+      "sha256": "4f2526f2af90a2ea4fc1030dbce8426f916366f111ed1c3851e6100c82ad2207"
+    },
+    {
+      "path": "rollup/fflate.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/rollup/fflate.js",
+      "bytes": 36,
+      "sha256": "d52d81271da3c505f05aca269ae12e104ac3537805e47867044a5eb5a04251ff"
+    },
+    {
+      "path": "rollup/zip.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/rollup/zip.js",
+      "bytes": 122,
+      "sha256": "6af596be7712141b2970208078c4a2a497464b1e3d6fb2505eead9f7a24d9336"
+    },
+    {
+      "path": "search.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/search.js",
+      "bytes": 5651,
+      "sha256": "31e846bdc095a645de0e94f7baa2c9e136561a363a2f774d4032e72cfa1fb0ef"
+    },
+    {
+      "path": "tests/epubcfi-tests.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/tests/epubcfi-tests.js",
+      "bytes": 9423,
+      "sha256": "918faedb0d17469a72f969aee725c29611aa364d0b2aa2211d2e7bc7fe2b74b6"
+    },
+    {
+      "path": "tests/tests.html",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/tests/tests.html",
+      "bytes": 203,
+      "sha256": "7f14245105eafeb7b2638aae1c4273447411037091e9ee89cb1f3e73cf971eff"
+    },
+    {
+      "path": "tests/tests.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/tests/tests.js",
+      "bytes": 28,
+      "sha256": "7e9c7944f2553e7729a9b2d97a182f72376381878487e46fd3a33d1ffa37e7de"
+    },
+    {
+      "path": "text-walker.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/text-walker.js",
+      "bytes": 1531,
+      "sha256": "4ad740ab6142b5be428700ef4d270253cef6649cf6e047ae7d2698a7aec65e92"
+    },
+    {
+      "path": "tts.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/tts.js",
+      "bytes": 9568,
+      "sha256": "530d34605b758a5e2260438964a85bb9909bcb49e8848e303fe22cac63859026"
+    },
+    {
+      "path": "ui/menu.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/ui/menu.js",
+      "bytes": 1518,
+      "sha256": "90795bdec271a32ad8414dd7a07ba8ffe6f810dbfd706a8c0805302360856160"
+    },
+    {
+      "path": "ui/tree.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/ui/tree.js",
+      "bytes": 6085,
+      "sha256": "713134d5f242239b094e121912d07eb925d4ae20a9a5c8a7363feb7560ebbd16"
+    },
+    {
+      "path": "uri-template.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/uri-template.js",
+      "bytes": 2010,
+      "sha256": "28bd96a9960cbfb07e14d4b9e9f334f28d1c3c96cbd8d58880631dcb1387e9f6"
+    },
+    {
+      "path": "view.js",
+      "source": "https://raw.githubusercontent.com/johnfactotum/foliate-js/78914aef4466eb960965702401634c2cb348e9b1/view.js",
+      "bytes": 22850,
+      "sha256": "e0093af921feb03bb58fb51aeedc321fa108a4158d215f6913ecf7925415c945"
+    }
+  ],
+  "references": [
+    {
+      "path": "html-xml-reference.html",
+      "source": "https://html.spec.whatwg.org/multipage/xhtml.html",
+      "sha256": "31ce8a1e1b5c2b54375e548dfabde613cd8804dfaeecf7748fae415c09309d14"
+    }
+  ]
+}

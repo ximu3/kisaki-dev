@@ -1,0 +1,757 @@
+{
+  "checkedAt": "2026-10-21T06:09:56.654712+00:00",
+  "workingDirectory": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk",
+  "pnpm": "11.10.0",
+  "tarballs": {
+    "@libmpv-design/loader-probe": {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\tarballs\\libmpv-design-loader-probe-0.0.0-probe.2.tgz",
+      "sha256": "1e19dac8546a7549f123ea93e7359b4df0fd63a50643ecaf6d953b6dbe2d5a1d",
+      "bytes": 1237,
+      "package": {
+        "version": "0.0.0-probe.2",
+        "private": true,
+        "license": "UNLICENSED",
+        "name": "@libmpv-design/loader-probe",
+        "main": "loader.cjs",
+        "exports": "./loader.cjs",
+        "files": ["loader.cjs"],
+        "optionalDependencies": {
+          "@libmpv-design/loader-probe-win32-x64": "0.0.0-probe.2"
+        }
+      }
+    },
+    "@libmpv-design/loader-probe-win32-x64": {
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\tarballs\\libmpv-design-loader-probe-win32-x64-0.0.0-probe.2.tgz",
+      "sha256": "9aec2824f859c29df23521617e5f88d5da1b628b646977c3e7dab11711cee2c6",
+      "bytes": 33225689,
+      "package": {
+        "version": "0.0.0-probe.2",
+        "private": true,
+        "license": "UNLICENSED",
+        "name": "@libmpv-design/loader-probe-win32-x64",
+        "os": ["win32"],
+        "cpu": ["x64"],
+        "main": "platform.cjs",
+        "exports": "./platform.cjs",
+        "files": ["platform.cjs", "artifact.json", "native", "fixture.ppm"]
+      }
+    }
+  },
+  "consumers": [
+    {
+      "host": "node",
+      "executable": "D:\\nodejs\\node.EXE",
+      "executableSha256": "f13ac3ca23248dc389507e8fe38c34489ab7edb3e6d6700eb6da6a0b7e128eaf",
+      "node": "24.11.1",
+      "electron": null,
+      "operatingSystem": "win32",
+      "architecture": "x64",
+      "path": "C:\\Windows\\System32",
+      "cwd": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\empty working directory",
+      "main": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_0ef5375abc44770c60cbb1cc0ae9332c\\node_modules\\@libmpv-design\\loader-probe\\loader.cjs",
+      "platform": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64",
+      "addon": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-gpu-probe.node",
+      "pictures": [
+        {
+          "width": 63,
+          "height": 47,
+          "samples": [
+            [0, 0, 255, 255],
+            [0, 255, 0, 255],
+            [255, 0, 0, 255],
+            [255, 255, 255, 255]
+          ],
+          "coreDestroyed": true
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "samples": [
+            [0, 0, 255, 255],
+            [0, 255, 0, 255],
+            [255, 0, 0, 255],
+            [255, 255, 255, 255]
+          ],
+          "coreDestroyed": true
+        }
+      ],
+      "frameResourcesReleased": true,
+      "observedModules": [
+        {
+          "name": "avcodec-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avcodec-63.dll"
+        },
+        {
+          "name": "avdevice-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avdevice-63.dll"
+        },
+        {
+          "name": "avfilter-12.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avfilter-12.dll"
+        },
+        {
+          "name": "avformat-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avformat-63.dll"
+        },
+        {
+          "name": "avutil-61.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avutil-61.dll"
+        },
+        {
+          "name": "libass-9.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libass-9.dll"
+        },
+        {
+          "name": "libbrotlicommon.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbrotlicommon.dll"
+        },
+        {
+          "name": "libbrotlidec.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbrotlidec.dll"
+        },
+        {
+          "name": "libbz2-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbz2-1.dll"
+        },
+        {
+          "name": "libdav1d-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libdav1d-7.dll"
+        },
+        {
+          "name": "libdovi.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libdovi.dll"
+        },
+        {
+          "name": "libexpat-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libexpat-1.dll"
+        },
+        {
+          "name": "libfontconfig-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfontconfig-1.dll"
+        },
+        {
+          "name": "libfreetype-6.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfreetype-6.dll"
+        },
+        {
+          "name": "libfribidi-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfribidi-0.dll"
+        },
+        {
+          "name": "libgcc_s_seh-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgcc_s_seh-1.dll"
+        },
+        {
+          "name": "libglib-2.0-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libglib-2.0-0.dll"
+        },
+        {
+          "name": "libgomp-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgomp-1.dll"
+        },
+        {
+          "name": "libgraphite2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgraphite2.dll"
+        },
+        {
+          "name": "libharfbuzz-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libharfbuzz-0.dll"
+        },
+        {
+          "name": "libiconv-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libiconv-2.dll"
+        },
+        {
+          "name": "libintl-8.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libintl-8.dll"
+        },
+        {
+          "name": "liblcms2-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\liblcms2-2.dll"
+        },
+        {
+          "name": "liblzma-5.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\liblzma-5.dll"
+        },
+        {
+          "name": "libmpv-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-2.dll"
+        },
+        {
+          "name": "libogg-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libogg-0.dll"
+        },
+        {
+          "name": "libopus-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libopus-0.dll"
+        },
+        {
+          "name": "libpcre2-8-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libpcre2-8-0.dll"
+        },
+        {
+          "name": "libplacebo-360.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libplacebo-360.dll"
+        },
+        {
+          "name": "libpng16-16.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libpng16-16.dll"
+        },
+        {
+          "name": "libshaderc_shared.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libshaderc_shared.dll"
+        },
+        {
+          "name": "libsoxr.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libsoxr.dll"
+        },
+        {
+          "name": "libspirv-cross-c-shared.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libspirv-cross-c-shared.dll"
+        },
+        {
+          "name": "libstdc++-6.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libstdc++-6.dll"
+        },
+        {
+          "name": "libunibreak-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libunibreak-7.dll"
+        },
+        {
+          "name": "libvorbis-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvorbis-0.dll"
+        },
+        {
+          "name": "libvorbisenc-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvorbisenc-2.dll"
+        },
+        {
+          "name": "libvpx-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvpx-1.dll"
+        },
+        {
+          "name": "libwinpthread-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libwinpthread-1.dll"
+        },
+        {
+          "name": "libxml2-16.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libxml2-16.dll"
+        },
+        {
+          "name": "libzimg-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libzimg-2.dll"
+        },
+        {
+          "name": "lua51.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\lua51.dll"
+        },
+        {
+          "name": "mujs.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\mujs.dll"
+        },
+        {
+          "name": "swresample-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\swresample-7.dll"
+        },
+        {
+          "name": "swscale-10.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\swscale-10.dll"
+        },
+        {
+          "name": "vulkan-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\vulkan-1.dll"
+        },
+        {
+          "name": "zlib1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\zlib1.dll"
+        },
+        {
+          "name": "MSVCP140.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\MSVCP140.dll"
+        },
+        {
+          "name": "VCRUNTIME140.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\VCRUNTIME140.dll"
+        },
+        {
+          "name": "VCRUNTIME140_1.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\VCRUNTIME140_1.dll"
+        },
+        {
+          "name": "libmpv-gpu-probe.node",
+          "role": "addon",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-gpu-probe.node"
+        }
+      ],
+      "stderr": ""
+    },
+    {
+      "host": "electron",
+      "executable": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\electron-44.5.1\\electron.exe",
+      "executableSha256": "49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa",
+      "node": "24.21.0",
+      "electron": "44.5.1",
+      "operatingSystem": "win32",
+      "architecture": "x64",
+      "path": "C:\\Windows\\System32",
+      "cwd": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\empty working directory",
+      "main": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_0ef5375abc44770c60cbb1cc0ae9332c\\node_modules\\@libmpv-design\\loader-probe\\loader.cjs",
+      "platform": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64",
+      "addon": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-gpu-probe.node",
+      "pictures": [
+        {
+          "width": 63,
+          "height": 47,
+          "samples": [
+            [0, 0, 255, 255],
+            [0, 255, 0, 255],
+            [255, 0, 0, 255],
+            [255, 255, 255, 255]
+          ],
+          "coreDestroyed": true
+        },
+        {
+          "width": 31,
+          "height": 23,
+          "samples": [
+            [0, 0, 255, 255],
+            [0, 255, 0, 255],
+            [255, 0, 0, 255],
+            [255, 255, 255, 255]
+          ],
+          "coreDestroyed": true
+        }
+      ],
+      "frameResourcesReleased": true,
+      "observedModules": [
+        {
+          "name": "avcodec-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avcodec-63.dll"
+        },
+        {
+          "name": "avdevice-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avdevice-63.dll"
+        },
+        {
+          "name": "avfilter-12.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avfilter-12.dll"
+        },
+        {
+          "name": "avformat-63.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avformat-63.dll"
+        },
+        {
+          "name": "avutil-61.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\avutil-61.dll"
+        },
+        {
+          "name": "libass-9.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libass-9.dll"
+        },
+        {
+          "name": "libbrotlicommon.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbrotlicommon.dll"
+        },
+        {
+          "name": "libbrotlidec.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbrotlidec.dll"
+        },
+        {
+          "name": "libbz2-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libbz2-1.dll"
+        },
+        {
+          "name": "libdav1d-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libdav1d-7.dll"
+        },
+        {
+          "name": "libdovi.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libdovi.dll"
+        },
+        {
+          "name": "libexpat-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libexpat-1.dll"
+        },
+        {
+          "name": "libfontconfig-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfontconfig-1.dll"
+        },
+        {
+          "name": "libfreetype-6.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfreetype-6.dll"
+        },
+        {
+          "name": "libfribidi-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libfribidi-0.dll"
+        },
+        {
+          "name": "libgcc_s_seh-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgcc_s_seh-1.dll"
+        },
+        {
+          "name": "libglib-2.0-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libglib-2.0-0.dll"
+        },
+        {
+          "name": "libgomp-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgomp-1.dll"
+        },
+        {
+          "name": "libgraphite2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libgraphite2.dll"
+        },
+        {
+          "name": "libharfbuzz-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libharfbuzz-0.dll"
+        },
+        {
+          "name": "libiconv-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libiconv-2.dll"
+        },
+        {
+          "name": "libintl-8.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libintl-8.dll"
+        },
+        {
+          "name": "liblcms2-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\liblcms2-2.dll"
+        },
+        {
+          "name": "liblzma-5.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\liblzma-5.dll"
+        },
+        {
+          "name": "libmpv-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-2.dll"
+        },
+        {
+          "name": "libogg-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libogg-0.dll"
+        },
+        {
+          "name": "libopus-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libopus-0.dll"
+        },
+        {
+          "name": "libpcre2-8-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libpcre2-8-0.dll"
+        },
+        {
+          "name": "libplacebo-360.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libplacebo-360.dll"
+        },
+        {
+          "name": "libpng16-16.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libpng16-16.dll"
+        },
+        {
+          "name": "libshaderc_shared.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libshaderc_shared.dll"
+        },
+        {
+          "name": "libsoxr.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libsoxr.dll"
+        },
+        {
+          "name": "libspirv-cross-c-shared.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libspirv-cross-c-shared.dll"
+        },
+        {
+          "name": "libstdc++-6.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libstdc++-6.dll"
+        },
+        {
+          "name": "libunibreak-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libunibreak-7.dll"
+        },
+        {
+          "name": "libvorbis-0.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvorbis-0.dll"
+        },
+        {
+          "name": "libvorbisenc-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvorbisenc-2.dll"
+        },
+        {
+          "name": "libvpx-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libvpx-1.dll"
+        },
+        {
+          "name": "libwinpthread-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libwinpthread-1.dll"
+        },
+        {
+          "name": "libxml2-16.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libxml2-16.dll"
+        },
+        {
+          "name": "libzimg-2.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libzimg-2.dll"
+        },
+        {
+          "name": "lua51.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\lua51.dll"
+        },
+        {
+          "name": "mujs.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\mujs.dll"
+        },
+        {
+          "name": "swresample-7.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\swresample-7.dll"
+        },
+        {
+          "name": "swscale-10.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\swscale-10.dll"
+        },
+        {
+          "name": "vulkan-1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\vulkan-1.dll"
+        },
+        {
+          "name": "zlib1.dll",
+          "role": "media-runtime",
+          "packaged": true,
+          "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\zlib1.dll"
+        },
+        {
+          "name": "MSVCP140.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\MSVCP140.dll"
+        },
+        {
+          "name": "VCRUNTIME140.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\VCRUNTIME140.dll"
+        },
+        {
+          "name": "VCRUNTIME140_1.dll",
+          "role": "msvc-runtime",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\VCRUNTIME140_1.dll"
+        },
+        {
+          "name": "libmpv-gpu-probe.node",
+          "role": "addon",
+          "packaged": true,
+          "path": "\\\\?\\F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\package\\pack 776xrvfk\\consumer\\node_modules\\.pnpm\\@libmpv-design+loader-probe_3d7dff0abfcb913549479d9a65a340ce\\node_modules\\@libmpv-design\\loader-probe-win32-x64\\native\\libmpv-gpu-probe.node"
+        }
+      ],
+      "stderr": ""
+    }
+  ],
+  "sources": {
+    "audit.py": "1d218df27e22cfd0afd78c77de79fe88fc57863ca87bac838ce878e7249d1f6c",
+    "run.py": "26a9a2acca8483fcd7dab7014ef243193dd81b7495764ca73f7fc9b73f9b3df6",
+    "loader.cjs": "d9393167ea5c3cd27403416d647ec572700e82cc843eca72351ba3a0c64db9d1",
+    "consumer.cjs": "fc72f60704f412046c03f8a906fc9abc23d66b42b048701dc2a29136935891ce"
+  },
+  "dependencyAudit": "F:\\project\\3\\kisaki\\refactor\\verification\\evidence\\libmpv-package\\engine-audit.json",
+  "dependencyAuditSha256": "6ecd58fe9de3214a5993dffe55cb30a464e67c5dbd36cb2ae6e71ef5d9840910",
+  "nativeFilesVerifiedAfterInstall": 51,
+  "offlineInstall": true,
+  "installScriptsExecuted": false,
+  "nativeAddonRebuilt": false,
+  "publicMpvImplementation": false,
+  "windowsCleanMachineExecuted": false,
+  "macosExecuted": false,
+  "linuxExecuted": false,
+  "published": false,
+  "formalEngineSelected": false,
+  "dynamicPluginsAndDataAudited": false
+}

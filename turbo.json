@@ -1,0 +1,74 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["tsconfig.base.json", "eslint.config.ts", ".prettierrc.json"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "cache": false
+    },
+    "test:consumers": {
+      "dependsOn": ["pack"],
+      "cache": false
+    },
+    "pack": {
+      "dependsOn": ["build"],
+      "outputs": ["out/*.tgz"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "@kisaki3/desktop#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["out/**"],
+      "cache": false
+    },
+    "@kisaki3/desktop#dev": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
+    "@kisaki3/desktop#package": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "@kisaki3/desktop#test:native": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "@kisaki3/desktop#test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "@kisaki3/desktop#test:artifacts": {
+      "cache": false
+    },
+    "@kisaki3/desktop#test:browser": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "@kisaki3/desktop#test:performance": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "@kisaki3/desktop#test:dev": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

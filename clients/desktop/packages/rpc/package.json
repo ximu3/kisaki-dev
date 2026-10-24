@@ -1,0 +1,46 @@
+{
+  "name": "@kisaki3/rpc",
+  "version": "0.1.0-dev.0",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki.git",
+    "directory": "clients/desktop/packages/rpc"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./transport": {
+      "types": "./dist/transport.d.ts",
+      "import": "./dist/transport.js"
+    }
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "typecheck": "tsc -b",
+    "pack": "pnpm pack --out out/package.tgz",
+    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+    "clean": "tsx tools/clean.ts"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "tsdown": "catalog:",
+    "vitest": "catalog:",
+    "publint": "0.3.25",
+    "@arethetypeswrong/cli": "0.18.5",
+    "@types/node": "catalog:",
+    "tsx": "catalog:"
+  }
+}

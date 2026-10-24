@@ -1,0 +1,154 @@
+{
+  "checkedAt": "2026-10-19T12:54:09.279Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "externalRequests": 0,
+  "nodeInRenderer": false,
+  "upstreamTests": {
+    "assertions": 104,
+    "failed": 0
+  },
+  "repeatedSpine": {
+    "sections": 3,
+    "secondOccurrence": "epubcfi(/6/4[r2])",
+    "resolvedIndex": 0,
+    "expectedSourceOccurrence": 1,
+    "contractMatches": false
+  },
+  "xhtmlEntities": [
+    {
+      "name": "xhtml11",
+      "foliateParsed": true,
+      "foliateText": "A B©C",
+      "expatCandidateParsed": false,
+      "candidateFailure": 3,
+      "candidateNativeError": 35
+    },
+    {
+      "name": "xhtml10",
+      "foliateParsed": true,
+      "foliateText": "A B©C",
+      "expatCandidateParsed": false,
+      "candidateFailure": 3,
+      "candidateNativeError": 35
+    },
+    {
+      "name": "unknown-subset",
+      "foliateParsed": true,
+      "foliateText": "ABC",
+      "expatCandidateParsed": false,
+      "candidateFailure": 3,
+      "candidateNativeError": 35
+    },
+    {
+      "name": "no-doctype",
+      "foliateParsed": false,
+      "foliateText": "",
+      "expatCandidateParsed": false,
+      "candidateFailure": 0,
+      "candidateNativeError": 11
+    }
+  ],
+  "cfiBehavior": {
+    "wrongIdResolvedTo": "b",
+    "wrongTextAssertionReturnedRange": true,
+    "wrongTextAssertionOffset": 1,
+    "leadingZeroParsedIndex": 4,
+    "temporalZeroAfterSerialization": "epubcfi(/4/6)",
+    "temporalComparison": 0
+  },
+  "fb2": [
+    {
+      "name": "normal-utf8",
+      "opened": true,
+      "sections": 3,
+      "location": "epubcfi(/6/2!/4/2[c1]/4[merge]/1:0)",
+      "positionScheme": "generated-section-cfi",
+      "sourceXmlNodePathExposed": false,
+      "observedText": null
+    },
+    {
+      "name": "normal-utf16",
+      "opened": false,
+      "errorType": "TypeError"
+    },
+    {
+      "name": "internal-entity",
+      "opened": true,
+      "sections": 3,
+      "location": "epubcfi(/6/2!/4/2[c1]/4[merge]/1:0)",
+      "positionScheme": "generated-section-cfi",
+      "sourceXmlNodePathExposed": false,
+      "observedText": null
+    },
+    {
+      "name": "external-entity",
+      "opened": true,
+      "sections": 3,
+      "location": "epubcfi(/6/2!/4/2[c1]/4[merge]/1:0)",
+      "positionScheme": "generated-section-cfi",
+      "sourceXmlNodePathExposed": false,
+      "observedText": "leftright"
+    }
+  ],
+  "mobi": [
+    {
+      "name": "sample-cp1252.mobi",
+      "originalVersion": 6,
+      "selectedVersion": 6,
+      "sections": 3,
+      "location": "epubcfi(/6/2!/4/6/1:0)",
+      "sourceByteAnchorExposed": false,
+      "positionScheme": "generated-section-cfi"
+    },
+    {
+      "name": "sample-ncx.mobi",
+      "originalVersion": 6,
+      "selectedVersion": 8,
+      "sections": 3,
+      "location": "epubcfi(/6/2!/4/2/1:0)",
+      "sourceByteAnchorExposed": false,
+      "positionScheme": "generated-section-cfi"
+    }
+  ],
+  "rar": {
+    "supported": false,
+    "unsupportedType": true
+  },
+  "upstreamCodeModified": false,
+  "fullViewRendered": false,
+  "allObservationAssertionsPassed": true,
+  "recordedAt": "2026-10-19T12:54:09.328425+00:00",
+  "fixtureFiles": {
+    "fb2/source.fb2": "d5906a82603c016ae50bb8028d7cbedbf93e62f0b55d1f5856a8e35e4b9a1fe7",
+    "fb2/source-utf16.fb2": "bb24cb643c722dbdab7cde7ec7f511942aa49eccecf754dba0b961004bb58632",
+    "fb2/internal-entity.fb2": "bbf2e4236fcaf484b4bdf00ea04c42d15189dbc5d0602fafd7346b824a688728",
+    "mobi/sample-cp1252.mobi": "e77aa8f99d65f12bc7b5d71f272a2a4a8f36fe6d5c00e9b95c8a926b145ad088",
+    "mobi/sample-ncx.mobi": "bb33217f3369d8ca6c5a373ca8e21a151be5494f5de6623aa9e7f42fb5fed743",
+    "META-INF/container.xml": "31105a9e8dc5f9c8e9f972cb9499daf389dd83197ef01457d662868df9a1d43f",
+    "EPUB/package.opf": "937513d6f9d0a9a073ed76ca81184e017c5a09d5fd7184f66b10e3e81193ff2e",
+    "EPUB/one.xhtml": "7866de74373af33a38915c2f1b3573ca610254f99726f9a4ca64ca6ead8c6bf0",
+    "EPUB/two.xhtml": "788be3305ba7758d3bbc1998fbacfdb00804651fdf4116718d394a3a601ff038",
+    "EPUB/diagram.svg": "68e9509e148847aa223541b5205b84940910df6f6c7ebf66502e1aef9c81f384",
+    "EPUB/nav.xhtml": "93b3487771e4c53d1fa2c0eac5736f4d275fa0176193660a54f535190f421527",
+    "rar5-hlink.rar": "c7c2db6fb021e89198da80d4b903d4a46b692c2f31fec64cb53c7e37af7a51f4"
+  },
+  "xmlCandidate": {
+    "buildReceiptSha256": "cb56893f7b891b7caedad9e4a32860e1da25c3d2e1f407c953efc23ca17f863a",
+    "adapterSha256": "c5c11a4549576b4565a9fccde255db2a4994a0fda742ac89b411d3baba3891a5"
+  },
+  "sourceInputSha256": "4591407f1adf511fe8eaf952a69e00e68c5cfbe2f8618e261d9b048da4f93299",
+  "sources": {
+    "browser-electron.cjs": "b3f60a9261b72db77601112a4ba534553e7bbbbc0371cd6fd332b01f7ee31d56",
+    "prepare.py": "ebf6cace61da20079b31bb2c29b8e7e5be8c7f64ad9a48345fd4328191e743fe",
+    "probe.html": "7a413547601e6e0b6089ae2ae751dac6e29f1a422105c4196dda83792f912e22",
+    "probe.mjs": "be6a9caf830ae2f403af2d30aa149c66d07d0375fbb2f12e6e06d676f6787770",
+    "run.py": "5ef5119fc3474ed3d18165eecbc7deb4c46ed0e62099d0a85aace15923da6b06"
+  },
+  "fixtureReceipts": {
+    "kana-source/fixture-input.json": "3f07a7ebbc8328d2d03a927dbde332a64338dd8ad45fc5ac75d24a761696333e",
+    "kana-formats/source-input.json": "7d95d3f08a658a2baf619cb414034f397c70ce75e6463f8bf318325edd0dbad5",
+    "kana-formats/epub-fixture-input.json": "e7337f33972b900c04a1e5ac6ea611cf53c8e74de995caff2811bd43e814f916",
+    "kana-rar-members/fixture-input.json": "571e72bb736bc3f07ecc5e449d9b63b7018e9e603b01fb403a6104fe0eb8d8e5"
+  }
+}

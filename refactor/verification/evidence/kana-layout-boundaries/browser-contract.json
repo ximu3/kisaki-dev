@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-19T13:19:15.588Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "probeSha256": "77f2c6c52f89c113b1022d80ebfdf465b89f9b4fc35cf9f45465f1b805ec36f4",
+  "externalRequests": 0,
+  "fontRequests": 2,
+  "sourcePreservedButStylesChanged": {
+    "whole": {
+      "source": "same-node",
+      "text": "Target text",
+      "color": "rgb(0, 120, 0)",
+      "fontSize": "16px",
+      "textIndent": "24px"
+    },
+    "fragment": {
+      "source": "same-node",
+      "text": "Target text",
+      "color": "rgb(0, 0, 0)",
+      "fontSize": "32px",
+      "textIndent": "0px"
+    }
+  },
+  "tableContext": {
+    "whole": 208,
+    "fragment": 16
+  },
+  "fontCompletion": {
+    "first": {
+      "ready": "fulfilled",
+      "load": "rejected",
+      "status": "error"
+    },
+    "nextCycle": {
+      "oldPromiseStillFulfilled": true,
+      "newReadyPromise": true,
+      "faceStatus": "loading",
+      "setStatus": "loading"
+    },
+    "second": {
+      "ready": "fulfilled",
+      "load": "rejected",
+      "status": "error"
+    }
+  },
+  "readerImplemented": false,
+  "clipboardAccessed": false,
+  "nodeInRenderer": false,
+  "runnerSha256": "8b5e267a1a6d6974bff5c8498a666eaba201ae630a5201b217e1de100b85ca43",
+  "runtimeReceiptSha256": "1bf0f3c2dd4931715504575dc71be7b231a2a304cb40783ad43dcba77abeedb2"
+}

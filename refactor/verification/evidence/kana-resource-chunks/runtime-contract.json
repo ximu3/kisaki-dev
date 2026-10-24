@@ -1,0 +1,1974 @@
+{
+  "checkedAt": "2026-10-20T11:13:21.046Z",
+  "sources": {
+    "run.cjs": "1c58163c73d88a96dab9719bd5605b50c6876cf2476c7e562db589718c5846d0",
+    "fixture.cjs": "ee182a38e35cb3598863dc2cb6fd5ba02c44f9e20cd427942f8bb76af726d887",
+    "electron.cjs": "9038fc599f94c7ba4f7559f6f06f5cf756b900d4b38d56c517fee319f1e35015",
+    "bridge.js": "4fe8c374771c2bc3f81a78f490f00e68ce3dbf02c199b708864340275dda10af",
+    "worker.js": "0433b2d4bb72d6b502b1d4cae569b73d70c5ff3799bf4898b48e158ed8c9091f",
+    "owner.js": "c4d4bc9fca0d9f553cc0cff00bd038cb2dba08a19a6f83e081894420e28aa998",
+    "cases.js": "4ef5599d81741a7df54468dd6984d433ad7741c49b53327cd04c8566c972bed4",
+    "storage.js": "1c0bebe683a4cbfaa7aa243956b6662e1de05f030050241fbccb3232456b24cd"
+  },
+  "baselineSha256": "3c29d47a36c59f462655e5c75dc7a5dd412c72ebccbb455a423e8798254815d4",
+  "engines": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "platform": {
+        "closeEventObserved": false,
+        "oncloseExposed": false,
+        "transferableStream": true,
+        "transferFailure": null
+      },
+      "streams": {
+        "directPull": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 1,
+          "borrowedSize": 65536
+        },
+        "complete": {
+          "consumed": 2097152,
+          "bytes": 2097152,
+          "reads": 32,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 32,
+          "borrowedSize": 65536
+        },
+        "sharedOccupancy": {
+          "sharedBytes": 1048576,
+          "bytes": 1114112,
+          "reads": 17,
+          "maxRead": 65536,
+          "released": 2,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 2,
+          "pendingSettled": 18,
+          "borrowedSize": 65536
+        },
+        "nativeCancel": {
+          "beforePause": 65536,
+          "afterPause": 196608,
+          "afterCancel": {
+            "bytes": 196608,
+            "reads": 3,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 0,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 3,
+            "borrowedSize": 65536
+          },
+          "afterOwnerClose": {
+            "bytes": 196608,
+            "reads": 3,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 0,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 3,
+            "borrowedSize": 65536
+          }
+        },
+        "ownerClose": {
+          "elapsed": 83.69999999925494,
+          "deliveredBeforeClose": 65536,
+          "readResult": "rejected",
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536
+        },
+        "sourceFailure": {
+          "failedRead": true,
+          "failedBytes": 131072,
+          "bytes": 131072,
+          "reads": 2,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 3,
+          "borrowedSize": 65536
+        },
+        "cleanupFailure": {
+          "failure": "readFailed",
+          "elapsed": 122.59999999776483,
+          "sources": [
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 0,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536,
+              "releaseFailures": 1
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            }
+          ]
+        },
+        "admission": {
+          "saturated": {
+            "active": 4,
+            "peak": 4,
+            "queued": 4,
+            "peakQueued": 4
+          },
+          "ended": [
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            }
+          ],
+          "after": {
+            "active": 0,
+            "peak": 4,
+            "queued": 0,
+            "peakQueued": 4
+          }
+        },
+        "priority": ["current", "background"],
+        "identity": {
+          "ownerId": "1edd1d3b-1d5c-4f3b-9955-ff22e40ae67e",
+          "version": "v1",
+          "bootId": "6cdb23f6-aad1-404c-b998-cb782cc5f5e2",
+          "observations": {
+            "chunks": 0,
+            "maxChunk": 0,
+            "streamCancelled": 0,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "worker": {
+          "ownerId": "1edd1d3b-1d5c-4f3b-9955-ff22e40ae67e",
+          "version": "v1",
+          "bootId": "6cdb23f6-aad1-404c-b998-cb782cc5f5e2",
+          "observations": {
+            "chunks": 77,
+            "maxChunk": 65536,
+            "streamCancelled": 3,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        }
+      },
+      "deployment": {
+        "coexistence": {
+          "hostController": "http://127.0.0.1:58913/pwa.js",
+          "oldController": "http://127.0.0.1:58913/assets/v1/worker.js",
+          "currentController": "http://127.0.0.1:58913/assets/v2/worker.js",
+          "pwaReply": "pwa-owner"
+        },
+        "independentCopies": {
+          "distinctRoutingIds": true,
+          "expiredStatus": 410,
+          "remainingOtherLeases": 0,
+          "mainStillReadable": true
+        },
+        "conflict": {
+          "rejected": "assetUnavailable",
+          "stillForeign": "http://127.0.0.1:58913/foreign.js"
+        },
+        "blockedWorker": {
+          "reason": "assetUnavailable"
+        },
+        "cancelSetup": {
+          "result": "cancelled",
+          "noContentPublished": true,
+          "staticRegistrationMayComplete": true
+        },
+        "liveSlowOwner": {
+          "elapsed": 1255.3999999985099,
+          "bytes": 1024
+        },
+        "failedOpening": {
+          "status": 500,
+          "bytes": 0,
+          "reads": 0,
+          "maxRead": 0,
+          "released": 0,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 0,
+          "pendingSettled": 0,
+          "borrowedSize": 0,
+          "openFailures": 1
+        },
+        "ownerDisappeared": {
+          "orphanStatus": 410,
+          "elapsed": 990.6000000014901
+        },
+        "cancelOpening": {
+          "status": 410,
+          "remainingTasks": 0
+        },
+        "oldVersionCleanup": {
+          "oldUnregistered": true,
+          "currentStillReadable": true,
+          "pwaStillActive": true
+        }
+      },
+      "storage": {
+        "persistentPermissionRequested": false,
+        "opfs": {
+          "available": true,
+          "size": 2048,
+          "rangeBytes": 900,
+          "cleaned": true
+        },
+        "boundedMemory": {
+          "size": 98304,
+          "peakRetained": 98304,
+          "produced": 98304,
+          "cancelled": 0
+        },
+        "memoryLimit": {
+          "failure": "resourceLimit",
+          "produced": 196608,
+          "cancelled": 1
+        },
+        "quotaBoundary": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "writes": 2,
+          "retained": 0,
+          "disposed": 1,
+          "produced": 131072,
+          "cancelled": 1
+        },
+        "storageDenied": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "produced": 0,
+          "cancelled": 1
+        }
+      },
+      "restart": {
+        "bootChanged": true,
+        "readResult": "rejected",
+        "releasedBeforeClose": true,
+        "readableAfterRestart": true,
+        "stats": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536,
+          "peerLost": 1
+        }
+      },
+      "privateMode": {
+        "outcome": "available",
+        "bytes": 1024,
+        "cleanup": {
+          "mounts": 0,
+          "leases": 0,
+          "inflight": 0,
+          "budget": {
+            "active": 0,
+            "peak": 1,
+            "queued": 0,
+            "peakQueued": 1
+          },
+          "caches": []
+        }
+      },
+      "cleanup": {
+        "mounts": 0,
+        "leases": 0,
+        "inflight": 0,
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        },
+        "caches": []
+      },
+      "errors": [],
+      "externalRequests": 0
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "platform": {
+        "closeEventObserved": false,
+        "oncloseExposed": false,
+        "transferableStream": true,
+        "transferFailure": null
+      },
+      "streams": {
+        "directPull": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 1,
+          "borrowedSize": 65536
+        },
+        "complete": {
+          "consumed": 2097152,
+          "bytes": 2097152,
+          "reads": 32,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 32,
+          "borrowedSize": 65536
+        },
+        "sharedOccupancy": {
+          "sharedBytes": 1048576,
+          "bytes": 1179648,
+          "reads": 18,
+          "maxRead": 65536,
+          "released": 2,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 2,
+          "pendingSettled": 19,
+          "borrowedSize": 65536
+        },
+        "nativeCancel": {
+          "beforePause": 65536,
+          "afterPause": 3866624,
+          "afterCancel": {
+            "bytes": 3866624,
+            "reads": 59,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 1,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 60,
+            "borrowedSize": 65536
+          },
+          "afterOwnerClose": {
+            "bytes": 3866624,
+            "reads": 59,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 1,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 60,
+            "borrowedSize": 65536
+          }
+        },
+        "ownerClose": {
+          "elapsed": 85,
+          "deliveredBeforeClose": 65536,
+          "readResult": "rejected",
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536
+        },
+        "sourceFailure": {
+          "failedRead": true,
+          "failedBytes": 131072,
+          "bytes": 131072,
+          "reads": 2,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 3,
+          "borrowedSize": 65536
+        },
+        "cleanupFailure": {
+          "failure": "readFailed",
+          "elapsed": 122,
+          "sources": [
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 0,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536,
+              "releaseFailures": 1
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            }
+          ]
+        },
+        "admission": {
+          "saturated": {
+            "active": 4,
+            "peak": 4,
+            "queued": 4,
+            "peakQueued": 4
+          },
+          "ended": [
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            }
+          ],
+          "after": {
+            "active": 0,
+            "peak": 4,
+            "queued": 0,
+            "peakQueued": 4
+          }
+        },
+        "priority": ["current", "background"],
+        "identity": {
+          "ownerId": "49f63dba-aff5-4280-a033-7d7a4d041e7a",
+          "version": "v1",
+          "bootId": "632b33df-a508-4dd4-8a3c-eca3e066d74b",
+          "observations": {
+            "chunks": 0,
+            "maxChunk": 0,
+            "streamCancelled": 0,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "worker": {
+          "ownerId": "49f63dba-aff5-4280-a033-7d7a4d041e7a",
+          "version": "v1",
+          "bootId": "632b33df-a508-4dd4-8a3c-eca3e066d74b",
+          "observations": {
+            "chunks": 134,
+            "maxChunk": 65536,
+            "streamCancelled": 3,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        }
+      },
+      "deployment": {
+        "coexistence": {
+          "hostController": "http://127.0.0.1:58913/pwa.js",
+          "oldController": "http://127.0.0.1:58913/assets/v1/worker.js",
+          "currentController": "http://127.0.0.1:58913/assets/v2/worker.js",
+          "pwaReply": "pwa-owner"
+        },
+        "independentCopies": {
+          "distinctRoutingIds": true,
+          "expiredStatus": 410,
+          "remainingOtherLeases": 0,
+          "mainStillReadable": true
+        },
+        "conflict": {
+          "rejected": "assetUnavailable",
+          "stillForeign": "http://127.0.0.1:58913/foreign.js"
+        },
+        "blockedWorker": {
+          "reason": "assetUnavailable"
+        },
+        "cancelSetup": {
+          "result": "cancelled",
+          "noContentPublished": true,
+          "staticRegistrationMayComplete": true
+        },
+        "liveSlowOwner": {
+          "elapsed": 1259,
+          "bytes": 1024
+        },
+        "failedOpening": {
+          "status": 500,
+          "bytes": 0,
+          "reads": 0,
+          "maxRead": 0,
+          "released": 0,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 0,
+          "pendingSettled": 0,
+          "borrowedSize": 0,
+          "openFailures": 1
+        },
+        "ownerDisappeared": {
+          "orphanStatus": 410,
+          "elapsed": 1029
+        },
+        "cancelOpening": {
+          "status": 410,
+          "remainingTasks": 0
+        },
+        "oldVersionCleanup": {
+          "oldUnregistered": true,
+          "currentStillReadable": true,
+          "pwaStillActive": true
+        }
+      },
+      "storage": {
+        "persistentPermissionRequested": false,
+        "opfs": {
+          "available": true,
+          "size": 2048,
+          "rangeBytes": 900,
+          "cleaned": true
+        },
+        "boundedMemory": {
+          "size": 98304,
+          "peakRetained": 98304,
+          "produced": 98304,
+          "cancelled": 0
+        },
+        "memoryLimit": {
+          "failure": "resourceLimit",
+          "produced": 196608,
+          "cancelled": 1
+        },
+        "quotaBoundary": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "writes": 2,
+          "retained": 0,
+          "disposed": 1,
+          "produced": 131072,
+          "cancelled": 1
+        },
+        "storageDenied": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "produced": 0,
+          "cancelled": 1
+        }
+      },
+      "restart": null,
+      "privateMode": {
+        "outcome": "available",
+        "bytes": 1024,
+        "cleanup": {
+          "mounts": 0,
+          "leases": 0,
+          "inflight": 0,
+          "budget": {
+            "active": 0,
+            "peak": 1,
+            "queued": 0,
+            "peakQueued": 1
+          },
+          "caches": []
+        }
+      },
+      "cleanup": {
+        "mounts": 0,
+        "leases": 0,
+        "inflight": 0,
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        },
+        "caches": []
+      },
+      "errors": [],
+      "externalRequests": 0
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "platform": {
+        "closeEventObserved": false,
+        "oncloseExposed": false,
+        "transferableStream": true,
+        "transferFailure": null
+      },
+      "streams": {
+        "directPull": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 1,
+          "borrowedSize": 65536
+        },
+        "complete": {
+          "consumed": 2097152,
+          "bytes": 2097152,
+          "reads": 32,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 32,
+          "borrowedSize": 65536
+        },
+        "sharedOccupancy": {
+          "sharedBytes": 1048576,
+          "bytes": 1114112,
+          "reads": 17,
+          "maxRead": 65536,
+          "released": 2,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 2,
+          "pendingSettled": 18,
+          "borrowedSize": 65536
+        },
+        "nativeCancel": {
+          "beforePause": 65536,
+          "afterPause": 524288,
+          "afterCancel": {
+            "bytes": 524288,
+            "reads": 8,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 1,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 9,
+            "borrowedSize": 65536
+          },
+          "afterOwnerClose": {
+            "bytes": 524288,
+            "reads": 8,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 1,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 9,
+            "borrowedSize": 65536
+          }
+        },
+        "ownerClose": {
+          "elapsed": 91,
+          "deliveredBeforeClose": 65536,
+          "readResult": "rejected",
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536
+        },
+        "sourceFailure": {
+          "failedRead": true,
+          "failedBytes": 131072,
+          "bytes": 131072,
+          "reads": 2,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 3,
+          "borrowedSize": 65536
+        },
+        "cleanupFailure": {
+          "failure": "readFailed",
+          "elapsed": 139,
+          "sources": [
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 0,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536,
+              "releaseFailures": 1
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            }
+          ]
+        },
+        "admission": {
+          "saturated": {
+            "active": 4,
+            "peak": 4,
+            "queued": 4,
+            "peakQueued": 4
+          },
+          "ended": [
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            }
+          ],
+          "after": {
+            "active": 0,
+            "peak": 4,
+            "queued": 0,
+            "peakQueued": 4
+          }
+        },
+        "priority": ["current", "background"],
+        "identity": {
+          "ownerId": "ec2f4e75-bee8-44f5-8465-f81244823880",
+          "version": "v1",
+          "bootId": "07a27a97-c791-4b70-8ad6-01308f71664c",
+          "observations": {
+            "chunks": 0,
+            "maxChunk": 0,
+            "streamCancelled": 0,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "worker": {
+          "ownerId": "ec2f4e75-bee8-44f5-8465-f81244823880",
+          "version": "v1",
+          "bootId": "07a27a97-c791-4b70-8ad6-01308f71664c",
+          "observations": {
+            "chunks": 82,
+            "maxChunk": 65536,
+            "streamCancelled": 3,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        }
+      },
+      "deployment": {
+        "coexistence": {
+          "hostController": "http://127.0.0.1:58913/pwa.js",
+          "oldController": "http://127.0.0.1:58913/assets/v1/worker.js",
+          "currentController": "http://127.0.0.1:58913/assets/v2/worker.js",
+          "pwaReply": "pwa-owner"
+        },
+        "independentCopies": {
+          "distinctRoutingIds": true,
+          "expiredStatus": 410,
+          "remainingOtherLeases": 0,
+          "mainStillReadable": true
+        },
+        "conflict": {
+          "rejected": "assetUnavailable",
+          "stillForeign": "http://127.0.0.1:58913/foreign.js"
+        },
+        "blockedWorker": {
+          "reason": "assetUnavailable"
+        },
+        "cancelSetup": {
+          "result": "cancelled",
+          "noContentPublished": true,
+          "staticRegistrationMayComplete": true
+        },
+        "liveSlowOwner": {
+          "elapsed": 1308,
+          "bytes": 1024
+        },
+        "failedOpening": {
+          "status": 500,
+          "bytes": 0,
+          "reads": 0,
+          "maxRead": 0,
+          "released": 0,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 0,
+          "pendingSettled": 0,
+          "borrowedSize": 0,
+          "openFailures": 1
+        },
+        "ownerDisappeared": {
+          "orphanStatus": 410,
+          "elapsed": 1004
+        },
+        "cancelOpening": {
+          "status": 410,
+          "remainingTasks": 0
+        },
+        "oldVersionCleanup": {
+          "oldUnregistered": true,
+          "currentStillReadable": true,
+          "pwaStillActive": true
+        }
+      },
+      "storage": {
+        "persistentPermissionRequested": false,
+        "opfs": {
+          "available": false
+        },
+        "boundedMemory": {
+          "size": 98304,
+          "peakRetained": 98304,
+          "produced": 98304,
+          "cancelled": 0
+        },
+        "memoryLimit": {
+          "failure": "resourceLimit",
+          "produced": 196608,
+          "cancelled": 1
+        },
+        "quotaBoundary": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "writes": 2,
+          "retained": 0,
+          "disposed": 1,
+          "produced": 131072,
+          "cancelled": 1
+        },
+        "storageDenied": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "produced": 0,
+          "cancelled": 1
+        }
+      },
+      "restart": null,
+      "privateMode": {
+        "outcome": "available",
+        "bytes": 1024,
+        "cleanup": {
+          "mounts": 0,
+          "leases": 0,
+          "inflight": 0,
+          "budget": {
+            "active": 0,
+            "peak": 1,
+            "queued": 0,
+            "peakQueued": 1
+          },
+          "caches": []
+        }
+      },
+      "cleanup": {
+        "mounts": 0,
+        "leases": 0,
+        "inflight": 0,
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        },
+        "caches": []
+      },
+      "errors": [
+        "FetchEvent.respondWith received an error: Error: Resource delivery ended.",
+        "FetchEvent.respondWith received an error: Error: Resource delivery ended.",
+        "FetchEvent.respondWith received an error: Error: Resource delivery ended.",
+        "FetchEvent.respondWith received an error: Error: Resource delivery ended.",
+        "FetchEvent.respondWith received an error: Error: Resource delivery ended."
+      ],
+      "externalRequests": 0
+    },
+    {
+      "name": "electron",
+      "executableSha256": "e9df29c4d114ee114e42e9fa9b5ccefaa0d22741cfb4e7f09b93f482ce33719f",
+      "version": {
+        "node": "24.14.0",
+        "acorn": "8.15.0",
+        "ada": "3.4.2",
+        "amaro": "1.1.7",
+        "ares": "1.34.6",
+        "brotli": "1.0.9",
+        "cldr": "47.0",
+        "icu": "77.1",
+        "llhttp": "9.3.0",
+        "merve": "1.0.0",
+        "modules": "145",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.68.0",
+        "openssl": "0.0.0",
+        "simdjson": "4.2.4",
+        "simdutf": "7.7.0",
+        "sqlite": "3.51.2",
+        "tz": "2025b",
+        "undici": "7.21.0",
+        "unicode": "16.0",
+        "uv": "1.51.0",
+        "uvwasi": "0.0.23",
+        "v8": "14.6.202.31-electron.0",
+        "zlib": "1.3.1",
+        "zstd": "1.6.0",
+        "electron": "41.2.0",
+        "chrome": "146.0.7680.179"
+      },
+      "platform": {
+        "closeEventObserved": true,
+        "oncloseExposed": true,
+        "transferableStream": true,
+        "transferFailure": null
+      },
+      "streams": {
+        "directPull": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 1,
+          "borrowedSize": 65536
+        },
+        "complete": {
+          "consumed": 2097152,
+          "bytes": 2097152,
+          "reads": 32,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 32,
+          "borrowedSize": 65536
+        },
+        "sharedOccupancy": {
+          "sharedBytes": 1048576,
+          "bytes": 1114112,
+          "reads": 17,
+          "maxRead": 65536,
+          "released": 2,
+          "leases": 0,
+          "consumerCancellations": 1,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 2,
+          "pendingSettled": 18,
+          "borrowedSize": 65536
+        },
+        "nativeCancel": {
+          "beforePause": 65536,
+          "afterPause": 196608,
+          "afterCancel": {
+            "bytes": 196608,
+            "reads": 3,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 0,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 3,
+            "borrowedSize": 65536
+          },
+          "afterOwnerClose": {
+            "bytes": 196608,
+            "reads": 3,
+            "maxRead": 65536,
+            "released": 1,
+            "leases": 0,
+            "consumerCancellations": 1,
+            "abortObserved": 0,
+            "inflight": 0,
+            "peakInflight": 1,
+            "pendingSettled": 3,
+            "borrowedSize": 65536
+          }
+        },
+        "ownerClose": {
+          "elapsed": 86.19999999925494,
+          "deliveredBeforeClose": 65536,
+          "readResult": "rejected",
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536
+        },
+        "sourceFailure": {
+          "failedRead": true,
+          "failedBytes": 131072,
+          "bytes": 131072,
+          "reads": 2,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 3,
+          "borrowedSize": 65536
+        },
+        "cleanupFailure": {
+          "failure": "readFailed",
+          "elapsed": 127.19999999925494,
+          "sources": [
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 0,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536,
+              "releaseFailures": 1
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            },
+            {
+              "bytes": 65536,
+              "reads": 1,
+              "maxRead": 65536,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 2,
+              "borrowedSize": 65536
+            }
+          ]
+        },
+        "admission": {
+          "saturated": {
+            "active": 4,
+            "peak": 4,
+            "queued": 4,
+            "peakQueued": 4
+          },
+          "ended": [
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 1,
+              "inflight": 0,
+              "peakInflight": 1,
+              "pendingSettled": 1,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            },
+            {
+              "bytes": 0,
+              "reads": 0,
+              "maxRead": 0,
+              "released": 1,
+              "leases": 0,
+              "consumerCancellations": 0,
+              "abortObserved": 0,
+              "inflight": 0,
+              "peakInflight": 0,
+              "pendingSettled": 0,
+              "borrowedSize": 0
+            }
+          ],
+          "after": {
+            "active": 0,
+            "peak": 4,
+            "queued": 0,
+            "peakQueued": 4
+          }
+        },
+        "priority": ["current", "background"],
+        "identity": {
+          "ownerId": "80309323-a91c-44f1-9742-9eba19e3e248",
+          "version": "v1",
+          "bootId": "b6d876f5-5592-4741-9737-ac56814e2091",
+          "observations": {
+            "chunks": 0,
+            "maxChunk": 0,
+            "streamCancelled": 0,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "worker": {
+          "ownerId": "80309323-a91c-44f1-9742-9eba19e3e248",
+          "version": "v1",
+          "bootId": "b6d876f5-5592-4741-9737-ac56814e2091",
+          "observations": {
+            "chunks": 77,
+            "maxChunk": 65536,
+            "streamCancelled": 3,
+            "requestAborted": 0,
+            "active": 0
+          }
+        },
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        }
+      },
+      "deployment": {
+        "coexistence": {
+          "hostController": "kana-runtime://app/pwa.js",
+          "oldController": "kana-runtime://app/assets/v1/worker.js",
+          "currentController": "kana-runtime://app/assets/v2/worker.js",
+          "pwaReply": "pwa-owner"
+        },
+        "independentCopies": {
+          "distinctRoutingIds": true,
+          "expiredStatus": 410,
+          "remainingOtherLeases": 0,
+          "mainStillReadable": true
+        },
+        "conflict": {
+          "rejected": "assetUnavailable",
+          "stillForeign": "kana-runtime://app/foreign.js"
+        },
+        "blockedWorker": {
+          "reason": "assetUnavailable"
+        },
+        "cancelSetup": {
+          "result": "cancelled",
+          "noContentPublished": true,
+          "staticRegistrationMayComplete": true
+        },
+        "liveSlowOwner": {
+          "elapsed": 1259.2999999970198,
+          "bytes": 1024
+        },
+        "failedOpening": {
+          "status": 500,
+          "bytes": 0,
+          "reads": 0,
+          "maxRead": 0,
+          "released": 0,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 0,
+          "inflight": 0,
+          "peakInflight": 0,
+          "pendingSettled": 0,
+          "borrowedSize": 0,
+          "openFailures": 1
+        },
+        "ownerDisappeared": {
+          "orphanStatus": 410,
+          "elapsed": 994.1999999992549
+        },
+        "cancelOpening": {
+          "status": 410,
+          "remainingTasks": 0
+        },
+        "oldVersionCleanup": {
+          "oldUnregistered": true,
+          "currentStillReadable": true,
+          "pwaStillActive": true
+        }
+      },
+      "storage": {
+        "persistentPermissionRequested": false,
+        "opfs": {
+          "available": true,
+          "size": 2048,
+          "rangeBytes": 900,
+          "cleaned": true
+        },
+        "boundedMemory": {
+          "size": 98304,
+          "peakRetained": 98304,
+          "produced": 98304,
+          "cancelled": 0
+        },
+        "memoryLimit": {
+          "failure": "resourceLimit",
+          "produced": 196608,
+          "cancelled": 1
+        },
+        "quotaBoundary": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "writes": 2,
+          "retained": 0,
+          "disposed": 1,
+          "produced": 131072,
+          "cancelled": 1
+        },
+        "storageDenied": {
+          "injectedFailure": true,
+          "failure": "resourceLimit",
+          "produced": 0,
+          "cancelled": 1
+        }
+      },
+      "restart": {
+        "bootChanged": true,
+        "readResult": "rejected",
+        "releasedBeforeClose": true,
+        "readableAfterRestart": true,
+        "stats": {
+          "bytes": 65536,
+          "reads": 1,
+          "maxRead": 65536,
+          "released": 1,
+          "leases": 0,
+          "consumerCancellations": 0,
+          "abortObserved": 1,
+          "inflight": 0,
+          "peakInflight": 1,
+          "pendingSettled": 2,
+          "borrowedSize": 65536,
+          "peerLost": 1
+        }
+      },
+      "cleanup": {
+        "mounts": 0,
+        "leases": 0,
+        "inflight": 0,
+        "budget": {
+          "active": 0,
+          "peak": 4,
+          "queued": 0,
+          "peakQueued": 4
+        },
+        "caches": []
+      },
+      "nativeRequests": [
+        "/host.html",
+        "/bridge.js",
+        "/owner.js",
+        "/storage.js",
+        "/cases.js",
+        "/assets/v1/worker.js",
+        "/assets/v1/bridge.js",
+        "/pwa.js",
+        "/assets/v2/worker.js",
+        "/assets/v2/bridge.js",
+        "/other-owner.js",
+        "/foreign.js",
+        "/blocked.html",
+        "/bridge.js",
+        "/owner.js",
+        "/storage.js",
+        "/cases.js",
+        "/assets/install-slow/worker.js",
+        "/assets/install-slow/bridge.js",
+        "/pwa.js",
+        "/assets/v1/worker.js",
+        "/assets/v1/bridge.js",
+        "/host.html",
+        "/bridge.js",
+        "/owner.js",
+        "/storage.js",
+        "/cases.js",
+        "/assets/v2/worker.js",
+        "/assets/v2/bridge.js",
+        "/pwa.js"
+      ]
+    }
+  ],
+  "httpRequests": [
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/favicon.ico",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/favicon.ico",
+    "/assets/v1/worker.js",
+    "/pwa.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/assets/v1/bridge.js",
+    "/other-owner.js",
+    "/foreign.js",
+    "/blocked.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/install-slow/worker.js",
+    "/assets/install-slow/bridge.js",
+    "/pwa.js",
+    "/pwa.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/other-owner.js",
+    "/foreign.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/blocked.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/install-slow/worker.js",
+    "/assets/install-slow/bridge.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/pwa.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/pwa.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/pwa.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/private/worker.js",
+    "/assets/private/bridge.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/favicon.ico",
+    "/assets/private/worker.js",
+    "/assets/private/bridge.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/pwa.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/other-owner.js",
+    "/assets/v1/worker.js",
+    "/assets/v1/bridge.js",
+    "/foreign.js",
+    "/blocked.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/install-slow/worker.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/assets/install-slow/bridge.js",
+    "/pwa.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/v2/worker.js",
+    "/assets/v2/bridge.js",
+    "/pwa.js",
+    "/host.html",
+    "/bridge.js",
+    "/owner.js",
+    "/storage.js",
+    "/cases.js",
+    "/assets/private/worker.js",
+    "/assets/private/bridge.js"
+  ],
+  "productionReaderExecuted": false,
+  "actualSafariExecuted": false,
+  "actualWebKitGtkExecuted": false,
+  "workspaceDependenciesChanged": false
+}

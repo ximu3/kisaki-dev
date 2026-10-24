@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-17T06:38:01.262Z",
+  "sourceBaseline": {
+    "repository": "ximu3/vnite",
+    "tag": "v4.14.0",
+    "commit": "36df84c5ded93b24fa86a269fb3f93f473316061",
+    "latestReleaseAtCheck": "v4.14.0"
+  },
+  "runtime": {
+    "platform": "Windows",
+    "adapter": "leveldb",
+    "pouchdb": "9.0.0",
+    "zipReader": "0.5.16"
+  },
+  "input": {
+    "kind": "user-provided-official-backup",
+    "fileName": "vnite-database-20261017.zip",
+    "bytes": 112066773,
+    "sha256": "f7bb9a805880eba46825d4c0d335210c0b45752e641076e6a25cc5ebd966d453",
+    "readDatabases": ["game", "game-local", "game-collection"],
+    "readConfigurationAndPluginDatabases": false,
+    "originalArchiveUnchanged": true,
+    "exactApplicationVersionVerified": false
+  },
+  "observations": {
+    "games": 147,
+    "localRecords": 147,
+    "collections": 5,
+    "explicitIntervals": 488,
+    "invalidIntervals": 0,
+    "futureIntervals": 0,
+    "memoryRecords": 9,
+    "memoriesWithTextOrCover": 5,
+    "emptyMemories": 4,
+    "allImageAttachments": 466,
+    "imageAttachmentChecks": {
+      "checked": 466,
+      "bytes": 113734606,
+      "digestMatches": 466,
+      "lengthMatches": 466,
+      "webpHeaders": 466,
+      "failed": 0
+    },
+    "winningRevisionConflictDocuments": {
+      "game": 3,
+      "gameCollection": 3
+    },
+    "danglingCollectionMembers": 0,
+    "sourceTotalLessThanIntervalSumCount": 1,
+    "sourceTotalGreaterThanIntervalSumCount": 4,
+    "dailyOnlyRecordsPresent": false,
+    "localLauncherModes": ["file", "url", "script"],
+    "memoryInlineReferencesResolvable": true,
+    "foreignSaveArchivesPresent": false
+  },
+  "sourceSemantics": {
+    "score": {
+      "minimum": 0,
+      "maximum": 10,
+      "step": 0.1,
+      "unset": -1
+    },
+    "statuses": ["unplayed", "playing", "partial", "finished", "multiple", "shelved"],
+    "timerUnits": "ISO timestamps; duration equals end-start in milliseconds",
+    "totalTime": "sum of timer durations + daily-only totals + undated time",
+    "multipleStatusExactCountKnown": false,
+    "archiveRootIncluded": false,
+    "publicIdentityFields": ["steamId", "vndbId", "igdbId", "ymgalId"],
+    "inlineImageScheme": "attachment://game/<gameId>/images/memories/inline/<imageId>.webp"
+  },
+  "syntheticFixture": {
+    "archive": "synthetic-backup.zip",
+    "records": "synthetic-records.json",
+    "sha256": "79e901da109519f53b3059c0d46ffca0ecd6963b341018283da7e50160dc3c6d",
+    "bytes": 5485,
+    "checks": {
+      "liveGames": 6,
+      "deletedAbsent": true,
+      "statuses": ["unplayed", "playing", "partial", "finished", "multiple", "shelved"],
+      "scoreZeroPreserved": true,
+      "unsetScorePreserved": true,
+      "dailyOnlyPresent": true,
+      "threeLauncherModes": ["file", "url", "script"],
+      "missingOptionalCollectionSort": true,
+      "inlineAttachmentBytesMatch": true,
+      "foreignSaveArchiveReadable": true
+    },
+    "containsUserData": false
+  },
+  "publicRequests": [
+    {
+      "url": "https://api.github.com/repos/ximu3/vnite/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.172Z",
+      "bytes": 9193,
+      "sha256": "f09a9613f10445f974bc6f46233b363a9c61032790210fb298ffcc39e4a07e8d"
+    },
+    {
+      "url": "https://api.github.com/repos/ximu3/vnite/git/trees/36df84c5ded93b24fa86a269fb3f93f473316061?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.175Z",
+      "bytes": 242167,
+      "sha256": "b251dd82fc2bd7ff235fc66a240b6390e6d4d7ef406fbf8a21e9ad74df4828ba"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/database/services/backup.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.867Z",
+      "bytes": 1534,
+      "sha256": "9187984d947cd9379513e05d4978708b8e6805685376f251aaf5f9e5889c0eb3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/types/models/game.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.867Z",
+      "bytes": 6326,
+      "sha256": "5e404398a88c3ecb0592645e5bc96f6104a3db590430cf4518c4f2b9ad03091d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/package.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.867Z",
+      "bytes": 5187,
+      "sha256": "8d19e492d8b020210e5906604a96bf4d78bb5b262e18e12137c5d01781c5cd85"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/core/database/types.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.868Z",
+      "bytes": 233,
+      "sha256": "faa7f8221d94380d00aaccb8c9c6d9ae0c8492dacfe42d8303403a44ac6f00ad"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/core/database/BaseDBManager.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.869Z",
+      "bytes": 17795,
+      "sha256": "46b732b051456382c03227f34e51779a4e8b2c6b2e67a23490e566e456f296a5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/core/database/layers/GameDBManager.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:01.869Z",
+      "bytes": 19523,
+      "sha256": "852d6cfebbc15e4e27d1343fa5d7f6e5068af821e8ed6726eeedb0246f4f138a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/monitor/services/monitor.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.097Z",
+      "bytes": 23996,
+      "sha256": "f8ed3a36ac4361832cc9f46c662579c0d7a6c2303df3a133b8d6666d35a3b894"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/game/services/memory.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.098Z",
+      "bytes": 3174,
+      "sha256": "bbeb194ea6a635e740ded6ed2870790a7d619fe63314935b66b0a1bc32e6b92d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/game/services/record.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.227Z",
+      "bytes": 796,
+      "sha256": "f474fa9b2641f3ed35fad3bfe6b6bb4a7471120b2efbcb8c24e5dfbfcb656564"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/launcher/services/launcher.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.232Z",
+      "bytes": 2696,
+      "sha256": "f7bd92a3d2dbe3f059c61871cf5a01b1ba258956de8f67080e2540fde12c2fad"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/core/database/migrations.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.232Z",
+      "bytes": 9289,
+      "sha256": "e1cd17d5a0383538649dbffc69e800f4987a6e48a10ade884c9e1e41c8aee07b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/utils/archiver.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.233Z",
+      "bytes": 3738,
+      "sha256": "ac5a777badfcca92638eadc971eb9f0df439135592bbc74fb2d67b7862614710"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Config/ManageMenu/TimerEditDialog.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.237Z",
+      "bytes": 3829,
+      "sha256": "f5f26199f15066ee8fbb175945c0d6a0e3deb79d3a24731eb93d99856b09cd42"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/system/services/path.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.237Z",
+      "bytes": 3082,
+      "sha256": "a2bced7f22b5d97d43bd79f5d8c3a335bfb05450056a035b9cfdd6c931baad32"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Config/ManageMenu/ScoreEditorDialog.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.243Z",
+      "bytes": 2360,
+      "sha256": "d12e95558b189e4092914b832c320458c9646b07f50db3c45ef9fe2e058b22fa"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/game/services/memoryExport.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:29:41.457Z",
+      "bytes": 5547,
+      "sha256": "68d4ca4078b5426fda9cc89568bcf643ba8cd820203bf4b9fb31fbfcbe68a3ae"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/main/features/game/services/save.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.649Z",
+      "bytes": 10713,
+      "sha256": "0bbac6fde40df4dc4f2388f43c39c809a2f01df240ed5bf488c95ea6a56e067f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Memory/components/MarkdownPreview.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.667Z",
+      "bytes": 3789,
+      "sha256": "a4ae1aa30fa2d679e0e199ffb666ade4a1f0704bc6102618a2a1d946c6a42649"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Memory/components/MarkdownEditor.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.672Z",
+      "bytes": 21334,
+      "sha256": "bc849f5696b1dabbf6ce42e253341f0ef1c2339d22fd86d5bd73ee51163fbe73"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/en/game.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.672Z",
+      "bytes": 30489,
+      "sha256": "45b193aa0458de47385ad7564138dd8ca0755616579178b52d4cec617158e7da"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/utils/common.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.673Z",
+      "bytes": 2815,
+      "sha256": "7b2f8d09ace1e6f165e236590fe42407bcb32570ec7875d5e8b42409c38efbb4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/zh-CN/game.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.686Z",
+      "bytes": 29998,
+      "sha256": "ec740e82791f30251540403cd3804034bec192290b36ba65c01beba3a4aafd67"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Memory/utils.ts",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:30:04.687Z",
+      "bytes": 2507,
+      "sha256": "80b1eec5fdc3eeb131b89a0e11ee1c3d5f033e4d7aa2e74e6cecb4353afc9fbd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/PlayStatusOrderEditor.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:31:24.422Z",
+      "bytes": 1963,
+      "sha256": "654dd5eff5db6027e5e83874984b844593ef731eb54943d5daa89de463745d33"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/zh-CN/utils.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:31:24.430Z",
+      "bytes": 3258,
+      "sha256": "49d2d3a9af32174ff99918854afa670eebaae3909b55d0c803a0432347a6f400"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/en/utils.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:31:24.438Z",
+      "bytes": 3303,
+      "sha256": "5a79a536e931fbfaa33d0f03e3dd15a5eb5bf8498cc6b4427168e2a8e8b7baf4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/zh-CN/sidebar.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:31:24.694Z",
+      "bytes": 1871,
+      "sha256": "a45de3a9a59a64d0eab5638b1a0daeefd0d1ec947bda8c64707dfa8a1168664b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/locales/en/sidebar.json",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:31:24.765Z",
+      "bytes": 1815,
+      "sha256": "b0fdab718ef221119b41c06b962b19827fb8cc344099af60f2390f500ac002f3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Config/ManageMenu/DailyPlayTimeEditDialog.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:33:45.056Z",
+      "bytes": 3746,
+      "sha256": "a08dddd4a79101cb25afdd671baeb45c098514e6bf60bfab0067ce5cf3f04874"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Overview/description/DescriptionHtmlContent.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:33:45.068Z",
+      "bytes": 2533,
+      "sha256": "c17088ebf45cd1f7a5924d5c55829a1159f61d328277f45c30ee39b9a2e4a795"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ximu3/vnite/36df84c5ded93b24fa86a269fb3f93f473316061/src/renderer/src/components/Game/Config/ManageMenu/PlayTimeEditorDialog.tsx",
+      "status": 200,
+      "checkedAt": "2026-10-17T06:33:45.095Z",
+      "bytes": 17824,
+      "sha256": "e59a141f2b5894473f9bbe13d3ec7f7499a9601f9be6510e364aa3670362cbbb"
+    }
+  ],
+  "limits": {
+    "productionImporterImplemented": false,
+    "nativeLibraryWritesPerformed": false,
+    "launchConfigurationsExecuted": false,
+    "foreignSaveArchivesImported": false,
+    "fullImageDecodeTested": false,
+    "privateInputCopiedIntoRepository": false
+  },
+  "cleanup": {
+    "privateDatabasesClosed": true,
+    "privateTemporaryCopyRemoved": false,
+    "reason": "Deletion was blocked by the execution policy.",
+    "sourceBackupUnchanged": true
+  }
+}

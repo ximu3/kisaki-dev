@@ -1,0 +1,311 @@
+{
+  "electron": "44.5.1",
+  "node": "24.21.0",
+  "nodeApi": "10",
+  "imports": [
+    {
+      "backend": "d3d11",
+      "target": "srgb",
+      "pixelFormat": "bgra8unorm",
+      "width": 63,
+      "height": 47,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": "BGRA",
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          255,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255,
+          255
+        ],
+        [
+          255,
+          255,
+          255,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    },
+    {
+      "backend": "d3d11",
+      "target": "srgb",
+      "pixelFormat": "bgra8unorm",
+      "width": 31,
+      "height": 23,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": "BGRA",
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          255,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255,
+          255
+        ],
+        [
+          255,
+          255,
+          255,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    },
+    {
+      "backend": "angle",
+      "target": "srgb",
+      "pixelFormat": "bgra8unorm",
+      "width": 63,
+      "height": 47,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": "BGRA",
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          255,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255,
+          255
+        ],
+        [
+          255,
+          255,
+          255,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    },
+    {
+      "backend": "angle",
+      "target": "srgb",
+      "pixelFormat": "bgra8unorm",
+      "width": 31,
+      "height": 23,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": "BGRA",
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          255,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255,
+          255
+        ],
+        [
+          255,
+          255,
+          255,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    },
+    {
+      "backend": "d3d11",
+      "target": "pq",
+      "pixelFormat": "rgba16float",
+      "width": 63,
+      "height": 47,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": null,
+      "samples": [
+        [
+          188,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          188,
+          2,
+          255
+        ],
+        [
+          2,
+          0,
+          187,
+          255
+        ],
+        [
+          187,
+          187,
+          187,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    },
+    {
+      "backend": "d3d11",
+      "target": "pq",
+      "pixelFormat": "rgba16float",
+      "width": 31,
+      "height": 23,
+      "adapterLuid": "0000000000018522",
+      "producerVendor": 4318,
+      "producerDevice": 10400,
+      "format": null,
+      "samples": [
+        [
+          188,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          188,
+          2,
+          255
+        ],
+        [
+          2,
+          0,
+          187,
+          255
+        ],
+        [
+          187,
+          187,
+          187,
+          255
+        ]
+      ],
+      "timestamp": 0,
+      "releaseWaitedForLastClone": true,
+      "allReferencesReleased": 1
+    }
+  ],
+  "gpuDevices": [
+    {
+      "vendorId": 4318,
+      "deviceId": 10400,
+      "active": true
+    },
+    {
+      "vendorId": 4098,
+      "deviceId": 5710,
+      "active": false
+    },
+    {
+      "vendorId": 4318,
+      "deviceId": 10400,
+      "active": false
+    },
+    {
+      "vendorId": 4318,
+      "deviceId": 10400,
+      "active": false
+    },
+    {
+      "vendorId": 5140,
+      "deviceId": 140,
+      "active": false
+    }
+  ],
+  "featureStatus": {
+    "2d_canvas": "enabled",
+    "direct_rendering_display_compositor": "disabled_off_ok",
+    "gpu_compositing": "enabled",
+    "multiple_raster_threads": "enabled_on",
+    "opengl": "enabled_on",
+    "rasterization": "enabled",
+    "raw_draw": "disabled_off_ok",
+    "skia_graphite": "disabled_off",
+    "trees_in_viz": "disabled_off",
+    "video_decode": "enabled",
+    "video_encode": "enabled",
+    "webgl": "enabled",
+    "webgpu": "enabled",
+    "webnn": "disabled_off"
+  },
+  "nativeGpuExecuted": true,
+  "electronImportExecuted": true,
+  "directD3d11RenderApiExecuted": true,
+  "sandboxedRenderer": true,
+  "visibleWindowCreated": false,
+  "independentAnglePackagingVerified": false,
+  "hardwareDecodingExecuted": false,
+  "hdrTargetImportExecuted": true,
+  "physicalHdrDisplayVerified": false,
+  "checkedAt": "2026-10-18T12:46:58.293872+00:00",
+  "addonSha256": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "dllSha256": "82bae3b6bf7bb737afc9b52d590b477983c715f3c63c1a361f9ee06523dc5dc2",
+  "nativeSettingsGuardImplemented": false,
+  "sources": {
+    "electron-main.cjs": "8c610ceabe68b362453dc48aeecef42f45c835093d63c2badfdf8a47412c4487",
+    "electron-preload.cjs": "d2b3f7c75d3852d515af3f36f0ffd120640bf362281c5448eba9b8445ec0d645",
+    "electron.html": "d00a7ea3534fef175d41a84056891850c900f1eeb13b31abebff9f0d15d4928f",
+    "run-electron.py": "c2fab99b21ecde2023bdb36b660614a0422b96ef1450dd3ac58c337ca322f9a7"
+  },
+  "stdout": "\n",
+  "stderr": ""
+}

@@ -1,0 +1,101 @@
+{
+  "scope": "Authenticated API verification with a temporary user-provided token. The token, username, user ID, complete profile and identity of the pre-existing favorite are omitted. Write-method probes did not create or remove account records.",
+  "recordedAt": "2026-10-13T10:15:37.687Z",
+  "authentication": {
+    "meStatus": 200,
+    "accountIdPresent": true,
+    "usernamePresent": true
+  },
+  "sourceReference": "https://github.com/bangumi/server/blob/4223d14057fea5078595e40470f8602d3301abb5/web/routes.go",
+  "baseline": {
+    "characters": 1,
+    "persons": 0
+  },
+  "cases": [
+    {
+      "operation": "cancel-uncollected",
+      "kind": "characters",
+      "beforeStatus": 404,
+      "writeStatus": 404,
+      "afterStatus": 404,
+      "id": 10596
+    },
+    {
+      "operation": "cancel-uncollected",
+      "kind": "persons",
+      "beforeStatus": 404,
+      "writeStatus": 404,
+      "afterStatus": 404,
+      "id": 603
+    },
+    {
+      "operation": "collect-already-collected",
+      "kind": "characters",
+      "beforeStatus": 200,
+      "writeStatus": 200,
+      "afterStatus": 200,
+      "originalCollectionTimestampPreserved": true,
+      "target": "existing-collected-character"
+    },
+    {
+      "operation": "method-validation-probe",
+      "kind": "characters",
+      "method": "POST",
+      "resourceId": "not-a-number",
+      "status": 400
+    },
+    {
+      "operation": "method-validation-probe",
+      "kind": "characters",
+      "method": "DELETE",
+      "resourceId": "not-a-number",
+      "status": 404
+    },
+    {
+      "operation": "method-validation-probe",
+      "kind": "persons",
+      "method": "POST",
+      "resourceId": "not-a-number",
+      "status": 400
+    },
+    {
+      "operation": "method-validation-probe",
+      "kind": "persons",
+      "method": "DELETE",
+      "resourceId": "not-a-number",
+      "status": 404
+    },
+    {
+      "operation": "final-count",
+      "kind": "characters",
+      "status": 200,
+      "total": 1
+    },
+    {
+      "operation": "final-count",
+      "kind": "persons",
+      "status": 200,
+      "total": 0
+    }
+  ],
+  "finalCounts": {
+    "characters": 1,
+    "persons": 0
+  },
+  "conclusions": {
+    "characterCollectIdempotentRequestAccepted": true,
+    "preexistingCharacterCollectionTimestampPreserved": true,
+    "personCollectRouteValidatesInput": true,
+    "characterCancelRouteAvailable": false,
+    "personCancelRouteAvailable": false,
+    "newCollectionCreationTested": false,
+    "createThenRemoveRoundTripTested": false,
+    "temporaryCollectionsCreated": 0,
+    "pendingCleanup": 0
+  },
+  "limitations": [
+    "Positive collection creation was not exercised because the cancellation route could not be called.",
+    "The accepted POST was an idempotent request for a pre-existing character collection.",
+    "These results do not verify subject state/rating writes, token refresh or the complete extension implementation."
+  ]
+}

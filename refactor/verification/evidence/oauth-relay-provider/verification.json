@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-21T07:25:24.659007+00:00",
+  "providers": [
+    {
+      "provider": "anilist",
+      "correctVerifierAccepted": true,
+      "wrongVerifierAccepted": true,
+      "missingVerifierAccepted": true,
+      "stateMatched": true,
+      "refreshSucceeded": true,
+      "s256EnforcedForTestedRegistration": false,
+      "originalCallbackRestored": true,
+      "listenerClosed": true,
+      "receiptSha256": "72992722d6d6e404f9c982755094cbde0aebe873765711b13bc0b8398b4d4181"
+    },
+    {
+      "provider": "bangumi",
+      "correctVerifierAccepted": true,
+      "wrongVerifierAccepted": true,
+      "missingVerifierAccepted": true,
+      "stateMatched": true,
+      "refreshSucceeded": true,
+      "s256EnforcedForTestedRegistration": false,
+      "originalCallbackRestored": true,
+      "listenerClosed": true,
+      "receiptSha256": "ece6752226ff30a4c198a1fe07ebb5e853d38c98763bf1194b5717f0ede00859"
+    }
+  ],
+  "authorizationCodeExchanges": 6,
+  "refreshRequests": 2,
+  "runtimeVersionIdentified": false,
+  "upstreamGrantRevocationExecuted": false,
+  "uiCredentialExposureOccurred": true,
+  "accidentalCredentialImageRemoved": true,
+  "finalResultImages": {
+    "anilist-results.png": "3e451f276abd09e700cf0ba40d7f1eb8125eb983863451e8456b4aa1b6f5dcb8",
+    "bangumi-results.png": "c81608996f401ee44753e7426de620786f564e4ec7b826ebe95b79a149cdf275"
+  },
+  "verificationSha256": "c4a29da8196d70a22c91fa665beb63aea2ad87dc41b89422c66efc9fb7ebf31d"
+}

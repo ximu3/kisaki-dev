@@ -1,0 +1,96 @@
+{
+  "purpose": "Versioned source evidence for Linux integration design",
+  "designStatus": "proposal",
+  "nativeCaptureExecuted": false,
+  "desktopRegistrationExecuted": false,
+  "appImageIdentityVerified": false,
+  "desktopProtocolExecuted": false,
+  "versions": [
+    {
+      "version": "v5.24.7",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-19T08:51:49.311476+00:00",
+      "bytes": 17940,
+      "sha256": "f66faf4c728873573778e084ab78defa3a7a6e06e1ff63510f6e223f4711f90f",
+      "markers": {
+        "captureWindow": true,
+        "checkPermissions": true,
+        "restrictedInterfaceLookup": true
+      }
+    },
+    {
+      "version": "v5.27.12",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v5.27.12/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v5.27.12/src/effects/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-19T08:51:48.688851+00:00",
+      "bytes": 19760,
+      "sha256": "d3ad86903bc2ef6923dd8d2dd9a86ee531964bb5dee3b17cb3559676f7beaf6a",
+      "markers": {
+        "captureWindow": true,
+        "checkPermissions": true,
+        "restrictedInterfaceLookup": true
+      }
+    },
+    {
+      "version": "v6.6.0",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.6.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v6.6.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-19T08:51:48.671308+00:00",
+      "bytes": 18147,
+      "sha256": "32b230236170ca1a2f167c180dced1d7ea556e17d726611ae0b69df674c6a13e",
+      "markers": {
+        "captureWindow": true,
+        "checkPermissions": true,
+        "restrictedInterfaceLookup": true
+      }
+    },
+    {
+      "version": "v6.7.0",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.7.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v6.7.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-19T08:51:49.311476+00:00",
+      "bytes": 18610,
+      "sha256": "70f4522608dd8adf865171ae35f91ffda733494ab7a4b7665cf84aa97d2d914f",
+      "markers": {
+        "captureWindow": true,
+        "checkPermissions": true,
+        "restrictedInterfaceLookup": true
+      }
+    },
+    {
+      "version": "v6.8.0",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "finalUrl": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "status": 200,
+      "checkedAt": "2026-10-19T08:51:49.311476+00:00",
+      "bytes": 17351,
+      "sha256": "879e13774906cde1b94a68ceb94f0ac27b0858b1c1b71548c1b2723e58ec4998",
+      "markers": {
+        "captureWindow": true,
+        "checkPermissions": false,
+        "restrictedInterfaceLookup": false
+      }
+    }
+  ],
+  "removalCommit": {
+    "url": "https://api.github.com/repos/KDE/kwin/commits/0ea31ae72eb052cb9c9cc508318fc3f0f329ed53",
+    "finalUrl": "https://api.github.com/repos/KDE/kwin/commits/0ea31ae72eb052cb9c9cc508318fc3f0f329ed53",
+    "status": 200,
+    "checkedAt": "2026-10-19T08:51:50.940386+00:00",
+    "bytes": 14214,
+    "sha256": "84a9a723f1c72d270d30a289064c52a0a8a62e8c75bb25acf36cf5cff003b0d1",
+    "sha": "0ea31ae72eb052cb9c9cc508318fc3f0f329ed53",
+    "committedAt": "2026-06-18T09:39:28Z",
+    "files": [
+      "src/plugins/screenshot/CMakeLists.txt",
+      "src/plugins/screenshot/org.kde.KWin.ScreenShot2.xml",
+      "src/plugins/screenshot/screenshotdbusinterface2.cpp",
+      "src/plugins/screenshot/screenshotdbusinterface2.h"
+    ]
+  }
+}

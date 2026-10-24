@@ -1,0 +1,274 @@
+{
+  "checkedAt": "2026-10-21T06:29:10.167523+00:00",
+  "cases": [
+    {
+      "name": "srgb",
+      "node": "v24.11.1",
+      "observed": {
+        "sourceTransfer": "srgb",
+        "sourcePrimaries": "bt.709",
+        "subtitle": false,
+        "sourceFormat": "rgb24",
+        "softwareScreenshot": false,
+        "primaries": "bt.709",
+        "transfer": "srgb",
+        "peak": "auto"
+      },
+      "frame": {
+        "width": 63,
+        "height": 47,
+        "vendor": 4318,
+        "device": 10400,
+        "adapterLuid": "000000000001a2c1",
+        "flags": "3",
+        "targetTime": "0",
+        "screenshotWidth": "63",
+        "screenshotHeight": "47",
+        "screenshotStride": "256",
+        "screenshotBytes": "12032",
+        "rendererBeforeInitialize": true,
+        "startupScript": true,
+        "coreDestroyed": true,
+        "rawVoChangeSucceeded": true,
+        "grayBeforeChange": 128,
+        "grayAfterChange": 55,
+        "backend": "d3d11",
+        "pixelFormat": "bgra8unorm",
+        "target": "srgb",
+        "samples": [
+          [255, 0, 0, 255],
+          [0, 255, 0, 255],
+          [0, 0, 255, 255],
+          [128, 64, 32, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ]
+      },
+      "screenshot": {
+        "width": 63,
+        "height": 47,
+        "stride": 256,
+        "byteLength": 12032,
+        "format": "rgba",
+        "samples": [
+          [255, 0, 0, 255],
+          [0, 255, 0, 255],
+          [0, 0, 255, 255],
+          [128, 64, 32, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ],
+        "activeRowsSha256": "ace3f1a7ebaa0619de0a5ae7acd9d4312f073c71d98c823b5f926452628db76f"
+      },
+      "independentBytesAfterCoreAndFrameRelease": true,
+      "stderr": ""
+    },
+    {
+      "name": "p3",
+      "node": "v24.11.1",
+      "observed": {
+        "subtitle": false,
+        "primaries": "display-p3",
+        "transfer": "srgb",
+        "peak": "auto",
+        "sourceTransfer": "srgb",
+        "sourcePrimaries": "bt.709",
+        "softwareScreenshot": false,
+        "sourceFormat": "rgb24"
+      },
+      "frame": {
+        "width": 63,
+        "height": 47,
+        "vendor": 4318,
+        "device": 10400,
+        "adapterLuid": "000000000001a2c1",
+        "flags": "3",
+        "targetTime": "0",
+        "screenshotWidth": "63",
+        "screenshotHeight": "47",
+        "screenshotStride": "256",
+        "screenshotBytes": "12032",
+        "rendererBeforeInitialize": true,
+        "startupScript": true,
+        "coreDestroyed": true,
+        "rawVoChangeSucceeded": true,
+        "grayBeforeChange": 128,
+        "grayAfterChange": 55,
+        "backend": "d3d11",
+        "pixelFormat": "bgra8unorm",
+        "target": "srgb",
+        "samples": [
+          [234, 51, 35, 255],
+          [117, 251, 76, 255],
+          [0, 0, 245, 255],
+          [120, 67, 39, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ]
+      },
+      "screenshot": {
+        "width": 63,
+        "height": 47,
+        "stride": 256,
+        "byteLength": 12032,
+        "format": "rgba",
+        "samples": [
+          [234, 51, 35, 255],
+          [117, 251, 76, 255],
+          [0, 0, 245, 255],
+          [120, 67, 39, 255],
+          [255, 255, 255, 255],
+          [0, 0, 0, 255]
+        ],
+        "activeRowsSha256": "47734d1ed8ee6182cfb52e5b6f78e8dacc39d15416bd0d79c01743eb22b9e449"
+      },
+      "independentBytesAfterCoreAndFrameRelease": true,
+      "stderr": ""
+    },
+    {
+      "name": "hdr-srgb",
+      "node": "v24.11.1",
+      "observed": {
+        "peak": "auto",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "subtitle": 1,
+        "sourceFormat": "yuv420p10",
+        "softwareScreenshot": false,
+        "primaries": "bt.709",
+        "transfer": "srgb"
+      },
+      "frame": {
+        "width": 63,
+        "height": 47,
+        "vendor": 4318,
+        "device": 10400,
+        "adapterLuid": "000000000001a2c1",
+        "flags": "3",
+        "targetTime": "0",
+        "screenshotWidth": "224",
+        "screenshotHeight": "64",
+        "screenshotStride": "896",
+        "screenshotBytes": "57344",
+        "rendererBeforeInitialize": true,
+        "startupScript": true,
+        "coreDestroyed": true,
+        "rawVoChangeSucceeded": true,
+        "grayBeforeChange": 182,
+        "grayAfterChange": 120,
+        "backend": "d3d11",
+        "pixelFormat": "bgra8unorm",
+        "target": "srgb",
+        "samples": [
+          [1, 1, 1, 255],
+          [44, 44, 44, 255],
+          [137, 137, 137, 255],
+          [182, 183, 182, 255],
+          [218, 218, 218, 255],
+          [246, 246, 246, 255],
+          [255, 255, 255, 255],
+          [255, 0, 0, 255]
+        ]
+      },
+      "screenshot": {
+        "width": 224,
+        "height": 64,
+        "stride": 896,
+        "byteLength": 57344,
+        "format": "rgba",
+        "samples": [
+          [1, 1, 1, 255],
+          [44, 44, 44, 255],
+          [137, 137, 137, 255],
+          [182, 183, 182, 255],
+          [218, 218, 218, 255],
+          [246, 246, 246, 255],
+          [255, 255, 255, 255],
+          [255, 0, 0, 255]
+        ],
+        "activeRowsSha256": "6211776460e42ad1d857fdeeb9ef9c880cf8a87ecc68ae2de98fc9a7e3de720e"
+      },
+      "independentBytesAfterCoreAndFrameRelease": true,
+      "stderr": ""
+    },
+    {
+      "name": "hdr-software",
+      "node": "v24.11.1",
+      "observed": {
+        "primaries": "bt.709",
+        "transfer": "srgb",
+        "peak": "auto",
+        "sourceTransfer": "pq",
+        "sourcePrimaries": "bt.2020",
+        "subtitle": 1,
+        "sourceFormat": "yuv420p10",
+        "softwareScreenshot": true
+      },
+      "frame": {
+        "width": 63,
+        "height": 47,
+        "vendor": 4318,
+        "device": 10400,
+        "adapterLuid": "000000000001a2c1",
+        "flags": "3",
+        "targetTime": "0",
+        "screenshotWidth": "224",
+        "screenshotHeight": "64",
+        "screenshotStride": "896",
+        "screenshotBytes": "57344",
+        "rendererBeforeInitialize": true,
+        "startupScript": true,
+        "coreDestroyed": true,
+        "rawVoChangeSucceeded": true,
+        "grayBeforeChange": 182,
+        "grayAfterChange": 119,
+        "backend": "d3d11",
+        "pixelFormat": "bgra8unorm",
+        "target": "srgb",
+        "samples": [
+          [1, 1, 1, 255],
+          [44, 44, 44, 255],
+          [137, 137, 137, 255],
+          [182, 183, 182, 255],
+          [218, 218, 218, 255],
+          [246, 246, 246, 255],
+          [255, 255, 255, 255],
+          [255, 0, 0, 255]
+        ]
+      },
+      "screenshot": {
+        "width": 224,
+        "height": 64,
+        "stride": 896,
+        "byteLength": 57344,
+        "format": "rgba",
+        "samples": [
+          [16, 16, 16, 255],
+          [77, 77, 77, 255],
+          [130, 130, 130, 255],
+          [148, 148, 148, 255],
+          [167, 167, 167, 255],
+          [192, 192, 192, 255],
+          [230, 230, 230, 255],
+          [255, 10, 0, 255]
+        ],
+        "activeRowsSha256": "c58123f314be6d4794edd4727a77fd71630b65bba48f1d07e5f1cd3f20b7efb2"
+      },
+      "independentBytesAfterCoreAndFrameRelease": true,
+      "stderr": ""
+    }
+  ],
+  "sourceReceiptSha256": "93e504c523372a796a7c53b3449d39db288735bfdacc9341dcb8c22a2ff998ab",
+  "sources": {
+    "prepare.py": "7e8461cd247358a667951af2aa2696e51df898eb6154fda6d1abf07f9538a2e1",
+    "probe.mjs": "206856dd6b6205accaa8a1c96c3de13c802097dbb4821ec526bb4dcdd3da8a3f",
+    "run.py": "4707907aaac7934215106eb4a4c16173a2443492e6a10d121dc6197adee95041",
+    "producer.patch": "1d2a811f4adcbaad47e9f3a069d36526f3da12f23938c48d382ce2d2cbad2c3e"
+  },
+  "publicMpvBindingImplemented": false,
+  "negativeStrideExecuted": false,
+  "electronImportExecuted": false,
+  "physicalDisplayVerified": false,
+  "macosExecuted": false,
+  "linuxExecuted": false
+}

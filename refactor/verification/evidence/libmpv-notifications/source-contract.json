@@ -1,0 +1,125 @@
+{
+  "purpose": "pinned source declarations and locators for the notification proposal",
+  "designStatus": "proposal",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "declarations": {
+    "endFileFields": [
+      "mpv_end_file_reason reason",
+      "int error",
+      "int64_t playlist_entry_id",
+      "int64_t playlist_insert_id",
+      "int playlist_insert_num_entries"
+    ],
+    "startFileFields": ["int64_t playlist_entry_id"],
+    "logMessageFields": [
+      "const char *prefix",
+      "const char *level",
+      "const char *text",
+      "mpv_log_level log_level"
+    ],
+    "clientMessageFields": ["int num_args", "const char **args"],
+    "endFileReasons": {
+      "MPV_END_FILE_REASON_EOF": 0,
+      "MPV_END_FILE_REASON_STOP": 2,
+      "MPV_END_FILE_REASON_QUIT": 3,
+      "MPV_END_FILE_REASON_ERROR": 4,
+      "MPV_END_FILE_REASON_REDIRECT": 5
+    },
+    "logLevels": {
+      "MPV_LOG_LEVEL_NONE": 0,
+      "MPV_LOG_LEVEL_FATAL": 10,
+      "MPV_LOG_LEVEL_ERROR": 20,
+      "MPV_LOG_LEVEL_WARN": 30,
+      "MPV_LOG_LEVEL_INFO": 40,
+      "MPV_LOG_LEVEL_V": 50,
+      "MPV_LOG_LEVEL_DEBUG": 60,
+      "MPV_LOG_LEVEL_TRACE": 70
+    },
+    "ordinaryEventNames": [
+      "shutdown",
+      "start-file",
+      "end-file",
+      "file-loaded",
+      "client-message",
+      "video-reconfig",
+      "audio-reconfig",
+      "seek",
+      "playback-restart",
+      "idle",
+      "tick"
+    ]
+  },
+  "nativeAddonExecuted": false,
+  "eventCopyAndTextDecodingVerified": false,
+  "independentLogSelectionVerified": false,
+  "earlyLogExclusionVerified": false,
+  "queueCapacityAndGapDeliveryVerified": false,
+  "weakClientShutdownVerified": false,
+  "sources": [
+    {
+      "name": "client-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:04:46.412605+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c",
+      "markers": {
+        "mpv_event_start_file": [1275, 1497, 1502, 1521, 1616],
+        "mpv_event_end_file": [345, 1280, 1482, 1504, 1546, 1617],
+        "mpv_event_client_message": [1318, 1548, 1557, 1615],
+        "mpv_event_log_message": [1434, 1458, 1614],
+        "terminal-default": [1677],
+        "all weak mpv_handles are destroyed": [580]
+      }
+    },
+    {
+      "name": "client-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:04:46.502175+00:00",
+      "bytes": 69031,
+      "sha256": "7d3c4b6ed1c614169277c7faad9e7fa21e5bf4694d7a3961986defdebcaa60eb",
+      "markers": {
+        "int mpv_request_event(": [851],
+        "int mpv_request_log_messages(": [1869],
+        "level != ctx->messages_level": [1888],
+        "\"file_error\"": [1995],
+        "mpv_error_string(eef->error)": [1995],
+        "[MPV_EVENT_IDLE] = \"idle\"": [2107],
+        "[MPV_EVENT_TICK] = \"tick\"": [2108]
+      }
+    },
+    {
+      "name": "log-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/common/msg.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/common/msg.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:04:46.405606+00:00",
+      "bytes": 39670,
+      "sha256": "ca7378d5da52e2ba056b9336299592a3177c708383b53fdb4a101c1f5ab2f87f",
+      "markers": {
+        "buffer_level = log->terminal_level": [451],
+        "lev != MSGL_STATUS": [454, 602],
+        ".prefix = \"overflow\"": [1100],
+        "if (root->early_buffer)": [984],
+        "root->early_buffer = NULL": [986],
+        "buffer->dropped += 1": [477, 1038]
+      }
+    },
+    {
+      "name": "initialization",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/main.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/main.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T06:04:46.493042+00:00",
+      "bytes": 14401,
+      "sha256": "c3bfca8c73543fc7beed2ce1f6856d0d2bfd5f0178af3149d592c7395788ff3e",
+      "markers": {
+        "mp_msg_set_early_logging(mpctx->global, true)": [348]
+      }
+    }
+  ]
+}

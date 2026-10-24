@@ -1,0 +1,338 @@
+{
+  "recordedAt": "2026-10-19T16:25:44.027826+00:00",
+  "packages": {
+    "saxes": {
+      "version": "6.0.0",
+      "source": "https://registry.npmjs.org/saxes/-/saxes-6.0.0.tgz",
+      "integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+      "sha256": "1cdf52fbbe1ccbd175c365d2b8e63f46e590e74aff23fa6a44a6ec51522e96db",
+      "metadataSha256": "49e633171169d15e096b3a85f976a723bfcd25f97d2d63915901e0990b0e8c42",
+      "license": "ISC",
+      "files": {
+        "saxes.js": "d00e2ba27ed7d6ac961d03ff14d6b8c0eb5bf063ed2c996c22c6df06ac121423",
+        "package.json": "32052572b41c2a890ed0854798c48454cc5991dcaafe5fb1718a4253046acfd3",
+        "saxes.js.map": "bf0ebc4bc6bec1a50bf91fab8b5460212e753becea10409082edac58fa8c7d6c",
+        "README.md": "ade6061f7c778cdd868d9b0f711530e4c1ec1f33767222ce33bb05e295bf6f0c",
+        "saxes.d.ts": "a795d722f71f114bbb73ad6fbde87c11e3b64af808f91183e1db601ff456d37f"
+      },
+      "dependencies": {
+        "xmlchars": "^2.2.0"
+      }
+    },
+    "xmlchars": {
+      "version": "2.2.0",
+      "source": "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz",
+      "integrity": "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==",
+      "sha256": "bdf900298963e4bd95b76aa95e96d29f05687e6ae662d617061778267b576da8",
+      "metadataSha256": "9d3589a69257ee2bc6b9765da1a94bec79274b9b7ad42cd1e6a4e87f3eeed493",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "45d196313c2647d313cc65ca9b093d2d6974b64d35ee7346f2c60c9d518dff2c",
+        "xml/1.1/ed2.js": "461d5c71cc6076dc16aebbfd2d3c506481df5a74f43631d82372a6ffdc239d69",
+        "xmlns/1.0/ed3.js": "ff14ffa3a2cdfdd1b6077c4a8443dc949f53d5bb56de5ed89d4dbc5d9fdf08f7",
+        "xml/1.0/ed4.js": "7ae981a2801658ff2eb92d418c000376381044a5caed40392fea9ad38c9d08c8",
+        "xml/1.0/ed5.js": "ea350479ab6f6553c0c3395c30ec440fb39821f6902081939831ddf1b5e8fd0f",
+        "xmlchars.js": "d5024cfd86dc4624feda301419bb56f5f3bd2b63963c2bdf88aff7c6afb6bdf2",
+        "package.json": "a91c0b20003ff9399dde1de8c59681f1b6901c6fb1aac71780a3a876dc548583",
+        "xml/1.1/ed2.js.map": "4dc036dc6f13bb07581fe268d6858f89074ed8ce971c38a1b630938100a6b19b",
+        "xmlns/1.0/ed3.js.map": "2dabf94f8ae6eb305ed5c1b432f7a49dcd91f29b29cde05375d5c9f5dfa7e300",
+        "xml/1.0/ed4.js.map": "ae07b2d2592ddb2bad17126cfc6f40e11b5d085d4d51cdc796a626d9e3bf2c9e",
+        "xml/1.0/ed5.js.map": "458e372d99ae5c62cf95320f1df61ec4843a355bfd2e36f3bf8e67384ee5aa12",
+        "xmlchars.js.map": "7a1358ab44707d1d8a68d13453c01547ffe158a4929a56849bfc5f411ebed8cc",
+        "README.md": "eb05246b228f24bd82f40d1c80ac8d56afc6bc96731d188e013a41564e445bda",
+        "xml/1.1/ed2.d.ts": "764391775fc90a5904c833a9538f44012c83baf81116f2bb6c4cce2a182eca4d",
+        "xmlns/1.0/ed3.d.ts": "8514561762de5684298a79453ea83e515af0d061710e64b2851ec89f3a4221d9",
+        "xml/1.0/ed4.d.ts": "31a482a4cb8b5bfa0a0fa9cf21a405a2f510704c99fa9c492265facda534bca4",
+        "xml/1.0/ed5.d.ts": "a8d1920a105bb364d37f471ac777e9d8972df98c5487bf9b0fab7043eb49e4d4",
+        "xmlchars.d.ts": "72dfe9bac2276537ab273ef47e017f3cd488d6df075ff7224903a80d37ba66f6"
+      },
+      "dependencies": {}
+    },
+    "@xmldom/xmldom": {
+      "version": "0.9.12",
+      "source": "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.9.12.tgz",
+      "integrity": "sha512-5AXjrcMClTryPe9LgZrygpB1lj7s0S9E0+W+AHaVKAVyHanafK86iPSvG5xHVSp/jC+VH1UXu0TAEmY279xH7A==",
+      "sha256": "08245e18c248b957b4c6e07f8549ad5f55ae11b7a8abd4c1113a0fd61ddc67ee",
+      "metadataSha256": "e9226c08df85a6ae0616fa88b25a7279b1fcae6369ae1eea02b4380070e755ae",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "4da724fc305d81606b245b324d4d2586916b9d248b23d82183df753ace0fdf71",
+        "lib/conventions.js": "da57fbe2b07f5a4aaee9217b49778936c11a1108da1761b2f24f356a900ff124",
+        "lib/dom-parser.js": "4188e24b953e2c70b66150306c66547495ad968d040e31dd65f22a7b3485da28",
+        "lib/dom.js": "bea9ba89adfec227e9e572ee934a48223a170c5cf96b7087d7e3d3023ac47be3",
+        "lib/entities.js": "ef333b680379392e8ee120e1cc77e0a8ff99a135e3b365b048f69c0df5f571f9",
+        "lib/errors.js": "3e97f9c4f0a189346e2621b29c7c5a3899cd7375d1d15cbfbddd044fb781cb9f",
+        "lib/grammar.js": "144f27b46adfb4a139adeb7483820def568b3940a6893194c03f5a71a94babc0",
+        "lib/index.js": "418c42598a45290498f4350b6b6f531ceeb25e8d4d9a107db2448a1c0b5b784e",
+        "lib/sax.js": "324e8a0c7b475c645efcd1736b634733e133150849bff741fa0e2215e7017d02",
+        "package.json": "b61c2dd342e0e1abb800302ec62c0b06ae7a07cd9b907c88428ff80100f64c6a",
+        "CHANGELOG.md": "5138fc1f8c15712ed7ede448a53f06fad0c15f1f94b57b4cb74ccfe694329c5a",
+        "readme.md": "5ee9af83f442f300bf14d6ba8a79a6708f4f721a68ce79ce6fb701bc9ccd2de7",
+        "SECURITY.md": "a17b482b11a4f3ff0aa20bad116c49472c5ba9417223adf915eb739d194aceea",
+        "index.d.ts": "342163401aa45f329d6b07a70d878ec9d1dfbf1630ee389ac242309178833baf",
+        "lib/.eslintrc.yml": "8962d52a0bb86f17e764dfaf160d265eaa969ed3d67da747b59c1df6eb4833c2"
+      },
+      "dependencies": {}
+    },
+    "fast-xml-parser": {
+      "version": "5.11.2",
+      "source": "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.11.2.tgz",
+      "integrity": "sha512-R9iDuNrQYeQut46cn2r2wHKn4HYzVDvDm5J1wW+koZewykv0yuO2HChTYeZtrULyHIDM9cj9TUXloCsueCQUog==",
+      "sha256": "d8a04c1838235165f66fa2bc8ed6fcc1adfccae6bda34e24e0b2eadd74601321",
+      "metadataSha256": "7e93be533e2d6fa91905dbd180b6497d68962accfadcc4dd2375b11a7689d6dc",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "7883225d5e84a6bbb9b170c3d891b4bf6d6259cee869c86bd86381a927071745",
+        "lib/fxp.cjs": "fbddba1ab4b8874fa6010da7f4f65b52b8e6dcb927b07964e2e16d62fd990647",
+        "lib/fxp.d.cts": "7e2094842bbe8fbb8514fc0a683198c6a4295f9c2566cbc8010e8f7003248783",
+        "src/v6/OutputBuilders/BaseOutputBuilder.js": "88dafcd928965417b34ece595705827cfdbb9bf639df72a809642e1adbad1160",
+        "src/v6/valueParsers/booleanParser.js": "5bf8e1b9e11068b3e25b384a217b71c576b344224cb50d90b98ce2e63062aa2d",
+        "src/v6/valueParsers/booleanParserExt.js": "ce154fbe652ba2de46b2083e8c99a58c4a0e337558f8c36330a04188cc4a38e1",
+        "src/v6/inputSource/BufferSource.js": "ba2df3ffe9b67d5d37c1729ede6870972207964719fd638eb63b8fdf6a334a57",
+        "src/v6/CharsSymbol.js": "e037787fbc37aa0309937b3b41e4a76e118167ba384e83fbc49e04f94740aedb",
+        "src/cli/cli.js": "8f5e6ebdc7cd90fa77a5e835fec6a57f399f82ec5eb0dd277b26415a83e29c48",
+        "src/v6/valueParsers/currency.js": "f653f705032ce04e9d12749a4bc28dada74fff0e24192205e3d8a9d32e88428f",
+        "src/xmlparser/DocTypeReader.js": "e693e1e1b6b972aa641bd2d3f7e18b653088a1f4af2c89d05b6f1f9897f4d7b8",
+        "src/v6/EntitiesParser.js": "8705dd25e2d2f6e6457fa491881e1f9eab082b0406cd5dcdc745aa61a2798725",
+        "src/v6/valueParsers/EntitiesParser.js": "2356a65d0256c6658b2d066b82d13d31ca28b39bbd7c75db89d3e939df76a47f",
+        "lib/fxbuilder.min.js": "7ca510aefbac305dd88b6290b9a2b85823bd6b1e3e8006dcb19ef5bb9a5d2c55",
+        "src/fxp.js": "587bee5d27b6dbc99d24f472ea93028659610c3496be7d667e72483483c3f3ba",
+        "lib/fxp.min.js": "40cf4f2a3b747e6df3abe07fff865e57a36b74d7b27836c157fb5ec51e1d87db",
+        "lib/fxparser.min.js": "c53edb2c88ad4c14bce3d56f0706c5776f0c08284e677f50de899713120f8b19",
+        "lib/fxvalidator.min.js": "df1158c8e35bb82882eb48818f96e717516ad720260e666146971d038f624430",
+        "src/ignoreAttributes.js": "40bdf3ab37f544b9f8ea7e474114f489a77ed3247e0be597b9e83e01688e8c80",
+        "src/v6/valueParsers/join.js": "19d179c90a52654c50e4eea52ce86c5ea4a72f90106d5afdfc86bc3b574e2eae",
+        "src/v6/OutputBuilders/JsArrBuilder.js": "6f5b0632d80eb6865124a553451f69b4a8b0c73cdacf21d4597ade0d097fbf20",
+        "src/v6/OutputBuilders/JsMinArrBuilder.js": "4a77b68d3ed107c7f5a006f2616b439c4660a14a537c66ff545ba3b68812d6f3",
+        "src/v6/OutputBuilders/JsObjBuilder.js": "3db399917d6ecc5541c518a0e7402d11e4023fa745a87eb187b534635e17e239",
+        "src/xmlbuilder/json2xml.js": "bcc5325758b3b940384c7bf2a7132874421989c2561a59dc49c4ef0b88c352dc",
+        "src/cli/man.js": "3780acda8a91a1a0fc4ca789acd50b3e1f22dc86e892ddf02765d3a5c33985fe",
+        "src/xmlparser/node2json.js": "cce0e8a8876bd1d3305a666e70cd556fd1ae57560fbca9f4ff0577d91178a0b1",
+        "src/v6/valueParsers/number.js": "50165c7d0f33534911f7ef9ee3ee7a1531786ee12aba89186e90fb601ab0d2e8",
+        "src/v6/OptionsBuilder.js": "2102f6735008c449c41728bbd5cf008f53a518cf3dc7ba2794c9d4dc7937f0b7",
+        "src/xmlparser/OptionsBuilder.js": "4f177e43f1ac36dc25b2b6a44970c97918091416bd15722b65ac938256bda687",
+        "src/xmlparser/OrderedObjParser.js": "d1d5d64ecfb3df9b07ba3bd5ee020d166eaecbf569ebce67be692aa5892a21b5",
+        "src/v6/OutputBuilders/ParserOptionsBuilder.js": "dacb3a0b8da41e10a9531b2ce0f9939b7db3cb73b8850fc3918a62cb26a2fc3d",
+        "src/cli/read.js": "5276d01f9e03dfe20d13996dc60aaf99d7eb2f9090030a82cd78e5e922b44188",
+        "src/v6/Report.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/v6/inputSource/StringSource.js": "5e9eb312fc320fb87a07424c98e439c4637b80d168879230c21f5435d35cb140",
+        "src/v6/TagPath.js": "c3201f12a399d0c2d6932e0b2ab0ffe11d59b25d8cbfad888139a6f8493c3574",
+        "src/v6/TagPathMatcher.js": "424002a4c4cbaba5b739bc2008fe9c7e4523a63865acabe26f2f46167c236464",
+        "src/v6/valueParsers/trim.js": "99e6101bbc04ad8882480e2c4c85aafac0dd6d25b42e00033ca8ccd1157a1c7e",
+        "src/util.js": "870ccd88a5d51e35ef8cbc59e7f2a35d31defc87aded9c06023ae57838851901",
+        "src/validator.js": "e818788b069429443a97756a4c458999d6751461c4ef41c7bfe1cc58bd70dde4",
+        "src/v6/Xml2JsParser.js": "f29463c843327731271f8240ed87146704954958ad124f623b7789c056dbabd0",
+        "src/xmlparser/xmlNode.js": "758d7a8b80ea22d19872b5219c874b4039ea2725e7af5ef0afe2a3e295b779e7",
+        "src/v6/XMLParser.js": "3ec7a6bcca9bf19de16ef3b019dedc3bf590ecd4b931d62b1e7f39aa988eecac",
+        "src/xmlparser/XMLParser.js": "e3280436ad479a240fa6b9034327efe12c97eb9dbd5d541800ebd74a6420c023",
+        "src/v6/XmlPartReader.js": "0b5d19de5039d3fd16c091d5a60a8ccb36335748ea44e55bac5a27e59051aa55",
+        "src/v6/XmlSpecialTagsReader.js": "9c2b765ad9131a1a1d71d699cdaf69ae547ad4534c6f76169657f06c623e05cd",
+        "package.json": "6e37d7f4edb7ead1c89dbd645f336e3dab813e0a4bf6164411ada9c693b40052",
+        "lib/fxbuilder.min.js.map": "32ebf12816315c98cce8a90ae2002d7d0ae874ab41450c86bafe3d2b4199a43a",
+        "lib/fxp.min.js.map": "b7e931d70c3c24a8f7a492edfde498105375145aca610258b6e9a39940bb808f",
+        "lib/fxparser.min.js.map": "214ec80a222d58093d98c82afc1f73eb398d6c265564c5ad78b3903f1ee9805f",
+        "lib/fxvalidator.min.js.map": "80ef2a27fc52d98899b43554ddcf6cf68a977bb2d6626e2f534492bba6810006",
+        "CHANGELOG.md": "8e4c290f0411272d513d11cb646f7ac1ebb6c7b2e670e75ee2dae5f57a9de381",
+        "README.md": "2b0548e4d819a6b654f3df466728a9f8cedd6767ffaa9b2bec16ee38da69cce5",
+        "src/fxp.d.ts": "1833c3d108ad1dee87665edcc756913f5f65037aa9fef5f117e0ad49ba3e0f39"
+      },
+      "dependencies": {
+        "strnum": "^2.4.2",
+        "is-unsafe": "^2.0.0",
+        "xml-naming": "^0.3.0",
+        "fast-xml-builder": "^1.2.0",
+        "@nodable/entities": "^3.0.1",
+        "path-expression-matcher": "^1.6.2"
+      }
+    },
+    "strnum": {
+      "version": "2.5.1",
+      "source": "https://registry.npmjs.org/strnum/-/strnum-2.5.1.tgz",
+      "integrity": "sha512-UM4nTLWzQiDBseVxUGxN0wJzIk0UU89Qi7pKXz9qISo+lhviJikTuikBsK/oFRlpvYHvSdz0TVoLyQ+sEpYwxA==",
+      "sha256": "ced67dded4b9d8122292bc5f41e0c5e65fee378c4fb902e3680790abcb1b90bd",
+      "metadataSha256": "62fe62eb9b4e5f37515ed0f5df140dc8116450b22d6fe3cf755e7116eb832fec",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "2aa16be0f4fad003a352a955a43314e9d1d8deef7034060a82ac9c49f32b81e2",
+        "strnum.js": "629ac48bfc12de3bc04b36320e532423212804e04a5b7aa475e76d71de089db3",
+        "package.json": "7efcf7c2b83b9d0054dd637da0b15983a4f43b9aedb999ae895ff9c0b23c7170",
+        "CHANGELOG.md": "fc1776a52b070bbc93aeaf9e193bae4c4bb18e5bab0ea8d573d6a11e4d6365eb",
+        "README.md": "6423769d4556b51fd966ed0cbf5d9bfd7813553560a1849966f48677ed674f83"
+      },
+      "dependencies": {
+        "anynum": "^1.0.1"
+      }
+    },
+    "anynum": {
+      "version": "1.0.1",
+      "source": "https://registry.npmjs.org/anynum/-/anynum-1.0.1.tgz",
+      "integrity": "sha512-N6//FLET/tXYNM/F6ABca1oH6fWB+KlTt909Le28WMDBk8oaT4vY17DCrwg2MvmuqUKt3Ni4N5dGJ/EoBgcO6A==",
+      "sha256": "705d5c67f0438588aded995c6f88fee65495d0bf6a785a5fa2c448a2fb1f341a",
+      "metadataSha256": "b643dfda21d209ad8f37f1315305359712d66e625f7a61593dc14476523bd8a2",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "anynum.js": "f8c6a9b031489dfc1573e7a669e4860223ddeedc0007db5dbf5878a14249776d",
+        "digitTable.js": "c649d39c53ebe6817c71407de8105b6d8cbc2326867f90d59f49ab02d9271b44",
+        "package.json": "41c5d60f0aa8b5f4133aeff56573a8c4130d4d1c19dc240398ff806b40a4470e",
+        "README.md": "1e88190ad99aa33ac5114a49f5661319938346d35fbc1babcaca0b4b47fbbb09"
+      },
+      "dependencies": {}
+    },
+    "is-unsafe": {
+      "version": "2.0.2",
+      "source": "https://registry.npmjs.org/is-unsafe/-/is-unsafe-2.0.2.tgz",
+      "integrity": "sha512-HgbIHPBH0KHHCcjLfGsCvhtPTVxjaAZlXjwdz7/GQC40SjSe4sfQsar8J5VFo8JOSbarkpV0OLG95bbaNd9aAQ==",
+      "sha256": "d1dd08942d20c78f5156911f77e60a173c87a4f575eca285fbecf2c6bc36db2b",
+      "metadataSha256": "700b80c6b89b91ad1c8b5f8cac324ebc55dd9d4bc704126d6fce4590b916460a",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "src/index.cjs": "827e7cc23034bdad2831dac7d8c5da9bcc966f259425107074064a42dff1230a",
+        "src/contexts/html.js": "5f378567e5be461b0850876c91b8f1c8ffdc8d29201d87edd7aa666eecabb9f3",
+        "src/index.js": "24f5eb575e633b68771328cc12fa6fde751ecc5f2700a6f52ea325938dc94342",
+        "src/contexts/log.js": "fe1678ab1c98db7387bea6892ec10a90a06a8e2ed01efb1ee577c3d155e4a395",
+        "src/contexts/nosql.js": "e20a132033f105a29db1cfdb3d85bbadbb7206b9a7e3336bcb030a63d66b4ab2",
+        "src/contexts/redos.js": "59ceb09d3fd2402e81ed7e5992245f2b398c7ceeb80141138f4eab5da0244586",
+        "src/contexts/shell.js": "c26834ef2c968e8a4223a89b2d0e5653952bbf6f3eed95e5ba45465e1870eb65",
+        "src/contexts/sql-strict.js": "16d6522ee4ecf4a91c4d29357ebc874844c266f2ae89ef2a92ec2d391f3762e9",
+        "src/contexts/sql.js": "4de8a60302e6ab22ef5607ee88ab6dd6559221fb8620780fb874a1dcf3000d06",
+        "src/contexts/svg.js": "eb9e106e81226ab9547882079e7fd6a9d885d2c71ba78784f7edaa7db61bb941",
+        "src/contexts/xml.js": "2ae9cb95ada7140a80c1ad378f2c4c5f7360bc3f3f6480a96247712df8d8ab16",
+        "package.json": "0fb03fbe6e0df6090d778679929c7c34c9fca298bc72190468217171e8154943",
+        "README.md": "037ee459a3870681c47d454eec265ead4822ab25724519b90e047cf2d4b2efad",
+        "src/index.d.ts": "75ecf95b575eaf2c9f84b541452fa9c9f6d97f4d914eedddc306329ce138127c"
+      },
+      "dependencies": {}
+    },
+    "xml-naming": {
+      "version": "0.3.0",
+      "source": "https://registry.npmjs.org/xml-naming/-/xml-naming-0.3.0.tgz",
+      "integrity": "sha512-ghig2TBE/H11aOVgmahA3MhimvkBr6JIYknH/Dhdk10nXwdbIqBJsbfMxpvFPG8bAw77gN29aQWvKpmVoPlvPQ==",
+      "sha256": "da0925864bd4c04ef3384e89ef5d4774d82ed6d9fa241519b003ddbcc0effac8",
+      "metadataSha256": "ffb9869377611c4c1e17b7f4fe21f39bd5dcfb4aa7bb58e18810708052f68060",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "src/index.js": "1a5d9fd32360e2cec4adbee9e56221fb26def66bb9d122e0b5745cebc963d92e",
+        "package.json": "e6ff1758837bca3ca6877308c0d51f9e3e47efd07497fa62c8291fd88ab8216f",
+        "README.md": "aa6f359e935296f26e878a119528daa37b9755391ecb701dd1a1330477440423",
+        "src/index.d.ts": "0f3bd36772edf86964a85459ebe5e910bf85b2fc9e5e871e83785549fc9a9f5d"
+      },
+      "dependencies": {}
+    },
+    "fast-xml-builder": {
+      "version": "1.3.1",
+      "source": "https://registry.npmjs.org/fast-xml-builder/-/fast-xml-builder-1.3.1.tgz",
+      "integrity": "sha512-pIM/1n3ntFXKYrUZwW7QCK0gAW7XY+wzj1YMIV3tLDvPj/V+zTGJK5e3/4WJfwj0qWw2ElNXiTixda/R+3YSug==",
+      "sha256": "0e9583b397ee65ab8cfd32b2f78461bc7d9d4c2d398a03506f524d1973d7642a",
+      "metadataSha256": "367cd029c2c8c5514853408c3e30f0ca115fec4a5c09e431ea98fb98a84dcdd3",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "lib/fxb.cjs": "987f2d413ff7c005f2aa8488c132e97204aaed1ae947b05c15c2517b86561408",
+        "lib/fxb.d.cts": "bf00115bf4352db46e091290ff5e60b7f89e07b9a9df556bcd6201c206845476",
+        "src/fxb.js": "44d54aa1500d8b179b56c47003530ade9220c0daec31caeeeb1a59760eca6d88",
+        "lib/fxb.min.js": "7bb5cf789808985b95cf4ad339633086bdec2423fcc76b1391f93304b8243147",
+        "src/ignoreAttributes.js": "40bdf3ab37f544b9f8ea7e474114f489a77ed3247e0be597b9e83e01688e8c80",
+        "src/orderedJs2Xml.js": "4d5b4d0e3a8b3bfa4535e85a2182446f05f32e179dffba00e07422da84cbdb69",
+        "src/prettifyJs2Xml.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/util.js": "f585f26c6fa18af890c32d00fbb00fbfd05b9c7217419b6fe8675bdcee264140",
+        "package.json": "304416f412412cd967ee1139f0eadfebaa263e92bfbfa264bedbb37055d5c27e",
+        "lib/fxb.min.js.map": "e6d41878c8127bda929e4ec2441b7715665443f27fd697edee03d8390a9dd2c9",
+        "CHANGELOG.md": "80fc1081d9612e7c476c8244d2febbda786d87094e72b2f70db869514ee2a51e",
+        "README.md": "b55a37d12169e4fcfa8718b132c446eba4fa067e22c3cafc5a4d6cf6054fce76",
+        "src/fxb.d.ts": "6a1352422b247af7058811bca5c0e159d03fad512e0eca38eb765a46154be045"
+      },
+      "dependencies": {
+        "xml-naming": "^0.3.0",
+        "path-expression-matcher": "^1.6.2"
+      }
+    },
+    "path-expression-matcher": {
+      "version": "1.6.2",
+      "source": "https://registry.npmjs.org/path-expression-matcher/-/path-expression-matcher-1.6.2.tgz",
+      "integrity": "sha512-enSlaiat05iasnzmgNxRj8reFdj3puY2QpNgP1aPIaVfT6nn9ICuPoFlKHk8EN22HcwewshO+mN2DGbkCEOtqQ==",
+      "sha256": "a501b52ebf8236b2264e98b23000ca67e30d0d6cbb2815a041e8b2c0e3818a36",
+      "metadataSha256": "8d07cc5d015824ab243a62503961e4bc53d87e49383ca21f429532d798c2773b",
+      "license": "MIT",
+      "files": {
+        "LICENSE": "75486ea0af9309140ca6e2c401d7e67bea8f4892344e5707f6394dc5e83dfc44",
+        "lib/pem.cjs": "aec62344de39f1c7a2c42e31767cd068af933c034837bbceaf5a7a4032b76a0d",
+        "lib/pem.d.cts": "d9bcaed1c26d15e944fa95ed2d2129fcf70e0c35b193933ed3210deb546e131a",
+        "src/Expression.js": "c24531320e7f2a69708fa8127b660bfb0efaa3a26636e6f56209f8cf4e984b9a",
+        "src/ExpressionSet.js": "a6250aa83ce7f238614fb7421f31e541c63c415a295e3764687693464918f3c4",
+        "src/index.js": "ebbf22c6979f6b2b05c580922e7dd197f4f4a246d504d4c0cc8e64778f12d4ed",
+        "src/Matcher.js": "d3b6ddfa1e9a07d6db63939e55106f4df3e8f2e48119c81e372f60f157914d66",
+        "lib/pem.min.js": "b39340293e75855e6efc54dbd36fc0422360ff78de98a41fe16883adcbcfcf88",
+        "package.json": "625ca3a27a289160508a79773ddfd7bf678a6401bd96321cac0bc43ebebe01f8",
+        "lib/pem.min.js.map": "9e1ee6e6c38de96125700ab1612d30709b6507f1c81932d36feba283ee8edeb7",
+        "README.md": "b3624137327085ee17b4731c3431a56e93b64e1627521cfdc43ab9e20a5c584d",
+        "src/index.d.ts": "be6fa8af49b89cf35b7e3351e66df1f0c20a7737cde5aa443cacd25f8f899808"
+      },
+      "dependencies": {}
+    },
+    "@nodable/entities": {
+      "version": "3.1.0",
+      "source": "https://registry.npmjs.org/@nodable/entities/-/entities-3.1.0.tgz",
+      "integrity": "sha512-LsS/DjHr+uDM647Gru/cA8+J3a3HfhttwCKLyuoyN7yXTFCxKBtSgMQBvrW9yNPa2/zDRUNuGPaH5QUFoa4arQ==",
+      "sha256": "3b7cbfe696f570ada57df3eb6981f6c668737a2158ec88a53134f243f9f1db8e",
+      "metadataSha256": "cd4da47c204cb1f8e78e8e1d779df058edd1c079a3beac2d464e8ae37ad1ba8a",
+      "license": "MIT",
+      "files": {
+        "src/all-entities.js": "2f1340ab32dce314f41638b7ee6d0368b974e3302983154b815a6d49a6dfb63b",
+        "src/entities.js": "96ec5d127a4e8cd77bdc678422f0d57c8ff9e37bcec999983da71a7b72ce9a0e",
+        "src/EntityDecoder.js": "a56cf2bf8174e0adf94970d70e003afcfc3923a53d0cf973f92d374cfe684544",
+        "src/EntityEncoder.js": "812a2077e073564d6470b8fda8ac0d20ecaaf75ddb1594d55d28acc2da8a1a71",
+        "src/entityTries.js": "fa2838d141fba0e8ee5bd2197956c3f6b1d23668be2c8841a585614ea7051f99",
+        "src/index.js": "79a65ddeda08664d00b7b82f5a903ea437de1dff54a02ed469e9cb1067cb568b",
+        "package.json": "81fc13661f9431f9f72ae5a1723482a1bcb473af463b93ca0b27c42461a6c6c9",
+        "README.md": "7e3484a07c208b5c5813290a993244c6841efc3d4241c29a07ef948e8129a758",
+        "src/index.d.ts": "f66cce05456e7b56b60d6356e8b42910abc1ae7dacf3cf37e17b05bf67d55304"
+      },
+      "dependencies": {}
+    }
+  },
+  "workspaceDependenciesChanged": false,
+  "packageScriptsExecuted": false,
+  "references": [
+    {
+      "url": "https://html.spec.whatwg.org/multipage/xhtml.html",
+      "file": "xml-reference.html",
+      "sha256": "31ce8a1e1b5c2b54375e548dfabde613cd8804dfaeecf7748fae415c09309d14"
+    },
+    {
+      "url": "https://html.spec.whatwg.org/entities.json",
+      "file": "entities.json",
+      "sha256": "d741d877ac77c4194c4ad526b5b4a19aef8dfe411ab840a466891cdbb9f362e6"
+    },
+    {
+      "url": "https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1251.TXT",
+      "file": "CP1251.TXT",
+      "sha256": "d9d491808bd7956c26ef8ed07fa63015bfab32860720e07d5bf3a64a609927ee"
+    }
+  ],
+  "catalog": {
+    "source": "https://html.spec.whatwg.org/multipage/xhtml.html#parsing-xhtml-documents",
+    "publicIds": [
+      "-//W3C//DTD XHTML 1.0 Transitional//EN",
+      "-//W3C//DTD XHTML 1.1//EN",
+      "-//W3C//DTD XHTML 1.0 Strict//EN",
+      "-//W3C//DTD XHTML 1.0 Frameset//EN",
+      "-//W3C//DTD XHTML Basic 1.0//EN",
+      "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN",
+      "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN",
+      "-//W3C//DTD MathML 2.0//EN",
+      "-//WAPFORUM//DTD XHTML Mobile 1.0//EN",
+      "-//WAPFORUM//DTD XHTML Mobile 1.1//EN",
+      "-//WAPFORUM//DTD XHTML Mobile 1.2//EN"
+    ],
+    "bytes": 58845,
+    "sha256": "c89599918b32495ba7c24e77e5b7fb9f1cfcdb76a5093ee85bcb9beda1b5f9ff"
+  },
+  "bundleSha256": "050852c720cd461fc7ff1a00992bb72ef4980cf558e45a8dee40b1d6872eea62",
+  "previousEncodingMapsSha256": "cafadb272c1ab0d332d8d2f440c3c10b9ae6cef2b785eca51509f6bf4e966907",
+  "encodingMapsSha256": "f2a72005acf7a52ebd00270cf64903a70a299be16091543d82d6795eef2a2a4b",
+  "bundlerVersion": "0.28.1",
+  "resolverVersion": "7.8.5"
+}

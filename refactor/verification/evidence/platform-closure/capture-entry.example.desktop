@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Kisaki window capture integration
+NoDisplay=true
+OnlyShowIn=KDE;
+Exec=/run/user/1000/vantage-example/host
+X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2;

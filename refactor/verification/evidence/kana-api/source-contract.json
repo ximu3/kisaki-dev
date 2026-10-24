@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-19T10:09:15.848557+00:00",
+  "sources": [
+    {
+      "url": "https://www.typescriptlang.org/tsconfig/lib.html",
+      "finalUrl": "https://www.typescriptlang.org/tsconfig/lib.html",
+      "status": 200,
+      "bytes": 168100,
+      "sha256": "fc96700764e4aa88c292d7d7dbe59f1ca6c306fda6eacc10df13685d31d6ee16"
+    },
+    {
+      "url": "https://nodejs.org/api/packages.html",
+      "finalUrl": "https://nodejs.org/api/packages.html",
+      "status": 200,
+      "bytes": 156551,
+      "sha256": "cfe4b621a1b095f7d638295d0fd29738ddac337dfc8ed52022c517f4d2d70da1"
+    },
+    {
+      "url": "https://vite.dev/guide/assets.html",
+      "finalUrl": "https://vite.dev/guide/assets.html",
+      "status": 200,
+      "bytes": 89818,
+      "sha256": "620bf2f0090e21f1814c732ca9adcd5817ef05f4c7112529f278190528de25f6"
+    },
+    {
+      "url": "https://encoding.spec.whatwg.org/encodings.json",
+      "finalUrl": "https://encoding.spec.whatwg.org/encodings.json",
+      "status": 200,
+      "bytes": 8913,
+      "sha256": "078212b3697f60b81225b6671bd9da2604497abff0aa8e96e4d46605c02ac9e7",
+      "canonicalEncodingNamesVerified": 39
+    },
+    {
+      "url": "https://drafts.csswg.org/css-font-loading/",
+      "finalUrl": "https://drafts.csswg.org/css-font-loading/",
+      "status": 200,
+      "bytes": 367369,
+      "sha256": "80ba73ddba9def3692b3f3a9ba95bef9bd04b748582dca2dcca6b047ed9c0733"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "finalUrl": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "status": 200,
+      "bytes": 1187554,
+      "sha256": "d431760660ea44e130f6e919dab216df2d0b3a490567a98089267523368fe1e5"
+    }
+  ],
+  "readerExecuted": false,
+  "assetLoadingExecuted": false,
+  "textDecodingExecuted": false
+}

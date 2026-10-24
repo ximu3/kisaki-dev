@@ -1,0 +1,136 @@
+{
+  "base": "rar5-hlink.rar",
+  "baseSha256": "c7c2db6fb021e89198da80d4b903d4a46b692c2f31fec64cb53c7e37af7a51f4",
+  "mutation": "Keep the first regular payload; replace its host/name fields and CRC; remove the two reference-only members",
+  "commercialCompressorExecuted": false,
+  "cases": [
+    {
+      "name": "unicode.rar",
+      "expected": "表だよ/😀.png",
+      "reason": null,
+      "sourceBytes": [
+        232, 161, 168, 227, 129, 160, 227, 130, 136, 47, 240, 159, 152, 128, 46, 112, 110, 103
+      ],
+      "host": 1,
+      "bytes": 132,
+      "sha256": "d1811ed10ca2061a53beb404e1e6b577dccc660a416a19da6d628f4883f80ee5"
+    },
+    {
+      "name": "unix-backslash.rar",
+      "expected": "a\\b.png",
+      "reason": null,
+      "sourceBytes": [97, 92, 98, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 121,
+      "sha256": "a55a43d85ec152852db0cf14f8c49204776f8bf1e6f9318c4b09df932b216184"
+    },
+    {
+      "name": "windows-backslash.rar",
+      "expected": null,
+      "reason": "invalidName",
+      "sourceBytes": [97, 92, 98, 46, 112, 110, 103],
+      "host": 0,
+      "bytes": 121,
+      "sha256": "088aff4b662aecdd6631549509dc596fee8c28bfd45f1185d83f66e61bd13b0a"
+    },
+    {
+      "name": "embedded-nul.rar",
+      "expected": null,
+      "reason": "invalidName",
+      "sourceBytes": [97, 0, 98, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 121,
+      "sha256": "50ef9f0b5eaac2d009dc29821c323a1fbc8a01d8892160cf8c317df03e11d9e9"
+    },
+    {
+      "name": "invalid-utf8.rar",
+      "expected": null,
+      "reason": "invalidEncoding",
+      "sourceBytes": [97, 192, 175, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 121,
+      "sha256": "568aea1b5ee03a627f960653291ab8e02db6841370d0ab4728b686843a7c5b00"
+    },
+    {
+      "name": "absolute.rar",
+      "expected": null,
+      "reason": "outsideArchive",
+      "sourceBytes": [47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 126,
+      "sha256": "78c040855568b22fa473caf9736308eff9ad774c15cd300634522191f2a9090d"
+    },
+    {
+      "name": "parent-escape.rar",
+      "expected": null,
+      "reason": "outsideArchive",
+      "sourceBytes": [46, 46, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 128,
+      "sha256": "ae0cdf1b7463c3e3c671b17f86085cec3c9bb96ef7d0af18c08aa6b36a1d31fb"
+    },
+    {
+      "name": "percent-literal.rar",
+      "expected": "pages/%2e%2e.png",
+      "reason": null,
+      "sourceBytes": [112, 97, 103, 101, 115, 47, 37, 50, 101, 37, 50, 101, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 130,
+      "sha256": "fb40d7445ddcb724987645577e2043985596f2ba35b7a8b180fb21fb9a9510ac"
+    },
+    {
+      "name": "composed.rar",
+      "expected": "é.png",
+      "reason": null,
+      "sourceBytes": [195, 169, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 120,
+      "sha256": "2850a3bb545385794e8c1eb95f7a54e009bf18d247bda5ea6ee6ba3aa66143ec"
+    },
+    {
+      "name": "decomposed.rar",
+      "expected": "é.png",
+      "reason": null,
+      "sourceBytes": [101, 204, 129, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 121,
+      "sha256": "b9c5ee9dcee905b7ed833c8ffb83e29496a1baa904cbba06582ffa34b6bdf9f7"
+    },
+    {
+      "name": "drive-path.rar",
+      "expected": null,
+      "reason": "outsideArchive",
+      "sourceBytes": [67, 58, 47, 111, 117, 116, 115, 105, 100, 101, 46, 112, 110, 103],
+      "host": 0,
+      "bytes": 128,
+      "sha256": "568f09563feeaf8d5067b62af5758f172029c442921cd8cacc5b32e736c4ebb1"
+    },
+    {
+      "name": "windows-reserved.rar",
+      "expected": "CON.png",
+      "reason": null,
+      "sourceBytes": [67, 79, 78, 46, 112, 110, 103],
+      "host": 0,
+      "bytes": 121,
+      "sha256": "bbf35a1b8dd849cf1d24375e3f1ace98671f305f408f0a1b52264826a1905e66"
+    },
+    {
+      "name": "mapped-unix-bytes.rar",
+      "expected": "raw￾.png",
+      "reason": null,
+      "sourceBytes": [114, 97, 119, 238, 130, 130, 239, 191, 190, 46, 112, 110, 103],
+      "host": 1,
+      "bytes": 127,
+      "sha256": "be32cb508a207a247057ecd6235e2e2052ed7ca8ba17d6726e18d044e900114a"
+    },
+    {
+      "name": "oversized-name-length.rar",
+      "expected": null,
+      "reason": "nameTruncated",
+      "sourceBytes": [97],
+      "host": 1,
+      "bytes": 119,
+      "sha256": "9db9b69de161f044ee281dd1e23256abeb2d2ac2b40493fd8095b8c346fc5492"
+    }
+  ]
+}

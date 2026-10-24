@@ -1,0 +1,88 @@
+{
+  "sourceSha256": "4b2aed6832edcef1340d855a32bf25165a8eacc6d9752a7c013b2588ce3db832",
+  "verifierSha256": "10c3fdb46c82ecaba3d2553f1e54b4ac09fa60fa79c335f529ea081357aee021",
+  "absoluteTolerance": 0.002,
+  "checks": [
+    {
+      "primaries": "bt.709",
+      "matrix": [
+        [
+          1.6604910021084345,
+          -0.5876411387885495,
+          -0.07284986331988488
+        ],
+        [
+          -0.12455047452159074,
+          1.1328998971259603,
+          -0.008349422604369477
+        ],
+        [
+          -0.018150763354905303,
+          -0.10057889800800739,
+          1.1187296613629127
+        ]
+      ],
+      "maximumComponentError": 0.0003404768108965506,
+      "defaultMappingMaximumError": 0.3242625482443777,
+      "minimumComponent": -0.32421875,
+      "maximumNeutralError": 0.001953125,
+      "maximumNeutralValue": 2.05859375
+    },
+    {
+      "primaries": "display-p3",
+      "matrix": [
+        [
+          1.343578252584332,
+          -0.2821796705261357,
+          -0.06139858205819628
+        ],
+        [
+          -0.06529745278911953,
+          1.0757879158485746,
+          -0.010490463059454957
+        ],
+        [
+          0.0028217872617009514,
+          -0.01959849452449406,
+          1.0167767072627931
+        ]
+      ],
+      "maximumComponentError": 0.00038776471506296595,
+      "defaultMappingMaximumError": 0.23818041209475388,
+      "minimumComponent": -0.1685791015625,
+      "maximumNeutralError": 0.0009765625,
+      "maximumNeutralValue": 2.05859375
+    },
+    {
+      "primaries": "bt.2020",
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "maximumComponentError": 0,
+      "defaultMappingMaximumError": 0,
+      "minimumComponent": 0,
+      "maximumNeutralError": 0,
+      "maximumNeutralValue": 2.05859375
+    }
+  ],
+  "linearRepresentationsVerified": true,
+  "negativeComponentsVerified": true,
+  "extendedLuminanceVerified": true,
+  "completeColorPipelineVerified": false,
+  "hostImportVerified": false,
+  "subtitleVerified": false
+}

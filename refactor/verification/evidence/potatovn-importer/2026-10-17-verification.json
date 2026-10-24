@@ -1,0 +1,399 @@
+{
+  "checkedOn": "2026-10-17",
+  "status": "design-confirmed",
+  "source": {
+    "project": "PotatoVN",
+    "version": "v1.10.2.0",
+    "commit": "d877bbe166e5b71d6520784f9d268e6df7eb4487",
+    "publishedAt": "2026-08-02T16:55:02Z",
+    "sourceFiles": 48
+  },
+  "evidenceLevel": "pinned-source-and-synthetic-fixtures",
+  "realUserExportAvailable": false,
+  "synthetic": {
+    "archive": "synthetic.pvnExport.zip",
+    "recordsDirectory": "fixture",
+    "metadata": "meta-v2/meta.json",
+    "results": "synthetic-results.json",
+    "passed": 41,
+    "summary": {
+      "games": 6,
+      "libraries": 5,
+      "libraryEntries": 7,
+      "localInstallations": 5,
+      "customGroups": 1,
+      "images": 7,
+      "imageReferences": 17,
+      "metadataVersion": 2,
+      "missingMetadataImages": 1
+    },
+    "archiveBytes": 4742,
+    "archiveSha256": "deedcf2e306f3c5501346cf0a8444b41c8958a0517a08a6f622aa50163202c53"
+  },
+  "implementationBoundaries": [
+    "No PotatoVN application was run.",
+    "No real user backup or running database was read.",
+    "ZIP and JSON checks include proposed pure normalization; they are not the product importer.",
+    "No game launch, elevated process, locale tool, save relocation, native Kisaki write, or complete image decode was exercised.",
+    "Real exports and full application integration remain implementation acceptance work."
+  ],
+  "technical": {
+    "zipLibrary": "fflate",
+    "version": "0.8.3",
+    "requiresNativeReader": false,
+    "loadsSourceAssemblies": false,
+    "temporaryPrivateFilesWritten": false
+  },
+  "publicSources": [
+    {
+      "url": "https://api.github.com/repos/GoldenPotato137/PotatoVN/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:40:55.869Z",
+      "bytes": 7648,
+      "sha256": "171518a3510ff5ad3aa927ebe9ddf1b1b5319e8392103be4d2b3a703a1d7d26c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/Galgame.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:40:55.871Z",
+      "bytes": 30185,
+      "sha256": "ed3c8d9467313ec8f7ebaeb0381869d69500efddb4b9916b44bbfaf40f92248b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/BgTasks/ExportTask.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:40:55.910Z",
+      "bytes": 5154,
+      "sha256": "7faa336e32345fc2a8c297b2e3a4e6797e814f125b748dd3fa4f7f386bf3a4c8"
+    },
+    {
+      "url": "https://api.github.com/repos/GoldenPotato137/PotatoVN/git/trees/d877bbe166e5b71d6520784f9d268e6df7eb4487?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:40:55.975Z",
+      "bytes": 266580,
+      "sha256": "00c752a618a03eb2c61828475280e8dad684822cc95a0d12264222b7ce16397d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/LocalSettingsService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.820Z",
+      "bytes": 28395,
+      "sha256": "0298b8198ad791bcb0755111f695652a0c696bbd7bebfba5ae87051585d71d22"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Enums/PlayType.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.822Z",
+      "bytes": 204,
+      "sha256": "6cdeae55fcbd7152c2d70bfb82394a1ae26af63a665bdb216be39240ffcd3dd3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/LocalSettingStatus.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.829Z",
+      "bytes": 2970,
+      "sha256": "e77c292448c5ae5dfdfc93a56a3d1b08e18263464f1077254134247fcec5f725"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Enums/RssType.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.834Z",
+      "bytes": 163,
+      "sha256": "854583dac9e161c3d42bb12b585c45e668bf0417d9f6e042d82fe9df8fd8e3d0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/GalgameSourceCollectionService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.835Z",
+      "bytes": 29030,
+      "sha256": "5e99944d276dca2154084d795e94619da852cd1aa0e0f46c04a6947cf34770f8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Enums/KeyValues.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.852Z",
+      "bytes": 19208,
+      "sha256": "80efec9d398c4bfae46eab7334af013c36d47d76af5ad5d0789593ee4ba732a1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/CategoryService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.859Z",
+      "bytes": 29396,
+      "sha256": "ac705f56c3bdc715a82b3e26cc4be68f5578f03dd6ee39631fcbc07eff9ab8f9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.Core/Services/FileService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.931Z",
+      "bytes": 3267,
+      "sha256": "72c408413df46b755e7e2b8c2373c096a2f8805ed0bb9ae7ca0c9aa733d3739a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/StaffService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:07.949Z",
+      "bytes": 11319,
+      "sha256": "96720c97889c6c186ba3e03c05df74e189e6c14bfbc293837b594c2075dd942c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/GameMetaBackup.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:08.005Z",
+      "bytes": 492,
+      "sha256": "113d37564cb5984fe10b50dfaff387d988cd280fda3d4e7a9ba84ad881e6d040"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/GalgameCollectionService/GalgameCollectionService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:08.020Z",
+      "bytes": 53904,
+      "sha256": "d3fde2e716023f26c2f79ad0763c76acdd6bd4cd05f75f315cb2fa6e484d91d4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Helpers/JsonConverters/GalgameSourceConverter.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:30.854Z",
+      "bytes": 1929,
+      "sha256": "bfdb836ad88b28a0b1d23795e9f4969bb1871907bd9f32475735efbfe6a04608"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/GalgameUid.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:30.854Z",
+      "bytes": 4618,
+      "sha256": "7818499c2c58cb61fdf63878b7d300aa0886282857031ee546800a4b54e82b75"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Enums/CategoryGroupType.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:30.872Z",
+      "bytes": 117,
+      "sha256": "8f85f26ccf47948bbe52fe0ecd68c33c37900739bb18118cbd30e026b5be57f6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/GalgameCharacter.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.002Z",
+      "bytes": 1332,
+      "sha256": "352f5d9477929a0e51780ab229d2923b857f1ecf3485154019f8a489fc5225d0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/Category.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.002Z",
+      "bytes": 2306,
+      "sha256": "b59a835d2a92c4ae728793006119f708dc0b752fd7144706df2d50a5c84d2567"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/CategoryGroup.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.003Z",
+      "bytes": 1148,
+      "sha256": "6c0a11ff3286d983b69d53d41ee8fee8b6a2f24475c555f23ddbca3e7bfa7cd4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/GalgameExtension.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.006Z",
+      "bytes": 1902,
+      "sha256": "db1a785e34c26c8d1f61f33ce6dd9610cbb7f885497e4e7deba1dc1d540a68a7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/LockableProperty.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.013Z",
+      "bytes": 1581,
+      "sha256": "f3a87cc47cd2c732e24fce6e37e611c2beb12971ae014ab21a41129bda1af086"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/Sources/GalgameAndPath.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.019Z",
+      "bytes": 7661,
+      "sha256": "28c1ede957dc6261dec4eb260650bcf7d36036730c402b0787d4d3cfcf456d51"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Helpers/GamePortablePath.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.034Z",
+      "bytes": 5381,
+      "sha256": "268ae097bdce5d2c8fe58ae8aa648668a0abcba4444e2b7efc0b47c885e87014"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/Sources/GalgameSourceBase.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.124Z",
+      "bytes": 13231,
+      "sha256": "51c9485cb4e6de53653da94a36fd2467f54c02db28f42179492d4fd72d4f190f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Helpers/JsonConverters/GalgameAndUidConverter.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:31.239Z",
+      "bytes": 1323,
+      "sha256": "8d7579db73d1fbc07bac212ecea371791b0bdffb42f526c690704464b7f5871c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Models/Staff.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.074Z",
+      "bytes": 4210,
+      "sha256": "0cc3d3e9fc50f8f3379ba0a5f6b559cbd6dbdcdfb4f200f57f6c8ac4bffb0513"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/BgTasks/RecordPlayTimeTask.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.209Z",
+      "bytes": 9182,
+      "sha256": "03cb3eb80d1c29c4ce8006630dd9d492986a290e19307bdf68cb4d1a7a2e63a1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/GameLaunchService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.344Z",
+      "bytes": 10832,
+      "sha256": "f127821394131e6cae4264519bc7a1f93898e751a4e74b20932f12b7dc8cc861"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/Dialog/EditPlayTimeDialog.xaml.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.362Z",
+      "bytes": 4154,
+      "sha256": "127847cad6f015e9beea5a5e20e437a4cbde7683612344be9e02be8b8e88fdf8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/GalgamePagePanel/GamePlayStatusPanel.xaml.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.363Z",
+      "bytes": 3000,
+      "sha256": "e43a8ece5845cbd67ab62f846a5a81277765d7fd349d3016ec1a2f830ca500d8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/ViewModels/GalgameSettingViewModel.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:41:54.375Z",
+      "bytes": 31102,
+      "sha256": "60236c1472f094685ae2ed2e1f1305f53ec8eb790b894b93dedba009174de690"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/SourceService/LocalFolderSourceService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:07.937Z",
+      "bytes": 13765,
+      "sha256": "0e8d5139e58d3d33c00f221f04c6111321e26e1addff0c4ff3c3224afa984afb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/GalgameCollectionService/GalgameCollectionService_AddGame.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:07.962Z",
+      "bytes": 9637,
+      "sha256": "07fd554d0f972f8fec9552ae20d81782fe13b053b41eba472f485158430d952b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/GalgamePagePanel/GamePlayStatusPanel.xaml",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:07.974Z",
+      "bytes": 4234,
+      "sha256": "d95dcb994c59646fa3207975f3c5018f28bf648fb9eb590a159396a283e068ca"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/Sources/GalgameFolderSource.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:07.992Z",
+      "bytes": 5205,
+      "sha256": "7d45e76ab94a863b67615d89b0041b8ba029d496631a235f74e43cd5e48f88d2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Services/SourceService/SteamSourceService.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:08.013Z",
+      "bytes": 4298,
+      "sha256": "3bfd94564fe8c067b2875f081d46fbfe329015f1e41d10fe3c85ddeadf6de018"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/Sources/SteamSource.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:08.029Z",
+      "bytes": 1642,
+      "sha256": "a4b84df596475c87c357c951fd1cc80a85ab1b85cee5167571116883bb731ddc"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Models/Sources/GalgameZipSource.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:42:08.142Z",
+      "bytes": 2365,
+      "sha256": "0833c36d431b7f477ec16a48b299ea9788ea7c8d2fc5428f8a6fa6ae10146a9b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.WinApp.Base/Helpers/RssTypeHelper.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:43:45.610Z",
+      "bytes": 1013,
+      "sha256": "60a59685f65af09149cc7cbc97c0e8d38f8cbb82abe2675505e251f27cdba3fb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager.Server.Test/Services/GalgameServiceRatingValidationTests.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:43:45.627Z",
+      "bytes": 7218,
+      "sha256": "180b30e06699d9f21166665e6a5093e01265213bb27f704be67d134764e77bab"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/Dialog/ChangePlayStatusDialog.xaml.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:43:45.683Z",
+      "bytes": 2700,
+      "sha256": "a245f891810fe373d9b2ce6e416cf1079e369c6b1d40ff7b4317c35c0d6bcedf"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/Dialog/ChangePlayStatusDialog.xaml",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:43:45.747Z",
+      "bytes": 1982,
+      "sha256": "d1f2abf8c7bd6c9c74391cb19659cfa65fa8d788cbca06cea58f108f79d00076"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Enums/PlayTypeHelper.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:43:45.752Z",
+      "bytes": 3889,
+      "sha256": "96dd1b6fb87c4975c8191de5b5dda6d490d7c4de8a6b657d2dde3e31d198df41"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Helpers/Phrase/VndbPhraser.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:45:01.220Z",
+      "bytes": 38832,
+      "sha256": "c964be242bd67df4233e810a74237596821da47e2690d833a96fab857cbba2d7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Helpers/Phrase/YmgalPhraser.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:45:01.413Z",
+      "bytes": 16941,
+      "sha256": "67e1ae786ae686b3c590d0a639aa60dac4fc93023f8075e35bb1406c00000aea"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/GalgamePagePanel/GameDescriptionPanel.xaml",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:45:08.031Z",
+      "bytes": 1252,
+      "sha256": "3c7d91cc98b8207e27e5e89759da5d5f208bc049faa50c7b32191697000c2012"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/Views/Dialog/SavePositionDialog.xaml.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:48:32.476Z",
+      "bytes": 2734,
+      "sha256": "0cee20b3626ffbb71b00835b4b313937ff02164faace23736db6a38a98133830"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/GoldenPotato137/PotatoVN/d877bbe166e5b71d6520784f9d268e6df7eb4487/GalgameManager/ViewModels/GalgameViewModel.cs",
+      "status": 200,
+      "checkedAt": "2026-10-17T07:48:47.691Z",
+      "bytes": 35707,
+      "sha256": "e8d5c18c6c56ce91cbc83ba28e211f91897d2f163be34e718c06b58e9963224b"
+    }
+  ]
+}

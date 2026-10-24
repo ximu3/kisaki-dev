@@ -1,0 +1,78 @@
+{
+  "synthetic": true,
+  "sourceRef": "v1.14.0",
+  "databaseVersion": 7,
+  "pdfReusedWithoutEdits": true,
+  "files": [
+    {
+      "path": "fixtures/exports/notes.csv",
+      "bytes": 448,
+      "sha256": "b7e97b297e31f6548237d720a76b2881bd49c87cc6e81b3646744e61c15a5a3c"
+    },
+    {
+      "path": "fixtures/exports/notes.md",
+      "bytes": 84,
+      "sha256": "124b29e4552a0233c6b81d5573f45ee044d3d98a1a461e4b485f55891117edf7"
+    },
+    {
+      "path": "fixtures/exports/notes.txt",
+      "bytes": 37,
+      "sha256": "10fdc92bc2c397de26bbaf4796c80d48edac68c9a1d669d1b8557e7137cbe901"
+    },
+    {
+      "path": "fixtures/invalid/foreign.db",
+      "bytes": 8192,
+      "sha256": "75c64de9cc1445b10855ebe4c04fa65a60f17e8c27e6ad0c6604f77e81087b7c"
+    },
+    {
+      "path": "fixtures/invalid/wrong-version.db",
+      "bytes": 32768,
+      "sha256": "df92c696ea21973fb1e6e9c65501dcc1caa26c7c86ad2d31f754d63e4f0a63a1"
+    },
+    {
+      "path": "fixtures/library/app_database.db",
+      "bytes": 32768,
+      "sha256": "e3b47061c373069cdbb860802c92ae5f4cd2317a291239e978117207c3546564"
+    },
+    {
+      "path": "fixtures/library/cover/novel.png",
+      "bytes": 124,
+      "sha256": "086a30c2591d1b30eeaa2941ab0c8b9a56b20c6b845d593be6364a941f0a32c7"
+    },
+    {
+      "path": "fixtures/library/file/comic.cbz",
+      "bytes": 976,
+      "sha256": "136e43a8421b2299d757baf9dc4e00f7d0bcae2cafbbe5f895b3ba6f559e5e2d"
+    },
+    {
+      "path": "fixtures/library/file/converted.epub",
+      "bytes": 1646,
+      "sha256": "500f27dd89bd94425a5803821040b2cec052ddbc90d508420030ea2a52a848c2"
+    },
+    {
+      "path": "fixtures/library/file/fixed.epub",
+      "bytes": 1665,
+      "sha256": "ff460e640eb9140a5bbd82c67d272c258652cc27f6afe892005a159bdbe70551"
+    },
+    {
+      "path": "fixtures/library/file/novel.epub",
+      "bytes": 1646,
+      "sha256": "500f27dd89bd94425a5803821040b2cec052ddbc90d508420030ea2a52a848c2"
+    },
+    {
+      "path": "fixtures/library/file/pages.pdf",
+      "bytes": 2065,
+      "sha256": "fc8fba6982d97b6c9c3e0dde3a9dc25ba80413846ab63fdf710004ce2b401209"
+    },
+    {
+      "path": "fixtures/original.txt",
+      "bytes": 33,
+      "sha256": "51897e0e214048d4f35f0d359abaa79f02846ef712ed446c955bcb7187a7f778"
+    },
+    {
+      "path": "fixtures/remote/database7.db",
+      "bytes": 32768,
+      "sha256": "e3b47061c373069cdbb860802c92ae5f4cd2317a291239e978117207c3546564"
+    }
+  ]
+}

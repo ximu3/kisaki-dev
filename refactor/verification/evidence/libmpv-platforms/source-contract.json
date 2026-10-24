@@ -1,0 +1,347 @@
+{
+  "status": "platform-and-output-proposal-source-review",
+  "mpv": {
+    "version": "0.41.0",
+    "commit": "41f6a645068483470267271e1d09966ca3b9f413"
+  },
+  "electron": {
+    "version": "44.5.1",
+    "commit": "19c601167d4ae75989938416c18ed81eb21c6020"
+  },
+  "angle": {
+    "commit": "b82a564646a26535ccedfa7a69134c0fd6654ac2",
+    "selectedForRelease": false
+  },
+  "renderFunctions": [
+    "mpv_render_context_create",
+    "mpv_render_context_set_parameter",
+    "mpv_render_context_get_info",
+    "mpv_render_context_set_update_callback",
+    "mpv_render_context_update",
+    "mpv_render_context_render",
+    "mpv_render_context_report_swap",
+    "mpv_render_context_free"
+  ],
+  "streamFunctions": ["mpv_stream_cb_add_ro"],
+  "publicRenderBackends": ["opengl", "sw"],
+  "electronLinuxImportDeclaresWebGpuUsage": false,
+  "electronLinuxImportDeclaresGlAndDisplayUsage": true,
+  "nativeLibmpvExecuted": false,
+  "addonExecuted": false,
+  "hardwareDecodingVerified": false,
+  "textureInteropVerified": false,
+  "hdrPresentationVerified": false,
+  "sixTargetBuildsVerified": false,
+  "sources": [
+    {
+      "name": "render-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.835572+00:00",
+      "bytes": 34271,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+      "markers": {
+        "MPV_RENDER_API_TYPE_OPENGL": true,
+        "MPV_RENDER_API_TYPE_SW": true,
+        "Currently, there can be only 1 mpv_render_context": true,
+        "before the mpv core": true
+      }
+    },
+    {
+      "name": "render-gl-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render_gl.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render_gl.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.615359+00:00",
+      "bytes": 7328,
+      "sha256": "48662c0ed9872a14dd9e1684105c97f69f94a0414709c254c5d372adc41d2e69",
+      "markers": {
+        "Windows: ANGLE is required": true,
+        "macOS: CGL is required": true,
+        "mpv_opengl_fbo": true
+      }
+    },
+    {
+      "name": "stream-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/stream_cb.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/stream_cb.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.816572+00:00",
+      "bytes": 9589,
+      "sha256": "188e58b6d14383e15a5dffdc4ecebbdfbf2e412b9c099ff21b571f747a8ce32d",
+      "markers": {
+        "Protocols remain registered until the mpv instance is terminated": true,
+        "custom callbacks must not invoke libmpv APIs": true,
+        "mpv_stream_cb_cancel_fn": true
+      }
+    },
+    {
+      "name": "gpu-renderer",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/gpu/libmpv_gpu.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/gpu/libmpv_gpu.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.604844+00:00",
+      "bytes": 7207,
+      "sha256": "084ad8d07055cb41c7d009cca07e7874fe9262203f2e28c42c5aaee461f045e6",
+      "markers": {
+        "&libmpv_gpu_context_gl": true,
+        "gl_video_init(": true,
+        "gl_video_init_hwdecs(": true
+      }
+    },
+    {
+      "name": "windows-hwdec",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/opengl/hwdec_d3d11egl.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/opengl/hwdec_d3d11egl.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.641724+00:00",
+      "bytes": 12283,
+      "sha256": "d48bd382209fdd7a0641e12d68386c8b8b763f0a687af5860bccae179452074c",
+      "markers": {
+        "EGL_ANGLE_stream_producer_d3d_texture": true,
+        "EGL_D3D11_DEVICE_ANGLE": true
+      }
+    },
+    {
+      "name": "macos-hwdec",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/hwdec/hwdec_mac_gl.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/hwdec/hwdec_mac_gl.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:43.633896+00:00",
+      "bytes": 4831,
+      "sha256": "b87b70ceba039e6fe392888d4916996d0755c10927914fd41d053f4295bffc25",
+      "markers": {
+        "CGLGetCurrentContext()": true,
+        "CGLTexImageIOSurface2D(": true,
+        "CVPixelBufferGetIOSurface(": true
+      }
+    },
+    {
+      "name": "linux-vaapi",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/hwdec/hwdec_vaapi.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/hwdec/hwdec_vaapi.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.111135+00:00",
+      "bytes": 19673,
+      "sha256": "e631416ba9f21afc450c0850bf929c728093a7a798e0863f93e5cc117c0d10a3",
+      "markers": {
+        "\"drm_params_v2\"": true,
+        "vaGetDisplayDRM(params->render_fd)": true,
+        "dmabuf_interop_gl_init": true
+      }
+    },
+    {
+      "name": "angle-loader",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/opengl/angle_dynamic.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/opengl/angle_dynamic.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.113135+00:00",
+      "bytes": 815,
+      "sha256": "7b8a0b714819d5badd5556782afcc283637f4215616fa5d31de46afd17221557",
+      "markers": {
+        "HAVE_EGL_ANGLE_LIB": true,
+        "LoadLibraryW(L\"LIBEGL.DLL\")": true
+      }
+    },
+    {
+      "name": "mpv-build",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/meson.build",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/meson.build",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.205145+00:00",
+      "bytes": 64834,
+      "sha256": "04c4798fb53f243880cf7c420ac26f019562361f05b2a09da82f7c716899741c",
+      "markers": {
+        "dependency('libavcodec'": true,
+        "dependency('libass'": true,
+        "dependency('libplacebo'": true,
+        "features += {'egl-angle-lib'": true
+      }
+    },
+    {
+      "name": "mpv-color-options",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/options.rst",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/options.rst",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.151145+00:00",
+      "bytes": 390184,
+      "sha256": "75b5c9ee515bd8f28a4224272fb1f9f1e65ecfe598f2cab10efd46539dca6aa1",
+      "markers": {
+        "--target-colorspace-hint=<auto|yes|no>": true,
+        "--target-peak=<auto|nits>": true,
+        "--tone-mapping=<value>": true,
+        "--hdr-compute-peak=<auto|yes|no>": true,
+        "does not send full HDR10+": true
+      }
+    },
+    {
+      "name": "mpv-output-drivers",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/vo.rst",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/vo.rst",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.227144+00:00",
+      "bytes": 33868,
+      "sha256": "48288a336efd33e4db83cbcc7f57b635e7b1887c00ca088435816955080f25d8",
+      "markers": {
+        "recommended output driver is ``--vo=gpu-next``": true,
+        "Video renderer based on ``libplacebo``": true
+      }
+    },
+    {
+      "name": "mpv-gl-color",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/gpu/video.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/video/out/gpu/video.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.169145+00:00",
+      "bytes": 157196,
+      "sha256": "740ef757a686037175fbabed7c14c2460407c826f884689c67cf6ec1863491cd",
+      "markers": {
+        "static void pass_colormanage(": true,
+        "fbo_csp->transfer": true,
+        "dst.primaries = PL_COLOR_PRIM_BT_709;": true,
+        "dst.transfer = PL_COLOR_TRC_GAMMA22;": true
+      }
+    },
+    {
+      "name": "electron-handle",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-handle.md",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-handle.md",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.500734+00:00",
+      "bytes": 1301,
+      "sha256": "77d15bf3a26bb5fc6621f674a3f525b2c0170bed755ee572c731c39ee7b8af9b",
+      "markers": {
+        "ntHandle": true,
+        "ioSurface": true,
+        "nativePixmap": true,
+        "supportsZeroCopyWebGpuImport": true
+      }
+    },
+    {
+      "name": "electron-import-info",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-import-texture-info.md",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-import-texture-info.md",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.513173+00:00",
+      "bytes": 990,
+      "sha256": "5bfb47ca2b85fdbfeec9991e77fc80fdea75050b89e52a8b6ff7f900e4a4ca2e",
+      "markers": {
+        "rgbaf16": true,
+        "colorSpace": true,
+        "visibleRect": true
+      }
+    },
+    {
+      "name": "electron-lifetime",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/shared-texture.md",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/shared-texture.md",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.553260+00:00",
+      "bytes": 3270,
+      "sha256": "508e3aa988d686cee1febf57b305dd1cfe06ee92cb49a9dd91fa701f6d5f845d",
+      "markers": {
+        "allReferencesReleased": true,
+        "all references in all processes are released": true
+      }
+    },
+    {
+      "name": "electron-import",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.562197+00:00",
+      "bytes": 33048,
+      "sha256": "dcfa5c570396d219f4e3c3d88061c7e33f47e934a380bc109abcb1bffe2988a9",
+      "markers": {
+        "DuplicateHandle(": true,
+        "scoped_policy::RETAIN": true,
+        "dup(plane.fd)": true,
+        "gpu::SharedImageUsageSet shared_image_usage": true,
+        "base::StringToUint64": true
+      }
+    },
+    {
+      "name": "electron-rgb-mutex",
+      "url": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/patches/chromium/osr_shared_texture_remove_keyed_mutex_on_win_dxgi.patch",
+      "finalUrl": "https://raw.githubusercontent.com/electron/electron/19c601167d4ae75989938416c18ed81eb21c6020/patches/chromium/osr_shared_texture_remove_keyed_mutex_on_win_dxgi.patch",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.592164+00:00",
+      "bytes": 3897,
+      "sha256": "c43cfdbf194bcef974f6429f4bcec7b79e31c0ba2efd76acf5e2df7946f58e2e",
+      "markers": {
+        "D3D11_RESOURCE_MISC_SHARED_NTHANDLE": true,
+        "D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX": true,
+        "PIXEL_FORMAT_RGBAF16": true
+      }
+    },
+    {
+      "name": "angle-d3d-input",
+      "url": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/extensions/EGL_ANGLE_d3d_texture_client_buffer.txt",
+      "finalUrl": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/extensions/EGL_ANGLE_d3d_texture_client_buffer.txt",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.646125+00:00",
+      "bytes": 11853,
+      "sha256": "a2f6d9c25593d6a6822b2bc7d4984e4b772a7e5eff0ce2e47af82ec4f486a92e",
+      "markers": {
+        "EGL_ANGLE_d3d_texture_client_buffer": true,
+        "EGL_D3D_TEXTURE_ANGLE": true,
+        "ID3D11Texture2D": true
+      }
+    },
+    {
+      "name": "angle-build",
+      "url": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/BUILD.gn",
+      "finalUrl": "https://raw.githubusercontent.com/google/angle/b82a564646a26535ccedfa7a69134c0fd6654ac2/BUILD.gn",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:44.896829+00:00",
+      "bytes": 50603,
+      "sha256": "f6f03b3de4d2dc79e4c4fc8cf13c5bfd6181b4527987d7bb080e1e60b082aa0b",
+      "markers": {
+        "angle_libs_suffix": true,
+        "ANGLE_EGL_LIBRARY_NAME": true,
+        "ANGLE_GLESV2_LIBRARY_NAME": true
+      }
+    },
+    {
+      "name": "dma-buf-export",
+      "url": "https://registry.khronos.org/EGL/extensions/MESA/EGL_MESA_image_dma_buf_export.txt",
+      "finalUrl": "https://registry.khronos.org/EGL/extensions/MESA/EGL_MESA_image_dma_buf_export.txt",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:45.473225+00:00",
+      "bytes": 4495,
+      "sha256": "a972075576f4853e48d5c25695e656bfe608f704f696b1183c7baef26de72f73",
+      "markers": {
+        "EGL_MESA_image_dma_buf_export": true,
+        "eglExportDMABUFImageMESA": true,
+        "modifiers": true
+      }
+    },
+    {
+      "name": "apple-opengl",
+      "url": "https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/OpenGL-MacProgGuide/opengl_intro/opengl_intro.html",
+      "finalUrl": "https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/OpenGL-MacProgGuide/opengl_intro/opengl_intro.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:45.000311+00:00",
+      "bytes": 25702,
+      "sha256": "7f59b790b721659bf99aed4f1ac404e048c64698746ce0c9aed99155d04576af",
+      "markers": {
+        "OpenGL was deprecated in macOS 10.14": true
+      }
+    },
+    {
+      "name": "windows-nt-handle",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgiresource1-createsharedhandle",
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgiresource1-createsharedhandle",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:54:45.260401+00:00",
+      "bytes": 59049,
+      "sha256": "76a9226cbff4dd50f033f786f3a0f4c156e4fe8baf6156324c813c1dc9c182be",
+      "markers": {
+        "CreateSharedHandle": true,
+        "NT handle": true,
+        "DuplicateHandle": true
+      }
+    }
+  ]
+}

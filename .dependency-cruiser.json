@@ -1,0 +1,326 @@
+{
+  "forbidden": [
+    {
+      "name": "no-cycles",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "circular": true
+      }
+    },
+    {
+      "name": "no-unresolved",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "couldNotResolve": true
+      }
+    },
+    {
+      "name": "runtime-does-not-import-engineering",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/.*/(src|native/node)/"
+      },
+      "to": {
+        "path": "(^|/)(tools|tests)/"
+      }
+    },
+    {
+      "name": "main-and-extension-host-are-independent",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/(main|extension-host)/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/src/(main|extension-host)/",
+        "pathNot": "^clients/desktop/app/src/$1/"
+      }
+    },
+    {
+      "name": "renderer-has-no-node",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/renderer/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "renderer-cannot-load-electron-or-native",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/renderer/"
+      },
+      "to": {
+        "path": "(^|/)(electron|better-sqlite3)(/|$)|^clients/desktop/app/(native|src/(main|preload|extension-host))/"
+      }
+    },
+    {
+      "name": "shared-stays-pure",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/shared/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/(native|src/(main|preload|renderer|extension-host))/"
+      }
+    },
+    {
+      "name": "shared-has-no-runtime",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/shared/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "native-is-main-only",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/",
+        "pathNot": "^clients/desktop/app/src/main/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/native/"
+      }
+    },
+    {
+      "name": "native-consumers-use-the-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/main/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/native/node/",
+        "pathNot": "^clients/desktop/app/native/node/index.ts$"
+      }
+    },
+    {
+      "name": "native-cannot-reach-application",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/native/node/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/src/"
+      }
+    },
+    {
+      "name": "preload-has-only-bridge-inputs",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/src/preload/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/src/(main|renderer|extension-host)/"
+      }
+    },
+    {
+      "name": "packages-never-import-the-app",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/"
+      }
+    },
+    {
+      "name": "extensions-never-import-the-app",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/extensions/projects/"
+      },
+      "to": {
+        "path": "^clients/desktop/app/"
+      }
+    },
+    {
+      "name": "package-private-source",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/([^/]+)/"
+      },
+      "to": {
+        "path": "^clients/desktop/packages/[^/]+/(src|tools)/",
+        "pathNot": "^clients/desktop/packages/$1/"
+      }
+    },
+    {
+      "name": "extension-private-source",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/extensions/projects/([^/]+)/"
+      },
+      "to": {
+        "path": "^clients/desktop/extensions/projects/",
+        "pathNot": "^clients/desktop/extensions/projects/$1/"
+      }
+    },
+    {
+      "name": "app-uses-public-packages",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/app/"
+      },
+      "to": {
+        "path": "^clients/desktop/packages/[^/]+/(src|tools)/"
+      }
+    },
+    {
+      "name": "extensions-use-public-packages",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/extensions/projects/"
+      },
+      "to": {
+        "path": "^clients/desktop/packages/[^/]+/(src|tools)/"
+      }
+    },
+    {
+      "name": "appearance-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/appearance/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
+      }
+    },
+    {
+      "name": "ui-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/ui/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
+      }
+    },
+    {
+      "name": "rpc-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/rpc/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(appearance|ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli)/"
+      }
+    },
+    {
+      "name": "extension-distribution-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-distribution/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|extension-api|extension-sdk|extension-cli|rpc|ui)/"
+      }
+    },
+    {
+      "name": "desktop-contracts-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/desktop-contracts/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(extension-api|extension-sdk|extension-cli|rpc|ui)/"
+      }
+    },
+    {
+      "name": "extension-api-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-api/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(extension-sdk|extension-cli|rpc|ui)/"
+      }
+    },
+    {
+      "name": "extension-sdk-dependency-direction",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-sdk/src/"
+      },
+      "to": {
+        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|ui|extension-cli)/"
+      }
+    },
+    {
+      "name": "appearance-pure-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/appearance/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "desktop-contracts-pure-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/desktop-contracts/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "extension-api-pure-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-api/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "extension-distribution-pure-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-distribution/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    },
+    {
+      "name": "rpc-pure-entry",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/rpc/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
+    }
+  ],
+  "options": {
+    "tsPreCompilationDeps": true,
+    "tsConfig": {
+      "fileName": "tsconfig.boundaries.json"
+    },
+    "doNotFollow": {
+      "path": "node_modules|/dist/|/out/"
+    },
+    "exclude": {
+      "path": "(^refactor/|/node_modules/|/dist/|/out/|/.cache/|.test.tsx?$)"
+    },
+    "enhancedResolveOptions": {
+      "conditionNames": ["types", "import", "node", "default"],
+      "exportsFields": ["exports"]
+    }
+  }
+}

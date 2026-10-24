@@ -1,0 +1,3020 @@
+{
+  "checkedAt": "2026-10-20T13:05:05.128Z",
+  "node": "v24.11.1",
+  "sources": {
+    "input.mjs": "056d74ce0c75f1862bcd85df7be2792667326462c8b38d838d1fd07e3a38df20",
+    "cases.mjs": "0695967a42d0e06f669ff072a84fac5ab30989960be1b06ff6b6109a1211c896",
+    "run-node.mjs": "ceaca106865692dc506f0d90e762572e7d0329ef9d4af739b04308296c9b54a1"
+  },
+  "inputs": {
+    "kana-xml-entry/build/xml.mjs": "8879e44bc21302a9b2123dc03ac70d2432670ae3d8c5e38266cca9a0d3246dde",
+    "kana-xml-entry/build/xml.wasm": "b41da517d6aa36cc387f855a151ac7ab9a00c04c6781249bc1d882a521b9a015",
+    "kana-xml-entry/build/codec.mjs": "574388dafcb7212e6dd0feedb4899f7bc6ecf00f0b5cf36be2e6dd15e47c5498",
+    "kana-xml-entry/build/codec.wasm": "2be7f2bdeeaf6a601cccc973c3c16a2fc5f7d369a3f42506a5574b74ce1b76d9",
+    "kana-xml-entry/build/registry.json": "6216cfbde79ab2380591a43944e80681c7ee9aed496e5470c55a38b3e4ca38af",
+    "kana-xml-entry/fixtures.json": "bd7401ac66d5920c3de6b4f08dfc8ed8dce0b360e8dae77a85f8d4f46954209b",
+    "kana-xml-input/catalog.json": "47210a0a032a2d1f79d660cf9cafba3048c4ad667a2e12955166499084ae3229",
+    "kana-xml-input/catalog.dtd": "c89599918b32495ba7c24e77e5b7fb9f1cfcdb76a5093ee85bcb9beda1b5f9ff"
+  },
+  "converterSha256": "c1340ae9372a8b29dd7ede40e331f0e75c11865c3e030c613c4b91795583b0f9",
+  "cases": [
+    {
+      "name": "encoded-UTF-8",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-UTF-16LE",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16LE",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16LE",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16LE",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-UTF-16BE",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16BE",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16BE",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16BE",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 82,
+          "sourceBytes": 296,
+          "parserBytes": 296,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-UTF-32LE",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-32LE",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-32LE",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-32LE",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-UTF-32BE",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-32BE",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-32BE",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-32BE",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 164,
+          "sourceBytes": 588,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-1",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-9",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-9",
+          "effective": "ISO-8859-9",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-9",
+          "effective": "ISO-8859-9",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-9",
+          "effective": "ISO-8859-9",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-2",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-2",
+          "effective": "ISO-8859-2",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-2",
+          "effective": "ISO-8859-2",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-2",
+          "effective": "ISO-8859-2",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-5",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-5",
+          "effective": "ISO-8859-5",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 150,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-5",
+          "effective": "ISO-8859-5",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 150,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-5",
+          "effective": "ISO-8859-5",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 150,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-7",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-7",
+          "effective": "ISO-8859-7",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-7",
+          "effective": "ISO-8859-7",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-7",
+          "effective": "ISO-8859-7",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 151,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-8859-15",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-15",
+          "effective": "ISO-8859-15",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-15",
+          "effective": "ISO-8859-15",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-15",
+          "effective": "ISO-8859-15",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 149,
+          "parserBytes": 152,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-windows-1251",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 154,
+          "parserBytes": 161,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 154,
+          "parserBytes": 161,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 154,
+          "parserBytes": 161,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-windows-1252",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP1252",
+          "effective": "CP1252",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 153,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP1252",
+          "effective": "CP1252",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 153,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP1252",
+          "effective": "CP1252",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 153,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-KOI8-R",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "KOI8-R",
+          "effective": "KOI8-R",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 146,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "KOI8-R",
+          "effective": "KOI8-R",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 146,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "KOI8-R",
+          "effective": "KOI8-R",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 146,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-KOI8-U",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "KOI8-U",
+          "effective": "KOI8-U",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 148,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "KOI8-U",
+          "effective": "KOI8-U",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 148,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "KOI8-U",
+          "effective": "KOI8-U",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 148,
+          "parserBytes": 154,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-Shift_JIS",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "SHIFT_JIS",
+          "effective": "SHIFT_JIS",
+          "route": "transcode",
+          "prefixBytes": 42,
+          "sourceBytes": 153,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "SHIFT_JIS",
+          "effective": "SHIFT_JIS",
+          "route": "transcode",
+          "prefixBytes": 42,
+          "sourceBytes": 153,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "SHIFT_JIS",
+          "effective": "SHIFT_JIS",
+          "route": "transcode",
+          "prefixBytes": 42,
+          "sourceBytes": 153,
+          "parserBytes": 157,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-CP932",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 149,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 149,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 149,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-EUC-JP",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "EUC-JP",
+          "effective": "EUC-JP",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "EUC-JP",
+          "effective": "EUC-JP",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "EUC-JP",
+          "effective": "EUC-JP",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-2022-JP",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-2022-JP",
+          "effective": "ISO-2022-JP",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 158,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-2022-JP",
+          "effective": "ISO-2022-JP",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 158,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-2022-JP",
+          "effective": "ISO-2022-JP",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 158,
+          "parserBytes": 155,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-GB2312",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "EUC-CN",
+          "effective": "EUC-CN",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 145,
+          "parserBytes": 147,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "EUC-CN",
+          "effective": "EUC-CN",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 145,
+          "parserBytes": 147,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "EUC-CN",
+          "effective": "EUC-CN",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 145,
+          "parserBytes": 147,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-GBK",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "GBK",
+          "effective": "GBK",
+          "route": "transcode",
+          "prefixBytes": 36,
+          "sourceBytes": 142,
+          "parserBytes": 144,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "GBK",
+          "effective": "GBK",
+          "route": "transcode",
+          "prefixBytes": 36,
+          "sourceBytes": 142,
+          "parserBytes": 144,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "GBK",
+          "effective": "GBK",
+          "route": "transcode",
+          "prefixBytes": 36,
+          "sourceBytes": 142,
+          "parserBytes": 144,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-GB18030",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "GB18030",
+          "effective": "GB18030",
+          "route": "transcode",
+          "prefixBytes": 40,
+          "sourceBytes": 151,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "GB18030",
+          "effective": "GB18030",
+          "route": "transcode",
+          "prefixBytes": 40,
+          "sourceBytes": 151,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "GB18030",
+          "effective": "GB18030",
+          "route": "transcode",
+          "prefixBytes": 40,
+          "sourceBytes": 151,
+          "parserBytes": 153,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-Big5",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "BIG5",
+          "effective": "BIG5",
+          "route": "transcode",
+          "prefixBytes": 37,
+          "sourceBytes": 147,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "BIG5",
+          "effective": "BIG5",
+          "route": "transcode",
+          "prefixBytes": 37,
+          "sourceBytes": 147,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "BIG5",
+          "effective": "BIG5",
+          "route": "transcode",
+          "prefixBytes": 37,
+          "sourceBytes": 147,
+          "parserBytes": 151,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-Big5-HKSCS",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "BIG5-HKSCS",
+          "effective": "BIG5-HKSCS",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 152,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "BIG5-HKSCS",
+          "effective": "BIG5-HKSCS",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 152,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "BIG5-HKSCS",
+          "effective": "BIG5-HKSCS",
+          "route": "transcode",
+          "prefixBytes": 43,
+          "sourceBytes": 152,
+          "parserBytes": 156,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-EUC-KR",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "EUC-KR",
+          "effective": "EUC-KR",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "EUC-KR",
+          "effective": "EUC-KR",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "EUC-KR",
+          "effective": "EUC-KR",
+          "route": "transcode",
+          "prefixBytes": 39,
+          "sourceBytes": 147,
+          "parserBytes": 150,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-CP949",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP949",
+          "effective": "CP949",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 146,
+          "parserBytes": 149,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP949",
+          "effective": "CP949",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 146,
+          "parserBytes": 149,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP949",
+          "effective": "CP949",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 146,
+          "parserBytes": 149,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "encoded-ISO-2022-JP-long",
+      "attempts": [
+        {
+          "chunk": 7,
+          "canonical": "ISO-2022-JP",
+          "effective": "ISO-2022-JP",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 90064,
+          "parserBytes": 75064,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-2022-JP",
+          "effective": "ISO-2022-JP",
+          "route": "transcode",
+          "prefixBytes": 44,
+          "sourceBytes": 90064,
+          "parserBytes": 75064,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "default-utf8",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 14,
+          "parserBytes": 14,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 14,
+          "parserBytes": 14,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 14,
+          "parserBytes": 14,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf8-bom",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 9,
+          "sourceBytes": 17,
+          "parserBytes": 17,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 9,
+          "sourceBytes": 17,
+          "parserBytes": 17,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 9,
+          "sourceBytes": 17,
+          "parserBytes": 17,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "declaration-version-only",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 29,
+          "parserBytes": 29,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 29,
+          "parserBytes": 29,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 29,
+          "parserBytes": 29,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "not-a-declaration",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 59,
+          "parserBytes": 59,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 59,
+          "parserBytes": 59,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 6,
+          "sourceBytes": 59,
+          "parserBytes": 59,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "case-and-whitespace",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 60,
+          "sourceBytes": 68,
+          "parserBytes": 68,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 60,
+          "sourceBytes": 68,
+          "parserBytes": 68,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 60,
+          "sourceBytes": 68,
+          "parserBytes": 68,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "ascii-alias",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "US-ASCII",
+          "effective": "US-ASCII",
+          "route": "native",
+          "prefixBytes": 40,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "US-ASCII",
+          "effective": "US-ASCII",
+          "route": "native",
+          "prefixBytes": 40,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "US-ASCII",
+          "effective": "US-ASCII",
+          "route": "native",
+          "prefixBytes": 40,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "latin1-alias",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 39,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 39,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "ISO-8859-1",
+          "effective": "ISO-8859-1",
+          "route": "native",
+          "prefixBytes": 39,
+          "sourceBytes": 48,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "windows-alias",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 58,
+          "parserBytes": 64,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 58,
+          "parserBytes": 64,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP1251",
+          "effective": "CP1251",
+          "route": "transcode",
+          "prefixBytes": 45,
+          "sourceBytes": 58,
+          "parserBytes": 64,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "cp932-corrected",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 47,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 47,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "CP932",
+          "effective": "CP932",
+          "route": "transcode",
+          "prefixBytes": 38,
+          "sourceBytes": 47,
+          "parserBytes": 48,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-implicit-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16",
+          "effective": "UTF-16LE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-no-bom-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-conflict-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "endian-conflict-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf32-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-32",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-32",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-32",
+          "effective": "UTF-32LE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf32-no-declaration-le",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 80,
+          "sourceBytes": 100,
+          "parserBytes": 100,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-implicit-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-16",
+          "effective": "UTF-16BE",
+          "route": "native",
+          "prefixBytes": 14,
+          "sourceBytes": 22,
+          "parserBytes": 22,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-no-bom-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingUtf16Bom"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf16-conflict-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "endian-conflict-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "byteOrderConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf32-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-32",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-32",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-32",
+          "effective": "UTF-32BE",
+          "route": "transcode",
+          "prefixBytes": 160,
+          "sourceBytes": 196,
+          "parserBytes": 53,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf32-no-declaration-be",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "missingEncodingDeclaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "utf8-bom-conflict",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "encodingConflict"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "double-utf8-bom",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "unknown-codec",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "prototype-name",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "locale-char",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "native-wchar",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "internal-ucs",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "java-escape-codec",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "c99-escape-codec",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unknownEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "empty-encoding",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "ignore-suffix",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "reordered-declaration",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "duplicate-encoding",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "unfinished-declaration",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "missing-version",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "leading-whitespace-declaration",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "second-declaration",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "non-ascii-encoding-name",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "declarationSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "missing-root",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "xml-1.1",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "xmlVersion"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "xmlVersion"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "xmlVersion"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "invalid-default-utf8",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "truncated-transcoded-byte",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "invalidEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "invalidEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "invalidEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "invalid-xml-after-transcoding",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "unsupported-ucs-order",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedByteOrder"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedByteOrder"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedByteOrder"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "unsupported-ebcdic",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedEbcdic"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedEbcdic"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "unsupportedFeature",
+            "reason": "unsupportedEbcdic"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "epub-utf8",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 46,
+          "parserBytes": 46,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 46,
+          "parserBytes": 46,
+          "catalogUses": 0,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 38,
+          "sourceBytes": 46,
+          "parserBytes": 46,
+          "catalogUses": 0,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "epub-non-unicode",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "epub-utf32",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "epubEncoding"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "declaration-budget",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "declaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "declaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "declaration"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "source-budget",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "source"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "source"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "source"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "expanded-text-budget",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "transcoded-output-budget",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "resourceLimit"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "resourceLimit"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "resourceLimit",
+            "reason": "resourceLimit"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "local-catalog",
+      "attempts": [
+        {
+          "chunk": 1,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 160,
+          "parserBytes": 160,
+          "catalogUses": 1,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 160,
+          "parserBytes": 160,
+          "catalogUses": 1,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "canonical": "UTF-8",
+          "effective": "UTF-8",
+          "route": "native",
+          "prefixBytes": 21,
+          "sourceBytes": 160,
+          "parserBytes": 160,
+          "catalogUses": 1,
+          "sourceClosed": true
+        }
+      ]
+    },
+    {
+      "name": "used-external-entity",
+      "attempts": [
+        {
+          "chunk": 1,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 3,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        },
+        {
+          "chunk": 4096,
+          "failure": {
+            "code": "invalidDocument",
+            "reason": "xmlSyntax"
+          },
+          "partialResultPublished": false,
+          "sourceClosed": true
+        }
+      ]
+    }
+  ],
+  "extra": [
+    {
+      "name": "pre-aborted-does-not-read",
+      "code": "cancelled",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "cancel-during-prefix",
+      "code": "cancelled",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "cancel-during-transcoded-body",
+      "code": "cancelled",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "source-read-failure",
+      "code": "readFailed",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "known-source-change",
+      "code": "sourceChanged",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "codec-asset-unavailable",
+      "code": "assetUnavailable",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "source-close-failure",
+      "code": "readFailed",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    },
+    {
+      "name": "source-change-survives-cleanup-failure",
+      "code": "sourceChanged",
+      "activeParsers": 0,
+      "activeDecoders": 0
+    }
+  ],
+  "codecModuleLoads": 1,
+  "registryAliases": 292,
+  "registryCanonical": 97,
+  "activeParsers": 0,
+  "activeDecoders": 0,
+  "fullReader": false,
+  "allCodecsConformance": false
+}

@@ -1,0 +1,1193 @@
+{
+  "checkedAt": "2026-10-17T08:33:07.621Z",
+  "status": "design-confirmed",
+  "ordinal": 23,
+  "name": "Mihon / Tachiyomi Backup Importer",
+  "realUserBackup": false,
+  "baselines": [
+    {
+      "tag": "v0.21.2",
+      "tagObject": "d6b3b3f1961508c686047f63cd4157eba73187f7",
+      "commit": "9612d955db3165e1578fdf9ff19ca9b7762c4a46",
+      "repository": "https://github.com/mihonapp/mihon",
+      "description": "Current Mihon baseline"
+    },
+    {
+      "tag": "v0.15.3",
+      "tagObject": "6fcde0e12709352d9151f2c8b86d9b98b6792bfc",
+      "commit": "49991d38d97e21746dcc9e5f2c177bccb94c93b3",
+      "repository": "https://github.com/mihonapp/mihon",
+      "description": "Tachiyomi tag retained in the Mihon repository"
+    }
+  ],
+  "release": {
+    "tag": "v0.21.2",
+    "publishedAt": "2026-10-13T04:27:29Z"
+  },
+  "publicRequests": [
+    {
+      "url": "https://api.github.com/repos/tachiyomiorg/tachiyomi/releases/latest",
+      "status": 404,
+      "checkedAt": "2026-10-17T08:20:17.770Z",
+      "bytes": 130,
+      "sha256": "d9e37600354c1839f6b22cebde497e9d14750d2401a06c9a51b1619baf991613"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:17.789Z",
+      "bytes": 21504,
+      "sha256": "400147c1e40ef5e53bd7359b850c20f1e00e5c089512cc0d7cac6e640f31c724"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/ref/tags/v0.21.2",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:24.663Z",
+      "bytes": 327,
+      "sha256": "3e3ec3b45cd81a0e0de0a2eb91032116ef2e336ab4011523435d0a0bbc54b51a"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/ref/tags/v0.15.3",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:24.681Z",
+      "bytes": 327,
+      "sha256": "04a29b2e22a0df629a210dfb2c6c9eb7e5e1c77befe94f03ff4b50979c2d0c0a"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/tags/d6b3b3f1961508c686047f63cd4157eba73187f7",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:32.436Z",
+      "bytes": 664,
+      "sha256": "e65073562500c8319531a0538ea14e394dc3f621ab1500d30998e7c05555b1cf"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/tags/6fcde0e12709352d9151f2c8b86d9b98b6792bfc",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:32.447Z",
+      "bytes": 647,
+      "sha256": "a55532c808a51b86231cc676245b8aeb6cde35d5c2b0372d0b3bca540660b664"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/trees/9612d955db3165e1578fdf9ff19ca9b7762c4a46?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:32.765Z",
+      "bytes": 545333,
+      "sha256": "2712b57cf9ec81104a78c9020ad0f733c603bff3a19ef89d874c997e474eb24f"
+    },
+    {
+      "url": "https://api.github.com/repos/mihonapp/mihon/git/trees/49991d38d97e21746dcc9e5f2c177bccb94c93b3?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:32.775Z",
+      "bytes": 421083,
+      "sha256": "90641121e013eb2c6b7c35ed354673123129242ea666c4a1d767752fc03434da"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.672Z",
+      "bytes": 590,
+      "sha256": "61e9be2c6638ad53299f5b7dfaa4e1c4e7b66e7e558da0cb5788cc00f212e728"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.683Z",
+      "bytes": 758,
+      "sha256": "d0e7aaf6016c06cee0f901a50423b23c2e20c9b4f5e4c151d43e7029032dc66c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.683Z",
+      "bytes": 2347,
+      "sha256": "3586f39be0fe263d678b16130549d057750cc7e67381c461e16ce8c3b4d7de22"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.684Z",
+      "bytes": 2667,
+      "sha256": "078ec6faa435053ae97754ee11a4483932df803452ab825c1b8699ea53cb0a31"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.687Z",
+      "bytes": 2962,
+      "sha256": "aeb35510c13e54fd85ba0b61038d4a26481e7dd674078b8a182aba3ceebb3fdf"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.693Z",
+      "bytes": 665,
+      "sha256": "f13dd4c9b49bcf9e914add0990e164812a50201403a663bf3b27356f76e9a94b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.693Z",
+      "bytes": 4108,
+      "sha256": "de4560a7f1e0f42acfc9b74cf75b1f159543ac8ef0e681ba15b1d7aa6b674563"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.694Z",
+      "bytes": 914,
+      "sha256": "6cfc1a76de048696b7962ed615f7490edda7d6e944b66f38a53afa5059b541b4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.695Z",
+      "bytes": 456,
+      "sha256": "35a1febbed8d8dbeea98d8b2930e402c48c1a8dbb269cf0bec1d354ac65a6291"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.697Z",
+      "bytes": 1755,
+      "sha256": "656022f481dcdced575bb15298981fcc62bcf8de0da642e686b687180f6575be"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.697Z",
+      "bytes": 754,
+      "sha256": "10bb4e24c0fcafdc8fbfe85e27bdb4ce7d6d548b2bf6d6eb0641491d33373bb2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.703Z",
+      "bytes": 3056,
+      "sha256": "eb3c9b4aa178fd38869975c0ef135fc2b40408685e5ff56a6c442bcdc218fc9f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.703Z",
+      "bytes": 1163,
+      "sha256": "e40372db2749e86394d8a582c45d9eda9d2ec4bc7946b67ba917bf91a1f40388"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.704Z",
+      "bytes": 1793,
+      "sha256": "ec9e165454a5db7046b76f885e1f91f1f2a982fd72331aa7c2ff62ea38eb4b8b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.710Z",
+      "bytes": 265,
+      "sha256": "6bfe980f5e07fbf7148185dd0959b42bc9fb0acfd0ca57246988c5839de3881f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.710Z",
+      "bytes": 1820,
+      "sha256": "61d9438eb8ee67d123d31be757754646457a33a0cf26be008f8e91752be8a9e3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.859Z",
+      "bytes": 3644,
+      "sha256": "92420b1465f2d7139a1305b4a923e3288ccee271734e246dd5dac75e617fba65"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.859Z",
+      "bytes": 796,
+      "sha256": "5c23f40dd32393f5f9360cecccf76d7b407900c4352ea7a994e36cecaa4b9bd8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.859Z",
+      "bytes": 3018,
+      "sha256": "9edd2cd9c62f73c1303e9e92d8b08fb8128178bac70b77bfd17f1c9bf48d4c2f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:20:44.936Z",
+      "bytes": 4204,
+      "sha256": "3ed554d40e44889a157b43fd18f298ef5750070924ec1f03fbfc0c5e0f5694b8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupOptions.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.463Z",
+      "bytes": 4180,
+      "sha256": "933c131987770b50299cd2798a1e342413134d41ec6253770952e2062cd81969"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.468Z",
+      "bytes": 8656,
+      "sha256": "ffa56fd34a4ea70e9ae9e276909598e43a8ba5aea00be2922cec4212463d9123"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/komga/Komga.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.476Z",
+      "bytes": 3655,
+      "sha256": "3430c09d6608f7c663402a662d9aa0c62a4deda5a5ce731216f418c2b7c19359"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.476Z",
+      "bytes": 8408,
+      "sha256": "1cde4aec0495d5bde23e3c0036cd3a8c3d0b42876ba5b2cf01e1afd1628a03c1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.476Z",
+      "bytes": 5251,
+      "sha256": "ccb2f6bf0cee3c59620ef8fc8d8b59e0d35d27f6d51233634602dde1fd3fa33d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.481Z",
+      "bytes": 5413,
+      "sha256": "3d78129a2d9f472255583974ea651922d2f458cecf11b552c2b5854873c3ab92"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.482Z",
+      "bytes": 1914,
+      "sha256": "4dcaf9de678fbf89b9ae7be6c78be75e8c575a592b7d01ad4101cc40220aeb9d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/hikka/Hikka.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.488Z",
+      "bytes": 6254,
+      "sha256": "554f1ee39345c5e8f1ca154fb4b410f224bc1416db09e21584baa948e1aad454"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupCreator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.489Z",
+      "bytes": 6806,
+      "sha256": "43cb59163608efc2e6dc5fbf125b03a96ae449b1bfbf938bda2f62ac56461e95"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.491Z",
+      "bytes": 5731,
+      "sha256": "0c598ecefa65b3b65340992eb6333b7f45a4bfe9ec0da4573e94ec176d56369a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.497Z",
+      "bytes": 4669,
+      "sha256": "4d1325ce6ff9d7b0df5af187af637f4ab370951b7aad5036ff3abd34dbb8b874"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kavita/Kavita.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.497Z",
+      "bytes": 5107,
+      "sha256": "2e7752caf6737f3eb17c55ac775803f04d73a1f174dbe899bbfec7ab5c137e6d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/comick/Comick.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.507Z",
+      "bytes": 4743,
+      "sha256": "790cb4d3f4b9373f50e3be7e4a06dc4fd064c4e30e94fa7a3ebd3a9d50f04b6f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/mangabaka/MangaBaka.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.645Z",
+      "bytes": 7845,
+      "sha256": "1e8fb9b3bd97bf7ff725f95ae641e18e4c3164626108bd975956c44d1bfbb6ba"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/suwayomi/Suwayomi.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.673Z",
+      "bytes": 3879,
+      "sha256": "a36b5f00b88b0d111e6e5b98b53a017460a6c687311ccdc5bd2142b5804fcf09"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/restore/restorers/MangaRestorer.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:21:44.974Z",
+      "bytes": 2927,
+      "sha256": "bae81acd7a77518aa9d3aa57a508c0a335b10f8dd0c987788cd287b41371a2da"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/source-local/src/main/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.071Z",
+      "bytes": 17095,
+      "sha256": "45bec34054df218a60328d4d0b1ae1c6d79c217294c8cc095187aec9c34d5be1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/data/history.sq",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.077Z",
+      "bytes": 1214,
+      "sha256": "32733155d8ec9a8943eca79b157ec3a3cbe2b7307201ba50ef8e02344e453ba5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/BaseTracker.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.077Z",
+      "bytes": 6673,
+      "sha256": "0b39d592b733af5530f9ff0974f5e28af201041d16ce66dffe005dab2f4ed98d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.078Z",
+      "bytes": 15547,
+      "sha256": "e3fc3e30e324e41a4142acc341f23b56a3310c464b89077de6b7ccaddbaac925"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/ReaderViewModel.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.081Z",
+      "bytes": 43135,
+      "sha256": "847b8093db9cfa066d5c86a7a8b5d652f9bba7c849d7bd79aace7cb4a4217183"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/source-api/src/main/kotlin/eu/kanade/tachiyomi/source/model/SManga.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.087Z",
+      "bytes": 1799,
+      "sha256": "1848776bbd108f90063a04004286eacd82ab0cf1821be0b7ea59a09f7e8a7cdd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesDisplay.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.108Z",
+      "bytes": 2022,
+      "sha256": "f8dfb066348a3a6b90829d4073d3895770db536f7a74b17b5ba1d8728f426fc9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesTextArea.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.220Z",
+      "bytes": 8631,
+      "sha256": "2146948abe318fac063192ec1d0b1395716730080e5dbecf4118772e9dc59c6f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.473Z",
+      "bytes": 1217,
+      "sha256": "3ef9639c147faf91238c9d870482f0abfa00e20ec478a80241afef126c375031"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.475Z",
+      "bytes": 3844,
+      "sha256": "4fe47dbf28d7486f340b4d6cd057c3a908c98aad5747978dd5729176ffe1fd25"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.475Z",
+      "bytes": 8273,
+      "sha256": "36f2afdf40f7a57174f3d4930eab30fe6d48799212c4e90f799a623828bba10e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.493Z",
+      "bytes": 4936,
+      "sha256": "d529da94a37c500055cc5c84fb5fdd518afa7354fd607b3916c5ddaa890101d2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:21.689Z",
+      "bytes": 5557,
+      "sha256": "235ea7db87b7617358ce5dd0139f63b015979a2d41f617302fbc32c92dbf46e7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/SourcesBackupCreator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:38.443Z",
+      "bytes": 746,
+      "sha256": "fc2aad804a1c2eac4baa34917f59fb2921c4118bf54158df6b5e2a7e8d04259e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupPreference.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:38.444Z",
+      "bytes": 986,
+      "sha256": "99ad107ed933b381e147262321b12c3dbb5b08bfff9d46659cc2de40d8972087"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/chapter/service/ChapterRecognition.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:22:38.460Z",
+      "bytes": 15793,
+      "sha256": "53a56bf75ddb0aa0d029f722188a3fc396071f523a9a61ac95f02e2d0c187086"
+    },
+    {
+      "url": "https://registry.npmjs.org/protobufjs/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:23:28.148Z",
+      "bytes": 4454,
+      "sha256": "3e68cb2845210da7ad1ccef2b3c1f6bb2c78af8cfba0fc6be7b4a78ecac09596"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/protobufjs@8.8.1/dist/protobuf.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:23:28.936Z",
+      "bytes": 360065,
+      "sha256": "c12c396c0fe382441bed5fbef7fdc412b9cf0158f07d66a9c31a73e294e0439b"
+    },
+    {
+      "url": "https://registry.npmjs.org/long/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:23:51.342Z",
+      "bytes": 2002,
+      "sha256": "a56b3c231256363f7e71a5c29ca8a09749570dd75aeb3ad6e2166988bbc70ced"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/long@5.3.2/umd/index.js",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:23:51.784Z",
+      "bytes": 50994,
+      "sha256": "ea6da8d5fff04abc358b94488dbbb7eeb46e5027cc05303b1761cea94bef7821"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DownloadPageLoader.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.109Z",
+      "bytes": 2355,
+      "sha256": "6971215730ef683d2a2898afef01db74d344e6b315a548252315dd83cfd5f7a7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/mihon/app/di/AppBindings.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.110Z",
+      "bytes": 2195,
+      "sha256": "1b0289d85581a1466f490fa14a9c953175abe7910c94b9023dbb390270b69062"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/library/service/LibraryPreferences.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.117Z",
+      "bytes": 9142,
+      "sha256": "528fd19d26e0ef60d2fb571e9cf633953530d00185ad8df824a838b4c1acff8f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/mihon/domain/manga/model/SManga.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.121Z",
+      "bytes": 567,
+      "sha256": "5957e8b890db0c3994c0b23f07c3adf567cb6a99826d5861dcd2b4d832792cc4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.135Z",
+      "bytes": 1071,
+      "sha256": "2a1ba69f84720a0b317f558e13abeb5b767cb07e1841ed0d12bd0db2dbb3a292"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/core/common/src/main/kotlin/eu/kanade/tachiyomi/util/storage/DiskUtil.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.153Z",
+      "bytes": 7199,
+      "sha256": "cabcf29b7a7425db76a9fafbcadc9bb9659aacfd2593d371da4575c886309f0e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ArchivePageLoader.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:24:43.361Z",
+      "bytes": 1221,
+      "sha256": "9c5563b003b91c089926a08b622f5ea7c96d3a36a743d4245a2532e17dff769e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/source-local/src/main/java/tachiyomi/source/local/LocalSource.kt",
+      "status": 404,
+      "checkedAt": "2026-10-17T08:26:57.984Z",
+      "bytes": 14,
+      "sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ZipPageLoader.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.001Z",
+      "bytes": 1413,
+      "sha256": "1263599b441bb1e73bfa203b3bbed51a181b2ffe046a40a6ac528d35df7258c2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/CategoriesBackupCreator.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.007Z",
+      "bytes": 609,
+      "sha256": "92a2ac657c5e82c1e85b706002d1f93d96d0f9b30acfe7acedba2c627ca66f73"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/category/model/Category.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.012Z",
+      "bytes": 324,
+      "sha256": "c4f2857110922e1dca149e909a7ecb07383269fc5ea8784c42b949a80d738242"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.013Z",
+      "bytes": 17391,
+      "sha256": "af95319c08e9734d1ebba591e0cdff727d997d75d733ee3af04816ef1b36e3bb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.028Z",
+      "bytes": 6403,
+      "sha256": "ea37e4f23a0d665f3c7e41f4268ab783ccc4266d931caa019de1a6f6ca47ee32"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:26:58.227Z",
+      "bytes": 1064,
+      "sha256": "ff7a862c0ea2e217c69f6174aa1207d3979001c995ac18e8f2b09d6029e9642a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:27:16.169Z",
+      "bytes": 13902,
+      "sha256": "e8dcbe8d7724a37a764bea4e471ff955afb62da315a8e50574eb6d3c6e3ad9f4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/source-local/src/androidMain/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:27:16.183Z",
+      "bytes": 15765,
+      "sha256": "a8459d383240e6aa4bd74d235bfb1f2d92b3e89f1dfbd932371de21749344f5b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/core/src/main/java/eu/kanade/tachiyomi/util/lang/StringExtensions.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:27:16.531Z",
+      "bytes": 1962,
+      "sha256": "bad0514821467e622a1dfd4eca1eff8dd25a3ac1eba47ae8d40ec5de89f4c849"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:27:46.694Z",
+      "bytes": 5003,
+      "sha256": "b33a8d0c1d68d0b38657014b915f0fa39c0c4ffa57f3bb917c4b1beacbea17e0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:27:46.863Z",
+      "bytes": 4817,
+      "sha256": "587df82717659ecc1bd2d97b079b5af1116f13f7a9f3cf9899e350be001ce943"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/18.sqm",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:30:53.813Z",
+      "bytes": 2206,
+      "sha256": "25be3c5cb2f7c791f8c40c172c06cdf0efbd337ba7ef1d9afd52edaabe122a62"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/19.sqm",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:30:53.813Z",
+      "bytes": 10653,
+      "sha256": "7419cd00e5284506c94eefc32a48211a83140b1d6c82d165eb5083834711c5fc"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/15.sqm",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:30:53.813Z",
+      "bytes": 572,
+      "sha256": "e874dbdb49a0033f444679e31456594b729d51211c0c5db0026df780079714b1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/17.sqm",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:30:53.815Z",
+      "bytes": 25063,
+      "sha256": "d6a4b3c8a525641232e2c7c541597f48100f8126b0a52137bcccb6fac988737c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mihonapp/mihon/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/16.sqm",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:30:53.869Z",
+      "bytes": 3642,
+      "sha256": "0c3953e66a91dce1c466ae143c107cc08bb25ec26d70ab45d178750ae046c987"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "bytes": 590,
+      "sha256": "61e9be2c6638ad53299f5b7dfaa4e1c4e7b66e7e558da0cb5788cc00f212e728"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "bytes": 758,
+      "sha256": "d0e7aaf6016c06cee0f901a50423b23c2e20c9b4f5e4c151d43e7029032dc66c"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "bytes": 2347,
+      "sha256": "3586f39be0fe263d678b16130549d057750cc7e67381c461e16ce8c3b4d7de22"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupChapter.kt",
+      "bytes": 2667,
+      "sha256": "078ec6faa435053ae97754ee11a4483932df803452ab825c1b8699ea53cb0a31"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "bytes": 2962,
+      "sha256": "aeb35510c13e54fd85ba0b61038d4a26481e7dd674078b8a182aba3ceebb3fdf"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "bytes": 665,
+      "sha256": "f13dd4c9b49bcf9e914add0990e164812a50201403a663bf3b27356f76e9a94b"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "bytes": 4108,
+      "sha256": "de4560a7f1e0f42acfc9b74cf75b1f159543ac8ef0e681ba15b1d7aa6b674563"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupHistory.kt",
+      "bytes": 914,
+      "sha256": "6cfc1a76de048696b7962ed615f7490edda7d6e944b66f38a53afa5059b541b4"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "bytes": 456,
+      "sha256": "35a1febbed8d8dbeea98d8b2930e402c48c1a8dbb269cf0bec1d354ac65a6291"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "bytes": 1755,
+      "sha256": "656022f481dcdced575bb15298981fcc62bcf8de0da642e686b687180f6575be"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt",
+      "bytes": 754,
+      "sha256": "10bb4e24c0fcafdc8fbfe85e27bdb4ce7d6d548b2bf6d6eb0641491d33373bb2"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "bytes": 3056,
+      "sha256": "eb3c9b4aa178fd38869975c0ef135fc2b40408685e5ff56a6c442bcdc218fc9f"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "bytes": 1163,
+      "sha256": "e40372db2749e86394d8a582c45d9eda9d2ec4bc7946b67ba917bf91a1f40388"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupFileValidator.kt",
+      "bytes": 1793,
+      "sha256": "ec9e165454a5db7046b76f885e1f91f1f2a982fd72331aa7c2ff62ea38eb4b8b"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupSource.kt",
+      "bytes": 265,
+      "sha256": "6bfe980f5e07fbf7148185dd0959b42bc9fb0acfd0ca57246988c5839de3881f"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/BackupDecoder.kt",
+      "bytes": 1820,
+      "sha256": "61d9438eb8ee67d123d31be757754646457a33a0cf26be008f8e91752be8a9e3"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt",
+      "bytes": 3644,
+      "sha256": "92420b1465f2d7139a1305b4a923e3288ccee271734e246dd5dac75e617fba65"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupCategory.kt",
+      "bytes": 796,
+      "sha256": "5c23f40dd32393f5f9360cecccf76d7b407900c4352ea7a994e36cecaa4b9bd8"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupTracking.kt",
+      "bytes": 3018,
+      "sha256": "9edd2cd9c62f73c1303e9e92d8b08fb8128178bac70b77bfd17f1c9bf48d4c2f"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupManga.kt",
+      "bytes": 4204,
+      "sha256": "3ed554d40e44889a157b43fd18f298ef5750070924ec1f03fbfc0c5e0f5694b8"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupOptions.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupOptions.kt",
+      "bytes": 4180,
+      "sha256": "933c131987770b50299cd2798a1e342413134d41ec6253770952e2062cd81969"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "bytes": 8656,
+      "sha256": "ffa56fd34a4ea70e9ae9e276909598e43a8ba5aea00be2922cec4212463d9123"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/komga/Komga.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/komga/Komga.kt",
+      "bytes": 3655,
+      "sha256": "3430c09d6608f7c663402a662d9aa0c62a4deda5a5ce731216f418c2b7c19359"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "bytes": 8408,
+      "sha256": "1cde4aec0495d5bde23e3c0036cd3a8c3d0b42876ba5b2cf01e1afd1628a03c1"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "bytes": 5251,
+      "sha256": "ccb2f6bf0cee3c59620ef8fc8d8b59e0d35d27f6d51233634602dde1fd3fa33d"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "bytes": 5413,
+      "sha256": "3d78129a2d9f472255583974ea651922d2f458cecf11b552c2b5854873c3ab92"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "bytes": 1914,
+      "sha256": "4dcaf9de678fbf89b9ae7be6c78be75e8c575a592b7d01ad4101cc40220aeb9d"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/hikka/Hikka.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/hikka/Hikka.kt",
+      "bytes": 6254,
+      "sha256": "554f1ee39345c5e8f1ca154fb4b410f224bc1416db09e21584baa948e1aad454"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupCreator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/BackupCreator.kt",
+      "bytes": 6806,
+      "sha256": "43cb59163608efc2e6dc5fbf125b03a96ae449b1bfbf938bda2f62ac56461e95"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "bytes": 5731,
+      "sha256": "0c598ecefa65b3b65340992eb6333b7f45a4bfe9ec0da4573e94ec176d56369a"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "bytes": 4669,
+      "sha256": "4d1325ce6ff9d7b0df5af187af637f4ab370951b7aad5036ff3abd34dbb8b874"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/kavita/Kavita.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kavita/Kavita.kt",
+      "bytes": 5107,
+      "sha256": "2e7752caf6737f3eb17c55ac775803f04d73a1f174dbe899bbfec7ab5c137e6d"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/comick/Comick.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/comick/Comick.kt",
+      "bytes": 4743,
+      "sha256": "790cb4d3f4b9373f50e3be7e4a06dc4fd064c4e30e94fa7a3ebd3a9d50f04b6f"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/mangabaka/MangaBaka.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/mangabaka/MangaBaka.kt",
+      "bytes": 7845,
+      "sha256": "1e8fb9b3bd97bf7ff725f95ae641e18e4c3164626108bd975956c44d1bfbb6ba"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/suwayomi/Suwayomi.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/suwayomi/Suwayomi.kt",
+      "bytes": 3879,
+      "sha256": "a36b5f00b88b0d111e6e5b98b53a017460a6c687311ccdc5bd2142b5804fcf09"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/restore/restorers/MangaRestorer.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/restore/restorers/MangaRestorer.kt",
+      "bytes": 2927,
+      "sha256": "bae81acd7a77518aa9d3aa57a508c0a335b10f8dd0c987788cd287b41371a2da"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "source-local/src/main/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/source-local/src/main/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "bytes": 17095,
+      "sha256": "45bec34054df218a60328d4d0b1ae1c6d79c217294c8cc095187aec9c34d5be1"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/data/history.sq",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/data/history.sq",
+      "bytes": 1214,
+      "sha256": "32733155d8ec9a8943eca79b157ec3a3cbe2b7307201ba50ef8e02344e453ba5"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/BaseTracker.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/BaseTracker.kt",
+      "bytes": 6673,
+      "sha256": "0b39d592b733af5530f9ff0974f5e28af201041d16ce66dffe005dab2f4ed98d"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "bytes": 15547,
+      "sha256": "e3fc3e30e324e41a4142acc341f23b56a3310c464b89077de6b7ccaddbaac925"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/ReaderViewModel.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/ReaderViewModel.kt",
+      "bytes": 43135,
+      "sha256": "847b8093db9cfa066d5c86a7a8b5d652f9bba7c849d7bd79aace7cb4a4217183"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "source-api/src/main/kotlin/eu/kanade/tachiyomi/source/model/SManga.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/source-api/src/main/kotlin/eu/kanade/tachiyomi/source/model/SManga.kt",
+      "bytes": 1799,
+      "sha256": "1848776bbd108f90063a04004286eacd82ab0cf1821be0b7ea59a09f7e8a7cdd"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesDisplay.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesDisplay.kt",
+      "bytes": 2022,
+      "sha256": "f8dfb066348a3a6b90829d4073d3895770db536f7a74b17b5ba1d8728f426fc9"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesTextArea.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/presentation/manga/components/MangaNotesTextArea.kt",
+      "bytes": 8631,
+      "sha256": "2146948abe318fac063192ec1d0b1395716730080e5dbecf4118772e9dc59c6f"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/TrackerManager.kt",
+      "bytes": 1217,
+      "sha256": "3ef9639c147faf91238c9d870482f0abfa00e20ec478a80241afef126c375031"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/mangaupdates/MangaUpdates.kt",
+      "bytes": 3844,
+      "sha256": "4fe47dbf28d7486f340b4d6cd057c3a908c98aad5747978dd5729176ffe1fd25"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/anilist/Anilist.kt",
+      "bytes": 8273,
+      "sha256": "36f2afdf40f7a57174f3d4930eab30fe6d48799212c4e90f799a623828bba10e"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt",
+      "bytes": 4936,
+      "sha256": "d529da94a37c500055cc5c84fb5fdd518afa7354fd607b3916c5ddaa890101d2"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/myanimelist/MyAnimeList.kt",
+      "bytes": 5557,
+      "sha256": "235ea7db87b7617358ce5dd0139f63b015979a2d41f617302fbc32c92dbf46e7"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/SourcesBackupCreator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/SourcesBackupCreator.kt",
+      "bytes": 746,
+      "sha256": "fc2aad804a1c2eac4baa34917f59fb2921c4118bf54158df6b5e2a7e8d04259e"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupPreference.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/BackupPreference.kt",
+      "bytes": 986,
+      "sha256": "99ad107ed933b381e147262321b12c3dbb5b08bfff9d46659cc2de40d8972087"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "domain/src/main/java/tachiyomi/domain/chapter/service/ChapterRecognition.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/chapter/service/ChapterRecognition.kt",
+      "bytes": 15793,
+      "sha256": "53a56bf75ddb0aa0d029f722188a3fc396071f523a9a61ac95f02e2d0c187086"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DownloadPageLoader.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DownloadPageLoader.kt",
+      "bytes": 2355,
+      "sha256": "6971215730ef683d2a2898afef01db74d344e6b315a548252315dd83cfd5f7a7"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/mihon/app/di/AppBindings.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/mihon/app/di/AppBindings.kt",
+      "bytes": 2195,
+      "sha256": "1b0289d85581a1466f490fa14a9c953175abe7910c94b9023dbb390270b69062"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "domain/src/main/java/tachiyomi/domain/library/service/LibraryPreferences.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/library/service/LibraryPreferences.kt",
+      "bytes": 9142,
+      "sha256": "528fd19d26e0ef60d2fb571e9cf633953530d00185ad8df824a838b4c1acff8f"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "domain/src/main/java/mihon/domain/manga/model/SManga.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/mihon/domain/manga/model/SManga.kt",
+      "bytes": 567,
+      "sha256": "5957e8b890db0c3994c0b23f07c3adf567cb6a99826d5861dcd2b4d832792cc4"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "bytes": 1071,
+      "sha256": "2a1ba69f84720a0b317f558e13abeb5b767cb07e1841ed0d12bd0db2dbb3a292"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "core/common/src/main/kotlin/eu/kanade/tachiyomi/util/storage/DiskUtil.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/core/common/src/main/kotlin/eu/kanade/tachiyomi/util/storage/DiskUtil.kt",
+      "bytes": 7199,
+      "sha256": "cabcf29b7a7425db76a9fafbcadc9bb9659aacfd2593d371da4575c886309f0e"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ArchivePageLoader.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ArchivePageLoader.kt",
+      "bytes": 1221,
+      "sha256": "9c5563b003b91c089926a08b622f5ea7c96d3a36a743d4245a2532e17dff769e"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ZipPageLoader.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ZipPageLoader.kt",
+      "bytes": 1413,
+      "sha256": "1263599b441bb1e73bfa203b3bbed51a181b2ffe046a40a6ac528d35df7258c2"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/CategoriesBackupCreator.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/CategoriesBackupCreator.kt",
+      "bytes": 609,
+      "sha256": "92a2ac657c5e82c1e85b706002d1f93d96d0f9b30acfe7acedba2c627ca66f73"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "domain/src/main/java/tachiyomi/domain/category/model/Category.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/domain/src/main/java/tachiyomi/domain/category/model/Category.kt",
+      "bytes": 324,
+      "sha256": "c4f2857110922e1dca149e909a7ecb07383269fc5ea8784c42b949a80d738242"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "bytes": 17391,
+      "sha256": "af95319c08e9734d1ebba591e0cdff727d997d75d733ee3af04816ef1b36e3bb"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadProvider.kt",
+      "bytes": 6403,
+      "sha256": "ea37e4f23a0d665f3c7e41f4268ab783ccc4266d931caa019de1a6f6ca47ee32"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/DirectoryPageLoader.kt",
+      "bytes": 1064,
+      "sha256": "ff7a862c0ea2e217c69f6174aa1207d3979001c995ac18e8f2b09d6029e9642a"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt",
+      "bytes": 13902,
+      "sha256": "e8dcbe8d7724a37a764bea4e471ff955afb62da315a8e50574eb6d3c6e3ad9f4"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "source-local/src/androidMain/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/source-local/src/androidMain/kotlin/tachiyomi/source/local/LocalSource.kt",
+      "bytes": 15765,
+      "sha256": "a8459d383240e6aa4bd74d235bfb1f2d92b3e89f1dfbd932371de21749344f5b"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "core/src/main/java/eu/kanade/tachiyomi/util/lang/StringExtensions.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/core/src/main/java/eu/kanade/tachiyomi/util/lang/StringExtensions.kt",
+      "bytes": 1962,
+      "sha256": "bad0514821467e622a1dfd4eca1eff8dd25a3ac1eba47ae8d40ec5de89f4c849"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/shikimori/Shikimori.kt",
+      "bytes": 5003,
+      "sha256": "b33a8d0c1d68d0b38657014b915f0fa39c0c4ffa57f3bb917c4b1beacbea17e0"
+    },
+    {
+      "tag": "v0.15.3",
+      "file": "app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "url": "https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/bangumi/Bangumi.kt",
+      "bytes": 4817,
+      "sha256": "587df82717659ecc1bd2d97b079b5af1116f13f7a9f3cf9899e350be001ce943"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/migrations/18.sqm",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/18.sqm",
+      "bytes": 2206,
+      "sha256": "25be3c5cb2f7c791f8c40c172c06cdf0efbd337ba7ef1d9afd52edaabe122a62"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/migrations/19.sqm",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/19.sqm",
+      "bytes": 10653,
+      "sha256": "7419cd00e5284506c94eefc32a48211a83140b1d6c82d165eb5083834711c5fc"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/migrations/15.sqm",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/15.sqm",
+      "bytes": 572,
+      "sha256": "e874dbdb49a0033f444679e31456594b729d51211c0c5db0026df780079714b1"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/migrations/17.sqm",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/17.sqm",
+      "bytes": 25063,
+      "sha256": "d6a4b3c8a525641232e2c7c541597f48100f8126b0a52137bcccb6fac988737c"
+    },
+    {
+      "tag": "v0.21.2",
+      "file": "data/src/main/sqldelight/tachiyomi/migrations/16.sqm",
+      "url": "https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/data/src/main/sqldelight/tachiyomi/migrations/16.sqm",
+      "bytes": 3642,
+      "sha256": "0c3953e66a91dce1c466ae143c107cc08bb25ec26d70ab45d178750ae046c987"
+    }
+  ],
+  "syntheticVerification": {
+    "status": "passed",
+    "checks": 97,
+    "sourceModelFiles": 14,
+    "sourceFieldDeclarations": 123,
+    "fixtureFiles": 9,
+    "result": "synthetic-results.json",
+    "productionOrHostRun": false
+  },
+  "limitations": [
+    "No real user backup or Android/Kotlin serializer was run.",
+    "Selected field and semantic probes are not a production importer or host acceptance.",
+    "Page comparator probe covers simple ASCII numeric image names only.",
+    "Opaque optional preference bytes test skipping, not preference deserialization.",
+    "No source application, online extension, user media, or native Kisaki database was changed."
+  ],
+  "notes": [
+    "The original Tachiyomi latest-release API returned 404; historical baseline was resolved through the retained Mihon tag.",
+    "One guessed old LocalSource path returned 404; the actual path was located in its pinned source tree and read successfully.",
+    "No user backup, source app, user media, production code, dependency manifest, or root AGENTS.md was modified."
+  ]
+}

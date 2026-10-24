@@ -1,0 +1,217 @@
+{
+  "checkedAt": "2026-10-19T11:12:35.123283+00:00",
+  "upstreamTag": "v3.8.10",
+  "fixtures": [
+    {
+      "file": "test_read_format_rar.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar.rar.uu",
+      "bytes": 336,
+      "encodedSha256": "d1e75b4120995bce82fc4e72ebf8b80d18ea69fa34ac62de383b8393f92afa09",
+      "sha256": "d421b86f6290aefad61b2a36737253b2b30fe27c156bd95abfc230f24fe0307e"
+    },
+    {
+      "file": "test_read_format_rar_unicode.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar_unicode.rar.uu",
+      "bytes": 666,
+      "encodedSha256": "9357910f65c0c27c79ce28038114a41c2e78f671fde6a9bfeeb67402d5f42723",
+      "sha256": "3dc3d2a8f3f6cbfeeb6f45b3bb09fa7b2bf4b52e10e80df29217fdeaa9dbda45"
+    },
+    {
+      "file": "test_read_format_rar3_lowdist_reset.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar3_lowdist_reset.rar.uu",
+      "bytes": 566,
+      "encodedSha256": "48ff7093a3660736a945ec90bdd305dbf08eb362d9d5b2add28058eb2f8d6bbc",
+      "sha256": "45ca17d52b91a6f24c48fe5d79b04cb26052f7e1d732d8bf8e459c433540f916"
+    },
+    {
+      "file": "test_read_format_rar_multi_lzss_blocks.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar_multi_lzss_blocks.rar.uu",
+      "bytes": 19842,
+      "encodedSha256": "6c4dfaa6921f1b0542b73274a4b62fd176bc0631ecd9637107be9a6ed82e5bf5",
+      "sha256": "232593586009149311a21c2a3e509ce32c726322a9d971aee6f55676a4caebf1"
+    },
+    {
+      "file": "test_read_format_rar4_solid_encrypted.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar4_solid_encrypted.rar.uu",
+      "bytes": 323,
+      "encodedSha256": "ed7ef1e86e07b08993121ae303ec7e6ee104cd2fff9f35b6a074d7bc54f63bf6",
+      "sha256": "428d44a21042069bbc1891c30a66c48f55540aa37dd8b7ff92c39c5914e3a4a6"
+    },
+    {
+      "file": "test_read_format_rar4_solid_encrypted_filenames.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar4_solid_encrypted_filenames.rar.uu",
+      "bytes": 428,
+      "encodedSha256": "888f1ca2e2f65a96913bfd164996de9d411d9f52a5589a8f55d20c0fdf3fb575",
+      "sha256": "867341376d5b9a922ec3283c8111821b0435e4cbc493efde8b5083ae3b5ed340"
+    },
+    {
+      "file": "test_read_format_rar5_multiple_files_solid.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_multiple_files_solid.rar.uu",
+      "bytes": 677,
+      "encodedSha256": "0184822d0b061ae1a705a46cf1ca4adb4981b9e37bdb6500a48530a19c56fd88",
+      "sha256": "0aa2c652c06304dedd93019663c1d52d5e85055d5fdb8045bfcc4345b90b4a0f"
+    },
+    {
+      "file": "test_read_format_rar5_solid.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_solid.rar.uu",
+      "bytes": 1050,
+      "encodedSha256": "1ced0e33ea4dc6847c05e63878f020d7c6c5cc82812b441865f16797fc7c8eaa",
+      "sha256": "1149dda288494ab6c954d0e3f2a8831318aaf9c69e7da741729bb0c681f924b5"
+    },
+    {
+      "file": "test_read_format_rar5_unicode.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_unicode.rar.uu",
+      "bytes": 269,
+      "encodedSha256": "054c96b1dba041fdeb1d9c9e9b3a701b5414f7f408f1c7671e12a28eefe8a7f9",
+      "sha256": "062c77fb1d47efbd5a468609a9c283ecb0b4cae43b0f6778935c41a975cedee9"
+    },
+    {
+      "file": "test_read_format_rar5_solid_encrypted.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_solid_encrypted.rar.uu",
+      "bytes": 475,
+      "encodedSha256": "9abb75e0de966b3db2bd7f3e8f6ec2db11a953b8855e0fb97d259472119a6f3f",
+      "sha256": "307de6b76f6b7cc3a221975e14b8a6d7a6b87a30fd1ee7a0e08e4333724e5657"
+    },
+    {
+      "file": "test_read_format_rar5_solid_encrypted_filenames.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_solid_encrypted_filenames.rar.uu",
+      "bytes": 654,
+      "encodedSha256": "f05919eebdf3b41a82046dc5b9d6c0e2426e8ec7c25f47e7e0501f5900d33913",
+      "sha256": "61bcc1272cc827fe607f0388d19f8d48c54af9b2cdb7bc0e32ebd2e369c0847e"
+    },
+    {
+      "file": "test_read_format_rar5_arm.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_arm.rar.uu",
+      "bytes": 41082,
+      "encodedSha256": "a8c52f15818198d0e6fc5b74ec3be0ec2ae94bde228d3b1ffdce50ebcc8a0896",
+      "sha256": "c5b149097c4f3e17239d80d6c9897c1a5aa98608d4f2e74e711bea5ef8ca85dd"
+    },
+    {
+      "file": "test_read_format_rar5_blake2.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_blake2.rar.uu",
+      "bytes": 642,
+      "encodedSha256": "6be4d60c833ffc549e74ad02032229291f879b1b1ce86ccd5ef04caa551c746b",
+      "sha256": "e2889c7498cb8065b9fd2338b142a135b906576a30d24acaf44850cca6fb845a"
+    },
+    {
+      "file": "test_read_format_rar5_compressed.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_compressed.rar.uu",
+      "bytes": 436,
+      "encodedSha256": "7a87af5035430d2307f9a183b2da8a71c95b3c0a5b8e8d1f172ef3343d4b8620",
+      "sha256": "68f9d7e2662cd5bc5607ba9c6bf1edbf121cf3b08011a7d8643091791750a7c8"
+    },
+    {
+      "file": "test_read_format_rar5_hardlink.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_hardlink.rar.uu",
+      "bytes": 122,
+      "encodedSha256": "9d69af7d15396bccb556f21e20080b7dd72a7648366400639bd696ce77c76812",
+      "sha256": "2a0494afad63dcf7a5522afd593bde0cb42f53744888397febf112c00853f3d0"
+    },
+    {
+      "file": "test_read_format_rar5_symlink.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_symlink.rar.uu",
+      "bytes": 190,
+      "encodedSha256": "7c159d88ca351a8324e2d85c9455d26e86e7df4c79f46ee3db9bfb5a89ffdd44",
+      "sha256": "a7336968564786ea5ff106fff2f6ef8dfd8ad5ecca86fbd1db3d63ba42bcd29a"
+    },
+    {
+      "file": "test_read_format_rar5_multiarchive_solid.part01.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_multiarchive_solid.part01.rar.uu",
+      "bytes": 13312,
+      "encodedSha256": "198ab406491ef87855e5b48c62c5e86746c73627e5bcecc7a9b4850088aa670c",
+      "sha256": "6607f575dad0b28aaeb02298b4c04a0e5a606e77f952127d2d9e346f60616a26"
+    },
+    {
+      "file": "test_read_format_rar5_multiarchive_solid.part02.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_multiarchive_solid.part02.rar.uu",
+      "bytes": 13312,
+      "encodedSha256": "a01fb59115f210d7f19c3d54e3c1904fa9be9f438822f2fefcdffc5f0bb82848",
+      "sha256": "eb119ed53511905ca6f1844c164b6246d8fcdca0d1f38a8e3fb13da9c0932fbd"
+    },
+    {
+      "file": "test_read_format_rar5_multiarchive_solid.part03.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_multiarchive_solid.part03.rar.uu",
+      "bytes": 13312,
+      "encodedSha256": "072c7f69286153cc465745cff8747ae640ea97e7433de5ce74beca17fc8317e8",
+      "sha256": "e814c3dbdaf3f613fd25c840065d25543f31e6b6c95505e7e25f47867a4812bd"
+    },
+    {
+      "file": "test_read_format_rar5_multiarchive_solid.part04.rar",
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5_multiarchive_solid.part04.rar.uu",
+      "bytes": 3280,
+      "encodedSha256": "d5e569b55002327f5f8f0b07f070a3e6952aab58ba079bb987e976acc21f0713",
+      "sha256": "9ff5a4e633b0e82a2ce6e022f3d389654dbb77a0906a34f107676d6673989c9f"
+    }
+  ],
+  "licenseAndExpectations": [
+    {
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/COPYING",
+      "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar.c",
+      "sha256": "5c51b57b9d146169737ddcbca12c2fde9289f5d281965829a6dab42862a40ee9"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar5.c",
+      "sha256": "777dfa8332972845dddbf3bdfe42d95d7fa8fe2a27dcc54901487ef40f3c3841"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/libarchive/libarchive/v3.8.10/libarchive/test/test_read_format_rar_encryption.c",
+      "sha256": "69d35e0ca520fe7c70acf0942d4b054710633ddadffbe443dc249a0e48a46c0f"
+    }
+  ],
+  "solidExpectedContent": {
+    "test1.bin": {
+      "bytes": 4096,
+      "sha256": "7d89f86f9f69d744ffff3fc043e15bf89fc3ffc134ffcbb31d164a99bb8b67b0",
+      "crc32": 2115220166
+    },
+    "test2.bin": {
+      "bytes": 4096,
+      "sha256": "f81e6fceeeab366306b23466bf6bb3aac2875e0906dc20a8652be0696ceb15a2",
+      "crc32": 4050038731
+    },
+    "test3.bin": {
+      "bytes": 4096,
+      "sha256": "5e621f2b6ce8fed758c3df8221f994eda55d1e432c7cc4349c34a30ec2e1c43d",
+      "crc32": 2679186393
+    },
+    "test4.bin": {
+      "bytes": 4096,
+      "sha256": "2627f40180217252956edb9a426e8d3e344adaf89019d3bccbe04f6c3416dcdd",
+      "crc32": 281296596
+    }
+  },
+  "encryptedExpectedContent": {
+    "a.txt": {
+      "bytes": 18,
+      "crc32": 3998903893
+    },
+    "b.txt": {
+      "bytes": 18,
+      "crc32": 2851738757
+    },
+    "c.txt": {
+      "bytes": 18,
+      "crc32": 2493136181
+    },
+    "d.txt": {
+      "bytes": 18,
+      "crc32": 649781541
+    }
+  },
+  "multivolumeExpectedCrc": {
+    "cebula.txt": 2120139934,
+    "test.bin": 2093641933,
+    "test1.bin": 2115220166,
+    "test2.bin": 4050038731,
+    "test3.bin": 2679186393,
+    "test4.bin": 281296596,
+    "test5.bin": 3117503986,
+    "test6.bin": 916736255,
+    "elf-Linux-ARMv7-ls": 2289013227
+  },
+  "fixturePasswordIsPublicTestData": true,
+  "commercialRarCompressorExecuted": false
+}

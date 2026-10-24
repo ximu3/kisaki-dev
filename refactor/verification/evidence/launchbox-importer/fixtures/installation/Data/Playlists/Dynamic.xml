@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LaunchBox>
+  <Playlist>
+    <PlaylistId>66666666-6666-4666-8666-666666666666</PlaylistId>
+    <Name>Rule controlled</Name>
+    <SortBy>Title</SortBy>
+    <AutoPopulate>true</AutoPopulate>
+  </Playlist>
+  <PlaylistFilter>
+    <Field>Progress</Field>
+    <Comparison>Contains</Comparison>
+    <Value>Done</Value>
+  </PlaylistFilter>
+  <PlaylistGame>
+    <GameId>11111111-1111-4111-8111-111111111111</GameId>
+    <ManualOrder>-1</ManualOrder>
+  </PlaylistGame>
+</LaunchBox>

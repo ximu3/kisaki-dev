@@ -1,0 +1,87 @@
+{
+  "checkedOn": "2026-10-16",
+  "source": "TMDB",
+  "status": "rules-confirmed-score-precision-unverified",
+  "authenticatedApiTested": false,
+  "accountWritesPerformed": false,
+  "requests": [
+    {
+      "id": "movie-add-rating",
+      "url": "https://developer.themoviedb.org/reference/movie-add-rating.md",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:48:19.451Z",
+      "bytes": 3533,
+      "sha256": "6e67cca4f01f612bbe5f7c61d89b2cbff99b138e16d9b3085e1f638af1eac949"
+    },
+    {
+      "id": "movie-delete-rating",
+      "url": "https://developer.themoviedb.org/reference/movie-delete-rating.md",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:48:19.463Z",
+      "bytes": 2651,
+      "sha256": "16058dfc4cea1c98510c3e80986ff2f17e44a4a5f4d70eb9d676b827fb7afe51"
+    },
+    {
+      "id": "movie-client",
+      "url": "https://www.themoviedb.org/assets/application-1cbbaa6fd14944accc97a7b605174c0f65df601c4c0fed782ea0b3a6a32950b8.js",
+      "status": 200,
+      "checkedAt": "2026-10-16T03:48:19.274Z",
+      "bytes": 127245,
+      "sha256": "1cbbaa6fd14944accc97a7b605174c0f65df601c4c0fed782ea0b3a6a32950b8"
+    }
+  ],
+  "currentScopeContract": "../../../design/extensions/sources/tmdb.md#account",
+  "nativeWriteContract": "../../../design/extensions/synchronization.md#writes",
+  "findings": {
+    "ratingWriteWatchlistEffect": {
+      "source": "https://developer.themoviedb.org/reference/movie-add-rating",
+      "behavior": "Adding or changing a rating removes an existing watchlist entry by default; an account preference can change this behavior.",
+      "clientKnowledge": "The inspected account-state API exposes favorite, rated and watchlist, not the account setting that controls automatic removal."
+    },
+    "ratingRemoval": {
+      "source": "https://developer.themoviedb.org/reference/movie-delete-rating",
+      "behavior": "A dedicated DELETE operation removes the personal rating."
+    },
+    "ratingPrecision": {
+      "confirmed": "The official request example uses the fractional personal rating 8.5. Personal ratings must not be truncated merely because some list-response schema examples label rating as integer.",
+      "remaining": "The inspected request schema does not declare bounds or step. Website star-control precision is not proof of accepted API precision; complete score conversion still requires verification."
+    },
+    "lists": {
+      "source": "https://developer.themoviedb.org/v4/reference/list-details",
+      "behavior": "Lists are paginated and can contain mixed media types. Private lists require their owner user token. Only applicable movie members belong to the accepted personal-record scope."
+    }
+  },
+  "confirmedRules": {
+    "acceptedOn": "2026-10-16",
+    "contract": "../../../design/extensions/sources/tmdb.md#import",
+    "importSources": [
+      "Favorite movies",
+      "Watchlist movies",
+      "Rated movies",
+      "Selected lists owned by the connected user"
+    ],
+    "importScope": "Complete pagination and filter for applicable animation movies; TV and non-animation items are excluded and reported, not expanded into local seasons.",
+    "inbound": {
+      "score": "Convert the actual personal rating using its real scale; explicit unrated can clear only when the user selected score adoption. API precision remains to be verified.",
+      "favorite": "Use the actual account boolean when selected; missing responses are not false.",
+      "watchlist": "When state adoption is selected, true becomes planned. False does not establish active, onHold or completion and does not overwrite the local state.",
+      "completion": "No completed history, completed flags, dates, repeat counts or actual watch duration from rating, favorite or list presence."
+    },
+    "outbound": {
+      "direction": "Native to TMDB only, within explicitly selected animation movies and fields.",
+      "score": "Set the representable personal score or use DELETE for explicit unrated; never change native score to the rounded remote value.",
+      "favorite": "Set the selected native favorite boolean.",
+      "watchlist": "planned maps to true; active, onHold and null map to false. This does not claim TMDB can express complete native state.",
+      "excluded": [
+        "Completion history",
+        "Completion dates",
+        "Part flags",
+        "Actual watch time",
+        "Notes and free text"
+      ]
+    },
+    "ratingWatchlistInteraction": "Only when a rating POST is needed: if score and watchlist are selected, process rating then the selected watchlist target. If watchlist is unselected and currently true, do not POST when preservation cannot be established. Equal scores need no write and are not blocked. Do not expand field selection, compensate unselected fields or change account settings.",
+    "lists": "Import applicable members into an optional selected native manual collection. Do not provide remote list CRUD, member synchronization or a persistent collection/list mirror.",
+    "automation": "Use existing separate automatic-import and outbound-sync behavior; both default off and automatic import does not overwrite existing records."
+  }
+}

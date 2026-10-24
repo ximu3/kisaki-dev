@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-20T08:43:57.143328+00:00",
+  "metadataUrl": "https://registry.npmjs.org/css-tree/3.2.1",
+  "version": "3.2.1",
+  "integrity": "sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==",
+  "tarballSha256": "4c06bfe733d006103a4c070dcf8e0a3b2eb6b6a83e20e21c32d2d3b9c3ffae0a",
+  "bundleSha256": "a34589878a06f95e4e144c27748db5e6d81ba19619d3f36036027098e16c3522",
+  "licenseSha256": "719a251ceca49c057ea90a1152af6546b767ec88e6d573bb6324454267b32c22",
+  "prepareSha256": "ff84b61674a8c5c76c38aa469627a229f4badc75d64133d526a6f90b0038d74e",
+  "workspaceDependenciesChanged": false,
+  "packageScriptsExecuted": false
+}

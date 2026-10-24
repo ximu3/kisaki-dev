@@ -1,0 +1,26 @@
+{
+  "verifiedAt": "2026-10-11T14:31:22.840Z",
+  "scope": "An isolated prototype for VNDB extension-owned spoiler removal before Markdown conversion; full provider output is not yet validated.",
+  "sourceFixture": "2026-10-11-common-metadata.json",
+  "sourceRecord": {
+    "endpoint": "/character",
+    "id": "c42",
+    "field": "description"
+  },
+  "originalCharacters": 812,
+  "retainedCharacters": 661,
+  "removedSpoilerNodes": 1,
+  "additionalChecks": [
+    "nested spoiler content removed",
+    "literal markers retained inside raw and code",
+    "hidden image reference removed",
+    "all-spoiler text has an empty public projection",
+    "unclosed spoiler markup raises a field conversion failure"
+  ],
+  "originalSha256": "4c881b2ea880b25898d7ae1c492198b9c95acc7a6d9fddb41aeb06b87ff2eafd",
+  "retainedSha256": "7fc041d3181fc1e034c757771de30f1e294aac67ded7befce79542164fa8ebb6",
+  "syntheticExample": {
+    "input": "Public introduction. [spoiler]Hidden detail.[/spoiler] Public ending.",
+    "output": "Public introduction.  Public ending."
+  }
+}

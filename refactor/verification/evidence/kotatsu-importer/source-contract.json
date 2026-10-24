@@ -1,0 +1,919 @@
+{
+  "sourceRef": "v9.4.1",
+  "commit": "06a0b5829b8d5f214d60d5011d66ec1ccbd5630e",
+  "parserCommit": "4d1e521aef7e4d9f41c65adda5e274509e93807c",
+  "coilVersion": "3.3.0",
+  "coilCommit": "1731511f0c12ef556db7822a91b6ea03fa3f95a1",
+  "applicationId": "org.koitharu.kotatsu",
+  "applicationVersionCode": 1033,
+  "archiveEntries": [
+    "index",
+    "history",
+    "categories",
+    "favourites",
+    "settings",
+    "reader_grid",
+    "bookmarks",
+    "sources",
+    "scrobbling",
+    "statistics",
+    "saved_filters"
+  ],
+  "models": {
+    "BackupIndex": ["app_id", "app_version", "created_at"],
+    "BookmarkBackup": [
+      "manga",
+      "tags",
+      "bookmarks",
+      "manga_id",
+      "page_id",
+      "chapter_id",
+      "page",
+      "scroll",
+      "image_url",
+      "created_at",
+      "percent"
+    ],
+    "CategoryBackup": [
+      "category_id",
+      "created_at",
+      "sort_key",
+      "title",
+      "order",
+      "track",
+      "show_in_lib"
+    ],
+    "FavouriteBackup": ["manga_id", "category_id", "sort_key", "pinned", "created_at", "manga"],
+    "HistoryBackup": [
+      "manga_id",
+      "created_at",
+      "updated_at",
+      "chapter_id",
+      "page",
+      "scroll",
+      "percent",
+      "chapters",
+      "manga"
+    ],
+    "MangaBackup": [
+      "id",
+      "title",
+      "alt_title",
+      "url",
+      "public_url",
+      "rating",
+      "nsfw",
+      "content_rating",
+      "cover_url",
+      "large_cover_url",
+      "state",
+      "author",
+      "source",
+      "tags"
+    ],
+    "ScrobblingBackup": [
+      "scrobbler",
+      "id",
+      "manga_id",
+      "target_id",
+      "status",
+      "chapter",
+      "comment",
+      "rating"
+    ],
+    "SourceBackup": ["source", "sort_key", "used_at", "added_in", "pinned", "enabled"],
+    "StatisticBackup": ["manga_id", "started_at", "duration", "pages"],
+    "TagBackup": ["id", "title", "key", "source", "pinned"]
+  },
+  "scrobblers": {
+    "1": {
+      "name": "SHIKIMORI",
+      "states": {
+        "PLANNED": "planned",
+        "READING": "watching",
+        "RE_READING": "rewatching",
+        "COMPLETED": "completed",
+        "ON_HOLD": "on_hold",
+        "DROPPED": "dropped"
+      }
+    },
+    "2": {
+      "name": "ANILIST",
+      "states": {
+        "PLANNED": "PLANNING",
+        "READING": "CURRENT",
+        "RE_READING": "REPEATING",
+        "COMPLETED": "COMPLETED",
+        "ON_HOLD": "PAUSED",
+        "DROPPED": "DROPPED"
+      }
+    },
+    "3": {
+      "name": "MAL",
+      "states": {
+        "PLANNED": "plan_to_read",
+        "READING": "reading",
+        "COMPLETED": "completed",
+        "ON_HOLD": "on_hold",
+        "DROPPED": "dropped"
+      }
+    },
+    "4": {
+      "name": "KITSU",
+      "states": {
+        "PLANNED": "planned",
+        "READING": "current",
+        "COMPLETED": "completed",
+        "ON_HOLD": "on_hold",
+        "DROPPED": "dropped"
+      }
+    }
+  },
+  "knownMimeTypes": {
+    "bin": "application/octet-stream",
+    "gz": "application/gzip",
+    "json": "application/json",
+    "pdf": "application/pdf",
+    "yaml": "application/yaml",
+    "avif": "image/avif",
+    "avifs": "image/avif",
+    "bmp": "image/bmp",
+    "cgm": "image/cgm",
+    "g3": "image/g3fax",
+    "gif": "image/gif",
+    "heif": "image/heic",
+    "heic": "image/heic",
+    "ief": "image/ief",
+    "jpe": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "pjpg": "image/jpeg",
+    "jfif": "image/jpeg",
+    "jfif-tbnl": "image/jpeg",
+    "jif": "image/jpeg",
+    "png": "image/png",
+    "btif": "image/prs.btif",
+    "svg": "image/svg+xml",
+    "svgz": "image/svg+xml",
+    "tif": "image/tiff",
+    "tiff": "image/tiff",
+    "psd": "image/vnd.adobe.photoshop",
+    "djv": "image/vnd.djvu",
+    "djvu": "image/vnd.djvu",
+    "dwg": "image/vnd.dwg",
+    "dxf": "image/vnd.dxf",
+    "fbs": "image/vnd.fastbidsheet",
+    "fpx": "image/vnd.fpx",
+    "fst": "image/vnd.fst",
+    "mmr": "image/vnd.fujixerox.edmics-mmr",
+    "rlc": "image/vnd.fujixerox.edmics-rlc",
+    "mdi": "image/vnd.ms-modi",
+    "npx": "image/vnd.net-fpx",
+    "wbmp": "image/vnd.wap.wbmp",
+    "xif": "image/vnd.xiff",
+    "webp": "image/webp",
+    "dng": "image/x-adobe-dng",
+    "cr2": "image/x-canon-cr2",
+    "crw": "image/x-canon-crw",
+    "ras": "image/x-cmu-raster",
+    "cmx": "image/x-cmx",
+    "erf": "image/x-epson-erf",
+    "fh": "image/x-freehand",
+    "fh4": "image/x-freehand",
+    "fh5": "image/x-freehand",
+    "fh7": "image/x-freehand",
+    "fhc": "image/x-freehand",
+    "raf": "image/x-fuji-raf",
+    "icns": "image/x-icns",
+    "ico": "image/x-icon",
+    "dcr": "image/x-kodak-dcr",
+    "k25": "image/x-kodak-k25",
+    "kdc": "image/x-kodak-kdc",
+    "mrw": "image/x-minolta-mrw",
+    "nef": "image/x-nikon-nef",
+    "orf": "image/x-olympus-orf",
+    "raw": "image/x-panasonic-raw",
+    "rw2": "image/x-panasonic-raw",
+    "rwl": "image/x-panasonic-raw",
+    "pcx": "image/x-pcx",
+    "pef": "image/x-pentax-pef",
+    "ptx": "image/x-pentax-pef",
+    "pct": "image/x-pict",
+    "pic": "image/x-pict",
+    "pnm": "image/x-portable-anymap",
+    "pbm": "image/x-portable-bitmap",
+    "pgm": "image/x-portable-graymap",
+    "ppm": "image/x-portable-pixmap",
+    "rgb": "image/x-rgb",
+    "x3f": "image/x-sigma-x3f",
+    "arw": "image/x-sony-arw",
+    "sr2": "image/x-sony-sr2",
+    "srf": "image/x-sony-srf",
+    "xbm": "image/x-xbitmap",
+    "xpm": "image/x-xpixmap",
+    "xwd": "image/x-xwindowdump",
+    "css": "text/css",
+    "csv": "text/csv",
+    "htm": "text/html",
+    "html": "text/html",
+    "ics": "text/calendar",
+    "js": "text/javascript",
+    "mjs": "text/javascript",
+    "md": "text/markdown",
+    "txt": "text/plain",
+    "xml": "text/xml",
+    "3gp": "video/3gpp",
+    "3g2": "video/3gpp2",
+    "h261": "video/h261",
+    "h263": "video/h263",
+    "h264": "video/h264",
+    "jpgv": "video/jpeg",
+    "jpgm": "video/jpm",
+    "jpm": "video/jpm",
+    "mj2": "video/mj2",
+    "mjp2": "video/mj2",
+    "ts": "video/mp2t",
+    "mp4": "video/mp4",
+    "mp4v": "video/mp4",
+    "mpg4": "video/mp4",
+    "m1v": "video/mpeg",
+    "m2v": "video/mpeg",
+    "mpa": "video/mpeg",
+    "mpe": "video/mpeg",
+    "mpeg": "video/mpeg",
+    "mpg": "video/mpeg",
+    "ogv": "video/ogg",
+    "mov": "video/quicktime",
+    "qt": "video/quicktime",
+    "fvt": "video/vnd.fvt",
+    "m4u": "video/vnd.mpegurl",
+    "mxu": "video/vnd.mpegurl",
+    "pyv": "video/vnd.ms-playready.media.pyv",
+    "viv": "video/vnd.vivo",
+    "webm": "video/webm",
+    "f4v": "video/x-f4v",
+    "fli": "video/x-fli",
+    "flv": "video/x-flv",
+    "m4v": "video/x-m4v",
+    "mkv": "video/x-matroska",
+    "asf": "video/x-ms-asf",
+    "asx": "video/x-ms-asf",
+    "wm": "video/x-ms-wm",
+    "wmv": "video/x-ms-wmv",
+    "wmx": "video/x-ms-wmx",
+    "wvx": "video/x-ms-wvx",
+    "avi": "video/x-msvideo",
+    "movie": "video/x-sgi-movie"
+  },
+  "sourceCodeExecuted": false,
+  "sources": [
+    {
+      "path": "backups/data/BackupRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/BackupRepository.kt",
+      "status": 200,
+      "bytes": 12361,
+      "sha256": "a52f835428b1a09796ef1c5c69dde67c59d4223338006e8dcd968c05904147ef",
+      "checkedAt": "2026-10-17T11:43:16.672034+00:00"
+    },
+    {
+      "path": "backups/domain/BackupSection.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/domain/BackupSection.kt",
+      "status": 200,
+      "bytes": 614,
+      "sha256": "c0be981cd8c53caeb810168f02ae39cec9f5fa58491bb732655139ed12f5f0b2",
+      "checkedAt": "2026-10-17T11:43:16.849823+00:00"
+    },
+    {
+      "path": "backups/data/model/BackupIndex.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/BackupIndex.kt",
+      "status": 200,
+      "bytes": 498,
+      "sha256": "bc672381a2e84a4fe8cea48b966542c8879102e099f04b55fce2454f8c1b078a",
+      "checkedAt": "2026-10-17T11:43:16.664035+00:00"
+    },
+    {
+      "path": "backups/data/model/BookmarkBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/BookmarkBackup.kt",
+      "status": 200,
+      "bytes": 1546,
+      "sha256": "0bdec485d26b4691d5736da68e01da8f67f77cee386c442ed80491b9962ada0e",
+      "checkedAt": "2026-10-17T11:43:16.677914+00:00"
+    },
+    {
+      "path": "backups/data/model/CategoryBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/CategoryBackup.kt",
+      "status": 200,
+      "bytes": 1169,
+      "sha256": "648d90721abd8fd8babaa96f41089fce36a6c174fec1692dcdfd809c77d17e3a",
+      "checkedAt": "2026-10-17T11:43:17.240694+00:00"
+    },
+    {
+      "path": "backups/data/model/FavouriteBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/FavouriteBackup.kt",
+      "status": 200,
+      "bytes": 1121,
+      "sha256": "3a750df9efcdc1edeedff157b0c826a44de4fc42895a2f2216bbfd2204ad3338",
+      "checkedAt": "2026-10-17T11:43:17.060979+00:00"
+    },
+    {
+      "path": "backups/data/model/HistoryBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/HistoryBackup.kt",
+      "status": 200,
+      "bytes": 1500,
+      "sha256": "e5acdb6b6447a798a4accb940f08dcb6ad7877ec9e9d1ecce7021ec4ca66b452",
+      "checkedAt": "2026-10-17T11:43:17.260446+00:00"
+    },
+    {
+      "path": "backups/data/model/MangaBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/MangaBackup.kt",
+      "status": 200,
+      "bytes": 1953,
+      "sha256": "6598c6331cdec38007ceb1f571925229f18bb154d2f7b983abbc480443e56cf1",
+      "checkedAt": "2026-10-17T11:43:17.264456+00:00"
+    },
+    {
+      "path": "backups/data/model/ScrobblingBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/ScrobblingBackup.kt",
+      "status": 200,
+      "bytes": 1053,
+      "sha256": "534de2ffb6546fc601f25f302f1482df30c10763ef1965dca5f8f43363fe8b29",
+      "checkedAt": "2026-10-17T11:43:17.646276+00:00"
+    },
+    {
+      "path": "backups/data/model/SourceBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/SourceBackup.kt",
+      "status": 200,
+      "bytes": 990,
+      "sha256": "bb7effec437d407c4c878f9a54ce3bf0ce5d841fbd4a4b7a1df93e15bd74a9b0",
+      "checkedAt": "2026-10-17T11:43:17.626497+00:00"
+    },
+    {
+      "path": "backups/data/model/StatisticBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/StatisticBackup.kt",
+      "status": 200,
+      "bytes": 682,
+      "sha256": "bbe57a53a169ef9cecbd2e2fed22dd19b534ab599a650784b0959efad24bd14f",
+      "checkedAt": "2026-10-17T11:43:17.838820+00:00"
+    },
+    {
+      "path": "backups/data/model/TagBackup.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/backups/data/model/TagBackup.kt",
+      "status": 200,
+      "bytes": 708,
+      "sha256": "d707498e4abffd4d0faef98bb6440386bcb41263c39f06678956f224e7c9d67e",
+      "checkedAt": "2026-10-17T11:43:17.663653+00:00"
+    },
+    {
+      "path": "bookmarks/data/BookmarkEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/bookmarks/data/BookmarkEntity.kt",
+      "status": 200,
+      "bytes": 897,
+      "sha256": "6aaa5c3ccccf3661772b1dc560b671128b4f6b2d5ad23b332bb3dbfe1455aa05",
+      "checkedAt": "2026-10-17T11:43:18.043134+00:00"
+    },
+    {
+      "path": "bookmarks/data/BookmarksDao.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/bookmarks/data/BookmarksDao.kt",
+      "status": 200,
+      "bytes": 2177,
+      "sha256": "fbe931310d2d2657a3cd601f6f8c7bd8c5efee1010b6d5cbd9d233768ec61c12",
+      "checkedAt": "2026-10-17T11:43:18.050133+00:00"
+    },
+    {
+      "path": "bookmarks/data/EntityMapping.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/bookmarks/data/EntityMapping.kt",
+      "status": 200,
+      "bytes": 797,
+      "sha256": "bbcab3825a476ccc92b6310caf1a8d91536516004ca3c6e38ea5f5610c9c91bf",
+      "checkedAt": "2026-10-17T11:43:18.069169+00:00"
+    },
+    {
+      "path": "bookmarks/domain/Bookmark.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/bookmarks/domain/Bookmark.kt",
+      "status": 200,
+      "bytes": 890,
+      "sha256": "086452059c4c5cb7e1207fc879abc877d1bd4a1d60e53887585b20ce138b1c71",
+      "checkedAt": "2026-10-17T11:43:18.227752+00:00"
+    },
+    {
+      "path": "bookmarks/domain/BookmarksRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/bookmarks/domain/BookmarksRepository.kt",
+      "status": 200,
+      "bytes": 3041,
+      "sha256": "bbfefd38b5f39836c2d14ce5846eeac477af97fbd99c322e8b1973f712f2f641",
+      "checkedAt": "2026-10-17T11:43:18.442175+00:00"
+    },
+    {
+      "path": "history/data/HistoryEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/history/data/HistoryEntity.kt",
+      "status": 200,
+      "bytes": 1016,
+      "sha256": "4060a3f83e7817250a6bec825d0d915e9c85c28215fde60080007ebd54ab56e8",
+      "checkedAt": "2026-10-17T11:43:18.440176+00:00"
+    },
+    {
+      "path": "history/data/HistoryDao.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/history/data/HistoryDao.kt",
+      "status": 200,
+      "bytes": 8489,
+      "sha256": "d90c0473732ba87e13fa991b56e2168372dc520d7b0ac91f443603a7bbdf7ed9",
+      "checkedAt": "2026-10-17T11:43:18.472447+00:00"
+    },
+    {
+      "path": "history/data/HistoryRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/history/data/HistoryRepository.kt",
+      "status": 200,
+      "bytes": 7542,
+      "sha256": "ca0fb9b33f7170e03cc9dd7dcf9dd20275430e0aa4552c1444d50b13937532d8",
+      "checkedAt": "2026-10-17T11:43:18.615823+00:00"
+    },
+    {
+      "path": "history/domain/HistoryUpdateUseCase.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/history/domain/HistoryUpdateUseCase.kt",
+      "status": 200,
+      "bytes": 1318,
+      "sha256": "de6ece1747dd816537fdd7cdca808086268e38804157406a0c37456b5d211837",
+      "checkedAt": "2026-10-17T11:43:18.842975+00:00"
+    },
+    {
+      "path": "history/domain/MarkAsReadUseCase.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/history/domain/MarkAsReadUseCase.kt",
+      "status": 200,
+      "bytes": 1249,
+      "sha256": "07b9bf7d15f5de21d5dd560a3a4a9df14310d7e72d0526a4026061f6bf400393",
+      "checkedAt": "2026-10-17T11:43:19.062454+00:00"
+    },
+    {
+      "path": "details/domain/ProgressUpdateUseCase.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/details/domain/ProgressUpdateUseCase.kt",
+      "status": 200,
+      "bytes": 2089,
+      "sha256": "28dd9de7adfbff453d4e4cbf3f6dec894f59d1d35905fde59c2099debe0fdc6b",
+      "checkedAt": "2026-10-17T11:43:19.095943+00:00"
+    },
+    {
+      "path": "list/domain/ReadingProgress.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/list/domain/ReadingProgress.kt",
+      "status": 200,
+      "bytes": 1507,
+      "sha256": "8de9b13c3e838fe2b9425eb86e1c05319aafd276fe8af5f2642b4927aac6cd81",
+      "checkedAt": "2026-10-17T11:43:19.004974+00:00"
+    },
+    {
+      "path": "list/domain/ListSortOrder.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/list/domain/ListSortOrder.kt",
+      "status": 200,
+      "bytes": 1326,
+      "sha256": "2f86a53758aa07cc79efbdc9cde356e6708fbe25b8c8a1e2a8774fd9d4a40636",
+      "checkedAt": "2026-10-17T11:43:19.249614+00:00"
+    },
+    {
+      "path": "favourites/data/FavouriteCategoryEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/favourites/data/FavouriteCategoryEntity.kt",
+      "status": 200,
+      "bytes": 1587,
+      "sha256": "89944ac7581d6e4ea2ca87f8c1ead557f23870c0c8a868690531b99409d8a14a",
+      "checkedAt": "2026-10-17T11:43:19.384751+00:00"
+    },
+    {
+      "path": "favourites/data/FavouriteEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/favourites/data/FavouriteEntity.kt",
+      "status": 200,
+      "bytes": 1047,
+      "sha256": "77dcbf54b8d6b21a5c5b8724cd43f1e8a02b996649f84b29ae40c97171381a2d",
+      "checkedAt": "2026-10-17T11:43:19.455728+00:00"
+    },
+    {
+      "path": "favourites/data/FavouritesDao.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/favourites/data/FavouritesDao.kt",
+      "status": 200,
+      "bytes": 10648,
+      "sha256": "af3d43ec8b874ebc7ecc7f7b1ca96e236be4effd984667f6b702f77e952157fe",
+      "checkedAt": "2026-10-17T11:43:19.491054+00:00"
+    },
+    {
+      "path": "favourites/domain/FavouritesRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/favourites/domain/FavouritesRepository.kt",
+      "status": 200,
+      "bytes": 9532,
+      "sha256": "d68c315c2a09f623faff12a3acf0eaade6e02c3b264d72cd2ea7994c7d61bd39",
+      "checkedAt": "2026-10-17T11:43:19.832903+00:00"
+    },
+    {
+      "path": "stats/data/StatsEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/stats/data/StatsEntity.kt",
+      "status": 200,
+      "bytes": 667,
+      "sha256": "a680b30b714f89767c7d35b0d5ff806595c3c8e39881a4980298c409f44faf46",
+      "checkedAt": "2026-10-17T11:43:19.793763+00:00"
+    },
+    {
+      "path": "stats/data/StatsDao.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/stats/data/StatsDao.kt",
+      "status": 200,
+      "bytes": 2841,
+      "sha256": "3cf262a09bf8056ef7edebfbd512bc37699e8d19d81fdbc953384bbd49593fef",
+      "checkedAt": "2026-10-17T11:43:19.841576+00:00"
+    },
+    {
+      "path": "stats/data/StatsRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/stats/data/StatsRepository.kt",
+      "status": 200,
+      "bytes": 2637,
+      "sha256": "93c502d088ccc970fa64f34ca1926b815ea219983d1ba4da3cc88ea8f1253c4a",
+      "checkedAt": "2026-10-17T11:43:19.905029+00:00"
+    },
+    {
+      "path": "stats/domain/StatsCollector.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/stats/domain/StatsCollector.kt",
+      "status": 200,
+      "bytes": 2138,
+      "sha256": "046cbe2caa2f48ca13b14f6349de3849f6dba9c868c9e0125a776700aeb33056",
+      "checkedAt": "2026-10-17T11:43:20.370857+00:00"
+    },
+    {
+      "path": "stats/domain/StatsRecord.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/stats/domain/StatsRecord.kt",
+      "status": 200,
+      "bytes": 637,
+      "sha256": "4e12d51798e0159084fc6fe16e0a33115052012b14d54be461100cf90af3c844",
+      "checkedAt": "2026-10-17T11:43:20.249054+00:00"
+    },
+    {
+      "path": "scrobbling/common/data/ScrobblingEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/data/ScrobblingEntity.kt",
+      "status": 200,
+      "bytes": 883,
+      "sha256": "18081f1b2c1360a4f92654f47aa1ae5b2a60bd30fd05da19fdfd7ef037b84cc6",
+      "checkedAt": "2026-10-17T11:43:20.265963+00:00"
+    },
+    {
+      "path": "scrobbling/common/data/ScrobblingDao.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/data/ScrobblingDao.kt",
+      "status": 200,
+      "bytes": 1401,
+      "sha256": "1e042fa47c848741c7b395688e3df0069c5ea0e1c357cf393dd15a4eb8c33be0",
+      "checkedAt": "2026-10-17T11:43:20.298263+00:00"
+    },
+    {
+      "path": "scrobbling/common/domain/model/ScrobblerType.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/domain/model/ScrobblerType.kt",
+      "status": 200,
+      "bytes": 168,
+      "sha256": "ac7265dfe10b030896dfca07135267fe8f9debc309420dee83a2e0344cc75f76",
+      "checkedAt": "2026-10-17T11:43:20.836344+00:00"
+    },
+    {
+      "path": "scrobbling/common/domain/model/ScrobblingInfo.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/domain/model/ScrobblingInfo.kt",
+      "status": 200,
+      "bytes": 900,
+      "sha256": "5e380ca78238fbbeeeb4935e3d354796874fdf7ec69ea96434ee0854367da4f5",
+      "checkedAt": "2026-10-17T11:43:20.660923+00:00"
+    },
+    {
+      "path": "scrobbling/common/domain/model/ScrobblingStatus.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/domain/model/ScrobblingStatus.kt",
+      "status": 200,
+      "bytes": 345,
+      "sha256": "c1e9adc8a6a7c3de7ccdb96400d5df627ec81a54ccb48d5ff0a9dc77332dc056",
+      "checkedAt": "2026-10-17T11:43:20.859579+00:00"
+    },
+    {
+      "path": "scrobbling/common/domain/Scrobbler.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/domain/Scrobbler.kt",
+      "status": 200,
+      "bytes": 5111,
+      "sha256": "0a81c8ef789c6a8ef09ab6962620afd1c32bea38f6a2df1331f3c4dc3dfdcdbd",
+      "checkedAt": "2026-10-17T11:43:20.779494+00:00"
+    },
+    {
+      "path": "local/data/MangaIndex.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/MangaIndex.kt",
+      "status": 200,
+      "bytes": 8963,
+      "sha256": "7bc227bc6e2628fe6590f7af3921bf0841ab64f531313047b2676156ad974fa4",
+      "checkedAt": "2026-10-17T11:43:21.037334+00:00"
+    },
+    {
+      "path": "local/data/input/LocalMangaParser.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/input/LocalMangaParser.kt",
+      "status": 200,
+      "bytes": 10184,
+      "sha256": "5c18e30011554a5124b4a9765b67c2894ded48de801cc5012d1d792c7bb7ee87",
+      "checkedAt": "2026-10-17T11:43:21.172734+00:00"
+    },
+    {
+      "path": "local/data/output/LocalMangaOutput.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/output/LocalMangaOutput.kt",
+      "status": 200,
+      "bytes": 3124,
+      "sha256": "662e6c41ace9f2d01d4795b6b94d93df3270c7e6dc63b371dd8161a47c4748e8",
+      "checkedAt": "2026-10-17T11:43:21.226740+00:00"
+    },
+    {
+      "path": "local/data/output/LocalMangaDirOutput.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/output/LocalMangaDirOutput.kt",
+      "status": 200,
+      "bytes": 4806,
+      "sha256": "4b1541a1f2cb042ef14880cda8f655d12df6503eb7aaf491fadd17c304503cb7",
+      "checkedAt": "2026-10-17T11:43:21.254748+00:00"
+    },
+    {
+      "path": "local/data/output/LocalMangaZipOutput.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/output/LocalMangaZipOutput.kt",
+      "status": 200,
+      "bytes": 4566,
+      "sha256": "ef54bfb1fabe890ddde80fa69bbded5eab2e943a7f4456595814cd56527270ca",
+      "checkedAt": "2026-10-17T11:43:21.433035+00:00"
+    },
+    {
+      "path": "local/data/output/LocalMangaUtil.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/local/data/output/LocalMangaUtil.kt",
+      "status": 200,
+      "bytes": 648,
+      "sha256": "591ddcdce6e7728385e60e1d3a25a181c9e0c9fddb1497d16903eee65a6c5c07",
+      "checkedAt": "2026-10-17T11:43:21.579717+00:00"
+    },
+    {
+      "path": "core/db/entity/MangaEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/db/entity/MangaEntity.kt",
+      "status": 200,
+      "bytes": 1002,
+      "sha256": "285a0af7966871ac0f00def2666425a4bdd9c4532d3c3013cf493ae95f9ec73f",
+      "checkedAt": "2026-10-17T11:43:21.621267+00:00"
+    },
+    {
+      "path": "core/db/entity/ChapterEntity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/db/entity/ChapterEntity.kt",
+      "status": 200,
+      "bytes": 1024,
+      "sha256": "3995a3e0804152534de69be4ee91a842001f11496880b8128a66567dfb7d6fce",
+      "checkedAt": "2026-10-17T11:43:21.659752+00:00"
+    },
+    {
+      "path": "core/util/AlphanumComparator.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/util/AlphanumComparator.kt",
+      "status": 200,
+      "bytes": 1628,
+      "sha256": "44f85c9ab5d01b57292f0f5957f6ec0af5289b7b3da30e864761219c2a7fb811",
+      "checkedAt": "2026-10-17T11:43:21.812929+00:00"
+    },
+    {
+      "path": "core/util/MimeTypes.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/util/MimeTypes.kt",
+      "status": 200,
+      "bytes": 1489,
+      "sha256": "79070dc5d64db5e52d041261fcee06cdddb0f21b2dfd08ab1fc8e007f3411bf2",
+      "checkedAt": "2026-10-17T11:43:22.019440+00:00"
+    },
+    {
+      "path": "core/model/MangaSource.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/model/MangaSource.kt",
+      "status": 200,
+      "bytes": 4073,
+      "sha256": "e7811dfa93fa62f98c28e669120aa546f1c6210ce85316f4a523a3cdee3d85e5",
+      "checkedAt": "2026-10-17T11:43:22.185811+00:00"
+    },
+    {
+      "path": "core/db/entity/EntityMapping.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/db/entity/EntityMapping.kt",
+      "status": 200,
+      "bytes": 3618,
+      "sha256": "622afba90add8aa4107cc4a2e6891a8260a9085b8ff17cdd10d0444f9f437b3f",
+      "checkedAt": "2026-10-17T11:43:22.239161+00:00"
+    },
+    {
+      "path": "core/util/ext/Uri.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/core/util/ext/Uri.kt",
+      "status": 200,
+      "bytes": 1096,
+      "sha256": "cfdcacaa03953813accbb2131799d970d9d84124b5e82c708210dc3ae42dcb04",
+      "checkedAt": "2026-10-17T11:43:22.232801+00:00"
+    },
+    {
+      "path": "reader/ui/ReaderViewModel.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/ReaderViewModel.kt",
+      "status": 200,
+      "bytes": 24960,
+      "sha256": "82e37084a2be654bfd778fb69872cb5ddb87b64c876d2c6291f86c130860e987",
+      "checkedAt": "2026-10-17T11:43:22.413347+00:00"
+    },
+    {
+      "path": "scrobbling/common/domain/model/ScrobblerService.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/common/domain/model/ScrobblerService.kt",
+      "status": 200,
+      "bytes": 488,
+      "sha256": "c6d04ff001bce3f7b88659450b0d9844d3121a49323e0ad8513b6889e1d9de2c",
+      "checkedAt": "2026-10-17T11:43:22.754048+00:00"
+    },
+    {
+      "path": "scrobbling/anilist/domain/AniListScrobbler.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/anilist/domain/AniListScrobbler.kt",
+      "status": 200,
+      "bytes": 1510,
+      "sha256": "8357876560db68de71b3ffd5aa6d289974033624b858d42494a96766a3e89699",
+      "checkedAt": "2026-10-17T11:43:22.805326+00:00"
+    },
+    {
+      "path": "scrobbling/anilist/data/AniListRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/anilist/data/AniListRepository.kt",
+      "status": 200,
+      "bytes": 8546,
+      "sha256": "5ac9f80440431e86eab8abf669eaf2de466a31ac18287183f6d26c5a10c8850c",
+      "checkedAt": "2026-10-17T11:43:22.811334+00:00"
+    },
+    {
+      "path": "scrobbling/kitsu/domain/KitsuScrobbler.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/kitsu/domain/KitsuScrobbler.kt",
+      "status": 200,
+      "bytes": 1403,
+      "sha256": "3a3bee0e0f43a52b51d7b6392648a608c60dd33717a62092590c542aa42c3c54",
+      "checkedAt": "2026-10-17T11:43:22.984303+00:00"
+    },
+    {
+      "path": "scrobbling/kitsu/data/KitsuRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/kitsu/data/KitsuRepository.kt",
+      "status": 200,
+      "bytes": 9116,
+      "sha256": "8f05b93bf6f5b472f76a15f7aed03bac5086170a11977d9ae9c1c15c809adb69",
+      "checkedAt": "2026-10-17T11:43:23.128020+00:00"
+    },
+    {
+      "path": "scrobbling/mal/domain/MALScrobbler.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/mal/domain/MALScrobbler.kt",
+      "status": 200,
+      "bytes": 1487,
+      "sha256": "1704889e2340eb4f9795a476e82fd88134351a9f135a2ff7aa0dde3762b40e22",
+      "checkedAt": "2026-10-17T11:43:23.213486+00:00"
+    },
+    {
+      "path": "scrobbling/mal/data/MALRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/mal/data/MALRepository.kt",
+      "status": 200,
+      "bytes": 7784,
+      "sha256": "f8c7a75349bff87d9949dab4fd09154a146cae9240a11c473cd8e9db5abdf7b6",
+      "checkedAt": "2026-10-17T11:43:23.118015+00:00"
+    },
+    {
+      "path": "scrobbling/shikimori/domain/ShikimoriScrobbler.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/shikimori/domain/ShikimoriScrobbler.kt",
+      "status": 200,
+      "bytes": 1573,
+      "sha256": "ecd46b1da91a79ccc2b635132f7eb4cb15a87038294f8c6539e104bce7218baf",
+      "checkedAt": "2026-10-17T11:43:23.382875+00:00"
+    },
+    {
+      "path": "scrobbling/shikimori/data/ShikimoriRepository.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/shikimori/data/ShikimoriRepository.kt",
+      "status": 200,
+      "bytes": 7941,
+      "sha256": "ed8162a15f717fa189c027bfd9d0c1b39856912c40e212f0c063022ea3de9ca2",
+      "checkedAt": "2026-10-17T11:43:23.422858+00:00"
+    },
+    {
+      "path": "scrobbling/anilist/data/ScoreFormat.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/scrobbling/anilist/data/ScoreFormat.kt",
+      "status": 200,
+      "bytes": 636,
+      "sha256": "13b80d8c428ea0f762eba11e022fb70b4a9e832aca6ac78c0f26dbd3c7c60edb",
+      "checkedAt": "2026-10-17T11:43:23.519837+00:00"
+    },
+    {
+      "path": "reader/ui/ReaderState.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/ReaderState.kt",
+      "status": 200,
+      "bytes": 677,
+      "sha256": "2b25be537623cdd0f7e3a7c94da8d6c5942133b70ce57e053947d66a96f4ac55",
+      "checkedAt": "2026-10-17T11:43:23.616862+00:00"
+    },
+    {
+      "path": "reader/ui/ReaderActivity.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/ReaderActivity.kt",
+      "status": 200,
+      "bytes": 18922,
+      "sha256": "76ec92bedf60f6250b03efd273c4ce1299c8c1bb85828fd6eacd8375b14161a3",
+      "checkedAt": "2026-10-17T11:43:23.952823+00:00"
+    },
+    {
+      "path": "reader/ui/pager/standard/PageHolder.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/standard/PageHolder.kt",
+      "status": 200,
+      "bytes": 4940,
+      "sha256": "a1e7c3370afa2e2040557437ac2a1b17b57d7fe575d217e4c0cc610062f40dc6",
+      "checkedAt": "2026-10-17T11:43:23.806678+00:00"
+    },
+    {
+      "path": "reader/ui/pager/BasePagerReaderFragment.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/BasePagerReaderFragment.kt",
+      "status": 200,
+      "bytes": 6096,
+      "sha256": "4f89289f034e308f2e1ce75aff45191e4de3dbf70b61978510d8f6fe45013cae",
+      "checkedAt": "2026-10-17T11:43:24.079020+00:00"
+    },
+    {
+      "path": "reader/ui/pager/webtoon/WebtoonReaderFragment.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/webtoon/WebtoonReaderFragment.kt",
+      "status": 200,
+      "bytes": 8698,
+      "sha256": "3e66670e9721d47750c1a3a65cda5419c31ef0272b8021a2a474067c35451c78",
+      "checkedAt": "2026-10-17T11:43:23.992984+00:00"
+    },
+    {
+      "path": "reader/ui/pager/webtoon/WebtoonLayoutManager.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/webtoon/WebtoonLayoutManager.kt",
+      "status": 200,
+      "bytes": 1257,
+      "sha256": "ff484eeb921ef3adbfac84f815f85751df30c94488ae795470daec5542efa30f",
+      "checkedAt": "2026-10-17T11:43:24.361492+00:00"
+    },
+    {
+      "path": "reader/ui/pager/webtoon/WebtoonHolder.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/webtoon/WebtoonHolder.kt",
+      "status": 200,
+      "bytes": 1542,
+      "sha256": "b917d7239a752a18a89c6363c3e072d652145e28859341eefa7788d869e7338c",
+      "checkedAt": "2026-10-17T11:43:24.557963+00:00"
+    },
+    {
+      "path": "reader/ui/pager/webtoon/WebtoonImageView.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/reader/ui/pager/webtoon/WebtoonImageView.kt",
+      "status": 200,
+      "bytes": 4032,
+      "sha256": "89cc627b5633af6262549612b5ebd0f784fe80b62e43bafe0624d0a8dad4c976",
+      "checkedAt": "2026-10-17T11:43:24.554765+00:00"
+    },
+    {
+      "path": "download/ui/worker/DownloadWorker.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/src/main/kotlin/org/koitharu/kotatsu/download/ui/worker/DownloadWorker.kt",
+      "status": 200,
+      "bytes": 19993,
+      "sha256": "1fb19ec7fb14b4d224f479168f43e2e2356f9d28140a738d64710cf94aa6a2ee",
+      "checkedAt": "2026-10-17T11:43:24.381744+00:00"
+    },
+    {
+      "path": "app/build.gradle",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/app/build.gradle",
+      "status": 200,
+      "bytes": 6406,
+      "sha256": "e06bb27c92f6574196c4166147aef7c10befc27d4f889ffe8615183fc5a681a6",
+      "checkedAt": "2026-10-17T11:43:24.941890+00:00"
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/Kotatsu/06a0b5829b8d5f214d60d5011d66ec1ccbd5630e/gradle/libs.versions.toml",
+      "status": 200,
+      "bytes": 7628,
+      "sha256": "0f0d621673646119cd2c6833d774b88d9a294733eaed388e70f24f0780eeb847",
+      "checkedAt": "2026-10-17T11:43:24.946209+00:00"
+    },
+    {
+      "path": "parser/model/Constants.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/kotatsu-parsers/4d1e521aef7e4d9f41c65adda5e274509e93807c/src/main/kotlin/org/koitharu/kotatsu/parsers/model/Constants.kt",
+      "status": 200,
+      "bytes": 235,
+      "sha256": "dc0064aed8c8787a4b9a29774800e232803c06fcc70da59e6fca87c8827304a7",
+      "checkedAt": "2026-10-17T11:43:24.983759+00:00"
+    },
+    {
+      "path": "parser/model/Manga.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/kotatsu-parsers/4d1e521aef7e4d9f41c65adda5e274509e93807c/src/main/kotlin/org/koitharu/kotatsu/parsers/model/Manga.kt",
+      "status": 200,
+      "bytes": 4913,
+      "sha256": "470cc4058915a7e0d0833438b4c98d263bca7dfe423739a37d0279b2e13f4c6a",
+      "checkedAt": "2026-10-17T11:43:24.947210+00:00"
+    },
+    {
+      "path": "parser/model/MangaState.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/kotatsu-parsers/4d1e521aef7e4d9f41c65adda5e274509e93807c/src/main/kotlin/org/koitharu/kotatsu/parsers/model/MangaState.kt",
+      "status": 200,
+      "bytes": 137,
+      "sha256": "d598f149b1bb93ae17c3b98db834e2936e7af4db248e8e7f315a6c40c27f1897",
+      "checkedAt": "2026-10-17T11:43:25.344339+00:00"
+    },
+    {
+      "path": "parser/util/String.kt",
+      "url": "https://raw.githubusercontent.com/KotatsuApp/kotatsu-parsers/4d1e521aef7e4d9f41c65adda5e274509e93807c/src/main/kotlin/org/koitharu/kotatsu/parsers/util/String.kt",
+      "status": 200,
+      "bytes": 5649,
+      "sha256": "d919283476637e55a72b921b0e403b0adfc3f151c38de0903540daac81b3a526",
+      "checkedAt": "2026-10-17T11:43:25.338339+00:00"
+    },
+    {
+      "path": "coil/commonMain/kotlin/coil3/util/mimeTypes.kt",
+      "url": "https://raw.githubusercontent.com/coil-kt/coil/1731511f0c12ef556db7822a91b6ea03fa3f95a1/coil-core/src/commonMain/kotlin/coil3/util/mimeTypes.kt",
+      "status": 200,
+      "bytes": 5531,
+      "sha256": "821fe2c2c9008ad9a4c8d259534594bd3fba8e92c5dbd2403389c338a18e63ea",
+      "checkedAt": "2026-10-17T11:43:25.335339+00:00"
+    },
+    {
+      "path": "coil/androidMain/kotlin/coil3/util/mimeTypes.android.kt",
+      "url": "https://raw.githubusercontent.com/coil-kt/coil/1731511f0c12ef556db7822a91b6ea03fa3f95a1/coil-core/src/androidMain/kotlin/coil3/util/mimeTypes.android.kt",
+      "status": 200,
+      "bytes": 206,
+      "sha256": "2a2eb6c0f76f9f6870fbfd65990727ccd56b90fadcc8a763dac1c519d8a70e95",
+      "checkedAt": "2026-10-17T11:43:25.559719+00:00"
+    }
+  ]
+}

@@ -1,0 +1,878 @@
+{
+  "observedOn": "2026-10-16",
+  "containsCredentials": false,
+  "containsAccountIdentifiers": false,
+  "containsPrivateText": false,
+  "mangaUpdates": {
+    "spec": {
+      "url": "https://api.mangaupdates.com/openapi.yaml",
+      "sha256": "12acb479d7c5c1a877f5dd31c9f7691cb185a6aee9796b91d68b05ef97c73202",
+      "server": "https://api.mangaupdates.com/v1"
+    },
+    "publicRequests": [
+      {
+        "label": "mu-yotsuba",
+        "url": "https://api.mangaupdates.com/v1/series/23606352927",
+        "method": "GET",
+        "status": 200,
+        "sha256": "51184dfe4666da625590efb72dfa0bc4b177dcc71eb109e3edab871f37423e3c",
+        "bytes": 12114,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-author-azuma",
+        "url": "https://api.mangaupdates.com/v1/authors/5044830093",
+        "method": "GET",
+        "status": 200,
+        "sha256": "de563463b0e8f4bb761008c517ff6a9928a69695186eacb00ac1d21f00dce58b",
+        "bytes": 1534,
+        "responseKind": "object",
+        "responseKeys": [
+          "id",
+          "name",
+          "url",
+          "associated",
+          "image",
+          "actualname",
+          "birthday",
+          "birthplace",
+          "bloodtype",
+          "gender",
+          "status",
+          "status_date",
+          "genres",
+          "stats",
+          "social",
+          "comments",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-author-clamp",
+        "url": "https://api.mangaupdates.com/v1/authors/40579282294",
+        "method": "GET",
+        "status": 200,
+        "sha256": "4598f76a5cc186efe849dae7fb440eb439ad0cb3c40931a781dacb672b0e9c02",
+        "bytes": 2215,
+        "responseKind": "object",
+        "responseKeys": [
+          "id",
+          "name",
+          "url",
+          "associated",
+          "image",
+          "actualname",
+          "birthday",
+          "birthplace",
+          "bloodtype",
+          "gender",
+          "status",
+          "status_date",
+          "genres",
+          "stats",
+          "social",
+          "comments",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-novel-search",
+        "url": "https://api.mangaupdates.com/v1/series/search",
+        "method": "POST",
+        "request": {
+          "search": "Sword Art Online",
+          "type": ["Novel"],
+          "page": 1,
+          "perpage": 5
+        },
+        "status": 200,
+        "sha256": "220e41171ffabe108b4d594f8f6dba8eece805cfca52ceb2ac6a5d5d085d0427",
+        "bytes": 7266,
+        "responseKind": "object",
+        "responseKeys": ["total_hits", "page", "per_page", "results"]
+      },
+      {
+        "label": "mu-frieren-search",
+        "url": "https://api.mangaupdates.com/v1/series/search",
+        "method": "POST",
+        "request": {
+          "search": "Sousou no Frieren",
+          "page": 1,
+          "perpage": 5
+        },
+        "status": 200,
+        "sha256": "f9c09a97c9a38ba12a05d955d837c454287f843544d472ad6c87c6472b8d1a7c",
+        "bytes": 6265,
+        "responseKind": "object",
+        "responseKeys": ["total_hits", "page", "per_page", "results"]
+      },
+      {
+        "label": "mu-sao",
+        "url": "https://api.mangaupdates.com/v1/series/37280732469",
+        "method": "GET",
+        "status": 200,
+        "sha256": "8f7424c669ccfa3b2493b49b17abdcef772acc9a0651d18a0da34b002227e538",
+        "bytes": 16830,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-frieren",
+        "url": "https://api.mangaupdates.com/v1/series/66296374554",
+        "method": "GET",
+        "status": 200,
+        "sha256": "a069a1e5f1360f2ba13e19c362c3135ebe05efb31de5941af9be5a87279f0315",
+        "bytes": 15291,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-author-azuma-series",
+        "url": "https://api.mangaupdates.com/v1/authors/5044830093/series",
+        "method": "POST",
+        "request": {
+          "orderby": "title"
+        },
+        "status": 200,
+        "sha256": "b990a0e327e159158264bc3890a642f6ea8884bb5e907666069e2f857a584d7c",
+        "bytes": 6245,
+        "responseKind": "object",
+        "responseKeys": ["total_series", "series_list", "genre_list"]
+      },
+      {
+        "label": "mu-author-clamp-series",
+        "url": "https://api.mangaupdates.com/v1/authors/40579282294/series",
+        "method": "POST",
+        "request": {
+          "orderby": "title"
+        },
+        "status": 200,
+        "sha256": "5ca1d19e4ac71bf1bf6ad34c0ed4b2a9fe59f27450051fe1e972599e62a1897d",
+        "bytes": 26182,
+        "responseKind": "object",
+        "responseKeys": ["total_series", "series_list", "genre_list"]
+      },
+      {
+        "label": "mu-publisher-mediaworks",
+        "url": "https://api.mangaupdates.com/v1/publishers/72534527311",
+        "method": "GET",
+        "status": 200,
+        "sha256": "40ed7a0b3a42bc2e1c0a95a6f98c6b27c064f19f8aaa389e2b8ec904c16614d4",
+        "bytes": 2344,
+        "responseKind": "object",
+        "responseKeys": [
+          "publisher_id",
+          "name",
+          "url",
+          "associated",
+          "type",
+          "info",
+          "site",
+          "stats",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-faq",
+        "url": "https://api.mangaupdates.com/v1/faq",
+        "method": "GET",
+        "status": 200,
+        "sha256": "cb41b72dfd3c7b153c9b17fcb864da30d6004a17066390788848048f6269966e",
+        "bytes": 5763,
+        "responseKind": "array"
+      },
+      {
+        "label": "mu-genres",
+        "url": "https://api.mangaupdates.com/v1/genres",
+        "method": "GET",
+        "status": 200,
+        "sha256": "3eef85f9c82a6bcb9e3a99b219656952bcbc1f690e400ef6df2477889834ff09",
+        "bytes": 9271,
+        "responseKind": "array"
+      },
+      {
+        "label": "mu-faq-types",
+        "url": "https://api.mangaupdates.com/v1/faq/1/questions/8",
+        "method": "GET",
+        "status": 200,
+        "sha256": "b6d4ef114a7556a20d558709b16dcccac00ca135b66182df39443483bc557333",
+        "bytes": 1999,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-status",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/51",
+        "method": "GET",
+        "status": 200,
+        "sha256": "e47cc340fcbb93b56811d16a253c82e7f2e23f76fca5a18a080f68b9016bb5cc",
+        "bytes": 846,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-year",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/52",
+        "method": "GET",
+        "status": 200,
+        "sha256": "d9a19af26d23a5c3314370cca6e7c4d34a9f242daac49ee92d036c90e02f2b19",
+        "bytes": 876,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-titles",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/69",
+        "method": "GET",
+        "status": 200,
+        "sha256": "dc8cf7a7df1ebfaef180d62378a8ad5272b7dbc59384260ac170b56f5178fac2",
+        "bytes": 569,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-series-novel-page2",
+        "url": "https://api.mangaupdates.com/v1/series/search",
+        "method": "POST",
+        "request": {
+          "search": "Sword Art Online",
+          "type": ["Novel"],
+          "page": 2,
+          "perpage": 5
+        },
+        "status": 200,
+        "sha256": "00a762efebedd8ff070c3222254976cfb4115f13138b7bdf809349462e3b00b8",
+        "bytes": 6936,
+        "responseKind": "object",
+        "responseKeys": ["total_hits", "page", "per_page", "results"]
+      },
+      {
+        "label": "mu-publisher-mediaworks-series",
+        "url": "https://api.mangaupdates.com/v1/publishers/72534527311/series",
+        "method": "GET",
+        "status": 200,
+        "sha256": "856ac99c2a32e7e71545241e670d71f5c19c3695eb584e3c1fde1e5c5285c65c",
+        "bytes": 602305,
+        "responseKind": "object",
+        "responseKeys": ["series_list", "publication_list"]
+      },
+      {
+        "label": "mu-faq-lists",
+        "url": "https://api.mangaupdates.com/v1/faq/4/questions/5",
+        "method": "GET",
+        "status": 200,
+        "sha256": "ea67c145a103973eef0b57b56fd295354a882350d9396470e849b6344542e5d6",
+        "bytes": 693,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-author-names",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/59",
+        "method": "GET",
+        "status": 200,
+        "sha256": "530b134e24bf66980a2a307e12b5a39c7bb709f70fee46351eac3be5dc63e57e",
+        "bytes": 1379,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-anthologies",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/65",
+        "method": "GET",
+        "status": 200,
+        "sha256": "74d7eb7185d2e9ac0c2f162d6eef89b952cc377073933790fb052323b50066f5",
+        "bytes": 1037,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-faq-alternate-media",
+        "url": "https://api.mangaupdates.com/v1/faq/7/questions/49",
+        "method": "GET",
+        "status": 200,
+        "sha256": "4a187e4f204112e4cc35c1d2c4449a04ecb840854d4798292e19d98b11d15aa2",
+        "bytes": 839,
+        "responseKind": "object",
+        "responseKeys": ["question_id", "question", "answer", "position"]
+      },
+      {
+        "label": "mu-azumanga",
+        "url": "https://api.mangaupdates.com/v1/series/52903451170",
+        "method": "GET",
+        "status": 200,
+        "sha256": "ee208fc54d38989f40c7e3cb4517538a79bac4ec8219aaea582f1dc88b3f2823",
+        "bytes": 10292,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-azumanga-unrendered",
+        "url": "https://api.mangaupdates.com/v1/series/52903451170?unrenderedFields=true",
+        "method": "GET",
+        "status": 200,
+        "sha256": "ee208fc54d38989f40c7e3cb4517538a79bac4ec8219aaea582f1dc88b3f2823",
+        "bytes": 10292,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-sao-adaptation",
+        "url": "https://api.mangaupdates.com/v1/series/69448094027",
+        "method": "GET",
+        "status": 200,
+        "sha256": "4c0d06f5a905d370b8ca493ef57c831f2e2a627febed43c68366837d16ae36c3",
+        "bytes": 10003,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-anthology",
+        "url": "https://api.mangaupdates.com/v1/series/1393342320",
+        "method": "GET",
+        "status": 200,
+        "sha256": "b421ef1cef007cbb2a3a5a9c97d2bc720c97b5d38ade18aa43d1f6bdbfad7078",
+        "bytes": 4759,
+        "responseKind": "object",
+        "responseKeys": [
+          "series_id",
+          "title",
+          "url",
+          "associated",
+          "description",
+          "image",
+          "type",
+          "year",
+          "bayesian_rating",
+          "rating_votes",
+          "genres",
+          "categories",
+          "latest_chapter",
+          "forum_id",
+          "status",
+          "licensed",
+          "completed",
+          "anime",
+          "related_series",
+          "authors",
+          "publishers",
+          "publications",
+          "recommendations",
+          "category_recommendations",
+          "rank",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-publisher-yen",
+        "url": "https://api.mangaupdates.com/v1/publishers/52425676473",
+        "method": "GET",
+        "status": 200,
+        "sha256": "5ca6db2e9cc7ed17c2774633e027d3a51485539052a2cad8a500feaae02c386d",
+        "bytes": 973,
+        "responseKind": "object",
+        "responseKeys": [
+          "publisher_id",
+          "name",
+          "url",
+          "associated",
+          "type",
+          "info",
+          "site",
+          "stats",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-author-image-check",
+        "url": "https://api.mangaupdates.com/v1/authors/5044830093?unrenderedFields=true",
+        "method": "GET",
+        "status": 200,
+        "sha256": "de563463b0e8f4bb761008c517ff6a9928a69695186eacb00ac1d21f00dce58b",
+        "bytes": 1534,
+        "responseKind": "object",
+        "responseKeys": [
+          "id",
+          "name",
+          "url",
+          "associated",
+          "image",
+          "actualname",
+          "birthday",
+          "birthplace",
+          "bloodtype",
+          "gender",
+          "status",
+          "status_date",
+          "genres",
+          "stats",
+          "social",
+          "comments",
+          "last_updated",
+          "admin"
+        ]
+      },
+      {
+        "label": "mu-author-miura-search",
+        "url": "https://api.mangaupdates.com/v1/authors/search",
+        "method": "POST",
+        "request": {
+          "search": "MIURA Kentarou",
+          "page": 1,
+          "perpage": 3
+        },
+        "status": 200,
+        "sha256": "724fec0db1886b2c3989898366c3ff1d616ee37710bdcb4b28d436919454fc39",
+        "bytes": 9275,
+        "responseKind": "object",
+        "responseKeys": ["total_hits", "page", "per_page", "results"]
+      },
+      {
+        "label": "mu-author-miura",
+        "url": "https://api.mangaupdates.com/v1/authors/22635311083",
+        "method": "GET",
+        "status": 200,
+        "sha256": "40126d51d28584d19d3b9ac308e9aa82b545f028f458a32eb61d115c0c9a4abe",
+        "bytes": 3079,
+        "responseKind": "object",
+        "responseKeys": [
+          "id",
+          "name",
+          "url",
+          "associated",
+          "image",
+          "actualname",
+          "birthday",
+          "birthplace",
+          "bloodtype",
+          "gender",
+          "status",
+          "status_date",
+          "genres",
+          "stats",
+          "social",
+          "comments",
+          "last_updated",
+          "admin"
+        ]
+      }
+    ],
+    "examples": [
+      {
+        "label": "mu-yotsuba",
+        "id": 23606352927,
+        "title": "Yotsuba to!",
+        "type": "Manga",
+        "year": "2003",
+        "publicationStatus": "16 Volumes (Ongoing)",
+        "completelyScanlated": false,
+        "latestChapter": 4,
+        "relationTypes": ["Adapted From"],
+        "publisherRoles": ["English", "Original"]
+      },
+      {
+        "label": "mu-sao",
+        "id": 37280732469,
+        "title": "Sword Art Online (Novel)",
+        "type": "Novel",
+        "year": "2009",
+        "publicationStatus": "28 Volumes (Ongoing)",
+        "completelyScanlated": false,
+        "latestChapter": 25,
+        "relationTypes": ["Spin-Off", "Alternate Version", "Side Story"],
+        "publisherRoles": ["Original", "English"]
+      },
+      {
+        "label": "mu-frieren",
+        "id": 66296374554,
+        "title": "Sousou no Frieren",
+        "type": "Manga",
+        "year": "2020",
+        "publicationStatus": "15 Volumes (Hiatus)",
+        "completelyScanlated": false,
+        "latestChapter": 147,
+        "relationTypes": ["Spin-Off", "Side Story"],
+        "publisherRoles": ["Original", "English"]
+      },
+      {
+        "label": "mu-azumanga",
+        "id": 52903451170,
+        "title": "Azumanga Daioh",
+        "type": "Manga",
+        "year": "1999",
+        "publicationStatus": "4 Volumes (Complete)",
+        "completelyScanlated": true,
+        "latestChapter": 5,
+        "relationTypes": ["Alternate Version", "Spin-Off"],
+        "publisherRoles": ["English", "Original"]
+      },
+      {
+        "label": "mu-anthology",
+        "id": 1393342320,
+        "title": "Azumanga - The Kiyohiko Azuma Anthology",
+        "type": "Manga",
+        "year": "1998",
+        "publicationStatus": "1 Volume (Complete)",
+        "completelyScanlated": true,
+        "latestChapter": 1,
+        "relationTypes": ["Adapted From"],
+        "publisherRoles": ["Original"]
+      },
+      {
+        "label": "mu-sao-adaptation",
+        "id": 69448094027,
+        "title": "Sword Art Online: Aincrad",
+        "type": "Manga",
+        "year": "2010",
+        "publicationStatus": "2 Volumes (Complete)",
+        "completelyScanlated": true,
+        "latestChapter": 11,
+        "relationTypes": ["Adapted From", "Sequel", "Spin-Off", "Alternate Version", "Side Story"],
+        "publisherRoles": ["Original", "English"]
+      }
+    ],
+    "authors": {
+      "mixedSubject": {
+        "id": 40579282294,
+        "name": "CLAMP",
+        "structuredSubjectDiscriminator": false,
+        "genderDoesNotDisambiguate": true
+      },
+      "nativeNamePolicy": {
+        "faq": "/faq/7/questions/59",
+        "actualnameMeansNativePublishedName": true
+      },
+      "deceasedDate": {
+        "id": 22635311083,
+        "status": "Deceased",
+        "statusDate": "2021-05-06",
+        "websiteLabel": "Date of Death"
+      },
+      "worksQueries": [
+        {
+          "id": 5044830093,
+          "returned": 14,
+          "total": 14
+        },
+        {
+          "id": 40579282294,
+          "returned": 58,
+          "total": 58
+        }
+      ],
+      "searchPagination": {
+        "requestedPerpage": 3,
+        "actualPerPage": 40
+      }
+    },
+    "publisherWorks": {
+      "id": 72534527311,
+      "returned": 2077,
+      "total": 2077,
+      "publicationCount": 52
+    },
+    "websiteChecks": [
+      {
+        "url": "https://www.mangaupdates.com/series/auem2hr/yotsuba-to",
+        "status": 200,
+        "completedFieldLabel": "Completely Scanlated?",
+        "sha256": "22c665ecb8117c0ad257a64e62bb6e08f0a67c1c2dff469aaef6cb7326fb3746"
+      },
+      {
+        "url": "https://www.mangaupdates.com/author/aech9t7/miura-kentaro",
+        "status": 200,
+        "statusDateLabel": "Date of Death",
+        "sha256": "e9c22c110f6b23d3fb2c3053e30fd7533eb7ef6ab8907c19bd51963dbc983f73"
+      }
+    ],
+    "clientSources": [
+      {
+        "url": "https://cdn.mangaupdates.com/_next/static/chunks/27htl49b_ho1t.js",
+        "status": 200,
+        "sha256": "75431ce90a5f69c3f677e8ea49a88fb3f4d18f41f0dff8fb8890bff604e05ea7"
+      },
+      {
+        "url": "https://cdn.mangaupdates.com/_next/static/chunks/2cdxy1owropo9.js",
+        "status": 200,
+        "sha256": "4ffff381b1f36006d1d198ddc1d009896aa7cc58ad3c69adfc7af69edeb85fa4"
+      },
+      {
+        "url": "https://cdn.mangaupdates.com/_next/static/chunks/30r4sjuh_w_7n.js",
+        "status": 200,
+        "sha256": "5b4182b030df1cb3ca553667d148c1cde5126585e78cea515f27d9970bab1889"
+      },
+      {
+        "url": "https://cdn.mangaupdates.com/_next/static/chunks/12yany_arb47b.js",
+        "status": 200,
+        "sha256": "c89996be9c0aa85b485ac56aa4f5b8d700dd7e8082a83bd8ca6063d0d375530d"
+      }
+    ],
+    "images": [
+      {
+        "label": "mu-yotsuba",
+        "url": "https://cdn.mangaupdates.com/image/i475257.png",
+        "status": 200,
+        "contentType": "image/png",
+        "bytes": 296877,
+        "sha256": "0d00d9c8e4b185a30038563c44da66e9115636e2e1358bdf436325f968c0cd1a"
+      },
+      {
+        "label": "mu-author-azuma",
+        "url": "https://cdn.mangaupdates.com/image/i185822.jpg",
+        "status": 200,
+        "contentType": "image/jpeg",
+        "bytes": 7023,
+        "sha256": "7218dca736befe7b85b5c7ad9fde58d170aaa668f57f42e04bf1e9f614141c75"
+      }
+    ],
+    "personal": {
+      "loginMethod": "PUT /account/loginWithCookie",
+      "loginStatus": 200,
+      "profileStatus": 200,
+      "identityVerified": true,
+      "refreshStatus": 200,
+      "sameAccountRefreshVerified": true,
+      "emptyListCount": 5,
+      "listTypes": ["read", "wish", "complete", "unfinished", "hold"],
+      "listSearchMustOmitEmptySearch": true,
+      "absentListItemStatus": 404,
+      "absentRatingStatus": 404,
+      "writeRequestCount": 11,
+      "cleanupVerified": true,
+      "logoutStatus": 200,
+      "receiverClosed": true
+    },
+    "identityChecks": [
+      {
+        "label": "mu-yotsuba",
+        "apiId": 23606352927,
+        "pageCode": "auem2hr",
+        "roundTrip": true
+      },
+      {
+        "label": "mu-author-azuma",
+        "apiId": 5044830093,
+        "pageCode": "2bfk7t9",
+        "roundTrip": true
+      },
+      {
+        "label": "mu-author-clamp",
+        "apiId": 40579282294,
+        "pageCode": "in3uuly",
+        "roundTrip": true
+      },
+      {
+        "label": "mu-author-miura",
+        "apiId": 22635311083,
+        "pageCode": "aech9t7",
+        "roundTrip": true
+      },
+      {
+        "label": "mu-publisher-mediaworks",
+        "apiId": 72534527311,
+        "pageCode": "xbl6ngv",
+        "roundTrip": true
+      },
+      {
+        "label": "mu-publisher-yen",
+        "apiId": 52425676473,
+        "pageCode": "o30w6ux",
+        "roundTrip": true
+      }
+    ]
+  },
+  "aniDb": {
+    "titleData": {
+      "url": "https://anidb.net/api/anime-titles.xml.gz",
+      "status": 200,
+      "lastModified": "Fri, 16 Oct 2026 03:00:07 GMT",
+      "compressedBytes": 1881529,
+      "sha256": "38c6bd8a1e4ad6cc7e6bb9c65786fef94dcf4ba237c47da1a84568484cb9dfe4",
+      "animeCount": 17063
+    },
+    "protocolDocs": {
+      "httpStatus": 403,
+      "udpStatus": 403,
+      "inAppBrowserBlocked": true
+    },
+    "userHasAccount": false,
+    "projectClientRegistered": false,
+    "detailApiVerified": false,
+    "personalApiVerified": false,
+    "remoteWrites": 0
+  }
+}

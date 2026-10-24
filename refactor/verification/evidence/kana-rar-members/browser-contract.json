@@ -1,0 +1,878 @@
+{
+  "checkedAt": "2026-10-19T11:26:56.772Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "platform": "win32",
+  "arch": "x64",
+  "externalRequests": 0,
+  "nodeInRenderer": false,
+  "runs": [
+    {
+      "ok": true,
+      "name": "rar3-symlink-unix.rar",
+      "entries": [
+        {
+          "name": "data_link",
+          "size": 8,
+          "redirection": 1,
+          "target": "data.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": true,
+          "index": 0
+        },
+        {
+          "name": "data.txt",
+          "size": 5,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "random_link",
+          "size": 12,
+          "redirection": 1,
+          "target": "../random123",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": true,
+          "index": 2
+        }
+      ],
+      "requests": [
+        {
+          "path": "data_link",
+          "target": "data.txt",
+          "bytes": 5,
+          "sha256": "6667b2d1aab6a00caa5aee5af8ad9f1465e567abf1c209d15727d57b3e8f6e5f"
+        },
+        {
+          "path": "data.txt",
+          "target": "data.txt",
+          "bytes": 5,
+          "sha256": "6667b2d1aab6a00caa5aee5af8ad9f1465e567abf1c209d15727d57b3e8f6e5f"
+        },
+        {
+          "path": "random_link",
+          "rejected": "outsideArchive"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 5,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 29,
+      "readBytes": 494,
+      "maxRead": 41,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 12,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "rar5-symlink-unix.rar",
+      "entries": [
+        {
+          "name": "data_link",
+          "size": 8,
+          "redirection": 1,
+          "target": "data.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "data.txt",
+          "size": 5,
+          "redirection": 0,
+          "target": "data.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "random_link",
+          "size": 12,
+          "redirection": 1,
+          "target": "../random123",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 2
+        }
+      ],
+      "requests": [
+        {
+          "path": "data_link",
+          "target": "data.txt",
+          "bytes": 5,
+          "sha256": "6667b2d1aab6a00caa5aee5af8ad9f1465e567abf1c209d15727d57b3e8f6e5f"
+        },
+        {
+          "path": "data.txt",
+          "target": "data.txt",
+          "bytes": 5,
+          "sha256": "6667b2d1aab6a00caa5aee5af8ad9f1465e567abf1c209d15727d57b3e8f6e5f"
+        },
+        {
+          "path": "random_link",
+          "rejected": "outsideArchive"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 5,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 27,
+      "readBytes": 487,
+      "maxRead": 54,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 5,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "rar5-symlink-win.rar",
+      "entries": [
+        {
+          "name": "content/file.txt",
+          "size": 9,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "links/bad_link",
+          "size": 0,
+          "redirection": 2,
+          "target": "../../missing",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "links/file_link",
+          "size": 0,
+          "redirection": 2,
+          "target": "../content/file.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 2
+        },
+        {
+          "name": "content/dir1",
+          "size": 0,
+          "redirection": 0,
+          "target": "../content/file.txt",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 3
+        },
+        {
+          "name": "content/dir2",
+          "size": 0,
+          "redirection": 0,
+          "target": "../content/file.txt",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 4
+        },
+        {
+          "name": "links/dir_junction",
+          "size": 0,
+          "redirection": 3,
+          "target": "/??/C:/Users/User/stuff/content/dir2",
+          "directory": true,
+          "directoryTarget": true,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 5
+        },
+        {
+          "name": "links/dir_link",
+          "size": 0,
+          "redirection": 2,
+          "target": "../content/dir1",
+          "directory": true,
+          "directoryTarget": true,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 6
+        },
+        {
+          "name": "content",
+          "size": 0,
+          "redirection": 0,
+          "target": "../content/dir1",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 7
+        },
+        {
+          "name": "links",
+          "size": 0,
+          "redirection": 0,
+          "target": "../content/dir1",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 8
+        }
+      ],
+      "requests": [
+        {
+          "path": "links/file_link",
+          "target": "content/file.txt",
+          "bytes": 9,
+          "sha256": "0743bcde888f7850d063579501c234b33769bf3b857f73331aaf9167adcaece1"
+        },
+        {
+          "path": "content/file.txt",
+          "target": "content/file.txt",
+          "bytes": 9,
+          "sha256": "0743bcde888f7850d063579501c234b33769bf3b857f73331aaf9167adcaece1"
+        },
+        {
+          "path": "links/dir_link",
+          "target": "content/dir1",
+          "directory": true
+        },
+        {
+          "path": "links/bad_link",
+          "rejected": "outsideArchive"
+        },
+        {
+          "path": "links/dir_junction",
+          "rejected": "outsideArchive"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 9,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 37,
+      "readBytes": 777,
+      "maxRead": 84,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 9,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "rar5-hlink.rar",
+      "entries": [
+        {
+          "name": "stest1.txt",
+          "size": 2048,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "stest2.txt",
+          "size": 2048,
+          "redirection": 4,
+          "target": "stest1.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "stest3.txt",
+          "size": 2048,
+          "redirection": 4,
+          "target": "stest1.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 2
+        }
+      ],
+      "requests": [
+        {
+          "path": "stest1.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        },
+        {
+          "path": "stest2.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        },
+        {
+          "path": "stest3.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 2048,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 25,
+      "readBytes": 418,
+      "maxRead": 55,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 2048,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "rar5-filecopy.rar",
+      "entries": [
+        {
+          "name": "stest1.txt",
+          "size": 2048,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "stest2.txt",
+          "size": 2048,
+          "redirection": 5,
+          "target": "stest1.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "stest3.txt",
+          "size": 2048,
+          "redirection": 5,
+          "target": "stest1.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 2
+        }
+      ],
+      "requests": [
+        {
+          "path": "stest3.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        },
+        {
+          "path": "stest2.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        },
+        {
+          "path": "stest1.txt",
+          "target": "stest1.txt",
+          "bytes": 2048,
+          "sha256": "2eaebb4c18cdef7f20089f8a2fa3475bc59c2a193f66e2f1513609a4bef13e22"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 2048,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 25,
+      "readBytes": 418,
+      "maxRead": 55,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 2048,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "rar5-evil-symlink-traversal.rar",
+      "entries": [
+        {
+          "name": "up",
+          "size": 0,
+          "redirection": 1,
+          "target": "..",
+          "directory": false,
+          "directoryTarget": true,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "up/pwned.txt",
+          "size": 23,
+          "redirection": 0,
+          "target": "..",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        }
+      ],
+      "requests": [
+        {
+          "path": "up",
+          "rejected": "outsideArchive"
+        },
+        {
+          "path": "up/pwned.txt",
+          "rejected": "outsideArchive"
+        }
+      ],
+      "decodedTargets": 0,
+      "cachedBytes": 0,
+      "cachedMembers": 0,
+      "cacheAfterDispose": 0,
+      "readCalls": 12,
+      "readBytes": 162,
+      "maxRead": 40,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 0,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "test_read_format_rar_unicode.rar",
+      "entries": [
+        {
+          "name": "表だよ/新しいフォルダ/新規テキスト ドキュメント.txt",
+          "size": 0,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "表だよ/漢字長いファイル名long-filename-in-漢字.txt",
+          "size": 5,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "表だよ/新しいフォルダ",
+          "size": 0,
+          "redirection": 0,
+          "target": "",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 2
+        },
+        {
+          "name": "表だよ",
+          "size": 0,
+          "redirection": 0,
+          "target": "",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 3
+        },
+        {
+          "name": "表だよ/ファイル",
+          "size": 54,
+          "redirection": 1,
+          "target": "漢字長いファイル名long-filename-in-漢字.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": true,
+          "index": 4
+        },
+        {
+          "name": "abcdefghijklmnopqrsテスト.txt",
+          "size": 16,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 5
+        }
+      ],
+      "requests": [
+        {
+          "path": "表だよ/ファイル",
+          "target": "表だよ/漢字長いファイル名long-filename-in-漢字.txt",
+          "bytes": 5,
+          "sha256": "7faabe854be71defacd1fd3b0403f2c54f446dd60a46db60b7d823cf988a6deb"
+        },
+        {
+          "path": "表だよ/漢字長いファイル名long-filename-in-漢字.txt",
+          "target": "表だよ/漢字長いファイル名long-filename-in-漢字.txt",
+          "bytes": 5,
+          "sha256": "7faabe854be71defacd1fd3b0403f2c54f446dd60a46db60b7d823cf988a6deb"
+        },
+        {
+          "path": "abcdefghijklmnopqrsテスト.txt",
+          "target": "abcdefghijklmnopqrsテスト.txt",
+          "bytes": 16,
+          "sha256": "84674f2bcd7325f909505e1532c6a07fdd33d441168618f5aa24f8346f6bec6e"
+        }
+      ],
+      "decodedTargets": 2,
+      "cachedBytes": 21,
+      "cachedMembers": 2,
+      "cacheAfterDispose": 0,
+      "readCalls": 52,
+      "readBytes": 2164,
+      "maxRead": 141,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 54,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "test_read_format_rar5_unicode.rar",
+      "entries": [
+        {
+          "name": "👋🌎.txt",
+          "size": 13,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "Ⓗⓐⓡⓓ Ⓛⓘⓝⓚ.txt",
+          "size": 13,
+          "redirection": 4,
+          "target": "👋🌎.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "𝒮𝓎𝓂𝒷𝑜𝓁𝒾𝒸 𝐿𝒾𝓃𝓀.txt",
+          "size": 0,
+          "redirection": 2,
+          "target": "👋🌎.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": true,
+          "targetInData": false,
+          "index": 2
+        }
+      ],
+      "requests": [
+        {
+          "path": "Ⓗⓐⓡⓓ Ⓛⓘⓝⓚ.txt",
+          "target": "👋🌎.txt",
+          "bytes": 13,
+          "sha256": "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+        },
+        {
+          "path": "𝒮𝓎𝓂𝒷𝑜𝓁𝒾𝒸 𝐿𝒾𝓃𝓀.txt",
+          "target": "👋🌎.txt",
+          "bytes": 13,
+          "sha256": "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+        },
+        {
+          "path": "👋🌎.txt",
+          "target": "👋🌎.txt",
+          "bytes": 13,
+          "sha256": "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 13,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 25,
+      "readBytes": 505,
+      "maxRead": 95,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 13,
+        "heapBytes": 33554432
+      }
+    },
+    {
+      "ok": true,
+      "name": "test_read_format_rar5_symlink.rar",
+      "entries": [
+        {
+          "name": "file.txt",
+          "size": 5,
+          "redirection": 0,
+          "target": "",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 0
+        },
+        {
+          "name": "symlink.txt",
+          "size": 8,
+          "redirection": 1,
+          "target": "file.txt",
+          "directory": false,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 1
+        },
+        {
+          "name": "dirlink",
+          "size": 3,
+          "redirection": 1,
+          "target": "dir",
+          "directory": false,
+          "directoryTarget": true,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 2
+        },
+        {
+          "name": "dir",
+          "size": 0,
+          "redirection": 0,
+          "target": "dir",
+          "directory": true,
+          "directoryTarget": false,
+          "windowsNames": false,
+          "targetInData": false,
+          "index": 3
+        }
+      ],
+      "requests": [
+        {
+          "path": "symlink.txt",
+          "target": "file.txt",
+          "bytes": 5,
+          "sha256": "a883dafc480d466ee04e0d6da986bd78eb1fdd2178d04693723da3a8f95d42f4"
+        },
+        {
+          "path": "file.txt",
+          "target": "file.txt",
+          "bytes": 5,
+          "sha256": "a883dafc480d466ee04e0d6da986bd78eb1fdd2178d04693723da3a8f95d42f4"
+        }
+      ],
+      "decodedTargets": 1,
+      "cachedBytes": 5,
+      "cachedMembers": 1,
+      "cacheAfterDispose": 0,
+      "readCalls": 27,
+      "readBytes": 368,
+      "maxRead": 43,
+      "disposed": {
+        "openStreams": 3,
+        "maxNativeOutput": 5,
+        "heapBytes": 33554432
+      }
+    }
+  ],
+  "namespaceCases": [
+    {
+      "id": "relative-symbolic-link",
+      "target": "a/data",
+      "identityPreserved": true
+    },
+    {
+      "id": "rooted-hardlink",
+      "target": "data/file",
+      "identityPreserved": true
+    },
+    {
+      "id": "rooted-copy",
+      "target": "data/file",
+      "identityPreserved": true
+    },
+    {
+      "id": "chained-reference",
+      "target": "data",
+      "identityPreserved": true
+    },
+    {
+      "id": "directory-prefix",
+      "target": "real/child",
+      "identityPreserved": true
+    },
+    {
+      "id": "relative-junction",
+      "target": "real/child",
+      "identityPreserved": true
+    },
+    {
+      "id": "parent-after-reference",
+      "target": "target/file",
+      "identityPreserved": true
+    },
+    {
+      "id": "legacy-directory-target",
+      "target": "real/child",
+      "identityPreserved": true
+    },
+    {
+      "id": "windows-reference-separators",
+      "target": "a/data",
+      "identityPreserved": true
+    },
+    {
+      "id": "unix-backslash-name",
+      "target": "a\\b",
+      "identityPreserved": true
+    },
+    {
+      "id": "literal-percent-name",
+      "target": "%2e%2e/file",
+      "identityPreserved": true
+    },
+    {
+      "id": "case-sensitive-name",
+      "target": "A",
+      "identityPreserved": true
+    },
+    {
+      "id": "unicode-composition-preserved",
+      "target": "é",
+      "identityPreserved": true
+    },
+    {
+      "id": "missing-target",
+      "rejected": "missingTarget"
+    },
+    {
+      "id": "root-escape",
+      "rejected": "outsideArchive"
+    },
+    {
+      "id": "absolute-target",
+      "rejected": "outsideArchive"
+    },
+    {
+      "id": "drive-target",
+      "rejected": "outsideArchive"
+    },
+    {
+      "id": "network-share-target",
+      "rejected": "outsideArchive"
+    },
+    {
+      "id": "self-cycle",
+      "rejected": "referenceCycle"
+    },
+    {
+      "id": "pair-cycle",
+      "rejected": "referenceCycle"
+    },
+    {
+      "id": "prefix-escape",
+      "rejected": "outsideArchive"
+    },
+    {
+      "id": "duplicate-member",
+      "rejected": "ambiguousTarget"
+    },
+    {
+      "id": "normalized-collision",
+      "rejected": "ambiguousTarget"
+    },
+    {
+      "id": "file-as-directory",
+      "rejected": "notDirectory"
+    },
+    {
+      "id": "directory-flag-mismatch",
+      "rejected": "targetKindMismatch"
+    },
+    {
+      "id": "unknown-redirection",
+      "rejected": "unsupportedReference"
+    },
+    {
+      "id": "reference-budget",
+      "rejected": "referenceLimit"
+    }
+  ],
+  "allAssertionsPassed": true,
+  "productionReaderExecuted": false,
+  "fullArchiveNameValidation": false,
+  "recordedAt": "2026-10-19T11:26:56.830991+00:00",
+  "sources": {
+    "archive.mjs": "f5288ddc569f7a92d193223ff069745ea700366e0af04b294589687eb73a8b22",
+    "browser-electron.cjs": "fb991e113fab49def8b6f6f415ffa8c72c03c58c5870aaf3b7c355f71141a507",
+    "build-probe.py": "fcf9e4e390746858d0739d6e269a8096f428a15773815c0b3e7ac18e6badada0",
+    "inspect.mjs": "c303651b3732136d6565e8e3ed246c1e828deef25b5d8f563a9596d16a5a6670",
+    "member-bridge.cpp": "ac0f346286b1342a0565df49bbdcec97e87b85fc58dc353f943189b68051cdcc",
+    "members.mjs": "3040d641bdfb674519861dc7aa198dafe3a43bd003862032e3e5657f5466ebea",
+    "policy-cases.mjs": "3bb9faafe322ce0ca64dc88508a50210b88b733685e3f15c3017e9a9bd09c984",
+    "prepare-fixtures.py": "e688f587273e20b75ac8c69abb7e8482b29aaee88d7456a5c799e98967f00146",
+    "probe-worker.mjs": "a5a4a435ef1486f3f6dc687370d6e1119f14e7cd42a8a1a769509d6046ff1751",
+    "probe.html": "2a6a5e4ef6323b062c803f999bba93580c830f3855d876168a20c5f5836911e8",
+    "run-browser.py": "354f33cef960b7c4039d7aa3a16c53ee0dc268a54327af3ef7a7579c0a5193f8"
+  },
+  "buildReceiptSha256": "7ac4c522b4ee3ec265876c78adf3d6977a75556777c75cad2bfd16b3bff78b63",
+  "fixtureReceiptSha256": "571e72bb736bc3f07ecc5e449d9b63b7018e9e603b01fb403a6104fe0eb8d8e5"
+}

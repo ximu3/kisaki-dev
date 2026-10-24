@@ -1,0 +1,431 @@
+{
+  "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+  "sqlite": "3.43.1",
+  "platform": "win32",
+  "primitive": "MoveFileExW(MOVEFILE_WRITE_THROUGH), without replacement",
+  "caseCount": 60,
+  "checks": [
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "ready",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "ready",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "new_placed_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "new_placed_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "before_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "before_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "after_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "after_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "rollback_new_moved",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "rollback_new_moved",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": false,
+      "interruption": "external_change",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "ready",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "ready",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "new_placed_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "new_placed_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "before_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "before_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "after_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "after_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "old_moved_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "old_moved_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "rollback_new_moved",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "rollback_new_moved",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "rollback_original_restored",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "rollback_original_restored",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "beforePresent": true,
+      "interruption": "external_change",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "ready",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "ready",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "new_placed_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "new_placed_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "before_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "before_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "after_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "after_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "rollback_new_moved",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "rollback_new_moved",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": false,
+      "interruption": "external_change",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "ready",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "ready",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "new_placed_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "new_placed_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "before_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "before_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "after_db_commit",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "after_db_commit",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "old_moved_before_progress",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "old_moved_before_progress",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "rollback_new_moved",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "rollback_new_moved",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "rollback_original_restored",
+      "action": "continue",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "rollback_original_restored",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "beforePresent": true,
+      "interruption": "external_change",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "interruption": "missing_prepared",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "interruption": "missing_original",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "interruption": "invalid_manifest",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "file",
+      "interruption": "occupied_destination",
+      "action": "native_no_replace",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "interruption": "missing_prepared",
+      "action": "rollback",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "interruption": "missing_original",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "interruption": "invalid_manifest",
+      "action": "keepCurrent",
+      "passed": true
+    },
+    {
+      "kind": "directory",
+      "interruption": "occupied_destination",
+      "action": "native_no_replace",
+      "passed": true
+    }
+  ],
+  "excluded": [
+    "power loss",
+    "other operating systems",
+    "other file systems",
+    "archive decoding",
+    "application integration",
+    "workspace cleanup",
+    "disk-full and permission faults",
+    "native module packaging"
+  ]
+}

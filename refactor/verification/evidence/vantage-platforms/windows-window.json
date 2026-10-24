@@ -1,0 +1,74 @@
+{
+  "purpose": "hidden owned-window painting primitives, not a Vantage capture backend",
+  "checkedAt": "2026-10-17T14:23:55.905860+00:00",
+  "printWindowCase": {
+    "method": "print-window",
+    "nativeResult": true,
+    "matchesFixture": false,
+    "width": 160,
+    "height": 100,
+    "samples": [
+      {
+        "rgb": [0, 0, 0],
+        "alphaByte": 0
+      },
+      {
+        "rgb": [0, 0, 0],
+        "alphaByte": 0
+      },
+      {
+        "rgb": [0, 0, 0],
+        "alphaByte": 0
+      },
+      {
+        "rgb": [0, 0, 0],
+        "alphaByte": 0
+      }
+    ],
+    "sha256": "4f7988030a00d082fe445e00a2ac5dab502300ff1b80e8592dd569867b60ef74",
+    "resourcesReleased": true,
+    "paintCallbackObserved": false
+  },
+  "paintProtocolCase": {
+    "method": "paint-message",
+    "nativeResult": 0,
+    "matchesFixture": false,
+    "width": 160,
+    "height": 100,
+    "samples": [
+      {
+        "rgb": [109, 109, 109],
+        "alphaByte": 109
+      },
+      {
+        "rgb": [109, 109, 109],
+        "alphaByte": 109
+      },
+      {
+        "rgb": [109, 109, 109],
+        "alphaByte": 109
+      },
+      {
+        "rgb": [109, 109, 109],
+        "alphaByte": 109
+      }
+    ],
+    "sha256": "e9c3d57d01bb35f372c80c616921b74be59e716a19ec5775dd313972761451c5",
+    "resourcesReleased": true,
+    "paintCallbackObserved": true
+  },
+  "blockedProtocolCase": {
+    "method": "paint-message",
+    "paintCallbackObserved": true,
+    "exceededObservationMs": 500,
+    "ownedCaptureWorkerTerminated": true
+  },
+  "windowsShown": false,
+  "externalTargetsReadOrControlled": false,
+  "windowsGraphicsCaptureExecuted": false,
+  "gpuContentVerified": false,
+  "hdrVerified": false,
+  "handleReuseVerified": false,
+  "vantageApiExecuted": false,
+  "ownedProcessesCleanedUp": true
+}

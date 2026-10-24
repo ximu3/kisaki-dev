@@ -1,0 +1,701 @@
+{
+  "evidenceClass": "actual-node-icu-and-generated-type-probe-with-lifecycle-model",
+  "officialTranslationsComplete": false,
+  "nativeHostExecuted": false,
+  "browserOrWebviewExecuted": false,
+  "runtime": {
+    "node": "v24.11.1",
+    "icu": "77.1",
+    "typescript": "6.0.3"
+  },
+  "dependencies": [
+    {
+      "name": "intl-messageformat",
+      "version": "12.1.3",
+      "license": "BSD-3-Clause",
+      "entryBytes": 11253,
+      "entrySha256": "3ceb9d7ec736c5d3e4efb05b76878f633b80d3315d1ce75cdf15984d1269e78d"
+    },
+    {
+      "name": "@formatjs/icu-messageformat-parser",
+      "version": "3.5.21",
+      "license": "MIT",
+      "entryBytes": 45919,
+      "entrySha256": "f7bf90326363a7019be2f9b2f05acc2149a27b15e1c33adde91d09ae3f902a08"
+    },
+    {
+      "name": "@formatjs/intl-localematcher",
+      "version": "0.9.0",
+      "license": "MIT",
+      "entryBytes": 63272,
+      "entrySha256": "8231e86893c5341360f06bf438791708f88d69f1a4cf0871ebf0d6f4cb9b56eb"
+    }
+  ],
+  "representativeKeys": 37,
+  "passed": 133,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Three projects have distinct stable extension and translation identities",
+      "passed": true
+    },
+    {
+      "name": "Each portable language project explicitly covers the six desktop targets",
+      "passed": true
+    },
+    {
+      "name": "en: all English fixture keys are present and type-compatible",
+      "passed": true
+    },
+    {
+      "name": "en: actual ICU count 0",
+      "passed": true
+    },
+    {
+      "name": "en: actual ICU count 1",
+      "passed": true
+    },
+    {
+      "name": "en: actual ICU count 2",
+      "passed": true
+    },
+    {
+      "name": "en: actual ICU count 1234",
+      "passed": true
+    },
+    {
+      "name": "en: unknown select value uses an explicit other branch",
+      "passed": true
+    },
+    {
+      "name": "en: arguments are not recursively interpreted as ICU",
+      "passed": true
+    },
+    {
+      "name": "en: escaped braces are literal and declare no argument",
+      "passed": true
+    },
+    {
+      "name": "en: markup is a literal text value",
+      "passed": true
+    },
+    {
+      "name": "en: Date and epoch milliseconds format identically",
+      "passed": true
+    },
+    {
+      "name": "en: an unformatted numeric argument supports zero",
+      "passed": true
+    },
+    {
+      "name": "en: live execution and personal reading state have different labels",
+      "passed": true
+    },
+    {
+      "name": "en: favorite and collection stay distinct",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: all English fixture keys are present and type-compatible",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: actual ICU count 0",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: actual ICU count 1",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: actual ICU count 2",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: actual ICU count 1234",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: unknown select value uses an explicit other branch",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: arguments are not recursively interpreted as ICU",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: escaped braces are literal and declare no argument",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: markup is a literal text value",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: Date and epoch milliseconds format identically",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: an unformatted numeric argument supports zero",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: live execution and personal reading state have different labels",
+      "passed": true
+    },
+    {
+      "name": "zh-Hans: favorite and collection stay distinct",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: all English fixture keys are present and type-compatible",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: actual ICU count 0",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: actual ICU count 1",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: actual ICU count 2",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: actual ICU count 1234",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: unknown select value uses an explicit other branch",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: arguments are not recursively interpreted as ICU",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: escaped braces are literal and declare no argument",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: markup is a literal text value",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: Date and epoch milliseconds format identically",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: an unformatted numeric argument supports zero",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: live execution and personal reading state have different labels",
+      "passed": true
+    },
+    {
+      "name": "zh-Hant: favorite and collection stay distinct",
+      "passed": true
+    },
+    {
+      "name": "ja: all English fixture keys are present and type-compatible",
+      "passed": true
+    },
+    {
+      "name": "ja: actual ICU count 0",
+      "passed": true
+    },
+    {
+      "name": "ja: actual ICU count 1",
+      "passed": true
+    },
+    {
+      "name": "ja: actual ICU count 2",
+      "passed": true
+    },
+    {
+      "name": "ja: actual ICU count 1234",
+      "passed": true
+    },
+    {
+      "name": "ja: unknown select value uses an explicit other branch",
+      "passed": true
+    },
+    {
+      "name": "ja: arguments are not recursively interpreted as ICU",
+      "passed": true
+    },
+    {
+      "name": "ja: escaped braces are literal and declare no argument",
+      "passed": true
+    },
+    {
+      "name": "ja: markup is a literal text value",
+      "passed": true
+    },
+    {
+      "name": "ja: Date and epoch milliseconds format identically",
+      "passed": true
+    },
+    {
+      "name": "ja: an unformatted numeric argument supports zero",
+      "passed": true
+    },
+    {
+      "name": "ja: live execution and personal reading state have different labels",
+      "passed": true
+    },
+    {
+      "name": "ja: favorite and collection stay distinct",
+      "passed": true
+    },
+    {
+      "name": "English plural uses the English one branch",
+      "passed": true
+    },
+    {
+      "name": "English selectordinal preserves ordinal rules",
+      "passed": true
+    },
+    {
+      "name": "English offset and pound are handled by the real ICU engine",
+      "passed": true
+    },
+    {
+      "name": "Translation may omit a baseline argument",
+      "passed": true
+    },
+    {
+      "name": "Translation may replace number formatting with plain interpolation",
+      "passed": true
+    },
+    {
+      "name": "Translation cannot narrow an ordinary argument to number",
+      "passed": true
+    },
+    {
+      "name": "Translation cannot require a new parameter",
+      "passed": true
+    },
+    {
+      "name": "Translation cannot format a number parameter as select text",
+      "passed": true
+    },
+    {
+      "name": "Translation cannot format a Date-capable argument as plain interpolation",
+      "passed": true
+    },
+    {
+      "name": "Known malformed ICU rejects the entire catalog",
+      "passed": true
+    },
+    {
+      "name": "An English parameter cannot require incompatible string and number values",
+      "passed": true
+    },
+    {
+      "name": "Compatible English uses derive the intersection of allowed types",
+      "passed": true
+    },
+    {
+      "name": "All select branches contribute to the static parameter contract",
+      "passed": true
+    },
+    {
+      "name": "Select branches do not form a closed enum",
+      "passed": true
+    },
+    {
+      "name": "Runtime allows missing keys for English fallback",
+      "passed": true
+    },
+    {
+      "name": "Official build rejects a partial catalog",
+      "passed": true
+    },
+    {
+      "name": "Unknown future ICU leaf is ignored by the current runtime",
+      "passed": true
+    },
+    {
+      "name": "Official build rejects extra unknown keys",
+      "passed": true
+    },
+    {
+      "name": "Catalog rejects array leaves",
+      "passed": true
+    },
+    {
+      "name": "Catalog rejects function leaves",
+      "passed": true
+    },
+    {
+      "name": "Catalog rejects null leaves",
+      "passed": true
+    },
+    {
+      "name": "Catalog rejects number leaves",
+      "passed": true
+    },
+    {
+      "name": "A dotted segment does not masquerade as a nested path",
+      "passed": true
+    },
+    {
+      "name": "Catalog accessors are not evaluated",
+      "passed": true
+    },
+    {
+      "name": "The rejected accessor never executed",
+      "passed": true
+    },
+    {
+      "name": "Catalog object cycles are rejected",
+      "passed": true
+    },
+    {
+      "name": "Catalog depth budget is enforced",
+      "passed": true
+    },
+    {
+      "name": "Individual message length budget is enforced",
+      "passed": true
+    },
+    {
+      "name": "Own prototype-looking keys never mutate prototypes",
+      "passed": true
+    },
+    {
+      "name": "Locale casing is canonicalized",
+      "passed": true
+    },
+    {
+      "name": "UI locales remain open beyond the four official languages",
+      "passed": true
+    },
+    {
+      "name": "Reject unsupported or option-bearing UI locale zh_Hant",
+      "passed": true
+    },
+    {
+      "name": "Reject unsupported or option-bearing UI locale ja-u-ca-japanese",
+      "passed": true
+    },
+    {
+      "name": "Reject unsupported or option-bearing UI locale zh-Hans-u-nu-hanidec",
+      "passed": true
+    },
+    {
+      "name": "Reject unsupported or option-bearing UI locale en-x-custom",
+      "passed": true
+    },
+    {
+      "name": "Reject unsupported or option-bearing UI locale zz-ZZ",
+      "passed": true
+    },
+    {
+      "name": "LocalizedText chooses an exact supplied regional value first",
+      "passed": true
+    },
+    {
+      "name": "A regional Traditional Chinese request can select a supplied Hant value",
+      "passed": true
+    },
+    {
+      "name": "A regional Simplified Chinese request can select a supplied Hans value",
+      "passed": true
+    },
+    {
+      "name": "Hans does not use Hant as a compatible script match",
+      "passed": true
+    },
+    {
+      "name": "The author default can still be Hant without claiming script equivalence",
+      "passed": true
+    },
+    {
+      "name": "LocalizedText does not interpolate ICU placeholders",
+      "passed": true
+    },
+    {
+      "name": "LocalizedText candidate ordering is deterministic",
+      "passed": true
+    },
+    {
+      "name": "Canonical duplicate locale names are rejected",
+      "passed": true
+    },
+    {
+      "name": "LocalizedText must contain its explicit default",
+      "passed": true
+    },
+    {
+      "name": "Zero extensions retain the complete English baseline",
+      "passed": true
+    },
+    {
+      "name": "Installation and registration do not choose a language",
+      "passed": true
+    },
+    {
+      "name": "Explicit selection adopts the selected Chinese catalog",
+      "passed": true
+    },
+    {
+      "name": "Switching to Hant uses its independently authored wording",
+      "passed": true
+    },
+    {
+      "name": "Switching preserves user-owned draft text",
+      "passed": true
+    },
+    {
+      "name": "Same-locale translation switch changes the rendered message",
+      "passed": true
+    },
+    {
+      "name": "Same-locale switch still invalidates message presentation",
+      "passed": true
+    },
+    {
+      "name": "Missing keys fall back to English grammar, not selected Chinese grammar",
+      "passed": true
+    },
+    {
+      "name": "Missing keys do not borrow the other installed Hant translation",
+      "passed": true
+    },
+    {
+      "name": "Withdrawal reverts effective language to English",
+      "passed": true
+    },
+    {
+      "name": "Withdrawal keeps the saved translation identity",
+      "passed": true
+    },
+    {
+      "name": "The exact saved translation automatically recovers when it returns",
+      "passed": true
+    },
+    {
+      "name": "A stale registration disposer cannot revoke a replacement",
+      "passed": true
+    },
+    {
+      "name": "A newly chosen unavailable translation is not saved",
+      "passed": true
+    },
+    {
+      "name": "Failed selection keeps the previous saved choice",
+      "passed": true
+    },
+    {
+      "name": "Activation failure does not publish its staged translations",
+      "passed": true
+    },
+    {
+      "name": "Failed activation leaves the published registry unchanged",
+      "passed": true
+    },
+    {
+      "name": "One invalid known message rejects all staged contributions",
+      "passed": true
+    },
+    {
+      "name": "Partially valid activation publishes no subset",
+      "passed": true
+    },
+    {
+      "name": "Duplicate identity is not a load-order override",
+      "passed": true
+    },
+    {
+      "name": "Missing call arguments remain a programming error",
+      "passed": true
+    },
+    {
+      "name": "Wrong call argument type does not cause a language fallback",
+      "passed": true
+    },
+    {
+      "name": "Unknown keys cannot be rendered through an escape overload",
+      "passed": true
+    },
+    {
+      "name": "A present empty string is distinct from a missing message",
+      "passed": true
+    },
+    {
+      "name": "Returning to English does not disable installed translations",
+      "passed": true
+    },
+    {
+      "name": "Generated ICU call types accept valid calls and reject seven invalid cases",
+      "passed": true
+    },
+    {
+      "name": "Existing four catalogs were inspected without executing their code",
+      "passed": true
+    },
+    {
+      "name": "Existing function-valued messages require deliberate ICU conversion",
+      "passed": true
+    },
+    {
+      "name": "Existing four catalogs have the same static leaf paths",
+      "passed": true
+    },
+    {
+      "name": "Fixture unchanged: fixtures/en.json",
+      "passed": true
+    },
+    {
+      "name": "Fixture unchanged: fixtures/zh-Hans.json",
+      "passed": true
+    },
+    {
+      "name": "Fixture unchanged: fixtures/zh-Hant.json",
+      "passed": true
+    },
+    {
+      "name": "Fixture unchanged: fixtures/ja.json",
+      "passed": true
+    },
+    {
+      "name": "Fixture unchanged: fixtures/projects.json",
+      "passed": true
+    }
+  ],
+  "samples": [
+    {
+      "locale": "en",
+      "key": "selection.count",
+      "values": {
+        "count": 0
+      },
+      "output": "No items selected"
+    },
+    {
+      "locale": "en",
+      "key": "selection.count",
+      "values": {
+        "count": 1
+      },
+      "output": "1 item selected"
+    },
+    {
+      "locale": "en",
+      "key": "selection.count",
+      "values": {
+        "count": 2
+      },
+      "output": "2 items selected"
+    },
+    {
+      "locale": "en",
+      "key": "selection.count",
+      "values": {
+        "count": 1234
+      },
+      "output": "1,234 items selected"
+    },
+    {
+      "locale": "zh-Hans",
+      "key": "selection.count",
+      "values": {
+        "count": 0
+      },
+      "output": "已选择 0 项"
+    },
+    {
+      "locale": "zh-Hans",
+      "key": "selection.count",
+      "values": {
+        "count": 1
+      },
+      "output": "已选择 1 项"
+    },
+    {
+      "locale": "zh-Hans",
+      "key": "selection.count",
+      "values": {
+        "count": 2
+      },
+      "output": "已选择 2 项"
+    },
+    {
+      "locale": "zh-Hans",
+      "key": "selection.count",
+      "values": {
+        "count": 1234
+      },
+      "output": "已选择 1,234 项"
+    },
+    {
+      "locale": "zh-Hant",
+      "key": "selection.count",
+      "values": {
+        "count": 0
+      },
+      "output": "已選取 0 項"
+    },
+    {
+      "locale": "zh-Hant",
+      "key": "selection.count",
+      "values": {
+        "count": 1
+      },
+      "output": "已選取 1 項"
+    },
+    {
+      "locale": "zh-Hant",
+      "key": "selection.count",
+      "values": {
+        "count": 2
+      },
+      "output": "已選取 2 項"
+    },
+    {
+      "locale": "zh-Hant",
+      "key": "selection.count",
+      "values": {
+        "count": 1234
+      },
+      "output": "已選取 1,234 項"
+    },
+    {
+      "locale": "ja",
+      "key": "selection.count",
+      "values": {
+        "count": 0
+      },
+      "output": "0 件を選択"
+    },
+    {
+      "locale": "ja",
+      "key": "selection.count",
+      "values": {
+        "count": 1
+      },
+      "output": "1 件を選択"
+    },
+    {
+      "locale": "ja",
+      "key": "selection.count",
+      "values": {
+        "count": 2
+      },
+      "output": "2 件を選択"
+    },
+    {
+      "locale": "ja",
+      "key": "selection.count",
+      "values": {
+        "count": 1234
+      },
+      "output": "1,234 件を選択"
+    }
+  ]
+}

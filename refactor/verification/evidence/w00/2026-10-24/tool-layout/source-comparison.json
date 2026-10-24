@@ -1,0 +1,248 @@
+[
+  {
+    "previous": "clients/desktop/app/tools/build/cli.ts",
+    "current": "clients/desktop/app/tools/build/cli.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/build/coordinator.ts",
+    "current": "clients/desktop/app/tools/build/coordinator.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/build/identity.ts",
+    "current": "clients/desktop/app/tools/build/identity.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/build/programs.ts",
+    "current": "clients/desktop/app/tools/build/programs.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/clean.ts",
+    "current": "clients/desktop/app/tools/clean.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/cli.ts",
+    "current": "clients/desktop/app/tools/dev/cli.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/dependencies.ts",
+    "current": "clients/desktop/app/tools/dev/dependencies.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/electron-process.ts",
+    "current": "clients/desktop/app/tools/dev/electron-process.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/generation.ts",
+    "current": "clients/desktop/app/tools/dev/generation.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/renderer.ts",
+    "current": "clients/desktop/app/tools/dev/renderer.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/dev/session.ts",
+    "current": "clients/desktop/app/tools/dev/session.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/electron-executable.ts",
+    "current": "clients/desktop/app/tools/dev/electron-executable.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/native/build.ts",
+    "current": "clients/desktop/app/tools/native/build.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/native/check.ts",
+    "current": "clients/desktop/app/tools/native/check.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/native/cli.ts",
+    "current": "clients/desktop/app/tools/native/cli.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/native/declarations.ts",
+    "current": "clients/desktop/app/tools/native/declarations.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/output.ts",
+    "current": "clients/desktop/app/tools/lib/output.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/package/cli.ts",
+    "current": "clients/desktop/app/tools/package/cli.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/package/packager.ts",
+    "current": "clients/desktop/app/tools/package/packager.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/paths.ts",
+    "current": "clients/desktop/app/tools/lib/paths.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/process.ts",
+    "current": "clients/desktop/app/tools/lib/process.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/resources/cli.ts",
+    "current": "clients/desktop/app/tools/resources/cli.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/resources/fonts.ts",
+    "current": "clients/desktop/app/tools/resources/fonts.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/resources/prepare.ts",
+    "current": "clients/desktop/app/tools/resources/prepare.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/sha256.ts",
+    "current": "clients/desktop/app/tools/lib/sha256.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tools/targets.ts",
+    "current": "clients/desktop/app/tools/lib/targets.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+    "current": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/browser/window.test.tsx",
+    "current": "clients/desktop/app/tests/browser/window.test.tsx",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/e2e/windows.test.ts",
+    "current": "clients/desktop/app/tests/e2e/windows.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/integration/database/abi.test.ts",
+    "current": "clients/desktop/app/tests/integration/database/abi.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/integration/native/files.test.ts",
+    "current": "clients/desktop/app/tests/integration/native/files.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/performance/budgets.ts",
+    "current": "clients/desktop/app/tests/performance/budgets.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/performance/startup.test.ts",
+    "current": "clients/desktop/app/tests/performance/startup.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/support/artifact-workspace.ts",
+    "current": "clients/desktop/app/tests/support/artifact-workspace.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/support/development-controller.ts",
+    "current": "clients/desktop/app/tests/support/development-controller.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/support/development-workspace.ts",
+    "current": "clients/desktop/app/tests/support/development-workspace.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/support/electron.ts",
+    "current": "clients/desktop/app/tests/support/electron.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/support/window-observation.ts",
+    "current": "clients/desktop/app/tests/support/window-observation.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/tools/build/output.test.ts",
+    "current": "clients/desktop/app/tests/tools/build/output.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/tools/dev/session.test.ts",
+    "current": "clients/desktop/app/tests/tools/dev/session.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  },
+  {
+    "previous": "clients/desktop/app/tests/tools/resources/fonts.test.ts",
+    "current": "clients/desktop/app/tests/tools/resources/fonts.test.ts",
+    "importTargetsPreserved": true,
+    "implementationPreserved": true
+  }
+]

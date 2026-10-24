@@ -1,0 +1,317 @@
+{
+  "checkedAt": "2026-10-17T08:14:25.420Z",
+  "status": "design-confirmed",
+  "design": "../../../design/extensions/importers/calibre.md",
+  "baseline": {
+    "release": "v9.16.0",
+    "publishedAt": "2026-10-09T03:05:13Z",
+    "tagObject": "eb81569359f56569b584597d4731571207c708b0",
+    "commit": "61c4027d2bfe737e0177e09952ee4942042a5892",
+    "metadataUserVersion": 28,
+    "notesUserVersion": 1
+  },
+  "input": {
+    "kind": "synthetic-only",
+    "userBackupAvailable": false,
+    "sourceApplicationRun": false,
+    "sourceFiles": 36,
+    "httpRequests": 40
+  },
+  "checks": {
+    "checks": 63,
+    "books": 5,
+    "customColumns": 8,
+    "sourceAnnotations": 6,
+    "selectedLiveAnnotations": 4,
+    "inputFiles": 10
+  },
+  "requests": [
+    {
+      "url": "https://api.github.com/repos/kovidgoyal/calibre/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.423Z",
+      "bytes": 11147,
+      "sha256": "085f510502485e175a0ca2de1aa192e32de37875e09d41d0297da779a74fc5f4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/annotations.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.441Z",
+      "bytes": 4314,
+      "sha256": "e6e1512fc3b4776ae3618bdbf134367ede112fd52db2db6e561613b42fcbd07e"
+    },
+    {
+      "url": "https://api.github.com/repos/kovidgoyal/calibre/git/trees/61c4027d2bfe737e0177e09952ee4942042a5892?recursive=1",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.542Z",
+      "bytes": 1254664,
+      "sha256": "76359c01b1886d9f01ddcc4cb49aaa21cd43d486d0d96db89fcc67ee687c4565"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/connect.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.613Z",
+      "bytes": 28420,
+      "sha256": "fa49bb02cd516f64a498709d40a5b1a33651370c00d2ea61a7e782ddcaf6098a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/resources/metadata_sqlite.sql",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.704Z",
+      "bytes": 31335,
+      "sha256": "3503d771a142fcfb2c4461b4346ee0b53b95b117209240d40f264c1c1218225f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/exim.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:02:46.789Z",
+      "bytes": 3431,
+      "sha256": "06eb03b671d5a6bfbbaa0bc00aef8c9d53476ea7f9db9013ae4ff03bb4e620d6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/schema_upgrades.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.763Z",
+      "bytes": 40581,
+      "sha256": "de2e46910ad5d4847d833c9550cd65cb3597203d43d5ce300557563ce6e11f45"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/schema_upgrade.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.777Z",
+      "bytes": 1348,
+      "sha256": "9f759d4bbbe310bbd060b89417e92de0fad354bb222416697d1b46b7eb286972"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/backend.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.792Z",
+      "bytes": 126583,
+      "sha256": "c151f8ea49fc2dd58b4adb7ee13921e0beb5d2718100ace50173ded1fc021697"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/srv/render_book.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.907Z",
+      "bytes": 36839,
+      "sha256": "d725ac9b2a1362d7579a057d680771118d2eb892a0beafc1a8cdb2d7e5f7c922"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/gui2/viewer/annotations.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.921Z",
+      "bytes": 6123,
+      "sha256": "8af0b1ce5d3304227094c6f76e588529524cd5cdf5636626f8d5671ab68cd36d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/gui2/viewer/convert_book.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.923Z",
+      "bytes": 14689,
+      "sha256": "16d23ad505cee0ce92f273c842072bfde87ecda494d92b85356a023d690f9a8c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/metadata/opf2.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:31.931Z",
+      "bytes": 70416,
+      "sha256": "222b88fe188555f7e24da59b8e67c6e3755b9182638d16b9bb3c1acd15a277df"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/constants.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:32.081Z",
+      "bytes": 1016,
+      "sha256": "a1ace35d325d7254ed22b8ad8406f16326c31c1959044b9b5ec98f08237c9a5c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/annotations.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:38.734Z",
+      "bytes": 9527,
+      "sha256": "6f24fab2b5909b46777052c86e44c968bb4252c335cf8aa04ecfc6418e18629f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/cli/cmd_export.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:38.746Z",
+      "bytes": 5685,
+      "sha256": "851514e7058e02b84d2e66afe9947ee8ed9aaaf2f7a3d1857678ab32ef45dc82"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/cfi.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:38.801Z",
+      "bytes": 34375,
+      "sha256": "4fcf3d17eb093fe3b57771c4d23feeb8a093d821226fba7544470ea5a5b145c3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/bookmarks.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:38.927Z",
+      "bytes": 3094,
+      "sha256": "13cf3c30203990f3ca52c9bff986d6fc328f4174883dd6c367077ac8186f1fe1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/resources/notes_sqlite.sql",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:38.965Z",
+      "bytes": 2565,
+      "sha256": "ebc38d7386bfcc7ab9c5d512274b9d2ee5d244c38cfc08b2c40c88884e0a1c89"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/library/save_to_disk.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:56.238Z",
+      "bytes": 19093,
+      "sha256": "0ddce3568a025cafdae6c51b4b133b00ff39c8418c18c4433ea6411d4a6c457f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/oeb/iterator/book.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:56.240Z",
+      "bytes": 10008,
+      "sha256": "1e15d5bcd1445eef3f878e9229df7fc632a0b057369acb0cdbeb681408089dbf"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/cache.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:56.446Z",
+      "bytes": 183067,
+      "sha256": "1bfcfbd63f15863e98cc54549ee432b3f00be17dcf4d7c4dfbde846a493ba50a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/backup.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:05:56.474Z",
+      "bytes": 3883,
+      "sha256": "df8992e4e8d3e62fbe385aa4b22dd8f2dc434fa44a1bd60b99e7c6bdada6eefb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/view.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:06:15.229Z",
+      "bytes": 75950,
+      "sha256": "0a97c0b7e7d62051af7e057887bceeaea4ba960c5a369e54c4732841383606dd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/oeb/polish/parsing.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:06:15.244Z",
+      "bytes": 5868,
+      "sha256": "01d08046ab71f8a63d8606aa81d8e6a08c4c6a4ea6d91073fbf64bf66f8729b8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/highlights.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:06:15.245Z",
+      "bytes": 38628,
+      "sha256": "83871189f351bac7574fe34562fa8dabe57083a96db9d0917595909a1f21656d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/pyj/read_book/iframe.pyj",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:06:15.246Z",
+      "bytes": 51356,
+      "sha256": "3d89a46b8050a233503b7e3383121d191576b69a17b6c5e7fcd1515e3c3421c0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/conversion/plugins/epub_input.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:06:15.419Z",
+      "bytes": 19838,
+      "sha256": "d09dfc6252734f561f5b7ee05f23025e722b8144e42b8b5fc03468fce91ebfe1"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/gui2/custom_column_widgets.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:07:27.567Z",
+      "bytes": 64046,
+      "sha256": "0b39f9ce1b0c32c62726041b73feb91fa537dd9f40206b8a7005ea966dcd57fb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/utils/date.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:07:27.570Z",
+      "bytes": 13860,
+      "sha256": "e49517fde39069b845a0816f7798ac101e86c8adc1cf8d9c93bad31bb6ea45ec"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/metadata/book/json_codec.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:07:27.742Z",
+      "bytes": 6929,
+      "sha256": "954b52f0369cf7d104fb1f401bbcd172c72d683ba6d0dbc258fd8bc5b42650cb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/gui2/dialogs/tag_categories.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:07:28.024Z",
+      "bytes": 16367,
+      "sha256": "806ed44eba73ddedb32cd30d4ead176f35b0a1912bbe5849e78303aa4f77f871"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/utils/iso8601.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:07:57.416Z",
+      "bytes": 1327,
+      "sha256": "7e6fe9fa817e53e214137019cb94896eb2ec8dc24554eaf9b5d617981c618441"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/utils/config.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:09:29.859Z",
+      "bytes": 13888,
+      "sha256": "ae5549f21453494fef5cf791c6afc514e4a9501c1f659ab881db9c8d1460e691"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/utils/config_base.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:09:36.403Z",
+      "bytes": 28564,
+      "sha256": "db5c59a3ce15e78fa0662aa2c1e8f81db5ba24744d60d436fa57434a71a6f38f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/metadata/sources/identify.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:11:08.843Z",
+      "bytes": 23780,
+      "sha256": "d819c183d7c45ad612b6f65b8bafed16f1a05b6040af3694f707c14d37a3eb91"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/ebooks/metadata/sources/prefs.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:11:08.853Z",
+      "bytes": 1317,
+      "sha256": "44145e4a5c5542bff91f55ae7996f906f80f88775da9af8b777cb240c97cfd09"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kovidgoyal/calibre/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/write.py",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:12:59.024Z",
+      "bytes": 20698,
+      "sha256": "cf078aec0685dd48d6c41ef6184b78258a28cb07d2361a90c9bc06fb7c8b0573"
+    },
+    {
+      "url": "https://api.github.com/repos/kovidgoyal/calibre/git/ref/tags/v9.16.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:13:41.646Z",
+      "bytes": 341,
+      "sha256": "0e6d4f3dcf754e946fa0e1d39cc629bc8babd0f1ccae4ce826de9ab3aae72fdf"
+    },
+    {
+      "url": "https://api.github.com/repos/kovidgoyal/calibre/git/tags/eb81569359f56569b584597d4731571207c708b0",
+      "status": 200,
+      "checkedAt": "2026-10-17T08:13:44.480Z",
+      "bytes": 2536,
+      "sha256": "f12a68d673e1099472f3c499ad982e11c7ded7037fc1ea84a4f0692d31930831"
+    }
+  ],
+  "syntheticResults": "synthetic-results.json",
+  "limits": [
+    "Selected ordinary SQLite tables only; no real source export or full FTS schema.",
+    "No WAL snapshot test.",
+    "Simple unchanged XHTML CFI probe only; full source normalization and reader round trips remain acceptance.",
+    "No Kisaki writes, attachment preparation, extension UI or packages were exercised."
+  ]
+}

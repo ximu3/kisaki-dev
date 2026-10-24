@@ -1,0 +1,144 @@
+{
+  "preparedAt": "2026-10-21T06:29:00.705278+00:00",
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1",
+  "crate": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-src-_jzfrqls",
+  "addon": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-build-l8389tjr\\screenshot-probe.node",
+  "addonSha256": "17d70c54e907b5f9505a8a36e5ea5b34701db2fd410ed1cafe74cd9636e77786",
+  "dll": {
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\engine-candidate-windows\\runtimes\\candidate-z1412fd2\\libmpv-2.dll",
+    "sha256": "34c9bf9c65fc7010e0a8c90eb1b1fb89f525c80f5bee86c060bd60bbe595bd0a"
+  },
+  "engineReceiptSha256": "e3886b3bbe297a20533967271df59af4aac219c8e41fbce7bf729f9a6182fc15",
+  "sourceReceiptSha256": "f76472335bd138184e6e7060041ce1117e03247e149e1ab310c4a674b13552e8",
+  "originalProbeSources": {
+    "Cargo.toml": "47649808252254847b832594c84d37f6eaec20e72aa35d7869f7fcd348a1898d",
+    "Cargo.lock": "ed8a812f46a6b6431703e85a6044671ff33a0f64103458f3a280e98ec85ae6fa",
+    "build.rs": "078f0688d9444869412c805ae872805ea99a9410ca0dcff4373b2b7497fcff68",
+    "binding.rs": "012d740a276289b669d45057efa0cb6087e5cc9a33e2dd0561a96b833aa2cfff",
+    "producer.cpp": "caf1b71a62853e2334586d690d62137015c377501eccf4e89f4ffc0154e6c9c6"
+  },
+  "derivedProducerSha256": "8a4a8e520e850b28b3538c543939245e87904c92f203696728917cc2ee3d2f58",
+  "patchSha256": "1d2a811f4adcbaad47e9f3a069d36526f3da12f23938c48d382ce2d2cbad2c3e",
+  "headers": {
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\include\\mpv\\client.h": "3da9b8c61c3fb4e2d76bd248cebf72f3ee830331411b71a76adbd5e05660cc50",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\include\\mpv\\render.h": "f2550aa29b2e9b20988bd954b4383e9fa05fd9e40d1669fbc6edf2afac603f15",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\graphics\\include\\mpv\\render_d3d11.h": "7b880453ee3c780b0d0f1c3f8ecaa1d23b289522f4c687e6857c8475f4a3f6fb"
+  },
+  "build": {
+    "arguments": [
+      "cargo",
+      "build",
+      "--offline",
+      "--locked",
+      "-j",
+      "8",
+      "--manifest-path",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-src-_jzfrqls\\Cargo.toml",
+      "--target-dir",
+      "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-build-l8389tjr"
+    ],
+    "log": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\build.log",
+    "logSha256": "6ee32ff02d9ede6fee3f4ee2cceef97faca067d4dbfc3c35430eacc40d1bfad3"
+  },
+  "sourceColors": [
+    [255, 0, 0],
+    [0, 255, 0],
+    [0, 0, 255],
+    [128, 64, 32],
+    [255, 255, 255],
+    [0, 0, 0]
+  ],
+  "p3Expected": [
+    [234, 51, 35],
+    [117, 251, 76],
+    [0, 0, 245],
+    [120, 67, 39],
+    [255, 255, 255],
+    [0, 0, 0]
+  ],
+  "hdrRequestedNits": [0.1, 10, 100, 203, 400, 1000, 4000],
+  "cases": [
+    {
+      "name": "srgb",
+      "target": "srgb",
+      "software": false,
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\srgb\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\srgb\\observed.json",
+      "points": [
+        [0.16666666666666666, 0.25],
+        [0.5, 0.25],
+        [0.8333333333333334, 0.25],
+        [0.16666666666666666, 0.75],
+        [0.5, 0.75],
+        [0.8333333333333334, 0.75]
+      ],
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\srgb\\result.json"
+    },
+    {
+      "name": "p3",
+      "target": "display-p3",
+      "software": false,
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\p3\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\p3\\observed.json",
+      "points": [
+        [0.16666666666666666, 0.25],
+        [0.5, 0.25],
+        [0.8333333333333334, 0.25],
+        [0.16666666666666666, 0.75],
+        [0.5, 0.75],
+        [0.8333333333333334, 0.75]
+      ],
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\p3\\result.json"
+    },
+    {
+      "name": "hdr-srgb",
+      "target": "srgb",
+      "software": false,
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-srgb\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-srgb\\observed.json",
+      "points": [
+        [0.07142857142857142, 0.3],
+        [0.21428571428571427, 0.3],
+        [0.35714285714285715, 0.3],
+        [0.5, 0.3],
+        [0.6428571428571429, 0.3],
+        [0.7857142857142857, 0.3],
+        [0.9285714285714286, 0.3],
+        [0.1, 0.82]
+      ],
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-srgb\\result.json"
+    },
+    {
+      "name": "hdr-software",
+      "target": "srgb",
+      "software": true,
+      "media": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv",
+      "script": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-software\\start.lua",
+      "metadata": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-software\\observed.json",
+      "points": [
+        [0.07142857142857142, 0.3],
+        [0.21428571428571427, 0.3],
+        [0.35714285714285715, 0.3],
+        [0.5, 0.3],
+        [0.6428571428571429, 0.3],
+        [0.7857142857142857, 0.3],
+        [0.9285714285714286, 0.3],
+        [0.1, 0.82]
+      ],
+      "output": "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-software\\result.json"
+    }
+  ],
+  "files": {
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\overlay.ass": "23f11fc24c4513da8a603a4cb3a236e7d7425957dddf927f97427cf3a6b76102",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\tonemapping\\steps-pq-4000.mkv": "295d03324db5aa84070480ad8f823ae69f375aaa442756b0bbce52c928330b52",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\sdr-integration-1jon4bze\\srgb.png": "2b38b464e0cfae190ac8b58c2633f393a4e9f25096d677a806b89142141c092e",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\srgb\\start.lua": "b1cadabf8ed6609648a197059b48977d814ebddc028d19ecdd80327f664c3a84",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\p3\\start.lua": "53dc261d2ec07161a4c4b6f77da44dd9ed432dd299de90277a824da5e95d7d14",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-srgb\\start.lua": "6bb505aeaaa20fbb374e288fb148e0615838479ab076cc838a63decebba0d253",
+    "F:\\project\\3\\kisaki\\node_modules\\.cache\\libmpv-design\\screenshot-run-j2op6u_1\\hdr-software\\start.lua": "2568f0b4391ce1352967850b71366ef1b48be8452737c2b9e6f0471ad4d313e3"
+  },
+  "prepareSha256": "7e8461cd247358a667951af2aa2696e51df898eb6154fda6d1abf07f9538a2e1"
+}

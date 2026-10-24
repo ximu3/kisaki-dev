@@ -1,0 +1,26 @@
+{
+  "packages": [
+    {
+      "name": "parse5",
+      "version": "8.0.1",
+      "source": "https://registry.npmjs.org/parse5/-/parse5-8.0.1.tgz",
+      "license": "MIT",
+      "integrity": "sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==",
+      "sha256": "d94ec8606e3cef24b8ec001ac121df5d7938f015be69615da27b53a082f86832"
+    },
+    {
+      "name": "entities",
+      "version": "8.0.0",
+      "source": "https://registry.npmjs.org/entities/-/entities-8.0.0.tgz",
+      "license": "BSD-2-Clause",
+      "integrity": "sha512-zwfzJecQ/Uej6tusMqwAqU/6KL2XaB2VZ2Jg54Je6ahNBGNH6Ek6g3jjNCF0fG9EWQKGZNddNjU5F1ZQn/sBnA==",
+      "sha256": "8e8b16388e19c12fc80f9f75f518a0f83d99428be6765a38f04c264a078cc25b"
+    }
+  ],
+  "workspaceDependenciesChanged": false,
+  "bundler": {
+    "name": "esbuild",
+    "version": "0.28.1"
+  },
+  "bundleSha256": "446aca195f43176c5f1f487cd1ed5eff104896c4497cf9693307a5bc0150ec94"
+}

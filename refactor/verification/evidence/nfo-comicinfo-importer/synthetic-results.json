@@ -1,0 +1,424 @@
+{
+  "checkedAt": "2026-10-17T08:51:00.165888+00:00",
+  "status": "passed",
+  "syntheticOnly": true,
+  "total": 101,
+  "runtime": {
+    "lxml": [6, 1, 0, 0],
+    "libxml": [2, 11, 9],
+    "videoDurationSeconds": 2.0
+  },
+  "limitations": [
+    "No real user export, source application, or production Kisaki migration was exercised.",
+    "XML text probe covers UTF-8 and BOM-marked UTF-16.",
+    "ComicRack page-order probe covers simple ASCII numeric member names only.",
+    "Resume tolerance is a synthetic fixture check, not the final player timing policy.",
+    "Pinned XSD validation complements field parsing; schema field order is not treated as a production import requirement."
+  ],
+  "tests": [
+    {
+      "name": "Synthetic ComicInfo 1.0 validates against its pinned XSD",
+      "status": "passed"
+    },
+    {
+      "name": "Synthetic ComicInfo 2.0 validates against its pinned XSD",
+      "status": "passed"
+    },
+    {
+      "name": "Synthetic ComicInfo 2.1 validates against its pinned XSD",
+      "status": "passed"
+    },
+    {
+      "name": "Version 1.0 does not accept the 2.0 right-to-left value",
+      "status": "passed"
+    },
+    {
+      "name": "Version 2.0 does not silently accept draft Tags",
+      "status": "passed"
+    },
+    {
+      "name": "Draft 2.1 reduces community-rating precision to one decimal",
+      "status": "passed"
+    },
+    {
+      "name": "Official schema rejects duplicate scalar fields",
+      "status": "passed"
+    },
+    {
+      "name": "Movie root remains a movie input",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy multi-episode fragment parses two distinct records",
+      "status": "passed"
+    },
+    {
+      "name": "New suffix NFO contains one episode",
+      "status": "passed"
+    },
+    {
+      "name": "UTF-16 metadata preserves the same title",
+      "status": "passed"
+    },
+    {
+      "name": "Known fields can be read despite non-semantic field order",
+      "status": "passed"
+    },
+    {
+      "name": "XML entities decode to their actual text",
+      "status": "passed"
+    },
+    {
+      "name": "Stylesheet processing instructions cannot add external actions",
+      "status": "passed"
+    },
+    {
+      "name": "Malformed XML is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "External entity document is rejected before expansion",
+      "status": "passed"
+    },
+    {
+      "name": "Unrelated XML namespace is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "A URL-only NFO is outside metadata input",
+      "status": "passed"
+    },
+    {
+      "name": "Mixed movie and episode roots are rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Trailing scraper URL is not an implicit network instruction",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate scalar field is not a last-value override",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit NFO user rating maps to eighty",
+      "status": "passed"
+    },
+    {
+      "name": "Public rating never replaces missing personal rating",
+      "status": "passed"
+    },
+    {
+      "name": "Zero means explicitly unrated",
+      "status": "passed"
+    },
+    {
+      "name": "Empty personal rating in a template is unknown",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit rating scale is normalized without integer-division loss",
+      "status": "passed"
+    },
+    {
+      "name": "Out-of-range personal rating is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown fractional source user rating is not rounded to a Kodi integer",
+      "status": "passed"
+    },
+    {
+      "name": "Movie watched count initializes three unknown-date completions",
+      "status": "passed"
+    },
+    {
+      "name": "Existing history is not appended from an aggregate count",
+      "status": "passed"
+    },
+    {
+      "name": "TV show all-current-episodes flag is not a Work completion",
+      "status": "passed"
+    },
+    {
+      "name": "Episode watched count becomes one Part flag",
+      "status": "passed"
+    },
+    {
+      "name": "Episode zero is a real false flag, not missing data",
+      "status": "passed"
+    },
+    {
+      "name": "Negative watched count is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Last played is not used as a completion date",
+      "status": "passed"
+    },
+    {
+      "name": "Runtime remains declaration in minutes",
+      "status": "passed"
+    },
+    {
+      "name": "Known movie identity includes its resource kind",
+      "status": "passed"
+    },
+    {
+      "name": "Untyped legacy id is not a public identity",
+      "status": "passed"
+    },
+    {
+      "name": "TV series identity is not attached to a season Work",
+      "status": "passed"
+    },
+    {
+      "name": "Bare episode TMDB ID is not a complete native identity",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown numbering order does not manufacture TMDB coordinates",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit standard numbering and real series context form complete coordinates",
+      "status": "passed"
+    },
+    {
+      "name": "Conflicting movie identities are reported",
+      "status": "passed"
+    },
+    {
+      "name": "Comic Number is preserved as a string label",
+      "status": "passed"
+    },
+    {
+      "name": "Comic Volume 2018 remains publication-run context",
+      "status": "passed"
+    },
+    {
+      "name": "Partial publication date keeps month precision",
+      "status": "passed"
+    },
+    {
+      "name": "Actual first day remains an exact legal date",
+      "status": "passed"
+    },
+    {
+      "name": "Sentinel unknown date does not become year one",
+      "status": "passed"
+    },
+    {
+      "name": "Invalid calendar day is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Known ISBN-form GTIN is retained with checksum",
+      "status": "passed"
+    },
+    {
+      "name": "A generic product code is not reclassified as ISBN",
+      "status": "passed"
+    },
+    {
+      "name": "An ISMN prefix is not reclassified as ISBN",
+      "status": "passed"
+    },
+    {
+      "name": "Bad ISBN checksum is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Comic community rating is not a user rating",
+      "status": "passed"
+    },
+    {
+      "name": "ComicInfo has no standard read count or last-page fields",
+      "status": "passed"
+    },
+    {
+      "name": "Draft story-arc names and ordinals stay positional input pairs",
+      "status": "passed"
+    },
+    {
+      "name": "Creator field retains a possible organization",
+      "status": "passed"
+    },
+    {
+      "name": "Book language is retained without claiming original language",
+      "status": "passed"
+    },
+    {
+      "name": "Space-delimited Web URLs preserve encoded spaces",
+      "status": "passed"
+    },
+    {
+      "name": "Actual CBZ page order follows the bounded source probe",
+      "status": "passed"
+    },
+    {
+      "name": "Bookmark Image 2 selects the third image, not the first XML Page node position",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit front-cover image resolves to an actual member",
+      "status": "passed"
+    },
+    {
+      "name": "Source deleted-page flag never removes the underlying image",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate metadata candidates in one archive are ambiguous",
+      "status": "passed"
+    },
+    {
+      "name": "Case-conflicting image members cannot be silently collapsed",
+      "status": "passed"
+    },
+    {
+      "name": "Archive traversal member is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Negative image index is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Out-of-bounds image index is not clipped",
+      "status": "passed"
+    },
+    {
+      "name": "Actual generated movie has a two-second timeline",
+      "status": "passed"
+    },
+    {
+      "name": "Actual generated movie has a video stream",
+      "status": "passed"
+    },
+    {
+      "name": "Fractional source seconds identify a position on the actual file",
+      "status": "passed"
+    },
+    {
+      "name": "Positive resume does not require an optional source total",
+      "status": "passed"
+    },
+    {
+      "name": "Zero unknown total does not discard a valid positive resume",
+      "status": "passed"
+    },
+    {
+      "name": "Default zero resume does not clear an existing position",
+      "status": "passed"
+    },
+    {
+      "name": "Out-of-file resume point is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Different source timeline is not proportionally rescaled",
+      "status": "passed"
+    },
+    {
+      "name": "Non-finite resume point is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Same-basename NFO resolves its explicit adjacent video",
+      "status": "passed"
+    },
+    {
+      "name": "Documented episode suffix resolves the shared multi-episode video",
+      "status": "passed"
+    },
+    {
+      "name": "Multiple same-basename formats need explicit pairing",
+      "status": "passed"
+    },
+    {
+      "name": "Conflicting multi-episode resume points remain distinct inputs",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: movie/星海.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: movie/星海-poster.png",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: movie/星海-fanart.png",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: series/tvshow.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: series/合集 S01E01E02.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: series/合集 S01E01E02-S01E01.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: series/合集 S01E01E02-S01E02.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/v1-ComicInfo.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/v2-ComicInfo.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/v21-ComicInfo.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/utf16-ComicInfo.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/reordered.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: invalid/entity.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: invalid/malformed.nfo",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: invalid/namespaced.xml",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/book.cbz",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/ambiguous.cbz",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: comic/traversal.cbz",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: movie/星海.mkv",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: series/合集 S01E01E02.mkv",
+      "status": "passed"
+    }
+  ]
+}

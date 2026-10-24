@@ -1,0 +1,74 @@
+{
+  "purpose": "sources for a subscription proposal, not native execution",
+  "designStatus": "proposal",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "nativeAddonExecuted": false,
+  "callbackAndCloseRacesVerified": false,
+  "queueCapacityVerified": false,
+  "eventAndLogPayloadsComplete": false,
+  "sources": [
+    {
+      "name": "client-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T05:36:57.305345+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c",
+      "markers": {
+        "mpv_observe_property": true,
+        "mpv_unobserve_property": true,
+        "mpv_hook_continue": true,
+        "\"overflow\"": true
+      }
+    },
+    {
+      "name": "client-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T05:36:57.391679+00:00",
+      "bytes": 69031,
+      "sha256": "7d3c4b6ed1c614169277c7faad9e7fa21e5bf4694d7a3961986defdebcaa60eb",
+      "markers": {
+        "static int reserve_reply": true,
+        "static void send_reply": true,
+        "gen_property_change_event(ctx)": true,
+        "gen_log_message_event(ctx)": true,
+        "\"file_error\"": true
+      }
+    },
+    {
+      "name": "node-events",
+      "url": "https://nodejs.org/download/release/v24.11.1/docs/api/events.html",
+      "finalUrl": "https://nodejs.org/download/release/v24.11.1/docs/api/events.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T05:36:57.636956+00:00",
+      "bytes": 242075,
+      "sha256": "26f15a3cfed6f07e08da2ec91e18a1c8c1cd2a063bf29e1614c73d4d210daa67",
+      "markers": {
+        "returned by the called listeners are ignored": true,
+        "captureRejections": true
+      }
+    },
+    {
+      "name": "node-api",
+      "url": "https://nodejs.org/download/release/v24.11.1/docs/api/n-api.html",
+      "finalUrl": "https://nodejs.org/download/release/v24.11.1/docs/api/n-api.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T05:36:57.648386+00:00",
+      "bytes": 443379,
+      "sha256": "1531df09b217d550824b42db65c1dfee5fa623e4774bd2886892a7ff367f7fb0",
+      "markers": {
+        "napi_fatal_exception": true,
+        "napi_fatal_error": true,
+        "napi_tsfn_nonblocking": true,
+        "napi_queue_full": true,
+        "napi_async_init": true,
+        "napi_make_callback": true,
+        "napi_async_destroy": true
+      }
+    }
+  ]
+}

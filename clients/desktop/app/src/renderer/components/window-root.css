@@ -1,0 +1,15 @@
+.window-shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+  padding: 64px;
+}
+
+.window-shell h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+}

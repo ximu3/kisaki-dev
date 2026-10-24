@@ -1,0 +1,71 @@
+{
+  "name": "relation-direction-pairs",
+  "observedAt": "2026-10-11T13:51:12.0206240+00:00",
+  "method": "POST",
+  "endpoint": "https://api.vndb.org/kana/vn",
+  "request": {
+    "filters": ["or", ["id", "=", "v50"], ["id", "=", "v9888"], ["id", "=", "v19373"]],
+    "fields": "title,relations{id,title,relation,relation_official}",
+    "results": 3
+  },
+  "status": 200,
+  "response": {
+    "more": false,
+    "results": [
+      {
+        "id": "v50",
+        "relations": [
+          {
+            "id": "v11",
+            "relation": "orig",
+            "relation_official": true,
+            "title": "Fate/stay night"
+          },
+          {
+            "id": "v65507",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Ocha no Ma Eirei Gekijou -Parallel & At Home Comedy-"
+          },
+          {
+            "id": "v14408",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Hollow Days -The Four Days of Sakura-"
+          },
+          {
+            "id": "v65506",
+            "relation": "char",
+            "relation_official": false,
+            "title": "Paradise NOAH"
+          }
+        ],
+        "title": "Fate/hollow ataraxia"
+      },
+      {
+        "id": "v9888",
+        "relations": [
+          {
+            "id": "v11",
+            "relation": "par",
+            "relation_official": false,
+            "title": "Fate/stay night"
+          }
+        ],
+        "title": "Happy Valentine's Day"
+      },
+      {
+        "id": "v19373",
+        "relations": [
+          {
+            "id": "v17",
+            "relation": "alt",
+            "relation_official": true,
+            "title": "Ever17 -the out of infinity-"
+          }
+        ],
+        "title": "Ever17"
+      }
+    ]
+  }
+}

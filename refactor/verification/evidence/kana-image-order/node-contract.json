@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-19T17:07:36.229Z",
+  "node": "v24.11.1",
+  "allAssertionsPassed": true,
+  "observations": [
+    {
+      "name": "integer-pages",
+      "order": ["1.jpg", "2.jpg", "10.jpg"]
+    },
+    {
+      "name": "case-fold-before-number",
+      "order": ["page2.jpg", "Page10.jpg"]
+    },
+    {
+      "name": "leading-zero-ties",
+      "order": ["1.jpg", "01.jpg", "001.jpg", "10.jpg"]
+    },
+    {
+      "name": "component-grouping",
+      "order": ["vol1/2.jpg", "vol1/10.jpg", "vol01/1.jpg", "vol2/1.jpg"]
+    },
+    {
+      "name": "case-distinct-folders",
+      "order": ["Vol1/2.jpg", "Vol1/10.jpg", "vol1/1.jpg"]
+    },
+    {
+      "name": "fullwidth-and-arabic-digits",
+      "order": ["page2.jpg", "page٢.jpg", "page２.jpg", "page１０.jpg"]
+    },
+    {
+      "name": "large-integers",
+      "order": ["9007199254740992.jpg", "9007199254740993.jpg"]
+    },
+    {
+      "name": "no-canonical-name-merge",
+      "order": ["é1.jpg", "é1.jpg"]
+    },
+    {
+      "name": "fold-expansion-tie",
+      "order": ["ss1.jpg", "ß1.jpg"]
+    },
+    {
+      "name": "unicode-scalars",
+      "order": ["1.jpg", "𐀀1.jpg"]
+    },
+    {
+      "name": "digit-versus-letter-cycle",
+      "order": ["٢.jpg", "10.jpg", "A.jpg"]
+    },
+    {
+      "name": "literal-punctuation",
+      "order": ["p-2.jpg", "p.2.jpg", "p2.jpg", "p_2.jpg"]
+    }
+  ],
+  "distinctPaths": 102,
+  "pairChecks": 5151,
+  "shuffledListings": 64,
+  "decimalDigitsChecked": 770,
+  "localeApiUsed": false,
+  "sourceNamesRewritten": false,
+  "realArchiveExtractionExecuted": false,
+  "sourceHashes": {
+    "order.mjs": "520101218939111113b463c724398ea6f035272e87af23504ba6b966d3f160cb",
+    "cases.mjs": "b9e8554065bf5d24b8eb3df6395a1cbc30858a47dd6c0a549516a2c04fcf4faa",
+    "run-node.mjs": "b522a4ae0fdd7c4e5f1c7b7198f31bf661118c48ba8c2f5f0a6079fdaca68027",
+    "prepare.py": "49cdb346b72fff8663810cbd0e96d077e80dea6dc236230ee53b117b930a23b2",
+    "source-input.json": "5fb35aec31c73d21323d4ca24fe24e3940ed0c945b43de257fcde07b6d9a8a48"
+  }
+}

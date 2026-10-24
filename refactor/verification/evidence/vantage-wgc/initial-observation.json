@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-10-21T08:49:39.518506+00:00",
+  "stage": "WGC session",
+  "hresult": 2147942487,
+  "processExitCode": 1,
+  "source": "F:\\project\\3\\kisaki\\node_modules\\.cache\\platform-design\\wgc-fuvo09ax\\capture-initial.cpp",
+  "sourceSha256": "941def7807d286b90ec133a80be183c6b4ea3f0646acaeec111e77d5f9f66c41",
+  "binarySha256": "2f62c80adf795f6f5f7699fd6f107694022e470c6bdd663340c49d3638eb0772",
+  "stderr": "The owned WGC check failed at WGC session; HRESULT=2147942487\n",
+  "ownedWindowOnly": true,
+  "frameObtained": false
+}

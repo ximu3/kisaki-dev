@@ -1,0 +1,71 @@
+{
+  "purpose": "source evidence for organization, not format or browser execution",
+  "designStatus": "organization-confirmed",
+  "dependencyVersionsLocked": false,
+  "kanaProjectCreated": false,
+  "formatsExecuted": false,
+  "browserLayoutExecuted": false,
+  "positionRoundTripExecuted": false,
+  "sources": [
+    {
+      "name": "epub-layout",
+      "url": "https://www.w3.org/TR/epub-33/",
+      "finalUrl": "https://www.w3.org/TR/epub-33/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:16.147140+00:00",
+      "bytes": 1514545,
+      "sha256": "f927cf3182598c552037445837b73faee346f97d4a396059440830e49e737d99",
+      "presentMarkers": ["rendition:layout", "rendition:layout-reflowable"]
+    },
+    {
+      "name": "epub-cfi",
+      "url": "https://w3c.github.io/epub-specs/epub33/epubcfi/",
+      "finalUrl": "https://w3c.github.io/epub-specs/epub33/epubcfi/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:15.939809+00:00",
+      "bytes": 60842,
+      "sha256": "fab2c47de88a1bcea1a25979e45e963dd0275693ca7e663a90f75a83fb9d03e9",
+      "presentMarkers": ["UTF-16", "spine"]
+    },
+    {
+      "name": "pdfjs-document",
+      "url": "https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html",
+      "finalUrl": "https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:16.444787+00:00",
+      "bytes": 96934,
+      "sha256": "7d290001a30225572bccbf064f8a8f7df17c4a43934b02516d1372101fe3ab18",
+      "presentMarkers": ["PDFDataRangeTransport", "PDFWorker", "cMapUrl"]
+    },
+    {
+      "name": "zipjs-reader",
+      "url": "https://gildas-lormeau.github.io/zip.js/api/classes/Reader.html",
+      "finalUrl": "https://gildas-lormeau.github.io/zip.js/api/classes/Reader.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:15.912478+00:00",
+      "bytes": 35945,
+      "sha256": "45fef93b9418e8ece6bbeb459ca4e72c44920b7ac925973d992c04ff3a236094",
+      "presentMarkers": ["readUint8Array", "createReadable"]
+    },
+    {
+      "name": "html-sandbox",
+      "url": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html",
+      "finalUrl": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:17.185037+00:00",
+      "bytes": 180942,
+      "sha256": "1395e7d379766ced95c31c957f3a72a3203bb564f3d8cd7c42123a1df02ccde3",
+      "presentMarkers": ["allow-same-origin", "allow-scripts"]
+    },
+    {
+      "name": "dom-range",
+      "url": "https://dom.spec.whatwg.org/",
+      "finalUrl": "https://dom.spec.whatwg.org/",
+      "status": 200,
+      "checkedAt": "2026-10-17T13:26:17.969171+00:00",
+      "bytes": 2714595,
+      "sha256": "e4df1356d375c009bfd3e951eea55964443d4994dd2569a28acb2b046d2e2d1a",
+      "presentMarkers": ["concept-range-bp-set", "setStart", "setEnd"]
+    }
+  ]
+}

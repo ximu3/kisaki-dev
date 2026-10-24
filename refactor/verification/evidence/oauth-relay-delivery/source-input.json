@@ -1,0 +1,138 @@
+{
+  "preparedAt": "2026-10-21T07:45:03.627414+00:00",
+  "work": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p",
+  "compose": {
+    "version": "v5.6.0",
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\docker-compose-windows-x86_64.exe",
+    "archive": {
+      "url": "https://github.com/docker/compose/releases/download/v5.6.0/docker-compose-windows-x86_64.exe",
+      "finalUrl": "https://release-assets.githubusercontent.com/github-production-release-asset/15045751/e5b89d43-eff9-435b-b1c4-d1d2162e65b1?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-10-21T08%3A33%3A48Z&rscd=attachment%3B+filename%3Ddocker-compose-windows-x86_64.exe&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-10-21T07%3A33%3A02Z&ske=2026-10-21T08%3A33%3A48Z&sks=b&skv=2018-11-09&sig=2EZNiF%2BdSrBL33a5jAsC6ZxbUHq1RrsO4q6%2BGd1%2FgzI%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5MjU3MDUxNCwibmJmIjoxNzkyNTY4NzE0LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.oulyxQcnkM1hsFerCA9r78w3Dvv1qEukUhdXkGaV-vY&response-content-disposition=attachment%3B%20filename%3Ddocker-compose-windows-x86_64.exe&response-content-type=application%2Foctet-stream",
+      "status": 200,
+      "bytes": 33352192,
+      "sha256": "8aeaa0055e660e12cf07cd70680dc8333957fe6718528b91ec3da084eab62483"
+    },
+    "checksums": {
+      "url": "https://github.com/docker/compose/releases/download/v5.6.0/checksums.txt",
+      "finalUrl": "https://release-assets.githubusercontent.com/github-production-release-asset/15045751/96e4e856-47ad-4a5f-91fe-0652f99ee73f?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-10-21T08%3A32%3A33Z&rscd=attachment%3B+filename%3Dchecksums.txt&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-10-21T07%3A32%3A22Z&ske=2026-10-21T08%3A32%3A33Z&sks=b&skv=2018-11-09&sig=2jtz4Tv4h6MNykOwUxbw3fJzZAVObeWh7x9253oCT58%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5MjU2OTAxMywibmJmIjoxNzkyNTY4NzEzLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.5AJ2LZcYq-_zEihezfPrPCbEXZmipFheTHCI-optE7Y&response-content-disposition=attachment%3B%20filename%3Dchecksums.txt&response-content-type=application%2Foctet-stream",
+      "status": 200,
+      "bytes": 4616,
+      "sha256": "40d09e5c4e2f2e24f99c0520cbd29c02d816b58800b4e11070318cffe03c6fbd"
+    }
+  },
+  "node": {
+    "version": "v24.22.0",
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\node.exe",
+    "exeSha256": "ba93f9a70bd86fce3ebbb39ec758501458453467aa92a34a0a3602d1e3fc2b9c",
+    "archive": {
+      "url": "https://nodejs.org/dist/v24.22.0/node-v24.22.0-win-x64.zip",
+      "finalUrl": "https://nodejs.org/dist/v24.22.0/node-v24.22.0-win-x64.zip",
+      "status": 200,
+      "bytes": 37733703,
+      "sha256": "f9683a19877e12a9b167305c8db71040d812876359de21f0d2e97c3f321f80c3"
+    },
+    "checksums": {
+      "url": "https://nodejs.org/dist/v24.22.0/SHASUMS256.txt",
+      "finalUrl": "https://nodejs.org/dist/v24.22.0/SHASUMS256.txt",
+      "status": 200,
+      "bytes": 3171,
+      "sha256": "8912ada1431af8390bb3e30328d30bca701b59c7a6d5396b491293515c092c46"
+    }
+  },
+  "baseImage": {
+    "tag": "node:24.22.0-trixie-slim",
+    "reference": "node:24.22.0-trixie-slim@sha256:a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c",
+    "index": {
+      "url": "https://registry-1.docker.io/v2/library/node/manifests/24.22.0-trixie-slim",
+      "finalUrl": "https://registry-1.docker.io/v2/library/node/manifests/24.22.0-trixie-slim",
+      "status": 200,
+      "bytes": 5177,
+      "sha256": "a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c"
+    },
+    "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\node-image-index.json",
+    "platforms": [
+      {
+        "platform": {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        "digest": "sha256:0ee27270bfd2db800257dea8e1ddec262e429338eed92e9d7b10484637af6803",
+        "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\node-image-amd64.json",
+        "source": {
+          "url": "https://registry-1.docker.io/v2/library/node/manifests/sha256:0ee27270bfd2db800257dea8e1ddec262e429338eed92e9d7b10484637af6803",
+          "finalUrl": "https://registry-1.docker.io/v2/library/node/manifests/sha256:0ee27270bfd2db800257dea8e1ddec262e429338eed92e9d7b10484637af6803",
+          "status": 200,
+          "bytes": 1923,
+          "sha256": "0ee27270bfd2db800257dea8e1ddec262e429338eed92e9d7b10484637af6803"
+        }
+      },
+      {
+        "platform": {
+          "architecture": "arm64",
+          "os": "linux",
+          "variant": "v8"
+        },
+        "digest": "sha256:b7225aca1e675b187e0265c549d8500019c9d6b8cb65c8ebc0018104c429b7cb",
+        "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\delivery-nr1fa89p\\node-image-arm64.json",
+        "source": {
+          "url": "https://registry-1.docker.io/v2/library/node/manifests/sha256:b7225aca1e675b187e0265c549d8500019c9d6b8cb65c8ebc0018104c429b7cb",
+          "finalUrl": "https://registry-1.docker.io/v2/library/node/manifests/sha256:b7225aca1e675b187e0265c549d8500019c9d6b8cb65c8ebc0018104c429b7cb",
+          "status": 200,
+          "bytes": 1925,
+          "sha256": "b7225aca1e675b187e0265c549d8500019c9d6b8cb65c8ebc0018104c429b7cb"
+        }
+      }
+    ]
+  },
+  "packages": [
+    {
+      "name": "hono",
+      "version": "4.13.13",
+      "registry": {
+        "url": "https://registry.npmjs.org/hono/4.13.13",
+        "finalUrl": "https://registry.npmjs.org/hono/4.13.13",
+        "status": 200,
+        "bytes": 20137,
+        "sha256": "0d73b35a70b2782c7a50269fecff99c52f615f15999bc487fa59315b31efc56e"
+      },
+      "archive": {
+        "url": "https://registry.npmjs.org/hono/-/hono-4.13.13.tgz",
+        "finalUrl": "https://registry.npmjs.org/hono/-/hono-4.13.13.tgz",
+        "status": 200,
+        "bytes": 245272,
+        "sha256": "3c656fb527641e841e1c4dae1d2faa238a4e17dde37f1620d5b72172caaddac0"
+      },
+      "integrity": "sha512-CQ46U0ZkAGmbT/4UxdzzGJpacP2IeKgY4a5/tOI9AABbpOMfK739wfDXmv1usCk+3RkKj1hQy4/fjhiwa2xlrA==",
+      "entry": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\node_modules\\hono\\dist\\index.js",
+      "entrySha256": "a18108f10e31afeda6c1489a3dc6588c45966d4800ff6361f7cc77e0159154be",
+      "packageSha256": "169a02072e32d85aacb089ad14b62b027d975479d811f741771fbd0f559fb5c9"
+    },
+    {
+      "name": "@hono/node-server",
+      "version": "2.1.5",
+      "registry": {
+        "url": "https://registry.npmjs.org/@hono%2fnode-server/2.1.5",
+        "finalUrl": "https://registry.npmjs.org/@hono%2fnode-server/2.1.5",
+        "status": 200,
+        "bytes": 3489,
+        "sha256": "379b59d54319e5ccc7276e3bb263832797be396962e12f1a1aeeb53803ea575c"
+      },
+      "archive": {
+        "url": "https://registry.npmjs.org/@hono/node-server/-/node-server-2.1.5.tgz",
+        "finalUrl": "https://registry.npmjs.org/@hono/node-server/-/node-server-2.1.5.tgz",
+        "status": 200,
+        "bytes": 37872,
+        "sha256": "bbe77a0002b58c161a7a040312b39307c6b0ba1f8604c4ab590d4ed77d01fdbb"
+      },
+      "integrity": "sha512-MgP/I06GdvsilDspMk/qmRzpk8LOUStP6jFAbSRi40W09DhoyUn+Mj7eyKICPqeYKybOjVFLVIAQzvu1bfIa7Q==",
+      "entry": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\protocol-plkvrcmn\\node_modules\\@hono\\node-server\\dist\\index.mjs",
+      "entrySha256": "6fa5ab4d3cb10b5c1aad67b226b3d7b34dfe8367d3d45694d9ac03483a8add19",
+      "packageSha256": "28b7c255c6c7ae6b994ceae9326211b6c6877c4746adb85b780b759ce1ceba41"
+    }
+  ],
+  "protocolInputSha256": "a3e2004d202d86c07d2fec4ba6e86edead53eacbc62a8764b4c3992c345d6731",
+  "prepareSha256": "3d20e84af85e9917c9762b6e12a482b66d51a982c8131ea84b742fd257dcf4b8",
+  "dockerEngineUsed": false,
+  "baseImageLayersDownloaded": false,
+  "systemInstallationChanged": false,
+  "realCredentialsUsed": false
+}

@@ -1,0 +1,417 @@
+{
+  "checkedAt": "2026-10-17T08:30:38.315Z",
+  "syntheticOnly": true,
+  "status": "passed",
+  "total": 97,
+  "dependencies": [
+    {
+      "name": "protobufjs",
+      "version": "8.8.1",
+      "url": "https://cdn.jsdelivr.net/npm/protobufjs@8.8.1/dist/protobuf.js",
+      "sha256": "c12c396c0fe382441bed5fbef7fdc412b9cf0158f07d66a9c31a73e294e0439b"
+    },
+    {
+      "name": "long",
+      "version": "5.3.2",
+      "url": "https://cdn.jsdelivr.net/npm/long@5.3.2/umd/index.js",
+      "sha256": "ea6da8d5fff04abc358b94488dbbb7eeb46e5027cc05303b1761cea94bef7821"
+    }
+  ],
+  "limitations": [
+    "No real user backup or Android/Kotlin serializer was run.",
+    "Selected field and semantic probes are not a production importer or host acceptance.",
+    "Page comparator probe covers simple ASCII numeric image names only.",
+    "Opaque optional preference bytes test skipping, not preference deserialization.",
+    "No source application, online extension, user media, or native Kisaki database was changed."
+  ],
+  "tests": [
+    {
+      "name": "v0.21.2 Backup selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupManga selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupChapter selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupHistory selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupTracking selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupCategory selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.21.2 BackupSource selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 Backup selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupManga selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupChapter selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupHistory selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupTracking selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupCategory selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "v0.15.3 BackupSource selected field numbers match pinned Kotlin",
+      "status": "passed"
+    },
+    {
+      "name": "Gzip and raw protobuf decode to the same records",
+      "status": "passed"
+    },
+    {
+      "name": "Current backup has three synthetic manga",
+      "status": "passed"
+    },
+    {
+      "name": "Old backup has one synthetic manga",
+      "status": "passed"
+    },
+    {
+      "name": "Maximum signed 64-bit source ID remains exact",
+      "status": "passed"
+    },
+    {
+      "name": "Minimum signed 64-bit source ID remains exact",
+      "status": "passed"
+    },
+    {
+      "name": "Local source ID remains zero",
+      "status": "passed"
+    },
+    {
+      "name": "Omitted library-membership flag uses Kotlin true default",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit false library-membership flag survives",
+      "status": "passed"
+    },
+    {
+      "name": "Library-only default excludes non-library read entries",
+      "status": "passed"
+    },
+    {
+      "name": "Omitted chapter read is false",
+      "status": "passed"
+    },
+    {
+      "name": "Markdown notes remain readable text",
+      "status": "passed"
+    },
+    {
+      "name": "Old backup has no source Markdown note",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown optional preferences are absent from selected projection",
+      "status": "passed"
+    },
+    {
+      "name": "Independent minimal wire example decodes local source",
+      "status": "passed"
+    },
+    {
+      "name": "Independent explicit-false wire example keeps false",
+      "status": "passed"
+    },
+    {
+      "name": "Required manga URL missing is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Truncated protobuf is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Corrupt gzip checksum is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy JSON is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Empty input is rejected before writes",
+      "status": "passed"
+    },
+    {
+      "name": "Expanded data has a bounded fixture budget",
+      "status": "passed"
+    },
+    {
+      "name": "Category reference resolves by order rather than category ID",
+      "status": "passed"
+    },
+    {
+      "name": "Category ID cannot stand in for unknown category order",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate category order is ambiguous",
+      "status": "passed"
+    },
+    {
+      "name": "Identical source display names retain distinct IDs",
+      "status": "passed"
+    },
+    {
+      "name": "Modern tracking media ID is distinct from library row ID",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy 32-bit media ID is adopted when present",
+      "status": "passed"
+    },
+    {
+      "name": "Conflicting old and new media IDs are rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Private library row ID cannot replace a missing media ID",
+      "status": "passed"
+    },
+    {
+      "name": "MangaUpdates decimal ID conversion is exact",
+      "status": "passed"
+    },
+    {
+      "name": "MAL eight of ten maps to eighty",
+      "status": "passed"
+    },
+    {
+      "name": "AniList stores hundred-point score independent of display mode",
+      "status": "passed"
+    },
+    {
+      "name": "Old AniList also stores hundred-point score",
+      "status": "passed"
+    },
+    {
+      "name": "Current Kitsu eight of twenty maps to forty",
+      "status": "passed"
+    },
+    {
+      "name": "Old Kitsu eight of ten maps to eighty",
+      "status": "passed"
+    },
+    {
+      "name": "Current Kitsu minus-one sentinel is unrated",
+      "status": "passed"
+    },
+    {
+      "name": "Zero tracker score is unrated",
+      "status": "passed"
+    },
+    {
+      "name": "Protobuf float rating keeps intended tenth-point value",
+      "status": "passed"
+    },
+    {
+      "name": "Old MangaUpdates UI scale allowed a positive sub-one value",
+      "status": "passed"
+    },
+    {
+      "name": "MangaBaka stores hundred-point score",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown family cannot silently choose Kitsu scale",
+      "status": "passed"
+    },
+    {
+      "name": "Current Kitsu out-of-range score is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Non-finite tracker score is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Self-hosted tracker has no personal rating scale",
+      "status": "passed"
+    },
+    {
+      "name": "New tracker is not accepted under old source family",
+      "status": "passed"
+    },
+    {
+      "name": "MangaUpdates zero is a real reading-list status",
+      "status": "passed"
+    },
+    {
+      "name": "Hikka zero is a real reading status",
+      "status": "passed"
+    },
+    {
+      "name": "MAL dropped does not clear an existing current state",
+      "status": "passed"
+    },
+    {
+      "name": "AniList repeating is active and not completed",
+      "status": "passed"
+    },
+    {
+      "name": "MangaBaka considering does not become planned",
+      "status": "passed"
+    },
+    {
+      "name": "Bangumi reading uses its own numeric status",
+      "status": "passed"
+    },
+    {
+      "name": "Self-hosted chapter-total completion is not Work completion",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown tracker status does not clear current state",
+      "status": "passed"
+    },
+    {
+      "name": "Fractional source chapter number remains fractional",
+      "status": "passed"
+    },
+    {
+      "name": "Same chapter number does not collapse separate release URLs",
+      "status": "passed"
+    },
+    {
+      "name": "Chapter bookmark is independent of its resume page",
+      "status": "passed"
+    },
+    {
+      "name": "History preserves cumulative milliseconds without a session start",
+      "status": "passed"
+    },
+    {
+      "name": "Cleared last-read time can coexist with cumulative duration",
+      "status": "passed"
+    },
+    {
+      "name": "Serialized history has no start/end activity interval",
+      "status": "passed"
+    },
+    {
+      "name": "Actual CBZ has three image members and excludes text file",
+      "status": "passed"
+    },
+    {
+      "name": "Local archive order is natural order",
+      "status": "passed"
+    },
+    {
+      "name": "Downloaded directory uses lexical filename order",
+      "status": "passed"
+    },
+    {
+      "name": "Local zero-based page one resolves to member two",
+      "status": "passed"
+    },
+    {
+      "name": "Download zero-based page one resolves to member ten",
+      "status": "passed"
+    },
+    {
+      "name": "Default zero without reading observation creates no resume point",
+      "status": "passed"
+    },
+    {
+      "name": "Observed page zero is a valid first-page position",
+      "status": "passed"
+    },
+    {
+      "name": "Negative lastPageRead is rejected instead of clamped",
+      "status": "passed"
+    },
+    {
+      "name": "Unsafe 64-bit lastPageRead is not rounded into a page",
+      "status": "passed"
+    },
+    {
+      "name": "Out-of-bounds lastPageRead is not clipped",
+      "status": "passed"
+    },
+    {
+      "name": "Synthetic PNG contains a valid one-pixel RGBA scanline",
+      "status": "passed"
+    },
+    {
+      "name": "Local chapter path resolves within selected persistent root",
+      "status": "passed"
+    },
+    {
+      "name": "Parent path traversal is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Android content URI is not a desktop file path",
+      "status": "passed"
+    },
+    {
+      "name": "Absolute source path is not accepted as a relative member",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: current.pb",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: current.tachibk",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: tachiyomi.proto.gz",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: malformed.tachibk",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: legacy.json",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: local/本地作品/第1卷.cbz",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: downloads/Source EN/星光日记/Group_Chapter 1/10.png",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: downloads/Source EN/星光日记/Group_Chapter 1/2.png",
+      "status": "passed"
+    },
+    {
+      "name": "Source fixture remains unchanged: downloads/Source EN/星光日记/Group_Chapter 1/1.png",
+      "status": "passed"
+    }
+  ]
+}

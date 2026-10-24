@@ -1,0 +1,25 @@
+@import '@kisaki3/appearance/styles.css';
+@import '@kisaki3/ui/styles.css';
+
+:root {
+  color-scheme: light;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  background: var(--background);
+  font-size: var(--text-base-size);
+  line-height: var(--text-base-line-height);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}

@@ -1,0 +1,29 @@
+{
+  "readAt": "2026-10-21T08:18:00.427346+00:00",
+  "sources": [
+    {
+      "name": "node-fetch",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.22.0/deps/undici/src/lib/web/fetch/index.js",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\integration-afhghpbq\\node-fetch.txt",
+      "status": 200,
+      "bytes": 89634,
+      "sha256": "de99d1d1944b747c6428a73f8ad72f687c1c66a568af5aaae90c9dd22aaa2aa7"
+    },
+    {
+      "name": "node-http",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.22.0/doc/api/http.md",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\integration-afhghpbq\\node-http.txt",
+      "status": 200,
+      "bytes": 141866,
+      "sha256": "784ddd5cd7c55aadb2addf711dc2e00eb68b5aead564a3931764a5cff922efe8"
+    },
+    {
+      "name": "node-stream",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.22.0/doc/api/stream.md",
+      "path": "F:\\project\\3\\kisaki\\node_modules\\.cache\\oauth-relay-design\\integration-afhghpbq\\node-stream.txt",
+      "status": 200,
+      "bytes": 159621,
+      "sha256": "74472b83ceb0c44a5ac8ded32afb5df61443ad9c89f7ad15d01ba5b79c745e65"
+    }
+  ]
+}

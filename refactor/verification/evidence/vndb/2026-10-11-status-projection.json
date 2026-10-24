@@ -1,0 +1,110 @@
+{
+  "verifiedAt": "2026-10-11T15:05:44.937Z",
+  "scope": "Synthetic design checks only. No account connected and no remote writes performed.",
+  "readCases": [
+    {
+      "labels": [2, 5, 10],
+      "expected": "completed",
+      "result": {
+        "kind": "value",
+        "value": "completed"
+      }
+    },
+    {
+      "labels": [1, 5],
+      "expected": "active",
+      "result": {
+        "kind": "value",
+        "value": "active"
+      }
+    },
+    {
+      "labels": [5, 6, 7, 10],
+      "expected": "planned",
+      "result": {
+        "kind": "value",
+        "value": "planned"
+      }
+    },
+    {
+      "labels": [6, 7, 10],
+      "expected": null,
+      "result": {
+        "kind": "value",
+        "value": null
+      }
+    },
+    {
+      "labels": [1, 2],
+      "conflict": true,
+      "result": {
+        "kind": "conflict"
+      }
+    }
+  ],
+  "writeCases": [
+    {
+      "labels": [2, 5, 6, 7, 10],
+      "target": "active",
+      "expected": [1, 5, 6, 7, 10],
+      "result": {
+        "kind": "patch",
+        "labels_set": [1],
+        "labels_unset": [2],
+        "result": [1, 5, 6, 7, 10]
+      }
+    },
+    {
+      "labels": [5, 7, 10],
+      "target": "completed",
+      "expected": [2, 5, 7, 10],
+      "result": {
+        "kind": "patch",
+        "labels_set": [2],
+        "labels_unset": [],
+        "result": [2, 5, 7, 10]
+      }
+    },
+    {
+      "labels": [2, 6, 7, 10],
+      "target": "planned",
+      "expected": [5, 6, 7, 10],
+      "result": {
+        "kind": "patch",
+        "labels_set": [5],
+        "labels_unset": [2],
+        "result": [5, 6, 7, 10]
+      }
+    },
+    {
+      "labels": [5, 7, 10],
+      "target": null,
+      "expected": [7, 10],
+      "result": {
+        "kind": "patch",
+        "labels_set": [],
+        "labels_unset": [5],
+        "result": [7, 10]
+      }
+    },
+    {
+      "labels": [2, 7, 10],
+      "target": null,
+      "expected": [7, 10],
+      "result": {
+        "kind": "patch",
+        "labels_set": [],
+        "labels_unset": [2],
+        "result": [7, 10]
+      }
+    },
+    {
+      "labels": [2, 5, 7, 10],
+      "target": null,
+      "unmappable": true,
+      "result": {
+        "kind": "unmappable"
+      }
+    }
+  ]
+}

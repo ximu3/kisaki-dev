@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-21T09:24:25.937932+00:00",
+  "unavailableLookups": [
+    {
+      "name": "kwin6-capture-manager",
+      "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.0/src/plugins/screenshot/screenshotmanager.cpp",
+      "errorType": "HTTPError",
+      "httpStatus": 404
+    },
+    {
+      "name": "mutter51-pipewire",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/backends/meta-screen-cast-stream-src.c",
+      "errorType": "HTTPError",
+      "httpStatus": 404
+    },
+    {
+      "name": "mutter51-window-stream",
+      "url": "https://raw.githubusercontent.com/GNOME/mutter/51.1/src/backends/meta-screen-cast-window-stream-src.c",
+      "errorType": "HTTPError",
+      "httpStatus": 404
+    }
+  ],
+  "scope": "Source discovery only; none of these paths supports a platform conclusion."
+}

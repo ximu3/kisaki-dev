@@ -1,0 +1,189 @@
+{
+  "purpose": "control API source inventory, not native execution",
+  "mpvRef": "v0.41.0",
+  "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
+  "nativeErrors": {
+    "MPV_ERROR_SUCCESS": 0,
+    "MPV_ERROR_EVENT_QUEUE_FULL": -1,
+    "MPV_ERROR_NOMEM": -2,
+    "MPV_ERROR_UNINITIALIZED": -3,
+    "MPV_ERROR_INVALID_PARAMETER": -4,
+    "MPV_ERROR_OPTION_NOT_FOUND": -5,
+    "MPV_ERROR_OPTION_FORMAT": -6,
+    "MPV_ERROR_OPTION_ERROR": -7,
+    "MPV_ERROR_PROPERTY_NOT_FOUND": -8,
+    "MPV_ERROR_PROPERTY_FORMAT": -9,
+    "MPV_ERROR_PROPERTY_UNAVAILABLE": -10,
+    "MPV_ERROR_PROPERTY_ERROR": -11,
+    "MPV_ERROR_COMMAND": -12,
+    "MPV_ERROR_LOADING_FAILED": -13,
+    "MPV_ERROR_AO_INIT_FAILED": -14,
+    "MPV_ERROR_VO_INIT_FAILED": -15,
+    "MPV_ERROR_NOTHING_TO_PLAY": -16,
+    "MPV_ERROR_UNKNOWN_FORMAT": -17,
+    "MPV_ERROR_UNSUPPORTED": -18,
+    "MPV_ERROR_NOT_IMPLEMENTED": -19,
+    "MPV_ERROR_GENERIC": -20
+  },
+  "knownHooks": [
+    "on_load",
+    "on_load_fail",
+    "on_preloaded",
+    "on_unload",
+    "on_before_start_file",
+    "on_after_end_file"
+  ],
+  "clientApiFunctionCount": 45,
+  "nativeAddonExecuted": false,
+  "nativeErrorInstancesVerified": false,
+  "clientAndHookDisposalVerified": false,
+  "asyncHookExecutionVerified": false,
+  "nodeEnvironmentCleanupVerified": false,
+  "queueCapacityVerified": false,
+  "sources": [
+    {
+      "name": "client-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.473146+00:00",
+      "bytes": 85973,
+      "sha256": "3c073236a09cb456c6e80587d5523c8771c32fb22ca014e0f99cc3d43905b75c",
+      "markers": {
+        "MPV_ERROR_GENERIC": true,
+        "hooks can't be removed explicitly": true,
+        "same hook with same priority": true,
+        "Unknown values should be treated as unknown": true,
+        "Any handle can make the core quit": true,
+        "Errors when setting options": true,
+        "mpv_get_time_ns": true
+      }
+    },
+    {
+      "name": "client-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/client.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.480146+00:00",
+      "bytes": 69031,
+      "sha256": "7d3c4b6ed1c614169277c7faad9e7fa21e5bf4694d7a3961986defdebcaa60eb",
+      "markers": {
+        "mpv_create_weak_client": true,
+        "mpv_load_config_file": true,
+        "mpv_get_property_osd_string": true
+      }
+    },
+    {
+      "name": "hook-implementation",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/command.c",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/player/command.c",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.521834+00:00",
+      "bytes": 277714,
+      "sha256": "c0932fe7950b92a3021f31ae96b13900a5393d2100e6703df59adc7f1bd8e62f",
+      "markers": {
+        "mp_hook_test_completion": true,
+        "mp_client_id_exists(mpctx, h->client_id)": true,
+        "mp_hook_continue(mpctx, h->client_id, h->seq)": true,
+        "hook_remove(mpctx, h)": true,
+        "return (*h1)->priority - (*h2)->priority": true
+      }
+    },
+    {
+      "name": "input-manual",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/input.rst",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/input.rst",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.497249+00:00",
+      "bytes": 181703,
+      "sha256": "ee424502462d34e50e9235ba99f2d74dde2ba8824e6fac7b5c149743afe1bd31",
+      "markers": {
+        "Hooks": true,
+        "on_load_fail": true,
+        "on_after_end_file": true,
+        "barriers": true
+      }
+    },
+    {
+      "name": "lua-hooks",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/lua.rst",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/lua.rst",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.497249+00:00",
+      "bytes": 45872,
+      "sha256": "ab2e43b7bad3b47b9459260c10b87e626dc562cdd9b1f94e99fd128074df581a",
+      "markers": {
+        "mp.add_hook(type, priority, fn)": true,
+        "Returning from the hook function should not automatically continue": true,
+        "Doesn't need to be called unless": true
+      }
+    },
+    {
+      "name": "stream-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/stream_cb.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/stream_cb.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.501508+00:00",
+      "bytes": 9589,
+      "sha256": "188e58b6d14383e15a5dffdc4ecebbdfbf2e412b9c099ff21b571f747a8ce32d",
+      "markers": {
+        "mpv_stream_cb_add_ro": true
+      }
+    },
+    {
+      "name": "render-header",
+      "url": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "finalUrl": "https://raw.githubusercontent.com/mpv-player/mpv/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/render.h",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.869763+00:00",
+      "bytes": 34271,
+      "sha256": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+      "markers": {
+        "mpv_render_context_create": true
+      }
+    },
+    {
+      "name": "node-errors",
+      "url": "https://nodejs.org/download/release/v24.11.1/docs/api/errors.html",
+      "finalUrl": "https://nodejs.org/download/release/v24.11.1/docs/api/errors.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.991001+00:00",
+      "bytes": 349338,
+      "sha256": "946dea5853b6bc51f573da604629dcb34fe4c8d22a4638c175826290bf2f023a",
+      "markers": {
+        "ABORT_ERR": true,
+        "error.cause": true
+      }
+    },
+    {
+      "name": "node-api",
+      "url": "https://nodejs.org/download/release/v24.11.1/docs/api/n-api.html",
+      "finalUrl": "https://nodejs.org/download/release/v24.11.1/docs/api/n-api.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:42.016001+00:00",
+      "bytes": 443379,
+      "sha256": "1531df09b217d550824b42db65c1dfee5fa623e4774bd2886892a7ff367f7fb0",
+      "markers": {
+        "napi_add_async_cleanup_hook": true,
+        "napi_remove_async_cleanup_hook": true,
+        "napi_ref_threadsafe_function": true,
+        "napi_unref_threadsafe_function": true
+      }
+    },
+    {
+      "name": "node-timers",
+      "url": "https://nodejs.org/download/release/v24.11.1/docs/api/timers.html",
+      "finalUrl": "https://nodejs.org/download/release/v24.11.1/docs/api/timers.html",
+      "status": 200,
+      "checkedAt": "2026-10-18T07:20:41.964479+00:00",
+      "bytes": 64036,
+      "sha256": "f04eb0aec9335725b9a69a7c7784e82de03e3c8ccabc8b128b1f14c9c9b4a819",
+      "markers": {
+        "timeout.unref()": true,
+        "timeout.ref()": true,
+        "timeout.hasRef()": true,
+        "AbortError": true
+      }
+    }
+  ]
+}

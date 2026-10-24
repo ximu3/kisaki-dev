@@ -1,0 +1,108 @@
+[
+  {
+    "name": "relation-labels-from-public-page",
+    "observedAt": "2026-10-11T13:53:32.5025920+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/v11",
+    "status": 200,
+    "extracted": [
+      {
+        "from": "v11",
+        "to": "v65507",
+        "apiCode": "char",
+        "pageLabel": "Shares characters",
+        "htmlLink": "<a href=\"/v65507\" lang=\"ja-Latn\" title=\"お茶の間英霊劇場 -パラレル＆アットホームコメディ-\">Ocha no Ma Eirei Gekijou -Parallel &amp; At Home Comedy-</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v50",
+        "apiCode": "fan",
+        "pageLabel": "Fandisc",
+        "htmlLink": "<a href=\"/v50\" lang=\"ja-Latn\" title=\"Fate/hollow ataraxia\">Fate/hollow ataraxia</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v12779",
+        "apiCode": "preq",
+        "pageLabel": "Prequel",
+        "htmlLink": "<a href=\"/v12779\" title=\"Fate/Otome\">Fate/Otome</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v5647",
+        "apiCode": "seq",
+        "pageLabel": "Sequel",
+        "htmlLink": "<a href=\"/v5647\" lang=\"ja-Latn\" title=\"Fake/ever since\">Fake/ever since</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v30132",
+        "apiCode": "ser",
+        "pageLabel": "Same series",
+        "htmlLink": "<a href=\"/v30132\" lang=\"ja-Latn\" title=\"Fate/Empire of Dirt\">Fate/Empire of Dirt</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v7",
+        "apiCode": "set",
+        "pageLabel": "Same setting",
+        "htmlLink": "<a href=\"/v7\" lang=\"ja-Latn\" title=\"月姫\">Tsukihime</a>"
+      },
+      {
+        "from": "v11",
+        "to": "v9888",
+        "apiCode": "side",
+        "pageLabel": "Side story",
+        "htmlLink": "<a href=\"/v9888\" title=\"Happy Valentine's Day\">Happy Valentine's Day</a>"
+      }
+    ]
+  },
+  {
+    "name": "relation-labels-from-public-page",
+    "observedAt": "2026-10-11T13:53:33.4423021+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/v17",
+    "status": 200,
+    "extracted": [
+      {
+        "from": "v17",
+        "to": "v19373",
+        "apiCode": "alt",
+        "pageLabel": "Alternative version",
+        "htmlLink": "<a href=\"/v19373\" lang=\"ja-Latn\" title=\"Ever17\">Ever17</a>"
+      }
+    ]
+  },
+  {
+    "name": "relation-labels-from-public-page",
+    "observedAt": "2026-10-11T13:53:34.3575765+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/v50",
+    "status": 200,
+    "extracted": [
+      {
+        "from": "v50",
+        "to": "v11",
+        "apiCode": "orig",
+        "pageLabel": "Original game",
+        "htmlLink": "<a href=\"/v11\" lang=\"ja-Latn\" title=\"Fate/stay night\">Fate/stay night</a>"
+      }
+    ]
+  },
+  {
+    "name": "relation-labels-from-public-page",
+    "observedAt": "2026-10-11T13:53:35.1013551+00:00",
+    "method": "GET",
+    "endpoint": "https://vndb.org/v9888",
+    "status": 200,
+    "extracted": [
+      {
+        "from": "v9888",
+        "to": "v11",
+        "apiCode": "par",
+        "pageLabel": "Parent story",
+        "htmlLink": "<a href=\"/v11\" lang=\"ja-Latn\" title=\"Fate/stay night\">Fate/stay night</a>"
+      }
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "origin": "representative-synthetic-message-catalogs",
+  "files": [
+    {
+      "path": "fixtures/en.json",
+      "bytes": 1656,
+      "sha256": "c2649217ea5400fbce00226ab200b80767f54b02cdd49c1738d5755ae06be542"
+    },
+    {
+      "path": "fixtures/zh-Hans.json",
+      "bytes": 1475,
+      "sha256": "c6b13d6dc23617442d249ebce9c0a7e5de22de610e48835bd1348e99156c50b7"
+    },
+    {
+      "path": "fixtures/zh-Hant.json",
+      "bytes": 1472,
+      "sha256": "b293584293c8e4dbb52d94049a730a6a4e1ed79aac68a8b80aece9ab9dac07ea"
+    },
+    {
+      "path": "fixtures/ja.json",
+      "bytes": 1647,
+      "sha256": "1dc4b861fdb031f11f7fec924631dd86c805244361ff7a1729a4b01351ad1bad"
+    },
+    {
+      "path": "fixtures/projects.json",
+      "bytes": 1261,
+      "sha256": "7629f6ce55a94da88abee46b64fcad907a06c137aa320e24bd194727f3ef8e4d"
+    }
+  ]
+}

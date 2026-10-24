@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "ordinal": 27,
+  "extension": "Anx Reader Importer",
+  "status": "design-confirmed",
+  "inputOrigin": "synthetic-at-user-request",
+  "sourceRef": "v1.14.0",
+  "commit": "356b7183e8463e7c60d84a72502d0055e55a19fd",
+  "databaseVersion": 7,
+  "releaseEvidence": {
+    "url": "https://api.github.com/repos/Anxcye/anx-reader/releases/tags/v1.14.0",
+    "htmlUrl": "https://github.com/Anxcye/anx-reader/releases/tag/v1.14.0",
+    "status": 200,
+    "checkedAt": "2026-10-17T10:46:02.242022+00:00",
+    "bytes": 27379,
+    "sha256": "9cb934db78210cb550bea3a37ba26e09ec967f189f740ae64595f7a572a6d6f9",
+    "publishedAt": "2026-03-19T07:40:40Z",
+    "prerelease": false
+  },
+  "sourceFiles": 48,
+  "sourceContract": "source-contract.json",
+  "fixtureManifest": "fixture-manifest.json",
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "sourceCfiDataModuleExecuted": true,
+  "inputFiles": 14,
+  "checks": {
+    "byteAndMapping": 89,
+    "cfiDataModule": 19,
+    "totalPassed": 108,
+    "failed": 0,
+    "allInputsUnchanged": true
+  },
+  "results": ["synthetic-results.json", "cfi-results.json"],
+  "notClaimed": [
+    "Real Anx export, Flutter runtime or WebDAV operation.",
+    "Browser Range or Kana round trip.",
+    "All translated or injected EPUB DOM positions.",
+    "PDF text-layer CFI to PDF quad conversion.",
+    "Other generated-format DOM positions, historic schema or arbitrary ZIP libraries.",
+    "Native Kisaki writes and all-platform independent artifacts."
+  ],
+  "completionAdoption": {
+    "status": "confirmed",
+    "sourceThreshold": 0.98,
+    "validPercentageRange": [0, 1],
+    "work": "Initialize one unknown-date record only when completion history is empty.",
+    "part": "Adopt only the actual Part completion flag.",
+    "existingHistory": "Preserve; do not append a minimum snapshot."
+  }
+}

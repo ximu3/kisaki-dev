@@ -1,0 +1,1301 @@
+{
+  "checkedAt": "2026-10-19T10:36:38.546989+00:00",
+  "runs": [
+    {
+      "checkedAt": "2026-10-19T10:36:25.278Z",
+      "electron": "44.5.1",
+      "chromium": "152.0.7977.130",
+      "platform": "win32",
+      "arch": "x64",
+      "deviceScale": 1,
+      "cases": [
+        {
+          "zoom": 1,
+          "rotation": 0,
+          "geometry": {
+            "rotation": 0,
+            "scale": 1.25,
+            "mapped": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 1.8328428268432617e-06
+          },
+          "view": {
+            "generation": 3,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 934,
+              "height": 450
+            },
+            "dpr": 1,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 141,
+            "y": 162,
+            "width": 75,
+            "height": 57
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 75,
+          "height": 57,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 90,
+          "geometry": {
+            "rotation": 90,
+            "scale": 1.25,
+            "mapped": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 5,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 934,
+              "height": 450
+            },
+            "dpr": 1,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 253,
+            "y": 181,
+            "width": 57,
+            "height": 75
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 57,
+          "height": 75,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 180,
+          "geometry": {
+            "rotation": 180,
+            "scale": 1.25,
+            "mapped": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 7,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 934,
+              "height": 450
+            },
+            "dpr": 1,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 316,
+            "y": 293,
+            "width": 75,
+            "height": 57
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 75,
+          "height": 57,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 270,
+          "geometry": {
+            "rotation": 270,
+            "scale": 1.25,
+            "mapped": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 9,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 934,
+              "height": 450
+            },
+            "dpr": 1,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 122,
+            "y": 356,
+            "width": 57,
+            "height": 75
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 57,
+          "height": 75,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 0,
+          "geometry": {
+            "rotation": 0,
+            "scale": 1.25,
+            "mapped": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 1.8328428268432617e-06
+          },
+          "view": {
+            "generation": 13,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 737.6000366210938,
+              "height": 450
+            },
+            "dpr": 1.25,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 176,
+            "y": 202,
+            "width": 94,
+            "height": 72
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 94,
+          "height": 72,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 90,
+          "geometry": {
+            "rotation": 90,
+            "scale": 1.25,
+            "mapped": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 15,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 737.6000366210938,
+              "height": 450
+            },
+            "dpr": 1.25,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 316,
+            "y": 226,
+            "width": 72,
+            "height": 94
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 72,
+          "height": 94,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 180,
+          "geometry": {
+            "rotation": 180,
+            "scale": 1.25,
+            "mapped": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 17,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 737.6000366210938,
+              "height": 450
+            },
+            "dpr": 1.25,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 395,
+            "y": 366,
+            "width": 94,
+            "height": 72
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 94,
+          "height": 72,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 270,
+          "geometry": {
+            "rotation": 270,
+            "scale": 1.25,
+            "mapped": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 19,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 737.6000366210938,
+              "height": 450
+            },
+            "dpr": 1.25,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 152,
+            "y": 445,
+            "width": 72,
+            "height": 94
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 72,
+          "height": 94,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        }
+      ],
+      "outsideRejected": true,
+      "wholeViewport": {
+        "rect": {
+          "x": 30,
+          "y": 100,
+          "width": 923,
+          "height": 563
+        },
+        "overlayPixels": 0
+      },
+      "resize": {
+        "accepted": false,
+        "cause": "viewChanged",
+        "sourcePage": "a.svg",
+        "navigationCompleted": false,
+        "closed": false
+      },
+      "closeBeforeFinish": false,
+      "closing": {
+        "accepted": false,
+        "cause": "closed",
+        "sourcePage": "a.svg",
+        "navigationCompleted": false,
+        "closed": true
+      },
+      "text": {
+        "observations": {
+          "normal": {
+            "source": "Alpha   Beta\nGamma",
+            "innerText": "Alpha Beta Gamma",
+            "selected": "Alpha Beta Gamma"
+          },
+          "cjk": {
+            "source": "你好\n世界",
+            "innerText": "你好 世界",
+            "selected": "你好 世界"
+          },
+          "ruby": {
+            "source": "漢かん字じ",
+            "innerText": "漢かん字じ",
+            "selected": "漢かん字じ"
+          },
+          "hidden": {
+            "source": "onesecrettwo",
+            "innerText": "onetwo",
+            "selected": "onetwo"
+          },
+          "upper": {
+            "source": "Straße",
+            "innerText": "STRASSE",
+            "selected": "STRASSE"
+          },
+          "pre": {
+            "source": " A  B\n  C ",
+            "innerText": " A  B\n  C ",
+            "selected": " A  B\n  C "
+          }
+        },
+        "caseFoldingVersion": "18.0.0",
+        "mappedSearchCases": 7,
+        "standardSourceAddressesTested": false,
+        "fullTextProjectionImplemented": false
+      },
+      "kanaReaderExecuted": false,
+      "allGeometryAndTextCasesCovered": false
+    },
+    {
+      "checkedAt": "2026-10-19T10:36:38.487Z",
+      "electron": "44.5.1",
+      "chromium": "152.0.7977.130",
+      "platform": "win32",
+      "arch": "x64",
+      "deviceScale": 1.5,
+      "cases": [
+        {
+          "zoom": 1,
+          "rotation": 0,
+          "geometry": {
+            "rotation": 0,
+            "scale": 1.25,
+            "mapped": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 1.8328428268432617e-06
+          },
+          "view": {
+            "generation": 3,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 141,
+              "top": 162.25,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 941.3333740234375,
+              "height": 450
+            },
+            "dpr": 1.5,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 141,
+            "y": 162,
+            "width": 75,
+            "height": 57
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 113,
+          "height": 86,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 90,
+          "geometry": {
+            "rotation": 90,
+            "scale": 1.25,
+            "mapped": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 5,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 253.5,
+              "top": 181,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 941.3333740234375,
+              "height": 450
+            },
+            "dpr": 1.5,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 253,
+            "y": 181,
+            "width": 57,
+            "height": 75
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 86,
+          "height": 113,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 180,
+          "geometry": {
+            "rotation": 180,
+            "scale": 1.25,
+            "mapped": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 7,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 316,
+              "top": 293.5,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 941.3333740234375,
+              "height": 450
+            },
+            "dpr": 1.5,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 316,
+            "y": 293,
+            "width": 75,
+            "height": 57
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 113,
+          "height": 86,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1,
+          "rotation": 270,
+          "geometry": {
+            "rotation": 270,
+            "scale": 1.25,
+            "mapped": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 9,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 122.25,
+              "top": 356,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24,
+              "top": 80,
+              "width": 941.3333740234375,
+              "height": 450
+            },
+            "dpr": 1.5,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 122,
+            "y": 356,
+            "width": 57,
+            "height": 75
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 86,
+          "height": 113,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 0,
+          "geometry": {
+            "rotation": 0,
+            "scale": 1.25,
+            "mapped": {
+              "left": 141,
+              "top": 162.25000762939453,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 141,
+              "top": 162.25001525878906,
+              "width": 75.00000762939453,
+              "height": 56.250003814697266
+            },
+            "inverseError": 1.8328428268432617e-06
+          },
+          "view": {
+            "generation": 13,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 141,
+              "top": 162.25000762939453,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24.000001907348633,
+              "top": 80.00000762939453,
+              "width": 743.4667358398438,
+              "height": 450.0000305175781
+            },
+            "dpr": 1.875,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 176,
+            "y": 202,
+            "width": 94,
+            "height": 72
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 141,
+          "height": 108,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 90,
+          "geometry": {
+            "rotation": 90,
+            "scale": 1.25,
+            "mapped": {
+              "left": 253.5,
+              "top": 181.00000762939453,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 253.50001525878906,
+              "top": 181.00001525878906,
+              "width": 56.250003814697266,
+              "height": 75.00000762939453
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 15,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 253.5,
+              "top": 181.00000762939453,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24.000001907348633,
+              "top": 80.00000762939453,
+              "width": 743.4667358398438,
+              "height": 450.0000305175781
+            },
+            "dpr": 1.875,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 316,
+            "y": 226,
+            "width": 72,
+            "height": 95
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 108,
+          "height": 143,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 180,
+          "geometry": {
+            "rotation": 180,
+            "scale": 1.25,
+            "mapped": {
+              "left": 316,
+              "top": 293.50000762939453,
+              "width": 75,
+              "height": 56.25
+            },
+            "actual": {
+              "left": 316.0000305175781,
+              "top": 293.5000305175781,
+              "width": 75.00000762939453,
+              "height": 56.250003814697266
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 17,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 316,
+              "top": 293.50000762939453,
+              "width": 75,
+              "height": 56.25
+            },
+            "viewport": {
+              "left": 24.000001907348633,
+              "top": 80.00000762939453,
+              "width": 743.4667358398438,
+              "height": 450.0000305175781
+            },
+            "dpr": 1.875,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 395,
+            "y": 366,
+            "width": 94,
+            "height": 72
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 141,
+          "height": 108,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        },
+        {
+          "zoom": 1.25,
+          "rotation": 270,
+          "geometry": {
+            "rotation": 270,
+            "scale": 1.25,
+            "mapped": {
+              "left": 122.25,
+              "top": 356.00000762939453,
+              "width": 56.25,
+              "height": 75
+            },
+            "actual": {
+              "left": 122.25000762939453,
+              "top": 356.0000305175781,
+              "width": 56.250003814697266,
+              "height": 75.00000762939453
+            },
+            "inverseError": 0
+          },
+          "view": {
+            "generation": 19,
+            "sourcePage": "a.svg",
+            "rect": {
+              "left": 122.25,
+              "top": 356.00000762939453,
+              "width": 56.25,
+              "height": 75
+            },
+            "viewport": {
+              "left": 24.000001907348633,
+              "top": 80.00000762939453,
+              "width": 743.4667358398438,
+              "height": 450.0000305175781
+            },
+            "dpr": 1.875,
+            "target": "region",
+            "region": {
+              "x": 0.25,
+              "y": 0.25,
+              "width": 0.15,
+              "height": 0.15
+            }
+          },
+          "captureRect": {
+            "x": 152,
+            "y": 445,
+            "width": 72,
+            "height": 94
+          },
+          "scaleFactors": [
+            1
+          ],
+          "representation": 1,
+          "width": 108,
+          "height": 141,
+          "centerBgra": [
+            40,
+            40,
+            198,
+            255
+          ],
+          "regionSamples": 25,
+          "end": {
+            "accepted": true,
+            "cause": null,
+            "sourcePage": "b.svg",
+            "navigationCompleted": true,
+            "closed": false
+          }
+        }
+      ],
+      "outsideRejected": true,
+      "wholeViewport": {
+        "rect": {
+          "x": 30,
+          "y": 100,
+          "width": 930,
+          "height": 563
+        },
+        "overlayPixels": 0
+      },
+      "resize": {
+        "accepted": false,
+        "cause": "viewChanged",
+        "sourcePage": "a.svg",
+        "navigationCompleted": false,
+        "closed": false
+      },
+      "closeBeforeFinish": false,
+      "closing": {
+        "accepted": false,
+        "cause": "closed",
+        "sourcePage": "a.svg",
+        "navigationCompleted": false,
+        "closed": true
+      },
+      "text": {
+        "observations": {
+          "normal": {
+            "source": "Alpha   Beta\nGamma",
+            "innerText": "Alpha Beta Gamma",
+            "selected": "Alpha Beta Gamma"
+          },
+          "cjk": {
+            "source": "你好\n世界",
+            "innerText": "你好 世界",
+            "selected": "你好 世界"
+          },
+          "ruby": {
+            "source": "漢かん字じ",
+            "innerText": "漢かん字じ",
+            "selected": "漢かん字じ"
+          },
+          "hidden": {
+            "source": "onesecrettwo",
+            "innerText": "onetwo",
+            "selected": "onetwo"
+          },
+          "upper": {
+            "source": "Straße",
+            "innerText": "STRASSE",
+            "selected": "STRASSE"
+          },
+          "pre": {
+            "source": " A  B\n  C ",
+            "innerText": " A  B\n  C ",
+            "selected": " A  B\n  C "
+          }
+        },
+        "caseFoldingVersion": "18.0.0",
+        "mappedSearchCases": 7,
+        "standardSourceAddressesTested": false,
+        "fullTextProjectionImplemented": false
+      },
+      "kanaReaderExecuted": false,
+      "allGeometryAndTextCasesCovered": false
+    }
+  ],
+  "sources": {
+    "content-probe.html": "2df7d0451838755659f19b9943337109417c62f16763440d086bf0b4767a7350",
+    "content-probe.mjs": "f95c2bc5b475be6ece1abd544a1a9ad56946abbf4ba5e9525b1b6b333ea1b1b1",
+    "content-electron.cjs": "b19ab9be6341abc4cb6e7809377d4d1d555b3f05a7e504152d0c22c54462207f",
+    "run-probe.py": "5d0bf373b169ad5939cec656c61c0c8cb9096f306f53c792e883a4dd372099ec"
+  },
+  "caseFoldingSha256": "a004797658a457bec4dc11683e39f69249ea3b595b752dbea6721c4c9f587b0d",
+  "standardSourceAddressRoundTripTested": false,
+  "fullQuoteProjectionTested": false,
+  "productionReaderOrHostAdapterTested": false
+}

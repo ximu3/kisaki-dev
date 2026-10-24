@@ -1,0 +1,39 @@
+{
+  "node": "v24.11.1",
+  "limitBytes": 1048576,
+  "checks": [
+    {
+      "name": "Header length counts UTF-8 bytes and excludes the header",
+      "passed": true
+    },
+    {
+      "name": "Every single split position reconstructs the same message",
+      "passed": true
+    },
+    {
+      "name": "Byte-by-byte chunks preserve multibyte text",
+      "passed": true
+    },
+    {
+      "name": "Multiple coalesced messages remain separate",
+      "passed": true
+    },
+    {
+      "name": "Zero and excessive lengths are rejected from the header alone",
+      "passed": true
+    },
+    {
+      "name": "Invalid UTF-8, JSON and non-object bodies are rejected",
+      "passed": true
+    },
+    {
+      "name": "EOF with an incomplete header or body is not a complete message",
+      "passed": true
+    },
+    {
+      "name": "The exact maximum body succeeds and one extra byte is rejected",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

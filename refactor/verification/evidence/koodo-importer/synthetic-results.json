@@ -1,0 +1,497 @@
+{
+  "evidenceClass": "synthetic-byte-probes-and-explicit-proposal-models",
+  "sourceApplicationExecuted": false,
+  "productionImporterExecuted": false,
+  "versions": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "pypdf": "6.10.0",
+    "pillow": "12.3.0",
+    "reportlab": "4.4.9",
+    "lxml": "6.1.1.0"
+  },
+  "inputFiles": 23,
+  "passed": 103,
+  "failed": 0,
+  "allInputsUnchanged": true,
+  "checks": [
+    {
+      "name": "manifest matches every generated input",
+      "passed": true
+    },
+    {
+      "name": "books has actual SQLite header",
+      "passed": true
+    },
+    {
+      "name": "books columns match pinned declarations",
+      "passed": true
+    },
+    {
+      "name": "books passes SQLite integrity check",
+      "passed": true
+    },
+    {
+      "name": "books refuses writes",
+      "passed": true
+    },
+    {
+      "name": "notes has actual SQLite header",
+      "passed": true
+    },
+    {
+      "name": "notes columns match pinned declarations",
+      "passed": true
+    },
+    {
+      "name": "notes passes SQLite integrity check",
+      "passed": true
+    },
+    {
+      "name": "notes refuses writes",
+      "passed": true
+    },
+    {
+      "name": "bookmarks has actual SQLite header",
+      "passed": true
+    },
+    {
+      "name": "bookmarks columns match pinned declarations",
+      "passed": true
+    },
+    {
+      "name": "bookmarks passes SQLite integrity check",
+      "passed": true
+    },
+    {
+      "name": "bookmarks refuses writes",
+      "passed": true
+    },
+    {
+      "name": "words has actual SQLite header",
+      "passed": true
+    },
+    {
+      "name": "words columns match pinned declarations",
+      "passed": true
+    },
+    {
+      "name": "words passes SQLite integrity check",
+      "passed": true
+    },
+    {
+      "name": "words refuses writes",
+      "passed": true
+    },
+    {
+      "name": "integer affinity preserves actual string highlight color",
+      "passed": true
+    },
+    {
+      "name": "backup tag array preserves commas inside a tag",
+      "passed": true
+    },
+    {
+      "name": "backup date is a JSON object in a text cell",
+      "passed": true
+    },
+    {
+      "name": "no rating or public identity invented from Book columns",
+      "passed": true
+    },
+    {
+      "name": "config values require a second JSON decode",
+      "passed": true
+    },
+    {
+      "name": "allowlist omits token content",
+      "passed": true
+    },
+    {
+      "name": "source deleted book excluded by default",
+      "passed": true
+    },
+    {
+      "name": "favorite list is independent of shelves",
+      "passed": true
+    },
+    {
+      "name": "shelf display order uses explicit names",
+      "passed": true
+    },
+    {
+      "name": "shelf member order remains stored array order",
+      "passed": true
+    },
+    {
+      "name": "existing collection order kept and new members appended",
+      "passed": true
+    },
+    {
+      "name": "malformed optional config is not an authoritative empty list",
+      "passed": true
+    },
+    {
+      "name": "exact saved Done value supplies one minimum completion fact",
+      "passed": true
+    },
+    {
+      "name": "100 percent display rounding is not Done",
+      "passed": true
+    },
+    {
+      "name": "Done alone has no resumable position",
+      "passed": true
+    },
+    {
+      "name": "Done may preserve an earlier PDF page",
+      "passed": true
+    },
+    {
+      "name": "missing location gives no completion fact",
+      "passed": true
+    },
+    {
+      "name": "numeric value is not silently coerced to source string",
+      "passed": true
+    },
+    {
+      "name": "source middle progress is not a current arrangement",
+      "passed": true
+    },
+    {
+      "name": "minimum completion adopts only into empty history 0",
+      "passed": true
+    },
+    {
+      "name": "minimum completion adopts only into empty history 1",
+      "passed": true
+    },
+    {
+      "name": "minimum completion adopts only into empty history 3",
+      "passed": true
+    },
+    {
+      "name": "daily key splits on final hyphen",
+      "passed": true
+    },
+    {
+      "name": "total and daily seconds are separate overlapping views",
+      "passed": true
+    },
+    {
+      "name": "daily totals cannot supply activity start and end",
+      "passed": true
+    },
+    {
+      "name": "JSON and CSV preserve multiline literal note text",
+      "passed": true
+    },
+    {
+      "name": "CSV leading formula punctuation stays text",
+      "passed": true
+    },
+    {
+      "name": "export tag text cannot reconstruct comma-containing labels",
+      "passed": true
+    },
+    {
+      "name": "export dates retain calendar precision",
+      "passed": true
+    },
+    {
+      "name": "highlight export omits note content",
+      "passed": true
+    },
+    {
+      "name": "source cfi is a JSON record rather than an EPUB CFI",
+      "passed": true
+    },
+    {
+      "name": "declared backup config omits PDF reflow membership",
+      "passed": true
+    },
+    {
+      "name": "declared backup config omits pinned-book membership",
+      "passed": true
+    },
+    {
+      "name": "PDF unknown reading mode blocks page-only resume",
+      "passed": true
+    },
+    {
+      "name": "PDF explicitly confirmed raw mode preserves actual page",
+      "passed": true
+    },
+    {
+      "name": "PDF Done-only record does not imply last page",
+      "passed": true
+    },
+    {
+      "name": "PDF out-of-range page is not clamped",
+      "passed": true
+    },
+    {
+      "name": "PDF negative page is rejected",
+      "passed": true
+    },
+    {
+      "name": "PDF highlighter source geometry identifies an actual page",
+      "passed": true
+    },
+    {
+      "name": "identical same-input source key is counted once",
+      "passed": true
+    },
+    {
+      "name": "conflicting source key does not silently choose a row",
+      "passed": true
+    },
+    {
+      "name": "json batch chooses all once",
+      "passed": true
+    },
+    {
+      "name": "csv batch chooses all once",
+      "passed": true
+    },
+    {
+      "name": "backup is a readable ZIP with unchanged database bytes",
+      "passed": true
+    },
+    {
+      "name": "backup member names stay inside the declared root",
+      "passed": true
+    },
+    {
+      "name": "backup books are singular book directory",
+      "passed": true
+    },
+    {
+      "name": "traversal member rejected before any extraction",
+      "passed": true
+    },
+    {
+      "name": "old JSON backup does not impersonate SQLite family",
+      "passed": true
+    },
+    {
+      "name": "multiple source roots remain ambiguous",
+      "passed": true
+    },
+    {
+      "name": "case-colliding destination names rejected",
+      "passed": true
+    },
+    {
+      "name": "whole-file MD5 verifies bytes for 12",
+      "passed": true
+    },
+    {
+      "name": "whole-file MD5 verifies bytes for pdf-book",
+      "passed": true
+    },
+    {
+      "name": "whole-file MD5 verifies bytes for comic-book",
+      "passed": true
+    },
+    {
+      "name": "changed file digest prevents source-coordinate association",
+      "passed": true
+    },
+    {
+      "name": "missing source path creates no holding",
+      "passed": true
+    },
+    {
+      "name": "exact cover key avoids prefix collision",
+      "passed": true
+    },
+    {
+      "name": "selected cover contains decodable image bytes",
+      "passed": true
+    },
+    {
+      "name": "ASCII comic model keeps numeric page order",
+      "passed": true
+    },
+    {
+      "name": "source comic filter is case sensitive",
+      "passed": true
+    },
+    {
+      "name": "comic href maps to exact actual member",
+      "passed": true
+    },
+    {
+      "name": "comic href does not become a title or basename guess",
+      "passed": true
+    },
+    {
+      "name": "mapped comic member is a readable page",
+      "passed": true
+    },
+    {
+      "name": "collation tie blocks index-only inference",
+      "passed": true
+    },
+    {
+      "name": "EPUB is a real package with two spine items",
+      "passed": true
+    },
+    {
+      "name": "raw and visible-text indices are not interchangeable",
+      "passed": true
+    },
+    {
+      "name": "same quote is ambiguous even inside one chapter",
+      "passed": true
+    },
+    {
+      "name": "UTF-16 counts differ from code points for source quote",
+      "passed": true
+    },
+    {
+      "name": "unconverted EPUB note still keeps quote and comment",
+      "passed": true
+    },
+    {
+      "name": "ink sentinel is not a literal private comment",
+      "passed": true
+    },
+    {
+      "name": "PDF has three actual pages",
+      "passed": true
+    },
+    {
+      "name": "PDF page 0 keeps two line quads",
+      "passed": true
+    },
+    {
+      "name": "PDF page 0 applies crop and rotation",
+      "passed": true
+    },
+    {
+      "name": "PDF page 0 keeps finite normalized geometry",
+      "passed": true
+    },
+    {
+      "name": "PDF page 0 quad winds clockwise from top-left",
+      "passed": true
+    },
+    {
+      "name": "PDF page 1 keeps two line quads",
+      "passed": true
+    },
+    {
+      "name": "PDF page 1 applies crop and rotation",
+      "passed": true
+    },
+    {
+      "name": "PDF page 1 keeps finite normalized geometry",
+      "passed": true
+    },
+    {
+      "name": "PDF page 1 quad winds clockwise from top-left",
+      "passed": true
+    },
+    {
+      "name": "PDF page 2 keeps two line quads",
+      "passed": true
+    },
+    {
+      "name": "PDF page 2 applies crop and rotation",
+      "passed": true
+    },
+    {
+      "name": "PDF page 2 keeps finite normalized geometry",
+      "passed": true
+    },
+    {
+      "name": "PDF page 2 quad winds clockwise from top-left",
+      "passed": true
+    },
+    {
+      "name": "PDF out-of-crop range is rejected without clipping",
+      "passed": true
+    },
+    {
+      "name": "PDF source page stays zero based",
+      "passed": true
+    },
+    {
+      "name": "PDF UserUnit exists and affects physical size",
+      "passed": true
+    },
+    {
+      "name": "all input bytes unchanged after read probes",
+      "passed": true
+    }
+  ],
+  "pdfGeometry": [
+    {
+      "pageIndex": 0,
+      "rotation": 0,
+      "userUnit": 1.0,
+      "quads": [
+        [
+          [0.07692307692307693, 0.2222222222222222],
+          [0.4230769230769231, 0.2222222222222222],
+          [0.4230769230769231, 0.3055555555555556],
+          [0.07692307692307693, 0.3055555555555556]
+        ],
+        [
+          [0.07692307692307693, 0.3611111111111111],
+          [0.5, 0.3611111111111111],
+          [0.5, 0.4444444444444444],
+          [0.07692307692307693, 0.4444444444444444]
+        ]
+      ]
+    },
+    {
+      "pageIndex": 1,
+      "rotation": 90,
+      "userUnit": 1.0,
+      "quads": [
+        [
+          [0.6944444444444444, 0.07692307692307693],
+          [0.7777777777777778, 0.07692307692307693],
+          [0.7777777777777778, 0.4230769230769231],
+          [0.6944444444444444, 0.4230769230769231]
+        ],
+        [
+          [0.5555555555555556, 0.07692307692307693],
+          [0.6388888888888888, 0.07692307692307693],
+          [0.6388888888888888, 0.5],
+          [0.5555555555555556, 0.5]
+        ]
+      ]
+    },
+    {
+      "pageIndex": 2,
+      "rotation": 270,
+      "userUnit": 2.0,
+      "quads": [
+        [
+          [0.2222222222222222, 0.5769230769230769],
+          [0.3055555555555556, 0.5769230769230769],
+          [0.3055555555555556, 0.9230769230769231],
+          [0.2222222222222222, 0.9230769230769231]
+        ],
+        [
+          [0.3611111111111111, 0.5],
+          [0.4444444444444444, 0.5],
+          [0.4444444444444444, 0.9230769230769231],
+          [0.3611111111111111, 0.9230769230769231]
+        ]
+      ]
+    }
+  ],
+  "limits": [
+    "No real Koodo export or source application execution.",
+    "No production Kisaki or Kana write/jump test.",
+    "No full browser/Rangy or generic EPUB coordinate conversion.",
+    "ASCII comic ordering model does not prove all locale collation.",
+    "Archive checks cover these synthetic inputs, not a complete adversarial archive implementation."
+  ]
+}

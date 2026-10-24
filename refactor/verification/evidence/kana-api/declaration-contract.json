@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-21T04:31:02.112600+00:00",
+  "compiler": "Version 6.0.3",
+  "declarationPackageOnly": true,
+  "readerImplementationExecuted": false,
+  "runtimeAssetLoadingExecuted": false,
+  "sourceOwnershipRuntimeExecuted": false,
+  "checks": [
+    {
+      "consumer": "pure",
+      "resolution": "NodeNext",
+      "libraries": ["ES2023"],
+      "positivePassed": true,
+      "expectedRejections": 33,
+      "diagnostics": 33
+    },
+    {
+      "consumer": "browser",
+      "resolution": "Bundler",
+      "libraries": ["ES2023", "DOM", "DOM.Iterable"],
+      "positivePassed": true,
+      "expectedRejections": 20,
+      "diagnostics": 20
+    },
+    {
+      "consumer": "view",
+      "resolution": "Bundler",
+      "libraries": ["ES2023", "DOM", "DOM.Iterable"],
+      "positivePassed": true,
+      "expectedRejections": 5,
+      "diagnostics": 5
+    }
+  ],
+  "tarballSha256": "96962f7690dec6ef7a0a2b0e63d30f6141932fea155ff354f0d5873ce8b387a1",
+  "sources": {
+    "contracts.d.ts": "734adc91ffb027813503e419c4375dcabd35bf1ee078ddb2806da659817342b3",
+    "browser.d.ts": "da019ff5c3a15e066ce8b9f3b3d02e721dd399f4913bd90f11d3b24b45071783",
+    "consumer-pure.ts": "3d959101cf1d6919bcd2fc4273c9b58ae4d8c5caea9fc8463cded1245cf53258",
+    "consumer-browser.ts": "ff6b7dcd471c290516bd7d3fb2bbed39a33dfc9a9da2d96bb1525e3c13867240",
+    "consumer-view.ts": "5d3ed87be3f8a7ea45c088b609b9fdb556ebd0108d31d8a50fe7100f828b4b7f",
+    "check-contracts.py": "c9f2f5fbe39975f495c4a65c33b5500010dc4d13347a206439217383788e76dd"
+  }
+}

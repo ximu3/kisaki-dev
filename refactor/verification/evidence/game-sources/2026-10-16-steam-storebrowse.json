@@ -1,0 +1,5570 @@
+{
+  "checkedOn": "2026-10-16",
+  "status": "design-confirmed-runtime-unverified",
+  "verification": {
+    "anonymousApiReads": 16,
+    "httpMethod": "GET",
+    "allHttp200": true,
+    "credentialsUsed": false,
+    "cookiesUsed": false,
+    "personalAccountRead": false,
+    "remoteWrites": false,
+    "rawResponseBodiesPersisted": false,
+    "downloadedJavaScriptExecuted": false,
+    "runtimeImplemented": false
+  },
+  "primaryCode": {
+    "page": {
+      "url": "https://store.steampowered.com/app/324160/?l=english&cc=US",
+      "status": 200,
+      "sha256": "2fe2c261f791442e47678bd17753a33869095c0c8800b559f60950f26b3fe74d"
+    },
+    "scripts": [
+      {
+        "url": "https://store.akamai.steamstatic.com/public/javascript/applications/store/libraries~b28b7af69.js?v=RjKKb5BhZu-x&l=english&_cdn=akamai",
+        "status": 200,
+        "bytes": 777230,
+        "sha256": "57835279aff2eabdcf52d63c8f91d6b25069efd55223b39b22d73a0aefeeb5a0"
+      },
+      {
+        "url": "https://store.akamai.steamstatic.com/public/javascript/applications/store/main.js?v=_0Z8Efjhiq37&l=english&_cdn=akamai",
+        "status": 200,
+        "bytes": 3764673,
+        "sha256": "99cc9e07912eaa1da4820815b6bb937ba900f66c8b1189589a9b067520dd6a82"
+      }
+    ],
+    "schemas": [
+      {
+        "name": "StoreBrowseItemDataRequest",
+        "fields": [
+          {
+            "name": "include_assets",
+            "definition": "n:1,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_release",
+            "definition": "n:2,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_platforms",
+            "definition": "n:3,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_all_purchase_options",
+            "definition": "n:4,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_screenshots",
+            "definition": "n:5,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_trailers",
+            "definition": "n:6,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_ratings",
+            "definition": "n:7,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_tag_count",
+            "definition": "n:8,br:a.qM.readInt32,bw:a.gp.writeInt32"
+          },
+          {
+            "name": "include_reviews",
+            "definition": "n:9,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_basic_info",
+            "definition": "n:10,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_supported_languages",
+            "definition": "n:11,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_full_description",
+            "definition": "n:12,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_included_items",
+            "definition": "n:13,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "included_item_data_request",
+            "definition": "n:14,c:B4"
+          },
+          {
+            "name": "include_assets_without_overrides",
+            "definition": "n:15,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "apply_user_filters",
+            "definition": "n:16,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_links",
+            "definition": "n:17,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_extra_details",
+            "definition": "n:18,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_best_purchase_option",
+            "definition": "n:19,d:!0,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "include_optin_registration_tags",
+            "definition": "n:20,br:a.qM.readBool,bw:a.gp.writeBool"
+          }
+        ]
+      },
+      {
+        "name": "CStoreQueryParams",
+        "fields": [
+          {
+            "name": "start",
+            "definition": "n:1,d:0,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "count",
+            "definition": "n:2,d:10,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "sort",
+            "definition": "n:10,d:C,br:t.qM.readEnum,bw:t.gp.writeEnum"
+          },
+          {
+            "name": "filters",
+            "definition": "n:20,c:O"
+          }
+        ]
+      },
+      {
+        "name": "CStoreQueryFilters",
+        "fields": [
+          {
+            "name": "released_only",
+            "definition": "n:1,br:t.qM.readBool,bw:t.gp.writeBool"
+          },
+          {
+            "name": "coming_soon_only",
+            "definition": "n:2,br:t.qM.readBool,bw:t.gp.writeBool"
+          },
+          {
+            "name": "type_filters",
+            "definition": "n:3,c:R"
+          },
+          {
+            "name": "exclude_from",
+            "definition": "n:4,r:!0,q:!0,br:t.qM.readEnum,pbr:t.qM.readPackedEnum,bw:t.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "predefined_filter",
+            "definition": "n:5,c:n1"
+          },
+          {
+            "name": "tagids_must_match",
+            "definition": "n:10,c:l1,r:!0,q:!0"
+          },
+          {
+            "name": "tagids_exclude",
+            "definition": "n:11,r:!0,q:!0,br:t.qM.readInt32,pbr:t.qM.readPackedInt32,bw:t.gp.writeRepeatedInt32"
+          },
+          {
+            "name": "price_filters",
+            "definition": "n:12,c:M1"
+          },
+          {
+            "name": "release_date_filter",
+            "definition": "n:13,c:N"
+          },
+          {
+            "name": "discounted_dates_filter",
+            "definition": "n:17,c:u1"
+          },
+          {
+            "name": "compatibility_filter",
+            "definition": "n:18,c:S1"
+          },
+          {
+            "name": "review_score_filter",
+            "definition": "n:19,c:U1"
+          },
+          {
+            "name": "content_descriptors_must_match",
+            "definition": "n:15,r:!0,q:!0,br:t.qM.readEnum,pbr:t.qM.readPackedEnum,bw:t.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "content_descriptors_excluded",
+            "definition": "n:16,r:!0,q:!0,br:t.qM.readEnum,pbr:t.qM.readPackedEnum,bw:t.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "regional_top_n_sellers",
+            "definition": "n:40,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "global_top_n_sellers",
+            "definition": "n:41,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "regional_long_term_top_n_sellers",
+            "definition": "n:42,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "global_long_term_top_n_sellers",
+            "definition": "n:43,br:t.qM.readInt32,bw:t.gp.writeInt32"
+          },
+          {
+            "name": "store_page_filter",
+            "definition": "n:44,c:d.S7"
+          },
+          {
+            "name": "parent_appids",
+            "definition": "n:45,r:!0,q:!0,br:t.qM.readUint32,pbr:t.qM.readPackedUint32,bw:t.gp.writeRepeatedUint32"
+          }
+        ]
+      },
+      {
+        "name": "CStoreQuery_SearchSuggestions_Request",
+        "fields": [
+          {
+            "name": "query_name",
+            "definition": "n:1,br:t.qM.readString,bw:t.gp.writeString"
+          },
+          {
+            "name": "context",
+            "definition": "n:2,c:c.TS"
+          },
+          {
+            "name": "search_term",
+            "definition": "n:3,br:t.qM.readString,bw:t.gp.writeString"
+          },
+          {
+            "name": "max_results",
+            "definition": "n:4,br:t.qM.readUint32,bw:t.gp.writeUint32"
+          },
+          {
+            "name": "filters",
+            "definition": "n:5,c:O"
+          },
+          {
+            "name": "data_request",
+            "definition": "n:6,c:c.gn"
+          },
+          {
+            "name": "use_spellcheck",
+            "definition": "n:7,br:t.qM.readBool,bw:t.gp.writeBool"
+          },
+          {
+            "name": "search_tags",
+            "definition": "n:8,br:t.qM.readBool,bw:t.gp.writeBool"
+          },
+          {
+            "name": "search_creators",
+            "definition": "n:9,br:t.qM.readBool,bw:t.gp.writeBool"
+          },
+          {
+            "name": "use_name_match_scoring",
+            "definition": "n:11,br:t.qM.readBool,bw:t.gp.writeBool"
+          }
+        ]
+      },
+      {
+        "name": "CStoreBrowse_GetItems_Request",
+        "fields": [
+          {
+            "name": "ids",
+            "definition": "n:1,c:E4,r:!0,q:!0"
+          },
+          {
+            "name": "context",
+            "definition": "n:2,c:C3"
+          },
+          {
+            "name": "data_request",
+            "definition": "n:3,c:B4"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem",
+        "fields": [
+          {
+            "name": "item_type",
+            "definition": "n:1,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          },
+          {
+            "name": "id",
+            "definition": "n:2,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "gid",
+            "definition": "n:76,br:a.qM.readFixed64String,bw:a.gp.writeFixed64String"
+          },
+          {
+            "name": "success",
+            "definition": "n:3,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "visible",
+            "definition": "n:4,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "unvailable_for_country_restriction",
+            "definition": "n:5,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "name",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "store_url_path",
+            "definition": "n:7,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "store_url_slug",
+            "definition": "n:8,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "appid",
+            "definition": "n:9,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "type",
+            "definition": "n:10,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          },
+          {
+            "name": "included_types",
+            "definition": "n:11,r:!0,q:!0,br:a.qM.readEnum,pbr:a.qM.readPackedEnum,bw:a.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "included_appids",
+            "definition": "n:12,r:!0,q:!0,br:a.qM.readUint32,pbr:a.qM.readPackedUint32,bw:a.gp.writeRepeatedUint32"
+          },
+          {
+            "name": "is_free",
+            "definition": "n:13,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "is_early_access",
+            "definition": "n:14,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "related_items",
+            "definition": "n:15,c:x4"
+          },
+          {
+            "name": "included_items",
+            "definition": "n:16,c:b4"
+          },
+          {
+            "name": "content_descriptorids",
+            "definition": "n:20,r:!0,q:!0,br:a.qM.readEnum,pbr:a.qM.readPackedEnum,bw:a.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "tagids",
+            "definition": "n:21,r:!0,q:!0,br:a.qM.readUint32,pbr:a.qM.readPackedUint32,bw:a.gp.writeRepeatedUint32"
+          },
+          {
+            "name": "categories",
+            "definition": "n:22,c:L4"
+          },
+          {
+            "name": "reviews",
+            "definition": "n:23,c:V3"
+          },
+          {
+            "name": "basic_info",
+            "definition": "n:24,c:z4"
+          },
+          {
+            "name": "tags",
+            "definition": "n:25,c:j4,r:!0,q:!0"
+          },
+          {
+            "name": "assets",
+            "definition": "n:30,c:g4"
+          },
+          {
+            "name": "release",
+            "definition": "n:31,c:P3"
+          },
+          {
+            "name": "platforms",
+            "definition": "n:32,c:K3"
+          },
+          {
+            "name": "game_rating",
+            "definition": "n:33,c:W3"
+          },
+          {
+            "name": "is_coming_soon",
+            "definition": "n:34,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "best_purchase_option",
+            "definition": "n:40,c:b3"
+          },
+          {
+            "name": "purchase_options",
+            "definition": "n:41,c:b3,r:!0,q:!0"
+          },
+          {
+            "name": "self_purchase_option",
+            "definition": "n:43,c:b3"
+          },
+          {
+            "name": "screenshots",
+            "definition": "n:50,c:Z2"
+          },
+          {
+            "name": "trailers",
+            "definition": "n:51,c:L2"
+          },
+          {
+            "name": "supported_languages",
+            "definition": "n:52,c:F3,r:!0,q:!0"
+          },
+          {
+            "name": "store_url_path_override",
+            "definition": "n:53,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "free_weekend",
+            "definition": "n:54,c:g3"
+          },
+          {
+            "name": "unlisted",
+            "definition": "n:55,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "game_count",
+            "definition": "n:56,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "internal_name",
+            "definition": "n:57,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "full_description_bbcode",
+            "definition": "n:58,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "is_free_temporarily",
+            "definition": "n:59,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "assets_without_overrides",
+            "definition": "n:60,c:g4"
+          },
+          {
+            "name": "user_filter_failure",
+            "definition": "n:70,c:X4"
+          },
+          {
+            "name": "links",
+            "definition": "n:71,c:J3,r:!0,q:!0"
+          },
+          {
+            "name": "purchase_description_bbcode",
+            "definition": "n:72,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "package_groups",
+            "definition": "n:74,c:x3,r:!0,q:!0"
+          },
+          {
+            "name": "extra_details",
+            "definition": "n:75,c:T3"
+          },
+          {
+            "name": "optin_registration_tags",
+            "definition": "n:77,c:h3,r:!0,q:!0"
+          },
+          {
+            "name": "purchase_notes",
+            "definition": "n:78,c:O3,r:!0,q:!0"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetLocalizedNameForTags_Request",
+        "fields": [
+          {
+            "name": "language",
+            "definition": "n:1,br:c.qM.readString,bw:c.gp.writeString"
+          },
+          {
+            "name": "tagids",
+            "definition": "n:2,r:!0,q:!0,br:c.qM.readUint32,pbr:c.qM.readPackedUint32,bw:c.gp.writeRepeatedUint32"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetLocalizedNameForTags_Response",
+        "fields": [
+          {
+            "name": "tags",
+            "definition": "n:1,c:z3,r:!0,q:!0"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetLocalizedNameForTags_Response_Tag",
+        "fields": [
+          {
+            "name": "tagid",
+            "definition": "n:1,br:c.qM.readUint32,bw:c.gp.writeUint32"
+          },
+          {
+            "name": "english_name",
+            "definition": "n:2,br:c.qM.readString,bw:c.gp.writeString"
+          },
+          {
+            "name": "name",
+            "definition": "n:3,br:c.qM.readString,bw:c.gp.writeString"
+          },
+          {
+            "name": "normalized_name",
+            "definition": "n:4,br:c.qM.readString,bw:c.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetTagList_Request",
+        "fields": [
+          {
+            "name": "language",
+            "definition": "n:1,br:c.qM.readString,bw:c.gp.writeString"
+          },
+          {
+            "name": "have_version_hash",
+            "definition": "n:2,br:c.qM.readString,bw:c.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetTagList_Response",
+        "fields": [
+          {
+            "name": "version_hash",
+            "definition": "n:1,br:c.qM.readString,bw:c.gp.writeString"
+          },
+          {
+            "name": "tags",
+            "definition": "n:2,c:Y3,r:!0,q:!0"
+          }
+        ]
+      },
+      {
+        "name": "CStore_GetTagList_Response_Tag",
+        "fields": [
+          {
+            "name": "tagid",
+            "definition": "n:1,br:c.qM.readUint32,bw:c.gp.writeUint32"
+          },
+          {
+            "name": "name",
+            "definition": "n:2,br:c.qM.readString,bw:c.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails",
+        "fields": [
+          {
+            "name": "steam_award",
+            "definition": "n:1,c:p,r:!0,q:!0"
+          },
+          {
+            "name": "vetted",
+            "definition": "n:2,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "no_mouse_keyboard_support",
+            "definition": "n:3,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "controller_wizard_complete",
+            "definition": "n:4,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "drm_third_party_type",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "drm_activation_limit",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "user_account_third_party",
+            "definition": "n:7,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "user_account_third_party_link_to_steam",
+            "definition": "n:8,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "anticheat",
+            "definition": "n:9,c:q3"
+          },
+          {
+            "name": "eula",
+            "definition": "n:10,c:G3,r:!0,q:!0"
+          },
+          {
+            "name": "ai_generation_service",
+            "definition": "n:11,c:M4"
+          },
+          {
+            "name": "refund_checks_ea_playtime",
+            "definition": "n:12,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "section",
+            "definition": "n:13,c:v2,r:!0,q:!0"
+          },
+          {
+            "name": "legal_notice_bbcode",
+            "definition": "n:14,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "interactive_elements",
+            "definition": "n:15,r:!0,q:!0,br:a.qM.readEnum,pbr:a.qM.readPackedEnum,bw:a.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "content_survey_notes",
+            "definition": "n:16,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "content_survey_ai_notes",
+            "definition": "n:17,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "press_review",
+            "definition": "n:18,c:w2,r:!0,q:!0"
+          },
+          {
+            "name": "partner_awards_bbcode",
+            "definition": "n:19,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "early_access",
+            "definition": "n:20,c:m"
+          },
+          {
+            "name": "season_pass",
+            "definition": "n:21,c:S"
+          },
+          {
+            "name": "links_and_info",
+            "definition": "n:22,c:q"
+          },
+          {
+            "name": "item_store_eligible",
+            "definition": "n:23,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "points_shop_eligible",
+            "definition": "n:24,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "metacritic",
+            "definition": "n:26,c:r2"
+          },
+          {
+            "name": "cast_and_crew",
+            "definition": "n:27,c:s4"
+          },
+          {
+            "name": "system_requirements",
+            "definition": "n:28,c:o3"
+          },
+          {
+            "name": "running_time_minutes",
+            "definition": "n:29,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "episode",
+            "definition": "n:30,c:b2"
+          },
+          {
+            "name": "seasons",
+            "definition": "n:31,c:V2,r:!0,q:!0"
+          },
+          {
+            "name": "video_extras_note",
+            "definition": "n:32,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_Anticheat",
+        "fields": [
+          {
+            "name": "kernel_mode",
+            "definition": "n:1,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "uninstall_completely",
+            "definition": "n:2,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "boot_protection",
+            "definition": "n:3,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "boot_protection_name",
+            "definition": "n:4,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "name",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "name_loc",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_Eula",
+        "fields": [
+          {
+            "name": "name",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "url",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_AIGeneratedContentService",
+        "fields": [
+          {
+            "name": "name",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "url",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_PageSection",
+        "fields": [
+          {
+            "name": "label",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "content_bbcode",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "banner",
+            "definition": "n:3,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_PressReview",
+        "fields": [
+          {
+            "name": "quote",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "score",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "site",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "url",
+            "definition": "n:4,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_EarlyAccess",
+        "fields": [
+          {
+            "name": "why_bbcode",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "how_long_bbcode",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "full_version_bbcode",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "current_state_bbcode",
+            "definition": "n:4,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "pricing_bbcode",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "community_bbcode",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "description_bbcode",
+            "definition": "n:7,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_LinksAndInfo",
+        "fields": [
+          {
+            "name": "website",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "stats_url",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "online_manual_url",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "health_warning_url",
+            "definition": "n:4,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "privacy_policy_url",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "available_documents",
+            "definition": "n:6,r:!0,q:!0,br:a.qM.readEnum,pbr:a.qM.readPackedEnum,bw:a.gp.writeRepeatedEnum"
+          },
+          {
+            "name": "genreids",
+            "definition": "n:7,r:!0,q:!0,br:a.qM.readUint32,pbr:a.qM.readPackedUint32,bw:a.gp.writeRepeatedUint32"
+          },
+          {
+            "name": "manufacturers",
+            "definition": "n:8,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          },
+          {
+            "name": "achievements_visible",
+            "definition": "n:9,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "achievement_count",
+            "definition": "n:10,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_Metacritic",
+        "fields": [
+          {
+            "name": "score",
+            "definition": "n:1,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "url",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "always_show",
+            "definition": "n:3,br:a.qM.readBool,bw:a.gp.writeBool"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_CastAndCrew",
+        "fields": [
+          {
+            "name": "directors",
+            "definition": "n:1,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          },
+          {
+            "name": "producers",
+            "definition": "n:2,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          },
+          {
+            "name": "writers",
+            "definition": "n:3,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          },
+          {
+            "name": "music",
+            "definition": "n:4,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          },
+          {
+            "name": "actors",
+            "definition": "n:5,r:!0,q:!0,br:a.qM.readString,bw:a.gp.writeRepeatedString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_SystemRequirements",
+        "fields": [
+          {
+            "name": "platforms",
+            "definition": "n:1,c:Q1,r:!0,q:!0"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_SystemRequirements_Size",
+        "fields": [
+          {
+            "name": "amount",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "units",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_SystemRequirements_Requirements",
+        "fields": [
+          {
+            "name": "os_version",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "os_version_unsupported",
+            "definition": "n:2,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "processor",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "memory",
+            "definition": "n:4,c:C4"
+          },
+          {
+            "name": "graphics",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "directx",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "broadband",
+            "definition": "n:7,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "storage",
+            "definition": "n:8,c:C4"
+          },
+          {
+            "name": "storage_hq",
+            "definition": "n:9,c:C4"
+          },
+          {
+            "name": "sound_card",
+            "definition": "n:10,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "vr_support",
+            "definition": "n:11,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "notes",
+            "definition": "n:12,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "legacy_bbcode",
+            "definition": "n:13,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_SystemRequirements_PlatformRequirements",
+        "fields": [
+          {
+            "name": "platform",
+            "definition": "n:1,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          },
+          {
+            "name": "minimum",
+            "definition": "n:2,c:_1"
+          },
+          {
+            "name": "recommended",
+            "definition": "n:3,c:_1"
+          },
+          {
+            "name": "requires_64bit",
+            "definition": "n:4,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "requires_apple_silicon",
+            "definition": "n:5,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "unsupported_os_note",
+            "definition": "n:6,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_Episode",
+        "fields": [
+          {
+            "name": "number",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "type",
+            "definition": "n:2,br:a.qM.readEnum,bw:a.gp.writeEnum"
+          },
+          {
+            "name": "hide_details",
+            "definition": "n:3,br:a.qM.readBool,bw:a.gp.writeBool"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ExtraDetails_Season",
+        "fields": [
+          {
+            "name": "index",
+            "definition": "n:1,br:a.qM.readInt32,bw:a.gp.writeInt32"
+          },
+          {
+            "name": "name",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "episode_appids",
+            "definition": "n:3,r:!0,q:!0,br:a.qM.readUint32,pbr:a.qM.readPackedUint32,bw:a.gp.writeRepeatedUint32"
+          }
+        ]
+      },
+      {
+        "name": "CStoreBrowse_GetStoreCategories_Request",
+        "fields": [
+          {
+            "name": "language",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "elanguage",
+            "definition": "n:2,d:-1,br:a.qM.readInt32,bw:a.gp.writeInt32"
+          }
+        ]
+      },
+      {
+        "name": "CStoreQuery_Query_Request",
+        "fields": [
+          {
+            "name": "query_name",
+            "definition": "n:1,br:t.qM.readString,bw:t.gp.writeString"
+          },
+          {
+            "name": "query",
+            "definition": "n:2,c:x1"
+          },
+          {
+            "name": "context",
+            "definition": "n:3,c:c.TS"
+          },
+          {
+            "name": "data_request",
+            "definition": "n:4,c:c.gn"
+          },
+          {
+            "name": "override_country_code",
+            "definition": "n:5,br:t.qM.readString,bw:t.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_Assets",
+        "fields": [
+          {
+            "name": "asset_url_format",
+            "definition": "n:1,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "main_capsule",
+            "definition": "n:2,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "main_capsule_2x",
+            "definition": "n:18,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "small_capsule",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "small_capsule_2x",
+            "definition": "n:19,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "header",
+            "definition": "n:4,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "header_2x",
+            "definition": "n:20,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "package_header",
+            "definition": "n:5,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "page_background",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "hero_capsule",
+            "definition": "n:7,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "hero_capsule_2x",
+            "definition": "n:8,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "library_capsule",
+            "definition": "n:9,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "library_capsule_2x",
+            "definition": "n:10,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "library_hero",
+            "definition": "n:11,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "library_hero_2x",
+            "definition": "n:12,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "community_icon",
+            "definition": "n:13,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "clan_avatar",
+            "definition": "n:14,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "page_background_path",
+            "definition": "n:15,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "raw_page_background",
+            "definition": "n:16,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "edition_comparison",
+            "definition": "n:17,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "last_modified",
+            "definition": "n:21,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "creator_home_background",
+            "definition": "n:22,br:a.qM.readString,bw:a.gp.writeString"
+          }
+        ]
+      },
+      {
+        "name": "StoreItem_ReleaseInfo",
+        "fields": [
+          {
+            "name": "steam_release_date",
+            "definition": "n:1,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "original_release_date",
+            "definition": "n:2,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "original_steam_release_date",
+            "definition": "n:3,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "release_from_early_access_date",
+            "definition": "n:11,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "release_from_early_access_style",
+            "definition": "n:12,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "is_coming_soon",
+            "definition": "n:4,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "is_preload",
+            "definition": "n:5,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "custom_release_date_message",
+            "definition": "n:6,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "is_abridged_release_date",
+            "definition": "n:7,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "coming_soon_display",
+            "definition": "n:8,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "is_early_access",
+            "definition": "n:10,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "mac_release_date",
+            "definition": "n:20,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "linux_release_date",
+            "definition": "n:21,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "limited_launch_active",
+            "definition": "n:22,br:a.qM.readBool,bw:a.gp.writeBool"
+          },
+          {
+            "name": "advance_access_date",
+            "definition": "n:23,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          }
+        ]
+      },
+      {
+        "name": "CStoreBrowse_GetDLCForApps_Request",
+        "fields": [
+          {
+            "name": "context",
+            "definition": "n:1,c:C3"
+          },
+          {
+            "name": "store_page_filter",
+            "definition": "n:2,c:L.S7"
+          },
+          {
+            "name": "appids",
+            "definition": "n:3,c:E4,r:!0,q:!0"
+          },
+          {
+            "name": "steamid",
+            "definition": "n:4,br:a.qM.readUint64String,bw:a.gp.writeUint64String"
+          }
+        ]
+      },
+      {
+        "name": "CStoreBrowse_GetDLCForAppsSolr_Request",
+        "fields": [
+          {
+            "name": "context",
+            "definition": "n:1,c:C3"
+          },
+          {
+            "name": "appids",
+            "definition": "n:2,r:!0,q:!0,br:a.qM.readUint32,pbr:a.qM.readPackedUint32,bw:a.gp.writeRepeatedUint32"
+          },
+          {
+            "name": "flavor",
+            "definition": "n:3,br:a.qM.readString,bw:a.gp.writeString"
+          },
+          {
+            "name": "count",
+            "definition": "n:4,br:a.qM.readUint32,bw:a.gp.writeUint32"
+          },
+          {
+            "name": "store_page_filter",
+            "definition": "n:5,c:L.S7"
+          }
+        ]
+      }
+    ],
+    "serviceMethods": [
+      "StoreBrowse.GetItems",
+      "StoreBrowse.GetStoreCategories",
+      "StoreBrowse.GetContentHubConfig",
+      "StoreBrowse.GetPriceStops",
+      "StoreBrowse.GetDLCForApps",
+      "StoreBrowse.GetDLCForAppsSolr",
+      "StoreBrowse.GetHardwareItems",
+      "StoreQuery.Query",
+      "StoreQuery.SearchSuggestions",
+      "StoreQuery.MoreLikeThis",
+      "StoreQuery.GetItemsByUserRecommendedTags",
+      "StoreQuery.GetItemByUserCombinedTagsPriority"
+    ]
+  },
+  "requests": [
+    {
+      "label": "full-storebrowse-clannad",
+      "path": "/IStoreBrowseService/GetItems/v1/",
+      "request": {
+        "ids": [
+          {
+            "appid": 324160
+          }
+        ],
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_assets": true,
+          "include_release": true,
+          "include_platforms": true,
+          "include_all_purchase_options": true,
+          "include_screenshots": true,
+          "include_trailers": true,
+          "include_ratings": true,
+          "include_tag_count": 20,
+          "include_reviews": true,
+          "include_basic_info": true,
+          "include_supported_languages": true,
+          "include_full_description": true,
+          "include_included_items": true,
+          "include_assets_without_overrides": true,
+          "include_links": true
+        }
+      },
+      "status": 200,
+      "bytes": 33576,
+      "keys": ["response"],
+      "responseKeys": ["store_items"],
+      "sha256": "f652596e5402620d732d658f19bb370d925c21a7f068eddba5e21f95e614998b",
+      "result": {
+        "keys": ["store_items"],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "included_items",
+              "tagids",
+              "categories",
+              "reviews",
+              "basic_info",
+              "tags",
+              "assets",
+              "release",
+              "platforms",
+              "best_purchase_option",
+              "purchase_options",
+              "screenshots",
+              "trailers",
+              "supported_languages",
+              "full_description_bbcode",
+              "assets_without_overrides",
+              "links"
+            ],
+            "shortDescriptionLength": 214,
+            "fullDescriptionLength": 1175,
+            "fullDescriptionHash": "5c375dacbea0ef841290c09ad64d787dbf4c3d79660f59fe5b50d86326b50c5b",
+            "assetsKeys": [
+              "asset_url_format",
+              "main_capsule",
+              "main_capsule_2x",
+              "small_capsule",
+              "small_capsule_2x",
+              "header",
+              "header_2x",
+              "page_background",
+              "hero_capsule",
+              "hero_capsule_2x",
+              "library_capsule",
+              "library_capsule_2x",
+              "library_hero",
+              "library_hero_2x",
+              "community_icon",
+              "page_background_path",
+              "raw_page_background",
+              "last_modified"
+            ],
+            "tagCount": 20,
+            "tagIdCount": 20,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "browse-batch-types",
+      "path": "/IStoreBrowseService/GetItems/v1/",
+      "request": {
+        "ids": [
+          {
+            "appid": 324160
+          },
+          {
+            "appid": 416930
+          },
+          {
+            "appid": 519110
+          },
+          {
+            "appid": 589120
+          },
+          {
+            "appid": 999999999
+          }
+        ],
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_assets": true,
+          "include_release": true,
+          "include_platforms": true,
+          "include_all_purchase_options": true,
+          "include_screenshots": true,
+          "include_trailers": true,
+          "include_ratings": true,
+          "include_tag_count": 20,
+          "include_reviews": true,
+          "include_basic_info": true,
+          "include_supported_languages": true,
+          "include_full_description": true,
+          "include_included_items": true,
+          "include_assets_without_overrides": true,
+          "include_links": true,
+          "include_extra_details": true
+        }
+      },
+      "status": 200,
+      "bytes": 52586,
+      "keys": ["response"],
+      "responseKeys": ["store_items"],
+      "sha256": "fa78d2cb4a8510ab9fe9ea16fd7fa2e9c381acc2b68dfcc874b894eb4accd134",
+      "result": {
+        "keys": ["store_items"],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "included_items",
+              "tagids",
+              "categories",
+              "reviews",
+              "basic_info",
+              "tags",
+              "assets",
+              "release",
+              "platforms",
+              "best_purchase_option",
+              "purchase_options",
+              "screenshots",
+              "trailers",
+              "supported_languages",
+              "full_description_bbcode",
+              "assets_without_overrides",
+              "links",
+              "extra_details"
+            ],
+            "shortDescriptionLength": 214,
+            "fullDescriptionLength": 1175,
+            "fullDescriptionHash": "5c375dacbea0ef841290c09ad64d787dbf4c3d79660f59fe5b50d86326b50c5b",
+            "assetsKeys": [
+              "asset_url_format",
+              "main_capsule",
+              "main_capsule_2x",
+              "small_capsule",
+              "small_capsule_2x",
+              "header",
+              "header_2x",
+              "page_background",
+              "hero_capsule",
+              "hero_capsule_2x",
+              "library_capsule",
+              "library_capsule_2x",
+              "library_hero",
+              "library_hero_2x",
+              "community_icon",
+              "page_background_path",
+              "raw_page_background",
+              "last_modified"
+            ],
+            "extraDetailsKeys": [
+              "vetted",
+              "legal_notice_bbcode",
+              "links_and_info",
+              "points_shop_eligible",
+              "metacritic",
+              "system_requirements"
+            ],
+            "tagCount": 20,
+            "tagIdCount": 20,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          },
+          {
+            "id": 416930,
+            "appid": 416930,
+            "itemType": 0,
+            "type": 11,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "included_items",
+              "tagids",
+              "categories",
+              "reviews",
+              "basic_info",
+              "tags",
+              "assets",
+              "release",
+              "platforms",
+              "best_purchase_option",
+              "purchase_options",
+              "screenshots",
+              "supported_languages",
+              "full_description_bbcode",
+              "assets_without_overrides",
+              "extra_details"
+            ],
+            "shortDescriptionLength": 32,
+            "fullDescriptionLength": 65,
+            "fullDescriptionHash": "51d2c11faa6aa542a7fdf119fa52855eb5d769755886a8b149a68e5d32af3dfe",
+            "assetsKeys": [
+              "asset_url_format",
+              "main_capsule",
+              "small_capsule",
+              "header",
+              "header_2x",
+              "hero_capsule",
+              "library_capsule",
+              "community_icon",
+              "page_background_path",
+              "last_modified"
+            ],
+            "extraDetailsKeys": [
+              "vetted",
+              "legal_notice_bbcode",
+              "links_and_info",
+              "system_requirements"
+            ],
+            "tagCount": 2,
+            "tagIdCount": 2,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          },
+          {
+            "id": 519110,
+            "appid": 519110,
+            "itemType": 0,
+            "type": 4,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "included_items",
+              "tagids",
+              "categories",
+              "reviews",
+              "basic_info",
+              "tags",
+              "assets",
+              "release",
+              "platforms",
+              "best_purchase_option",
+              "purchase_options",
+              "screenshots",
+              "supported_languages",
+              "full_description_bbcode",
+              "assets_without_overrides",
+              "extra_details"
+            ],
+            "shortDescriptionLength": 145,
+            "fullDescriptionLength": 145,
+            "fullDescriptionHash": "6bcfb6e3b8bc541f0772fe7910e59daad833b66731f481872a653465d3c743ca",
+            "assetsKeys": [
+              "asset_url_format",
+              "main_capsule",
+              "small_capsule",
+              "header",
+              "header_2x",
+              "page_background_path",
+              "last_modified"
+            ],
+            "extraDetailsKeys": [
+              "vetted",
+              "legal_notice_bbcode",
+              "links_and_info",
+              "system_requirements"
+            ],
+            "tagCount": 2,
+            "tagIdCount": 2,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          },
+          {
+            "id": 589120,
+            "appid": 589120,
+            "itemType": 0,
+            "type": 1,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "related_items",
+              "included_items",
+              "tagids",
+              "categories",
+              "reviews",
+              "basic_info",
+              "tags",
+              "assets",
+              "release",
+              "platforms",
+              "screenshots",
+              "trailers",
+              "supported_languages",
+              "full_description_bbcode",
+              "assets_without_overrides",
+              "package_groups",
+              "extra_details"
+            ],
+            "shortDescriptionLength": 295,
+            "fullDescriptionLength": 1171,
+            "fullDescriptionHash": "aa41e7d74082a5b5e87b5891aea807b959c0873dc07f16185961c999847dd0e2",
+            "assetsKeys": [
+              "asset_url_format",
+              "main_capsule",
+              "small_capsule",
+              "header",
+              "header_2x",
+              "page_background",
+              "library_capsule",
+              "community_icon",
+              "page_background_path",
+              "raw_page_background",
+              "last_modified"
+            ],
+            "extraDetailsKeys": [
+              "vetted",
+              "legal_notice_bbcode",
+              "links_and_info",
+              "points_shop_eligible",
+              "system_requirements"
+            ],
+            "tagCount": 11,
+            "tagIdCount": 11,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          },
+          {
+            "id": 999999999,
+            "appid": 0,
+            "itemType": 0,
+            "success": 15,
+            "visible": false,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "query-name-clannad",
+      "path": "/IStoreQueryService/SearchSuggestions/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "search_term": "CLANNAD",
+        "max_results": 20,
+        "filters": {
+          "type_filters": {
+            "include_apps": true,
+            "include_games": true
+          }
+        },
+        "data_request": {
+          "include_basic_info": true,
+          "include_release": true
+        },
+        "use_spellcheck": false,
+        "search_tags": false,
+        "search_creators": false,
+        "use_name_match_scoring": true
+      },
+      "status": 200,
+      "bytes": 8072,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "ef347c15acf255cd1517c6d092c49aeaa3670ee78495ff7dcf901d1c2abff601",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 7,
+          "start": 0,
+          "count": 7
+        },
+        "ids": [
+          {
+            "appid": 324160
+          },
+          {
+            "appid": 420100
+          },
+          {
+            "appid": 615930
+          },
+          {
+            "appid": 519110
+          },
+          {
+            "appid": 416930
+          },
+          {
+            "appid": 509081
+          },
+          {
+            "appid": 952900
+          }
+        ],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 214
+          },
+          {
+            "id": 420100,
+            "appid": 420100,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 273
+          },
+          {
+            "id": 615930,
+            "appid": 615930,
+            "itemType": 0,
+            "type": 4,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 333
+          },
+          {
+            "id": 519110,
+            "appid": 519110,
+            "itemType": 0,
+            "type": 4,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 145
+          },
+          {
+            "id": 416930,
+            "appid": 416930,
+            "itemType": 0,
+            "type": 11,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 32
+          },
+          {
+            "id": 509081,
+            "appid": 509081,
+            "itemType": 0,
+            "type": 11,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 96
+          },
+          {
+            "id": 952900,
+            "appid": 952900,
+            "itemType": 0,
+            "type": 4,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories",
+              "basic_info",
+              "release",
+              "best_purchase_option"
+            ],
+            "shortDescriptionLength": 283
+          }
+        ]
+      }
+    },
+    {
+      "label": "query-page0",
+      "path": "/IStoreQueryService/Query/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "query": {
+          "start": 0,
+          "count": 3,
+          "sort": 2,
+          "filters": {
+            "type_filters": {
+              "include_apps": true,
+              "include_games": true
+            }
+          }
+        },
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_basic_info": true
+        }
+      },
+      "status": 200,
+      "bytes": 1256,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "2a28b34b665e9b7209d5a87b743255eb67bc2b98d6842eb9154386e5c4889933",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 312724,
+          "start": 0,
+          "count": 3
+        },
+        "ids": [
+          {
+            "appid": 219
+          },
+          {
+            "appid": 410
+          },
+          {
+            "appid": 1003
+          }
+        ],
+        "items": [
+          {
+            "id": 219,
+            "appid": 219,
+            "itemType": 0,
+            "type": 1,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "related_items",
+              "categories",
+              "basic_info"
+            ]
+          },
+          {
+            "id": 410,
+            "appid": 410,
+            "itemType": 0,
+            "type": 1,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "related_items",
+              "categories",
+              "basic_info"
+            ]
+          },
+          {
+            "id": 1003,
+            "appid": 1003,
+            "itemType": 0,
+            "type": 1,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "related_items",
+              "categories",
+              "basic_info"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "category-labels",
+      "path": "/IStoreBrowseService/GetStoreCategories/v1/",
+      "request": {
+        "language": "english"
+      },
+      "status": 200,
+      "bytes": 16246,
+      "keys": ["response"],
+      "responseKeys": ["categories"],
+      "sha256": "72ed5119a91f6c17fa1d15cf11b2ada46b62b76dea44ae6443e1a9b0657315cc",
+      "result": {
+        "keys": ["categories"],
+        "categories": [
+          {
+            "id": 10,
+            "type": 0,
+            "name": "Game demo",
+            "internalName": "Game Demo"
+          },
+          {
+            "id": 21,
+            "type": 0,
+            "name": "Downloadable Content",
+            "internalName": "DLC"
+          },
+          {
+            "id": 19,
+            "type": 0,
+            "name": "Mods",
+            "internalName": "Mods"
+          },
+          {
+            "id": 7,
+            "type": 0,
+            "name": "Mods (require HL1)",
+            "internalName": "Mods (requires HL1)"
+          },
+          {
+            "id": 6,
+            "type": 0,
+            "name": "Mods (require HL2)",
+            "internalName": "Mods (requires HL2)"
+          },
+          {
+            "id": 2,
+            "type": 1,
+            "name": "Single-player",
+            "internalName": "Single-player"
+          },
+          {
+            "id": 1,
+            "type": 1,
+            "name": "Multi-player",
+            "internalName": "Multi-player"
+          },
+          {
+            "id": 20,
+            "type": 1,
+            "name": "MMO",
+            "internalName": "MMO"
+          },
+          {
+            "id": 49,
+            "type": 1,
+            "name": "PvP",
+            "internalName": "PvP"
+          },
+          {
+            "id": 36,
+            "type": 1,
+            "name": "Online PvP",
+            "internalName": "Online PvP"
+          },
+          {
+            "id": 47,
+            "type": 1,
+            "name": "LAN PvP",
+            "internalName": "LAN PvP"
+          },
+          {
+            "id": 37,
+            "type": 1,
+            "name": "Shared/Split Screen PvP",
+            "internalName": "Shared/Split Screen PvP"
+          },
+          {
+            "id": 9,
+            "type": 1,
+            "name": "Co-op",
+            "internalName": "Co-op"
+          },
+          {
+            "id": 38,
+            "type": 1,
+            "name": "Online Co-op",
+            "internalName": "Online Co-op"
+          },
+          {
+            "id": 48,
+            "type": 1,
+            "name": "LAN Co-op",
+            "internalName": "LAN Co-op"
+          },
+          {
+            "id": 39,
+            "type": 1,
+            "name": "Shared/Split Screen Co-op",
+            "internalName": "Shared/Split Screen Co-op"
+          },
+          {
+            "id": 24,
+            "type": 1,
+            "name": "Shared/Split Screen",
+            "internalName": "Shared/Split Screen"
+          },
+          {
+            "id": 27,
+            "type": 1,
+            "name": "Cross-Platform Multiplayer",
+            "internalName": "Cross-Platform Multiplayer"
+          },
+          {
+            "id": 50,
+            "type": 2,
+            "name": "Additional High-Quality Audio",
+            "internalName": "High-Quality Audio"
+          },
+          {
+            "id": 22,
+            "type": 2,
+            "name": "Steam Achievements",
+            "internalName": "Steam Achievements"
+          },
+          {
+            "id": 52,
+            "type": 2,
+            "name": "Tracked Controller Support",
+            "internalName": "Tracked Motion Controller"
+          },
+          {
+            "id": 53,
+            "type": 2,
+            "name": "VR Supported",
+            "internalName": "VR Supported"
+          },
+          {
+            "id": 54,
+            "type": 2,
+            "name": "VR Only",
+            "internalName": "VR Only"
+          },
+          {
+            "id": 29,
+            "type": 2,
+            "name": "Steam Trading Cards",
+            "internalName": "Steam Trading Cards"
+          },
+          {
+            "id": 31,
+            "type": 2,
+            "name": "VR Support",
+            "internalName": "VR Support"
+          },
+          {
+            "id": 13,
+            "type": 2,
+            "name": "Captions available",
+            "internalName": "Captions"
+          },
+          {
+            "id": 30,
+            "type": 2,
+            "name": "Steam Workshop",
+            "internalName": "Steam Workshop"
+          },
+          {
+            "id": 51,
+            "type": 2,
+            "name": "Steam Workshop",
+            "internalName": "Steam China Workshop"
+          },
+          {
+            "id": 40,
+            "type": 2,
+            "name": "SteamVR Collectibles",
+            "internalName": "SteamVR Collectibles"
+          },
+          {
+            "id": 35,
+            "type": 2,
+            "name": "In-App Purchases",
+            "internalName": "In-App Purchases"
+          },
+          {
+            "id": 64,
+            "type": 2,
+            "name": "Adjustable Text Size",
+            "internalName": "Adjustable Text Size"
+          },
+          {
+            "id": 65,
+            "type": 2,
+            "name": "Subtitle Options",
+            "internalName": "Subtitle Options"
+          },
+          {
+            "id": 66,
+            "type": 2,
+            "name": "Color Alternatives",
+            "internalName": "Color Alternatives"
+          },
+          {
+            "id": 67,
+            "type": 2,
+            "name": "Camera Comfort",
+            "internalName": "Camera Comfort"
+          },
+          {
+            "id": 68,
+            "type": 2,
+            "name": "Custom Volume Controls",
+            "internalName": "Custom Volume Controls"
+          },
+          {
+            "id": 69,
+            "type": 2,
+            "name": "Stereo Sound",
+            "internalName": "Stereo Sound"
+          },
+          {
+            "id": 70,
+            "type": 2,
+            "name": "Surround Sound",
+            "internalName": "Surround Sound"
+          },
+          {
+            "id": 71,
+            "type": 2,
+            "name": "Narrated Game Menus",
+            "internalName": "Narrated Menus"
+          },
+          {
+            "id": 72,
+            "type": 2,
+            "name": "Chat Speech-to-text",
+            "internalName": "Chat Speech-to-Text"
+          },
+          {
+            "id": 73,
+            "type": 2,
+            "name": "Chat Text-to-speech",
+            "internalName": "Chat Text-to-Speech"
+          },
+          {
+            "id": 74,
+            "type": 2,
+            "name": "Playable without Timed Input",
+            "internalName": "Playable without Timed Input"
+          },
+          {
+            "id": 75,
+            "type": 2,
+            "name": "Keyboard Only Option",
+            "internalName": "Keyboard-Only Option"
+          },
+          {
+            "id": 76,
+            "type": 2,
+            "name": "Mouse Only Option",
+            "internalName": "Mouse-Only Option"
+          },
+          {
+            "id": 77,
+            "type": 2,
+            "name": "Touch Only Option",
+            "internalName": "Touch-Only Option"
+          },
+          {
+            "id": 78,
+            "type": 2,
+            "name": "Adjustable Difficulty",
+            "internalName": "Difficulty Levels"
+          },
+          {
+            "id": 79,
+            "type": 2,
+            "name": "Save Anytime",
+            "internalName": "Save Anytime"
+          },
+          {
+            "id": 80,
+            "type": 2,
+            "name": "#category_playable_at_your_own_pace",
+            "internalName": "Playable at Your Own Pace"
+          },
+          {
+            "id": 81,
+            "type": 2,
+            "name": "#category_playable_without_vision",
+            "internalName": "Playable without Vision"
+          },
+          {
+            "id": 82,
+            "type": 2,
+            "name": "#category_contrast_controls",
+            "internalName": "Contrast Controls"
+          },
+          {
+            "id": 23,
+            "type": 2,
+            "name": "Steam Cloud",
+            "internalName": "Steam Cloud"
+          },
+          {
+            "id": 8,
+            "type": 2,
+            "name": "Valve Anti-Cheat enabled",
+            "internalName": "VAC Enabled"
+          },
+          {
+            "id": 15,
+            "type": 2,
+            "name": "Stats",
+            "internalName": "Stats"
+          },
+          {
+            "id": 25,
+            "type": 2,
+            "name": "Steam Leaderboards",
+            "internalName": "Steam Leaderboards"
+          },
+          {
+            "id": 32,
+            "type": 2,
+            "name": "Steam Turn Notifications",
+            "internalName": "Async Game Notifications"
+          },
+          {
+            "id": 17,
+            "type": 2,
+            "name": "Includes level editor",
+            "internalName": "Includes level editor"
+          },
+          {
+            "id": 16,
+            "type": 2,
+            "name": "Includes Source SDK",
+            "internalName": "Includes Source SDK"
+          },
+          {
+            "id": 14,
+            "type": 2,
+            "name": "Commentary available",
+            "internalName": "Commentary"
+          },
+          {
+            "id": 41,
+            "type": 2,
+            "name": "Remote Play on Phone",
+            "internalName": "Remote Play on Phone"
+          },
+          {
+            "id": 42,
+            "type": 2,
+            "name": "Remote Play on Tablet",
+            "internalName": "Remote Play on Tablet"
+          },
+          {
+            "id": 43,
+            "type": 2,
+            "name": "Remote Play on TV",
+            "internalName": "Remote Play on TV"
+          },
+          {
+            "id": 44,
+            "type": 2,
+            "name": "Remote Play Together",
+            "internalName": "Remote Play Together"
+          },
+          {
+            "id": 61,
+            "type": 2,
+            "name": "HDR available",
+            "internalName": "HDR"
+          },
+          {
+            "id": 62,
+            "type": 2,
+            "name": "Family Sharing",
+            "internalName": "Family Sharing"
+          },
+          {
+            "id": 63,
+            "type": 2,
+            "name": "Steam Timeline",
+            "internalName": "Steam Timeline"
+          },
+          {
+            "id": 28,
+            "type": 3,
+            "name": "Full controller support",
+            "internalName": "Full Controller Support"
+          },
+          {
+            "id": 55,
+            "type": 3,
+            "name": "DualShock Controller Support",
+            "internalName": "PS4 Controller"
+          },
+          {
+            "id": 56,
+            "type": 3,
+            "name": "DualShock Controller Support",
+            "internalName": "PS4 Controller BT"
+          },
+          {
+            "id": 57,
+            "type": 3,
+            "name": "DualSense Controller Support",
+            "internalName": "PS5 Controller"
+          },
+          {
+            "id": 58,
+            "type": 3,
+            "name": "DualSense Controller Support",
+            "internalName": "PS5 Controller BT"
+          },
+          {
+            "id": 59,
+            "type": 3,
+            "name": "Steam Input API Support",
+            "internalName": "Steam Input API"
+          },
+          {
+            "id": 60,
+            "type": 3,
+            "name": "Gamepad Recommended",
+            "internalName": "Gamepad Preferred"
+          },
+          {
+            "id": 18,
+            "type": 3,
+            "name": "Partial Controller Support",
+            "internalName": "Controller enabled"
+          }
+        ]
+      }
+    },
+    {
+      "label": "name-broad20",
+      "path": "/IStoreQueryService/SearchSuggestions/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "search_term": "a",
+        "max_results": 20,
+        "filters": {
+          "type_filters": {
+            "include_games": true
+          }
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        },
+        "use_spellcheck": false,
+        "search_tags": false,
+        "search_creators": false,
+        "use_name_match_scoring": true
+      },
+      "status": 200,
+      "bytes": 7544,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "2cbfeb1a6418e2e4d074f3671c773fbe2db913440fcb0fbe245c9c184e322a6d",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 31015,
+          "start": 0,
+          "count": 20
+        },
+        "ids": [
+          {
+            "appid": 3393110
+          },
+          {
+            "appid": 1172470
+          },
+          {
+            "appid": 1808500
+          },
+          {
+            "appid": 2288340
+          },
+          {
+            "appid": 4126040
+          },
+          {
+            "appid": 2073620
+          },
+          {
+            "appid": 270880
+          },
+          {
+            "appid": 2887580
+          },
+          {
+            "appid": 4732690
+          },
+          {
+            "appid": 1798230
+          },
+          {
+            "appid": 244210
+          },
+          {
+            "appid": 714010
+          },
+          {
+            "appid": 813780
+          },
+          {
+            "appid": 945360
+          },
+          {
+            "appid": 3448650
+          },
+          {
+            "appid": 2399830
+          },
+          {
+            "appid": 3751950
+          },
+          {
+            "appid": 3557160
+          },
+          {
+            "appid": 346110
+          },
+          {
+            "appid": 1466860
+          }
+        ],
+        "items": [
+          {
+            "id": 3393110,
+            "appid": 3393110,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 1172470,
+            "appid": 1172470,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 1808500,
+            "appid": 1808500,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 2288340,
+            "appid": 2288340,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 4126040,
+            "appid": 4126040,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 2073620,
+            "appid": 2073620,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 270880,
+            "appid": 270880,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories"
+            ]
+          },
+          {
+            "id": 2887580,
+            "appid": 2887580,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 4732690,
+            "appid": 4732690,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 1798230,
+            "appid": 1798230,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_early_access",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 244210,
+            "appid": 244210,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 714010,
+            "appid": 714010,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 813780,
+            "appid": 813780,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 945360,
+            "appid": 945360,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3448650,
+            "appid": 3448650,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 2399830,
+            "appid": 2399830,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_early_access",
+              "categories"
+            ]
+          },
+          {
+            "id": 3751950,
+            "appid": 3751950,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 3557160,
+            "appid": 3557160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 346110,
+            "appid": 346110,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 1466860,
+            "appid": 1466860,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "query-games-page0",
+      "path": "/IStoreQueryService/Query/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "query": {
+          "start": 0,
+          "count": 3,
+          "sort": 2,
+          "filters": {
+            "type_filters": {
+              "include_games": true
+            }
+          }
+        },
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        }
+      },
+      "status": 200,
+      "bytes": 1049,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "9cd63b20f374efa3bd306b18fb8dd1f2606be0e3bb3e5213c845b31744ae5fb2",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 193478,
+          "start": 0,
+          "count": 3
+        },
+        "ids": [
+          {
+            "appid": 10
+          },
+          {
+            "appid": 20
+          },
+          {
+            "appid": 30
+          }
+        ],
+        "items": [
+          {
+            "id": 10,
+            "appid": 10,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 20,
+            "appid": 20,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 30,
+            "appid": 30,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "tag-labels",
+      "path": "/IStoreService/GetLocalizedNameForTags/v1/",
+      "request": {
+        "language": "english",
+        "tagids": [
+          3799, 4085, 1742, 4947, 1756, 6971, 9551, 4182, 1693, 6426, 4726, 5608, 4166, 597, 1719,
+          21, 5350, 3871, 1721, 6650
+        ]
+      },
+      "status": 200,
+      "bytes": 1883,
+      "keys": ["response"],
+      "responseKeys": ["tags"],
+      "sha256": "367c5f1995318ac3083399b4adf6c71dcae855413a47fcfeca2b4d3742088d47",
+      "result": {
+        "keys": ["tags"],
+        "tags": [
+          {
+            "tagid": 3799,
+            "english_name": "Visual Novel",
+            "name": "Visual Novel",
+            "normalized_name": "visualnovel"
+          },
+          {
+            "tagid": 4085,
+            "english_name": "Anime",
+            "name": "Anime",
+            "normalized_name": "anime"
+          },
+          {
+            "tagid": 1742,
+            "english_name": "Story Rich",
+            "name": "Story Rich",
+            "normalized_name": "storyrich"
+          },
+          {
+            "tagid": 4947,
+            "english_name": "Romance",
+            "name": "Romance",
+            "normalized_name": "romance"
+          },
+          {
+            "tagid": 1756,
+            "english_name": "Great Soundtrack",
+            "name": "Great Soundtrack",
+            "normalized_name": "greatsoundtrack"
+          },
+          {
+            "tagid": 6971,
+            "english_name": "Multiple Endings",
+            "name": "Multiple Endings",
+            "normalized_name": "multipleendings"
+          },
+          {
+            "tagid": 9551,
+            "english_name": "Dating Sim",
+            "name": "Dating Sim",
+            "normalized_name": "datingsim"
+          },
+          {
+            "tagid": 4182,
+            "english_name": "Singleplayer",
+            "name": "Singleplayer",
+            "normalized_name": "singleplayer"
+          },
+          {
+            "tagid": 1693,
+            "english_name": "Classic",
+            "name": "Classic",
+            "normalized_name": "classic"
+          },
+          {
+            "tagid": 6426,
+            "english_name": "Choices Matter",
+            "name": "Choices Matter",
+            "normalized_name": "choicesmatter"
+          },
+          {
+            "tagid": 4726,
+            "english_name": "Cute",
+            "name": "Cute",
+            "normalized_name": "cute"
+          },
+          {
+            "tagid": 5608,
+            "english_name": "Emotional",
+            "name": "Emotional",
+            "normalized_name": "emotional"
+          },
+          {
+            "tagid": 4166,
+            "english_name": "Atmospheric",
+            "name": "Atmospheric",
+            "normalized_name": "atmospheric"
+          },
+          {
+            "tagid": 597,
+            "english_name": "Casual",
+            "name": "Casual",
+            "normalized_name": "casual"
+          },
+          {
+            "tagid": 1719,
+            "english_name": "Comedy",
+            "name": "Comedy",
+            "normalized_name": "comedy"
+          },
+          {
+            "tagid": 21,
+            "english_name": "Adventure",
+            "name": "Adventure",
+            "normalized_name": "adventure"
+          },
+          {
+            "tagid": 5350,
+            "english_name": "Family Friendly",
+            "name": "Family Friendly",
+            "normalized_name": "familyfriendly"
+          },
+          {
+            "tagid": 3871,
+            "english_name": "2D",
+            "name": "2D",
+            "normalized_name": "2d"
+          },
+          {
+            "tagid": 1721,
+            "english_name": "Psychological Horror",
+            "name": "Psychological Horror",
+            "normalized_name": "psychologicalhorror"
+          },
+          {
+            "tagid": 6650,
+            "english_name": "Nudity",
+            "name": "Nudity",
+            "normalized_name": "nudity"
+          }
+        ]
+      }
+    },
+    {
+      "label": "query-games-page1",
+      "path": "/IStoreQueryService/Query/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "query": {
+          "start": 3,
+          "count": 3,
+          "sort": 2,
+          "filters": {
+            "type_filters": {
+              "include_games": true
+            }
+          }
+        },
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        }
+      },
+      "status": 200,
+      "bytes": 995,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "6eea3c1ba79fc7e409b75946d745c6f47282a2d7e54b1ddf4e699f5ac89231fe",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 193478,
+          "start": 3,
+          "count": 3
+        },
+        "ids": [
+          {
+            "appid": 40
+          },
+          {
+            "appid": 50
+          },
+          {
+            "appid": 60
+          }
+        ],
+        "items": [
+          {
+            "id": 40,
+            "appid": 40,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 50,
+            "appid": 50,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 60,
+            "appid": 60,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "name-broad50",
+      "path": "/IStoreQueryService/SearchSuggestions/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "search_term": "a",
+        "max_results": 50,
+        "filters": {
+          "type_filters": {
+            "include_games": true
+          }
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        },
+        "use_spellcheck": false,
+        "search_tags": false,
+        "search_creators": false,
+        "use_name_match_scoring": true
+      },
+      "status": 200,
+      "bytes": 18707,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "323aec7e772865bc3a7a49dc439a1153bf7552e8b2e9f415c0cb965e9f2bfe92",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 31015,
+          "start": 0,
+          "count": 50
+        },
+        "ids": [
+          {
+            "appid": 3393110
+          },
+          {
+            "appid": 1172470
+          },
+          {
+            "appid": 1808500
+          },
+          {
+            "appid": 2288340
+          },
+          {
+            "appid": 4126040
+          },
+          {
+            "appid": 2073620
+          },
+          {
+            "appid": 270880
+          },
+          {
+            "appid": 2887580
+          },
+          {
+            "appid": 4732690
+          },
+          {
+            "appid": 1798230
+          },
+          {
+            "appid": 244210
+          },
+          {
+            "appid": 714010
+          },
+          {
+            "appid": 813780
+          },
+          {
+            "appid": 945360
+          },
+          {
+            "appid": 3448650
+          },
+          {
+            "appid": 2399830
+          },
+          {
+            "appid": 3751950
+          },
+          {
+            "appid": 3557160
+          },
+          {
+            "appid": 346110
+          },
+          {
+            "appid": 1466860
+          },
+          {
+            "appid": 2622000
+          },
+          {
+            "appid": 1669000
+          },
+          {
+            "appid": 3845070
+          },
+          {
+            "appid": 1874880
+          },
+          {
+            "appid": 1234430
+          },
+          {
+            "appid": 668580
+          },
+          {
+            "appid": 427410
+          },
+          {
+            "appid": 5159870
+          },
+          {
+            "appid": 761890
+          },
+          {
+            "appid": 3218230
+          },
+          {
+            "appid": 107410
+          },
+          {
+            "appid": 3159330
+          },
+          {
+            "appid": 2375790
+          },
+          {
+            "appid": 2424420
+          },
+          {
+            "appid": 812140
+          },
+          {
+            "appid": 2840770
+          },
+          {
+            "appid": 933110
+          },
+          {
+            "appid": 977950
+          },
+          {
+            "appid": 1126320
+          },
+          {
+            "appid": 805550
+          },
+          {
+            "appid": 3393280
+          },
+          {
+            "appid": 1675260
+          },
+          {
+            "appid": 3016620
+          },
+          {
+            "appid": 502500
+          },
+          {
+            "appid": 3832490
+          },
+          {
+            "appid": 1934680
+          },
+          {
+            "appid": 221380
+          },
+          {
+            "appid": 4529700
+          },
+          {
+            "appid": 1815780
+          },
+          {
+            "appid": 5058430
+          }
+        ],
+        "items": [
+          {
+            "id": 3393110,
+            "appid": 3393110,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 1172470,
+            "appid": 1172470,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 1808500,
+            "appid": 1808500,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 2288340,
+            "appid": 2288340,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 4126040,
+            "appid": 4126040,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 2073620,
+            "appid": 2073620,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 270880,
+            "appid": 270880,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories"
+            ]
+          },
+          {
+            "id": 2887580,
+            "appid": 2887580,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 4732690,
+            "appid": 4732690,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 1798230,
+            "appid": 1798230,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_early_access",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 244210,
+            "appid": 244210,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 714010,
+            "appid": 714010,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 813780,
+            "appid": 813780,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 945360,
+            "appid": 945360,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3448650,
+            "appid": 3448650,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 2399830,
+            "appid": 2399830,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_early_access",
+              "categories"
+            ]
+          },
+          {
+            "id": 3751950,
+            "appid": 3751950,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 3557160,
+            "appid": 3557160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 346110,
+            "appid": 346110,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 1466860,
+            "appid": 1466860,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 2622000,
+            "appid": 2622000,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 1669000,
+            "appid": 1669000,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3845070,
+            "appid": 3845070,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 1874880,
+            "appid": 1874880,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 1234430,
+            "appid": 1234430,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 668580,
+            "appid": 668580,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 427410,
+            "appid": 427410,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 5159870,
+            "appid": 5159870,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 761890,
+            "appid": 761890,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 3218230,
+            "appid": 3218230,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 107410,
+            "appid": 107410,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 3159330,
+            "appid": 3159330,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 2375790,
+            "appid": 2375790,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 2424420,
+            "appid": 2424420,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 812140,
+            "appid": 812140,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 2840770,
+            "appid": 2840770,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 933110,
+            "appid": 933110,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 977950,
+            "appid": 977950,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 1126320,
+            "appid": 1126320,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 805550,
+            "appid": 805550,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3393280,
+            "appid": 3393280,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 1675260,
+            "appid": 1675260,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3016620,
+            "appid": 3016620,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories",
+              "is_coming_soon"
+            ]
+          },
+          {
+            "id": 502500,
+            "appid": 502500,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 3832490,
+            "appid": 3832490,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "related_items",
+              "categories"
+            ]
+          },
+          {
+            "id": 1934680,
+            "appid": 1934680,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 221380,
+            "appid": 221380,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 4529700,
+            "appid": 4529700,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "content_descriptorids",
+              "categories"
+            ]
+          },
+          {
+            "id": 1815780,
+            "appid": 1815780,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "is_free",
+              "categories"
+            ]
+          },
+          {
+            "id": 5058430,
+            "appid": 5058430,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "is_coming_soon"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "name-no-match",
+      "path": "/IStoreQueryService/SearchSuggestions/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "search_term": "KisakiNoSuchWork9a4c20",
+        "max_results": 20,
+        "filters": {
+          "type_filters": {
+            "include_games": true
+          }
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        },
+        "use_spellcheck": false,
+        "search_tags": false,
+        "search_creators": false,
+        "use_name_match_scoring": true
+      },
+      "status": 200,
+      "bytes": 74,
+      "keys": ["response"],
+      "responseKeys": ["metadata"],
+      "sha256": "71bf80ae2781d9db364526035c38baaa34549df31658046646cc7fd444467d5c",
+      "result": {
+        "keys": ["metadata"],
+        "metadata": {
+          "total_matching_records": 0,
+          "start": 0,
+          "count": 0
+        }
+      }
+    },
+    {
+      "label": "name-games-only",
+      "path": "/IStoreQueryService/SearchSuggestions/v1/",
+      "request": {
+        "query_name": "KisakiMetadata",
+        "context": {
+          "language": "english",
+          "country_code": "US"
+        },
+        "search_term": "CLANNAD",
+        "max_results": 20,
+        "filters": {
+          "type_filters": {
+            "include_games": true
+          }
+        },
+        "data_request": {
+          "include_best_purchase_option": false
+        },
+        "use_spellcheck": false,
+        "search_tags": false,
+        "search_creators": false,
+        "use_name_match_scoring": true
+      },
+      "status": 200,
+      "bytes": 656,
+      "keys": ["response"],
+      "responseKeys": ["metadata", "ids", "store_items"],
+      "sha256": "ea222b9c740eb2bb362976593bc916e64871d121a5135fcaf349f08bac0217f2",
+      "result": {
+        "keys": ["metadata", "ids", "store_items"],
+        "metadata": {
+          "total_matching_records": 2,
+          "start": 0,
+          "count": 2
+        },
+        "ids": [
+          {
+            "appid": 324160
+          },
+          {
+            "appid": 420100
+          }
+        ],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          },
+          {
+            "id": 420100,
+            "appid": 420100,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "browse-ja",
+      "path": "/IStoreBrowseService/GetItems/v1/",
+      "request": {
+        "ids": [
+          {
+            "appid": 324160
+          }
+        ],
+        "context": {
+          "language": "japanese",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_basic_info": true,
+          "include_full_description": true,
+          "include_best_purchase_option": false
+        }
+      },
+      "status": 200,
+      "bytes": 1909,
+      "keys": ["response"],
+      "responseKeys": ["store_items"],
+      "sha256": "52a4026394fb3c387c759e722674f79024a002389b86d1a8a573d6a45fec5677",
+      "result": {
+        "keys": ["store_items"],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "categories",
+              "basic_info",
+              "full_description_bbcode"
+            ],
+            "shortDescriptionLength": 214,
+            "fullDescriptionLength": 1175,
+            "fullDescriptionHash": "5c375dacbea0ef841290c09ad64d787dbf4c3d79660f59fe5b50d86326b50c5b"
+          }
+        ]
+      }
+    },
+    {
+      "label": "browse-zh",
+      "path": "/IStoreBrowseService/GetItems/v1/",
+      "request": {
+        "ids": [
+          {
+            "appid": 324160
+          }
+        ],
+        "context": {
+          "language": "schinese",
+          "country_code": "US"
+        },
+        "data_request": {
+          "include_basic_info": true,
+          "include_full_description": true,
+          "include_extra_details": true,
+          "include_supported_languages": true,
+          "include_tag_count": 100,
+          "include_best_purchase_option": false
+        }
+      },
+      "status": 200,
+      "bytes": 2857,
+      "keys": ["response"],
+      "responseKeys": ["store_items"],
+      "sha256": "d7a28760531784d2b5ddbc0273928b022499686525a72a7cbdee9287072bf5a2",
+      "result": {
+        "keys": ["store_items"],
+        "items": [
+          {
+            "id": 324160,
+            "appid": 324160,
+            "itemType": 0,
+            "type": 0,
+            "success": 1,
+            "visible": true,
+            "keys": [
+              "item_type",
+              "id",
+              "success",
+              "visible",
+              "name",
+              "store_url_path",
+              "store_url_slug",
+              "appid",
+              "type",
+              "tagids",
+              "categories",
+              "basic_info",
+              "tags",
+              "supported_languages",
+              "full_description_bbcode",
+              "extra_details"
+            ],
+            "shortDescriptionLength": 63,
+            "fullDescriptionLength": 189,
+            "fullDescriptionHash": "f5b3229a14bd1dbec9b8250df141a2a022cf2ae462a0ac93f0740a0106c3b328",
+            "extraDetailsKeys": [
+              "vetted",
+              "legal_notice_bbcode",
+              "links_and_info",
+              "points_shop_eligible",
+              "metacritic",
+              "system_requirements"
+            ],
+            "tagCount": 20,
+            "tagIdCount": 20,
+            "supportedLanguageShape": [
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
+              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "tag-labels-zh",
+      "path": "/IStoreService/GetLocalizedNameForTags/v1/",
+      "request": {
+        "language": "schinese",
+        "tagids": [
+          3799, 4085, 1742, 4947, 1756, 6971, 9551, 4182, 1693, 6426, 4726, 5608, 4166, 597, 1719,
+          21, 5350, 3871, 1721, 6650
+        ]
+      },
+      "status": 200,
+      "bytes": 1847,
+      "keys": ["response"],
+      "responseKeys": ["tags"],
+      "sha256": "7b32463dc2a30879bd1cfb5785e60d0bafea80e380345cacc643b61ad7fb88d4",
+      "result": {
+        "keys": ["tags"],
+        "tags": [
+          {
+            "tagid": 3799,
+            "english_name": "Visual Novel",
+            "name": "视觉小说",
+            "normalized_name": "visualnovel"
+          },
+          {
+            "tagid": 4085,
+            "english_name": "Anime",
+            "name": "动漫",
+            "normalized_name": "anime"
+          },
+          {
+            "tagid": 1742,
+            "english_name": "Story Rich",
+            "name": "剧情丰富",
+            "normalized_name": "storyrich"
+          },
+          {
+            "tagid": 4947,
+            "english_name": "Romance",
+            "name": "爱情",
+            "normalized_name": "romance"
+          },
+          {
+            "tagid": 1756,
+            "english_name": "Great Soundtrack",
+            "name": "好评原声音轨",
+            "normalized_name": "greatsoundtrack"
+          },
+          {
+            "tagid": 6971,
+            "english_name": "Multiple Endings",
+            "name": "多结局",
+            "normalized_name": "multipleendings"
+          },
+          {
+            "tagid": 9551,
+            "english_name": "Dating Sim",
+            "name": "恋爱模拟",
+            "normalized_name": "datingsim"
+          },
+          {
+            "tagid": 4182,
+            "english_name": "Singleplayer",
+            "name": "单人",
+            "normalized_name": "singleplayer"
+          },
+          {
+            "tagid": 1693,
+            "english_name": "Classic",
+            "name": "经典",
+            "normalized_name": "classic"
+          },
+          {
+            "tagid": 6426,
+            "english_name": "Choices Matter",
+            "name": "选择取向",
+            "normalized_name": "choicesmatter"
+          },
+          {
+            "tagid": 4726,
+            "english_name": "Cute",
+            "name": "可爱",
+            "normalized_name": "cute"
+          },
+          {
+            "tagid": 5608,
+            "english_name": "Emotional",
+            "name": "情感",
+            "normalized_name": "emotional"
+          },
+          {
+            "tagid": 4166,
+            "english_name": "Atmospheric",
+            "name": "氛围",
+            "normalized_name": "atmospheric"
+          },
+          {
+            "tagid": 597,
+            "english_name": "Casual",
+            "name": "休闲",
+            "normalized_name": "casual"
+          },
+          {
+            "tagid": 1719,
+            "english_name": "Comedy",
+            "name": "喜剧",
+            "normalized_name": "comedy"
+          },
+          {
+            "tagid": 21,
+            "english_name": "Adventure",
+            "name": "冒险",
+            "normalized_name": "adventure"
+          },
+          {
+            "tagid": 5350,
+            "english_name": "Family Friendly",
+            "name": "阖家",
+            "normalized_name": "familyfriendly"
+          },
+          {
+            "tagid": 3871,
+            "english_name": "2D",
+            "name": "2D",
+            "normalized_name": "2d"
+          },
+          {
+            "tagid": 1721,
+            "english_name": "Psychological Horror",
+            "name": "心理恐怖",
+            "normalized_name": "psychologicalhorror"
+          },
+          {
+            "tagid": 6650,
+            "english_name": "Nudity",
+            "name": "裸露",
+            "normalized_name": "nudity"
+          }
+        ]
+      }
+    },
+    {
+      "label": "category-labels-zh",
+      "path": "/IStoreBrowseService/GetStoreCategories/v1/",
+      "request": {
+        "language": "schinese"
+      },
+      "status": 200,
+      "bytes": 16195,
+      "keys": ["response"],
+      "responseKeys": ["categories"],
+      "sha256": "d0107d267d90e15bb9e8716b8af673bd870880519521fa6b17c7317e2a2b0e0d",
+      "result": {
+        "keys": ["categories"],
+        "categories": [
+          {
+            "id": 10,
+            "type": 0,
+            "name": "游戏试用版",
+            "internalName": "Game Demo"
+          },
+          {
+            "id": 21,
+            "type": 0,
+            "name": "DLC",
+            "internalName": "DLC"
+          },
+          {
+            "id": 19,
+            "type": 0,
+            "name": "Mods",
+            "internalName": "Mods"
+          },
+          {
+            "id": 7,
+            "type": 0,
+            "name": "模组（限 HL1）",
+            "internalName": "Mods (requires HL1)"
+          },
+          {
+            "id": 6,
+            "type": 0,
+            "name": "模组（限 HL2）",
+            "internalName": "Mods (requires HL2)"
+          },
+          {
+            "id": 2,
+            "type": 1,
+            "name": "单人",
+            "internalName": "Single-player"
+          },
+          {
+            "id": 1,
+            "type": 1,
+            "name": "多人",
+            "internalName": "Multi-player"
+          },
+          {
+            "id": 20,
+            "type": 1,
+            "name": "大型多人在线",
+            "internalName": "MMO"
+          },
+          {
+            "id": 49,
+            "type": 1,
+            "name": "玩家对战",
+            "internalName": "PvP"
+          },
+          {
+            "id": 36,
+            "type": 1,
+            "name": "线上玩家对战",
+            "internalName": "Online PvP"
+          },
+          {
+            "id": 47,
+            "type": 1,
+            "name": "局域网玩家对战",
+            "internalName": "LAN PvP"
+          },
+          {
+            "id": 37,
+            "type": 1,
+            "name": "同屏/分屏玩家对战",
+            "internalName": "Shared/Split Screen PvP"
+          },
+          {
+            "id": 9,
+            "type": 1,
+            "name": "合作",
+            "internalName": "Co-op"
+          },
+          {
+            "id": 38,
+            "type": 1,
+            "name": "在线合作",
+            "internalName": "Online Co-op"
+          },
+          {
+            "id": 48,
+            "type": 1,
+            "name": "局域网合作",
+            "internalName": "LAN Co-op"
+          },
+          {
+            "id": 39,
+            "type": 1,
+            "name": "同屏/分屏合作",
+            "internalName": "Shared/Split Screen Co-op"
+          },
+          {
+            "id": 24,
+            "type": 1,
+            "name": "同屏/分屏",
+            "internalName": "Shared/Split Screen"
+          },
+          {
+            "id": 27,
+            "type": 1,
+            "name": "跨平台多人",
+            "internalName": "Cross-Platform Multiplayer"
+          },
+          {
+            "id": 50,
+            "type": 2,
+            "name": "额外高品质音频",
+            "internalName": "High-Quality Audio"
+          },
+          {
+            "id": 22,
+            "type": 2,
+            "name": "Steam 成就",
+            "internalName": "Steam Achievements"
+          },
+          {
+            "id": 52,
+            "type": 2,
+            "name": "定位控制器支持",
+            "internalName": "Tracked Motion Controller"
+          },
+          {
+            "id": 53,
+            "type": 2,
+            "name": "已支持 VR",
+            "internalName": "VR Supported"
+          },
+          {
+            "id": 54,
+            "type": 2,
+            "name": "VR 独占",
+            "internalName": "VR Only"
+          },
+          {
+            "id": 29,
+            "type": 2,
+            "name": "Steam 集换式卡牌",
+            "internalName": "Steam Trading Cards"
+          },
+          {
+            "id": 31,
+            "type": 2,
+            "name": "支持 VR",
+            "internalName": "VR Support"
+          },
+          {
+            "id": 13,
+            "type": 2,
+            "name": "支持字幕",
+            "internalName": "Captions"
+          },
+          {
+            "id": 30,
+            "type": 2,
+            "name": "Steam 创意工坊",
+            "internalName": "Steam Workshop"
+          },
+          {
+            "id": 51,
+            "type": 2,
+            "name": "Steam 创意工坊",
+            "internalName": "Steam China Workshop"
+          },
+          {
+            "id": 40,
+            "type": 2,
+            "name": "SteamVR 收藏品",
+            "internalName": "SteamVR Collectibles"
+          },
+          {
+            "id": 35,
+            "type": 2,
+            "name": "应用内购买",
+            "internalName": "In-App Purchases"
+          },
+          {
+            "id": 64,
+            "type": 2,
+            "name": "可调整文字大小",
+            "internalName": "Adjustable Text Size"
+          },
+          {
+            "id": 65,
+            "type": 2,
+            "name": "字幕选项",
+            "internalName": "Subtitle Options"
+          },
+          {
+            "id": 66,
+            "type": 2,
+            "name": "可选颜色",
+            "internalName": "Color Alternatives"
+          },
+          {
+            "id": 67,
+            "type": 2,
+            "name": "视角舒适度",
+            "internalName": "Camera Comfort"
+          },
+          {
+            "id": 68,
+            "type": 2,
+            "name": "自定义音量控制",
+            "internalName": "Custom Volume Controls"
+          },
+          {
+            "id": 69,
+            "type": 2,
+            "name": "立体声",
+            "internalName": "Stereo Sound"
+          },
+          {
+            "id": 70,
+            "type": 2,
+            "name": "环绕声",
+            "internalName": "Surround Sound"
+          },
+          {
+            "id": 71,
+            "type": 2,
+            "name": "朗读游戏菜单",
+            "internalName": "Narrated Menus"
+          },
+          {
+            "id": 72,
+            "type": 2,
+            "name": "聊天语音转文字",
+            "internalName": "Chat Speech-to-Text"
+          },
+          {
+            "id": 73,
+            "type": 2,
+            "name": "聊天文字转语音",
+            "internalName": "Chat Text-to-Speech"
+          },
+          {
+            "id": 74,
+            "type": 2,
+            "name": "无需应对快速反应事件",
+            "internalName": "Playable without Timed Input"
+          },
+          {
+            "id": 75,
+            "type": 2,
+            "name": "可以仅用键盘",
+            "internalName": "Keyboard-Only Option"
+          },
+          {
+            "id": 76,
+            "type": 2,
+            "name": "可以仅用鼠标",
+            "internalName": "Mouse-Only Option"
+          },
+          {
+            "id": 77,
+            "type": 2,
+            "name": "可以仅用触控",
+            "internalName": "Touch-Only Option"
+          },
+          {
+            "id": 78,
+            "type": 2,
+            "name": "可调整难度",
+            "internalName": "Difficulty Levels"
+          },
+          {
+            "id": 79,
+            "type": 2,
+            "name": "随时保存",
+            "internalName": "Save Anytime"
+          },
+          {
+            "id": 80,
+            "type": 2,
+            "name": "#category_playable_at_your_own_pace",
+            "internalName": "Playable at Your Own Pace"
+          },
+          {
+            "id": 81,
+            "type": 2,
+            "name": "#category_playable_without_vision",
+            "internalName": "Playable without Vision"
+          },
+          {
+            "id": 82,
+            "type": 2,
+            "name": "#category_contrast_controls",
+            "internalName": "Contrast Controls"
+          },
+          {
+            "id": 23,
+            "type": 2,
+            "name": "Steam 云",
+            "internalName": "Steam Cloud"
+          },
+          {
+            "id": 8,
+            "type": 2,
+            "name": "已启用 Valve 反作弊保护",
+            "internalName": "VAC Enabled"
+          },
+          {
+            "id": 15,
+            "type": 2,
+            "name": "统计数据",
+            "internalName": "Stats"
+          },
+          {
+            "id": 25,
+            "type": 2,
+            "name": "Steam 排行榜",
+            "internalName": "Steam Leaderboards"
+          },
+          {
+            "id": 32,
+            "type": 2,
+            "name": "Steam 回合通知",
+            "internalName": "Async Game Notifications"
+          },
+          {
+            "id": 17,
+            "type": 2,
+            "name": "包含关卡编辑器",
+            "internalName": "Includes level editor"
+          },
+          {
+            "id": 16,
+            "type": 2,
+            "name": "包括 Source SDK",
+            "internalName": "Includes Source SDK"
+          },
+          {
+            "id": 14,
+            "type": 2,
+            "name": "解说可用",
+            "internalName": "Commentary"
+          },
+          {
+            "id": 41,
+            "type": 2,
+            "name": "在手机上远程畅玩",
+            "internalName": "Remote Play on Phone"
+          },
+          {
+            "id": 42,
+            "type": 2,
+            "name": "在平板上远程畅玩",
+            "internalName": "Remote Play on Tablet"
+          },
+          {
+            "id": 43,
+            "type": 2,
+            "name": "在电视上远程畅玩",
+            "internalName": "Remote Play on TV"
+          },
+          {
+            "id": 44,
+            "type": 2,
+            "name": "远程同乐",
+            "internalName": "Remote Play Together"
+          },
+          {
+            "id": 61,
+            "type": 2,
+            "name": "可用 HDR",
+            "internalName": "HDR"
+          },
+          {
+            "id": 62,
+            "type": 2,
+            "name": "家庭共享",
+            "internalName": "Family Sharing"
+          },
+          {
+            "id": 63,
+            "type": 2,
+            "name": "Steam 时间轴",
+            "internalName": "Steam Timeline"
+          },
+          {
+            "id": 28,
+            "type": 3,
+            "name": "完全支持控制器",
+            "internalName": "Full Controller Support"
+          },
+          {
+            "id": 55,
+            "type": 3,
+            "name": "DUALSHOCK 控制器支持",
+            "internalName": "PS4 Controller"
+          },
+          {
+            "id": 56,
+            "type": 3,
+            "name": "DUALSHOCK 控制器支持",
+            "internalName": "PS4 Controller BT"
+          },
+          {
+            "id": 57,
+            "type": 3,
+            "name": "DualSense 控制器支持",
+            "internalName": "PS5 Controller"
+          },
+          {
+            "id": 58,
+            "type": 3,
+            "name": "DualSense 控制器支持",
+            "internalName": "PS5 Controller BT"
+          },
+          {
+            "id": 59,
+            "type": 3,
+            "name": "Steam 输入 API 支持",
+            "internalName": "Steam Input API"
+          },
+          {
+            "id": 60,
+            "type": 3,
+            "name": "推荐使用手柄",
+            "internalName": "Gamepad Preferred"
+          },
+          {
+            "id": 18,
+            "type": 3,
+            "name": "部分支持控制器",
+            "internalName": "Controller enabled"
+          }
+        ]
+      }
+    }
+  ],
+  "findings": {
+    "storeBrowseFullDescriptionAvailable": true,
+    "descriptionFormat": "BBCode",
+    "batchInputKinds": ["game", "music", "dlc", "demo", "unavailable"],
+    "perItemResultCodes": {
+      "available": 1,
+      "unavailableSample": 15
+    },
+    "nameSearch": {
+      "service": "IStoreQueryService/SearchSuggestions",
+      "gameOnlyFilter": {
+        "include_games": true
+      },
+      "includeAppsBroadensScope": true,
+      "clannadGames": 2,
+      "broadQueryRequestedCounts": [20, 50],
+      "broadQueryActualCounts": [20, 50],
+      "broadQueryMatchingTotal": 31015,
+      "noPagingFieldInPrimarySchema": true
+    },
+    "conditionalQuery": {
+      "service": "IStoreQueryService/Query",
+      "pagingVerified": true,
+      "nameSearchFieldInPrimarySchema": false
+    },
+    "localizedNames": {
+      "tagNames": true,
+      "storeCategories": true,
+      "englishAndSimplifiedChineseVerified": true
+    },
+    "japaneseFullDescriptionEqualsEnglish": true,
+    "legacyStoreRoutesNeededForCurrentPlannedMetadata": false
+  },
+  "designBoundary": {
+    "wholeSteamProposalConfirmed": true,
+    "personalLibraryEndpointsReplaced": false,
+    "newNativeContractRequired": false,
+    "legacyRoutesAreHistoricalComparisonOnly": true
+  }
+}

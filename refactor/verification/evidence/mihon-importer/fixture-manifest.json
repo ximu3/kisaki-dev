@@ -1,0 +1,51 @@
+{
+  "syntheticOnly": true,
+  "inputFormatProof": "Source-derived protobuf messages with an explicitly opaque optional-field probe.",
+  "files": [
+    {
+      "path": "current.pb",
+      "bytes": 1028,
+      "sha256": "3246e757993c15bf15f590407361db3cab8110de599f2350389e90c77d38644b"
+    },
+    {
+      "path": "current.tachibk",
+      "bytes": 687,
+      "sha256": "ff15c5cfee04afe644bcf16264be34e963d7e5f9ee96fff31b934b07eed8b739"
+    },
+    {
+      "path": "tachiyomi.proto.gz",
+      "bytes": 149,
+      "sha256": "74e5eeffa4f8aa06f56391fb0c76f9c3568a865424d3319da8611f8038c1b0bd"
+    },
+    {
+      "path": "malformed.tachibk",
+      "bytes": 687,
+      "sha256": "fab49147e6ba4216a500f3f12362bdef6d7971bd9ef632774598feafce357805"
+    },
+    {
+      "path": "legacy.json",
+      "bytes": 13,
+      "sha256": "7752f4a490353d2e45989de5da3f43c3e901c13010b3ca55f0ac2f0ec8d8ede9"
+    },
+    {
+      "path": "local/本地作品/第1卷.cbz",
+      "bytes": 598,
+      "sha256": "e79240e862d3c1d2841eecdf3d24f5348e6e6d6abcf6a7d5dd08a00724dde4de"
+    },
+    {
+      "path": "downloads/Source EN/星光日记/Group_Chapter 1/10.png",
+      "bytes": 70,
+      "sha256": "d5a51b6aed15684ec8c123e30fe5703155359d6543b6d7b47cb5766ef44939de"
+    },
+    {
+      "path": "downloads/Source EN/星光日记/Group_Chapter 1/2.png",
+      "bytes": 70,
+      "sha256": "d5a51b6aed15684ec8c123e30fe5703155359d6543b6d7b47cb5766ef44939de"
+    },
+    {
+      "path": "downloads/Source EN/星光日记/Group_Chapter 1/1.png",
+      "bytes": 70,
+      "sha256": "d5a51b6aed15684ec8c123e30fe5703155359d6543b6d7b47cb5766ef44939de"
+    }
+  ]
+}

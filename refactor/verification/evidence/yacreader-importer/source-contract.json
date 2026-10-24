@@ -1,0 +1,1305 @@
+{
+  "sourceRef": "10.4.0",
+  "commit": "28f92f4d8bdbb7170f6002e00bed7503356eea03",
+  "databaseVersion": "9.16.0",
+  "originEvidence": [
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:18.812584+00:00",
+      "bytes": 6402,
+      "sha256": "6f5406f46c7a65f421b8bd2a7139aac19e55b8731e30caf5a437e71e0efa0b51",
+      "archived": false,
+      "default_branch": "develop"
+    },
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader/releases/latest",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:19.279488+00:00",
+      "bytes": 11277,
+      "sha256": "db860011e5352bdcae3505b399d5789683d1630f9017f23893e7923b6cb78c1a",
+      "tag_name": "10.4.0",
+      "published_at": "2026-10-09T15:30:18Z",
+      "html_url": "https://github.com/YACReader/yacreader/releases/tag/10.4.0"
+    },
+    {
+      "url": "https://api.github.com/repos/YACReader/yacreader/git/ref/tags/10.4.0",
+      "status": 200,
+      "checkedAt": "2026-10-17T12:16:19.701004+00:00",
+      "bytes": 347,
+      "sha256": "aae6e0a19fb48e99b3beaf1061f952efca9824efe6261b91f2d6807116a26a8d",
+      "ref": "refs/tags/10.4.0",
+      "object": {
+        "sha": "28f92f4d8bdbb7170f6002e00bed7503356eea03",
+        "type": "commit",
+        "url": "https://api.github.com/repos/YACReader/yacreader/git/commits/28f92f4d8bdbb7170f6002e00bed7503356eea03"
+      }
+    }
+  ],
+  "tables": {
+    "folder": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "parentId",
+          "type": "INTEGER",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "path",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "finished",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "completed",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "numChildren",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "firstChildHash",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "customImage",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "manga",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "type",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "added",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "updated",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "folder",
+          "from": "parentId",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE folder (id INTEGER PRIMARY KEY,parentId INTEGER NOT NULL,name TEXT NOT NULL,path TEXT NOT NULL,finished BOOLEAN DEFAULT 0,completed BOOLEAN DEFAULT 1,numChildren INTEGER,firstChildHash TEXT,customImage TEXT,manga BOOLEAN DEFAULT 0,type INTEGER DEFAULT 0,added INTEGER,updated INTEGER,FOREIGN KEY(parentId) REFERENCES folder(id) ON DELETE CASCADE)"
+    },
+    "comic": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "parentId",
+          "type": "INTEGER",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "comicInfoId",
+          "type": "INTEGER",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "fileName",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "path",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "comic_info",
+          "from": "comicInfoId",
+          "to": "id",
+          "onDelete": "NO ACTION"
+        },
+        {
+          "table": "folder",
+          "from": "parentId",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE comic (id INTEGER PRIMARY KEY, parentId INTEGER NOT NULL, comicInfoId INTEGER NOT NULL,  fileName TEXT NOT NULL, path TEXT, FOREIGN KEY(parentId) REFERENCES folder(id) ON DELETE CASCADE, FOREIGN KEY(comicInfoId) REFERENCES comic_info(id))"
+    },
+    "db_info": {
+      "columns": [
+        {
+          "name": "version",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE db_info (version TEXT NOT NULL)"
+    },
+    "comic_info": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "coverPage",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "numPages",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "number",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "isBis",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "count",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "volume",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "storyArc",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "arcNumber",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "arcCount",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "genere",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "writer",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "penciller",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "inker",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "colorist",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "letterer",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "coverArtist",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "date",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "publisher",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "format",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "color",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "ageRating",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "synopsis",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "characters",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "hash",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "edited",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "read",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "hasBeenOpened",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "rating",
+          "type": "REAL",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "currentPage",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "bookmark1",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "bookmark2",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "bookmark3",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "brightness",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "contrast",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "gamma",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "-1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "comicVineID",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "lastTimeOpened",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "coverSizeRatio",
+          "type": "REAL",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "originalCoverSize",
+          "type": "STRING",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "manga",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "added",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "type",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "editor",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "imprint",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "teams",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "locations",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "series",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "alternateSeries",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "alternateNumber",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "alternateCount",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "languageISO",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "seriesGroup",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "mainCharacterOrTeam",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "review",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "tags",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "imageFiltersJson",
+          "type": "TEXT",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "lastTimeImageFiltersSet",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "lastTimeCoverSet",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "usesExternalCover",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "lastTimeMetadataSet",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [],
+      "uniqueColumns": [["hash"]],
+      "createSql": "CREATE TABLE comic_info (id INTEGER PRIMARY KEY,title TEXT,coverPage INTEGER DEFAULT 1,numPages INTEGER,number TEXT,isBis BOOLEAN,count INTEGER,volume TEXT,storyArc TEXT,arcNumber TEXT,arcCount INTEGER,genere TEXT,writer TEXT,penciller TEXT,inker TEXT,colorist TEXT,letterer TEXT,coverArtist TEXT,date TEXT,publisher TEXT,format TEXT,color BOOLEAN,ageRating TEXT,synopsis TEXT,characters TEXT,notes TEXT,hash TEXT UNIQUE NOT NULL,edited BOOLEAN DEFAULT 0,read BOOLEAN DEFAULT 0,hasBeenOpened BOOLEAN DEFAULT 0,rating REAL DEFAULT 0,currentPage INTEGER DEFAULT 1, bookmark1 INTEGER DEFAULT -1, bookmark2 INTEGER DEFAULT -1, bookmark3 INTEGER DEFAULT -1, brightness INTEGER DEFAULT -1, contrast INTEGER DEFAULT -1, gamma INTEGER DEFAULT -1, comicVineID TEXT,lastTimeOpened INTEGER,coverSizeRatio REAL,originalCoverSize STRING,manga BOOLEAN DEFAULT 0,added INTEGER,type INTEGER DEFAULT 0,editor TEXT,imprint TEXT,teams TEXT,locations TEXT,series TEXT,alternateSeries TEXT,alternateNumber TEXT,alternateCount INTEGER,languageISO TEXT,seriesGroup TEXT,mainCharacterOrTeam TEXT,review TEXT,tags TEXT,imageFiltersJson TEXT,lastTimeImageFiltersSet INTEGER DEFAULT 0,lastTimeCoverSet INTEGER DEFAULT 0,usesExternalCover BOOLEAN DEFAULT 0,lastTimeMetadataSet INTEGER DEFAULT 0)"
+    },
+    "label": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "color",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "ordering",
+          "type": "INTEGER",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE label (id INTEGER PRIMARY KEY, name TEXT NOT NULL, color TEXT NOT NULL, ordering INTEGER NOT NULL); "
+    },
+    "comic_label": {
+      "columns": [
+        {
+          "name": "comic_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 2
+        },
+        {
+          "name": "label_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "ordering",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "comic",
+          "from": "comic_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        },
+        {
+          "table": "label",
+          "from": "label_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [["label_id", "comic_id"]],
+      "createSql": "CREATE TABLE comic_label (comic_id INTEGER, label_id INTEGER, ordering INTEGER, FOREIGN KEY(label_id) REFERENCES label(id) ON DELETE CASCADE, FOREIGN KEY(comic_id) REFERENCES comic(id) ON DELETE CASCADE, PRIMARY KEY(label_id, comic_id))"
+    },
+    "reading_list": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "parentId",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "ordering",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "finished",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "completed",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "1",
+          "primaryKeyOrder": 0
+        },
+        {
+          "name": "manga",
+          "type": "BOOLEAN",
+          "notNull": false,
+          "default": "0",
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "reading_list",
+          "from": "parentId",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE reading_list (id INTEGER PRIMARY KEY, parentId INTEGER, ordering INTEGER DEFAULT 0, name TEXT NOT NULL, finished BOOLEAN DEFAULT 0, completed BOOLEAN DEFAULT 1, manga BOOLEAN DEFAULT 0, FOREIGN KEY(parentId) REFERENCES reading_list(id) ON DELETE CASCADE)"
+    },
+    "comic_reading_list": {
+      "columns": [
+        {
+          "name": "reading_list_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "comic_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 2
+        },
+        {
+          "name": "ordering",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "comic",
+          "from": "comic_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        },
+        {
+          "table": "reading_list",
+          "from": "reading_list_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [["reading_list_id", "comic_id"]],
+      "createSql": "CREATE TABLE comic_reading_list (reading_list_id INTEGER, comic_id INTEGER, ordering INTEGER, FOREIGN KEY(reading_list_id) REFERENCES reading_list(id) ON DELETE CASCADE, FOREIGN KEY(comic_id) REFERENCES comic(id) ON DELETE CASCADE, PRIMARY KEY(reading_list_id, comic_id))"
+    },
+    "default_reading_list": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notNull": true,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [],
+      "uniqueColumns": [],
+      "createSql": "CREATE TABLE default_reading_list (id INTEGER PRIMARY KEY, name TEXT NOT NULL)"
+    },
+    "comic_default_reading_list": {
+      "columns": [
+        {
+          "name": "comic_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 2
+        },
+        {
+          "name": "default_reading_list_id",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 1
+        },
+        {
+          "name": "ordering",
+          "type": "INTEGER",
+          "notNull": false,
+          "default": null,
+          "primaryKeyOrder": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "table": "comic",
+          "from": "comic_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        },
+        {
+          "table": "default_reading_list",
+          "from": "default_reading_list_id",
+          "to": "id",
+          "onDelete": "CASCADE"
+        }
+      ],
+      "uniqueColumns": [["default_reading_list_id", "comic_id"]],
+      "createSql": "CREATE TABLE comic_default_reading_list (comic_id INTEGER, default_reading_list_id INTEGER, ordering INTEGER, FOREIGN KEY(default_reading_list_id) REFERENCES default_reading_list(id) ON DELETE CASCADE, FOREIGN KEY(comic_id) REFERENCES comic(id) ON DELETE CASCADE,PRIMARY KEY(default_reading_list_id, comic_id))"
+    }
+  },
+  "exportFields": [
+    "title",
+    "coverPage",
+    "numPages",
+    "number",
+    "isBis",
+    "count",
+    "volume",
+    "storyArc",
+    "arcNumber",
+    "arcCount",
+    "genere",
+    "writer",
+    "penciller",
+    "inker",
+    "colorist",
+    "letterer",
+    "coverArtist",
+    "date",
+    "publisher",
+    "format",
+    "color",
+    "ageRating",
+    "synopsis",
+    "characters",
+    "notes",
+    "hash",
+    "edited",
+    "read",
+    "hasBeenOpened",
+    "rating",
+    "currentPage",
+    "bookmark1",
+    "bookmark2",
+    "bookmark3",
+    "brightness",
+    "contrast",
+    "gamma",
+    "comicVineID",
+    "lastTimeOpened",
+    "added",
+    "type",
+    "editor",
+    "imprint",
+    "teams",
+    "locations",
+    "series",
+    "alternateSeries",
+    "alternateNumber",
+    "alternateCount",
+    "languageISO",
+    "seriesGroup",
+    "mainCharacterOrTeam",
+    "review",
+    "tags",
+    "imageFiltersJson",
+    "lastTimeImageFiltersSet",
+    "lastTimeCoverSet",
+    "usesExternalCover",
+    "lastTimeMetadataSet"
+  ],
+  "sourceApplicationExecuted": false,
+  "sources": [
+    {
+      "path": "VERSION",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/VERSION",
+      "status": 200,
+      "bytes": 6,
+      "sha256": "7264d2faf8078a0a0ef7210f249bd55b6c3c9d64d0e851d6d67efcfa4d3afa1b",
+      "checkedAt": "2026-10-17T12:16:13.916641+00:00"
+    },
+    {
+      "path": "common/yacreader_global.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/yacreader_global.h",
+      "status": 200,
+      "bytes": 6580,
+      "sha256": "6657ec9176744c88dd0c3fbf0ea939234c01822aac63d689ad431385eb20aed5",
+      "checkedAt": "2026-10-17T12:16:14.047583+00:00"
+    },
+    {
+      "path": "common/yacreader_global.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/yacreader_global.cpp",
+      "status": 200,
+      "bytes": 3923,
+      "sha256": "f1958d755fd7c81c48e34cbc5fca7db79496deb49c3c41d6a98c5516df7b85f2",
+      "checkedAt": "2026-10-17T12:16:13.766007+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/data_base_management.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/data_base_management.cpp",
+      "status": 200,
+      "bytes": 87041,
+      "sha256": "6ad255da353ad148e849d565d30e20c1e815572795f2711846fc4e4967a75eb6",
+      "checkedAt": "2026-10-17T12:16:13.903109+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/data_base_management.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/data_base_management.h",
+      "status": 200,
+      "bytes": 5543,
+      "sha256": "2a4b7ee5d4e5aced70b9c003f0992159d8655a575ab5b17b3b589c86468fa683",
+      "checkedAt": "2026-10-17T12:16:14.335725+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/comic_item.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/comic_item.cpp",
+      "status": 200,
+      "bytes": 676,
+      "sha256": "e27d3bf21d0e8afdbd2e87c0b0ae1ccba31f375a5acdaeff98f8ae28da172fdb",
+      "checkedAt": "2026-10-17T12:16:14.287816+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/comic_item.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/comic_item.h",
+      "status": 200,
+      "bytes": 590,
+      "sha256": "bb94c3803c0e996059435abf00e56ec74da1bc3a22bae80e847b7dca4bd3fc96",
+      "checkedAt": "2026-10-17T12:16:14.306201+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/comic_model.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/comic_model.cpp",
+      "status": 200,
+      "bytes": 46884,
+      "sha256": "fb2b1a3396c0e6146b4a80443104afe1f52109dc2e64e576c8433bcaf648a764",
+      "checkedAt": "2026-10-17T12:16:14.489036+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/comic_query_result_processor.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/comic_query_result_processor.cpp",
+      "status": 200,
+      "bytes": 1888,
+      "sha256": "0e2c22a12762fbde184328d5b68f1d50bfd2d1c3cfe511694066c7eb10fcfafb",
+      "checkedAt": "2026-10-17T12:16:14.674319+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/folder_model.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/folder_model.cpp",
+      "status": 200,
+      "bytes": 30842,
+      "sha256": "22d2cacf183e53dee599eaa37e0c215c20b8253fc81a5a6163059ce5d6dcaf53",
+      "checkedAt": "2026-10-17T12:16:14.703501+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/folder_item.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/folder_item.cpp",
+      "status": 200,
+      "bytes": 2401,
+      "sha256": "5a87f66bbe12082957d346d85f22b0ba58cb6aa8f6e742988c3e854bc9443754",
+      "checkedAt": "2026-10-17T12:16:14.722915+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/reading_list.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/reading_list.cpp",
+      "status": 200,
+      "bytes": 639,
+      "sha256": "3c9ab404c3f23f24e813014c71adae76ee550ceb216525dfcc8bf15f01bc590d",
+      "checkedAt": "2026-10-17T12:16:15.065057+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/reading_list.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/reading_list.h",
+      "status": 200,
+      "bytes": 651,
+      "sha256": "80965168e4de13451700f84b82151dcbf9f9f508bf0b8bd224dcdaf9da0f2bf8",
+      "checkedAt": "2026-10-17T12:16:15.071333+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/reading_list_model.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/reading_list_model.cpp",
+      "status": 200,
+      "bytes": 26011,
+      "sha256": "914aa4a5cfcd726e6b6ec50c0937e6a515415f7f59097970add24d8296ec49ef",
+      "checkedAt": "2026-10-17T12:16:15.091526+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db/reading_list_item.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db/reading_list_item.cpp",
+      "status": 200,
+      "bytes": 6504,
+      "sha256": "6b86e64b2842b690b891ee793e8288ca0aaf6802f821d6937b8cf6378b9322bb",
+      "checkedAt": "2026-10-17T12:16:15.102979+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/qml/InfoRating.qml",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/qml/InfoRating.qml",
+      "status": 200,
+      "bytes": 927,
+      "sha256": "14c6a6e13a78a15f07018b1000e63b57d9d688cdb3ab204f65d166c17c0acdcd",
+      "checkedAt": "2026-10-17T12:16:15.625166+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/yacreader_comic_info_helper.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/yacreader_comic_info_helper.cpp",
+      "status": 200,
+      "bytes": 1081,
+      "sha256": "4e1f95b426eade0a3904fecc89dd6b36f697f70c6e5d40b956d7fe7d77284e7a",
+      "checkedAt": "2026-10-17T12:16:15.653903+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/initial_comic_info_extractor.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/initial_comic_info_extractor.cpp",
+      "status": 200,
+      "bytes": 6388,
+      "sha256": "84ace64a2d288c30d6ed4b96f8ca5c662254051f0513ecde34341addd5877ff4",
+      "checkedAt": "2026-10-17T12:16:15.493558+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/reading_list_management_coordinator.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/reading_list_management_coordinator.cpp",
+      "status": 200,
+      "bytes": 3723,
+      "sha256": "e9f8c6a638e6d455c754927da0620e541f813e1f478083de318a412f3951d722",
+      "checkedAt": "2026-10-17T12:16:15.493558+00:00"
+    },
+    {
+      "path": "common/comic.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/comic.cpp",
+      "status": 200,
+      "bytes": 36714,
+      "sha256": "1f8d8ef547a4a9e55cf59739cd78f4e7ce28050e40b8d5192097985f843854af",
+      "checkedAt": "2026-10-17T12:16:15.916000+00:00"
+    },
+    {
+      "path": "common/comic.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/comic.h",
+      "status": 200,
+      "bytes": 5160,
+      "sha256": "e7f86986e7ae39cf9a0a5926c6cf1b3df716a4f975fb97cdfbd33ff273686ef1",
+      "checkedAt": "2026-10-17T12:16:15.875327+00:00"
+    },
+    {
+      "path": "common/comic_db.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/comic_db.cpp",
+      "status": 200,
+      "bytes": 22612,
+      "sha256": "14c87748ac7c7bd3c712ea6c190ddfefa319f1c7ceaad86407b456c25c130c89",
+      "checkedAt": "2026-10-17T12:16:16.222736+00:00"
+    },
+    {
+      "path": "common/comic_db.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/comic_db.h",
+      "status": 200,
+      "bytes": 9327,
+      "sha256": "b60bea48ed96714f39c441077832c085b93f2cc6bb32664c146b225aeecabec3",
+      "checkedAt": "2026-10-17T12:16:16.041969+00:00"
+    },
+    {
+      "path": "common/library_item.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/library_item.cpp",
+      "status": 200,
+      "bytes": 233,
+      "sha256": "b9ad7817695b093d28e6a1a612dd290e803d021c62f0d85edde77b9abc306ba8",
+      "checkedAt": "2026-10-17T12:16:16.457126+00:00"
+    },
+    {
+      "path": "common/library_item.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/library_item.h",
+      "status": 200,
+      "bytes": 310,
+      "sha256": "81f699179eacb6874604e288f4d22fe8dfa09e975c34c0ba7f2b416d788186b7",
+      "checkedAt": "2026-10-17T12:16:16.514128+00:00"
+    },
+    {
+      "path": "common/bookmarks.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/bookmarks.cpp",
+      "status": 200,
+      "bytes": 3892,
+      "sha256": "255b4be43f45531b56ddc4203b3870f34feab1f5e1cbc409e89c9f1c900e220a",
+      "checkedAt": "2026-10-17T12:16:16.439364+00:00"
+    },
+    {
+      "path": "common/bookmarks.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/bookmarks.h",
+      "status": 200,
+      "bytes": 1891,
+      "sha256": "460c8544ec250883274438b01000530a4c1d92b2848bcda8f3bb075b8c22ed70",
+      "checkedAt": "2026-10-17T12:16:16.800739+00:00"
+    },
+    {
+      "path": "common/pdf_comic.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/pdf_comic.cpp",
+      "status": 200,
+      "bytes": 3057,
+      "sha256": "88d3afc2eabbbce801b6cdfda276521af3cf05fd5c6d36b21d2eb739be5c1da6",
+      "checkedAt": "2026-10-17T12:16:16.823365+00:00"
+    },
+    {
+      "path": "common/pdf_comic.mm",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/pdf_comic.mm",
+      "status": 200,
+      "bytes": 4398,
+      "sha256": "717da6d1181127cabb0565b9de8ce8cb849cf0559e84b8557b1d801b6cc6e3ad",
+      "checkedAt": "2026-10-17T12:16:16.848600+00:00"
+    },
+    {
+      "path": "common/qnaturalsorting.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/qnaturalsorting.cpp",
+      "status": 200,
+      "bytes": 7223,
+      "sha256": "b010c699f306b64399ce668e6e593a43186decbe1b8ddf7f1a9bbea60a7386e2",
+      "checkedAt": "2026-10-17T12:16:16.919601+00:00"
+    },
+    {
+      "path": "common/qnaturalsorting.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/qnaturalsorting.h",
+      "status": 200,
+      "bytes": 2414,
+      "sha256": "3e44b2f7764dd053bdcd040a9d94fed585cfaeb21d631c521bc2a5c7265ce0d5",
+      "checkedAt": "2026-10-17T12:16:17.196869+00:00"
+    },
+    {
+      "path": "compressed_archive/compressed_archive.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/compressed_archive/compressed_archive.cpp",
+      "status": 200,
+      "bytes": 13818,
+      "sha256": "afb22c534ea879ebb6bbcf90a3298edf42304f49f07b7cebe3d8ad6d71a614fc",
+      "checkedAt": "2026-10-17T12:16:17.393928+00:00"
+    },
+    {
+      "path": "compressed_archive/libarchive/compressed_archive.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/compressed_archive/libarchive/compressed_archive.cpp",
+      "status": 200,
+      "bytes": 4180,
+      "sha256": "1d8409edbf3d519c0452cf0587f332a1f7d3c7df3f9a6d70443648180d0cba66",
+      "checkedAt": "2026-10-17T12:16:17.245562+00:00"
+    },
+    {
+      "path": "compressed_archive/unarr/compressed_archive.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/compressed_archive/unarr/compressed_archive.cpp",
+      "status": 200,
+      "bytes": 3054,
+      "sha256": "ceb6262905c45382a76a18aacec79172c1849b04bbbec7dadadb2f9c74b522c5",
+      "checkedAt": "2026-10-17T12:16:17.356716+00:00"
+    },
+    {
+      "path": "tests/natural_sorting_test/main.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/tests/natural_sorting_test/main.cpp",
+      "status": 200,
+      "bytes": 6712,
+      "sha256": "ce929a17edfa638c694ff5097f283954b80d8927233c7738f9b9cf162a2f3c15",
+      "checkedAt": "2026-10-17T12:16:17.592389+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/xml_info_parser.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/xml_info_parser.cpp",
+      "status": 200,
+      "bytes": 7245,
+      "sha256": "5d184771bc56c794a266949136ba0184722ad0004a00ef755fef28de1540a542",
+      "checkedAt": "2026-10-17T12:16:17.631761+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/xml_info_library_scanner.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/xml_info_library_scanner.cpp",
+      "status": 200,
+      "bytes": 3627,
+      "sha256": "f92daba2148abf4223f33c082b7a613494247c93140d20b522988947d2c3c21c",
+      "checkedAt": "2026-10-17T12:16:17.750270+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/library_creator.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/library_creator.cpp",
+      "status": 200,
+      "bytes": 28704,
+      "sha256": "0a2c4dba2b86b8f4f1a3409ddaa059c98d04f59c9eff2e1c452e31cdd1e89cbb",
+      "checkedAt": "2026-10-17T12:16:17.777958+00:00"
+    },
+    {
+      "path": "common/folder.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/folder.cpp",
+      "status": 200,
+      "bytes": 2052,
+      "sha256": "05cfaeed094eb054a6e465267558b731cc66030ed6eecaff82274f346a578a4f",
+      "checkedAt": "2026-10-17T12:16:17.989787+00:00"
+    },
+    {
+      "path": "common/epub_page_index.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/common/epub_page_index.cpp",
+      "status": 200,
+      "bytes": 16613,
+      "sha256": "e943d93aecbadcf7f1fd40bfc4370f84d888a5b1357602cc81a8fe93b9a8a8d2",
+      "checkedAt": "2026-10-17T12:16:18.026751+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db_helper.cpp",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db_helper.cpp",
+      "status": 200,
+      "bytes": 94914,
+      "sha256": "aae37c5b04ba79f587e583c77b1d19648ec0ea8c6e5e83bc458ea8e196634cfb",
+      "checkedAt": "2026-10-17T12:16:18.133950+00:00"
+    },
+    {
+      "path": "YACReaderLibrary/db_helper.h",
+      "url": "https://raw.githubusercontent.com/YACReader/yacreader/28f92f4d8bdbb7170f6002e00bed7503356eea03/YACReaderLibrary/db_helper.h",
+      "status": 200,
+      "bytes": 8248,
+      "sha256": "2b9363cccfd6053da198575df5c1da5938f9e73b996136ff4ed9119f290169ae",
+      "checkedAt": "2026-10-17T12:16:18.157347+00:00"
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "scope": "Design research using official schema, pinned public source code and anonymous GET requests only. No credentials, account writes, private collection data or production extension execution were used. Source-code behavior is not an authenticated production round trip.",
+  "schema": {
+    "url": "https://raw.githubusercontent.com/bangumi/api/master/open-api/v0.yaml",
+    "observedAt": "2026-10-13T04:46:07.496Z",
+    "status": 200,
+    "sha256": "5a7ddb7ddec132293b1aa08102e6ac63e31b2925574658e927d6f931df2519da",
+    "commit": "a7055f2dca7286d6963aaa7928345eeca6293e2b",
+    "fixedUrl": "https://raw.githubusercontent.com/bangumi/api/a7055f2dca7286d6963aaa7928345eeca6293e2b/open-api/v0.yaml"
+  },
+  "sources": [
+    {
+      "repo": "api",
+      "path": "docs-raw/How-to-Auth.md",
+      "url": "https://raw.githubusercontent.com/bangumi/api/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md",
+      "commit": "65d29cff2331e08c0110d30d515f7f1b6488f845",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.840Z",
+      "sha256": "c8c0495c5fa3090b1a1c418320974dd9f087b05e22c39571fa20c4844c9d21af",
+      "lines": 170
+    },
+    {
+      "repo": "server",
+      "path": "ctrl/update_subject_collection.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/ctrl/update_subject_collection.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.738Z",
+      "sha256": "70202dd9d39fa49b967cc272328110735beab17095ab5a922a11b271c5b8791e",
+      "lines": 157
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/user/post_subject_collection.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/user/post_subject_collection.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.719Z",
+      "sha256": "113e0df6f1d0cb15f8f77620a80667e93ee79589fadd31a26156bb4158bbe9df",
+      "lines": 59
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/user/patch_subject_collection.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/user/patch_subject_collection.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.694Z",
+      "sha256": "18ae2a6195fd08c4419ed3647b6e9d79ed28a548c941f2e1cd5a6fbf9b038f1b",
+      "lines": 117
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/user/update_episode_collection.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/user/update_episode_collection.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.769Z",
+      "sha256": "4985ed1b88380ef7523c6cbdfce3f1d9866933d4be712279444d2e25446022b5",
+      "lines": 123
+    },
+    {
+      "repo": "server",
+      "path": "web/req/collection.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/req/collection.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.722Z",
+      "sha256": "9593fad066155fcfc622b4a7f10e4dd95c2e6d417f57ddf0115f1884ea55438b",
+      "lines": 96
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/user/list_character_collections.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/user/list_character_collections.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.737Z",
+      "sha256": "467610be9cd51b56f7cc6476298156ce9ac785dd5d53ee42c9e0db6c152f4460",
+      "lines": 104
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/user/list_person_collections.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/user/list_person_collections.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.703Z",
+      "sha256": "0b1d2267e016d54ea08b2d47aa1017035893ce833b1db164ed8f626d1b4ffbfa",
+      "lines": 103
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/character/collect.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/character/collect.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.891Z",
+      "sha256": "3abb84502a000754c80b2d8970d45ce930123846707faf8f5607e898e3b7f395",
+      "lines": 91
+    },
+    {
+      "repo": "server",
+      "path": "web/handler/person/collect.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/handler/person/collect.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:42:30.716Z",
+      "sha256": "f4a8ce5fe81a8db510b606955c9ed680cd14b3fd234f703a4821a71f8fca2d74",
+      "lines": 93
+    },
+    {
+      "repo": "server",
+      "path": "ctrl/update_episode_progress.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/ctrl/update_episode_progress.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:43:17.015Z",
+      "sha256": "301ef0e625a691b0ddb653763fa498b0e3c291dc53267f0a22fbb0555142e520",
+      "lines": 182
+    },
+    {
+      "repo": "server",
+      "path": "internal/collections/domain.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/internal/collections/domain.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:43:17.041Z",
+      "sha256": "26cd81ef337556900ca7e1d2ae7de5d19c51e4adb43eeb0fcf7b3baa8b9b7120",
+      "lines": 114
+    },
+    {
+      "repo": "server",
+      "path": "internal/collections/domain/collection/subject.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/internal/collections/domain/collection/subject.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:43:17.013Z",
+      "sha256": "612476a124f29cbbdecf8ccf56aaf7435a6d03629764d6bd45268a03d79d0ae8",
+      "lines": 173
+    },
+    {
+      "repo": "server",
+      "path": "internal/collections/infra/mysql_repo.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/internal/collections/infra/mysql_repo.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:43:17.017Z",
+      "sha256": "acdc1cd4ccf16a23a5cfe59c238f2ddc768149d0938ca4248ccea2d0c75b99de",
+      "lines": 956
+    },
+    {
+      "repo": "server",
+      "path": "web/routes.go",
+      "url": "https://raw.githubusercontent.com/bangumi/server/4223d14057fea5078595e40470f8602d3301abb5/web/routes.go",
+      "commit": "4223d14057fea5078595e40470f8602d3301abb5",
+      "status": 200,
+      "observedAt": "2026-10-13T08:43:17.015Z",
+      "sha256": "2b3153a2ab68af0b050c585f0fb7d17f48b0d6c35100a26a43d0281ce0b9c687",
+      "lines": 137
+    }
+  ],
+  "observations": {
+    "subjectCollections": {
+      "acceptedTypes": [1, 2, 3, 4, 5],
+      "ratingRange": [0, 10],
+      "zeroRatingMeans": "unrated",
+      "independentFavoriteField": false,
+      "completionDateField": false,
+      "optionalPatchFields": [
+        "type",
+        "rate",
+        "ep_status",
+        "vol_status",
+        "comment",
+        "private",
+        "tags"
+      ],
+      "newCollectionDefaultTypeInSource": 3,
+      "newCollectionDefaultPrivateInSource": false,
+      "ratingSubmissionWhileWishInSource": 0,
+      "documentedPostStatus": 204,
+      "postHandlerStatusInSource": 202,
+      "authenticatedRoundTrip": false
+    },
+    "episodeCollections": {
+      "acceptedTypes": [0, 1, 2, 3],
+      "doneType": 2,
+      "noneType": 0,
+      "requiresCollectedParentInSource": true,
+      "recalculatesParentEpStatusInSource": true,
+      "listMaximumLimit": 1000,
+      "subjectStateChangedByExaminedEpisodeController": false
+    },
+    "bookCounts": {
+      "subjectType": 1,
+      "fields": ["ep_status", "vol_status"],
+      "minimum": 0,
+      "perPartIdentityMappingReturned": false,
+      "continuousPrefixSemanticsProven": false
+    },
+    "personAndCharacterCollections": {
+      "schemaMethods": ["POST", "DELETE"],
+      "registeredWriteMethodsInSource": ["POST"],
+      "deleteRoutesCommentedOutInSource": true,
+      "listPaginationParametersAbsentFromExaminedSchema": true,
+      "listPaginationObservedWithAnonymousGet": true,
+      "writeMethodsDeploymentVerified": false
+    },
+    "auth": {
+      "officialGuideGrantTypes": ["authorization_code", "refresh_token"],
+      "guideCodeLifetimeSeconds": 60,
+      "guideRequiresClientSecret": true,
+      "v0TokenTransport": "Authorization header",
+      "connectionAndRefreshVerified": false
+    }
+  },
+  "requests": [
+    {
+      "observedAt": "2026-10-13T08:46:58.365Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/me"
+      },
+      "status": 401,
+      "contentType": "application/json",
+      "responseKeys": ["title", "details", "request_id", "description"]
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.402Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/-/collections/400602/episodes?limit=1&offset=0"
+      },
+      "status": 401,
+      "contentType": "application/json",
+      "responseKeys": ["title", "details", "request_id", "description"]
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.402Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/-/collections/-/episodes/1227087"
+      },
+      "status": 401,
+      "contentType": "application/json",
+      "responseKeys": ["title", "details", "request_id", "description"]
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.403Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/sai/collections/-/characters?limit=1&offset=0"
+      },
+      "status": 200,
+      "contentType": "application/json",
+      "responseProjection": {
+        "total": 45,
+        "limit": 1,
+        "offset": 0,
+        "itemCount": 1,
+        "items": [
+          {
+            "keys": ["id", "type", "name", "images", "created_at"],
+            "id": 131623
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.403Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/sai/collections/-/characters?limit=1&offset=1"
+      },
+      "status": 200,
+      "contentType": "application/json",
+      "responseProjection": {
+        "total": 45,
+        "limit": 1,
+        "offset": 1,
+        "itemCount": 1,
+        "items": [
+          {
+            "keys": ["id", "type", "name", "images", "created_at"],
+            "id": 17572
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.404Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/sai/collections/-/persons?limit=1&offset=0"
+      },
+      "status": 200,
+      "contentType": "application/json",
+      "responseProjection": {
+        "total": 59,
+        "limit": 1,
+        "offset": 0,
+        "itemCount": 1,
+        "items": [
+          {
+            "keys": ["id", "type", "name", "images", "created_at"],
+            "id": 9512
+          }
+        ]
+      }
+    },
+    {
+      "observedAt": "2026-10-13T08:46:58.404Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/users/sai/collections/-/persons?limit=1&offset=1"
+      },
+      "status": 200,
+      "contentType": "application/json",
+      "responseProjection": {
+        "total": 59,
+        "limit": 1,
+        "offset": 1,
+        "itemCount": 1,
+        "items": [
+          {
+            "keys": ["id", "type", "name", "images", "created_at"],
+            "id": 1040
+          }
+        ]
+      }
+    }
+  ],
+  "routeReadProbes": [
+    {
+      "observedAt": "2026-10-13T08:48:19.693Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/characters/10596/collect"
+      },
+      "status": 404,
+      "allow": null,
+      "contentType": "application/json"
+    },
+    {
+      "observedAt": "2026-10-13T08:48:19.731Z",
+      "request": {
+        "method": "GET",
+        "url": "https://api.bgm.tv/v0/persons/603/collect"
+      },
+      "status": 404,
+      "allow": null,
+      "contentType": "application/json"
+    }
+  ],
+  "limitations": [
+    "Public pagination probes cover two records in each list, not a complete account export.",
+    "GET 404 on a collect route does not establish availability of POST or DELETE.",
+    "Creation defaults, Wish rating behavior and side effects were inspected in source, not exercised against an authenticated account.",
+    "Book count identity and order semantics remain unproven."
+  ]
+}

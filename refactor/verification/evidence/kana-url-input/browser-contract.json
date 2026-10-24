@@ -1,0 +1,604 @@
+{
+  "checkedAt": "2026-10-19T17:07:36.872Z",
+  "electron": "44.5.1",
+  "chromium": "152.0.7977.130",
+  "externalRequests": 0,
+  "cancelledResponses": 3,
+  "requests": [
+    {
+      "side": "page",
+      "name": "stable",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "stable",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "ignored",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "weak",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "weak",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "other",
+      "name": "cors-hidden",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-hidden",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "other",
+      "name": "cors-list",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-list",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "other",
+      "name": "cors-visible",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-visible",
+      "method": "OPTIONS",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": "if-match",
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "other",
+      "name": "cors-visible",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-self-list",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-self-list",
+      "method": "OPTIONS",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": "if-match",
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "other",
+      "name": "cors-self-list",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-credentials",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "other",
+      "name": "cors-credentials",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "page",
+      "name": "gzip",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "gzip",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "page",
+      "name": "changed",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "changed",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "redirect",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "a",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "redirect",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"same-tag\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "b",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"same-tag\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "wrong-range",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "wrong-range",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "short-body",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "short-body",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "missing-etag",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "missing-etag",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "ignored-later",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "ignored-later",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "gzip-limit",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "gzip-limit",
+      "method": "GET",
+      "range": null,
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "gzip, deflate, br, zstd"
+    },
+    {
+      "side": "page",
+      "name": "slow",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "cancel-range",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "cancel-range",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "cancel-range",
+      "method": "GET",
+      "range": "bytes=32-39",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "dispose-range",
+      "method": "GET",
+      "range": "bytes=0-15",
+      "ifMatch": null,
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    },
+    {
+      "side": "page",
+      "name": "dispose-range",
+      "method": "GET",
+      "range": "bytes=40-51",
+      "ifMatch": "\"v1\"",
+      "requestedHeaders": null,
+      "acceptEncoding": "identity"
+    }
+  ],
+  "networkErrors": [
+    {
+      "name": "gzip",
+      "error": "net::ERR_CONTENT_DECODING_FAILED"
+    },
+    {
+      "name": "gzip-limit",
+      "error": "net::ERR_CONTENT_DECODING_FAILED"
+    },
+    {
+      "name": "slow",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "name": "cancel-range",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "name": "dispose-range",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "results": [
+    {
+      "name": "stable",
+      "mode": "range",
+      "size": 96,
+      "metadata": {
+        "responseType": "basic",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": true,
+        "codingVisibilityProven": true,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "ignored",
+      "mode": "snapshot",
+      "size": 96,
+      "metadata": {
+        "responseType": "basic",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": false,
+        "codingVisibilityProven": true,
+        "contentEncoding": null,
+        "contentLength": "96"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "weak",
+      "mode": "snapshot",
+      "size": 96,
+      "metadata": {
+        "responseType": "basic",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": true,
+        "codingVisibilityProven": true,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "cors-hidden",
+      "mode": "snapshot",
+      "size": 96,
+      "metadata": {
+        "responseType": "cors",
+        "probeTransportFailed": false,
+        "etagReadable": false,
+        "rangeReadable": false,
+        "codingVisibilityProven": false,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "cors-list",
+      "mode": "snapshot",
+      "size": 96,
+      "metadata": {
+        "responseType": "cors",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": true,
+        "codingVisibilityProven": false,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "cors-visible",
+      "mode": "range",
+      "size": 96,
+      "metadata": {
+        "responseType": "cors",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": true,
+        "codingVisibilityProven": true,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "cors-self-list",
+      "mode": "range",
+      "size": 96,
+      "metadata": {
+        "responseType": "cors",
+        "probeTransportFailed": false,
+        "etagReadable": true,
+        "rangeReadable": true,
+        "codingVisibilityProven": true,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "cors-credentials",
+      "mode": "snapshot",
+      "size": 96,
+      "metadata": {
+        "responseType": "cors",
+        "probeTransportFailed": false,
+        "etagReadable": false,
+        "rangeReadable": false,
+        "codingVisibilityProven": false,
+        "contentEncoding": null,
+        "contentLength": "16"
+      },
+      "openSignalLifetimePassed": true,
+      "isolatedReadBufferPassed": true
+    },
+    {
+      "name": "gzip",
+      "mode": "snapshot",
+      "fileBytes": 128,
+      "httpContentLength": 24,
+      "probeTransportFailed": true
+    },
+    {
+      "name": "changed",
+      "failed": "sourceChanged",
+      "newRepresentationNotAdopted": true
+    },
+    {
+      "name": "redirect",
+      "failed": "sourceChanged",
+      "newRepresentationNotAdopted": true
+    },
+    {
+      "name": "wrong-range",
+      "failed": "readFailed",
+      "notMisclassifiedAsSourceChanged": true
+    },
+    {
+      "name": "short-body",
+      "failed": "readFailed",
+      "notMisclassifiedAsSourceChanged": true
+    },
+    {
+      "name": "missing-etag",
+      "failed": "readFailed",
+      "notMisclassifiedAsSourceChanged": true
+    },
+    {
+      "name": "ignored-later",
+      "failed": "readFailed",
+      "notMisclassifiedAsSourceChanged": true
+    },
+    {
+      "name": "decoded-snapshot-budget",
+      "failed": "resourceLimit",
+      "partialSourceNotPublished": true
+    },
+    {
+      "name": "cancel-snapshot",
+      "wroteBeforeCancellation": true,
+      "failed": "cancelled"
+    },
+    {
+      "name": "cancel-range",
+      "failed": "cancelled",
+      "pendingReadSettled": true
+    },
+    {
+      "name": "dispose-range",
+      "failed": "closed",
+      "pendingReadSettled": true
+    }
+  ],
+  "storage": {
+    "created": 8,
+    "writes": 7,
+    "removed": 8,
+    "live": 0
+  },
+  "opfsUsed": true,
+  "nodeInRenderer": false,
+  "prototypeOnly": true,
+  "readerImplementationExecuted": false,
+  "browserSourceSha256": "8e5f5246979d04f10aee3044015b55871408fc852e8dff0bcd062a4486baf239",
+  "runtimeReceiptSha256": "1bf0f3c2dd4931715504575dc71be7b231a2a304cb40783ad43dcba77abeedb2",
+  "sourceHashes": {
+    "browser.cjs": "8e5f5246979d04f10aee3044015b55871408fc852e8dff0bcd062a4486baf239",
+    "probe.mjs": "f06d6b2ba44275697a4a4ed1dacf863d5110e2901c0fe1818f0094fe4e1b7115",
+    "run.py": "78e214babddda2c55efe48db67870e31c45b4ca09d940065b50eabd8dfbf5b36"
+  }
+}

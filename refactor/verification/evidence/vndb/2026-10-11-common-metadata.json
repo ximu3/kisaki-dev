@@ -1,0 +1,1619 @@
+[
+  {
+    "name": "vn-common-fields",
+    "observedAt": "2026-10-11T22:10:42.3344895+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/vn",
+    "request": {
+      "filters": ["id", "=", "v17"],
+      "results": 1,
+      "fields": "title,alttitle,titles{lang,title,latin,main,official},aliases,olang,languages,released,platforms,devstatus,description,image{id,url,dims,sexual,violence},screenshots{id,url,dims,sexual,violence},extlinks{url,label,name,id},length,length_minutes,length_votes,average,rating,votecount"
+    },
+    "status": 200,
+    "descriptionInspection": [
+      {
+        "id": "v17",
+        "hasDescription": true,
+        "characters": 638,
+        "sha256": "0935c75f38527bd767a281b0fa774fcd5b7b954b9b646dade570ca9fc41587a4",
+        "formatTags": ["url"],
+        "spoilerOpeningTags": 0
+      }
+    ],
+    "omittedResponseFields": ["results[].description"],
+    "responseExcerpt": {
+      "more": false,
+      "results": [
+        {
+          "aliases": ["Ever 17", "Ebaa Sebuntiin", "エバー・セブンティーン", "E17"],
+          "alttitle": null,
+          "average": 84.5,
+          "devstatus": 0,
+          "extlinks": [
+            {
+              "id": "Ever 17: The Out of Infinity",
+              "label": "Wikipedia (en)",
+              "name": "enwiki",
+              "url": "https://en.wikipedia.org/wiki/Ever_17:_The_Out_of_Infinity"
+            },
+            {
+              "id": "Ever17 -the out of infinity-",
+              "label": "Wikipedia (ja)",
+              "name": "jawiki",
+              "url": "https://ja.wikipedia.org/wiki/Ever17_-the_out_of_infinity-"
+            },
+            {
+              "id": "954766",
+              "label": "Wikidata",
+              "name": "wikidata",
+              "url": "https://www.wikidata.org/wiki/Q954766"
+            },
+            {
+              "id": 14525,
+              "label": "MobyGames",
+              "name": "mobygames_game",
+              "url": "https://www.mobygames.com/game/14525/"
+            },
+            {
+              "id": "931349",
+              "label": "GameFAQs",
+              "name": "gamefaqs_game",
+              "url": "https://gamefaqs.gamespot.com/-/931349-"
+            },
+            {
+              "id": "563076",
+              "label": "GameFAQs",
+              "name": "gamefaqs_game",
+              "url": "https://gamefaqs.gamespot.com/-/563076-"
+            },
+            {
+              "id": "582206",
+              "label": "GameFAQs",
+              "name": "gamefaqs_game",
+              "url": "https://gamefaqs.gamespot.com/-/582206-"
+            },
+            {
+              "id": "3217",
+              "label": "HowLongToBeat",
+              "name": "howlongtobeat",
+              "url": "http://howlongtobeat.com/game.php?id=3217"
+            },
+            {
+              "id": "ever-17-the-out-of-infinity",
+              "label": "IGDB",
+              "name": "igdb_game",
+              "url": "https://www.igdb.com/games/ever-17-the-out-of-infinity"
+            },
+            {
+              "id": "Ever_17:_The_Out_of_Infinity",
+              "label": "PCGamingWiki",
+              "name": "pcgamingwiki",
+              "url": "https://www.pcgamingwiki.com/wiki/Ever_17:_The_Out_of_Infinity"
+            },
+            {
+              "id": "Ever_17:_The_Out_of_Infinity_(Remaster)",
+              "label": "PCGamingWiki",
+              "name": "pcgamingwiki",
+              "url": "https://www.pcgamingwiki.com/wiki/Ever_17:_The_Out_of_Infinity_(Remaster)"
+            },
+            {
+              "id": 6763,
+              "label": "Wine AppDB",
+              "name": "wine",
+              "url": "https://appdb.winehq.org/appview.php?iAppId=6763"
+            }
+          ],
+          "id": "v17",
+          "image": {
+            "dims": [1080, 1529],
+            "id": "cv79412",
+            "sexual": 0,
+            "url": "https://t.vndb.org/cv/12/79412.jpg",
+            "violence": 0
+          },
+          "languages": ["en", "es", "ja", "ko", "ru", "uk", "zh-Hans", "zh-Hant"],
+          "length": 4,
+          "length_minutes": 1987,
+          "length_votes": 201,
+          "olang": "ja",
+          "platforms": [
+            "win",
+            "lin",
+            "mac",
+            "ios",
+            "and",
+            "psp",
+            "ps2",
+            "drc",
+            "vnd",
+            "web",
+            "mob"
+          ],
+          "rating": 84.5,
+          "released": "2002-08-29",
+          "screenshots": [
+            {
+              "dims": [800, 600],
+              "id": "sf190",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/90/190.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf191",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/91/191.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf231",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/31/231.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf233",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/33/233.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf234",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/34/234.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf235",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/35/235.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf273",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/73/273.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf274",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/74/274.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf275",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/75/275.jpg",
+              "violence": 0
+            },
+            {
+              "dims": [800, 600],
+              "id": "sf419",
+              "sexual": 0,
+              "url": "https://t.vndb.org/sf/19/419.jpg",
+              "violence": 0
+            }
+          ],
+          "title": "Ever17 -the out of infinity-",
+          "titles": [
+            {
+              "lang": "en",
+              "latin": null,
+              "main": false,
+              "official": true,
+              "title": "Ever17 -out of infinity-"
+            },
+            {
+              "lang": "ja",
+              "latin": null,
+              "main": true,
+              "official": true,
+              "title": "Ever17 -the out of infinity-"
+            },
+            {
+              "lang": "zh-Hans",
+              "latin": "Shikong Lunhui",
+              "main": false,
+              "official": true,
+              "title": "时空轮回"
+            },
+            {
+              "lang": "zh-Hant",
+              "latin": "Shiguang de Jiban",
+              "main": false,
+              "official": true,
+              "title": "時光的羈絆"
+            }
+          ],
+          "votecount": 8787
+        }
+      ]
+    }
+  },
+  {
+    "name": "character-common-fields",
+    "observedAt": "2026-10-11T14:44:38.9827481+00:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/character",
+    "request": {
+      "filters": ["or", ["id", "=", "c15"], ["id", "=", "c42"]],
+      "results": 2,
+      "fields": "name,original,aliases,description,age,birthday,blood_type,sex,gender,height,weight,bust,waist,hips,cup,image{id,url,dims,sexual,violence},vns{id,role,spoiler,release{id}},traits{id,spoiler,lie,sexual}"
+    },
+    "status": 200,
+    "descriptionInspection": [
+      {
+        "id": "c15",
+        "hasDescription": true,
+        "characters": 685,
+        "sha256": "9060f104ba827f093b71aecb5495a569eff5e3d55ede65f1715311a509a6a985",
+        "formatTags": ["url"],
+        "spoilerOpeningTags": 0
+      },
+      {
+        "id": "c42",
+        "hasDescription": true,
+        "characters": 812,
+        "sha256": "4c881b2ea880b25898d7ae1c492198b9c95acc7a6d9fddb41aeb06b87ff2eafd",
+        "formatTags": ["spoiler", "url"],
+        "spoilerOpeningTags": 1
+      }
+    ],
+    "omittedResponseFields": ["results[].description"],
+    "responseExcerpt": {
+      "more": false,
+      "results": [
+        {
+          "age": 17,
+          "aliases": [],
+          "birthday": null,
+          "blood_type": null,
+          "bust": null,
+          "cup": null,
+          "gender": ["m", "m"],
+          "height": 167,
+          "hips": null,
+          "id": "c15",
+          "image": {
+            "dims": [208, 300],
+            "id": "ch17",
+            "sexual": 0,
+            "url": "https://t.vndb.org/ch/17/17.jpg",
+            "violence": 0
+          },
+          "name": "Emiya Shirou",
+          "original": "衛宮 士郎",
+          "sex": ["m", "m"],
+          "traits": [
+            {
+              "id": "i10",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i29",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i30",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i54",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i55",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i59",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i64",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i66",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i68",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i70",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i72",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i74",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i75",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i76",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i79",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i82",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i83",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i85",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i86",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i87",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i89",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i90",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i91",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i102",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i104",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i107",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i108",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i143",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i181",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i199",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i204",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i209",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i227",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i256",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i270",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i313",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i318",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i343",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i405",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i412",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i420",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i421",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i437",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i441",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i443",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i444",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i485",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i515",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i553",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i567",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i575",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i619",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i628",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i635",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i667",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i685",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i725",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i759",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i764",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i767",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i771",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i822",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i916",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1021",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1067",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1243",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1252",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1280",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1301",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i1342",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 1
+            },
+            {
+              "id": "i1495",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1517",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1551",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1633",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1637",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1638",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 1
+            },
+            {
+              "id": "i1641",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1680",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i1689",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1690",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1691",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1692",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1693",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1694",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i1826",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 0
+            },
+            {
+              "id": "i2177",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i2565",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i2967",
+              "lie": false,
+              "sexual": true,
+              "spoiler": 1
+            },
+            {
+              "id": "i3085",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i3089",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i3119",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i3142",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i3144",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i3159",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i3261",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i3326",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i3422",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            }
+          ],
+          "vns": [
+            {
+              "id": "v11",
+              "release": null,
+              "role": "main",
+              "spoiler": 0
+            },
+            {
+              "id": "v50",
+              "release": null,
+              "role": "main",
+              "spoiler": 0
+            }
+          ],
+          "waist": null,
+          "weight": 58
+        },
+        {
+          "age": null,
+          "aliases": [],
+          "birthday": [12, 28],
+          "blood_type": "b",
+          "bust": null,
+          "cup": null,
+          "gender": ["m", "m"],
+          "height": 193,
+          "hips": null,
+          "id": "c42",
+          "image": {
+            "dims": [208, 300],
+            "id": "ch44",
+            "sexual": 0,
+            "url": "https://t.vndb.org/ch/44/44.jpg",
+            "violence": 0
+          },
+          "name": "Kotomine Kirei",
+          "original": "言峰 綺礼",
+          "sex": ["m", "m"],
+          "traits": [
+            {
+              "id": "i6",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i25",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i27",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i29",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i30",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i53",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i59",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i66",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i68",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i79",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i84",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i87",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i120",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i122",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i136",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i159",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i162",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i196",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i203",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i239",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i245",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i256",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i288",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i317",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i330",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i358",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i385",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i407",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i418",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i468",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i503",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i619",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i637",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i641",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i798",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i819",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i922",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i993",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1009",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1033",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1058",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i1095",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1243",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i1249",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1408",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i1509",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i2773",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i2934",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 1
+            },
+            {
+              "id": "i3142",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i3160",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i3347",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 0
+            },
+            {
+              "id": "i3937",
+              "lie": false,
+              "sexual": false,
+              "spoiler": 2
+            },
+            {
+              "id": "i4148",
+              "lie": true,
+              "sexual": false,
+              "spoiler": 1
+            }
+          ],
+          "vns": [
+            {
+              "id": "v11",
+              "release": null,
+              "role": "primary",
+              "spoiler": 0
+            },
+            {
+              "id": "v50",
+              "release": null,
+              "role": "appears",
+              "spoiler": 2
+            }
+          ],
+          "waist": null,
+          "weight": 82
+        }
+      ]
+    }
+  },
+  {
+    "name": "staff-common-fields",
+    "observedAt": "2026-10-11T22:10:43.8661624+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/staff",
+    "request": {
+      "filters": ["and", ["id", "=", "s81"], ["ismain", "=", 1]],
+      "results": 1,
+      "fields": "aid,ismain,name,original,lang,gender,aliases{aid,name,latin,ismain},description,extlinks{url,label,name,id}"
+    },
+    "status": 200,
+    "descriptionInspection": [
+      {
+        "id": "s81",
+        "hasDescription": true,
+        "characters": 609,
+        "sha256": "8c78aa576fae3d9c56833eb16a2ca45a2f53e1081e8bef1515fcc550d76913e3",
+        "formatTags": ["url"],
+        "spoilerOpeningTags": 0
+      }
+    ],
+    "omittedResponseFields": ["results[].description"],
+    "responseExcerpt": {
+      "more": false,
+      "results": [
+        {
+          "aid": 158,
+          "aliases": [
+            {
+              "aid": 11409,
+              "ismain": false,
+              "latin": "Komekiri Yui",
+              "name": "米霧 唯"
+            },
+            {
+              "aid": 11554,
+              "ismain": false,
+              "latin": "Koiwai Sayuri",
+              "name": "小岩井 小百合"
+            },
+            {
+              "aid": 1158,
+              "ismain": false,
+              "latin": "Konatsu Sumire",
+              "name": "小夏 スミレ"
+            },
+            {
+              "aid": 1384,
+              "ismain": false,
+              "latin": "Shirakawa Hibiki",
+              "name": "白河 響"
+            },
+            {
+              "aid": 158,
+              "ismain": true,
+              "latin": "Asakawa Yuu",
+              "name": "浅川 悠"
+            },
+            {
+              "aid": 1769,
+              "ismain": false,
+              "latin": "Haruka",
+              "name": "はるか"
+            },
+            {
+              "aid": 1770,
+              "ismain": false,
+              "latin": "Hazakura Ryouko",
+              "name": "羽桜 涼子"
+            },
+            {
+              "aid": 1771,
+              "ismain": false,
+              "latin": "Shinomiya Kiyomi",
+              "name": "篠宮 聖美"
+            },
+            {
+              "aid": 1947,
+              "ismain": false,
+              "latin": "Munekawa Kyou",
+              "name": "宗川 梗"
+            },
+            {
+              "aid": 2012,
+              "ismain": false,
+              "latin": "Fujimi Kiriko",
+              "name": "藤見 桐子"
+            },
+            {
+              "aid": 2013,
+              "ismain": false,
+              "latin": "Hongou Noriko",
+              "name": "木柳 のり子"
+            },
+            {
+              "aid": 2014,
+              "ismain": false,
+              "latin": "Nakagawa Ayako",
+              "name": "中川 彩子"
+            },
+            {
+              "aid": 2015,
+              "ismain": false,
+              "latin": "Takamine Mutsumi",
+              "name": "高嶺 睦美"
+            },
+            {
+              "aid": 2016,
+              "ismain": false,
+              "latin": "Ureshino Sachiko",
+              "name": "嬉野 祥子"
+            },
+            {
+              "aid": 2017,
+              "ismain": false,
+              "latin": "Yuzuki Azusa",
+              "name": "柚木 あずさ"
+            },
+            {
+              "aid": 2019,
+              "ismain": false,
+              "latin": "Kamisaka Rio",
+              "name": "上坂 莉緒"
+            },
+            {
+              "aid": 2021,
+              "ismain": false,
+              "latin": "Koga Yuki",
+              "name": "古閑 ゆき"
+            },
+            {
+              "aid": 2023,
+              "ismain": false,
+              "latin": "Naoshima Fuji",
+              "name": "直島 ふじ"
+            },
+            {
+              "aid": 2024,
+              "ismain": false,
+              "latin": "Niuchi Kiri",
+              "name": "新内 紀里"
+            },
+            {
+              "aid": 30444,
+              "ismain": false,
+              "latin": "Mizusawa Tsukina",
+              "name": "水沢 月菜"
+            },
+            {
+              "aid": 3189,
+              "ismain": false,
+              "latin": "Fuyumiya Mea",
+              "name": "冬宮 メア"
+            },
+            {
+              "aid": 4794,
+              "ismain": false,
+              "latin": "Akisora Mai",
+              "name": "秋空 真衣"
+            },
+            {
+              "aid": 4795,
+              "ismain": false,
+              "latin": "Hano Rin",
+              "name": "巴乃 凛"
+            },
+            {
+              "aid": 4796,
+              "ismain": false,
+              "latin": "Yamabuki Yuna",
+              "name": "山吹 結菜"
+            },
+            {
+              "aid": 883,
+              "ismain": false,
+              "latin": "Urakasumi Shino",
+              "name": "浦霞 紫乃"
+            },
+            {
+              "aid": 969,
+              "ismain": false,
+              "latin": "Kamishiro Misaki",
+              "name": "神代 岬"
+            },
+            {
+              "aid": 970,
+              "ismain": false,
+              "latin": "Sumitani Naomi",
+              "name": "隅谷 直海"
+            },
+            {
+              "aid": 9849,
+              "ismain": false,
+              "latin": "Kamiwada Mito",
+              "name": "上和田 美都"
+            }
+          ],
+          "extlinks": [
+            {
+              "id": "https://profcard.info/u/TyAVHXepf5Zqdq6lsmc3T0IEKCe2",
+              "label": "Official website",
+              "name": "website",
+              "url": "https://profcard.info/u/TyAVHXepf5Zqdq6lsmc3T0IEKCe2"
+            },
+            {
+              "id": "Yū Asakawa",
+              "label": "Wikipedia (en)",
+              "name": "enwiki",
+              "url": "https://en.wikipedia.org/wiki/Yū_Asakawa"
+            },
+            {
+              "id": "浅川悠",
+              "label": "Wikipedia (ja)",
+              "name": "jawiki",
+              "url": "https://ja.wikipedia.org/wiki/浅川悠"
+            },
+            {
+              "id": "1323156",
+              "label": "Wikidata",
+              "name": "wikidata",
+              "url": "https://www.wikidata.org/wiki/Q1323156"
+            },
+            {
+              "id": "Julia320",
+              "label": "Xitter",
+              "name": "twitter",
+              "url": "https://x.com/Julia320"
+            },
+            {
+              "id": "82",
+              "label": "AniDB",
+              "name": "anidb",
+              "url": "https://anidb.net/cr82"
+            },
+            {
+              "id": "eb08db82-6bde-440c-9259-fee5fa95f68f",
+              "label": "MusicBrainz",
+              "name": "musicbrainz_artist",
+              "url": "https://musicbrainz.org/artist/eb08db82-6bde-440c-9259-fee5fa95f68f"
+            },
+            {
+              "id": "903",
+              "label": "VGMdb",
+              "name": "vgmdb_artist",
+              "url": "https://vgmdb.net/artist/903"
+            },
+            {
+              "id": "680331",
+              "label": "Discogs",
+              "name": "discogs_artist",
+              "url": "https://www.discogs.com/artist/680331"
+            },
+            {
+              "id": "4476234",
+              "label": "Discogs",
+              "name": "discogs_artist",
+              "url": "https://www.discogs.com/artist/4476234"
+            },
+            {
+              "id": "7521",
+              "label": "ErogameScape",
+              "name": "egs_creator",
+              "url": "https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/creater.php?creater=7521"
+            },
+            {
+              "id": "YuuAsakawa320",
+              "label": "Youtube",
+              "name": "youtube",
+              "url": "https://www.youtube.com/@YuuAsakawa320"
+            },
+            {
+              "id": "yuu_asakawa_insta",
+              "label": "Instagram",
+              "name": "instagram",
+              "url": "https://www.instagram.com/yuu_asakawa_insta/"
+            },
+            {
+              "id": "yuu.asakawa.320",
+              "label": "Facebook",
+              "name": "facebook",
+              "url": "https://www.facebook.com/yuu.asakawa.320"
+            }
+          ],
+          "gender": "f",
+          "id": "s81",
+          "ismain": true,
+          "lang": "ja",
+          "name": "Asakawa Yuu",
+          "original": "浅川 悠"
+        }
+      ]
+    }
+  },
+  {
+    "name": "producer-common-fields",
+    "observedAt": "2026-10-11T22:10:44.5936811+08:00",
+    "method": "POST",
+    "endpoint": "https://api.vndb.org/kana/producer",
+    "request": {
+      "filters": ["id", "=", "p8"],
+      "results": 1,
+      "fields": "name,original,lang,type,aliases,description,extlinks{url,label,name,id}"
+    },
+    "status": 200,
+    "descriptionInspection": [
+      {
+        "id": "p8",
+        "hasDescription": true,
+        "characters": 705,
+        "sha256": "c90d6f3d934bdb4809fcd1f8433a341bdfd23b494694dabb6ddf6358cc32eaca",
+        "formatTags": ["url"],
+        "spoilerOpeningTags": 0
+      }
+    ],
+    "omittedResponseFields": ["results[].description"],
+    "responseExcerpt": {
+      "more": false,
+      "results": [
+        {
+          "aliases": ["Kindle Imagine Develop"],
+          "extlinks": [
+            {
+              "id": "https://web.archive.org/web/20061107152702/http://www.kid-game.co.jp/index_1.html",
+              "label": "Official website",
+              "name": "website",
+              "url": "https://web.archive.org/web/20061107152702/http://www.kid-game.co.jp/index_1.html"
+            },
+            {
+              "id": "KID",
+              "label": "Wikipedia (en)",
+              "name": "enwiki",
+              "url": "https://en.wikipedia.org/wiki/KID"
+            },
+            {
+              "id": "KID (ゲームブランド)",
+              "label": "Wikipedia (ja)",
+              "name": "jawiki",
+              "url": "https://ja.wikipedia.org/wiki/KID_(ゲームブランド)"
+            },
+            {
+              "id": "2255185",
+              "label": "Wikidata",
+              "name": "wikidata",
+              "url": "https://www.wikidata.org/wiki/Q2255185"
+            },
+            {
+              "id": "kid-corp",
+              "label": "MobyGames",
+              "name": "mobygames_company",
+              "url": "https://www.mobygames.com/company/kid-corp"
+            }
+          ],
+          "id": "p8",
+          "lang": "ja",
+          "name": "KID",
+          "original": "キッド",
+          "type": "co"
+        }
+      ]
+    }
+  }
+]
