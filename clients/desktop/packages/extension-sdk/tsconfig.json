@@ -2,10 +2,10 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.lib.json"
+      "path": "./config/typescript/tsconfig.lib.json"
     },
     {
-      "path": "./tsconfig.tools.json"
+      "path": "./config/typescript/tsconfig.tools.json"
     }
   ]
 }

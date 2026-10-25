@@ -127,14 +127,14 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [A18](scenarios/ui.md)                             | 编辑期间的刷新、目标切换、迟到查询和保存冲突都不会覆盖草稿。                                                                                                          |
 | [A19](scenarios/ui.md#search)                      | 统计选择器和详情没有循环依赖，虚拟定位、选择、锚点、焦点和筛选正确。                                                                                                  |
 | [A20](scenarios/sessions.md#shutdown)              | 主界面、阅读器、播放器、游戏面板和 Webview 状态隔离，窗口接口与资源范围正确。更新 Dialog 使用主窗口宿主。                                                             |
-| [A21](scenarios/engineering.md#startup)            | 扩展入口轻量，贡献能够撤销，共享宿主崩溃或重启后旧代回复失效。安装提交前后中断、激活失败、已准备更新跨重启、目录离线和包丢失都保留准确事实。                          |
+| [A21](scenarios/engineering.md#startup)            | 扩展入口轻量，贡献能够撤销，共享宿主崩溃或重启后旧代回复失效。[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)按真实实例正确登记与交付。安装提交前后中断、激活失败、已准备更新跨重启、目录离线和包丢失都保留准确事实。 |
 | [A22](scenarios/sources.md)                        | 全部官方扩展及三个官方译本通过各自适用的认证、任务、设置、UI、语言和分发能力验收。                                                                                    |
 | [A23](scenarios/engineering.md#public-consumers)   | 所有公开包 tarball 与生成模板在仓库外可用，没有私有源码依赖。                                                                                                         |
 | [A24](#commands)                                   | 实际消费的资源按来源、版本与目标校验，准备失败保留旧结果。                                                                                                              |
 | [A25](scenarios/engineering.md#release-identities) | 应用更新只选择 desktop 发行，预发布、分页、说明身份和缺少资源等行为符合合同。                                                                                         |
 | [A26](scenarios/engineering.md#hooks)              | hooks 安装、重复安装、卸载、部分暂存失败恢复和 worktree 行为正确，全局配置保持不变。                                                                                  |
 | [A27](scenarios/engineering.md#database)           | 新基线初始化与版本迁移、关闭重开、持久化完整性和数据目录隔离均有效。                                                                                                  |
-| [A28](#integration-gates)                          | 实际安装与便携制品的资源、ABI、数据库打开、窗口和关闭均有效。                                                                                                         |
+| [A28](#integration-gates)                          | 实际安装与便携制品的资源、ABI、数据库打开、窗口和关闭均有效；[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)的协议关联、冷启动及运行中系统交付成立。 |
 | [A29](scenarios/ui.md)                             | 英语与三个译本、主题、缩放、字体、表格、键盘和焦点达到基线。首次离线或译本安装失败时仍可操作，深链不被引导抢占，重新打开引导时展示已保存状态。                        |
 | [A30](#performance)                                | 启动、导航、列表、编辑、阅读和长流程没有未经解释的性能退化。                                                                                                          |
 | [A31](#structure)                                  | 导入边界、包依赖、运行环境、生成文件和资源清理规则实际生效。                                                                                                          |

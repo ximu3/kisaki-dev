@@ -259,7 +259,7 @@ NativeViewTarget 定义在 desktop-contracts/ui，按具体原生目标区分分
 
 Entry 使用 EntryIdentifier，并核对从属类型。Annotation 使用 [AnnotationRef](domains/annotations.md#api)，按身份打开已保存内容；返回原文件仍由内容界面的明确操作发起。ui.navigate(target) 等待宿主就绪并接纳导航后返回 void，不隐含保存、启动或采用操作。
 
-desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open 和 add 区分请求。字段、公开目标、编码和重复参数规则见 [应用入口](ui/navigation.md)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
+desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。extension-api 选取所需纯合同并定义 Node 的 context.deeplink.register 接入，SDK 绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
 
 notifications.show 接收 { title, body, open?: NativeViewTarget }，返回 accepted 或 unavailable；投递失败时拒绝调用。accepted 只表示操作系统已经接纳。Node SDK 使用这项能力，Webview 使用所属视图的 Toast。通知点击由 app 协调，只有已经定义的公开入口可以通过协议激活。内部目标不会因此获得应用退出后的恢复保证。接口不公开 Electron Notification、点击脚本或完整业务结果，不保存通知历史，也不在不可用时自动改投 Toast。
 

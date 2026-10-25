@@ -1,6 +1,12 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["tsconfig.base.json", "eslint.config.ts", ".prettierrc.json"],
+  "globalDependencies": [
+    "tsconfig.base.json",
+    "eslint.config.ts",
+    ".prettierrc.json",
+    "tools/outputs/**"
+  ],
+  "globalPassThroughEnv": ["KISAKI_OUTPUT_ACCESS"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -39,7 +45,6 @@
       "cache": false
     },
     "@kisaki3/desktop#dev": {
-      "dependsOn": ["^build"],
       "persistent": true,
       "cache": false
     },

@@ -1,13 +1,11 @@
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { prepareResources } from './prepare'
+import { runCli } from '../../../../../tools/outputs'
 
-try {
+await runCli(async (signal) => {
   const { values } = parseArgs({ options: { target: { type: 'string' } } })
   const target = values.target ? parseTarget(values.target) : hostTarget()
 
-  console.info(await prepareResources(target))
-} catch (cause) {
-  console.error(cause)
-  process.exitCode = 1
-}
+  console.info(await prepareResources(target, signal))
+})

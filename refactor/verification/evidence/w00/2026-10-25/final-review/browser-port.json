@@ -1,0 +1,5 @@
+{
+  "host": "127.0.0.1",
+  "port": 65254,
+  "selection": "operating system allocated unused port; released before runner invocation"
+}

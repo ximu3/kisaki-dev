@@ -1,0 +1,10 @@
+{
+  "extends": "../../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/config.tsbuildinfo",
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": ["../../tsdown.config.ts"]
+}

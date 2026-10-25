@@ -1,0 +1,54 @@
+{
+  "buildId": "d5f88e08869c535cad49582d4c0fc68d1464a76baa19f56c85d927adf009d997",
+  "lockfileSha256": "0c6ca30728bf9e0d87fca671e449c04378a261402c814d6fbf5e332df2b369c8",
+  "packages": [
+    {
+      "name": "@kisaki3/appearance",
+      "version": "0.1.0-dev.0",
+      "path": "appearance-cd9c236fc87c4eea3019b80711ecdeb6e7aee1966a4fcd76838b55ab9aea3df0.tgz",
+      "sha256": "cd9c236fc87c4eea3019b80711ecdeb6e7aee1966a4fcd76838b55ab9aea3df0"
+    },
+    {
+      "name": "@kisaki3/desktop-contracts",
+      "version": "0.1.0-dev.0",
+      "path": "desktop-contracts-70353a9c89c4cf80c9f02cd92c2875d671fd553fef3c4cd1e0fc6658832be5ea.tgz",
+      "sha256": "70353a9c89c4cf80c9f02cd92c2875d671fd553fef3c4cd1e0fc6658832be5ea"
+    },
+    {
+      "name": "@kisaki3/extension-api",
+      "version": "0.1.0-dev.0",
+      "path": "extension-api-3be131221fc396cacbba2196b1c2e72149d2512fbf98fa9708f97e05a5854d57.tgz",
+      "sha256": "3be131221fc396cacbba2196b1c2e72149d2512fbf98fa9708f97e05a5854d57"
+    },
+    {
+      "name": "@kisaki3/extension-cli",
+      "version": "0.1.0-dev.0",
+      "path": "extension-cli-d4438a36e6496af47bab1dbbb7c47058feca34b0749a2d66f16356724e615ed7.tgz",
+      "sha256": "d4438a36e6496af47bab1dbbb7c47058feca34b0749a2d66f16356724e615ed7"
+    },
+    {
+      "name": "@kisaki3/extension-distribution",
+      "version": "0.1.0-dev.0",
+      "path": "extension-distribution-08f82383cb93b712c0a96fed9bce1f42c69da2af6f5e42415799fa52aaae7479.tgz",
+      "sha256": "08f82383cb93b712c0a96fed9bce1f42c69da2af6f5e42415799fa52aaae7479"
+    },
+    {
+      "name": "@kisaki3/extension-sdk",
+      "version": "0.1.0-dev.0",
+      "path": "extension-sdk-d8604da8cf7a735963a271b4dbbc1d10219e55583861c12a2b1b976330e98b76.tgz",
+      "sha256": "d8604da8cf7a735963a271b4dbbc1d10219e55583861c12a2b1b976330e98b76"
+    },
+    {
+      "name": "@kisaki3/rpc",
+      "version": "0.1.0-dev.0",
+      "path": "rpc-76e07b9f97411bcd2c3b543e4b1f34e33ea11294daab4a6bb7a173914811b8b9.tgz",
+      "sha256": "76e07b9f97411bcd2c3b543e4b1f34e33ea11294daab4a6bb7a173914811b8b9"
+    },
+    {
+      "name": "@kisaki3/ui",
+      "version": "0.1.0-dev.0",
+      "path": "ui-2e4d1e1de503835535a532ca5fedd9dc254287cad8b3f61db3ac252be99b591b.tgz",
+      "sha256": "2e4d1e1de503835535a532ca5fedd9dc254287cad8b3f61db3ac252be99b591b"
+    }
+  ]
+}

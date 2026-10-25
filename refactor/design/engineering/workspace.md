@@ -155,11 +155,11 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 根配置提供共同严格性与格式规则，各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
-仓库根 tsconfig.json 以空 files 和 references 组织 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。根类型任务先由 Turbo 调度各 workspace，再通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。tsconfig.base.json 只提供共同规则，tsconfig.boundaries.json 只为依赖图解析别名与源码，不加入类型项目引用。
+仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。根类型任务先由 Turbo 调度各 workspace，再通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。根 tsconfig.base.json 提供共同规则，依赖检查复用其中的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。tsdown 显式读取 tsconfig.lib.json；增量信息写入各包 .cache/typescript。少量配置继续保留在包根目录，官方扩展当前的单一配置环境保持原入口。
+八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。官方扩展当前的 tsconfig.json 与 kisx.config.ts 是实际默认入口，后续内部配置同样遵守[配置归属](conventions.md#configuration-layout)，不按配置数量另设例外。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -181,6 +181,8 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
+工程输出使用 fs-native-extensions 的系统文件锁表示实际占用。该依赖由根工程工具声明，不进入应用或公共包的运行依赖；目标平台的真实运行验证随工程入口验收。锁载体保留在根 .cache 中，文件存在不表示仍有任务运行。
+
 各包分别声明直接运行依赖、开发依赖和 peer 依赖。catalog 只统一确实需要一致的版本范围，不把所有依赖提升到根目录。workspace 包打包后检查实际依赖版本，预发布版本使用明确范围，不能假定稳定版本范围会接纳它。
 
 公开库默认交付 ESM、d.ts 和所需 CSS，并区分 Node、DOM、Solid 与纯定义入口。通过 publint、Are the Types Wrong 和实际 tarball 消费检查制品。sandbox preload 将非 Electron 依赖完整打包为可加载的 CommonJS；其他程序按 [Electron 加载规则](https://www.electronjs.org/docs/latest/tutorial/esm) 检查，不机械统一为 ESM。
@@ -197,7 +199,7 @@ tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定
 
 依赖 Kobalte 的 UI 控件实现使用 skipLibCheck: true，普通 .ts 和 .tsx 实现仍完整检查。纯合同、SDK 和仓库外公开声明消费者使用 skipLibCheck: false。
 
-UI 的 tsdown 构建配置单独使用 `tsconfig.config.json` 与 `skipLibCheck: true`。锁定的 unplugin-solid 2.0.0 的 Rolldown 入口通过通用 unplugin 声明引用其他打包器和 Bun；这些非消费路径的缺失或不相容声明不作为 UI 构建配置的依赖。该豁免只覆盖配置使用的声明检查；配置自身、UI 源码和构建工具源码仍检查，工具源码使用独立且不跳过声明检查的配置，公开声明继续由严格消费者验证。
+UI 的 tsdown 构建配置单独使用本包的 `config/typescript/tsconfig.config.json` 与 `skipLibCheck: true`。锁定的 unplugin-solid 2.0.0 的 Rolldown 入口通过通用 unplugin 声明引用其他打包器和 Bun；这些非消费路径的缺失或不相容声明不作为 UI 构建配置的依赖。该豁免只覆盖配置使用的声明检查；配置自身、UI 源码和构建工具源码仍检查，工具源码使用独立且不跳过声明检查的配置，公开声明继续由严格消费者验证。
 
 skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍依据这些声明检查调用。这个选项不会修复错误声明，也不能证明受影响类型准确。
 
@@ -222,6 +224,18 @@ persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障�
 renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
 
 每份输出只有一个写入者，build 与 watch 不互相清理，监听过程也不先删除下游正在读取的目录。成功构建后完整交接，并处理文件删除和改名。正式构建使用干净输出，不夹带开发遗留文件。HMR 接入释放旧 Solid root、监听和 DOM。
+
+<a id="output-access"></a>
+
+输出访问按所属项目和具体输出目录控制。普通任务持有项目共享锁，clean 取得项目独占锁；读取输出持有共享锁，写入、替换和删除输出持有独占锁。项目及输出之间没有冲突的任务可以并行，编译顺序与任务内并行由 Turbo 的实际依赖图决定。
+
+每个完整操作一次声明所需的访问范围，在读取或修改输出前取得占用，交接及所需的子进程结束后释放。输出身份采用所属任务声明的完整输出根，读写双方使用同一根目录，不以任意内部文件另设锁。同一操作的嵌套调用和子任务复用已经取得的访问范围，不将共享占用隐式升级为独占占用。有限任务遇到冲突时报告占用并退出；开发会话的构建阶段允许等待。等待占用和初始化均可取消；取消等待与实际任务结束分别处理。
+
+Turbo 的缓存恢复和实际任务执行采用相同的输出占用。根入口依据 Turbo 的公开任务计划取得参与项目与缓存输出，不维护另一份依赖图；项目入口声明自身操作及实际依赖输出的访问。有限任务通过受保护的根入口调度；只读任务计划查询不需要取得输出写入占用。构建完成到复制快照、打包或验证的读取期间，相关输出保持受保护。
+
+开发会话持有本体项目共享锁，程序代际与依赖快照由该会话独占写入和清理。共享资源准备与公共包重建只在相应阶段取得输出独占锁；现用程序与 renderer 使用已交接的完整结果。会话关闭等待编译、进程、监听和服务结束，再清理自身目录并释放占用。
+
+锁的寿命由实际打开的系统句柄维持，工程代码等待其子进程完成并在正常退出时关闭句柄。锁载体与访问上下文不采用 PID、文件时间或目录存在性判断存活，也不作为构建缓存输入。
 
 停止开发会话时，工具关闭 Electron、监听和服务。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
 

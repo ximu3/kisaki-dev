@@ -8,6 +8,8 @@
 
 每个项目在自己的仓库提供源码、合同、锁文件、测试、工具、使用文档及发行材料。仓库外从 tarball 或固定服务镜像消费，核对声明和实际导出、匹配版本与资源、依赖及许可。Kisaki 锁定这些制品后完成联合调用，不使用跨仓源码 link。
 
+各自的临时私有仓库持续承载开发与验证，正式接续按[仓库阶段场景](engineering.md#repository-lifecycle)验收。核对项目自己的来源提交、候选制品、CI 与正式身份，不把 Kisaki 的临时仓库或 W00 结果作为四个项目已完成对应工作的证明。
+
 两个原生库覆盖 Windows、macOS、glibc Linux 的 x64／arm64。最低系统、Node-API、Node／Electron 范围及桌面版本按[构建合同](../../design/engineering/build.md)与[原生交付合同](../../design/projects/native-runtime.md)逐项记录。各场景使用对应目标环境执行，记录实际结果与兼容性依据，交付按[运行覆盖规则](../acceptance.md#runtime-coverage)判定。
 
 <a id="scenarios"></a>

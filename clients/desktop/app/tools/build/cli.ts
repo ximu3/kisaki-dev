@@ -2,13 +2,13 @@ import { parseArgs } from 'node:util'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, parseTarget } from '../lib/targets'
-import { replaceOutput } from '../lib/output'
+import { replaceOutput, runCli, withProjectOutputs } from '../../../../../tools/outputs'
 import { buildDesktop } from './coordinator'
 import { sourceIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 import type { ProgramName } from './programs'
 
-try {
+await runCli(async (signal) => {
   const { values } = parseArgs({
     options: { target: { type: 'string' }, program: { type: 'string' } },
   })
@@ -18,15 +18,18 @@ try {
       throw new Error('Unknown desktop program')
     }
     const program = values.program as ProgramName
-    const buildId = await sourceIdentity()
-    await replaceOutput(join(appRoot, 'out', 'programs', target, program), (staging) =>
-      buildProgram(program, staging, buildId),
+    const output = join(appRoot, 'out', 'programs', target, program)
+    await withProjectOutputs(
+      appRoot,
+      { write: [output] },
+      async () => {
+        const buildId = await sourceIdentity()
+        await replaceOutput(appRoot, output, (staging) => buildProgram(program, staging, buildId))
+      },
+      { signal },
     )
   } else {
-    const build = await buildDesktop(target)
+    const build = await buildDesktop(target, signal)
     console.info(`Desktop build ready: ${build.target} ${build.buildId}`)
   }
-} catch (cause) {
-  console.error(cause)
-  process.exitCode = 1
-}
+})

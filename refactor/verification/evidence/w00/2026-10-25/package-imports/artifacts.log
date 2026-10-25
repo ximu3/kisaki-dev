@@ -1,0 +1,14 @@
+$ pnpm --filter @kisaki3/desktop test:artifacts
+$ vitest run --config config/vitest/vitest.config.artifacts.ts
+
+ RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+
+ ✓ tests/artifacts/desktop.test.ts (1 test) 3464ms
+   ✓ the exact packaged carrier retains production fuses and starts and closes externally 3463ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  11:38:50
+   Duration  3.75s (tests 96%, import 3%, transform 1%)
+
+JSON report written to F:/project/kisaki/clients/desktop/app/test-results/artifacts/results.json

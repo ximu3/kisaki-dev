@@ -6,7 +6,7 @@ if (process.versions.electron !== '44.5.1' || process.env.ELECTRON_RUN_AS_NODE !
 
 export default defineConfig({
   test: {
-    include: ['tests/integration/**/*.test.ts'],
+    include: ['tests/integration/database/**/*.test.ts', 'tests/integration/native/**/*.test.ts'],
     environment: 'node',
     pool: 'forks',
     globals: false,

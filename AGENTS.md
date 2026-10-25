@@ -2,7 +2,7 @@
 
 沟通默认使用简体中文。遵守 [CONVENTIONS.md](CONVENTIONS.md)，从 [refactor/README.md](refactor/README.md) 和当前工作包读取正式合同，完成后维护 [实施状态](refactor/implementation/status.md)。重要方向与超出任务范围的对外操作先讨论。
 
-当前只交付桌面生态：`clients/desktop/app`、八个公共包与 33 个官方扩展项目。Web、官网、候选服务端及四个独立项目的源码不在本次桌面工程中预建。旧项目仅按已确认的行为或资源保留要求查阅，实现独立设计。
+本仓库当前承载 `clients/desktop/app`、八个公共包与 33 个官方扩展项目。Vantage、Kana、libmpv-node 和 oauth-relay 属于整体交付范围，在各自独立仓库完成实现、验证与交付，并按合同与 Kisaki 接入。本仓库的 Web 客户端、官网和候选服务端不在当前交付范围，不预建源码。旧项目仅按已确认的行为或资源保留要求查阅，实现独立设计。
 
 main 拥有事实与操作；renderer 拥有视图；preload 只开放窗口最小能力；extension-host 是独立共享 Node 进程。shared 只含纯合同。公共包使用构建后的 exports；SDK 不绕过 extension-api，官方扩展不导入应用私有代码。
 

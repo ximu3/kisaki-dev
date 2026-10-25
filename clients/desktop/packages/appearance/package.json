@@ -33,9 +33,9 @@
   },
   "scripts": {
     "build": "tsx tools/build.ts",
-    "typecheck": "tsc -b",
-    "pack": "pnpm pack --out out/package.tgz",
-    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
+    "typecheck": "tsx ../../../../tools/outputs/run.ts --dependencies -- exec tsc -b",
+    "pack": "tsx ../../../../tools/outputs/run.ts --read dist --write out -- pack --out out/package.tgz",
+    "test:consumers": "tsx ../../../../tools/outputs/run.ts --read out -- --shell-mode exec \"publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css\"",
     "clean": "tsx tools/clean.ts"
   },
   "devDependencies": {

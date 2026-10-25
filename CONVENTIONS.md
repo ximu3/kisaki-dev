@@ -8,11 +8,17 @@
 
 模块按照事实、操作和资源寿命组织，使用者经正式入口依赖拥有者。跨包使用 workspace 依赖、公开 exports 和构建结果，不指向另一包的源码。SDK 通过 extension-api 取得桌面合同；纯合同不执行 I/O、DOM、框架或数据库代码。
 
+包内有稳定命名需求的模块入口由所属 package.json 的 imports 定义，以 `#` 开头；模块内部使用相对导入。代码与测试消费同一入口，工具读取同一份映射，访问权限仍由依赖边界检查约束，见[模块导入规则](refactor/design/engineering/conventions.md#module-imports)。
+
 目录按职责与所有权组织，同级保持相近粒度。专用实现随拥有者放置，共同机制归最小合理共享范围；入口、配置与内部支撑的角色清楚，测试复用本身不构成上移理由。文件或目录按协作需要和工程边界选择，名称说明实际工作，具体要求见[目录规则](refactor/design/engineering/conventions.md#directory-readability)。
+
+各工程的内部工具配置按工具归入自身 `config/<工具名>/`，默认发现入口、明确共享的配置基线及工具规定的位置保持稳定。配置归属不以文件数量或项目规模决定，不增加纯转发入口或空目录；完整规则见[配置归属](refactor/design/engineering/conventions.md#configuration-layout)。
 
 W00 中已确认的程序、项目及打包输入骨架可以保留，文件少本身不是删除理由。审查覆盖当前全部代码、工具、测试、配置及目录，并记录实际差异与阶段。
 
 类型表达合法组合，区分缺省、空值、未知与失败。复用唯一定义，不以 `any`、连续断言或同形别名掩盖边界。TypeScript 配置隔离实际运行环境和测试 globals；配置、工具、模板与声明也纳入检查。UI 构建配置的声明检查例外仅按已确认的 [具体范围](refactor/design/engineering/workspace.md#declaration-checks) 使用。
+
+采用当前锁定版本支持的公开 API 与配置方式；发现弃用提示时，按[弃用接口处理](refactor/design/engineering/conventions.md#deprecated-apis)核对官方替代、行为和兼容边界。
 
 ## 行为与资源
 

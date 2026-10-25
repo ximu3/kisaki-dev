@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-10-25T12:57:16.623Z",
+  "node": "v24.11.1",
+  "platform": "win32",
+  "arch": "x64",
+  "buildId": "2751247a6c187c5473fc49342642c1953483dbd772d887d0b4ade0f25a1ab2ea",
+  "check": {
+    "passed": true,
+    "rootTests": 24,
+    "applicationNodeTests": 12
+  },
+  "outputAccess": {
+    "tests": 8,
+    "files": 3,
+    "passed": true
+  },
+  "development": {
+    "tests": 2,
+    "passed": true
+  },
+  "browser": {
+    "tests": 1,
+    "passed": true
+  },
+  "native": {
+    "tests": 8,
+    "passed": true
+  },
+  "e2e": {
+    "tests": 4,
+    "passed": true
+  },
+  "consumers": {
+    "packages": 8,
+    "tests": 2,
+    "passed": true
+  },
+  "performance": {
+    "samples": 20,
+    "p95Ms": 418.2579000000005,
+    "medianMs": 377.84504999999945,
+    "passed": true
+  },
+  "artifacts": {
+    "tests": 1,
+    "carrier": "zip",
+    "passed": true
+  },
+  "pending": [
+    "six-target CI for these inputs",
+    "NSIS install and upgrade acceptance",
+    "later work-package product acceptance"
+  ]
+}

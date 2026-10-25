@@ -1,18 +1,22 @@
-import type { ChildProcess } from 'node:child_process'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
+import {
+  acquireOutputs,
+  runPnpm,
+  withTurboOutputs,
+  workspaceProjects,
+} from '../../../../../tools/outputs'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import { readPnpm, runPnpm } from '../lib/process'
 import { startRenderer } from './renderer'
 import { sourceIdentity } from '../build/identity'
 import { prepareResources } from '../resources/prepare'
 import { electronExecutable } from './electron-executable'
 import { captureDependencies } from './dependencies'
-import { startElectron, stopElectron } from './electron-process'
+import { startElectron } from './electron-process'
+import type { DevelopmentProcess } from './electron-process'
 import { buildGeneration, programInputsChanged } from './generation'
-import type { DependencySnapshot, WorkspaceDependency } from './dependencies'
-import type { DesktopTarget } from '../../src/shared/runtime-manifest'
+import type { DependencySnapshot } from './dependencies'
 
 /** The built runtime and Electron process currently owned by a development session. */
 export interface DevelopmentBuild {
@@ -21,45 +25,24 @@ export interface DevelopmentBuild {
   processId: number
 }
 
-/** A complete development session; stop waits for all processes, builds and watchers to close. */
+/** A development session owns its readers until stop or closed confirms their actual release. */
 export interface DevelopmentSession {
-  /** Resolves on the first successful startup; stopping before then rejects it. */
   readonly ready: Promise<void>
+  readonly closed: Promise<void>
   readonly rendererUrl: string
-  /** The running generation, or undefined before startup and after shutdown. */
   readonly current: DevelopmentBuild | undefined
-  /** Wait for builds, processes and Vite to close, then remove this session's outputs. */
+  /** Cancel compilation, close processes and watchers, then remove this session's outputs. */
   stop(): Promise<void>
 }
 
-/** Inputs for a local development session; caller-owned profiles survive stop and rebuild. */
+/** Caller-owned profiles survive stop; cancellation also applies during initial preparation. */
 export interface DevelopmentOptions {
-  /** Absolute profile path; defaults to the application's .local/development directory. */
   profile?: string
-  /** Synchronous state notifications; failed includes the build or startup cause. */
+  signal?: AbortSignal
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/** Create a session output directory and transfer its lock to the caller. */
-async function createSessionWorkspace(
-  target: DesktopTarget,
-): Promise<{ directory: string; lockDirectory: string }> {
-  const output = join(appRoot, 'out', 'development', target)
-  await mkdir(output, { recursive: true })
-
-  const lockDirectory = join(output, '.session-lock')
-  await mkdir(lockDirectory)
-
-  try {
-    const directory = await mkdtemp(join(output, 'session-'))
-    return { directory, lockDirectory }
-  } catch (cause) {
-    await rm(lockDirectory, { recursive: true, force: true })
-    throw cause
-  }
-}
-
-/** Start Vite and an Electron session; callers await ready and release the session with stop(). */
+/** Start a shared-project session and publish only complete private generations to its readers. */
 export async function startDevelopmentSession(
   options: DevelopmentOptions = {},
 ): Promise<DevelopmentSession> {
@@ -67,161 +50,238 @@ export async function startDevelopmentSession(
   const profile = options.profile ?? join(appRoot, '.local', 'development')
   if (!isAbsolute(profile)) throw new Error('Development profile must be an absolute path')
 
-  const { directory, lockDirectory } = await createSessionWorkspace(target)
-
+  const controller = new AbortController()
+  const signal = options.signal
+    ? AbortSignal.any([options.signal, controller.signal])
+    : controller.signal
+  const access = await acquireOutputs([{ project: appRoot, mode: 'use' }], { signal })
+  let directory: string | undefined
   let rendererToClose: Awaited<ReturnType<typeof startRenderer>> | undefined
-  let child: ChildProcess | undefined
+  let child: DevelopmentProcess | undefined
   const snapshots = new Map<string, DependencySnapshot>()
-  let initialDependencies: DependencySnapshot | undefined
 
   try {
-    await mkdir(profile, { recursive: true })
-    const members: WorkspaceDependency[] = JSON.parse(
-      await readPnpm(
-        ['list', '--filter', '@kisaki3/desktop^...', '--depth', '-1', '--json'],
-        repositoryRoot,
-      ),
-    )
-    electronExecutable()
-    await prepareResources(target)
+    return await access.run(async () => {
+      const parent = join(appRoot, 'out', 'development', target)
+      await mkdir(parent, { recursive: true })
+      const sessionDirectory = await mkdtemp(join(parent, 'session-'))
+      directory = sessionDirectory
+      await mkdir(profile, { recursive: true })
+      const members = await workspaceProjects('@kisaki3/desktop^...', { signal })
+      electronExecutable()
+      await prepareResources(target, signal)
+      const tasks = ['run', 'build', '--filter=@kisaki3/desktop^...']
+      let initialDependencies: DependencySnapshot | undefined
 
-    try {
-      await runPnpm(['exec', 'turbo', 'run', 'build', '--filter=@kisaki3/desktop^...'], {
-        cwd: repositoryRoot,
-      })
-      initialDependencies = await captureDependencies(
-        members,
-        join(directory, 'dependencies'),
-        snapshots,
-      )
-    } catch (cause) {
-      options.onState?.('failed', cause)
-    }
-
-    const renderer = await startRenderer(members, initialDependencies)
-    rendererToClose = renderer
-
-    let current: DevelopmentBuild | undefined
-    let stopping = false
-    let stopPromise: Promise<void> | undefined
-    let buildPending = false
-    let buildLoop: Promise<void> | undefined
-
-    let resolveReady!: () => void
-    let rejectReady!: (cause: unknown) => void
-    const ready = new Promise<void>((resolve, reject) => {
-      resolveReady = resolve
-      rejectReady = reject
-    })
-    // Stop may occur before a caller starts awaiting readiness.
-    void ready.catch(() => undefined)
-
-    let generation = 0
-    let forceRuntimeBuild = true
-    let programInputs = new Map<string, string>()
-
-    /** Adopt a successful candidate, or retain the current process when compilation fails. */
-    async function rebuild(): Promise<void> {
-      options.onState?.('building')
-      const candidate = join(directory, `generation-${++generation}`)
       try {
-        await runPnpm(['exec', 'turbo', 'run', 'build', '--filter=@kisaki3/desktop^...'], {
-          cwd: repositoryRoot,
-        })
-        const nextDependencies = await captureDependencies(
-          members,
-          join(directory, 'dependencies'),
-          snapshots,
+        initialDependencies = await withTurboOutputs(
+          tasks,
+          async () => {
+            await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot })
+            return captureDependencies(members, join(sessionDirectory, 'dependencies'), snapshots)
+          },
+          { signal, wait: true },
         )
-        const forced = forceRuntimeBuild
-        forceRuntimeBuild = false
-        const needsRuntimeBuild = !current || forced || (await programInputsChanged(programInputs))
-        if (!needsRuntimeBuild) {
-          await renderer.adopt(nextDependencies)
-          options.onState?.('ready')
-          return
-        }
-
-        const { buildId, inputs: nextInputs } = await buildGeneration(target, candidate)
-
-        if (stopping || buildId !== (await sourceIdentity())) {
-          buildPending = !stopping
-          await rm(candidate, { recursive: true, force: true })
-          return
-        }
-
-        const previous = current?.directory
-        if (child) await stopElectron(child)
-        child = undefined
-        current = undefined
-
-        await renderer.adopt(nextDependencies)
-
-        child = await startElectron(candidate, profile, renderer.url, buildId)
-        if (!child.pid) throw new Error('Electron process identity is unavailable')
-        current = { buildId, directory: candidate, processId: child.pid }
-        programInputs = nextInputs
-        if (previous) await rm(previous, { recursive: true, force: true })
-        options.onState?.('ready')
-        resolveReady()
       } catch (cause) {
-        forceRuntimeBuild = true
-        await rm(candidate, { recursive: true, force: true })
+        if (signal.aborted) throw cause
         options.onState?.('failed', cause)
       }
-    }
 
-    /** Coalesce file changes into serial builds; changes during a build schedule the next one. */
-    function enqueue(force = false): void {
-      if (stopping) return
+      const renderer = await startRenderer(members, initialDependencies)
+      rendererToClose = renderer
+      signal.throwIfAborted()
 
-      forceRuntimeBuild ||= force
-      buildPending = true
-      buildLoop ??= (async () => {
-        while (buildPending && !stopping) {
-          buildPending = false
-          await rebuild()
-        }
-      })().finally(() => {
-        buildLoop = undefined
+      let current: DevelopmentBuild | undefined
+      let stopping = false
+      let stopPromise: Promise<void> | undefined
+      let buildPending = false
+      let buildLoop: Promise<void> | undefined
+      let generation = 0
+      let forceRuntimeBuild = true
+      let programInputs = new Map<string, string>()
+      let resolveReady!: () => void
+      let rejectReady!: (cause: unknown) => void
+      let resolveClosed!: () => void
+      let rejectClosed!: (cause: unknown) => void
+      const ready = new Promise<void>((resolve, reject) => {
+        resolveReady = resolve
+        rejectReady = reject
       })
-    }
+      const closed = new Promise<void>((resolve, reject) => {
+        resolveClosed = resolve
+        rejectClosed = reject
+      })
+      // Stop can precede the caller's first await of these lifecycle promises.
+      void ready.catch(() => undefined)
+      void closed.catch(() => undefined)
 
-    const stopWatching = renderer.watch((change) => enqueue(change === 'runtime'))
-    enqueue()
+      /** Prepare dependencies and Node programs under their complete output-access set. */
+      async function rebuild(): Promise<void> {
+        options.onState?.('building')
+        const candidate = join(sessionDirectory, `generation-${++generation}`)
+        try {
+          const result = await withTurboOutputs(
+            tasks,
+            async () => {
+              await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot })
+              const dependencies = await captureDependencies(
+                members,
+                join(sessionDirectory, 'dependencies'),
+                snapshots,
+              )
+              const forced = forceRuntimeBuild
+              forceRuntimeBuild = false
+              if (current && !forced && !(await programInputsChanged(programInputs))) {
+                return { dependencies, runtime: undefined }
+              }
+              const runtime = await buildGeneration(target, candidate)
+              if (runtime.buildId !== (await sourceIdentity())) {
+                buildPending = !stopping
+                await rm(candidate, { recursive: true, force: true })
+                return undefined
+              }
+              return { dependencies, runtime }
+            },
+            {
+              signal,
+              wait: true,
+              requests: [
+                {
+                  project: appRoot,
+                  mode: 'use',
+                  write: [
+                    join(appRoot, 'out', 'resources', target),
+                    join(appRoot, 'out', 'native', target),
+                  ],
+                },
+              ],
+            },
+          )
+          if (!result || stopping) {
+            await rm(candidate, { recursive: true, force: true })
+            return
+          }
+          if (!result.runtime) {
+            await renderer.adopt(result.dependencies)
+            options.onState?.('ready')
+            return
+          }
 
-    return {
-      ready,
-      get rendererUrl() {
-        return renderer.url
-      },
-      get current() {
-        return current
-      },
-      stop() {
-        stopPromise ??= (async () => {
-          stopping = true
-          stopWatching()
-          await buildLoop
-
-          if (child) await stopElectron(child)
+          const previous = current?.directory
+          if (child) await child.stop()
+          child = undefined
           current = undefined
-          await renderer.close()
+          await renderer.adopt(result.dependencies)
+          signal.throwIfAborted()
+          child = await startElectron(
+            candidate,
+            profile,
+            renderer.url,
+            result.runtime.buildId,
+            signal,
+          )
+          if (!child.pid) throw new Error('Electron process identity is unavailable')
+          current = { buildId: result.runtime.buildId, directory: candidate, processId: child.pid }
+          programInputs = result.runtime.inputs
+          if (previous) await rm(previous, { recursive: true, force: true })
+          options.onState?.('ready')
+          resolveReady()
+        } catch (cause) {
+          forceRuntimeBuild = true
+          await rm(candidate, { recursive: true, force: true })
+          if (!signal.aborted) options.onState?.('failed', cause)
+        }
+      }
 
-          await rm(directory, { recursive: true, force: true })
-          await rm(lockDirectory, { recursive: true, force: true })
+      /** Coalesce changes into serial rebuilds without blocking unrelated output owners. */
+      function enqueue(force = false): void {
+        if (stopping) return
+        forceRuntimeBuild ||= force
+        buildPending = true
+        buildLoop ??= (async () => {
+          while (buildPending && !stopping) {
+            buildPending = false
+            await rebuild()
+          }
+        })().finally(() => {
+          buildLoop = undefined
+        })
+      }
 
-          rejectReady(new Error('Development session stopped before readiness'))
-          options.onState?.('stopped')
-        })()
-        return stopPromise
-      },
-    }
+      const stopWatching = renderer.watch((change) => enqueue(change === 'runtime'))
+      const cancel = () => {
+        void session.stop().catch((cause: unknown) => {
+          options.onState?.('failed', cause)
+        })
+      }
+      const session: DevelopmentSession = {
+        ready,
+        closed,
+        get rendererUrl() {
+          return renderer.url
+        },
+        get current() {
+          return current
+        },
+        stop() {
+          if (stopPromise) return stopPromise
+          stopping = true
+          signal.removeEventListener('abort', cancel)
+          controller.abort(new Error('Development session stopping'))
+          stopWatching()
+          stopPromise = (async () => {
+            const failures: unknown[] = []
+            try {
+              await buildLoop
+            } catch (cause) {
+              failures.push(cause)
+            }
+            let processesClosed = false
+            try {
+              if (child) await child.stop()
+              processesClosed = true
+              current = undefined
+            } catch (cause) {
+              failures.push(cause)
+            }
+            let rendererClosed = false
+            try {
+              await renderer.close()
+              rendererClosed = true
+            } catch (cause) {
+              failures.push(cause)
+            }
+            if (processesClosed && rendererClosed) {
+              try {
+                await rm(sessionDirectory, { recursive: true, force: true })
+              } catch (cause) {
+                failures.push(cause)
+              }
+            }
+            await access.close()
+            rejectReady(new Error('Development session stopped before readiness'))
+            if (failures.length) {
+              throw new AggregateError(failures, 'Development session cleanup failed')
+            }
+            options.onState?.('stopped')
+          })()
+          void stopPromise.then(resolveClosed, rejectClosed)
+          return stopPromise
+        },
+      }
+      signal.addEventListener('abort', cancel, { once: true })
+      enqueue()
+      if (signal.aborted) cancel()
+      return session
+    })
   } catch (cause) {
-    if (child) await stopElectron(child)
-    await rendererToClose?.close()
-    await rm(directory, { recursive: true, force: true })
-    await rm(lockDirectory, { recursive: true, force: true })
+    try {
+      if (child) await child.stop()
+      await rendererToClose?.close()
+      if (directory) await rm(directory, { recursive: true, force: true })
+    } finally {
+      await access.close()
+    }
     throw cause
   }
 }

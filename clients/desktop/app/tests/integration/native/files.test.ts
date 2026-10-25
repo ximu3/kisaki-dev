@@ -2,12 +2,7 @@ import { afterEach, beforeEach, expect, test } from 'vitest'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import {
-  loadNative,
-  NativeLoadError,
-  FileMoveError,
-  FileSyncError,
-} from '../../../native/node/index'
+import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
 import { appRoot, buildDirectory } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 

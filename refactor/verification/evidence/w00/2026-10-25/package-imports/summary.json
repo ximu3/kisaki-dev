@@ -1,0 +1,116 @@
+{
+  "recordedAtUtc": "2026-10-25T03:50:01.4185057Z",
+  "baseCommit": "93a06c29beddb41b1083549c004ab830fcc29ff5",
+  "target": "windows-x64",
+  "buildId": "a448219d7697bb7dae0ebed6172746b29a1c91725a29278a10c514b7fcc05d1d",
+  "entry": {
+    "owner": "clients/desktop/app/package.json",
+    "specifier": "#native",
+    "target": "./native/node/index.ts",
+    "nodeResolvesInsidePackage": true,
+    "nodeRejectsOutsidePackage": "ERR_PACKAGE_IMPORT_NOT_DEFINED",
+    "duplicateNativeAliases": 0
+  },
+  "runtime": {
+    "runtimeImportsFieldPresent": false,
+    "privateSpecifierInMainBundle": false,
+    "mainIdenticalExceptBuildId": true,
+    "files": 156,
+    "nativePassed": 8,
+    "e2ePassed": 4,
+    "artifactPassed": 1,
+    "developmentPassed": 1,
+    "developmentImportsFailureAndRecovery": true
+  },
+  "boundaries": {
+    "ruleCount": 30,
+    "rulesUnchanged": true,
+    "sourceConfig": "tsconfig.base.json",
+    "fixtureCasesPassed": 4,
+    "modules": 161,
+    "dependencies": 283
+  },
+  "dependencyCruiser": {
+    "version": "18.7.0",
+    "source": "upstream-unmodified",
+    "verifiedSourceFiles": [
+      {
+        "path": "src/config-utl/extract-ts-config.mjs",
+        "upstreamGitBlob": "3da4b88f7191d68e8d31a8f22bbc0ee6ac5b786b"
+      },
+      {
+        "path": "src/main/resolve-options/normalize.mjs",
+        "upstreamGitBlob": "831bfa481c758f7edda4ef98ff9c28bdadb03a42"
+      }
+    ],
+    "patchRegistrationPresent": false
+  },
+  "inputs": [
+    {
+      "path": "clients/desktop/app/package.json",
+      "sha256": "03c85a47b65e71d7947bbe034bcdb1f430cd3914c307377718444eca4bc262a3"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "sha256": "d3da9efb0805115d01072238b3dcefa3656706cfb451d555f5fc04d228873be5"
+    },
+    {
+      "path": "clients/desktop/app/config/typescript/tsconfig.main.json",
+      "sha256": "e70308a24f8d09b87eb71a0f5070fd5665b9a6ac04dbb3470287e5217f2dd740"
+    },
+    {
+      "path": "clients/desktop/app/config/typescript/tsconfig.tests.json",
+      "sha256": "93d45a06b0e990567c583c6c58071ce819ad59faa9306b4681621756fc0b095d"
+    },
+    {
+      "path": "clients/desktop/app/config/vite/vite.config.main.ts",
+      "sha256": "7f3de429aef26f7f76db1197244e84d52f90c10b09d0d75d496afb36e7b8d0de"
+    },
+    {
+      "path": "clients/desktop/app/tests/integration/native/files.test.ts",
+      "sha256": "c3b4bd29ac3acb0483af543c38769b4132497e9ae3c29a7ea98166708c6327fa"
+    },
+    {
+      "path": "clients/desktop/app/tests/tools/dev/session.test.ts",
+      "sha256": "41a6693fdd7d6e7a8fbdffa15c15ab6760026cdc6630620ec6b1cd6d528e645f"
+    },
+    {
+      "path": "tests/tools/structure/boundaries.test.ts",
+      "sha256": "7879649c235de82da0af55a66a747cc119561b144eae2906f7767c8725ec32cb"
+    },
+    {
+      "path": ".dependency-cruiser.json",
+      "sha256": "cd065b0f081b312439bdbf9247b340e8c51fd8663808cafb5b90e7ada022fc7b"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "sha256": "b88795a30a3556f8ef49630935a3d3a2459a15afd372943f652594a322c78c84"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "522cb3fb799d605dec889d93981a73f919fda628209d75851459e4fbb02c4195"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "32c81b50f74d4ffb158e9a80dfcc0d536b00b474bbab529456e25d697aba603c"
+    }
+  ],
+  "checks": [
+    "pnpm check",
+    "pnpm desktop:package --target windows-x64 --test-only",
+    "pnpm --filter @kisaki3/desktop test:native",
+    "pnpm --filter @kisaki3/desktop test:e2e",
+    "pnpm desktop:test:artifacts",
+    "pnpm --filter @kisaki3/desktop test:dev"
+  ],
+  "firstPackagingAttempt": {
+    "code": "EPERM",
+    "phase": "publishing the completed build directory",
+    "previousOutputRestored": true,
+    "relatedApplicationProcessesFound": 0,
+    "sourceChangesBeforeRetry": false,
+    "retryResult": "passed",
+    "automaticRetryLogicAdded": false
+  },
+  "scope": "Local Windows x64 implementation and runtime verification. Candidate archives are test-only; NSIS was generated, not installed. Six-target CI, signing, notarization, upgrades and other runtime backends were not revalidated for this change."
+}

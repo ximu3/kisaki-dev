@@ -1,7 +1,9 @@
 import { createServer } from 'vite'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import { appRoot, repositoryRoot } from '../lib/paths'
-import type { DependencySnapshot, WorkspaceDependency } from './dependencies'
+import { publicPackageBuildInputs } from '../lib/package-inputs'
+import type { DependencySnapshot } from './dependencies'
+import type { WorkspaceProject } from '../../../../../tools/outputs'
 
 /** Vite and the public-package snapshot serving this development session. */
 export interface DevelopmentRenderer {
@@ -20,7 +22,7 @@ function contains(parent: string, path: string): boolean {
 
 /** Start the renderer server and retain its current public-package resolution until close(). */
 export async function startRenderer(
-  members: WorkspaceDependency[],
+  members: WorkspaceProject[],
   initialSnapshot: DependencySnapshot | undefined,
 ): Promise<DevelopmentRenderer> {
   let snapshot = initialSnapshot
@@ -45,13 +47,9 @@ export async function startRenderer(
     if (!initialUrl) throw new Error('Renderer server did not publish a listening address')
     let url = initialUrl
 
-    const packageInputs = members.flatMap((member) => [
-      join(member.path, 'src'),
-      join(member.path, 'package.json'),
-      join(member.path, 'tsdown.config.ts'),
-      join(member.path, 'tsconfig.json'),
-      join(member.path, 'tsconfig.lib.json'),
-    ])
+    const packageInputs = (
+      await Promise.all(members.map((member) => publicPackageBuildInputs(member.path)))
+    ).flat()
     const runtimeInputs = [
       ...['main', 'preload', 'extension-host', 'shared'].map((name) => join(appRoot, 'src', name)),
       join(appRoot, 'native'),

@@ -2,8 +2,9 @@ import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { buildNative } from './build'
 import { checkNative } from './check'
+import { runCli } from '../../../../../tools/outputs'
 
-try {
+await runCli(async (signal) => {
   const { values } = parseArgs({
     options: {
       target: { type: 'string' },
@@ -16,11 +17,8 @@ try {
     if (target !== hostTarget() || values['update-declarations']) {
       throw new Error('Native checks use the host target and do not update declarations')
     }
-    await checkNative()
+    await checkNative(signal)
   } else {
-    console.info(await buildNative(target, values['update-declarations']))
+    console.info(await buildNative(target, values['update-declarations'], signal))
   }
-} catch (cause) {
-  console.error(cause)
-  process.exitCode = 1
-}
+})

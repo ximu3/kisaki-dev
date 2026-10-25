@@ -6,7 +6,7 @@ app 接收外部激活并分派明确的业务意图，ui 协调页面和宿主�
 
 ## 应用身份与条目寻址
 
-项目域名为 kisaki.me，通用授权中转为 oauth-relay.ximu.dev。独立服务不会因项目域名变化而迁移回调。正式应用使用 appId me.kisaki 和协议 kisaki://，开发应用使用 me.kisaki.dev 和 kisaki-dev://，安装身份见[工程配置](../engineering/repository.md)。普通协议只提供 view、open 和 add，分别表示查看、实际使用作品和直接新增，不提供 launch、play、read、manga 别名或通用命令 URL。
+项目域名为 kisaki.me，通用授权中转为 oauth-relay.ximu.dev。独立服务不会因项目域名变化而迁移回调。正式应用使用 appId me.kisaki 和协议 kisaki://，开发应用使用 me.kisaki.dev 和 kisaki-dev://，安装身份见[工程配置](../engineering/repository.md)。原生业务入口提供 view、open 和 add，分别表示查看、实际使用作品和直接新增；extension 将请求交给明确扩展登记的处理器，见[扩展 deeplink 入口](#extension-deeplinks)。不提供 launch、play、read、manga 别名或通用命令 URL。
 
 ```ts
 type EntryIdentifier = { type: 'local'; id: string } | ({ type: 'external' } & ExternalIdentity)
@@ -41,6 +41,7 @@ external 只寻找根 Entry。Part 身份不会自动寻找父作品，分部、
 | 阅读漫画             | `open/comic/<identifier>`                  | 可选 volumeId、chapterId、fileId、position       |
 | 阅读小说             | `open/novel/<identifier>`                  | 可选 volumeId、fileId、position                  |
 | 添加条目             | `add`                                      | 下方添加参数                                     |
+| 扩展业务入口         | `extension/<extensionId>[/<path>...]`      | 由目标扩展定义的查询参数                         |
 
 Collection、Tag 和 Note 只使用本地 ID，路径不增加 local。view 作品可以定位配置、分部或文件，但不会实际使用内容。position 只适用于 open 动画、漫画或小说，并且必须同时指定 fileId。preferences 不接受 sectionId。主题、字体、系统集成和更新 Dialog 不自动获得公开地址，应用内部仍可以使用原生导航进入具体设置。
 
@@ -80,13 +81,13 @@ kisaki://add 只接受查询参数，直接调用 ingest.add。不提供 interac
 
 ## 参数编码、校验与复制
 
-字符串、ID 和枚举使用普通查询参数。日期和 position 先使用原生 JSON，再进行 URL 编码，解码与编码各执行一次。PartialDate 不拆成 releaseDate.year，也不建立日期小语言。
+原生入口的字符串、ID 和枚举使用普通查询参数。日期和 position 先使用原生 JSON，再进行 URL 编码，解码与编码各执行一次。PartialDate 不拆成 releaseDate.year，也不建立日期小语言。
 
 ```text
 kisaki://add?entryType=game&name=CLANNAD&releaseDate=%7B%22year%22%3A2004%7D
 ```
 
-start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短链接表。具体坐标遵循[阅读操作](../domains/reader.md#operations)，start 不持久化。未知参数、重复单值参数、非法空值和错误格式都必须拒绝。缺省与无效不同，不能丢掉失败条件后改为执行另一种操作。授权 loopback 由来源协议解析，不经过业务 URL。
+start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短链接表。具体坐标遵循[阅读操作](../domains/reader.md#operations)，start 不持久化。原生 view、open 和 add 拒绝未知参数、重复单值参数、非法空值和错误格式。扩展入口的参数由[所属扩展校验](#extension-deeplinks)，宿主保留顺序与重复值。缺省与无效不同，不能丢掉失败条件后改为执行另一种操作。授权 loopback 由来源协议解析，不经过业务 URL。
 
 | 操作                     | 生成行为                                              |
 | ------------------------ | ----------------------------------------------------- |
@@ -107,12 +108,13 @@ start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短�
 | open/game                          | 使用正常启动流程，需要选择启动配置时才显示相应界面 |
 | open/anime、open/comic、open/novel | 打开或复用对应播放、阅读窗口                       |
 | add                                | 主进程后台直接执行，不弹添加窗口，通过桌面通知反馈 |
+| extension                          | 交付目标扩展的 Node 处理器，按该入口业务决定所需界面 |
 
-系统激活由主进程 app 校验目标、选择窗口，并等待必要能力。windows 负责创建、恢复、显示和聚焦窗口，renderer 明确报告 router 与 receiver 就绪后才接收请求，不能依靠固定延时。窗口加载固定 UI 入口，不调用 loadURL(kisaki://)。冷启动的 view 直接成为初始路由，避免先闪首页。阅读可以直接打开阅读窗口，无须等待无关 provider 或全部扩展。
+系统激活由主进程 app 校验目标、协调交付，并等待必要能力。需要窗口的操作由 windows 创建、恢复、显示和聚焦窗口，renderer 明确报告 router 与 receiver 就绪后才接收页面请求，不能依靠固定延时。窗口加载固定 UI 入口，不调用 loadURL(kisaki://)。冷启动的 view 直接成为初始路由，避免先闪首页。阅读可以直接打开阅读窗口，无须等待无关 provider 或全部扩展；扩展请求交付 Node 处理器，不以主窗口或 Webview 就绪为前提。
 
 未交付队列的工程默认上限为 32 条，最多等待 60 秒。超时或超量时明确失败，不能积压后突然执行。队列只等待本次请求真正依赖的能力；已知缺失、停用或失败时直接报告。该限制不计算业务执行或用户选择耗时。交付后由业务拥有取消和结果，未交付请求只保存在内存中。退出开始后停止接收新请求，下次启动不重放。
 
-待交付的相同规范请求可以合并，参数顺序不同仍可视为同一请求，但不建立永久去重表。Windows 与 Linux 处理冷启动参数和 second-instance；macOS 在启动早期同步监听 open-url，再进行异步初始化。单实例机制避免重复打开数据库，制品按 [Electron 接入规则](https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app)验证。
+待交付的相同原生规范请求可以合并，参数顺序不同仍可视为同一请求，但不建立永久去重表。扩展请求不由宿主合并或重排参数，重复资源的处理由扩展业务决定。Windows 与 Linux 处理冷启动参数和 second-instance；macOS 在启动早期同步监听 open-url，再进行异步初始化。单实例机制避免重复打开数据库，制品按 [Electron 接入规则](https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app)验证。
 
 通知携带可序列化业务目标。新增结果通知打开实际条目或任务，应用内导航直接使用原生请求。Windows 可以采用[协议激活](https://learn.microsoft.com/en-us/dotnet/api/microsoft.toolkit.uwp.notifications.toastcontentbuilder.setprotocolactivation?view=win-comm-toolkit-dotnet-7.1)；各平台按安装身份验证运行中与冷启动投递，确保一次点击只触发一次导航。
 
@@ -133,6 +135,59 @@ kisaki://view/extensions?extensionId=E&pageId=P
 三个地址分别进入扩展管理、扩展详情和具体登记页面。pageId 必须与 extensionId 同时出现，并在扩展内稳定且唯一，不使用文件名、组件名或临时 Dialog、Webview 身份。登记绑定真实拥有者，重复时报错。扩展不能替其他扩展登记，也不能透传任意 URL、脚本或命令。
 
 扩展停用后仍可查看原生详情，但运行页面应报告不可用，不自动启用。已经交付的调用绑定实际实例，旧结果不能覆盖新实例状态。认证不经过该分发入口。
+
+<a id="extension-deeplinks"></a>
+
+## 扩展 deeplink 入口
+
+扩展通过自己的地址范围接收外部业务请求，与原生入口共用协议关联、系统接收及交付机制：
+
+```text
+kisaki://extension/<extensionId>/install?resourceId=123&version=1.2
+kisaki-dev://extension/<extensionId>/install?resourceId=123&version=1.2
+kisaki://extension/example/show?resourceId=123#description
+```
+
+extensionId 使用[扩展身份合同](../extensions/distribution.md#package)中的正式 ID，解析后与 manifest 共用同一校验，不从 npm 包名推导身份，也不因 URL 编码放宽格式。含 / 的值及其他非法 ID 必须拒绝。后续路径、查询参数与 fragment 由该扩展定义，不要求路径动作在宿主逐项登记。注册不创建新的操作系统协议，也不能占用原生 view、open、add 或其他扩展的地址范围。
+
+desktop-contracts/deeplink 的 extension 请求分支保存 extensionId、path、query 与可选 fragment；格式化和解析复用基于 [WHATWG URL 标准](https://url.spec.whatwg.org/)的纯实现。宿主校验协议、目标结构、扩展身份格式与编码，拒绝用户名、密码和端口。路径先按组件划分，再各解码一次，查询参数遵循标准 URL 查询语义，fragment 按其组件规则解码一次。非法百分号转义或非法 UTF-8 必须拒绝，不能替换为其他字符后继续。不能先解码整个路径再拆分，也不能修改扩展身份的大小写或把格式错误的目标解释为另一个入口。
+
+对实际收到的 URL，在标准规范化消除点路径前，检查并拒绝完整的 .、.. 路径组件及其等价编码，包括 %2e、.%2e、%2e. 和 %2e%2e 的大小写变体。format 同样拒绝输入 path 中完整的 . 或 ..，不能生成会改变扩展目标或业务路径的链接。点号出现在其他组件内容中不受此限制。合法请求经 format 和 parse 往返后，扩展归属、路径组件、查询项顺序与重复值，以及 fragment 的业务值保持一致。
+
+交付给处理器的输入包含业务路径、查询参数与可选片段：
+
+```ts
+interface ExtensionDeeplinkRequest {
+  readonly path: readonly string[]
+  readonly query: readonly (readonly [name: string, value: string])[]
+  readonly fragment?: string
+}
+```
+
+path 不包含 extensionId，省略后续路径时为空数组。路径中的空组件、查询项的顺序、同名多值与空值保留，由扩展校验；query 不转成会覆盖重复键的对象。未知路径、参数或不满足业务要求的值由扩展明确拒绝，不套用原生入口的参数白名单，也不丢掉条件后执行其他动作。
+
+fragment 不包含开头的 #；没有片段时省略，显式的空片段保留为空字符串，其中的 + 不按查询参数解释为空格。片段只作为业务数据交付，由扩展解释或校验，不参与选择扩展、权限判断或宿主页面导航，也不扩大原生 view、open、add 的公开输入。上例的 description 可以由扩展解释为资源介绍位置，但宿主不替它执行定位。
+
+Node 扩展通过 context.deeplink.register(handler) 登记：
+
+```ts
+const registration = await context.deeplink.register(async (request, execution) => {
+  const input = parseInstallRequest(request)
+  await downloads.install(input, execution)
+})
+```
+
+每个扩展实例至多持有一个有效处理器；多个路径在扩展内部组织和分发。宿主从真实 ExtensionContext 绑定拥有者与代际，作者不传 extensionId 或 localId。返回句柄提供只读 ref（包含绑定的 extensionId）及可重复调用的 dispose。重复登记失败，不覆盖已有处理器。登记沿用[激活与贡献发布](../extensions/runtime.md#activation)：激活成功后才对外可用，失败时撤销；提前 dispose 停止后续交付，已经交付的调用继续按自己的执行合同收尾，实例失效则遵循[停用规则](../extensions/runtime.md#disable)。旧句柄不能撤销新实例的登记。
+
+app 拥有外部请求分发和扩展入口的运行期路由，extensions 适配层绑定真实实例并接入登记，extension-host 执行回调。原生请求与扩展请求共用接收和交付规则，各业务拥有者继续负责实际操作。冷启动只等待目标已启用扩展的正常激活与贡献发布，不等待全部扩展。已知未安装、停用、激活失败或激活完成后未登记时直接报告不可用，不自动安装、启用或反复激活。未交付请求沿用[共同队列与等待预算](#delivery)，退出后不保留。
+
+同一处理器的请求按接收顺序发起交付，不等待前一次异步处理结束才交付下一次。每次调用有独立输入与执行上下文，业务并发、同资源互斥和重复安装由扩展处理；没有全局“当前链接”。交付后绑定实际实例，断连或重启不自动重放，迟到结果不能采用到后来创建的实例。
+
+handler 返回 `Promise<void>`，完成表示该链接约定的请求处理已经结束：下载安装入口等待真实业务及收尾，打开界面的入口等待界面就绪。长期进度、取消和后台执行使用既有任务与[完整操作合同](../communication.md#operations)，不因耗时长就提前返回或套用未交付预算。execution 的 signal 与 allowInteraction 由宿主绑定和桥接，不能由 URL 提供。
+
+扩展入口允许业务所需的界面交互，宿主不额外弹出“是否允许此扩展处理链接”的通用确认框；浏览器或系统自身的协议打开提示按实际环境处理。打开页面、定位内容可以直接进入相应业务。外部链接发起资源下载安装时，由扩展的完整业务先展示资源、资源来源、版本、安装位置与覆盖影响，用户确认本次具体操作后再下载和安装。已有同等业务确认直接复用，不重复询问；取消确认则结束本次操作并清理准备资源，不开始下载安装。确认与本次确定的资源及安装范围绑定，链接不能代替确认或证明来源网站身份。allowInteraction 只允许业务所需的交互，不表示已经获得用户授权。
+
+处理器可以打开 Dialog、页面或执行后台业务，页面参数通过既有私有通信交付，不把安装挂到页面初始化上。宿主报告解析、目标不可用和未处理的调用失败；扩展业务负责进度与业务结果，按[入口责任](components.md#notifications)反馈一次。交付成功不显示为安装成功，普通协议也不向发起网页返回业务响应。浏览器授权继续使用下方 loopback 合同。
 
 <a id="authorization"></a>
 
@@ -235,7 +290,7 @@ Mod 在 Windows 和 Linux 中表示 Ctrl，在 macOS 中表示 Command。
 | 主窗口关闭按钮       | 默认转入后台，用户可以设置为退出应用 |
 | 最小化按钮           | 使用系统正常最小化行为               |
 | 明确选择退出         | 进入下方完整退出流程                 |
-| deeplink 启动        | 按链接自身查看、使用或添加合同交付   |
+| deeplink 启动        | 按链接的原生业务或扩展入口合同交付   |
 
 呈现方式由启动原因决定，不提供覆盖所有入口的统一“启动后隐藏”开关。主窗口关闭偏好属于应用，自启动是否生效属于操作系统。托盘保留主界面、当前使用、游戏面板和退出等必要入口，不复制全部导航。“游戏面板”按[面板规则](../domains/games.md#panel)列出活动会话，分别打开对应窗口；会话结束后自动关闭面板并移除入口。尚未处理完的未保存编辑暂留原入口，直到处理完成，不增加已结束面板的历史列表。主窗口设置为退出时，与托盘退出共用完整生命周期。隐藏主窗口不会结束其他内容会话。
 

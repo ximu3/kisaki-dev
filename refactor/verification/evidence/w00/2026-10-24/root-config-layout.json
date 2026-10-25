@@ -1,0 +1,287 @@
+{
+  "status": "superseded",
+  "supersededBy": "../2026-10-25/package-imports/README.md",
+  "note": "Retained measurements from an intermediate layout and dependency-patch attempt. That patch was withdrawn; the current implementation uses the unmodified dependency and package.json imports.",
+  "recordedAtUtc": "2026-10-24T15:37:56.958088Z",
+  "baseCommit": "93a06c29beddb41b1083549c004ab830fcc29ff5",
+  "target": "windows-x64",
+  "nodeVersion": "v24.11.1",
+  "change": "Move five root auxiliary configurations into config/typescript and config/vitest while preserving root default entry points.",
+  "typeProjects": [
+    {
+      "config": "config/typescript/tsconfig.tools.json",
+      "files": [
+        "tools/hooks.ts",
+        "tools/release/package-inputs.ts"
+      ],
+      "options": {
+        "target": 10,
+        "module": 99,
+        "moduleResolution": 100,
+        "strict": true,
+        "exactOptionalPropertyTypes": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowJs": false,
+        "skipLibCheck": false,
+        "noEmit": true,
+        "lib": [
+          "lib.es2023.d.ts"
+        ],
+        "types": [
+          "node"
+        ],
+        "incremental": true,
+        "tsBuildInfoFile": "F:/project/kisaki/.cache/typescript/tools.tsbuildinfo"
+      },
+      "sourceCoveragePreserved": true,
+      "compilerOptionsPreserved": true
+    },
+    {
+      "config": "config/typescript/tsconfig.config.json",
+      "files": [
+        "commitlint.config.ts",
+        "config/vitest/vitest.config.consumers.ts",
+        "eslint.config.ts",
+        "lint-staged.config.ts",
+        "vitest.config.ts"
+      ],
+      "options": {
+        "target": 10,
+        "module": 99,
+        "moduleResolution": 100,
+        "strict": true,
+        "exactOptionalPropertyTypes": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowJs": false,
+        "skipLibCheck": false,
+        "noEmit": true,
+        "lib": [
+          "lib.es2023.d.ts",
+          "lib.dom.d.ts"
+        ],
+        "types": [
+          "node"
+        ],
+        "incremental": true,
+        "tsBuildInfoFile": "F:/project/kisaki/.cache/typescript/config.tsbuildinfo"
+      },
+      "sourceCoveragePreserved": true,
+      "compilerOptionsPreserved": true
+    },
+    {
+      "config": "config/typescript/tsconfig.tests.json",
+      "files": [
+        "tests/consumers/packages.test.ts",
+        "tests/support/consumer.ts",
+        "tests/tools/hooks/lifecycle.test.ts",
+        "tests/tools/structure/boundaries.test.ts",
+        "tests/tools/structure/workspace.test.ts"
+      ],
+      "options": {
+        "target": 10,
+        "module": 99,
+        "moduleResolution": 100,
+        "strict": true,
+        "exactOptionalPropertyTypes": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowJs": false,
+        "skipLibCheck": false,
+        "noEmit": true,
+        "lib": [
+          "lib.es2023.d.ts",
+          "lib.dom.d.ts"
+        ],
+        "types": [
+          "node"
+        ],
+        "incremental": true,
+        "tsBuildInfoFile": "F:/project/kisaki/.cache/typescript/tests.tsbuildinfo"
+      },
+      "sourceCoveragePreserved": true,
+      "compilerOptionsPreserved": true
+    }
+  ],
+  "editor": {
+    "typescript": "6.0.3",
+    "results": [
+      {
+        "file": "tools/hooks.ts",
+        "configuration": "config/typescript/tsconfig.tools.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tools/release/package-inputs.ts",
+        "configuration": "config/typescript/tsconfig.tools.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "commitlint.config.ts",
+        "configuration": "config/typescript/tsconfig.config.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "eslint.config.ts",
+        "configuration": "config/typescript/tsconfig.config.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "lint-staged.config.ts",
+        "configuration": "config/typescript/tsconfig.config.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "vitest.config.ts",
+        "configuration": "config/typescript/tsconfig.config.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "config/vitest/vitest.config.consumers.ts",
+        "configuration": "config/typescript/tsconfig.config.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tests/consumers/packages.test.ts",
+        "configuration": "config/typescript/tsconfig.tests.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tests/support/consumer.ts",
+        "configuration": "config/typescript/tsconfig.tests.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tests/tools/hooks/lifecycle.test.ts",
+        "configuration": "config/typescript/tsconfig.tests.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tests/tools/structure/boundaries.test.ts",
+        "configuration": "config/typescript/tsconfig.tests.json",
+        "diagnostics": 0
+      },
+      {
+        "file": "tests/tools/structure/workspace.test.ts",
+        "configuration": "config/typescript/tsconfig.tests.json",
+        "diagnostics": 0
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "path": "config/typescript/tsconfig.tools.json",
+      "sha256": "ce1bd737489f0d8ec139de0d25bad77c538b7319c1c5f8ab78a4ebe2f33aecb6"
+    },
+    {
+      "path": "config/typescript/tsconfig.config.json",
+      "sha256": "7319ae0d74ddf1d445cefef9ca07a9d8a4c5ecd6b1054023bf116a1241242370"
+    },
+    {
+      "path": "config/typescript/tsconfig.tests.json",
+      "sha256": "cba905eac2b21093c72334a5aa607a202a86fc29a64055282ea5b3e74993ecfb"
+    },
+    {
+      "path": "config/typescript/tsconfig.boundaries.json",
+      "sha256": "d14f70ff222cb43f46af625d67c48e09266217201d60c71ef627492e27ae65f6"
+    },
+    {
+      "path": "config/vitest/vitest.config.consumers.ts",
+      "sha256": "aadeea6c0f5ed65a2b382e0a6dab49c0e1c495c385a163911340ab1bc1ed89fa"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "9d8e3f45da126bcec71d46e50623ab26573facbb394706ce1fef718792eaf1e8"
+    },
+    {
+      "path": ".dependency-cruiser.json",
+      "sha256": "df0f5599d7fd1011b3c75c635c3163f0bf74ff93f00f184301fb7abfaef2274b"
+    },
+    {
+      "path": "package.json",
+      "sha256": "834584b547d41c704a5d23bff2c688538c01f485b08a851f07709a989cead73e"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "5ff882476727f217b4be01307ea48f364398e6145217b153042e45a7331e1be0"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "a2e87f75d635c44ff20f5f47147934ae7ddd7969ee5c9d54e37fae98315e8735"
+    },
+    {
+      "path": "patches/dependency-cruiser@18.7.0.patch",
+      "sha256": "1ef7b4db5083ef3cfcee649c07cb8c33c2753e0fad7270ba89a1d0b1d7e1bedc"
+    },
+    {
+      "path": "tests/tools/structure/boundaries.test.ts",
+      "sha256": "2670d0b5deffa644412104257b43ac87c171ed8080f959a6d9553256e7ea6f48"
+    },
+    {
+      "path": "tests/tools/structure/workspace.test.ts",
+      "sha256": "e2e999e286b76cff09474ad7402b9c6c1667a9618432d4980c23ac338d3ba81e"
+    }
+  ],
+  "dependencyCheck": {
+    "rulesPreserved": 30,
+    "modules": 161,
+    "dependencies": 284,
+    "forbiddenImportFixturesPassed": 4,
+    "version": "18.7.0",
+    "patch": "patches/dependency-cruiser@18.7.0.patch",
+    "patchSha256": "1ef7b4db5083ef3cfcee649c07cb8c33c2753e0fad7270ba89a1d0b1d7e1bedc",
+    "fixes": [
+      "Use one absolute tsconfig identity when invoking the TypeScript parser.",
+      "Resolve path mappings without baseUrl relative to their tsconfig directory."
+    ],
+    "removeWhen": "An upstream version handles both cases and passes the unchanged dependency-boundary assertions."
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm check",
+      "exitCode": 0,
+      "rootTestsPassed": 15,
+      "desktopNodeTestsPassed": 10
+    },
+    {
+      "command": "pnpm test:consumers",
+      "exitCode": 0,
+      "packageChecksPassed": 8,
+      "consumerTestsPassed": 2
+    }
+  ],
+  "packages": {
+    "archivesUnchanged": true,
+    "count": 8,
+    "previousInputId": "8a55678f38887927a3706c25f62e23981ca10777e7b2c3888c6298eb6fe8886a",
+    "currentInputId": "2012586f847301de12579b85c95934c2b1e5546dabfd4e0c1ee22784ac7723ba",
+    "lockfileSha256": "a2e87f75d635c44ff20f5f47147934ae7ddd7969ee5c9d54e37fae98315e8735"
+  },
+  "scope": "Root configuration discovery, source and editor ownership, dependency boundaries, hooks, package checks and repository-external consumers. Desktop runtime source and the existing runtime suites were not changed; desktop candidates and six-target CI were not rerun."
+}

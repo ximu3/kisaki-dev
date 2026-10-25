@@ -112,7 +112,7 @@ export async function prepareConsumer(): Promise<{
           packageManager: 'pnpm@11.11.0',
           scripts: {
             typecheck:
-              'tsc -p node/tsconfig.json && tsc -p webview/tsconfig.json && tsc -p solid/tsconfig.json && tsc -p tsconfig.tools.json',
+              'tsc -p node/tsconfig.json && tsc -p webview/tsconfig.json && tsc -p solid/tsconfig.json && tsc -p config/typescript/tsconfig.tools.json',
             build: 'vite build',
             node: 'tsx node/consumer.ts',
           },

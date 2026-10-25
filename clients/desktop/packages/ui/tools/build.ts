@@ -1,71 +1,36 @@
 import { build } from 'tsdown'
-import { mkdir, mkdtemp, rename, rm, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { execFile } from 'node:child_process'
-import { promisify } from 'node:util'
+import { replaceOutput, runCli, runPnpm, withProjectOutputs } from '../../../../../tools/outputs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 
-/** Build code, declarations and assets in a candidate, then replace the package output. */
-export async function buildPackage(): Promise<void> {
-  const cache = join(root, '.cache')
-  await mkdir(cache, { recursive: true })
-  const lock = join(cache, 'build.lock')
-  await mkdir(lock)
-  let candidate: string | undefined
-  const output = join(root, 'dist')
-  let replaced = false
-
-  try {
-    candidate = await mkdtemp(join(cache, 'build-'))
-    const previous = candidate + '.previous'
-    await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
-
-    const pnpm = process.env.npm_execpath
-    if (!pnpm) throw new Error('Run the package build through its pnpm task')
-    const command = pnpm.endsWith('.exe') ? pnpm : process.execPath
-    const tailwindArguments = [
-      'exec',
-      'tailwindcss',
-      '-i',
-      'src/styles.css',
-      '-o',
-      join(candidate, 'styles.css'),
-      '--minify',
-    ]
-    const commandArguments = pnpm.endsWith('.exe')
-      ? tailwindArguments
-      : [pnpm, ...tailwindArguments]
-    await promisify(execFile)(command, commandArguments, { cwd: root, windowsHide: true })
-
-    try {
-      await stat(output)
-      await rename(output, previous)
-      replaced = true
-    } catch (cause) {
-      if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
-    }
-
-    try {
-      await rename(candidate, output)
-    } catch (cause) {
-      if (replaced) await rename(previous, output)
-      throw cause
-    }
-
-    await rm(previous, { recursive: true, force: true })
-  } finally {
-    if (candidate) await rm(candidate, { recursive: true, force: true })
-    await rm(lock, { recursive: true, force: true })
-  }
+/** Build code, declarations and styles while retaining dependency and published-output ownership. */
+export async function buildPackage(signal?: AbortSignal): Promise<void> {
+  await withProjectOutputs(
+    root,
+    { write: ['dist'] },
+    async () => {
+      await replaceOutput(root, 'dist', async (candidate) => {
+        await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
+        await runPnpm(
+          [
+            'exec',
+            'tailwindcss',
+            '-i',
+            'src/styles.css',
+            '-o',
+            join(candidate, 'styles.css'),
+            '--minify',
+          ],
+          { cwd: root },
+        )
+      })
+    },
+    signal ? { signal } : {},
+  )
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  try {
-    await buildPackage()
-  } catch (cause) {
-    console.error(cause)
-    process.exitCode = 1
-  }
+  await runCli((signal) => buildPackage(signal))
 }

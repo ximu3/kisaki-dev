@@ -97,6 +97,8 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+      - name: Check system locks and output handoffs on the actual target
+        run: pnpm test:outputs
       - run: pnpm --filter @kisaki3/desktop native:check
       - name: Build the actual target
         shell: bash

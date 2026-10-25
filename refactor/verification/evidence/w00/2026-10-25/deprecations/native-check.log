@@ -1,0 +1,2 @@
+$ tsx tools/native/cli.ts --check
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.68s

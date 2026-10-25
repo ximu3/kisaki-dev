@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-25",
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.11.1",
+  "workspace": "C:\\Users\\ximu\\AppData\\Local\\Temp\\kisaki-lock-review-chefjp",
+  "workspaceRemoved": true,
+  "cache": {
+    "firstExit": 0,
+    "cachedExit": 0,
+    "cacheHitWithLockPresent": true,
+    "outputRestoredWithLockPresent": true,
+    "directBuildExit": 1,
+    "directBuildRejectedByLock": true,
+    "copiedBuildSha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0",
+    "originalBuildSha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+  },
+  "snapshot": {
+    "scheduledAfterFirstRead": true,
+    "writerCompletedWithExistingLock": true,
+    "snapshotAccepted": true,
+    "firstFile": "export const generation = \"old\";",
+    "secondFile": "export const generation = \"new\";",
+    "mixedGenerations": true
+  }
+}

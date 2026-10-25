@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-25",
+  "timezone": "Asia/Shanghai",
+  "head": "93a06c29beddb41b1083549c004ab830fcc29ff5",
+  "workingTree": "uncommitted",
+  "status": "review-complete-implementation-pending",
+  "versions": {
+    "node": "24.11.1",
+    "pnpm": "11.11.0",
+    "turbo": "2.11.10",
+    "napiCli": "3.10.9"
+  },
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "296f0000f274a24e482ed0f3f8c73acface8f956dc2010bd572ec2ddd1e7f64d"
+    },
+    {
+      "path": "CONVENTIONS.md",
+      "sha256": "b20a5f464f25fa7c28b3f24ea2fe3782c32569bd4bff788c7cd4a87563597b48"
+    },
+    {
+      "path": "turbo.json",
+      "sha256": "7c260fb6731cc23a185f3c06f64410f9faac68b415f0556e755915eb0ee09d85"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "73e62e5f0c3d12a659799c31c9455e7d38fcb18d319ddee580002fae70e21f7b"
+    },
+    {
+      "path": "refactor/design/engineering/build.md",
+      "sha256": "e55e0675f52a49763bd2111f524ba3aec2dc5e8959e2825b18dcd123d599dc4c"
+    },
+    {
+      "path": "refactor/design/engineering/workspace.md",
+      "sha256": "f8b1cd646f891000ee213a385af89efe829aa8c61aaa64b4c1309537722a0342"
+    },
+    {
+      "path": "refactor/design/engineering/layout.md",
+      "sha256": "fbcd4062d8c7705749c558322de738668bbb254441ce175fb9883975377f2788"
+    },
+    {
+      "path": "clients/desktop/app/tools/lib/output.ts",
+      "sha256": "bef7085c495722435b73e46d5d4dbebd8381b0c75a64c3c974ec5517f33e04cf"
+    },
+    {
+      "path": "clients/desktop/app/tools/build/coordinator.ts",
+      "sha256": "23a2e0905045cb403a156f654d2556fd86a8d042e269f637507e50de3655cfc1"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/session.ts",
+      "sha256": "8392ad3800013fc20202bfaa268999b49745225834b5d177782c648a25826087"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/cli.ts",
+      "sha256": "3d16cf0cc752f7ea98c4d9728359632a1481bd0c9115a080fb203fbf1dd8b78c"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/dependencies.ts",
+      "sha256": "7fcfdeb0bb2992a404bc04982da7c9c8994154cda0bd12ecc8942eac988fea02"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/generation.ts",
+      "sha256": "72b96e9d9fb1bcc875786ce68aa716c5f7a683c18ece3b5a80f07faac1571f81"
+    },
+    {
+      "path": "clients/desktop/app/tools/resources/prepare.ts",
+      "sha256": "26aa5c841df61b842186913298a2006b08546b4d56ca974c3b5a5a726a9e0bf5"
+    },
+    {
+      "path": "clients/desktop/app/tools/native/build.ts",
+      "sha256": "868cbb55c197d2139d518e13eb575c494908707b97c4737b6f8f675a531e785f"
+    },
+    {
+      "path": "clients/desktop/app/tools/native/check.ts",
+      "sha256": "545d683e1397414571c5ee74761eb5eeefbd6c6620672cea98ec09c7f257799b"
+    },
+    {
+      "path": "clients/desktop/app/tools/package/packager.ts",
+      "sha256": "56d9a3ec09bdb83601c2e7711f4c36f642ce883a332233b365772d971bf23a2e"
+    },
+    {
+      "path": "clients/desktop/app/tools/clean.ts",
+      "sha256": "ac2453aa58ee6c583b96db1e237b7968ee9051dad2a2ef22dba0a40948d47212"
+    },
+    {
+      "path": "clients/desktop/packages/appearance/tools/build.ts",
+      "sha256": "4780c4f798fb7635d8f2d688dd7b352898105797430d96ff28f2803f0158e908"
+    },
+    {
+      "path": "clients/desktop/packages/appearance/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/appearance/package.json",
+      "sha256": "25689e8b89fcf798908d4ac00225b4a7d2b9387d7f9d1231a0f8784c608cf008"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/package.json",
+      "sha256": "1c6f97415bdab98c28dee9cbde38d86725286bb95bc4cf0b215e55edb03a96a3"
+    },
+    {
+      "path": "clients/desktop/packages/extension-api/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-api/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-api/package.json",
+      "sha256": "193622ba38d5d724969e403a15c4dd4bb4d0d8c2adc22f999b23a7233377d1aa"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/package.json",
+      "sha256": "59413a7dddeb58e11e3cfa4d06f3c0a02c3b540713da2ee201df67f714314511"
+    },
+    {
+      "path": "clients/desktop/packages/extension-distribution/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-distribution/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-distribution/package.json",
+      "sha256": "7a8815f0ad95128cc655bd92acaa43eb5be063cf15a71acfaff2acc2d8e703d5"
+    },
+    {
+      "path": "clients/desktop/packages/extension-sdk/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-sdk/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/extension-sdk/package.json",
+      "sha256": "03e82478104f3b765b57485234e03e96518518457c940c980d4dff915f2589f9"
+    },
+    {
+      "path": "clients/desktop/packages/rpc/tools/build.ts",
+      "sha256": "d9e85a7a257714cfd22dfe3a2aeda00b8cb73c94685804f7ec356aefc3b903d0"
+    },
+    {
+      "path": "clients/desktop/packages/rpc/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/rpc/package.json",
+      "sha256": "858f957a53dfa0a12b9dd36a0f5c8b9dea5420fd099483529fc4a48dd6c65d33"
+    },
+    {
+      "path": "clients/desktop/packages/ui/tools/build.ts",
+      "sha256": "d6d5c36139de1272177c5edb267fbe4606dad85cba1a34adddd493dc72b4bc0d"
+    },
+    {
+      "path": "clients/desktop/packages/ui/tools/clean.ts",
+      "sha256": "aeb0ebca0eae7183a7aab0eec0b7a28aff54acdbb3ae117e261be4ef6a16c8e0"
+    },
+    {
+      "path": "clients/desktop/packages/ui/package.json",
+      "sha256": "9343138e495f9251ff837ef699fe144fab972bdb984e4b7f62a38a6067ccbc7b"
+    }
+  ],
+  "observations": {
+    "staleLock": "Existing final-review evidence reused",
+    "cacheRestore": "Actual pinned Turbo and byte-identical copied package builder",
+    "mixedSnapshot": "Actual helpers with a scheduled read/write interleaving",
+    "cleanRace": "Static review only",
+    "packagingAndNativeReads": "Static review only"
+  },
+  "probeTypecheck": "Passed with strict TypeScript, no skipLibCheck override",
+  "previousCorrectionsUnchanged": true,
+  "implementationEdits": [],
+  "dependencyEdits": [],
+  "remoteActions": [],
+  "pending": [
+    "Concrete public-package orchestration including cache restoration and snapshot acquisition",
+    "Complete the narrowed output ownership and lock changes",
+    "Validate the eventual implementation on affected targets"
+  ]
+}

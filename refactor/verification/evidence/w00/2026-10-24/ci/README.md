@@ -2,6 +2,12 @@
 
 验证仓库为临时私有库 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci)。本记录覆盖 W00 的工程、运行和测试入口；正式签署身份、安装升级与完整产品验收仍由后续工作包交付。
 
+## 建库时的仓库核对
+
+2026-10-24 为新工程建立上述临时私有仓库，确认 Actions 已启用并允许当前工作流使用的 Actions，本地 F:/project/kisaki 的 origin 随后指向该库。当时旧 ximu3/kisaki 为公开仓库，默认分支 main，当前账户具有 admin 权限；旧库有 17 个 Release，附件约 0.8 GB，完整存档尚未执行。这些是建库时的观察，当前仓库阶段由[实施状态](../../../../../implementation/status.md)记录。
+
+当时 GitHub CLI 令牌缺少读取用户计费信息的 user scope，额度 API 未取得结果。工作流沿用账户已有预算与付费设置，没有将读取失败解释为零使用或无限额度。临时库的持续用途与正式接续规则现由[共同仓库规范](../../../../../design/engineering/repository.md#temporary-repositories)维护，本记录保留原始仓库地址、提交和实际制品身份。
+
 ## 初始运行
 
 初始提交为 `66d39a78e19945bde223223769dd42741bb45cb1`，提交标题为 `chore: initial commit`。[工作流 40099308610](https://github.com/ximu3/kisaki-w00-ci/actions/runs/40099308610)从固定锁文件安装，实际启动六个原生目标。仓库级普通检查与八包仓库外消费通过；六个桌面任务均在不同阶段失败，Required checks 正确报告失败。

@@ -1,0 +1,230 @@
+[
+  {
+    "file": "clients/desktop/packages/appearance/src/defaults.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/appearance/src/index.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/appearance/src/tokens.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/appearance/tools/build.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/appearance/tools/clean.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/appearance/tsdown.config.ts",
+    "project": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/src/errors.ts",
+    "project": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/src/index.ts",
+    "project": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/tools/build.ts",
+    "project": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/tools/clean.ts",
+    "project": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/tsdown.config.ts",
+    "project": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/src/index.ts",
+    "project": "clients/desktop/packages/extension-api/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/extension-api/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/tools/build.ts",
+    "project": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/tools/clean.ts",
+    "project": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/tsdown.config.ts",
+    "project": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/src/config.ts",
+    "project": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/tools/build.ts",
+    "project": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/tools/clean.ts",
+    "project": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/tsdown.config.ts",
+    "project": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/src/index.ts",
+    "project": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/src/metadata.ts",
+    "project": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/tools/build.ts",
+    "project": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/tools/clean.ts",
+    "project": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/tsdown.config.ts",
+    "project": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/src/index.ts",
+    "project": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/tools/build.ts",
+    "project": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/tools/clean.ts",
+    "project": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/tsdown.config.ts",
+    "project": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/rpc/src/index.ts",
+    "project": "clients/desktop/packages/rpc/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/rpc/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/rpc/src/transport.ts",
+    "project": "clients/desktop/packages/rpc/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/rpc/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/rpc/tools/build.ts",
+    "project": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/rpc/tools/clean.ts",
+    "project": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/rpc/tsdown.config.ts",
+    "project": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/ui/tsdown.config.ts",
+    "project": "clients/desktop/packages/ui/config/typescript/tsconfig.config.json",
+    "expected": "clients/desktop/packages/ui/config/typescript/tsconfig.config.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/ui/src/components/button.tsx",
+    "project": "clients/desktop/packages/ui/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/ui/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/ui/src/index.ts",
+    "project": "clients/desktop/packages/ui/config/typescript/tsconfig.lib.json",
+    "expected": "clients/desktop/packages/ui/config/typescript/tsconfig.lib.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/ui/tools/build.ts",
+    "project": "clients/desktop/packages/ui/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/ui/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  },
+  {
+    "file": "clients/desktop/packages/ui/tools/clean.ts",
+    "project": "clients/desktop/packages/ui/config/typescript/tsconfig.tools.json",
+    "expected": "clients/desktop/packages/ui/config/typescript/tsconfig.tools.json",
+    "diagnostics": []
+  }
+]

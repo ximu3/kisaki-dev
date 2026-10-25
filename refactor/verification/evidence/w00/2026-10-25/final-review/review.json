@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-25",
+  "verdict": "changes-required",
+  "head": "93a06c29beddb41b1083549c004ab830fcc29ff5",
+  "workingTreeReviewed": true,
+  "sourceInventorySha256": "54c16e9fc1fd486e27ef2d76d8f40fd4ca65692455d5951e73bac912ac8ea4dd",
+  "maintainedFiles": 418,
+  "sourceFiles": 173,
+  "sourceUnchangedDuringReview": true,
+  "contractInputs": [
+    {
+      "file": "refactor/implementation/work-packages.md",
+      "sha256": "715a436e593d55f4f8b7d195a45cac8d4a83f3d192d36e48d97cce4c2ef423b0"
+    },
+    {
+      "file": "refactor/verification/acceptance.md",
+      "sha256": "536f8b6fdeb3892ec9baf2850f85863d63ae75055126b5770869bd27453a2fc9"
+    },
+    {
+      "file": "refactor/design/architecture.md",
+      "sha256": "288a67d54dcb24a4b96d9a2b373e68a411b70f3266ed07ca9a77268daf90f65b"
+    },
+    {
+      "file": "refactor/design/engineering/conventions.md",
+      "sha256": "72b50e86147c6e0c86193e9293f038fef00477eae60c9e556e1edc282755785a"
+    },
+    {
+      "file": "refactor/design/engineering/layout.md",
+      "sha256": "fbcd4062d8c7705749c558322de738668bbb254441ce175fb9883975377f2788"
+    },
+    {
+      "file": "refactor/design/engineering/workspace.md",
+      "sha256": "f8b1cd646f891000ee213a385af89efe829aa8c61aaa64b4c1309537722a0342"
+    },
+    {
+      "file": "refactor/design/engineering/build.md",
+      "sha256": "e55e0675f52a49763bd2111f524ba3aec2dc5e8959e2825b18dcd123d599dc4c"
+    },
+    {
+      "file": "refactor/design/engineering/native.md",
+      "sha256": "934489fcad40479e76eab6e8ae9f1fb86aec3ef35b8aeea7b3cc4abf1db4d77b"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "priority": 1,
+      "file": "clients/desktop/app/tools/build/identity.ts",
+      "line": 43,
+      "problem": "Public package config directories are absent from source identity",
+      "confirmed": true
+    },
+    {
+      "id": "F2",
+      "priority": 2,
+      "file": "clients/desktop/app/tools/lib/output.ts",
+      "line": 21,
+      "problem": "Terminated writer leaves a lock that prevents subsequent builds",
+      "confirmed": true
+    },
+    {
+      "id": "F3",
+      "priority": 2,
+      "file": "clients/desktop/app/config/vitest/vitest.config.browser.ts",
+      "line": 7,
+      "problem": "Default browser runner port is unavailable in the actual Windows environment",
+      "confirmed": true
+    }
+  ],
+  "checks": {
+    "ordinary": "passed",
+    "nativeRust": "passed",
+    "desktopBuild": "passed",
+    "nativeSqliteTests": 8,
+    "browserDefault": "failed before test execution",
+    "browserApiPortZero": "failed before test execution",
+    "browserSelectedPort": {
+      "status": "passed",
+      "tests": 1,
+      "port": 65254
+    },
+    "windowTests": 4,
+    "consumerTests": 2,
+    "developmentTests": 1,
+    "startupSamples": 20,
+    "packagedCarrierTests": 1
+  },
+  "artifact": {
+    "buildId": "867b0e9a5a0144f7262fedf0022f368615bd8a5a250216d1d7541ff2b935f6dc",
+    "testOnly": true,
+    "target": "windows-x64",
+    "archive": "artifacts/w00/final-review/2026-10-25/867b0e9a5a0144f7262fedf0022f368615bd8a5a250216d1d7541ff2b935f6dc/run-GlUqPa",
+    "files": [
+      {
+        "path": "Kisaki-0.1.0-dev.0-windows-x64.exe",
+        "sha256": "c4e57f6563f76d55758eb6710f1c3bd1f60e44c805e8c7b7de722aaf1ce24bdd",
+        "sizeBytes": 118921136
+      },
+      {
+        "path": "Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap",
+        "sha256": "9faf9892e2894b4a419ce33cf54fbd8930efbc1aabe3592034ac844cbc04e226",
+        "sizeBytes": 124330
+      },
+      {
+        "path": "Kisaki-0.1.0-dev.0-windows-x64.zip",
+        "sha256": "174c290d7ae3d2a65fe4a65e7c5d2e99dfb7597ce94e84380dd4f49334b250bf",
+        "sizeBytes": 160464073
+      },
+      {
+        "path": "latest.yml",
+        "sha256": "6b9f15096306c75f5cf6701c0d89efa2963642ccdd0c04b690fc78cdb2013480",
+        "sizeBytes": 371
+      }
+    ]
+  },
+  "otherTargets": {
+    "rerun": false,
+    "historicalCiCommit": "df0d99d3373004f50f122441a7c01460615ada67"
+  },
+  "notPerformed": [
+    "source fixes",
+    "installer installation and upgrade",
+    "formal signing or notarization",
+    "remote changes or public release"
+  ]
+}

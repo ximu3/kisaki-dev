@@ -1,8 +1,9 @@
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { packageDesktop } from './packager'
+import { runCli } from '../../../../../tools/outputs'
 
-try {
+await runCli(async (signal) => {
   const { values } = parseArgs({
     options: { target: { type: 'string' }, 'test-only': { type: 'boolean', default: false } },
   })
@@ -10,9 +11,7 @@ try {
     await packageDesktop(
       values.target ? parseTarget(values.target) : hostTarget(),
       values['test-only'],
+      signal,
     ),
   )
-} catch (cause) {
-  console.error(cause)
-  process.exitCode = 1
-}
+})

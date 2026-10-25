@@ -54,9 +54,13 @@ kisaki/
 ├── site/
 ├── server/
 ├── tools/
+│   ├── outputs/
 │   ├── release/
 │   └── hooks.ts
 ├── tests/
+├── config/
+│   ├── typescript/
+│   └── vitest/
 ├── .github/workflows/
 ├── .husky/
 ├── artifacts/                       # Ignored verified delivery outputs
@@ -89,7 +93,11 @@ Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
+各工程遵守[通用配置归属](conventions.md#configuration-layout)。仓库根目录保留默认工具入口与共享基线，包括 tsconfig.json、tsconfig.base.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。依赖检查复用 tsconfig.base.json 的编译选项，模块入口由所属包的 imports 与 exports 解析。工具、配置、测试三个类型项目归根 config/typescript；仓库外消费者测试配置归根 config/vitest，由所属命令显式指定。
+
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
+
+八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展保留根 tsconfig.json 与 kisx.config.ts，新增内部配置时按工具归组。作者模板和合成消费者采用相同规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
@@ -107,7 +115,7 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 
 | 位置                      | 负责的工作                                                           |
 | ------------------------- | -------------------------------------------------------------------- |
-| 根 tools                  | 跨项目发行输入检查、版本说明与元数据、仓库 Git hooks。               |
+| 根 tools                  | 工程输出访问、跨项目发行输入检查、版本说明与元数据、仓库 Git hooks。 |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。 |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。           |
 | extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。            |
@@ -118,6 +126,10 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 ```text
 tools/
 ├── hooks.ts
+├── outputs/
+│   ├── index.ts
+│   ├── run.ts
+│   └── turbo.ts
 └── release/
     └── package-inputs.ts
 ```
@@ -133,6 +145,10 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 工具专用的辅助实现放在对应工作流内部；本仓库多个工具共同使用的内部支撑归所属工程的 tools/lib，仅在确有共用实现时建立。lib 以具体职责命名模块，不提供命令入口，也不导入工作流或 CLI。测试复用专用模块不改变其拥有者，目录归属遵守[通用规则](conventions.md#directory-readability)。
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
+
+根 tools/outputs 提供工程输出访问的公开入口：index.ts 导出程序化操作，run.ts 与 turbo.ts 提供命令入口。项目工具消费声明的入口，不导入目录中的私有支撑；该目录不属于八个公共包，不发布 npm API，也不被生产运行代码消费。根工程拥有系统锁依赖、访问上下文与子进程收尾，具体编译和输出交接由各项目负责。
+
+输出访问的集成测试归根 tests/tools/outputs，使用隔离项目与真实子进程验证共享读取、独占写入、清理互斥、取消与进程退出，并以实际 Turbo 缓存恢复验证调度入口。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
 工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过相同项目脚本调用工程工作流、现成检查工具或测试运行器；脚本转交参数与退出状态，工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
 
@@ -172,11 +188,11 @@ clients/desktop/app/tools/
 │   ├── cli.ts
 │   └── packager.ts
 ├── clean.ts
+├── run.ts
 └── lib/
     ├── paths.ts
     ├── targets.ts
-    ├── output.ts
-    ├── process.ts
+    ├── package-inputs.ts
     └── sha256.ts
 ```
 
@@ -191,9 +207,10 @@ clients/desktop/app/tools/
 | native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                     |
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                        |
 | clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                           |
-| lib                             | 提供跨工作流共用的工程路径、目标解析、输出交接、子进程调用和字节摘要；各工作流继续拥有自身操作与资源寿命。 |
+| run.ts                           | 为类型与测试命令声明实际依赖及运行、制品输出的读取范围，保持占用直到命令结束。 |
+| lib                             | 提供跨工作流共用的工程路径、目标解析、公共包输入与字节摘要；各工作流拥有自身操作与资源寿命。 |
 
-桌面的 dev、build 和 package 命令分别进入对应 cli.ts，测试任务直接采用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流，每份输出只有一个实际写入者。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的 dev、build 和 package 命令分别进入对应 cli.ts，测试任务在输出访问范围内采用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流，每份输出只有一个实际写入者。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 上述文件确定主要职责，私有辅助文件按实际协作需要拆分。共享的目标与路径解析归 lib/targets.ts 和 lib/paths.ts，不复制程序配置、项目依赖图或支持范围。工程命令与输出位置由工具解析，部署后的运行资源路径仍由 main/app/paths 负责。
 

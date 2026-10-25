@@ -1,11 +1,13 @@
 import { createHash } from 'node:crypto'
-import { readFile, readdir } from 'node:fs/promises'
+import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'
-import { appRoot, repositoryRoot } from '../lib/paths'
+import { repositoryRoot } from '../lib/paths'
+import { publicPackageBuildInputs } from '../lib/package-inputs'
 import { sha256 } from '../lib/sha256'
 
-/** Hash only declared engineering inputs, excluding state, caches and earlier outputs. */
-export async function sourceIdentity(): Promise<string> {
+/** Hash a workspace's declared engineering inputs, excluding state, caches and earlier outputs. */
+export async function sourceIdentity(root = repositoryRoot): Promise<string> {
+  const appRoot = join(root, 'clients', 'desktop', 'app')
   const digest = createHash('sha256')
 
   /** Traverse owned inputs in stable order, preserving names in the identity. */
@@ -18,7 +20,7 @@ export async function sourceIdentity(): Promise<string> {
       if (entry.isDirectory()) {
         await include(path)
       } else {
-        digest.update(relative(repositoryRoot, path).replaceAll('\\', '/'))
+        digest.update(relative(root, path).replaceAll('\\', '/'))
         digest.update('\0')
         digest.update(await readFile(path))
       }
@@ -34,17 +36,18 @@ export async function sourceIdentity(): Promise<string> {
     }
   }
   for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json']) {
-    digest.update(file).update(await readFile(join(repositoryRoot, file)))
+    digest.update(file).update(await readFile(join(root, file)))
   }
+  await include(join(root, 'tools', 'outputs'))
 
   const packages = join(appRoot, '..', 'packages')
   for (const name of (await readdir(packages)).sort()) {
     const packageRoot = join(packages, name)
-    await include(join(packageRoot, 'src'))
-    await include(join(packageRoot, 'tools'))
-    for (const entry of (await readdir(packageRoot)).sort()) {
-      if (entry.endsWith('.ts') || entry.endsWith('.json')) {
-        digest.update(`${name}/${entry}`).update(await readFile(join(packageRoot, entry)))
+    for (const input of await publicPackageBuildInputs(packageRoot)) {
+      if ((await stat(input)).isDirectory()) {
+        await include(input)
+      } else {
+        digest.update(`${name}/${relative(packageRoot, input)}`).update(await readFile(input))
       }
     }
   }

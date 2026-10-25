@@ -46,7 +46,7 @@ native 使用一个 Cargo crate；lib.rs 声明实际模块与原生导出，fil
 
 node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 
-应用内部的 @native 入口指向 native/node/index.ts。main/app 调用 `loadNative(modulePath)`，传入 app/paths 提供的绝对制品路径，取得按能力组织的接口，再向设施注入其所需部分。当前文件能力通过 `native.files.moveNoReplace(source, target)` 调用。设施直接使用该接口及其类型，不穿透绑定或重新实现加载；只有应用语义和宿主转换留在设施中。
+应用 package.json 的 imports 唯一定义 `#native` 入口，指向 native/node/index.ts，遵守[模块导入规则](conventions.md#module-imports)。main 与原生集成测试从该入口消费接口，原生模块内部使用相对导入。main/app 调用 `loadNative(modulePath)`，传入 app/paths 提供的绝对制品路径，取得按能力组织的接口，再向设施注入其所需部分。当前文件能力通过 `native.files.moveNoReplace(source, target)` 调用。设施直接使用该接口及其类型，不穿透绑定或重新实现加载；只有应用语义和宿主转换留在设施中。
 
 入口导入不隐式加载二进制或创建系统资源，加载由装配显式发起。无状态操作使用普通方法；持有会话、观察或其他资源的能力按自己的合同创建和关闭实例，不要求所有能力具备同一套生命周期方法。
 
@@ -56,7 +56,7 @@ node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files
 
 底层绑定声明由实际 Rust 导出生成，保存为 node/binding.d.ts，作为可审查输入进入版本控制。原生构建重新生成并核对该声明；平台之间保持同一 Node 合同。TypeScript 检查直接消费声明，不为取得类型加载二进制，也不在消费方手写一份绑定接口。
 
-Node 入口公开调用者需要的参数、结果、错误和资源类型。原生声明已经准确表达的类型直接选用；必要的 TypeScript 适配定义其新增的语义，公开声明由实际代码生成与检查。消费方从 @native 引用，不复制类型、建立同形别名或通过设施再次转导出。
+Node 入口公开调用者需要的参数、结果、错误和资源类型。原生声明已经准确表达的类型直接选用；必要的 TypeScript 适配定义其新增的语义，公开声明由实际代码生成与检查。消费方从 `#native` 引用，不复制类型、建立同形别名或通过设施再次转导出。
 
 加载失败与能力操作失败分别报告。加载器保留原始 cause 并提供安全错误；每项能力拥有稳定的错误类别、原因字段与必要上下文。系统错误码用于诊断和有依据的映射，调用者不解析错误文案。错误转换归原生工程的 Node 边界，业务层只补充实际业务含义或采取相应处理。
 

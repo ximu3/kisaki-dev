@@ -1,0 +1,107 @@
+$ turbo run build --filter=@kisaki3/desktop -- "--target" "windows-x64"
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/desktop
+   • Running build in 1 package
+   • Remote caching disabled
+
+@kisaki3/appearance:build: cache miss, executing 19ed9ca9c2c29b83
+@kisaki3/appearance:build: $ tsx tools/build.ts "--target" "windows-x64"
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\build-QayDSd\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\build-QayDSd\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\build-QayDSd\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\build-QayDSd\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 500ms
+@kisaki3/ui:build: cache miss, executing ba79e93c5881384c
+@kisaki3/ui:build: $ tsx tools/build.ts "--target" "windows-x64"
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\build-GV5ewG\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\build-GV5ewG\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 833ms
+@kisaki3/desktop:build: cache bypass, force executing 36ae2e0967e1cb2f
+@kisaki3/desktop:build: $ tsx tools/build/cli.ts "--target" "windows-x64"
+@kisaki3/desktop:build: info: component 'rust-std' for target 'x86_64-pc-windows-msvc' is up to date
+@kisaki3/desktop:build:     Finished `release` profile [optimized] target(s) in 0.16s
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: ✓ 2 modules transformed.
+@kisaki3/desktop:build: ✓ 3 modules transformed.
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: ✓ 13 modules transformed.
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/extension-host/entry.js  0.34 kB │ gzip: 0.24 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: ✓ built in 88ms
+@kisaki3/desktop:build: ✓ built in 95ms
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/main/entry.js  15.39 kB │ gzip: 5.09 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: ✓ built in 108ms
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: ✓ 3 modules transformed.
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: ✓ built in 34ms
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: ✓ 19 modules transformed.
+@kisaki3/desktop:build: ✓ 3 modules transformed.
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: ✓ built in 35ms
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: ✓ built in 340ms
+@kisaki3/desktop:build: transforming...
+@kisaki3/desktop:build: ✓ 3 modules transformed.
+@kisaki3/desktop:build: rendering chunks...
+@kisaki3/desktop:build: computing gzip size...
+@kisaki3/desktop:build: out/windows-x64.staging-LygSIY/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+@kisaki3/desktop:build: 
+@kisaki3/desktop:build: ✓ built in 17ms
+@kisaki3/desktop:build: Desktop build ready: windows-x64 867b0e9a5a0144f7262fedf0022f368615bd8a5a250216d1d7541ff2b935f6dc
+
+ Tasks:    3 successful, 3 total
+Cached:    0 cached, 3 total
+  Time:    10.709s 
+

@@ -1,10 +1,6 @@
 import { defineConfig } from 'vite'
-import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
-  resolve: {
-    alias: { '@native': fileURLToPath(new URL('../../native/node/index.ts', import.meta.url)) },
-  },
   build: {
     target: 'node24',
     minify: false,

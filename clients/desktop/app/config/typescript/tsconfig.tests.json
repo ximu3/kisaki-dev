@@ -6,10 +6,7 @@
     "types": ["node", "vite/client"],
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "paths": {
-      "@native": ["../../native/node/index.ts"]
-    }
+    "jsxImportSource": "solid-js"
   },
   "include": [
     "../../tests/**/*.ts",

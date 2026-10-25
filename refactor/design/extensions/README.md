@@ -5,6 +5,7 @@
 | [运行与 SDK](runtime.md)            | 公开能力、Node/Webview 分工、登记及实例失效。    |
 | [Provider 与参与接口](providers.md) | 来源身份、完整读取、字段加工及作品识别。         |
 | [页面与私有 IPC](webview.md)        | 视图、菜单、业务通信、反馈与关闭。               |
+| [外部链接入口](../ui/navigation.md#extension-deeplinks) | 扩展 deeplink 地址、Node 处理器、参数与交付。 |
 | [私有数据与认证](private-data.md)   | 条件写入、系统凭据保护、账号与 relay 消费。      |
 | [平台同步](synchronization.md)      | 明确导入、以本地为准的个人字段同步与自动触发。   |
 | [迁移导入](importers.md)            | 十三项输入格式、默认采用、历史、文件与执行结果。 |

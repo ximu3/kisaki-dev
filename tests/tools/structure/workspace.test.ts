@@ -74,7 +74,7 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     ...rootFiles,
     ...(
       await Promise.all(
-        ['clients', 'tools', 'tests'].map((directory) => sourceFiles(resolve(directory))),
+        ['clients', 'config', 'tools', 'tests'].map((directory) => sourceFiles(resolve(directory))),
       )
     ).flat(),
   ]
@@ -97,7 +97,7 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
       'node/tsconfig.json',
       'webview/tsconfig.json',
       'solid/tsconfig.json',
-      'tsconfig.tools.json',
+      'config/typescript/tsconfig.tools.json',
     ].map((file) => resolve('tests/fixtures/consumers', file)),
   )
   const checked = new Set<string>()

@@ -4,7 +4,7 @@ import { dirname, join, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { appRoot, repositoryRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
-import { readPnpm } from '../../tools/lib/process'
+import { readPnpm, withOutputs } from '../../../../../tools/outputs'
 
 /** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
 export async function prepareDevelopmentWorkspace(): Promise<{
@@ -31,6 +31,9 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     ]) {
       await copyFile(join(repositoryRoot, file), join(root, file))
     }
+    await cp(join(repositoryRoot, 'tools', 'outputs'), join(root, 'tools', 'outputs'), {
+      recursive: true,
+    })
 
     const ignored = new Set([
       'node_modules',
@@ -88,9 +91,14 @@ export async function prepareDevelopmentWorkspace(): Promise<{
 
     const target = hostTarget()
     // Cargo dependencies may be reused, but the copied crate and its target output remain isolated.
-    await cp(join(appRoot, '.cache', 'native', target), join(app, '.cache', 'native', target), {
-      recursive: true,
-    })
+    await withOutputs(
+      [{ project: appRoot, mode: 'use', read: [join(appRoot, 'out', 'native', target)] }],
+      async () => {
+        await cp(join(appRoot, '.cache', 'native', target), join(app, '.cache', 'native', target), {
+          recursive: true,
+        })
+      },
+    )
 
     return {
       root,

@@ -1,0 +1,13 @@
+$ tsx tools/build.ts
+Error: EEXIST: file already exists, mkdir 'C:\Users\ximu\AppData\Local\Temp\kisaki-lock-review-chefjp\turbo\clients\desktop\packages\rpc\.cache\build.lock'
+    at async mkdir (node:internal/fs/promises:861:10)
+    at async buildPackage (C:\Users\ximu\AppData\Local\Temp\kisaki-lock-review-chefjp\turbo\clients\desktop\packages\rpc\tools\build.ts:13:3)
+    at async <anonymous> (C:\Users\ximu\AppData\Local\Temp\kisaki-lock-review-chefjp\turbo\clients\desktop\packages\rpc\tools\build.ts:47:5) {
+  errno: -4075,
+  code: 'EEXIST',
+  syscall: 'mkdir',
+  path: 'C:\\Users\\ximu\\AppData\\Local\\Temp\\kisaki-lock-review-chefjp\\turbo\\clients\\desktop\\packages\\rpc\\.cache\\build.lock'
+}
+C:\Users\ximu\AppData\Local\Temp\kisaki-lock-review-chefjp\turbo\clients\desktop\packages\rpc:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @kisaki3/rpc@0.1.0-dev.0 build: `tsx tools/build.ts`
+Exit status 1

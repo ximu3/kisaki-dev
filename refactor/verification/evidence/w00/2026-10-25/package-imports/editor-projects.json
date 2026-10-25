@@ -1,0 +1,20 @@
+{
+  "typescript": "6.0.3",
+  "results": [
+    {
+      "file": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "configuration": "clients/desktop/app/config/typescript/tsconfig.main.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "clients/desktop/app/native/node/index.ts",
+      "configuration": "clients/desktop/app/config/typescript/tsconfig.main.json",
+      "diagnostics": 0
+    },
+    {
+      "file": "clients/desktop/app/tests/integration/native/files.test.ts",
+      "configuration": "clients/desktop/app/config/typescript/tsconfig.tests.json",
+      "diagnostics": 0
+    }
+  ]
+}

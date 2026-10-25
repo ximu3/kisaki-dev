@@ -7,6 +7,7 @@ import { join } from 'node:path'
 import { hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
 import type { DevelopmentBuild } from '../../../tools/dev/session'
+import { readPnpm } from '../../../../../../tools/outputs'
 
 /** Test-only observations from the fixture controller, not an application protocol. */
 interface Observation {
@@ -50,6 +51,14 @@ test('hands off complete generations, retains the last good build and stops with
       })
       .toBeGreaterThan(0)
     const first = states.filter((state) => state.state === 'ready').at(-1)!
+    await expect(
+      readPnpm(['--filter', '@kisaki3/desktop', 'run', 'clean'], workspace.root),
+    ).rejects.toMatchObject({
+      exitCode: 1,
+      stderr: expect.stringContaining('Output is in use'),
+    })
+    await readPnpm(['--filter', '@kisaki3/rpc', 'build'], workspace.root)
+    expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
     if (process.platform === 'win32') {
       await expect.poll(() => hasNativeWindow(first.current!.processId)).toBe(true)
     }
@@ -87,9 +96,34 @@ test('hands off complete generations, retains the last good build and stops with
       '/* Synthetic configuration update. */',
     )
 
+    const applicationManifest = join(workspace.app, 'package.json')
+    const originalManifest = await readFile(applicationManifest, 'utf8')
+    const manifest: { imports: Record<string, string> } = JSON.parse(originalManifest)
+    const importFailures = states.filter((state) => state.state === 'failed').length
+    await writeFile(
+      applicationManifest,
+      JSON.stringify({
+        ...manifest,
+        imports: { ...manifest.imports, '#native': './native/node/absent-fixture.ts' },
+      }),
+    )
+    await expect
+      .poll(() => states.filter((state) => state.state === 'failed').length, { timeout: 60_000 })
+      .toBeGreaterThan(importFailures)
+    expect(states.at(-1)?.current?.processId).toBe(configured.current!.processId)
+    expect(() => process.kill(configured.current!.processId, 0)).not.toThrow()
+
+    await writeFile(applicationManifest, originalManifest)
+    await expect
+      .poll(() => states.filter((state) => state.state === 'ready').at(-1)?.current?.processId, {
+        timeout: 60_000,
+      })
+      .not.toBe(configured.current!.processId)
+    const importsRecovered = states.filter((state) => state.state === 'ready').at(-1)!
+
     const libraryConfiguration = join(
       workspace.root,
-      'clients/desktop/packages/ui/tsconfig.lib.json',
+      'clients/desktop/packages/ui/config/typescript/tsconfig.lib.json',
     )
     const libraryOptions = await readFile(libraryConfiguration, 'utf8')
     const configurationFailures = states.filter((state) => state.state === 'failed').length
@@ -97,15 +131,15 @@ test('hands off complete generations, retains the last good build and stops with
     await expect
       .poll(() => states.filter((state) => state.state === 'failed').length, { timeout: 60_000 })
       .toBeGreaterThan(configurationFailures)
-    expect(states.at(-1)?.current?.processId).toBe(configured.current!.processId)
-    expect(() => process.kill(configured.current!.processId, 0)).not.toThrow()
+    expect(states.at(-1)?.current?.processId).toBe(importsRecovered.current!.processId)
+    expect(() => process.kill(importsRecovered.current!.processId, 0)).not.toThrow()
 
     await writeFile(libraryConfiguration, libraryOptions)
     await expect
       .poll(() => states.filter((state) => state.state === 'ready').at(-1)?.current?.processId, {
         timeout: 60_000,
       })
-      .not.toBe(configured.current!.processId)
+      .not.toBe(importsRecovered.current!.processId)
     const dependencyRecovered = states.filter((state) => state.state === 'ready').at(-1)!
 
     const entry = join(workspace.app, 'src/main/entry.ts')
@@ -181,6 +215,9 @@ test('hands off complete generations, retains the last good build and stops with
         }
       })
       .toBe(false)
+    await readPnpm(['--filter', '@kisaki3/desktop', 'run', 'clean'], workspace.root)
+    await expect(readdir(join(workspace.app, 'out'))).rejects.toMatchObject({ code: 'ENOENT' })
+    expect(await readFile(marker, 'utf8')).toBe('synthetic retained development state')
   } catch (cause) {
     throw new Error(`Development workflow failed:\n${diagnostics}`, { cause })
   } finally {

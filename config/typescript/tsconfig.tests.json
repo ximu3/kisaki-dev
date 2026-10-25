@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["../../tests/**/*.ts", "../../tools/**/*.test.ts"],
+  "exclude": ["../../tests/fixtures"]
+}

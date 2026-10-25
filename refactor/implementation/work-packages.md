@@ -82,6 +82,8 @@ W 编号表达完整交付的依赖，后续工作可以按真实前置条件提
 
 建立本体、八包与官方扩展的实际 workspace、独立程序入口、纯共享合同和依赖检查。落实输出唯一写入、开发交接、测试环境与 Electron SQLite ABI；保留正式 fuses。同时建立[本体私有原生工程](../design/engineering/native.md)的 Node 入口、绑定声明、目标构建与 Electron 消费验证。本包实际消费的字体、原生及归档输入固定，媒体运行输入由 libmpv-node 在接入工作包交付；Husky 生命周期先在隔离仓库验证。
 
+本包建立的新工程历史及远端验证沿[项目级临时仓库](../design/engineering/repository.md#temporary-repositories)持续接续，后续工作包继续使用同一开发历史。W00 完成不表示临时仓库阶段结束，也不要求立即切换正式远端。
+
 按[桌面工具布局](../design/engineering/layout.md#desktop-tools)建立实际工作流，按[测试结构](../design/engineering/layout.md#tests)配置根工具、本体和各项目的测试发现、运行环境、样本与输出归属。依照[任务分工](../design/engineering/layout.md#test-tasks)设置薄命令入口、前置依赖和实际宿主，测试专用准备归所属 tests/support。
 
 实施依据：[运行架构与职责](../design/architecture.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [构建、桌面制品与便携模式](../design/engineering/build.md) · [验收环境](../verification/acceptance.md#environments)。
@@ -99,6 +101,8 @@ W 编号表达完整交付的依赖，后续工作可以按真实前置条件提
 交付：八个公共包的独立消费边界、唯一纯值定义、完整业务合同和自研 rpc。
 
 完成纯值读写、桌面与扩展合同、rpc、appearance 和 ui 的真实职责；ui 的通用几何使用已选定的 TanStack Virtual，业务行映射与真实身份仍由各视图拥有；生成声明与公开 exports 一致。查询形状与投影采用[公共查询值](../design/domains/library-query-contracts.md)，逐项声明[编辑基线和错误](../design/domains/library-write-contracts.md)，按[帧与握手](../design/engineering/protocols.md)实现通信，不从任意对象或数据库行推导公共接口。通过仓库外包及无 Tailwind 构建链验证视觉消费，SDK 只通过公开 API 取得业务能力。
+
+deeplink 纯合同覆盖原生请求与[扩展入口](../design/ui/navigation.md#extension-deeplinks)，交付基于标准 URL 语义的共同解析、格式化、身份与路径校验及扩展处理器声明；真实系统接收和实例回调由 W08 接入，不以类型声明代替运行实现。
 
 实施依据：[领域值与边界规则](../design/domains/values.md) · [调用、事件与跨进程通信](../design/communication.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [扩展运行与实例生命周期](../design/extensions/runtime.md)。
 
@@ -202,6 +206,8 @@ W 编号表达完整交付的依赖，后续工作可以按真实前置条件提
 
 承接 W03 已验证的宿主、实例和 Node API 链路，完成安装更新、完整启停与激活、私有通信、其余公开适配与贡献生命周期，覆盖身份代际、取消及有限恢复。交付 storage／secrets、真实网络和 Webview 能力，以及 kisx、三种模板的源码与工程配置、签名分发；通过仓库外消费和真实 .kisx 验证。
 
+完成[扩展 deeplink](../design/ui/navigation.md#extension-deeplinks)的系统接收、app 分发、Node SDK 登记和实例调用，贯通冷启动与已运行交付、业务参数、具体业务确认、取消及反馈。按[专项场景](../verification/scenarios/engineering.md#extension-deeplinks)验证实际宿主和仓库外消费者；各平台最终制品的协议关联与接收由 W11 继续验收。
+
 Webview 按[实际来源、CSP、Worker 与权限场景](../verification/scenarios/ui.md#webview-isolation)验收；浏览器数据请求、Node 业务网络与开发 HMR 各自覆盖。隔离试件的成功不能代替正式 SDK、资源撤销和真实代理连接。
 
 实施依据：[扩展运行与实例生命周期](../design/extensions/runtime.md) · [资料提供者、字段处理器与识别器](../design/extensions/providers.md) · [扩展页面、私有通信与菜单](../design/extensions/webview.md) · [扩展私有存储与来源认证](../design/extensions/private-data.md) · [扩展包、仓库信任与版本采用](../design/extensions/distribution.md) · [扩展作者工具与开发流程](../design/extensions/development.md) · [调用、事件与跨进程通信](../design/communication.md)。
@@ -247,6 +253,8 @@ Webview 按[实际来源、CSP、Worker 与权限场景](../verification/scenari
 交付：可核验的六目标候选制品、独立项目制品接入，以及可执行的发行与更新流程。
 
 装配六目标制品，在可用环境完成运行、安装、更新、便携与失败恢复，核对各目标的兼容性、签名策略和不可变资源。完成版本和发行说明流程、许可及源码材料、hooks 验证，以及四个独立项目制品与服务的联合消费。发行、部署和更新流程在受限环境中验证。
+
+按[临时仓库与正式接续规则](../design/engineering/repository.md#temporary-repositories)准备正式仓库所需的历史、归档、协作和发布配置。实际仓库切换、公开发行及部署仍依据各自条件与已有授权执行，不由本包构建成功自动触发。
 
 实施依据：[构建、桌面制品与便携模式](../design/engineering/build.md) · [版本、发行与说明更正](../design/engineering/releases.md) · [许可、第三方材料与分发](../design/engineering/licensing.md) · [仓库、公开身份与协作](../design/engineering/repository.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [独立技术项目](../design/projects/README.md)。
 
@@ -295,4 +303,4 @@ Webview 按[实际来源、CSP、Worker 与权限场景](../verification/scenari
 | libmpv-node | 完整 libmpv Node 原生绑定与可选受管渲染、平台依赖与资源寿命、目标制品、新仓库及工程                                                                                                         | [W07](#w07) 完成播放和纹理接入；[W11](#w11) 完成目标制品装配，[W13](#w13) 验收实际播放                       |
 | oauth-relay | 按合同直接新写的独立工程与仓库、协议实现／配置、服务测试和部署材料；切换前核对现有接入事实                                                                                                  | [W08](#w08)/[W09](#w09) 完成公开接入与来源扩展授权；[W11](#w11)/[W13](#w13) 核对实际部署和完整授权链路       |
 
-每个项目都在独立仓库完成合同、实现、测试、工具与锁文件、制品、文档，以及建仓或重建工作，不能只修改 Kisaki 依赖。候选 tarball 和资源可以按依赖进行私有验证，联合通过后分别明确发布新版。Kisaki 锁定最终版本并验证正式包，不依赖未交付的私有源码路径，也不要求全部项目锁步发版。源码完成、制品验证、包公开和服务部署分别记录。
+每个项目都在自己的临时私有仓库持续完成合同、实现、测试、工具与锁文件、制品和文档，再按[共同规则](../design/engineering/repository.md#temporary-repositories)接续正式仓库及建仓或重建工作，不能只修改 Kisaki 依赖。候选 tarball 和资源可以按依赖进行私有验证，联合通过后分别明确发布新版。Kisaki 锁定最终版本并验证正式包，不依赖未交付的私有源码路径，也不要求全部项目锁步发版。源码完成、制品验证、仓库接续、包公开和服务部署分别记录。

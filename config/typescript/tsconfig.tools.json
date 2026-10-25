@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tools.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": ["../../tools/**/*.ts"],
+  "exclude": ["../../tools/**/*.test.ts"]
+}
