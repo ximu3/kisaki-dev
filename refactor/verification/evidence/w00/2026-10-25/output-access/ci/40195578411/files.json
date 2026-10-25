@@ -1,0 +1,82 @@
+[
+  {
+    "path": "archive-receipts.json",
+    "bytes": 1007,
+    "sha256": "51abc5c925de40b7df166ca73a4a8bccc8776b17161c4421264bf8dc568cd0a7"
+  },
+  {
+    "path": "artifacts.json",
+    "bytes": 4842,
+    "sha256": "b568c0961d96ff7d9a8ba1ec3a2a1485b4d434f2b9800833eb34ac5a46b95a95"
+  },
+  {
+    "path": "jobs.json",
+    "bytes": 35320,
+    "sha256": "3e659eb8d82a1a215b969073d3becdb79c92160ea5741745c8e9e855385a9513"
+  },
+  {
+    "path": "linux-arm64-e2e.json",
+    "bytes": 16341,
+    "sha256": "024a2424f4043dc0736d171afca32b0e74bbe9fea4ab659a668b968fd9df9fd0"
+  },
+  {
+    "path": "linux-arm64.log",
+    "bytes": 86091,
+    "sha256": "ad17330a5f9a37bcb47352d935fac52f1d3f22c6ad89de3c9ea73987efeca411"
+  },
+  {
+    "path": "linux-x64.log",
+    "bytes": 104320,
+    "sha256": "d1c5aa90876af9a6ce7f602b2bd61d6036b752ae417a19d48de0896aaa95c3b0"
+  },
+  {
+    "path": "local-e2e-close.json",
+    "bytes": 27106,
+    "sha256": "83821fc6c221485a808d73a02ea71e9d548f38b4bf86c1967f86a7fb31f1b773"
+  },
+  {
+    "path": "local-e2e-close.log",
+    "bytes": 3626,
+    "sha256": "bb9dc952e813ca36c33621efd6897b8121dab8708126f337eb7b53a23b2ecff3"
+  },
+  {
+    "path": "macos-arm64.log",
+    "bytes": 75336,
+    "sha256": "76795f64c024f1669fec45edd8d88b8c090ff4ac86fc39623edd94ecda0a249e"
+  },
+  {
+    "path": "macos-x64.log",
+    "bytes": 79270,
+    "sha256": "cc253fd7078d280733e00efc34dc8254d257c6b21fc09f1f73f3047544c29b71"
+  },
+  {
+    "path": "repository.log",
+    "bytes": 155876,
+    "sha256": "24e75e681590c18477d7f2e96f9dff5ca3451cd925714f4ba0511056ffd798d2"
+  },
+  {
+    "path": "required.log",
+    "bytes": 2700,
+    "sha256": "40ec120d0363ec9dc2c3504ddb35444565ddc1a0421d0d8e52ad0da9d2145b44"
+  },
+  {
+    "path": "run.json",
+    "bytes": 11962,
+    "sha256": "e1cb3a1882de6be12990680a9776d4b6ff7f1ad1276020497db372ac3ccb116f"
+  },
+  {
+    "path": "windows-arm64-e2e.json",
+    "bytes": 16256,
+    "sha256": "a5bc93793a78c592400db7bfe96674c6f0c04c7cf326e7a344da1d848ab286b5"
+  },
+  {
+    "path": "windows-arm64.log",
+    "bytes": 74237,
+    "sha256": "e4a0448e23795349ba811988b225533328218a660d151107de87059468f7221f"
+  },
+  {
+    "path": "windows-x64.log",
+    "bytes": 85021,
+    "sha256": "a7d76f93af755bdc69f9610fb8ad8812e0ded736c228bad37d1de9160422b4c8"
+  }
+]

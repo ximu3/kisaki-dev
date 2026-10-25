@@ -1,0 +1,58 @@
+[
+  {
+    "id": 12601530142,
+    "name": "desktop-macos-x64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 279945853,
+    "sha256": "16ff128543f8660c0ab92eddb17e43ae4b4e699da1764a2bbb40adbdbdf3bb6e",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-macos-x64.zip"
+  },
+  {
+    "id": 12601500404,
+    "name": "desktop-windows-x64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 277959423,
+    "sha256": "05f38676a8cde2ab64c361c5d48e0995d1e459499548ea1401f48109e769bf4c",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-windows-x64.zip"
+  },
+  {
+    "id": 12601420885,
+    "name": "desktop-windows-arm64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 269809553,
+    "sha256": "67e90abf738ab41a56ae90c47aea531336d2e41444295e567b90fad146da962f",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-windows-arm64.zip"
+  },
+  {
+    "id": 12601125132,
+    "name": "desktop-linux-arm64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 324485910,
+    "sha256": "f2738bc031340918a97e27d801ff25464150d2e25a96895eb40c9414dfe1e79d",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-linux-arm64.zip"
+  },
+  {
+    "id": 12600409264,
+    "name": "desktop-macos-arm64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 272012874,
+    "sha256": "b79248bcc056efb04f45223457de29ebf80f22f011eda50c1f9fb8ecbd4f2994",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-macos-arm64.zip"
+  },
+  {
+    "id": 12600364980,
+    "name": "desktop-linux-x64",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 333195653,
+    "sha256": "2c1d992309464d7f1a54b403ba49a2a22e82d1138de0d1412751dc6d47ab59d3",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/desktop-linux-x64.zip"
+  },
+  {
+    "id": 12599728918,
+    "name": "repository-verification",
+    "headSha": "61f33a069bd49c6051458e6b2dc46e3d03a1e936",
+    "bytes": 23883,
+    "sha256": "36266d071912fee7cb2d5ff76a43066d4d29386cfe6e277da668e5f8475cf00e",
+    "path": "artifacts/w00-output-access/ci/40197393514/archives/repository-verification.zip"
+  }
+]

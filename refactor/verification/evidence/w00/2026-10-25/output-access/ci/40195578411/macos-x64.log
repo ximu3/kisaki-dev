@@ -1,0 +1,966 @@
+﻿2026-10-25T13:05:07.4615270Z Current runner version: '2.338.0'
+2026-10-25T13:05:07.4640620Z ##[group]Runner Image Provisioner
+2026-10-25T13:05:07.4641570Z Hosted Compute Agent
+2026-10-25T13:05:07.4642240Z Version: 20260819.586
+2026-10-25T13:05:07.4642960Z Commit: 3cc4a88dfa507ef76119ad1bb3eccc6378bb2b76
+2026-10-25T13:05:07.4643820Z Build Date: 2026-08-18T23:20:18Z
+2026-10-25T13:05:07.4644610Z Worker ID: {c8b87f5d-6265-4394-92f8-9306e2f77b4a}
+2026-10-25T13:05:07.4645450Z Azure Region: westus
+2026-10-25T13:05:07.4646090Z ##[endgroup]
+2026-10-25T13:05:07.4647950Z ##[group]Operating System
+2026-10-25T13:05:07.4648660Z macOS
+2026-10-25T13:05:07.4649220Z 15.7.9
+2026-10-25T13:05:07.4649780Z 24G830
+2026-10-25T13:05:07.4650360Z ##[endgroup]
+2026-10-25T13:05:07.4650960Z ##[group]Runner Image
+2026-10-25T13:05:07.4651630Z Image: macos-15
+2026-10-25T13:05:07.4652250Z Version: 20260824.0482.1
+2026-10-25T13:05:07.4653760Z Included Software: https://github.com/actions/runner-images/blob/macos-15/20260824.0482/images/macos/macos-15-Readme.md
+2026-10-25T13:05:07.4655780Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15%2F20260824.0482
+2026-10-25T13:05:07.4657050Z ##[endgroup]
+2026-10-25T13:05:07.4658380Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T13:05:07.4660300Z Contents: read
+2026-10-25T13:05:07.4660950Z Metadata: read
+2026-10-25T13:05:07.4661620Z ##[endgroup]
+2026-10-25T13:05:07.4663890Z Secret source: Actions
+2026-10-25T13:05:07.4664920Z Cache mode: write
+2026-10-25T13:05:07.4665700Z Prepare workflow directory
+2026-10-25T13:05:07.5288190Z Prepare all required actions
+2026-10-25T13:05:07.5347190Z Getting action download info
+2026-10-25T13:05:07.9395220Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-25T13:05:08.1261900Z Download action repository 'pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa' (SHA:f40ffcd9367d9f12939873eb1018b921a783ffaa)
+2026-10-25T13:05:08.5619700Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-25T13:05:08.7661850Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-25T13:05:09.1418810Z Complete job name: desktop (macos-x64, macos-15-intel, x64)
+2026-10-25T13:05:09.2687710Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-25T13:05:09.2690530Z with:
+2026-10-25T13:05:09.2692260Z   persist-credentials: false
+2026-10-25T13:05:09.2693900Z   repository: ximu3/kisaki-w00-ci
+2026-10-25T13:05:09.2711760Z   token: ***
+2026-10-25T13:05:09.2713040Z   ssh-strict: true
+2026-10-25T13:05:09.2714520Z   ssh-user: git
+2026-10-25T13:05:09.2715770Z   clean: true
+2026-10-25T13:05:09.2717090Z   sparse-checkout-cone-mode: true
+2026-10-25T13:05:09.2718730Z   fetch-depth: 1
+2026-10-25T13:05:09.2720010Z   fetch-tags: false
+2026-10-25T13:05:09.2721370Z   show-progress: true
+2026-10-25T13:05:09.2722750Z   lfs: false
+2026-10-25T13:05:09.2724120Z   submodules: false
+2026-10-25T13:05:09.2725520Z   set-safe-directory: true
+2026-10-25T13:05:09.2727120Z   allow-unsafe-pr-checkout: false
+2026-10-25T13:05:09.2729620Z env:
+2026-10-25T13:05:09.2730980Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:05:09.2732900Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:05:09.2734740Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:05:09.2736220Z ##[endgroup]
+2026-10-25T13:05:09.5283100Z Syncing repository: ximu3/kisaki-w00-ci
+2026-10-25T13:05:09.5287100Z ##[group]Getting Git version info
+2026-10-25T13:05:09.5289820Z Working directory is '/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci'
+2026-10-25T13:05:09.5293980Z [command]/usr/local/bin/git version
+2026-10-25T13:05:09.5566280Z git version 2.55.0
+2026-10-25T13:05:09.5615210Z ##[endgroup]
+2026-10-25T13:05:09.5625860Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/e4841933-33f1-4346-85be-0691b77ac092/.gitconfig'
+2026-10-25T13:05:09.5631430Z Temporarily overriding HOME='/Users/runner/work/_temp/e4841933-33f1-4346-85be-0691b77ac092' before making global git config changes
+2026-10-25T13:05:09.5636940Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:05:09.5641290Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci
+2026-10-25T13:05:09.5747710Z Deleting the contents of '/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci'
+2026-10-25T13:05:09.5752750Z ##[group]Initializing the repository
+2026-10-25T13:05:09.5759400Z [command]/usr/local/bin/git init /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci
+2026-10-25T13:05:09.6072290Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T13:05:09.6076050Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T13:05:09.6079540Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T13:05:09.6082700Z hint: call:
+2026-10-25T13:05:09.6083960Z hint:
+2026-10-25T13:05:09.6085590Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T13:05:09.6087650Z hint:
+2026-10-25T13:05:09.6089550Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T13:05:09.6092830Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T13:05:09.6095460Z hint:
+2026-10-25T13:05:09.6096770Z hint: 	git branch -m <name>
+2026-10-25T13:05:09.6098300Z hint:
+2026-10-25T13:05:09.6100400Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T13:05:09.6104240Z Initialized empty Git repository in /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/.git/
+2026-10-25T13:05:09.6110270Z [command]/usr/local/bin/git remote add origin https://github.com/ximu3/kisaki-w00-ci
+2026-10-25T13:05:09.6200580Z ##[endgroup]
+2026-10-25T13:05:09.6203140Z ##[group]Disabling automatic garbage collection
+2026-10-25T13:05:09.6205450Z [command]/usr/local/bin/git config --local gc.auto 0
+2026-10-25T13:05:09.6301090Z ##[endgroup]
+2026-10-25T13:05:09.6303460Z ##[group]Setting up auth
+2026-10-25T13:05:09.6308640Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:05:09.6402760Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:05:09.7758060Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:05:09.7851290Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:05:09.8969070Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:05:09.9652770Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:05:10.0553610Z [command]/usr/local/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T13:05:10.0659760Z ##[endgroup]
+2026-10-25T13:05:10.0662080Z ##[group]Fetching the repository
+2026-10-25T13:05:10.0671590Z [command]/usr/local/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +59ab12c74d88bb34054eea419107795445078e08:refs/remotes/origin/main
+2026-10-25T13:05:10.8261700Z From https://github.com/ximu3/kisaki-w00-ci
+2026-10-25T13:05:10.8264500Z  * [new ref]         59ab12c74d88bb34054eea419107795445078e08 -> origin/main
+2026-10-25T13:05:10.8268490Z ##[endgroup]
+2026-10-25T13:05:10.8269500Z ##[group]Determining the checkout info
+2026-10-25T13:05:10.8270620Z ##[endgroup]
+2026-10-25T13:05:10.8276840Z [command]/usr/local/bin/git sparse-checkout disable
+2026-10-25T13:05:10.8387760Z [command]/usr/local/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T13:05:10.8485620Z ##[group]Checking out the ref
+2026-10-25T13:05:10.8491320Z [command]/usr/local/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-25T13:05:11.7559870Z Switched to a new branch 'main'
+2026-10-25T13:05:11.7564410Z branch 'main' set up to track 'origin/main'.
+2026-10-25T13:05:11.7578170Z ##[endgroup]
+2026-10-25T13:05:11.7693220Z [command]/usr/local/bin/git log -1 --format=%H
+2026-10-25T13:05:11.7785690Z 59ab12c74d88bb34054eea419107795445078e08
+2026-10-25T13:05:11.7797460Z ##[group]Removing auth
+2026-10-25T13:05:11.7802960Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:05:11.7891360Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:05:11.9055220Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:05:11.9134850Z http.https://github.com/.extraheader
+2026-10-25T13:05:11.9341410Z [command]/usr/local/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T13:05:11.9357890Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:05:12.0434780Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:05:12.0522670Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:05:12.2192380Z ##[endgroup]
+2026-10-25T13:05:12.2432180Z ##[group]Run pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+2026-10-25T13:05:12.2432960Z with:
+2026-10-25T13:05:12.2433350Z   dest: ~/setup-pnpm
+2026-10-25T13:05:12.2433770Z   run_install: null
+2026-10-25T13:05:12.2434200Z   cache: false
+2026-10-25T13:05:12.2434640Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-25T13:05:12.2435200Z   package_json_file: package.json
+2026-10-25T13:05:12.2435690Z   standalone: false
+2026-10-25T13:05:12.2436080Z env:
+2026-10-25T13:05:12.2436460Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:05:12.2436960Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:05:12.2437470Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:05:12.2437930Z ##[endgroup]
+2026-10-25T13:05:12.4797970Z ##[group]Running self-installer...
+2026-10-25T13:05:13.0727450Z (node:4428) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T13:05:13.0796270Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:05:13.5219360Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-25T13:05:13.5310100Z Packages: +1
+2026-10-25T13:05:13.5311260Z +
+2026-10-25T13:05:14.2780530Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-25T13:05:14.3071720Z 
+2026-10-25T13:05:14.3281880Z dependencies:
+2026-10-25T13:05:14.3369840Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-25T13:05:14.3410740Z 
+2026-10-25T13:05:14.3626390Z Done in 1.6s
+2026-10-25T13:05:14.3631160Z ##[endgroup]
+2026-10-25T13:05:14.3633670Z Installation Completed!
+2026-10-25T13:05:14.3873950Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-25T13:05:14.3874730Z with:
+2026-10-25T13:05:14.3875150Z   node-version-file: .node-version
+2026-10-25T13:05:14.3875670Z   architecture: x64
+2026-10-25T13:05:14.3876070Z   cache: pnpm
+2026-10-25T13:05:14.3876450Z   always-auth: false
+2026-10-25T13:05:14.3876860Z   check-latest: false
+2026-10-25T13:05:14.3881560Z   token: ***
+2026-10-25T13:05:14.3882010Z   package-manager-cache: true
+2026-10-25T13:05:14.3882480Z env:
+2026-10-25T13:05:14.3882850Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:05:14.3883830Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:05:14.3884340Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:05:14.3884940Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:05:14.3885570Z ##[endgroup]
+2026-10-25T13:05:14.6143190Z (node:4439) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:05:14.6144710Z Node version file is not JSON file
+2026-10-25T13:05:14.6146560Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:05:14.6147300Z Resolved .node-version as 24.11.1
+2026-10-25T13:05:14.6154330Z Attempting to download 24.11.1...
+2026-10-25T13:05:15.2535470Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-darwin-x64.tar.gz
+2026-10-25T13:05:16.0293250Z Extracting ...
+2026-10-25T13:05:16.0570510Z [command]/usr/bin/tar xz --strip 1 -C /Users/runner/work/_temp/f7448f88-4d6c-4e8a-88ec-a8e527dea89d -f /Users/runner/work/_temp/f7f30e1a-2226-4e32-9d19-8e951d555b8d
+2026-10-25T13:05:18.9170030Z Adding to the cache ...
+2026-10-25T13:05:26.2607430Z ##[group]Environment details
+2026-10-25T13:05:26.7398760Z node: v24.11.1
+2026-10-25T13:05:26.7399190Z npm: 11.6.2
+2026-10-25T13:05:26.7399600Z yarn: 1.22.22
+2026-10-25T13:05:26.7400370Z ##[endgroup]
+2026-10-25T13:05:26.7441730Z [command]/Users/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-25T13:05:27.6626240Z /Users/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-25T13:05:28.0185380Z pnpm cache is not found
+2026-10-25T13:05:28.0337260Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-25T13:05:28.0337990Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-25T13:05:28.0417840Z shell: /bin/bash -e {0}
+2026-10-25T13:05:28.0418320Z env:
+2026-10-25T13:05:28.0418710Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:05:28.0419240Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:05:28.0419720Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:05:28.0420270Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:05:28.0420920Z ##[endgroup]
+2026-10-25T13:05:28.7854620Z Scope: all 43 workspace projects
+2026-10-25T13:05:28.9956260Z ? Verifying lockfile against supply-chain policies (884 entries)...
+2026-10-25T13:05:29.0254740Z Lockfile is up to date, resolution step is skipped
+2026-10-25T13:05:29.2181200Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-25T13:05:29.3338120Z Packages: +706
+2026-10-25T13:05:29.3476200Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-25T13:05:30.2145710Z Progress: resolved 706, reused 0, downloaded 0, added 0
+2026-10-25T13:05:33.2548620Z Progress: resolved 706, reused 0, downloaded 1, added 0
+2026-10-25T13:05:35.0588060Z Progress: resolved 706, reused 0, downloaded 15, added 0
+2026-10-25T13:05:36.1403900Z Progress: resolved 706, reused 0, downloaded 57, added 0
+2026-10-25T13:05:37.2858720Z Progress: resolved 706, reused 0, downloaded 62, added 0
+2026-10-25T13:05:38.3287530Z Progress: resolved 706, reused 0, downloaded 86, added 4
+2026-10-25T13:05:39.3145300Z Progress: resolved 706, reused 0, downloaded 147, added 8
+2026-10-25T13:05:40.3420000Z Progress: resolved 706, reused 0, downloaded 189, added 11
+2026-10-25T13:05:41.3696840Z Progress: resolved 706, reused 0, downloaded 214, added 12
+2026-10-25T13:05:41.8443010Z [WARN] Request took 10547ms: https://registry.npmjs.org/@playwright%2Ftest
+2026-10-25T13:05:42.1320200Z [WARN] Request took 10597ms: https://registry.npmjs.org/@typescript-eslint%2Futils
+2026-10-25T13:05:42.2992400Z [WARN] Request took 10769ms: https://registry.npmjs.org/@typescript-eslint%2Ftype-utils
+2026-10-25T13:05:42.3799590Z Progress: resolved 706, reused 0, downloaded 230, added 12
+2026-10-25T13:05:42.5826330Z [WARN] Request took 11052ms: https://registry.npmjs.org/@typescript-eslint%2Ftypes
+2026-10-25T13:05:42.9790400Z [WARN] Request took 11352ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+2026-10-25T13:05:43.5490430Z Progress: resolved 706, reused 0, downloaded 246, added 15
+2026-10-25T13:05:44.2697670Z [WARN] Request took 12702ms: https://registry.npmjs.org/@typescript-eslint%2Fscope-manager
+2026-10-25T13:05:44.5604130Z Progress: resolved 706, reused 0, downloaded 260, added 16
+2026-10-25T13:05:45.5347550Z [WARN] Request took 14010ms: https://registry.npmjs.org/@typescript-eslint%2Fparser
+2026-10-25T13:05:46.1115210Z Progress: resolved 706, reused 0, downloaded 277, added 16
+2026-10-25T13:05:46.7210020Z [WARN] Request took 15187ms: https://registry.npmjs.org/@typescript-eslint%2Ftypescript-estree
+2026-10-25T13:05:46.9717970Z [WARN] Request took 15461ms: https://registry.npmjs.org/@typescript-eslint%2Feslint-plugin
+2026-10-25T13:05:47.0734910Z Progress: resolved 706, reused 0, downloaded 302, added 18
+2026-10-25T13:05:47.4356550Z [WARN] Request took 11649ms: https://registry.npmjs.org/playwright
+2026-10-25T13:05:47.6228620Z [WARN] Request took 11838ms: https://registry.npmjs.org/playwright-core
+2026-10-25T13:05:48.1142620Z Progress: resolved 706, reused 0, downloaded 352, added 20
+2026-10-25T13:05:49.2641930Z ✓ Lockfile passes supply-chain policies (884 entries in 20.3s)
+2026-10-25T13:05:49.2852280Z Progress: resolved 706, reused 0, downloaded 364, added 22
+2026-10-25T13:05:50.3096230Z Progress: resolved 706, reused 0, downloaded 449, added 28
+2026-10-25T13:05:51.3133360Z Progress: resolved 706, reused 0, downloaded 501, added 32
+2026-10-25T13:05:52.4697160Z Progress: resolved 706, reused 0, downloaded 515, added 32
+2026-10-25T13:05:53.4470650Z Progress: resolved 706, reused 0, downloaded 530, added 32
+2026-10-25T13:05:54.4316320Z Progress: resolved 706, reused 0, downloaded 587, added 36
+2026-10-25T13:05:55.4215950Z Progress: resolved 706, reused 0, downloaded 627, added 40
+2026-10-25T13:05:56.4776420Z Progress: resolved 706, reused 0, downloaded 671, added 43
+2026-10-25T13:05:57.4514380Z Progress: resolved 706, reused 0, downloaded 706, added 129
+2026-10-25T13:05:58.4951920Z Progress: resolved 706, reused 0, downloaded 706, added 207
+2026-10-25T13:05:59.4969680Z Progress: resolved 706, reused 0, downloaded 706, added 263
+2026-10-25T13:06:00.5149900Z Progress: resolved 706, reused 0, downloaded 706, added 365
+2026-10-25T13:06:01.5401820Z Progress: resolved 706, reused 0, downloaded 706, added 530
+2026-10-25T13:06:02.7042450Z Progress: resolved 706, reused 0, downloaded 706, added 611
+2026-10-25T13:06:03.5158030Z Progress: resolved 706, reused 0, downloaded 706, added 627
+2026-10-25T13:06:04.5231370Z Progress: resolved 706, reused 0, downloaded 706, added 702
+2026-10-25T13:06:04.6275590Z Progress: resolved 706, reused 0, downloaded 706, added 706, done
+2026-10-25T13:06:06.3845380Z .../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+2026-10-25T13:06:06.7067690Z .../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+2026-10-25T13:06:07.2926970Z 
+2026-10-25T13:06:07.2929300Z devDependencies:
+2026-10-25T13:06:07.2930160Z + @commitlint/cli 21.2.4
+2026-10-25T13:06:07.2931100Z + @commitlint/config-conventional 21.2.4
+2026-10-25T13:06:07.2931930Z + @eslint/js 10.0.1
+2026-10-25T13:06:07.2933060Z + @playwright/test 1.64.1
+2026-10-25T13:06:07.2933860Z + @types/node 24.19.2
+2026-10-25T13:06:07.2934560Z + @types/semver 7.8.0
+2026-10-25T13:06:07.2935280Z + dependency-cruiser 18.7.0
+2026-10-25T13:06:07.2936050Z + eslint 10.13.0
+2026-10-25T13:06:07.2936750Z + fs-native-extensions 1.5.2
+2026-10-25T13:06:07.2937720Z + husky 9.1.7
+2026-10-25T13:06:07.2938610Z + jiti 2.7.0
+2026-10-25T13:06:07.2939590Z + lint-staged 17.6.0
+2026-10-25T13:06:07.2940480Z + prettier 3.9.10
+2026-10-25T13:06:07.2941130Z + semver 7.8.5
+2026-10-25T13:06:07.2941950Z + tar 7.5.22
+2026-10-25T13:06:07.2942530Z + tsx 4.23.15
+2026-10-25T13:06:07.2943130Z + turbo 2.11.10
+2026-10-25T13:06:07.2943830Z + typescript 6.0.3
+2026-10-25T13:06:07.2944520Z + typescript-eslint 8.72.0
+2026-10-25T13:06:07.2945200Z + vite 8.3.3
+2026-10-25T13:06:07.2945750Z + vitest 5.0.5
+2026-10-25T13:06:07.2946260Z + yaml 2.9.1
+2026-10-25T13:06:07.2946750Z 
+2026-10-25T13:06:07.7511570Z Done in 39.6s using pnpm v11.11.0
+2026-10-25T13:06:07.9548800Z ##[group]Run pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+2026-10-25T13:06:07.9551080Z [36;1mpnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium[0m
+2026-10-25T13:06:07.9659480Z shell: /bin/bash -e {0}
+2026-10-25T13:06:07.9659920Z env:
+2026-10-25T13:06:07.9660360Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:06:07.9660850Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:06:07.9661330Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:06:07.9661900Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:06:07.9662500Z ##[endgroup]
+2026-10-25T13:06:10.5657200Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/mac-x64/chrome-mac-x64.zip
+2026-10-25T13:06:11.8081240Z |                                                                                |   0% of 195.8 MiB
+2026-10-25T13:06:13.1071200Z |■■■■■■■■                                                                        |  10% of 195.8 MiB
+2026-10-25T13:06:13.4710320Z |■■■■■■■■■■■■■■■■                                                                |  20% of 195.8 MiB
+2026-10-25T13:06:13.9314400Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 195.8 MiB
+2026-10-25T13:06:14.2101360Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 195.8 MiB
+2026-10-25T13:06:14.8599780Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 195.8 MiB
+2026-10-25T13:06:15.2791310Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 195.8 MiB
+2026-10-25T13:06:15.6619280Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 195.8 MiB
+2026-10-25T13:06:16.4082100Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 195.8 MiB
+2026-10-25T13:06:17.0438270Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 195.8 MiB
+2026-10-25T13:06:17.5751230Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 195.8 MiB
+2026-10-25T13:06:27.8647430Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /Users/runner/Library/Caches/ms-playwright/chromium-1248
+2026-10-25T13:06:27.8685290Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-mac.zip
+2026-10-25T13:06:28.6886860Z |                                                                                |   1% of 1.5 MiB
+2026-10-25T13:06:28.6970070Z |■■■■■■■■                                                                        |  10% of 1.5 MiB
+2026-10-25T13:06:28.7012490Z |■■■■■■■■■■■■■■■■                                                                |  20% of 1.5 MiB
+2026-10-25T13:06:28.7059180Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 1.5 MiB
+2026-10-25T13:06:28.7092970Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 1.5 MiB
+2026-10-25T13:06:28.7220730Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 1.5 MiB
+2026-10-25T13:06:28.7286370Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 1.5 MiB
+2026-10-25T13:06:28.7345990Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 1.5 MiB
+2026-10-25T13:06:28.7426560Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 1.5 MiB
+2026-10-25T13:06:28.7484450Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 1.5 MiB
+2026-10-25T13:06:28.7594090Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 1.5 MiB
+2026-10-25T13:06:29.0996570Z FFmpeg (playwright ffmpeg v1013) downloaded to /Users/runner/Library/Caches/ms-playwright/ffmpeg-1013
+2026-10-25T13:06:29.1154920Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/mac-x64/chrome-headless-shell-mac-x64.zip
+2026-10-25T13:06:30.0475400Z |                                                                                |   0% of 104.1 MiB
+2026-10-25T13:06:30.7392580Z |■■■■■■■■                                                                        |  10% of 104.1 MiB
+2026-10-25T13:06:30.9348930Z |■■■■■■■■■■■■■■■■                                                                |  20% of 104.1 MiB
+2026-10-25T13:06:31.1109220Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 104.1 MiB
+2026-10-25T13:06:31.3587610Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 104.1 MiB
+2026-10-25T13:06:31.5403040Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 104.1 MiB
+2026-10-25T13:06:31.7440480Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 104.1 MiB
+2026-10-25T13:06:31.9349670Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 104.1 MiB
+2026-10-25T13:06:32.1290250Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 104.1 MiB
+2026-10-25T13:06:32.3071440Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 104.1 MiB
+2026-10-25T13:06:32.4948880Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 104.1 MiB
+2026-10-25T13:06:37.5859150Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /Users/runner/Library/Caches/ms-playwright/chromium_headless_shell-1248
+2026-10-25T13:06:37.6480740Z ##[group]Run pnpm test:outputs
+2026-10-25T13:06:37.6482010Z [36;1mpnpm test:outputs[0m
+2026-10-25T13:06:37.6587190Z shell: /bin/bash -e {0}
+2026-10-25T13:06:37.6588130Z env:
+2026-10-25T13:06:37.6589280Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:06:37.6609130Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:06:37.6609770Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:06:37.6610410Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:06:37.6611210Z ##[endgroup]
+2026-10-25T13:06:38.5140040Z $ vitest run tests/tools/outputs
+2026-10-25T13:06:39.3538120Z 
+2026-10-25T13:06:39.3546430Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci[39m
+2026-10-25T13:06:39.3547290Z 
+2026-10-25T13:06:41.5612980Z  [32m✓[39m tests/tools/outputs/access.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1639[2mms[22m[39m
+2026-10-25T13:06:41.5662970Z    [33m[2m✓[22m[39m a child borrows declared access and cannot weaken the live parent lock[33m 971[2mms[22m[39m
+2026-10-25T13:06:41.5703760Z    [33m[2m✓[22m[39m terminating a lock holder leaves no directory marker that prevents retry[33m 404[2mms[22m[39m
+2026-10-25T13:06:41.6609670Z  [32m✓[39m tests/tools/outputs/process.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1755[2mms[22m[39m
+2026-10-25T13:06:41.6839870Z    [33m[2m✓[22m[39m cancellation closes the owned command and descendant before its output can be reused[33m 897[2mms[22m[39m
+2026-10-25T13:06:41.6896650Z    [33m[2m✓[22m[39m terminating the owner does not expose outputs while an inherited child remains alive[33m 855[2mms[22m[39m
+2026-10-25T13:06:43.0831570Z 
+2026-10-25T13:06:43.0910870Z    • Packages in scope: @kisaki3/rpc
+2026-10-25T13:06:43.0971310Z    • Running build in 1 package
+2026-10-25T13:06:43.1025980Z    • Remote caching disabled
+2026-10-25T13:06:43.1089640Z 
+2026-10-25T13:06:48.5869890Z ##[group]@kisaki3/rpc:build
+2026-10-25T13:06:48.5894110Z cache miss, executing d044c93d4417a8c6
+2026-10-25T13:06:48.5918730Z $ tsx tools/build.ts
+2026-10-25T13:06:48.5928220Z ℹ config file: /private/var/folders/20/jp1_0n3n7kndh6rnbqb5344m0000gn/T/kisaki-output-cache-uDxHkc/clients/desktop/packages/rpc/tsdown.config.ts 
+2026-10-25T13:06:48.5958550Z ℹ entry: src/index.ts, src/transport.ts
+2026-10-25T13:06:48.5977080Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:06:48.6004790Z ℹ Build start
+2026-10-25T13:06:48.6034940Z ℹ .cache/output-staging/dist-2cuazz/index.js        0.01 kB │ gzip: 0.03 kB
+2026-10-25T13:06:48.6065530Z ℹ .cache/output-staging/dist-2cuazz/transport.js    0.01 kB │ gzip: 0.03 kB
+2026-10-25T13:06:48.6088880Z ℹ .cache/output-staging/dist-2cuazz/transport.d.ts  0.60 kB │ gzip: 0.33 kB
+2026-10-25T13:06:48.6123920Z ℹ .cache/output-staging/dist-2cuazz/index.d.ts      0.08 kB │ gzip: 0.07 kB
+2026-10-25T13:06:48.6173980Z ℹ 4 files, total: 0.71 kB
+2026-10-25T13:06:48.6182630Z ✔ Build complete in 1276ms
+2026-10-25T13:06:48.6192630Z ##[endgroup]
+2026-10-25T13:06:48.6221560Z 
+2026-10-25T13:06:48.6249080Z  Tasks:    1 successful, 1 total
+2026-10-25T13:06:48.6329850Z Cached:    0 cached, 1 total
+2026-10-25T13:06:48.6359120Z   Time:    5.524s 
+2026-10-25T13:06:48.6377410Z 
+2026-10-25T13:06:53.2082610Z 
+2026-10-25T13:06:53.2604630Z    • Packages in scope: @kisaki3/rpc
+2026-10-25T13:06:53.2618620Z    • Running build in 1 package
+2026-10-25T13:06:53.3506660Z    • Remote caching disabled
+2026-10-25T13:06:53.3516450Z 
+2026-10-25T13:06:53.3518200Z ##[group]@kisaki3/rpc:build
+2026-10-25T13:06:53.3519280Z cache hit, replaying logs d044c93d4417a8c6
+2026-10-25T13:06:53.3520040Z $ tsx tools/build.ts
+2026-10-25T13:06:53.3522680Z ℹ config file: /private/var/folders/20/jp1_0n3n7kndh6rnbqb5344m0000gn/T/kisaki-output-cache-uDxHkc/clients/desktop/packages/rpc/tsdown.config.ts 
+2026-10-25T13:06:53.3524820Z ℹ entry: src/index.ts, src/transport.ts
+2026-10-25T13:06:53.3526110Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:06:53.3526960Z ℹ Build start
+2026-10-25T13:06:53.3529750Z ℹ .cache/output-staging/dist-2cuazz/index.js        0.01 kB │ gzip: 0.03 kB
+2026-10-25T13:06:53.3531990Z ℹ .cache/output-staging/dist-2cuazz/transport.js    0.01 kB │ gzip: 0.03 kB
+2026-10-25T13:06:53.3534020Z ℹ .cache/output-staging/dist-2cuazz/transport.d.ts  0.60 kB │ gzip: 0.33 kB
+2026-10-25T13:06:53.3537360Z ℹ .cache/output-staging/dist-2cuazz/index.d.ts      0.08 kB │ gzip: 0.07 kB
+2026-10-25T13:06:53.3538630Z ℹ 4 files, total: 0.71 kB
+2026-10-25T13:06:53.3539460Z ✔ Build complete in 1276ms
+2026-10-25T13:06:53.3540640Z ##[endgroup]
+2026-10-25T13:06:53.3540950Z 
+2026-10-25T13:06:53.3541330Z  Tasks:    1 successful, 1 total
+2026-10-25T13:06:53.3542210Z Cached:    1 cached, 1 total
+2026-10-25T13:06:53.3543060Z   Time:    160ms >>> FULL TURBO
+2026-10-25T13:06:53.3543770Z 
+2026-10-25T13:06:53.3545140Z  [32m✓[39m tests/tools/outputs/turbo.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 13384[2mms[22m[39m
+2026-10-25T13:06:53.3548160Z    [33m[2m✓[22m[39m cache restoration observes the same output lock as the real package builder[33m 13383[2mms[22m[39m
+2026-10-25T13:06:53.3550160Z 
+2026-10-25T13:06:53.3551250Z [2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+2026-10-25T13:06:53.3552920Z [2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+2026-10-25T13:06:53.3554290Z [2m   Start at [22m 13:06:39
+2026-10-25T13:06:53.3555820Z [2m   Duration [22m 13.93s[2m (tests 96%, transform 3%, import 1%)[22m
+2026-10-25T13:06:53.3558250Z 
+2026-10-25T13:06:53.3681680Z ##[group]Run pnpm --filter @kisaki3/desktop native:check
+2026-10-25T13:06:53.3683120Z [36;1mpnpm --filter @kisaki3/desktop native:check[0m
+2026-10-25T13:06:53.3778010Z shell: /bin/bash -e {0}
+2026-10-25T13:06:53.3778800Z env:
+2026-10-25T13:06:53.3779480Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:06:53.3780260Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:06:53.3781050Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:06:53.3781900Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:06:53.3782840Z ##[endgroup]
+2026-10-25T13:06:54.5746050Z $ tsx tools/native/cli.ts --check
+2026-10-25T13:06:55.3388260Z info: syncing channel updates for 1.90.0-x86_64-apple-darwin
+2026-10-25T13:06:55.5355130Z info: latest update on 2025-09-18 for version 1.90.0 (1159e78c4 2025-09-14)
+2026-10-25T13:06:55.5357720Z info: downloading 5 components
+2026-10-25T13:07:14.0909570Z     Updating crates.io index
+2026-10-25T13:07:14.3446290Z  Downloading crates ...
+2026-10-25T13:07:14.4098240Z   Downloaded convert_case v0.12.0
+2026-10-25T13:07:14.4305140Z   Downloaded napi-sys v3.4.1
+2026-10-25T13:07:14.4389960Z   Downloaded napi-derive-backend v6.1.6
+2026-10-25T13:07:14.4536630Z   Downloaded slab v0.4.12
+2026-10-25T13:07:14.4647070Z   Downloaded unicode-segmentation v1.13.3
+2026-10-25T13:07:14.4726170Z   Downloaded unicode-ident v1.0.27
+2026-10-25T13:07:14.4901170Z   Downloaded semver v1.0.28
+2026-10-25T13:07:14.5018630Z   Downloaded memchr v2.8.3
+2026-10-25T13:07:14.5321810Z   Downloaded rustc-hash v2.1.3
+2026-10-25T13:07:14.5432750Z   Downloaded quote v1.0.47
+2026-10-25T13:07:14.5580360Z   Downloaded pin-project-lite v0.2.17
+2026-10-25T13:07:14.5946290Z   Downloaded nohash-hasher v0.2.0
+2026-10-25T13:07:14.6025670Z   Downloaded libloading v0.9.0
+2026-10-25T13:07:14.6169330Z   Downloaded syn v3.0.9
+2026-10-25T13:07:14.6812810Z   Downloaded futures-util v0.3.34
+2026-10-25T13:07:14.7716400Z   Downloaded futures-channel v0.3.34
+2026-10-25T13:07:14.7862870Z   Downloaded ctor v1.0.13
+2026-10-25T13:07:14.7980850Z   Downloaded napi-derive v3.6.13
+2026-10-25T13:07:14.8076630Z   Downloaded napi-build v2.6.0
+2026-10-25T13:07:14.8172230Z   Downloaded napi v3.15.0
+2026-10-25T13:07:14.8595170Z   Downloaded futures-task v0.3.34
+2026-10-25T13:07:14.8672330Z   Downloaded futures-sink v0.3.34
+2026-10-25T13:07:14.8713690Z   Downloaded futures-macro v0.3.34
+2026-10-25T13:07:14.8780060Z   Downloaded futures-io v0.3.34
+2026-10-25T13:07:14.8824880Z   Downloaded futures-executor v0.3.34
+2026-10-25T13:07:14.8927000Z   Downloaded proc-macro2 v1.0.107
+2026-10-25T13:07:14.9105820Z   Downloaded futures-core v0.3.34
+2026-10-25T13:07:14.9186940Z   Downloaded futures v0.3.34
+2026-10-25T13:07:14.9536240Z   Downloaded cfg-if v1.0.5
+2026-10-25T13:07:14.9654930Z   Downloaded bitflags v2.13.2
+2026-10-25T13:07:15.0148950Z   Downloaded libc v0.2.186
+2026-10-25T13:07:15.3838380Z    Compiling proc-macro2 v1.0.107
+2026-10-25T13:07:15.4840700Z    Compiling quote v1.0.47
+2026-10-25T13:07:15.5137100Z    Compiling unicode-ident v1.0.27
+2026-10-25T13:07:15.5313730Z     Checking futures-sink v0.3.34
+2026-10-25T13:07:15.6316870Z     Checking futures-core v0.3.34
+2026-10-25T13:07:15.7317990Z    Compiling napi-build v2.6.0
+2026-10-25T13:07:15.8321080Z     Checking futures-channel v0.3.34
+2026-10-25T13:07:16.5595700Z     Checking futures-io v0.3.34
+2026-10-25T13:07:16.6150820Z     Checking futures-task v0.3.34
+2026-10-25T13:07:16.8156830Z     Checking memchr v2.8.3
+2026-10-25T13:07:16.9946180Z     Checking pin-project-lite v0.2.17
+2026-10-25T13:07:17.1031750Z     Checking slab v0.4.12
+2026-10-25T13:07:17.6085920Z    Compiling napi-sys v3.4.1
+2026-10-25T13:07:18.4735310Z    Compiling libc v0.2.186
+2026-10-25T13:07:21.7515930Z     Checking cfg-if v1.0.5
+2026-10-25T13:07:21.7900660Z    Compiling unicode-segmentation v1.13.3
+2026-10-25T13:07:21.8215040Z     Checking libloading v0.9.0
+2026-10-25T13:07:21.8928000Z    Compiling napi v3.15.0
+2026-10-25T13:07:21.9924950Z    Compiling semver v1.0.28
+2026-10-25T13:07:22.8731300Z    Compiling kisaki-native v0.1.0-dev.0 (/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/native)
+2026-10-25T13:07:23.2324890Z    Compiling convert_case v0.12.0
+2026-10-25T13:07:23.3845710Z     Checking rustc-hash v2.1.3
+2026-10-25T13:07:23.4918030Z     Checking bitflags v2.13.2
+2026-10-25T13:07:24.0646740Z     Checking ctor v1.0.13
+2026-10-25T13:07:24.1648230Z     Checking nohash-hasher v0.2.0
+2026-10-25T13:07:24.2649480Z    Compiling syn v3.0.9
+2026-10-25T13:07:30.9564810Z    Compiling napi-derive-backend v6.1.6
+2026-10-25T13:07:32.7111070Z    Compiling futures-macro v0.3.34
+2026-10-25T13:07:33.6160680Z     Checking futures-util v0.3.34
+2026-10-25T13:07:38.1029250Z    Compiling napi-derive v3.6.13
+2026-10-25T13:07:41.5343190Z     Checking futures-executor v0.3.34
+2026-10-25T13:07:41.6743050Z     Checking futures v0.3.34
+2026-10-25T13:07:50.3548700Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 36.37s
+2026-10-25T13:07:50.4507080Z ##[group]Run pnpm desktop:build --target "$DESKTOP_TARGET"
+2026-10-25T13:07:50.4508250Z [36;1mpnpm desktop:build --target "$DESKTOP_TARGET"[0m
+2026-10-25T13:07:50.4618280Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T13:07:50.4619160Z env:
+2026-10-25T13:07:50.4619910Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:07:50.4620640Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:07:50.4622070Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:07:50.4623420Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:07:50.4624430Z ##[endgroup]
+2026-10-25T13:07:51.4891770Z $ tsx tools/outputs/turbo.ts run build --filter=@kisaki3/desktop -- --target macos-x64
+2026-10-25T13:07:54.3590340Z 
+2026-10-25T13:07:54.4042010Z    • Packages in scope: @kisaki3/desktop
+2026-10-25T13:07:54.4044350Z    • Running build in 1 package
+2026-10-25T13:07:54.4050270Z    • Remote caching disabled
+2026-10-25T13:07:54.4254730Z 
+2026-10-25T13:07:57.8242280Z ##[group]@kisaki3/appearance:build
+2026-10-25T13:07:57.8243240Z cache miss, executing 11d99787a121019c
+2026-10-25T13:07:57.8244350Z $ tsx tools/build.ts --target macos-x64
+2026-10-25T13:07:57.8247390Z ℹ config file: /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-25T13:07:57.8249630Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-25T13:07:57.8251240Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:07:57.8252450Z ℹ Build start
+2026-10-25T13:07:57.8253720Z ℹ .cache/output-staging/dist-9dlmYn/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-25T13:07:57.8255670Z ℹ .cache/output-staging/dist-9dlmYn/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-25T13:07:57.8257390Z ℹ .cache/output-staging/dist-9dlmYn/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-25T13:07:57.8259400Z ℹ .cache/output-staging/dist-9dlmYn/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-25T13:07:57.8262100Z ℹ 4 files, total: 6.51 kB
+2026-10-25T13:07:57.8263640Z ✔ Build complete in 875ms
+2026-10-25T13:07:57.8265310Z ##[endgroup]
+2026-10-25T13:08:06.6544020Z ##[group]@kisaki3/ui:build
+2026-10-25T13:08:06.6546070Z cache miss, executing ef16f47c750a175c
+2026-10-25T13:08:06.6554690Z $ tsx tools/build.ts --target macos-x64
+2026-10-25T13:08:06.6585110Z ℹ config file: /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-25T13:08:06.6587030Z ℹ entry: src/index.ts
+2026-10-25T13:08:06.6589120Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:08:06.6590920Z ℹ Build start
+2026-10-25T13:08:06.6593150Z ℹ .cache/output-staging/dist-KZCSJ1/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-25T13:08:06.6595520Z ℹ .cache/output-staging/dist-KZCSJ1/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-25T13:08:06.6597330Z ℹ 2 files, total: 1.05 kB
+2026-10-25T13:08:06.6598790Z ✔ Build complete in 3698ms
+2026-10-25T13:08:06.6600190Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-25T13:08:06.6600750Z 
+2026-10-25T13:08:06.6601180Z Done in [33m358ms[39m
+2026-10-25T13:08:06.6602440Z ##[endgroup]
+2026-10-25T13:08:56.9552800Z ##[group]@kisaki3/desktop:build
+2026-10-25T13:08:56.9826600Z cache bypass, force executing 1f8b1114958283e5
+2026-10-25T13:08:57.0644140Z $ tsx tools/build/cli.ts --target macos-x64
+2026-10-25T13:08:57.0917360Z info: component rust-std is up to date
+2026-10-25T13:08:57.1112410Z    Compiling proc-macro2 v1.0.107
+2026-10-25T13:08:57.1114050Z    Compiling unicode-ident v1.0.27
+2026-10-25T13:08:57.1115220Z    Compiling quote v1.0.47
+2026-10-25T13:08:57.1116120Z    Compiling napi-build v2.6.0
+2026-10-25T13:08:57.1117890Z    Compiling futures-sink v0.3.34
+2026-10-25T13:08:57.1119140Z    Compiling futures-core v0.3.34
+2026-10-25T13:08:57.1120550Z    Compiling futures-channel v0.3.34
+2026-10-25T13:08:57.1122120Z    Compiling slab v0.4.12
+2026-10-25T13:08:57.1123500Z    Compiling memchr v2.8.3
+2026-10-25T13:08:57.1124850Z    Compiling pin-project-lite v0.2.17
+2026-10-25T13:08:57.1126610Z    Compiling futures-task v0.3.34
+2026-10-25T13:08:57.1127890Z    Compiling futures-io v0.3.34
+2026-10-25T13:08:57.1133290Z    Compiling cfg-if v1.0.5
+2026-10-25T13:08:57.1135230Z    Compiling unicode-segmentation v1.13.3
+2026-10-25T13:08:57.1136800Z    Compiling libc v0.2.186
+2026-10-25T13:08:57.1138020Z    Compiling napi-sys v3.4.1
+2026-10-25T13:08:57.1139180Z    Compiling convert_case v0.12.0
+2026-10-25T13:08:57.1140460Z    Compiling syn v3.0.9
+2026-10-25T13:08:57.1141520Z    Compiling libloading v0.9.0
+2026-10-25T13:08:57.1142650Z    Compiling napi v3.15.0
+2026-10-25T13:08:57.1143850Z    Compiling semver v1.0.28
+2026-10-25T13:08:57.1176740Z    Compiling kisaki-native v0.1.0-dev.0 (/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/native)
+2026-10-25T13:08:57.1178120Z    Compiling ctor v1.0.13
+2026-10-25T13:08:57.1178740Z    Compiling nohash-hasher v0.2.0
+2026-10-25T13:08:57.1179390Z    Compiling rustc-hash v2.1.3
+2026-10-25T13:08:57.1182420Z    Compiling bitflags v2.13.2
+2026-10-25T13:08:57.1183510Z    Compiling napi-derive-backend v6.1.6
+2026-10-25T13:08:57.1186060Z    Compiling futures-macro v0.3.34
+2026-10-25T13:08:57.1186880Z    Compiling futures-util v0.3.34
+2026-10-25T13:08:57.1187980Z    Compiling napi-derive v3.6.13
+2026-10-25T13:08:57.1189030Z    Compiling futures-executor v0.3.34
+2026-10-25T13:08:57.1189650Z    Compiling futures v0.3.34
+2026-10-25T13:08:57.1190450Z     Finished `release` profile [optimized] target(s) in 42.78s
+2026-10-25T13:08:57.1192340Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1194150Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1195600Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1196430Z transforming...
+2026-10-25T13:08:57.1196900Z transforming...
+2026-10-25T13:08:57.1197760Z transforming...
+2026-10-25T13:08:57.1198410Z ✓ 3 modules transformed.
+2026-10-25T13:08:57.1200670Z ✓ 2 modules transformed.
+2026-10-25T13:08:57.1201270Z ✓ 13 modules transformed.
+2026-10-25T13:08:57.1202360Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1203220Z rendering chunks...
+2026-10-25T13:08:57.1203720Z rendering chunks...
+2026-10-25T13:08:57.1204260Z rendering chunks...
+2026-10-25T13:08:57.1204730Z transforming...
+2026-10-25T13:08:57.1205230Z computing gzip size...
+2026-10-25T13:08:57.1205760Z computing gzip size...
+2026-10-25T13:08:57.1206890Z .cache/output-staging/macos-x64-2nIcC0/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:08:57.1207610Z 
+2026-10-25T13:08:57.1208510Z .cache/output-staging/macos-x64-2nIcC0/extension-host/entry.js  0.34 kB │ gzip: 0.24 kB
+2026-10-25T13:08:57.1209280Z 
+2026-10-25T13:08:57.1209750Z [32m✓ built in 94ms[39m
+2026-10-25T13:08:57.1210400Z [32m✓ built in 455ms[39m
+2026-10-25T13:08:57.1211070Z computing gzip size...
+2026-10-25T13:08:57.1212380Z .cache/output-staging/macos-x64-2nIcC0/main/entry.js  15.39 kB │ gzip: 5.09 kB
+2026-10-25T13:08:57.1213430Z 
+2026-10-25T13:08:57.1213910Z [32m✓ built in 554ms[39m
+2026-10-25T13:08:57.1215720Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1217270Z transforming...
+2026-10-25T13:08:57.1218140Z ✓ 3 modules transformed.
+2026-10-25T13:08:57.1218900Z rendering chunks...
+2026-10-25T13:08:57.1219660Z computing gzip size...
+2026-10-25T13:08:57.1222190Z .cache/output-staging/macos-x64-2nIcC0/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:08:57.1223410Z 
+2026-10-25T13:08:57.1224000Z [32m✓ built in 15ms[39m
+2026-10-25T13:08:57.1226750Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1228060Z transforming...
+2026-10-25T13:08:57.1229070Z ✓ 3 modules transformed.
+2026-10-25T13:08:57.1229750Z rendering chunks...
+2026-10-25T13:08:57.1230620Z ✓ 19 modules transformed.
+2026-10-25T13:08:57.1231210Z computing gzip size...
+2026-10-25T13:08:57.1232540Z .cache/output-staging/macos-x64-2nIcC0/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:08:57.1233340Z 
+2026-10-25T13:08:57.1234590Z [32m✓ built in 73ms[39m
+2026-10-25T13:08:57.1235390Z rendering chunks...
+2026-10-25T13:08:57.1236790Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:08:57.1237810Z transforming...
+2026-10-25T13:08:57.1238410Z ✓ 3 modules transformed.
+2026-10-25T13:08:57.1239090Z computing gzip size...
+2026-10-25T13:08:57.1240640Z .cache/output-staging/macos-x64-2nIcC0/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:08:57.1242910Z .cache/output-staging/macos-x64-2nIcC0/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:08:57.1245850Z .cache/output-staging/macos-x64-2nIcC0/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:08:57.1247770Z .cache/output-staging/macos-x64-2nIcC0/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+2026-10-25T13:08:57.1253370Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+2026-10-25T13:08:57.1256860Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+2026-10-25T13:08:57.1258890Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+2026-10-25T13:08:57.1260800Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+2026-10-25T13:08:57.1262870Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+2026-10-25T13:08:57.1267220Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+2026-10-25T13:08:57.1269170Z .cache/output-staging/macos-x64-2nIcC0/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+2026-10-25T13:08:57.1270030Z 
+2026-10-25T13:08:57.1270360Z [32m✓ built in 337ms[39m
+2026-10-25T13:08:57.1271470Z rendering chunks...
+2026-10-25T13:08:57.1272000Z computing gzip size...
+2026-10-25T13:08:57.1273150Z .cache/output-staging/macos-x64-2nIcC0/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+2026-10-25T13:08:57.1273850Z 
+2026-10-25T13:08:57.1274100Z [32m✓ built in 18ms[39m
+2026-10-25T13:08:57.1275290Z Desktop build ready: macos-x64 2751247a6c187c5473fc49342642c1953483dbd772d887d0b4ade0f25a1ab2ea
+2026-10-25T13:08:57.1315380Z ##[endgroup]
+2026-10-25T13:08:57.1315810Z 
+2026-10-25T13:08:57.1316370Z  Tasks:    3 successful, 3 total
+2026-10-25T13:08:57.1317370Z Cached:    0 cached, 3 total
+2026-10-25T13:08:57.1324100Z   Time:    1m2.64s 
+2026-10-25T13:08:57.1332280Z 
+2026-10-25T13:08:57.1560490Z ##[group]Run pnpm --filter @kisaki3/desktop test:native
+2026-10-25T13:08:57.1561760Z [36;1mpnpm --filter @kisaki3/desktop test:native[0m
+2026-10-25T13:08:57.1716050Z shell: /bin/bash -e {0}
+2026-10-25T13:08:57.1716910Z env:
+2026-10-25T13:08:57.1717910Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:08:57.1718770Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:08:57.1720650Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:08:57.1721690Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:08:57.1722990Z ##[endgroup]
+2026-10-25T13:08:57.8883960Z $ tsx tools/run.ts --runtime -- exec cross-env ELECTRON_RUN_AS_NODE=1 electron ../../../node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts
+2026-10-25T13:08:59.6786830Z Downloading Electron binary...
+2026-10-25T13:09:03.0294510Z 
+2026-10-25T13:09:03.0298210Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app[39m
+2026-10-25T13:09:03.0299620Z 
+2026-10-25T13:09:03.3400990Z  [32m✓[39m tests/integration/database/abi.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 15[2mms[22m[39m
+2026-10-25T13:09:04.0652820Z  [32m✓[39m tests/integration/native/files.test.ts [2m([22m[2m7 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 741[2mms[22m[39m
+2026-10-25T13:09:04.0654940Z    [33m[2m✓[22m[39m synchronizes existing regular files and reports missing or wrong-type paths[33m 710[2mms[22m[39m
+2026-10-25T13:09:04.0706450Z 
+2026-10-25T13:09:04.0710570Z [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-25T13:09:04.0713170Z [2m      Tests [22m [1m[32m7 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (8)[39m
+2026-10-25T13:09:04.0714440Z [2m   Start at [22m 13:09:03
+2026-10-25T13:09:04.0715480Z [2m   Duration [22m 1.04s[2m (tests 84%, transform 11%, import 4%, worker 1%)[22m
+2026-10-25T13:09:04.0724270Z 
+2026-10-25T13:09:04.1408300Z ##[group]Run pnpm --filter @kisaki3/desktop test:browser
+2026-10-25T13:09:04.1409060Z [36;1mpnpm --filter @kisaki3/desktop test:browser[0m
+2026-10-25T13:09:04.1464440Z shell: /bin/bash -e {0}
+2026-10-25T13:09:04.1464920Z env:
+2026-10-25T13:09:04.1480200Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:09:04.1480740Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:09:04.1481250Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:09:04.1481820Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:09:04.1482410Z ##[endgroup]
+2026-10-25T13:09:04.7485740Z $ tsx tools/run.ts -- exec vitest run --config config/vitest/vitest.config.browser.ts
+2026-10-25T13:09:07.3783410Z 
+2026-10-25T13:09:07.3801400Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app[39m
+2026-10-25T13:09:07.3811710Z       [2m[32mAPI started at http://127.0.0.1:23315/[39m[22m
+2026-10-25T13:09:07.3817020Z 
+2026-10-25T13:09:09.0367570Z  [32m✓[39m [30m[43m chromium [49m[39m tests/browser/window.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 177[2mms[22m[39m
+2026-10-25T13:09:09.0454020Z 
+2026-10-25T13:09:09.0459920Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-25T13:09:09.0462360Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-25T13:09:09.0464310Z [2m   Start at [22m 13:09:07
+2026-10-25T13:09:09.0468240Z [2m   Duration [22m 1.66s[2m (worker 55%, tests 40%, import 5%)[22m
+2026-10-25T13:09:09.0483200Z 
+2026-10-25T13:09:09.2481420Z ##[group]Run pnpm --filter @kisaki3/desktop test:e2e && pnpm --filter @kisaki3/desktop test:dev && pnpm --filter @kisaki3/desktop test:performance
+2026-10-25T13:09:09.2483420Z [36;1mpnpm --filter @kisaki3/desktop test:e2e && pnpm --filter @kisaki3/desktop test:dev && pnpm --filter @kisaki3/desktop test:performance[0m
+2026-10-25T13:09:09.2544580Z shell: /bin/bash -e {0}
+2026-10-25T13:09:09.2545070Z env:
+2026-10-25T13:09:09.2545500Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:09:09.2546070Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:09:09.2546620Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:09:09.2547220Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:09:09.2547880Z ##[endgroup]
+2026-10-25T13:09:09.8905570Z $ tsx tools/run.ts --runtime -- exec playwright test --config playwright.config.ts
+2026-10-25T13:09:12.2398600Z 
+2026-10-25T13:09:12.2399440Z Running 4 tests using 1 worker
+2026-10-25T13:09:12.2400460Z 
+2026-10-25T13:09:16.3996320Z   ✓  1 tests/e2e/windows.test.ts:6:5 › main › renders in its own sandbox with a minimal bridge and closes normally (3.5s)
+2026-10-25T13:09:18.4350100Z   ✓  2 tests/e2e/windows.test.ts:6:5 › reader › renders in its own sandbox with a minimal bridge and closes normally (2.0s)
+2026-10-25T13:09:20.2226800Z   ✓  3 tests/e2e/windows.test.ts:6:5 › player › renders in its own sandbox with a minimal bridge and closes normally (1.8s)
+2026-10-25T13:09:21.9303690Z   ✓  4 tests/e2e/windows.test.ts:6:5 › game-panel › renders in its own sandbox with a minimal bridge and closes normally (1.7s)
+2026-10-25T13:09:21.9565250Z 
+2026-10-25T13:09:21.9571560Z   4 passed (9.9s)
+2026-10-25T13:09:22.8796270Z $ tsx tools/run.ts -- exec vitest run --config config/vitest/vitest.config.dev.ts
+2026-10-25T13:09:25.1882840Z 
+2026-10-25T13:09:25.1887940Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app[39m
+2026-10-25T13:09:25.1888970Z 
+2026-10-25T13:12:04.9113340Z  [32m✓[39m tests/tools/dev/session.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 158823[2mms[22m[39m
+2026-10-25T13:12:04.9116200Z    [33m[2m✓[22m[39m hands off complete generations, retains the last good build and stops without resetting the profile[33m 158820[2mms[22m[39m
+2026-10-25T13:13:24.4379300Z  [32m✓[39m tests/tools/dev/cancellation.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 79157[2mms[22m[39m
+2026-10-25T13:13:24.4382150Z    [33m[2m✓[22m[39m cancelling initial dependency acquisition releases the session and permits a complete retry[33m 79156[2mms[22m[39m
+2026-10-25T13:13:24.4443210Z 
+2026-10-25T13:13:24.4451230Z [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-25T13:13:24.4453590Z [2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-25T13:13:24.4459960Z [2m   Start at [22m 13:09:25
+2026-10-25T13:13:24.4461100Z [2m   Duration [22m 239.25s[2m (tests 100%)[22m
+2026-10-25T13:13:24.4474160Z 
+2026-10-25T13:13:24.4503660Z JSON report written to /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/test-results/dev/results.json
+2026-10-25T13:13:25.9321710Z $ tsx tools/run.ts --runtime -- exec playwright test --config config/playwright/playwright.config.performance.ts
+2026-10-25T13:13:29.5279210Z 
+2026-10-25T13:13:29.5280640Z Running 1 test using 1 worker
+2026-10-25T13:13:29.5281710Z 
+2026-10-25T13:13:59.5322280Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (29.0s)
+2026-10-25T13:13:59.5526920Z 
+2026-10-25T13:13:59.5531600Z   1 passed (30.4s)
+2026-10-25T13:13:59.6757240Z ##[group]Run pnpm desktop:package --target "$DESKTOP_TARGET" --test-only
+2026-10-25T13:13:59.6765480Z [36;1mpnpm desktop:package --target "$DESKTOP_TARGET" --test-only[0m
+2026-10-25T13:13:59.6918150Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T13:13:59.6919790Z env:
+2026-10-25T13:13:59.6926500Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:13:59.6927390Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:13:59.6928980Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:13:59.6930280Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:13:59.6931270Z ##[endgroup]
+2026-10-25T13:14:01.1591310Z $ tsx tools/outputs/turbo.ts run package --filter=@kisaki3/desktop -- --target macos-x64 --test-only
+2026-10-25T13:14:03.2115480Z 
+2026-10-25T13:14:03.2117180Z    • Packages in scope: @kisaki3/desktop
+2026-10-25T13:14:03.2118270Z    • Running package in 1 package
+2026-10-25T13:14:03.2119150Z    • Remote caching disabled
+2026-10-25T13:14:03.2119610Z 
+2026-10-25T13:14:06.4319140Z ##[group]@kisaki3/appearance:build
+2026-10-25T13:14:06.4476450Z cache miss, executing cfe117a789da348e
+2026-10-25T13:14:06.4478330Z $ tsx tools/build.ts
+2026-10-25T13:14:06.4485050Z ℹ config file: /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-25T13:14:06.4493580Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-25T13:14:06.4496270Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:14:06.4498330Z ℹ Build start
+2026-10-25T13:14:06.4500020Z ℹ .cache/output-staging/dist-HqixNv/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-25T13:14:06.4502400Z ℹ .cache/output-staging/dist-HqixNv/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-25T13:14:06.4504130Z ℹ .cache/output-staging/dist-HqixNv/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-25T13:14:06.4506010Z ℹ .cache/output-staging/dist-HqixNv/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-25T13:14:06.4507250Z ℹ 4 files, total: 6.51 kB
+2026-10-25T13:14:06.4508160Z ✔ Build complete in 1093ms
+2026-10-25T13:14:06.4509460Z ##[endgroup]
+2026-10-25T13:14:10.7571750Z ##[group]@kisaki3/ui:build
+2026-10-25T13:14:10.7584650Z cache miss, executing e08d74b4f1ffd70c
+2026-10-25T13:14:10.7585870Z $ tsx tools/build.ts
+2026-10-25T13:14:10.7588220Z ℹ config file: /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-25T13:14:10.7593760Z ℹ entry: src/index.ts
+2026-10-25T13:14:10.7596910Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-25T13:14:10.7602230Z ℹ Build start
+2026-10-25T13:14:10.7603550Z ℹ .cache/output-staging/dist-UOW6vt/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-25T13:14:10.7610200Z ℹ .cache/output-staging/dist-UOW6vt/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-25T13:14:10.7611340Z ℹ 2 files, total: 1.05 kB
+2026-10-25T13:14:10.7611950Z ✔ Build complete in 1151ms
+2026-10-25T13:14:10.7612790Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-25T13:14:10.7613570Z 
+2026-10-25T13:14:10.7613850Z Done in [34m70ms[39m
+2026-10-25T13:14:10.7615000Z ##[endgroup]
+2026-10-25T13:15:19.7342780Z ##[group]@kisaki3/desktop:package
+2026-10-25T13:15:19.8342090Z cache bypass, force executing e416a7ed68863d4f
+2026-10-25T13:15:19.8404880Z $ tsx tools/package/cli.ts --target macos-x64 --test-only
+2026-10-25T13:15:19.8613530Z info: component rust-std is up to date
+2026-10-25T13:15:19.8636470Z    Compiling kisaki-native v0.1.0-dev.0 (/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/native)
+2026-10-25T13:15:19.8661920Z     Finished `release` profile [optimized] target(s) in 6.41s
+2026-10-25T13:15:19.8742570Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.8913930Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.8959940Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.9001040Z transforming...
+2026-10-25T13:15:19.9031080Z transforming...
+2026-10-25T13:15:19.9038160Z transforming...
+2026-10-25T13:15:19.9083720Z ✓ 2 modules transformed.
+2026-10-25T13:15:19.9103550Z ✓ 3 modules transformed.
+2026-10-25T13:15:19.9105960Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.9111930Z ✓ 13 modules transformed.
+2026-10-25T13:15:19.9114370Z rendering chunks...
+2026-10-25T13:15:19.9115910Z rendering chunks...
+2026-10-25T13:15:19.9118940Z transforming...
+2026-10-25T13:15:19.9121280Z rendering chunks...
+2026-10-25T13:15:19.9123380Z computing gzip size...
+2026-10-25T13:15:19.9126280Z computing gzip size...
+2026-10-25T13:15:19.9129550Z .cache/output-staging/macos-x64-cXvqx7/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:15:19.9131650Z 
+2026-10-25T13:15:19.9134110Z .cache/output-staging/macos-x64-cXvqx7/extension-host/entry.js  0.34 kB │ gzip: 0.24 kB
+2026-10-25T13:15:19.9136260Z 
+2026-10-25T13:15:19.9138040Z [32m✓ built in 510ms[39m
+2026-10-25T13:15:19.9141080Z [32m✓ built in 186ms[39m
+2026-10-25T13:15:19.9143120Z computing gzip size...
+2026-10-25T13:15:19.9145900Z .cache/output-staging/macos-x64-cXvqx7/main/entry.js  15.39 kB │ gzip: 5.09 kB
+2026-10-25T13:15:19.9147910Z 
+2026-10-25T13:15:19.9149990Z [32m✓ built in 182ms[39m
+2026-10-25T13:15:19.9152770Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.9155320Z transforming...
+2026-10-25T13:15:19.9157450Z ✓ 3 modules transformed.
+2026-10-25T13:15:19.9272540Z rendering chunks...
+2026-10-25T13:15:19.9273800Z computing gzip size...
+2026-10-25T13:15:19.9277030Z .cache/output-staging/macos-x64-cXvqx7/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:15:19.9279620Z 
+2026-10-25T13:15:19.9280330Z [32m✓ built in 14ms[39m
+2026-10-25T13:15:19.9281680Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.9283070Z transforming...
+2026-10-25T13:15:19.9284110Z ✓ 3 modules transformed.
+2026-10-25T13:15:19.9284780Z rendering chunks...
+2026-10-25T13:15:19.9285320Z ✓ 19 modules transformed.
+2026-10-25T13:15:19.9286260Z computing gzip size...
+2026-10-25T13:15:19.9287350Z .cache/output-staging/macos-x64-cXvqx7/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-25T13:15:19.9288260Z 
+2026-10-25T13:15:19.9288820Z [32m✓ built in 60ms[39m
+2026-10-25T13:15:19.9289500Z rendering chunks...
+2026-10-25T13:15:19.9290590Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-25T13:15:19.9291940Z transforming...
+2026-10-25T13:15:19.9292830Z ✓ 3 modules transformed.
+2026-10-25T13:15:19.9293780Z computing gzip size...
+2026-10-25T13:15:19.9295950Z .cache/output-staging/macos-x64-cXvqx7/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:15:19.9298190Z .cache/output-staging/macos-x64-cXvqx7/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:15:19.9300460Z .cache/output-staging/macos-x64-cXvqx7/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-25T13:15:19.9302320Z .cache/output-staging/macos-x64-cXvqx7/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+2026-10-25T13:15:19.9304750Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+2026-10-25T13:15:19.9307300Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+2026-10-25T13:15:19.9309280Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+2026-10-25T13:15:19.9311710Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+2026-10-25T13:15:19.9313850Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+2026-10-25T13:15:19.9316340Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+2026-10-25T13:15:19.9318180Z .cache/output-staging/macos-x64-cXvqx7/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+2026-10-25T13:15:19.9318980Z 
+2026-10-25T13:15:19.9320130Z [32m✓ built in 283ms[39m
+2026-10-25T13:15:19.9320680Z rendering chunks...
+2026-10-25T13:15:19.9321510Z computing gzip size...
+2026-10-25T13:15:19.9322740Z .cache/output-staging/macos-x64-cXvqx7/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+2026-10-25T13:15:19.9323610Z 
+2026-10-25T13:15:19.9324020Z [32m✓ built in 16ms[39m
+2026-10-25T13:15:19.9325760Z   • electron-builder  version=26.15.3 os=24.6.0
+2026-10-25T13:15:19.9327450Z   • loaded configuration  file=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/out/package-rmVEqm/electron-builder.yml
+2026-10-25T13:15:19.9330010Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app
+2026-10-25T13:15:19.9333480Z   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@11.11.0 resolved=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci projectDir=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app
+2026-10-25T13:15:19.9336230Z   • skipped dependencies rebuild  reason=npmRebuild is set to false
+2026-10-25T13:15:19.9338050Z   • packaging       platform=darwin arch=x64 electron=44.5.1 appOutDir=.cache/output-staging/macos-x64-QMfIhD/mac
+2026-10-25T13:15:19.9339850Z   • downloaded      label=electron progress=100%
+2026-10-25T13:15:19.9342110Z   • downloaded electron zip extracted successfully  output=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/.cache/output-staging/macos-x64-QMfIhD/mac
+2026-10-25T13:15:19.9344750Z   • searching for node modules  pm=pnpm searchDir=/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/out/package-rmVEqm
+2026-10-25T13:15:19.9346380Z   • downloaded      label=icons-bundle.tar.gz progress=100%
+2026-10-25T13:15:19.9347660Z   • executing @electron/fuses  electronPath=.cache/output-staging/macos-x64-QMfIhD/mac/Kisaki.app
+2026-10-25T13:15:19.9349320Z   • skipped macOS code signing  reason=identity explicitly is set to null
+2026-10-25T13:15:19.9351170Z   • building        target=macOS zip arch=x64 file=.cache/output-staging/macos-x64-QMfIhD/Kisaki-0.1.0-dev.0-macos-x64.zip
+2026-10-25T13:15:19.9353630Z   • building        target=DMG arch=x64 file=.cache/output-staging/macos-x64-QMfIhD/Kisaki-0.1.0-dev.0-macos-x64.dmg
+2026-10-25T13:15:19.9355450Z   • downloaded      label=dmgbuild-bundle-x86_64-75c8a6c.tar.gz progress=100%
+2026-10-25T13:15:19.9357290Z   • building block map  blockMapFile=.cache/output-staging/macos-x64-QMfIhD/Kisaki-0.1.0-dev.0-macos-x64.zip.blockmap
+2026-10-25T13:15:19.9359320Z   • building block map  blockMapFile=.cache/output-staging/macos-x64-QMfIhD/Kisaki-0.1.0-dev.0-macos-x64.dmg.blockmap
+2026-10-25T13:15:19.9361390Z /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/dist/macos-x64/artifacts.json
+2026-10-25T13:15:19.9363400Z ##[endgroup]
+2026-10-25T13:15:19.9364200Z 
+2026-10-25T13:15:19.9364640Z  Tasks:    3 successful, 3 total
+2026-10-25T13:15:19.9365410Z Cached:    0 cached, 3 total
+2026-10-25T13:15:19.9366480Z   Time:    1m16.538s 
+2026-10-25T13:15:19.9366790Z 
+2026-10-25T13:15:19.9444600Z ##[group]Run pnpm desktop:test:artifacts
+2026-10-25T13:15:19.9445230Z [36;1mpnpm desktop:test:artifacts[0m
+2026-10-25T13:15:19.9506020Z shell: /bin/bash -e {0}
+2026-10-25T13:15:19.9506440Z env:
+2026-10-25T13:15:19.9506760Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:15:19.9507180Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:15:19.9507590Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:15:19.9508060Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:15:19.9508570Z ##[endgroup]
+2026-10-25T13:15:20.6903710Z $ pnpm --filter @kisaki3/desktop test:artifacts
+2026-10-25T13:15:21.2897700Z $ tsx tools/run.ts --artifacts -- exec vitest run --config config/vitest/vitest.config.artifacts.ts
+2026-10-25T13:15:23.0111560Z 
+2026-10-25T13:15:23.0115330Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app[39m
+2026-10-25T13:15:23.0116230Z 
+2026-10-25T13:15:28.5936950Z  [32m✓[39m tests/artifacts/desktop.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 5294[2mms[22m[39m
+2026-10-25T13:15:28.6062600Z    [33m[2m✓[22m[39m the exact packaged carrier retains production fuses and starts and closes externally[33m 5293[2mms[22m[39m
+2026-10-25T13:15:28.6066710Z 
+2026-10-25T13:15:28.6068860Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-25T13:15:28.6070330Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-25T13:15:28.6071770Z [2m   Start at [22m 13:15:23
+2026-10-25T13:15:28.6072980Z [2m   Duration [22m 5.58s[2m (tests 97%, import 1%, transform 1%)[22m
+2026-10-25T13:15:28.6073690Z 
+2026-10-25T13:15:28.6075330Z JSON report written to /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/test-results/artifacts/results.json
+2026-10-25T13:15:28.7215540Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-25T13:15:28.7216410Z with:
+2026-10-25T13:15:28.7216860Z   name: desktop-macos-x64
+2026-10-25T13:15:28.7218320Z   path: clients/desktop/app/test-results/
+clients/desktop/app/dist/macos-x64/artifacts.json
+clients/desktop/app/dist/macos-x64/Kisaki-*
+clients/desktop/app/dist/macos-x64/*.yml
+
+2026-10-25T13:15:28.7219960Z   if-no-files-found: error
+2026-10-25T13:15:28.7220490Z   compression-level: 6
+2026-10-25T13:15:28.7220950Z   overwrite: false
+2026-10-25T13:15:28.7221480Z   include-hidden-files: false
+2026-10-25T13:15:28.7222030Z env:
+2026-10-25T13:15:28.7222430Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-25T13:15:28.7222960Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-25T13:15:28.7223510Z   DESKTOP_TARGET: macos-x64
+2026-10-25T13:15:28.7224160Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-25T13:15:28.7224980Z ##[endgroup]
+2026-10-25T13:15:29.1366040Z (node:16461) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:15:29.1367700Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:15:29.1540970Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-25T13:15:29.1543570Z The least common ancestor is /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app. This will be the root directory of the artifact
+2026-10-25T13:15:29.1545190Z With the provided path, there will be 11 files uploaded
+2026-10-25T13:15:29.1549370Z Artifact name is valid!
+2026-10-25T13:15:29.1549990Z Root directory input is valid!
+2026-10-25T13:15:29.5256680Z Beginning upload of artifact content to blob storage
+2026-10-25T13:15:29.8256700Z (node:16461) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T13:15:32.0080550Z Uploaded bytes 8388608
+2026-10-25T13:15:32.3827010Z Uploaded bytes 16777216
+2026-10-25T13:15:32.5306370Z Uploaded bytes 25165824
+2026-10-25T13:15:32.6935050Z Uploaded bytes 33554432
+2026-10-25T13:15:32.8921640Z Uploaded bytes 41943040
+2026-10-25T13:15:33.2432100Z Uploaded bytes 50331648
+2026-10-25T13:15:33.5432520Z Uploaded bytes 58720256
+2026-10-25T13:15:33.8913710Z Uploaded bytes 67108864
+2026-10-25T13:15:34.1657990Z Uploaded bytes 75497472
+2026-10-25T13:15:34.4596380Z Uploaded bytes 83886080
+2026-10-25T13:15:34.7764310Z Uploaded bytes 92274688
+2026-10-25T13:15:35.0768050Z Uploaded bytes 100663296
+2026-10-25T13:15:35.3853110Z Uploaded bytes 109051904
+2026-10-25T13:15:35.7230480Z Uploaded bytes 117440512
+2026-10-25T13:15:36.0196230Z Uploaded bytes 125829120
+2026-10-25T13:15:36.3366210Z Uploaded bytes 134217728
+2026-10-25T13:15:36.6692050Z Uploaded bytes 142606336
+2026-10-25T13:15:36.9794400Z Uploaded bytes 150994944
+2026-10-25T13:15:37.2745010Z Uploaded bytes 159383552
+2026-10-25T13:15:37.5629860Z Uploaded bytes 167772160
+2026-10-25T13:15:37.9355880Z Uploaded bytes 176160768
+2026-10-25T13:15:38.2223050Z Uploaded bytes 184549376
+2026-10-25T13:15:38.5575370Z Uploaded bytes 192937984
+2026-10-25T13:15:38.8217260Z Uploaded bytes 201326592
+2026-10-25T13:15:39.1169000Z Uploaded bytes 209715200
+2026-10-25T13:15:39.4059930Z Uploaded bytes 218103808
+2026-10-25T13:15:39.7216270Z Uploaded bytes 226492416
+2026-10-25T13:15:40.0571880Z Uploaded bytes 234881024
+2026-10-25T13:15:40.4052300Z Uploaded bytes 243269632
+2026-10-25T13:15:40.7564140Z Uploaded bytes 251658240
+2026-10-25T13:15:41.0164290Z Uploaded bytes 260046848
+2026-10-25T13:15:41.3095560Z Uploaded bytes 268435456
+2026-10-25T13:15:41.6249180Z Uploaded bytes 276824064
+2026-10-25T13:15:41.7411600Z Uploaded bytes 279945728
+2026-10-25T13:15:41.8150610Z Finished uploading artifact content to blob storage!
+2026-10-25T13:15:41.8154970Z SHA256 digest of uploaded artifact zip is fa9bff4fcdd9e755b77b041ad88cbb5b4a0cbe3e454c6315dca2b2de533052e1
+2026-10-25T13:15:41.8157010Z Finalizing artifact upload
+2026-10-25T13:15:42.4189880Z Artifact desktop-macos-x64.zip successfully finalized. Artifact ID 12600277156
+2026-10-25T13:15:42.4191690Z Artifact desktop-macos-x64 has been successfully uploaded! Final size is 279945728 bytes. Artifact ID is 12600277156
+2026-10-25T13:15:42.4207220Z Artifact download URL: https://github.com/ximu3/kisaki-w00-ci/actions/runs/40195578411/artifacts/12600277156
+2026-10-25T13:15:42.4554420Z Post job cleanup.
+2026-10-25T13:15:42.6909780Z (node:16623) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:15:42.6911360Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:15:42.7794290Z [command]/usr/local/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+2026-10-25T13:15:54.1272250Z (node:16623) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T13:15:55.1160930Z Sent 22151168 of 131530275 (16.8%), 21.1 MBs/sec
+2026-10-25T13:15:56.1175590Z Sent 75628544 of 131530275 (57.5%), 36.0 MBs/sec
+2026-10-25T13:15:57.1190570Z Sent 131530275 of 131530275 (100.0%), 41.8 MBs/sec
+2026-10-25T13:15:57.4571060Z Cache saved with the key: node-cache-macOS-x64-pnpm-969dedf75640f2cd6e4a05519a32349f81991cf899c44bbce0915e3018cbe282
+2026-10-25T13:15:57.4745800Z Post job cleanup.
+2026-10-25T13:15:57.7118110Z Pruning is unnecessary.
+2026-10-25T13:15:57.7372070Z Post job cleanup.
+2026-10-25T13:15:57.8963560Z [command]/usr/local/bin/git version
+2026-10-25T13:15:57.9511120Z git version 2.55.0
+2026-10-25T13:15:57.9545210Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/82ed6467-9bbb-4461-a9e5-40f383a58e21/.gitconfig'
+2026-10-25T13:15:57.9560460Z Temporarily overriding HOME='/Users/runner/work/_temp/82ed6467-9bbb-4461-a9e5-40f383a58e21' before making global git config changes
+2026-10-25T13:15:57.9562150Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:15:57.9566670Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/kisaki-w00-ci/kisaki-w00-ci
+2026-10-25T13:15:57.9694250Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:15:57.9785290Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:15:58.1456290Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:15:58.1551510Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:15:58.2704580Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:15:58.2793720Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:15:58.4168690Z Cleaning up orphan processes
+2026-10-25T13:15:58.4587870Z Terminate orphan process: pid (16203) (System Events)
+2026-10-25T13:15:58.7485650Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02, pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
