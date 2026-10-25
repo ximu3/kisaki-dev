@@ -18,7 +18,7 @@ beforeEach(async () => {
   for (const directory of ['src', 'tools', 'config/typescript']) {
     await mkdir(join(packageRoot, directory), { recursive: true })
   }
-  await mkdir(join(root, 'tools', 'outputs'), { recursive: true })
+  await mkdir(join(root, 'tools', 'lib'), { recursive: true })
   for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json']) {
     await writeFile(join(root, file), '{}\n')
   }

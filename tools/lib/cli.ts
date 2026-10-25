@@ -1,5 +1,4 @@
 import { CommandFailed } from './process'
-import { OutputInUse } from './access'
 
 /** Install cancellation before preparation, and report failure only after the action has closed. */
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
@@ -23,7 +22,7 @@ export async function runCli(action: (signal: AbortSignal) => Promise<void>): Pr
       if (cause.stderr) process.stderr.write(cause.stderr)
       process.exitCode = cause.exitCode
     } else {
-      console.error(cause instanceof OutputInUse ? cause.message : cause)
+      console.error(cause)
       process.exitCode = 1
     }
   } finally {

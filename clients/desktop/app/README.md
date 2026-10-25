@@ -10,7 +10,7 @@
 
 扩展宿主由 utilityProcess 运行，保留正式关闭 RunAsNode 和调试相关 fuses 的条件。应用 package.json 的 imports 定义私有原生入口 `#native`，主进程与原生集成测试共同消费；主进程构建将其编入输出，产物不依赖源码映射。入口导入不加载二进制；装配明确选择部署路径，并核对运行构建身份和原生字节。
 
-`tools/build`、`dev`、`resources`、`native` 和 `package` 分别拥有有限构建、开发会话、固定资源、原生编译与打包，`tools/clean.ts` 提供清理任务，`tools/run.ts` 在类型与测试命令使用输出期间持有访问范围。跨工作流的路径、目标、公共包输入与摘要归 `tools/lib`，开发 Electron 定位归 `tools/dev`。工程输出访问、完整候选交接与子进程收尾通过根 `tools/outputs` 的公开入口复用。生成的运行清单与载体身份共用 `src/shared` 中的定义。任务的输入、环境和清理规则见根 [开发指南](../../../CONTRIBUTING.md)，测试归属与正式设计见 [源码布局](../../../refactor/design/engineering/layout.md)。
+`tools/build`、`dev`、`resources`、`native` 和 `package` 分别拥有有限构建、开发会话、固定资源、原生编译与打包，`tools/clean.ts` 提供清理任务。类型与测试脚本直接调用所属运行器和配置。跨工作流的路径、目标、公共包输入与摘要归 `tools/lib`，开发 Electron 定位归 `tools/dev`；跨工程复用的候选交接、命令执行和 CLI 收尾为根 `tools/lib` 中的普通函数，取消信号由调用方显式传入。生成的运行清单与载体身份共用 `src/shared` 中的定义。任务的输入、环境和清理规则见根 [开发指南](../../../CONTRIBUTING.md)，测试归属与正式设计见 [源码布局](../../../refactor/design/engineering/layout.md)。
 
 SQLite 13.0.3 使用包内 Node-API 预编译绑定，资源工作流只装配所选目标；测试在启动前选择 Electron Node 宿主，直接验证将要交付的同一绑定，不在共享 node_modules 内切换 ABI。
 

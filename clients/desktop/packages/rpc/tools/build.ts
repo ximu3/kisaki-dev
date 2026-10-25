@@ -1,21 +1,20 @@
 import { build } from 'tsdown'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { replaceOutput, runCli, withProjectOutputs } from '../../../../../tools/outputs'
+import { replaceOutput } from '../../../../../tools/lib/output'
+import { runCli } from '../../../../../tools/lib/cli'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 
-/** Build complete code and declarations while dependency exports and the published output are owned. */
+/** Build complete code and declarations before replacing the package output. */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
-  await withProjectOutputs(
+  await replaceOutput(
     root,
-    { write: ['dist'] },
-    async () => {
-      await replaceOutput(root, 'dist', async (candidate) => {
-        await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
-      })
+    'dist',
+    async (candidate) => {
+      await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
     },
-    signal ? { signal } : {},
+    signal,
   )
 }
 

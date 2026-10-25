@@ -10,11 +10,10 @@
     "name": "AniList"
   },
   "scripts": {
-    "typecheck": "tsx ../../../../../tools/outputs/run.ts --dependencies -- exec tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@kisaki3/extension-cli": "workspace:^",
-    "typescript": "catalog:",
-    "tsx": "catalog:"
+    "typescript": "catalog:"
   }
 }

@@ -27,12 +27,6 @@
       }
     },
     {
-      "name": "projects-use-output-access-entry",
-      "severity": "error",
-      "from": { "path": "^clients/" },
-      "to": { "path": "^tools/outputs/", "pathNot": "^tools/outputs/index\\.ts$" }
-    },
-    {
       "name": "main-and-extension-host-are-independent",
       "severity": "error",
       "from": {

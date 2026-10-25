@@ -2,7 +2,8 @@ import { parseArgs } from 'node:util'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, parseTarget } from '../lib/targets'
-import { replaceOutput, runCli, withProjectOutputs } from '../../../../../tools/outputs'
+import { replaceOutput } from '../../../../../tools/lib/output'
+import { runCli } from '../../../../../tools/lib/cli'
 import { buildDesktop } from './coordinator'
 import { sourceIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
@@ -19,14 +20,12 @@ await runCli(async (signal) => {
     }
     const program = values.program as ProgramName
     const output = join(appRoot, 'out', 'programs', target, program)
-    await withProjectOutputs(
+    const buildId = await sourceIdentity()
+    await replaceOutput(
       appRoot,
-      { write: [output] },
-      async () => {
-        const buildId = await sourceIdentity()
-        await replaceOutput(appRoot, output, (staging) => buildProgram(program, staging, buildId))
-      },
-      { signal },
+      output,
+      (staging) => buildProgram(program, staging, buildId),
+      signal,
     )
   } else {
     const build = await buildDesktop(target, signal)

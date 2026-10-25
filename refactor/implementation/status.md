@@ -9,12 +9,12 @@
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 已完成；终审与输出访问修正通过本机及六目标完整回归 |
+| W00 工程与验证入口 | 顺序执行入口的本机完整回归已通过，六目标 CI 待复核 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-[W00](work-packages.md#w00) 的[最终审查](../verification/evidence/w00/2026-10-25/final-review/README.md)发现的输入遗漏、遗留锁和浏览器入口问题均已修正，buildId 按确认采用现有输入指纹。工程锁的[设计审视](../verification/evidence/w00/2026-10-25/lock-design-review/README.md)发现的缓存恢复与读取交接缺口已按项目与输出读写方案补齐。修正提交 `61f33a0` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run)中，仓库检查、六目标桌面任务及 Required checks 全部成功；实际候选与七份附件已归档并核对摘要，W00 完成，W01 尚未开始。Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci)，当前 origin 指向该地址；名称沿用建库时的标记，用途覆盖后续开发、联调和 CI，直到具备正式接续条件。2026-10-25 核对时该库仍为 private、未归档，默认分支为 main；旧 [ximu3/kisaki](https://github.com/ximu3/kisaki) 仍为 public、未归档，默认分支为 main。旧资料存档与同名重建尚未执行，后续按[共同仓库规则](../design/engineering/repository.md#temporary-repositories)接续。
+[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护：同一工作副本使用相同输出的独立任务顺序运行。跨命令输出协调、访问上下文和命令包装已移除，候选交接、失败保留与显式取消继续由具体工作流负责；当前输入正在重新验证，W01 尚未开始。历史[六目标完整运行](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run)及实际候选保持其原提交与范围。Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci)，当前 origin 指向该地址；名称沿用建库时的标记，用途覆盖后续开发、联调和 CI，直到具备正式接续条件。2026-10-25 核对时该库仍为 private、未归档，默认分支为 main；旧 [ximu3/kisaki](https://github.com/ximu3/kisaki) 仍为 public、未归档，默认分支为 main。旧资料存档与同名重建尚未执行，后续按[共同仓库规则](../design/engineering/repository.md#temporary-repositories)接续。
 
 W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README.md)、原始附件与实际制品继续按当时提交保存，不把旧记录中的仓库名称改写为后来的身份。四个独立项目采用同一临时仓库规范，其实际远端在开始实施时登记。设计、实现、运行验收、仓库接续和发布分别依据实际结果记录。
 
@@ -28,7 +28,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 修正提交 `61f33a0` 的[六目标 runner 矩阵](../design/engineering/build.md#platforms)已全部通过输出访问、实际构建、原生运行、桌面测试及最终候选启动，见[完整运行](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run) |
+| 标准 CI | 提交 `61f33a0` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run)已通过；当前顺序执行入口待六目标复核 |
 
 <a id="progress"></a>
 
@@ -36,7 +36,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 已完成，见[六目标复核](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run) |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 本机回归通过，见[顺序执行验证](../verification/evidence/w00/2026-10-25/sequential-workflows/README.md)；六目标待复核 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |
@@ -61,7 +61,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 ## W00 实施记录
 
-工程锁当前实现状态：已按确认的项目与输出读写方案接入根调度、八包构建与消费、本体构建、打包、开发会话、测试及清理。系统锁由根工程的 fs-native-extensions 提供，有限任务冲突退出，开发重建可取消等待；缓存恢复与读取交接处于同一访问范围。本机完整回归与六目标 CI 均通过，每个目标实际执行 8 项输出访问用例、2 项开发用例、四窗口、20 次启动测量及最终载体启动，见[输出访问修正](../verification/evidence/w00/2026-10-25/output-access/README.md)及[六目标记录](../verification/evidence/w00/2026-10-25/output-access/ci/README.md#complete-run)。关闭用例的点击反馈竞态已修正并在六目标复核。七份附件、八份公共包和六目标候选已归档并核对摘要，A24、A26、A28、A31 在 W00 范围通过，W00 完成。
+当前工程入口已移除根 tools/outputs 及其系统锁依赖、访问上下文、Turbo 计划包装和项目脚本接入。根任务与项目脚本直接使用所属工具；候选交接、命令执行和 CLI 收尾为显式调用的普通函数。跨命令并发保证对应的测试已随合同调整移除。本机普通检查、4 项候选与命令取消用例、2 项实际开发用例、八包消费、浏览器、原生、四窗口、20 次启动测量、Windows 打包和原样 ZIP 运行均已通过，实际候选已留存，见[顺序执行验证](../verification/evidence/w00/2026-10-25/sequential-workflows/README.md)。当前输入的六目标结果尚待完成。
 
 已建立 42 个实际 workspace 成员、四类独立程序构建和开发会话、私有 Rust／Node-API 工程、固定字体与原生资源输入、隔离 hooks、类型与依赖边界，以及 Node、浏览器、Electron、仓库外 tarball 消费、性能和最终制品测试入口。版本统一为未公开基线 `0.1.0-dev.0`。公共包目前只交付工程所需的实际入口，33 个扩展只有工程身份与配置；不提前声明 W01 或 W09 完成。
 

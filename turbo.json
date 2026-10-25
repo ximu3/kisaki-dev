@@ -4,9 +4,8 @@
     "tsconfig.base.json",
     "eslint.config.ts",
     ".prettierrc.json",
-    "tools/outputs/**"
+    "tools/lib/**"
   ],
-  "globalPassThroughEnv": ["KISAKI_OUTPUT_ACCESS"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

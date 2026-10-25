@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
 import type { DevelopmentBuild } from '../../../tools/dev/session'
-import { readPnpm } from '../../../../../../tools/outputs'
+import { readPnpm } from '../../../../../../tools/lib/process'
 
 /** Test-only observations from the fixture controller, not an application protocol. */
 interface Observation {
@@ -51,13 +51,6 @@ test('hands off complete generations, retains the last good build and stops with
       })
       .toBeGreaterThan(0)
     const first = states.filter((state) => state.state === 'ready').at(-1)!
-    await expect(
-      readPnpm(['--filter', '@kisaki3/desktop', 'run', 'clean'], workspace.root),
-    ).rejects.toMatchObject({
-      exitCode: 1,
-      stderr: expect.stringContaining('Output is in use'),
-    })
-    await readPnpm(['--filter', '@kisaki3/rpc', 'build'], workspace.root)
     expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
     if (process.platform === 'win32') {
       await expect.poll(() => hasNativeWindow(first.current!.processId)).toBe(true)

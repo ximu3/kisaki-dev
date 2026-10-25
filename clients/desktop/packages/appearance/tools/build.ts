@@ -3,27 +3,26 @@ import type * as DefaultTokens from '../src/defaults'
 import { writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { replaceOutput, runCli, withProjectOutputs } from '../../../../../tools/outputs'
+import { replaceOutput } from '../../../../../tools/lib/output'
+import { runCli } from '../../../../../tools/lib/cli'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 
 /** Build code, declarations and generated styles before replacing the owned package output. */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
-  await withProjectOutputs(
+  await replaceOutput(
     root,
-    { write: ['dist'] },
-    async () => {
-      await replaceOutput(root, 'dist', async (candidate) => {
-        await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
-        const defaults: typeof DefaultTokens = await import(
-          pathToFileURL(join(candidate, 'index.js')).href
-        )
-        const light = cssTokens(':root', defaults.defaultLightTokens)
-        const dark = cssTokens(":root[data-color-scheme='dark']", defaults.defaultDarkTokens)
-        await writeFile(join(candidate, 'styles.css'), light + '\n\n' + dark + '\n')
-      })
+    'dist',
+    async (candidate) => {
+      await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
+      const defaults: typeof DefaultTokens = await import(
+        pathToFileURL(join(candidate, 'index.js')).href
+      )
+      const light = cssTokens(':root', defaults.defaultLightTokens)
+      const dark = cssTokens(":root[data-color-scheme='dark']", defaults.defaultDarkTokens)
+      await writeFile(join(candidate, 'styles.css'), light + '\n\n' + dark + '\n')
     },
-    signal ? { signal } : {},
+    signal,
   )
 }
 

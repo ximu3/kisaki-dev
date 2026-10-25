@@ -4,7 +4,8 @@ import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, targetTriples } from '../lib/targets'
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'
-import { replaceOutput, run, runPnpm } from '../../../../../tools/outputs'
+import { replaceOutput } from '../../../../../tools/lib/output'
+import { run, runPnpm } from '../../../../../tools/lib/process'
 import { checkDeclarations } from './declarations'
 
 /** Compile the host target and replace its output after the generated declarations match. */
@@ -24,6 +25,7 @@ export async function buildNative(
     async (staging) => {
       await run('rustup', ['target', 'add', targetTriples[target]], {
         cwd: join(appRoot, 'native'),
+        signal,
       })
 
       await runPnpm(
@@ -50,7 +52,7 @@ export async function buildNative(
           '--',
           '--locked',
         ],
-        { cwd: appRoot },
+        { cwd: appRoot, signal },
       )
 
       await checkDeclarations(
@@ -69,7 +71,7 @@ export async function buildNative(
         }),
       )
     },
-    signal ? { signal } : {},
+    signal,
   )
 
   return output

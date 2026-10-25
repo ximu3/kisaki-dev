@@ -3,7 +3,7 @@ import { isAbsolute, join, relative, sep } from 'node:path'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { publicPackageBuildInputs } from '../lib/package-inputs'
 import type { DependencySnapshot } from './dependencies'
-import type { WorkspaceProject } from '../../../../../tools/outputs'
+import type { DesktopDependency } from './dependencies'
 
 /** Vite and the public-package snapshot serving this development session. */
 export interface DevelopmentRenderer {
@@ -22,7 +22,7 @@ function contains(parent: string, path: string): boolean {
 
 /** Start the renderer server and retain its current public-package resolution until close(). */
 export async function startRenderer(
-  members: WorkspaceProject[],
+  members: DesktopDependency[],
   initialSnapshot: DependencySnapshot | undefined,
 ): Promise<DevelopmentRenderer> {
   let snapshot = initialSnapshot

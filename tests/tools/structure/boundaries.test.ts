@@ -9,13 +9,6 @@ const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruis
 
 test.each([
   {
-    name: 'projects-use-output-access-entry',
-    from: 'packages/rpc/tools/example.ts',
-    to: '../../tools/outputs/access.ts',
-    source:
-      "import type { Value } from '../../../../../tools/outputs/access'\nexport type Alias = Value\n",
-  },
-  {
     name: 'main-and-extension-host-are-independent',
     from: 'app/src/main/entry.ts',
     to: 'app/src/extension-host/entry.ts',

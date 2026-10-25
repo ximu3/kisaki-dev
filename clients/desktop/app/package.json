@@ -20,15 +20,15 @@
     "resources:prepare": "tsx tools/resources/cli.ts",
     "native:build": "tsx tools/native/cli.ts",
     "native:check": "tsx tools/native/cli.ts --check",
-    "typecheck": "tsx tools/run.ts -- exec tsc -b",
-    "test": "tsx tools/run.ts -- exec vitest run --config vitest.config.ts",
-    "test:native": "tsx tools/run.ts --runtime -- exec cross-env ELECTRON_RUN_AS_NODE=1 electron ../../../node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
-    "test:browser": "tsx tools/run.ts -- exec vitest run --config config/vitest/vitest.config.browser.ts",
-    "test:e2e": "tsx tools/run.ts --runtime -- exec playwright test --config playwright.config.ts",
-    "test:artifacts": "tsx tools/run.ts --artifacts -- exec vitest run --config config/vitest/vitest.config.artifacts.ts",
-    "test:performance": "tsx tools/run.ts --runtime -- exec playwright test --config config/playwright/playwright.config.performance.ts",
+    "typecheck": "tsc -b",
+    "test": "vitest run --config vitest.config.ts",
+    "test:native": "cross-env ELECTRON_RUN_AS_NODE=1 electron ../../../node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
+    "test:browser": "vitest run --config config/vitest/vitest.config.browser.ts",
+    "test:e2e": "playwright test --config playwright.config.ts",
+    "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
+    "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
     "clean": "tsx tools/clean.ts",
-    "test:dev": "tsx tools/run.ts -- exec vitest run --config config/vitest/vitest.config.dev.ts"
+    "test:dev": "vitest run --config config/vitest/vitest.config.dev.ts"
   },
   "dependencies": {
     "@kisaki3/appearance": "workspace:^",

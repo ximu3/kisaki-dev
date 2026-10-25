@@ -39,13 +39,13 @@ pnpm desktop:package --target windows-x64
 
 公共依赖快照保留到会话结束，以免撤销仍被读取的代码；总量限制为 256 MiB，达到预算时停止采用新快照并报告需要重启。工具自身或锁定工具链变更后重新启动开发命令。
 
-正式任务在使用工程输出期间持有项目共享锁，清理取得项目独占锁；同一输出的读取可以并行，写入与读取互斥。有限任务遇到冲突时报告 `Output is in use` 并退出，开发会话的重建等待可用输出，停止命令可以取消等待。构建、快照、测试和打包保持占用直到实际读取与子进程结束。锁由系统句柄维持，进程结束后不需要手动删除锁文件；根 `.cache/output-locks` 中的载体不随普通清理删除。
+同一工作副本内，使用相同构建输出的独立任务顺序执行。运行检查、有限构建或打包前，停止会重建这些依赖的开发会话；清理前停止相关构建、测试和开发任务。需要并行执行独立流程时使用不同工作副本。单次任务内的依赖顺序、合法并行与缓存由 Turbo 管理。
 
-需要自行选择 Turbo 的有限任务时，使用 `pnpm outputs:turbo run <task> --filter=<project>`，使缓存恢复也进入输出访问范围。直接运行 Turbo 的只读计划查询可用于检查依赖图；直接执行会恢复缓存的任务不属于受保护入口。项目自身的 package scripts 同样声明输出访问，可以单独调用。
+根任务和项目脚本直接调用所属工具。自选任务可使用 `pnpm exec turbo run <task> --filter=<project>`，只读任务计划使用 `--dry=json`。构建在私有候选目录中准备完整结果，成功后替换输出；准备失败或采用前取消时保留原有结果。停止工作流等待所属命令、程序、监听和服务结束。
 
 独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `native:build`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`native:check` 在固定 Rust 工具链下执行格式与 Clippy 检查。
 
-普通构建位于应用 `out/<target>`，每个开发会话使用独立的 `out/development/<target>/session-*`，安装和归档制品位于 `dist/<target>`。`pnpm run clean` 仅清理已声明的工程输出，保留 `.local`、下载缓存和根 `artifacts` 中留存的制品。活动开发会话阻止清理本体输出；关闭会话后可以重试清理，与其输出无关的项目仍可构建。
+普通构建位于应用 `out/<target>`，每个开发会话使用独立的 `out/development/<target>/session-*`，安装和归档制品位于 `dist/<target>`。相关任务停止后执行 `pnpm run clean`，仅清理已声明的工程输出，保留 `.local`、下载缓存和根 `artifacts` 中留存的制品。
 
 ## 验证任务
 
@@ -59,18 +59,17 @@ pnpm desktop:package --target windows-x64
 
 TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc` 检查通过不代表此类提示为零。API 与配置迁移还须核对相应弃用提示，处理依据见[弃用接口规则](refactor/design/engineering/conventions.md#deprecated-apis)；上游传递依赖的弃用通知与自维护代码的 API 调用分别记录。
 
-| 命令                            | 输入与运行环境                                                            |
-| ------------------------------- | ------------------------------------------------------------------------- |
-| `pnpm check`                    | 全仓类型、lint、格式、根工具与各项目常规 Node 测试                        |
-| `pnpm test:outputs`             | 隔离目录中的系统锁、进程寿命与真实 Turbo 缓存恢复；常规测试也收集这些用例 |
-| `pnpm test:consumers`           | 构建并打包八包，执行 publint、Are the Types Wrong 和仓库外消费者          |
-| `pnpm test:consumers:run`       | 只消费已准备的 `artifacts/packages/inputs.json`，不重建产品               |
-| `pnpm desktop:test:native`      | 先构建，再由开发 Electron 的 Node 模式执行实际 SQLite 与原生文件测试      |
-| `pnpm desktop:test:browser`     | 真正的 Playwright Chromium 与 Vitest Browser Mode                         |
-| `pnpm desktop:test:e2e`         | 完整构建、隔离 profile、真实 Electron 窗口和正常退出                      |
-| `pnpm desktop:test:dev`         | 独立源码副本中的构建恢复、改名、HMR、输出冲突、启动取消和会话收尾         |
-| `pnpm desktop:test:performance` | 20 次新进程测量、固定预算、内存和退出观察                                 |
-| `pnpm desktop:test:artifacts`   | 已完成打包的目标文件，保留正式 fuses，以外部方式观察启动与关闭            |
+| 命令                            | 输入与运行环境                                                       |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `pnpm check`                    | 全仓类型、lint、格式、根工具与各项目常规 Node 测试                   |
+| `pnpm test:consumers`           | 构建并打包八包，执行 publint、Are the Types Wrong 和仓库外消费者     |
+| `pnpm test:consumers:run`       | 只消费已准备的 `artifacts/packages/inputs.json`，不重建产品          |
+| `pnpm desktop:test:native`      | 先构建，再由开发 Electron 的 Node 模式执行实际 SQLite 与原生文件测试 |
+| `pnpm desktop:test:browser`     | 真正的 Playwright Chromium 与 Vitest Browser Mode                    |
+| `pnpm desktop:test:e2e`         | 完整构建、隔离 profile、真实 Electron 窗口和正常退出                 |
+| `pnpm desktop:test:dev`         | 独立源码副本中的构建恢复、改名、HMR、启动取消和会话收尾              |
+| `pnpm desktop:test:performance` | 20 次新进程测量、固定预算、内存和退出观察                            |
+| `pnpm desktop:test:artifacts`   | 已完成打包的目标文件，保留正式 fuses，以外部方式观察启动与关闭       |
 
 浏览器首次准备使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`。Linux CI 还需对应浏览器系统依赖、Xvfb、窗口管理器、wmctrl 和 AppImage 的 FUSE 条件。原生测试的宿主在启动 Vitest 前选择，不能在测试内部设置变量来改变 ABI。
 

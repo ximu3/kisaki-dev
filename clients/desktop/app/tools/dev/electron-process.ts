@@ -1,5 +1,5 @@
 import { join } from 'node:path'
-import { spawnWithOutputs } from '../../../../../tools/outputs'
+import { spawn } from 'node:child_process'
 import { appRoot } from '../lib/paths'
 import { electronExecutable } from './electron-executable'
 
@@ -25,11 +25,10 @@ export async function startElectron(
     KISAKI_RENDERER_URL: rendererUrl,
   }
   delete env.ELECTRON_RUN_AS_NODE
-  const child = spawnWithOutputs(electronExecutable(), [join(directory, 'main', 'entry.js')], {
+  const child = spawn(electronExecutable(), [join(directory, 'main', 'entry.js')], {
     cwd: appRoot,
     env,
     windowsHide: false,
-    inheritAccessContext: false,
     stdio: ['ignore', 'inherit', 'inherit', 'ipc'],
   })
   let ended = false

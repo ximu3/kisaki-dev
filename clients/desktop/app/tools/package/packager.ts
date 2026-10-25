@@ -9,7 +9,8 @@ import { runtimeFiles } from '../build/identity'
 import type { DesktopBuild } from '../../src/shared/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
 import { sha256 } from '../lib/sha256'
-import { replaceOutput, runPnpm, withProjectOutputs } from '../../../../../tools/outputs'
+import { replaceOutput } from '../../../../../tools/lib/output'
+import { runPnpm } from '../../../../../tools/lib/process'
 
 /** Identifies the candidate files by their desktop build and SHA-256 digests. */
 export interface ArtifactReceipt {
@@ -39,57 +40,48 @@ export async function packageDesktop(
 ): Promise<string> {
   if (target !== hostTarget()) throw new Error('Package on the corresponding native target runner')
 
-  return withProjectOutputs(
-    appRoot,
-    {
-      write: [
-        buildDirectory(target),
-        join(appRoot, 'out', 'resources', target),
-        join(appRoot, 'out', 'native', target),
-        join(appRoot, 'dist', target),
-      ],
-    },
-    async () => {
-      const desktop = await buildDesktop(target)
-      const runtime = buildDirectory(target)
-      const actual = await runtimeFiles(runtime)
-      for (const [file, digest] of Object.entries(desktop.files)) {
-        if (actual[file] !== digest) {
-          throw new Error(`Desktop build changed before packaging: ${file}`)
+  const desktop = await buildDesktop(target, signal)
+  const runtime = buildDirectory(target)
+  const actual = await runtimeFiles(runtime)
+  for (const [file, digest] of Object.entries(desktop.files)) {
+    if (actual[file] !== digest) {
+      throw new Error(`Desktop build changed before packaging: ${file}`)
+    }
+  }
+
+  const output = join(appRoot, 'dist', target)
+  const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
+  try {
+    await cp(runtime, staging, { recursive: true })
+    await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
+
+    await replaceOutput(
+      appRoot,
+      output,
+      async (candidate) => {
+        const context = { build: desktop, staging, output: candidate, testOnly }
+        const configPath = await writeBuilderConfig(context)
+
+        if (target.startsWith('windows-')) {
+          await packageCarrier(context, configPath, 'zip', '--win', ['zip'], signal)
+          await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'], signal)
+        } else if (target.startsWith('macos-')) {
+          await packageCarrier(context, configPath, 'app', '--mac', ['dmg', 'zip'], signal)
+        } else {
+          await packageCarrier(context, configPath, 'deb', '--linux', ['deb'], signal)
+          await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'], signal)
+          await packageCarrier(context, configPath, 'appimage', '--linux', ['AppImage'], signal)
         }
-      }
 
-      const output = join(appRoot, 'dist', target)
-      const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
-      try {
-        await cp(runtime, staging, { recursive: true })
-        await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
+        await writeArtifactReceipt(context)
+      },
+      signal,
+    )
 
-        await replaceOutput(appRoot, output, async (candidate) => {
-          const context = { build: desktop, staging, output: candidate, testOnly }
-          const configPath = await writeBuilderConfig(context)
-
-          if (target.startsWith('windows-')) {
-            await packageCarrier(context, configPath, 'zip', '--win', ['zip'])
-            await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'])
-          } else if (target.startsWith('macos-')) {
-            await packageCarrier(context, configPath, 'app', '--mac', ['dmg', 'zip'])
-          } else {
-            await packageCarrier(context, configPath, 'deb', '--linux', ['deb'])
-            await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'])
-            await packageCarrier(context, configPath, 'appimage', '--linux', ['AppImage'])
-          }
-
-          await writeArtifactReceipt(context)
-        })
-
-        return join(output, 'artifacts.json')
-      } finally {
-        await rm(staging, { recursive: true, force: true })
-      }
-    },
-    signal ? { signal } : {},
-  )
+    return join(output, 'artifacts.json')
+  } finally {
+    await rm(staging, { recursive: true, force: true })
+  }
 }
 
 /** Write the target's builder configuration, including resources and signing requirements. */
@@ -131,6 +123,7 @@ async function packageCarrier(
   kind: DistributionKind,
   platform: string,
   formats: string[],
+  signal?: AbortSignal,
 ): Promise<void> {
   const { build, staging, testOnly } = context
   const distribution: DistributionManifest = { kind, target: build.target, testOnly }
@@ -156,7 +149,7 @@ async function packageCarrier(
       '--publish',
       'never',
     ],
-    { cwd: appRoot, env },
+    { cwd: appRoot, env, signal },
   )
 }
 
