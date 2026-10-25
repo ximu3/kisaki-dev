@@ -40,8 +40,12 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       expect(runtime.metrics).toContain('Utility')
 
       const closed = desktop.waitForEvent('close')
-      // The click closes its renderer; completion is the application's normal exit, not navigation.
-      await page.getByRole('button', { name: 'Close window' }).click({ noWaitAfter: true })
+      // Renderer shutdown can close the click transport before its acknowledgement arrives.
+      try {
+        await page.getByRole('button', { name: 'Close window' }).click()
+      } catch (cause) {
+        if (!page.isClosed()) throw cause
+      }
       await closed
       expect(child.exitCode).toBe(0)
     })
