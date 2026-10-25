@@ -1,0 +1,356 @@
+{
+  "config": {
+    "argv": [
+      "/opt/hostedtoolcache/node/24.11.1/x64/bin/node",
+      "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "playwright.config.ts"
+    ],
+    "configFile": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/playwright.config.ts",
+    "rootDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/ximu3/kisaki-w00-ci/commit/748c6192049574145fca33bf9b59c1f08eb013e4",
+        "commitHash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+        "prHref": "https://github.com/ximu3/kisaki-w00-ci/pull/1",
+        "prTitle": "refactor: remove cross-command output coordination",
+        "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+        "buildHref": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40203504015"
+      },
+      "gitCommit": {
+        "shortHash": "748c619",
+        "hash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+        "subject": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938",
+        "body": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+        "author": {
+          "name": "ximu",
+          "email": "152481053+ximu3@users.noreply.github.com",
+          "time": 1792939351000
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "time": 1792939351000
+        },
+        "branch": "HEAD"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/test-results/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-w00-ci/commit/748c6192049574145fca33bf9b59c1f08eb013e4",
+            "commitHash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+            "prHref": "https://github.com/ximu3/kisaki-w00-ci/pull/1",
+            "prTitle": "refactor: remove cross-command output coordination",
+            "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "buildHref": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40203504015"
+          },
+          "gitCommit": {
+            "shortHash": "748c619",
+            "hash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+            "subject": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "body": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1792939351000
+            },
+            "committer": {
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1792939351000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.test.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/test-results/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-w00-ci/commit/748c6192049574145fca33bf9b59c1f08eb013e4",
+            "commitHash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+            "prHref": "https://github.com/ximu3/kisaki-w00-ci/pull/1",
+            "prTitle": "refactor: remove cross-command output coordination",
+            "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "buildHref": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40203504015"
+          },
+          "gitCommit": {
+            "shortHash": "748c619",
+            "hash": "748c6192049574145fca33bf9b59c1f08eb013e4",
+            "subject": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "body": "Merge 17788f32fd84d750eed55f66a978cb1989191da5 into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1792939351000
+            },
+            "committer": {
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1792939351000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/tests/e2e",
+        "snapshotDir": "/home/runner/work/kisaki-w00-ci/kisaki-w00-ci/clients/desktop/app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.test.ts",
+        "timeout": 30000,
+        "use": {
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "windows.test.ts",
+      "file": "windows.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "main",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1396,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T14:49:36.721Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2fef7b5faf58b814563a",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "reader",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 873,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T14:49:38.161Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-019cdcfa78680240cd82",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "player",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 855,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T14:49:39.056Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-f40ccb7f718b930a0e30",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "game-panel",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 856,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T14:49:39.930Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2252153537811e43ef22",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-25T14:49:35.990Z",
+    "duration": 4840.269,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "target": "windows-x64",
+    "path": "Kisaki-0.1.0-dev.0-windows-x64.exe",
+    "status": "NotSigned",
+    "sha256": "78273c0f70882ebedd1cc8c24bdeb59fbbf8fdaecde79c8c6fb9b88d12244ea3"
+  },
+  {
+    "target": "windows-arm64",
+    "path": "Kisaki-0.1.0-dev.0-windows-arm64.exe",
+    "status": "NotSigned",
+    "sha256": "e44f92be6d37eb8149b71f7dc5602b8b7dc457e1fc8335deb570154262fe1991"
+  }
+]

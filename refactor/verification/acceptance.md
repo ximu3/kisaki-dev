@@ -194,7 +194,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵                    |
 | pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                          |
 | pnpm hooks:install / pnpm hooks:uninstall            | 当前仓库 hooks 的明确生命周期                                             |
-| pnpm clean                                           | 仅清理项目声明的构建输出                                                  |
+| pnpm run clean                                       | 仅清理项目声明的构建输出                                                  |
 
 根命令区分全仓任务与 clients/desktop/app 目标。desktop:* 不隐式构建或发布全部 .kisx，build 和 check 根据真实 workspace 依赖图执行，桌面开发入口固定为 desktop:dev。根 tools 处理机械交付工作，clients/desktop/app/tools 处理桌面会话与制品。项目级操作使用 pnpm filter，扩展作者使用 kisx。
 
