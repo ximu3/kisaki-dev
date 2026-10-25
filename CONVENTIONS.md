@@ -10,6 +10,8 @@
 
 包内有稳定命名需求的模块入口由所属 package.json 的 imports 定义，以 `#` 开头；模块内部使用相对导入。代码与测试消费同一入口，工具读取同一份映射，访问权限仍由依赖边界检查约束，见[模块导入规则](refactor/design/engineering/conventions.md#module-imports)。
 
+仓库共用工程源码由 Node 工具与相应测试通过 `@repo-tools/cli`、`@repo-tools/output`、`@repo-tools/process` 引用，唯一映射位于根 tsconfig.base.json，实际运行器读取同一配置。该命名空间不用于产品运行代码、对外包的运行源码或导出声明，也不用于工具加载的配置模块；不能用 paths 绕过业务包的 exports 或另一项目的私有边界。
+
 目录按职责与所有权组织，同级保持相近粒度。专用实现随拥有者放置，共同机制归最小合理共享范围；入口、配置与内部支撑的角色清楚，测试复用本身不构成上移理由。文件或目录按协作需要和工程边界选择，名称说明实际工作，具体要求见[目录规则](refactor/design/engineering/conventions.md#directory-readability)。
 
 各工程的内部工具配置按工具归入自身 `config/<工具名>/`，默认发现入口、明确共享的配置基线及工具规定的位置保持稳定。配置归属不以文件数量或项目规模决定，不增加纯转发入口或空目录；完整规则见[配置归属](refactor/design/engineering/conventions.md#configuration-layout)。

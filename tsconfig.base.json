@@ -18,6 +18,11 @@
     "skipLibCheck": false,
     "noEmit": true,
     "lib": ["ES2023"],
-    "types": []
+    "types": [],
+    "paths": {
+      "@repo-tools/cli": ["./tools/lib/cli.ts"],
+      "@repo-tools/output": ["./tools/lib/output.ts"],
+      "@repo-tools/process": ["./tools/lib/process.ts"]
+    }
   }
 }

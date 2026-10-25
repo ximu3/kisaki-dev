@@ -5,6 +5,7 @@ if (process.versions.electron !== '44.5.1' || process.env.ELECTRON_RUN_AS_NODE !
 }
 
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   test: {
     include: ['tests/integration/database/**/*.test.ts', 'tests/integration/native/**/*.test.ts'],
     environment: 'node',

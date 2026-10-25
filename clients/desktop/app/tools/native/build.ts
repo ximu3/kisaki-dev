@@ -4,8 +4,8 @@ import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, targetTriples } from '../lib/targets'
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'
-import { replaceOutput } from '../../../../../tools/lib/output'
-import { run, runPnpm } from '../../../../../tools/lib/process'
+import { replaceOutput } from '@repo-tools/output'
+import { run, runPnpm } from '@repo-tools/process'
 import { checkDeclarations } from './declarations'
 
 /** Compile the host target and replace its output after the generated declarations match. */

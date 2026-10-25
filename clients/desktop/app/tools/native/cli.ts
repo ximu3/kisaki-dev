@@ -2,7 +2,7 @@ import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { buildNative } from './build'
 import { checkNative } from './check'
-import { runCli } from '../../../../../tools/lib/cli'
+import { runCli } from '@repo-tools/cli'
 
 await runCli(async (signal) => {
   const { values } = parseArgs({

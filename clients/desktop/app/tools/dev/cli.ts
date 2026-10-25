@@ -1,4 +1,4 @@
-import { runCli } from '../../../../../tools/lib/cli'
+import { runCli } from '@repo-tools/cli'
 import { startDevelopmentSession } from './session'
 
 await runCli(async (signal) => {

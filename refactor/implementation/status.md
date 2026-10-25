@@ -4,17 +4,17 @@
 
 ## 当前进度
 
-截至 2026-10-25：
+截至 2026-10-26：
 
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 已完成；顺序执行入口通过本机与六目标完整回归 |
+| W00 工程与验证入口 | 工程导入可读性调整已通过本机完整回归，当前输入的六目标结果待登记 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护：同一工作副本使用相同输出的独立任务顺序运行。跨命令输出协调、访问上下文和命令包装已移除，候选交接、失败保留与显式取消由具体工作流负责。提交 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)中，仓库检查、六个桌面任务和 Required checks 全部成功；实际候选及七份附件已归档并核对摘要，W00 当前工程范围完成，W01 尚未开始。历史验证保持其原提交与范围。Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci)，当前 origin 指向该地址；名称沿用建库时的标记，用途覆盖后续开发、联调和 CI，直到具备正式接续条件。2026-10-25 核对时该库仍为 private、未归档，默认分支为 main；旧 [ximu3/kisaki](https://github.com/ximu3/kisaki) 仍为 public、未归档，默认分支为 main。旧资料存档与同名重建尚未执行，后续按[共同仓库规则](../design/engineering/repository.md#temporary-repositories)接续。
+[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；为改善可读性，工具与测试通过三个 `@repo-tools` 名称引用现有共用源码，应用 `#native` 保留包内唯一映射，没有增加工具包或构建前置。[当前输入的本机完整回归](../verification/evidence/w00/2026-10-26/readable-imports/README.md)已通过，六目标结果由 PR 的实际 CI 接续，尚未登记为当前版本通过。W01 尚未开始。历史[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)及实际候选保持原提交与范围。Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-w00-ci](https://github.com/ximu3/kisaki-w00-ci)，当前 origin 指向该地址；名称沿用建库时的标记，用途覆盖后续开发、联调和 CI，直到具备正式接续条件。2026-10-25 核对时该库仍为 private、未归档，默认分支为 main；旧 [ximu3/kisaki](https://github.com/ximu3/kisaki) 仍为 public、未归档，默认分支为 main。旧资料存档与同名重建尚未执行，后续按[共同仓库规则](../design/engineering/repository.md#temporary-repositories)接续。
 
 W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README.md)、原始附件与实际制品继续按当时提交保存，不把旧记录中的仓库名称改写为后来的身份。四个独立项目采用同一临时仓库规范，其实际远端在开始实施时登记。设计、实现、运行验收、仓库接续和发布分别依据实际结果记录。
 
@@ -28,7 +28,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 提交 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)已通过候选交接、命令取消、实际构建、桌面运行与最终候选启动 |
+| 标准 CI | 提交 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)已通过；当前工程导入配置的六目标结果待登记 |
 
 <a id="progress"></a>
 
@@ -36,7 +36,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 已完成，见[顺序执行验证](../verification/evidence/w00/2026-10-25/sequential-workflows/README.md) |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [导入可读性本机验证](../verification/evidence/w00/2026-10-26/readable-imports/README.md)通过，当前输入的六目标结果待登记 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |
@@ -60,6 +60,8 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 <a id="w00"></a>
 
 ## W00 实施记录
+
+工程共有源码的 47 处跨层导入已使用三个明确的命名入口，唯一映射由现有运行器读取。应用 `#native`、公开包 exports、依赖和工作区成员保持原样；27 份公共输出及八份 tarball 的摘要与调整前一致。普通检查、实际开发与取消、八包消费、浏览器、原生、四窗口、20 次启动测量、Windows 打包与原样 ZIP 均在本机通过，见[工程导入验证](../verification/evidence/w00/2026-10-26/readable-imports/README.md)。当前输入的六目标结果尚未登记，按用户要求不等待 CI 完成。
 
 当前工程入口已移除根 tools/outputs 及其系统锁依赖、访问上下文、Turbo 计划包装和项目脚本接入。根任务与项目脚本直接使用所属工具；候选交接、命令执行和 CLI 收尾为显式调用的普通函数。跨命令并发保证对应的测试已随合同调整移除。本机完整回归及[六目标 CI](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)均已通过，每个目标实际执行 4 项候选与命令取消用例、2 项开发用例、四窗口、20 次启动测量及最终载体启动。八包制品和六目标候选已经归档并核对摘要，A24、A26、A28、A31 在当前 W00 范围通过，见[顺序执行验证](../verification/evidence/w00/2026-10-25/sequential-workflows/README.md)。
 

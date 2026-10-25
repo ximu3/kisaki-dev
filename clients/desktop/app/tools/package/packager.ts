@@ -9,8 +9,8 @@ import { runtimeFiles } from '../build/identity'
 import type { DesktopBuild } from '../../src/shared/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
 import { sha256 } from '../lib/sha256'
-import { replaceOutput } from '../../../../../tools/lib/output'
-import { runPnpm } from '../../../../../tools/lib/process'
+import { replaceOutput } from '@repo-tools/output'
+import { runPnpm } from '@repo-tools/process'
 
 /** Identifies the candidate files by their desktop build and SHA-256 digests. */
 export interface ArtifactReceipt {

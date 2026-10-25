@@ -9,6 +9,12 @@ const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruis
 
 test.each([
   {
+    name: 'runtime-does-not-import-engineering',
+    from: 'app/src/main/entry.ts',
+    to: '../../tools/lib/process.ts',
+    source: "import type { Value } from '@repo-tools/process'\nexport type Alias = Value\n",
+  },
+  {
     name: 'main-and-extension-host-are-independent',
     from: 'app/src/main/entry.ts',
     to: 'app/src/extension-host/entry.ts',

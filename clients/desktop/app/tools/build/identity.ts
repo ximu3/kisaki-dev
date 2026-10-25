@@ -35,7 +35,12 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
       digest.update(entry).update(await readFile(join(appRoot, entry)))
     }
   }
-  for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json']) {
+  for (const file of [
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+    'tsconfig.base.json',
+    'tsconfig.json',
+  ]) {
     digest.update(file).update(await readFile(join(root, file)))
   }
   await include(join(root, 'tools', 'lib'))

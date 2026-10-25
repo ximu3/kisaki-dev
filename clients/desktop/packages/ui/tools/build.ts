@@ -1,9 +1,9 @@
 import { build } from 'tsdown'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { replaceOutput } from '../../../../../tools/lib/output'
-import { runCli } from '../../../../../tools/lib/cli'
-import { runPnpm } from '../../../../../tools/lib/process'
+import { replaceOutput } from '@repo-tools/output'
+import { runCli } from '@repo-tools/cli'
+import { runPnpm } from '@repo-tools/process'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 

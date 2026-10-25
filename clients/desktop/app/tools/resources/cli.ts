@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { prepareResources } from './prepare'
-import { runCli } from '../../../../../tools/lib/cli'
+import { runCli } from '@repo-tools/cli'
 
 await runCli(async (signal) => {
   const { values } = parseArgs({ options: { target: { type: 'string' } } })

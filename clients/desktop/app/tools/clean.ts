@@ -2,7 +2,7 @@ import { rm } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { appRoot } from './lib/paths'
-import { runCli } from '../../../../tools/lib/cli'
+import { runCli } from '@repo-tools/cli'
 
 /** Remove declared application outputs after its tasks stop; preserve caches and profiles. */
 export async function cleanOutputs(signal?: AbortSignal): Promise<void> {

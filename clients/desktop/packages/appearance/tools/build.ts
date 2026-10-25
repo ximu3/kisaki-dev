@@ -3,8 +3,8 @@ import type * as DefaultTokens from '../src/defaults'
 import { writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { replaceOutput } from '../../../../../tools/lib/output'
-import { runCli } from '../../../../../tools/lib/cli'
+import { replaceOutput } from '@repo-tools/output'
+import { runCli } from '@repo-tools/cli'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 

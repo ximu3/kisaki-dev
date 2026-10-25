@@ -1,6 +1,6 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
-import { runPnpm } from '../../../../../tools/lib/process'
+import { runPnpm } from '@repo-tools/process'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'

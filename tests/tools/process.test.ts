@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { run } from '../../tools/lib/process'
+import { run } from '@repo-tools/process'
 
 const require = createRequire(import.meta.url)
 const loader = pathToFileURL(require.resolve('tsx')).href

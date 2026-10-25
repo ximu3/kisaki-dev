@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { resolve as resolveExports } from 'resolve.exports'
-import { readPnpm } from '../../../../../tools/lib/process'
+import { readPnpm } from '@repo-tools/process'
 import { repositoryRoot } from '../lib/paths'
 
 /** A public workspace dependency whose built exports feed the development session. */

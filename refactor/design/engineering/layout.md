@@ -146,7 +146,7 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-根 tools/lib 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
+根 tools/lib 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@repo-tools/output`、`@repo-tools/process`、`@repo-tools/cli` 引用，唯一映射归根 tsconfig.base.json。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
 
 候选失败、取消和文件替换的验证归根 tests/tools/output.test.ts，真实命令树的取消验证归根 tests/tools/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 

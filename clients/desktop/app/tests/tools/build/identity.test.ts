@@ -19,7 +19,12 @@ beforeEach(async () => {
     await mkdir(join(packageRoot, directory), { recursive: true })
   }
   await mkdir(join(root, 'tools', 'lib'), { recursive: true })
-  for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json']) {
+  for (const file of [
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+    'tsconfig.base.json',
+    'tsconfig.json',
+  ]) {
     await writeFile(join(root, file), '{}\n')
   }
 })
@@ -47,4 +52,12 @@ test('public-package outputs and local state do not change the desktop build ide
   }
 
   expect(await sourceIdentity(root)).toBe(previous)
+})
+
+test('the root tooling resolution configuration changes the desktop build identity', async () => {
+  const previous = await sourceIdentity(root)
+
+  await writeFile(join(root, 'tsconfig.json'), JSON.stringify({ extends: './tsconfig.base.json' }))
+
+  expect(await sourceIdentity(root)).not.toBe(previous)
 })

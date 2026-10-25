@@ -4,7 +4,7 @@ import { dirname, join, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { appRoot, repositoryRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
-import { readPnpm } from '../../../../../tools/lib/process'
+import { readPnpm } from '@repo-tools/process'
 
 /** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
 export async function prepareDevelopmentWorkspace(): Promise<{
@@ -24,6 +24,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       'pnpm-lock.yaml',
       'turbo.json',
       'tsconfig.base.json',
+      'tsconfig.json',
       '.npmrc',
       '.prettierrc.json',
       '.gitignore',
@@ -32,6 +33,9 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       await copyFile(join(repositoryRoot, file), join(root, file))
     }
     await cp(join(repositoryRoot, 'tools', 'lib'), join(root, 'tools', 'lib'), {
+      recursive: true,
+    })
+    await cp(join(repositoryRoot, 'config', 'typescript'), join(root, 'config', 'typescript'), {
       recursive: true,
     })
 
