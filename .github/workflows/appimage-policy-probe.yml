@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
         with:
           node-version: '24.11.1'
+          package-manager-cache: false
       - name: Prepare disposable graphical test environment
         run: |
           sudo apt-get update
@@ -36,7 +37,7 @@ jobs:
           cd "$PROBE_DIR"
           xvfb-run --auto-servernum npm run probe
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: always() && env.PROBE_DIR != ''
         with:
           name: appimage-policy-ubuntu-24-x64
           path: |
