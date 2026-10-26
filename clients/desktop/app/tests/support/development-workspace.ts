@@ -4,7 +4,7 @@ import { dirname, join, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { appRoot, repositoryRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
-import { readPnpm } from '@repo-tools/process'
+import { readPnpm } from '@kisaki3/tooling/process'
 
 /** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
 export async function prepareDevelopmentWorkspace(): Promise<{
@@ -23,7 +23,6 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       'pnpm-workspace.yaml',
       'pnpm-lock.yaml',
       'turbo.json',
-      'tsconfig.base.json',
       'tsconfig.json',
       '.npmrc',
       '.prettierrc.json',
@@ -32,9 +31,6 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     ]) {
       await copyFile(join(repositoryRoot, file), join(root, file))
     }
-    await cp(join(repositoryRoot, 'tools', 'lib'), join(root, 'tools', 'lib'), {
-      recursive: true,
-    })
     await cp(join(repositoryRoot, 'config', 'typescript'), join(root, 'config', 'typescript'), {
       recursive: true,
     })
@@ -47,17 +43,20 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       '.local',
       'target',
       '.vitest',
+      '.turbo',
       'test-results',
       'playwright-report',
     ])
-    await cp(join(repositoryRoot, 'clients'), join(root, 'clients'), {
-      recursive: true,
-      filter(path) {
-        return !relative(join(repositoryRoot, 'clients'), path)
-          .split(/[\\/]/)
-          .some((part) => ignored.has(part))
-      },
-    })
+    for (const directory of ['clients', 'packages']) {
+      await cp(join(repositoryRoot, directory), join(root, directory), {
+        recursive: true,
+        filter(path) {
+          return !relative(join(repositoryRoot, directory), path)
+            .split(/[\\/]/)
+            .some((part) => ignored.has(part))
+        },
+      })
+    }
 
     const store = await readPnpm(['store', 'path'], repositoryRoot)
     try {

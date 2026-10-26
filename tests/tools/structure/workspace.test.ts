@@ -15,6 +15,7 @@ async function sourceFiles(directory: string): Promise<string[]> {
     '.cache',
     '.local',
     '.vitest',
+    '.turbo',
     'target',
     'test-results',
     'playwright-report',
@@ -32,7 +33,11 @@ async function sourceFiles(directory: string): Promise<string[]> {
 /** Read the actual member manifests; category folders and fixture projects are not members. */
 async function members(): Promise<{ directory: string; manifest: Record<string, unknown> }[]> {
   const directories = ['clients/desktop/app']
-  for (const parent of ['clients/desktop/packages', 'clients/desktop/extensions/projects']) {
+  for (const parent of [
+    'packages',
+    'clients/desktop/packages',
+    'clients/desktop/extensions/projects',
+  ]) {
     for (const child of await readdir(parent)) directories.push(`${parent}/${child}`)
   }
   return Promise.all(
@@ -43,19 +48,20 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
   )
 }
 
-test('the workspace contains exactly the application, eight public packages and 33 official projects', async () => {
+test('the workspace contains the application, eight public packages, 33 official projects and three private engineering packages', async () => {
   const workspace: { packages: string[] } = parse(await readFile('pnpm-workspace.yaml', 'utf8'))
   expect(workspace.packages).toEqual([
+    'packages/*',
     'clients/desktop/app',
     'clients/desktop/packages/*',
     'clients/desktop/extensions/projects/*',
   ])
   const projects = await members()
-  expect(projects).toHaveLength(42)
-  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(42)
+  expect(projects).toHaveLength(45)
+  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(45)
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
-    if (directory.includes('/packages/')) {
+    if (directory.startsWith('clients/desktop/packages/')) {
       expect(manifest.license).toBe('MIT')
       expect(manifest.publishConfig).toEqual({ access: 'public' })
     } else {
@@ -74,7 +80,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     ...rootFiles,
     ...(
       await Promise.all(
-        ['clients', 'config', 'tools', 'tests'].map((directory) => sourceFiles(resolve(directory))),
+        ['clients', 'packages', 'config', 'tools', 'tests'].map((directory) =>
+          sourceFiles(resolve(directory)),
+        ),
       )
     ).flat(),
   ]
@@ -85,8 +93,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   ]
   const configs: string[] = []
   for (const { directory, manifest } of projects) {
-    const scripts = manifest.scripts as Record<string, string>
-    for (const match of (scripts.typecheck ?? '').matchAll(
+    const scripts = (manifest.scripts ?? {}) as Record<string, string>
+    const command = directory === '.' ? scripts['typecheck:root'] : scripts.typecheck
+    for (const match of (command ?? '').matchAll(
       /tsc (?:-p|--project|-b|--build)(?: ([\w./-]+\.json))?/g,
     )) {
       configs.push(resolve(directory, match[1] ?? 'tsconfig.json'))

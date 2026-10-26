@@ -1,4 +1,5 @@
 packages:
+  - packages/*
   - clients/desktop/app
   - clients/desktop/packages/*
   - clients/desktop/extensions/projects/*
@@ -6,6 +7,10 @@ packages:
 autoInstallPeers: false
 
 catalog:
+  eslint: 10.13.0
+  jiti: 2.7.0
+  '@eslint/js': 10.0.1
+  typescript-eslint: 8.72.0
   typescript: 6.0.3
   tsx: 4.23.15
   vitest: 5.0.5

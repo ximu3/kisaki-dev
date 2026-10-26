@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
 import type { DevelopmentBuild } from '../../../tools/dev/session'
-import { readPnpm } from '@repo-tools/process'
+import { readPnpm } from '@kisaki3/tooling/process'
 
 /** Test-only observations from the fixture controller, not an application protocol. */
 interface Observation {

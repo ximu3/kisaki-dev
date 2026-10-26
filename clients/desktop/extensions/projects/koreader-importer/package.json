@@ -10,10 +10,16 @@
     "name": "KOReader Importer"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
     "@kisaki3/extension-cli": "workspace:^",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@kisaki3/eslint-config": "workspace:*",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "@types/node": "catalog:"
   }
 }

@@ -1,12 +1,9 @@
 {
-  "extends": "../../../../../tsconfig.base.json",
+  "extends": "@kisaki3/typescript-config/solid.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
-    "types": ["node", "vite/client"],
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "types": ["node", "vite/client"]
   },
   "include": [
     "../../tests/**/*.ts",

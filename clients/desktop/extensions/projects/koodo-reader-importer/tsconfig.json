@@ -1,4 +1,12 @@
 {
-  "extends": "../../../../../tsconfig.base.json",
-  "include": ["kisx.config.ts"]
+  "extends": "@kisaki3/typescript-config/base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./config/typescript/tsconfig.kisx.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.tools.json"
+    }
+  ]
 }

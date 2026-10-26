@@ -80,7 +80,7 @@ W 编号表达完整交付的依赖，后续工作可以按真实前置条件提
 
 交付：独立程序构建、开发会话、CI 配置、测试运行配置与辅助，以及明确的消费者和最终制品测试任务。
 
-建立本体、八包与官方扩展的实际 workspace、独立程序入口、纯共享合同和依赖检查。落实输出唯一写入、开发交接、测试环境与 Electron SQLite ABI；保留正式 fuses。同时建立[本体私有原生工程](../design/engineering/native.md)的 Node 入口、绑定声明、目标构建与 Electron 消费验证。本包实际消费的字体、原生及归档输入固定，媒体运行输入由 libmpv-node 在接入工作包交付；Husky 生命周期先在隔离仓库验证。
+建立本体、八包、官方扩展与实际共享的私有工程包的 workspace、独立程序入口、纯共享合同和依赖检查。配置与工具通过各自拥有者的正式入口复用，项目任务和 CI 缓存遵守[工作区规则](../design/engineering/workspace.md#tasks)。落实输出唯一写入、开发交接、测试环境与 Electron SQLite ABI；保留正式 fuses。同时建立[本体私有原生工程](../design/engineering/native.md)的 Node 入口、绑定声明、目标构建与 Electron 消费验证。本包实际消费的字体、原生及归档输入固定，媒体运行输入由 libmpv-node 在接入工作包交付；Husky 生命周期先在隔离仓库验证。
 
 本包建立的新工程历史及远端验证沿[项目级临时仓库](../design/engineering/repository.md#temporary-repositories)持续接续，后续工作包继续使用同一开发历史。W00 完成不表示临时仓库阶段结束，也不要求立即切换正式远端。
 

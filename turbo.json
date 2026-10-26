@@ -1,23 +1,18 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": [
-    "tsconfig.json",
-    "tsconfig.base.json",
-    "eslint.config.ts",
-    ".prettierrc.json",
-    "tools/lib/**"
-  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "env": ["TSDOWN_*"]
     },
     "typecheck": {
       "dependsOn": ["^build"],
       "outputs": []
     },
     "lint": {
-      "outputs": []
+      "outputs": [],
+      "dependsOn": ["transit"]
     },
     "test": {
       "dependsOn": ["^build"],
@@ -39,41 +34,33 @@
     "clean": {
       "cache": false
     },
-    "@kisaki3/desktop#build": {
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "//#typecheck:root": {
       "dependsOn": ["^build"],
-      "outputs": ["out/**"],
-      "cache": false
+      "outputs": []
     },
-    "@kisaki3/desktop#dev": {
-      "persistent": true,
-      "cache": false
+    "//#lint:root": {
+      "dependsOn": ["^transit"],
+      "outputs": []
     },
-    "@kisaki3/desktop#package": {
-      "dependsOn": ["^build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:native": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:e2e": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:artifacts": {
-      "cache": false
-    },
-    "@kisaki3/desktop#test:browser": {
+    "//#test:root": {
       "dependsOn": ["^build"],
       "cache": false
     },
-    "@kisaki3/desktop#test:performance": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:dev": {
-      "dependsOn": ["build"],
-      "cache": false
+    "//#check:boundaries": {
+      "dependsOn": [
+        "@kisaki3/appearance#build",
+        "@kisaki3/desktop-contracts#build",
+        "@kisaki3/extension-api#build",
+        "@kisaki3/extension-cli#build",
+        "@kisaki3/extension-distribution#build",
+        "@kisaki3/extension-sdk#build",
+        "@kisaki3/rpc#build",
+        "@kisaki3/ui#build"
+      ],
+      "outputs": []
     }
   }
 }

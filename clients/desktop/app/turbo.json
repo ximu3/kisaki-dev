@@ -1,0 +1,41 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["out/**"],
+      "cache": false
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "package": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "test:native": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:artifacts": {
+      "cache": false
+    },
+    "test:browser": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "test:performance": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:dev": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

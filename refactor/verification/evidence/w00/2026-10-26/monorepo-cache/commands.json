@@ -1,0 +1,150 @@
+[
+  {
+    "name": "install",
+    "command": [
+      "pnpm",
+      "install",
+      "--frozen-lockfile"
+    ],
+    "startedAt": "2026-10-26T03:41:50.9442095Z",
+    "finishedAt": "2026-10-26T03:41:51.3483757Z",
+    "exitCode": 0
+  },
+  {
+    "name": "check",
+    "command": [
+      "pnpm",
+      "check"
+    ],
+    "startedAt": "2026-10-26T03:41:51.3636264Z",
+    "finishedAt": "2026-10-26T03:43:05.3086631Z",
+    "exitCode": 0
+  },
+  {
+    "name": "native-check",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "native:check"
+    ],
+    "startedAt": "2026-10-26T03:43:05.3117127Z",
+    "finishedAt": "2026-10-26T03:43:06.9728321Z",
+    "exitCode": 0
+  },
+  {
+    "name": "build",
+    "command": [
+      "pnpm",
+      "desktop:build",
+      "--target",
+      "windows-x64"
+    ],
+    "startedAt": "2026-10-26T03:43:06.9742099Z",
+    "finishedAt": "2026-10-26T03:43:17.4552176Z",
+    "exitCode": 0
+  },
+  {
+    "name": "native",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "test:native"
+    ],
+    "startedAt": "2026-10-26T03:43:17.4563924Z",
+    "finishedAt": "2026-10-26T03:43:18.8042580Z",
+    "exitCode": 0
+  },
+  {
+    "name": "browser",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "test:browser"
+    ],
+    "startedAt": "2026-10-26T03:43:18.8057598Z",
+    "finishedAt": "2026-10-26T03:43:21.5293521Z",
+    "exitCode": 0
+  },
+  {
+    "name": "e2e",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "test:e2e"
+    ],
+    "startedAt": "2026-10-26T03:43:21.5304367Z",
+    "finishedAt": "2026-10-26T03:43:25.2596798Z",
+    "exitCode": 0
+  },
+  {
+    "name": "development",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "test:dev"
+    ],
+    "startedAt": "2026-10-26T03:43:25.2608824Z",
+    "finishedAt": "2026-10-26T03:45:05.6449857Z",
+    "exitCode": 0
+  },
+  {
+    "name": "consumers",
+    "command": [
+      "pnpm",
+      "test:consumers"
+    ],
+    "startedAt": "2026-10-26T03:45:05.6463247Z",
+    "finishedAt": "2026-10-26T03:45:23.3392312Z",
+    "exitCode": 0
+  },
+  {
+    "name": "performance",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@kisaki3/desktop",
+      "test:performance"
+    ],
+    "startedAt": "2026-10-26T03:45:23.3402684Z",
+    "finishedAt": "2026-10-26T03:45:32.9432453Z",
+    "exitCode": 0
+  },
+  {
+    "name": "package",
+    "command": [
+      "pnpm",
+      "desktop:package",
+      "--target",
+      "windows-x64"
+    ],
+    "startedAt": "2026-10-26T03:45:32.9442499Z",
+    "finishedAt": "2026-10-26T03:46:56.8091098Z",
+    "exitCode": 0
+  },
+  {
+    "name": "artifacts",
+    "command": [
+      "pnpm",
+      "desktop:test:artifacts"
+    ],
+    "startedAt": "2026-10-26T03:46:56.8101514Z",
+    "finishedAt": "2026-10-26T03:47:02.0413230Z",
+    "exitCode": 0
+  },
+  {
+    "name": "final-check",
+    "command": [
+      "pnpm",
+      "check"
+    ],
+    "startedAt": "2026-10-26T03:41:51.3636264Z",
+    "finishedAt": "2026-10-26T03:43:05.3086631Z",
+    "exitCode": 0,
+    "aliasOf": "check"
+  }
+]

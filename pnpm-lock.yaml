@@ -4,6 +4,51 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@eslint/js':
+      specifier: 10.0.1
+      version: 10.0.1
+    '@types/node':
+      specifier: 24.19.2
+      version: 24.19.2
+    eslint:
+      specifier: 10.13.0
+      version: 10.13.0
+    jiti:
+      specifier: 2.7.0
+      version: 2.7.0
+    solid-js:
+      specifier: 1.9.16
+      version: 1.9.16
+    tailwindcss:
+      specifier: 4.3.3
+      version: 4.3.3
+    tsdown:
+      specifier: 0.23.0
+      version: 0.23.0
+    tsx:
+      specifier: 4.23.15
+      version: 4.23.15
+    typescript:
+      specifier: 6.0.3
+      version: 6.0.3
+    typescript-eslint:
+      specifier: 8.72.0
+      version: 8.72.0
+    unplugin-solid:
+      specifier: 2.0.0
+      version: 2.0.0
+    vite:
+      specifier: 8.3.3
+      version: 8.3.3
+    vite-plugin-solid:
+      specifier: 2.11.14
+      version: 2.11.14
+    vitest:
+      specifier: 5.0.5
+      version: 5.0.5
+
 importers:
 
   .:
@@ -14,9 +59,15 @@ importers:
       '@commitlint/config-conventional':
         specifier: 21.2.4
         version: 21.2.4
-      '@eslint/js':
-        specifier: 10.0.1
-        version: 10.0.1(eslint@10.13.0(jiti@2.7.0))
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:packages/typescript-config
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -30,13 +81,13 @@ importers:
         specifier: 18.7.0
         version: 18.7.0
       eslint:
-        specifier: 10.13.0
+        specifier: 'catalog:'
         version: 10.13.0(jiti@2.7.0)
       husky:
         specifier: 9.1.7
         version: 9.1.7
       jiti:
-        specifier: 2.7.0
+        specifier: 'catalog:'
         version: 2.7.0
       lint-staged:
         specifier: 17.6.0
@@ -59,15 +110,12 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
-      typescript-eslint:
-        specifier: 8.72.0
-        version: 8.72.0(eslint@10.13.0(jiti@2.7.0))(typescript@6.0.3)
       vite:
         specifier: 8.3.3
         version: 8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       vitest:
         specifier: 5.0.5
-        version: 5.0.5(@types/node@24.19.2)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+        version: 5.0.5(@types/node@24.19.2)(@vitest/browser-playwright@5.0.5)(@vitest/ui@5.0.5)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
       yaml:
         specifier: 2.9.1
         version: 2.9.1
@@ -99,6 +147,15 @@ importers:
       '@fontsource-variable/noto-sans-sc':
         specifier: 5.3.1
         version: 5.3.1
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../packages/typescript-config
       '@napi-rs/cli':
         specifier: 3.10.9
         version: 3.10.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@24.19.2)
@@ -129,9 +186,15 @@ importers:
       electron-builder-squirrel-windows:
         specifier: 26.15.3
         version: 26.15.3(dmg-builder@26.15.3)
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
       extract-zip:
         specifier: 2.0.1
         version: 2.0.1
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       playwright:
         specifier: 1.64.1
         version: 1.64.1
@@ -168,297 +231,792 @@ importers:
 
   clients/desktop/extensions/projects/anilist:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/anx-reader-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/bangumi:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/calibre-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/fanart-tv:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/goodreads-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/google-books:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/igdb:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/itch-io:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/koodo-reader-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/koreader-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/kotatsu-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/language-ja:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/language-zh-hans:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/language-zh-hant:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/launchbox-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/mangadex:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/mangaupdates:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/mihon-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/myanimelist:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/ndl-search:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/nfo-comicinfo-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/playnite-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/potatovn-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/ranobedb:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/steam:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/steamgriddb:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/tmdb:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/vndb:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/vnite-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/wikidata:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/yacreader-importer:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   clients/desktop/extensions/projects/ymgal:
     devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/eslint-config
       '@kisaki3/extension-cli':
         specifier: workspace:^
         version: link:../../../packages/extension-cli
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -468,9 +1026,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -492,9 +1065,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -520,9 +1108,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -544,9 +1147,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -568,9 +1186,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -596,9 +1229,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -620,9 +1268,24 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -648,12 +1311,27 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 0.18.5
         version: 0.18.5
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
       '@tailwindcss/cli':
         specifier: 4.3.3
         version: 4.3.3
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
@@ -678,6 +1356,60 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 5.0.5(@types/node@24.19.2)(@vitest/browser-playwright@5.0.5)(@vitest/ui@5.0.5)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+
+  packages/eslint-config:
+    dependencies:
+      '@eslint/js':
+        specifier: 'catalog:'
+        version: 10.0.1(eslint@10.13.0(jiti@2.7.0))
+      typescript-eslint:
+        specifier: 'catalog:'
+        version: 8.72.0(eslint@10.13.0(jiti@2.7.0))(typescript@6.0.3)
+    devDependencies:
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/tooling:
+    devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.0.5(@types/node@24.19.2)(@vitest/browser-playwright@5.0.5)(@vitest/ui@5.0.5)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+
+  packages/typescript-config: {}
 
 packages:
 
@@ -8625,27 +9357,6 @@ snapshots:
       '@types/node': 24.19.2
       '@vitest/browser-playwright': 5.0.5(playwright@1.64.1)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(vitest@5.0.5)
       '@vitest/ui': 5.0.5(vitest@5.0.5)
-    transitivePeerDependencies:
-      - msw
-
-  vitest@5.0.5(@types/node@24.19.2)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)):
-    dependencies:
-      '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.5(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
-      chai: 6.3.0
-      es-module-lexer: 2.3.2
-      expect-type: 1.4.0
-      magic-string: 1.4.3
-      obug: 3.0.0
-      picomatch: 4.0.7
-      std-env: 4.3.0
-      tinybench: 6.2.2
-      tinyexec: 1.3.1
-      tinyglobby: 0.2.17
-      vite: 8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
-      why-is-node-running: 3.2.1
-    optionalDependencies:
-      '@types/node': 24.19.2
     transitivePeerDependencies:
       - msw
 

@@ -23,7 +23,7 @@
         "path": "^clients/desktop/.*/(src|native/node)/"
       },
       "to": {
-        "path": "(^|/)(tools|tests)/"
+        "path": "^packages/|(^|/)(tools|tests)/"
       }
     },
     {
@@ -310,7 +310,7 @@
   "options": {
     "tsPreCompilationDeps": true,
     "tsConfig": {
-      "fileName": "tsconfig.base.json"
+      "fileName": "tsconfig.json"
     },
     "doNotFollow": {
       "path": "node_modules|/dist/|/out/"

@@ -28,7 +28,8 @@
     "typecheck": "tsc -b",
     "pack": "pnpm pack --out out/package.tgz",
     "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
-    "clean": "tsx tools/clean.ts"
+    "clean": "tsx tools/clean.ts",
+    "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
     "@kisaki3/desktop-contracts": "workspace:^"
@@ -40,6 +41,11 @@
     "publint": "0.3.25",
     "@arethetypeswrong/cli": "0.18.5",
     "@types/node": "catalog:",
-    "tsx": "catalog:"
+    "tsx": "catalog:",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@kisaki3/eslint-config": "workspace:*",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "@kisaki3/tooling": "workspace:*"
   }
 }

@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto'
 import { copyFile, mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { readPnpm } from '@repo-tools/process'
-import { runCli } from '@repo-tools/cli'
+import { readPnpm } from '@kisaki3/tooling/process'
+import { runCli } from '@kisaki3/tooling/cli'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 

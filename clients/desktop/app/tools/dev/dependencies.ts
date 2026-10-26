@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { resolve as resolveExports } from 'resolve.exports'
-import { readPnpm } from '@repo-tools/process'
+import { readPnpm } from '@kisaki3/tooling/process'
 import { repositoryRoot } from '../lib/paths'
 
 /** A public workspace dependency whose built exports feed the development session. */
@@ -11,11 +11,11 @@ export interface DesktopDependency {
   path: string
 }
 
-/** Read the application's workspace dependencies from pnpm before taking a development snapshot. */
+/** Read production workspace dependencies from pnpm before taking a development snapshot. */
 export async function desktopDependencies(signal?: AbortSignal): Promise<DesktopDependency[]> {
   const value: unknown = JSON.parse(
     await readPnpm(
-      ['list', '--filter', '@kisaki3/desktop^...', '--depth', '-1', '--json'],
+      ['list', '--filter-prod', '@kisaki3/desktop^...', '--depth', '-1', '--json'],
       repositoryRoot,
       { signal },
     ),

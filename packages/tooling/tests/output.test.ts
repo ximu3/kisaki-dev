@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { replaceOutput } from '@repo-tools/output'
+import { replaceOutput } from '@kisaki3/tooling/output'
 
 let directory: string
 beforeEach(async () => {

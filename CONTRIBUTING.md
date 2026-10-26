@@ -49,9 +49,11 @@ pnpm desktop:package --target windows-x64
 
 ## 验证任务
 
-仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，由根 `typecheck` 在各 workspace 检查后执行。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。根 `tsconfig.base.json` 提供共同规则，依赖检查复用其中的编译选项，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.consumers.ts`。
+仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `typecheck:root`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.consumers.ts`。
 
-工具和测试引用仓库共用函数时使用 `@repo-tools/cli`、`@repo-tools/output` 或 `@repo-tools/process`。映射只在根 `tsconfig.base.json` 定义；根、应用和公共包的默认配置继承它，tsx、Vitest 和 Playwright 按各自支持读取配置。Vitest 已启用 `resolve.tsconfigPaths`，不需要安装额外解析插件。该别名不是普通 Node 或对外包的运行时入口，也不用于其他工具加载的配置模块。
+工具和测试引用共用函数时声明 `@kisaki3/tooling` 的 workspace devDependency，并使用其 `/cli`、`/output` 或 `/process` exports。TypeScript 与 ESLint 共享配置分别由 `@kisaki3/typescript-config`、`@kisaki3/eslint-config` 提供。三者是固定工具链内直接加载的私有工程包，不预构建，不进入产品运行依赖或仓库外作者模板。
+
+每个 TypeScript 项目维护自己的 `eslint.config.ts` 和 lint 任务，显式声明 ESLint、jiti 与共享配置依赖，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`，支持跨项目的暂存文件检查。官方扩展的声明配置保持纯环境，ESLint 配置由独立 Node 类型项目检查。根 lint 调度项目任务、根工程 lint 与全仓依赖检查。根 `turbo.json` 提供共同任务，应用 `turbo.json` 声明桌面任务。CI 用 GitHub Actions 官方 cache 保存 `.turbo/cache`，按系统、架构和 Node 版本隔离；fork PR 只读取缓存。原生、桌面运行、开发会话、消费者与制品验证始终实际执行。
 
 应用的 `#native` 由应用 `package.json#imports` 唯一定义，不复制到根 paths。配置继承不改变包作用域：在根目录启动构建仍能解析应用源码的 `#native`，根工程自己的模块则不拥有该入口。具体导入范围见[模块导入规则](refactor/design/engineering/conventions.md#module-imports)。
 

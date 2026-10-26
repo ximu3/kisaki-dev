@@ -1,0 +1,31 @@
+{
+  "name": "@kisaki3/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "exports": {
+    "./base": "./src/base.ts",
+    "./node": "./src/node.ts",
+    "./tests": "./src/tests.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@eslint/js": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "^10.13.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@kisaki3/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "typescript": "catalog:"
+  }
+}

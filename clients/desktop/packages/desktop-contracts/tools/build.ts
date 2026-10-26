@@ -1,8 +1,8 @@
 import { build } from 'tsdown'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { replaceOutput } from '@repo-tools/output'
-import { runCli } from '@repo-tools/cli'
+import { replaceOutput } from '@kisaki3/tooling/output'
+import { runCli } from '@kisaki3/tooling/cli'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 

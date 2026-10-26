@@ -103,7 +103,7 @@ W00 可以建立已确认的独立程序、workspace 项目、打包输入和分
 | 配置职责 | 位置与要求 |
 | --- | --- |
 | 工具默认发现的实际入口与项目声明 | 保留工具约定的位置，如项目根目录的 tsconfig.json、tsdown.config.ts、kisx.config.ts、package.json 和 Cargo.toml。入口承担实际配置或项目组织职责。 |
-| 明确供多个项目继承的共享基线 | 由共同拥有者提供稳定入口，如仓库根 tsconfig.base.json。消费者通过正式引用采用，基线不混入单个项目的环境配置。 |
+| 明确供多个项目继承的共享基线 | 由共同拥有者提供稳定入口，如 @kisaki3/typescript-config 与 @kisaki3/eslint-config。消费者声明依赖并通过 exports 采用，基线不混入单个项目的环境配置。 |
 | 环境配置、测试变体与其他内部工具配置 | 放在所属工程的 `config/<工具名>/`，如 config/typescript、config/vite、config/vitest 和 config/playwright，保留工具及用途明确的文件名。 |
 | 工具规定的专用目录 | 沿用 .github/workflows、.cargo 等原生约定，不为统一外观改写工具发现行为。 |
 
@@ -141,20 +141,20 @@ Rust 原生实现、SQL、CSS 和声明式配置使用各自适用的语言。�
 
 <a id="module-imports"></a>
 
-模块导入按依赖关系选择统一机制：跨包通过已声明的包名、公开 exports 和构建结果消费；包内有稳定命名需求的模块入口通过所属 package.json 的 imports 声明，以 `#` 开头；模块内部协作使用相对导入。命名入口需要明确的模块边界，不为每个文件或目录建立别名。
+模块导入按依赖关系选择统一机制：跨包通过已声明的包名和正式 exports 消费，公共包提供构建结果，私有工程包按固定宿主提供 JSON 或 TypeScript 入口；包内有稳定命名需求的模块入口通过所属 package.json 的 imports 声明，以 `#` 开头；模块内部协作使用相对导入。命名入口需要明确的模块边界，不为每个文件或目录建立别名。
 
 | 依赖关系 | 导入形式 | 唯一定义 |
 | --- | --- | --- |
 | 应用、公共包、扩展及独立工程之间的包代码 | 包名及公开子入口 | 所属 package.json 的 exports，以及使用者声明的依赖 |
 | 同一包内的稳定模块入口 | `#native` 等 `#` 名称 | 所属 package.json 的 imports |
 | 同一模块内部 | `./`、`../` 相对路径 | 模块自身的文件组织 |
-| 仓库共用工程执行源码 | `@repo-tools/cli`、`@repo-tools/output`、`@repo-tools/process` | 根 tsconfig.base.json 的 paths |
+| 仓库共用工程配置和函数 | `@kisaki3/typescript-config`、`@kisaki3/eslint-config`、`@kisaki3/tooling` 的明确子入口 | 私有 workspace 包的 exports 与消费者 devDependencies |
 
 包内入口由所属包唯一维护，代码与测试使用同一入口，类型检查、构建与依赖检查通过标准包解析读取它，不分别维护等价的 TypeScript paths 或构建器 alias。`#` 是 Node 包内映射的前缀，不表示原生二进制或特定权限。当前 `#native` 命名本体原生能力的 Node 入口，主进程与原生测试消费同一合同；二进制定位与加载由该入口负责。
 
 imports 按发起导入文件所属的包生效，与 tsconfig.extends 的继承链无关，也不由命令的工作目录决定。根任务处理应用源码时读取应用的包映射；根工程自己的文件不能借此使用应用的私有 `#native`。imports 的相对文件目标位于所属包内，也可以指向已声明的外部包；不通过 `../` 指向包外的共享源码。
 
-仓库共用工程函数属于固定工具链内的源码复用，保留在根 tools/lib，由 Node 工具及相应测试使用 `@repo-tools` 的三个明确入口。根、应用及公共包的默认 tsconfig.json 继承共同基线，让 tsx 与测试运行器读取同一份映射；Vitest 使用 Vite 的 `resolve.tsconfigPaths`，不另外维护 resolve.alias 表。paths 本身不改写输出 JavaScript，也不是普通 Node 的运行时协议，因此该别名不用于产品运行代码、对外包的运行源码或导出声明，以及工具加载的配置模块。配置模块按所属宿主的加载规则使用包名、包内 imports 或相对路径。独立包之间仍按包名与 exports 协作。
+仓库共用工程配置和函数属于固定工具链内的源码复用，分别由根 packages 下三个私有工程包拥有。消费者通过 workspace devDependencies 和明确 exports 使用；TypeScript 读取 JSON 配置，ESLint 使用锁定的 jiti 加载 TypeScript 配置，tsx 与测试运行器处理 tooling 的 TypeScript 源码。源码入口不需要空 build 或独立监听，不另建 paths、resolve.alias 或 Vitest 解析开关。产品运行代码、公共包导出声明与仓库外作者模板不依赖这些私有工程包；公开包继续使用构建后的入口。
 
 模块位置解析与访问权限分别管理，检查依据解析后的实际目标；类型导入同样受约束。别名不能开放另一工程的私有 src 或 tools。工具可消费本工程明确供工程流程使用的纯合同、纯数据及合适的纯函数，不直接启动依赖应用运行环境的模块；共用支撑不反向依赖具体工作流、命令入口或测试夹具。只为实际稳定入口命名，不以相对路径的层数机械决定是否增加别名。
 

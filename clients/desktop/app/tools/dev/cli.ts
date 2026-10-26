@@ -1,4 +1,4 @@
-import { runCli } from '@repo-tools/cli'
+import { runCli } from '@kisaki3/tooling/cli'
 import { startDevelopmentSession } from './session'
 
 await runCli(async (signal) => {

@@ -6,11 +6,11 @@
 
 自维护 JavaScript 环境源码统一使用 TypeScript，JSX 使用 `.tsx`；Rust、SQL、CSS 和声明式配置使用各自语言。生成代码和第三方发行内容按实际归属处理。目录与普通文件使用 kebab-case，类型、组件和类使用 PascalCase，函数和变量使用 camelCase。`index.ts` 只列出实际公开导出。
 
-模块按照事实、操作和资源寿命组织，使用者经正式入口依赖拥有者。跨包使用 workspace 依赖、公开 exports 和构建结果，不指向另一包的源码。SDK 通过 extension-api 取得桌面合同；纯合同不执行 I/O、DOM、框架或数据库代码。
+模块按照事实、操作和资源寿命组织，使用者经正式入口依赖拥有者。跨包使用 workspace 依赖和正式 exports；公共包消费构建结果，不指向另一包的源码。SDK 通过 extension-api 取得桌面合同；纯合同不执行 I/O、DOM、框架或数据库代码。
 
 包内有稳定命名需求的模块入口由所属 package.json 的 imports 定义，以 `#` 开头；模块内部使用相对导入。代码与测试消费同一入口，工具读取同一份映射，访问权限仍由依赖边界检查约束，见[模块导入规则](refactor/design/engineering/conventions.md#module-imports)。
 
-仓库共用工程源码由 Node 工具与相应测试通过 `@repo-tools/cli`、`@repo-tools/output`、`@repo-tools/process` 引用，唯一映射位于根 tsconfig.base.json，实际运行器读取同一配置。该命名空间不用于产品运行代码、对外包的运行源码或导出声明，也不用于工具加载的配置模块；不能用 paths 绕过业务包的 exports 或另一项目的私有边界。
+仓库共用 TypeScript、ESLint 配置和工程函数分别由私有包 `@kisaki3/typescript-config`、`@kisaki3/eslint-config`、`@kisaki3/tooling` 提供。消费者声明实际 devDependencies 并使用正式 exports；固定工程宿主直接读取 JSON 或编译 TypeScript 源码，不增加空构建步骤。这些入口只用于工程工具、配置与测试，不进入产品运行代码、公共导出声明或仓库外作者模板；不能用 paths 绕过包的 exports 或私有边界。
 
 目录按职责与所有权组织，同级保持相近粒度。专用实现随拥有者放置，共同机制归最小合理共享范围；入口、配置与内部支撑的角色清楚，测试复用本身不构成上移理由。文件或目录按协作需要和工程边界选择，名称说明实际工作，具体要求见[目录规则](refactor/design/engineering/conventions.md#directory-readability)。
 

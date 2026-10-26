@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import { run } from '@repo-tools/process'
+import { run } from '@kisaki3/tooling/process'
 
 /** Check maintained Rust sources in the crate's pinned toolchain and target cache. */
 export async function checkNative(signal?: AbortSignal): Promise<void> {

@@ -58,7 +58,7 @@ desktop-contracts 可以引用 appearance 的视觉词表和 extension-distribut
 
 Vantage、Kana、libmpv-node 和 oauth-relay 按 [独立项目规范](../projects/README.md) 通过公开发行或服务合同接入，其实现源码不进入 Kisaki monorepo。未来产品服务端同仓与这些独立项目的仓库边界分别判断。云合同由服务提供者维护，客户端不导入服务端内部实现；公开构建不能读取私有服务端源码。
 
-跨包导入使用 workspace 依赖、exports 和构建结果。同仓消费者与仓库外消费者使用相同的公开路径，不能通过 TypeScript paths 指向另一包的 src。发布的 d.ts 不得包含私有源码路径或尚未发布的依赖。相关行为依据 [TypeScript paths](https://www.typescriptlang.org/docs/handbook/modules/reference.html#paths) 和 [Node exports](https://nodejs.org/api/packages.html#package-entry-points) 验证。
+公共包之间的导入使用 workspace 依赖、exports 和构建结果。同仓消费者与仓库外消费者使用相同的公开路径，不能通过 TypeScript paths 指向另一包的 src。发布的 d.ts 不得包含私有源码路径或尚未发布的依赖。私有工程包的直接源码入口按[工作区配置](#workspace)限定宿主与消费范围。相关行为依据 [TypeScript paths](https://www.typescriptlang.org/docs/handbook/modules/reference.html#paths) 和 [Node exports](https://nodejs.org/api/packages.html#package-entry-points) 验证。
 
 exports 不提供安全隔离。静态检查还要覆盖相对路径、绝对路径、别名、类型导入、转导出、循环依赖和运行环境。main 与 extension-host 不互相导入私有实现，只共同使用 shared 中的私有协议和独立 rpc；连接身份、开放方法及运行资源由各自接入负责。
 
@@ -141,7 +141,7 @@ CSS 提供明确的消费入口，并通过副作用配置确保构建保留；�
 
 ## 工作区与项目配置
 
-Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。当前成员为桌面应用、八个公共包和 33 个官方扩展；clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
+Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。当前成员为桌面应用、八个公共包、33 个官方扩展和三个私有工程包，共 45 个；clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
 
 | 位置                   | 负责内容                                                             |
 | ---------------------- | -------------------------------------------------------------------- |
@@ -153,13 +153,15 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 根目录只保留仓库级工具及根工具实际使用的依赖，应用和库的依赖由使用者声明。Electron 属于桌面应用，Solid 属于实际使用它的项目，组件库依据公开合同声明 peer。一个锁文件可以记录各项目需要的不同依赖版本；catalog 只统一需要共同兼容的范围，不迫使未来 Web 或官网采用桌面的框架。依赖归属依据 [Turborepo 依赖管理建议](https://turborepo.dev/docs/crafting-your-repository/managing-dependencies)。
 
-根配置提供共同严格性与格式规则，各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
+packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码与公开声明不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
 
-仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。根类型任务先由 Turbo 调度各 workspace，再通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。根 tsconfig.base.json 提供共同规则，依赖检查复用其中的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
+各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
+
+仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 typecheck:root，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。官方扩展当前的 tsconfig.json 与 kisx.config.ts 是实际默认入口，后续内部配置同样遵守[配置归属](conventions.md#configuration-layout)，不按配置数量另设例外。
+八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。官方扩展同样由默认 tsconfig.json 组织实际类型项目：config/typescript/tsconfig.kisx.json 保留 kisx.config.ts 的纯声明环境，tsconfig.tools.json 单独检查 Node 宿主中的 ESLint 配置，增量信息归 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -207,11 +209,13 @@ skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明
 
 ## 任务调度、缓存与桌面开发
 
-各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。依赖其他项目输出的任务明确声明上游 build，格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
+各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；根 lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查通过 transit 依赖传播输入变化，不制造空 build。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
 
 测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
 
 只有结果由完整输入决定的有限任务才使用缓存。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
+
+CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按操作系统、架构与 Node 版本隔离，再由 Turbo 根据任务完整输入命中具体结果；不接入额外远端服务或凭据。fork PR 只恢复缓存，保存仅用于本仓库分支；GitHub 的分支作用域限制仍然生效。缓存不包含用户资料、密钥或现场运行证据。根实际使用的私有工程依赖参与 Turbo 全局哈希，因此共同工程源码变更可以使全仓任务失效；项目局部源码则按实际依赖图传播。验收分别记录冷运行、热命中、输入失效、输出恢复和真实 CI 跨运行恢复，不能以本机命中代替 CI 证据。
 
 persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
 
