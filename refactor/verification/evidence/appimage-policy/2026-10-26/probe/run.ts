@@ -11,7 +11,6 @@ import {
   rename,
   writeFile,
 } from 'node:fs/promises'
-import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -19,7 +18,6 @@ import ts from 'typescript'
 import { getCurrentFuseWire } from '@electron/fuses'
 
 const probe = dirname(fileURLToPath(import.meta.url))
-const require = createRequire(import.meta.url)
 const output = join(probe, 'results')
 await mkdir(output, { recursive: true })
 const workspace = await mkdtemp(join(tmpdir(), 'kisaki-policy-'))
@@ -104,7 +102,6 @@ async function buildImage(name: string, version: string, strict: boolean): Promi
     asar: true,
     npmRebuild: false,
     electronVersion: '44.5.1',
-    electronDist: join(dirname(require.resolve('electron/package.json')), 'dist'),
     directories: { app: appDir, output: destination },
     files: ['!node_modules/**', 'main.js', 'package.json'],
     linux: { target: ['AppImage'], executableName: 'kisaki-policy-probe', category: 'Utility' },
@@ -364,7 +361,7 @@ try {
       : String(cause)
   process.exitCode = 1
 } finally {
-  const cleanup: unknown[] = []
+  const cleanup: { code: number | null; text: string }[] = []
   if (policyInstalled) {
     cleanup.push(
       await command('sudo', ['-n', 'apparmor_parser', '--remove', installedPolicy], true),
@@ -375,6 +372,11 @@ try {
     cleanup.push(await command('sudo', ['-n', 'sysctl', '-w', `${key}=${value}`], true))
   report.originalSysctls = Object.fromEntries(originalSysctls)
   report.cleanup = cleanup
+  if (cleanup.some((result) => result.code !== 0)) {
+    report.passed = false
+    report.cleanupFailed = true
+    process.exitCode = 1
+  }
   report.files = await readdir(output)
   await writeFile(join(output, 'result.json'), JSON.stringify(report, null, 2))
   console.info(

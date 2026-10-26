@@ -28,7 +28,7 @@ jobs:
           cp refactor/verification/evidence/appimage-policy/2026-10-26/probe/* "$probe_directory/"
           echo "PROBE_DIR=$probe_directory" >> "$GITHUB_ENV"
       - name: Install pinned probe dependencies
-        run: npm ci --prefix "$PROBE_DIR" --no-audit --no-fund
+        run: npm ci --prefix "$PROBE_DIR" --ignore-scripts --no-audit --no-fund
       - name: Check probe types
         run: npm --prefix "$PROBE_DIR" run check
       - name: Compare actual sandbox and first preparation behavior
