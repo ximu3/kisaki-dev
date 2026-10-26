@@ -16,6 +16,7 @@ import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 import { getCurrentFuseWire } from '@electron/fuses'
+import { parse } from 'yaml'
 
 const probe = dirname(fileURLToPath(import.meta.url))
 const output = join(probe, 'results')
@@ -31,6 +32,16 @@ const report: Record<string, unknown> = {
   passed: false,
 }
 const cases = report.cases as unknown[]
+const applicationConfigText = await readFile(join(probe, 'application-builder.yml'), 'utf8')
+const applicationConfig = parse(applicationConfigText) as {
+  appImage: { executableArgs: string[] }
+  electronFuses: Record<string, boolean>
+}
+assert.deepEqual(applicationConfig.appImage.executableArgs, [])
+report.applicationConfig = {
+  sha256: createHash('sha256').update(applicationConfigText).digest('hex'),
+  appImage: applicationConfig.appImage,
+}
 const originalSysctls = new Map<string, string>()
 let policyInstalled = false
 
@@ -64,7 +75,11 @@ async function setSysctl(key: string, value: string): Promise<void> {
 }
 
 /** Create a real AppImage using the pinned public builder CLI and its public afterPack hook. */
-async function buildImage(name: string, version: string, strict: boolean): Promise<string> {
+async function buildImage(
+  name: string,
+  version: string,
+  policy: 'default' | 'conditional' | 'strict',
+): Promise<string> {
   console.info(`Building ${name}`)
   const appDir = join(workspace, `app-${name}`)
   const destination = join(workspace, `build-${name}`)
@@ -107,16 +122,9 @@ async function buildImage(name: string, version: string, strict: boolean): Promi
     linux: { target: ['AppImage'], executableName: 'kisaki-policy-probe', category: 'Utility' },
     artifactName: `${name}.AppImage`,
     toolsets: { appimage: '0.0.0' },
-    electronFuses: {
-      runAsNode: false,
-      enableCookieEncryption: true,
-      enableNodeOptionsEnvironmentVariable: false,
-      enableNodeCliInspectArguments: false,
-      enableEmbeddedAsarIntegrityValidation: true,
-      onlyLoadAppFromAsar: true,
-      grantFileProtocolExtraPrivileges: false,
-    },
-    ...(strict ? { afterPack: hook, appImage: { executableArgs: [] } } : {}),
+    electronFuses: applicationConfig.electronFuses,
+    ...(policy !== 'default' ? { appImage: applicationConfig.appImage } : {}),
+    ...(policy === 'strict' ? { afterPack: hook } : {}),
   }
   const configPath = join(workspace, `${name}.json`)
   await writeFile(configPath, JSON.stringify(config, null, 2))
@@ -156,8 +164,8 @@ async function buildImage(name: string, version: string, strict: boolean): Promi
   const appRun = await readFile(join(tree, 'AppRun'), 'utf8')
   await writeFile(join(output, `${name}.desktop`), desktop)
   await writeFile(join(output, `${name}-AppRun.txt`), appRun)
-  assert.equal(/--no-sandbox/.test(desktop), !strict)
-  assert.equal(/--no-sandbox/.test(appRun), !strict)
+  assert.equal(/--no-sandbox/.test(desktop), policy === 'default')
+  assert.equal(/--no-sandbox/.test(appRun), policy !== 'strict')
   report[name] = { image, sha256: digest, fuseWire, desktop }
   return image
 }
@@ -308,19 +316,26 @@ try {
     parentLabel: await readFile('/proc/self/attr/current', 'utf8'),
     apparmor: (await command('sudo', ['-n', 'aa-status'])).text,
   }
-  const defaultImage = await buildImage('default', '1.0.0', false)
-  const strictV1 = await buildImage('strict-v1', '1.0.0', true)
-  const strictV2 = await buildImage('strict-v2', '1.0.1', true)
+  const defaultImage = await buildImage('default', '1.0.0', 'default')
+  const conditionalImage = await buildImage('conditional', '1.0.0', 'conditional')
+  const strictV1 = await buildImage('strict-v1', '1.0.0', 'strict')
+  const strictV2 = await buildImage('strict-v2', '1.0.1', 'strict')
+  assert.equal(
+    await readFile(join(output, 'conditional-AppRun.txt'), 'utf8'),
+    await readFile(join(output, 'default-AppRun.txt'), 'utf8'),
+  )
   const current = join(workspace, 'KisakiProbe.AppImage')
   await copyFile(strictV1, current)
   await chmod(current, 0o755)
   await setSysctl('kernel.apparmor_restrict_unprivileged_userns', '0')
   await launch('default-allowed', defaultImage, 'sandboxed')
+  await launch('conditional-allowed', conditionalImage, 'sandboxed')
   await launch('default-desktop-argument', defaultImage, 'unsandboxed', ['--no-sandbox'])
   await setSysctl('kernel.apparmor_restrict_unprivileged_userns', '1')
   report.restrictedBaseline = await command('unshare', ['-Ur', 'true'], true)
   assert.notEqual((report.restrictedBaseline as { code: number }).code, 0)
   await launch('default-restricted', defaultImage, 'unsandboxed')
+  await launch('conditional-restricted', conditionalImage, 'unsandboxed')
   await launch('strict-without-profile', current, 'blocked')
   await installProfile(current)
   await launch('strict-exact-profile', current, 'sandboxed')
@@ -339,6 +354,7 @@ try {
   await setSysctl('user.max_user_namespaces', '0')
   await launch('strict-global-userns-disabled', moved, 'blocked', [], '1.0.1')
   await launch('default-global-userns-disabled', defaultImage, 'unsandboxed')
+  await launch('conditional-global-userns-disabled', conditionalImage, 'unsandboxed')
   await setSysctl('user.max_user_namespaces', originalSysctls.get('user.max_user_namespaces')!)
   const other = join(movedDirectory, 'KisakiProbe-other.AppImage')
   await copyFile('/usr/bin/unshare', other)

@@ -13,6 +13,7 @@
     "electron": "44.5.1",
     "electron-builder": "26.15.3",
     "tsx": "4.23.15",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "yaml": "2.9.1"
   }
 }

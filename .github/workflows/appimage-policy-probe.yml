@@ -26,6 +26,7 @@ jobs:
           probe_directory="$RUNNER_TEMP/appimage-policy"
           mkdir -p "$probe_directory"
           cp refactor/verification/evidence/appimage-policy/2026-10-26/probe/* "$probe_directory/"
+          cp clients/desktop/app/electron-builder.yml "$probe_directory/application-builder.yml"
           echo "PROBE_DIR=$probe_directory" >> "$GITHUB_ENV"
       - name: Install pinned probe dependencies
         run: npm ci --prefix "$PROBE_DIR" --ignore-scripts --no-audit --no-fund
@@ -43,4 +44,5 @@ jobs:
           path: |
             ${{ env.PROBE_DIR }}/results
             ${{ env.PROBE_DIR }}/package-lock.json
+            ${{ env.PROBE_DIR }}/application-builder.yml
           retention-days: 30
