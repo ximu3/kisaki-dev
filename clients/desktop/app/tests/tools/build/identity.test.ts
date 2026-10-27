@@ -75,7 +75,7 @@ test.each(['typescript-config/base.json', 'tooling/src/process.ts'])(
 test('private engineering outputs and test fixtures do not change the desktop build identity', async () => {
   const previous = await sourceIdentity(root)
 
-  for (const directory of ['dist', 'out', '.cache', '.turbo', 'tests']) {
+  for (const directory of ['dist', 'out', '.cache', '.turbo', 'tests', 'test-results']) {
     await mkdir(join(root, 'packages', 'tooling', directory))
     await writeFile(join(root, 'packages', 'tooling', directory, 'generated.json'), '{}\n')
   }

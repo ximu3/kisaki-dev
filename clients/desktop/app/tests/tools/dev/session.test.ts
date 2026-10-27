@@ -42,7 +42,10 @@ app.once('browser-window-created', (_event, window) => {
     const first = controller.states.find((state) => state.state === 'ready')!
     expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
     if (process.platform === 'win32') {
-      await expect.poll(() => hasNativeWindow(first.current!.processId)).toBe(true)
+      // Native observation launches PowerShell; use the same budget as the artifact checks.
+      await expect
+        .poll(() => hasNativeWindow(first.current!.processId), { timeout: 30_000, interval: 250 })
+        .toBe(true)
     }
 
     controller.process.send({ type: 'stop' })

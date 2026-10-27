@@ -18,6 +18,7 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
     'dist',
     'out',
     'tests',
+    'test-results',
   ])
 
   /** Traverse owned inputs in stable order, preserving names in the identity. */

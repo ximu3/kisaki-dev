@@ -190,7 +190,9 @@ jobs:
           CHECK_PERFORMANCE: ${{ needs.repository.outputs.performance }}
         run: |
           prefix=()
-          if [[ "$RUNNER_OS" == Linux ]]; then prefix=(xvfb-run --auto-servernum); fi
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
           for task in e2e dev performance; do
             case "$task" in
               e2e) selected="$CHECK_E2E" ;;

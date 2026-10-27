@@ -9,7 +9,7 @@
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 声明检查分工及本机回归通过；Linux fixture 清理修正待 CI 复验，当前六目标及缓存恢复待完成 |
+| W00 工程与验证入口 | 仓库、Windows x64 与两个 macOS 目标通过；Linux 会话环境和 Windows arm64 观察预算待复验，六目标与缓存恢复待完成 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -48,6 +48,8 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 用户已确认并落实[声明检查分工](../verification/evidence/declaration-checks/2026-10-27/README.md)：常规项目默认 skipLibCheck: true，strict 保持；公共声明消费者及 main／shared／renderer 中自有声明的拥有层保持完整检查。UI 旧配置例外合并回普通工具项目，自有声明覆盖沿现有结构检查核对。全仓检查、48 项常规测试、八包 publint／ATTW 和两项实际消费者通过。[当前 CI 记录](../verification/evidence/w00/2026-10-27/ci/README.md)保留一次主动取消及一次 Linux fixture 清理失败；后者的类型、lint、格式和本体 19 项断言已通过，ENOTEMPTY 清理修正等待新输入复验，不记作六目标成功。
 
+随后 a20c3f0 的[完整 CI](../verification/evidence/w00/2026-10-27/ci/README.md)通过仓库检查、消费者与浏览器，Linux fixture 清理修正获得实际通过结果；Windows x64 和两个 macOS 目标完成原生、四窗口、开发、20 次启动测量及最终载体验证。两个 Linux 目标因 Xvfb 内未运行窗口管理器而失败，Windows arm64 因原生窗口观察的默认短超时失败；相关环境与观察预算已修正。构建身份同时排除工具包生成的测试报告，现有回归通过，等待新 CI 接续。当前没有把部分平台通过汇总为六目标完成。
+
 <a id="environments"></a>
 
 ## 验证环境
@@ -56,7 +58,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 历史 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)有效；当前 [61caf5b 运行](../verification/evidence/w00/2026-10-27/ci/README.md)在 Linux fixture 清理失败，新输入待复验 |
+| 标准 CI | 历史 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)有效；当前 [a20c3f0 运行](../verification/evidence/w00/2026-10-27/ci/README.md)仓库及三个目标通过，另外三个目标待修正复验 |
 
 <a id="progress"></a>
 
