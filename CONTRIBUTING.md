@@ -65,7 +65,7 @@ pnpm desktop:package --target windows-x64
 
 应用的 `tsconfig.json` 是七个类型项目的共同入口，`pnpm --filter @kisaki3/desktop typecheck` 通过 `tsc -b` 检查全部环境。具体配置位于 `config/typescript`，增量信息归应用 `.cache/typescript`，不生成运行代码；需要完整重检时使用 `pnpm --filter @kisaki3/desktop typecheck --force`。
 
-八个公共包同样由根 `tsconfig.json` 组织各自 `config/typescript` 中的库源码与工具项目，类型任务使用 `tsc -b`。库源码配置为 `config/typescript/tsconfig.lib.json`，根 `tsdown.config.ts` 显式读取它进行代码与声明构建；工具使用同目录的 `tsconfig.tools.json`，UI 另有独立构建配置项目。增量信息归各包 `.cache/typescript`，各环境的严格性独立保持。各类工程和样板遵守同一[配置归属规则](refactor/design/engineering/conventions.md#configuration-layout)。
+八个公共包同样由根 `tsconfig.json` 组织各自 `config/typescript` 中的库源码与工具项目，类型任务使用 `tsc -b`。库源码配置为 `config/typescript/tsconfig.lib.json`，根 `tsdown.config.ts` 显式读取它进行代码与声明构建；工具及其构建配置使用同目录的 `tsconfig.tools.json`。增量信息归各包 `.cache/typescript`，各环境的严格性独立保持。各类工程和样板遵守同一[配置归属规则](refactor/design/engineering/conventions.md#configuration-layout)。
 
 常规 Node 与桌面端到端测试保留应用根目录的默认配置，其他运行方式由 `config/vitest` 和 `config/playwright` 中的配置明确指定。脚本与 CI 继续使用下列任务入口。
 
@@ -91,7 +91,7 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 制品输入可用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认读取当前目标 `dist/<target>/artifacts.json`。测试核对版本、目标、构建身份、摘要、资源和 fuses；不重新打包。Windows 使用窗口句柄，macOS 使用获准的系统辅助功能，Linux X11 使用窗口管理器；原生 Wayland 另按实际桌面操作记录，不将 X11 结果记作 Wayland 通过。
 
-UI 的 `config/typescript/tsconfig.config.json` 仅对 tsdown 配置采用已确认的声明检查例外。UI 源码、工具源码和仓库外消费者保持独立严格检查，详见 [类型检查规则](refactor/design/engineering/workspace.md#declaration-checks)。
+常规类型项目使用 `strict: true` 与 `skipLibCheck: true`，完整检查自有源码及其对依赖的调用。仓库外公共声明消费者保持 `skipLibCheck: false`；应用的 main、shared、renderer 项目分别负责原生、构建全局及窗口全局声明的完整检查。结构检查确认每份自有 `.d.ts` 至少有一个实际执行且不跳过声明的拥有者，详见[类型检查规则](refactor/design/engineering/workspace.md#declaration-checks)。
 
 ## CI 与交付
 

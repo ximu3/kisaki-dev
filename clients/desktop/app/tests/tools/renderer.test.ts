@@ -54,7 +54,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await renderer?.close()
-  if (paths.repositoryRoot) await rm(paths.repositoryRoot, { recursive: true, force: true })
+  if (paths.repositoryRoot) {
+    // Vite may still finish a cache write as its server closes; retry transient directory removal.
+    await rm(paths.repositoryRoot, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
+  }
 })
 
 test('runtime configuration and nested public-package inputs remain watched after Vite restarts', async () => {

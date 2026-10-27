@@ -109,6 +109,7 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     ].map((file) => resolve('tests/fixtures/consumers', file)),
   )
   const checked = new Set<string>()
+  const checkedDeclarations = new Set<string>()
   const visited = new Set<string>()
   for (const config of configs) {
     if (visited.has(config)) continue
@@ -119,7 +120,11 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     const parsed = ts.parseJsonConfigFileContent(content.config, ts.sys, resolve(config, '..'))
     expect(parsed.errors, config).toEqual([])
     expect(parsed.options.allowJs ?? false, config).toBe(false)
-    for (const path of parsed.fileNames) checked.add(resolve(path).toLowerCase())
+    for (const path of parsed.fileNames) {
+      const file = resolve(path).toLowerCase()
+      checked.add(file)
+      if (!parsed.options.skipLibCheck) checkedDeclarations.add(file)
+    }
     for (const reference of parsed.projectReferences ?? []) {
       configs.push(ts.resolveProjectReferencePath(reference))
     }
@@ -128,4 +133,11 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     (path) => /\.tsx?$/.test(path) && !checked.has(resolve(path).toLowerCase()),
   )
   expect(uncovered.map((path) => relative(root, path))).toEqual([])
+  expect(
+    files
+      .filter(
+        (path) => path.endsWith('.d.ts') && !checkedDeclarations.has(resolve(path).toLowerCase()),
+      )
+      .map((path) => relative(root, path)),
+  ).toEqual([])
 })

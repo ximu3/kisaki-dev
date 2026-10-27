@@ -7,9 +7,6 @@
     },
     {
       "path": "./config/typescript/tsconfig.tools.json"
-    },
-    {
-      "path": "./config/typescript/tsconfig.config.json"
     }
   ]
 }

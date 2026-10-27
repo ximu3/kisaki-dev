@@ -1,6 +1,7 @@
 {
   "extends": "@kisaki3/typescript-config/solid.json",
   "compilerOptions": {
+    "skipLibCheck": false,
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/renderer.tsbuildinfo",
     "types": ["vite/client"]

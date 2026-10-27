@@ -167,7 +167,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -203,13 +203,15 @@ tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定
 
 ## 实现与公开声明的类型检查
 
-依赖 Kobalte 的 UI 控件实现使用 skipLibCheck: true，普通 .ts 和 .tsx 实现仍完整检查。纯合同、SDK 和仓库外公开声明消费者使用 skipLibCheck: false。
+共同基线使用 strict: true 与 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/monorepo-review/2026-10-27/skip-lib-check.md)。
 
-UI 的 tsdown 构建配置单独使用本包的 `config/typescript/tsconfig.config.json` 与 `skipLibCheck: true`。锁定的 unplugin-solid 2.0.0 的 Rolldown 入口通过通用 unplugin 声明引用其他打包器和 Bun；这些非消费路径的缺失或不相容声明不作为 UI 构建配置的依赖。该豁免只覆盖配置使用的声明检查；配置自身、UI 源码和构建工具源码仍检查，工具源码使用独立且不跳过声明检查的配置，公开声明继续由严格消费者验证。
+skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍读取声明并依据它检查调用。该选项不修复错误声明，可能掩盖声明内部冲突，不能被用来证明声明本身准确。
 
-skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍依据这些声明检查调用。这个选项不会修复错误声明，也不能证明受影响类型准确。
+公共包的最终 d.ts 由实际仓库外消费者使用 skipLibCheck: false 完整检查，覆盖所属 Node、Webview 和 Solid 入口及实际解析环境。消费者使用打包后的公开入口，不指向源码，也不继承私有工程配置。声明生成成功不能代替消费验证，依赖升级中的真实不相容仍须处理。
 
-公共 UI 必须提供准确的组件合同，最终 d.ts 由实际消费者完整检查，必要时通过独立声明检查补足自有范围。不得用任意断言、复制第三方定义或泄漏错误声明来绕过问题。TypeScript、解析器和声明生成器保持相容，解析器支持范围检查继续生效，不使用双编译器或兼容 shim。
+每份自有 .d.ts 必须有至少一个实际执行、使用 skipLibCheck: false 的类型检查拥有者；普通消费方可复用这个保证。当前构建全局声明归 shared，窗口全局声明归 renderer，原生绑定声明归 main；原生声明同时核对实际 Rust 生成结果。结构检查沿真实任务入口和项目引用检查此项覆盖。新增声明随拥有者维护，不为每个调用入口重复建立声明检查项目。
+
+UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置项目。工具声明间接引用的其他打包器或运行时，不因此成为产品依赖。不得用任意断言、复制第三方定义或泄漏错误声明绕过问题。TypeScript、解析器和声明生成器保持相容，解析器支持范围检查继续生效，不使用双编译器或兼容 shim。
 
 <a id="tasks"></a>
 

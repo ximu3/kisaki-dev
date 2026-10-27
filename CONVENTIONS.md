@@ -30,7 +30,7 @@ package.json 的依赖块按包名排序，脚本按开发、构建、验证和�
 
 W00 中已确认的程序、项目及打包输入骨架可以保留，文件少本身不是删除理由。审查覆盖当前全部代码、工具、测试、配置及目录，并记录实际差异与阶段。
 
-类型表达合法组合，区分缺省、空值、未知与失败。复用唯一定义，不以 `any`、连续断言或同形别名掩盖边界。TypeScript 配置隔离实际运行环境和测试 globals；配置、工具、模板与声明也纳入检查。UI 构建配置的声明检查例外仅按已确认的 [具体范围](refactor/design/engineering/workspace.md#declaration-checks) 使用。
+类型表达合法组合，区分缺省、空值、未知与失败。复用唯一定义，不以 `any`、连续断言或同形别名掩盖边界。TypeScript 配置隔离实际运行环境和测试 globals；配置、工具、模板与声明也纳入检查。常规项目使用 strict 与 skipLibCheck，公共声明消费者和自有声明拥有层完整检查声明，具体分工见[类型检查规则](refactor/design/engineering/workspace.md#declaration-checks)。
 
 采用当前锁定版本支持的公开 API 与配置方式；发现弃用提示时，按[弃用接口处理](refactor/design/engineering/conventions.md#deprecated-apis)核对官方替代、行为和兼容边界。
 

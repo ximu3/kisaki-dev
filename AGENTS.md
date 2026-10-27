@@ -12,6 +12,6 @@ main 拥有事实与操作；renderer 拥有视图；preload 只开放窗口最�
 
 数据、错误、并发、取消与资源寿命遵循所属设计。失败不通过缩小范围、返回空值或关闭检查消除。测试不使用真实个人资料，Node、浏览器、Electron Node 模式和实际 Electron 分别运行。
 
-常用入口与前置条件见 [CONTRIBUTING.md](CONTRIBUTING.md)。普通 `check` 不包含真实桌面、制品和性能验收；按改动实际执行相应任务并记录范围。UI 的声明检查例外限于已确认的配置，不扩大到工具源码、纯包或消费者。
+常用入口与前置条件见 [CONTRIBUTING.md](CONTRIBUTING.md)。普通 `check` 不包含真实桌面、制品和性能验收；按改动实际执行相应任务并记录范围。常规类型项目保留 strict 并启用 skipLibCheck，公共声明消费者与自有声明拥有层保持完整声明检查，遵守[类型检查分工](refactor/design/engineering/workspace.md#declaration-checks)。
 
 构建、测试和打包不隐含外部发布。GitHub 仓库重建、npm 发布、平台签署身份与部署按实际授权处理。未取得的六目标、签名或后端运行证据保持未完成。

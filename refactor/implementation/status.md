@@ -9,7 +9,7 @@
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 工具链修正及 Windows 本机回归通过；GitHub 缓存恢复及当前六目标结果待登记 |
+| W00 工程与验证入口 | 声明检查分工及本机回归通过；Linux fixture 清理修正待 CI 复验，当前六目标及缓存恢复待完成 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -46,6 +46,8 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 随后完成 [monorepo 与 CI 完成度核对](../verification/evidence/monorepo-review/2026-10-27/README.md)。工作区、包边界、共享工程依赖、任务图与缓存已成立，但发现任务输入收窄漏掉打包配置和根 LICENSE，以及签名身份等任务环境声明不完整；两类遗漏已修正，实际 Turbo 任务图、十二类变更选择、类型、lint 与格式检查通过。历史六目标通过仅对应原提交，旧 CI 在任务选择粒度与重复运行成本方面未充分达到现行要求。W00 当前仍需新六目标与跨运行缓存恢复的实际结果；正式签名制品、首开及更新验签由 W11 负责，不作为 W00 当前未完成的理由。
 
+用户已确认并落实[声明检查分工](../verification/evidence/declaration-checks/2026-10-27/README.md)：常规项目默认 skipLibCheck: true，strict 保持；公共声明消费者及 main／shared／renderer 中自有声明的拥有层保持完整检查。UI 旧配置例外合并回普通工具项目，自有声明覆盖沿现有结构检查核对。全仓检查、48 项常规测试、八包 publint／ATTW 和两项实际消费者通过。[当前 CI 记录](../verification/evidence/w00/2026-10-27/ci/README.md)保留一次主动取消及一次 Linux fixture 清理失败；后者的类型、lint、格式和本体 19 项断言已通过，ENOTEMPTY 清理修正等待新输入复验，不记作六目标成功。
+
 <a id="environments"></a>
 
 ## 验证环境
@@ -54,7 +56,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 提交 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)已通过；当前工程导入配置的六目标结果待登记 |
+| 标准 CI | 历史 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)有效；当前 [61caf5b 运行](../verification/evidence/w00/2026-10-27/ci/README.md)在 Linux fixture 清理失败，新输入待复验 |
 
 <a id="progress"></a>
 
@@ -62,7 +64,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [工具链修正及本机回归](../verification/evidence/tooling-review/2026-10-26/implementation/README.md)通过，CI 缓存恢复及当前六目标结果待登记 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查分工及本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)通过；[当前 CI](../verification/evidence/w00/2026-10-27/ci/README.md)待修正复验及六目标、缓存恢复结果 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

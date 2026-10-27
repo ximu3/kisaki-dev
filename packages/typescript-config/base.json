@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "noEmit": true,
     "lib": ["ES2023"],
     "types": []

@@ -6,6 +6,8 @@
 
 | 范围                         | 记录                                                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 声明检查分工 | [skipLibCheck 的收益与边界](monorepo-review/2026-10-27/skip-lib-check.md) · [用户确认后的采用与验证](declaration-checks/2026-10-27/README.md) |
+| 当前 W00 CI | [新工程提交、并发调整与实际失败记录](w00/2026-10-27/ci/README.md) |
 | Monorepo 与 CI 完成度 | [工程结构、Turbo 使用、旧 CI 的实际边界及打包输入／环境补漏](monorepo-review/2026-10-27/README.md) |
 | 测试必要性收敛 | [用例分层、Turbo 任务选择、CI 与文档义务调整及本机验证](testing-cleanup/2026-10-27/README.md) |
 | 新准则全项目复核 | [实现与文档覆盖、环境变量传递和消费者资源清理修正](comprehensive-review/2026-10-26/README.md) · [全面测试必要性复核](comprehensive-review/2026-10-26/testing.md) |
