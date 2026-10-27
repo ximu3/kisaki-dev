@@ -1,0 +1,30 @@
+{
+  "action": "pnpm/action-setup",
+  "selectedVersion": "v5.0.0",
+  "selectedCommit": "fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+  "tagObject": "b307475762933b98ed359c036b0e51f26b63b74b",
+  "tagSignatureVerified": true,
+  "runtime": "node24",
+  "installation": "Install packageManager directly as the pnpm npm package; standalone remains false.",
+  "supersededTrial": {
+    "version": "v6.1.0",
+    "commit": "ea17c68df8912ef543352723c149a84f56e3d413",
+    "runId": 40462091602,
+    "jobId": 122051622039,
+    "target": "macos-x64",
+    "step": "Set up pnpm",
+    "errorCode": "ERR_PNPM_PNPM_ENGINE_IDENTITY_UNVERIFIABLE",
+    "bootstrapVersion": "11.25.0",
+    "requestedVersion": "11.11.0",
+    "nodeVersion": "24.11.1"
+  },
+  "projectToolchainChanged": false,
+  "platformSpecificBranchAdded": false,
+  "remoteValidation": "pending",
+  "sources": [
+    "https://github.com/pnpm/action-setup/releases/tag/v5.0.0",
+    "https://github.com/pnpm/action-setup/blob/fc06bc1257f339d1d5d8b3a19a8cae5388b55320/action.yml",
+    "https://github.com/pnpm/action-setup/blob/fc06bc1257f339d1d5d8b3a19a8cae5388b55320/src/install-pnpm/run.ts",
+    "https://github.com/pnpm/pnpm/blob/main/pnpm11/docs/installation.md"
+  ]
+}

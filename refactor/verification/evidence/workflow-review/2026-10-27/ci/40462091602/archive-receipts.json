@@ -1,0 +1,11 @@
+[
+  {
+    "artifactId": 12715411003,
+    "name": "repository-verification",
+    "path": "artifacts/w00-ci/2026-10-27/40462091602/repository-verification.zip",
+    "bytes": 32834,
+    "sha256": "eb8299283b017ea5351c7bc276614589fb1481ae8cfd38e19b063aafbc60c41c",
+    "githubDigest": "sha256:eb8299283b017ea5351c7bc276614589fb1481ae8cfd38e19b063aafbc60c41c",
+    "verified": true
+  }
+]

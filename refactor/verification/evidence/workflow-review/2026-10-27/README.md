@@ -55,9 +55,9 @@ verify / Required checks 和 PR title 是现行合并规则约定的检查名称
 
 保留三文件分工和 verify / Required checks、PR title 两个检查名称。repository 与 desktop 增加明确显示名，步骤按检查、测试、构建、打包、缓存和上传职责命名；complete 描述改为全部已配置检查。两个 Turbo 保存步骤只在主键未命中且来源允许时保存，前缀恢复仍可以生成新主键。
 
-pnpm/action-setup 升级为 v6.1.0，固定提交 ea17c68df8912ef543352723c149a84f56e3d413；upload-artifact 升级为 v7.0.2，固定提交 cf430e030ddbb5b0abf93d22962f4752f3646cd9。两者均声明 Node 24。上传保留默认 ZIP、多路径公共根、附件名及缺少文件即失败的行为，没有采用新的直接单文件上传模式。其余已使用 Node 24 的三个 Action 保留已验证输入。
+pnpm/action-setup 升级为 v5.0.0，固定提交 fc06bc1257f339d1d5d8b3a19a8cae5388b55320；upload-artifact 升级为 v7.0.2，固定提交 cf430e030ddbb5b0abf93d22962f4752f3646cd9。两者均声明 Node 24。上传保留默认 ZIP、多路径公共根、附件名及缺少文件即失败的行为，没有采用新的直接单文件上传模式。其余已使用 Node 24 的三个 Action 保留已验证输入。
 
-安装顺序统一为 checkout → setup-node → pnpm/action-setup → frozen-lockfile 安装。固定 Node 先进入 PATH，pnpm Action 从 packageManager 取得固定版本，负责 pnpm store 缓存；setup-node 的包管理器缓存关闭，避免重复拥有同一缓存。依据是 pnpm 的[安装说明](https://github.com/pnpm/action-setup/tree/v6.1.0)和[固定提交中的实现](https://github.com/pnpm/action-setup/blob/ea17c68df8912ef543352723c149a84f56e3d413/src/install-pnpm/run.ts)：pnpm 11 在 Intel macOS 上没有独立可执行制品，应先提供 Node 22.13 或更新版本。当前固定 Node 24.11.1 满足前置条件；不修改 pnpm 版本，也不增加项目自己的兼容脚本。
+安装顺序统一为 checkout → setup-node → pnpm/action-setup → frozen-lockfile 安装。固定 Node 先进入 PATH，pnpm Action 从 packageManager 取得固定版本，负责 pnpm store 缓存；setup-node 的包管理器缓存关闭，避免重复拥有同一缓存。pnpm 11 在 Intel macOS 上没有独立可执行制品，官方要求安装运行于现有 Node 的普通 pnpm 包，见[安装说明](https://github.com/pnpm/pnpm/blob/main/pnpm11/docs/installation.md)。v5.0.0 的[固定实现](https://github.com/pnpm/action-setup/blob/fc06bc1257f339d1d5d8b3a19a8cae5388b55320/src/install-pnpm/run.ts)直接安装 packageManager 指定的包，且[发行说明](https://github.com/pnpm/action-setup/releases/tag/v5.0.0)确认使用 Node 24。三个入口采用同一实现，不修改 pnpm 11.11.0、不增加平台分支或项目兼容脚本。
 
 | 实际 job | 超时上限 | 取值依据 |
 | --- | --- | --- |
@@ -69,6 +69,14 @@ pnpm/action-setup 升级为 v6.1.0，固定提交 ea17c68df8912ef543352723c149a8
 这些是 CI 作业资源寿命上限，不修改应用启动或交互性能预算，也没有给每个步骤增加独立计时机制。macOS 部署目标继续在依赖安装前的专属步骤设置。
 
 三份 workflow 的 actionlint 1.7.12 与格式检查已通过。Action 配置接口、固定 SHA 的运行时和安装前置已核对；真实安装、六目标运行、附件上传与缓存保存分支等待本轮 CI 复验。
+
+## 安装兼容的实际修正
+
+首次采用 v6.1.0 的提交 d4329c2 在[运行 40462091602](https://github.com/ximu3/kisaki-dev/actions/runs/40462091602)通过仓库检查、48 项常规测试、八包消费者和浏览器检查，新版上传 Action 也成功生成附件，下载摘要与八个包摘要均相符。但 Intel macOS 在 Set up pnpm 失败：[原始日志](ci/40462091602/macos-x64.log)显示 Node 24.11.1 已就位，Action 将内置 pnpm 11.25.0 自更新为项目的 11.11.0 时，仍要求不存在的 @pnpm/exe.darwin-x64 身份，报 ERR_PNPM_PNPM_ENGINE_IDENTITY_UNVERIFIABLE。该目标没有执行依赖安装、源码检查或桌面验证，不能记作通过。
+
+v6.1.0 的[实现](https://github.com/pnpm/action-setup/blob/ea17c68df8912ef543352723c149a84f56e3d413/src/install-pnpm/run.ts)在普通安装后仍调用 self-update；仅调整 Node 安装顺序不足以闭合这个版本组合。因此改用已支持 Node 24、直接安装目标包的 v5.0.0，统一处理全部 runner，随后复验实际 CI。保留首次失败记录，未关闭身份校验或改变项目工具链版本。
+
+第一次仓库 job 为 8 分 49 秒，其中 Chromium 与系统依赖准备占 4 分 25 秒；日志记录系统包下载 19.7 MB 用时 3 分 57 秒、速度 83.2 kB/s。源码检查阶段为 2 分 53 秒，与旧运行的 2 分 55 秒接近。首次 pnpm 缓存创建与独立 PR 标题 job 使用同一主键，后保存者出现已占用提示；该现象与 Turbo 主键恢复后的重复保存是不同分支，原始日志保留。
 
 ## CI 时长判断
 

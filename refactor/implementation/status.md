@@ -56,7 +56,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 随后完成[GitHub workflow 组织与维护复核](../verification/evidence/workflow-review/2026-10-27/README.md)：三份文件的职责与事件／取消边界成立，完整 SHA、只读权限、任务选择、六目标及汇总设计保留；确认两个旧 Action 的 Node 20 迁移提示和缓存主键命中后的重复保存需要维护，job／step 显示命名与任务超时另有整理建议。三份 workflow 通过 actionlint；本次仅审查和记录，未升级依赖、调整这些设计或触发新 CI，既有六目标结果保持原范围。
 
-用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。三份文件的静态检查通过，真实接入等待现有私有 PR 的 CI 复验。旧完整运行约 28 分钟，仓库反馈约 5 分钟，时长依据和适用范围已单独记录。
+用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。首次 v6.1.0 的实际 CI 通过仓库、消费者、浏览器与附件上传，但 Intel macOS 的 pnpm 二次自更新失败；已统一改用 Node 24 的 v5.0.0 直接安装目标包，保留失败日志，等待修正后的远端复验。旧完整运行约 28 分钟，仓库反馈约 5 分钟，时长依据和适用范围已单独记录。
 
 <a id="environments"></a>
 
