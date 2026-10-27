@@ -1,0 +1,13 @@
+{
+  "id": 12736460951,
+  "name": "development-linux-arm64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:a247769e191cfd4cd5a7a9c72aa2216e61edf76758d6a668228544f56fefc3b9",
+  "bytes": 1389,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40507951097/development-linux-arm64.zip",
+  "sha256": "a247769e191cfd4cd5a7a9c72aa2216e61edf76758d6a668228544f56fefc3b9"
+}

@@ -1,0 +1,499 @@
+﻿2026-10-27T12:05:53.5343042Z Current runner version: '2.338.0'
+2026-10-27T12:05:53.5369346Z ##[group]Runner Image Provisioner
+2026-10-27T12:05:53.5370063Z Hosted Compute Agent
+2026-10-27T12:05:53.5370526Z Version: 20261021.618
+2026-10-27T12:05:53.5371028Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T12:05:53.5371611Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T12:05:53.5372167Z Worker ID: {0ddbf660-cbd4-4bf3-8ecc-70ac5d433440}
+2026-10-27T12:05:53.5372749Z Region: northcentralus
+2026-10-27T12:05:53.5373208Z Cloud: Azure
+2026-10-27T12:05:53.5373629Z ##[endgroup]
+2026-10-27T12:05:53.5374990Z ##[group]Operating System
+2026-10-27T12:05:53.5375515Z Microsoft Windows 11
+2026-10-27T12:05:53.5375953Z 10.0.26200
+2026-10-27T12:05:53.5376351Z Enterprise
+2026-10-27T12:05:53.5376751Z ##[endgroup]
+2026-10-27T12:05:53.5377166Z ##[group]Runner Image
+2026-10-27T12:05:53.5377628Z Image: windows-11-vs2026-arm64
+2026-10-27T12:05:53.5378117Z Version: 20261022.194.1
+2026-10-27T12:05:53.5379548Z Included Software: https://github.com/actions/runner-images/blob/win11-vs2026-arm64/20261022.194/images/windows/Windows11-VS2026-Arm64-Readme.md
+2026-10-27T12:05:53.5381258Z Image Release: https://github.com/actions/runner-images/releases/tag/win11-vs2026-arm64%2F20261022.194
+2026-10-27T12:05:53.5382104Z ##[endgroup]
+2026-10-27T12:05:53.5383071Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T12:05:53.5385110Z Contents: read
+2026-10-27T12:05:53.5385591Z Metadata: read
+2026-10-27T12:05:53.5386014Z ##[endgroup]
+2026-10-27T12:05:53.5388088Z Secret source: Actions
+2026-10-27T12:05:53.5388828Z Cache mode: write
+2026-10-27T12:05:53.5389392Z Prepare workflow directory
+2026-10-27T12:05:53.5922325Z Prepare all required actions
+2026-10-27T12:05:53.5974611Z Getting action download info
+2026-10-27T12:05:53.7906946Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T12:05:54.0547451Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T12:05:54.6865014Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T12:05:55.0037358Z Download action repository 'actions/cache@caa296126883cff596d87d8935842f9db880ef25' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-27T12:05:55.3008589Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T12:05:55.9053158Z Uses: ximu3/kisaki-dev/.github/workflows/verification.yml@refs/heads/research/ci-final-design-measurements (313351cb1848a8cfe732c27919a2a7ec1fef425a)
+2026-10-27T12:05:55.9058868Z ##[group] Inputs
+2026-10-27T12:05:55.9059950Z   complete: false
+2026-10-27T12:05:55.9060549Z ##[endgroup]
+2026-10-27T12:05:55.9061209Z Complete job name: verify / Desktop (windows-arm64)
+2026-10-27T12:05:56.0767335Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T12:05:56.0768944Z with:
+2026-10-27T12:05:56.0769505Z   persist-credentials: false
+2026-10-27T12:05:56.0770138Z   repository: ximu3/kisaki-dev
+2026-10-27T12:05:56.0775392Z   token: ***
+2026-10-27T12:05:56.0775902Z   ssh-strict: true
+2026-10-27T12:05:56.0776425Z   ssh-user: git
+2026-10-27T12:05:56.0776935Z   clean: true
+2026-10-27T12:05:56.0777468Z   sparse-checkout-cone-mode: true
+2026-10-27T12:05:56.0778099Z   fetch-depth: 1
+2026-10-27T12:05:56.0778612Z   fetch-tags: false
+2026-10-27T12:05:56.0779143Z   show-progress: true
+2026-10-27T12:05:56.0779676Z   lfs: false
+2026-10-27T12:05:56.0780169Z   submodules: false
+2026-10-27T12:05:56.0780712Z   set-safe-directory: true
+2026-10-27T12:05:56.0781321Z   allow-unsafe-pr-checkout: false
+2026-10-27T12:05:56.0782330Z env:
+2026-10-27T12:05:56.0782829Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:05:56.0783461Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:05:56.0784364Z ##[endgroup]
+2026-10-27T12:05:56.3098735Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T12:05:56.3100863Z ##[group]Getting Git version info
+2026-10-27T12:05:56.3101691Z Working directory is 'C:\a\kisaki-dev\kisaki-dev'
+2026-10-27T12:05:56.3965970Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-27T12:05:56.7524658Z git version 2.56.0.windows.3
+2026-10-27T12:05:56.7579545Z ##[endgroup]
+2026-10-27T12:05:56.7624045Z Temporarily overriding HOME='C:\a\_temp\1b679d2f-aa5d-4c62-aac0-b9320d4f733d' before making global git config changes
+2026-10-27T12:05:56.7626202Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:05:56.7635115Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory C:\a\kisaki-dev\kisaki-dev
+2026-10-27T12:05:56.8369116Z Deleting the contents of 'C:\a\kisaki-dev\kisaki-dev'
+2026-10-27T12:05:56.8376998Z ##[group]Initializing the repository
+2026-10-27T12:05:56.8384468Z [command]"C:\Program Files\Git\bin\git.exe" init C:\a\kisaki-dev\kisaki-dev
+2026-10-27T12:05:56.9838068Z Initialized empty Git repository in C:/a/kisaki-dev/kisaki-dev/.git/
+2026-10-27T12:05:56.9886820Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T12:05:57.0486978Z ##[endgroup]
+2026-10-27T12:05:57.0487485Z ##[group]Disabling automatic garbage collection
+2026-10-27T12:05:57.0496221Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-27T12:05:57.0976330Z ##[endgroup]
+2026-10-27T12:05:57.0977172Z ##[group]Setting up auth
+2026-10-27T12:05:57.0978418Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:05:57.1454141Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-27T12:05:59.2051931Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:05:59.2549750Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-27T12:06:00.3586966Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:06:00.4062614Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-27T12:06:01.4833873Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-27T12:06:01.5320813Z ##[endgroup]
+2026-10-27T12:06:01.5321232Z ##[group]Fetching the repository
+2026-10-27T12:06:01.5334375Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +313351cb1848a8cfe732c27919a2a7ec1fef425a:refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T12:06:03.2961106Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T12:06:03.2961694Z  * [new ref]         313351cb1848a8cfe732c27919a2a7ec1fef425a -> origin/research/ci-final-design-measurements
+2026-10-27T12:06:03.3009138Z ##[endgroup]
+2026-10-27T12:06:03.3009518Z ##[group]Determining the checkout info
+2026-10-27T12:06:03.3011641Z ##[endgroup]
+2026-10-27T12:06:03.3025846Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-27T12:06:03.3587721Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-27T12:06:03.4050307Z ##[group]Checking out the ref
+2026-10-27T12:06:03.4062191Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B research/ci-final-design-measurements refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T12:06:04.4745827Z Updating files:  28% (883/3058)
+2026-10-27T12:06:04.5070785Z Updating files:  29% (887/3058)
+2026-10-27T12:06:04.5414313Z Updating files:  30% (918/3058)
+2026-10-27T12:06:04.5831765Z Updating files:  31% (948/3058)
+2026-10-27T12:06:04.6147932Z Updating files:  32% (979/3058)
+2026-10-27T12:06:04.6549795Z Updating files:  33% (1010/3058)
+2026-10-27T12:06:04.6786833Z Updating files:  34% (1040/3058)
+2026-10-27T12:06:04.7054077Z Updating files:  35% (1071/3058)
+2026-10-27T12:06:04.7315780Z Updating files:  36% (1101/3058)
+2026-10-27T12:06:04.7612303Z Updating files:  37% (1132/3058)
+2026-10-27T12:06:04.7881266Z Updating files:  38% (1163/3058)
+2026-10-27T12:06:04.8100289Z Updating files:  39% (1193/3058)
+2026-10-27T12:06:04.8402726Z Updating files:  40% (1224/3058)
+2026-10-27T12:06:04.8694110Z Updating files:  41% (1254/3058)
+2026-10-27T12:06:04.8958146Z Updating files:  42% (1285/3058)
+2026-10-27T12:06:04.9173400Z Updating files:  43% (1315/3058)
+2026-10-27T12:06:04.9570817Z Updating files:  44% (1346/3058)
+2026-10-27T12:06:04.9924822Z Updating files:  45% (1377/3058)
+2026-10-27T12:06:05.0204839Z Updating files:  46% (1407/3058)
+2026-10-27T12:06:05.0549200Z Updating files:  47% (1438/3058)
+2026-10-27T12:06:05.0864276Z Updating files:  48% (1468/3058)
+2026-10-27T12:06:05.1106387Z Updating files:  49% (1499/3058)
+2026-10-27T12:06:05.1412462Z Updating files:  50% (1529/3058)
+2026-10-27T12:06:05.1807955Z Updating files:  51% (1560/3058)
+2026-10-27T12:06:05.2194369Z Updating files:  52% (1591/3058)
+2026-10-27T12:06:05.2617373Z Updating files:  53% (1621/3058)
+2026-10-27T12:06:05.2879508Z Updating files:  54% (1652/3058)
+2026-10-27T12:06:05.3232120Z Updating files:  55% (1682/3058)
+2026-10-27T12:06:05.3562564Z Updating files:  56% (1713/3058)
+2026-10-27T12:06:05.3868943Z Updating files:  57% (1744/3058)
+2026-10-27T12:06:05.4197332Z Updating files:  58% (1774/3058)
+2026-10-27T12:06:05.4526908Z Updating files:  59% (1805/3058)
+2026-10-27T12:06:05.5357923Z Updating files:  60% (1835/3058)
+2026-10-27T12:06:05.5793855Z Updating files:  60% (1841/3058)
+2026-10-27T12:06:05.6159382Z Updating files:  61% (1866/3058)
+2026-10-27T12:06:05.6451674Z Updating files:  62% (1896/3058)
+2026-10-27T12:06:05.6762670Z Updating files:  63% (1927/3058)
+2026-10-27T12:06:06.3568313Z Updating files:  64% (1958/3058)
+2026-10-27T12:06:06.3898332Z Updating files:  65% (1988/3058)
+2026-10-27T12:06:06.4279386Z Updating files:  66% (2019/3058)
+2026-10-27T12:06:06.4560843Z Updating files:  67% (2049/3058)
+2026-10-27T12:06:06.5342487Z Updating files:  68% (2080/3058)
+2026-10-27T12:06:06.5537816Z Updating files:  68% (2094/3058)
+2026-10-27T12:06:06.5828351Z Updating files:  69% (2111/3058)
+2026-10-27T12:06:06.6112104Z Updating files:  70% (2141/3058)
+2026-10-27T12:06:06.6467792Z Updating files:  71% (2172/3058)
+2026-10-27T12:06:06.6865051Z Updating files:  72% (2202/3058)
+2026-10-27T12:06:06.7188969Z Updating files:  73% (2233/3058)
+2026-10-27T12:06:06.7532862Z Updating files:  74% (2263/3058)
+2026-10-27T12:06:06.7777626Z Updating files:  75% (2294/3058)
+2026-10-27T12:06:06.8072916Z Updating files:  76% (2325/3058)
+2026-10-27T12:06:06.8375881Z Updating files:  77% (2355/3058)
+2026-10-27T12:06:06.9048683Z Updating files:  78% (2386/3058)
+2026-10-27T12:06:06.9741543Z Updating files:  79% (2416/3058)
+2026-10-27T12:06:07.0534276Z Updating files:  80% (2447/3058)
+2026-10-27T12:06:07.0957413Z Updating files:  81% (2477/3058)
+2026-10-27T12:06:07.1524855Z Updating files:  82% (2508/3058)
+2026-10-27T12:06:07.1928377Z Updating files:  83% (2539/3058)
+2026-10-27T12:06:07.2197724Z Updating files:  84% (2569/3058)
+2026-10-27T12:06:07.2439084Z Updating files:  85% (2600/3058)
+2026-10-27T12:06:07.2709053Z Updating files:  86% (2630/3058)
+2026-10-27T12:06:07.2900765Z Updating files:  87% (2661/3058)
+2026-10-27T12:06:07.3192308Z Updating files:  88% (2692/3058)
+2026-10-27T12:06:07.3510451Z Updating files:  89% (2722/3058)
+2026-10-27T12:06:07.3816212Z Updating files:  90% (2753/3058)
+2026-10-27T12:06:07.4143706Z Updating files:  91% (2783/3058)
+2026-10-27T12:06:07.4477083Z Updating files:  92% (2814/3058)
+2026-10-27T12:06:07.4746783Z Updating files:  93% (2844/3058)
+2026-10-27T12:06:07.5057975Z Updating files:  94% (2875/3058)
+2026-10-27T12:06:07.5191529Z Updating files:  95% (2906/3058)
+2026-10-27T12:06:07.5342367Z Updating files:  95% (2916/3058)
+2026-10-27T12:06:07.5750661Z Updating files:  96% (2936/3058)
+2026-10-27T12:06:07.6223103Z Updating files:  97% (2967/3058)
+2026-10-27T12:06:07.6671311Z Updating files:  98% (2997/3058)
+2026-10-27T12:06:09.4699763Z Updating files:  99% (3028/3058)
+2026-10-27T12:06:09.4920466Z Updating files:  99% (3039/3058)
+2026-10-27T12:06:09.4920817Z Updating files: 100% (3058/3058)
+2026-10-27T12:06:09.4921042Z Updating files: 100% (3058/3058), done.
+2026-10-27T12:06:09.5130223Z Switched to a new branch 'research/ci-final-design-measurements'
+2026-10-27T12:06:09.5203180Z branch 'research/ci-final-design-measurements' set up to track 'origin/research/ci-final-design-measurements'.
+2026-10-27T12:06:09.5272977Z ##[endgroup]
+2026-10-27T12:06:09.5838683Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-27T12:06:09.6284332Z 313351cb1848a8cfe732c27919a2a7ec1fef425a
+2026-10-27T12:06:09.6335741Z ##[group]Removing auth
+2026-10-27T12:06:09.6344962Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:06:09.6785448Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-27T12:06:10.7612002Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:06:10.8012534Z http.https://github.com/.extraheader
+2026-10-27T12:06:10.8059385Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T12:06:10.8547242Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-27T12:06:11.9326279Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:06:11.9767248Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-27T12:06:13.0555110Z ##[endgroup]
+2026-10-27T12:06:13.1049677Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T12:06:13.1050139Z with:
+2026-10-27T12:06:13.1050327Z   node-version-file: .node-version
+2026-10-27T12:06:13.1050550Z   architecture: arm64
+2026-10-27T12:06:13.1050757Z   package-manager-cache: false
+2026-10-27T12:06:13.1050965Z   always-auth: false
+2026-10-27T12:06:13.1051144Z   check-latest: false
+2026-10-27T12:06:13.1053556Z   token: ***
+2026-10-27T12:06:13.1053717Z env:
+2026-10-27T12:06:13.1053881Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:06:13.1054103Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:06:13.1054301Z ##[endgroup]
+2026-10-27T12:06:13.3530174Z Node version file is not JSON file
+2026-10-27T12:06:13.3532442Z Resolved .node-version as 24.11.1
+2026-10-27T12:06:13.3543400Z Attempting to download 24.11.1...
+2026-10-27T12:06:13.3735433Z (node:2500) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T12:06:13.3736138Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T12:06:14.0363900Z Acquiring 24.11.1 - arm64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-win32-arm64.7z
+2026-10-27T12:06:14.5159279Z Extracting ...
+2026-10-27T12:06:19.4850511Z Adding to the cache ...
+2026-10-27T12:06:24.9284213Z ##[group]Environment details
+2026-10-27T12:06:26.8708513Z node: v24.11.1
+2026-10-27T12:06:26.8708750Z npm: 11.6.2
+2026-10-27T12:06:26.8708909Z yarn: 1.22.22
+2026-10-27T12:06:26.8709322Z ##[endgroup]
+2026-10-27T12:06:26.9087344Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T12:06:26.9087771Z with:
+2026-10-27T12:06:26.9087925Z   cache: true
+2026-10-27T12:06:26.9088088Z   dest: ~/setup-pnpm
+2026-10-27T12:06:26.9088265Z   run_install: null
+2026-10-27T12:06:26.9088457Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T12:06:26.9088705Z   package_json_file: package.json
+2026-10-27T12:06:26.9088984Z   standalone: false
+2026-10-27T12:06:26.9089197Z env:
+2026-10-27T12:06:26.9089386Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:06:26.9097246Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:06:26.9097493Z ##[endgroup]
+2026-10-27T12:06:27.1558603Z ##[group]Running self-installer...
+2026-10-27T12:06:27.6397768Z (node:5988) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T12:06:27.6398943Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T12:06:27.7867539Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T12:06:27.7951063Z Packages: +1
+2026-10-27T12:06:27.7951282Z +
+2026-10-27T12:06:28.9063980Z Progress: resolved 1, reused 0, downloaded 1, added 0
+2026-10-27T12:06:29.1373322Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T12:06:29.2482141Z 
+2026-10-27T12:06:29.2482615Z dependencies:
+2026-10-27T12:06:29.2482923Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T12:06:29.2483095Z 
+2026-10-27T12:06:29.2585737Z Done in 1.8s
+2026-10-27T12:06:29.2806029Z ##[endgroup]
+2026-10-27T12:06:29.2807974Z Installation Completed!
+2026-10-27T12:06:29.2825403Z ##[group]Restoring cache...
+2026-10-27T12:06:29.3871873Z [command]C:\Windows\system32\cmd.exe /D /S /C "C:\Users\runneradmin\setup-pnpm\node_modules\.bin\pnpm.CMD store path --silent"
+2026-10-27T12:06:30.1430942Z C:\Users\runneradmin\setup-pnpm\node_modules\.bin\store\v11
+2026-10-27T12:06:30.4890040Z Cache hit for: pnpm-cache-Windows-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T12:06:31.6592811Z Received 62914560 of 130727740 (48.1%), 56.6 MBs/sec
+2026-10-27T12:06:34.6519090Z Received 130727740 of 130727740 (100.0%), 30.8 MBs/sec
+2026-10-27T12:06:34.6524474Z Cache Size: ~125 MB (130727740 B)
+2026-10-27T12:06:34.6564503Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf C:/a/_temp/9ed8d92b-c3ac-47d8-bf8a-d5bdd7a57c0a/cache.tzst -P -C C:/a/kisaki-dev/kisaki-dev --force-local --use-compress-program "zstd -d"
+2026-10-27T12:07:03.3264709Z Cache restored successfully
+2026-10-27T12:07:03.3927052Z Cache restored from key: pnpm-cache-Windows-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T12:07:03.3936229Z ##[endgroup]
+2026-10-27T12:07:03.4313132Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T12:07:03.4313569Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T12:07:03.4367734Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-27T12:07:03.4368059Z env:
+2026-10-27T12:07:03.4368228Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:07:03.4368449Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:07:03.4368737Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:07:03.4369030Z ##[endgroup]
+2026-10-27T12:07:04.7301701Z Scope: all 46 workspace projects
+2026-10-27T12:07:04.8256393Z ? Verifying lockfile against supply-chain policies (879 entries)...
+2026-10-27T12:07:04.8421637Z Lockfile is up to date, resolution step is skipped
+2026-10-27T12:07:04.9918202Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T12:07:05.0981456Z Packages: +703
+2026-10-27T12:07:05.0982080Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T12:07:06.0019696Z Progress: resolved 703, reused 703, downloaded 0, added 0
+2026-10-27T12:07:07.0349492Z Progress: resolved 703, reused 703, downloaded 0, added 16
+2026-10-27T12:07:08.0287337Z Progress: resolved 703, reused 703, downloaded 0, added 21
+2026-10-27T12:07:14.6587937Z Progress: resolved 703, reused 703, downloaded 0, added 22
+2026-10-27T12:07:15.6731576Z Progress: resolved 703, reused 703, downloaded 0, added 46
+2026-10-27T12:07:16.6833082Z Progress: resolved 703, reused 703, downloaded 0, added 65
+2026-10-27T12:07:17.6959819Z Progress: resolved 703, reused 703, downloaded 0, added 66
+2026-10-27T12:07:18.7181199Z Progress: resolved 703, reused 703, downloaded 0, added 71
+2026-10-27T12:07:18.8603935Z [WARN] Request took 11349ms: https://registry.npmjs.org/@types%2Fnode
+2026-10-27T12:07:18.8761455Z [WARN] Request took 11512ms: https://registry.npmjs.org/@tailwindcss%2Foxide
+2026-10-27T12:07:19.3273791Z [WARN] Request took 12126ms: https://registry.npmjs.org/@playwright%2Ftest
+2026-10-27T12:07:19.7315456Z Progress: resolved 703, reused 703, downloaded 0, added 117
+2026-10-27T12:07:20.6659815Z ✓ Lockfile passes supply-chain policies (879 entries in 15.8s)
+2026-10-27T12:07:20.7331078Z Progress: resolved 703, reused 703, downloaded 0, added 144
+2026-10-27T12:07:21.7486296Z Progress: resolved 703, reused 703, downloaded 0, added 229
+2026-10-27T12:07:27.0847259Z Progress: resolved 703, reused 703, downloaded 0, added 230
+2026-10-27T12:07:28.0922637Z Progress: resolved 703, reused 703, downloaded 0, added 232
+2026-10-27T12:07:29.1068783Z Progress: resolved 703, reused 703, downloaded 0, added 234
+2026-10-27T12:07:30.1196003Z Progress: resolved 703, reused 703, downloaded 0, added 367
+2026-10-27T12:07:31.1211351Z Progress: resolved 703, reused 703, downloaded 0, added 488
+2026-10-27T12:07:32.1210658Z Progress: resolved 703, reused 703, downloaded 0, added 501
+2026-10-27T12:07:37.7437393Z Progress: resolved 703, reused 703, downloaded 0, added 502
+2026-10-27T12:07:38.7517971Z Progress: resolved 703, reused 703, downloaded 0, added 603
+2026-10-27T12:07:39.7649962Z Progress: resolved 703, reused 703, downloaded 0, added 671
+2026-10-27T12:07:40.4205168Z Progress: resolved 703, reused 703, downloaded 0, added 703, done
+2026-10-27T12:07:48.7663382Z 
+2026-10-27T12:07:48.7664196Z devDependencies:
+2026-10-27T12:07:48.7664834Z + @commitlint/cli 21.2.4
+2026-10-27T12:07:48.7665245Z + @commitlint/config-conventional 21.2.4
+2026-10-27T12:07:48.7665933Z + @kisaki3/eslint-config 0.0.0 <- packages\eslint-config
+2026-10-27T12:07:48.7666383Z + @kisaki3/tooling 0.0.0 <- packages\tooling
+2026-10-27T12:07:48.7666857Z + @kisaki3/typescript-config 0.0.0 <- packages\typescript-config
+2026-10-27T12:07:48.7667279Z + @playwright/test 1.64.1
+2026-10-27T12:07:48.7667558Z + @types/node 24.19.2
+2026-10-27T12:07:48.7667809Z + @types/semver 7.8.0
+2026-10-27T12:07:48.7668079Z + dependency-cruiser 18.7.0
+2026-10-27T12:07:48.7668343Z + eslint 10.13.0
+2026-10-27T12:07:48.7668571Z + husky 9.1.7
+2026-10-27T12:07:48.7672008Z + jiti 2.7.0
+2026-10-27T12:07:48.7672617Z + lint-staged 17.6.0
+2026-10-27T12:07:48.7673045Z + prettier 3.9.10
+2026-10-27T12:07:48.7673315Z + semver 7.8.5
+2026-10-27T12:07:48.7673552Z + tar 7.5.22
+2026-10-27T12:07:48.7682211Z + tsx 4.23.15
+2026-10-27T12:07:48.7682691Z + turbo 2.11.10
+2026-10-27T12:07:48.7683616Z + typescript 6.0.3
+2026-10-27T12:07:48.7683863Z + vite 8.3.3
+2026-10-27T12:07:48.7684941Z + vitest 5.0.5
+2026-10-27T12:07:48.7685180Z + yaml 2.9.1
+2026-10-27T12:07:48.7687078Z 
+2026-10-27T12:07:49.3482453Z Done in 45.1s using pnpm v11.11.0
+2026-10-27T12:07:50.0422569Z ##[group]Run actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T12:07:50.0423043Z with:
+2026-10-27T12:07:50.0423218Z   path: .turbo/cache
+2026-10-27T12:07:50.0423825Z   key: turbo-v2-Windows-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-313351cb1848a8cfe732c27919a2a7ec1fef425a
+2026-10-27T12:07:50.0425373Z   restore-keys: turbo-v2-Windows-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-
+turbo-v2-Windows-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-
+
+2026-10-27T12:07:50.0426686Z   enableCrossOsArchive: false
+2026-10-27T12:07:50.0426912Z   fail-on-cache-miss: false
+2026-10-27T12:07:50.0427119Z   lookup-only: false
+2026-10-27T12:07:50.0427297Z env:
+2026-10-27T12:07:50.0427460Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:07:50.0427689Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:07:50.0427976Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:07:50.0428318Z ##[endgroup]
+2026-10-27T12:07:50.5060100Z Cache hit for restore-key: turbo-v2-Windows-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T12:07:50.7148241Z Received 21183 of 21183 (100.0%), 0.2 MBs/sec
+2026-10-27T12:07:50.7150624Z Cache Size: ~0 MB (21183 B)
+2026-10-27T12:07:50.7173716Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf C:/a/_temp/3604b937-5e86-4d87-824c-d41d6038a4db/cache.tzst -P -C C:/a/kisaki-dev/kisaki-dev --force-local --use-compress-program "zstd -d"
+2026-10-27T12:07:50.8278050Z Cache restored successfully
+2026-10-27T12:07:50.8404301Z Cache restored from key: turbo-v2-Windows-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T12:07:50.8754500Z ##[group]Run mkdir -p test-results/verification
+2026-10-27T12:07:50.8754961Z [36;1mmkdir -p test-results/verification[0m
+2026-10-27T12:07:50.8756048Z [36;1mnode -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json[0m
+2026-10-27T12:07:50.8777397Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:07:50.8777768Z env:
+2026-10-27T12:07:50.8777970Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:07:50.8778203Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:07:50.8778502Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:07:50.8778808Z ##[endgroup]
+2026-10-27T12:07:51.4940447Z ##[group]Run pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
+2026-10-27T12:07:51.4941351Z [36;1mpnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json[0m
+2026-10-27T12:07:51.4991059Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-27T12:07:51.4991382Z env:
+2026-10-27T12:07:51.4991552Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:07:51.4991778Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:07:51.4992074Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:07:51.4992377Z ##[endgroup]
+2026-10-27T12:07:52.4236172Z $ vitest run "--reporter=default" "--reporter=json" "--outputFile=test-results/results.json"
+2026-10-27T12:07:52.9608532Z 
+2026-10-27T12:07:52.9612412Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90mC:/a/kisaki-dev/kisaki-dev/packages/tooling[39m
+2026-10-27T12:07:52.9613160Z 
+2026-10-27T12:07:53.3029801Z  [32m✓[39m tests/output.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+2026-10-27T12:07:54.2507630Z  [32m✓[39m tests/process.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 979[2mms[22m[39m
+2026-10-27T12:07:54.2508490Z    [33m[2m✓[22m[39m cancelling a command waits for the command and its descendant to exit[33m 686[2mms[22m[39m
+2026-10-27T12:07:54.2566523Z 
+2026-10-27T12:07:54.2570810Z [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-27T12:07:54.2574246Z [2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+2026-10-27T12:07:54.2574893Z [2m   Start at [22m 05:07:52
+2026-10-27T12:07:54.2576753Z [2m   Duration [22m 1.29s[2m (tests 88%, transform 8%, import 3%, worker 1%)[22m
+2026-10-27T12:07:54.2586160Z 
+2026-10-27T12:07:54.2604207Z JSON report written to C:/a/kisaki-dev/kisaki-dev/packages/tooling/test-results/results.json
+2026-10-27T12:07:54.4633788Z ##[group]Run pnpm --filter @kisaki3/desktop native:check
+2026-10-27T12:07:54.4634269Z [36;1mpnpm --filter @kisaki3/desktop native:check[0m
+2026-10-27T12:07:54.4684480Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-27T12:07:54.4684804Z env:
+2026-10-27T12:07:54.4684978Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:07:54.4685203Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:07:54.4685494Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:07:54.4685795Z ##[endgroup]
+2026-10-27T12:07:55.3563030Z $ tsx tools/native/cli.ts --check
+2026-10-27T12:07:56.8028818Z info: syncing channel updates for 1.90.0-aarch64-pc-windows-msvc
+2026-10-27T12:07:57.4367116Z info: latest update on 2025-09-18 for version 1.90.0 (1159e78c4 2025-09-14)
+2026-10-27T12:07:57.4500853Z info: downloading 5 components
+2026-10-27T12:08:04.8937413Z warn: the missing active toolchain `1.90.0-aarch64-pc-windows-msvc` has been auto-installed
+2026-10-27T12:08:04.8938168Z warn: this might cause rustup commands to take longer time to finish than expected
+2026-10-27T12:08:04.8938761Z info: you may opt out with `RUSTUP_AUTO_INSTALL=0` or `rustup set auto-install disable`
+2026-10-27T12:08:08.6938348Z     Updating crates.io index
+2026-10-27T12:08:08.9321553Z  Downloading crates ...
+2026-10-27T12:08:09.0082231Z   Downloaded napi-derive v3.6.13
+2026-10-27T12:08:09.0224260Z   Downloaded futures-task v0.3.34
+2026-10-27T12:08:09.0372166Z   Downloaded windows-link v0.2.1
+2026-10-27T12:08:09.0503405Z   Downloaded slab v0.4.12
+2026-10-27T12:08:09.0612726Z   Downloaded semver v1.0.28
+2026-10-27T12:08:09.0840052Z   Downloaded unicode-ident v1.0.27
+2026-10-27T12:08:09.1083348Z   Downloaded proc-macro2 v1.0.107
+2026-10-27T12:08:09.1361113Z   Downloaded futures v0.3.34
+2026-10-27T12:08:09.1904610Z   Downloaded quote v1.0.47
+2026-10-27T12:08:09.2169354Z   Downloaded pin-project-lite v0.2.17
+2026-10-27T12:08:09.2858984Z   Downloaded napi-derive-backend v6.1.6
+2026-10-27T12:08:09.3042871Z   Downloaded futures-channel v0.3.34
+2026-10-27T12:08:09.3235239Z   Downloaded convert_case v0.12.0
+2026-10-27T12:08:09.3421058Z   Downloaded nohash-hasher v0.2.0
+2026-10-27T12:08:09.3505374Z   Downloaded unicode-segmentation v1.13.3
+2026-10-27T12:08:09.3663848Z   Downloaded memchr v2.8.3
+2026-10-27T12:08:09.4126954Z   Downloaded napi-build v2.6.0
+2026-10-27T12:08:09.4268173Z   Downloaded libloading v0.9.0
+2026-10-27T12:08:09.4556223Z   Downloaded futures-core v0.3.34
+2026-10-27T12:08:09.4676779Z   Downloaded futures-util v0.3.34
+2026-10-27T12:08:09.6166666Z   Downloaded rustc-hash v2.1.3
+2026-10-27T12:08:09.6314087Z   Downloaded napi-sys v3.4.1
+2026-10-27T12:08:09.6433709Z   Downloaded napi v3.15.0
+2026-10-27T12:08:09.7072937Z   Downloaded futures-sink v0.3.34
+2026-10-27T12:08:09.7151377Z   Downloaded futures-macro v0.3.34
+2026-10-27T12:08:09.7242006Z   Downloaded futures-io v0.3.34
+2026-10-27T12:08:09.7350741Z   Downloaded syn v3.0.9
+2026-10-27T12:08:10.0611952Z   Downloaded ctor v1.0.13
+2026-10-27T12:08:10.0870965Z   Downloaded bitflags v2.13.2
+2026-10-27T12:08:10.1383606Z   Downloaded futures-executor v0.3.34
+2026-10-27T12:08:10.1651492Z   Downloaded windows-sys v0.61.2
+2026-10-27T12:08:10.7989221Z    Compiling proc-macro2 v1.0.107
+2026-10-27T12:08:10.7989629Z    Compiling quote v1.0.47
+2026-10-27T12:08:10.7989938Z    Compiling unicode-ident v1.0.27
+2026-10-27T12:08:10.7991050Z     Checking futures-sink v0.3.34
+2026-10-27T12:08:10.9197739Z     Checking futures-core v0.3.34
+2026-10-27T12:08:10.9489469Z    Compiling napi-build v2.6.0
+2026-10-27T12:08:11.0406441Z     Checking futures-channel v0.3.34
+2026-10-27T12:08:11.2390012Z     Checking pin-project-lite v0.2.17
+2026-10-27T12:08:11.3023426Z     Checking futures-io v0.3.34
+2026-10-27T12:08:11.3402738Z     Checking slab v0.4.12
+2026-10-27T12:08:11.4076938Z     Checking windows-link v0.2.1
+2026-10-27T12:08:11.4733695Z     Checking futures-task v0.3.34
+2026-10-27T12:08:11.4996696Z     Checking memchr v2.8.3
+2026-10-27T12:08:11.5989611Z    Compiling napi-sys v3.4.1
+2026-10-27T12:08:11.9172035Z    Compiling unicode-segmentation v1.13.3
+2026-10-27T12:08:12.4517930Z    Compiling convert_case v0.12.0
+2026-10-27T12:08:12.9888540Z     Checking libloading v0.9.0
+2026-10-27T12:08:13.1608916Z    Compiling napi v3.15.0
+2026-10-27T12:08:14.2183252Z    Compiling semver v1.0.28
+2026-10-27T12:08:14.4637999Z    Compiling kisaki-native v0.1.0-dev.0 (C:\a\kisaki-dev\kisaki-dev\clients\desktop\app\native)
+2026-10-27T12:08:14.6550494Z    Compiling ctor v1.0.13
+2026-10-27T12:08:14.8927775Z     Checking rustc-hash v2.1.3
+2026-10-27T12:08:14.8969971Z     Checking bitflags v2.13.2
+2026-10-27T12:08:14.9081316Z     Checking nohash-hasher v0.2.0
+2026-10-27T12:08:15.4333180Z     Checking windows-sys v0.61.2
+2026-10-27T12:08:15.8821768Z    Compiling syn v3.0.9
+2026-10-27T12:08:19.5544931Z    Compiling napi-derive-backend v6.1.6
+2026-10-27T12:08:21.1619823Z    Compiling futures-macro v0.3.34
+2026-10-27T12:08:22.2967420Z    Compiling napi-derive v3.6.13
+2026-10-27T12:08:22.4643060Z Terminate batch job (Y/N)? 
+2026-10-27T12:08:22.5605993Z ##[error]The operation was canceled.
+2026-10-27T12:08:22.6368615Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T12:08:22.6369113Z with:
+2026-10-27T12:08:22.6369300Z   name: desktop-windows-arm64
+2026-10-27T12:08:22.6370239Z   path: test-results/verification/
+packages/tooling/test-results/
+clients/desktop/app/test-results/
+clients/desktop/app/dist/windows-arm64/artifacts.json
+clients/desktop/app/dist/windows-arm64/Kisaki-*
+clients/desktop/app/dist/windows-arm64/*.yml
+2026-10-27T12:08:22.6371200Z   if-no-files-found: error
+2026-10-27T12:08:22.6371410Z   compression-level: 6
+2026-10-27T12:08:22.6371600Z   overwrite: false
+2026-10-27T12:08:22.6371790Z   include-hidden-files: false
+2026-10-27T12:08:22.6372032Z   archive: true
+2026-10-27T12:08:22.6372201Z env:
+2026-10-27T12:08:22.6372367Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:08:22.6372591Z   DESKTOP_TARGET: windows-arm64
+2026-10-27T12:08:22.6372882Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+2026-10-27T12:08:22.6373234Z ##[endgroup]
+2026-10-27T12:08:22.9674117Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T12:08:22.9682458Z The least common ancestor is C:\a\kisaki-dev\kisaki-dev. This will be the root directory of the artifact
+2026-10-27T12:08:22.9683134Z With the provided path, there will be 2 files uploaded
+2026-10-27T12:08:22.9683758Z Artifact name is valid!
+2026-10-27T12:08:22.9686229Z Root directory input is valid!
+2026-10-27T12:08:23.1979286Z Uploading artifact: desktop-windows-arm64.zip
+2026-10-27T12:08:23.2015413Z Beginning upload of artifact content to blob storage
+2026-10-27T12:08:23.3267102Z Uploaded bytes 1161
+2026-10-27T12:08:23.3580792Z Finished uploading artifact content to blob storage!
+2026-10-27T12:08:23.3583807Z SHA256 digest of uploaded artifact is 30bf4f0c435fae06eada7c2b2535fb8b7961a2c18ab12c11485fe651943ccfa1
+2026-10-27T12:08:23.3584408Z Finalizing artifact upload
+2026-10-27T12:08:23.7818211Z Artifact desktop-windows-arm64 successfully finalized. Artifact ID 12733021642
+2026-10-27T12:08:23.7818982Z Artifact desktop-windows-arm64 has been successfully uploaded! Final size is 1161 bytes. Artifact ID is 12733021642
+2026-10-27T12:08:23.7830927Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40501024765/artifacts/12733021642
+2026-10-27T12:08:23.8650061Z Post job cleanup.
+2026-10-27T12:08:24.1678684Z Pruning is unnecessary.
+2026-10-27T12:08:24.1683422Z Cache hit occurred on the primary key pnpm-cache-Windows-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1, not saving cache.
+2026-10-27T12:08:24.2584174Z Post job cleanup.
+2026-10-27T12:08:24.5959708Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-27T12:08:24.6477699Z git version 2.56.0.windows.3
+2026-10-27T12:08:24.6555825Z Temporarily overriding HOME='C:\a\_temp\20c10e7a-74e5-4f29-813d-20b5404bfe81' before making global git config changes
+2026-10-27T12:08:24.6556575Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:08:24.6564794Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory C:\a\kisaki-dev\kisaki-dev
+2026-10-27T12:08:24.7115867Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:08:24.7630466Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-27T12:08:25.9269555Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:08:25.9799921Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-27T12:08:27.1763171Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:08:27.2258726Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-27T12:08:28.3559004Z Cleaning up orphan processes

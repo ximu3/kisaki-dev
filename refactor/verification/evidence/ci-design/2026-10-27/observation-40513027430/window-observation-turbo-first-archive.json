@@ -1,0 +1,13 @@
+{
+  "id": 12738530936,
+  "name": "window-observation-turbo-first",
+  "completeArchive": true,
+  "expectedDigest": "sha256:1a735478348630c260d41e368d083dd2ab92ca5f96aca76f9bc5c57b54b395f0",
+  "bytes": 4553,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40513027430/window-observation-turbo-first.zip",
+  "sha256": "1a735478348630c260d41e368d083dd2ab92ca5f96aca76f9bc5c57b54b395f0"
+}

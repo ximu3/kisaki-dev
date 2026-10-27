@@ -1,0 +1,6 @@
+{
+  "sourceHead": "5e0a8dc03211a6ffe119bede4ccf4d1efc516005",
+  "seconds": 116.5663352,
+  "exitCode": 0,
+  "command": "pnpm desktop:package --test-only"
+}

@@ -1,0 +1,13 @@
+{
+  "node": "v24.11.1",
+  "platform": "linux",
+  "architecture": "x64",
+  "parallelism": 4,
+  "cpus": [
+    "AMD EPYC 9V45 96-Core Processor",
+    "AMD EPYC 9V45 96-Core Processor",
+    "AMD EPYC 9V45 96-Core Processor",
+    "AMD EPYC 9V45 96-Core Processor"
+  ],
+  "memoryBytes": 16765390848
+}

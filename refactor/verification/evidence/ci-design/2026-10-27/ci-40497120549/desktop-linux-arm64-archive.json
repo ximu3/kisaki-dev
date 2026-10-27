@@ -1,0 +1,21 @@
+{
+  "id": 12732340382,
+  "name": "desktop-linux-arm64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:597536d9d1f80924b1bbf680f1fd0251f95b683ff46ef6ce4d117d871f9bd998",
+  "bytes": 19410,
+  "reportEntriesCheckedByZipCrc": 10,
+  "verifiedFiles": [
+    {
+      "path": "clients/desktop/app/dist/linux-arm64/latest-linux-arm64.yml",
+      "sha256": "d4d2061a71cf95019ff030eb63e40fd09895a980a7d5e5602ea7b6bd05aa7df9"
+    }
+  ],
+  "receiptFilesNotInArchive": [
+    "Kisaki-0.1.0-dev.0-linux-arm64.AppImage",
+    "Kisaki-0.1.0-dev.0-linux-arm64.deb",
+    "Kisaki-0.1.0-dev.0-linux-arm64.rpm"
+  ],
+  "path": "artifacts/ci-design/2026-10-27/40497120549/desktop-linux-arm64.zip",
+  "sha256": "597536d9d1f80924b1bbf680f1fd0251f95b683ff46ef6ce4d117d871f9bd998"
+}

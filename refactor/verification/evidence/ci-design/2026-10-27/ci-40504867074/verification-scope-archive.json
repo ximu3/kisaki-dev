@@ -1,0 +1,13 @@
+{
+  "id": 12734611393,
+  "name": "verification-scope",
+  "completeArchive": true,
+  "expectedDigest": "sha256:7a71683d7178841f1f7926a0adf4480dd5cf83218e896640a6627438fd9def5b",
+  "bytes": 1028,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40504867074/verification-scope.zip",
+  "sha256": "7a71683d7178841f1f7926a0adf4480dd5cf83218e896640a6627438fd9def5b"
+}

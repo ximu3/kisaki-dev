@@ -1,0 +1,22 @@
+{
+  "id": 12730932565,
+  "name": "desktop-macos-x64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:3dcbdd92242d46d4488a6f46b68301ed94d15f0c5c9d648d943296297e8f2042",
+  "bytes": 19630,
+  "reportEntriesCheckedByZipCrc": 10,
+  "verifiedFiles": [
+    {
+      "path": "clients/desktop/app/dist/macos-x64/latest-mac.yml",
+      "sha256": "5aa5776e0d0b57940741a6cf11ff5e81b70e65d7c7b739e428329fb4f68b579d"
+    }
+  ],
+  "receiptFilesNotInArchive": [
+    "Kisaki-0.1.0-dev.0-macos-x64.dmg",
+    "Kisaki-0.1.0-dev.0-macos-x64.dmg.blockmap",
+    "Kisaki-0.1.0-dev.0-macos-x64.zip",
+    "Kisaki-0.1.0-dev.0-macos-x64.zip.blockmap"
+  ],
+  "path": "artifacts/ci-design/2026-10-27/40497120549/desktop-macos-x64.zip",
+  "sha256": "3dcbdd92242d46d4488a6f46b68301ed94d15f0c5c9d648d943296297e8f2042"
+}

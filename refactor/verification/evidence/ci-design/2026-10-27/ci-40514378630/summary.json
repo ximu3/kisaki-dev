@@ -1,0 +1,1824 @@
+{
+  "runId": 40514378630,
+  "head": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+  "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630",
+  "conclusion": "success",
+  "scope": {
+    "complete": false,
+    "native": true,
+    "browser": false,
+    "e2e": true,
+    "dev": true,
+    "performance": true,
+    "artifacts": true,
+    "tooling": false,
+    "consumers": false
+  },
+  "elapsedSeconds": 742.0,
+  "runnerSeconds": 4469.0,
+  "artifactBytes": 1737833452,
+  "jobs": [
+    {
+      "name": "Select checks",
+      "id": 122224348945,
+      "conclusion": "success",
+      "seconds": 26.0,
+      "completedFromTriggerSeconds": 29.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Select checks",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Upload selected scope",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Desktop (macos-x64)",
+      "id": 122224596728,
+      "conclusion": "success",
+      "seconds": 289.0,
+      "completedFromTriggerSeconds": 322.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 18.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 43.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 41.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 38.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 65.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "success",
+          "seconds": 10.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 1.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 6,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "Desktop (windows-arm64)",
+      "id": 122224596738,
+      "conclusion": "success",
+      "seconds": 448.0,
+      "completedFromTriggerSeconds": 480.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 14.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 46.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 39.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 37.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 66.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 20.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 161.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "success",
+          "seconds": 12.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 10.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 6,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "Desktop (macos-arm64)",
+      "id": 122224596795,
+      "conclusion": "success",
+      "seconds": 188.0,
+      "completedFromTriggerSeconds": 222.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 13.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 12.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 21.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 27.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 27.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 42.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "success",
+          "seconds": 7.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 11.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 3.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 6,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "Desktop (linux-arm64)",
+      "id": 122224596803,
+      "conclusion": "success",
+      "seconds": 341.0,
+      "completedFromTriggerSeconds": 375.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "success",
+          "seconds": 28.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 18.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 219.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 6,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "Development (windows-x64)",
+      "id": 122224596815,
+      "conclusion": "success",
+      "seconds": 661.0,
+      "completedFromTriggerSeconds": 692.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 7.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 12.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 164.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 33.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 421.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Desktop (linux-x64)",
+      "id": 122224596820,
+      "conclusion": "success",
+      "seconds": 291.0,
+      "completedFromTriggerSeconds": 323.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 13.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 198.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 6,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "Repository checks",
+      "id": 122224596863,
+      "conclusion": "success",
+      "seconds": 49.0,
+      "completedFromTriggerSeconds": 81.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Check commit title",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Check repository",
+          "conclusion": "success",
+          "seconds": 20.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test public package consumers",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test browser interactions",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload verification artifacts",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Development (windows-arm64)",
+      "id": 122224596868,
+      "conclusion": "success",
+      "seconds": 705.0,
+      "completedFromTriggerSeconds": 737.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 20.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 14.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 33.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 35.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 54.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 81.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 453.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Development (linux-arm64)",
+      "id": 122224596917,
+      "conclusion": "success",
+      "seconds": 189.0,
+      "completedFromTriggerSeconds": 224.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "success",
+          "seconds": 21.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 23.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 22.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 93.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Development (macos-x64)",
+      "id": 122224596918,
+      "conclusion": "success",
+      "seconds": 518.0,
+      "completedFromTriggerSeconds": 554.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 24.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 47.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 26.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 32.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 99.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 261.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Development (linux-x64)",
+      "id": 122224596924,
+      "conclusion": "success",
+      "seconds": 194.0,
+      "completedFromTriggerSeconds": 226.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 10.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 7.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "success",
+          "seconds": 14.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 19.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 27.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 101.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Development (macos-arm64)",
+      "id": 122224596937,
+      "conclusion": "success",
+      "seconds": 217.0,
+      "completedFromTriggerSeconds": 251.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 8.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Prepare native build",
+          "conclusion": "success",
+          "seconds": 26.0
+        },
+        {
+          "name": "Test development workflows",
+          "conclusion": "success",
+          "seconds": 145.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Upload development reports",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 2.0
+        }
+      ]
+    },
+    {
+      "name": "Desktop (windows-x64)",
+      "id": 122224597086,
+      "conclusion": "success",
+      "seconds": 351.0,
+      "completedFromTriggerSeconds": 384.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Check out repository",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Set up Node.js",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Set up pnpm",
+          "conclusion": "success",
+          "seconds": 14.0
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Install dependencies",
+          "conclusion": "success",
+          "seconds": 11.0
+        },
+        {
+          "name": "Restore Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Record measurement host",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test tooling",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check native source",
+          "conclusion": "success",
+          "seconds": 37.0
+        },
+        {
+          "name": "Build desktop",
+          "conclusion": "success",
+          "seconds": 71.0
+        },
+        {
+          "name": "Record tested build",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Test native bindings and database",
+          "conclusion": "success",
+          "seconds": 6.0
+        },
+        {
+          "name": "Test desktop workflows",
+          "conclusion": "success",
+          "seconds": 18.0
+        },
+        {
+          "name": "Package desktop",
+          "conclusion": "success",
+          "seconds": 148.0
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Test packaged application",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Save Turbo cache",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Post Set up pnpm",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Set up Node.js",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Check out repository",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ],
+      "applicationBuildCount": 1,
+      "turboBuildCache": {
+        "cachedTasks": 4,
+        "totalTasks": 5
+      },
+      "nativeTests": {
+        "passed": 7,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "Required checks",
+      "id": 122230715097,
+      "conclusion": "success",
+      "seconds": 2.0,
+      "completedFromTriggerSeconds": 742.0,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Check required results",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    }
+  ],
+  "reports": {
+    "windows-x64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 419.259
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 4.065
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 10.867,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 7.56,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 4,
+        "reusedTestedBuild": true
+      }
+    },
+    "windows-arm64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 449.971
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 4.252
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 11.359,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 10.245,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 4,
+        "reusedTestedBuild": true
+      }
+    },
+    "macos-x64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 256.084
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 8.431
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 25.408,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 7.726,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 5,
+        "reusedTestedBuild": true
+      }
+    },
+    "macos-arm64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 143.281
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 7.129
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 17.749,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 4.63,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 5,
+        "reusedTestedBuild": true
+      }
+    },
+    "linux-x64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 98.854
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 1.66
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 6.371,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 5.312,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 4,
+        "reusedTestedBuild": true
+      }
+    },
+    "linux-arm64": {
+      "development": {
+        "passed": 7,
+        "failed": 0,
+        "durationSeconds": 91.246
+      },
+      "e2e": {
+        "passed": 4,
+        "failed": 0,
+        "durationSeconds": 3.462
+      },
+      "performance": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 7.394,
+        "samples": 20
+      },
+      "artifacts": {
+        "passed": 1,
+        "failed": 0,
+        "durationSeconds": 5.209,
+        "buildId": "86a751819ecb86c01cfcaaf5c47708d7f8e3686cb4559b09df2d23df0c7ae03e",
+        "candidateFiles": 4,
+        "reusedTestedBuild": true
+      }
+    }
+  }
+}

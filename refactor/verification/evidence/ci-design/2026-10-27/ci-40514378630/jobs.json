@@ -1,0 +1,2753 @@
+{
+  "total_count": 15,
+  "jobs": [
+    {
+      "id": 122224348945,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSOPEQ",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224348945",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224348945",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:12Z",
+      "started_at": "2026-10-27T13:42:14Z",
+      "completed_at": "2026-10-27T13:42:40Z",
+      "name": "verify / Select checks",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:15Z",
+          "completed_at": "2026-10-27T13:42:17Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:17Z",
+          "completed_at": "2026-10-27T13:42:19Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:19Z",
+          "completed_at": "2026-10-27T13:42:24Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:24Z",
+          "completed_at": "2026-10-27T13:42:28Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:42:28Z",
+          "completed_at": "2026-10-27T13:42:34Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:42:34Z",
+          "completed_at": "2026-10-27T13:42:34Z"
+        },
+        {
+          "name": "Select checks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:42:34Z",
+          "completed_at": "2026-10-27T13:42:36Z"
+        },
+        {
+          "name": "Upload selected scope",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:42:36Z",
+          "completed_at": "2026-10-27T13:42:37Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:42:37Z",
+          "completed_at": "2026-10-27T13:42:37Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:42:37Z",
+          "completed_at": "2026-10-27T13:42:37Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:42:37Z",
+          "completed_at": "2026-10-27T13:42:38Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:42:38Z",
+          "completed_at": "2026-10-27T13:42:38Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224348945",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001380,
+      "runner_name": "GitHub Actions 1000001380",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596728,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdW-A",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596728",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596728",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:44Z",
+      "completed_at": "2026-10-27T13:47:33Z",
+      "name": "verify / Desktop (macos-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:45Z",
+          "completed_at": "2026-10-27T13:42:48Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:48Z",
+          "completed_at": "2026-10-27T13:42:52Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:52Z",
+          "completed_at": "2026-10-27T13:43:08Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:08Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:42Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:42Z",
+          "completed_at": "2026-10-27T13:43:43Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:43Z",
+          "completed_at": "2026-10-27T13:43:44Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:44Z",
+          "completed_at": "2026-10-27T13:43:44Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:44Z",
+          "completed_at": "2026-10-27T13:43:44Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:44Z",
+          "completed_at": "2026-10-27T13:44:27Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:44:27Z",
+          "completed_at": "2026-10-27T13:45:08Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:45:08Z",
+          "completed_at": "2026-10-27T13:45:08Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:45:08Z",
+          "completed_at": "2026-10-27T13:45:16Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:45:16Z",
+          "completed_at": "2026-10-27T13:45:54Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:45:54Z",
+          "completed_at": "2026-10-27T13:46:59Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:46:59Z",
+          "completed_at": "2026-10-27T13:46:59Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T13:46:59Z",
+          "completed_at": "2026-10-27T13:47:09Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-27T13:47:09Z",
+          "completed_at": "2026-10-27T13:47:09Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:47:09Z",
+          "completed_at": "2026-10-27T13:47:11Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:47:11Z",
+          "completed_at": "2026-10-27T13:47:27Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:47:27Z",
+          "completed_at": "2026-10-27T13:47:27Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:47:27Z",
+          "completed_at": "2026-10-27T13:47:28Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:47:28Z",
+          "completed_at": "2026-10-27T13:47:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:47:28Z",
+          "completed_at": "2026-10-27T13:47:29Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596728",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001382,
+      "runner_name": "GitHub Actions 1000001382",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596738,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXAg",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596738",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596738",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:43Z",
+      "completed_at": "2026-10-27T13:50:11Z",
+      "name": "verify / Desktop (windows-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:43:03Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:43:03Z",
+          "completed_at": "2026-10-27T13:43:17Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:17Z",
+          "completed_at": "2026-10-27T13:44:03Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:44:03Z",
+          "completed_at": "2026-10-27T13:44:03Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:44:03Z",
+          "completed_at": "2026-10-27T13:44:42Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:44:42Z",
+          "completed_at": "2026-10-27T13:44:45Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:44:45Z",
+          "completed_at": "2026-10-27T13:44:45Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:44:45Z",
+          "completed_at": "2026-10-27T13:44:45Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:44:45Z",
+          "completed_at": "2026-10-27T13:44:45Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:44:45Z",
+          "completed_at": "2026-10-27T13:45:22Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:45:22Z",
+          "completed_at": "2026-10-27T13:46:28Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:46:28Z",
+          "completed_at": "2026-10-27T13:46:29Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:46:29Z",
+          "completed_at": "2026-10-27T13:46:38Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:46:38Z",
+          "completed_at": "2026-10-27T13:46:58Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:46:58Z",
+          "completed_at": "2026-10-27T13:49:39Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:49:39Z",
+          "completed_at": "2026-10-27T13:49:40Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T13:49:40Z",
+          "completed_at": "2026-10-27T13:49:52Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-27T13:49:52Z",
+          "completed_at": "2026-10-27T13:49:52Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:49:52Z",
+          "completed_at": "2026-10-27T13:49:54Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:49:54Z",
+          "completed_at": "2026-10-27T13:50:04Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:50:04Z",
+          "completed_at": "2026-10-27T13:50:05Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:50:05Z",
+          "completed_at": "2026-10-27T13:50:05Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:50:05Z",
+          "completed_at": "2026-10-27T13:50:09Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:50:09Z",
+          "completed_at": "2026-10-27T13:50:09Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596738",
+      "labels": [
+        "windows-11-arm"
+      ],
+      "runner_id": 1000001383,
+      "runner_name": "GitHub Actions 1000001383",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596795,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXOw",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596795",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596795",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:45Z",
+      "completed_at": "2026-10-27T13:45:53Z",
+      "name": "verify / Desktop (macos-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:45Z",
+          "completed_at": "2026-10-27T13:42:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:42:51Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:51Z",
+          "completed_at": "2026-10-27T13:43:00Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:00Z",
+          "completed_at": "2026-10-27T13:43:13Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:13Z",
+          "completed_at": "2026-10-27T13:43:13Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:13Z",
+          "completed_at": "2026-10-27T13:43:25Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:25Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:47Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:43:47Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:44:18Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:44:18Z",
+          "completed_at": "2026-10-27T13:44:45Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:44:45Z",
+          "completed_at": "2026-10-27T13:45:27Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:45:27Z",
+          "completed_at": "2026-10-27T13:45:27Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T13:45:27Z",
+          "completed_at": "2026-10-27T13:45:34Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-27T13:45:34Z",
+          "completed_at": "2026-10-27T13:45:34Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:45:34Z",
+          "completed_at": "2026-10-27T13:45:35Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:45:35Z",
+          "completed_at": "2026-10-27T13:45:46Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:45:46Z",
+          "completed_at": "2026-10-27T13:45:46Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:45:46Z",
+          "completed_at": "2026-10-27T13:45:46Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:45:46Z",
+          "completed_at": "2026-10-27T13:45:47Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:45:47Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596795",
+      "labels": [
+        "macos-15"
+      ],
+      "runner_id": 1000001387,
+      "runner_name": "GitHub Actions 1000001387",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596803,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXQw",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596803",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596803",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:45Z",
+      "completed_at": "2026-10-27T13:48:26Z",
+      "name": "verify / Desktop (linux-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:46Z",
+          "completed_at": "2026-10-27T13:42:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:42:50Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:50Z",
+          "completed_at": "2026-10-27T13:42:54Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:54Z",
+          "completed_at": "2026-10-27T13:42:57Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:42:57Z",
+          "completed_at": "2026-10-27T13:42:57Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:42:57Z",
+          "completed_at": "2026-10-27T13:43:03Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:03Z",
+          "completed_at": "2026-10-27T13:43:08Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:08Z",
+          "completed_at": "2026-10-27T13:43:08Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:08Z",
+          "completed_at": "2026-10-27T13:43:36Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:36Z",
+          "completed_at": "2026-10-27T13:43:36Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:36Z",
+          "completed_at": "2026-10-27T13:43:52Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:43:52Z",
+          "completed_at": "2026-10-27T13:44:10Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:44:10Z",
+          "completed_at": "2026-10-27T13:44:11Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:44:11Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:44:30Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:44:30Z",
+          "completed_at": "2026-10-27T13:48:09Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:48:09Z",
+          "completed_at": "2026-10-27T13:48:09Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-10-27T13:48:09Z",
+          "completed_at": "2026-10-27T13:48:09Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T13:48:09Z",
+          "completed_at": "2026-10-27T13:48:15Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:48:15Z",
+          "completed_at": "2026-10-27T13:48:16Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:48:16Z",
+          "completed_at": "2026-10-27T13:48:24Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:48:24Z",
+          "completed_at": "2026-10-27T13:48:24Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:48:24Z",
+          "completed_at": "2026-10-27T13:48:24Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:48:24Z",
+          "completed_at": "2026-10-27T13:48:25Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:48:25Z",
+          "completed_at": "2026-10-27T13:48:25Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596803",
+      "labels": [
+        "ubuntu-22.04-arm"
+      ],
+      "runner_id": 1000001386,
+      "runner_name": "GitHub Actions 1000001386",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596815,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXTw",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596815",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596815",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:42Z",
+      "completed_at": "2026-10-27T13:53:43Z",
+      "name": "verify / Development (windows-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:43Z",
+          "completed_at": "2026-10-27T13:42:44Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:52Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:52Z",
+          "completed_at": "2026-10-27T13:42:59Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:59Z",
+          "completed_at": "2026-10-27T13:43:11Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:11Z",
+          "completed_at": "2026-10-27T13:43:11Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:11Z",
+          "completed_at": "2026-10-27T13:43:19Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:19Z",
+          "completed_at": "2026-10-27T13:43:20Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:20Z",
+          "completed_at": "2026-10-27T13:43:20Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:20Z",
+          "completed_at": "2026-10-27T13:43:20Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:20Z",
+          "completed_at": "2026-10-27T13:46:04Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:46:04Z",
+          "completed_at": "2026-10-27T13:46:37Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:46:37Z",
+          "completed_at": "2026-10-27T13:53:38Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:53:38Z",
+          "completed_at": "2026-10-27T13:53:39Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:53:39Z",
+          "completed_at": "2026-10-27T13:53:40Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:53:40Z",
+          "completed_at": "2026-10-27T13:53:40Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:53:40Z",
+          "completed_at": "2026-10-27T13:53:40Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:53:40Z",
+          "completed_at": "2026-10-27T13:53:42Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:53:42Z",
+          "completed_at": "2026-10-27T13:53:42Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596815",
+      "labels": [
+        "windows-2025"
+      ],
+      "runner_id": 1000001381,
+      "runner_name": "GitHub Actions 1000001381",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596820,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXVA",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596820",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596820",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:43Z",
+      "completed_at": "2026-10-27T13:47:34Z",
+      "name": "verify / Desktop (linux-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:46Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:46Z",
+          "completed_at": "2026-10-27T13:42:48Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:48Z",
+          "completed_at": "2026-10-27T13:42:52Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:52Z",
+          "completed_at": "2026-10-27T13:42:55Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:42:55Z",
+          "completed_at": "2026-10-27T13:42:55Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:42:55Z",
+          "completed_at": "2026-10-27T13:42:59Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:42:59Z",
+          "completed_at": "2026-10-27T13:43:00Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:00Z",
+          "completed_at": "2026-10-27T13:43:00Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:00Z",
+          "completed_at": "2026-10-27T13:43:16Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:16Z",
+          "completed_at": "2026-10-27T13:43:16Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:16Z",
+          "completed_at": "2026-10-27T13:43:32Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:43:32Z",
+          "completed_at": "2026-10-27T13:43:45Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:43:45Z",
+          "completed_at": "2026-10-27T13:43:45Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:43:45Z",
+          "completed_at": "2026-10-27T13:43:48Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:43:48Z",
+          "completed_at": "2026-10-27T13:43:57Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:43:57Z",
+          "completed_at": "2026-10-27T13:47:15Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:47:15Z",
+          "completed_at": "2026-10-27T13:47:15Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-10-27T13:47:15Z",
+          "completed_at": "2026-10-27T13:47:15Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T13:47:15Z",
+          "completed_at": "2026-10-27T13:47:21Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:47:21Z",
+          "completed_at": "2026-10-27T13:47:22Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:47:22Z",
+          "completed_at": "2026-10-27T13:47:31Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:47:31Z",
+          "completed_at": "2026-10-27T13:47:31Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:47:31Z",
+          "completed_at": "2026-10-27T13:47:31Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:47:31Z",
+          "completed_at": "2026-10-27T13:47:31Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:47:31Z",
+          "completed_at": "2026-10-27T13:47:31Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596820",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001389,
+      "runner_name": "GitHub Actions 1000001389",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596863,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXfw",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596863",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596863",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:43Z",
+      "completed_at": "2026-10-27T13:43:32Z",
+      "name": "verify / Repository checks",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:46Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:46Z",
+          "completed_at": "2026-10-27T13:42:49Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:49Z",
+          "completed_at": "2026-10-27T13:42:54Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:54Z",
+          "completed_at": "2026-10-27T13:42:59Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:42:59Z",
+          "completed_at": "2026-10-27T13:43:04Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:04Z",
+          "completed_at": "2026-10-27T13:43:04Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:04Z",
+          "completed_at": "2026-10-27T13:43:05Z"
+        },
+        {
+          "name": "Check commit title",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:05Z",
+          "completed_at": "2026-10-27T13:43:06Z"
+        },
+        {
+          "name": "Check repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:06Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Test public package consumers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Test browser interactions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:26Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:43:26Z",
+          "completed_at": "2026-10-27T13:43:27Z"
+        },
+        {
+          "name": "Upload verification artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:43:27Z",
+          "completed_at": "2026-10-27T13:43:28Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:43:28Z",
+          "completed_at": "2026-10-27T13:43:28Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:43:28Z",
+          "completed_at": "2026-10-27T13:43:29Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:43:29Z",
+          "completed_at": "2026-10-27T13:43:29Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:43:29Z",
+          "completed_at": "2026-10-27T13:43:29Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596863",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001385,
+      "runner_name": "GitHub Actions 1000001385",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596868,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXhA",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596868",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596868",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:43Z",
+      "completed_at": "2026-10-27T13:54:28Z",
+      "name": "verify / Development (windows-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:43:07Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:43:07Z",
+          "completed_at": "2026-10-27T13:43:21Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:21Z",
+          "completed_at": "2026-10-27T13:43:54Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:54Z",
+          "completed_at": "2026-10-27T13:43:54Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:54Z",
+          "completed_at": "2026-10-27T13:44:29Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:44:29Z",
+          "completed_at": "2026-10-27T13:44:29Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:44:29Z",
+          "completed_at": "2026-10-27T13:44:31Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:44:31Z",
+          "completed_at": "2026-10-27T13:44:31Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:44:31Z",
+          "completed_at": "2026-10-27T13:45:25Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:45:25Z",
+          "completed_at": "2026-10-27T13:46:46Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:46:46Z",
+          "completed_at": "2026-10-27T13:54:19Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:54:19Z",
+          "completed_at": "2026-10-27T13:54:20Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:54:20Z",
+          "completed_at": "2026-10-27T13:54:22Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:54:22Z",
+          "completed_at": "2026-10-27T13:54:22Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:54:22Z",
+          "completed_at": "2026-10-27T13:54:22Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:54:22Z",
+          "completed_at": "2026-10-27T13:54:27Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:54:27Z",
+          "completed_at": "2026-10-27T13:54:27Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596868",
+      "labels": [
+        "windows-11-arm"
+      ],
+      "runner_id": 1000001391,
+      "runner_name": "GitHub Actions 1000001391",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596917,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXtQ",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596917",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596917",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:46Z",
+      "completed_at": "2026-10-27T13:45:55Z",
+      "name": "verify / Development (linux-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:42:49Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:49Z",
+          "completed_at": "2026-10-27T13:42:50Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:50Z",
+          "completed_at": "2026-10-27T13:42:56Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:56Z",
+          "completed_at": "2026-10-27T13:43:01Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:01Z",
+          "completed_at": "2026-10-27T13:43:01Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:01Z",
+          "completed_at": "2026-10-27T13:43:07Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:07Z",
+          "completed_at": "2026-10-27T13:43:07Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:07Z",
+          "completed_at": "2026-10-27T13:43:08Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:08Z",
+          "completed_at": "2026-10-27T13:43:29Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:29Z",
+          "completed_at": "2026-10-27T13:43:52Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:52Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:45:47Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:45:47Z",
+          "completed_at": "2026-10-27T13:45:48Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:45:48Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:45:50Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:45:50Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:45:50Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:45:50Z",
+          "completed_at": "2026-10-27T13:45:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596917",
+      "labels": [
+        "ubuntu-22.04-arm"
+      ],
+      "runner_id": 1000001388,
+      "runner_name": "GitHub Actions 1000001388",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596918,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXtg",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596918",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596918",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:47Z",
+      "completed_at": "2026-10-27T13:51:25Z",
+      "name": "verify / Development (macos-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:52Z",
+          "completed_at": "2026-10-27T13:42:55Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:55Z",
+          "completed_at": "2026-10-27T13:43:03Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:43:03Z",
+          "completed_at": "2026-10-27T13:43:27Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:27Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:44:14Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:44:14Z",
+          "completed_at": "2026-10-27T13:44:40Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:44:40Z",
+          "completed_at": "2026-10-27T13:44:40Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:44:40Z",
+          "completed_at": "2026-10-27T13:44:43Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:44:43Z",
+          "completed_at": "2026-10-27T13:44:43Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:44:43Z",
+          "completed_at": "2026-10-27T13:45:15Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:45:15Z",
+          "completed_at": "2026-10-27T13:46:54Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:46:54Z",
+          "completed_at": "2026-10-27T13:51:15Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:51:15Z",
+          "completed_at": "2026-10-27T13:51:17Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:51:17Z",
+          "completed_at": "2026-10-27T13:51:19Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:51:19Z",
+          "completed_at": "2026-10-27T13:51:19Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:51:19Z",
+          "completed_at": "2026-10-27T13:51:20Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:51:20Z",
+          "completed_at": "2026-10-27T13:51:21Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:51:21Z",
+          "completed_at": "2026-10-27T13:51:21Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596918",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001390,
+      "runner_name": "GitHub Actions 1000001390",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596924,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXvA",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596924",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596924",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:43Z",
+      "completed_at": "2026-10-27T13:45:57Z",
+      "name": "verify / Development (linux-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:46Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:46Z",
+          "completed_at": "2026-10-27T13:42:48Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:48Z",
+          "completed_at": "2026-10-27T13:42:53Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:53Z",
+          "completed_at": "2026-10-27T13:43:03Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:03Z",
+          "completed_at": "2026-10-27T13:43:03Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:03Z",
+          "completed_at": "2026-10-27T13:43:10Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:10Z",
+          "completed_at": "2026-10-27T13:43:10Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:10Z",
+          "completed_at": "2026-10-27T13:43:11Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:11Z",
+          "completed_at": "2026-10-27T13:43:25Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:25Z",
+          "completed_at": "2026-10-27T13:43:44Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:44Z",
+          "completed_at": "2026-10-27T13:44:11Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:44:11Z",
+          "completed_at": "2026-10-27T13:45:52Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:45:52Z",
+          "completed_at": "2026-10-27T13:45:53Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:45:53Z",
+          "completed_at": "2026-10-27T13:45:54Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:45:54Z",
+          "completed_at": "2026-10-27T13:45:54Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:45:54Z",
+          "completed_at": "2026-10-27T13:45:54Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:45:54Z",
+          "completed_at": "2026-10-27T13:45:55Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:45:55Z",
+          "completed_at": "2026-10-27T13:45:55Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596924",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001384,
+      "runner_name": "GitHub Actions 1000001384",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224596937,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdXyQ",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224596937",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224596937",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:45Z",
+      "completed_at": "2026-10-27T13:46:22Z",
+      "name": "verify / Development (macos-arm64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:45Z",
+          "completed_at": "2026-10-27T13:42:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:47Z",
+          "completed_at": "2026-10-27T13:42:50Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:50Z",
+          "completed_at": "2026-10-27T13:42:56Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:42:56Z",
+          "completed_at": "2026-10-27T13:43:04Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:04Z",
+          "completed_at": "2026-10-27T13:43:04Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:04Z",
+          "completed_at": "2026-10-27T13:43:12Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:12Z",
+          "completed_at": "2026-10-27T13:43:12Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:12Z",
+          "completed_at": "2026-10-27T13:43:13Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:13Z",
+          "completed_at": "2026-10-27T13:43:13Z"
+        },
+        {
+          "name": "Install Chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:13Z",
+          "completed_at": "2026-10-27T13:43:22Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:22Z",
+          "completed_at": "2026-10-27T13:43:48Z"
+        },
+        {
+          "name": "Test development workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:43:48Z",
+          "completed_at": "2026-10-27T13:46:13Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:46:13Z",
+          "completed_at": "2026-10-27T13:46:15Z"
+        },
+        {
+          "name": "Upload development reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:46:15Z",
+          "completed_at": "2026-10-27T13:46:16Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-27T13:46:16Z",
+          "completed_at": "2026-10-27T13:46:16Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-27T13:46:16Z",
+          "completed_at": "2026-10-27T13:46:17Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-27T13:46:17Z",
+          "completed_at": "2026-10-27T13:46:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-27T13:46:17Z",
+          "completed_at": "2026-10-27T13:46:19Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224596937",
+      "labels": [
+        "macos-15"
+      ],
+      "runner_id": 1000001393,
+      "runner_name": "GitHub Actions 1000001393",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122224597086,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdSdYXg",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122224597086",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122224597086",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:42:40Z",
+      "started_at": "2026-10-27T13:42:44Z",
+      "completed_at": "2026-10-27T13:48:35Z",
+      "name": "verify / Desktop (windows-x64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:42:44Z",
+          "completed_at": "2026-10-27T13:42:46Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:42:46Z",
+          "completed_at": "2026-10-27T13:42:55Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:42:55Z",
+          "completed_at": "2026-10-27T13:43:04Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T13:43:04Z",
+          "completed_at": "2026-10-27T13:43:18Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-27T13:43:18Z",
+          "completed_at": "2026-10-27T13:43:18Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T13:43:18Z",
+          "completed_at": "2026-10-27T13:43:29Z"
+        },
+        {
+          "name": "Restore Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T13:43:29Z",
+          "completed_at": "2026-10-27T13:43:30Z"
+        },
+        {
+          "name": "Record measurement host",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T13:43:30Z",
+          "completed_at": "2026-10-27T13:43:31Z"
+        },
+        {
+          "name": "Install Linux desktop tools",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T13:43:31Z",
+          "completed_at": "2026-10-27T13:43:31Z"
+        },
+        {
+          "name": "Test tooling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-10-27T13:43:31Z",
+          "completed_at": "2026-10-27T13:43:31Z"
+        },
+        {
+          "name": "Check native source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-27T13:43:31Z",
+          "completed_at": "2026-10-27T13:44:08Z"
+        },
+        {
+          "name": "Build desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-27T13:44:08Z",
+          "completed_at": "2026-10-27T13:45:19Z"
+        },
+        {
+          "name": "Record tested build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-27T13:45:19Z",
+          "completed_at": "2026-10-27T13:45:19Z"
+        },
+        {
+          "name": "Test native bindings and database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T13:45:19Z",
+          "completed_at": "2026-10-27T13:45:25Z"
+        },
+        {
+          "name": "Test desktop workflows",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T13:45:25Z",
+          "completed_at": "2026-10-27T13:45:43Z"
+        },
+        {
+          "name": "Package desktop",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T13:45:43Z",
+          "completed_at": "2026-10-27T13:48:11Z"
+        },
+        {
+          "name": "Confirm tested build reuse",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T13:48:11Z",
+          "completed_at": "2026-10-27T13:48:12Z"
+        },
+        {
+          "name": "Test packaged application",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T13:48:12Z",
+          "completed_at": "2026-10-27T13:48:21Z"
+        },
+        {
+          "name": "Test packaged application (X11)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-27T13:48:21Z",
+          "completed_at": "2026-10-27T13:48:21Z"
+        },
+        {
+          "name": "Save Turbo cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T13:48:21Z",
+          "completed_at": "2026-10-27T13:48:22Z"
+        },
+        {
+          "name": "Upload desktop artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T13:48:22Z",
+          "completed_at": "2026-10-27T13:48:31Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-27T13:48:31Z",
+          "completed_at": "2026-10-27T13:48:32Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-27T13:48:32Z",
+          "completed_at": "2026-10-27T13:48:32Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-27T13:48:32Z",
+          "completed_at": "2026-10-27T13:48:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-27T13:48:34Z",
+          "completed_at": "2026-10-27T13:48:34Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122224597086",
+      "labels": [
+        "windows-2025"
+      ],
+      "runner_id": 1000001392,
+      "runner_name": "GitHub Actions 1000001392",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122230715097,
+      "run_id": 40514378630,
+      "workflow_name": "CI design measurements",
+      "head_branch": "research/ci-final-design-measurements",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40514378630",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcdYSy2Q",
+      "head_sha": "a32abca1968bec74e2e181d805a66d199ef1a1e4",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122230715097",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40514378630/job/122230715097",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T13:54:29Z",
+      "started_at": "2026-10-27T13:54:31Z",
+      "completed_at": "2026-10-27T13:54:33Z",
+      "name": "verify / Required checks",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T13:54:32Z",
+          "completed_at": "2026-10-27T13:54:32Z"
+        },
+        {
+          "name": "Check required results",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T13:54:32Z",
+          "completed_at": "2026-10-27T13:54:32Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T13:54:32Z",
+          "completed_at": "2026-10-27T13:54:32Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122230715097",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001394,
+      "runner_name": "GitHub Actions 1000001394",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

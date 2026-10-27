@@ -1,0 +1,45 @@
+{
+  "id": 12731536194,
+  "name": "repository-verification",
+  "completeArchive": true,
+  "expectedDigest": "sha256:32eee35be87325d414ba6d566850a7cf56366863d5489c232de9ba921f072874",
+  "bytes": 30181,
+  "reportEntriesCheckedByZipCrc": 4,
+  "verifiedFiles": [
+    {
+      "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+      "sha256": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+    },
+    {
+      "path": "artifacts/packages/desktop-contracts-3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996.tgz",
+      "sha256": "3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996"
+    },
+    {
+      "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+      "sha256": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+    },
+    {
+      "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+      "sha256": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+    },
+    {
+      "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+      "sha256": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+    },
+    {
+      "path": "artifacts/packages/extension-sdk-823df01c04a5ded0c70601483b0400fff7ca0836d64d424a6ad5e3b97418c8eb.tgz",
+      "sha256": "823df01c04a5ded0c70601483b0400fff7ca0836d64d424a6ad5e3b97418c8eb"
+    },
+    {
+      "path": "artifacts/packages/rpc-59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31.tgz",
+      "sha256": "59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31"
+    },
+    {
+      "path": "artifacts/packages/ui-08b97d0807b01d1bc2961138cbd7cec83ecbb7a74206134e0b08cbab3811f16d.tgz",
+      "sha256": "08b97d0807b01d1bc2961138cbd7cec83ecbb7a74206134e0b08cbab3811f16d"
+    }
+  ],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40497120549/repository-verification.zip",
+  "sha256": "32eee35be87325d414ba6d566850a7cf56366863d5489c232de9ba921f072874"
+}

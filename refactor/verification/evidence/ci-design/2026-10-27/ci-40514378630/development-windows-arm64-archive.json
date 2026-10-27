@@ -1,0 +1,13 @@
+{
+  "id": 12739336927,
+  "name": "development-windows-arm64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:0d48ccaff4d1c3f782ec5cd62d4b4a6d04f1b04ca314920476c5cb1ec2563834",
+  "bytes": 1375,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40514378630/development-windows-arm64.zip",
+  "sha256": "0d48ccaff4d1c3f782ec5cd62d4b4a6d04f1b04ca314920476c5cb1ec2563834"
+}
