@@ -1,0 +1,28 @@
+{
+  "target": "macos-arm64",
+  "version": "0.1.0-dev.0",
+  "buildId": "a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b",
+  "testOnly": true,
+  "files": [
+    {
+      "path": "Kisaki-0.1.0-dev.0-macos-arm64.dmg",
+      "sha256": "1214ca4d8f1a2db5a60ff5f0ffcc756739d8d33adffdf8bcb2b562ec8b87c774"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-macos-arm64.dmg.blockmap",
+      "sha256": "c376588ea2f2ed69c460a385653d982706b02330495bb92e968dc3401089fd08"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-macos-arm64.zip",
+      "sha256": "8dc2b3f443afce866f3e70cbf52c0eaecb18a32359631c2154220c5695aa8d76"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-macos-arm64.zip.blockmap",
+      "sha256": "49bdb493ac9756e810473d5f013ec636b94ea87c1c3694ac92bed547af4280db"
+    },
+    {
+      "path": "latest-mac.yml",
+      "sha256": "7d22af21c191be3455202a2ca5c82729512793523a83fddc26da93ee005349d4"
+    }
+  ]
+}

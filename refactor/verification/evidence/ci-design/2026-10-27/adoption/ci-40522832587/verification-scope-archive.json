@@ -1,0 +1,13 @@
+{
+  "id": 12743125760,
+  "name": "verification-scope",
+  "completeArchive": true,
+  "expectedDigest": "sha256:32f576c22beface21a163753e75a6136a479c04430b3b5d7b68fbab78a5050a7",
+  "bytes": 3204,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-adoption/2026-10-27/40522832587/verification-scope.zip",
+  "sha256": "32f576c22beface21a163753e75a6136a479c04430b3b5d7b68fbab78a5050a7"
+}
