@@ -24,6 +24,7 @@ jobs:
       tooling: ${{ steps.affected.outputs.tooling }}
     env:
       TURBO_TELEMETRY_DISABLED: '1'
+      TURBO_CONCURRENCY: '2'
       TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       TURBO_SCM_HEAD: ${{ github.sha }}
     steps:
@@ -90,17 +91,16 @@ jobs:
         if: github.event_name == 'push'
         run: git log -1 --format=%s | pnpm exec commitlint
       - name: Check repository inputs
+        shell: bash
         env:
           COMPLETE: ${{ steps.affected.outputs.complete }}
         run: |
-          if [ "$COMPLETE" = true ]; then
-            pnpm check
-          else
-            pnpm typecheck --affected
-            pnpm lint --affected
-            pnpm format:check
-            pnpm test --affected
-          fi
+          selection=()
+          if [[ "$COMPLETE" == false ]]; then selection=(--affected); fi
+          pnpm typecheck "${selection[@]}" --log-order=stream
+          pnpm lint "${selection[@]}" --log-order=stream
+          pnpm format:check
+          pnpm test "${selection[@]}" --log-order=stream
       - name: Prepare Chromium
         if: steps.affected.outputs.consumers == 'true' || steps.affected.outputs.browser == 'true'
         run: pnpm exec playwright install --with-deps chromium
