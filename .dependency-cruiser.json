@@ -17,6 +17,14 @@
       }
     },
     {
+      "name": "no-undeclared-packages",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "dependencyTypes": ["npm-no-pkg", "npm-unknown"]
+      }
+    },
+    {
       "name": "runtime-does-not-import-engineering",
       "severity": "error",
       "from": {
@@ -313,10 +321,7 @@
       "fileName": "tsconfig.json"
     },
     "doNotFollow": {
-      "path": "node_modules|/dist/|/out/"
-    },
-    "exclude": {
-      "path": "(^refactor/|/node_modules/|/dist/|/out/|/.cache/|.test.tsx?$)"
+      "path": "^refactor/|(^|/)(node_modules|dist|out|target|test-results|playwright-report|coverage|\\.cache|\\.local|\\.turbo|\\.vitest)/|\\.test\\.tsx?$"
     },
     "enhancedResolveOptions": {
       "conditionNames": ["types", "import", "node", "default"],

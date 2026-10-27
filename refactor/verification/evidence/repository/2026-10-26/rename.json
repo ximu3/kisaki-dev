@@ -1,0 +1,206 @@
+{
+  "requestedName": "ximu3/kisaki-dev",
+  "requestedDescription": "Private development repository for the Kisaki rewrite.",
+  "before": {
+    "id": 1432214248,
+    "nodeId": "R_kgDOVV3a6A",
+    "name": "kisaki-w00-ci",
+    "fullName": "ximu3/kisaki-w00-ci",
+    "url": "https://github.com/ximu3/kisaki-w00-ci",
+    "private": true,
+    "archived": false,
+    "defaultBranch": "main",
+    "description": "Temporary private repository for Kisaki W00 engineering and six-target CI verification.",
+    "hasPages": false
+  },
+  "beforeRefs": [
+    {
+      "ref": "refs/heads/main",
+      "sha": "e0ac47204390b1828ad5fba869ece2e226dc0938"
+    },
+    {
+      "ref": "refs/heads/refactor/remove-output-coordination",
+      "sha": "f3f74f5880f3fd74be63f119a231e38fff4478c1"
+    },
+    {
+      "ref": "refs/heads/research/appimage-policy-2026-10-26",
+      "sha": "b87c1238e68846f25b46ec63d454a4ba83b85b18"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-alternate-2026-10-26",
+      "sha": "9150109a1b77559506f5d74414c5dca060b62178"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-base-2026-10-26",
+      "sha": "bf696f3e18b411049515927e27cb497193f1e3e9"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-head-2026-10-26",
+      "sha": "3f05d1e86e33692a51c4f825fc921c1cba197d3a"
+    }
+  ],
+  "beforePullRequests": [
+    {
+      "number": 2,
+      "state": "closed",
+      "title": "test: verify CI event routing",
+      "headRef": "research/ci-trigger-head-2026-10-26",
+      "headSha": "3f05d1e86e33692a51c4f825fc921c1cba197d3a",
+      "baseRef": "research/ci-trigger-alternate-2026-10-26",
+      "url": "https://github.com/ximu3/kisaki-w00-ci/pull/2"
+    },
+    {
+      "number": 1,
+      "state": "open",
+      "title": "refactor: simplify tooling and cache workspace tasks",
+      "headRef": "refactor/remove-output-coordination",
+      "headSha": "f3f74f5880f3fd74be63f119a231e38fff4478c1",
+      "baseRef": "main",
+      "url": "https://github.com/ximu3/kisaki-w00-ci/pull/1"
+    }
+  ],
+  "beforeWorkflows": [
+    {
+      "id": 396867641,
+      "name": "AppImage policy probe",
+      "path": ".github/workflows/appimage-policy-probe.yml",
+      "state": "active"
+    },
+    {
+      "id": 395135224,
+      "name": "CI",
+      "path": ".github/workflows/ci.yml",
+      "state": "active"
+    },
+    {
+      "id": 396944172,
+      "name": "PR title",
+      "path": ".github/workflows/pr-title.yml",
+      "state": "active"
+    },
+    {
+      "id": 396102521,
+      "name": "Copilot",
+      "path": "dynamic/agents/copilot-pull-request-reviewer",
+      "state": "active"
+    }
+  ],
+  "after": {
+    "id": 1432214248,
+    "nodeId": "R_kgDOVV3a6A",
+    "name": "kisaki-dev",
+    "fullName": "ximu3/kisaki-dev",
+    "url": "https://github.com/ximu3/kisaki-dev",
+    "private": true,
+    "archived": false,
+    "defaultBranch": "main",
+    "description": "Private development repository for the Kisaki rewrite.",
+    "hasPages": false
+  },
+  "afterRefs": [
+    {
+      "ref": "refs/heads/main",
+      "sha": "e0ac47204390b1828ad5fba869ece2e226dc0938"
+    },
+    {
+      "ref": "refs/heads/refactor/remove-output-coordination",
+      "sha": "f3f74f5880f3fd74be63f119a231e38fff4478c1"
+    },
+    {
+      "ref": "refs/heads/research/appimage-policy-2026-10-26",
+      "sha": "b87c1238e68846f25b46ec63d454a4ba83b85b18"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-alternate-2026-10-26",
+      "sha": "9150109a1b77559506f5d74414c5dca060b62178"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-base-2026-10-26",
+      "sha": "bf696f3e18b411049515927e27cb497193f1e3e9"
+    },
+    {
+      "ref": "refs/heads/research/ci-trigger-head-2026-10-26",
+      "sha": "3f05d1e86e33692a51c4f825fc921c1cba197d3a"
+    }
+  ],
+  "afterPullRequests": [
+    {
+      "number": 2,
+      "state": "closed",
+      "title": "test: verify CI event routing",
+      "headRef": "research/ci-trigger-head-2026-10-26",
+      "headSha": "3f05d1e86e33692a51c4f825fc921c1cba197d3a",
+      "baseRef": "research/ci-trigger-alternate-2026-10-26",
+      "url": "https://github.com/ximu3/kisaki-dev/pull/2"
+    },
+    {
+      "number": 1,
+      "state": "open",
+      "title": "refactor: simplify tooling and cache workspace tasks",
+      "headRef": "refactor/remove-output-coordination",
+      "headSha": "f3f74f5880f3fd74be63f119a231e38fff4478c1",
+      "baseRef": "main",
+      "url": "https://github.com/ximu3/kisaki-dev/pull/1"
+    }
+  ],
+  "afterWorkflows": [
+    {
+      "id": 396867641,
+      "name": "AppImage policy probe",
+      "path": ".github/workflows/appimage-policy-probe.yml",
+      "state": "active"
+    },
+    {
+      "id": 395135224,
+      "name": "CI",
+      "path": ".github/workflows/ci.yml",
+      "state": "active"
+    },
+    {
+      "id": 396944172,
+      "name": "PR title",
+      "path": ".github/workflows/pr-title.yml",
+      "state": "active"
+    },
+    {
+      "id": 396102521,
+      "name": "Copilot",
+      "path": "dynamic/agents/copilot-pull-request-reviewer",
+      "state": "active"
+    }
+  ],
+  "verification": {
+    "repositoryIdentityPreserved": true,
+    "branchRefsPreserved": true,
+    "pullRequestsPreserved": true,
+    "workflowsPreserved": true,
+    "oldGitUrlResolves": true,
+    "oldApiUrlResolves": true,
+    "actionsRun": {
+      "id": 40310558001,
+      "conclusion": "success",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40310558001"
+    },
+    "origin": "https://github.com/ximu3/kisaki-dev.git",
+    "chatPullRequestLinks": [
+      "https://github.com/ximu3/kisaki-dev/pull/1",
+      "https://github.com/ximu3/kisaki-dev/pull/2"
+    ],
+    "worktrees": [
+      {
+        "directory": "F:/project/kisaki",
+        "origin": "https://github.com/ximu3/kisaki-dev.git"
+      },
+      {
+        "directory": "C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki",
+        "origin": "https://github.com/ximu3/kisaki-dev.git"
+      }
+    ],
+    "documentation": {
+      "result": "passed",
+      "checkedLocalLinks": 159,
+      "diffWhitespace": "passed"
+    }
+  },
+  "completedDate": "2026-10-26"
+}

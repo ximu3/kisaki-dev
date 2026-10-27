@@ -1,0 +1,10 @@
+$ vitest run --config vitest.config.ts
+
+ RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+
+
+ Test Files  4 passed (4)
+      Tests  14 passed (14)
+   Start at  15:29:18
+   Duration  719ms (tests 71%, transform 15%, import 10%, worker 3%)
+

@@ -1,0 +1,97 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 121533250705,
+      "run_id": 40311415895,
+      "workflow_name": "CI",
+      "head_branch": "research/ci-trigger-head-2026-10-26",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-w00-ci/actions/runs/40311415895",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcS_I8kQ",
+      "head_sha": "42f10f5f94fd1089fc7500495c044126354c3918",
+      "url": "https://api.github.com/repos/ximu3/kisaki-w00-ci/actions/jobs/121533250705",
+      "html_url": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40311415895/job/121533250705",
+      "status": "in_progress",
+      "conclusion": null,
+      "created_at": "2026-10-26T10:57:34Z",
+      "started_at": "2026-10-26T10:57:37Z",
+      "completed_at": null,
+      "name": "verify / repository",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T10:57:38Z",
+          "completed_at": "2026-10-26T10:57:39Z"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T10:57:39Z",
+          "completed_at": "2026-10-26T10:57:41Z"
+        },
+        {
+          "name": "Run cp \"$GITHUB_EVENT_PATH\" event.json",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T10:57:41Z",
+          "completed_at": "2026-10-26T10:57:41Z"
+        },
+        {
+          "name": "Run echo 'desktop=false' >> \"$GITHUB_OUTPUT\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T10:57:41Z",
+          "completed_at": "2026-10-26T10:57:41Z"
+        },
+        {
+          "name": "Keep verification running while metadata is edited",
+          "status": "in_progress",
+          "conclusion": null,
+          "number": 5,
+          "started_at": "2026-10-26T10:57:41Z",
+          "completed_at": null
+        },
+        {
+          "name": "Apply the intentional probe result",
+          "status": "pending",
+          "conclusion": null,
+          "number": 6,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "pending",
+          "conclusion": null,
+          "number": 7,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "pending",
+          "conclusion": null,
+          "number": 14,
+          "started_at": null,
+          "completed_at": null
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-w00-ci/check-runs/121533250705",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001157,
+      "runner_name": "GitHub Actions 1000001157",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

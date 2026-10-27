@@ -1,0 +1,13 @@
+$ vitest run --config config/vitest/vitest.config.dev.ts "tests/tools/dev/session.test.ts"
+
+ RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+
+ ✓ tests/tools/dev/session.test.ts (1 test) 65629ms
+   ✓ hands off complete generations, retains the last good build and stops without resetting the profile 65628ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  13:27:07
+   Duration  66.08s (tests 100%)
+
+JSON report written to F:/project/kisaki/clients/desktop/app/test-results/dev/results.json

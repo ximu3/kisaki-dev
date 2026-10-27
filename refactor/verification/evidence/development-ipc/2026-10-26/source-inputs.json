@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "package": "app-builder-lib",
+      "version": "26.15.3",
+      "file": "out/targets/appimage/AppImageTarget.js",
+      "sha256": "e681ec08f713e76e84c8001a2e3ba8cb8c5d67ea72fe2a66b6eb32be79446fea"
+    },
+    {
+      "package": "app-builder-lib",
+      "version": "26.15.3",
+      "file": "out/targets/appimage/appImageUtil.js",
+      "sha256": "4d3b63afc9939ace718e0b3537e2b1508c15fde7fd030206cbe207bcb6a8f030"
+    },
+    {
+      "package": "app-builder-lib",
+      "version": "26.15.3",
+      "file": "out/toolsets/linux.js",
+      "sha256": "43c9c90f3016f4624ef7b83462453691e2a0e54eaff6e8d4be9fc63bb1f4e4bc"
+    }
+  ],
+  "asarEntries": [
+    "\\main.js",
+    "\\package.json"
+  ]
+}

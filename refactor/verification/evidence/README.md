@@ -6,6 +6,17 @@
 
 | 范围                         | 记录                                                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Monorepo 与 CI 完成度 | [工程结构、Turbo 使用、旧 CI 的实际边界及打包输入／环境补漏](monorepo-review/2026-10-27/README.md) |
+| 测试必要性收敛 | [用例分层、Turbo 任务选择、CI 与文档义务调整及本机验证](testing-cleanup/2026-10-27/README.md) |
+| 新准则全项目复核 | [实现与文档覆盖、环境变量传递和消费者资源清理修正](comprehensive-review/2026-10-26/README.md) · [全面测试必要性复核](comprehensive-review/2026-10-26/testing.md) |
+| 临时仓库改名 | [kisaki-w00-ci → kisaki-dev：身份、分支、PR、工作流与旧地址核对](repository/2026-10-26/rename.json) |
+| 脚本、依赖与工具能力 | [审查与社区比较](tooling-review/2026-10-26/README.md) · [Vite、依赖边界、脚本与缓存的正式修正及本机回归](tooling-review/2026-10-26/implementation/README.md) |
+| 简洁与原生 | [全项目准则、技术与交互复核、Kana 焦点取舍及旧条款修正](simplicity-native/2026-10-26/README.md) |
+| CI 事件与检查结果 | [标题／正文编辑保留代码结果，提交与目标分支变化重新验证](ci-events/2026-10-26/README.md) |
+| AppImage 条件兼容策略采用 | [本体打包配置、统一入口与真实 Linux 沙箱状态](appimage-policy/2026-10-26/adoption/README.md) |
+| AppImage 启动政策比较 | [Ubuntu 24.04 x64：默认降级、精确路径准备、原位更新与移动后的真实沙箱状态](appimage-policy/2026-10-26/README.md) |
+| 开发连接完整替换 | [正式加固设置下的探索](development-ipc/2026-10-26/README.md) · [正式合同、W00 实现与本机验证](development-ipc/2026-10-26/implementation/README.md) |
+| 必要性与复杂度 | [2026-10-26 全项目设计、实现与测试复核，准则提升及局部简化](proportionality/2026-10-26/README.md) |
 | 私有工程包与任务缓存 | [2026-10-26 共享配置、项目任务、缓存隔离与本机完整回归](w00/2026-10-26/monorepo-cache/README.md) |
 | 工程导入可读性 | [2026-10-26 工程源码命名入口、包内 imports 作用域与本机回归](w00/2026-10-26/readable-imports/README.md) |
 | W00 顺序执行入口 | [2026-10-25 跨命令协调清理、普通任务入口与实际回归](w00/2026-10-25/sequential-workflows/README.md) |
@@ -23,7 +34,7 @@
 | 默认分集补充与辅助资料集 | [身份对应与上游资料核对](metadata-reachability/2026-10-24/README.md) |
 | 会话结果声明与存档格式 | [类型消费与 ZIP 编码试件](contract-closure/2026-10-24/README.md) |
 | 存档恢复、查询与事务         | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                             |
-| 公共值、开发帧与 Drizzle RC  | [声明和隔离运行检查](public-contracts/2026-10-22/README.md)                                            |
+| 公共值、历史开发帧与 Drizzle RC | [声明和隔离运行检查](public-contracts/2026-10-22/README.md) |
 | 日期、界面隔离与开发工具     | [技术对照](technical-tradeoffs/2026-10-22/README.md)                                                   |
 | 时钟分段、分部匹配与截图来源 | [规则及原生探针](contract-closure/2026-10-22/README.md)                                                |
 | 大集合与扫描报告复制成本     | [容量模型](capacity/README.md)                                                                         |

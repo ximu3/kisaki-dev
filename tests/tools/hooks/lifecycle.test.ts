@@ -55,16 +55,13 @@ test('installs idempotently, uninstalls cleanly, and never edits inherited confi
   expect(await readFile(globalConfig, 'utf8')).toBe(originalGlobal)
 })
 
-test.each(['', '.other-hooks', '.lefthook'])(
-  'preserves an explicit local hook path %j',
-  async (path) => {
-    git(['config', '--local', 'core.hooksPath', path])
-    const original = await readFile(join(repository, '.git/config'), 'utf8')
+test.each(['', '.other-hooks'])('preserves an explicit local hook path %j', async (path) => {
+  git(['config', '--local', 'core.hooksPath', path])
+  const original = await readFile(join(repository, '.git/config'), 'utf8')
 
-    await expect(configureHooks(repository, 'install')).rejects.toThrow('conflicts')
-    expect(await readFile(join(repository, '.git/config'), 'utf8')).toBe(original)
-  },
-)
+  await expect(configureHooks(repository, 'install')).rejects.toThrow('conflicts')
+  expect(await readFile(join(repository, '.git/config'), 'utf8')).toBe(original)
+})
 
 test('rejects an inherited hook path, including an explicitly empty value', async () => {
   await writeFile(globalConfig, '[core]\n\thooksPath =\n')

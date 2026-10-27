@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
-import { resolve as resolveExports } from 'resolve.exports'
+import type { ViteDevServer } from 'vite'
 import { readPnpm } from '@kisaki3/tooling/process'
 import { repositoryRoot } from '../lib/paths'
 
@@ -43,17 +43,22 @@ export async function desktopDependencies(signal?: AbortSignal): Promise<Desktop
 export interface DependencySnapshot {
   id: string
   sizeBytes: number
-  aliases: ReadonlyMap<string, string>
+  packages: ReadonlyMap<string, string>
 }
 
-/** Capture complete public packages after their dependency build succeeds. */
+/** Vite's client resolver, accessed through the environment that currently owns the server. */
+export type DependencyResolver =
+  ViteDevServer['environments']['client']['pluginContainer']['resolveId']
+
+/** Capture complete packages and validate their runtime exports with Vite before adoption. */
 export async function captureDependencies(
   members: DesktopDependency[],
   directory: string,
   existing: Map<string, DependencySnapshot>,
+  resolveDependency: DependencyResolver,
 ): Promise<DependencySnapshot> {
   const content = new Map<string, Uint8Array>()
-  const manifests = new Map<string, Parameters<typeof resolveExports>[0]>()
+  const manifests = new Map<string, unknown>()
   let sizeBytes = 0
   const digest = createHash('sha256')
 
@@ -89,19 +94,19 @@ export async function captureDependencies(
   for (const [name, value] of content) digest.update(name).update('\0').update(value)
   const id = digest.digest('hex')
   const previous = existing.get(id)
-  if (previous) return previous
 
   // Snapshots remain readable until session end; cap accumulated build outputs at 256 MiB.
   const budgetBytes = 256 * 1024 * 1024
   if (
-    sizeBytes + [...existing.values()].reduce((sum, item) => sum + item.sizeBytes, 0) >
-    budgetBytes
+    !previous &&
+    sizeBytes + [...existing.values()].reduce((sum, item) => sum + item.sizeBytes, 0) > budgetBytes
   ) {
     throw new Error('Development dependency snapshots exceed 256 MiB; restart the session')
   }
 
   const root = join(directory, id, 'node_modules')
-  const aliases = new Map<string, string>()
+  const packages = new Map<string, string>()
+  const entries = new Map<string, string[]>()
   for (const [name, manifest] of manifests) {
     if (
       !manifest ||
@@ -110,46 +115,55 @@ export async function captureDependencies(
       manifest.name !== name ||
       !('exports' in manifest) ||
       !manifest.exports ||
-      typeof manifest.exports !== 'object'
+      typeof manifest.exports !== 'object' ||
+      Array.isArray(manifest.exports)
     ) {
       throw new Error('Public package exports are unavailable')
     }
 
-    for (const entry of Object.keys(manifest.exports)) {
-      if (!entry.startsWith('.') || entry.includes('*')) {
+    const exports = Object.keys(manifest.exports)
+    for (const entry of exports) {
+      if ((entry !== '.' && !entry.startsWith('./')) || entry.includes('*')) {
         throw new Error('Desktop package exports must be explicit')
       }
-
-      const selected = resolveExports(manifest, entry, {
-        browser: true,
-        conditions: ['import'],
-      })?.[0]
-      if (!selected) continue
-
-      const packageRoot = join(root, name)
-      const path = resolve(packageRoot, selected)
-      if (!path.startsWith(`${join(packageRoot, 'dist')}${sep}`)) {
-        throw new Error('Public runtime exports must use built output')
-      }
-      if (!content.has(relative(root, path).split(sep).join('/'))) {
-        throw new Error(`Public export has no build output: ${name}${entry.slice(1)}`)
-      }
-
-      aliases.set(entry === '.' ? name : `${name}/${entry.slice(2)}`, path)
     }
+    packages.set(name, join(root, name))
+    entries.set(name, exports)
   }
 
   try {
-    for (const [name, value] of content) {
-      await mkdir(dirname(join(root, name)), { recursive: true })
-      await writeFile(join(root, name), value)
+    if (!previous) {
+      for (const [name, value] of content) {
+        await mkdir(dirname(join(root, name)), { recursive: true })
+        await writeFile(join(root, name), value)
+      }
+    }
+
+    for (const [name, exports] of entries) {
+      const packageRoot = packages.get(name)!
+      for (const entry of exports) {
+        const specifier = entry === '.' ? name : `${name}${entry.slice(1)}`
+        const selected = await resolveDependency(specifier, join(packageRoot, 'package.json'))
+        if (!selected || selected.external || !isAbsolute(selected.id)) {
+          throw new Error(`Public export could not be resolved: ${specifier}`)
+        }
+
+        const path = resolve(selected.id.replace(/[?#].*$/, ''))
+        const output = relative(join(packageRoot, 'dist'), path)
+        if (!output || output === '..' || output.startsWith(`..${sep}`) || isAbsolute(output)) {
+          throw new Error('Public runtime exports must use built output')
+        }
+        if (!content.has(relative(root, path).split(sep).join('/'))) {
+          throw new Error(`Public export has no build output: ${specifier}`)
+        }
+      }
     }
   } catch (cause) {
-    await rm(join(directory, id), { recursive: true, force: true })
+    if (!previous) await rm(join(directory, id), { recursive: true, force: true })
     throw cause
   }
 
-  const snapshot = { id, sizeBytes, aliases }
+  const snapshot = previous ?? { id, sizeBytes, packages }
   existing.set(id, snapshot)
   return snapshot
 }

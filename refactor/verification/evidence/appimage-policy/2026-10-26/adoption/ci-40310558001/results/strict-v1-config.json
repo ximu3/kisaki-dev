@@ -1,0 +1,40 @@
+{
+  "appId": "me.kisaki.policy-probe",
+  "productName": "Kisaki Policy Probe",
+  "asar": true,
+  "npmRebuild": false,
+  "electronVersion": "44.5.1",
+  "directories": {
+    "app": "/tmp/kisaki-policy-bKYZHH/app-strict-v1",
+    "output": "/tmp/kisaki-policy-bKYZHH/build-strict-v1"
+  },
+  "files": [
+    "!node_modules/**",
+    "main.js",
+    "package.json"
+  ],
+  "linux": {
+    "target": [
+      "AppImage"
+    ],
+    "executableName": "kisaki-policy-probe",
+    "category": "Utility"
+  },
+  "artifactName": "strict-v1.AppImage",
+  "toolsets": {
+    "appimage": "0.0.0"
+  },
+  "electronFuses": {
+    "runAsNode": false,
+    "enableCookieEncryption": true,
+    "enableNodeOptionsEnvironmentVariable": false,
+    "enableNodeCliInspectArguments": false,
+    "enableEmbeddedAsarIntegrityValidation": true,
+    "onlyLoadAppFromAsar": true,
+    "grantFileProtocolExtraPrivileges": false
+  },
+  "appImage": {
+    "executableArgs": []
+  },
+  "afterPack": "/tmp/kisaki-policy-bKYZHH/strict-launcher.cjs"
+}

@@ -1,0 +1,25 @@
+  • electron-builder  version=26.15.3 os=10.0.19045
+  • loaded configuration  file=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\electron-builder.json
+  • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=F:\project\kisaki\clients\desktop\app
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=44.5.1 appOutDir=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\output\win-unpacked
+  • using custom unpacked Electron distribution  electronDist=F:\project\kisaki\node_modules\.pnpm\electron@44.5.1\node_modules\electron\dist
+  • copying unpacked Electron  source=F:\project\kisaki\node_modules\.pnpm\electron@44.5.1\node_modules\electron\dist destination=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\output\win-unpacked
+  • searching for node modules  pm=pnpm searchDir=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\app
+  • no node modules found in collection, trying next search directory  searchDir=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\app attempt=0
+  • searching for node modules  pm=pnpm searchDir=F:\project\kisaki\clients\desktop\app
+  • searching for node modules  pm=traversal searchDir=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\app
+  • using manual traversal of node_modules to build dependency tree
+  • no node modules found in collection, trying next search directory  searchDir=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\app attempt=0
+  • searching for node modules  pm=traversal searchDir=F:\project\kisaki\clients\desktop\app
+  • using manual traversal of node_modules to build dependency tree
+  • updating asar integrity executable resource  executablePath=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\output\win-unpacked\Kisaki-Ipc-Probe.exe
+  • executing @electron/fuses  electronPath=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\output\win-unpacked\Kisaki-Ipc-Probe.exe
+  • default Electron icon is used  reason=application icon is not set
+  • signing with signtool.exe  path=F:\project\kisaki\.cache\development-ipc\packaged-IFz7sq\output\win-unpacked\Kisaki-Ipc-Probe.exe
+Warning: Detected unsettled top-level await at F:\project\kisaki\refactor\verification\evidence\development-ipc\2026-10-26\run.ts:129
+  scenarios.push({ name: 'channel-disconnect-and-normal-exit', ...await probe(true) })
+                                                                  ^
+
+
+

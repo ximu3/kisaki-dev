@@ -101,7 +101,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展保留默认 tsconfig.json 与 kisx.config.ts，并由 config/typescript 中的声明配置和 Node 工具配置分别检查实际环境。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展当前的 kisx.config.ts 与 eslint.config.ts 共用根 tsconfig.json 的 Node 环境；实际运行源码建立后再按其宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
@@ -167,7 +167,6 @@ clients/desktop/app/tools/
 │   ├── cli.ts
 │   ├── session.ts
 │   ├── renderer.ts
-│   ├── electron-process.ts
 │   ├── electron-executable.ts
 │   ├── generation.ts
 │   └── dependencies.ts
@@ -198,7 +197,7 @@ clients/desktop/app/tools/
 
 | 位置                             | 职责与调用关系                                                                                                                                                                     |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dev/session.ts                   | 拥有完整开发会话与构建交接；renderer 管理 Vite 和输入监听，electron-process 管理进程启停，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)收尾。 |
+| dev/session.ts                   | 拥有完整开发会话与构建交接，通过 extension-cli/extension 启动真实应用；renderer 管理 Vite 和输入监听，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。 |
 | build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                 |
 | build/programs.ts                | 依据应用 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。 |

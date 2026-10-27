@@ -1,0 +1,14 @@
+{
+  "events": [
+    {
+      "event": "deadline"
+    },
+    {
+      "event": "close",
+      "code": null,
+      "signal": "SIGTERM"
+    }
+  ],
+  "stdout": "\r\n",
+  "stderr": ""
+}

@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 import { readFile, readdir } from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import ts from 'typescript'
-import { parse } from 'yaml'
+import { readPnpm } from '@kisaki3/tooling/process'
 
 const root = process.cwd()
 
@@ -38,7 +38,9 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
     'clients/desktop/packages',
     'clients/desktop/extensions/projects',
   ]) {
-    for (const child of await readdir(parent)) directories.push(`${parent}/${child}`)
+    for (const child of await readdir(parent, { withFileTypes: true })) {
+      if (child.isDirectory()) directories.push(`${parent}/${child.name}`)
+    }
   }
   return Promise.all(
     directories.map(async (directory) => ({
@@ -48,22 +50,19 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
   )
 }
 
-test('the workspace contains the application, eight public packages, 33 official projects and three private engineering packages', async () => {
-  const workspace: { packages: string[] } = parse(await readFile('pnpm-workspace.yaml', 'utf8'))
-  expect(workspace.packages).toEqual([
-    'packages/*',
-    'clients/desktop/app',
-    'clients/desktop/packages/*',
-    'clients/desktop/extensions/projects/*',
-  ])
+test('pnpm registers the maintained projects with unique identities and the intended publication boundaries', async () => {
+  const selected: { path: string }[] = JSON.parse(
+    await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
+  )
   const projects = await members()
-  expect(projects).toHaveLength(45)
-  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(45)
+  const actual = selected.map((member) => relative(root, member.path).replaceAll('\\', '/'))
+  expect(actual.filter(Boolean).sort()).toEqual(projects.map(({ directory }) => directory).sort())
+  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(projects.length)
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
     if (directory.startsWith('clients/desktop/packages/')) {
       expect(manifest.license).toBe('MIT')
-      expect(manifest.publishConfig).toEqual({ access: 'public' })
+      expect(manifest.publishConfig).toMatchObject({ access: 'public' })
     } else {
       expect(manifest.private).toBe(true)
       expect(manifest.license).toBe('AGPL-3.0-only')

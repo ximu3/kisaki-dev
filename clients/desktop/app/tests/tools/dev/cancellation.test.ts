@@ -1,64 +1,21 @@
 import { expect, test } from 'vitest'
-import { spawn } from 'node:child_process'
-import type { ChildProcess } from 'node:child_process'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { hostTarget } from '../../../tools/lib/targets'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
-
-/** An isolated controller reports test observations through its private IPC channel. */
-function controller(app: string): {
-  process: ChildProcess
-  closed: Promise<number | null>
-  states: string[]
-  diagnostics(): string
-} {
-  const child = spawn(
-    process.execPath,
-    ['--import', 'tsx', 'tests/support/development-controller.ts'],
-    {
-      cwd: app,
-      windowsHide: true,
-      env: process.env,
-      stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-    },
-  )
-  let output = ''
-  const states: string[] = []
-  child.stdout!.setEncoding('utf8').on('data', (value: string) => {
-    output = (output + value).slice(-16_384)
-  })
-  child.stderr!.setEncoding('utf8').on('data', (value: string) => {
-    output = (output + value).slice(-16_384)
-  })
-  child.on('message', (message: unknown) => {
-    if (
-      message &&
-      typeof message === 'object' &&
-      'state' in message &&
-      typeof message.state === 'string'
-    ) {
-      states.push(message.state)
-    }
-  })
-  const closed = new Promise<number | null>((resolve, reject) => {
-    child.once('error', reject)
-    child.once('close', resolve)
-  })
-  return { process: child, closed, states, diagnostics: () => output }
-}
+import { startDevelopmentController } from '../../support/development-session'
 
 test('cancelling initial dependency preparation closes its command and permits a complete retry', async () => {
   const workspace = await prepareDevelopmentWorkspace()
-  let first: ReturnType<typeof controller> | undefined
-  let retry: ReturnType<typeof controller> | undefined
+  let first: ReturnType<typeof startDevelopmentController> | undefined
+  let retry: ReturnType<typeof startDevelopmentController> | undefined
   try {
     const manifestPath = join(workspace.root, 'clients/desktop/packages/ui/package.json')
     const original = await readFile(manifestPath, 'utf8')
     const manifest: { scripts: Record<string, string> } = JSON.parse(original)
     manifest.scripts.build = 'tsx ../../app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
-    first = controller(workspace.app)
+    first = startDevelopmentController(workspace.app)
     const sessions = join(workspace.app, 'out', 'development', hostTarget())
     let preparation: { pid: number } | undefined
     await expect
@@ -79,7 +36,7 @@ test('cancelling initial dependency preparation closes its command and permits a
       .toBe(true)
     first.process.send({ type: 'stop' })
     expect(await first.closed, first.diagnostics()).toBe(0)
-    expect(first.states).not.toContain('ready')
+    expect(first.states.some((state) => state.state === 'ready')).toBe(false)
     expect(await readdir(sessions)).toEqual([])
     expect(preparation).toBeDefined()
     await expect
@@ -95,18 +52,17 @@ test('cancelling initial dependency preparation closes its command and permits a
       .toBe(false)
 
     await writeFile(manifestPath, original)
-    retry = controller(workspace.app)
-    await expect.poll(() => retry!.states.includes('ready'), { timeout: 120_000 }).toBe(true)
+    retry = startDevelopmentController(workspace.app)
+    await expect
+      .poll(() => retry!.states.some((state) => state.state === 'ready'), { timeout: 120_000 })
+      .toBe(true)
     retry.process.send({ type: 'stop' })
     expect(await retry.closed, retry.diagnostics()).toBe(0)
     expect(await readdir(sessions)).toEqual([])
   } finally {
     for (const item of [first, retry]) {
       if (!item) continue
-      if (item.process.connected) item.process.send({ type: 'stop' })
-      const timeout = setTimeout(() => item.process.kill('SIGKILL'), 15_000)
-      await item.closed
-      clearTimeout(timeout)
+      await item.close()
     }
     await workspace.close()
   }

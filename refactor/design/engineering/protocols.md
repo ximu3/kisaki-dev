@@ -13,7 +13,7 @@ rpc 包、扩展接入与本地开发连接使用下述协议，分别管理消�
 | extension API version            | extension-api 拥有的 SemVer；核对 manifest.apiVersionRange，不等于桌面版本、SDK 版本或 wireVersion                  |
 | manifest／registry schemaVersion | extension-distribution 拥有的文档格式；在读取对应文档时验证，不与 RPC 帧合并                                        |
 | desktop buildId                  | 同一制品主进程、preload、原生 renderer 和 extension-host 的构建标识；私有同版本端点必须一致，防止旧资源接入新主进程 |
-| development protocolVersion      | desktop-contracts/development 拥有，首版为 1；本地字节流消息及构建交接使用独立版本，不以工具 npm 版本猜兼容         |
+| development protocolVersion      | desktop-contracts/development 拥有，首版为 1；父子消息及构建交接使用独立版本，不以工具 npm 版本猜兼容         |
 
 同一个 API 范围内，SDK 可以独立发布；符合范围并且接入协议受支持才可以建立能力。未知主版本、缺少必要声明或不满足范围时，在开放调用前明确拒绝。已经安装的扩展保留包、私有数据和用户启用意愿，只停止不兼容实例的加载。新增接口不自动向已有端点开放，接入方法表继续逐项选择。
 
@@ -84,63 +84,54 @@ MessagePort 的引导交接由真实浏览器适配层核对 iframe/source/origi
 
 <a id="development"></a>
 
-## CLI 与开发应用的字节流合同
+## CLI 与开发应用的父子消息合同
 
-开发协议由 desktop-contracts/development 独立拥有，仅用于[开发工作流](../extensions/development.md#connection)。它不用任意 RPC method 承载宿主管理，也不让 SDK 获得该连接。
+开发协议由 desktop-contracts/development 独立拥有，仅用于[开发工作流](../extensions/development.md#connection)。唯一启动器通过 Node child_process.spawn 直接创建应用，stdio 配置一个 ipc 项并使用 JSON 序列化。源码桌面开发与作者开发使用同一接入；前者运行项目 Electron 与完成的 main 入口，后者运行所选应用的真实可执行文件。macOS 定位 bundle 内的可执行文件，Linux 直接启动所选应用或 AppImage，不经系统打开命令另起无法拥有的实例。
 
-启动器建立会话后，CLI 先监听专用本地端点，再启动开发应用。Windows 使用带随机会话标识的命名管道，并关闭 readableAll 与 writableAll；Unix socket 位于仅当前用户可访问的短路径会话目录。
+启动器传入 `--development` 和 `--profile=<绝对路径>`。应用在数据库、日志与浏览器 Session 建立前选定资料，并要求本次父子 IPC 已存在。正式包也从正常包内主模块接入，保留现行 fuses。源码自动化可单独传入 profile 使用隔离资料；没有 development 参数就不建立开发控制连接。打包应用的资料覆盖仅在受控开发模式开放，普通启动仍遵守安装与便携规则。renderer-url 与窗口选择只适用于源码运行，不能据此改写正式应用的界面入口。
 
-启动器传入 sessionId、端点和隔离 profile 路径，通过继承环境交付至少 128 位随机的一次性 token。token 仅用于本次接入，排除在提交配置、日志和终端命令之外。握手成功后才交付构建路径并接纳管理消息。
+消息关联到实际子进程对象及其 IPC 连接。Node 负责消息序列化与消息边界；本项目校验有限消息的类型、字段和当前操作条件，不维护字节帧、命名管道或 socket 端点、连接凭据和消息内会话身份。只支持启动自己拥有的应用，不提供附加到任意进程、任意方法调用、自动重连或旧消息重放。资源和构建内容通过目录交接，不嵌入消息。
 
-接入凭据用于核对本次会话，不提供同用户恶意进程的隔离保证。Windows [默认管道权限](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipe-security-and-access-rights)与 Unix 私有目录权限分别核对；通过 Node [IPC 接口](https://github.com/nodejs/node/blob/main/doc/api/net.md)建立端点后，按实际运行版本验证权限与接入。
+| type           | 方向            | 其余字段与含义 |
+| -------------- | --------------- | -------------- |
+| initialize     | 启动器 → 应用   | `protocolVersion: 1`；建立父子连接后发送一次，应用先核对版本 |
+| ready          | 应用 → 启动器   | `protocolVersion: 1, appVersion, apiVersion, buildId`；本体完成初始化，版本与构建身份来自实际运行输入，不代表扩展已激活 |
+| buildsReady    | 工具 → 应用     | `builds: DevelopmentBuild[]`；已经完成且不会继续改写的非空批次，扩展 ID 不重复 |
+| adoptionResult | 应用 → 工具     | 使用下方 DevelopmentAdoptionResult，报告本批构建的实际采用与激活结果 |
+| buildsReleased | 应用 → 工具     | `builds: { extensionId, buildId }[]`；所列构建已无宿主、页面或资源读取者，可以清理其临时目录 |
+| stop           | 启动器 → 应用   | 无其他字段；请求该实例的正常退出流程 |
+| stopResult     | 应用 → 启动器   | `outcome: 'exiting' \| 'cancelled' \| 'failed', error?`；只有 failed 带 error。普通界面退出也在正常收尾后报告 exiting |
+| failed         | 应用 → 启动器   | `error: ErrorSummary`；本体启动或连接已无法继续，不冒充编译失败或全部激活失败 |
 
-字节流采用四字节无符号大端长度，随后为该长度的 UTF-8 JSON 对象；长度不包含头部，必须为 1–1,048,576 字节。读取器允许头部／正文拆包与多帧合包，解码拒绝非法 UTF-8、非对象和未知键。超过上限或非法帧时关闭连接，不按长度分配无界缓冲，也不把半帧当完整消息。资源和构建内容通过明确目录交接，不嵌入字节流。
+initialize 只接受一次，未知版本不继续解释后续操作。应用在连接建立后十秒内未收到初始化时报告失败并收尾。ready 等待真实启动完成；启动器可为具体启动环境设置启动预算，不能拿它限制迁移或用户退出选择。当前 W00 尚无扩展运行 API，明确报告 `apiVersion: null`，不能接纳 buildsReady；W03／W08 实现真实扩展接入后才报告所实现的 API 版本。作者工具须在交付构建前检查这一能力及兼容范围，不能把公共包版本冒充运行能力。
 
-每条消息都包含 type 与 sessionId。sessionId 必须等于真实启动会话；握手完成后不再携带 token。消息集合与方向如下：
+DevelopmentBuild 为 `{ extensionId, buildId, rootPath, webviews }`。buildId 是本连接内该扩展递增的正安全整数，只关联临时构建及其释放，不替代发布版本。rootPath 是已完成且不再改写的完整构建绝对路径。应用正常读取并校验实际 manifest、入口、身份、兼容和运行条件；正式安装包的签名与字节校验仍归安装流程。
 
-| type           | 方向            | 其余字段与含义                                                                                              |
-| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------- |
-| hello          | 应用 → CLI      | `protocolVersion: 1, token`；只发一次，尚不表示应用初始化或扩展激活完成                                     |
-| accepted       | CLI → 应用      | `protocolVersion: 1`；只确认开发连接。版本、会话或凭据不符发送 rejected 后关闭                              |
-| rejected       | 接纳方 → 发起方 | `error: ErrorSummary`；安全原因，不能回显 token                                                             |
-| ready          | 应用 → CLI      | `appVersion, apiVersion, buildId`；本体初始化完成、可以接纳完整构建，不代表任何扩展已激活                   |
-| buildsReady    | CLI → 应用      | `sequence, builds: DevBuild[]`；sequence 为从 1 递增的安全整数，builds 非空且扩展 ID 不重复                 |
-| adoptionResult | 应用 → CLI      | 使用下方 DevAdoptionResult；分别报告完整处理或中途结束，以及真实采用与实际激活结果                          |
-| buildsReleased | 应用 → CLI      | `builds: { extensionId, buildId }[]`；所列构建已无宿主、页面或资源读取者，可以清理其临时目录                |
-| stop           | CLI → 应用      | `requestId`；请求走该实例的正常退出流程，不直接杀进程                                                       |
-| stopResult     | 应用 → CLI      | `requestId, outcome: 'exiting' \| 'cancelled' \| 'failed', error?`；failed 必须有 error，其他分支不带 error |
-| failed         | 应用 → CLI      | `error: ErrorSummary`；本体初始化或会话发生无法继续的故障，不冒充构建失败或全部激活失败                     |
+webviews 为 `{ document, url }[]`，没有 Webview 时数组为空。映射只使用本会话拥有的 loopback 开发服务器和明确文档，并遵守[每视图开发内容来源](../extensions/webview.md#development)。不能把共享 loopback origin 当作页面隔离，也不能由消息开放任意网络代理或扩大 document.root。
 
-接纳方先检查最小 hello 的版本与会话，未知版本不解释其他消息。连接后十秒内握手未完成则诊断并收尾；ready 与实际退出分别遵守启动器和应用的执行寿命，不借握手超时结束尚未完成的迁移或用户退出选择。ready 之前不能发送 buildsReady；首次完整构建仍在应用启动前全部准备好。
-
-DevBuild 为 `{ extensionId, buildId, rootPath, manifestSha256, webviews }`。buildId 是本会话内该扩展单调递增的安全整数，不能替代扩展发布版本。rootPath 是已经写完、以后不再改写的完整构建目录绝对路径；manifestSha256 是该目录 manifest 字节的 SHA-256。webviews 为 `{ document, url }[]`，只接受本会话实际拥有的 loopback 开发服务器与明确文档映射，不从任意 URL 推导权限。没有 Webview 时数组为空。
-
-webviews.url 指明[开发内容来源](../extensions/webview.md#development)，宿主通过每视图独立来源接入；不能直接导航到共享 loopback origin 后放弃视图隔离。开发消息不授权任意网络代理或扩大 document.root。
-
-应用独立校验目录、manifest、扩展身份、兼容范围和文档映射，再按现有重建流程采用。协议完成、编译完成、候选被采用和 activate 成功分别报告：
+同一连接最多有一批构建正在采用。工具拥有尚未交付的最新集合，每个扩展只留最新完整结果；当前批次结束后才发送下一批。应用只执行固定的当前批次及共享宿主重建，不再维护第二份跨消息候选队列。尚未交付的旧候选由工具自己替换和清理，不在线上报告替代结果；已交付的候选等待自己的实际结果。
 
 ```ts
-type DevBuildResult =
+type DevelopmentBuildResult =
   | { extensionId: string; buildId: number; outcome: 'adopted' }
-  | { extensionId: string; buildId: number; outcome: 'superseded' }
   | { extensionId: string; buildId: number; outcome: 'notAdopted'; error: ErrorSummary }
 
-type DevActivationResult =
+type DevelopmentActivationResult =
   | { extensionId: string; instanceId: string; outcome: 'activated' }
   | { extensionId: string; outcome: 'failed'; error: ErrorSummary }
 
-type DevAdoptionResult = {
-  sequence: number
-  builds: readonly DevBuildResult[]
-  activations: readonly DevActivationResult[]
+type DevelopmentAdoptionResult = {
+  type: 'adoptionResult'
+  builds: readonly DevelopmentBuildResult[]
+  activations: readonly DevelopmentActivationResult[]
 } & ({ outcome: 'completed' } | { outcome: 'interrupted'; error: ErrorSummary })
 ```
 
-连接仍有效且执行者能够交付时，每个已接纳 buildsReady 只返回一次 adoptionResult。completed 表示全部项目已经处理，builds 按输入逐项给出结果，并不表示全部成功；整体流程无法继续时使用 interrupted 和安全 error，只保留已有确定结论的 builds 及实际 activations，缺项不伪造失败。进程崩溃或断连没有报告时保持结果未知，不重放旧消息。等待期间被同扩展更新构建替代的旧候选为 superseded；正在采用的一轮已经固定，后来的候选进入下一轮，不能倒退。激活结果只包含真实尝试过的实例，包含共享宿主重建时重新激活的其他扩展；不会为未尝试项伪造失败。候选已采用而激活失败时，该项仍为 adopted，错误出现在 activations。
+连接有效且执行者能够交付时，每个接纳的 buildsReady 只返回一次 adoptionResult。completed 按输入逐项交付结果，不表示全部成功；interrupted 保留已确定的构建结果及实际尝试过的激活，缺项保持未知。共享宿主重建时重新激活的其他扩展也如实列出。已采用而激活失败的构建仍为 adopted，失败属于 activations。Node send 回调只确认传输结果，不能代替这些事实。
 
-采用结果不表示旧构建已经无读取者。只有收到 buildsReleased，或已确认开发应用与全部相关子进程真实结束，CLI 才清理对应临时目录。失去连接而无法确认实例已结束时保留目录并诊断，不猜测失效。进程退出是启动器已有进程句柄确认的事实，不能由 socket 断开或 stopResult: exiting 代替。
+stop 至多有一个在途请求，重复调用共享这次等待；取消后可再次明确请求。应用完成窗口关闭决定后才释放宿主等资源。退出取消保留正在使用的输出、编译监听与服务器，开发会话继续可用；不能先永久取消工具，再留下仍在运行的应用。启动准备的 AbortSignal 与运行期正常停止分别处理，不给一般有限命令增加可撤回取消。
 
-没有自动断线重连或消息重放。CLI／应用重新启动建立新会话，旧 sequence、buildId 和 token 均失效；持久测试资料继续保留。退出取消后保留当前进程与使用中的资源，工具显示实际结果。构建失败留在工具自己的编译流程，未完成目录不发送 buildsReady。
+采用结果不代表旧构建已经无读取者。只有 buildsReleased，或已经确认应用与相关读取进程真实结束，才可以清理对应目录。启动器观察 ChildProcess 的 exit，并分别关闭自己取得的日志流；disconnect、stopResult.exiting 和超时不能代替退出。异常结束且读取者状态不明时保留目录并报告。连接丢失终止后续交接，应用请求正常退出；若退出被取消，应用和目录仍保留，连接已失效的事实不能改写成开发正常运行。强制结束必须由开发者明确请求，只作用于本会话拥有的进程。新启动创建新连接和临时构建身份，持久 profile 继续保留。
 
 <a id="verification"></a>
 
@@ -148,4 +139,4 @@ type DevAdoptionResult = {
 
 纯机制验证覆盖有限帧校验、双向相同 ID、嵌套调用、void 与 null、一次回复、取消／完成竞态、握手前调用、版本不符、迟到旧连接结果与断连释放。端点验证再覆盖真实来源、权限、API 范围、旧宿主代际、旧 Webview document 和资源寿命；类型检查不能证明这些运行边界。
 
-开发连接验证逐字节拆包、合包、非法 UTF-8、零长／超长帧、错误会话、错误 token、未知版本、重复 sequence、同扩展连续构建、候选替代、激活失败及退出取消。所有平台仍须使用实际命名管道或 Unix socket 及真实 Electron 核对；纯编码器样例不计作跨平台运行通过。
+开发连接验证未知版本、非法消息、就绪前操作、重复在途批次、同扩展连续构建、工具侧候选替换、真实采用与激活失败、目录释放、退出取消后继续开发，以及断连与实际退出的区别。源码与打包应用都使用真实 Electron 父子 IPC 核对；Windows、macOS 与 Linux 的实际可执行文件及 AppImage 分别记录平台证据，单平台试件不能代替其余目标。

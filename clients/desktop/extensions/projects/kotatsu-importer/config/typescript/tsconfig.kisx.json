@@ -1,8 +1,0 @@
-{
-  "extends": "@kisaki3/typescript-config/base.json",
-  "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": "../../.cache/typescript/kisx.tsbuildinfo"
-  },
-  "include": ["../../kisx.config.ts"]
-}

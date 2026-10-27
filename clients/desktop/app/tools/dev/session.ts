@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { runPnpm } from '@kisaki3/tooling/process'
+import type { DevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'
@@ -8,8 +9,6 @@ import { sourceIdentity } from '../build/identity'
 import { prepareResources } from '../resources/prepare'
 import { electronExecutable } from './electron-executable'
 import { captureDependencies, desktopDependencies } from './dependencies'
-import { startElectron } from './electron-process'
-import type { DevelopmentProcess } from './electron-process'
 import { buildGeneration, programInputsChanged } from './generation'
 import type { GenerationOutput } from './generation'
 import type { DependencySnapshot } from './dependencies'
@@ -27,11 +26,13 @@ export interface DevelopmentSession {
   readonly closed: Promise<void>
   readonly rendererUrl: string
   readonly current: DevelopmentBuild | undefined
-  /** Cancel compilation, close processes and watchers, then remove this session's outputs. */
-  stop(): Promise<void>
+  /** Request normal application exit, then close tools and outputs; cancellation keeps the session usable. */
+  stop(): Promise<'cancelled' | 'stopped'>
+  /** Explicitly end this session's application before closing its tools and outputs. */
+  terminate(): Promise<void>
 }
 
-/** Caller-owned profiles survive stop; cancellation also applies during initial preparation. */
+/** Caller-owned profiles survive stop; signal cancels startup only, before the first ready application. */
 export interface DevelopmentOptions {
   profile?: string
   signal?: AbortSignal
@@ -46,14 +47,14 @@ export async function startDevelopmentSession(
   const profile = options.profile ?? join(appRoot, '.local', 'development')
   if (!isAbsolute(profile)) throw new Error('Development profile must be an absolute path')
 
+  options.signal?.throwIfAborted()
   const controller = new AbortController()
-  const signal = options.signal
-    ? AbortSignal.any([options.signal, controller.signal])
-    : controller.signal
-  signal.throwIfAborted()
+  const cancelPreparation = () => controller.abort(options.signal?.reason)
+  options.signal?.addEventListener('abort', cancelPreparation, { once: true })
+  const signal = controller.signal
   let directory: string | undefined
   let rendererToClose: Awaited<ReturnType<typeof startRenderer>> | undefined
-  let child: DevelopmentProcess | undefined
+  let child: DevelopmentApplication | undefined
   const snapshots = new Map<string, DependencySnapshot>()
 
   try {
@@ -66,27 +67,35 @@ export async function startDevelopmentSession(
     electronExecutable()
     await prepareResources(target, signal)
     const tasks = ['run', 'build', '--filter=@kisaki3/desktop^...']
-    let initialDependencies: DependencySnapshot | undefined
+    const snapshotDirectory = join(sessionDirectory, 'dependencies')
+    const renderer = await startRenderer(members, snapshotDirectory)
+    rendererToClose = renderer
+    signal.throwIfAborted()
 
     try {
       await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot, signal })
-      initialDependencies = await captureDependencies(
+      const initialDependencies = await captureDependencies(
         members,
-        join(sessionDirectory, 'dependencies'),
+        snapshotDirectory,
         snapshots,
+        renderer.resolveDependency,
       )
+      await renderer.adopt(initialDependencies)
     } catch (cause) {
       if (signal.aborted) throw cause
       options.onState?.('failed', cause)
     }
 
-    const renderer = await startRenderer(members, initialDependencies)
-    rendererToClose = renderer
     signal.throwIfAborted()
 
     let current: DevelopmentBuild | undefined
     let stopping = false
-    let stopPromise: Promise<void> | undefined
+    let replacing = false
+    let stopped = false
+    let connectionFailed = false
+    // An abnormal main exit cannot confirm that every runtime reader has stopped.
+    let retainOutputs = false
+    let stopPromise: Promise<'cancelled' | 'stopped'> | undefined
     let buildPending = false
     let buildLoop: Promise<void> | undefined
     let generation = 0
@@ -112,12 +121,14 @@ export async function startDevelopmentSession(
     async function rebuild(): Promise<void> {
       options.onState?.('building')
       const candidate = join(sessionDirectory, `generation-${++generation}`)
+      let launching = false
       try {
         await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot, signal })
         const dependencies = await captureDependencies(
           members,
-          join(sessionDirectory, 'dependencies'),
+          snapshotDirectory,
           snapshots,
+          renderer.resolveDependency,
         )
         const forced = forceRuntimeBuild
         forceRuntimeBuild = false
@@ -130,7 +141,7 @@ export async function startDevelopmentSession(
             return
           }
         }
-        if (stopping) {
+        if (stopping || connectionFailed) {
           await rm(candidate, { recursive: true, force: true })
           return
         }
@@ -141,30 +152,70 @@ export async function startDevelopmentSession(
         }
 
         const previous = current?.directory
-        if (child) await child.stop()
+        if (child) {
+          replacing = true
+          try {
+            if ((await child.stop()) === 'cancelled') {
+              throw new Error('Source application restart was cancelled')
+            }
+          } finally {
+            replacing = false
+          }
+        }
         child = undefined
         current = undefined
         await renderer.adopt(dependencies)
         signal.throwIfAborted()
-        child = await startElectron(candidate, profile, renderer.url, runtime.buildId, signal)
-        if (!child.pid) throw new Error('Electron process identity is unavailable')
+        const { launchDevelopmentApplication } = await import('@kisaki3/extension-cli/extension')
+        launching = true
+        child = await launchDevelopmentApplication({
+          executable: electronExecutable(),
+          args: [join(candidate, 'main', 'entry.js'), `--renderer-url=${renderer.url}`],
+          cwd: appRoot,
+          profile,
+          buildId: runtime.buildId,
+          signal,
+          startupTimeoutMs: 30_000,
+          onFailure: (cause) => {
+            connectionFailed = true
+            buildPending = false
+            options.onState?.('failed', cause)
+          },
+        })
         current = { buildId: runtime.buildId, directory: candidate, processId: child.pid }
+        const launched = child
+        void launched.exited.then((result) => {
+          if (result.code !== 0) retainOutputs = true
+          if (child !== launched || replacing || stopping) return
+          child = undefined
+          current = undefined
+          if (result.code !== 0) {
+            options.onState?.('failed', new Error('Development application exited unsuccessfully'))
+          }
+          void session.stop().catch((cause: unknown) => options.onState?.('failed', cause))
+        })
         programInputs = runtime.inputs
-        if (previous) await rm(previous, { recursive: true, force: true })
+        if (previous && !retainOutputs) await rm(previous, { recursive: true, force: true })
+        options.signal?.removeEventListener('abort', cancelPreparation)
         options.onState?.('ready')
         resolveReady()
       } catch (cause) {
         forceRuntimeBuild = true
-        await rm(candidate, { recursive: true, force: true })
+        if (launching) {
+          retainOutputs = true
+        } else if (current?.directory !== candidate) {
+          await rm(candidate, { recursive: true, force: true })
+        }
         if (!signal.aborted) options.onState?.('failed', cause)
       }
     }
 
     /** Coalesce changes into serial rebuilds owned by this development session. */
     function enqueue(force = false): void {
-      if (stopping) return
+      if (stopped || connectionFailed) return
       forceRuntimeBuild ||= force
       buildPending = true
+      if (stopping) return
       buildLoop ??= (async () => {
         while (buildPending && !stopping) {
           buildPending = false
@@ -191,26 +242,24 @@ export async function startDevelopmentSession(
         return current
       },
       stop() {
+        if (stopped) return Promise.resolve('stopped')
         if (stopPromise) return stopPromise
         stopping = true
         signal.removeEventListener('abort', cancel)
-        controller.abort(new Error('Development session stopping'))
-        stopWatching()
+        if (!current) controller.abort(new Error('Development startup cancelled'))
         stopPromise = (async () => {
+          await buildLoop
+          if (child && (await child.stop()) === 'cancelled') {
+            return 'cancelled'
+          }
+
+          signal.removeEventListener('abort', cancel)
+          options.signal?.removeEventListener('abort', cancelPreparation)
+          controller.abort(new Error('Development session stopping'))
+          stopWatching()
           const failures: unknown[] = []
-          try {
-            await buildLoop
-          } catch (cause) {
-            failures.push(cause)
-          }
-          let processesClosed = false
-          try {
-            if (child) await child.stop()
-            processesClosed = true
-            current = undefined
-          } catch (cause) {
-            failures.push(cause)
-          }
+          child = undefined
+          current = undefined
           let rendererClosed = false
           try {
             await renderer.close()
@@ -218,21 +267,44 @@ export async function startDevelopmentSession(
           } catch (cause) {
             failures.push(cause)
           }
-          if (processesClosed && rendererClosed) {
+          if (rendererClosed && !retainOutputs) {
             try {
               await rm(sessionDirectory, { recursive: true, force: true })
             } catch (cause) {
               failures.push(cause)
             }
           }
+          if (retainOutputs) {
+            options.onState?.(
+              'failed',
+              new Error(
+                `Development outputs retained because reader shutdown is unconfirmed: ${sessionDirectory}`,
+              ),
+            )
+          }
           rejectReady(new Error('Development session stopped before readiness'))
           if (failures.length) {
-            throw new AggregateError(failures, 'Development session cleanup failed')
+            const cause = new AggregateError(failures, 'Development session cleanup failed')
+            rejectClosed(cause)
+            throw cause
           }
+          stopped = true
+          resolveClosed()
           options.onState?.('stopped')
-        })()
-        void stopPromise.then(resolveClosed, rejectClosed)
+          return 'stopped'
+        })().finally(() => {
+          stopPromise = undefined
+          if (!stopped && !signal.aborted) {
+            stopping = false
+            if (buildPending) enqueue()
+          }
+        })
         return stopPromise
+      },
+      async terminate() {
+        stopping = true
+        await child?.terminate()
+        await session.stop()
       },
     }
     signal.addEventListener('abort', cancel, { once: true })
@@ -240,7 +312,8 @@ export async function startDevelopmentSession(
     if (signal.aborted) cancel()
     return session
   } catch (cause) {
-    if (child) await child.stop()
+    options.signal?.removeEventListener('abort', cancelPreparation)
+    if (child) await child.terminate()
     await rendererToClose?.close()
     if (directory) await rm(directory, { recursive: true, force: true })
     throw cause

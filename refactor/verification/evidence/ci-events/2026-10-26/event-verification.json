@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-26T11:09:04.467Z",
+  "metadataPreservedCodeFailure": true,
+  "bodyEditPreservedInvalidTitleFailure": true,
+  "titleCorrectionUpdatedOnlyTitle": true,
+  "retargetCancelledPriorRun": true,
+  "retargetPassed": true,
+  "retargetAction": "edited",
+  "retargetChanges": {
+    "base": {
+      "ref": {
+        "from": "research/ci-trigger-base-2026-10-26"
+      },
+      "sha": {
+        "from": "bf696f3e18b411049515927e27cb497193f1e3e9"
+      }
+    }
+  },
+  "retargetBase": "research/ci-trigger-alternate-2026-10-26",
+  "requiredCheckName": "verify / Required checks",
+  "titleCheckName": "PR title"
+}

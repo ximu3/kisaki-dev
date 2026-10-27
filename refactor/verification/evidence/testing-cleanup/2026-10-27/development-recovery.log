@@ -1,0 +1,13 @@
+$ vitest run --config config/vitest/vitest.config.dev.ts "tests/tools/dev/session.test.ts" "-t" "public-package recovery"
+
+ RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+
+ ✓ tests/tools/dev/session.test.ts (3 tests | 2 skipped) 52920ms
+   ✓ public-package recovery retains a usable session and renderer-only updates preserve its process 35146ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 2 skipped (3)
+   Start at  11:15:49
+   Duration  53.37s (tests 99%, import 1%)
+
+JSON report written to F:/project/kisaki/clients/desktop/app/test-results/dev/results.json

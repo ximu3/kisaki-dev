@@ -1,0 +1,52 @@
+{
+  "pnpmCheck": {
+    "result": "passed",
+    "initialFailure": "Prettier formatting in clients/desktop/app/tests/fixtures/development-application.ts; formatted and reran check.",
+    "tests": {
+      "desktop": 14,
+      "tooling": 4,
+      "root": 19,
+      "total": 37
+    },
+    "dependencyGraph": {
+      "modules": 219,
+      "dependencies": 378,
+      "violations": 0
+    }
+  },
+  "documentLinks": {
+    "result": "passed",
+    "documents": 220,
+    "localLinks": 2642,
+    "fragmentLinks": 1550,
+    "errors": []
+  },
+  "formatting": {
+    "result": "passed",
+    "command": "pnpm exec prettier AGENTS.md CONVENTIONS.md CONTRIBUTING.md clients/desktop/app/tests/fixtures/development-application.ts --check"
+  },
+  "diffWhitespace": {
+    "result": "passed",
+    "command": "git diff --check"
+  },
+  "obsoleteRules": {
+    "result": "passed",
+    "patterns": [
+      "优先级高于原生",
+      "原生机制不决定",
+      "tsconfig.kisx",
+      "当前工作区的 Electron 41"
+    ]
+  },
+  "confirmedDecision": {
+    "topic": "Kana sequential focus navigation",
+    "choice": "Follow platform and user keyboard settings; adapt only necessary transitions.",
+    "confirmedByUser": true
+  },
+  "historicalFollowUp": {
+    "path": "refactor/verification/evidence/kana-focus/focus.md",
+    "link": "../simplicity-native/2026-10-26/README.md",
+    "result": "passed",
+    "originalRuntimeResultsChanged": false
+  }
+}

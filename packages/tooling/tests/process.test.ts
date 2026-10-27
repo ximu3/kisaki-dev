@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 import { createRequire } from 'node:module'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -8,6 +8,24 @@ import { run } from '@kisaki3/tooling/process'
 
 const require = createRequire(import.meta.url)
 const loader = pathToFileURL(require.resolve('tsx')).href
+
+test('an explicit environment preserves removals from the parent environment', async () => {
+  vi.stubEnv('KISAKI_COMMAND_REMOVED', 'parent-only')
+  const env: NodeJS.ProcessEnv = { ...process.env, KISAKI_COMMAND_RETAINED: 'child-value' }
+  delete env.KISAKI_COMMAND_REMOVED
+
+  try {
+    await run(
+      process.execPath,
+      ['--import', loader, resolve('tests/support/environment-worker.ts')],
+      {
+        env,
+      },
+    )
+  } finally {
+    vi.unstubAllEnvs()
+  }
+})
 
 test('cancelling a command waits for the command and its descendant to exit', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-command-'))

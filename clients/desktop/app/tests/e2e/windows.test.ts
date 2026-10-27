@@ -12,13 +12,13 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       const page = await desktop.firstWindow()
       await expect(page.getByRole('button', { name: 'Close window' })).toBeVisible()
       const values = await page.evaluate(() => ({
-        bridge: Object.keys(window.kisaki),
+        bridge: Object.keys(window.kisaki).sort(),
         kind: window.kisaki.kind,
         node: typeof Reflect.get(globalThis, 'require'),
         process: typeof Reflect.get(globalThis, 'process'),
       }))
       expect(values).toEqual({
-        bridge: ['kind', 'close'],
+        bridge: ['close', 'kind'],
         kind,
         node: 'undefined',
         process: 'undefined',

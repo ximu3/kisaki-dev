@@ -1,0 +1,379 @@
+compare	Set up job	﻿2026-10-26T09:38:41.1055991Z Current runner version: '2.338.0'
+compare	Set up job	2026-10-26T09:38:41.1147487Z ##[group]Runner Image Provisioner
+compare	Set up job	2026-10-26T09:38:41.1149005Z Hosted Compute Agent
+compare	Set up job	2026-10-26T09:38:41.1150248Z Version: 20261021.618
+compare	Set up job	2026-10-26T09:38:41.1151372Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+compare	Set up job	2026-10-26T09:38:41.1152757Z Build Date: 2026-10-21T00:45:21Z
+compare	Set up job	2026-10-26T09:38:41.1153894Z Worker ID: {1abc050d-0721-4c07-b511-3bf79608c654}
+compare	Set up job	2026-10-26T09:38:41.1155089Z Region: eastus
+compare	Set up job	2026-10-26T09:38:41.1156147Z Cloud: Azure
+compare	Set up job	2026-10-26T09:38:41.1157088Z ##[endgroup]
+compare	Set up job	2026-10-26T09:38:41.1180357Z ##[group]Operating System
+compare	Set up job	2026-10-26T09:38:41.1181426Z Ubuntu
+compare	Set up job	2026-10-26T09:38:41.1182383Z 24.04.5
+compare	Set up job	2026-10-26T09:38:41.1183305Z LTS
+compare	Set up job	2026-10-26T09:38:41.1184158Z ##[endgroup]
+compare	Set up job	2026-10-26T09:38:41.1185773Z ##[group]Runner Image
+compare	Set up job	2026-10-26T09:38:41.1186897Z Image: ubuntu-24.04
+compare	Set up job	2026-10-26T09:38:41.1188376Z Version: 20261012.334.1
+compare	Set up job	2026-10-26T09:38:41.1190547Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+compare	Set up job	2026-10-26T09:38:41.1193836Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+compare	Set up job	2026-10-26T09:38:41.1195721Z ##[endgroup]
+compare	Set up job	2026-10-26T09:38:41.1198151Z ##[group]GITHUB_TOKEN Permissions
+compare	Set up job	2026-10-26T09:38:41.1201275Z Contents: read
+compare	Set up job	2026-10-26T09:38:41.1202449Z Metadata: read
+compare	Set up job	2026-10-26T09:38:41.1203449Z ##[endgroup]
+compare	Set up job	2026-10-26T09:38:41.1206684Z Secret source: Actions
+compare	Set up job	2026-10-26T09:38:41.1228783Z Cache mode: write
+compare	Set up job	2026-10-26T09:38:41.1230473Z Prepare workflow directory
+compare	Set up job	2026-10-26T09:38:41.1956763Z Prepare all required actions
+compare	Set up job	2026-10-26T09:38:41.2030266Z Getting action download info
+compare	Set up job	2026-10-26T09:38:41.4334435Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+compare	Set up job	2026-10-26T09:38:41.5768067Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+compare	Set up job	2026-10-26T09:38:41.6841069Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+compare	Set up job	2026-10-26T09:38:41.9145537Z Complete job name: compare
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	﻿2026-10-26T09:38:42.0085104Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0086359Z with:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0086825Z   persist-credentials: false
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0087848Z   repository: ximu3/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0091981Z   token: ***
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0092418Z   ssh-strict: true
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0092852Z   ssh-user: git
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0093366Z   clean: true
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0093825Z   sparse-checkout-cone-mode: true
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0094350Z   fetch-depth: 1
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0094778Z   fetch-tags: false
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0095229Z   show-progress: true
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0095687Z   lfs: false
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0096097Z   submodules: false
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0096550Z   set-safe-directory: true
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0097057Z   allow-unsafe-pr-checkout: false
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.0098103Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2284771Z Syncing repository: ximu3/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2288044Z ##[group]Getting Git version info
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2289792Z Working directory is '/home/runner/work/kisaki-w00-ci/kisaki-w00-ci'
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2291904Z [command]/usr/bin/git version
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2293212Z git version 2.55.0
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2296406Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2508526Z Temporarily overriding HOME='/home/runner/work/_temp/9f979a35-23ed-454f-ba97-4504c4a5486c' before making global git config changes
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2511206Z Adding repository directory to the temporary git global config as a safe directory
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2513572Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-w00-ci/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2518312Z Deleting the contents of '/home/runner/work/kisaki-w00-ci/kisaki-w00-ci'
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2521162Z ##[group]Initializing the repository
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2523106Z [command]/usr/bin/git init /home/runner/work/kisaki-w00-ci/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2525276Z hint: Using 'master' as the name for the initial branch. This default branch name
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2527507Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2529362Z hint: to use in all of your new repositories, which will suppress this warning,
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2531132Z hint: call:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2532025Z hint:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2533026Z hint: 	git config --global init.defaultBranch <name>
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2534261Z hint:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2535385Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2537390Z hint: 'development'. The just-created branch can be renamed via this command:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2538853Z hint:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2568611Z hint: 	git branch -m <name>
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2569969Z hint:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2571815Z hint: Disable this message with "git config set advice.defaultBranchName false"
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2574116Z Initialized empty Git repository in /home/runner/work/kisaki-w00-ci/kisaki-w00-ci/.git/
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2584908Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2589577Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2593002Z ##[group]Disabling automatic garbage collection
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2594565Z [command]/usr/bin/git config --local gc.auto 0
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2678613Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2687380Z ##[group]Setting up auth
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2688938Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.2789486Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3182360Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3223230Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3473928Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3516198Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3801697Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3828895Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3830878Z ##[group]Fetching the repository
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:42.3841960Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +49a2df7715df264fb09bc22091e847e249ade7be:refs/remotes/origin/research/appimage-policy-2026-10-26
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0750019Z From https://github.com/ximu3/kisaki-w00-ci
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0765126Z  * [new ref]         49a2df7715df264fb09bc22091e847e249ade7be -> origin/research/appimage-policy-2026-10-26
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0822313Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0824230Z ##[group]Determining the checkout info
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0826018Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0827449Z [command]/usr/bin/git sparse-checkout disable
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0831557Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0866137Z ##[group]Checking out the ref
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.0872201Z [command]/usr/bin/git checkout --progress --force -B research/appimage-policy-2026-10-26 refs/remotes/origin/research/appimage-policy-2026-10-26
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3016177Z Switched to a new branch 'research/appimage-policy-2026-10-26'
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3039401Z branch 'research/appimage-policy-2026-10-26' set up to track 'origin/research/appimage-policy-2026-10-26'.
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3048481Z ##[endgroup]
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3093647Z [command]/usr/bin/git log -1 --format=%H
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3126240Z 49a2df7715df264fb09bc22091e847e249ade7be
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3135734Z ##[group]Removing auth
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3141215Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3180508Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3434697Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3470418Z http.https://github.com/.extraheader
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3477009Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3528125Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3774050Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.3814951Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+compare	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:38:43.4057108Z ##[endgroup]
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	﻿2026-10-26T09:38:43.4528795Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4530552Z with:
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4531363Z   node-version: 24.11.1
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4532358Z   package-manager-cache: false
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4533382Z   always-auth: false
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4534267Z   check-latest: false
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4545577Z   token: ***
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.4546409Z ##[endgroup]
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.6149175Z Attempting to download 24.11.1...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.6249772Z (node:2123) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:43.6254975Z (Use `node --trace-deprecation ...` to show where the warning was created)
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:44.3606019Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:44.9085885Z Extracting ...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:44.9229047Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/daa8c6e4-7304-4ce3-9dbf-7c6244bab641 -f /home/runner/work/_temp/208f0736-e635-408c-be3f-00e9b3722de1
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:46.2942736Z Adding to the cache ...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:48.9990929Z ##[group]Environment details
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:49.2868338Z node: v24.11.1
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:49.2869074Z npm: 11.6.2
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:49.2869444Z yarn: 1.22.22
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:38:49.2870204Z ##[endgroup]
+compare	Prepare disposable graphical test environment	﻿2026-10-26T09:38:49.3094697Z ##[group]Run sudo apt-get update
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3095093Z ^[[36;1msudo apt-get update^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3095624Z ^[[36;1msudo apt-get install -y xvfb libfuse2t64 libgtk-3-0t64 libnss3 libasound2t64 apparmor apparmor-utils^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3096250Z ^[[36;1mprobe_directory="$RUNNER_TEMP/appimage-policy"^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3096622Z ^[[36;1mmkdir -p "$probe_directory"^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3097101Z ^[[36;1mcp refactor/verification/evidence/appimage-policy/2026-10-26/probe/* "$probe_directory/"^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3098165Z ^[[36;1mecho "PROBE_DIR=$probe_directory" >> "$GITHUB_ENV"^[[0m
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3375155Z shell: /usr/bin/bash -e {0}
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.3375572Z ##[endgroup]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.4630457Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.4979371Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6042534Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6068520Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6083615Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6139499Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6573510Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6709347Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [598 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.6868524Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [661 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8173178Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1400 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8398790Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8438848Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8641173Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8671889Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:49.8933237Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.0660569Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.0764120Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.0778372Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.0968463Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.1397618Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:50.1666688Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:54.2432045Z Fetched 12.6 MB in 2s (7531 kB/s)
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.2917961Z Reading package lists...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.3298498Z Reading package lists...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.5797816Z Building dependency tree...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.5807606Z Reading state information...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8402533Z libgtk-3-0t64 is already the newest version (3.24.41-4ubuntu1.3).
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8403405Z libgtk-3-0t64 set to manually installed.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8404219Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8404959Z libasound2t64 set to manually installed.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8405658Z The following additional packages will be installed:
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8408531Z   libapparmor1 libnss3-tools python3-apparmor python3-libapparmor
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8418138Z   xserver-common
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8418931Z Suggested packages:
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8419674Z   apparmor-profiles-extra vim-addon-manager
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8421415Z Recommended packages:
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8422023Z   xfonts-base
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8699895Z The following NEW packages will be installed:
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8713080Z   apparmor-utils libfuse2t64 python3-apparmor python3-libapparmor
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8722618Z The following packages will be upgraded:
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8728769Z   apparmor libapparmor1 libnss3 libnss3-tools xserver-common xvfb
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8942095Z 6 upgraded, 4 newly installed, 0 to remove and 94 not upgraded.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8943233Z Need to get 3915 kB of archives.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8944599Z After this operation, 1363 kB of additional disk space will be used.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.8945967Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.9293071Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libapparmor1 amd64 4.0.1really4.0.1-0ubuntu0.24.04.9 [51.5 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.9460341Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 apparmor amd64 4.0.1really4.0.1-0ubuntu0.24.04.9 [640 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.9653087Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 python3-libapparmor amd64 4.0.1really4.0.1-0ubuntu0.24.04.9 [30.2 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.9799520Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 python3-apparmor all 4.0.1really4.0.1-0ubuntu0.24.04.9 [84.5 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:55.9963381Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 apparmor-utils all 4.0.1really4.0.1-0ubuntu0.24.04.9 [46.6 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.0131104Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libfuse2t64 amd64 2.9.9-8.1build1 [89.9 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.0287051Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libnss3 amd64 2:3.98-1ubuntu0.3 [1445 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.0539173Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libnss3-tools amd64 2:3.98-1ubuntu0.3 [615 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.0727457Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 xserver-common all 2:21.1.12-1ubuntu1.9 [35.0 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.0879524Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 xvfb amd64 2:21.1.12-1ubuntu1.9 [877 kB]
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.3461175Z Preconfiguring packages ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4266761Z Fetched 3915 kB in 0s (18.5 MB/s)
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4854023Z (Reading database ... 
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4855082Z (Reading database ... 5%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4855591Z (Reading database ... 10%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4855997Z (Reading database ... 15%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4856468Z (Reading database ... 20%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4856871Z (Reading database ... 25%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4857523Z (Reading database ... 30%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4857950Z (Reading database ... 35%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4858363Z (Reading database ... 40%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4858801Z (Reading database ... 45%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4859216Z (Reading database ... 50%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.4923539Z (Reading database ... 55%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.6136987Z (Reading database ... 60%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:56.8182262Z (Reading database ... 65%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.0082932Z (Reading database ... 70%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.2135777Z (Reading database ... 75%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.3155452Z (Reading database ... 80%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.5126359Z (Reading database ... 85%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.6696047Z (Reading database ... 90%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.7869983Z (Reading database ... 95%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.7870896Z (Reading database ... 100%
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.7872015Z (Reading database ... 203540 files and directories currently installed.)
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.7915792Z Preparing to unpack .../0-libapparmor1_4.0.1really4.0.1-0ubuntu0.24.04.9_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.7976578Z Unpacking libapparmor1:amd64 (4.0.1really4.0.1-0ubuntu0.24.04.9) over (4.0.1really4.0.1-0ubuntu0.24.04.8) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:57.8439479Z Preparing to unpack .../1-apparmor_4.0.1really4.0.1-0ubuntu0.24.04.9_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.4059185Z Unpacking apparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) over (4.0.1really4.0.1-0ubuntu0.24.04.8) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7508548Z Selecting previously unselected package python3-libapparmor.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7631140Z Preparing to unpack .../2-python3-libapparmor_4.0.1really4.0.1-0ubuntu0.24.04.9_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7638044Z Unpacking python3-libapparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7888990Z Selecting previously unselected package python3-apparmor.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7989300Z Preparing to unpack .../3-python3-apparmor_4.0.1really4.0.1-0ubuntu0.24.04.9_all.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.7996221Z Unpacking python3-apparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.8290008Z Selecting previously unselected package apparmor-utils.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.8419778Z Preparing to unpack .../4-apparmor-utils_4.0.1really4.0.1-0ubuntu0.24.04.9_all.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.8427632Z Unpacking apparmor-utils (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.8922861Z Selecting previously unselected package libfuse2t64:amd64.
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.9055612Z Preparing to unpack .../5-libfuse2t64_2.9.9-8.1build1_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.9068242Z Unpacking libfuse2t64:amd64 (2.9.9-8.1build1) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.9434914Z Preparing to unpack .../6-libnss3_2%3a3.98-1ubuntu0.3_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:58.9488703Z Unpacking libnss3:amd64 (2:3.98-1ubuntu0.3) over (2:3.98-1ubuntu0.2) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.0047030Z Preparing to unpack .../7-libnss3-tools_2%3a3.98-1ubuntu0.3_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.0069573Z Unpacking libnss3-tools (2:3.98-1ubuntu0.3) over (2:3.98-1ubuntu0.2) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.0691277Z Preparing to unpack .../8-xserver-common_2%3a21.1.12-1ubuntu1.9_all.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.0711436Z Unpacking xserver-common (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.1094006Z Preparing to unpack .../9-xvfb_2%3a21.1.12-1ubuntu1.9_amd64.deb ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.1116024Z Unpacking xvfb (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.1691270Z Setting up libapparmor1:amd64 (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.1714454Z Setting up libnss3:amd64 (2:3.98-1ubuntu0.3) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.1732644Z Setting up apparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:38:59.6617759Z Installing new version of config file /etc/apparmor.d/transmission ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:00.7885726Z Reloading AppArmor profiles 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.3179082Z Skipping profile in /etc/apparmor.d/disable: usr.bin.firefox
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.6022100Z Setting up xserver-common (2:21.1.12-1ubuntu1.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.6038214Z Setting up libfuse2t64:amd64 (2.9.9-8.1build1) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.6056919Z Setting up libnss3-tools (2:3.98-1ubuntu0.3) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.6078095Z Setting up python3-libapparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.7480690Z Setting up xvfb (2:21.1.12-1ubuntu1.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.7501259Z Setting up python3-apparmor (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.9451178Z Setting up apparmor-utils (4.0.1really4.0.1-0ubuntu0.24.04.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.9492084Z Processing triggers for man-db (2.12.0-4build2) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.9541103Z Not building database; man-db/auto-update is not 'true'.
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:01.9557064Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:02.6496908Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:02.6498441Z Running kernel seems to be up-to-date.
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:02.6499051Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:02.6499451Z Restarting services...
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:02.6816176Z  /etc/needrestart/restart.d/systemd-manager
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.0288705Z  systemctl restart php8.3-fpm.service udisks2.service
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1871019Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1881796Z Service restarts being deferred:
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1882996Z  /etc/needrestart/restart.d/dbus.service
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1884174Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1884729Z No containers need to be restarted.
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1885596Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1885968Z User sessions running outdated binaries:
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1887516Z  runner @ user manager service: systemd[1139]
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1980896Z 
+compare	Prepare disposable graphical test environment	2026-10-26T09:39:03.1994791Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+compare	Install pinned probe dependencies	﻿2026-10-26T09:39:04.3567850Z ##[group]Run npm ci --prefix "$PROBE_DIR" --ignore-scripts --no-audit --no-fund
+compare	Install pinned probe dependencies	2026-10-26T09:39:04.3568510Z ^[[36;1mnpm ci --prefix "$PROBE_DIR" --ignore-scripts --no-audit --no-fund^[[0m
+compare	Install pinned probe dependencies	2026-10-26T09:39:04.3634220Z shell: /usr/bin/bash -e {0}
+compare	Install pinned probe dependencies	2026-10-26T09:39:04.3634496Z env:
+compare	Install pinned probe dependencies	2026-10-26T09:39:04.3634753Z   PROBE_DIR: /home/runner/work/_temp/appimage-policy
+compare	Install pinned probe dependencies	2026-10-26T09:39:04.3635079Z ##[endgroup]
+compare	Install pinned probe dependencies	2026-10-26T09:39:06.0795834Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+compare	Install pinned probe dependencies	2026-10-26T09:39:06.2752737Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+compare	Install pinned probe dependencies	2026-10-26T09:39:06.2969507Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+compare	Install pinned probe dependencies	2026-10-26T09:39:07.1027037Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+compare	Install pinned probe dependencies	2026-10-26T09:39:09.7858280Z 
+compare	Install pinned probe dependencies	2026-10-26T09:39:09.7878652Z added 289 packages in 5s
+compare	Check probe types	﻿2026-10-26T09:39:09.8740284Z ##[group]Run npm --prefix "$PROBE_DIR" run check
+compare	Check probe types	2026-10-26T09:39:09.8740934Z ^[[36;1mnpm --prefix "$PROBE_DIR" run check^[[0m
+compare	Check probe types	2026-10-26T09:39:09.8825887Z shell: /usr/bin/bash -e {0}
+compare	Check probe types	2026-10-26T09:39:09.8826292Z env:
+compare	Check probe types	2026-10-26T09:39:09.8826694Z   PROBE_DIR: /home/runner/work/_temp/appimage-policy
+compare	Check probe types	2026-10-26T09:39:09.8827406Z ##[endgroup]
+compare	Check probe types	2026-10-26T09:39:10.0331080Z 
+compare	Check probe types	2026-10-26T09:39:10.0358289Z > kisaki-appimage-policy-probe@1.0.0 check
+compare	Check probe types	2026-10-26T09:39:10.0359314Z > tsc --noEmit
+compare	Check probe types	2026-10-26T09:39:10.0377679Z 
+compare	Compare actual sandbox and first preparation behavior	﻿2026-10-26T09:39:15.1296570Z ##[group]Run ulimit -c 0
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1297068Z ^[[36;1mulimit -c 0^[[0m
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1297816Z ^[[36;1mcd "$PROBE_DIR"^[[0m
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1298207Z ^[[36;1mxvfb-run --auto-servernum npm run probe^[[0m
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1387649Z shell: /usr/bin/bash -e {0}
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1388082Z env:
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1388498Z   PROBE_DIR: /home/runner/work/_temp/appimage-policy
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:15.1389041Z ##[endgroup]
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:16.8783701Z 
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:16.8784701Z > kisaki-appimage-policy-probe@1.0.0 probe
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:16.8785818Z > tsx run.ts
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:16.8786291Z 
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:18.0391753Z Building default
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:39:47.9610061Z Building strict-v1
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:17.0594718Z Building strict-v2
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:45.2794858Z Checking default-allowed
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:47.8328306Z Checking default-desktop-argument
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:49.9154606Z Checking default-restricted
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:51.9308401Z Checking strict-without-profile
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:52.6449740Z Checking strict-exact-profile
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:55.3583853Z Checking strict-in-place-update
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:57.4768508Z Checking strict-moved-without-registration
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:40:58.2108525Z Checking strict-moved-registered
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:00.9985864Z Checking strict-global-userns-disabled
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:01.7610898Z Checking default-global-userns-disabled
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:04.4335583Z {
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:04.4336271Z   "passed": true,
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:04.4336993Z   "cases": 10
+compare	Compare actual sandbox and first preparation behavior	2026-10-26T09:41:04.4340310Z }
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	﻿2026-10-26T09:41:04.4741588Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4742037Z with:
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4742261Z   name: appimage-policy-ubuntu-24-x64
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4742820Z   path: /home/runner/work/_temp/appimage-policy/results
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	/home/runner/work/_temp/appimage-policy/package-lock.json
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4743361Z   retention-days: 30
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4743592Z   if-no-files-found: warn
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4743848Z   compression-level: 6
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4744061Z   overwrite: false
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4744279Z   include-hidden-files: false
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4744525Z env:
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4744767Z   PROBE_DIR: /home/runner/work/_temp/appimage-policy
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.4745072Z ##[endgroup]
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.6704200Z (node:5473) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.6705955Z (Use `node --trace-deprecation ...` to show where the warning was created)
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.7058270Z Multiple search paths detected. Calculating the least common ancestor of all paths
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.7119252Z The least common ancestor is /home/runner/work/_temp/appimage-policy. This will be the root directory of the artifact
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.7120726Z With the provided path, there will be 27 files uploaded
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.7121993Z Artifact name is valid!
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.7122650Z Root directory input is valid!
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.8848117Z Beginning upload of artifact content to blob storage
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:04.9846392Z (node:5473) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.0316462Z Uploaded bytes 54327
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.0534252Z Finished uploading artifact content to blob storage!
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.0549249Z SHA256 digest of uploaded artifact zip is 68288b85bb74154f176793d943c959710abf37d60c74cc666dc95e388542d6cc
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.0550528Z Finalizing artifact upload
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.5228529Z Artifact appimage-policy-ubuntu-24-x64.zip successfully finalized. Artifact ID 12640521811
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.5229956Z Artifact appimage-policy-ubuntu-24-x64 has been successfully uploaded! Final size is 54327 bytes. Artifact ID is 12640521811
+compare	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-10-26T09:41:05.5231246Z Artifact download URL: https://github.com/ximu3/kisaki-w00-ci/actions/runs/40301130444/artifacts/12640521811
+compare	Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	﻿2026-10-26T09:41:05.5426561Z Post job cleanup.
+compare	Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:41:05.6772030Z (node:5486) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+compare	Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:41:05.6773962Z (Use `node --trace-deprecation ...` to show where the warning was created)
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	﻿2026-10-26T09:41:05.7072834Z Post job cleanup.
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8238064Z [command]/usr/bin/git version
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8328351Z git version 2.55.0
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8414870Z Temporarily overriding HOME='/home/runner/work/_temp/6e37d9cd-e5ca-421a-bf27-ec2a46754ac6' before making global git config changes
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8416361Z Adding repository directory to the temporary git global config as a safe directory
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8417908Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-w00-ci/kisaki-w00-ci
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8491207Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.8629397Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.9428844Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:05.9599413Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:06.0348582Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+compare	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-10-26T09:41:06.0398740Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+compare	Complete job	﻿2026-10-26T09:41:06.1004449Z Cleaning up orphan processes
+compare	Complete job	2026-10-26T09:41:06.1445202Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

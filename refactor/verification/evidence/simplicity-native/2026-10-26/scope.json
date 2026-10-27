@@ -1,0 +1,2934 @@
+{
+  "date": "2026-10-26",
+  "baseCommit": "f3f74f5880f3fd74be63f119a231e38fff4478c1",
+  "workingTree": "Includes the existing uncommitted work; file hashes identify reviewed inputs.",
+  "focus": [
+    "simple user and engineering workflows",
+    "native platform and tool capabilities",
+    "native input and accessibility semantics",
+    "justified adaptations and ownership",
+    "design and current implementation consistency"
+  ],
+  "members": [
+    {
+      "path": "clients/desktop/app",
+      "name": "@kisaki3/desktop",
+      "private": true
+    },
+    {
+      "path": "packages/eslint-config",
+      "name": "@kisaki3/eslint-config",
+      "private": true
+    },
+    {
+      "path": "packages/tooling",
+      "name": "@kisaki3/tooling",
+      "private": true
+    },
+    {
+      "path": "packages/typescript-config",
+      "name": "@kisaki3/typescript-config",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/packages/appearance",
+      "name": "@kisaki3/appearance",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts",
+      "name": "@kisaki3/desktop-contracts",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/extension-api",
+      "name": "@kisaki3/extension-api",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli",
+      "name": "@kisaki3/extension-cli",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/extension-distribution",
+      "name": "@kisaki3/extension-distribution",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/extension-sdk",
+      "name": "@kisaki3/extension-sdk",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/rpc",
+      "name": "@kisaki3/rpc",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/packages/ui",
+      "name": "@kisaki3/ui",
+      "private": false
+    },
+    {
+      "path": "clients/desktop/extensions/projects/anilist",
+      "name": "@kisaki3/ext-anilist",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/anx-reader-importer",
+      "name": "@kisaki3/ext-anx-reader-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/bangumi",
+      "name": "@kisaki3/ext-bangumi",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/calibre-importer",
+      "name": "@kisaki3/ext-calibre-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/fanart-tv",
+      "name": "@kisaki3/ext-fanart-tv",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/goodreads-importer",
+      "name": "@kisaki3/ext-goodreads-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/google-books",
+      "name": "@kisaki3/ext-google-books",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/igdb",
+      "name": "@kisaki3/ext-igdb",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/itch-io",
+      "name": "@kisaki3/ext-itch-io",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/koodo-reader-importer",
+      "name": "@kisaki3/ext-koodo-reader-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/koreader-importer",
+      "name": "@kisaki3/ext-koreader-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/kotatsu-importer",
+      "name": "@kisaki3/ext-kotatsu-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/language-ja",
+      "name": "@kisaki3/ext-language-ja",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/language-zh-hans",
+      "name": "@kisaki3/ext-language-zh-hans",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/language-zh-hant",
+      "name": "@kisaki3/ext-language-zh-hant",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/launchbox-importer",
+      "name": "@kisaki3/ext-launchbox-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/mangadex",
+      "name": "@kisaki3/ext-mangadex",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/mangaupdates",
+      "name": "@kisaki3/ext-mangaupdates",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/mihon-importer",
+      "name": "@kisaki3/ext-mihon-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/myanimelist",
+      "name": "@kisaki3/ext-myanimelist",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/ndl-search",
+      "name": "@kisaki3/ext-ndl-search",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer",
+      "name": "@kisaki3/ext-nfo-comicinfo-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/playnite-importer",
+      "name": "@kisaki3/ext-playnite-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/potatovn-importer",
+      "name": "@kisaki3/ext-potatovn-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/ranobedb",
+      "name": "@kisaki3/ext-ranobedb",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/steam",
+      "name": "@kisaki3/ext-steam",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/steamgriddb",
+      "name": "@kisaki3/ext-steamgriddb",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/tmdb",
+      "name": "@kisaki3/ext-tmdb",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/vndb",
+      "name": "@kisaki3/ext-vndb",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/vnite-importer",
+      "name": "@kisaki3/ext-vnite-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/wikidata",
+      "name": "@kisaki3/ext-wikidata",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/yacreader-importer",
+      "name": "@kisaki3/ext-yacreader-importer",
+      "private": true
+    },
+    {
+      "path": "clients/desktop/extensions/projects/ymgal",
+      "name": "@kisaki3/ext-ymgal",
+      "private": true
+    }
+  ],
+  "areas": {
+    "design": {
+      "count": 146,
+      "files": [
+        {
+          "path": "refactor/design/README.md",
+          "sha256": "c693f65dd86ae320064d5738ecfff233cdfa1ba041bdcb58b3a7587e5ae049ec"
+        },
+        {
+          "path": "refactor/design/architecture.md",
+          "sha256": "62d9a006dacc2783450e301958e27cf9ceb319e0b6e3bf5ede14df262df28ced"
+        },
+        {
+          "path": "refactor/design/communication.md",
+          "sha256": "fabc5d467f967a99154bcfebe8c534120659842be42def423dd9bca07d238708"
+        },
+        {
+          "path": "refactor/design/domains/README.md",
+          "sha256": "c8c832666992961a0bae13b584a61db2421e2a28cf5e2b41201376b852b7cc2f"
+        },
+        {
+          "path": "refactor/design/domains/anime.md",
+          "sha256": "d0cc16d9f407083141e0dc8fd83e51a2aed004d04e0e42e167dd06d48f7e75dd"
+        },
+        {
+          "path": "refactor/design/domains/annotation-contracts.md",
+          "sha256": "2791aa49a1b221cee6a3b4b8d0d653e56bb5d9cc71dc4b83022020681a552e5c"
+        },
+        {
+          "path": "refactor/design/domains/annotations.md",
+          "sha256": "08367f4b198f1a5007a25e6d5acfbd4c61b77f802de213ccf52641f79c570225"
+        },
+        {
+          "path": "refactor/design/domains/appearance.md",
+          "sha256": "92734673911e7ccabaca8656415b8dcfdc833ea2dd783373b9c4e3fb5e6ed00b"
+        },
+        {
+          "path": "refactor/design/domains/attachments.md",
+          "sha256": "5a8f2b74ab953c2254889436750373083200252723bb4230f37e87a12ee17620"
+        },
+        {
+          "path": "refactor/design/domains/backups.md",
+          "sha256": "1e54bb5c0e1df0e047ff5bfa449d478e03f4be41617b24a2dc80df6cc8f98d92"
+        },
+        {
+          "path": "refactor/design/domains/catalog.md",
+          "sha256": "6ef56869e83c14deb20fdf0fb13e62253a5dfaa8905ec842c7a331dcf02cba99"
+        },
+        {
+          "path": "refactor/design/domains/collections-and-tags.md",
+          "sha256": "f124984b12d20ad46b47652db00fc48b7148da9a3133258ea07bf47b54975b05"
+        },
+        {
+          "path": "refactor/design/domains/comics.md",
+          "sha256": "9e9ec0db674d82702d8fd07245564adf176a6c26b596cb50249ceb9e15c9df1d"
+        },
+        {
+          "path": "refactor/design/domains/file-maintenance.md",
+          "sha256": "0e98ea8954a7c29b0a324a0afe856a0df8269333edcfc65e363772f25e3c2e82"
+        },
+        {
+          "path": "refactor/design/domains/file-recognition-presets.md",
+          "sha256": "89cf80b0e254b2c76f9181a845a31e4cf9c2c3ae8e391ce2533f1c8f9b050e64"
+        },
+        {
+          "path": "refactor/design/domains/file-recognition.md",
+          "sha256": "443333a9f8317d2bd0ec43f4f8370529a87a84ae34c2687c46beb20a465c189e"
+        },
+        {
+          "path": "refactor/design/domains/games.md",
+          "sha256": "5db48449aefb71f32fb17d28f3ac48f0814bee9398fa7b904596a67e9a96ab22"
+        },
+        {
+          "path": "refactor/design/domains/holdings.md",
+          "sha256": "9c421bc92d10e782d1522d6ac6f36069418f68e9f236cb9a0c9e182a1175ff49"
+        },
+        {
+          "path": "refactor/design/domains/library-graph-contracts.md",
+          "sha256": "140cb8835fa29d4627dd160c36f479032eed275f334570f06d69ac4c1773eca8"
+        },
+        {
+          "path": "refactor/design/domains/library-operations.md",
+          "sha256": "4371fad0a0f13f458fd679014ac9826dfb1ddde1cbe0f350a3ad87ce9d2e56ac"
+        },
+        {
+          "path": "refactor/design/domains/library-queries.md",
+          "sha256": "0abf7d5dfcd66693190a3c6abf65fbb4a53f781e47c85d2445ce83866bd8c8e2"
+        },
+        {
+          "path": "refactor/design/domains/library-query-contracts.md",
+          "sha256": "eb49294df21a78af6a563c8661f4340350b20d35ec84d4f4c7ee7f39172ab744"
+        },
+        {
+          "path": "refactor/design/domains/library-write-contracts.md",
+          "sha256": "8c32bd51a24e028e58aee89b05608d66dd2106a9299ff7ffc4ba9ef32c8d2e32"
+        },
+        {
+          "path": "refactor/design/domains/metadata-contracts.md",
+          "sha256": "d7a3f63c9f6fcb48f442191346b6df7e5290588266cc1dc7d84fdb6e1adaae18"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets.md",
+          "sha256": "eb3bfcda21cf5b92fc4f4bc5f35aa9e378d977d9df35f5a87e4e79027791e795"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/anime.md",
+          "sha256": "37f49b0bcaba4514bc3a5ace0f8c6aa54111ebab8fe3aa79888e0e874118a451"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/characters.md",
+          "sha256": "785d8d82db951d8375c0ed21f749a8b750ba972d3176ede7cb3ea0d35e19ad37"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/comics.md",
+          "sha256": "669c0a9654d7b003c731e39e239f1758c32d86b73e0ed50d16cbd2a154ec336b"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/games.md",
+          "sha256": "afaafad224c6fd402f64d85b2495199d7b24590bc5d60d460611e74d8e20a126"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/novels.md",
+          "sha256": "ce19b908af4390a2e791f7ee4bb00315e72f9f8000c890012add60eb3eed5eef"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/organizations.md",
+          "sha256": "0369199816d3bb0232e371dd3c32c8fd4aec4ade445db0507bd245c4a1d891ca"
+        },
+        {
+          "path": "refactor/design/domains/metadata-presets/persons.md",
+          "sha256": "a3df7289a793fce5e86a8a9efcb7020c403a418be250488c726289868db3a820"
+        },
+        {
+          "path": "refactor/design/domains/metadata-profiles.md",
+          "sha256": "1aa12ea3fb8428a0b356b6a43ab73808dd973cdc5ddf3179f73352cd6257137b"
+        },
+        {
+          "path": "refactor/design/domains/metadata.md",
+          "sha256": "7bfdcbd3354187bfb5d5b1cc677ca17978aa4660a10619925fdea2a070b709a2"
+        },
+        {
+          "path": "refactor/design/domains/notes.md",
+          "sha256": "77977304ea062fbdfee64f09552eaf9a2bb92b48e2c6ecef40e20e2470987a19"
+        },
+        {
+          "path": "refactor/design/domains/novels.md",
+          "sha256": "4e250ee41e9b52c49441587b0e1074016ce47ee5e68160880408f7fe7eb02371"
+        },
+        {
+          "path": "refactor/design/domains/onboarding.md",
+          "sha256": "6d9c13bcbe754671230f604ab88c7f091ad457e647553b46eb5219e13c050e89"
+        },
+        {
+          "path": "refactor/design/domains/preferences.md",
+          "sha256": "9bd530658851d164ba6f6d34a02e7a8e86e0ae0c286d43b270ff91451c91961f"
+        },
+        {
+          "path": "refactor/design/domains/reader.md",
+          "sha256": "ed0e8e3bdb329e2e000113e0ca0da4bba94b2d4dcc6fbbb71f9e3602bc87b39a"
+        },
+        {
+          "path": "refactor/design/domains/records.md",
+          "sha256": "d9dd0ac150525cf25fa03056966604fe5d02d980cfe737c7f5b930b8aef75e98"
+        },
+        {
+          "path": "refactor/design/domains/relations.md",
+          "sha256": "e4d3080573fc5cf97adfb6c36414745a55c00e3e74aaacff80fd1c8b88f51dfe"
+        },
+        {
+          "path": "refactor/design/domains/resources.md",
+          "sha256": "6b07779d5d80f3cd388b6fff0588d97a39c01761e9e258edd69d6f25acb67f1c"
+        },
+        {
+          "path": "refactor/design/domains/scanner.md",
+          "sha256": "c44884f4f928c299d721ebbf3f2394942f3c6c0c956d686dbd7728d37aadd5ee"
+        },
+        {
+          "path": "refactor/design/domains/search.md",
+          "sha256": "753fb1a9eba22eda491f40057987089c3766c953185c574266f3320e4a486d67"
+        },
+        {
+          "path": "refactor/design/domains/sessions.md",
+          "sha256": "483b34c69b7bfbba8573beb5b6d674e83a7d6ea810e638dad2ed7a9f07c64dbf"
+        },
+        {
+          "path": "refactor/design/domains/tasks.md",
+          "sha256": "0570cb9fe2f19dfe9b543b9c06e3a84c895a944d880f8b59c442a4319c681970"
+        },
+        {
+          "path": "refactor/design/domains/updates.md",
+          "sha256": "5abf89501f81521c5f0a90341c0abc4e9a2ed5fe5f6205023b3c1f3613dac3c3"
+        },
+        {
+          "path": "refactor/design/domains/values.md",
+          "sha256": "7b8cb6a5c92cfabff4f723110beb359b27aaa665c930db34653099639d9b2501"
+        },
+        {
+          "path": "refactor/design/engineering/README.md",
+          "sha256": "db78983a4976bde0fdad4b661cc7ff307042febc8acf1389ec313dac99d78d0f"
+        },
+        {
+          "path": "refactor/design/engineering/build.md",
+          "sha256": "8bf26c08c3279ae725de3bc759c7a460fedcddbc3f5d9733a80e3e0a0f628f32"
+        },
+        {
+          "path": "refactor/design/engineering/conventions.md",
+          "sha256": "2aeae49d77b7c615fc3f0767a2c65cdc0f215f51a71b38df3b3c2846f1709f53"
+        },
+        {
+          "path": "refactor/design/engineering/database.md",
+          "sha256": "cddb61bb4ececa9b8acb2313ed2ea1a2fd4e6266cdf7587afdaf00972b85997d"
+        },
+        {
+          "path": "refactor/design/engineering/documentation.md",
+          "sha256": "e36ca6a30cdb9da0542470557972cf6b8117238a292f231307821f8b66e73d64"
+        },
+        {
+          "path": "refactor/design/engineering/integrations.md",
+          "sha256": "279da90c7f500d555385211b0ee88b7539c17315ea47692a6a07c5290c0b563e"
+        },
+        {
+          "path": "refactor/design/engineering/layout.md",
+          "sha256": "8e09241e1bdfcde089e340dd4cd5ffc8449a74321dcdc8df83290004f7b365ec"
+        },
+        {
+          "path": "refactor/design/engineering/licensing.md",
+          "sha256": "51bd7affe65d82cd398b40b3d10c1f9276aaf6ec9f55ec151e5eff1cb96e1643"
+        },
+        {
+          "path": "refactor/design/engineering/native.md",
+          "sha256": "6967c9b59d3495c80451de82f2059aba968a95bebf8e2a57ca99193ae9b614ae"
+        },
+        {
+          "path": "refactor/design/engineering/network.md",
+          "sha256": "13fbb01193d8b35532f71e0f508290ef55ab96af7f8c2c08093f4261660b4e4d"
+        },
+        {
+          "path": "refactor/design/engineering/performance.md",
+          "sha256": "50148040db1481c38e3941f8e7af6bc7dda80b021e1f9cd843b12786efbc902d"
+        },
+        {
+          "path": "refactor/design/engineering/protocols.md",
+          "sha256": "750c9ee7fc871dd499b6852a8e3207343ef0064e567805445dbebe8e1f80cac2"
+        },
+        {
+          "path": "refactor/design/engineering/releases.md",
+          "sha256": "bbad1137e77389cde66ee8bc2e4abcdec5a3633c81ffeaf8b25aa2be9ab73cc5"
+        },
+        {
+          "path": "refactor/design/engineering/repository.md",
+          "sha256": "42998fad6f99a95724f612057ce4e174b64f2f91305c84602a87c8efc792f1fd"
+        },
+        {
+          "path": "refactor/design/engineering/workspace.md",
+          "sha256": "33db258ff343814fefc1e5066f4c7e7364fb9516016f1a1f777cd30a113bc443"
+        },
+        {
+          "path": "refactor/design/extensions/README.md",
+          "sha256": "cc8b1305cb4db3a7f50a838414f72d371cfe481236185a33ab89e8aa32c8d24b"
+        },
+        {
+          "path": "refactor/design/extensions/catalog.md",
+          "sha256": "98672046598ca2c23a2223c3f2d7f9498cad44a8294fd7bac04647f9f9150cb9"
+        },
+        {
+          "path": "refactor/design/extensions/development.md",
+          "sha256": "da4211e90fd83bfde47ff26245d4ed05eac48d51ab9c5aab6d99b78e0b8e95c5"
+        },
+        {
+          "path": "refactor/design/extensions/distribution.md",
+          "sha256": "a2686536c38c26321aa9e79da3536f970929a0c43253d6734a3a1990ac45611b"
+        },
+        {
+          "path": "refactor/design/extensions/importers.md",
+          "sha256": "c70c4d0b9edd435ff6c170ae78029bfe7725bc71af1ef268ef5f1501137acf1a"
+        },
+        {
+          "path": "refactor/design/extensions/importers/anx.md",
+          "sha256": "0112ea29e4c1babe8a47eec15d936071ffb0673643ccc5da191e59c9f43299a6"
+        },
+        {
+          "path": "refactor/design/extensions/importers/calibre.md",
+          "sha256": "82c025d316b60139b896d4d6423a6c1b0d3d4e0dc90de10cd323dd9f0d890852"
+        },
+        {
+          "path": "refactor/design/extensions/importers/goodreads.md",
+          "sha256": "c185ba0876950c69bc0df3dfbb589e986c212833525d9ba463a00bf286fb7f7c"
+        },
+        {
+          "path": "refactor/design/extensions/importers/koodo.md",
+          "sha256": "40f975e101f61efa85ed654d470c4d4c90177a9b9cb6c3b785d759c330122ed5"
+        },
+        {
+          "path": "refactor/design/extensions/importers/koreader.md",
+          "sha256": "b63710062e226788811cb7ba4d0331289f16aa82d88af11a46d54e620a238962"
+        },
+        {
+          "path": "refactor/design/extensions/importers/kotatsu.md",
+          "sha256": "b05a59abb51d8e7ccc90f9fbcdf035bd1cac973cc993bca27fe887b7bccaf2ba"
+        },
+        {
+          "path": "refactor/design/extensions/importers/launchbox.md",
+          "sha256": "189aa7b1393576c40b4916489dfd3e8ee87476c8c51a9b3da6859f74ede6489a"
+        },
+        {
+          "path": "refactor/design/extensions/importers/mihon.md",
+          "sha256": "e5ba635516872be5dcea87757504d317bc651b9749ed8b0bbbcb7b5e8df55e80"
+        },
+        {
+          "path": "refactor/design/extensions/importers/nfo-comicinfo.md",
+          "sha256": "8a5444fdbcee692047049176bc889bb3c2821afd626d978b9eb79543fe40f838"
+        },
+        {
+          "path": "refactor/design/extensions/importers/playnite.md",
+          "sha256": "312b613ea476b592d4c8a469a60e4a0fd06f1012ce9c0cceddf8af7d1b9412a8"
+        },
+        {
+          "path": "refactor/design/extensions/importers/potatovn.md",
+          "sha256": "30759eb2a6210eacb463b819d65266b4f7a95a49471faa7e59ed1e2dec4122ef"
+        },
+        {
+          "path": "refactor/design/extensions/importers/vnite.md",
+          "sha256": "eba87c993f74456cd7c795957c067141ae3a424180ed439f08c6b49f3f9eb78a"
+        },
+        {
+          "path": "refactor/design/extensions/importers/yacreader.md",
+          "sha256": "3083242e8ab407f21418f8b0e164c3894a34e8a8021ee38465f9a837c644f648"
+        },
+        {
+          "path": "refactor/design/extensions/languages.md",
+          "sha256": "a08e932a8846a08856338acbf575e73a7cd1866c5f3716e6a78a453b96cd982f"
+        },
+        {
+          "path": "refactor/design/extensions/private-data.md",
+          "sha256": "a2142bca9ef7c5dd383a0e55aa9ab02fb0bb07ace9e3c1fccc45e72737da4cee"
+        },
+        {
+          "path": "refactor/design/extensions/providers.md",
+          "sha256": "08a08b78330bc22984894617b4082fe9606c3608109e73a7e31d2e194f946d5a"
+        },
+        {
+          "path": "refactor/design/extensions/runtime.md",
+          "sha256": "a9d2777dc399051fb36655dfeb4797e20257c59463aec770acb3adaba84f40df"
+        },
+        {
+          "path": "refactor/design/extensions/sources.md",
+          "sha256": "7ef5f43630ace61a2391e61e8b52deff2f5a615b593b70da01ee8a81cbbf2940"
+        },
+        {
+          "path": "refactor/design/extensions/sources/anilist.md",
+          "sha256": "29f19a20ea8fccab3b5b8444cb287dd7e2cb33d9a11af820c3de9f1f9f1fc4a3"
+        },
+        {
+          "path": "refactor/design/extensions/sources/bangumi.md",
+          "sha256": "dfbe35b03bfde0d337d1730c1d5d43d16c6b44cc30ddce50fd1760e38aa45065"
+        },
+        {
+          "path": "refactor/design/extensions/sources/fanart.md",
+          "sha256": "dcd5f2e1ce1e0862df5973bb6916a0b0e0057d011229bae78fdf1b99224de999"
+        },
+        {
+          "path": "refactor/design/extensions/sources/googlebooks.md",
+          "sha256": "889807f995df899715873275da38d138a5f093465ad460ae2d009ad4f40253f6"
+        },
+        {
+          "path": "refactor/design/extensions/sources/igdb.md",
+          "sha256": "30a64a2b1cd05fbfe306331e7996e963ebe288d2b0d8577c39b0f415a763ebdf"
+        },
+        {
+          "path": "refactor/design/extensions/sources/itchio.md",
+          "sha256": "18fcb0085104c17aee37d7ed02ca01e6b90ddf1c8252cada34b1d30bcc527a12"
+        },
+        {
+          "path": "refactor/design/extensions/sources/mal.md",
+          "sha256": "270bee10ad73fd45b1b6ac00640cfd1e8f5e1c38c54e613ec0ec6d64bad72863"
+        },
+        {
+          "path": "refactor/design/extensions/sources/mangadex.md",
+          "sha256": "326d2c3fb8a16d6c924d76292f0265afe900737571ecb8a7ebb0cb3554416f8f"
+        },
+        {
+          "path": "refactor/design/extensions/sources/mangaupdates.md",
+          "sha256": "24c56e1f83d2aee978567fb10d95f358de3d064e496551a79f539b17bcbe7c15"
+        },
+        {
+          "path": "refactor/design/extensions/sources/ndl.md",
+          "sha256": "cc170d0e791773e2d47a8d58dafdaf79f10878d7fc1c79487323cab5620155f4"
+        },
+        {
+          "path": "refactor/design/extensions/sources/ranobedb.md",
+          "sha256": "21ef8a9c7a3c2c93c3c53c921c9811728ff1c1af79f7644f49dccb9e3236fc44"
+        },
+        {
+          "path": "refactor/design/extensions/sources/steam.md",
+          "sha256": "3f3e6672ee8222176112c16470b180a27674f8cfdbf71832f188f6c80da5eae0"
+        },
+        {
+          "path": "refactor/design/extensions/sources/steamgriddb.md",
+          "sha256": "edc02ff4bc3e60cad44726f4f80f760a64afc32a9d9b5fe1f95c6a2203cfacc2"
+        },
+        {
+          "path": "refactor/design/extensions/sources/tmdb.md",
+          "sha256": "c3b9fe84b921258bc555364ed3c296d7db880c1af0eb8dd152f4f7c96d104b10"
+        },
+        {
+          "path": "refactor/design/extensions/sources/vndb.md",
+          "sha256": "443b8d12696dabd15ea3e7f0603341fe3ffbc6a5264b20489e271274df4c4eeb"
+        },
+        {
+          "path": "refactor/design/extensions/sources/wikidata.md",
+          "sha256": "e6d817b8b56f34a87dc0b93e4eb26d2dfb092f270076c03ab1cbb65f1b7f4bdc"
+        },
+        {
+          "path": "refactor/design/extensions/sources/ymgal.md",
+          "sha256": "8a0cfaba3dab658423a7da4bc291a5cedea6b507c0f6885571e761cb67901ef0"
+        },
+        {
+          "path": "refactor/design/extensions/synchronization.md",
+          "sha256": "a6758f865980d4253f264e60af4b75ad432e4501840f7db07ac6b40d9f5c5a02"
+        },
+        {
+          "path": "refactor/design/extensions/webview.md",
+          "sha256": "2e07d3c7c83464301bd1a60a4d28325c558237f1f5219420cf426036d515bd94"
+        },
+        {
+          "path": "refactor/design/product.md",
+          "sha256": "7d4d55e4a14924305f271a9a8d09ba4461ff79429bdb201dc6a26895b177bbb0"
+        },
+        {
+          "path": "refactor/design/projects/README.md",
+          "sha256": "cecde34b08e8cbbf37a70cbc44cc3ce75b584429f6669fbc6e9dcd5fcba718b1"
+        },
+        {
+          "path": "refactor/design/projects/kana/README.md",
+          "sha256": "8872068a78c6903c02d3158fc0daa0e5fb628a826231dd3a54694597904f1001"
+        },
+        {
+          "path": "refactor/design/projects/kana/api.md",
+          "sha256": "167105c8afa7fceee8baa991f605ee58bae95a005af7c017af8c27b366ddc876"
+        },
+        {
+          "path": "refactor/design/projects/kana/content.md",
+          "sha256": "6e2a81b5b0c7957abe82001f85dbc98c0d54a8c8e87d13471475603e04992b65"
+        },
+        {
+          "path": "refactor/design/projects/kana/distribution.md",
+          "sha256": "c1bd12e38312f9efac9b121d2c9580f607bcd12b3b18e92e0e76dc4a1a550a2d"
+        },
+        {
+          "path": "refactor/design/projects/kana/formats.md",
+          "sha256": "27eba202ebedf72bf70ceaa941f3357f0390d54189a9c34c3d850061a674b0a4"
+        },
+        {
+          "path": "refactor/design/projects/kana/interaction.md",
+          "sha256": "8c26561f8f71826feafa82967acee4bb713589db08d78897a306c2c72b481bee"
+        },
+        {
+          "path": "refactor/design/projects/kana/layout.md",
+          "sha256": "54eb17d82b81a7cbb190bb2d96ed951c3151ff31e35453891cec263aba86c67d"
+        },
+        {
+          "path": "refactor/design/projects/kana/positions.md",
+          "sha256": "393444ed7eb6b1dd5cc8ddb2b8ee89abdda1797ec73a31287183060ef5ddb5c5"
+        },
+        {
+          "path": "refactor/design/projects/kana/resources.md",
+          "sha256": "f6052dba17724fdff71b48fae2b0ad86b76f0c625e4aece9a8e47b3df9d01875"
+        },
+        {
+          "path": "refactor/design/projects/kana/settings.md",
+          "sha256": "1a6c39f856a8de2f913ccd71a95ab1eec96825496de0659c833b9d53aa49ecb0"
+        },
+        {
+          "path": "refactor/design/projects/kana/styles.md",
+          "sha256": "cd22f4c00daf647221cac94ec95b3c4d5041da4ccf214093af02a8c88658d134"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/README.md",
+          "sha256": "daf83c4dc989430e6145a66dc102d2dde1d9379633ddfde2e6b4c79f0afa2128"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/api.md",
+          "sha256": "c287a8fd91790acccd0d083d22feac99549bacb715d373f49f446e44086b8987"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/distribution.md",
+          "sha256": "76384ca257000ae6c57b5343cd49d49482144d7412e8cf203be209e08dcd6038"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/lifecycle.md",
+          "sha256": "dff8e5c6cd08a0d16863a80dc1a857973a54c6e01266c2d4b1f78010779a5274"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/notifications.md",
+          "sha256": "6e79dd7d9a2faaed9d89a44be4f0d5c5ef480f05685fc793da5e501771350740"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/platforms.md",
+          "sha256": "b620955dd5cee0e523db0e1c9bb0cfc6cefb8f090d6dacd83869c31038b810c0"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/streams.md",
+          "sha256": "779959fde367e9113d5205b972a9cbc00e921ff47eb7ffddc130173ce0c97e0b"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/values.md",
+          "sha256": "4dca611d7c2cca0f1979d7fde87ce6713443deddc0b0e4145efecd5a7c471180"
+        },
+        {
+          "path": "refactor/design/projects/libmpv-node/video.md",
+          "sha256": "6950b838105d6fb97012bfc4c7c6125c80300f59c08dcc0c7e5876bf39d770eb"
+        },
+        {
+          "path": "refactor/design/projects/native-runtime.md",
+          "sha256": "61246c87cb79939776d160298afc3510f6a73376056ae14ac18bb523968972c2"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/README.md",
+          "sha256": "6762a9a8160b1b081bc4c14c54c2a73b5e577d7f6e0e35782ede4652a0c0a0d0"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/config.example.json",
+          "sha256": "131f6bd44ef11d1e0d2bfe78470affca0fd8876b625130b4a0ac616b8475d09b"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/config.schema.json",
+          "sha256": "5bbff0f316dc5297354d69bf213dfdbe5c17ea72afe0c37ed83437cb2dea9394"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/deployment.md",
+          "sha256": "48521b182f194a59d527cd1465976275c5a3b7ebacd56f2f2cae79e3b78f5b98"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/protocol.md",
+          "sha256": "4014d4a0847e5d190e1a4cacd36ec54c2487b5d50ee2f008e845d699b6463d62"
+        },
+        {
+          "path": "refactor/design/projects/oauth-relay/providers.md",
+          "sha256": "ecd2a719cbf02dd5c701700905dd045277435213fa19037925b514a864e29cf3"
+        },
+        {
+          "path": "refactor/design/projects/vantage/README.md",
+          "sha256": "9d7fa5b1f20d96549ffb412c4afc94d822878c6e075ebfe7ff5ab738875fbb79"
+        },
+        {
+          "path": "refactor/design/projects/vantage/api.md",
+          "sha256": "73b31678eae24365be18b357b65b833decc746cff451c6ad00e3d4c061c3c785"
+        },
+        {
+          "path": "refactor/design/projects/vantage/backends.md",
+          "sha256": "202a47d254ceaab5fbf3bb16a740ab735e8da7f7fd8ee0ece9c68dce276b1d3b"
+        },
+        {
+          "path": "refactor/design/projects/vantage/linux.md",
+          "sha256": "5e2e6b6b398a423079fcda6a5518ce7d3941628369b9968c6b4741c499b61805"
+        },
+        {
+          "path": "refactor/design/ui/README.md",
+          "sha256": "524e42d8dc467b16e55619910dbe03cf86684dae896acb242e9e645d30ed9500"
+        },
+        {
+          "path": "refactor/design/ui/components.md",
+          "sha256": "41f4789eadccafab9a535b4f6ba8d8941b3fe44dc11be04884e6ecd33e8d2be1"
+        },
+        {
+          "path": "refactor/design/ui/explorer.md",
+          "sha256": "f6790f228f57e18d9a8dd124c0691cdc935035905873511749e6ff6f1625c31b"
+        },
+        {
+          "path": "refactor/design/ui/localization.md",
+          "sha256": "012808f94227da3cd271555bc8e8da5a3b0c9ecbcfda6bc9a0c30ab7b7db6a56"
+        },
+        {
+          "path": "refactor/design/ui/navigation.md",
+          "sha256": "7b85c1994521e7f109eb58d23750a12bfe3255e89f05dadacb9441002a83b172"
+        },
+        {
+          "path": "refactor/design/ui/showcase.md",
+          "sha256": "d3ca625abb2de6f0be60e76b25bb17bec9ff653916d567c6c136fa7728432286"
+        },
+        {
+          "path": "refactor/design/ui/state.md",
+          "sha256": "18acb027e4e19313734ba6e1fc0f8206e76a6697c40f6d0f5b23341b1b1eddbf"
+        },
+        {
+          "path": "refactor/design/ui/virtualization.md",
+          "sha256": "76aa7a4cbc04a2aeb8854c124453b884a2ce637b34668384a71f368ae1fa0b67"
+        }
+      ]
+    },
+    "implementationAndVerification": {
+      "count": 22,
+      "files": [
+        {
+          "path": "refactor/README.md",
+          "sha256": "aa1e1e267c01c49fde406f1ec0d6280be694952aea177a07c31e4420518f3f8a"
+        },
+        {
+          "path": "refactor/implementation/delivery-checklist.md",
+          "sha256": "2a494ff777e513a25518149f73303a06bce3e04045369a95160b97c792a89eb1"
+        },
+        {
+          "path": "refactor/implementation/patches/libmpv/black-tone-map.patch",
+          "sha256": "2a76d386261c4312e47b10f1336efbf8fba08e381c1038e98ebb8161879b41f9"
+        },
+        {
+          "path": "refactor/implementation/patches/libmpv/manifest.json",
+          "sha256": "acf24a2159d50d89cd71a49598a524dd5de8da68a5dbc38d1ee4254bb3beefb5"
+        },
+        {
+          "path": "refactor/implementation/patches/libmpv/screenshot-source.patch",
+          "sha256": "a71f6fed21e0a5754f76cf5c0df9e34126488e0330332fc5259ffeb79d316f57"
+        },
+        {
+          "path": "refactor/implementation/status.md",
+          "sha256": "1bd3db42e2b1e81b7a3214439524685d45d0d864dd7f93d578485b796dbfda49"
+        },
+        {
+          "path": "refactor/implementation/work-packages.md",
+          "sha256": "03f8bf445634c3130655652c658d40ed9b26b88ed9f19f3d0249324f2e0779ed"
+        },
+        {
+          "path": "refactor/verification/acceptance.md",
+          "sha256": "85fd9c3ae4683d0a6fbed2cfd5d2d399503b3e731b575b2a3e73ce19d8b97f9c"
+        },
+        {
+          "path": "refactor/verification/coverage.md",
+          "sha256": "ddf73fd52afc79a6a6cd734656a2dcc9f71397cf278e8f1f50650d750b378b75"
+        },
+        {
+          "path": "refactor/verification/scenarios/engineering.md",
+          "sha256": "fe95af9bf31f87b1ca53609f3efc9d69ab52f5b1102fc197fcb16703b932f1b2"
+        },
+        {
+          "path": "refactor/verification/scenarios/holdings.md",
+          "sha256": "6c64f3020ebf14c9fbef21d465f05e8a128df7f5690bcd7b98091eb09fcc4f45"
+        },
+        {
+          "path": "refactor/verification/scenarios/importers.md",
+          "sha256": "0271dcaf717523997c59fb458905d413f58d601412855aa38e9cb68a97b01fce"
+        },
+        {
+          "path": "refactor/verification/scenarios/libmpv.md",
+          "sha256": "27c6f3d2a081b8ee57401506608df7a45bc159230c23622a4debbb4ac0d47c83"
+        },
+        {
+          "path": "refactor/verification/scenarios/library.md",
+          "sha256": "973d45eb26bc2732c1119ed2bcfbcb24c8cf949cf42dba6f596775630fe8dad8"
+        },
+        {
+          "path": "refactor/verification/scenarios/metadata.md",
+          "sha256": "d6ae2f088be3b78a5afd09a9aefb0df28aefdac17378bbf1b9b3ea3f125b5fb0"
+        },
+        {
+          "path": "refactor/verification/scenarios/oauth-relay.md",
+          "sha256": "13632e76765d5dea69e5eafe1d4ce7c2255d67c4e4182ef8879b0718662669e7"
+        },
+        {
+          "path": "refactor/verification/scenarios/projects.md",
+          "sha256": "ee00f61111e8cb06d11b94eb6a5b0a2bcc707ecbe13df5b071163c68ce0bac10"
+        },
+        {
+          "path": "refactor/verification/scenarios/reading.md",
+          "sha256": "82ea71049f4ce16c26c3e3ca7dc4e6a11a89205595d2ded22ad4ff21113f82af"
+        },
+        {
+          "path": "refactor/verification/scenarios/sessions.md",
+          "sha256": "84ed017f67e446372d2f9de9e22003a3e3fa2830f71175eea00417599c322536"
+        },
+        {
+          "path": "refactor/verification/scenarios/sources.md",
+          "sha256": "9aa9deec9022d929747c154a314f3ba3cc3cfd584a7dfb8681103ad108ec12d0"
+        },
+        {
+          "path": "refactor/verification/scenarios/ui.md",
+          "sha256": "ec419aa5d338472321bfb33d0f54515f79279a98937089b9dfe47608e3f3ae0d"
+        },
+        {
+          "path": "refactor/verification/scenarios/vantage.md",
+          "sha256": "d80e788d1ebe7bc3caf1df64a7f2b4eb3a7c252d12c7bd2a038add2d2b4e3f03"
+        }
+      ]
+    },
+    "guidance": {
+      "count": 55,
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "sha256": "c5b7c4323036022de7b1b22e78b5a8f83ab254650a7e769419523d09414ad3ca"
+        },
+        {
+          "path": "ARCHITECTURE.md",
+          "sha256": "c1289e8f99eb5d0495170749eb48dc970ab0dffbdd56847663f4e31a0e424166"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "sha256": "e6078dcad680df4ca59455ad4060092dbd602aed048a192870d6adec5dc69eec"
+        },
+        {
+          "path": "CONVENTIONS.md",
+          "sha256": "45a71ac6659c949f61d29aa86be7b58ecbfdca8c20240da0367daeede3ae0f8a"
+        },
+        {
+          "path": "README.md",
+          "sha256": "16691cfa77be2f8ca0e0e5832b393987089294c0b5d5fcd000f923019e889e09"
+        },
+        {
+          "path": "clients/desktop/app/README.md",
+          "sha256": "7f332fdc59a5a9a9ef5352d4f7d7589113fe16231bf72d4bb1bc651f3317c2d2"
+        },
+        {
+          "path": "clients/desktop/app/assets/fonts/README.md",
+          "sha256": "5448e5c31f9359eddd070441cdd2106f6c14bc8fb97fbb11ea26809a61eedfc0"
+        },
+        {
+          "path": "clients/desktop/app/assets/icons/README.md",
+          "sha256": "c531e38273059f3037f6f6e42d8f5179ecdb17d4e53350cd3def740402d5cb5d"
+        },
+        {
+          "path": "clients/desktop/app/packaging/README.md",
+          "sha256": "bb9df3b31d2613e181b5a92e998be273b1d3426e1aceffd765b895e1d22fffb1"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/README.md",
+          "sha256": "2f39a8228f6728d49b744631e87304000af42564464892c17c7f0fa885dd2272"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/README.md",
+          "sha256": "d356ad39d0bfe03a43da6a82e88f8f05c8eb1d6ee4d720b4ed643a89b6782a72"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/README.md",
+          "sha256": "300fd48be162c9d43279b7fa34d30bb4bb3b0d8ebbb1d2e420922ad6045eb2f0"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/README.md",
+          "sha256": "09dd757e56dc9742eb7c029f01ce35f05d8cefdf41b4d53c9787ca02a72d44e2"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/README.md",
+          "sha256": "7fbb9d257336737bd28cc61d1c8f1c8d14b039927fe557cf52590560e35d82c4"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/README.md",
+          "sha256": "e9640f4c684a74e776513b0364b81d6ad904a655416618f46009f8d5e9b36f2d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/README.md",
+          "sha256": "e7cbc18f2fe8dbff81e8a1a79500407038c86c7163133db522316802e226b924"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/README.md",
+          "sha256": "1681288791503b1c3485046620bcf7a98ab821cc105bb27a4d010b98f573bf44"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/README.md",
+          "sha256": "fa429d285f8c49f4ae79e5f58abac8ee1da7264e049c882cd65c2b7d71706a3a"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/README.md",
+          "sha256": "27848fca81265ae93f218181f16b1ee73713174e958a4c4e47e09c20ba106dc6"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/README.md",
+          "sha256": "e2f6d2beeb59b647e0f17f11c366aa1d876a5f497512e27beac808e01fe6cb0f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/README.md",
+          "sha256": "358ea6de3067010a82b817c3f3eb61baf3e05b191757cd591df710cfcbeeadae"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/README.md",
+          "sha256": "8257c7b085b0ce73e4849ce943473c6fb9ca39fdfce802b1672db10e1c7ecfb8"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/README.md",
+          "sha256": "a43695f094dbdfdc112b98f2348139f220f56e81136610556902f744cfc4044d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/README.md",
+          "sha256": "f23e05bc93555b3d02c89d94b25555e755dfbcb12711b73edc4ea967656c23fe"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/README.md",
+          "sha256": "4ba3fbb96924dff3e67558a4c430674ef40ce569caef880666621b94c9bf3e73"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/README.md",
+          "sha256": "561c72bd5fb2e8161e6ce9017f2e2963175066c04187eba5b5eeccbf174ed7ca"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/README.md",
+          "sha256": "09038e1cd5e24600e294024c30c6c01d3525af0ac64a3efbea77b39d922712fd"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/README.md",
+          "sha256": "edd38c1cd1e0301c02ac7e7c6c30cecf4b4f582a6a7bff323733e02f0b41d975"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/README.md",
+          "sha256": "7edacd42af13baadec3a2e360feb41b001a2e2648dfcccbba4380b2b240fc068"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/README.md",
+          "sha256": "088653f5b4be972ee79ecd3493bffb1cb87b817cf47191c56452fc15e7d74ac5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/README.md",
+          "sha256": "7d27920b3cbe6aa2221f8fdf99a1643b66cb0eb72848629b65965da876f8488a"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/README.md",
+          "sha256": "21982f64379c016cea9a570d84039c5599284a33bdc34a5b28ba09764e88b95c"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/README.md",
+          "sha256": "cd7602a0b76eac01614d658c73e2c42ec3c4f213b6e89798775060044686fd49"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/README.md",
+          "sha256": "4a6b93e00a0bec54f14bafd4fd094f2c379e179964514ac92c666d853a937443"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/README.md",
+          "sha256": "656568226686f47ac556c335a19123a59dca4226db07bc3a12cf587591fa94dd"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/README.md",
+          "sha256": "38db053063961d2586218c541613e68a86efc07d6407c13f5a7efe7fc4f7426c"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/README.md",
+          "sha256": "a2f910d8e9de07d81666d063cac3cf5dc24476e9378c09482dabd45751db8102"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/README.md",
+          "sha256": "8933aef7b0e4d39134268bcd66e5ef216e9db77c57e6c0b592b6ce49045de1a6"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/README.md",
+          "sha256": "7520bdf33b21fa124ebc7840b6559b311cd508236611db09f78da72ab4184b3a"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/README.md",
+          "sha256": "bfbc9f2e1a740c48cb69f0eae12c37a44259a73e18c292919c4f71f64dd02f4e"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/README.md",
+          "sha256": "16ea29502d40158cbe348dd52ebe46383cfe067208e346d7ac84f744b78274dd"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/README.md",
+          "sha256": "ff9788a832d0df5b73e6355b990037ad1e104cda87b2ae7db08f954c3428c152"
+        },
+        {
+          "path": "clients/desktop/extensions/registry/README.md",
+          "sha256": "ae4a097f10192df916fe1b575711c7fcfedc634af2084611387d6ecf684189a6"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/README.md",
+          "sha256": "8cc038da0616c7fccee480bf68874a38353681daaa5d52a387b9e068c471cb58"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/README.md",
+          "sha256": "a723f9c7a819f91cd31d407c33457f9c73026d72adc6399d1d391c44892ef2f5"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/README.md",
+          "sha256": "2775e56c2e8a1e405f7ec56e603fa21a7d0581dac08d94144d3b14f32ec3795d"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/README.md",
+          "sha256": "5fc393cd39aa2828aa5d1243ca2f3332fbfc375593b77d915bbdb068190697cc"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/README.md",
+          "sha256": "e562f654c4f34ab829560b9b01bcf9bce88f55512a25115d9fe39955dbdfb298"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/README.md",
+          "sha256": "f3018e47482ef13ebff17fa6ef056ef852eca054189a0978d8b89913db5e0708"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/README.md",
+          "sha256": "d4c21fe67bd7a516fa3080a95c4daa1387bfac813fdff1042d0603abca3484a1"
+        },
+        {
+          "path": "clients/desktop/packages/ui/README.md",
+          "sha256": "2f02aee4114746ee2a836722e8f22689ef2681b6e70ba20550a37cbab62c2686"
+        },
+        {
+          "path": "packages/eslint-config/README.md",
+          "sha256": "64cbe03171e391e19bf9fdeba2cfeb061bd402ca7d3437b9f4beb8b1f098e6fa"
+        },
+        {
+          "path": "packages/tooling/README.md",
+          "sha256": "5030ad4bafe9b0d1a60bdb5e0d0132f204297bbac0a934f63fe630b6b6e72b90"
+        },
+        {
+          "path": "packages/typescript-config/README.md",
+          "sha256": "e71c369eaf7ee029e52cf6d24af00d4501c21f727f39aa02cf6ff254a1c853a2"
+        },
+        {
+          "path": "tests/fixtures/consumers/README.md",
+          "sha256": "c8a0854679f94d51169ce28c9342ba4e455fe177a6c88a2d6968668ea818ce7d"
+        }
+      ]
+    },
+    "engineering": {
+      "count": 440,
+      "files": [
+        {
+          "path": ".dependency-cruiser.json",
+          "sha256": "7d465b48068464adf2398218bfaabe9feb46fd140077721f3c28b3e2bfdef932"
+        },
+        {
+          "path": ".gitattributes",
+          "sha256": "3ae166aad51ea0019221856d4c4329068012edfbb6b6166c009296fe8916397b"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "24900563ff55a49665ae231ec6b0a81331d2d1fca41227b4d32def960f1f9338"
+        },
+        {
+          "path": ".github/workflows/pr-title.yml",
+          "sha256": "04ca1802de6fbf7aa7044a183ac45857cc224183c0930c29f55a4e4bbdf9a1d1"
+        },
+        {
+          "path": ".github/workflows/verification.yml",
+          "sha256": "1f015ed4a32a57bfa2605454e30d7547e20f8100bf6d2b574a0adb53ed7fc5c4"
+        },
+        {
+          "path": ".gitignore",
+          "sha256": "c5f5c465874baed1a7e118ed82fc88b1fc3abc60ca02819b1cb0817617945595"
+        },
+        {
+          "path": ".husky/pre-commit",
+          "sha256": "5b003b570658de5c7ac119b47cf7ad77f9e57e1e3bea2d469c5a0ba01693e6fa"
+        },
+        {
+          "path": ".node-version",
+          "sha256": "d3fbdabc6e79cd4db661944014629a9d677d22d5e7656eadeea8ef55ddf9c9e3"
+        },
+        {
+          "path": ".npmrc",
+          "sha256": "2421febef445a76babc0ee7ae760b4eac0e0849304d8b208c9cacddd9fe8073e"
+        },
+        {
+          "path": ".prettierignore",
+          "sha256": "89d389b2b555917ffc1a05973c7fe02a431a54ec2d32d259264a53d3998b466d"
+        },
+        {
+          "path": ".prettierrc.json",
+          "sha256": "7d0d0ced9b633e1d1192e0f009109304e90bd85435034689d49119313ec38d56"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/app/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/app/assets/fonts/inputs.json",
+          "sha256": "6cf8025b44ae17166cb0c440af77e3fe7b579d6810a00cff67afebd43950d99c"
+        },
+        {
+          "path": "clients/desktop/app/config/playwright/playwright.config.performance.ts",
+          "sha256": "af526c86a2ad5ef960bb41b99f2b6e373477aa9c78bb395a32131dd1ca9b840c"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.extension-host.json",
+          "sha256": "0fd36b55a829edcc7c6e48c9205cc0b6a584dcad962beb0a2c0b6d6b99daef61"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.main.json",
+          "sha256": "5868b773eb7fdd3d29514f5ae42f63cfaddd2e21af554977b1093a2fdd4ee639"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.preload.json",
+          "sha256": "4fe7f8504a0c630bed0fcdc9029247ce9e7f61422e14dcbcac6732d0f4375b71"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.renderer.json",
+          "sha256": "c4e1fc184b33cb1f5011f5a1a32260dad36f2cec0928e09708ccfcc1df64cf22"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.shared.json",
+          "sha256": "bcf883b4967d117716a521cc2c06f3761a72e11a1e37693df57f458f5c162645"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.tests.json",
+          "sha256": "81986003a9ab4d1fe6fcd3872cb9c2310d8cce23343d1e91170cba1d78bded5f"
+        },
+        {
+          "path": "clients/desktop/app/config/typescript/tsconfig.tools.json",
+          "sha256": "5fd59c145b0c30d474b942c052ca88f251c8644527a2691a86822bad4f12934d"
+        },
+        {
+          "path": "clients/desktop/app/config/vite/vite.config.extension-host.ts",
+          "sha256": "a4c7c51ccec75a723002ba1b38068bf0c31e04a3baa68b6301402012e5e289ca"
+        },
+        {
+          "path": "clients/desktop/app/config/vite/vite.config.main.ts",
+          "sha256": "7f3de429aef26f7f76db1197244e84d52f90c10b09d0d75d496afb36e7b8d0de"
+        },
+        {
+          "path": "clients/desktop/app/config/vite/vite.config.preload.ts",
+          "sha256": "1ec3f5241be7eb7574ad807245640b27384a3ef6fefe4bfca599809798da3755"
+        },
+        {
+          "path": "clients/desktop/app/config/vite/vite.config.renderer.ts",
+          "sha256": "9585534be335c4924bdf38c38c721388a213be2da2ed82719ffb873b9ded7030"
+        },
+        {
+          "path": "clients/desktop/app/config/vitest/vitest.config.artifacts.ts",
+          "sha256": "1bdab1910a62948ecf175ce771ba29c4770f94a6f46afcb36994778bd329f569"
+        },
+        {
+          "path": "clients/desktop/app/config/vitest/vitest.config.browser.ts",
+          "sha256": "020e9dce55ea51565d01137ffc51a24255fb6769a77d5b58e5bcab92fe884baa"
+        },
+        {
+          "path": "clients/desktop/app/config/vitest/vitest.config.dev.ts",
+          "sha256": "e7dd19dd340df126b490631b7f0108bc4f5a3e2db955e8bc57f01772f93d95ee"
+        },
+        {
+          "path": "clients/desktop/app/config/vitest/vitest.config.native.ts",
+          "sha256": "8a401e229d8fde1ef71c2188b1501d9602694832df34bbc6b6e78608e5e8ace4"
+        },
+        {
+          "path": "clients/desktop/app/electron-builder.yml",
+          "sha256": "35803ee34fbbc78e07d90f48f22af153592e45a8dadd2eec976632630ecfce14"
+        },
+        {
+          "path": "clients/desktop/app/eslint.config.ts",
+          "sha256": "e134ee259d802203657c06b7d5be851b0f95c5f37190ca446854ae36f755f84e"
+        },
+        {
+          "path": "clients/desktop/app/native/Cargo.toml",
+          "sha256": "f811f8790d860ebd19cf9d29e734e3c6d9374a571913d5a5e43f55d76318fb02"
+        },
+        {
+          "path": "clients/desktop/app/native/build.rs",
+          "sha256": "fcbd1ff3f627a7553fa1704dc6f558998daff8bc256015c37aace62cc49ce584"
+        },
+        {
+          "path": "clients/desktop/app/native/node/files.ts",
+          "sha256": "427d8460d2a7d341a6b0d4c086d6b32fdfdf235e54cd294eb34590ac8fc79d49"
+        },
+        {
+          "path": "clients/desktop/app/native/node/index.ts",
+          "sha256": "1942d7a828f4e55e3b618b93514e081df61704ca12c2d15cecaab1fa1ef54edd"
+        },
+        {
+          "path": "clients/desktop/app/native/node/loader.ts",
+          "sha256": "30a3e5e04b57bc36b84a924ba34a59b8508013da461bb1614c45cc9e79a4dce8"
+        },
+        {
+          "path": "clients/desktop/app/native/rust-toolchain.toml",
+          "sha256": "c33d1f0b1b8fda448bea32d7dc867aa64947c87169fd9de7122ffccad1dd80f9"
+        },
+        {
+          "path": "clients/desktop/app/native/src/files.rs",
+          "sha256": "e16288042cc803f8665004d8b8888c194b8ffb2b8efbb9c15d682d936669d068"
+        },
+        {
+          "path": "clients/desktop/app/native/src/lib.rs",
+          "sha256": "9486e4fcaf0b3df291da7735b00cf932efff308dddcf989afe534b5f4ecbc1e2"
+        },
+        {
+          "path": "clients/desktop/app/package.json",
+          "sha256": "aa8622074de10482eb7a88503cd780037a87be79655b09fbb73849e353e96ed6"
+        },
+        {
+          "path": "clients/desktop/app/playwright.config.ts",
+          "sha256": "c0e4c980933d2cb20e411302a62093727bd23ca530af9315db51c04b611ec219"
+        },
+        {
+          "path": "clients/desktop/app/src/extension-host/entry.ts",
+          "sha256": "2ef18e9e0301d4a61127c3aa766806faa97e95f0ab786372e362b64a594a6a05"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/bootstrap.ts",
+          "sha256": "4b3f4ea86e40ec0aa71a7292c39aab9fd52feb959e596f85aa39e712b874de7b"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/development.ts",
+          "sha256": "cb6016436eb5beb513ced51c53fc40011cae1f7746e4b78b1d5ad957cebf6e06"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/extension-host.ts",
+          "sha256": "1bc5bc98d2ecbbff9a79ce0a92d6ed3eddbb3786103a2dac5dcf1b8597d0bfa1"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/launch.ts",
+          "sha256": "9e88cfc50616b1a91097222155663868e89cf97c93cddfe20e72dc2e6b22509d"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/paths.ts",
+          "sha256": "f2b78e97fb013b9d56cae74748785d8b6102ca5b0d175ff18c8730505246d361"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/portable.ts",
+          "sha256": "2b9a333e92a0c86cfde1d185ebbc95e5da8ae3721bc65afeb32ce9ed911d105f"
+        },
+        {
+          "path": "clients/desktop/app/src/main/app/shutdown.ts",
+          "sha256": "07b5694a20e47b156a5f11ccdc95cb383b9ddbbbc6e45a837c30d9dd31a8182e"
+        },
+        {
+          "path": "clients/desktop/app/src/main/entry.ts",
+          "sha256": "74c53e6aa34be53b87febb5d7ea2dcfda829f30a410ecb16b4c968d8a1ae6806"
+        },
+        {
+          "path": "clients/desktop/app/src/main/infrastructure/log.ts",
+          "sha256": "e3199ecd7d657435a1a5876ee35883dea4c4a12b376eef01a0ca6b0c5e0f2ade"
+        },
+        {
+          "path": "clients/desktop/app/src/main/infrastructure/windows/native-window.ts",
+          "sha256": "e8672b2aaba75d1eb053dd6acd52f6288f3757909cc6063db18a67978e7c0928"
+        },
+        {
+          "path": "clients/desktop/app/src/main/infrastructure/windows/protocol.ts",
+          "sha256": "178c59ffc2c1a6be8b8e27be595cc31c6b4d344ae2e08140ef3a87cfdf84f029"
+        },
+        {
+          "path": "clients/desktop/app/src/preload/bridge.ts",
+          "sha256": "437eba363685c6db2768ceb0e24dbe1b4cdb57422aff952aa13d27468474b017"
+        },
+        {
+          "path": "clients/desktop/app/src/preload/game-panel.ts",
+          "sha256": "2f44d3c75435b3ac0b3519eaf77f58b1958f1b1843e4c6b17e9a7f866ac247fa"
+        },
+        {
+          "path": "clients/desktop/app/src/preload/main.ts",
+          "sha256": "cc0ed641b83bd881cc58f9b16c05a1be52cabf266c2d79a1fbbcc1cc5c36c9f4"
+        },
+        {
+          "path": "clients/desktop/app/src/preload/player.ts",
+          "sha256": "475210ae37f6b60e9c0d58ee3c858ff3ec0002bf31e588040a167a4c346d3fde"
+        },
+        {
+          "path": "clients/desktop/app/src/preload/reader.ts",
+          "sha256": "3f1f11fad501ca4a6685ecb9bd4248d43ed62073187620072aaafbe6bdbb5efb"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/components/window-root.css",
+          "sha256": "d8dc20b258e0d397b83909d524b777746442eaaba00094327e306e43fb7c9b00"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/components/window-root.tsx",
+          "sha256": "89c41bed60c4df0c7858d24bfda2e1824a20abc44789a692c17432862f1d23d7"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/environment.d.ts",
+          "sha256": "7e440c692a27c5966004586987e555faa4f93edc2fcf9bfcb94ed584e50f2110"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/styles/base.css",
+          "sha256": "89ca8a0c1a9125a294fe86ca4f792456e31c363407503b86da6e7fc41cb5511c"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/game-panel/entry.tsx",
+          "sha256": "15faf8ea6411c18ec4662fa88f8b1fed875851c85168ea8329702f1d76d348f5"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/game-panel/index.html",
+          "sha256": "358471f41d556926952a703f44eabe987cf4e01c4050d9a09f5f1b03136c33d1"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/game-panel/styles.css",
+          "sha256": "afcbad6d299b039a6d14db9be2f5a05ec3d50dd7dcef9ca8a554fcefa738a83b"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/main/entry.tsx",
+          "sha256": "9dedcef52399acb5460734442e24a51f13751213ed9f98fece05dbcd6f1556b6"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/main/index.html",
+          "sha256": "8c81a642401cfc7c5d8f6cf00f831b8723078ee0cdd74e1c36f185b7745272fd"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/main/styles.css",
+          "sha256": "afcbad6d299b039a6d14db9be2f5a05ec3d50dd7dcef9ca8a554fcefa738a83b"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/player/entry.tsx",
+          "sha256": "ea5c7cceba34ebad09c040a999d2dffb13d9999220c3aafcd2d8c55cc5294ffc"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/player/index.html",
+          "sha256": "0e79ed00406383e075a58a2a26201459ec0cf3f079852acf4754efa6f339291b"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/player/styles.css",
+          "sha256": "afcbad6d299b039a6d14db9be2f5a05ec3d50dd7dcef9ca8a554fcefa738a83b"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/reader/entry.tsx",
+          "sha256": "6823685a0cac11c5cf228c0661bb83fedc2cc2617bf7cb90c3486e352d9b64b1"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/reader/index.html",
+          "sha256": "c2fe1152dbc85d3f6c02860c58a2c7ef50a9cbe5d5d8173320a839e57703b707"
+        },
+        {
+          "path": "clients/desktop/app/src/renderer/windows/reader/styles.css",
+          "sha256": "afcbad6d299b039a6d14db9be2f5a05ec3d50dd7dcef9ca8a554fcefa738a83b"
+        },
+        {
+          "path": "clients/desktop/app/src/shared/build.d.ts",
+          "sha256": "5b9d80a766bbc65b567b24de966ce50ef70887dc97199b4ea354388292ddffb2"
+        },
+        {
+          "path": "clients/desktop/app/src/shared/distribution.ts",
+          "sha256": "5e00d411159b30255206c2f49916a67a1cf74d75a7c2219bdc0eaa1701f046dc"
+        },
+        {
+          "path": "clients/desktop/app/src/shared/extension-host.ts",
+          "sha256": "2c51d1e16c60c286a1b01b6d8ed297a11b54d942ecee2959d9bac70d7a975f41"
+        },
+        {
+          "path": "clients/desktop/app/src/shared/runtime-manifest.ts",
+          "sha256": "29fda36bf2e0783ca550627bbd3cb74a38dea9e1ecd30efb99b065a30f24edbc"
+        },
+        {
+          "path": "clients/desktop/app/src/shared/window-controls.ts",
+          "sha256": "f113a9cb53ecf3bdc6e77a23faafb56380e084b2e5fd8ea1e02c71a1ca85d663"
+        },
+        {
+          "path": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+          "sha256": "0bd2455a97bdb84296a5091345f1c8ae5afbaaa22fec293fb385ba9fe3c957ab"
+        },
+        {
+          "path": "clients/desktop/app/tests/browser/window.test.tsx",
+          "sha256": "89b9c4b7b086f0db48bbec5f8073b117bd2ccb7592d3a75eabbf492d2f1c2a03"
+        },
+        {
+          "path": "clients/desktop/app/tests/e2e/windows.test.ts",
+          "sha256": "8d172b8208474d5ff71f63f70a2ffa776ea1769a9a74febdd41a68c3eeb5c51c"
+        },
+        {
+          "path": "clients/desktop/app/tests/fixtures/development-application.ts",
+          "sha256": "18d8d9e2dee21f4ecc157c4ae84b32078a40cc0f0ca6ba715ab9832a656ecff3"
+        },
+        {
+          "path": "clients/desktop/app/tests/integration/database/abi.test.ts",
+          "sha256": "8c176c595b81ffd2023c9fc9cd908e77c08deb353bc1992dde4bc2193cb248f3"
+        },
+        {
+          "path": "clients/desktop/app/tests/integration/native/files.test.ts",
+          "sha256": "c3b4bd29ac3acb0483af543c38769b4132497e9ae3c29a7ea98166708c6327fa"
+        },
+        {
+          "path": "clients/desktop/app/tests/integration/portable.test.ts",
+          "sha256": "b2299f3dc5e7e8963ed299e332025d0e2bc408723180aa957f994ccdac634d26"
+        },
+        {
+          "path": "clients/desktop/app/tests/performance/budgets.ts",
+          "sha256": "a3dfd6e965c01ba79df158c285edeb74e92e743122faa2835544ca04c2b34186"
+        },
+        {
+          "path": "clients/desktop/app/tests/performance/startup.test.ts",
+          "sha256": "2032a2a8efa9dfa55d22491c62c326a4ab84d6a8dd6a5e4b4e0f8f26a67e62f8"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/artifact-workspace.ts",
+          "sha256": "db888d3f33c15b7b651628e5edeffd4f7957506d77f8d6ca26eefab71254ce29"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/development-controller.ts",
+          "sha256": "436f185e718c053eb1f0ce7834ebe0063d2d9e9cf1d5c76f6881a2eadec63cd0"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/development-workspace.ts",
+          "sha256": "eaacacf8746b63d9defe828f68aef5164e9e6875ae439961e3422876e45b1b00"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/electron.ts",
+          "sha256": "b58c4f03e60963b49da6f9c982bf240cac029481b6737d6e20277609657847a8"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/preparation-worker.ts",
+          "sha256": "362fee025d69b2af12f2de7538efd2b2651a8497032be3aef5b754b04e3a67a8"
+        },
+        {
+          "path": "clients/desktop/app/tests/support/window-observation.ts",
+          "sha256": "6e49731ee75cdb898955e67d797972701959e3433a1290846b3c08332b1ba85c"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/build/identity.test.ts",
+          "sha256": "a024f196d16cac55a266c2669dfb2582c8a3218b4545be8d885a5d4b4ace54a1"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/dependencies.test.ts",
+          "sha256": "ccedbd57141ab26ab8410041acb451311d56710d42445e3abc6311bed9d1a9bc"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/dev/cancellation.test.ts",
+          "sha256": "eb8459fbada9d0fef8aded6c148c6bc7a7186f851b5275fa7686b35dc8d052b3"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/dev/connection.test.ts",
+          "sha256": "2a6c45905aeeb9d586a7242133c293b72805ee8200df3cca56f285dc74eb6976"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/dev/session.test.ts",
+          "sha256": "1cc2cdd34ba3e036b130193980bca8fe7037ee18554b9cb0c83bfa429547cac4"
+        },
+        {
+          "path": "clients/desktop/app/tests/tools/resources/fonts.test.ts",
+          "sha256": "9469b06dcb859b26aed3d1aa7b51dbf496ddb62c1e384d5e1f915d5e79e3dea9"
+        },
+        {
+          "path": "clients/desktop/app/tools/build/cli.ts",
+          "sha256": "b94fab516ca29bd1fe9d9fcfd8a7a6a475bf48a804146adad207f85b919466ac"
+        },
+        {
+          "path": "clients/desktop/app/tools/build/coordinator.ts",
+          "sha256": "432eed9e6ee8fd0b58ed49c333f0cc95db8456958a3f273ab8fb4be6f2c040b7"
+        },
+        {
+          "path": "clients/desktop/app/tools/build/identity.ts",
+          "sha256": "087c06170e9bd686fdbb20e24df4d3319da09bc90236d60fde69f7267a92e837"
+        },
+        {
+          "path": "clients/desktop/app/tools/build/programs.ts",
+          "sha256": "69879442bce652c35a7e6dd24ba799344b3e61288c7eb68077d6268a78e459ab"
+        },
+        {
+          "path": "clients/desktop/app/tools/clean.ts",
+          "sha256": "5ffdeb2db3eb540950fe8754b398680765ab481d705ac84ce70658b8359293b5"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/cli.ts",
+          "sha256": "ca8225cf21bffef88d1cb4f1f43dd9a0debbee7944ef6eb7ac4a74f014466f1d"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/dependencies.ts",
+          "sha256": "f436ade26c1b0998dd537d32be8a7984d75ac618bbf5b94fb8b440410f5da40a"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/electron-executable.ts",
+          "sha256": "e508cc3b33ae8eb3343257f15966ecaec334dc0b3c996ffbc79530199833602a"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/generation.ts",
+          "sha256": "73a180be44e81bb1b5abcb565ffe7ee53c7f0c85d737bdb479bfe8469984c936"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/renderer.ts",
+          "sha256": "911c0fa4f123cfd476b175441a4027f372d50f9ba12bce807de7cad40a614858"
+        },
+        {
+          "path": "clients/desktop/app/tools/dev/session.ts",
+          "sha256": "311821a92212ffd48b8664940f1845ce512f04a63cae983e7f40ae6ba88433de"
+        },
+        {
+          "path": "clients/desktop/app/tools/lib/package-inputs.ts",
+          "sha256": "eef24f56c1462d940c532bd050788fd99631ff8976d39b3983d07de3ae78d1a3"
+        },
+        {
+          "path": "clients/desktop/app/tools/lib/paths.ts",
+          "sha256": "3c6d715e9444e059042d3681144ee331dea3663735d00ec2c5faee8e5f0e497e"
+        },
+        {
+          "path": "clients/desktop/app/tools/lib/sha256.ts",
+          "sha256": "4d185e4b19c9cdf9dac4be5c992d860753ed87726c760a574fcf053440b5aafe"
+        },
+        {
+          "path": "clients/desktop/app/tools/lib/targets.ts",
+          "sha256": "e54cdbf918c400a99a34bcd1d8e46bdac641ebc064ed75a9b2a12c6dc5136fcc"
+        },
+        {
+          "path": "clients/desktop/app/tools/native/build.ts",
+          "sha256": "ee2db1eb5c54a752ae2c3386800ad5f0d2620a038358653e4f0ee7ca55e5628c"
+        },
+        {
+          "path": "clients/desktop/app/tools/native/check.ts",
+          "sha256": "24660b4f6d0b037b32419ba696b72519262e6edff7748bb316614d321a472805"
+        },
+        {
+          "path": "clients/desktop/app/tools/native/cli.ts",
+          "sha256": "d18c1df4d7eaf58463671ee1f8774ffb551be7868410f8dbffac815979534bcd"
+        },
+        {
+          "path": "clients/desktop/app/tools/native/declarations.ts",
+          "sha256": "69f25cbe8eee28883abef9ebb2163b8d451467bca7eee1996343a9011b0148bd"
+        },
+        {
+          "path": "clients/desktop/app/tools/package/cli.ts",
+          "sha256": "bc98d9ae7843a946892c00293bc9c90d0166981c253c4c75596d86d66963c1e8"
+        },
+        {
+          "path": "clients/desktop/app/tools/package/packager.ts",
+          "sha256": "24d540df2a97566b27c3d5c104c9e44e3a27369f2b38b0a5d42262649b5fd332"
+        },
+        {
+          "path": "clients/desktop/app/tools/resources/cli.ts",
+          "sha256": "31b3a256bf152fef682df6a1e489c98e106906212990a8ecbd806d7a44e0ddd8"
+        },
+        {
+          "path": "clients/desktop/app/tools/resources/fonts.ts",
+          "sha256": "8556c15da85c774f6cb1b35fb6aa3972908d76bde394a0cccb793490587cb965"
+        },
+        {
+          "path": "clients/desktop/app/tools/resources/prepare.ts",
+          "sha256": "e0f046874e1b5130a81a85f46cf60952f1558b140b15ac6b5aa3fcaf6e0c7ca5"
+        },
+        {
+          "path": "clients/desktop/app/tsconfig.json",
+          "sha256": "c9efc9a3d5c429c6bc45015df3c7fdb8e00c1c9883055ab7801e9a16f9bc096d"
+        },
+        {
+          "path": "clients/desktop/app/turbo.json",
+          "sha256": "43c1b88b3263cac7384636c219fe11c7220e10581812e7cce6be8588bd229490"
+        },
+        {
+          "path": "clients/desktop/app/vitest.config.ts",
+          "sha256": "4900e27deffe72036c9b5ce4be8329802dc3fb5a0f94a7b26d9cf9c72448dec4"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/package.json",
+          "sha256": "8912078e6cd3720b48b70a412bf4a624a2e67b56484befd96c3023ecbb2d68c9"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anilist/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/package.json",
+          "sha256": "23fb0b9b776559ee94bd9d650dd44371d0d8c95af3c3d83611b17b340039b318"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/anx-reader-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/package.json",
+          "sha256": "b825cece254b5bcfa4648695922615a7db81edba8143060501e11da4d503f736"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/bangumi/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/package.json",
+          "sha256": "f2847761cc99c5cb2f1d639a91e8f62d0f71a55e9bd447d108f7ffc3f5abc62d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/calibre-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/package.json",
+          "sha256": "2b384dc2435202cbcbbce0e7f5482dddd21b9933fa47ef41cc902c0c180ee988"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/fanart-tv/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/package.json",
+          "sha256": "b46accc2b0dde0da92e7746374fcb62a511d4d67ef1674e559d9931be843a32e"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/goodreads-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/package.json",
+          "sha256": "9fa6621e8705641079ca1fd9b45bfdffb9f13ad2c24cd7b47eb2c414896e62c6"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/google-books/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/package.json",
+          "sha256": "f56507bfee351a5ad779502c847b8ddebcb69b15bfcb08a0bfa578de2ba65195"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/igdb/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/package.json",
+          "sha256": "b9bd2cf336fb78b706e97727074d0bcc095babfed8c6869c1673495a71c132b5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/itch-io/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/package.json",
+          "sha256": "90b7d1efedd20c68387285c6ae693bddc25cdee546adb28b616ae547c8032745"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koodo-reader-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/package.json",
+          "sha256": "ed9288a8de98da7b77b3e3e1096c1d6768ebedc0eff603bf6766e699fcf112d1"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/koreader-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/package.json",
+          "sha256": "410a971c4e02c01c5de7973cc9c374032676e8b5b07cd13597903ff7baa55719"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/kotatsu-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/package.json",
+          "sha256": "d459706b42c0677cda276c9345ab742eb1578403cfe2376882a0291a0fd53c5a"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-ja/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/package.json",
+          "sha256": "924083ffedb6c512cdefc25e9ea844f39f5a7fa0ca74fe2fffe237110695c0bd"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hans/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/package.json",
+          "sha256": "964ccba0e60baa408022eb4e7bba0a079409ef6c58420ec8c1e87b58350e90d0"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/language-zh-hant/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/package.json",
+          "sha256": "0dc5c6cee9d8d2476d6332e15d581663bfd664e4557a63219f04629f43e94191"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/launchbox-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/package.json",
+          "sha256": "fd1a2a61d4ba366270e3bc4ebe52d3c248c85fb3cb94338b4ffd0794a7fa1807"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangadex/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/package.json",
+          "sha256": "a6ebff00dac8b0d5fca02db8ada207e19802d456a682d86b6bcd5c0a077d166b"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mangaupdates/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/package.json",
+          "sha256": "5a1591d73a56e112d05ed6025346c0355ec92e52092b59dc3d7b7fee21184655"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/mihon-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/package.json",
+          "sha256": "86b7ca27991f22d2fc4c6f9042075f6ef39501dea3ce5936b551825b578b2090"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/myanimelist/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/package.json",
+          "sha256": "05e4edb51b39fc4ff92e0a0361ffe7b720b38db47342c87d1a6110c58184bb08"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ndl-search/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/package.json",
+          "sha256": "f56aa964d090594f182f179e177026786da0004c994ae66b5c70c56437a81aa0"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/package.json",
+          "sha256": "5fc5977ee72bbc09805cf0a2d7c5b0b14ed084ca6fc06082d3a2e66dc2951739"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/playnite-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/package.json",
+          "sha256": "f1ad8402373999c5acf76ba2dcf3827bd41cf8294b7b7acba01a6e25461a4d99"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/potatovn-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/package.json",
+          "sha256": "7de65f0ba314ddf9d8d2d3af5ace008a298186884d2ec9cd45526a641688f395"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ranobedb/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/package.json",
+          "sha256": "84bb7a6db769f99c22b2e9a1fcbbd9490903f72d8b85e5101b0796d907803939"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steam/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/package.json",
+          "sha256": "45adc4a4e4d2cadfa6471c279cbab36f5c76ac7e450d2085c3df45a6703f848a"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/steamgriddb/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/package.json",
+          "sha256": "72bd04c770cdb7e534d7975bdafb0848bb5d9ea26cdd37805e543ad64ff67b94"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/tmdb/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/package.json",
+          "sha256": "78ec41e3b601b7a2e78a3518a25665c18bfc71477a98114213d30171a410a64e"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vndb/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/package.json",
+          "sha256": "dce111b972382fc035283d0fd2b94db1a98e45e4b178bc2a248f034894d9580c"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/vnite-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/package.json",
+          "sha256": "45b772cf7284e1bb67484ecfdda4ca1752b7835694376b8544bd01cf2c0ad944"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/wikidata/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/package.json",
+          "sha256": "e65e364c8711943aa23c14fa11b9379ded575bb838f1f9aa07f1ed8305e60a1f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/yacreader-importer/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/LICENSE",
+          "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/eslint.config.ts",
+          "sha256": "c1c28425ffc7502c6732e0262779ab8d8763f7fdcdfa3719501d463fa6a4c22f"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/kisx.config.ts",
+          "sha256": "6f62b3f38b848d32346c0f3562d09b75eeec7ff60ed4bfbf089d84274d386d5d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/package.json",
+          "sha256": "26c60be0b617c9f0bcd23c5dadbdc691ab13cab36b7d659bcaa630292e1fda4d"
+        },
+        {
+          "path": "clients/desktop/extensions/projects/ymgal/tsconfig.json",
+          "sha256": "f445e7b935dabee69525812103ebb0e34e001d7f9d30b375254b4f49461319d5"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/package.json",
+          "sha256": "c0c82b519f1b81bff31d180eb0349104cfda0b8a69ddeba46e1f7e97e6c6e99c"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/src/defaults.ts",
+          "sha256": "27dd671e8c7098bc5eaa4588ba3bbc9c5fafc20147a80508459d115c222c29bb"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/src/index.ts",
+          "sha256": "c8ab0a0bab4ef30ecbfed2b55d91c1f5998c5fa291c23d6f99b0e354f2a4aa74"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/src/tailwind.css",
+          "sha256": "e88128ba387ded1e32f2ee0f327c39a24b19b4b5172ca8cf2b46b3f2ed3bbf11"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/src/tokens.ts",
+          "sha256": "4cc2aa2c9ade3e8776fd80a1e70933c92e04030367d305c167934c93c2d7b0c3"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/tools/build.ts",
+          "sha256": "e9ac0ca0d7b1255dc702de757f8ac68cdbe333071921576e88cc5042e59fc712"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/appearance/tsdown.config.ts",
+          "sha256": "d2a26811c7d19a0c6021f5f586fa58788b77ac69c277a37050e377c4160f364a"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/package.json",
+          "sha256": "d936ae983cc06bee018b3b37c94862943ac9058a5ce92b581aedb28351bd5490"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/src/development.ts",
+          "sha256": "246fb274356460a0c5111a0c58cf92ebd34f2824af450a23875e01e711124788"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/src/errors.ts",
+          "sha256": "1050c54b9564b29ffd1b8de2d1facfd8c6314fdf86a750df2756cf4ace393b07"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/src/index.ts",
+          "sha256": "19989bc2ff05f15bbc734125cf35f7d78f8f265dd625a70d6bbd309be4ba979a"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/desktop-contracts/tsdown.config.ts",
+          "sha256": "76d21a205b5dcd4749d3377cf73aecc7df789194b52dcacf8673e38e1fd002ea"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/package.json",
+          "sha256": "03d4fe6c02e1b20991a5a71b374fb8679e681ae6414d41d05653c44aaef44308"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/src/index.ts",
+          "sha256": "c035fd2a007c3ea51659e7244741b02a175b5ababe6dcfe5850b003ce26782de"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/extension-api/tsdown.config.ts",
+          "sha256": "81d2f3cd071618ac5ffaa0306ce4bad4b7a289c29d03fc92325f9bd1df77e7f7"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.lib.json",
+          "sha256": "230faec428634300c9c3b393fdeba07282a76570ac9ec315306387926fb3a968"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.node.json",
+          "sha256": "37824140fe44ec0d252de309aa68d9c37676f4a3eeba0f13ae823e2adc4c430c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/package.json",
+          "sha256": "ddae106cb7c982c16e35616ed277e02eb1093bb688e91654528af0845ed2f83c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/src/config.ts",
+          "sha256": "cd4c8b51cd888c80d1db521028f531291b9acee5209e4c0a4f074fb2449fd700"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/src/extension.ts",
+          "sha256": "e5ea2ae114ef68b86b6528ea12deecfcdfeae62bf8d0bd497873be9c4901fe7b"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/src/extension/development-application.ts",
+          "sha256": "053348d8ace28c280aae5f6dc1b6eb686977f50b6b3e7201c5b3cd302cc96d01"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/tsconfig.json",
+          "sha256": "ced50e82dc6d25158596e9543626608e6a011e2238d5d41fb0718f6dfffd2d2e"
+        },
+        {
+          "path": "clients/desktop/packages/extension-cli/tsdown.config.ts",
+          "sha256": "6297a44a43887919fc0b33a9aa2a1d114418b190ca4832ad99c13086dd37922c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/package.json",
+          "sha256": "d12381a9b85415553971aa5a113558607733f9ec4fa42682b2825fff0119ec74"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/src/index.ts",
+          "sha256": "d7982242a0c81dc67ff79368bd62302ec2aa8598a1d824f5ca1dd1410efe163b"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/src/metadata.ts",
+          "sha256": "56ebc31810b594abaacb66988815283c7d587b6abb4514ae3322afe3e2fd9f15"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/extension-distribution/tsdown.config.ts",
+          "sha256": "499b12d5d49a2f21adee7c0d9aa4ed051fa413272ae9272fccd960e686167279"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/package.json",
+          "sha256": "3d01731d2f3c380684458613040ffe18a614b6d547cd0e92b2b05b7d7a20f19f"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/src/index.ts",
+          "sha256": "7f11e643089484467de28c452543775a8d3a41e175fa098a5fed3cd3a3ad079f"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/extension-sdk/tsdown.config.ts",
+          "sha256": "81d2f3cd071618ac5ffaa0306ce4bad4b7a289c29d03fc92325f9bd1df77e7f7"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/config/typescript/tsconfig.lib.json",
+          "sha256": "b2a1763b31ce9cae18a4483f9a18512235cfbb63a2e50051bbf4a4ab49b2e6c6"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/config/typescript/tsconfig.tools.json",
+          "sha256": "85f79f7d4e0dd35a614c8a0706b779d1e3184d9e33766d6a637c900e9b7bf284"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/package.json",
+          "sha256": "e041d6e65fefa3eb60c69c5af74ac84a79c2af9723b935666eb49a4f2327b31c"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/src/index.ts",
+          "sha256": "258331d94e5741c74cf087dc3140c5724c240b59ed954cf4eddabfe6f552dc9c"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/src/transport.ts",
+          "sha256": "abefb3ec20ad89ac5e907853dc8423dd364065dc20ef1dad2ebad85a1d1262c2"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/tools/build.ts",
+          "sha256": "f3cf65c609067836301ef6a4556412a2b2e8f632f0db03bb8f610c97aa5dde9a"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/tsconfig.json",
+          "sha256": "6d62d9c408877cc9a1fc85925c67e5285a02c4184b18371e2820c01267812098"
+        },
+        {
+          "path": "clients/desktop/packages/rpc/tsdown.config.ts",
+          "sha256": "b4f1b735387e65d9d9e4a02cc32af58357405c7cd0a61c1c9c2b096b029c2a2c"
+        },
+        {
+          "path": "clients/desktop/packages/ui/LICENSE",
+          "sha256": "1c8d603ca2c12278110c7d4521b4284eb936631a89a4fef44b232deff329e6dd"
+        },
+        {
+          "path": "clients/desktop/packages/ui/config/typescript/tsconfig.config.json",
+          "sha256": "def8e30a07f97fa6c2ba4c8baabdd2b6517fd12fe931bd1a37b1cf011ddd9bcb"
+        },
+        {
+          "path": "clients/desktop/packages/ui/config/typescript/tsconfig.lib.json",
+          "sha256": "07b6e90eeace76aa132319b0d222e2e044ef0d774fa8da2f6d5201d48d8578cd"
+        },
+        {
+          "path": "clients/desktop/packages/ui/config/typescript/tsconfig.tools.json",
+          "sha256": "917b746810704fb0f22526caf2d86022b7068108df4b43284a6fc45dc8e7e2eb"
+        },
+        {
+          "path": "clients/desktop/packages/ui/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "clients/desktop/packages/ui/package.json",
+          "sha256": "7223f4f3a46c3c00be884f190658ffa614ab2bddd6dd21f4b064453a53d6f9d9"
+        },
+        {
+          "path": "clients/desktop/packages/ui/src/components/button.tsx",
+          "sha256": "3800dfc009fcb9013740df852de6974902acdf6d08073fd3e0e8da3ad8ed9c9f"
+        },
+        {
+          "path": "clients/desktop/packages/ui/src/index.ts",
+          "sha256": "ea9c2661bc387a30dd21cb81f4391a8df24d2453401cb0ce1efd94a771191b60"
+        },
+        {
+          "path": "clients/desktop/packages/ui/src/styles.css",
+          "sha256": "df9144824e653be4275b458f6f7ec34f106d0dd0fa41e75bc5ced6f482911463"
+        },
+        {
+          "path": "clients/desktop/packages/ui/tools/build.ts",
+          "sha256": "dc6d631904581311713047792960f11a718250c2977b1839a224e9516c2b677e"
+        },
+        {
+          "path": "clients/desktop/packages/ui/tools/clean.ts",
+          "sha256": "1c9488353e0185bfe3d8cc1929bf051be0448ff7d8ddd55453e9bb3e259a1170"
+        },
+        {
+          "path": "clients/desktop/packages/ui/tsconfig.json",
+          "sha256": "02c5ed3e02ea1a9a2960a779b04ac20a40d8b15be5cef6ddb0ad5158c6a49033"
+        },
+        {
+          "path": "clients/desktop/packages/ui/tsdown.config.ts",
+          "sha256": "abeef539a51e1d18b077ffd6900a66f604bea764bad63b0dd842429d8488aeb8"
+        },
+        {
+          "path": "commitlint.config.ts",
+          "sha256": "326ab8371873b797385cd99621fe412bc8ed39e85719b2f9c1e7fce758456b2e"
+        },
+        {
+          "path": "config/typescript/tsconfig.config.json",
+          "sha256": "4bf4a42a525851225a6bdbe738b7dccd0fdc914178e06f124c5d0cd50289a9d4"
+        },
+        {
+          "path": "config/typescript/tsconfig.tests.json",
+          "sha256": "d3cf75d80c91a0a2bf60780419d8b3d5922740d70059c4a292cc1b03c994f932"
+        },
+        {
+          "path": "config/typescript/tsconfig.tools.json",
+          "sha256": "8e77c888d3c4029328a931c6249f88f6248dd27fad5fc5a0b38153424853bf19"
+        },
+        {
+          "path": "config/vitest/vitest.config.consumers.ts",
+          "sha256": "aadeea6c0f5ed65a2b382e0a6dab49c0e1c495c385a163911340ab1bc1ed89fa"
+        },
+        {
+          "path": "eslint.config.ts",
+          "sha256": "c6c1daa9851c78585d7ece77cbf95d2fa0aed3dc69c7a8bcf74dd33f2a95ebf8"
+        },
+        {
+          "path": "lint-staged.config.ts",
+          "sha256": "44e7943ec2d29446615d963a90562ee40412698cedd3734f8082fd5b357d84fc"
+        },
+        {
+          "path": "package.json",
+          "sha256": "842835a3f0d6ed33609df79554d891b3138b969b28addfe20a607475bd7b6a9c"
+        },
+        {
+          "path": "packages/eslint-config/eslint.config.ts",
+          "sha256": "67e5e0b57e9cb3df8dbcbfab784d7f3b81112760b0558d5dc2282ce3bef1e4b1"
+        },
+        {
+          "path": "packages/eslint-config/package.json",
+          "sha256": "672108c6b40b6a424d355c6dbf2116ac389a037cb358bd51b06447827606b8fb"
+        },
+        {
+          "path": "packages/eslint-config/src/base.ts",
+          "sha256": "66186dc9d7e80b87eb4b50b57dad7ba899eab37b8e54ebd18032c4a7a811592b"
+        },
+        {
+          "path": "packages/eslint-config/src/node.ts",
+          "sha256": "c5455a32b62251c94aa6d1ed6a58ce347e6b0cf3a2f1d6590e3fc4fd29fd5175"
+        },
+        {
+          "path": "packages/eslint-config/src/tests.ts",
+          "sha256": "3421c65ae32ab3b1caa08c316aeb4cd4a5562e048864fe963aa0b0f3dfd931fb"
+        },
+        {
+          "path": "packages/eslint-config/tsconfig.json",
+          "sha256": "939f9db1ae01857fb15344492b2a22875f6328859ebf221e6c146e524b367895"
+        },
+        {
+          "path": "packages/tooling/config/typescript/tsconfig.lib.json",
+          "sha256": "fa9cb9c06c097c9adf6e6e8bf43c268c4e8984104dafd0d600a92d1f8b4e8b54"
+        },
+        {
+          "path": "packages/tooling/config/typescript/tsconfig.tests.json",
+          "sha256": "26d21f9cfabb8a95ba7a3ad7f2f7bf1be1f73a23b9c5ebc45ce41806c2e25344"
+        },
+        {
+          "path": "packages/tooling/eslint.config.ts",
+          "sha256": "43307a3e90645d7873c3439975f02ae840acd2f5d06171c0b1bb4bbb231a583c"
+        },
+        {
+          "path": "packages/tooling/package.json",
+          "sha256": "62129938b2b5c009007b6526ca148368f521a1ccb34e0b3b5de2e89a532b14b9"
+        },
+        {
+          "path": "packages/tooling/src/cli.ts",
+          "sha256": "2461bdb764b3acfbca92babcc7bc82035e46f8604aae89fcee3657c5b812373d"
+        },
+        {
+          "path": "packages/tooling/src/output.ts",
+          "sha256": "f393c4235629df997b2387083481271287625c3e5e8968243d1c934862ea26fa"
+        },
+        {
+          "path": "packages/tooling/src/process.ts",
+          "sha256": "470aeb8c6d920b4dbf3574703397592e10e517cbcd2ec13fce2ca197fa77c6be"
+        },
+        {
+          "path": "packages/tooling/tests/output.test.ts",
+          "sha256": "d137d41e0cced5ea921b0fa0b4935a5680e1dc5d592d76396fa78ebe672f986f"
+        },
+        {
+          "path": "packages/tooling/tests/process.test.ts",
+          "sha256": "a1ddeb81d9ba23cc918313bd89a980f7bf4c15bfbfd02cec7eb5f15276b40922"
+        },
+        {
+          "path": "packages/tooling/tests/support/command-worker.ts",
+          "sha256": "fb0f6f33951265ab5a8adcfb7f42ed6abdd9c14a10a6ec9f34e52fb30018167e"
+        },
+        {
+          "path": "packages/tooling/tsconfig.json",
+          "sha256": "07bd2c86a54f0e239c493791dba37875be879d5a6246afa51ba06feebd315c00"
+        },
+        {
+          "path": "packages/tooling/vitest.config.ts",
+          "sha256": "019d900fb573ce8a73034c9e45fbbbdc87074e1a5ca118ac514e89c68a231fea"
+        },
+        {
+          "path": "packages/typescript-config/base.json",
+          "sha256": "b88795a30a3556f8ef49630935a3d3a2459a15afd372943f652594a322c78c84"
+        },
+        {
+          "path": "packages/typescript-config/browser.json",
+          "sha256": "127961dc29091ef5790a9ca998b824862008dea3e6b6f8a9efba58ecadcb9964"
+        },
+        {
+          "path": "packages/typescript-config/node.json",
+          "sha256": "5d178670b0da21fe1c810ff56233c2ec9e9ef88c3d5ba7a4cc8d4b322a974d67"
+        },
+        {
+          "path": "packages/typescript-config/package.json",
+          "sha256": "c44055356716f7a837f1af31ea6c3de36667cd2910cb7c32d5297e1b16d1e0a7"
+        },
+        {
+          "path": "packages/typescript-config/solid.json",
+          "sha256": "12f6335d0d7e0f178b20ad10ef5d5d47b55b98030cb1fdcae10cdc0b94fb295b"
+        },
+        {
+          "path": "pnpm-workspace.yaml",
+          "sha256": "66beaeb64f8c3806801b22a31ed962cd55eb02f5c9664ab15feff76741e1a613"
+        },
+        {
+          "path": "tests/consumers/packages.test.ts",
+          "sha256": "a1bea860fcc1711b03504d700cb4d114785f420693f193e3e6c05ea05386541e"
+        },
+        {
+          "path": "tests/fixtures/consumers/config/typescript/tsconfig.tools.json",
+          "sha256": "2e7cbb30182c9b0c63f77772911b8c1dc9a8e974584bc0b650491f34f0e8aeab"
+        },
+        {
+          "path": "tests/fixtures/consumers/node/consumer.ts",
+          "sha256": "edbe6309d56674e1efafc61d90033dc9e2b55a091b7b8cade0504cf06dbf2b45"
+        },
+        {
+          "path": "tests/fixtures/consumers/node/tsconfig.json",
+          "sha256": "db3e036aead4549d59900198db23cf38097ba1badd668047a8aa89675c3c8eaf"
+        },
+        {
+          "path": "tests/fixtures/consumers/solid/entry.tsx",
+          "sha256": "bb99838b59356c268524449ed8ad47b67b2a397b0831e0ebef4ecfaf09f9e6da"
+        },
+        {
+          "path": "tests/fixtures/consumers/solid/index.html",
+          "sha256": "8164541c0f077736f0f172b4dff81c222105169bccd2dd139f11837cc3965882"
+        },
+        {
+          "path": "tests/fixtures/consumers/solid/tsconfig.json",
+          "sha256": "85b5928db3048f6c5095291aefaa8ce08a5ddea81fd8c6bea3d4944d749c476f"
+        },
+        {
+          "path": "tests/fixtures/consumers/vite.config.ts",
+          "sha256": "d0c319b75e93784a5c82736c9ab01ec8289819fefda5bddf0f64ed8b47bce326"
+        },
+        {
+          "path": "tests/fixtures/consumers/webview/entry.ts",
+          "sha256": "3331bcf65ea2dbe91d708e0f49884e9f6cd097548932f40545dd7496c56af4ba"
+        },
+        {
+          "path": "tests/fixtures/consumers/webview/index.html",
+          "sha256": "93338c289c671e324cb2a1e743da93eb72861e6eef4cb73b5caf6a21c2b31a49"
+        },
+        {
+          "path": "tests/fixtures/consumers/webview/tsconfig.json",
+          "sha256": "af6e8c85cf2e64828efd6204ded4216da06d22438efce17c9b4687ddfd42175a"
+        },
+        {
+          "path": "tests/support/consumer.ts",
+          "sha256": "608fe34603071779d8bae8a39561dd31c7ac0ca163aaeb41a8476d7fae1125ba"
+        },
+        {
+          "path": "tests/tools/hooks/lifecycle.test.ts",
+          "sha256": "1cde968e333cbbd29705f7d3efc1db9b7deb5920ada09c56330adf863a8a4e5c"
+        },
+        {
+          "path": "tests/tools/structure/boundaries.test.ts",
+          "sha256": "61ee000221b4cde7d1c41bbd239ee243a0e6e45bd18307c85d811e22a31f2fc2"
+        },
+        {
+          "path": "tests/tools/structure/lint.test.ts",
+          "sha256": "284955f6f07e12d5561b80d04cd97cd53a7a75b7c7219db94c992acfe838b882"
+        },
+        {
+          "path": "tests/tools/structure/tasks.test.ts",
+          "sha256": "4cc08cb55c4ccc6ec010ccff2f00cca4fe97950b6a160b7ca3d2aaf1a6f3d771"
+        },
+        {
+          "path": "tests/tools/structure/workspace.test.ts",
+          "sha256": "c33f8a25c3bfe8d9882471d3328919d52f47f106d6b5d542471e76a82ce5deef"
+        },
+        {
+          "path": "tools/hooks.ts",
+          "sha256": "4ae18b7b5961e628fbd32152040b39f362ec4f5121f1a38b3646ac057633fca8"
+        },
+        {
+          "path": "tools/release/package-inputs.ts",
+          "sha256": "44200c2d9043ad47583a0b01c9c25727d9bbb1ed04826209d7a17820d84d4faa"
+        },
+        {
+          "path": "tsconfig.json",
+          "sha256": "2de38092c9a1e4621af70f897b5fbe03de8c623d58f9c0c58e82b505c6b6fd08"
+        },
+        {
+          "path": "turbo.json",
+          "sha256": "9acc56da08bd9926f8f3436080c64142f4bd98b21fc810ffc24293198a582e63"
+        },
+        {
+          "path": "vitest.config.ts",
+          "sha256": "f6cdee3b431f48ae89df51d5a16e990ad1a9c20062d98948639ecf900eb2dbc4"
+        }
+      ]
+    },
+    "assetsAndGenerated": {
+      "count": 4,
+      "files": [
+        {
+          "path": "clients/desktop/app/assets/icons/source.png",
+          "sha256": "ff5fce0b774d74398379c4ae4feb98649cb8b500cc85d5dc080151ffde6efd27"
+        },
+        {
+          "path": "clients/desktop/app/native/Cargo.lock",
+          "sha256": "693c6005ef97046f03eb01d75a243a6bb8812031c8ad50d9a266bbf34f1697d1"
+        },
+        {
+          "path": "clients/desktop/app/native/node/binding.d.ts",
+          "sha256": "8eaa5474efcb0a67c61dc51c8700e5ce669e21ba3eb560ac41966bdec931c2ef"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "sha256": "411d760ef0cd45459f6d41a922b8bb8e8b2f04278d5212182813aca59f0e02ca"
+        }
+      ]
+    }
+  }
+}

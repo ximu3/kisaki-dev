@@ -1,0 +1,26 @@
+{
+  "verifiedAt": "2026-10-26T11:07:54.657Z",
+  "repository": "https://github.com/ximu3/kisaki-w00-ci",
+  "pullRequest": 2,
+  "baseBranch": "research/ci-trigger-base-2026-10-26",
+  "alternateBaseBranch": "research/ci-trigger-alternate-2026-10-26",
+  "headBranch": "research/ci-trigger-head-2026-10-26",
+  "probeBaseCommit": "bf696f3",
+  "failureCommit": "42f10f5f94fd1089fc7500495c044126354c3918",
+  "passCommit": "3f05d1e86e33692a51c4f825fc921c1cba197d3a",
+  "workflowSources": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "applicationSha256": "24900563ff55a49665ae231ec6b0a81331d2d1fca41227b4d32def960f1f9338",
+      "probeSha256": "24900563ff55a49665ae231ec6b0a81331d2d1fca41227b4d32def960f1f9338",
+      "sameNormalizedContent": true
+    },
+    {
+      "path": ".github/workflows/pr-title.yml",
+      "applicationSha256": "04ca1802de6fbf7aa7044a183ac45857cc224183c0930c29f55a4e4bbdf9a1d1",
+      "probeSha256": "04ca1802de6fbf7aa7044a183ac45857cc224183c0930c29f55a4e4bbdf9a1d1",
+      "sameNormalizedContent": true
+    }
+  ],
+  "verificationScope": "Event routing and concurrency use actual workflow entry points. Repository work is replaced only in the probe with a 90-second controlled outcome; desktop is unselected. Production verification retains all existing jobs."
+}

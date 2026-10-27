@@ -6,6 +6,7 @@ import { buildProgram } from '../build/programs'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
 import { sha256 } from '../lib/sha256'
+import { appRoot } from '../lib/paths'
 
 /** A compiled development runtime and the source digests used for its Node programs. */
 export interface GenerationOutput {
@@ -58,6 +59,9 @@ export async function buildGeneration(
   const manifest: RuntimeManifest = {
     schemaVersion: 1,
     buildId,
+    version: (
+      JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8')) as { version: string }
+    ).version,
     target,
     files: await runtimeFiles(directory),
   }

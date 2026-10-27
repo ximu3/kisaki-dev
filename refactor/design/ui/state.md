@@ -50,6 +50,8 @@ await metadata.profiles.update(profileId, {
 
 Solid 实现要明确区分响应式读取与初始化快照、只读结果与编辑草稿、view、dialog 和 window owner，以及窗口投影与主进程权威。模块顶层 signal 不能充当所有窗口共用的当前条目，也不能把全部 UI 状态持久化。
 
+状态、异步读取和释放优先组合 Solid 现有的 signal、store、[createResource](https://docs.solidjs.com/reference/basic-reactivity/create-resource)和 [onCleanup](https://docs.solidjs.com/reference/lifecycle/on-cleanup)。按实际查询补充取消与失效重查，不重复维护框架已有的依赖追踪、加载状态或 owner 寿命。简单读取可直接接入，只有共同的实际行为才提取辅助能力。
+
 <a id="loading"></a>
 
 ## 加载边界与体验验证

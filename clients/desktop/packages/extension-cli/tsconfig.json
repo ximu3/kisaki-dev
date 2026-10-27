@@ -3,6 +3,9 @@
   "files": [],
   "references": [
     {
+      "path": "./config/typescript/tsconfig.node.json"
+    },
+    {
       "path": "./config/typescript/tsconfig.lib.json"
     },
     {

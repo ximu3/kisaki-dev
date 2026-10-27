@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Kisaki Policy Probe
+Exec=AppRun %U
+Terminal=false
+Type=Application
+Icon=kisaki-policy-probe
+StartupWMClass=Kisaki Policy Probe
+X-AppImage-Version=1.0.1
+Comment=Synthetic sandbox policy comparison
+Categories=Utility;

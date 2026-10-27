@@ -19,14 +19,12 @@ test('measures twenty fresh processes and confirms all observed child processes 
           (entry): entry is [string, string] => entry[1] !== undefined,
         ),
       )
-      env.KISAKI_DEV_PROFILE = profile
       delete env.ELECTRON_RUN_AS_NODE
-      delete env.KISAKI_RENDERER_URL
 
       const start = performance.now()
       const application = await _electron.launch({
         executablePath: electronExecutable(),
-        args: [join(runtime, 'main/entry.js')],
+        args: [join(runtime, 'main/entry.js'), `--profile=${profile}`],
         env,
       })
 

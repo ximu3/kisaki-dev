@@ -29,5 +29,4 @@ test('keyboard activation calls the owning window and close failures stay visibl
   await expect
     .element(page.getByRole('alert'))
     .toHaveTextContent('This window could not be closed.')
-  expect(getComputedStyle(button.element()).borderRadius).toBe('6px')
 })

@@ -10,6 +10,7 @@ import type { ArtifactReceipt } from '../../tools/package/packager'
 import { sha256 } from '../../tools/lib/sha256'
 import { hasNativeWindow, closeNativeWindow } from '../support/window-observation'
 import { electronExecutable } from '../../tools/dev/electron-executable'
+import { launchDevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import { prepareArtifactWorkspace } from '../support/artifact-workspace'
 import type { DesktopBuild } from '../../src/shared/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
@@ -67,6 +68,16 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     const expectedCarrier = carriers[process.platform]
     expect(distribution).toMatchObject({ kind: expectedCarrier, target: receipt.target })
 
+    if (process.platform === 'linux') {
+      const applicationDirectory = dirname(resourceDirectory)
+      const desktopEntries = (await readdir(applicationDirectory)).filter((path) =>
+        path.endsWith('.desktop'),
+      )
+      expect(desktopEntries).toHaveLength(1)
+      const desktopEntry = await readFile(join(applicationDirectory, desktopEntries[0]!), 'utf8')
+      expect(desktopEntry.match(/^Exec=(.*)$/m)?.[1]).toBe('AppRun %U')
+    }
+
     expect(build).toMatchObject({
       buildId: receipt.buildId,
       version: receipt.version,
@@ -110,7 +121,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       env: {
         ...process.env,
         ELECTRON_RUN_AS_NODE: '1',
-        KISAKI_DEV_PROFILE: join(directory, 'must-not-be-used'),
       },
       stdio: ['ignore', 'pipe', 'pipe'],
     })
@@ -140,15 +150,52 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
       await closeNativeWindow(child.pid)
       expect(await waitForExit(closed, 15_000), diagnostic).toBe(0)
-      await expect(readFile(join(directory, 'must-not-be-used'))).rejects.toMatchObject({
-        code: 'ENOENT',
-      })
       expect((await readdir(join(dataDirectory, 'browser'))).length).toBeGreaterThan(0)
     } catch (cause) {
       throw new Error(`Packaged application verification failed:\n${diagnostic}`, { cause })
     } finally {
       if (child.exitCode === null) child.kill()
       await waitForExit(closed, 10_000)
+    }
+
+    const developmentProfile = join(directory, 'development-profile')
+    const application = await launchDevelopmentApplication({
+      executable: executablePath,
+      cwd: directory,
+      profile: developmentProfile,
+      buildId: build.buildId,
+      startupTimeoutMs: 30_000,
+    })
+    try {
+      expect(application.ready).toMatchObject({ appVersion: build.version, apiVersion: null })
+      expect(await hasNativeWindow(application.pid)).toBe(true)
+      expect(await application.stop()).toBe('exited')
+      expect(await application.exited).toEqual({ code: 0, signal: null })
+      expect((await readdir(join(developmentProfile, 'browser'))).length).toBeGreaterThan(0)
+    } finally {
+      await application.terminate()
+    }
+
+    const missingChannelProfile = join(directory, 'missing-channel-profile')
+    const rejected = spawn(
+      executablePath,
+      ['--development', `--profile=${missingChannelProfile}`],
+      {
+        cwd: directory,
+        stdio: 'ignore',
+        windowsHide: false,
+      },
+    )
+    const rejectedExit = new Promise<number | null>((resolve, reject) => {
+      rejected.once('error', reject)
+      rejected.once('exit', resolve)
+    })
+    try {
+      expect(await waitForExit(rejectedExit, 15_000)).not.toBe(0)
+      await expect(readdir(missingChannelProfile)).rejects.toMatchObject({ code: 'ENOENT' })
+    } finally {
+      if (rejected.exitCode === null) rejected.kill()
+      await waitForExit(rejectedExit, 10_000)
     }
   } finally {
     await workspace.close()

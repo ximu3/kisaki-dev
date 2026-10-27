@@ -1,0 +1,702 @@
+{
+  "workspace": "/tmp/kisaki-policy-bKYZHH",
+  "policyName": "kisaki-policy-4075",
+  "cases": [
+    {
+      "name": "default-allowed",
+      "expected": "sandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4425,
+          "uid": 1001,
+          "rendererPid": 4470,
+          "argv": [
+            "/tmp/.mount_defaul0Rqubj/kisaki-policy-probe"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4425,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4425\nNgid:\t0\nPid:\t4425\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4425\nNSpid:\t4425\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532603276 kB\nVmSize:\t1518567916 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  144276 kB\nVmRSS:\t  144260 kB\nRssAnon:\t   29760 kB\nRssFile:\t  113592 kB\nRssShmem:\t     908 kB\nVmData:\t 1000240 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     888 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1555\nnonvoluntary_ctxt_switches:\t261\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4470,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4470\nNgid:\t0\nPid:\t4470\nPPid:\t4438\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4470\t4\t1\nNSpid:\t4470\t4\t1\nNSpgid:\t1807\t0\t0\nNSsid:\t1807\t0\t0\nKthread:\t0\nVmPeak:\t1518724356 kB\nVmSize:\t1518233624 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   84640 kB\nVmRSS:\t   84640 kB\nRssAnon:\t   18656 kB\nRssFile:\t   65708 kB\nRssShmem:\t     276 kB\nVmData:\t  657660 kB\nVmStk:\t     164 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     664 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000140014a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t175\nnonvoluntary_ctxt_switches:\t81\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026532310]",
+          "pid": "pid:[4026532311]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026532251]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "conditional-allowed",
+      "expected": "sandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-conditional/conditional.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4513,
+          "uid": 1001,
+          "rendererPid": 4557,
+          "argv": [
+            "/tmp/.mount_conditXvdXIT/kisaki-policy-probe"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4513,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4513\nNgid:\t0\nPid:\t4513\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4513\nNSpid:\t4513\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532603392 kB\nVmSize:\t1518568096 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  141100 kB\nVmRSS:\t  141100 kB\nRssAnon:\t   27556 kB\nRssFile:\t  112636 kB\nRssShmem:\t     908 kB\nVmData:\t  996120 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     856 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1381\nnonvoluntary_ctxt_switches:\t280\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4557,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4557\nNgid:\t0\nPid:\t4557\nPPid:\t4525\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4557\t4\t1\nNSpid:\t4557\t4\t1\nNSpgid:\t1807\t0\t0\nNSsid:\t1807\t0\t0\nKthread:\t0\nVmPeak:\t1518724360 kB\nVmSize:\t1518233628 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   83840 kB\nVmRSS:\t   83840 kB\nRssAnon:\t   18672 kB\nRssFile:\t   64852 kB\nRssShmem:\t     316 kB\nVmData:\t  657660 kB\nVmStk:\t     168 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     660 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000140014a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t187\nnonvoluntary_ctxt_switches:\t136\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026532310]",
+          "pid": "pid:[4026532311]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026532251]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "default-desktop-argument",
+      "expected": "unsandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4598,
+          "uid": 1001,
+          "rendererPid": 4641,
+          "argv": [
+            "/tmp/.mount_defaulEC6Bj8/kisaki-policy-probe",
+            "--no-sandbox"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4598,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tR (running)\nTgid:\t4598\nNgid:\t0\nPid:\t4598\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4598\nNSpid:\t4598\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532587004 kB\nVmSize:\t1518586532 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  143664 kB\nVmRSS:\t  143664 kB\nRssAnon:\t   29560 kB\nRssFile:\t  113196 kB\nRssShmem:\t     908 kB\nVmData:\t 1012552 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t30\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1406\nnonvoluntary_ctxt_switches:\t295\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4641,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4641\nNgid:\t0\nPid:\t4641\nPPid:\t4607\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4641\nNSpid:\t4641\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1518724340 kB\nVmSize:\t1518233608 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   81152 kB\nVmRSS:\t   81152 kB\nRssAnon:\t   18680 kB\nRssFile:\t   62156 kB\nRssShmem:\t     316 kB\nVmData:\t  657612 kB\nVmStk:\t     148 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     652 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t173\nnonvoluntary_ctxt_switches:\t127\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "default-restricted",
+      "expected": "unsandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4687,
+          "uid": 1001,
+          "rendererPid": 4728,
+          "argv": [
+            "/tmp/.mount_defaulHgI3y3/kisaki-policy-probe",
+            "--no-sandbox"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4687,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tD (disk sleep)\nTgid:\t4687\nNgid:\t0\nPid:\t4687\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4687\nNSpid:\t4687\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532587004 kB\nVmSize:\t1518570144 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  143064 kB\nVmRSS:\t  143064 kB\nRssAnon:\t   29508 kB\nRssFile:\t  112648 kB\nRssShmem:\t     908 kB\nVmData:\t  996152 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1371\nnonvoluntary_ctxt_switches:\t247\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4728,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4728\nNgid:\t0\nPid:\t4728\nPPid:\t4696\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4728\nNSpid:\t4728\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1518724344 kB\nVmSize:\t1518233612 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   81384 kB\nVmRSS:\t   81384 kB\nRssAnon:\t   18632 kB\nRssFile:\t   62436 kB\nRssShmem:\t     316 kB\nVmData:\t  657596 kB\nVmStk:\t     152 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     656 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t173\nnonvoluntary_ctxt_switches:\t108\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "conditional-restricted",
+      "expected": "unsandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-conditional/conditional.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4770,
+          "uid": 1001,
+          "rendererPid": 4814,
+          "argv": [
+            "/tmp/.mount_conditrAi67y/kisaki-policy-probe",
+            "--no-sandbox"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4770,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4770\nNgid:\t0\nPid:\t4770\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4770\nNSpid:\t4770\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532587004 kB\nVmSize:\t1518581252 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  138592 kB\nVmRSS:\t  138592 kB\nRssAnon:\t   28808 kB\nRssFile:\t  108876 kB\nRssShmem:\t     908 kB\nVmData:\t 1012072 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   27044 kB\nVmPTE:\t     844 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t30\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1363\nnonvoluntary_ctxt_switches:\t258\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4814,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4814\nNgid:\t0\nPid:\t4814\nPPid:\t4780\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4814\nNSpid:\t4814\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1518724344 kB\nVmSize:\t1518233612 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   81452 kB\nVmRSS:\t   81452 kB\nRssAnon:\t   18628 kB\nRssFile:\t   62520 kB\nRssShmem:\t     304 kB\nVmData:\t  657596 kB\nVmStk:\t     152 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     652 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t176\nnonvoluntary_ctxt_switches:\t127\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "strict-without-profile",
+      "expected": "blocked",
+      "image": "/tmp/kisaki-policy-bKYZHH/KisakiProbe.AppImage",
+      "event": {
+        "kind": "exited",
+        "value": {
+          "code": null,
+          "signal": "SIGTRAP"
+        }
+      }
+    },
+    {
+      "name": "strict-exact-profile",
+      "expected": "sandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/KisakiProbe.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4882,
+          "uid": 1001,
+          "rendererPid": 4933,
+          "argv": [
+            "/tmp/.mount_KisakiWnq9YE/kisaki-policy-probe"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4882,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4882\nNgid:\t0\nPid:\t4882\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4882\nNSpid:\t4882\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532603392 kB\nVmSize:\t1518568096 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  141516 kB\nVmRSS:\t  141516 kB\nRssAnon:\t   27572 kB\nRssFile:\t  113036 kB\nRssShmem:\t     908 kB\nVmData:\t  996072 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     848 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1264\nnonvoluntary_ctxt_switches:\t325\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 4933,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4933\nNgid:\t0\nPid:\t4933\nPPid:\t4897\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t4933\t4\t1\nNSpid:\t4933\t4\t1\nNSpgid:\t1807\t0\t0\nNSsid:\t1807\t0\t0\nKthread:\t0\nVmPeak:\t1518724360 kB\nVmSize:\t1518233628 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   84580 kB\nVmRSS:\t   84580 kB\nRssAnon:\t   18652 kB\nRssFile:\t   65684 kB\nRssShmem:\t     244 kB\nVmData:\t  657756 kB\nVmStk:\t     168 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     668 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000140014a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t173\nnonvoluntary_ctxt_switches:\t171\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026532372]",
+          "pid": "pid:[4026532373]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026532314]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "strict-in-place-update",
+      "expected": "sandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/KisakiProbe.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 4977,
+          "uid": 1001,
+          "rendererPid": 5024,
+          "argv": [
+            "/tmp/.mount_Kisakixb7QbP/kisaki-policy-probe"
+          ],
+          "version": "1.0.1",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 4977,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t4977\nNgid:\t0\nPid:\t4977\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t4977\nNSpid:\t4977\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532603392 kB\nVmSize:\t1518568032 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  144680 kB\nVmRSS:\t  143908 kB\nRssAnon:\t   30016 kB\nRssFile:\t  112984 kB\nRssShmem:\t     908 kB\nVmData:\t  997840 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1065\nnonvoluntary_ctxt_switches:\t675\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 5024,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5024\nNgid:\t0\nPid:\t5024\nPPid:\t4987\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t5024\t4\t1\nNSpid:\t5024\t4\t1\nNSpgid:\t1807\t0\t0\nNSsid:\t1807\t0\t0\nKthread:\t0\nVmPeak:\t1518724356 kB\nVmSize:\t1518233624 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   84816 kB\nVmRSS:\t   84816 kB\nRssAnon:\t   18668 kB\nRssFile:\t   65872 kB\nRssShmem:\t     276 kB\nVmData:\t  657644 kB\nVmStk:\t     164 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     664 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000140014a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t177\nnonvoluntary_ctxt_switches:\t75\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026532372]",
+          "pid": "pid:[4026532373]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026532314]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "strict-moved-without-registration",
+      "expected": "blocked",
+      "image": "/tmp/kisaki-policy-bKYZHH/moved/KisakiProbe.AppImage",
+      "event": {
+        "kind": "exited",
+        "value": {
+          "code": null,
+          "signal": "SIGTRAP"
+        }
+      }
+    },
+    {
+      "name": "strict-moved-registered",
+      "expected": "sandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/moved/KisakiProbe.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 5094,
+          "uid": 1001,
+          "rendererPid": 5165,
+          "argv": [
+            "/tmp/.mount_KisakihO0DsS/kisaki-policy-probe"
+          ],
+          "version": "1.0.1",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 5094,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5094\nNgid:\t0\nPid:\t5094\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t5094\nNSpid:\t5094\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532603392 kB\nVmSize:\t1518586596 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  141832 kB\nVmRSS:\t  141832 kB\nRssAnon:\t   27680 kB\nRssFile:\t  113140 kB\nRssShmem:\t    1012 kB\nVmData:\t 1012984 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     860 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t30\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1381\nnonvoluntary_ctxt_switches:\t354\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 5165,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5165\nNgid:\t0\nPid:\t5165\nPPid:\t5133\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t5165\t4\t1\nNSpid:\t5165\t4\t1\nNSpgid:\t1807\t0\t0\nNSsid:\t1807\t0\t0\nKthread:\t0\nVmPeak:\t1518724356 kB\nVmSize:\t1518233624 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   84696 kB\nVmRSS:\t   84696 kB\nRssAnon:\t   18648 kB\nRssFile:\t   65804 kB\nRssShmem:\t     244 kB\nVmData:\t  657660 kB\nVmStk:\t     164 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     668 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000140014a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t192\nnonvoluntary_ctxt_switches:\t88\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "kisaki-policy-4075 (unconfined)",
+        "namespaces": {
+          "user": "user:[4026532432]",
+          "pid": "pid:[4026532433]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026532374]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "strict-global-userns-disabled",
+      "expected": "blocked",
+      "image": "/tmp/kisaki-policy-bKYZHH/moved/KisakiProbe.AppImage",
+      "event": {
+        "kind": "exited",
+        "value": {
+          "code": null,
+          "signal": "SIGTRAP"
+        }
+      }
+    },
+    {
+      "name": "default-global-userns-disabled",
+      "expected": "unsandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 5230,
+          "uid": 1001,
+          "rendererPid": 5293,
+          "argv": [
+            "/tmp/.mount_defaulWIfQMq/kisaki-policy-probe",
+            "--no-sandbox"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 5230,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5230\nNgid:\t0\nPid:\t5230\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t5230\nNSpid:\t5230\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532587004 kB\nVmSize:\t1518553756 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  141564 kB\nVmRSS:\t  141564 kB\nRssAnon:\t   27568 kB\nRssFile:\t  113088 kB\nRssShmem:\t     908 kB\nVmData:\t  979736 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     848 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t28\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1168\nnonvoluntary_ctxt_switches:\t590\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 5293,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5293\nNgid:\t0\nPid:\t5293\nPPid:\t5244\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t5293\nNSpid:\t5293\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1518724340 kB\nVmSize:\t1518233608 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   81192 kB\nVmRSS:\t   81192 kB\nRssAnon:\t   18648 kB\nRssFile:\t   62268 kB\nRssShmem:\t     276 kB\nVmData:\t  657596 kB\nVmStk:\t     148 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     644 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t175\nnonvoluntary_ctxt_switches:\t106\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    {
+      "name": "conditional-global-userns-disabled",
+      "expected": "unsandboxed",
+      "image": "/tmp/kisaki-policy-bKYZHH/build-conditional/conditional.AppImage",
+      "event": {
+        "kind": "ready",
+        "value": {
+          "type": "ready",
+          "pid": 5336,
+          "uid": 1001,
+          "rendererPid": 5433,
+          "argv": [
+            "/tmp/.mount_conditT8LXHu/kisaki-policy-probe",
+            "--no-sandbox"
+          ],
+          "version": "1.0.0",
+          "isPackaged": true,
+          "view": {
+            "text": "AppImage policy probe",
+            "node": "undefined",
+            "process": "undefined"
+          }
+        }
+      },
+      "main": {
+        "pid": 5336,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tR (running)\nTgid:\t5336\nNgid:\t0\nPid:\t5336\nPPid:\t4075\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t1024\nGroups:\t4 100 118 999 1001 \nNStgid:\t5336\nNSpid:\t5336\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1532587004 kB\nVmSize:\t1518570080 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  142672 kB\nVmRSS:\t  142672 kB\nRssAnon:\t   28348 kB\nRssFile:\t  113064 kB\nRssShmem:\t    1260 kB\nVmData:\t  996816 kB\nVmStk:\t     136 kB\nVmExe:\t  162744 kB\nVmLib:\t   29012 kB\nVmPTE:\t     876 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t29\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000200\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1384\nnonvoluntary_ctxt_switches:\t312\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "renderer": {
+        "pid": 5433,
+        "status": "Name:\tkisaki-policy-p\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t5433\nNgid:\t0\nPid:\t5433\nPPid:\t5350\nTracerPid:\t0\nUid:\t1001\t1001\t1001\t1001\nGid:\t1001\t1001\t1001\t1001\nFDSize:\t512\nGroups:\t4 100 118 999 1001 \nNStgid:\t5433\nNSpid:\t5433\nNSpgid:\t1807\nNSsid:\t1807\nKthread:\t0\nVmPeak:\t1518724340 kB\nVmSize:\t1518233608 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   81548 kB\nVmRSS:\t   81548 kB\nRssAnon:\t   18644 kB\nRssFile:\t   62568 kB\nRssShmem:\t     336 kB\nVmData:\t  657612 kB\nVmStk:\t     148 kB\nVmExe:\t  162744 kB\nVmLib:\t   27040 kB\nVmPTE:\t     660 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t8\nSigQ:\t0/31633\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t3\nCpus_allowed_list:\t0-1\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t181\nnonvoluntary_ctxt_switches:\t178\nx86_Thread_features:\t\nx86_Thread_features_locked:",
+        "label": "unconfined",
+        "namespaces": {
+          "user": "user:[4026531837]",
+          "pid": "pid:[4026531836]",
+          "mnt": "mnt:[4026531832]",
+          "net": "net:[4026531833]"
+        }
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  ],
+  "passed": true,
+  "applicationConfig": {
+    "sha256": "35803ee34fbbc78e07d90f48f22af153592e45a8dadd2eec976632630ecfce14",
+    "appImage": {
+      "executableArgs": []
+    }
+  },
+  "environment": {
+    "node": "v24.11.1",
+    "uid": 1001,
+    "kernel": "Linux runnervmtai0g 6.17.0-1022-azure #22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+    "os": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "parentLabel": "unconfined\n",
+    "apparmor": "apparmor module is loaded.\n123 profiles are loaded.\n28 profiles are in enforce mode.\n   /usr/bin/man\n   /usr/lib/snapd/snap-confine\n   /usr/sbin/chronyd\n   /usr/sbin/haveged\n   /usr/sbin/mysqld\n   docker-default\n   lsb_release\n   man_filter\n   man_groff\n   nvidia_modprobe\n   nvidia_modprobe//kmod\n   passt\n   plasmashell\n   plasmashell//QtWebEngineProcess\n   rsyslogd\n   tcpdump\n   ubuntu_pro_apt_news\n   ubuntu_pro_esm_cache\n   ubuntu_pro_esm_cache//apt_methods\n   ubuntu_pro_esm_cache//apt_methods_gpgv\n   ubuntu_pro_esm_cache//cloud_id\n   ubuntu_pro_esm_cache//dpkg\n   ubuntu_pro_esm_cache//ps\n   ubuntu_pro_esm_cache//ubuntu_distro_info\n   ubuntu_pro_esm_cache_systemctl\n   ubuntu_pro_esm_cache_systemd_detect_virt\n   unix-chkpwd\n   unprivileged_userns\n4 profiles are in complain mode.\n   transmission-cli\n   transmission-daemon\n   transmission-gtk\n   transmission-qt\n0 profiles are in prompt mode.\n0 profiles are in kill mode.\n91 profiles are in unconfined mode.\n   1password\n   Discord\n   MongoDB Compass\n   QtWebEngineProcess\n   balena-etcher\n   brave\n   buildah\n   cam\n   ch-checkns\n   ch-run\n   chrome\n   crun\n   devhelp\n   element-desktop\n   epiphany\n   evolution\n   firefox\n   flatpak\n   foliate\n   geary\n   github-desktop\n   goldendict\n   ipa_verify\n   kchmviewer\n   keybase\n   lc-compliance\n   libcamerify\n   linux-sandbox\n   loupe\n   lxc-attach\n   lxc-create\n   lxc-destroy\n   lxc-execute\n   lxc-stop\n   lxc-unshare\n   lxc-usernsexec\n   microsoft-edge-stable\n   mmdebstrap\n   msedge\n   nautilus\n   notepadqq\n   obsidian\n   opam\n   opera\n   pageedit\n   podman\n   polypane\n   privacybrowser\n   qcam\n   qmapshack\n   qutebrowser\n   rootlesskit\n   rpm\n   rssguard\n   runc\n   sbuild\n   sbuild-abort\n   sbuild-adduser\n   sbuild-apt\n   sbuild-checkpackages\n   sbuild-clean\n   sbuild-createchroot\n   sbuild-destroychroot\n   sbuild-distupgrade\n   sbuild-hold\n   sbuild-shell\n   sbuild-unhold\n   sbuild-update\n   sbuild-upgrade\n   scide\n   signal-desktop\n   slack\n   slirp4netns\n   steam\n   stress-ng\n   surfshark\n   systemd-coredump\n   thunderbird\n   toybox\n   trinity\n   tup\n   tuxedo-control-center\n   userbindmount\n   uwsgi-core\n   vdens\n   virtiofsd\n   vivaldi-bin\n   vpnns\n   vscode\n   wike\n   wpcom\n4 processes have profiles defined.\n4 processes are in enforce mode.\n   /usr/sbin/chronyd (931) \n   /usr/sbin/chronyd (935) \n   /usr/sbin/haveged (557) \n   /usr/sbin/rsyslogd (975) rsyslogd\n0 processes are in complain mode.\n0 processes are in prompt mode.\n0 processes are in kill mode.\n0 processes are unconfined but have a profile defined.\n0 processes are in mixed mode."
+  },
+  "default": {
+    "image": "/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage",
+    "sha256": "77e10594b9e126e51a7d3a9ed94116fa37b9b6be2eed85859577ddd2dfe8dc26",
+    "fuseWire": {
+      "0": 48,
+      "1": 49,
+      "2": 48,
+      "3": 48,
+      "4": 49,
+      "5": 49,
+      "6": 48,
+      "7": 48,
+      "8": 49,
+      "version": "1"
+    },
+    "desktop": "[Desktop Entry]\nName=Kisaki Policy Probe\nExec=AppRun --no-sandbox %U\nTerminal=false\nType=Application\nIcon=kisaki-policy-probe\nStartupWMClass=Kisaki Policy Probe\nX-AppImage-Version=1.0.0\nComment=Synthetic sandbox policy comparison\nCategories=Utility;\n"
+  },
+  "conditional": {
+    "image": "/tmp/kisaki-policy-bKYZHH/build-conditional/conditional.AppImage",
+    "sha256": "8c0b6d164fc84749ac148fb94608c2a5901071f5d6bb9620993187c6c57099b0",
+    "fuseWire": {
+      "0": 48,
+      "1": 49,
+      "2": 48,
+      "3": 48,
+      "4": 49,
+      "5": 49,
+      "6": 48,
+      "7": 48,
+      "8": 49,
+      "version": "1"
+    },
+    "desktop": "[Desktop Entry]\nName=Kisaki Policy Probe\nExec=AppRun %U\nTerminal=false\nType=Application\nIcon=kisaki-policy-probe\nStartupWMClass=Kisaki Policy Probe\nX-AppImage-Version=1.0.0\nComment=Synthetic sandbox policy comparison\nCategories=Utility;\n"
+  },
+  "strict-v1": {
+    "image": "/tmp/kisaki-policy-bKYZHH/build-strict-v1/strict-v1.AppImage",
+    "sha256": "24a51d710c25954998003376d39d909ad54115acec4e79396e0c076a966cee72",
+    "fuseWire": {
+      "0": 48,
+      "1": 49,
+      "2": 48,
+      "3": 48,
+      "4": 49,
+      "5": 49,
+      "6": 48,
+      "7": 48,
+      "8": 49,
+      "version": "1"
+    },
+    "desktop": "[Desktop Entry]\nName=Kisaki Policy Probe\nExec=AppRun %U\nTerminal=false\nType=Application\nIcon=kisaki-policy-probe\nStartupWMClass=Kisaki Policy Probe\nX-AppImage-Version=1.0.0\nComment=Synthetic sandbox policy comparison\nCategories=Utility;\n"
+  },
+  "strict-v2": {
+    "image": "/tmp/kisaki-policy-bKYZHH/build-strict-v2/strict-v2.AppImage",
+    "sha256": "0c2d2cb475979629cb7e062e13093ad34b5ea85006d016b0e16ed4af1fad8612",
+    "fuseWire": {
+      "0": 48,
+      "1": 49,
+      "2": 48,
+      "3": 48,
+      "4": 49,
+      "5": 49,
+      "6": 48,
+      "7": 48,
+      "8": 49,
+      "version": "1"
+    },
+    "desktop": "[Desktop Entry]\nName=Kisaki Policy Probe\nExec=AppRun %U\nTerminal=false\nType=Application\nIcon=kisaki-policy-probe\nStartupWMClass=Kisaki Policy Probe\nX-AppImage-Version=1.0.1\nComment=Synthetic sandbox policy comparison\nCategories=Utility;\n"
+  },
+  "restrictedBaseline": {
+    "code": 1,
+    "text": "unshare: write failed /proc/self/uid_map: Operation not permitted"
+  },
+  "wildcardAttachment": {
+    "before": {
+      "code": 1,
+      "text": "KisakiProbe-other.AppImage: write failed /proc/self/uid_map: Operation not permitted"
+    },
+    "after": {
+      "code": 0,
+      "text": ""
+    },
+    "meaning": "Attachment follows a path pattern, not AppImage content or application identity."
+  },
+  "originalSysctls": {
+    "kernel.apparmor_restrict_unprivileged_userns": "1",
+    "user.max_user_namespaces": "31633"
+  },
+  "cleanup": [
+    {
+      "code": 0,
+      "text": ""
+    },
+    {
+      "code": 0,
+      "text": ""
+    },
+    {
+      "code": 0,
+      "text": "kernel.apparmor_restrict_unprivileged_userns = 1"
+    },
+    {
+      "code": 0,
+      "text": "user.max_user_namespaces = 31633"
+    }
+  ],
+  "files": [
+    "conditional-AppRun.txt",
+    "conditional-allowed.log",
+    "conditional-build.log",
+    "conditional-config.json",
+    "conditional-global-userns-disabled.log",
+    "conditional-restricted.log",
+    "conditional.desktop",
+    "default-AppRun.txt",
+    "default-allowed.log",
+    "default-build.log",
+    "default-config.json",
+    "default-desktop-argument.log",
+    "default-global-userns-disabled.log",
+    "default-restricted.log",
+    "default.desktop",
+    "profile-13.txt",
+    "profile-6.txt",
+    "profile-9.txt",
+    "result.json",
+    "strict-exact-profile.log",
+    "strict-global-userns-disabled.log",
+    "strict-in-place-update.log",
+    "strict-moved-registered.log",
+    "strict-moved-without-registration.log",
+    "strict-v1-AppRun.txt",
+    "strict-v1-build.log",
+    "strict-v1-config.json",
+    "strict-v1.desktop",
+    "strict-v2-AppRun.txt",
+    "strict-v2-build.log",
+    "strict-v2-config.json",
+    "strict-v2.desktop",
+    "strict-without-profile.log"
+  ]
+}

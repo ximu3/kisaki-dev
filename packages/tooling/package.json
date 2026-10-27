@@ -15,13 +15,13 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@kisaki3/typescript-config": "workspace:*",
     "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "jiti": "catalog:",
-    "typescript": "catalog:",
     "tsx": "catalog:",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   }
 }

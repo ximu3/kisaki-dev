@@ -7,6 +7,7 @@ import { promisify } from 'node:util'
 /** Process inputs for a finite engineering command. */
 export interface ProcessOptions {
   cwd?: string
+  /** Complete child environment; omission inherits process.env as in Node's spawn(). */
   env?: NodeJS.ProcessEnv
   signal?: AbortSignal | undefined
 }
@@ -78,7 +79,7 @@ async function execute(
   const child = spawn(command, args, {
     windowsHide: true,
     ...(options.cwd ? { cwd: options.cwd } : {}),
-    ...(options.env ? { env: { ...process.env, ...options.env } } : {}),
+    ...(options.env ? { env: options.env } : {}),
     detached: process.platform !== 'win32',
     stdio: ['ignore', capture ? 'pipe' : 'inherit', capture ? 'pipe' : 'inherit'],
   })

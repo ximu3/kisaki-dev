@@ -1,0 +1,55 @@
+$ vitest run "--" "tests/process.test.ts" "-t" "explicit environment"
+
+ RUN  v5.0.5 F:/project/kisaki/packages/tooling
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'parent-only'
+- undefined
+
+    at <anonymous> (F:\project\kisaki\packages\tooling\tests\support\environment-worker.ts:3:8)
+    at ModuleJob.run (node:internal/modules/esm/module_job:377:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:671:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'parent-only',
+  expected: undefined,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.1
+ ❯ tests/process.test.ts (2 tests | 1 failed) 1448ms
+   × an explicit environment preserves removals from the parent environment 339ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/process.test.ts > an explicit environment preserves removals from the parent environment
+Error: Tool failed: node.exe (1)
+ ❯ execute src/process.ts:122:13
+    120|     signal.throwIfAborted()
+    121|     if (result.code !== 0) {
+    122|       throw new CommandFailed(command, result.code, result.signal, std…
+       |             ^
+    123|     }
+    124|     return stdout
+ ❯ run src/process.ts:136:3
+ ❯ tests/process.test.ts:18:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 4 passed (5)
+   Start at  22:58:08
+   Duration  1.71s (tests 94%, import 3%, transform 2%, worker 1%)
+
+F:\project\kisaki\packages\tooling:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @kisaki3/tooling@0.0.0 test: `vitest run "--" "tests/process.test.ts" "-t" "explicit environment"`
+Exit status 1

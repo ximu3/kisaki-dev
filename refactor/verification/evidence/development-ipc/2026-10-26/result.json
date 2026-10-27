@@ -1,0 +1,115 @@
+{
+  "electronVersion": "44.5.1",
+  "builderVersion": "26.15.3",
+  "parentNode": "v24.11.1",
+  "platform": "win32",
+  "architecture": "x64",
+  "work": "F:\\project\\kisaki\\.cache\\development-ipc\\packaged-IFz7sq",
+  "fuses": {
+    "0": 48,
+    "1": 49,
+    "2": 48,
+    "3": 48,
+    "4": 49,
+    "5": 49,
+    "6": 48,
+    "7": 48,
+    "8": 49,
+    "version": "1"
+  },
+  "scenarios": [
+    {
+      "name": "roundtrip-cancelled-quit-and-normal-exit",
+      "runtime": {
+        "packaged": true,
+        "processType": "browser",
+        "connected": true,
+        "sendType": "function",
+        "node": "24.21.0",
+        "electron": "44.5.1",
+        "chromium": "152.0.7977.130"
+      },
+      "messages": [
+        {
+          "type": "ready",
+          "runtime": {
+            "packaged": true,
+            "processType": "browser",
+            "connected": true,
+            "sendType": "function",
+            "node": "24.21.0",
+            "electron": "44.5.1",
+            "chromium": "152.0.7977.130"
+          }
+        },
+        {
+          "type": "echoResult",
+          "id": 1,
+          "value": {
+            "rootPath": "F:/Synthetic/日本語 与中文/extension",
+            "webviews": [],
+            "enabled": false,
+            "count": 0
+          }
+        },
+        {
+          "type": "stopResult",
+          "id": 2,
+          "outcome": "cancelled"
+        },
+        {
+          "type": "echoResult",
+          "id": 3,
+          "value": "alive after cancelled quit"
+        },
+        {
+          "type": "stopResult",
+          "id": 4,
+          "outcome": "exiting"
+        }
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "diagnostics": "\r\n"
+    },
+    {
+      "name": "channel-disconnect-and-normal-exit",
+      "runtime": {
+        "packaged": true,
+        "processType": "browser",
+        "connected": true,
+        "sendType": "function",
+        "node": "24.21.0",
+        "electron": "44.5.1",
+        "chromium": "152.0.7977.130"
+      },
+      "messages": [
+        {
+          "type": "ready",
+          "runtime": {
+            "packaged": true,
+            "processType": "browser",
+            "connected": true,
+            "sendType": "function",
+            "node": "24.21.0",
+            "electron": "44.5.1",
+            "chromium": "152.0.7977.130"
+          }
+        }
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "disconnect": {
+        "observed": true
+      },
+      "diagnostics": "\r\n"
+    }
+  ],
+  "passed": true,
+  "executableSha256": "2b30afdd538b5ed6a0a67a4b423b98933a0fd61ee7f12ba35ab8d2df39f86c34",
+  "asarSha256": "4bca029b092e8a43fac96c1a6a3559300a69389f1e7a49682d28cd2f91370d31"
+}

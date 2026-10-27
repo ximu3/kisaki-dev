@@ -1,0 +1,23 @@
+{
+  "version": "v24.11.1",
+  "events": [
+    {
+      "event": "message",
+      "value": {
+        "type": "ready"
+      }
+    },
+    {
+      "event": "disconnect"
+    },
+    {
+      "event": "exit",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "event": "deadline",
+      "exitCode": 0
+    }
+  ]
+}

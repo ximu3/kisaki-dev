@@ -153,15 +153,21 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 根目录只保留仓库级工具及根工具实际使用的依赖，应用和库的依赖由使用者声明。Electron 属于桌面应用，Solid 属于实际使用它的项目，组件库依据公开合同声明 peer。一个锁文件可以记录各项目需要的不同依赖版本；catalog 只统一需要共同兼容的范围，不迫使未来 Web 或官网采用桌面的框架。依赖归属依据 [Turborepo 依赖管理建议](https://turborepo.dev/docs/crafting-your-repository/managing-dependencies)。
 
+工程用途包括已确认的构建与测试工具链、类型检查、配置加载、资产准备和上游 peer 约束。具备这些用途的依赖应保留，不能仅因产品源码没有直接 import、某阶段尚无对应测试用例或希望减少声明数量而删除。清理前先核对实际拥有者及使用方式。
+
+各依赖声明块按包名排序，脚本按开发、构建与打包、验证、维护组织，同类任务相邻。工具默认入口可直接发现，需要选择其他宿主或输入范围时显式指定配置。条件 exports 的顺序具有匹配语义，不能机械排序；不为固定字段顺序增加结构快照测试。已经进入共同 catalog 的版本由消费者引用 catalog，不另写一份等价版本。
+
 packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码与公开声明不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
+
+当前官方扩展只有 kisx.config.ts 与 eslint.config.ts 两个 Node 工具配置，由各自根 tsconfig.json 共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。实际 Node、Webview、共享合同或测试源码建立后，再按真实环境拆分配置；不为尚不存在的源码预建类型项目。
 
 仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 typecheck:root，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。官方扩展同样由默认 tsconfig.json 组织实际类型项目：config/typescript/tsconfig.kisx.json 保留 kisx.config.ts 的纯声明环境，tsconfig.tools.json 单独检查 Node 宿主中的 ESLint 配置，增量信息归 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置，UI 的 tsconfig.config.json 单独管理已确认的声明检查例外。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -179,7 +185,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                     |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                     |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                       |
-| 根 tools                     | 仓库 Git hooks、制品与发行输入，以及工具共用的候选交接和命令执行函数 |
+| 根 tools 与私有工程包         | 根工具拥有 Git hooks 与发行输入；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -213,6 +219,10 @@ skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明
 
 测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
 
+普通 CI 使用 Turbo 的任务输入与依赖图分别选择常规检查、公共包消费者、浏览器、原生、桌面窗口、开发会话、性能和最终制品任务。当前通用 Chromium 交互在 Ubuntu x64 参考环境执行一次；具有平台差异的原生与桌面任务在六个实际目标执行。开发会话针对构建、监听与生命周期输入，完整性能测量针对启动、加载和资源输入；20 次采样口径不因普通修改而缩减。首次交付、发行前及明确的完整验收仍执行全部所需目标和后端；手动 CI 入口请求完整范围。全局工具链变化、缺失或不可解析的基线按完整范围处理，选择工具失败则让检查失败。
+
+构建准备与回归选择分别表达。根 desktop:test:native、desktop:test:e2e、desktop:test:dev 和 desktop:test:performance 先完成有限构建，再执行所属任务；应用的测试脚本消费已准备输入。CI 为选中的测试共用一次目标构建，不把该构建的全部输入作为每个套件的触发条件。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。输入清单随运行器、配置、辅助和资源依赖同步更新。
+
 只有结果由完整输入决定的有限任务才使用缓存。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
 
 CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按操作系统、架构与 Node 版本隔离，再由 Turbo 根据任务完整输入命中具体结果；不接入额外远端服务或凭据。fork PR 只恢复缓存，保存仅用于本仓库分支；GitHub 的分支作用域限制仍然生效。缓存不包含用户资料、密钥或现场运行证据。根实际使用的私有工程依赖参与 Turbo 全局哈希，因此共同工程源码变更可以使全仓任务失效；项目局部源码则按实际依赖图传播。验收分别记录冷运行、热命中、输入失效、输出恢复和真实 CI 跨运行恢复，不能以本机命中代替 CI 证据。
@@ -222,6 +232,10 @@ persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障�
 桌面工具直接使用 Vite 的公开 API，由项目开发会话拥有进程和就绪交接。[桌面工具布局](layout.md#desktop-tools)中的 dev/session.ts 负责一个完整开发会话，依次完成有限依赖构建、当前目标资源准备、服务与程序监听、首次编译和 renderer 就绪，然后启动 Electron。就绪由回调或明确信号确认，不解析日志或依靠固定延时。
 
 项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、HMR、watch 和打包使用 Vite 的公开能力。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)。
+
+main 与 extension-host 使用 Vite 的 SSR 构建选择 Node 解析和插件语义；target 只负责生成语法，不能替代宿主配置。普通 JavaScript 依赖按制品布局打包，Electron、Node 内建模块和实际原生资源按所属部署合同处理。preload 保持沙箱可消费的独立 CommonJS 输出，renderer 使用浏览器环境，不套用完整 Node 宿主的缺省配置。
+
+开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。额外源码路径和变更通知在 configureServer 中注册，使 Vite 重启后仍能观察应用配置和公共包输入。对应取舍与验证见[工具链修正](../../verification/evidence/tooling-review/2026-10-26/implementation/README.md)。
 
 renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
 
@@ -233,9 +247,9 @@ renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同
 
 根任务与项目脚本直接调用 Turbo、编译器、打包器和测试运行器。缓存恢复按任务声明的输出执行。完整流程按顺序完成准备、构建、快照或打包交接；候选在成功后替换对应输出，准备失败或采用前取消时保留原有结果。
 
-开发会话拥有程序代际与依赖快照的写入和清理，现用程序与 renderer 使用已交接的完整结果。取消信号沿工作流显式传递；会话关闭等待编译、进程、监听和服务结束，再清理自身目录。不能中断的调用等待实际完成，采用结果前检查取消状态。
+开发会话拥有程序代际与依赖快照的写入和清理，现用程序与 renderer 使用已交接的完整结果。启动准备沿工作流传递取消信号；运行中的停止先取得本体正常退出结果。取消退出保留可用会话，确认退出后再取消编译、关闭监听和服务，并清理已无读取者的目录。不能中断的调用等待实际完成，采用结果前检查取消状态。
 
-停止开发会话时，工具关闭 Electron、监听和服务。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
+源码开发与作者开发共用 extension-cli/extension 的父子 IPC 启动入口及 desktop-contracts/development 消息。源码会话选择本次 main、renderer 地址和隔离 profile，直接观察实际进程退出；不维护第二套私有控制消息。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
 
 Turbo 只负责选择和调度任务。桌面与 kisx 通过 [公开开发接入](../extensions/development.md#connection) 协作，官方扩展不使用私有热加载路径。集成验证包括公共合同、UI 样式和 SDK 变化，故意构建失败后的恢复，多程序输出交接，停止与重启，以及真实资源使用；打开 watch 开关本身不代表开发流程可用。
 
@@ -257,9 +271,15 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审、Squash 合并并删除分支。main 要求 PR 和检查通过，不要求另一人 Approve。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
 
-ci.yml 覆盖 PR 和主线。CI 根据实际依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。必需的汇总检查始终执行，并确认所有应运行任务已经完成，不能用顶层 paths 条件使检查永远等待，也不能把应执行却被 skipped 的任务算作通过。
+ci.yml 接收 PR、主线 push 和手动事件，再调用 verification.yml 执行代码验证。PR 打开、提交变化、重新打开及目标分支变化需要代码验证；仅编辑标题或正文时不调用验证工作流，也不进入代码任务的取消组，不生成新的代码汇总结果。GitHub 仍可能显示一个跳过的入口任务；它不作为必需检查，也不能覆盖已有的代码检查结果。
+
+实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。代码任务的并发组仅由新的代码验证参与，同一 PR 的新提交或目标分支变化可以取消过时验证。
+
+pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
 
 纯规则使用普通 Node 下的 Vitest，Solid 组件使用 Browser Mode，数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包 tarball 消费和扩展真实安装各自完成，不能相互代替。
+
+Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 显式指定相对项目 root 的 node_modules/.vitest-cache，避免合法并行的项目互相清理缓存。缓存只复用转换结果，不替代实际执行测试；同一工程的独立任务继续遵守输出访问约束。原生模块测试由开发 Electron 的 Node 模式执行应用自身的 Vitest CLI，不跨目录取根工程的运行器。
 
 普通 PR 只有读取权限，不接触发行密钥。版本 PR 额外检查版本、依赖、所属语言要求的发行说明和交付物。过时的普通检查可以取消；发行绑定合并后的最终 SHA 并重新验证，不能以 PR 临时合并构建作为正式版本证据。
 
@@ -267,7 +287,7 @@ ci.yml 覆盖 PR 和主线。CI 根据实际依赖图及 Git 基线选择变更�
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，合并前整理最终说明，不拼接临时提交消息。commitlint 配合 conventional 规则检查 PR 标题，并在标题编辑后重新运行；主线检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
+PR 标题作为 Squash 标题，合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线代码工作流检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
 
 <a id="hooks"></a>
 

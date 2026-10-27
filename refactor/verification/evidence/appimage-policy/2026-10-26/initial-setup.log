@@ -1,0 +1,21 @@
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	﻿2026-10-26T09:31:13.7381999Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7383636Z with:
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7384530Z   node-version: 24.11.1
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7385540Z   always-auth: false
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7386543Z   check-latest: false
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7396326Z   token: ***
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7397349Z   package-manager-cache: true
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.7398680Z ##[endgroup]
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.8922735Z Attempting to download 24.11.1...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.9040908Z (node:2095) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:13.9046391Z (Use `node --trace-deprecation ...` to show where the warning was created)
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:14.4622728Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:15.1332406Z Extracting ...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:15.1458931Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/f1ba2bb4-7c1b-4fcb-8bb6-e1ef7bc61600 -f /home/runner/work/_temp/48854c55-29e5-4136-9d15-a35a59def8d5
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:16.5417844Z Adding to the cache ...
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.4636880Z ##[group]Environment details
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.7679700Z node: v24.11.1
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.7680651Z npm: 11.6.2
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.7689722Z yarn: 1.22.22
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.7699558Z ##[endgroup]
+compare	Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444	2026-10-26T09:31:20.7779940Z ##[error]Unable to locate executable file: pnpm. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also check the file mode to verify the file is executable.

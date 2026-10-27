@@ -1,0 +1,1 @@
+$ eslint "*.config.ts" config tools tests --max-warnings 0

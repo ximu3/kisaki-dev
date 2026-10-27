@@ -1,0 +1,25 @@
+{
+  "electronVersion": "44.5.1",
+  "builderVersion": "26.15.3",
+  "parentNode": "v24.11.1",
+  "platform": "win32",
+  "architecture": "x64",
+  "work": "F:\\project\\kisaki\\.cache\\development-ipc\\packaged-RIwSyi",
+  "fuses": {
+    "0": 48,
+    "1": 49,
+    "2": 48,
+    "3": 48,
+    "4": 49,
+    "5": 49,
+    "6": 48,
+    "7": 48,
+    "8": 49,
+    "version": "1"
+  },
+  "scenarios": [],
+  "passed": false,
+  "failure": "AbortError: The operation was aborted",
+  "executableSha256": "69e678c6f65d1b328351948faa704845a9ef48daea573cad6ef40ec9c8fe75bc",
+  "asarSha256": "6fd8b83904d504d786d8bb442ad5ddfd463c8722852a67e7c57134b36db4a330"
+}

@@ -6,11 +6,11 @@ import { loadNative } from '#native'
 import { initializePaths } from './paths'
 import type { ApplicationPaths } from './paths'
 import { startExtensionHost } from './extension-host'
-import type { ExtensionHostProcess } from './extension-host'
-import { logFailure, logLifecycle } from '../infrastructure/log'
-import type { WindowKind } from '../../shared/window-controls'
+import { logLifecycle } from '../infrastructure/log'
 import type { RuntimeManifest } from '../../shared/runtime-manifest'
-import type { DevelopmentReady } from '../../shared/development-session'
+import { readApplicationLaunch } from './launch'
+import { connectDevelopment } from './development'
+import { registerShutdown } from './shutdown'
 import { createNativeWindow } from '../infrastructure/windows/native-window'
 import {
   registerApplicationScheme,
@@ -31,6 +31,8 @@ async function loadRuntime(paths: ApplicationPaths): Promise<RuntimeManifest> {
 
   if (
     build.schemaVersion !== 1 ||
+    typeof build.version !== 'string' ||
+    !build.version ||
     build.buildId !== __KISAKI_BUILD_ID__ ||
     build.target !== target
   ) {
@@ -48,33 +50,9 @@ async function loadRuntime(paths: ApplicationPaths): Promise<RuntimeManifest> {
   return build
 }
 
-/** Wait for the shared host to stop before allowing Electron's quit sequence to finish. */
-function registerShutdown(host: ExtensionHostProcess): void {
-  let stopped = false
-  let stopping: Promise<void> | undefined
-
-  app.on('before-quit', (event) => {
-    if (stopped) return
-
-    event.preventDefault()
-    if (stopping) return
-
-    stopping = host.stop().then(
-      () => {
-        stopped = true
-        logLifecycle('app', 'Shutdown complete')
-        app.quit()
-      },
-      (cause: unknown) => {
-        logFailure('app', cause)
-        app.exit(1)
-      },
-    )
-  })
-}
-
 /** Start the selected window and shared host, then signal readiness to the development session. */
 export async function bootstrap(): Promise<void> {
+  const launch = readApplicationLaunch()
   logLifecycle('app', 'Starting')
   registerApplicationScheme()
   app.setName(app.isPackaged ? 'Kisaki' : 'Kisaki Dev')
@@ -87,11 +65,13 @@ export async function bootstrap(): Promise<void> {
   }
 
   // Electron fixes session paths at ready, so initialize them before the first await.
-  const paths = initializePaths()
+  const paths = initializePaths(launch.profile)
   if (!app.requestSingleInstanceLock()) {
     app.quit()
     return
   }
+
+  const development = launch.development ? connectDevelopment() : undefined
 
   const build = await loadRuntime(paths)
   logLifecycle('app', 'Native resources loaded')
@@ -105,40 +85,19 @@ export async function bootstrap(): Promise<void> {
   session.defaultSession.setPermissionCheckHandler(() => false)
 
   const host = await startExtensionHost(paths.runtimeDirectory)
-  registerShutdown(host)
-
-  const requestedKind = app.isPackaged ? 'main' : (process.env.KISAKI_WINDOW ?? 'main')
-  if (!['main', 'reader', 'player', 'game-panel'].includes(requestedKind)) {
-    throw new Error('Unknown development window')
-  }
+  registerShutdown(host, development?.shutdown)
 
   const window = await createNativeWindow({
     runtime: paths.runtimeDirectory,
     title: app.getName(),
-    kind: requestedKind as WindowKind,
-    rendererUrl: app.isPackaged ? undefined : process.env.KISAKI_RENDERER_URL,
+    kind: launch.window,
+    rendererUrl: launch.rendererUrl,
   })
-  window.on('closed', () => app.quit())
   app.on('second-instance', () => {
     if (window.isMinimized()) window.restore()
     window.focus()
   })
 
   logLifecycle('app', `Ready ${__KISAKI_BUILD_ID__}`)
-  if (!app.isPackaged) {
-    process.on('message', (message: unknown) => {
-      if (
-        message &&
-        typeof message === 'object' &&
-        'type' in message &&
-        message.type === 'shutdown'
-      ) {
-        app.quit()
-      }
-    })
-    process.on('disconnect', () => app.quit())
-
-    const ready: DevelopmentReady = { type: 'ready', buildId: __KISAKI_BUILD_ID__ }
-    process.send?.(ready)
-  }
+  await development?.ready(__KISAKI_BUILD_ID__, build.version)
 }

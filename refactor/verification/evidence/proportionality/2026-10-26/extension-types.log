@@ -1,0 +1,67 @@
+Scope: 33 of 46 workspace projects
+.../desktop/extensions/projects/anilist typecheck$ tsc -b
+.../projects/anx-reader-importer typecheck$ tsc -b
+.../desktop/extensions/projects/bangumi typecheck$ tsc -b
+.../extensions/projects/calibre-importer typecheck$ tsc -b
+.../projects/anx-reader-importer typecheck: Done
+.../extensions/projects/fanart-tv typecheck$ tsc -b
+.../desktop/extensions/projects/anilist typecheck: Done
+.../projects/goodreads-importer typecheck$ tsc -b
+.../desktop/extensions/projects/bangumi typecheck: Done
+.../extensions/projects/google-books typecheck$ tsc -b
+.../extensions/projects/calibre-importer typecheck: Done
+clients/desktop/extensions/projects/igdb typecheck$ tsc -b
+.../projects/goodreads-importer typecheck: Done
+.../desktop/extensions/projects/itch-io typecheck$ tsc -b
+.../extensions/projects/fanart-tv typecheck: Done
+.../projects/koodo-reader-importer typecheck$ tsc -b
+.../extensions/projects/google-books typecheck: Done
+.../projects/koreader-importer typecheck$ tsc -b
+clients/desktop/extensions/projects/igdb typecheck: Done
+.../extensions/projects/kotatsu-importer typecheck$ tsc -b
+.../desktop/extensions/projects/itch-io typecheck: Done
+.../extensions/projects/language-ja typecheck$ tsc -b
+.../projects/koodo-reader-importer typecheck: Done
+.../extensions/projects/language-zh-hans typecheck$ tsc -b
+.../projects/koreader-importer typecheck: Done
+.../extensions/projects/language-zh-hant typecheck$ tsc -b
+.../extensions/projects/kotatsu-importer typecheck: Done
+.../projects/launchbox-importer typecheck$ tsc -b
+.../extensions/projects/language-ja typecheck: Done
+.../desktop/extensions/projects/mangadex typecheck$ tsc -b
+.../extensions/projects/language-zh-hans typecheck: Done
+.../extensions/projects/mangaupdates typecheck$ tsc -b
+.../extensions/projects/language-zh-hant typecheck: Done
+.../extensions/projects/mihon-importer typecheck$ tsc -b
+.../projects/launchbox-importer typecheck: Done
+.../extensions/projects/myanimelist typecheck$ tsc -b
+.../desktop/extensions/projects/mangadex typecheck: Done
+.../extensions/projects/ndl-search typecheck$ tsc -b
+.../extensions/projects/mangaupdates typecheck: Done
+.../projects/nfo-comicinfo-importer typecheck$ tsc -b
+.../extensions/projects/mihon-importer typecheck: Done
+.../projects/playnite-importer typecheck$ tsc -b
+.../extensions/projects/myanimelist typecheck: Done
+.../projects/potatovn-importer typecheck$ tsc -b
+.../extensions/projects/ndl-search typecheck: Done
+.../desktop/extensions/projects/ranobedb typecheck$ tsc -b
+.../projects/nfo-comicinfo-importer typecheck: Done
+.../desktop/extensions/projects/steam typecheck$ tsc -b
+.../projects/potatovn-importer typecheck: Done
+.../extensions/projects/steamgriddb typecheck$ tsc -b
+.../projects/playnite-importer typecheck: Done
+clients/desktop/extensions/projects/tmdb typecheck$ tsc -b
+.../desktop/extensions/projects/ranobedb typecheck: Done
+clients/desktop/extensions/projects/vndb typecheck$ tsc -b
+.../desktop/extensions/projects/steam typecheck: Done
+.../extensions/projects/vnite-importer typecheck$ tsc -b
+.../extensions/projects/steamgriddb typecheck: Done
+.../desktop/extensions/projects/wikidata typecheck$ tsc -b
+clients/desktop/extensions/projects/tmdb typecheck: Done
+.../projects/yacreader-importer typecheck$ tsc -b
+.../extensions/projects/vnite-importer typecheck: Done
+.../desktop/extensions/projects/ymgal typecheck$ tsc -b
+clients/desktop/extensions/projects/vndb typecheck: Done
+.../desktop/extensions/projects/wikidata typecheck: Done
+.../projects/yacreader-importer typecheck: Done
+.../desktop/extensions/projects/ymgal typecheck: Done

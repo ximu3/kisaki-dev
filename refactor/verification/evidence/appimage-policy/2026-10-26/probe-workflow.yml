@@ -1,0 +1,46 @@
+name: AppImage policy probe
+
+on:
+  push:
+    branches: [research/appimage-policy-2026-10-26]
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24.11.1'
+          package-manager-cache: false
+      - name: Prepare disposable graphical test environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libfuse2t64 libgtk-3-0t64 libnss3 libasound2t64 apparmor apparmor-utils
+          probe_directory="$RUNNER_TEMP/appimage-policy"
+          mkdir -p "$probe_directory"
+          cp refactor/verification/evidence/appimage-policy/2026-10-26/probe/* "$probe_directory/"
+          echo "PROBE_DIR=$probe_directory" >> "$GITHUB_ENV"
+      - name: Install pinned probe dependencies
+        run: npm ci --prefix "$PROBE_DIR" --ignore-scripts --no-audit --no-fund
+      - name: Check probe types
+        run: npm --prefix "$PROBE_DIR" run check
+      - name: Compare actual sandbox and first preparation behavior
+        run: |
+          ulimit -c 0
+          cd "$PROBE_DIR"
+          xvfb-run --auto-servernum npm run probe
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && env.PROBE_DIR != ''
+        with:
+          name: appimage-policy-ubuntu-24-x64
+          path: |
+            ${{ env.PROBE_DIR }}/results
+            ${{ env.PROBE_DIR }}/package-lock.json
+          retention-days: 30

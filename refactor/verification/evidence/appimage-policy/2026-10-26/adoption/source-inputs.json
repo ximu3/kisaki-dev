@@ -1,0 +1,19 @@
+{
+  "verifiedAt": "2026-10-26T11:06:32.753Z",
+  "sourceRepository": "https://github.com/ximu3/kisaki-w00-ci",
+  "sourceCommit": "b87c1238e68846f25b46ec63d454a4ba83b85b18",
+  "baseProbeCommit": "49a2df7715df264fb09bc22091e847e249ade7be",
+  "runUrl": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40310558001",
+  "applicationConfig": {
+    "path": "clients/desktop/app/electron-builder.yml",
+    "localSha256": "35803ee34fbbc78e07d90f48f22af153592e45a8dadd2eec976632630ecfce14",
+    "ciSha256": "35803ee34fbbc78e07d90f48f22af153592e45a8dadd2eec976632630ecfce14",
+    "sameNormalizedContent": true
+  },
+  "probePatchSha256": "a9748994b8600db4fa260d7b041642dee5b811eeb27675fdf2a6864d39edc6b0",
+  "lockSha256": "69ee7132f74210ed8f2cedf81ad2115d17b4d6da33c01d839257833f0357c1e7",
+  "passed": true,
+  "caseCount": 13,
+  "appRunMatchesUpstream": true,
+  "desktopExec": "AppRun %U"
+}

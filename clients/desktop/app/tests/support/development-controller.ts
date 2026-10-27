@@ -4,7 +4,26 @@ import type { DevelopmentSession } from '../../tools/dev/session'
 const controller = new AbortController()
 let session: DevelopmentSession | undefined
 let failure: unknown
-const stop = () => controller.abort(new Error('Fixture development session stopped'))
+const stop = () => {
+  if (session) {
+    void session.stop().then(
+      (result) => {
+        if (result === 'cancelled' && process.connected) {
+          process.send?.({
+            state: 'cancelled',
+            current: session?.current,
+            rendererUrl: session?.rendererUrl,
+          })
+        }
+      },
+      (cause: unknown) => {
+        failure = cause
+      },
+    )
+  } else {
+    controller.abort(new Error('Fixture development session stopped'))
+  }
+}
 const message = (value: unknown) => {
   if (value && typeof value === 'object' && 'type' in value && value.type === 'stop') stop()
 }

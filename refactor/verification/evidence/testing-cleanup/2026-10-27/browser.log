@@ -1,0 +1,81 @@
+$ turbo run test:browser --filter=@kisaki3/desktop -- "--reporter=default" "--reporter=json" "--outputFile=test-results/browser/results.json"
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/desktop
+   • Running test:browser in 1 package
+   • Remote caching disabled
+
+@kisaki3/desktop-contracts:build: cache miss, executing 4ceb94cdcb62f162
+@kisaki3/appearance:build: cache miss, executing 36d6bf70cbc6175c
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\development.js    5.32 kB │ gzip: 1.46 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\errors.js         0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\index.js          0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\development.d.ts  3.34 kB │ gzip: 1.18 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\errors.d.ts       0.34 kB │ gzip: 0.23 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-nb5o1F\index.d.ts        0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.14 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 426ms
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-bnw5kT\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-bnw5kT\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-bnw5kT\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-bnw5kT\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 405ms
+@kisaki3/extension-cli:build: cache miss, executing 9a23734091a83dcc
+@kisaki3/ui:build: cache miss, executing c67b096d267c45c2
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.node.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-5JkeVv\extension.js    5.44 kB │ gzip: 1.80 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-5JkeVv\config.js       0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-5JkeVv\extension.d.ts  1.84 kB │ gzip: 0.83 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-5JkeVv\config.d.ts     0.68 kB │ gzip: 0.38 kB
+@kisaki3/extension-cli:build: ℹ 4 files, total: 8.14 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 802ms
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-f5QSHT\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-f5QSHT\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 686ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 48ms
+@kisaki3/desktop:test:browser: cache bypass, force executing 87a2d1dac583828c
+@kisaki3/desktop:test:browser: $ vitest run --config config/vitest/vitest.config.browser.ts "--reporter=default" "--reporter=json" "--outputFile=test-results/browser/results.json"
+@kisaki3/desktop:test:browser: 
+@kisaki3/desktop:test:browser:  RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+@kisaki3/desktop:test:browser:       API started at http://127.0.0.1:23315/
+@kisaki3/desktop:test:browser: 
+@kisaki3/desktop:test:browser:  ✓ |chromium| tests/browser/window.test.tsx (1 test) 27ms
+@kisaki3/desktop:test:browser: 
+@kisaki3/desktop:test:browser:  Test Files  1 passed (1)
+@kisaki3/desktop:test:browser:       Tests  1 passed (1)
+@kisaki3/desktop:test:browser:    Start at  11:17:33
+@kisaki3/desktop:test:browser:    Duration  629ms (worker 77%, tests 18%, import 5%)
+@kisaki3/desktop:test:browser: 
+@kisaki3/desktop:test:browser: JSON report written to F:/project/kisaki/clients/desktop/app/test-results/browser/results.json
+
+ Tasks:    5 successful, 5 total
+Cached:    0 cached, 5 total
+  Time:    6.599s 
+

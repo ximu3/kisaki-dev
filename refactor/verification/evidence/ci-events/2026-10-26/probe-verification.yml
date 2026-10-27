@@ -1,0 +1,54 @@
+name: Verification routing probe
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  repository:
+    runs-on: ubuntu-22.04
+    outputs:
+      desktop: ${{ steps.select.outputs.desktop }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - run: cp "$GITHUB_EVENT_PATH" event.json
+      - id: select
+        run: echo 'desktop=false' >> "$GITHUB_OUTPUT"
+      - name: Keep verification running while metadata is edited
+        run: sleep 90
+      - name: Apply the intentional probe result
+        run: test "$(cat .ci-probe-state)" = pass
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ci-event-${{ github.run_id }}
+          path: event.json
+          retention-days: 7
+  desktop:
+    needs: repository
+    if: needs.repository.outputs.desktop == 'true'
+    runs-on: ubuntu-22.04
+    steps:
+      - run: exit 1
+  required:
+    name: Required checks
+    if: always()
+    needs: [repository, desktop]
+    runs-on: ubuntu-22.04
+    steps:
+      - env:
+          REPOSITORY_RESULT: ${{ needs.repository.result }}
+          DESKTOP_SELECTED: ${{ needs.repository.outputs.desktop }}
+          DESKTOP_RESULT: ${{ needs.desktop.result }}
+        run: |
+          test "$REPOSITORY_RESULT" = success
+          if [ "$DESKTOP_SELECTED" = true ]; then
+            test "$DESKTOP_RESULT" = success
+          else
+            test "$DESKTOP_SELECTED" = false
+            test "$DESKTOP_RESULT" = skipped
+          fi

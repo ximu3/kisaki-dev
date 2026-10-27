@@ -1,4 +1,9 @@
 import { defineConfig } from '@kisaki3/extension-cli/config'
+import { launchDevelopmentApplication } from '@kisaki3/extension-cli/extension'
+import {
+  developmentProtocolVersion,
+  parseDevelopmentCommand,
+} from '@kisaki3/desktop-contracts/development'
 import { appearanceTokenNames } from '@kisaki3/appearance'
 import type { ErrorSummary, ExecutionFailure } from '@kisaki3/extension-sdk'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
@@ -9,6 +14,13 @@ const failure: ExecutionFailure<{ count: number }> = { ...summary, partialResult
 const text: LocalizedText = { en: 'Consumer', 'zh-Hans': '消费者' }
 const config = defineConfig({ entry: 'src/entry.ts' })
 const transport: MessageTransport | undefined = undefined
+const initialization = parseDevelopmentCommand({
+  type: 'initialize',
+  protocolVersion: developmentProtocolVersion,
+})
+if (typeof launchDevelopmentApplication !== 'function' || initialization.type !== 'initialize') {
+  throw new Error('Development entries are unavailable')
+}
 // @ts-expect-error Failure codes are text, not implicit numeric database codes.
 const invalid: ErrorSummary = { code: 1, message: 'invalid' }
 console.info(

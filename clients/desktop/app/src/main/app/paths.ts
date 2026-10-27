@@ -29,14 +29,8 @@ function readDistributionKind(runtimeDirectory: string): DistributionKind {
 }
 
 /** Resolve this launch's data location; portable marker errors propagate to startup. */
-function resolveDataDirectory(runtimeDirectory: string): string {
-  if (!app.isPackaged) {
-    const profile = process.env.KISAKI_DEV_PROFILE
-    if (!profile || !isAbsolute(profile)) {
-      throw new Error('Start development through the desktop session with an isolated profile')
-    }
-    return profile
-  }
+function resolveDataDirectory(runtimeDirectory: string, profile?: string): string {
+  if (profile) return profile
 
   const kind = readDistributionKind(runtimeDirectory)
   const ordinaryDirectory = join(app.getPath('appData'), 'Kisaki')
@@ -65,7 +59,7 @@ function resolveDataDirectory(runtimeDirectory: string): string {
 }
 
 /** Select the data location and set Electron paths synchronously before app.ready. */
-export function initializePaths(): ApplicationPaths {
+export function initializePaths(profile?: string): ApplicationPaths {
   const runtimeDirectory = app.isPackaged
     ? app.getAppPath()
     : resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -73,7 +67,7 @@ export function initializePaths(): ApplicationPaths {
     ? join(process.resourcesPath, 'resources')
     : join(runtimeDirectory, 'resources')
 
-  const dataDirectory = resolveDataDirectory(runtimeDirectory)
+  const dataDirectory = resolveDataDirectory(runtimeDirectory, profile)
   const sessionDirectory = join(dataDirectory, 'browser')
   mkdirSync(dataDirectory, { recursive: true })
   mkdirSync(sessionDirectory, { recursive: true })
