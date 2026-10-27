@@ -21,46 +21,54 @@ test('measures twenty fresh processes and confirms all observed child processes 
       )
       delete env.ELECTRON_RUN_AS_NODE
 
-      const start = performance.now()
-      const application = await _electron.launch({
-        executablePath: electronExecutable(),
-        args: [join(runtime, 'main/entry.js'), `--profile=${profile}`],
-        env,
+      const sample = `Sample ${index + 1}`
+      const { application, start } = await test.step(`${sample}: launch`, async () => {
+        const start = performance.now()
+        const application = await _electron.launch({
+          executablePath: electronExecutable(),
+          args: [join(runtime, 'main/entry.js'), `--profile=${profile}`],
+          env,
+        })
+        return { application, start }
       })
 
       let pids: number[] = []
       try {
-        const window = await application.firstWindow()
-        await window.getByRole('button', { name: 'Close window' }).waitFor()
-        const milliseconds = performance.now() - start
-        const metrics = await application.evaluate(({ app }) =>
-          app
-            .getAppMetrics()
-            .map(({ pid, memory }) => ({ pid, workingSetSize: memory.workingSetSize })),
-        )
+        const milliseconds = await test.step(`${sample}: window ready`, async () => {
+          const window = await application.firstWindow()
+          await window.getByRole('button', { name: 'Close window' }).waitFor()
+          return performance.now() - start
+        })
+        const metrics = await test.step(`${sample}: process metrics`, () =>
+          application.evaluate(({ app }) =>
+            app
+              .getAppMetrics()
+              .map(({ pid, memory }) => ({ pid, workingSetSize: memory.workingSetSize })),
+          ))
         pids = metrics.map((metric) => metric.pid)
         samples.push({
           milliseconds,
           workingSetKiB: metrics.reduce((sum, metric) => sum + metric.workingSetSize, 0),
         })
       } finally {
-        await application.close()
+        await test.step(`${sample}: close`, () => application.close())
       }
 
-      await expect
-        .poll(
-          () =>
-            pids.filter((pid) => {
-              try {
-                process.kill(pid, 0)
-                return true
-              } catch {
-                return false
-              }
-            }),
-          { timeout: 5_000 },
-        )
-        .toEqual([])
+      await test.step(`${sample}: observed processes exit`, () =>
+        expect
+          .poll(
+            () =>
+              pids.filter((pid) => {
+                try {
+                  process.kill(pid, 0)
+                  return true
+                } catch {
+                  return false
+                }
+              }),
+            { timeout: 5_000 },
+          )
+          .toEqual([]))
     }
 
     const sorted = samples.map((sample) => sample.milliseconds).sort((a, b) => a - b)

@@ -1,0 +1,9 @@
+{
+  "artifactId": 12716126951,
+  "name": "desktop-linux-x64",
+  "path": "artifacts/w00-ci/2026-10-27/40463344626/desktop-linux-x64.zip",
+  "bytes": 333204520,
+  "sha256": "b6e331e5550092f4e029227ab7f72602ee33603921bf865c6812bdd1e7ea368d",
+  "githubDigest": "sha256:b6e331e5550092f4e029227ab7f72602ee33603921bf865c6812bdd1e7ea368d",
+  "verified": true
+}

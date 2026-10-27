@@ -9,12 +9,12 @@
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 六目标与缓存基线已通过；workflow 维护调整已实施，等待当前输入的远端复验 |
+| W00 工程与验证入口 | workflow 维护后的六目标首轮已通过；Apple Silicon 启动采样在两次暖缓存复跑中超时，待定位与复验 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；当前提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)也已完成。W01 尚未开始。历史[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)及实际候选保持原提交与范围。
+[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)保持原范围。维护后的提交 0abf572 首轮六目标成功，但后续两次 Apple Silicon 启动采样超时仍待定位，见[workflow 维护记录](../verification/evidence/workflow-review/2026-10-27/README.md)。W01 尚未开始。
 
 Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，保持 private、未归档及 main 默认分支。仓库身份、现有分支提交、PR、工作流和所核对的 Actions 运行均保留，旧 Git 与 API 地址仍可访问，见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址。
 
@@ -56,7 +56,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 随后完成[GitHub workflow 组织与维护复核](../verification/evidence/workflow-review/2026-10-27/README.md)：三份文件的职责与事件／取消边界成立，完整 SHA、只读权限、任务选择、六目标及汇总设计保留；确认两个旧 Action 的 Node 20 迁移提示和缓存主键命中后的重复保存需要维护，job／step 显示命名与任务超时另有整理建议。三份 workflow 通过 actionlint；本次仅审查和记录，未升级依赖、调整这些设计或触发新 CI，既有六目标结果保持原范围。
 
-用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。首次 v6.1.0 的实际 CI 通过仓库、消费者、浏览器与附件上传，但 Intel macOS 的 pnpm 二次自更新失败；已统一改用 Node 24 的 v5.0.0 直接安装目标包，保留失败日志，等待修正后的远端复验。旧完整运行约 28 分钟，仓库反馈约 5 分钟，时长依据和适用范围已单独记录。
+用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。首次 v6.1.0 在 Intel macOS 的 pnpm 二次自更新失败；统一改用 Node 24 的 v5.0.0 直接安装目标包后，0abf572 的首轮仓库、六目标和汇总全部通过，七份附件及实际候选均归档核对。完整等待 28 分 53 秒，扣除初始排队后实际验证 26 分 55 秒，仓库反馈 4 分 42 秒。随后两次新 Apple Silicon runner 均恢复主键并命中四个公共包构建任务，但性能用例及 worker 收尾各超时 180 秒，未到达打包与成功后的缓存保存分支。失败报告没有具体等待点，已添加 Playwright 原生采样步骤记录；本机 Windows 20 次采样与 100 个阶段记录、类型及 lint 通过，macOS 故障尚未定位。六个构建目标保持不变。
 
 <a id="environments"></a>
 
@@ -74,7 +74,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查与本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)、[六目标与缓存基线](../verification/evidence/w00/2026-10-27/ci/README.md)通过；[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)待远端复验 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查与本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)、六目标首轮通过；[workflow 维护中的启动采样超时](../verification/evidence/workflow-review/2026-10-27/README.md)待定位与复验 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

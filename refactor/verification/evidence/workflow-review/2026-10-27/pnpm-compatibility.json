@@ -20,7 +20,16 @@
   },
   "projectToolchainChanged": false,
   "platformSpecificBranchAdded": false,
-  "remoteValidation": "pending",
+  "remoteValidation": {
+    "runId": 40463344626,
+    "attempt": 1,
+    "headSha": "0abf572581308cb3ef1fa3a6a3d4896833ee7383",
+    "conclusion": "success",
+    "desktopTargets": 6,
+    "repositoryAndRequiredPassed": true,
+    "titleJobId": 122052841162,
+    "report": "ci/40463344626/verification-summary.json"
+  },
   "sources": [
     "https://github.com/pnpm/action-setup/releases/tag/v5.0.0",
     "https://github.com/pnpm/action-setup/blob/fc06bc1257f339d1d5d8b3a19a8cae5388b55320/action.yml",
