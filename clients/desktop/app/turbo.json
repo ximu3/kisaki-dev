@@ -31,7 +31,7 @@
       "cache": false
     },
     "package": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build"],
       "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
         "electron-builder.yml",

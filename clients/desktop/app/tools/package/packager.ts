@@ -4,8 +4,7 @@ import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'
-import { buildDesktop } from '../build/coordinator'
-import { runtimeFiles } from '../build/identity'
+import { runtimeFiles, sourceIdentity } from '../build/identity'
 import type { DesktopBuild } from '../../src/shared/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
 import { sha256 } from '../lib/sha256'
@@ -30,7 +29,7 @@ interface PackagingContext {
 }
 
 /**
- * Build and package the host target, returning the completed artifact receipt path.
+ * Package the prepared host target, returning the completed artifact receipt path.
  * Adopt the output after all formats and the receipt are written, then release the staging files.
  */
 export async function packageDesktop(
@@ -40,9 +39,19 @@ export async function packageDesktop(
 ): Promise<string> {
   if (target !== hostTarget()) throw new Error('Package on the corresponding native target runner')
 
-  const desktop = await buildDesktop(target, signal)
   const runtime = buildDirectory(target)
+  const desktop: DesktopBuild = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8'))
+  if (
+    desktop.schemaVersion !== 1 ||
+    desktop.target !== target ||
+    desktop.buildId !== (await sourceIdentity())
+  ) {
+    throw new Error('Desktop packaging requires a build matching the current target and inputs')
+  }
   const actual = await runtimeFiles(runtime)
+  if (Object.keys(actual).length !== Object.keys(desktop.files).length) {
+    throw new Error('Desktop runtime file set changed before packaging')
+  }
   for (const [file, digest] of Object.entries(desktop.files)) {
     if (actual[file] !== digest) {
       throw new Error(`Desktop build changed before packaging: ${file}`)

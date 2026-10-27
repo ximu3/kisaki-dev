@@ -1,0 +1,12 @@
+name: CI design measurements
+on:
+  push:
+    branches: [research/ci-final-design-measurements]
+permissions:
+  contents: read
+concurrency:
+  group: ci-design-measurements-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    uses: ./.github/workflows/verification.yml
