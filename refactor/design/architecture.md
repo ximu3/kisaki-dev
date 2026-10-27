@@ -2,6 +2,8 @@
 
 桌面应用由 Electron 主进程、四类原生窗口、各窗口的 preload，以及一个共享 Node 扩展宿主组成。主进程保存本地事实并执行完整业务操作，窗口负责呈现与交互，扩展通过正式合同参与功能。
 
+“原生窗口”指 Electron 创建的系统窗口，窗口内部由 Solid 和网页控件呈现。文中与扩展贡献相对的“原生能力”指本体拥有的业务能力；具体系统 API、控件和交互方式按[简洁与原生准则](engineering/conventions.md#simplicity-native)及[系统交互规则](ui/components.md#native-interaction)选择。
+
 <a id="processes"></a>
 
 ## 进程与运行环境

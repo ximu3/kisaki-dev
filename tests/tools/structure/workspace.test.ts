@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 import { readFile, readdir } from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import ts from 'typescript'
-import { parse } from 'yaml'
+import { readPnpm } from '@kisaki3/tooling/process'
 
 const root = process.cwd()
 
@@ -15,6 +15,7 @@ async function sourceFiles(directory: string): Promise<string[]> {
     '.cache',
     '.local',
     '.vitest',
+    '.turbo',
     'target',
     'test-results',
     'playwright-report',
@@ -32,8 +33,14 @@ async function sourceFiles(directory: string): Promise<string[]> {
 /** Read the actual member manifests; category folders and fixture projects are not members. */
 async function members(): Promise<{ directory: string; manifest: Record<string, unknown> }[]> {
   const directories = ['clients/desktop/app']
-  for (const parent of ['clients/desktop/packages', 'clients/desktop/extensions/projects']) {
-    for (const child of await readdir(parent)) directories.push(`${parent}/${child}`)
+  for (const parent of [
+    'packages',
+    'clients/desktop/packages',
+    'clients/desktop/extensions/projects',
+  ]) {
+    for (const child of await readdir(parent, { withFileTypes: true })) {
+      if (child.isDirectory()) directories.push(`${parent}/${child.name}`)
+    }
   }
   return Promise.all(
     directories.map(async (directory) => ({
@@ -43,21 +50,19 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
   )
 }
 
-test('the workspace contains exactly the application, eight public packages and 33 official projects', async () => {
-  const workspace: { packages: string[] } = parse(await readFile('pnpm-workspace.yaml', 'utf8'))
-  expect(workspace.packages).toEqual([
-    'clients/desktop/app',
-    'clients/desktop/packages/*',
-    'clients/desktop/extensions/projects/*',
-  ])
+test('pnpm registers the maintained projects with unique identities and the intended publication boundaries', async () => {
+  const selected: { path: string }[] = JSON.parse(
+    await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
+  )
   const projects = await members()
-  expect(projects).toHaveLength(42)
-  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(42)
+  const actual = selected.map((member) => relative(root, member.path).replaceAll('\\', '/'))
+  expect(actual.filter(Boolean).sort()).toEqual(projects.map(({ directory }) => directory).sort())
+  expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(projects.length)
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
-    if (directory.includes('/packages/')) {
+    if (directory.startsWith('clients/desktop/packages/')) {
       expect(manifest.license).toBe('MIT')
-      expect(manifest.publishConfig).toEqual({ access: 'public' })
+      expect(manifest.publishConfig).toMatchObject({ access: 'public' })
     } else {
       expect(manifest.private).toBe(true)
       expect(manifest.license).toBe('AGPL-3.0-only')
@@ -74,7 +79,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     ...rootFiles,
     ...(
       await Promise.all(
-        ['clients', 'config', 'tools', 'tests'].map((directory) => sourceFiles(resolve(directory))),
+        ['clients', 'packages', 'config', 'tools', 'tests'].map((directory) =>
+          sourceFiles(resolve(directory)),
+        ),
       )
     ).flat(),
   ]
@@ -85,8 +92,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   ]
   const configs: string[] = []
   for (const { directory, manifest } of projects) {
-    const scripts = manifest.scripts as Record<string, string>
-    for (const match of (scripts.typecheck ?? '').matchAll(
+    const scripts = (manifest.scripts ?? {}) as Record<string, string>
+    const command = directory === '.' ? scripts['typecheck:root'] : scripts.typecheck
+    for (const match of (command ?? '').matchAll(
       /tsc (?:-p|--project|-b|--build)(?: ([\w./-]+\.json))?/g,
     )) {
       configs.push(resolve(directory, match[1] ?? 'tsconfig.json'))
@@ -101,6 +109,7 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     ].map((file) => resolve('tests/fixtures/consumers', file)),
   )
   const checked = new Set<string>()
+  const checkedDeclarations = new Set<string>()
   const visited = new Set<string>()
   for (const config of configs) {
     if (visited.has(config)) continue
@@ -111,7 +120,11 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     const parsed = ts.parseJsonConfigFileContent(content.config, ts.sys, resolve(config, '..'))
     expect(parsed.errors, config).toEqual([])
     expect(parsed.options.allowJs ?? false, config).toBe(false)
-    for (const path of parsed.fileNames) checked.add(resolve(path).toLowerCase())
+    for (const path of parsed.fileNames) {
+      const file = resolve(path).toLowerCase()
+      checked.add(file)
+      if (!parsed.options.skipLibCheck) checkedDeclarations.add(file)
+    }
     for (const reference of parsed.projectReferences ?? []) {
       configs.push(ts.resolveProjectReferencePath(reference))
     }
@@ -120,4 +133,11 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     (path) => /\.tsx?$/.test(path) && !checked.has(resolve(path).toLowerCase()),
   )
   expect(uncovered.map((path) => relative(root, path))).toEqual([])
+  expect(
+    files
+      .filter(
+        (path) => path.endsWith('.d.ts') && !checkedDeclarations.has(resolve(path).toLowerCase()),
+      )
+      .map((path) => relative(root, path)),
+  ).toEqual([])
 })

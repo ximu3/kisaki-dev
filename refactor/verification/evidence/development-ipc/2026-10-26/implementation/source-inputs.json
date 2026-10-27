@@ -1,0 +1,141 @@
+{
+  "recordedAt": "2026-10-26T07:44:57.3599677Z",
+  "baseRevision": "f3f74f5880f3fd74be63f119a231e38fff4478c1",
+  "branch": "refactor/remove-output-coordination",
+  "uncommittedWorkingTree": true,
+  "verifiedArtifactBuildId": "957ec0f2ab1418f8862bbbd476f3af85da87a1b15fc1dd9aa402a9c5cef82f9a",
+  "removedFiles": [
+    "clients/desktop/app/src/shared/development-session.ts",
+    "clients/desktop/app/tools/dev/electron-process.ts"
+  ],
+  "files": [
+    {
+      "path": "clients/desktop/app/package.json",
+      "sha256": "aa8622074de10482eb7a88503cd780037a87be79655b09fbb73849e353e96ed6"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "sha256": "4b3f4ea86e40ec0aa71a7292c39aab9fd52feb959e596f85aa39e712b874de7b"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/development.ts",
+      "sha256": "cb6016436eb5beb513ced51c53fc40011cae1f7746e4b78b1d5ad957cebf6e06"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/launch.ts",
+      "sha256": "9e88cfc50616b1a91097222155663868e89cf97c93cddfe20e72dc2e6b22509d"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/paths.ts",
+      "sha256": "f2b78e97fb013b9d56cae74748785d8b6102ca5b0d175ff18c8730505246d361"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/shutdown.ts",
+      "sha256": "07b5694a20e47b156a5f11ccdc95cb383b9ddbbbc6e45a837c30d9dd31a8182e"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/runtime-manifest.ts",
+      "sha256": "29fda36bf2e0783ca550627bbd3cb74a38dea9e1ecd30efb99b065a30f24edbc"
+    },
+    {
+      "path": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+      "sha256": "25c6bb0631fbccbad43e5ddede7b0006cf58a73a34acfa9fbd95426029496a24"
+    },
+    {
+      "path": "clients/desktop/app/tests/e2e/windows.test.ts",
+      "sha256": "8d172b8208474d5ff71f63f70a2ffa776ea1769a9a74febdd41a68c3eeb5c51c"
+    },
+    {
+      "path": "clients/desktop/app/tests/fixtures/development-application.ts",
+      "sha256": "377aa81e2b88a78fcd55e2eaa94f8f905492ca929e64c15567a0b33aa6960e68"
+    },
+    {
+      "path": "clients/desktop/app/tests/performance/startup.test.ts",
+      "sha256": "2032a2a8efa9dfa55d22491c62c326a4ab84d6a8dd6a5e4b4e0f8f26a67e62f8"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/development-controller.ts",
+      "sha256": "436f185e718c053eb1f0ce7834ebe0063d2d9e9cf1d5c76f6881a2eadec63cd0"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/electron.ts",
+      "sha256": "b58c4f03e60963b49da6f9c982bf240cac029481b6737d6e20277609657847a8"
+    },
+    {
+      "path": "clients/desktop/app/tests/tools/dev/connection.test.ts",
+      "sha256": "2a6c45905aeeb9d586a7242133c293b72805ee8200df3cca56f285dc74eb6976"
+    },
+    {
+      "path": "clients/desktop/app/tests/tools/dev/session.test.ts",
+      "sha256": "1cc2cdd34ba3e036b130193980bca8fe7037ee18554b9cb0c83bfa429547cac4"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/cli.ts",
+      "sha256": "ca8225cf21bffef88d1cb4f1f43dd9a0debbee7944ef6eb7ac4a74f014466f1d"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/generation.ts",
+      "sha256": "73a180be44e81bb1b5abcb565ffe7ee53c7f0c85d737bdb479bfe8469984c936"
+    },
+    {
+      "path": "clients/desktop/app/tools/dev/session.ts",
+      "sha256": "311821a92212ffd48b8664940f1845ce512f04a63cae983e7f40ae6ba88433de"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/package.json",
+      "sha256": "d936ae983cc06bee018b3b37c94862943ac9058a5ce92b581aedb28351bd5490"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/README.md",
+      "sha256": "a723f9c7a819f91cd31d407c33457f9c73026d72adc6399d1d391c44892ef2f5"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/src/development.ts",
+      "sha256": "246fb274356460a0c5111a0c58cf92ebd34f2824af450a23875e01e711124788"
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/tsdown.config.ts",
+      "sha256": "76d21a205b5dcd4749d3377cf73aecc7df789194b52dcacf8673e38e1fd002ea"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.lib.json",
+      "sha256": "230faec428634300c9c3b393fdeba07282a76570ac9ec315306387926fb3a968"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/config/typescript/tsconfig.node.json",
+      "sha256": "37824140fe44ec0d252de309aa68d9c37676f4a3eeba0f13ae823e2adc4c430c"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/package.json",
+      "sha256": "ddae106cb7c982c16e35616ed277e02eb1093bb688e91654528af0845ed2f83c"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/README.md",
+      "sha256": "5fc393cd39aa2828aa5d1243ca2f3332fbfc375593b77d915bbdb068190697cc"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/src/extension.ts",
+      "sha256": "e5ea2ae114ef68b86b6528ea12deecfcdfeae62bf8d0bd497873be9c4901fe7b"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/src/extension/development-application.ts",
+      "sha256": "053348d8ace28c280aae5f6dc1b6eb686977f50b6b3e7201c5b3cd302cc96d01"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/tsconfig.json",
+      "sha256": "ced50e82dc6d25158596e9543626608e6a011e2238d5d41fb0718f6dfffd2d2e"
+    },
+    {
+      "path": "clients/desktop/packages/extension-cli/tsdown.config.ts",
+      "sha256": "6297a44a43887919fc0b33a9aa2a1d114418b190ca4832ad99c13086dd37922c"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "411d760ef0cd45459f6d41a922b8bb8e8b2f04278d5212182813aca59f0e02ca"
+    },
+    {
+      "path": "tests/fixtures/consumers/node/consumer.ts",
+      "sha256": "edbe6309d56674e1efafc61d90033dc9e2b55a091b7b8cade0504cf06dbf2b45"
+    }
+  ]
+}

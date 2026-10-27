@@ -1,0 +1,17 @@
+• electron-builder  version=26.15.3 os=6.17.0-1022-azure
+  • loaded configuration  file=/tmp/kisaki-policy-bKYZHH/default.json
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=linux arch=x64 electron=44.5.1 appOutDir=/tmp/kisaki-policy-bKYZHH/build-default/linux-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/tmp/kisaki-policy-bKYZHH/build-default/linux-unpacked
+  • searching for node modules  pm=npm searchDir=/tmp/kisaki-policy-bKYZHH/app-default
+  • no node modules found in collection, trying next search directory  searchDir=/tmp/kisaki-policy-bKYZHH/app-default attempt=0
+  • searching for node modules  pm=npm searchDir=/home/runner/work/_temp/appimage-policy
+  • duplicate dependency references  dependencies=["once@1.4.0","chalk@4.1.2","jsonfile@6.2.1","debug@4.4.3","@types/node@24.19.2","@types/node@24.19.2","@types/responselike@1.0.3","@types/node@24.19.2","once@1.4.0","once@1.4.0","responselike@2.0.1","sumchecker@3.0.1","debug@4.4.3","jsonfile@6.2.1","debug@4.4.3","fs-extra@10.1.0","plist@3.1.0","cross-spawn@7.0.6","debug@4.4.3","tar@7.5.22","debug@4.4.3","@electron/asar@3.4.1","@malept/cross-spawn-promise@2.0.0","debug@4.4.3","jsonfile@6.2.1","plist@3.1.0","debug@4.4.3","jsonfile@6.2.1","@peculiar/utils@2.0.3","asn1js@3.1.0","@peculiar/asn1-schema@2.11.1","@peculiar/json-schema@1.1.12","@peculiar/utils@2.0.3","asn1js@3.1.0","@types/node@24.19.2","builder-util-runtime@9.7.0","builder-util@26.15.3","dmg-builder@26.15.3","app-builder-lib@26.15.3","builder-util@26.15.3","@electron/asar@3.4.1","debug@4.4.3","jsonfile@6.2.1","debug@4.4.3","glob@7.2.3","@types/fs-extra@9.0.13","builder-util-runtime@9.7.0","builder-util@26.15.3","chalk@4.1.2","call-bind-apply-helpers@1.0.2","es-object-atoms@1.1.2","hasown@2.0.4","hasown@2.0.4","fs-extra@10.1.0","fs-extra@10.1.0","asn1js@3.1.0","pvtsutils@1.3.6","fs-extra@10.1.0","jsonfile@6.2.1","debug@4.4.3","builder-util-runtime@9.7.0","chalk@4.1.2","debug@4.4.3","fs-extra@10.1.0","debug@4.4.3","debug@4.4.3","js-yaml@4.3.2","temp-file@3.4.0","tiny-async-pool@1.3.0","app-builder-lib@26.15.3","builder-util@26.15.3","fs-extra@10.1.0","js-yaml@4.3.2","string-width@4.2.3","ansi-styles@4.3.0","string-width@4.2.3","strip-ansi@6.0.1","strip-ansi@6.0.1","debug@4.4.3","debug@4.4.3","@types/node@24.19.2"]
+  • executing @electron/fuses  electronPath=/tmp/kisaki-policy-bKYZHH/build-default/linux-unpacked/kisaki-policy-probe
+  • building        target=AppImage arch=x64 file=/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage
+  • electron uses desktopName as app_id / WM_CLASS for window association. Without it desktop environments may not link running windows to this .desktop entry. Set desktopName in package.json and linux.syncDesktopName: true to fix.  reason=desktopName is not set in package.json docs=https://www.electron.build/linux#window-association-desktopname--syncdesktopname
+  • default Electron icon is used  reason=application icon is not set
+  • downloaded      label=appimage-12.0.1.7z progress=100%
+  • downloaded      label=7zip-linux-x64.tar.gz progress=100%
+  • building embedded block map  file=/tmp/kisaki-policy-bKYZHH/build-default/default.AppImage

@@ -1,0 +1,90 @@
+[
+  {
+    "stdio": "pipe",
+    "events": [
+      {
+        "event": "spawn",
+        "ms": 0,
+        "pid": 168696
+      },
+      {
+        "event": "message",
+        "ms": 91,
+        "value": {
+          "type": "ready",
+          "runtime": {
+            "packaged": true,
+            "processType": "browser",
+            "connected": true,
+            "sendType": "function",
+            "node": "24.21.0",
+            "electron": "44.5.1",
+            "chromium": "152.0.7977.130"
+          }
+        }
+      },
+      {
+        "event": "disconnect",
+        "ms": 91
+      },
+      {
+        "event": "exit",
+        "ms": 136,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "event": "deadline",
+        "ms": 4007,
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ],
+    "stdout": "\r\n",
+    "stderr": ""
+  },
+  {
+    "stdio": "inherit",
+    "events": [
+      {
+        "event": "spawn",
+        "ms": 0,
+        "pid": 173760
+      },
+      {
+        "event": "message",
+        "ms": 106,
+        "value": {
+          "type": "ready",
+          "runtime": {
+            "packaged": true,
+            "processType": "browser",
+            "connected": true,
+            "sendType": "function",
+            "node": "24.21.0",
+            "electron": "44.5.1",
+            "chromium": "152.0.7977.130"
+          }
+        }
+      },
+      {
+        "event": "disconnect",
+        "ms": 106
+      },
+      {
+        "event": "exit",
+        "ms": 135,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "event": "deadline",
+        "ms": 4010,
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ],
+    "stdout": "",
+    "stderr": ""
+  }
+]

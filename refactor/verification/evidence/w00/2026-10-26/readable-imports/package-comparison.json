@@ -1,0 +1,42 @@
+[
+  {
+    "name": "@kisaki3/appearance",
+    "sha256": "ac27169b9337fe6d3e4515d02f8767651524647e7bab3222ad4f5d7a86bf32de",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/desktop-contracts",
+    "sha256": "e7f473915d5b3aacba9273ed03e81fb081df3d525868cef73560def21f3d6063",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-api",
+    "sha256": "ee568ad86907fb382e545b5665968e7b6e35bbf194d05c80ff1dde147a416bae",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-cli",
+    "sha256": "0e3dc3de7d4a2b2d57002eef240affd5f9523423724a45536cb521d2f051a129",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-distribution",
+    "sha256": "58cbeef1055c74e20e355dda8a6d073b006beae73e32f0f6302a0f29cb12ba87",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/extension-sdk",
+    "sha256": "7f421a74f5506fade3dc7e28ea9f1e9a2754fe02d0bea45969d4f7268eb7af0e",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/rpc",
+    "sha256": "4964b5daa18b99e59841e5fff31b00451d174c93022e4954bfa66583270c47ad",
+    "unchanged": true
+  },
+  {
+    "name": "@kisaki3/ui",
+    "sha256": "2db54025481b229b0556e7bdfc4e6ac40ec395590f67001eccf2dcaa65854d53",
+    "unchanged": true
+  }
+]

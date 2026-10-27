@@ -1,0 +1,263 @@
+$ pnpm typecheck && pnpm lint && pnpm format:check && pnpm test
+$ turbo run typecheck && tsc -b
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+   • Running typecheck in 42 packages
+   • Remote caching disabled
+
+@kisaki3/extension-distribution:typecheck: cache miss, executing d51888e44bf67a2b
+@kisaki3/appearance:build: cache miss, executing b49a1d493e56142b
+@kisaki3/extension-cli:typecheck: cache miss, executing 09a5373376b5b618
+@kisaki3/extension-cli:build: cache miss, executing 71bbaab125d0342a
+@kisaki3/rpc:typecheck: cache miss, executing 8b147f135fe55bf4
+@kisaki3/appearance:typecheck: cache miss, executing db4f5e1a6dad32b5
+@kisaki3/desktop-contracts:build: cache miss, executing ad688a6edd775b60
+@kisaki3/desktop-contracts:typecheck: cache miss, executing 62cb2068be252e6e
+@kisaki3/extension-distribution:typecheck: $ tsc -b
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:typecheck: $ tsc -b
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/rpc:typecheck: $ tsc -b
+@kisaki3/appearance:typecheck: $ tsc -b
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:typecheck: $ tsc -b
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 858ms
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.js    0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.d.ts  0.68 kB │ gzip: 0.38 kB
+@kisaki3/extension-cli:build: ℹ 2 files, total: 0.86 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 718ms
+@kisaki3/ui:typecheck: cache miss, executing 06f58ef190ea248a
+@kisaki3/ui:build: cache miss, executing d84a94159ee91ea4
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.js     0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.d.ts  0.34 kB │ gzip: 0.23 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.d.ts   0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 4 files, total: 0.47 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 588ms
+@kisaki3/ext-language-zh-hans:typecheck: cache miss, executing 79bde4fbbdc9c726
+@kisaki3/ext-language-ja:typecheck: cache miss, executing 2a3b5c457f457235
+@kisaki3/ext-anilist:typecheck: cache miss, executing 97ee9512917c2f46
+@kisaki3/ext-goodreads-importer:typecheck: cache miss, executing bbd8e1bae93945c5
+@kisaki3/ext-wikidata:typecheck: cache miss, executing b8b9fe066676e2a8
+@kisaki3/ext-potatovn-importer:typecheck: cache miss, executing 653807967f8bcb37
+@kisaki3/ext-yacreader-importer:typecheck: cache miss, executing ad305e35325354b7
+@kisaki3/ext-tmdb:typecheck: cache miss, executing 5980e550c527ca3f
+@kisaki3/ui:typecheck: $ tsc -b
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ext-language-zh-hans:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-language-ja:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-anilist:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-goodreads-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-wikidata:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-ndl-search:typecheck: cache miss, executing bda5a04c719f2123
+@kisaki3/ext-potatovn-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-mangaupdates:typecheck: cache miss, executing 379353e687ec53e0
+@kisaki3/ext-yacreader-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-mihon-importer:typecheck: cache miss, executing 45538fc61d2a3410
+@kisaki3/ext-tmdb:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-vnite-importer:typecheck: cache miss, executing 99477625f2fc08bc
+@kisaki3/ext-language-zh-hant:typecheck: cache miss, executing 94a32c639a38159e
+@kisaki3/ext-playnite-importer:typecheck: cache miss, executing 2bd3c3b6f6f1816a
+@kisaki3/ext-ndl-search:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-vndb:typecheck: cache miss, executing 1b879494e14b3e86
+@kisaki3/ext-mangaupdates:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-itch-io:typecheck: cache miss, executing 17aa6866fa4719e8
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ext-mihon-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-anx-reader-importer:typecheck: cache miss, executing fdbb83238efbfde6
+@kisaki3/ext-vnite-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-steam:typecheck: cache miss, executing aed348c68728cd26
+@kisaki3/ext-language-zh-hant:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-koodo-reader-importer:typecheck: cache miss, executing 58f2e03d84ab0c99
+@kisaki3/ext-playnite-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-vndb:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-bangumi:typecheck: cache miss, executing e475be3a507dade2
+@kisaki3/ext-nfo-comicinfo-importer:typecheck: cache miss, executing cd824de56dc10ea9
+@kisaki3/ext-itch-io:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-anx-reader-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-ymgal:typecheck: cache miss, executing bbfc96a8480daca8
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 1350ms
+@kisaki3/ext-calibre-importer:typecheck: cache miss, executing c9819ecc7fd970f7
+@kisaki3/ext-steam:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-ranobedb:typecheck: cache miss, executing 0282444e3bcb7808
+@kisaki3/ext-koodo-reader-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-fanart-tv:typecheck: cache miss, executing 08a52c5265b71711
+@kisaki3/ext-bangumi:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-kotatsu-importer:typecheck: cache miss, executing 9deb5220fc700223
+@kisaki3/ext-nfo-comicinfo-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-mangadex:typecheck: cache miss, executing 128188f36ac2f559
+@kisaki3/ext-ymgal:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 132ms
+@kisaki3/ext-calibre-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-launchbox-importer:typecheck: cache miss, executing 963de500393aec0b
+@kisaki3/ext-ranobedb:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-koreader-importer:typecheck: cache miss, executing 2c2dd7f04042c344
+@kisaki3/ext-myanimelist:typecheck: cache miss, executing 2a684b7e233d15c1
+@kisaki3/ext-fanart-tv:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-google-books:typecheck: cache miss, executing 12b42e21ef951acc
+@kisaki3/ext-kotatsu-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-igdb:typecheck: cache miss, executing 09756ed6d7686734
+@kisaki3/ext-mangadex:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-steamgriddb:typecheck: cache miss, executing fdbb56bae78e54c9
+@kisaki3/ext-launchbox-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/extension-api:build: cache miss, executing d40cf347b0fda7d3
+@kisaki3/ext-koreader-importer:typecheck: $ tsc -p tsconfig.json
+@kisaki3/extension-api:typecheck: cache miss, executing cb390c8629902dfb
+@kisaki3/ext-myanimelist:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-google-books:typecheck: $ tsc -p tsconfig.json
+@kisaki3/desktop:typecheck: cache miss, executing 5ab7f900c52b964d
+@kisaki3/ext-igdb:typecheck: $ tsc -p tsconfig.json
+@kisaki3/ext-steamgriddb:typecheck: $ tsc -p tsconfig.json
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:typecheck: $ tsc -b
+@kisaki3/desktop:typecheck: $ tsc -b
+@kisaki3/extension-api:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 531ms
+@kisaki3/extension-sdk:typecheck: cache miss, executing 48c0eaa48ca02533
+@kisaki3/extension-sdk:typecheck: $ tsc -b
+
+ Tasks:    47 successful, 47 total
+Cached:    0 cached, 47 total
+  Time:    14.145s 
+
+$ eslint . --max-warnings 0 && depcruise --config .dependency-cruiser.json clients tools
+
+✔ no dependency violations found (165 modules, 314 dependencies cruised)
+
+$ prettier . --check
+Checking formatting...
+All matched files use Prettier code style!
+$ vitest run && turbo run test
+
+ RUN  v5.0.5 F:/project/kisaki
+
+
+ Test Files  5 passed (5)
+      Tests  20 passed (20)
+   Start at  00:07:50
+   Duration  13.76s (tests 96%, import 3%, transform 1%)
+
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+   • Running test in 42 packages
+   • Remote caching disabled
+
+@kisaki3/desktop-contracts:build: cache hit, replaying logs ad688a6edd775b60
+@kisaki3/extension-cli:build: cache hit, replaying logs 71bbaab125d0342a
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.js     0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.d.ts  0.34 kB │ gzip: 0.23 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.d.ts   0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 4 files, total: 0.47 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 588ms
+@kisaki3/appearance:build: cache hit, replaying logs b49a1d493e56142b
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.js    0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.d.ts  0.68 kB │ gzip: 0.38 kB
+@kisaki3/extension-cli:build: ℹ 2 files, total: 0.86 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 718ms
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 858ms
+@kisaki3/extension-api:build: cache hit, replaying logs d40cf347b0fda7d3
+@kisaki3/ui:build: cache hit, replaying logs d84a94159ee91ea4
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 531ms
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 1350ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 132ms
+@kisaki3/desktop:test: cache bypass, force executing 274327497d9571e7
+@kisaki3/desktop:test: $ vitest run --config vitest.config.ts
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  ✓ tests/integration/portable.test.ts (4 tests) 15ms
+@kisaki3/desktop:test:  ✓ tests/tools/resources/fonts.test.ts (3 tests) 21ms
+@kisaki3/desktop:test:  ✓ tests/tools/build/identity.test.ts (3 tests) 70ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  Test Files  3 passed (3)
+@kisaki3/desktop:test:       Tests  10 passed (10)
+@kisaki3/desktop:test:    Start at  00:08:05
+@kisaki3/desktop:test:    Duration  348ms (transform 38%, tests 33%, import 24%, worker 5%)
+@kisaki3/desktop:test: 
+
+ Tasks:    6 successful, 6 total
+Cached:    5 cached, 6 total
+  Time:    1.47s 
+

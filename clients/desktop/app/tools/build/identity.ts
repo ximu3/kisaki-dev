@@ -9,12 +9,23 @@ import { sha256 } from '../lib/sha256'
 export async function sourceIdentity(root = repositoryRoot): Promise<string> {
   const appRoot = join(root, 'clients', 'desktop', 'app')
   const digest = createHash('sha256')
+  const ignored = new Set([
+    'node_modules',
+    '.cache',
+    '.turbo',
+    '.local',
+    'target',
+    'dist',
+    'out',
+    'tests',
+    'test-results',
+  ])
 
   /** Traverse owned inputs in stable order, preserving names in the identity. */
   async function include(directory: string): Promise<void> {
     const entries = await readdir(directory, { withFileTypes: true })
     for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name, 'en'))) {
-      if (['node_modules', '.cache', 'target', 'out', 'tests'].includes(entry.name)) continue
+      if (ignored.has(entry.name)) continue
       if (/\.test\.tsx?$/.test(entry.name)) continue
       const path = join(directory, entry.name)
       if (entry.isDirectory()) {
@@ -35,10 +46,10 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
       digest.update(entry).update(await readFile(join(appRoot, entry)))
     }
   }
-  for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json']) {
+  for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.json']) {
     digest.update(file).update(await readFile(join(root, file)))
   }
-  await include(join(root, 'tools', 'outputs'))
+  await include(join(root, 'packages'))
 
   const packages = join(appRoot, '..', 'packages')
   for (const name of (await readdir(packages)).sort()) {

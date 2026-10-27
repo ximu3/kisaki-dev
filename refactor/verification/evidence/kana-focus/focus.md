@@ -1,5 +1,7 @@
 # 多面展示的语义文档与焦点验证
 
+2026-10-26 后续决定：用户确认顺序焦点导航遵循平台与用户键盘设置，只补必要接续，见[简洁与原生复核](../simplicity-native/2026-10-26/README.md)。下文统一 Tab 协调的结果保留为当时的试件事实，不作为新规则的运行验收。
+
 2026-10-20，使用[已准备并记录的浏览器构建](../kana-browser-scope/source-input.json)运行 [probe.mjs](probe.mjs) 与 [run.cjs](run.cjs)。运行时为 Chromium 149.0.7827.55、Firefox 153.0、Windows WebKit 测试构建 26.5；每个引擎执行横排、vertical-rl、vertical-lr，共九组受控场景。详细数据、代码指纹及未覆盖项见 [browser-contract.json](browser-contract.json)。这些构建说明本轮机制验证的环境，不充当当前稳定版本名单或维护窗口的完整验收记录。
 
 试件每次建立两个完整、同源的短章节展示文档。第一份保留语义入口，第二份 iframe 使用 aria-hidden 与负 tabindex；正文内容未为去重而切碎或替换。宿主代码管理输入，内容 CSP 禁止书内代码执行。源位置使用自建文本索引，未实现 EPUB CFI、MOBI 字节地址或 FB2 格式映射。

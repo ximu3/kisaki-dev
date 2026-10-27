@@ -90,7 +90,7 @@ infrastructure/media 关联打开、控制请求与显示交接。切换、采�
 
 源码中，普通渲染 reset 会保留当前帧用于重绘；没有下一帧时 render 也可以复用当前帧。因此交接时必须隔离旧接收与在途显示工作，不能将重置、重新订阅或任意一次重绘直接当作新文件画面的证据。该事实支持显式交接要求，不单独证明整个跨线程交接方案已经成立。[渲染重置与当前帧](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/vo_libmpv.c)
 
-受控换文件与帧持有的依据见[Node／Electron 交接检查](../../verification/evidence/libmpv-handoff/verification.md)，包括跨线程、原生 hook 与迟到消费回调。运行输入和实际覆盖范围保留在证据中；正式接入另验证脚本变化、并发加载取消、公共订阅和核心复用池。
+受控换文件与帧持有的依据见[Node／Electron 交接检查](../../verification/evidence/libmpv-handoff/verification.md)，包括跨线程、原生 hook 与迟到消费回调。运行输入和实际覆盖范围保留在证据中；正式接入另验证脚本变化、并发加载取消、公共订阅和同一播放器内的核心复用，不额外建立核心池。
 
 原生层可使用 on_before_start_file 与 on_after_end_file 作为明确协调点。本次直接 D3D11 原型在两种事件／渲染处理顺序下，实际完成同核心换文件、定位、加载失败后恢复，以及旧帧持有关闭检查；也记录到了不应当作新文件就绪的旧画面重绘。[切换证据](../../verification/evidence/libmpv-playback/verification.md#switching)
 

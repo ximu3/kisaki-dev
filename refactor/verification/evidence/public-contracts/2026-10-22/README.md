@@ -2,6 +2,8 @@
 
 本记录对应 2026-10-22 的[查询值合同](../../../../design/domains/library-query-contracts.md)、[写入基线与错误](../../../../design/domains/library-write-contracts.md)和[消息协议](../../../../design/engineering/protocols.md)修订。只记录声明与隔离试件，不代表 W01、正式数据库或扩展端点已经实现。
 
+2026-10-26 已将开发接入改为[Node 父子消息](../../../../design/engineering/protocols.md#development)。本记录的开发字节帧与声明组合保留为当时方案的历史证据，不计作新连接通过；其余查询、写入与数据库证据仍按原范围解释。
+
 ## 实际环境与结果
 
 | 检查             | 实际输入与结果                                                                                                                   |

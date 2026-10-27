@@ -1,0 +1,9 @@
+{
+  "artifactId": 12715424633,
+  "name": "desktop-linux-arm64",
+  "path": "artifacts/w00-ci/2026-10-27/40463344626/desktop-linux-arm64.zip",
+  "bytes": 324491667,
+  "sha256": "9bdcff4ecaab2a2c3a1d5afcd78484d8d59d0402ba572277d06ba8f845aa7fbe",
+  "githubDigest": "sha256:9bdcff4ecaab2a2c3a1d5afcd78484d8d59d0402ba572277d06ba8f845aa7fbe",
+  "verified": true
+}

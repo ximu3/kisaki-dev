@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { packageDesktop } from './packager'
-import { runCli } from '../../../../../tools/outputs'
+import { runCli } from '@kisaki3/tooling/cli'
 
 await runCli(async (signal) => {
   const { values } = parseArgs({

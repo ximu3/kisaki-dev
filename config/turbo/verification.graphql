@@ -1,0 +1,31 @@
+query Verification($base: String!, $head: String!) {
+  affectedTasks(
+    base: $base
+    head: $head
+    tasks: [
+      "test"
+      "test:consumers"
+      "test:consumers:run"
+      "test:browser"
+      "test:native"
+      "test:e2e"
+      "test:dev"
+      "test:performance"
+      "test:artifacts"
+      "package"
+    ]
+  ) {
+    items {
+      name
+      fullName
+      command
+      package {
+        name
+        path
+      }
+      reason {
+        __typename
+      }
+    }
+  }
+}

@@ -15,9 +15,9 @@
 | 开发状态     | .local 中隔离的资料库、偏好、账号与开发会话                                   | 跨会话保留，重置是单独明确动作           |
 | 测试状态     | 测试拥有的临时 profile、数据库和目录                                          | 资源关闭后由测试清理，不复用真实资料     |
 
-不同目标的输出分别存放，开发输出另设位置。每个输出目录只有一个写入者，并行构建不能互相覆盖。各目标的运行布局如下：
+不同目标的输出分别存放，开发输出另设位置。每个输出目录由对应任务拥有，单次任务内并行步骤使用不同输出。独立任务遵守[顺序执行约束](workspace.md#output-access)。各目标的运行布局如下：
 
-共享构建输出按[输出访问规则](workspace.md#output-access)协调读写。开发会话的程序与公共包快照位于会话独占的开发目录，由会话关闭后清理；活动会话的项目共享锁阻止 clean 删除其输出。开发资料位于 .local，不属于构建输出。
+开发会话的程序与公共包快照位于会话独占的开发目录，由会话关闭后清理。开发资料位于 .local，不属于构建输出。
 
 ```text
 clients/desktop/app/out/<target>/
@@ -45,7 +45,7 @@ build 生成程序，package 生成交付制品，publish 才写入外部平台�
 
 clean 清理任务声明的输出；缓存清理、开发资料重置和发行制品留存各有独立入口。用户内容、全局 Git 配置和个人工具保持原样。发行文件另行保存稳定副本，签名与时间戳等处理按实际机制记录可复现范围。
 
-clean 取得所属项目的独占锁后删除声明的输出。根 .cache 中的工程锁载体不随普通 clean 删除；系统释放失效持有者的占用，遗留文件不阻止下一次进入。
+clean 在相关构建、测试和开发任务停止后执行，删除所属项目声明的输出。
 
 <a id="media-tools"></a>
 
@@ -75,7 +75,9 @@ libmpv、FFmpeg 及其匹配运行依赖由 libmpv-node 按固定版本、目标
 
 依赖 Electron 或 V8 ABI 的模块必须匹配对应 Electron。Node-API 模块按所需等级和平台选择，并在真实 Electron 中加载；Node-API 兼容不能代替外部原生库兼容检查。开发、普通 Node 测试和 Electron 测试不互相覆盖不同 ABI 的二进制。
 
-| 改动或发行范围                   | 必须提供的验证                                             |
+下表列出各范围涉及的验证边界。日常修改按[实际影响](../../verification/acceptance.md#verification-scope)选择检查并复用仍有效的证据；首次交付和正式发行取得各自要求的完整覆盖。
+
+| 改动或发行范围                   | 对应的验证边界                                             |
 | -------------------------------- | ---------------------------------------------------------- |
 | 纯值或单个公开包                 | 对应测试、实际依赖者检查、exports/类型/样式及 tarball 消费 |
 | UI、renderer 和跨进程合同        | 受影响包、真浏览器组件和相应 Electron 工作流               |
@@ -110,9 +112,19 @@ libmpv、FFmpeg 及其匹配运行依赖由 libmpv-node 按固定版本、目标
 
 macOS 的 DMG 用于首次取得 .app。更新 ZIP 包含同版本、同架构且已签名的完整 .app，由更新器下载、解压和采用。结构按 [Apple bundle](https://developer.apple.com/documentation/bundleresources/placing-content-in-a-bundle) 与[更新器规则](https://www.electron.build/v26/docs/features/auto-update/)验证。
 
-AppImage 是可移动的单文件，支持应用内更新。交付必须验证系统库、FUSE、runtime、权限和沙箱条件，并按 [AppImage 系统要求](https://docs.appimage.org/introduction/concepts.html) 与 [FUSE 说明](https://docs.appimage.org/user-guide/troubleshooting/fuse.html) 处理，不关闭 Electron 沙箱兜底。
+AppImage 是可移动的单文件，支持应用内更新。交付必须验证系统库、FUSE、runtime、权限和沙箱条件，并按 [AppImage 系统要求](https://docs.appimage.org/introduction/concepts.html)、[FUSE 说明](https://docs.appimage.org/user-guide/troubleshooting/fuse.html)与[启动兼容政策](#appimage-compatibility)处理。
 
 官方 HTTPS 与摘要用于下载内容一致性检查，发布者身份另按对应签名机制判断。准备、校验和安装绑定同一版本、目标与摘要，底层工具原有校验保持。应用下载、macOS 代码身份及扩展 registry 签名各自承担明确职责，所用密钥独立。
+
+<a id="appimage-compatibility"></a>
+
+## AppImage 启动兼容性
+
+AppImage 沿用锁定 electron-builder 所提供 AppRun 的条件兼容行为：系统允许创建用户命名空间时保留 Chromium 进程沙箱；上游检测到限制时允许通过 --no-sandbox 启动。此选择接受受限系统上的进程隔离下降，不承诺 AppImage 始终具有操作系统级 Chromium 沙箱。
+
+appImage.executableArgs 设为空数组，生成的 .desktop 入口为 AppRun %U，不无条件附加 --no-sandbox。直接启动与桌面入口都由同一 AppRun 判断，不另写启动器、命名空间探测或应用内降级逻辑，也不要求用户先登记路径权限或修改全局系统策略。
+
+承载窗口仍配置 sandbox、contextIsolation 和 webSecurity，关闭 Node 集成，并保留受控来源、CSP、最小 preload 桥接及现行 fuses；这些配置不能证明降级运行时仍有进程沙箱。该政策仅适用于 AppImage，不扩展到其他载体或源码运行。验收检查最终启动文件、允许与受限条件下的真实渲染进程状态，范围与依据见[采用验证](../../verification/evidence/appimage-policy/2026-10-26/adoption/README.md)。
 
 <a id="portable-marker"></a>
 
@@ -172,7 +184,7 @@ macOS 更新替换 .app，AppImage 更新替换原文件，外部资料和标记
 
 各目标的 asset 名称包含系统、架构和格式，latest.yml 等汇总文件不得冲突。区分方式使用工具的官方 provider 和格式，不手写第二份清单。
 
-macOS 不修改签名后的包内容，并验证首次路径随机化、只读位置、权限、移动与更新，依据 [Apple 代码签名说明](https://developer.apple.com/library/archive/technotes/tn2206/) 执行。正式便携使用不依赖删除 quarantine、关闭 Gatekeeper 或私有定位方法；AppImage 也不降低沙箱要求。
+macOS 不修改签名后的包内容，并验证首次路径随机化、只读位置、权限、移动与更新，依据 [Apple 代码签名说明](https://developer.apple.com/library/archive/technotes/tn2206/) 执行。正式便携使用不依赖删除 quarantine、关闭 Gatekeeper 或私有定位方法。AppImage 的普通与便携模式采用同一[启动兼容政策](#appimage-compatibility)。
 
 免安装制品默认不主动登记自启动、协议或文件关联。用户明确启用时，界面说明登记属于当前机器；系统自然产生的记录与应用主动写入分别判断。便携模式不承诺零痕迹，也不承诺完整 PortableApps 格式。
 

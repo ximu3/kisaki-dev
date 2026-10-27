@@ -1,0 +1,52 @@
+appId: me.kisaki
+productName: Kisaki
+asar: true
+npmRebuild: false
+files:
+  - '!node_modules/**'
+  - main/**
+  - preload/**
+  - renderer/**
+  - extension-host/**
+  - package.json
+  - distribution.json
+  - build.json
+  - LICENSE
+extraResources:
+  - from: resources
+    to: resources
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  grantFileProtocolExtraPrivileges: false
+win:
+  target: [nsis, zip]
+  executableName: Kisaki
+  signAndEditExecutable: true
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+mac:
+  target: [dmg, zip]
+  minimumSystemVersion: '13.0'
+  forceCodeSigning: true
+  notarize: false
+  hardenedRuntime: true
+linux:
+  target: [deb, rpm, AppImage]
+  category: Utility
+  syncDesktopName: true
+  executableName: kisaki
+appImage:
+  # AppRun alone owns the upstream namespace compatibility decision.
+  executableArgs: []
+publish:
+  provider: github
+  owner: ximu3
+  repo: kisaki

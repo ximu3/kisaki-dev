@@ -1,0 +1,354 @@
+{
+  "config": {
+    "argv": [
+      "C:\\hostedtoolcache\\windows\\node\\24.11.1\\x64\\node.exe",
+      "D:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\node_modules\\playwright\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\playwright.config.ts",
+    "rootDir": "D:/a/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/ximu3/kisaki-dev/commit/6d70179a0c450cac689093485c11d5cc5f79bdf1",
+        "commitHash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+        "prHref": "https://github.com/ximu3/kisaki-dev/pull/1",
+        "prTitle": "refactor: unify desktop tooling and verification",
+        "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+        "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40454692840"
+      },
+      "gitCommit": {
+        "shortHash": "6d70179",
+        "hash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+        "subject": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938",
+        "body": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+        "author": {
+          "name": "ximu",
+          "email": "152481053+ximu3@users.noreply.github.com",
+          "time": 1793078386000
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "time": 1793078386000
+        },
+        "branch": "HEAD"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/a/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "commitHash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "prHref": "https://github.com/ximu3/kisaki-dev/pull/1",
+            "prTitle": "refactor: unify desktop tooling and verification",
+            "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40454692840"
+          },
+          "gitCommit": {
+            "shortHash": "6d70179",
+            "hash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "subject": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "body": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793078386000
+            },
+            "committer": {
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1793078386000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/a/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.test.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\test-results\\e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "commitHash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "prHref": "https://github.com/ximu3/kisaki-dev/pull/1",
+            "prTitle": "refactor: unify desktop tooling and verification",
+            "prBaseHash": "e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40454692840"
+          },
+          "gitCommit": {
+            "shortHash": "6d70179",
+            "hash": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+            "subject": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938",
+            "body": "Merge 711d9566da74c1e1f9d466052eb9cf826d04633d into e0ac47204390b1828ad5fba869ece2e226dc0938\n",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793078386000
+            },
+            "committer": {
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1793078386000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "D:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\tests\\e2e",
+        "snapshotDir": "D:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\tests\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.test.ts",
+        "timeout": 30000,
+        "use": {
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "windows.test.ts",
+      "file": "windows.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "main",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1367,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T05:31:42.230Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2fef7b5faf58b814563a",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "reader",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1018,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T05:31:43.652Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-019cdcfa78680240cd82",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "player",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 988,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T05:31:44.693Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-f40ccb7f718b930a0e30",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "game-panel",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1066,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T05:31:45.694Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2252153537811e43ef22",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T05:31:40.014Z",
+    "duration": 6784.853,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

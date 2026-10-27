@@ -22,7 +22,7 @@ Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用
 
 主进程在 app ready 前登记该协议的 standard、secure、supportFetchAPI 和 corsEnabled 能力；在实际使用的 Session 上处理请求。不得开启 bypassCSP、allowServiceWorkers 或 allowExtensions。路径解析拒绝越界、编码绕过和符号链接逃出已授权根；返回准确 MIME 与 nosniff，不把用户文件、扩展私有 data 或运行期资源当作页面与可执行脚本。协议的注册和 Session 归属遵循 [Electron protocol](https://www.electronjs.org/docs/latest/api/protocol)。
 
-承载窗口启用 sandbox、contextIsolation 和 webSecurity，关闭 nodeIntegration、nodeIntegrationInSubFrames。原生 preload 只在主 frame 暴露本窗口所需的有限桥接；主进程接入仍校验实际 senderFrame，不能仅凭同一 webContents 接受子 frame。Webview 只取得自己的 SDK MessagePort，不取得 Electron、Node、原生窗口客户端或其他视图的桥接。
+承载窗口启用 sandbox、contextIsolation 和 webSecurity，关闭 nodeIntegration、nodeIntegrationInSubFrames。AppImage 在受限系统上的实际进程隔离遵守[启动兼容政策](../engineering/build.md#appimage-compatibility)，不能仅凭窗口的 sandbox 配置宣称进程沙箱始终存在。原生 preload 只在主 frame 暴露本窗口所需的有限桥接；主进程接入仍校验实际 senderFrame，不能仅凭同一 webContents 接受子 frame。Webview 只取得自己的 SDK MessagePort，不取得 Electron、Node、原生窗口客户端或其他视图的桥接。
 
 iframe 的 sandbox 仅包含 allow-scripts 与 allow-same-origin，不开放弹窗、下载、表单提交、顶层导航或模态权限。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
 

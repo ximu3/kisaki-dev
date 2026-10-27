@@ -1,9 +1,9 @@
 {
-  "extends": "../../../../../../tsconfig.base.json",
+  "extends": "@kisaki3/typescript-config/base.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/lib.tsbuildinfo"
   },
-  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"],
+  "include": ["../../src/config.ts"],
   "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
 }

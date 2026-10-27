@@ -1,0 +1,147 @@
+{
+  "repository": "ximu3/kisaki-dev",
+  "runId": 40454692840,
+  "headSha": "711d9566da74c1e1f9d466052eb9cf826d04633d",
+  "checkedMergeSha": "6d70179a0c450cac689093485c11d5cc5f79bdf1",
+  "target": "macos-arm64",
+  "fromAttempt": 1,
+  "toAttempt": 2,
+  "firstJobId": 122026641200,
+  "newJobId": 122033737279,
+  "firstRunnerId": 1000001189,
+  "newRunnerId": 1000001193,
+  "cacheKey": "turbo-v1-macOS-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-6d70179a0c450cac689093485c11d5cc5f79bdf1-desktop",
+  "firstTasks": [
+    {
+      "phase": "build",
+      "task": "@kisaki3/desktop-contracts#build",
+      "result": "miss",
+      "hash": "214a31ae346694a7"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/appearance#build",
+      "result": "miss",
+      "hash": "cf782685944c1e21"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/extension-cli#build",
+      "result": "miss",
+      "hash": "3f3227e88b6572d5"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/ui#build",
+      "result": "miss",
+      "hash": "d6ac6624fa5dd6cb"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/desktop#build",
+      "result": "bypass",
+      "hash": "51e5b73e9f05ca04"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/desktop-contracts#build",
+      "result": "miss",
+      "hash": "093997f38f53b830"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/appearance#build",
+      "result": "miss",
+      "hash": "0dc21872615997d8"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/extension-cli#build",
+      "result": "miss",
+      "hash": "bd82387de4ece991"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/ui#build",
+      "result": "miss",
+      "hash": "a875d575696d2985"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/desktop#package",
+      "result": "bypass",
+      "hash": "3c07b7d16929de8b"
+    }
+  ],
+  "warmTasks": [
+    {
+      "phase": "build",
+      "task": "@kisaki3/appearance#build",
+      "result": "hit",
+      "hash": "cf782685944c1e21"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/desktop-contracts#build",
+      "result": "hit",
+      "hash": "214a31ae346694a7"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/ui#build",
+      "result": "hit",
+      "hash": "d6ac6624fa5dd6cb"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/extension-cli#build",
+      "result": "hit",
+      "hash": "3f3227e88b6572d5"
+    },
+    {
+      "phase": "build",
+      "task": "@kisaki3/desktop#build",
+      "result": "bypass",
+      "hash": "51e5b73e9f05ca04"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/appearance#build",
+      "result": "hit",
+      "hash": "0dc21872615997d8"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/desktop-contracts#build",
+      "result": "hit",
+      "hash": "093997f38f53b830"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/extension-cli#build",
+      "result": "hit",
+      "hash": "bd82387de4ece991"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/ui#build",
+      "result": "hit",
+      "hash": "a875d575696d2985"
+    },
+    {
+      "phase": "package",
+      "task": "@kisaki3/desktop#package",
+      "result": "bypass",
+      "hash": "3c07b7d16929de8b"
+    }
+  ],
+  "cacheHitsWithIdenticalInputs": 8,
+  "desktopTasksExecuted": [
+    "@kisaki3/desktop#build",
+    "@kisaki3/desktop#package"
+  ],
+  "requiredConclusion": "success",
+  "otherJobsReusePriorResults": true,
+  "cacheSaveNote": "The restored primary key already exists; the save step reports a reservation warning and completes successfully. The existing cache is retained.",
+  "scope": "One fresh macOS arm64 runner proves GitHub cache persistence and task reuse; this is not six-target warm-cache coverage."
+}

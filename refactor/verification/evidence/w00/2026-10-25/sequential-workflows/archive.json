@@ -1,0 +1,25 @@
+{
+  "directory": "F:/project/kisaki/artifacts/w00-sequential/977178e22de00d54/windows-x64",
+  "files": [
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.exe",
+      "bytes": 118921174,
+      "sha256": "a5702469acf9082f021d265a83c8ec3a344d916e91b04772af9c6cb2a8184243"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap",
+      "bytes": 124426,
+      "sha256": "549cda3a323342f0cbc9cb4473df68580fc7079421a4abf38430ba210ad5de2d"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-x64.zip",
+      "bytes": 160464203,
+      "sha256": "a68a1eaa5d2eb65baff574cf1b3784a2980388cb96ca91407e3dd49868c21d86"
+    },
+    {
+      "path": "latest.yml",
+      "bytes": 371,
+      "sha256": "91ba72438c58779d4b5f586d49fbe2237557f790ac020b56266b812664d806ce"
+    }
+  ]
+}

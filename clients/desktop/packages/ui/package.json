@@ -28,9 +28,10 @@
   },
   "scripts": {
     "build": "tsx tools/build.ts",
-    "typecheck": "tsx ../../../../tools/outputs/run.ts --dependencies -- exec tsc -b",
-    "pack": "tsx ../../../../tools/outputs/run.ts --read dist --write out -- pack --out out/package.tgz",
-    "test:consumers": "tsx ../../../../tools/outputs/run.ts --read out -- --shell-mode exec \"publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css\"",
+    "pack": "pnpm pack --out out/package.tgz",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css",
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
@@ -40,16 +41,21 @@
     "solid-js": "^1.9.16"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "tsdown": "catalog:",
-    "vitest": "catalog:",
-    "publint": "0.3.25",
     "@arethetypeswrong/cli": "0.18.5",
-    "@types/node": "catalog:",
-    "solid-js": "catalog:",
-    "unplugin-solid": "catalog:",
-    "tailwindcss": "catalog:",
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
     "@tailwindcss/cli": "4.3.3",
-    "tsx": "catalog:"
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "publint": "0.3.25",
+    "solid-js": "catalog:",
+    "tailwindcss": "catalog:",
+    "tsdown": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-solid": "catalog:",
+    "vitest": "catalog:"
   }
 }

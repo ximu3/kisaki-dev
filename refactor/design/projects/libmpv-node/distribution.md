@@ -18,7 +18,7 @@ Windows 生产端采用直接 D3D11，完整 libmpv 构建显式携带自身依�
 
 运行库按[进程寿命](lifecycle.md#runtime-lifetime)装载，播放器实例与 Node 环境分别收尾，代码映射驻留不放宽实例资源的回收要求。正式依赖的多实例、环境退出与版本配对检查覆盖这项使用方式；重复装载实验的失败保留其原始范围，不因改变装载策略而标记为已修复。
 
-平台包仍覆盖 Windows、macOS、glibc Linux 的 x64 与 arm64，系统下限保持[现有合同](../../engineering/build.md#platforms)。工具链、最低 Node-API、Node 与 Electron 测试范围分别记录。当前工作区的 Electron 41.2.0 不替代已规划的 44.5.1 消费验证。
+平台包仍覆盖 Windows、macOS、glibc Linux 的 x64 与 arm64，系统下限保持[现有合同](../../engineering/build.md#platforms)。工具链、最低 Node-API、Node 与 Electron 测试范围分别记录。Kisaki 的消费版本沿[当前构建基线](../../engineering/build.md#formats)核对，历史探针只保留其实际版本与验证范围。
 
 <a id="build-capabilities"></a>
 

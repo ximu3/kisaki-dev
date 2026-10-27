@@ -5,6 +5,7 @@ import solid from 'vite-plugin-solid'
 export default defineConfig({
   plugins: [solid({ hot: false })],
   test: {
+    fsModuleCachePath: 'node_modules/.vitest-cache',
     api: { host: '127.0.0.1', port: 23315, strictPort: false },
     environment: 'node',
     include: ['tests/browser/**/*.test.tsx'],

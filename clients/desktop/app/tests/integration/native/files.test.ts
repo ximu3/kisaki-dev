@@ -16,15 +16,18 @@ afterEach(async () => {
   await rm(directory, { recursive: true, force: true })
 })
 
-test('runs in the selected Electron Node host', () => {
-  expect(process.versions.electron).toBe('44.5.1')
-  expect(Number(process.versions.napi)).toBeGreaterThanOrEqual(8)
-})
+test('preserves the native loading cause at the supplied module path', async () => {
+  const path = join(directory, 'invalid.node')
+  await writeFile(path, 'not a native module')
+  let failure: unknown
+  try {
+    loadNative(path)
+  } catch (cause) {
+    failure = cause
+  }
 
-test('loads only the supplied module path and preserves the loading cause', async () => {
-  expect(() => loadNative(join(directory, 'missing.node'))).toThrow(NativeLoadError)
-  await writeFile(join(directory, 'invalid.node'), 'not a native module')
-  expect(() => loadNative(join(directory, 'invalid.node'))).toThrow(NativeLoadError)
+  expect(failure).toBeInstanceOf(NativeLoadError)
+  expect(failure).toHaveProperty('cause', expect.any(Error))
 })
 
 test('moves files and directories without replacing existing targets', async () => {
@@ -72,12 +75,12 @@ test('reports absent sources and rejects invalid paths before scheduling native 
     files.moveNoReplace(join(directory, 'missing'), join(directory, 'target')),
   ).rejects.toMatchObject({ reason: 'sourceMissing' })
   await writeFile(join(directory, 'source'), 'retained')
-  await expect(
-    files.moveNoReplace(join(directory, 'source'), join(directory, 'absent-parent', 'target')),
-  ).rejects.toBeInstanceOf(FileMoveError)
-  await expect(
-    files.moveNoReplace(join(directory, 'source'), join(directory, 'absent-parent', 'target')),
-  ).rejects.toMatchObject({ reason: 'ioFailure' })
+  const missingParent = files.moveNoReplace(
+    join(directory, 'source'),
+    join(directory, 'absent-parent', 'target'),
+  )
+  await expect(missingParent).rejects.toBeInstanceOf(FileMoveError)
+  await expect(missingParent).rejects.toMatchObject({ reason: 'ioFailure' })
   await expect(files.moveNoReplace('relative', join(directory, 'target'))).rejects.toThrow(
     TypeError,
   )

@@ -5,7 +5,7 @@ import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
 import { appRoot } from '../lib/paths'
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'
-import { replaceOutput } from '../../../../../tools/outputs'
+import { replaceOutput } from '@kisaki3/tooling/output'
 import { sha256 } from '../lib/sha256'
 import { copyFonts } from './fonts'
 import type { FontInput } from './fonts'
@@ -60,7 +60,7 @@ export async function prepareResources(
       await record(staging, '')
       await writeFile(join(staging, 'resources.json'), JSON.stringify({ target, files }, null, 2))
     },
-    signal ? { signal } : {},
+    signal,
   )
 
   return output

@@ -1,4 +1,5 @@
 {
+  "extends": "@kisaki3/typescript-config/base.json",
   "files": [],
   "references": [
     {
@@ -6,9 +7,6 @@
     },
     {
       "path": "./config/typescript/tsconfig.tools.json"
-    },
-    {
-      "path": "./config/typescript/tsconfig.config.json"
     }
   ]
 }

@@ -1,35 +1,52 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "futureFlags": { "affectedUsingTaskInputs": true },
   "globalDependencies": [
-    "tsconfig.base.json",
-    "eslint.config.ts",
-    ".prettierrc.json",
-    "tools/outputs/**"
+    ".node-version",
+    ".npmrc",
+    "pnpm-workspace.yaml",
+    ".github/workflows/*.yml",
+    "config/turbo/verification.graphql"
   ],
-  "globalPassThroughEnv": ["KISAKI_OUTPUT_ACCESS"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/*.md",
+        "!tests/**",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!vitest.config.ts",
+        "!config/vitest/**"
+      ],
+      "outputs": ["dist/**"],
+      "env": ["TSDOWN_*"]
     },
     "typecheck": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": []
     },
     "lint": {
-      "outputs": []
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "outputs": [],
+      "dependsOn": ["transit"]
     },
     "test": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": [],
       "cache": false
     },
     "test:consumers": {
       "dependsOn": ["pack"],
+      "inputs": ["package.json"],
       "cache": false
     },
     "pack": {
       "dependsOn": ["build"],
+      "inputs": ["package.json", "README.md", "LICENSE", "LICENSE.*", ".npmignore"],
       "outputs": ["out/*.tgz"]
     },
     "dev": {
@@ -39,41 +56,49 @@
     "clean": {
       "cache": false
     },
-    "@kisaki3/desktop#build": {
+    "transit": {
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "dependsOn": ["^transit"]
+    },
+    "//#typecheck:root": {
       "dependsOn": ["^build"],
-      "outputs": ["out/**"],
-      "cache": false
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "outputs": []
     },
-    "@kisaki3/desktop#dev": {
-      "persistent": true,
-      "cache": false
+    "//#lint:root": {
+      "dependsOn": ["^transit"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "outputs": []
     },
-    "@kisaki3/desktop#package": {
+    "//#test:root": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     },
-    "@kisaki3/desktop#test:native": {
-      "dependsOn": ["build"],
+    "//#test:consumers:run": {
+      "inputs": [
+        "tests/consumers/**",
+        "tests/support/**",
+        "config/vitest/vitest.config.consumers.ts",
+        "config/typescript/**",
+        "tools/release/**",
+        "tsconfig.json"
+      ],
       "cache": false
     },
-    "@kisaki3/desktop#test:e2e": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:artifacts": {
-      "cache": false
-    },
-    "@kisaki3/desktop#test:browser": {
-      "dependsOn": ["^build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:performance": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "@kisaki3/desktop#test:dev": {
-      "dependsOn": ["build"],
-      "cache": false
+    "//#check:boundaries": {
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "dependsOn": [
+        "@kisaki3/appearance#build",
+        "@kisaki3/desktop-contracts#build",
+        "@kisaki3/extension-api#build",
+        "@kisaki3/extension-cli#build",
+        "@kisaki3/extension-distribution#build",
+        "@kisaki3/extension-sdk#build",
+        "@kisaki3/rpc#build",
+        "@kisaki3/ui#build"
+      ],
+      "outputs": []
     }
   }
 }

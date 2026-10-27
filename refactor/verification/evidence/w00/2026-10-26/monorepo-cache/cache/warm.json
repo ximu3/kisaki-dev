@@ -1,0 +1,766 @@
+{
+  "id": "3LDQWSu18wE5dJeUhHXxMmJ9zTg",
+  "version": "1",
+  "turboVersion": "2.11.10",
+  "monorepo": true,
+  "globalCacheInputs": {
+    "rootKey": "I can’t see ya, but I know you’re here",
+    "files": {
+      ".gitattributes": "c0873f3a4010e00d65e8d54581d6103843826b76"
+    },
+    "hashOfExternalDependencies": "fcddae20381c11eb",
+    "hashOfInternalDependencies": "9c69d0a342b9f8c5",
+    "environmentVariables": {
+      "specified": {
+        "env": [],
+        "passThroughEnv": null
+      },
+      "configured": [],
+      "inferred": [],
+      "passthrough": null
+    },
+    "engines": {
+      "node": "24.11.1"
+    }
+  },
+  "execution": {
+    "command": "turbo run build --filter=./clients/desktop/packages/*",
+    "repoPath": "",
+    "success": 0,
+    "failed": 0,
+    "cached": 8,
+    "attempted": 8,
+    "startTime": 1792986189671,
+    "endTime": 1792986189719,
+    "exitCode": 0
+  },
+  "packages": [
+    "@kisaki3/appearance",
+    "@kisaki3/desktop-contracts",
+    "@kisaki3/extension-api",
+    "@kisaki3/extension-cli",
+    "@kisaki3/extension-distribution",
+    "@kisaki3/extension-sdk",
+    "@kisaki3/rpc",
+    "@kisaki3/ui"
+  ],
+  "envMode": "strict",
+  "frameworkInference": true,
+  "tasks": [
+    {
+      "taskId": "@kisaki3/appearance#build",
+      "task": "build",
+      "package": "@kisaki3/appearance",
+      "hash": "4268e19917dcce2b",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "5b13a0b8baa50b6c3e49de402564731fc1f7dbbb",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "f3eb0b284a7a57074d6ec0ddaeb58685aaf8fe39",
+        "src/defaults.ts": "4388b331c8107393f0ebf7a1e2b811aa40645650",
+        "src/index.ts": "d42957f157298c9a83336d15d089219b7b513763",
+        "src/tailwind.css": "00f407ead607ee408cea6f4aa3847f292af37937",
+        "src/tokens.ts": "34986f00a650cce6ef28b16d95406d47fc563e21",
+        "tools/build.ts": "f1d7bd2dbfc42ae49b39f99ef25e580a3aa446c8",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "958317e79e961459a1f61ed8550ffe63f4f40630"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 2550,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\appearance\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\appearance",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [
+        "@kisaki3/ui#build"
+      ],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\appearance\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\appearance\\dist",
+        "clients\\desktop\\packages\\appearance\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\appearance\\dist\\index.js",
+        "clients\\desktop\\packages\\appearance\\dist\\styles.css",
+        "clients\\desktop\\packages\\appearance\\dist\\tailwind.css",
+        "clients\\desktop\\packages\\appearance\\dist\\tokens.d.ts",
+        "clients\\desktop\\packages\\appearance\\dist\\tokens.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189717,
+        "endTime": 1792986189718,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/desktop-contracts#build",
+      "task": "build",
+      "package": "@kisaki3/desktop-contracts",
+      "hash": "2c7952404391711a",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "5d4be63938eb9397730dd7af978d40fb572d2f7d",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "5d7965b333409739682a6493bcabae333880f8a2",
+        "src/errors.ts": "bd4fab7470bf0d7ea8ce23b742a03476400b7da4",
+        "src/index.ts": "60412e22b02fb3e1b20206c2e9280d168e535e64",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "6351a9f5fbe9f73cbf68d98fce0f793716dbb95e"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 1979,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\desktop-contracts\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\desktop-contracts",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [
+        "@kisaki3/extension-api#build"
+      ],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\desktop-contracts\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\desktop-contracts\\dist",
+        "clients\\desktop\\packages\\desktop-contracts\\dist\\errors.d.ts",
+        "clients\\desktop\\packages\\desktop-contracts\\dist\\errors.js",
+        "clients\\desktop\\packages\\desktop-contracts\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\desktop-contracts\\dist\\index.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189717,
+        "endTime": 1792986189718,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/extension-api#build",
+      "task": "build",
+      "package": "@kisaki3/extension-api",
+      "hash": "842b337525802b33",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "f396d299c0587966b1d051b600193d6f2123e2f1",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "ee7962ae68ff92f81321027b7b0b03fc491dca4d",
+        "src/index.ts": "0fd02ca55bd4397f54765c7b85374ad9bec65633",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "76a555c983047283124429b275d4584ca67cf9ce"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 1723,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\extension-api\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\extension-api",
+      "dependencies": [
+        "@kisaki3/desktop-contracts#build",
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [
+        "@kisaki3/extension-sdk#build"
+      ],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\extension-api\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\extension-api\\dist",
+        "clients\\desktop\\packages\\extension-api\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\extension-api\\dist\\index.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189718,
+        "endTime": 1792986189719,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/extension-cli#build",
+      "task": "build",
+      "package": "@kisaki3/extension-cli",
+      "hash": "485741d65d890f23",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "11902849083733cde13a11538d9502588369c8b2",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "718a1a3e5a0191b09c4be6dd756f738bd14744a5",
+        "src/config.ts": "02e43ce2ece21b7bac269e2c5e1027ec1b41afb7",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "1e5e00ba1ea4d0a2211ad46cf5c2031028cb7203"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 2346,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\extension-cli\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\extension-cli",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\extension-cli\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\extension-cli\\dist",
+        "clients\\desktop\\packages\\extension-cli\\dist\\config.d.ts",
+        "clients\\desktop\\packages\\extension-cli\\dist\\config.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189717,
+        "endTime": 1792986189718,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/extension-distribution#build",
+      "task": "build",
+      "package": "@kisaki3/extension-distribution",
+      "hash": "63e626dbf8bca8b3",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "48b499dbf5129f8ffccf0054e88476570336c636",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "567a7af06f8b040426aa8c9e283336d2e33171bf",
+        "src/index.ts": "55df730b351fed634de7dd4a6fbd2ab04ec0b80c",
+        "src/metadata.ts": "f9fc49cdb6d1d95bf8368a10ddb1d018085c0ce7",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "dd6b3e81ab980b7fd880c7f9f69cfef7cae18e5b"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 2242,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\extension-distribution\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\extension-distribution",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\extension-distribution\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\extension-distribution\\dist",
+        "clients\\desktop\\packages\\extension-distribution\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\extension-distribution\\dist\\index.js",
+        "clients\\desktop\\packages\\extension-distribution\\dist\\metadata.d.ts",
+        "clients\\desktop\\packages\\extension-distribution\\dist\\metadata.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189717,
+        "endTime": 1792986189718,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/extension-sdk#build",
+      "task": "build",
+      "package": "@kisaki3/extension-sdk",
+      "hash": "a3c650871a251613",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "8bc1aba7f40afdfce1461a61744f0e098bcf59b6",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "7d809789461199d45f4cfa4090c22d358150d81c",
+        "src/index.ts": "8d8989bb249c56d0aa9473decd74865a8d6e449a",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "76a555c983047283124429b275d4584ca67cf9ce"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 1650,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\extension-sdk\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\extension-sdk",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/extension-api#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\extension-sdk\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\extension-sdk\\dist",
+        "clients\\desktop\\packages\\extension-sdk\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\extension-sdk\\dist\\index.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189719,
+        "endTime": 1792986189719,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/rpc#build",
+      "task": "build",
+      "package": "@kisaki3/rpc",
+      "hash": "53178048826630e9",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "299602d8c6437d1804db235c5de8e8eb1c15f70b",
+        "config/typescript/tsconfig.lib.json": "a3d4ae3a0eddd3449e4378816b281c5483771bef",
+        "config/typescript/tsconfig.tools.json": "5d4388e44e9321a13f563f9866f1476b9355a1af",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "a9f2a91b9458c2c1186a7f438256a04fe1475e49",
+        "src/index.ts": "c8ec722774e097e55c76723d761f70068ee95a16",
+        "src/transport.ts": "c98f624c55e35ddb20e42923df7f736608f23495",
+        "tools/build.ts": "a16c4222a6d96ca0fa576c657a7f2be01832e6d9",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "da43052671e2733ba729aa576e000613b2acb8a0",
+        "tsdown.config.ts": "28e05265cdecb58cd0edd895e2e1fb603f854c70"
+      },
+      "hashOfExternalDependencies": "a4997e1785d1f14b",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 2115,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\rpc\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\rpc",
+      "dependencies": [
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\rpc\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\rpc\\dist",
+        "clients\\desktop\\packages\\rpc\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\rpc\\dist\\index.js",
+        "clients\\desktop\\packages\\rpc\\dist\\transport.d.ts",
+        "clients\\desktop\\packages\\rpc\\dist\\transport.js"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189716,
+        "endTime": 1792986189717,
+        "exitCode": 0
+      }
+    },
+    {
+      "taskId": "@kisaki3/ui#build",
+      "task": "build",
+      "package": "@kisaki3/ui",
+      "hash": "4945ccb15f25dfab",
+      "inputs": {
+        "LICENSE": "33933189d49289950715cdef90215608db695560",
+        "README.md": "36a4c35a5b8e111bffcb4f0544f58286497f3cfb",
+        "config/typescript/tsconfig.config.json": "da74c15e2714ce9a21f770cd2f74c5b445924594",
+        "config/typescript/tsconfig.lib.json": "ae544642cf2050f0754eeebb24c14fca9b20328b",
+        "config/typescript/tsconfig.tools.json": "fd456e122a304df86f8cf46f32869619aa1285c9",
+        "eslint.config.ts": "4e0c9d6403127cce9c09f65a39fc0b09acc43116",
+        "package.json": "23539ac5703f58178fbc2477f6c74f2aa16ae47a",
+        "src/components/button.tsx": "bb06258362c05cab81b03195162cd4c2baa5f734",
+        "src/index.ts": "edd7af35e9049f89e92763c605b75d34b72c54ab",
+        "src/styles.css": "acbbd9c758c1142fea75ab3f76d8b2ebe272a20d",
+        "tools/build.ts": "33c10195106fe1c53d782a64f59f3bab830fdead",
+        "tools/clean.ts": "e3d4be9cd5b703134d41e8fd4c0bee5776bd4cdf",
+        "tsconfig.json": "c0e55ec39995ad990cabf600772bda9c12abd14d",
+        "tsdown.config.ts": "7170959aa359aad2d41d7e5aa4d93ee26ce8e807"
+      },
+      "hashOfExternalDependencies": "d278ad7ce22cc91f",
+      "cache": {
+        "local": true,
+        "remote": false,
+        "status": "HIT",
+        "source": "LOCAL",
+        "timeSaved": 3461,
+        "dirtyHash": "76ce4aee40ae543b71791c57f1393257fb17e4faf3d1d81c0b3c9a1db676f528"
+      },
+      "command": "tsx tools/build.ts",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "clients\\desktop\\packages\\ui\\.turbo\\turbo-build.log",
+      "directory": "clients\\desktop\\packages\\ui",
+      "dependencies": [
+        "@kisaki3/appearance#build",
+        "@kisaki3/eslint-config#build",
+        "@kisaki3/tooling#build",
+        "@kisaki3/typescript-config#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [
+          "TSDOWN_*"
+        ],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [
+        "clients\\desktop\\packages\\ui\\.turbo\\turbo-build.log",
+        "clients\\desktop\\packages\\ui\\dist",
+        "clients\\desktop\\packages\\ui\\dist\\index.d.ts",
+        "clients\\desktop\\packages\\ui\\dist\\index.js",
+        "clients\\desktop\\packages\\ui\\dist\\styles.css"
+      ],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [
+            "TSDOWN_*"
+          ],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      },
+      "execution": {
+        "startTime": 1792986189718,
+        "endTime": 1792986189719,
+        "exitCode": 0
+      }
+    }
+  ],
+  "user": "",
+  "scm": {
+    "type": "git",
+    "sha": null,
+    "branch": "main"
+  }
+}

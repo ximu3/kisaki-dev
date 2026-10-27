@@ -1,0 +1,12 @@
+{
+  "extends": "@kisaki3/typescript-config/base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./config/typescript/tsconfig.lib.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.tests.json"
+    }
+  ]
+}

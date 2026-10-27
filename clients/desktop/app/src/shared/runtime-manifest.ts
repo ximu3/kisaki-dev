@@ -6,6 +6,7 @@ export type DesktopTarget =
 export interface RuntimeManifest {
   schemaVersion: 1
   buildId: string
+  version: string
   target: DesktopTarget
   /** Runtime-relative paths mapped to the SHA-256 digest of each completed file. */
   files: Record<string, string>
@@ -13,6 +14,5 @@ export interface RuntimeManifest {
 
 /** A finite desktop build with the version information needed by packaging and consumers. */
 export interface DesktopBuild extends RuntimeManifest {
-  version: string
   electronVersion: string
 }

@@ -1,0 +1,697 @@
+$ pnpm packages:pack && turbo run test:consumers --filter=./clients/desktop/packages/* && pnpm test:consumers:run
+$ turbo run pack --filter=./clients/desktop/packages/* && tsx tools/release/package-inputs.ts
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+   • Running pack in 8 packages
+   • Remote caching disabled
+
+@kisaki3/extension-distribution:build: cache miss, executing f8a55d37e6791eda
+@kisaki3/rpc:build: cache miss, executing 9118c12d0ded5fad
+@kisaki3/extension-cli:build: cache hit, replaying logs 71bbaab125d0342a
+@kisaki3/desktop-contracts:build: cache hit, replaying logs ad688a6edd775b60
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.js    0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.d.ts  0.68 kB │ gzip: 0.38 kB
+@kisaki3/extension-cli:build: ℹ 2 files, total: 0.86 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 718ms
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.js     0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.d.ts  0.34 kB │ gzip: 0.23 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.d.ts   0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 4 files, total: 0.47 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 588ms
+@kisaki3/appearance:build: cache hit, replaying logs b49a1d493e56142b
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 858ms
+@kisaki3/desktop-contracts:pack: cache miss, executing 0af2681636dc01ae
+@kisaki3/extension-cli:pack: cache miss, executing e669f9d8460feec8
+@kisaki3/appearance:pack: cache miss, executing e6ef34cf9c6a124f
+@kisaki3/extension-api:build: cache hit, replaying logs d40cf347b0fda7d3
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 531ms
+@kisaki3/ui:build: cache hit, replaying logs d84a94159ee91ea4
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 1350ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 132ms
+@kisaki3/extension-api:pack: cache miss, executing ac66184337a99cff
+@kisaki3/extension-sdk:build: cache miss, executing 72d16bf3c53c7cec
+@kisaki3/ui:pack: cache miss, executing b93f56bf4085f06a
+@kisaki3/extension-distribution:build: $ tsx tools/build.ts
+@kisaki3/rpc:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-cli:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/appearance:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-api:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-sdk:build: $ tsx tools/build.ts
+@kisaki3/extension-distribution:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-distribution\tsdown.config.ts 
+@kisaki3/extension-distribution:build: ℹ entry: src/index.ts, src/metadata.ts
+@kisaki3/extension-distribution:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-distribution:build: ℹ Build start
+@kisaki3/extension-distribution:build: ℹ Cleaning 1 files
+@kisaki3/ui:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/desktop-contracts:pack: package: @kisaki3/desktop-contracts@0.1.0-dev.0
+@kisaki3/desktop-contracts:pack: Tarball Contents
+@kisaki3/desktop-contracts:pack: dist/errors.d.ts
+@kisaki3/desktop-contracts:pack: dist/errors.js
+@kisaki3/desktop-contracts:pack: dist/index.d.ts
+@kisaki3/desktop-contracts:pack: dist/index.js
+@kisaki3/desktop-contracts:pack: LICENSE
+@kisaki3/desktop-contracts:pack: package.json
+@kisaki3/desktop-contracts:pack: README.md
+@kisaki3/desktop-contracts:pack: Tarball Details
+@kisaki3/desktop-contracts:pack: F:\project\kisaki\clients\desktop\packages\desktop-contracts\out\package.tgz
+@kisaki3/rpc:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\rpc\tsdown.config.ts 
+@kisaki3/rpc:build: ℹ entry: src/index.ts, src/transport.ts
+@kisaki3/rpc:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/rpc:build: ℹ Build start
+@kisaki3/rpc:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:pack: package: @kisaki3/extension-cli@0.1.0-dev.0
+@kisaki3/extension-cli:pack: Tarball Contents
+@kisaki3/extension-cli:pack: dist/config.d.ts
+@kisaki3/extension-cli:pack: dist/config.js
+@kisaki3/extension-cli:pack: LICENSE
+@kisaki3/extension-cli:pack: package.json
+@kisaki3/extension-cli:pack: README.md
+@kisaki3/extension-cli:pack: Tarball Details
+@kisaki3/extension-cli:pack: F:\project\kisaki\clients\desktop\packages\extension-cli\out\package.tgz
+@kisaki3/appearance:pack: package: @kisaki3/appearance@0.1.0-dev.0
+@kisaki3/appearance:pack: Tarball Contents
+@kisaki3/appearance:pack: dist/index.d.ts
+@kisaki3/appearance:pack: dist/index.js
+@kisaki3/appearance:pack: dist/styles.css
+@kisaki3/appearance:pack: dist/tailwind.css
+@kisaki3/appearance:pack: dist/tokens.d.ts
+@kisaki3/appearance:pack: dist/tokens.js
+@kisaki3/appearance:pack: LICENSE
+@kisaki3/appearance:pack: package.json
+@kisaki3/appearance:pack: README.md
+@kisaki3/appearance:pack: Tarball Details
+@kisaki3/appearance:pack: F:\project\kisaki\clients\desktop\packages\appearance\out\package.tgz
+@kisaki3/extension-api:pack: package: @kisaki3/extension-api@0.1.0-dev.0
+@kisaki3/extension-api:pack: Tarball Contents
+@kisaki3/extension-api:pack: dist/index.d.ts
+@kisaki3/extension-api:pack: dist/index.js
+@kisaki3/extension-api:pack: LICENSE
+@kisaki3/extension-api:pack: package.json
+@kisaki3/extension-api:pack: README.md
+@kisaki3/extension-api:pack: Tarball Details
+@kisaki3/extension-api:pack: F:\project\kisaki\clients\desktop\packages\extension-api\out\package.tgz
+@kisaki3/ui:pack: package: @kisaki3/ui@0.1.0-dev.0
+@kisaki3/ui:pack: Tarball Contents
+@kisaki3/ui:pack: dist/index.d.ts
+@kisaki3/ui:pack: dist/index.js
+@kisaki3/ui:pack: dist/styles.css
+@kisaki3/ui:pack: LICENSE
+@kisaki3/ui:pack: package.json
+@kisaki3/ui:pack: README.md
+@kisaki3/ui:pack: Tarball Details
+@kisaki3/ui:pack: F:\project\kisaki\clients\desktop\packages\ui\out\package.tgz
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\index.js       0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\metadata.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\metadata.d.ts  0.14 kB │ gzip: 0.13 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\index.d.ts     0.08 kB │ gzip: 0.08 kB
+@kisaki3/extension-distribution:build: ℹ 4 files, total: 0.24 kB
+@kisaki3/extension-distribution:build: ✔ Build complete in 768ms
+@kisaki3/extension-sdk:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-sdk\tsdown.config.ts 
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\index.js        0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\transport.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\transport.d.ts  0.60 kB │ gzip: 0.33 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\index.d.ts      0.08 kB │ gzip: 0.07 kB
+@kisaki3/rpc:build: ℹ 4 files, total: 0.71 kB
+@kisaki3/rpc:build: ✔ Build complete in 745ms
+@kisaki3/extension-sdk:build: ℹ entry: src/index.ts
+@kisaki3/extension-sdk:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-sdk:build: ℹ Build start
+@kisaki3/extension-sdk:build: ℹ Cleaning 1 files
+@kisaki3/extension-distribution:pack: cache miss, executing 7b25cbb8b7b91c54
+@kisaki3/rpc:pack: cache miss, executing b047d0fa8060f944
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-r1vtXm\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-r1vtXm\index.d.ts  0.12 kB │ gzip: 0.10 kB
+@kisaki3/extension-sdk:build: ℹ 2 files, total: 0.13 kB
+@kisaki3/extension-sdk:build: ✔ Build complete in 623ms
+@kisaki3/extension-distribution:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-sdk:pack: cache miss, executing d7956a4dbd7b38f8
+@kisaki3/rpc:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-distribution:pack: package: @kisaki3/extension-distribution@0.1.0-dev.0
+@kisaki3/extension-distribution:pack: Tarball Contents
+@kisaki3/extension-distribution:pack: dist/index.d.ts
+@kisaki3/extension-distribution:pack: dist/index.js
+@kisaki3/extension-distribution:pack: dist/metadata.d.ts
+@kisaki3/extension-distribution:pack: dist/metadata.js
+@kisaki3/extension-distribution:pack: LICENSE
+@kisaki3/extension-distribution:pack: package.json
+@kisaki3/extension-distribution:pack: README.md
+@kisaki3/extension-distribution:pack: Tarball Details
+@kisaki3/extension-distribution:pack: F:\project\kisaki\clients\desktop\packages\extension-distribution\out\package.tgz
+@kisaki3/extension-sdk:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/rpc:pack: package: @kisaki3/rpc@0.1.0-dev.0
+@kisaki3/rpc:pack: Tarball Contents
+@kisaki3/rpc:pack: dist/index.d.ts
+@kisaki3/rpc:pack: dist/index.js
+@kisaki3/rpc:pack: dist/transport.d.ts
+@kisaki3/rpc:pack: dist/transport.js
+@kisaki3/rpc:pack: LICENSE
+@kisaki3/rpc:pack: package.json
+@kisaki3/rpc:pack: README.md
+@kisaki3/rpc:pack: Tarball Details
+@kisaki3/rpc:pack: F:\project\kisaki\clients\desktop\packages\rpc\out\package.tgz
+@kisaki3/extension-sdk:pack: package: @kisaki3/extension-sdk@0.1.0-dev.0
+@kisaki3/extension-sdk:pack: Tarball Contents
+@kisaki3/extension-sdk:pack: dist/index.d.ts
+@kisaki3/extension-sdk:pack: dist/index.js
+@kisaki3/extension-sdk:pack: LICENSE
+@kisaki3/extension-sdk:pack: package.json
+@kisaki3/extension-sdk:pack: README.md
+@kisaki3/extension-sdk:pack: Tarball Details
+@kisaki3/extension-sdk:pack: F:\project\kisaki\clients\desktop\packages\extension-sdk\out\package.tgz
+
+ Tasks:    16 successful, 16 total
+Cached:    5 cached, 16 total
+  Time:    4.638s 
+
+F:\project\kisaki\artifacts\packages\inputs.json
+
+   • turbo 2.11.10
+   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+   • Running test:consumers in 8 packages
+   • Remote caching disabled
+
+@kisaki3/extension-cli:build: cache hit, replaying logs 71bbaab125d0342a
+@kisaki3/desktop-contracts:build: cache hit, replaying logs ad688a6edd775b60
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.js    0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-u3uoeL\config.d.ts  0.68 kB │ gzip: 0.38 kB
+@kisaki3/extension-cli:build: ℹ 2 files, total: 0.86 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 718ms
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.js     0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\errors.d.ts  0.34 kB │ gzip: 0.23 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-o8UWnn\index.d.ts   0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 4 files, total: 0.47 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 588ms
+@kisaki3/extension-distribution:build: cache hit, replaying logs f8a55d37e6791eda
+@kisaki3/rpc:build: cache hit, replaying logs 9118c12d0ded5fad
+@kisaki3/extension-distribution:build: $ tsx tools/build.ts
+@kisaki3/extension-distribution:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-distribution\tsdown.config.ts 
+@kisaki3/extension-distribution:build: ℹ entry: src/index.ts, src/metadata.ts
+@kisaki3/extension-distribution:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-distribution:build: ℹ Build start
+@kisaki3/extension-distribution:build: ℹ Cleaning 1 files
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\index.js       0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\metadata.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\metadata.d.ts  0.14 kB │ gzip: 0.13 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-JxzYW0\index.d.ts     0.08 kB │ gzip: 0.08 kB
+@kisaki3/extension-distribution:build: ℹ 4 files, total: 0.24 kB
+@kisaki3/extension-distribution:build: ✔ Build complete in 768ms
+@kisaki3/appearance:build: cache hit, replaying logs b49a1d493e56142b
+@kisaki3/rpc:build: $ tsx tools/build.ts
+@kisaki3/rpc:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\rpc\tsdown.config.ts 
+@kisaki3/rpc:build: ℹ entry: src/index.ts, src/transport.ts
+@kisaki3/rpc:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/rpc:build: ℹ Build start
+@kisaki3/rpc:build: ℹ Cleaning 1 files
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\index.js        0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\transport.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\transport.d.ts  0.60 kB │ gzip: 0.33 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-hVYwm3\index.d.ts      0.08 kB │ gzip: 0.07 kB
+@kisaki3/rpc:build: ℹ 4 files, total: 0.71 kB
+@kisaki3/rpc:build: ✔ Build complete in 745ms
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.js    1.00 kB │ gzip: 0.37 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-IK5GGj\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+@kisaki3/appearance:build: ✔ Build complete in 858ms
+@kisaki3/extension-cli:pack: cache hit, replaying logs e669f9d8460feec8
+@kisaki3/extension-cli:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-cli:pack: package: @kisaki3/extension-cli@0.1.0-dev.0
+@kisaki3/extension-cli:pack: Tarball Contents
+@kisaki3/extension-cli:pack: dist/config.d.ts
+@kisaki3/extension-cli:pack: dist/config.js
+@kisaki3/extension-cli:pack: LICENSE
+@kisaki3/extension-cli:pack: package.json
+@kisaki3/extension-cli:pack: README.md
+@kisaki3/extension-cli:pack: Tarball Details
+@kisaki3/extension-cli:pack: F:\project\kisaki\clients\desktop\packages\extension-cli\out\package.tgz
+@kisaki3/desktop-contracts:pack: cache hit, replaying logs 0af2681636dc01ae
+@kisaki3/extension-cli:test:consumers: cache bypass, force executing 070aae9e9e4e0362
+@kisaki3/extension-api:build: cache hit, replaying logs d40cf347b0fda7d3
+@kisaki3/desktop-contracts:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/desktop-contracts:pack: package: @kisaki3/desktop-contracts@0.1.0-dev.0
+@kisaki3/desktop-contracts:pack: Tarball Contents
+@kisaki3/desktop-contracts:pack: dist/errors.d.ts
+@kisaki3/desktop-contracts:pack: dist/errors.js
+@kisaki3/desktop-contracts:pack: dist/index.d.ts
+@kisaki3/desktop-contracts:pack: dist/index.js
+@kisaki3/desktop-contracts:pack: LICENSE
+@kisaki3/desktop-contracts:pack: package.json
+@kisaki3/desktop-contracts:pack: README.md
+@kisaki3/desktop-contracts:pack: Tarball Details
+@kisaki3/desktop-contracts:pack: F:\project\kisaki\clients\desktop\packages\desktop-contracts\out\package.tgz
+@kisaki3/extension-distribution:pack: cache hit, replaying logs 7b25cbb8b7b91c54
+@kisaki3/appearance:pack: cache hit, replaying logs e6ef34cf9c6a124f
+@kisaki3/rpc:pack: cache hit, replaying logs b047d0fa8060f944
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-8FKH1l\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 531ms
+@kisaki3/extension-distribution:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-distribution:pack: package: @kisaki3/extension-distribution@0.1.0-dev.0
+@kisaki3/extension-distribution:pack: Tarball Contents
+@kisaki3/extension-distribution:pack: dist/index.d.ts
+@kisaki3/extension-distribution:pack: dist/index.js
+@kisaki3/extension-distribution:pack: dist/metadata.d.ts
+@kisaki3/extension-distribution:pack: dist/metadata.js
+@kisaki3/extension-distribution:pack: LICENSE
+@kisaki3/extension-distribution:pack: package.json
+@kisaki3/extension-distribution:pack: README.md
+@kisaki3/extension-distribution:pack: Tarball Details
+@kisaki3/extension-distribution:pack: F:\project\kisaki\clients\desktop\packages\extension-distribution\out\package.tgz
+@kisaki3/appearance:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/appearance:pack: package: @kisaki3/appearance@0.1.0-dev.0
+@kisaki3/appearance:pack: Tarball Contents
+@kisaki3/appearance:pack: dist/index.d.ts
+@kisaki3/appearance:pack: dist/index.js
+@kisaki3/appearance:pack: dist/styles.css
+@kisaki3/appearance:pack: dist/tailwind.css
+@kisaki3/appearance:pack: dist/tokens.d.ts
+@kisaki3/appearance:pack: dist/tokens.js
+@kisaki3/appearance:pack: LICENSE
+@kisaki3/appearance:pack: package.json
+@kisaki3/appearance:pack: README.md
+@kisaki3/appearance:pack: Tarball Details
+@kisaki3/appearance:pack: F:\project\kisaki\clients\desktop\packages\appearance\out\package.tgz
+@kisaki3/rpc:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/rpc:pack: package: @kisaki3/rpc@0.1.0-dev.0
+@kisaki3/rpc:pack: Tarball Contents
+@kisaki3/rpc:pack: dist/index.d.ts
+@kisaki3/rpc:pack: dist/index.js
+@kisaki3/rpc:pack: dist/transport.d.ts
+@kisaki3/rpc:pack: dist/transport.js
+@kisaki3/rpc:pack: LICENSE
+@kisaki3/rpc:pack: package.json
+@kisaki3/rpc:pack: README.md
+@kisaki3/rpc:pack: Tarball Details
+@kisaki3/rpc:pack: F:\project\kisaki\clients\desktop\packages\rpc\out\package.tgz
+@kisaki3/ui:build: cache hit, replaying logs d84a94159ee91ea4
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.js    0.68 kB │ gzip: 0.41 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-ZEYF2L\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+@kisaki3/ui:build: ✔ Build complete in 1350ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 132ms
+@kisaki3/desktop-contracts:test:consumers: cache bypass, force executing 0671f29eb7635c60
+@kisaki3/appearance:test:consumers: cache bypass, force executing 117ac06ccb99458d
+@kisaki3/extension-distribution:test:consumers: cache bypass, force executing 5328ab80fc4e5d93
+@kisaki3/rpc:test:consumers: cache bypass, force executing f56ec36010deeee9
+@kisaki3/extension-api:pack: cache hit, replaying logs ac66184337a99cff
+@kisaki3/extension-sdk:build: cache hit, replaying logs 72d16bf3c53c7cec
+@kisaki3/extension-api:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-api:pack: package: @kisaki3/extension-api@0.1.0-dev.0
+@kisaki3/extension-api:pack: Tarball Contents
+@kisaki3/extension-api:pack: dist/index.d.ts
+@kisaki3/extension-api:pack: dist/index.js
+@kisaki3/extension-api:pack: LICENSE
+@kisaki3/extension-api:pack: package.json
+@kisaki3/extension-api:pack: README.md
+@kisaki3/extension-api:pack: Tarball Details
+@kisaki3/extension-api:pack: F:\project\kisaki\clients\desktop\packages\extension-api\out\package.tgz
+@kisaki3/extension-sdk:build: $ tsx tools/build.ts
+@kisaki3/extension-sdk:build: ℹ config file: F:\project\kisaki\clients\desktop\packages\extension-sdk\tsdown.config.ts 
+@kisaki3/extension-sdk:build: ℹ entry: src/index.ts
+@kisaki3/extension-sdk:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-sdk:build: ℹ Build start
+@kisaki3/extension-sdk:build: ℹ Cleaning 1 files
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-r1vtXm\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-r1vtXm\index.d.ts  0.12 kB │ gzip: 0.10 kB
+@kisaki3/extension-sdk:build: ℹ 2 files, total: 0.13 kB
+@kisaki3/extension-sdk:build: ✔ Build complete in 623ms
+@kisaki3/ui:pack: cache hit, replaying logs b93f56bf4085f06a
+@kisaki3/ui:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/ui:pack: package: @kisaki3/ui@0.1.0-dev.0
+@kisaki3/ui:pack: Tarball Contents
+@kisaki3/ui:pack: dist/index.d.ts
+@kisaki3/ui:pack: dist/index.js
+@kisaki3/ui:pack: dist/styles.css
+@kisaki3/ui:pack: LICENSE
+@kisaki3/ui:pack: package.json
+@kisaki3/ui:pack: README.md
+@kisaki3/ui:pack: Tarball Details
+@kisaki3/ui:pack: F:\project\kisaki\clients\desktop\packages\ui\out\package.tgz
+@kisaki3/ui:test:consumers: cache bypass, force executing 535b7fe879c0bb86
+@kisaki3/extension-api:test:consumers: cache bypass, force executing 073c7f75302adc50
+@kisaki3/extension-sdk:pack: cache hit, replaying logs d7956a4dbd7b38f8
+@kisaki3/extension-sdk:pack: $ pnpm pack --out out/package.tgz
+@kisaki3/extension-sdk:pack: package: @kisaki3/extension-sdk@0.1.0-dev.0
+@kisaki3/extension-sdk:pack: Tarball Contents
+@kisaki3/extension-sdk:pack: dist/index.d.ts
+@kisaki3/extension-sdk:pack: dist/index.js
+@kisaki3/extension-sdk:pack: LICENSE
+@kisaki3/extension-sdk:pack: package.json
+@kisaki3/extension-sdk:pack: README.md
+@kisaki3/extension-sdk:pack: Tarball Details
+@kisaki3/extension-sdk:pack: F:\project\kisaki\clients\desktop\packages\extension-sdk\out\package.tgz
+@kisaki3/extension-cli:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/desktop-contracts:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/extension-cli:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/extension-cli:test:consumers: Unpacking tarball...
+@kisaki3/extension-cli:test:consumers: Linting...
+@kisaki3/extension-cli:test:consumers: All good!
+@kisaki3/extension-sdk:test:consumers: cache bypass, force executing 72107a5678e46dc9
+@kisaki3/appearance:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css
+@kisaki3/extension-distribution:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/rpc:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/desktop-contracts:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/desktop-contracts:test:consumers: Unpacking tarball...
+@kisaki3/desktop-contracts:test:consumers: Linting...
+@kisaki3/appearance:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/appearance:test:consumers: Unpacking tarball...
+@kisaki3/desktop-contracts:test:consumers: All good!
+@kisaki3/appearance:test:consumers: Linting...
+@kisaki3/appearance:test:consumers: All good!
+@kisaki3/extension-distribution:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/extension-distribution:test:consumers: Unpacking tarball...
+@kisaki3/extension-distribution:test:consumers: Linting...
+@kisaki3/extension-distribution:test:consumers: All good!
+@kisaki3/rpc:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/rpc:test:consumers: Unpacking tarball...
+@kisaki3/rpc:test:consumers: Linting...
+@kisaki3/rpc:test:consumers: All good!
+@kisaki3/ui:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css
+@kisaki3/extension-sdk:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/extension-api:test:consumers: $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+@kisaki3/ui:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/ui:test:consumers: Unpacking tarball...
+@kisaki3/ui:test:consumers: Linting...
+@kisaki3/ui:test:consumers: All good!
+@kisaki3/extension-sdk:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/extension-sdk:test:consumers: Unpacking tarball...
+@kisaki3/extension-sdk:test:consumers: Linting...
+@kisaki3/extension-sdk:test:consumers: All good!
+@kisaki3/extension-api:test:consumers: Running publint v0.3.25 for out/package.tgz...
+@kisaki3/extension-api:test:consumers: Unpacking tarball...
+@kisaki3/extension-api:test:consumers: Linting...
+@kisaki3/extension-api:test:consumers: All good!
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: @kisaki3/extension-cli v0.1.0-dev.0
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: Build tools:
+@kisaki3/extension-cli:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/extension-cli:test:consumers: - typescript@6.0.3
+@kisaki3/extension-cli:test:consumers: - tsdown@0.23.0
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: 
+@kisaki3/extension-cli:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/extension-cli:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/extension-cli/config"        [39m[90m│[39m
+@kisaki3/extension-cli:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-cli:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/extension-cli:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-cli:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/extension-cli:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-cli:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/extension-cli:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-cli:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/extension-cli:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/appearance:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: @kisaki3/desktop-contracts v0.1.0-dev.0
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: Build tools:
+@kisaki3/desktop-contracts:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/desktop-contracts:test:consumers: - typescript@6.0.3
+@kisaki3/desktop-contracts:test:consumers: - tsdown@0.23.0
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: 
+@kisaki3/desktop-contracts:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/desktop-contracts:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/desktop-contracts"           [39m[90m│[39m[31m "@kisaki3/desktop-contracts/errors"    [39m[90m│[39m
+@kisaki3/desktop-contracts:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/desktop-contracts:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/desktop-contracts:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/desktop-contracts:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/desktop-contracts:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/desktop-contracts:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/desktop-contracts:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/desktop-contracts:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/desktop-contracts:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/appearance:test:consumers: @kisaki3/appearance v0.1.0-dev.0
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers: Build tools:
+@kisaki3/appearance:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/appearance:test:consumers: - typescript@6.0.3
+@kisaki3/appearance:test:consumers: - tsdown@0.23.0
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers: 
+@kisaki3/appearance:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/appearance:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/appearance"                  [39m[90m│[39m[31m "@kisaki3/appearance/tokens"           [39m[90m│[39m
+@kisaki3/appearance:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/appearance:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/appearance:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/appearance:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/appearance:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/appearance:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/appearance:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/appearance:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/appearance:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/extension-distribution:test:consumers: @kisaki3/extension-distribution v0.1.0-dev.0
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: Build tools:
+@kisaki3/extension-distribution:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/extension-distribution:test:consumers: - typescript@6.0.3
+@kisaki3/extension-distribution:test:consumers: - tsdown@0.23.0
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: "@kisaki3/extension-distribution"
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: node16 (from ESM): 🟢 (ESM)
+@kisaki3/extension-distribution:test:consumers: bundler: 🟢 
+@kisaki3/extension-distribution:test:consumers: node10: (ignored) 💀 Resolution failed
+@kisaki3/extension-distribution:test:consumers: node16 (from CJS): (ignored) ⚠️ ESM (dynamic import only)
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: ***********************************
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: "@kisaki3/extension-distribution/metadata"
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: node16 (from ESM): 🟢 (ESM)
+@kisaki3/extension-distribution:test:consumers: bundler: 🟢 
+@kisaki3/extension-distribution:test:consumers: node10: (ignored) 💀 Resolution failed
+@kisaki3/extension-distribution:test:consumers: node16 (from CJS): (ignored) ⚠️ ESM (dynamic import only)
+@kisaki3/extension-distribution:test:consumers: 
+@kisaki3/extension-distribution:test:consumers: ***********************************
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: @kisaki3/rpc v0.1.0-dev.0
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: Build tools:
+@kisaki3/rpc:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/rpc:test:consumers: - typescript@6.0.3
+@kisaki3/rpc:test:consumers: - tsdown@0.23.0
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: 
+@kisaki3/rpc:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/rpc:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/rpc"                         [39m[90m│[39m[31m "@kisaki3/rpc/transport"               [39m[90m│[39m
+@kisaki3/rpc:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/rpc:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/rpc:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/rpc:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/rpc:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/rpc:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/rpc:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/rpc:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/rpc:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/ui:test:consumers: 
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: @kisaki3/extension-sdk v0.1.0-dev.0
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: Build tools:
+@kisaki3/extension-sdk:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/extension-sdk:test:consumers: - typescript@6.0.3
+@kisaki3/extension-sdk:test:consumers: - tsdown@0.23.0
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: 
+@kisaki3/extension-sdk:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/extension-sdk:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/extension-sdk"               [39m[90m│[39m
+@kisaki3/extension-sdk:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-sdk:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/extension-sdk:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-sdk:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/extension-sdk:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-sdk:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/extension-sdk:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-sdk:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/extension-sdk:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/ui:test:consumers: @kisaki3/ui v0.1.0-dev.0
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers: Build tools:
+@kisaki3/ui:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/ui:test:consumers: - typescript@6.0.3
+@kisaki3/ui:test:consumers: - tsdown@0.23.0
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers: 
+@kisaki3/ui:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/ui:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/ui"                          [39m[90m│[39m
+@kisaki3/ui:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/ui:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/ui:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/ui:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/ui:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/ui:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/ui:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/ui:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/ui:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────┘[39m
+@kisaki3/extension-api:test:consumers: @kisaki3/extension-api v0.1.0-dev.0
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers: Build tools:
+@kisaki3/extension-api:test:consumers: - @arethetypeswrong/cli@0.18.5
+@kisaki3/extension-api:test:consumers: - typescript@6.0.3
+@kisaki3/extension-api:test:consumers: - tsdown@0.23.0
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers:  (ignoring resolutions: 'node10', 'node16-cjs')
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers: (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers: (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers: 
+@kisaki3/extension-api:test:consumers: [90m┌───────────────────[39m[90m┬────────────────────────────────────────┐[39m
+@kisaki3/extension-api:test:consumers: [90m│[39m[31m                   [39m[90m│[39m[31m "@kisaki3/extension-api"               [39m[90m│[39m
+@kisaki3/extension-api:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-api:test:consumers: [90m│[39m node16 (from ESM) [90m│[39m 🟢 (ESM)                               [90m│[39m
+@kisaki3/extension-api:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-api:test:consumers: [90m│[39m bundler           [90m│[39m 🟢                                     [90m│[39m
+@kisaki3/extension-api:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-api:test:consumers: [90m│[39m node10            [90m│[39m (ignored) 💀 Resolution failed         [90m│[39m
+@kisaki3/extension-api:test:consumers: [90m├───────────────────[39m[90m┼────────────────────────────────────────┤[39m
+@kisaki3/extension-api:test:consumers: [90m│[39m node16 (from CJS) [90m│[39m (ignored) ⚠️ ESM (dynamic import only) [90m│[39m
+@kisaki3/extension-api:test:consumers: [90m└───────────────────[39m[90m┴────────────────────────────────────────┘[39m
+
+ Tasks:    24 successful, 24 total
+Cached:    16 cached, 24 total
+  Time:    3.525s 
+
+$ vitest run --config config/vitest/vitest.config.consumers.ts
+
+ RUN  v5.0.5 F:/project/kisaki
+
+ ✓ tests/consumers/packages.test.ts (2 tests) 12820ms
+   ✓ strict TypeScript and ordinary Node consume the supplied public entries outside the repository 7715ms
+   ✓ framework-independent and Solid pages consume built styles without a Tailwind toolchain 2498ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:13:18
+   Duration  13.64s (tests 95%, import 4%)
+
+JSON report written to F:/project/kisaki/test-results/consumers/results.json

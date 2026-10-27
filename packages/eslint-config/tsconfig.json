@@ -1,0 +1,4 @@
+{
+  "extends": "@kisaki3/typescript-config/node.json",
+  "include": ["src/**/*.ts", "*.config.ts"]
+}

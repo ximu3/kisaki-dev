@@ -1,0 +1,4 @@
+$ depcruise --config .dependency-cruiser.json clients packages tools
+
+✔ no dependency violations found (219 modules, 378 dependencies cruised)
+

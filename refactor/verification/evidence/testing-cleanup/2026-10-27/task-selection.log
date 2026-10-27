@@ -1,0 +1,10 @@
+$ vitest run "tests/tools/structure/tasks.test.ts"
+
+ RUN  v5.0.5 F:/project/kisaki
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:25:34
+   Duration  7.66s (tests 99%)
+

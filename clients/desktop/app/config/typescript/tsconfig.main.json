@@ -1,9 +1,9 @@
 {
-  "extends": "../../../../../tsconfig.base.json",
+  "extends": "@kisaki3/typescript-config/node.json",
   "compilerOptions": {
+    "skipLibCheck": false,
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/main.tsbuildinfo",
-    "types": ["node"],
     "lib": ["ES2023", "DOM"]
   },
   "include": ["../../src/main/**/*.ts", "../../src/shared/**/*.ts", "../../native/node/**/*.ts"],

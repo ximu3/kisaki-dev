@@ -1,6 +1,7 @@
 {
-  "extends": "../../../../../tsconfig.base.json",
+  "extends": "@kisaki3/typescript-config/base.json",
   "compilerOptions": {
+    "skipLibCheck": false,
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo",
     "types": []

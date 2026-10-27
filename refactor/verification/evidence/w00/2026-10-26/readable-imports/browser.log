@@ -1,0 +1,11 @@
+$ vitest run --config config/vitest/vitest.config.browser.ts
+
+ RUN  v5.0.5 F:/project/kisaki/clients/desktop/app
+      API started at http://127.0.0.1:23315/
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  00:10:42
+   Duration  1.06s (worker 69%, tests 26%, import 6%)
+

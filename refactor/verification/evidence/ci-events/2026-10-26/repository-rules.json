@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-10-26T11:07:55.891Z",
+  "branch": "main",
+  "protected": false,
+  "rulesets": [],
+  "changesMade": false,
+  "designatedRequiredChecks": [
+    "verify / Required checks",
+    "PR title"
+  ]
+}

@@ -30,7 +30,13 @@ export const test = base.extend<DesktopFixtures>({
     const build: { target: string; electronVersion: string } = JSON.parse(
       await readFile(join(runtime, 'build.json'), 'utf8'),
     )
-    if (build.target !== hostTarget() || build.electronVersion !== '44.5.1') {
+    const manifest: { devDependencies: { electron: string } } = JSON.parse(
+      await readFile(new URL('../../package.json', import.meta.url), 'utf8'),
+    )
+    if (
+      build.target !== hostTarget() ||
+      build.electronVersion !== manifest.devDependencies.electron
+    ) {
       throw new Error('The test input does not match the selected Electron target')
     }
 
@@ -39,14 +45,11 @@ export const test = base.extend<DesktopFixtures>({
         (entry): entry is [string, string] => entry[1] !== undefined,
       ),
     )
-    env.KISAKI_DEV_PROFILE = profile
-    env.KISAKI_WINDOW = kind
     delete env.ELECTRON_RUN_AS_NODE
-    delete env.KISAKI_RENDERER_URL
 
     const application = await _electron.launch({
       executablePath: electronExecutable(),
-      args: [join(runtime, 'main/entry.js')],
+      args: [join(runtime, 'main/entry.js'), `--profile=${profile}`, `--window=${kind}`],
       env,
     })
     const child = application.process()

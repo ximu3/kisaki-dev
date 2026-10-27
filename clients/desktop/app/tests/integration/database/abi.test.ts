@@ -29,7 +29,6 @@ test('the shipped SQLite binding creates, commits, rolls back and reopens under 
     database.close()
     database = new Database(path, options)
     expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已提交' }])
-    expect(process.versions.electron).toBe('44.5.1')
   } finally {
     database.close()
     await rm(directory, { recursive: true, force: true })

@@ -1,0 +1,29 @@
+{
+  "commit": "49a2df7715df264fb09bc22091e847e249ade7be",
+  "run": "https://github.com/ximu3/kisaki-w00-ci/actions/runs/40301130444",
+  "originalWorkspaceRevision": "f3f74f5880f3fd74be63f119a231e38fff4478c1",
+  "sources": [
+    {
+      "path": "probe/main.ts",
+      "sha256": "7aea41ffa2176421acea2af1b9d0a9583a8a915fa0ea0bb18e4b52816d7b3140"
+    },
+    {
+      "path": "probe/package-lock.json",
+      "sha256": "6df0b3350f3e35683cc137daad0c11373b81b01df7552ae4e1b9f899c8dd2280"
+    },
+    {
+      "path": "probe/package.json",
+      "sha256": "495bb6eb26158770e744fccb27425d4887fe0b98cea95d0054e6d02960ef7fe9"
+    },
+    {
+      "path": "probe/run.ts",
+      "sha256": "b0a5caa28c1a2d42d42c1a75c319795ee783d0c2f15ae22d45ea02a73bb64c24"
+    },
+    {
+      "path": "probe/tsconfig.json",
+      "sha256": "bc9c94b6fafaf6ddcba0d99b675bc8b80f7eb37f3b23d35cb1003030407d64bb"
+    }
+  ],
+  "originalAppFusesConfiguration": "b762942884de6856ccbf6426f37020170134a9283c90bc663de461dad795dee5",
+  "workflow": "55349d56d7fc84c42c927461e43bbe620e06c1ab0d48e4a8b34d8f71f9138278"
+}

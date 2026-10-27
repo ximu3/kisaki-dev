@@ -33,18 +33,24 @@
   },
   "scripts": {
     "build": "tsx tools/build.ts",
-    "typecheck": "tsx ../../../../tools/outputs/run.ts --dependencies -- exec tsc -b",
-    "pack": "tsx ../../../../tools/outputs/run.ts --read dist --write out -- pack --out out/package.tgz",
-    "test:consumers": "tsx ../../../../tools/outputs/run.ts --read out -- --shell-mode exec \"publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css\"",
+    "pack": "pnpm pack --out out/package.tgz",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
     "clean": "tsx tools/clean.ts"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "tsdown": "catalog:",
-    "vitest": "catalog:",
-    "publint": "0.3.25",
     "@arethetypeswrong/cli": "0.18.5",
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
-    "tsx": "catalog:"
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "publint": "0.3.25",
+    "tsdown": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

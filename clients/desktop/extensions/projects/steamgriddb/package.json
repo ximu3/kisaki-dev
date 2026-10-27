@@ -10,11 +10,16 @@
     "name": "SteamGridDB"
   },
   "scripts": {
-    "typecheck": "tsx ../../../../../tools/outputs/run.ts --dependencies -- exec tsc -p tsconfig.json"
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
+    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/extension-cli": "workspace:^",
-    "typescript": "catalog:",
-    "tsx": "catalog:"
+    "@kisaki3/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "typescript": "catalog:"
   }
 }
