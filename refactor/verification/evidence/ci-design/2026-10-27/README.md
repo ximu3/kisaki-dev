@@ -10,6 +10,8 @@
 
 首轮候选 [40497120549](https://github.com/ximu3/kisaki-dev/actions/runs/40497120549) 的十五个任务全部通过，六目标各七项开发回归、二十次启动与正常退出及最终载体验证完整保留，六目标均确认打包复用了此前测试的构建。该轮从触发到 Required checks 完成用时 13 分 48 秒，附件仅含报告，不能直接与包含完整桌面附件的基线总时长等同。Windows x64 和 arm64 的开发回归分别为 470.31、454.89 秒；不同 runner 的单次变化不作为稳定提速比例。
 
+保留完整桌面候选的 [40499251641](https://github.com/ximu3/kisaki-dev/actions/runs/40499251641) 十五项均通过，总等待 13 分 22 秒，总 runner 时间 77 分 42 秒；现行公开仓库基线分别为 19 分 29 秒与 58 分 25 秒。随后 renderer 实测发现原有选择逻辑把上游构建的 `TaskAllChanged` 一并解释为全局变化，误触发完整验证。该轮 [40501024765](https://github.com/ximu3/kisaki-dev/actions/runs/40501024765) 已取消并留存，不能作为增量耗时样本。已改为仅由明确的全局原因提升范围；真实任务图补充 renderer 回归，缺失基线和完整请求继续执行全量。修正后的增量测量接续进行。
+
 先前 private 仓库与当前 public 仓库的 Windows／Linux 标准 runner 资源不同。代表性修改用行为不变的源码注释触发真实任务选择与执行，解释其范围时不声称覆盖所有业务改动。
 
 依据：[GitHub 任务依赖](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-jobs)、[原生 YAML anchors](https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations)、[Turbo 任务查询](https://turborepo.dev/docs/reference/query)、[公共／私有 runner 规格](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)。[VS Code 的独立 flaky 检测流程](https://github.com/microsoft/vscode/blob/main/build/azure-pipelines/product-smoke-flaky.yml)展示按平台构建后复用的实践；本实验不沿用其循环次数、continueOnError 或整套调度结构。

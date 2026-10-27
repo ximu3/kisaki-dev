@@ -67,7 +67,8 @@ jobs:
             jq -n --arg base "$TURBO_SCM_BASE" --arg head "$TURBO_SCM_HEAD" '{base: $base, head: $head}' > "$RUNNER_TEMP/verification-refs.json"
             pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"
             jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null
-            if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskAllChanged" or .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then
+            # Required build prerequisites also use TaskAllChanged; they do not expand verification.
+            if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then
               complete=true
             fi
           else
@@ -345,11 +346,11 @@ jobs:
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
         with:
           cache: true
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Configure macOS deployment target
         if: runner.os == 'macOS'
         run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Record measurement host
         shell: bash
         run: |-

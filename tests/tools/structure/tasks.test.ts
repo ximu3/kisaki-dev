@@ -112,6 +112,11 @@ test('affected tasks follow verification inputs without promoting documentation 
     { path: 'tests/consumers/packages.test.ts', desktop: [], consumers: true },
     { path: 'clients/desktop/app/tools/dev/session.ts', desktop: ['test:dev'], consumers: false },
     {
+      path: 'clients/desktop/app/src/renderer/windows/main/entry.tsx',
+      desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e', 'test:performance'],
+      consumers: false,
+    },
+    {
       path: 'clients/desktop/packages/ui/src/components/button.tsx',
       desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e', 'test:performance'],
       consumers: true,
@@ -214,6 +219,7 @@ test('affected tasks follow verification inputs without promoting documentation 
               fullName: string
               command: string | null
               package: { name: string; path: string }
+              reason: { __typename: string }
             }[]
           }
         }
@@ -229,6 +235,19 @@ test('affected tasks follow verification inputs without promoting documentation 
         .map((task) => task.name)
         .sort()
       expect(desktop, item.path).toEqual(item.desktop)
+      if (item.path.includes('/src/renderer/')) {
+        // Unchanged build prerequisites remain in the plan without selecting other desktop suites.
+        expect(
+          tasks.some(
+            (task) => task.name === 'build' && task.reason.__typename === 'TaskAllChanged',
+          ),
+        ).toBe(true)
+        expect(
+          tasks.some((task) =>
+            ['TaskGlobalFileChanged', 'TaskGlobalDepsChanged'].includes(task.reason.__typename),
+          ),
+        ).toBe(false)
+      }
       expect(
         tasks.some(
           (task) =>
