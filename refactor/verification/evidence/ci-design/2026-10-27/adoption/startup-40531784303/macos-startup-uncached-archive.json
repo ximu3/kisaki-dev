@@ -1,0 +1,13 @@
+{
+  "id": 12746857382,
+  "name": "macos-startup-uncached",
+  "completeArchive": true,
+  "expectedDigest": "sha256:456758e7d11c8b869ac0bf2560e2e0d0c7d687b5c11442040b4f8c21b784bd2e",
+  "bytes": 3201,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-adoption/2026-10-27/40531784303/macos-startup-uncached.zip",
+  "sha256": "456758e7d11c8b869ac0bf2560e2e0d0c7d687b5c11442040b4f8c21b784bd2e"
+}

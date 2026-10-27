@@ -1,0 +1,164 @@
+[
+  {
+    "path": "macos-startup-1/dev/controllers/3391-3678.json",
+    "startedAt": "2026-10-27T15:18:29.954Z",
+    "states": [
+      {
+        "elapsedMs": 19045.723672,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 68579.87624499999,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 68783.625514,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 70091.91735,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  },
+  {
+    "path": "macos-startup-1/dev/controllers/5467-5685.json",
+    "startedAt": "2026-10-27T15:20:09.601Z",
+    "states": [
+      {
+        "elapsedMs": 20409.835818000003,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 71614.311611,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 71774.483414,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 72388.367326,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  },
+  {
+    "path": "macos-startup-1/dev/controllers/7407-7602.json",
+    "startedAt": "2026-10-27T15:21:49.121Z",
+    "states": [
+      {
+        "elapsedMs": 16652.882555000004,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 58874.06350899999,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 59010.621735999994,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 59526.818074999996,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  },
+  {
+    "path": "macos-startup-2/dev/controllers/3023-3320.json",
+    "startedAt": "2026-10-27T15:18:41.289Z",
+    "states": [
+      {
+        "elapsedMs": 24381.112738000003,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 76296.940643,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 76531.746727,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 78094.68425,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  },
+  {
+    "path": "macos-startup-2/dev/controllers/4921-5190.json",
+    "startedAt": "2026-10-27T15:20:25.971Z",
+    "states": [
+      {
+        "elapsedMs": 14482.583427999998,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 63209.93429800001,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 63484.454685000004,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 65080.350600000005,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  },
+  {
+    "path": "macos-startup-2/dev/controllers/7007-7305.json",
+    "startedAt": "2026-10-27T15:22:08.154Z",
+    "states": [
+      {
+        "elapsedMs": 29768.89297,
+        "state": "building",
+        "error": null
+      },
+      {
+        "elapsedMs": 94782.318894,
+        "state": "ready",
+        "error": null
+      },
+      {
+        "elapsedMs": 94904.278898,
+        "state": "cancelled",
+        "error": null
+      },
+      {
+        "elapsedMs": 95723.23041,
+        "state": "stopped",
+        "error": null
+      }
+    ],
+    "exitCode": 0
+  }
+]

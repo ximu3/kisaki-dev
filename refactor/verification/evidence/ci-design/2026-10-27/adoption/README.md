@@ -21,4 +21,8 @@
 
 本机完整 `pnpm check` 的 48 项常规测试、actionlint 1.7.12 对三份正式 workflow 的检查均通过。YAML 展开的任务、步骤、条件及两个六目标矩阵与已测原型一致，仅更新环境记录的显示名称，见 [workflow 核对](local/workflow-equivalence.json)。独立根打包命令成功，日志中只有一次应用构建；生成的原样 ZIP 真实启动和正常退出通过。根开发回归七项通过，测试报告为 115.27 秒。四类失效构建拒绝复用原型同一校验实现的证据，不因类型导入整理重复运行。日志、摘要和回执见 [local](local/files.json)，四份本机候选按回执摘要核对后保存在忽略目录 `artifacts/ci-adoption/2026-10-27/local-windows-x64`。
 
-本次通过 [PR #4](https://github.com/ximu3/kisaki-dev/pull/4) 单独交付，基于尚未合并的 [PR #3](https://github.com/ximu3/kisaki-dev/pull/3)，目标分支为 `research/ci-reliability-and-feedback`。正式实现、合同和当前 W00 范围验证已完成；PR 合并与发行未执行。原型、诊断和失败记录继续按各自提交保留。
+随后仅补充证据的提交 `85d2078` 在[完整 CI 40525500828](https://github.com/ximu3/kisaki-dev/actions/runs/40525500828)出现一次 macOS x64 开发回归失败：第一个用例在 120 秒内没有观察到首次 ready；其余六个开发用例、其他五目标开发回归和全部运行／制品任务通过，Required checks 正确拒绝通过。该次源码与首轮通过版本相同，但原辅助函数没有保存控制器状态和输出，无法从失败断言区分构建未完成与启动失败。该运行保留在 [ci-40525500828](ci-40525500828/run.json)，不计入成功测量。
+
+为补齐诊断，开发测试现在通过 Vitest 的测试结束钩子保存控制器的最后 32 个状态、错误、最后 16,384 个字符的输出与实际退出状态，沿既有开发报告上传；运行实现、断言和等待预算未改变。本机七项开发回归通过，耗时 108.19 秒，见 [local/diagnostics](local/diagnostics/files.json)。两组 macOS x64 探针分别在两个 runner 上运行六次独立首次启动，以及在三个新 runner 上比较两次依赖构建缓存恢复与一次无缓存启动；九次均通过，首次 ready 为 58.9–102.6 秒，见 [40529204600](startup-40529204600/observations.json) 与 [40531784303](startup-40531784303/observations.json)。没有复现原失败，不能据此确认原因或声称已经修复；缓存对照也不足以建立因果关系。
+
+本次通过 [PR #4](https://github.com/ximu3/kisaki-dev/pull/4) 单独交付，基于尚未合并的 [PR #3](https://github.com/ximu3/kisaki-dev/pull/3)，目标分支为 `research/ci-reliability-and-feedback`。正式实现和合同已完成，补充诊断后的完整验证正在进行；macOS x64 偶发首次启动超时仍待定位，PR 保持草稿。PR 合并与发行未执行。原型、诊断和失败记录继续按各自提交保留。

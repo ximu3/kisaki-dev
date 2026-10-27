@@ -1,0 +1,549 @@
+{
+  "total_count": 4,
+  "jobs": [
+    {
+      "id": 122286254257,
+      "run_id": 40531784303,
+      "workflow_name": "macOS development startup probes",
+      "head_branch": "research/ci-macos-startup",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40531784303",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAceNQosQ",
+      "head_sha": "e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122286254257",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40531784303/job/122286254257",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T15:31:14Z",
+      "started_at": "2026-10-27T15:31:19Z",
+      "completed_at": "2026-10-27T15:33:39Z",
+      "name": "Prepare dependency cache",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T15:31:20Z",
+          "completed_at": "2026-10-27T15:31:24Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T15:31:24Z",
+          "completed_at": "2026-10-27T15:31:33Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T15:31:33Z",
+          "completed_at": "2026-10-27T15:31:56Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T15:31:56Z",
+          "completed_at": "2026-10-27T15:32:28Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T15:32:28Z",
+          "completed_at": "2026-10-27T15:32:28Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T15:32:28Z",
+          "completed_at": "2026-10-27T15:33:14Z"
+        },
+        {
+          "name": "Build development test dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T15:33:14Z",
+          "completed_at": "2026-10-27T15:33:29Z"
+        },
+        {
+          "name": "Save dependency cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T15:33:29Z",
+          "completed_at": "2026-10-27T15:33:31Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T15:33:31Z",
+          "completed_at": "2026-10-27T15:33:31Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-27T15:33:31Z",
+          "completed_at": "2026-10-27T15:33:33Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T15:33:33Z",
+          "completed_at": "2026-10-27T15:33:35Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T15:33:35Z",
+          "completed_at": "2026-10-27T15:33:36Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122286254257",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001433,
+      "runner_name": "GitHub Actions 1000001433",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122287671189,
+      "run_id": 40531784303,
+      "workflow_name": "macOS development startup probes",
+      "head_branch": "research/ci-macos-startup",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40531784303",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAceOnHlQ",
+      "head_sha": "e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122287671189",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40531784303/job/122287671189",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T15:33:39Z",
+      "started_at": "2026-10-27T15:33:43Z",
+      "completed_at": "2026-10-27T15:39:24Z",
+      "name": "Intel Mac (cached-1)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T15:33:44Z",
+          "completed_at": "2026-10-27T15:33:46Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T15:33:47Z",
+          "completed_at": "2026-10-27T15:33:53Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T15:33:53Z",
+          "completed_at": "2026-10-27T15:34:24Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T15:34:24Z",
+          "completed_at": "2026-10-27T15:34:51Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T15:34:51Z",
+          "completed_at": "2026-10-27T15:34:51Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T15:34:51Z",
+          "completed_at": "2026-10-27T15:35:19Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T15:35:19Z",
+          "completed_at": "2026-10-27T15:36:51Z"
+        },
+        {
+          "name": "Restore dependency cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T15:36:51Z",
+          "completed_at": "2026-10-27T15:36:53Z"
+        },
+        {
+          "name": "Observe an isolated first start",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T15:36:53Z",
+          "completed_at": "2026-10-27T15:39:14Z"
+        },
+        {
+          "name": "Upload startup records",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T15:39:14Z",
+          "completed_at": "2026-10-27T15:39:16Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T15:39:16Z",
+          "completed_at": "2026-10-27T15:39:16Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T15:39:16Z",
+          "completed_at": "2026-10-27T15:39:17Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T15:39:17Z",
+          "completed_at": "2026-10-27T15:39:18Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T15:39:18Z",
+          "completed_at": "2026-10-27T15:39:19Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122287671189",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001434,
+      "runner_name": "GitHub Actions 1000001434",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122287671387,
+      "run_id": 40531784303,
+      "workflow_name": "macOS development startup probes",
+      "head_branch": "research/ci-macos-startup",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40531784303",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAceOnIWw",
+      "head_sha": "e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122287671387",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40531784303/job/122287671387",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T15:33:39Z",
+      "started_at": "2026-10-27T15:33:45Z",
+      "completed_at": "2026-10-27T15:40:04Z",
+      "name": "Intel Mac (cached-2)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T15:33:47Z",
+          "completed_at": "2026-10-27T15:33:53Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T15:33:53Z",
+          "completed_at": "2026-10-27T15:34:06Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T15:34:06Z",
+          "completed_at": "2026-10-27T15:34:29Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T15:34:29Z",
+          "completed_at": "2026-10-27T15:34:59Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T15:34:59Z",
+          "completed_at": "2026-10-27T15:34:59Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T15:34:59Z",
+          "completed_at": "2026-10-27T15:35:41Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T15:35:41Z",
+          "completed_at": "2026-10-27T15:37:15Z"
+        },
+        {
+          "name": "Restore dependency cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T15:37:15Z",
+          "completed_at": "2026-10-27T15:37:17Z"
+        },
+        {
+          "name": "Observe an isolated first start",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T15:37:17Z",
+          "completed_at": "2026-10-27T15:39:54Z"
+        },
+        {
+          "name": "Upload startup records",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T15:39:54Z",
+          "completed_at": "2026-10-27T15:39:57Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T15:39:57Z",
+          "completed_at": "2026-10-27T15:39:57Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T15:39:57Z",
+          "completed_at": "2026-10-27T15:39:58Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T15:39:58Z",
+          "completed_at": "2026-10-27T15:39:59Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T15:39:59Z",
+          "completed_at": "2026-10-27T15:40:00Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122287671387",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001435,
+      "runner_name": "GitHub Actions 1000001435",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122287671570,
+      "run_id": 40531784303,
+      "workflow_name": "macOS development startup probes",
+      "head_branch": "research/ci-macos-startup",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40531784303",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAceOnJEg",
+      "head_sha": "e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122287671570",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40531784303/job/122287671570",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T15:33:39Z",
+      "started_at": "2026-10-27T15:33:43Z",
+      "completed_at": "2026-10-27T15:38:18Z",
+      "name": "Intel Mac (uncached)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T15:33:44Z",
+          "completed_at": "2026-10-27T15:33:47Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T15:33:47Z",
+          "completed_at": "2026-10-27T15:33:56Z"
+        },
+        {
+          "name": "Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T15:33:56Z",
+          "completed_at": "2026-10-27T15:34:20Z"
+        },
+        {
+          "name": "Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T15:34:20Z",
+          "completed_at": "2026-10-27T15:34:43Z"
+        },
+        {
+          "name": "Configure macOS deployment target",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T15:34:43Z",
+          "completed_at": "2026-10-27T15:34:43Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T15:34:43Z",
+          "completed_at": "2026-10-27T15:35:08Z"
+        },
+        {
+          "name": "Prepare native build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T15:35:08Z",
+          "completed_at": "2026-10-27T15:36:22Z"
+        },
+        {
+          "name": "Restore dependency cache",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-10-27T15:36:22Z",
+          "completed_at": "2026-10-27T15:36:22Z"
+        },
+        {
+          "name": "Observe an isolated first start",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T15:36:22Z",
+          "completed_at": "2026-10-27T15:38:10Z"
+        },
+        {
+          "name": "Upload startup records",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T15:38:10Z",
+          "completed_at": "2026-10-27T15:38:12Z"
+        },
+        {
+          "name": "Post Set up pnpm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T15:38:12Z",
+          "completed_at": "2026-10-27T15:38:12Z"
+        },
+        {
+          "name": "Post Set up Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T15:38:12Z",
+          "completed_at": "2026-10-27T15:38:12Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T15:38:12Z",
+          "completed_at": "2026-10-27T15:38:13Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T15:38:13Z",
+          "completed_at": "2026-10-27T15:38:14Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122287671570",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "runner_id": 1000001436,
+      "runner_name": "GitHub Actions 1000001436",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

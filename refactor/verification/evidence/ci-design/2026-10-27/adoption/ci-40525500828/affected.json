@@ -1,0 +1,2241 @@
+{
+  "version": "2.11.10",
+  "data": {
+    "affectedTasks": {
+      "items": [
+        {
+          "name": "test:consumers:run",
+          "fullName": "//#test:consumers:run",
+          "command": "vitest run --config config/vitest/vitest.config.consumers.ts",
+          "package": {
+            "name": "//",
+            "path": ""
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/appearance#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/appearance",
+            "path": "clients/desktop/packages/appearance"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/appearance#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/appearance",
+            "path": "clients/desktop/packages/appearance"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/appearance#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/appearance",
+            "path": "clients/desktop/packages/appearance"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/appearance#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
+          "package": {
+            "name": "@kisaki3/appearance",
+            "path": "clients/desktop/packages/appearance"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/desktop#build",
+          "command": "tsx tools/build/cli.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/desktop#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "package",
+          "fullName": "@kisaki3/desktop#package",
+          "command": "tsx tools/package/cli.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/desktop#test",
+          "command": "vitest run",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:artifacts",
+          "fullName": "@kisaki3/desktop#test:artifacts",
+          "command": "vitest run --config config/vitest/vitest.config.artifacts.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:browser",
+          "fullName": "@kisaki3/desktop#test:browser",
+          "command": "vitest run --config config/vitest/vitest.config.browser.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/desktop#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:dev",
+          "fullName": "@kisaki3/desktop#test:dev",
+          "command": "vitest run --config config/vitest/vitest.config.dev.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:e2e",
+          "fullName": "@kisaki3/desktop#test:e2e",
+          "command": "playwright test",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:native",
+          "fullName": "@kisaki3/desktop#test:native",
+          "command": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:performance",
+          "fullName": "@kisaki3/desktop#test:performance",
+          "command": "playwright test --config config/playwright/playwright.config.performance.ts",
+          "package": {
+            "name": "@kisaki3/desktop",
+            "path": "clients/desktop/app"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/desktop-contracts#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/desktop-contracts",
+            "path": "clients/desktop/packages/desktop-contracts"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/desktop-contracts#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/desktop-contracts",
+            "path": "clients/desktop/packages/desktop-contracts"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/desktop-contracts#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/desktop-contracts",
+            "path": "clients/desktop/packages/desktop-contracts"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/desktop-contracts#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/desktop-contracts",
+            "path": "clients/desktop/packages/desktop-contracts"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/eslint-config#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/eslint-config",
+            "path": "packages/eslint-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/eslint-config#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/eslint-config",
+            "path": "packages/eslint-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/eslint-config#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/eslint-config",
+            "path": "packages/eslint-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/eslint-config#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/eslint-config",
+            "path": "packages/eslint-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-anilist#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anilist",
+            "path": "clients/desktop/extensions/projects/anilist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-anilist#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anilist",
+            "path": "clients/desktop/extensions/projects/anilist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-anilist#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anilist",
+            "path": "clients/desktop/extensions/projects/anilist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-anilist#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anilist",
+            "path": "clients/desktop/extensions/projects/anilist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-anx-reader-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anx-reader-importer",
+            "path": "clients/desktop/extensions/projects/anx-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-anx-reader-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anx-reader-importer",
+            "path": "clients/desktop/extensions/projects/anx-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-anx-reader-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anx-reader-importer",
+            "path": "clients/desktop/extensions/projects/anx-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-anx-reader-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-anx-reader-importer",
+            "path": "clients/desktop/extensions/projects/anx-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-bangumi#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-bangumi",
+            "path": "clients/desktop/extensions/projects/bangumi"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-bangumi#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-bangumi",
+            "path": "clients/desktop/extensions/projects/bangumi"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-bangumi#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-bangumi",
+            "path": "clients/desktop/extensions/projects/bangumi"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-bangumi#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-bangumi",
+            "path": "clients/desktop/extensions/projects/bangumi"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-calibre-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-calibre-importer",
+            "path": "clients/desktop/extensions/projects/calibre-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-calibre-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-calibre-importer",
+            "path": "clients/desktop/extensions/projects/calibre-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-calibre-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-calibre-importer",
+            "path": "clients/desktop/extensions/projects/calibre-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-calibre-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-calibre-importer",
+            "path": "clients/desktop/extensions/projects/calibre-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-fanart-tv#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-fanart-tv",
+            "path": "clients/desktop/extensions/projects/fanart-tv"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-fanart-tv#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-fanart-tv",
+            "path": "clients/desktop/extensions/projects/fanart-tv"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-fanart-tv#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-fanart-tv",
+            "path": "clients/desktop/extensions/projects/fanart-tv"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-fanart-tv#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-fanart-tv",
+            "path": "clients/desktop/extensions/projects/fanart-tv"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-goodreads-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-goodreads-importer",
+            "path": "clients/desktop/extensions/projects/goodreads-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-goodreads-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-goodreads-importer",
+            "path": "clients/desktop/extensions/projects/goodreads-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-goodreads-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-goodreads-importer",
+            "path": "clients/desktop/extensions/projects/goodreads-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-goodreads-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-goodreads-importer",
+            "path": "clients/desktop/extensions/projects/goodreads-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-google-books#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-google-books",
+            "path": "clients/desktop/extensions/projects/google-books"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-google-books#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-google-books",
+            "path": "clients/desktop/extensions/projects/google-books"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-google-books#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-google-books",
+            "path": "clients/desktop/extensions/projects/google-books"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-google-books#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-google-books",
+            "path": "clients/desktop/extensions/projects/google-books"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-igdb#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-igdb",
+            "path": "clients/desktop/extensions/projects/igdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-igdb#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-igdb",
+            "path": "clients/desktop/extensions/projects/igdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-igdb#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-igdb",
+            "path": "clients/desktop/extensions/projects/igdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-igdb#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-igdb",
+            "path": "clients/desktop/extensions/projects/igdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-itch-io#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-itch-io",
+            "path": "clients/desktop/extensions/projects/itch-io"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-itch-io#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-itch-io",
+            "path": "clients/desktop/extensions/projects/itch-io"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-itch-io#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-itch-io",
+            "path": "clients/desktop/extensions/projects/itch-io"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-itch-io#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-itch-io",
+            "path": "clients/desktop/extensions/projects/itch-io"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-koodo-reader-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koodo-reader-importer",
+            "path": "clients/desktop/extensions/projects/koodo-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-koodo-reader-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koodo-reader-importer",
+            "path": "clients/desktop/extensions/projects/koodo-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-koodo-reader-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koodo-reader-importer",
+            "path": "clients/desktop/extensions/projects/koodo-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-koodo-reader-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koodo-reader-importer",
+            "path": "clients/desktop/extensions/projects/koodo-reader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-koreader-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koreader-importer",
+            "path": "clients/desktop/extensions/projects/koreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-koreader-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koreader-importer",
+            "path": "clients/desktop/extensions/projects/koreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-koreader-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koreader-importer",
+            "path": "clients/desktop/extensions/projects/koreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-koreader-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-koreader-importer",
+            "path": "clients/desktop/extensions/projects/koreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-kotatsu-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-kotatsu-importer",
+            "path": "clients/desktop/extensions/projects/kotatsu-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-kotatsu-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-kotatsu-importer",
+            "path": "clients/desktop/extensions/projects/kotatsu-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-kotatsu-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-kotatsu-importer",
+            "path": "clients/desktop/extensions/projects/kotatsu-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-kotatsu-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-kotatsu-importer",
+            "path": "clients/desktop/extensions/projects/kotatsu-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-language-ja#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-ja",
+            "path": "clients/desktop/extensions/projects/language-ja"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-language-ja#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-ja",
+            "path": "clients/desktop/extensions/projects/language-ja"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-language-ja#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-ja",
+            "path": "clients/desktop/extensions/projects/language-ja"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-language-ja#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-ja",
+            "path": "clients/desktop/extensions/projects/language-ja"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-language-zh-hans#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hans",
+            "path": "clients/desktop/extensions/projects/language-zh-hans"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-language-zh-hans#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hans",
+            "path": "clients/desktop/extensions/projects/language-zh-hans"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-language-zh-hans#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hans",
+            "path": "clients/desktop/extensions/projects/language-zh-hans"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-language-zh-hans#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hans",
+            "path": "clients/desktop/extensions/projects/language-zh-hans"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-language-zh-hant#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hant",
+            "path": "clients/desktop/extensions/projects/language-zh-hant"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-language-zh-hant#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hant",
+            "path": "clients/desktop/extensions/projects/language-zh-hant"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-language-zh-hant#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hant",
+            "path": "clients/desktop/extensions/projects/language-zh-hant"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-language-zh-hant#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-language-zh-hant",
+            "path": "clients/desktop/extensions/projects/language-zh-hant"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-launchbox-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-launchbox-importer",
+            "path": "clients/desktop/extensions/projects/launchbox-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-launchbox-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-launchbox-importer",
+            "path": "clients/desktop/extensions/projects/launchbox-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-launchbox-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-launchbox-importer",
+            "path": "clients/desktop/extensions/projects/launchbox-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-launchbox-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-launchbox-importer",
+            "path": "clients/desktop/extensions/projects/launchbox-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-mangadex#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangadex",
+            "path": "clients/desktop/extensions/projects/mangadex"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-mangadex#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangadex",
+            "path": "clients/desktop/extensions/projects/mangadex"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-mangadex#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangadex",
+            "path": "clients/desktop/extensions/projects/mangadex"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-mangadex#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangadex",
+            "path": "clients/desktop/extensions/projects/mangadex"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-mangaupdates#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangaupdates",
+            "path": "clients/desktop/extensions/projects/mangaupdates"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-mangaupdates#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangaupdates",
+            "path": "clients/desktop/extensions/projects/mangaupdates"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-mangaupdates#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangaupdates",
+            "path": "clients/desktop/extensions/projects/mangaupdates"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-mangaupdates#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mangaupdates",
+            "path": "clients/desktop/extensions/projects/mangaupdates"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-mihon-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mihon-importer",
+            "path": "clients/desktop/extensions/projects/mihon-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-mihon-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mihon-importer",
+            "path": "clients/desktop/extensions/projects/mihon-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-mihon-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mihon-importer",
+            "path": "clients/desktop/extensions/projects/mihon-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-mihon-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-mihon-importer",
+            "path": "clients/desktop/extensions/projects/mihon-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-myanimelist#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-myanimelist",
+            "path": "clients/desktop/extensions/projects/myanimelist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-myanimelist#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-myanimelist",
+            "path": "clients/desktop/extensions/projects/myanimelist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-myanimelist#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-myanimelist",
+            "path": "clients/desktop/extensions/projects/myanimelist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-myanimelist#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-myanimelist",
+            "path": "clients/desktop/extensions/projects/myanimelist"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-ndl-search#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ndl-search",
+            "path": "clients/desktop/extensions/projects/ndl-search"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-ndl-search#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ndl-search",
+            "path": "clients/desktop/extensions/projects/ndl-search"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-ndl-search#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ndl-search",
+            "path": "clients/desktop/extensions/projects/ndl-search"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-ndl-search#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ndl-search",
+            "path": "clients/desktop/extensions/projects/ndl-search"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-nfo-comicinfo-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-nfo-comicinfo-importer",
+            "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-nfo-comicinfo-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-nfo-comicinfo-importer",
+            "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-nfo-comicinfo-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-nfo-comicinfo-importer",
+            "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-nfo-comicinfo-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-nfo-comicinfo-importer",
+            "path": "clients/desktop/extensions/projects/nfo-comicinfo-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-playnite-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-playnite-importer",
+            "path": "clients/desktop/extensions/projects/playnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-playnite-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-playnite-importer",
+            "path": "clients/desktop/extensions/projects/playnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-playnite-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-playnite-importer",
+            "path": "clients/desktop/extensions/projects/playnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-playnite-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-playnite-importer",
+            "path": "clients/desktop/extensions/projects/playnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-potatovn-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-potatovn-importer",
+            "path": "clients/desktop/extensions/projects/potatovn-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-potatovn-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-potatovn-importer",
+            "path": "clients/desktop/extensions/projects/potatovn-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-potatovn-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-potatovn-importer",
+            "path": "clients/desktop/extensions/projects/potatovn-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-potatovn-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-potatovn-importer",
+            "path": "clients/desktop/extensions/projects/potatovn-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-ranobedb#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ranobedb",
+            "path": "clients/desktop/extensions/projects/ranobedb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-ranobedb#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ranobedb",
+            "path": "clients/desktop/extensions/projects/ranobedb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-ranobedb#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ranobedb",
+            "path": "clients/desktop/extensions/projects/ranobedb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-ranobedb#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ranobedb",
+            "path": "clients/desktop/extensions/projects/ranobedb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-steam#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steam",
+            "path": "clients/desktop/extensions/projects/steam"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-steam#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steam",
+            "path": "clients/desktop/extensions/projects/steam"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-steam#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steam",
+            "path": "clients/desktop/extensions/projects/steam"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-steam#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steam",
+            "path": "clients/desktop/extensions/projects/steam"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-steamgriddb#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steamgriddb",
+            "path": "clients/desktop/extensions/projects/steamgriddb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-steamgriddb#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steamgriddb",
+            "path": "clients/desktop/extensions/projects/steamgriddb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-steamgriddb#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steamgriddb",
+            "path": "clients/desktop/extensions/projects/steamgriddb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-steamgriddb#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-steamgriddb",
+            "path": "clients/desktop/extensions/projects/steamgriddb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-tmdb#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-tmdb",
+            "path": "clients/desktop/extensions/projects/tmdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-tmdb#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-tmdb",
+            "path": "clients/desktop/extensions/projects/tmdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-tmdb#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-tmdb",
+            "path": "clients/desktop/extensions/projects/tmdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-tmdb#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-tmdb",
+            "path": "clients/desktop/extensions/projects/tmdb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-vndb#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vndb",
+            "path": "clients/desktop/extensions/projects/vndb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-vndb#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vndb",
+            "path": "clients/desktop/extensions/projects/vndb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-vndb#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vndb",
+            "path": "clients/desktop/extensions/projects/vndb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-vndb#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vndb",
+            "path": "clients/desktop/extensions/projects/vndb"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-vnite-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vnite-importer",
+            "path": "clients/desktop/extensions/projects/vnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-vnite-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vnite-importer",
+            "path": "clients/desktop/extensions/projects/vnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-vnite-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vnite-importer",
+            "path": "clients/desktop/extensions/projects/vnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-vnite-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-vnite-importer",
+            "path": "clients/desktop/extensions/projects/vnite-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-wikidata#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-wikidata",
+            "path": "clients/desktop/extensions/projects/wikidata"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-wikidata#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-wikidata",
+            "path": "clients/desktop/extensions/projects/wikidata"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-wikidata#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-wikidata",
+            "path": "clients/desktop/extensions/projects/wikidata"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-wikidata#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-wikidata",
+            "path": "clients/desktop/extensions/projects/wikidata"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-yacreader-importer#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-yacreader-importer",
+            "path": "clients/desktop/extensions/projects/yacreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-yacreader-importer#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-yacreader-importer",
+            "path": "clients/desktop/extensions/projects/yacreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-yacreader-importer#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-yacreader-importer",
+            "path": "clients/desktop/extensions/projects/yacreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-yacreader-importer#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-yacreader-importer",
+            "path": "clients/desktop/extensions/projects/yacreader-importer"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ext-ymgal#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ymgal",
+            "path": "clients/desktop/extensions/projects/ymgal"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ext-ymgal#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ymgal",
+            "path": "clients/desktop/extensions/projects/ymgal"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ext-ymgal#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ymgal",
+            "path": "clients/desktop/extensions/projects/ymgal"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ext-ymgal#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ext-ymgal",
+            "path": "clients/desktop/extensions/projects/ymgal"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/extension-api#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/extension-api",
+            "path": "clients/desktop/packages/extension-api"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/extension-api#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/extension-api",
+            "path": "clients/desktop/packages/extension-api"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/extension-api#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/extension-api",
+            "path": "clients/desktop/packages/extension-api"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/extension-api#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/extension-api",
+            "path": "clients/desktop/packages/extension-api"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/extension-cli#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/extension-cli",
+            "path": "clients/desktop/packages/extension-cli"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/extension-cli#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/extension-cli",
+            "path": "clients/desktop/packages/extension-cli"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/extension-cli#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/extension-cli",
+            "path": "clients/desktop/packages/extension-cli"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/extension-cli#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/extension-cli",
+            "path": "clients/desktop/packages/extension-cli"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/extension-distribution#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/extension-distribution",
+            "path": "clients/desktop/packages/extension-distribution"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/extension-distribution#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/extension-distribution",
+            "path": "clients/desktop/packages/extension-distribution"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/extension-distribution#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/extension-distribution",
+            "path": "clients/desktop/packages/extension-distribution"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/extension-distribution#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/extension-distribution",
+            "path": "clients/desktop/packages/extension-distribution"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/extension-sdk#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/extension-sdk",
+            "path": "clients/desktop/packages/extension-sdk"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/extension-sdk#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/extension-sdk",
+            "path": "clients/desktop/packages/extension-sdk"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/extension-sdk#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/extension-sdk",
+            "path": "clients/desktop/packages/extension-sdk"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/extension-sdk#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/extension-sdk",
+            "path": "clients/desktop/packages/extension-sdk"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/rpc#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/rpc",
+            "path": "clients/desktop/packages/rpc"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/rpc#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/rpc",
+            "path": "clients/desktop/packages/rpc"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/rpc#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/rpc",
+            "path": "clients/desktop/packages/rpc"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/rpc#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+          "package": {
+            "name": "@kisaki3/rpc",
+            "path": "clients/desktop/packages/rpc"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/tooling#build",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/tooling",
+            "path": "packages/tooling"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/tooling#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/tooling",
+            "path": "packages/tooling"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/tooling#test",
+          "command": "vitest run",
+          "package": {
+            "name": "@kisaki3/tooling",
+            "path": "packages/tooling"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/tooling#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/tooling",
+            "path": "packages/tooling"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/typescript-config#pack",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/typescript-config",
+            "path": "packages/typescript-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/typescript-config#test:consumers",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/typescript-config",
+            "path": "packages/typescript-config"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "build",
+          "fullName": "@kisaki3/ui#build",
+          "command": "tsx tools/build.ts",
+          "package": {
+            "name": "@kisaki3/ui",
+            "path": "clients/desktop/packages/ui"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "pack",
+          "fullName": "@kisaki3/ui#pack",
+          "command": "pnpm pack --out out/package.tgz",
+          "package": {
+            "name": "@kisaki3/ui",
+            "path": "clients/desktop/packages/ui"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test",
+          "fullName": "@kisaki3/ui#test",
+          "command": null,
+          "package": {
+            "name": "@kisaki3/ui",
+            "path": "clients/desktop/packages/ui"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        },
+        {
+          "name": "test:consumers",
+          "fullName": "@kisaki3/ui#test:consumers",
+          "command": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css",
+          "package": {
+            "name": "@kisaki3/ui",
+            "path": "clients/desktop/packages/ui"
+          },
+          "reason": {
+            "__typename": "TaskGlobalDepsChanged"
+          }
+        }
+      ]
+    }
+  }
+}
