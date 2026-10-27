@@ -2,18 +2,18 @@
 
 基线为 PR #1 Squash 合并后的 `1efc7ad8c22824c1b5ea727ebd14bfc151eaf114`，与已通过六目标及暖缓存复验的 `18a6346` 文件树相同。用户已授权合并后开始探索；原生优先允许引入、更换工具或在收益明确时自研，不以保留当前工具为前提。六目标、20 次启动采样、正常退出与失败判定保持原要求。
 
-本记录区分已经证实的问题、局部修正和正式实施结果。用户已确认采用独立 Chokidar 6 输入监听与 Electron 45.0.0，正式实现及六目标验证进行中。诊断分支只承载一次性实验，不能合并其替代工作流。后续成功不覆盖已保存的失败。
+本记录区分已经证实的问题、局部修正和正式实施结果。用户已确认采用独立 Chokidar 6 输入监听与 Electron 45.0.0，正式实现已在提交 `be06a2f` 通过六目标 CI，见下方结果。诊断分支只承载一次性实验，不能合并其替代工作流。后续成功不覆盖已保存的失败。
 
 ## 已取得的结果
 
 | 问题                       | 实际证据                                                                                                                                   | 当前判断                                                                     |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| 合并后主线常规检查失败     | [40475563259](https://github.com/ximu3/kisaki-dev/actions/runs/40475563259) 的 renderer 监听回归失败，六目标尚未开始                       | 不是六目标运行成功；需要修复监听就绪问题                                     |
+| 合并后主线常规检查失败     | [40475563259](https://github.com/ximu3/kisaki-dev/actions/runs/40475563259) 的 renderer 监听回归失败，六目标尚未开始                       | 原失败保留；正式修正已通过 Linux 常规回归与六目标开发场景                     |
 | Linux 漏掉公共包配置修改   | 原路径两轮各五次均失败两次；补齐试件 `src`、`tools` 后仍失败一次                                                                           | 失败时修改已经发生，但文件尚未进入监听列表；随后扫描完成，没有补发该修改事件 |
-| 独立输入监听原型           | Chokidar 6 原型在 Linux 上五次原有回归全部通过，未扩大断言时间                                                                             | 支持独立监听与显式就绪方向，尚未形成正式跨平台实现结论                       |
+| 独立输入监听原型           | Chokidar 6 原型在 Linux 上五次原有回归全部通过，未扩大断言时间                                                                             | 正式实现采用独立输入监听与显式就绪，并已完成六目标验证                       |
 | 隔离开发副本反复缓存失效   | 无有效 Git HEAD 时，Turbo 把生成的 `.turbo/turbo-build.log` 纳入输入；每次构建改变下一次任务 hash                                          | 不是根 CI 缓存恢复顺序问题；开发试件需要有效 Git 仓库上下文                  |
 | Electron 准备依赖测试顺序  | Apple Silicon 单独运行开发场景时，复制尚不存在的 `electron/dist` 失败                                                                      | 锁定 Electron 版本在首次导入时下载二进制；试件必须显式调用公开包入口         |
-| Apple Silicon 性能测试卡住 | 两个失败进程均记录 Electron 内部 `BrowserWindow.visibilityChanged` 的 `Object has been destroyed`；原生采样显示错误对话框的模态循环 | 已复现窗口销毁后内部回调异常导致退出卡住；Electron 45 移除了该回调，升级候选的单平台验证通过 |
+| Apple Silicon 性能测试卡住 | 两个失败进程均记录 Electron 内部 `BrowserWindow.visibilityChanged` 的 `Object has been destroyed`；原生采样显示错误对话框的模态循环 | Electron 45 移除了该回调；正式六目标各二十次启动和正常退出均通过              |
 
 ## Linux 监听与候选方案
 
@@ -28,7 +28,7 @@ Vite 8.3.3 先创建 watcher，再异步创建环境和调用 `configureServer`�
 | 独立使用 @parcel/watcher 2.6 | `subscribe()`、`unsubscribe()` 是明确的异步操作，支持批量文件变更                  | 使用原生二进制，监听入口为目录；需要核对输入选择范围和各目标实际运行，尚未做接入原型                   |
 | 直接使用 Node fs.watch       | 无外部监听库                                                                       | 需要自行处理跨平台事件、文件重建与监听恢复；目前没有证明比成熟监听器更简单完整                         |
 
-用户已确认采用独立 Chokidar 6 输入监听器：Vite 继续拥有 renderer HMR，开发会话拥有会触发运行时或公共包重建的输入监听。两者各自关闭；服务或监听准备失败时释放已建立资源。运行期间的监听错误必须交给会话失败路径，不能只记录后继续报告可用。workspace 文档已同步监听归属与就绪规则，正式实现进行中。
+用户已确认采用独立 Chokidar 6 输入监听器：Vite 继续拥有 renderer HMR，开发会话拥有会触发运行时或公共包重建的输入监听。两者各自关闭；服务或监听准备失败时释放已建立资源。运行期间的监听错误必须交给会话失败路径，不能只记录后继续报告可用。workspace 文档与正式实现已同步监听归属、就绪和失败规则。
 
 [可审阅原型](https://github.com/ximu3/kisaki-dev/blob/d02d415d6b27a1c7ea794a9de1bc3199d918edb5/clients/desktop/app/tools/dev/renderer.ts)只验证监听所有权与就绪，不是最终实现。它沿用现有输入清单、变更分类和 Vite 服务，不增加自定义文件事件协议。原型的五次通过不能替代完整错误路径或六目标验证。
 
@@ -80,7 +80,7 @@ TypeError: Object has been destroyed
 
 `40484423503` 在独立 Apple Silicon runner 上分别安装固定的 44.9.3、45.0.0。两者均通过原有二十次启动／正常退出、本体类型检查、六项原生／SQLite 断言，以及四种窗口。原生测试各有一项同文件系统条件下的跨设备移动跳过，按原条件保留；并未记作七项全部执行。没有出现异常文件。44.9.3 的单次通过不足以证明竞态被修复，45 的依据还包括触发异常的回调已从源码移除。
 
-用户已确认升级 Electron 45.0.0，正式基线文档已同步，实现与六目标验收进行中。代价包括 Chromium／Node 组合及沙箱 preload 的兼容检查、六目标构建／桌面／载体验证，以及正式版本文档同步。[45 的破坏性变更](https://releases.electronjs.org/release/v45.0.0)移除了沙箱 preload 中部分 Node 垫片；当前 preload 只使用 contextBridge、ipcRenderer 和 DOM 事件，没有使用被移除的 events、timers、url、Buffer 或 immediate。ASAR 的原始文件描述符语义与尚未接入的独立原生项目仍需按各自合同核对。单平台候选成功不代替正式六目标验收。
+用户已确认升级 Electron 45.0.0，正式基线文档与实现已同步，六目标验证结果见下方记录。代价包括 Chromium／Node 组合及沙箱 preload 的兼容检查、六目标构建／桌面／载体验证，以及正式版本文档同步。[45 的破坏性变更](https://releases.electronjs.org/release/v45.0.0)移除了沙箱 preload 中部分 Node 垫片；当前 preload 只使用 contextBridge、ipcRenderer 和 DOM 事件，没有使用被移除的 events、timers、url、Buffer 或 immediate。ASAR 的原始文件描述符语义与尚未接入的独立原生项目仍需按各自合同核对。单平台候选成功不代替正式六目标验收。
 
 [Playwright 当前关闭实现](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/electron/electron.ts)调用 `app.quit()`，断开 Node 调试连接，再等待主进程实际退出。[Electron 退出事件合同](https://www.electronjs.org/docs/latest/api/app#event-before-quit)用于区分窗口尚未接受关闭、宿主停止和最终进程退出。现阶段没有依据更换测试框架、缩减采样或增加等待预算。
 
@@ -92,7 +92,28 @@ Electron 45 的 Chromium 156／Node 24.22.0 组合已核对，renderer 语法目
 
 [45 的平台清单](https://github.com/electron/electron/blob/v45.0.0/README.md#platform-support)保留 Windows 10、macOS 13 起的 x64／arm64，以及 Linux x64／arm64。libmpv-node 合同引用已按 [45 的共享纹理导入实现](https://github.com/electron/electron/blob/v45.0.0/shell/common/api/electron_api_shared_texture.cc)重新核对：Windows 复制 NT 句柄、macOS 保留 IOSurface、Linux 复制 plane fd 的边界保持成立，Linux SharedImage 仍未声明相同的 WebGPU usage。这里只确认上游源码合同，没有把尚未实现的媒体接入记为运行通过。
 
-Windows x64 的正式实现已通过 pnpm check（48 项常规测试）、有限桌面构建、7 项原生测试、4 类实际窗口和 7 项开发会话回归；[本机日志与构建清单](local-verification/)保留实际结果，构建身份为 `51b0a5576a25553463ca92d77e03f29467ea7fd562e7ea46bbcada1c3efe6230`。第一次全仓检查指出新聚合异常缺少显式 cause，修正后完整检查通过；该失败日志一并保留。六目标 CI 仍待登记。一次性诊断分支已在核对末端提交后删除，所有实验输入、日志与结果均已归档。
+Windows x64 的正式实现已通过 pnpm check（48 项常规测试）、有限桌面构建、7 项原生测试、4 类实际窗口、7 项开发会话回归及二十次启动／正常退出测量；本机启动 P95 为 456.2 ms。[本机日志与构建清单](local-verification/)保留实际结果，构建身份为 `51b0a5576a25553463ca92d77e03f29467ea7fd562e7ea46bbcada1c3efe6230`。第一次全仓检查指出新聚合异常缺少显式 cause，修正后完整检查通过；该失败日志一并保留。一次性诊断分支已在核对末端提交后删除，所有实验输入、日志与结果均已归档。
+
+## 正式六目标 CI
+
+[运行 40486930578](https://github.com/ximu3/kisaki-dev/actions/runs/40486930578) 对源码提交 `be06a2f8edc32f36fb1fae8b66518b914b699537` 完成全部六目标、仓库检查与 Required checks；PR title 也通过。实际检出的 PR 合并引用为 `447b1fc798bc5b3d8c28106525ccb71c299cf205`，未执行 PR 合并。仓库检查覆盖 48 项常规测试、八包 publint／ATTW、两项仓库外消费者和一项浏览器交互。
+
+六目标分别通过五项工程工具测试、Rust 检查、目标构建、原生／SQLite、四窗口、七项开发回归、二十次启动测量及一项最终载体验证。各目标均使用 Electron 45.0.0，应用构建身份与上述本机结果一致。
+
+| 目标 | 原生／SQLite | 七项开发回归总耗时 | 二十次启动 P95 | 实际启动并正常关闭的载体 |
+| --- | --- | ---: | ---: | --- |
+| Windows x64 | 7 项通过 | 269.92 秒 | 699.8 ms | ZIP 中的应用 |
+| Windows arm64 | 6 项通过，1 项跳过 | 500.68 秒 | 645.0 ms | ZIP 中的应用 |
+| macOS x64 | 6 项通过，1 项跳过 | 226.30 秒 | 1,988.0 ms | ZIP 中的 app |
+| macOS arm64 | 6 项通过，1 项跳过 | 69.22 秒 | 353.6 ms | ZIP 中的 app |
+| Linux x64 | 6 项通过，1 项跳过 | 112.98 秒 | 626.6 ms | AppImage，X11 |
+| Linux arm64 | 6 项通过，1 项跳过 | 103.20 秒 | 520.6 ms | AppImage，X11 |
+
+五个跳过项均为测试根处于同一文件系统时不适用的跨设备移动，Windows x64 在不同卷取得通过证据。启动测量使用新进程、热磁盘缓存和隔离资料，只覆盖 W00 工程外壳，全部通过原有 5,000 ms P95 预算。Windows 生成 NSIS 与 ZIP，macOS 生成 DMG 与 ZIP，Linux 生成 AppImage、DEB 与 RPM；候选均为 test-only，载体启动不代替安装、升级、正式签署或完整产品验收。
+
+Windows arm64 的完整回归为 500.68 秒，低于修正前的 641.66 秒，但高于独立诊断运行的 238.19 秒。三者来自不同 runner 和准备状态，不能将单次差值作为稳定提速比例。本轮仓库 Chromium 环境准备另耗时 7 分 19 秒，其中 Ubuntu 镜像下载 19.7 MB 系统依赖用了 6 分 52 秒，实际下载速率 47.9 kB/s；这部分网络波动与已经证实的 Turbo 输入修正分别记录。
+
+[核对汇总](ci-40486930578/verification-summary.json)、原始 job 日志、全部测试报告及候选回执保存在同目录。七份附件的 ID、大小、GitHub 摘要与到期信息见 [artifacts.json](ci-40486930578/artifacts.json)。仓库与 Apple Silicon 的完整附件在本机保留并核对 SHA-256，其中八份公共包与五个 macOS 候选文件另按回执逐文件核对；其余五目标从实际附件按 HTTP Range 取得报告并通过 ZIP CRC 检查，没有重复下载大型载体，也没有将其完整附件摘要记为本机复算。每份附件的实际留存范围见 [archive-receipts.json](ci-40486930578/archive-receipts.json)，远端附件到期后不保证仍可下载。
 
 ## 远端实验索引
 

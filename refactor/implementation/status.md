@@ -9,16 +9,18 @@
 | 范围                                                                | 状态   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口               | PR #1 已合并；监听就绪与 Electron 关闭失败均已定位，按用户确认采用 Chokidar 6 与 Electron 45，正式实现及六目标复验进行中 |
+| W00 工程与验证入口               | PR #1 已合并；Chokidar 6、Electron 45 与开发副本修正已通过六目标 CI，PR #3 待合并；开发仓库已按要求公开 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
 [W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)保持原范围。维护后的提交 0abf572 首轮六目标成功；诊断提交 18a6346 的六目标及暖缓存复验同样通过，但此前两次 Apple Silicon 采样超时的原因仍未确定，见[workflow 维护记录](../verification/evidence/workflow-review/2026-10-27/README.md)。W01 尚未开始。
 
-用户授权后，[PR #1](https://github.com/ximu3/kisaki-dev/pull/1) 已 Squash 合并为 `1efc7ad`，文件树与已验证的 `18a6346` 相同，原分支已删除。随后主线 CI 的 renderer 文件监听回归失败，六目标未开始；当前不能以合并前的成功代替这次失败。[可靠性与反馈时间探索](../verification/evidence/ci-exploration/2026-10-27/README.md)已确认 Linux 追加输入尚未完成扫描时会漏掉首次修改；独立 Chokidar 6 原型通过五次原回归，用户已确认调整监听归属。开发副本缺少有效 Git HEAD 导致 Turbo 将构建日志纳入输入的问题已修正，Electron 首次导入准备也已显式化；本机以及新的 Apple Silicon、Windows arm64 runner 均通过七项开发回归，后两者确认从无 Electron 分发目录的状态准备成功。Apple Silicon 两次关闭失败捕获了 Electron 内部 visibilityChanged 访问已销毁对象的相同异常，默认错误对话框阻塞退出；用户已确认升级到移除该回调的 Electron 45.0.0。当前正式实现的本体类型检查与十九项常规测试通过，六目标复验待完成。六目标、采样预算和正常退出要求保持不变。
+用户授权后，[PR #1](https://github.com/ximu3/kisaki-dev/pull/1) 已 Squash 合并为 `1efc7ad`，原分支已删除。随后主线 CI 的 renderer 文件监听回归失败，六目标未开始；该失败保留。[可靠性与反馈时间探索](../verification/evidence/ci-exploration/2026-10-27/README.md)确认了三个问题：Vite 追加输入未扫描完成时漏掉首次修改；开发副本没有有效 Git HEAD，导致 Turbo 将生成日志纳入输入而反复失去缓存；Apple Silicon 的 Electron 内部 visibilityChanged 回调访问已销毁窗口，默认错误对话框阻塞退出。按用户确认采用会话独立拥有的 Chokidar 6 和移除该回调的 Electron 45.0.0，并为开发试件建立有效 Git 上下文、显式准备 Electron 分发文件。
 
-Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，保持 private、未归档及 main 默认分支。仓库身份、现有分支提交、PR、工作流和所核对的 Actions 运行均保留，旧 Git 与 API 地址仍可访问，见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址。
+正式修正已提交至 [PR #3](https://github.com/ximu3/kisaki-dev/pull/3)。源码提交 `be06a2f` 的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40486930578)通过仓库检查、六目标与 Required checks；每个目标完成四窗口、七项开发场景、二十次启动／正常退出及最终载体验证。六目标的 Electron 45.0.0 构建身份一致，本机全仓检查与 48 项常规测试也通过。Windows arm64 开发回归本轮为 500.68 秒，修正前为 641.66 秒，独立诊断为 238.19 秒；不同 runner 的观察不作为稳定提速比例。当前 PR 尚未合并，正式产品、签署、安装升级及后续工作包的未完成范围不变。
+
+Kisaki 的项目级开发仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，当时保持 private；2026-10-27 按用户要求改为 public，并以未认证 API 请求确认公开可读，见[可见性变更](../verification/evidence/repository/2026-10-27/README.md)。目前实际存在的开发仓库只有这一项；四个独立项目尚未建仓，规范已统一为公开开发仓库。仓库 ID、main 默认分支和未归档状态保持原值；改名前后的记录见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址与可见性。
 
 旧 [ximu3/kisaki](https://github.com/ximu3/kisaki) 在 2026-10-25 核对时为 public、未归档，默认分支为 main。旧资料存档与同名重建尚未执行，后续按[共同仓库规则](../design/engineering/repository.md#temporary-repositories)接续。
 
@@ -68,7 +70,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI      | `711d956` 与 `18a6346` 均有六目标及 Apple Silicon 暖缓存通过证据；合并后的 `1efc7ad` 主线运行在常规文件监听回归失败，当前修正进展见[可靠性探索](../verification/evidence/ci-exploration/2026-10-27/README.md) |
+| 标准 CI      | `be06a2f` 的 Chokidar 6／Electron 45 修正已通过六目标和 Required checks；`1efc7ad` 主线监听失败与更早运行结果均保留，见[可靠性探索](../verification/evidence/ci-exploration/2026-10-27/README.md) |
 
 <a id="progress"></a>
 

@@ -95,7 +95,7 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 ## CI 与交付
 
-正式发布前，在所属项目的[临时私有仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
+正式发布前，在所属项目的[公开开发仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
 
 普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果随仓库验证报告保存。
 

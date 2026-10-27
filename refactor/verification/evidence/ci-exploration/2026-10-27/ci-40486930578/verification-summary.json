@@ -1,0 +1,130 @@
+{
+  "runId": 40486930578,
+  "sourceHead": "be06a2f8edc32f36fb1fae8b66518b914b699537",
+  "checkedOutMerge": "447b1fc798bc5b3d8c28106525ccb71c299cf205",
+  "conclusion": "success",
+  "requiredChecks": "success",
+  "repositoryTestsPassed": 48,
+  "consumerTestsPassed": 2,
+  "browserTestsPassed": 1,
+  "publicPackagesVerified": 8,
+  "applicationBuildId": "51b0a5576a25553463ca92d77e03f29467ea7fd562e7ea46bbcada1c3efe6230",
+  "electronVersion": "45.0.0",
+  "targets": [
+    {
+      "target": "linux-arm64",
+      "jobId": 122135237763,
+      "runnerLabels": [
+        "ubuntu-22.04-arm"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 6,
+      "nativeTestsSkipped": 1,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 103.2,
+      "startupSamples": 20,
+      "startupP95Ms": 520.615331,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 4
+    },
+    {
+      "target": "linux-x64",
+      "jobId": 122135238193,
+      "runnerLabels": [
+        "ubuntu-22.04"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 6,
+      "nativeTestsSkipped": 1,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 112.98,
+      "startupSamples": 20,
+      "startupP95Ms": 626.5966340000014,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 4
+    },
+    {
+      "target": "macos-arm64",
+      "jobId": 122135237956,
+      "runnerLabels": [
+        "macos-15"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 6,
+      "nativeTestsSkipped": 1,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 69.22,
+      "startupSamples": 20,
+      "startupP95Ms": 353.58150000000023,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 5
+    },
+    {
+      "target": "macos-x64",
+      "jobId": 122135237833,
+      "runnerLabels": [
+        "macos-15-intel"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 6,
+      "nativeTestsSkipped": 1,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 226.3,
+      "startupSamples": 20,
+      "startupP95Ms": 1987.9675430000025,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 5
+    },
+    {
+      "target": "windows-arm64",
+      "jobId": 122135237824,
+      "runnerLabels": [
+        "windows-11-arm"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 6,
+      "nativeTestsSkipped": 1,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 500.68,
+      "startupSamples": 20,
+      "startupP95Ms": 645.0384000000004,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 4
+    },
+    {
+      "target": "windows-x64",
+      "jobId": 122135237899,
+      "runnerLabels": [
+        "windows-2025"
+      ],
+      "conclusion": "success",
+      "toolingTestsPassed": 5,
+      "nativeTestsPassed": 7,
+      "nativeTestsSkipped": 0,
+      "windowTestsPassed": 4,
+      "developmentTestsPassed": 7,
+      "developmentSeconds": 269.92,
+      "startupSamples": 20,
+      "startupP95Ms": 699.7713999999996,
+      "packagedTestsPassed": 1,
+      "candidateFileCount": 4
+    }
+  ],
+  "repositoryChromiumPreparation": {
+    "started_at": "2026-10-27T10:16:31Z",
+    "completed_at": "2026-10-27T10:23:50Z"
+  },
+  "timingCaveat": "The repository APT download took 6m52s for 19.7 MB at 47.9 kB/s. Windows arm64 development took 500.68s, compared with 641.66s before the fixture fix and 238.19s in its separate diagnostic run. These are different runners and preparation states, not controlled speedup estimates.",
+  "archiveScope": "Repository and macOS arm64 archives are retained locally and matched to GitHub SHA-256 digests; their eight package files and five macOS candidate files were also checked against receipts. The other five desktop archives remain on GitHub; selected JSON/text entries were obtained with HTTP Range and verified by ZIP CRC, not by a local full-archive hash. All artifact metadata and expected digests are retained.",
+  "scope": "W00 shell, six native targets, twenty fresh processes per target with warm OS disk cache and isolated retained profiles. Test-only carriers; no signing, installer upgrade, product-completion or deployment claim."
+}
