@@ -9,12 +9,12 @@
 | 范围                             | 状态                                      |
 | -------------------------------- | ----------------------------------------- |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | 仓库、Windows x64 与两个 macOS 目标通过；Linux 会话环境和 Windows arm64 观察预算待复验，六目标与缓存恢复待完成 |
+| W00 工程与验证入口 | 六目标与缓存基线已通过；workflow 维护调整已实施，等待当前输入的远端复验 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[本轮完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过，GitHub 跨运行恢复及六目标结果仍由 PR 的实际 CI 接续，不等待其完成。W01 尚未开始。历史[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)及实际候选保持原提交与范围。
+[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；当前提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)也已完成。W01 尚未开始。历史[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)及实际候选保持原提交与范围。
 
 Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，保持 private、未归档及 main 默认分支。仓库身份、现有分支提交、PR、工作流和所核对的 Actions 运行均保留，旧 Git 与 API 地址仍可访问，见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址。
 
@@ -48,7 +48,15 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 用户已确认并落实[声明检查分工](../verification/evidence/declaration-checks/2026-10-27/README.md)：常规项目默认 skipLibCheck: true，strict 保持；公共声明消费者及 main／shared／renderer 中自有声明的拥有层保持完整检查。UI 旧配置例外合并回普通工具项目，自有声明覆盖沿现有结构检查核对。全仓检查、48 项常规测试、八包 publint／ATTW 和两项实际消费者通过。[当前 CI 记录](../verification/evidence/w00/2026-10-27/ci/README.md)保留一次主动取消及一次 Linux fixture 清理失败；后者的类型、lint、格式和本体 19 项断言已通过，ENOTEMPTY 清理修正等待新输入复验，不记作六目标成功。
 
-随后 a20c3f0 的[完整 CI](../verification/evidence/w00/2026-10-27/ci/README.md)通过仓库检查、消费者与浏览器，Linux fixture 清理修正获得实际通过结果；Windows x64 和两个 macOS 目标完成原生、四窗口、开发、20 次启动测量及最终载体验证。两个 Linux 目标因 Xvfb 内未运行窗口管理器而失败，Windows arm64 因原生窗口观察的默认短超时失败；相关环境与观察预算已修正。构建身份同时排除工具包生成的测试报告，现有回归通过，等待新 CI 接续。当前没有把部分平台通过汇总为六目标完成。
+随后 a20c3f0 的[完整 CI](../verification/evidence/w00/2026-10-27/ci/README.md)通过仓库检查、消费者与浏览器，Linux fixture 清理修正获得实际通过结果；Windows x64 和两个 macOS 目标完成原生、四窗口、开发、20 次启动测量及最终载体验证。两个 Linux 目标因 Xvfb 内未运行窗口管理器而失败，Windows arm64 因原生窗口观察的默认短超时失败；相关环境与观察预算已修正。构建身份同时排除工具包生成的测试报告，现有回归通过。当次三个目标失败及其日志保持原记录。
+
+当前提交 711d956 的[运行 40454692840](../verification/evidence/w00/2026-10-27/ci/README.md)已通过仓库、六目标和 Required checks 共八项任务。各目标均执行五项候选／取消、原生与 SQLite、四窗口、七项开发场景、20 次启动测量及最终载体验证；Windows x64 的跨文件系统移动通过，其余五个 runner 因测试根处于同一文件系统明确跳过。七份原始附件、八个公共包与六目标共 26 个候选相关文件已归档核对，六目标的构建身份一致。随后在新 macOS arm64 runner 复跑，构建与打包分别实际命中四个公共包任务，桌面任务与真实运行检查重新执行通过，Required checks 再次成功。W00 当前范围的 A24、A26、A28、A31 及缓存证据已补齐；没有推进 W01、正式签署、合并、发布或部署。
+
+随后按用户确认，将 MACOSX_DEPLOYMENT_TARGET 从 desktop 任务的公共环境移到 pnpm install 之前的 macOS 条件步骤，通过 GitHub Actions 原生 GITHUB_ENV 供后续步骤继承。13.0 在工作流中仍只定义一次，Windows／Linux 任务不再设置该变量。此次仅收窄 CI 配置作用域，actionlint 1.7.12、Prettier 和差异检查通过；未提交、推送或触发新的远端 CI，既有六目标证据仍对应 711d956。
+
+随后完成[GitHub workflow 组织与维护复核](../verification/evidence/workflow-review/2026-10-27/README.md)：三份文件的职责与事件／取消边界成立，完整 SHA、只读权限、任务选择、六目标及汇总设计保留；确认两个旧 Action 的 Node 20 迁移提示和缓存主键命中后的重复保存需要维护，job／step 显示命名与任务超时另有整理建议。三份 workflow 通过 actionlint；本次仅审查和记录，未升级依赖、调整这些设计或触发新 CI，既有六目标结果保持原范围。
+
+用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。三份文件的静态检查通过，真实接入等待现有私有 PR 的 CI 复验。旧完整运行约 28 分钟，仓库反馈约 5 分钟，时长依据和适用范围已单独记录。
 
 <a id="environments"></a>
 
@@ -58,7 +66,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 历史 `17788f3` 的[六目标完整运行](../verification/evidence/w00/2026-10-25/sequential-workflows/ci/README.md)有效；当前 [a20c3f0 运行](../verification/evidence/w00/2026-10-27/ci/README.md)仓库及三个目标通过，另外三个目标待修正复验 |
+| 标准 CI | 当前 `711d956` 的[仓库与六目标运行](../verification/evidence/w00/2026-10-27/ci/README.md)全部通过；同一提交在新 macOS arm64 runner 上完成缓存恢复、任务命中与完整目标复跑 |
 
 <a id="progress"></a>
 
@@ -66,7 +74,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查分工及本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)通过；[当前 CI](../verification/evidence/w00/2026-10-27/ci/README.md)待修正复验及六目标、缓存恢复结果 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查与本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)、[六目标与缓存基线](../verification/evidence/w00/2026-10-27/ci/README.md)通过；[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)待远端复验 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

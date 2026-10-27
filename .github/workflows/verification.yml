@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       complete:
-        description: Run complete acceptance, including every target and performance sample.
+        description: Run all configured checks for every desktop target, including performance samples.
         type: boolean
         default: false
 
@@ -13,7 +13,9 @@ permissions:
 
 jobs:
   repository:
+    name: Repository checks
     runs-on: ubuntu-22.04
+    timeout-minutes: 20
     outputs:
       desktop: ${{ steps.affected.outputs.desktop }}
       native: ${{ steps.affected.outputs.native }}
@@ -28,17 +30,23 @@ jobs:
       TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       TURBO_SCM_HEAD: ${{ github.sha }}
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version-file: .node-version
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Restore Turbo task results
+          package-manager-cache: false
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          cache: true
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Restore Turbo cache
         id: turbo-cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
@@ -46,7 +54,7 @@ jobs:
           key: turbo-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}-${{ github.job }}
           restore-keys: |
             turbo-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
-      - name: Select verification from task inputs and dependencies
+      - name: Select checks
         id: affected
         shell: bash
         env:
@@ -87,10 +95,10 @@ jobs:
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
           echo "desktop=${desktop:-false}" >> "$GITHUB_OUTPUT"
-      - name: Check the main commit title
+      - name: Check commit title
         if: github.event_name == 'push'
         run: git log -1 --format=%s | pnpm exec commitlint
-      - name: Check repository inputs
+      - name: Check repository
         shell: bash
         env:
           COMPLETE: ${{ steps.affected.outputs.complete }}
@@ -101,22 +109,23 @@ jobs:
           pnpm lint "${selection[@]}" --log-order=stream
           pnpm format:check
           pnpm test "${selection[@]}" --log-order=stream
-      - name: Prepare Chromium
+      - name: Install Chromium
         if: steps.affected.outputs.consumers == 'true' || steps.affected.outputs.browser == 'true'
         run: pnpm exec playwright install --with-deps chromium
-      - name: Check public package consumers
+      - name: Test public package consumers
         if: steps.affected.outputs.consumers == 'true'
         run: pnpm test:consumers
-      - name: Check common browser interactions
+      - name: Test browser interactions
         if: steps.affected.outputs.browser == 'true'
         run: pnpm desktop:test:browser --reporter=default --reporter=json --outputFile=test-results/browser/results.json
-      - name: Save Turbo task results
-        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      - name: Save Turbo cache
+        if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: .turbo/cache
           key: ${{ steps.turbo-cache.outputs.cache-primary-key }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - name: Upload verification artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: repository-verification
@@ -127,6 +136,7 @@ jobs:
           if-no-files-found: error
 
   desktop:
+    name: Desktop (${{ matrix.target }})
     needs: repository
     if: needs.repository.outputs.desktop == 'true'
     strategy:
@@ -140,22 +150,31 @@ jobs:
           - { target: linux-x64, runner: ubuntu-22.04, arch: x64 }
           - { target: linux-arm64, runner: ubuntu-22.04-arm, arch: arm64 }
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
     env:
       TURBO_TELEMETRY_DISABLED: '1'
-      MACOSX_DEPLOYMENT_TARGET: '13.0'
       DESKTOP_TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version-file: .node-version
           architecture: ${{ matrix.arch }}
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Restore Turbo task results
+          package-manager-cache: false
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          cache: true
+      - name: Configure macOS deployment target
+        if: runner.os == 'macOS'
+        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Restore Turbo cache
         id: turbo-cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
@@ -163,26 +182,26 @@ jobs:
           key: turbo-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}-${{ github.job }}
           restore-keys: |
             turbo-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
-      - name: Prepare Linux desktop tools
+      - name: Install Linux desktop tools
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
-      - name: Prepare development browser
+      - name: Install Chromium
         if: needs.repository.outputs.dev == 'true'
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-      - name: Check candidate adoption and command cancellation on the actual target
+      - name: Test tooling
         if: needs.repository.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
       - name: Check native source
         if: needs.repository.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop native:check
-      - name: Build the actual target
+      - name: Build desktop
         if: needs.repository.outputs.native == 'true' || needs.repository.outputs.e2e == 'true' || needs.repository.outputs.dev == 'true' || needs.repository.outputs.performance == 'true'
         shell: bash
         run: pnpm desktop:build --target "$DESKTOP_TARGET"
-      - name: Check native bindings and database
+      - name: Test native bindings and database
         if: needs.repository.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop test:native
-      - name: Check desktop workflows
+      - name: Test desktop workflows
         shell: bash
         env:
           CHECK_E2E: ${{ needs.repository.outputs.e2e }}
@@ -201,25 +220,26 @@ jobs:
             esac
             if [[ "$selected" == true ]]; then "${prefix[@]}" pnpm --filter @kisaki3/desktop "test:$task"; fi
           done
-      - name: Package the candidate
+      - name: Package desktop
         if: needs.repository.outputs.artifacts == 'true'
         shell: bash
         run: pnpm desktop:package --target "$DESKTOP_TARGET" --test-only
-      - name: Observe the hardened native candidate
+      - name: Test packaged application
         if: needs.repository.outputs.artifacts == 'true' && runner.os != 'Linux'
         run: pnpm desktop:test:artifacts
-      - name: Observe the hardened X11 candidate
+      - name: Test packaged application (X11)
         if: needs.repository.outputs.artifacts == 'true' && runner.os == 'Linux'
         env:
           XDG_SESSION_TYPE: x11
         run: xvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'
-      - name: Save Turbo task results
-        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      - name: Save Turbo cache
+        if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: .turbo/cache
           key: ${{ steps.turbo-cache.outputs.cache-primary-key }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - name: Upload desktop artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: desktop-${{ matrix.target }}
@@ -236,8 +256,9 @@ jobs:
     if: always()
     needs: [repository, desktop]
     runs-on: ubuntu-22.04
+    timeout-minutes: 5
     steps:
-      - name: Require every selected job to finish successfully
+      - name: Check required results
         env:
           REPOSITORY_RESULT: ${{ needs.repository.result }}
           DESKTOP_SELECTED: ${{ needs.repository.outputs.desktop }}

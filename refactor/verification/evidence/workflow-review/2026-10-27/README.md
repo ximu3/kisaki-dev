@@ -1,0 +1,81 @@
+# GitHub workflow 组织与维护复核
+
+本次先按用户要求核对三份 workflow 的职责、调用关系、事件与取消、权限、任务选择、缓存、命名及当前上游版本，再按确认结果实施维护。下述审查结论保留其原时点；维护内容和验证范围见后文。
+
+## 组织判断
+
+三文件划分成立，建议保留。
+
+| 文件 | 实际职责 | 判断 |
+| --- | --- | --- |
+| ci.yml | 接收 PR、main push 和手动事件；决定是否调用代码验证，管理整组验证的取消 | 职责明确，名称准确 |
+| verification.yml | 选择验证范围，执行仓库与六目标任务，汇总必要结果 | 是完整的多 job 验证单元，名称准确 |
+| pr-title.yml | 独立检查当前 PR 标题，使用独立取消组 | 与代码验证具有不同触发与失败语义，应该独立 |
+
+ci.yml 中的调用 job 同时承载 if 和 concurrency，使标题／正文编辑不进入代码验证取消组，也不产生新的 Required checks 结果。这一分层已有实际职责，不能只因当前仅有一个调用方就判定为多余抽象。GitHub 原生支持在可复用工作流的调用 job 上设置这两个字段，见[可复用工作流支持的字段](https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations#supported-keywords-for-jobs-that-call-a-reusable-workflow)。
+
+主流程使用 Turbo 的实际任务输入与依赖图选择范围，未知基线和全局变化回退完整验证；六目标采用实际原生 runner，fail-fast: false 保留各目标结果，Required checks 区分未选择与未完成。Action 使用完整 SHA，PR 使用只读权限，checkout 不保留凭据，声明的 Turbo 保存条件不向 fork PR 开放可信缓存写入。真实桌面与制品任务不重放缓存。这些设计与现行合同及[六目标运行证据](../../w00/2026-10-27/ci/README.md)一致。
+
+没有理由为这次整理增加新的 workflow、复合 action 或通用 CI 脚本。release.yml 等发行工程随 W11 的实际身份和交付流程建立。
+
+## 审查时确认的维护项
+
+1. **升级仍声明 Node 20 的 Action。** 当前 pnpm/action-setup 与 actions/upload-artifact 的固定 SHA 均声明 node20；最新 CI 已记录 runner 强制改用 Node 24 的迁移警告。上游已经提供声明 Node 24 的稳定版本，应该完成兼容核对后更新固定 SHA。这是已有运行证据支持的维护项。其余三项当前已声明 Node 24，不能仅凭版本号较旧就认定不合格。
+2. **缓存主键命中后跳过重复保存。** 仓库与 desktop 的 Save Turbo task results 只检查分支来源，没有检查 restore 的 cache-hit。第二次实际运行成功恢复同一主键后又尝试保存，产生 Unable to reserve cache 提示。建议在两个保存条件中加入 cache-hit != 'true'，保留分支来源条件；restore-keys 的部分命中仍可保存新主键。依据是[实际日志](../../w00/2026-10-27/ci/40454692840/warm-cache/macos-arm64.log)及[cache/save 官方用法](https://github.com/actions/cache/blob/v6.1.0/save/README.md)。
+
+2026-10-27 核对到的上游稳定版本如下，仅列为维护候选，尚未执行升级兼容验证；完整元数据与当前声明运行时见[上游快照](upstream.json)。
+
+| Action | 当前配置注释 | 当前声明运行时 | 上游稳定版 |
+| --- | --- | --- | --- |
+| actions/checkout | v5 | Node 24 | [v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) |
+| actions/setup-node | v5 | Node 24 | [v7.1.0](https://github.com/actions/setup-node/releases/tag/v7.1.0) |
+| actions/cache | v5 | Node 24 | [v6.1.0](https://github.com/actions/cache/releases/tag/v6.1.0) |
+| actions/upload-artifact | v4 | Node 20 | [v7.0.2](https://github.com/actions/upload-artifact/releases/tag/v7.0.2) |
+| pnpm/action-setup | v4 | Node 20 | [v6.1.0](https://github.com/pnpm/action-setup/releases/tag/v6.1.0) |
+
+[GitHub 迁移公告](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)要求 Action 用户升级至支持 Node 24 的版本。Action 自身的运行时与应用固定的 Node／Electron 版本是不同的配置职责。
+
+## 命名与运行边界建议
+
+文件名和 workflow 的 CI、Verification、PR title 可以保留。job 显示名目前混用隐含小写 ID、自动展开的完整矩阵和显式标题；desktop 展示 target、runner、arch，其中架构信息重复。建议给 repository 和 desktop 明确显示名，例如 Repository checks、Desktop (${{ matrix.target }})，内部 job ID 沿用现有名字。
+
+步骤名称可以按实际命令职责收敛：Build the actual target 可改为 Build desktop；两个 Observe the hardened ... candidate 步骤可统一为 Test packaged application 与 Test packaged application (X11)。complete 输入的描述宜改为全部已配置验证，避免 Run complete acceptance 被理解为已经覆盖 W11、全部系统下限和运行后端。名称整理只改善含义表达，不改任务范围。
+
+verify / Required checks 和 PR title 是现行合并规则约定的检查名称。此次未读取或修改远端分支规则；不能因为整理显示名称而直接改动这两个对外名称。完整规则见[PR、提交与 CI](../../../../design/engineering/workspace.md#collaboration)。
+
+目前四类实际 job 均未声明 timeout-minutes，沿用 GitHub 的[默认 360 分钟上限](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idtimeout-minutes)。本轮仓库任务约 4 分 46 秒，最长 desktop 为 Windows arm64，约 22 分 51 秒，此前还发生过需手动取消的长时间类型步骤。建议为仓库、桌面、标题及汇总 job 设置符合实际规模且留足余量的上限；具体预算在实施时确定，不扩展为每个步骤都新增超时。
+
+## 验证与范围
+
+三份文件同时通过 actionlint 1.7.12。核对了固定 SHA 的 action.yml、最新 release 元数据、任务调用、事件条件、已有完整运行和暖缓存日志。本次没有重跑六目标、升级 Action、改变检查名称、修改远端配置或触发新 CI。
+
+审查结论是职责组织与主要工程机制成立，但依赖维护、缓存保存分支和显示命名仍有具体收尾；不能将六目标通过直接表述为工作流维护已经全部完成。既有 W00 运行结果保持其原提交与验证范围。
+
+## 已确认的维护实施
+
+保留三文件分工和 verify / Required checks、PR title 两个检查名称。repository 与 desktop 增加明确显示名，步骤按检查、测试、构建、打包、缓存和上传职责命名；complete 描述改为全部已配置检查。两个 Turbo 保存步骤只在主键未命中且来源允许时保存，前缀恢复仍可以生成新主键。
+
+pnpm/action-setup 升级为 v6.1.0，固定提交 ea17c68df8912ef543352723c149a84f56e3d413；upload-artifact 升级为 v7.0.2，固定提交 cf430e030ddbb5b0abf93d22962f4752f3646cd9。两者均声明 Node 24。上传保留默认 ZIP、多路径公共根、附件名及缺少文件即失败的行为，没有采用新的直接单文件上传模式。其余已使用 Node 24 的三个 Action 保留已验证输入。
+
+安装顺序统一为 checkout → setup-node → pnpm/action-setup → frozen-lockfile 安装。固定 Node 先进入 PATH，pnpm Action 从 packageManager 取得固定版本，负责 pnpm store 缓存；setup-node 的包管理器缓存关闭，避免重复拥有同一缓存。依据是 pnpm 的[安装说明](https://github.com/pnpm/action-setup/tree/v6.1.0)和[固定提交中的实现](https://github.com/pnpm/action-setup/blob/ea17c68df8912ef543352723c149a84f56e3d413/src/install-pnpm/run.ts)：pnpm 11 在 Intel macOS 上没有独立可执行制品，应先提供 Node 22.13 或更新版本。当前固定 Node 24.11.1 满足前置条件；不修改 pnpm 版本，也不增加项目自己的兼容脚本。
+
+| 实际 job | 超时上限 | 取值依据 |
+| --- | --- | --- |
+| Repository checks | 20 分钟 | 完整仓库基线约 5 分钟，保留首次安装和 runner 波动余量 |
+| Desktop | 60 分钟 | 已观察到的最长原生目标约 23 分钟，覆盖准备、真实桌面回归与多格式打包 |
+| PR title | 10 分钟 | 根依赖安装和一次标题检查，避免异常等待沿用六小时默认值 |
+| Required checks | 5 分钟 | 仅检查已有任务结果，不执行构建或安装 |
+
+这些是 CI 作业资源寿命上限，不修改应用启动或交互性能预算，也没有给每个步骤增加独立计时机制。macOS 部署目标继续在依赖安装前的专属步骤设置。
+
+三份 workflow 的 actionlint 1.7.12 与格式检查已通过。Action 配置接口、固定 SHA 的运行时和安装前置已核对；真实安装、六目标运行、附件上传与缓存保存分支等待本轮 CI 复验。
+
+## CI 时长判断
+
+[旧运行的分项时间](timing-before.json)来自 40454692840 第一次完整运行。事件创建到 Required checks 完成为 27 分 49 秒，仓库任务为 4 分 46 秒，六目标并行执行，最长 Windows arm64 为 22 分 51 秒。该目标的桌面工作流耗时 10 分 58 秒、打包 4 分 3 秒，两者约占其任务时间的三分之二；依赖安装另需 2 分 13 秒，浏览器准备 1 分 19 秒。
+
+[DORA 对持续集成的建议](https://dora.dev/capabilities/continuous-integration/)强调每次提交在几分钟内取得反馈。当前约五分钟的仓库反馈与此方向相符；包含六个原生目标、真实桌面、每目标 20 次启动和最终载体的约 28 分钟完整验证有明确成本来源，但不能称为快速的日常 PR 门禁。如果普通修改经常执行同一完整范围，反馈仍偏慢。
+
+当前使用实际任务输入选择范围，但尚未取得一组具有代表性的增量 PR 耗时分布。也不能把单个 macOS arm64 的暖缓存复跑当成整套 CI 从 28 分钟降到几分钟：该目标首次为 3 分 34 秒，复跑为 3 分 41 秒。缓存确实命中，真实运行与打包仍占主要时间，这两次不同 runner 的单次结果不是稳定性能比较。
+
+本轮维护提高配置可读性与运行可靠性，不承诺明显缩短桌面回归和打包。后续若优化时长，应先针对实际耗时最大的准备、开发回归和打包步骤测量；既有用例、平台范围与启动采样预算不因追求一个更短的总时间而缩减。
