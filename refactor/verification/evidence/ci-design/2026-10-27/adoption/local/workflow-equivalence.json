@@ -1,0 +1,13 @@
+{
+  "source": "50bd410d2b4dab9f4d6ec658636fb41b5d7f2786",
+  "resolvedVerificationEquivalent": true,
+  "allowedDifference": "Permanent runner environment step label",
+  "desktopTargets": 6,
+  "developmentTargets": 6,
+  "macosDeploymentTargetDefinitions": 1,
+  "workflows": [
+    "ci.yml",
+    "pr-title.yml",
+    "verification.yml"
+  ]
+}

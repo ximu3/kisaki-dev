@@ -3,8 +3,12 @@ import { promisify } from 'node:util'
 
 const execute = promisify(execFile)
 
-/** Capture a desktop observation, waiting for the owned command's streams after cancellation. */
-async function observe(command: string, args: string[], signal?: AbortSignal): Promise<string> {
+/** Run a native window command and wait for its streams to close after cancellation. */
+async function runWindowCommand(
+  command: string,
+  args: string[],
+  signal?: AbortSignal,
+): Promise<string> {
   signal?.throwIfAborted()
   const result = execute(command, args, { windowsHide: true, encoding: 'utf8', signal })
   const closed = new Promise<void>((resolve) => result.child.once('close', () => resolve()))
@@ -19,7 +23,7 @@ async function observe(command: string, args: string[], signal?: AbortSignal): P
 export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promise<boolean> {
   if (process.platform === 'win32') {
     // Direct .NET access does not depend on PowerShell module discovery in the task environment.
-    const stdout = await observe(
+    const stdout = await runWindowCommand(
       'powershell.exe',
       [
         '-NoProfile',
@@ -32,7 +36,7 @@ export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promis
     return Number(stdout.trim()) > 0
   }
   if (process.platform === 'darwin') {
-    const stdout = await observe(
+    const stdout = await runWindowCommand(
       'osascript',
       [
         '-e',
@@ -47,14 +51,14 @@ export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promis
       'Use the documented native Wayland observation procedure; X11 observation is not a substitute',
     )
   }
-  const stdout = await observe('wmctrl', ['-lp'], signal)
+  const stdout = await runWindowCommand('wmctrl', ['-lp'], signal)
   return stdout.split('\n').some((line) => Number(line.trim().split(/\s+/)[2]) === pid)
 }
 
 /** Request ordinary window closure; cancellation closes the command without undoing a sent request. */
 export async function closeNativeWindow(pid: number, signal?: AbortSignal): Promise<void> {
   if (process.platform === 'win32') {
-    const stdout = await observe(
+    const stdout = await runWindowCommand(
       'powershell.exe',
       [
         '-NoProfile',
@@ -68,7 +72,7 @@ export async function closeNativeWindow(pid: number, signal?: AbortSignal): Prom
       throw new Error('The packaged window did not accept a close request')
     }
   } else if (process.platform === 'darwin') {
-    await observe(
+    await runWindowCommand(
       'osascript',
       [
         '-e',
@@ -77,12 +81,12 @@ export async function closeNativeWindow(pid: number, signal?: AbortSignal): Prom
       signal,
     )
   } else {
-    const stdout = await observe('wmctrl', ['-lp'], signal)
+    const stdout = await runWindowCommand('wmctrl', ['-lp'], signal)
     const line = stdout.split('\n').find((value) => Number(value.trim().split(/\s+/)[2]) === pid)
     const id = line?.trim().split(/\s+/)[0]
     if (!id || !/^0x[0-9a-f]+$/i.test(id)) {
       throw new Error('The packaged window is no longer available')
     }
-    await observe('wmctrl', ['-ic', id], signal)
+    await runWindowCommand('wmctrl', ['-ic', id], signal)
   }
 }

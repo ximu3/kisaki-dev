@@ -46,7 +46,8 @@ jobs:
           cache: true
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Record measurement host
+      - &runner-environment
+        name: Record runner environment
         shell: bash
         run: |-
           mkdir -p test-results/verification
@@ -102,6 +103,7 @@ jobs:
           if-no-files-found: error
   repository:
     name: Repository checks
+    needs: select
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     env:
@@ -126,11 +128,7 @@ jobs:
           cache: true
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Record measurement host
-        shell: bash
-        run: |-
-          mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+      - *runner-environment
       - name: Restore Turbo cache
         id: turbo-cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
@@ -179,14 +177,13 @@ jobs:
             clients/desktop/app/test-results/browser/
             artifacts/packages/
           if-no-files-found: error
-    needs: select
   desktop:
     name: Desktop (${{ matrix.target }})
     needs: select
     if: needs.select.outputs.desktop == 'true'
     strategy:
       fail-fast: false
-      matrix: &desktop-targets1
+      matrix: &desktop-targets
         include:
           - target: windows-x64
             runner: windows-2025
@@ -226,7 +223,8 @@ jobs:
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
         with:
           cache: true
-      - name: Configure macOS deployment target
+      - &macos-deployment-target
+        name: Configure macOS deployment target
         if: runner.os == 'macOS'
         run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
       - name: Install dependencies
@@ -240,11 +238,7 @@ jobs:
           restore-keys: |
             turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-
             turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
-      - name: Record measurement host
-        shell: bash
-        run: |-
-          mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+      - *runner-environment
       - name: Install Linux desktop tools
         if: runner.os == 'Linux' && (needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
@@ -327,7 +321,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix: *desktop-targets1
+      matrix: *desktop-targets
     env:
       TURBO_TELEMETRY_DISABLED: '1'
       DESKTOP_TARGET: ${{ matrix.target }}
@@ -346,16 +340,10 @@ jobs:
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
         with:
           cache: true
-      - name: Configure macOS deployment target
-        if: runner.os == 'macOS'
-        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - *macos-deployment-target
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Record measurement host
-        shell: bash
-        run: |-
-          mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+      - *runner-environment
       - name: Restore Turbo cache
         id: turbo-cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25

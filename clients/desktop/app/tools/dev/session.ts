@@ -40,7 +40,7 @@ export interface DevelopmentOptions {
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/** Start a development session; readers receive only complete private generations. */
+/** Start a development session and publish only complete private generations to its readers. */
 export async function startDevelopmentSession(
   options: DevelopmentOptions = {},
 ): Promise<DevelopmentSession> {

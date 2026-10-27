@@ -43,7 +43,9 @@ pnpm desktop:package --target windows-x64
 
 根任务和项目脚本直接调用所属工具。自选任务可使用 `pnpm exec turbo run <task> --filter=<project>`，只读任务计划使用 `--dry=json`。构建在私有候选目录中准备完整结果，成功后替换输出；准备失败或采用前取消时保留原有结果。停止工作流等待所属命令、程序、监听和服务结束。
 
-根 `desktop:test:native`、`desktop:test:e2e`、`desktop:test:dev` 和 `desktop:test:performance` 显式先运行一次 `desktop:build`。应用的测试脚本及对应 Turbo 测试任务消费已准备输入；直接调用这些任务时自行先完成构建。这样可以复用同一候选，也让测试的触发条件按自身风险声明。浏览器任务仍通过依赖图准备公共包，制品测试仍消费已经打包的输入。
+根 `desktop:test:native`、`desktop:test:e2e` 和 `desktop:test:performance` 显式先运行一次 `desktop:build`，再执行所属测试。`desktop:test:dev` 只提前准备原生编译输出，由 Turbo 准备测试所需的公共依赖；开发回归在隔离源码副本内验证真实构建、监听与生命周期。应用测试脚本消费已准备输入，直接调用时自行完成相应准备。浏览器任务通过依赖图准备公共包，制品测试消费已经打包的输入。
+
+根 `desktop:package` 由 Turbo 的本包构建依赖完成准备，独立执行会先构建一次。已完成构建的流程使用 `pnpm --filter @kisaki3/desktop package --target <host-target>` 消费同一输出；入口核对现有 `build.json` 的目标、输入身份、完整文件集合和摘要，不在打包阶段重建。缺失、过时或被改写的构建会使任务失败，原有候选保留。
 
 独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `native:build`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`native:check` 在固定 Rust 工具链下执行格式与 Clippy 检查。
 
@@ -97,9 +99,11 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 正式发布前，在所属项目的[公开开发仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
 
-普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果随仓库验证报告保存。
+普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果单独留存，各执行分支保存自身报告。
 
-CI 先准备固定的 Node，再由 pnpm 官方 Action 安装 packageManager 指定版本并管理依赖存储缓存。Turbo 任务缓存单独恢复和保存，主键已命中时跳过重复保存。macOS 的部署目标在依赖安装前单独设置；作业级超时按现有完整运行耗时留出环境准备与 runner 波动余量，具体值由 workflow 配置拥有，不替代应用性能预算。
+CI 的轻量选择任务完成后，仓库检查、六目标运行／制品验证和六目标开发回归在独立 runner 并行。各分支准备自己消费的环境；Chromium 只在消费者／浏览器检查和开发回归中安装。运行／制品分支为所选检查构建一次，打包复用同一输出。Required checks 核对所有选中任务成功，以及未选中矩阵按依据跳过。
+
+CI 先准备固定的 Node，再由 pnpm 官方 Action 安装 packageManager 指定版本并管理依赖存储缓存。Turbo 缓存按操作系统、架构、Node 和任务职责分组，主键已命中时跳过重复保存。macOS 部署目标在依赖安装前单独设置。反馈目标及统计口径见[工程工作区合同](refactor/design/engineering/workspace.md#ci-feedback)；作业级超时为环境准备与 runner 波动留出余量，由 workflow 配置拥有，不替代反馈目标或应用性能预算。
 
 手动运行 CI 请求完整验收；可复用 Verification 工作流的 `complete` 输入供明确的完整验收调用。初次提交、缺失基线及全局工具链变化也执行完整范围；选择工具失败直接导致检查失败。首次交付和发行前的六目标与主要后端要求保持。`Required checks` 始终运行，并区分有依据的未选择与应执行但未完成的任务。普通 PR 只有读取权限，正式发布和签名凭据不进入这些检查。
 
