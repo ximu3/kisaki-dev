@@ -140,9 +140,9 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       if (!child.pid) throw new Error('Packaged process could not start')
       await expect
         .poll(
-          async () => {
+          async ({ signal }) => {
             if (child.exitCode !== null) throw new Error(`Packaged process exited: ${diagnostic}`)
-            return hasNativeWindow(child.pid!)
+            return hasNativeWindow(child.pid!, signal)
           },
           { timeout: 30_000, interval: 250 },
         )

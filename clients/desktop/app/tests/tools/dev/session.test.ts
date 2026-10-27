@@ -44,7 +44,10 @@ app.once('browser-window-created', (_event, window) => {
     if (process.platform === 'win32') {
       // Native observation launches PowerShell; use the same budget as the artifact checks.
       await expect
-        .poll(() => hasNativeWindow(first.current!.processId), { timeout: 30_000, interval: 250 })
+        .poll(({ signal }) => hasNativeWindow(first.current!.processId, signal), {
+          timeout: 30_000,
+          interval: 250,
+        })
         .toBe(true)
     }
 
