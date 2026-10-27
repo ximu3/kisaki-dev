@@ -1,0 +1,14 @@
+[
+  {
+    "source": ".local/ci-adoption/artifacts-window-observation.log",
+    "path": "artifacts.log",
+    "sha256": "1f60aa4152c7b22ad246996b81ff2966c18c0b1ecbb314c70307b7066ca8783b",
+    "bytes": 869
+  },
+  {
+    "source": "clients/desktop/app/test-results/artifacts/results.json",
+    "path": "results.json",
+    "sha256": "81c5de12364645660176691cfc5823892d89d204e994fc89aa4cea9a42028645",
+    "bytes": 1021
+  }
+]

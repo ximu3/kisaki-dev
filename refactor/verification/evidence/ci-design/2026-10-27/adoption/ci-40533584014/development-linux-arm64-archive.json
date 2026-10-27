@@ -1,0 +1,13 @@
+{
+  "id": 12746674688,
+  "name": "development-linux-arm64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:8efe51cbd3a8d9f10ca26e5a507a623915e473ff99ac20e3afccfe7615bd7272",
+  "bytes": 13162,
+  "reportEntriesCheckedByZipCrc": 7,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-adoption/2026-10-27/40533584014/development-linux-arm64.zip",
+  "sha256": "8efe51cbd3a8d9f10ca26e5a507a623915e473ff99ac20e3afccfe7615bd7272"
+}

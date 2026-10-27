@@ -1,0 +1,108 @@
+{
+  "startedAt": "2026-10-27T15:51:29.995Z",
+  "controllerPid": 5929,
+  "elapsedMs": 12273.829666000005,
+  "observations": [
+    {
+      "elapsedMs": 2058.116265000004,
+      "observation": {
+        "state": "building"
+      }
+    },
+    {
+      "elapsedMs": 4718.751484,
+      "observation": {
+        "state": "ready",
+        "current": {
+          "buildId": "a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-1",
+          "processId": 6152
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 4883.034689,
+      "observation": {
+        "state": "building",
+        "current": {
+          "buildId": "a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-1",
+          "processId": 6152
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 6682.991291000006,
+      "observation": {
+        "state": "failed",
+        "current": {
+          "buildId": "a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-1",
+          "processId": 6152
+        },
+        "rendererUrl": "http://127.0.0.1:46385/",
+        "error": "Tool failed: node (1)"
+      }
+    },
+    {
+      "elapsedMs": 6695.242511000004,
+      "observation": {
+        "state": "building",
+        "current": {
+          "buildId": "a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-1",
+          "processId": 6152
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 9144.353297000001,
+      "observation": {
+        "state": "ready",
+        "current": {
+          "buildId": "5c087cfceb9291f3c05ceaa3777446993b06238ac58d5f554fac22ab170c9a6a",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-3",
+          "processId": 6453
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 9165.775864000003,
+      "observation": {
+        "state": "building",
+        "current": {
+          "buildId": "5c087cfceb9291f3c05ceaa3777446993b06238ac58d5f554fac22ab170c9a6a",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-3",
+          "processId": 6453
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 12048.179393000006,
+      "observation": {
+        "state": "ready",
+        "current": {
+          "buildId": "5c087cfceb9291f3c05ceaa3777446993b06238ac58d5f554fac22ab170c9a6a",
+          "directory": "/tmp/kisaki-dev-workspace-953KH3/clients/desktop/app/out/development/linux-x64/session-nuvwxr/generation-3",
+          "processId": 6453
+        },
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    },
+    {
+      "elapsedMs": 12200.551367,
+      "observation": {
+        "state": "stopped",
+        "rendererUrl": "http://127.0.0.1:46385/"
+      }
+    }
+  ],
+  "output": "e...\nout/development/linux-x64/session-nuvwxr/generation-1/main/entry.js  22.55 kB │ gzip: 6.95 kB\n\n\u001b[32m✓ built in 19ms\u001b[39m\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-1/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB\n\n\u001b[32m✓ built in 8ms\u001b[39m\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-1/preload/player.cjs  0.53 kB │ gzip: 0.31 kB\n\n\u001b[32m✓ built in 7ms\u001b[39m\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-1/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB\n\n\u001b[32m✓ built in 7ms\u001b[39m\n[app] Starting\n[6152:1027/155134.397112:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[6152:1027/155134.408153:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[6152:1027/155134.408325:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[6152:1027/155134.411334:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[app] Native resources loaded\n[app] Electron ready\n[extensions] Host ready\n[6152:1027/155134.504106:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[app] Ready a045d504b629d0d0645895e044a99e010cbc353cc1c775730a628863618ac98b\n\u001b[2m3:51:34 PM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[32mhmr update \u001b[39m\u001b[2m/main/styles.css\u001b[22m\n\n   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/extension-cli, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui\n   • Running build in 7 packages\n   • Remote caching disabled\n\n::group::@kisaki3/appearance:build\ncache hit, replaying logs 4947f5a9d707ef43\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/appearance/tsdown.config.ts \nℹ entry: src/index.ts, src/tokens.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-mlfmZh/index.js     3.87 kB │ gzip: 0.86 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.js    1.00 kB │ gzip: 0.37 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.d.ts  1.20 kB │ gzip: 0.49 kB\nℹ .cache/output-staging/dist-mlfmZh/index.d.ts   0.44 kB │ gzip: 0.23 kB\nℹ 4 files, total: 6.51 kB\n✔ Build complete in 631ms\n::endgroup::\n::group::@kisaki3/desktop-contracts:build\ncache hit, replaying logs 410457644b4699fa\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/desktop-contracts/tsdown.config.ts \nℹ entry: src/index.ts, src/errors.ts, src/development.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-7CpI5f/development.js    5.32 kB │ gzip: 1.46 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.js         0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/index.js          0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/development.d.ts  3.34 kB │ gzip: 1.18 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.d.ts       0.34 kB │ gzip: 0.23 kB\nℹ .cache/output-staging/dist-7CpI5f/index.d.ts        0.11 kB │ gzip: 0.09 kB\nℹ 6 files, total: 9.14 kB\n✔ Build complete in 618ms\n::endgroup::\n::group::@kisaki3/extension-cli:build\ncache hit, replaying logs af5b0be6d5ec0047\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/extension-cli/tsdown.config.ts \nℹ entry: src/config.ts, src/extension.ts\nℹ tsconfig: config/typescript/tsconfig.node.json\nℹ Build start\nℹ .cache/output-staging/dist-KuxeJ4/extension.js    5.44 kB │ gzip: 1.80 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.js       0.18 kB │ gzip: 0.15 kB\nℹ .cache/output-staging/dist-KuxeJ4/extension.d.ts  1.84 kB │ gzip: 0.83 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.d.ts     0.68 kB │ gzip: 0.38 kB\nℹ 4 files, total: 8.14 kB\n✔ Build complete in 1082ms\n::endgroup::\n\u001b[;31m@kisaki3/ui:build\u001b[;0m\ncache miss, executing 76e5fd8c3b68a6e1\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui/tsdown.config.ts \nℹ entry: src/index.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nError: Build failed with 1 error:\n\n\u001b[31m[TSCONFIG_ERROR] \u001b[0mFailed to load tsconfig 'config/typescript/tsconfig.lib.json': EOF while parsing an object at line 1 column 1\n\n    at aggregateBindingErrorsIntoJsError (file:///tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/rolldown@1.2.15/node_modules/rolldown/dist/shared/error-D0SD8_tL.mjs:49:18)\n    at unwrapBindingResult (file:///tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/rolldown@1.2.15/node_modules/rolldown/dist/shared/error-D0SD8_tL.mjs:19:128)\n    at #build (file:///tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/rolldown@1.2.15/node_modules/rolldown/dist/shared/rolldown-CMhwwZPA.mjs:145:34)\n    at async build (file:///tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/rolldown@1.2.15/node_modules/rolldown/dist/index.mjs:46:22)\n    at async Promise.all (index 0)\n    at async buildSingle (/tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/tsdown@0.23.0_@arethetypeswrong+core@0.18.5_publint@0.3.25_tsx@4.23.15_typescript@6.0.3/node_modules/tsdown/dist/build-JVmLFaZt.mjs:820:19)\n    at async Promise.all (index 0)\n    at async buildWithConfigs (/tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/tsdown@0.23.0_@arethetypeswrong+core@0.18.5_publint@0.3.25_tsx@4.23.15_typescript@6.0.3/node_modules/tsdown/dist/build-JVmLFaZt.mjs:767:18)\n    at async build$1 (/tmp/kisaki-dev-workspace-953KH3/node_modules/.pnpm/tsdown@0.23.0_@arethetypeswrong+core@0.18.5_publint@0.3.25_tsx@4.23.15_typescript@6.0.3/node_modules/tsdown/dist/build-JVmLFaZt.mjs:722:9)\n    at async <anonymous> (/tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui/tools/build.ts:16:7) {\n  errors: [Getter/Setter]\n}\n[ELIFECYCLE] Command failed with exit code 1.\n::error::command (/tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui) /home/runner/setup-pnpm/node_modules/.bin/pnpm run build exited (1)\n@kisaki3/ui#build:  ERROR  command (/tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui) /home/runner/setup-pnpm/node_modules/.bin/pnpm run build exited (1)\n\n Tasks:    3 successful, 4 total\nCached:    3 cached, 4 total\n  Time:    1.396s \nFailed:    @kisaki3/ui#build\n\n ERROR  run failed: command  exited (1)\n\n   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/extension-cli, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui\n   • Running build in 7 packages\n   • Remote caching disabled\n\n::group::@kisaki3/desktop-contracts:build\ncache hit, replaying logs 410457644b4699fa\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/desktop-contracts/tsdown.config.ts \nℹ entry: src/index.ts, src/errors.ts, src/development.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-7CpI5f/development.js    5.32 kB │ gzip: 1.46 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.js         0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/index.js          0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/development.d.ts  3.34 kB │ gzip: 1.18 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.d.ts       0.34 kB │ gzip: 0.23 kB\nℹ .cache/output-staging/dist-7CpI5f/index.d.ts        0.11 kB │ gzip: 0.09 kB\nℹ 6 files, total: 9.14 kB\n✔ Build complete in 618ms\n::endgroup::\n::group::@kisaki3/appearance:build\ncache hit, replaying logs 4947f5a9d707ef43\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/appearance/tsdown.config.ts \nℹ entry: src/index.ts, src/tokens.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-mlfmZh/index.js     3.87 kB │ gzip: 0.86 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.js    1.00 kB │ gzip: 0.37 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.d.ts  1.20 kB │ gzip: 0.49 kB\nℹ .cache/output-staging/dist-mlfmZh/index.d.ts   0.44 kB │ gzip: 0.23 kB\nℹ 4 files, total: 6.51 kB\n✔ Build complete in 631ms\n::endgroup::\n::group::@kisaki3/extension-cli:build\ncache hit, replaying logs af5b0be6d5ec0047\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/extension-cli/tsdown.config.ts \nℹ entry: src/config.ts, src/extension.ts\nℹ tsconfig: config/typescript/tsconfig.node.json\nℹ Build start\nℹ .cache/output-staging/dist-KuxeJ4/extension.js    5.44 kB │ gzip: 1.80 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.js       0.18 kB │ gzip: 0.15 kB\nℹ .cache/output-staging/dist-KuxeJ4/extension.d.ts  1.84 kB │ gzip: 0.83 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.d.ts     0.68 kB │ gzip: 0.38 kB\nℹ 4 files, total: 8.14 kB\n✔ Build complete in 1082ms\n::endgroup::\n::group::@kisaki3/ui:build\ncache hit, replaying logs 9da0a667f2830e03\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui/tsdown.config.ts \nℹ entry: src/index.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-Z40bpI/index.js    0.68 kB │ gzip: 0.41 kB\nℹ .cache/output-staging/dist-Z40bpI/index.d.ts  0.37 kB │ gzip: 0.25 kB\nℹ 2 files, total: 1.05 kB\n✔ Build complete in 1068ms\n\u001b[3m\u001b[1m\u001b[34m≈\u001b[39m\u001b[22m\u001b[23m tailwindcss \u001b[34mv4.3.3\u001b[39m\n\nDone in \u001b[32m38ms\u001b[39m\n::endgroup::\n\n Tasks:    4 successful, 4 total\nCached:    4 cached, 4 total\n  Time:    123ms >>> FULL TURBO\n\ninfo: component rust-std is up to date\n    Finished `release` profile [optimized] target(s) in 0.02s\n\u001b[36mvite v8.3.3 \u001b[32mbuilding ssr environment for development...\u001b[36m\u001b[39m\ntransforming...\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\n✓ 2 modules transformed.\n\u001b[36mvite v8.3.3 \u001b[32mbuilding ssr environment for development...\u001b[36m\u001b[39m\ntransforming...\nrendering chunks...\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\n✓ 17 modules transformed.\nout/development/linux-x64/session-nuvwxr/generation-3/extension-host/entry.js  0.35 kB │ gzip: 0.25 kB\n\n\u001b[32m✓ built in 25ms\u001b[39m\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-3/preload/main.cjs  0.53 kB │ gzip: 0.31 kB\n\n\u001b[32m✓ built in 18ms\u001b[39m\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-3/main/entry.js  22.55 kB │ gzip: 6.95 kB\n\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\n\u001b[32m✓ built in 24ms\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-3/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB\n\n\u001b[32m✓ built in 9ms\u001b[39m\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-3/preload/player.cjs  0.53 kB │ gzip: 0.31 kB\n\n\u001b[32m✓ built in 8ms\u001b[39m\n\u001b[36mvite v8.3.3 \u001b[32mbuilding client environment for development...\u001b[36m\u001b[39m\ntransforming...\n✓ 3 modules transformed.\nrendering chunks...\ncomputing gzip size...\nout/development/linux-x64/session-nuvwxr/generation-3/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB\n\n\u001b[32m✓ built in 7ms\u001b[39m\n[extensions] Host stopped\n[app] Shutdown complete\n[app] Starting\n[6453:1027/155138.953236:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[6453:1027/155138.964711:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[6453:1027/155138.964986:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[6453:1027/155138.968153:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[app] Native resources loaded\n[app] Electron ready\n[extensions] Host ready\n[6453:1027/155139.068932:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[app] Ready 5c087cfceb9291f3c05ceaa3777446993b06238ac58d5f554fac22ab170c9a6a\n\n   • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/extension-cli, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui\n   • Running build in 7 packages\n   • Remote caching disabled\n\n::group::@kisaki3/desktop-contracts:build\ncache hit, replaying logs 410457644b4699fa\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/desktop-contracts/tsdown.config.ts \nℹ entry: src/index.ts, src/errors.ts, src/development.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-7CpI5f/development.js    5.32 kB │ gzip: 1.46 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.js         0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/index.js          0.01 kB │ gzip: 0.03 kB\nℹ .cache/output-staging/dist-7CpI5f/development.d.ts  3.34 kB │ gzip: 1.18 kB\nℹ .cache/output-staging/dist-7CpI5f/errors.d.ts       0.34 kB │ gzip: 0.23 kB\nℹ .cache/output-staging/dist-7CpI5f/index.d.ts        0.11 kB │ gzip: 0.09 kB\nℹ 6 files, total: 9.14 kB\n✔ Build complete in 618ms\n::endgroup::\n::group::@kisaki3/appearance:build\ncache hit, replaying logs 4947f5a9d707ef43\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/appearance/tsdown.config.ts \nℹ entry: src/index.ts, src/tokens.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-mlfmZh/index.js     3.87 kB │ gzip: 0.86 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.js    1.00 kB │ gzip: 0.37 kB\nℹ .cache/output-staging/dist-mlfmZh/tokens.d.ts  1.20 kB │ gzip: 0.49 kB\nℹ .cache/output-staging/dist-mlfmZh/index.d.ts   0.44 kB │ gzip: 0.23 kB\nℹ 4 files, total: 6.51 kB\n✔ Build complete in 631ms\n::endgroup::\n::group::@kisaki3/extension-cli:build\ncache hit, replaying logs af5b0be6d5ec0047\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/extension-cli/tsdown.config.ts \nℹ entry: src/config.ts, src/extension.ts\nℹ tsconfig: config/typescript/tsconfig.node.json\nℹ Build start\nℹ .cache/output-staging/dist-KuxeJ4/extension.js    5.44 kB │ gzip: 1.80 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.js       0.18 kB │ gzip: 0.15 kB\nℹ .cache/output-staging/dist-KuxeJ4/extension.d.ts  1.84 kB │ gzip: 0.83 kB\nℹ .cache/output-staging/dist-KuxeJ4/config.d.ts     0.68 kB │ gzip: 0.38 kB\nℹ 4 files, total: 8.14 kB\n✔ Build complete in 1082ms\n::endgroup::\n\u001b[2m3:51:41 PM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[32mhmr update \u001b[39m\u001b[2m/main/styles.css\u001b[22m\n::group::@kisaki3/ui:build\ncache miss, executing 1dd359416d066cb7\n$ tsx tools/build.ts\nℹ config file: /tmp/kisaki-dev-workspace-953KH3/clients/desktop/packages/ui/tsdown.config.ts \nℹ entry: src/index.ts\nℹ tsconfig: config/typescript/tsconfig.lib.json\nℹ Build start\nℹ .cache/output-staging/dist-jGyMKS/index.js    0.70 kB │ gzip: 0.42 kB\nℹ .cache/output-staging/dist-jGyMKS/index.d.ts  0.37 kB │ gzip: 0.25 kB\nℹ 2 files, total: 1.07 kB\n✔ Build complete in 832ms\n\u001b[3m\u001b[1m\u001b[34m≈\u001b[39m\u001b[22m\u001b[23m tailwindcss \u001b[34mv4.3.3\u001b[39m\n\nDone in \u001b[32m34ms\u001b[39m\n::endgroup::\n\n Tasks:    4 successful, 4 total\nCached:    3 cached, 4 total\n  Time:    2.455s \n\n[extensions] Host stopped\n[app] Shutdown complete\n",
+  "exitCode": 0,
+  "signalCode": null
+}
