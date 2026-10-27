@@ -6,15 +6,17 @@
 
 截至 2026-10-27：
 
-| 范围                             | 状态                                      |
-| -------------------------------- | ----------------------------------------- |
+| 范围                                                                | 状态   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口 | workflow 维护后的六目标首轮已通过；Apple Silicon 启动采样在两次暖缓存复跑中超时，待定位与复验 |
+| W00 工程与验证入口               | PR #1 已合并；监听就绪与 Electron 关闭失败均已定位，按用户确认采用 Chokidar 6 与 Electron 45，正式实现及六目标复验进行中 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
 
-[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)保持原范围。维护后的提交 0abf572 首轮六目标成功，但后续两次 Apple Silicon 启动采样超时仍待定位，见[workflow 维护记录](../verification/evidence/workflow-review/2026-10-27/README.md)。W01 尚未开始。
+[W00](work-packages.md#w00) 的工程任务按确认的[顺序执行约束](../design/engineering/workspace.md#output-access)维护。跨命令协调层已经移除；共享 TypeScript、ESLint 配置与工程函数归入三个私有 workspace 包，项目自行拥有检查入口，CI 使用 GitHub Actions 原生缓存。源码共享入口通过 exports 供固定工程宿主加载，不增加构建前置，应用 `#native` 保留包内唯一映射。[完整本机回归](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)与 12 项隔离缓存验证通过；提交 711d956 的[六目标 CI 与跨运行缓存验证](../verification/evidence/w00/2026-10-27/ci/README.md)保持原范围。维护后的提交 0abf572 首轮六目标成功；诊断提交 18a6346 的六目标及暖缓存复验同样通过，但此前两次 Apple Silicon 采样超时的原因仍未确定，见[workflow 维护记录](../verification/evidence/workflow-review/2026-10-27/README.md)。W01 尚未开始。
+
+用户授权后，[PR #1](https://github.com/ximu3/kisaki-dev/pull/1) 已 Squash 合并为 `1efc7ad`，文件树与已验证的 `18a6346` 相同，原分支已删除。随后主线 CI 的 renderer 文件监听回归失败，六目标未开始；当前不能以合并前的成功代替这次失败。[可靠性与反馈时间探索](../verification/evidence/ci-exploration/2026-10-27/README.md)已确认 Linux 追加输入尚未完成扫描时会漏掉首次修改；独立 Chokidar 6 原型通过五次原回归，用户已确认调整监听归属。开发副本缺少有效 Git HEAD 导致 Turbo 将构建日志纳入输入的问题已修正，Electron 首次导入准备也已显式化；本机以及新的 Apple Silicon、Windows arm64 runner 均通过七项开发回归，后两者确认从无 Electron 分发目录的状态准备成功。Apple Silicon 两次关闭失败捕获了 Electron 内部 visibilityChanged 访问已销毁对象的相同异常，默认错误对话框阻塞退出；用户已确认升级到移除该回调的 Electron 45.0.0。当前正式实现的本体类型检查与十九项常规测试通过，六目标复验待完成。六目标、采样预算和正常退出要求保持不变。
 
 Kisaki 的项目级临时私有仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，保持 private、未归档及 main 默认分支。仓库身份、现有分支提交、PR、工作流和所核对的 Actions 运行均保留，旧 Git 与 API 地址仍可访问，见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址。
 
@@ -50,31 +52,31 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 随后 a20c3f0 的[完整 CI](../verification/evidence/w00/2026-10-27/ci/README.md)通过仓库检查、消费者与浏览器，Linux fixture 清理修正获得实际通过结果；Windows x64 和两个 macOS 目标完成原生、四窗口、开发、20 次启动测量及最终载体验证。两个 Linux 目标因 Xvfb 内未运行窗口管理器而失败，Windows arm64 因原生窗口观察的默认短超时失败；相关环境与观察预算已修正。构建身份同时排除工具包生成的测试报告，现有回归通过。当次三个目标失败及其日志保持原记录。
 
-当前提交 711d956 的[运行 40454692840](../verification/evidence/w00/2026-10-27/ci/README.md)已通过仓库、六目标和 Required checks 共八项任务。各目标均执行五项候选／取消、原生与 SQLite、四窗口、七项开发场景、20 次启动测量及最终载体验证；Windows x64 的跨文件系统移动通过，其余五个 runner 因测试根处于同一文件系统明确跳过。七份原始附件、八个公共包与六目标共 26 个候选相关文件已归档核对，六目标的构建身份一致。随后在新 macOS arm64 runner 复跑，构建与打包分别实际命中四个公共包任务，桌面任务与真实运行检查重新执行通过，Required checks 再次成功。W00 当前范围的 A24、A26、A28、A31 及缓存证据已补齐；没有推进 W01、正式签署、合并、发布或部署。
+提交 711d956 的[运行 40454692840](../verification/evidence/w00/2026-10-27/ci/README.md)已通过仓库、六目标和 Required checks 共八项任务。各目标均执行五项候选／取消、原生与 SQLite、四窗口、七项开发场景、20 次启动测量及最终载体验证；Windows x64 的跨文件系统移动通过，其余五个 runner 因测试根处于同一文件系统明确跳过。七份原始附件、八个公共包与六目标共 26 个候选相关文件已归档核对，六目标的构建身份一致。随后在新 macOS arm64 runner 复跑，构建与打包分别实际命中四个公共包任务，桌面任务与真实运行检查重新执行通过，Required checks 再次成功。W00 当前范围的 A24、A26、A28、A31 及缓存证据已补齐；没有推进 W01、正式签署、合并、发布或部署。
 
 随后按用户确认，将 MACOSX_DEPLOYMENT_TARGET 从 desktop 任务的公共环境移到 pnpm install 之前的 macOS 条件步骤，通过 GitHub Actions 原生 GITHUB_ENV 供后续步骤继承。13.0 在工作流中仍只定义一次，Windows／Linux 任务不再设置该变量。此次仅收窄 CI 配置作用域，actionlint 1.7.12、Prettier 和差异检查通过；未提交、推送或触发新的远端 CI，既有六目标证据仍对应 711d956。
 
 随后完成[GitHub workflow 组织与维护复核](../verification/evidence/workflow-review/2026-10-27/README.md)：三份文件的职责与事件／取消边界成立，完整 SHA、只读权限、任务选择、六目标及汇总设计保留；确认两个旧 Action 的 Node 20 迁移提示和缓存主键命中后的重复保存需要维护，job／step 显示命名与任务超时另有整理建议。三份 workflow 通过 actionlint；本次仅审查和记录，未升级依赖、调整这些设计或触发新 CI，既有六目标结果保持原范围。
 
-用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。首次 v6.1.0 在 Intel macOS 的 pnpm 二次自更新失败；统一改用 Node 24 的 v5.0.0 直接安装目标包后，0abf572 的首轮仓库、六目标和汇总全部通过，七份附件及实际候选均归档核对。完整等待 28 分 53 秒，扣除初始排队后实际验证 26 分 55 秒，仓库反馈 4 分 42 秒。随后两次新 Apple Silicon runner 均恢复主键并命中四个公共包构建任务，但性能用例及 worker 收尾各超时 180 秒，未到达打包与成功后的缓存保存分支。失败报告没有具体等待点，已添加 Playwright 原生采样步骤记录；本机 Windows 20 次采样与 100 个阶段记录、类型及 lint 通过，macOS 故障尚未定位。六个构建目标保持不变。
+用户确认后已实施[workflow 维护](../verification/evidence/workflow-review/2026-10-27/README.md)：两项旧运行时 Action 升级为 Node 24 版本并固定完整 SHA；安装按 Node → pnpm 排序，pnpm 依赖缓存由 pnpm Action 单独管理；Turbo 主键命中时跳过保存，job／step 名称按职责统一，实际 job 增加与实测规模相称的超时。首次 v6.1.0 在 Intel macOS 的 pnpm 二次自更新失败；统一改用 Node 24 的 v5.0.0 直接安装目标包后，0abf572 的首轮仓库、六目标和汇总全部通过，七份附件及实际候选均归档核对。完整等待 28 分 53 秒，扣除初始排队后实际验证 26 分 55 秒，仓库反馈 4 分 42 秒。随后两次新 Apple Silicon runner 均恢复主键并命中四个公共包构建任务，但性能用例及 worker 收尾各超时 180 秒，未到达打包与成功后的缓存保存分支。失败报告没有具体等待点，已添加 Playwright 原生采样步骤记录；本机 Windows 20 次采样与 100 个阶段记录、类型及 lint 通过，诊断提交 18a6346 随后通过完整六目标，等待 23 分 37 秒，仓库反馈 2 分 9 秒；新 Apple Silicon runner 的同提交暖缓存复验在 3 分 30 秒内通过，八次公共包任务 hash 相同，成功后的 Save Turbo cache 正确跳过。历史超时根因仍未确定，后续成功不计作修复。另已确认 Windows arm64 的 Turbo 全局版本警告源自上游将 x64 二进制放入 arm64 包后，本地包定位仍按 x64 查找；实际应用制品保持 arm64。六个构建目标保持不变。
 
 <a id="environments"></a>
 
 ## 验证环境
 
 | 资源         | 已确认范围                                                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡 |
 | 本地执行条件 | 普通用户权限的交互桌面                                                                                      |
-| 标准 CI | 当前 `711d956` 的[仓库与六目标运行](../verification/evidence/w00/2026-10-27/ci/README.md)全部通过；同一提交在新 macOS arm64 runner 上完成缓存恢复、任务命中与完整目标复跑 |
+| 标准 CI      | `711d956` 与 `18a6346` 均有六目标及 Apple Silicon 暖缓存通过证据；合并后的 `1efc7ad` 主线运行在常规文件监听回归失败，当前修正进展见[可靠性探索](../verification/evidence/ci-exploration/2026-10-27/README.md) |
 
 <a id="progress"></a>
 
 ## 工作包与独立项目
 
 | 范围                                                                | 状态   |
-| ------------------------------------------------------------------- | ------ |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | [声明检查与本机回归](../verification/evidence/declaration-checks/2026-10-27/README.md)、六目标首轮通过；[workflow 维护中的启动采样超时](../verification/evidence/workflow-review/2026-10-27/README.md)待定位与复验 |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 既有[六目标及暖缓存证据](../verification/evidence/workflow-review/2026-10-27/README.md)保留；合并后文件监听失败与 Apple Silicon 关闭卡住正在[定位和修正](../verification/evidence/ci-exploration/2026-10-27/README.md)，未记作本轮完成 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

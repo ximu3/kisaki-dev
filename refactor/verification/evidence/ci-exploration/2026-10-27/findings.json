@@ -1,0 +1,231 @@
+{
+  "baseline": "1efc7ad8c22824c1b5ea727ebd14bfc151eaf114",
+  "differences": [
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/appearance#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/desktop-contracts#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/eslint-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/extension-cli#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/tooling#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/typescript-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "copied-directory",
+      "task": "@kisaki3/ui#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/appearance#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/desktop-contracts#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/eslint-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/extension-cli#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/tooling#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/typescript-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-initialized",
+      "task": "@kisaki3/ui#build",
+      "stable": false,
+      "changedInputs": [
+        ".turbo/turbo-build.log"
+      ]
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/appearance#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/desktop-contracts#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/eslint-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/extension-cli#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/tooling#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/typescript-config#build",
+      "stable": true,
+      "changedInputs": []
+    },
+    {
+      "mode": "git-committed",
+      "task": "@kisaki3/ui#build",
+      "stable": true,
+      "changedInputs": []
+    }
+  ],
+  "buildTimings": [
+    {
+      "mode": "copied-directory",
+      "attempt": 0,
+      "elapsedMs": 5428.634100000001,
+      "cached": "Cached:    0 cached, 4 total"
+    },
+    {
+      "mode": "copied-directory",
+      "attempt": 1,
+      "elapsedMs": 5135.051299999999,
+      "cached": "Cached:    0 cached, 4 total"
+    },
+    {
+      "mode": "git-initialized",
+      "attempt": 0,
+      "elapsedMs": 5091.764099999997,
+      "cached": "Cached:    0 cached, 4 total"
+    },
+    {
+      "mode": "git-initialized",
+      "attempt": 1,
+      "elapsedMs": 5101,
+      "cached": "Cached:    0 cached, 4 total"
+    },
+    {
+      "mode": "git-committed",
+      "attempt": 0,
+      "elapsedMs": 5510.919100000001,
+      "cached": "Cached:    0 cached, 4 total"
+    },
+    {
+      "mode": "git-committed",
+      "attempt": 1,
+      "elapsedMs": 761.806700000001,
+      "cached": "Cached:    4 cached, 4 total"
+    }
+  ],
+  "phaseTimings": {
+    "prepareMs": 15469.92,
+    "firstReadyMs": 23306.78,
+    "warmReadyMs": 20821.379999999997
+  },
+  "watcherAttempts": [
+    {
+      "attempt": 1,
+      "success": false,
+      "failed": 1,
+      "failure": [
+        "Error: Expected public-package notification for package/config/typescript/tsconfig.lib.json: expected 0 to be greater than 0\n    at Proxy.__VITEST_POLL_CHAIN__ (file:///home/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/vitest@5.0.5_@types+node@24.19.2_@vitest+browser-playwright@5.0.5_@vitest+ui@5.0.5_vite_e419eacdbf60a84507074798097ae8b6/node_modules/vitest/dist/chunks/index.aTZaPVhf.js:7579:47)\n    at /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/tools/renderer.test.ts:88:8\n    at file:///home/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/vitest@5.0.5_@types+node@24.19.2_@vitest+browser-playwright@5.0.5_@vitest+ui@5.0.5_vite_e419eacdbf60a84507074798097ae8b6/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2801:20"
+      ]
+    },
+    {
+      "attempt": 2,
+      "success": true,
+      "failed": 0,
+      "failure": []
+    },
+    {
+      "attempt": 3,
+      "success": false,
+      "failed": 1,
+      "failure": [
+        "Error: Expected public-package notification for package/config/typescript/tsconfig.lib.json: expected 0 to be greater than 0\n    at Proxy.__VITEST_POLL_CHAIN__ (file:///home/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/vitest@5.0.5_@types+node@24.19.2_@vitest+browser-playwright@5.0.5_@vitest+ui@5.0.5_vite_e419eacdbf60a84507074798097ae8b6/node_modules/vitest/dist/chunks/index.aTZaPVhf.js:7579:47)\n    at /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/tools/renderer.test.ts:88:8\n    at file:///home/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/vitest@5.0.5_@types+node@24.19.2_@vitest+browser-playwright@5.0.5_@vitest+ui@5.0.5_vite_e419eacdbf60a84507074798097ae8b6/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2801:20"
+      ]
+    },
+    {
+      "attempt": 4,
+      "success": true,
+      "failed": 0,
+      "failure": []
+    },
+    {
+      "attempt": 5,
+      "success": true,
+      "failed": 0,
+      "failure": []
+    }
+  ],
+  "fixedPhaseTimings": {
+    "prepareMs": 11530.07,
+    "firstReadyMs": 13577.77,
+    "warmReadyMs": 8922.989999999998
+  }
+}

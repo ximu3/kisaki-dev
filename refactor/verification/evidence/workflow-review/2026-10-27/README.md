@@ -68,7 +68,7 @@ pnpm/action-setup 升级为 v5.0.0，固定提交 fc06bc1257f339d1d5d8b3a19a8cae
 
 这些是 CI 作业资源寿命上限，不修改应用启动或交互性能预算，也没有给每个步骤增加独立计时机制。macOS 部署目标继续在依赖安装前的专属步骤设置。
 
-三份 workflow 的 actionlint 1.7.12 与格式检查已通过。修正后的真实安装、六目标运行及附件上传已通过，完整结果见后文；缓存主键命中后的保存分支单独复验。
+三份 workflow 的 actionlint 1.7.12 与格式检查已通过。修正后的真实安装、六目标运行及附件上传已通过；同提交的 macOS arm64 暖缓存复验也确认，全部实际检查成功后，主键命中的保存步骤正确跳过。完整结果及历史失败见后文。
 
 ## 安装兼容的实际修正
 
@@ -111,14 +111,30 @@ v6.1.0 的[实现](https://github.com/pnpm/action-setup/blob/ea17c68df8912ef5433
 
 现为每次采样增加 [Playwright 原生 test.step](https://playwright.dev/docs/api/class-test#test-step) 记录，分别标明 launch、window ready、process metrics、close 和 observed processes exit。测量时钟仍位于实际启动与窗口就绪之间；运行代码、关闭方式、采样数和超时不变。本机 Windows 的实际 20 次采样通过，JSON 报告保留 100 个步骤，类型、lint、格式与目标构建通过，见[诊断改动核对](diagnostics/local-validation.json)。这只补足诊断，尚不构成 macOS 故障修复。
 
+诊断提交 18a6346 的[运行 40469205920](https://github.com/ximu3/kisaki-dev/actions/runs/40469205920/attempts/1)首轮通过仓库、六目标和 Required checks 共八项任务，PR title 同样通过，见[核对汇总](ci/40469205920/verification-summary.json)。macOS arm64 的 20 次采样及 100 个阶段均通过，P95 为 365.8 ms，性能用例用时 8.8 秒；指标读取最长 5 ms，关闭最长 245 ms，见[阶段核对](ci/40469205920/macos-arm64-diagnostics.json)与[原始报告](ci/40469205920/macos-arm64-performance.json)。该目标从前缀恢复上一提交的缓存，构建和打包各命中四个公共包任务，随后保存本提交的新主键。
+
+同提交的[第二次运行](https://github.com/ximu3/kisaki-dev/actions/runs/40469205920/attempts/2)仅复跑 macOS arm64 和汇总检查。新 runner 在 3 分 30 秒内完成全部检查，20 次采样用时 8.1 秒；准确恢复首轮保存的主键，构建与打包各四个公共包任务的八个 hash 与首轮相同。Save Turbo cache 在全部检查成功后正确跳过，日志没有缓存占用警告，Required checks 成功。其余六个任务的开始与结束时间与首轮相同，见[缓存复验](ci/40469205920/warm-cache/attempt-2/cache-recovery.json)、原始日志和运行元数据。缓存保存条件的正常命中分支已验证；两次历史采样超时的根因仍未确定，新增诊断步骤与后续成功不计作故障修复。
+
+本轮保存七份远端附件的元数据，并下载、核对仓库与 macOS arm64 的首轮附件。八包摘要及应用源码 buildId 与 0abf572 首轮相同；其余五目标和暖缓存的重复候选沿用此前完整候选证据，同时保留本轮各任务原始日志与远端附件身份。没有将未下载的重复附件计作本地归档。
+
+## Windows arm64 的 Turbo 本地定位警告
+
+用户指出的 No locally installed turbo / Using globally installed version (2.11.10) 出现在 Windows arm64 的构建与打包步骤，其他五目标没有该警告。该 runner 的依赖安装日志已明确记录 turbo 2.11.10，与根清单和锁文件一致。
+
+锁定版本的[官方发布脚本](https://github.com/vercel/turborepo/blob/v2.11.10/.github/workflows/turborepo-release.yml#L604-L612)将 Windows x64 程序复制为 Windows arm64 包。实际下载 @turbo/windows-arm64@2.11.10、核对 npm SHA-512 后，其 turbo.exe 的 PE Machine 为 0x8664，确认是 x64 程序，见[文件核对](turbo-windows-arm64.json)。Node 启动器按主机架构选择 arm64 包；运行中的 x64 程序再按[编译目标](https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/turbo_state.rs)查找 windows-64 本地包，于是[本地定位](https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/local_turbo_state.rs)失败。[后续分支](https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/run.rs#L387-L440)继续执行当前程序，同时将其称为 globally installed。
+
+这是上游 Windows arm64 发行方式与自身定位逻辑不一致造成的误导性警告。当前任务仍使用仓库固定的 2.11.10，应用打包日志明确为 Electron arch=arm64。该上游告警保留记录，六目标安装方式和应用目标不变。
+
 ## CI 时长判断
 
 [维护后分项时间](timing-after.json)对应上述首轮完整运行：事件创建到 Required checks 完成为 28 分 53 秒，其中初始排队 1 分 58 秒用于等待被取代的运行收尾；从首个 job 开始到汇总完成为 26 分 55 秒。仓库反馈为 4 分 42 秒。最长 Windows arm64 为 22 分 3 秒，其中桌面工作流 11 分 19 秒、打包 4 分 5 秒，合计约占该目标的 70%。
 
 [维护前基线](timing-before.json)为整套 27 分 49 秒、仓库 4 分 46 秒、Windows arm64 22 分 51 秒。两轮整体仍处于相近规模，不同 runner、网络准备、缓存与排队条件不能作为受控性能比较；不能把更换 Action 或某个目标变快直接解释为稳定提速。job 时长之和另有记录，它既不是整套等待时间，也不是计费分钟。
 
-[DORA 对持续集成的建议](https://dora.dev/capabilities/continuous-integration/)强调每次提交在几分钟内取得反馈，快速测试约十分钟为上限，并建议将更长的检查放入分阶段的交付流程。当前约五分钟的仓库反馈与此方向相符；包含六个原生目标、真实桌面、每目标 20 次启动和最终载体的约 27 分钟实际验证有明确成本来源，但不能称为快速的日常 PR 门禁。如果普通修改经常执行同一完整范围，反馈仍偏慢。
+只增加采样诊断后的[完整运行](timing-diagnostics.json)为 23 分 37 秒，初始排队 2 秒、实际执行 23 分 35 秒；仓库检查 2 分 9 秒，大量类型、lint 与包任务命中缓存。Windows arm64 仍最长，为 21 分 17 秒，其中桌面场景 11 分 17 秒、打包 3 分 52 秒，两项约占该目标的 71%。这轮验证了诊断用例与完整工作流，未改变实际桌面覆盖；其较短等待同时受到缓存、准备和 runner 差异影响。
 
-当前使用实际任务输入选择范围，但尚未取得一组具有代表性的增量 PR 耗时分布。也不能把单个 macOS arm64 的暖缓存复跑当成整套 CI 从 28 分钟降到几分钟：该目标首次为 3 分 34 秒，复跑为 3 分 41 秒。缓存确实命中，真实运行与打包仍占主要时间，这两次不同 runner 的单次结果不是稳定性能比较。
+[DORA 对持续集成的建议](https://dora.dev/capabilities/continuous-integration/)强调每次提交在几分钟内取得反馈，快速测试约十分钟为上限，并建议将更长的检查放入分阶段的交付流程。当前约两至五分钟的仓库反馈与此方向相符；包含六个原生目标、真实桌面、每目标 20 次启动和最终载体的约 24 至 27 分钟实际验证有明确成本来源，但不能称为快速的日常 PR 门禁。如果普通修改经常执行同一完整范围，反馈仍偏慢。
+
+当前使用实际任务输入选择范围，但尚未取得一组具有代表性的增量 PR 耗时分布。也不能把单个 macOS arm64 的暖缓存复跑当成整套 CI 从 28 分钟降到几分钟：维护前提交 711d956 的[缓存复验](../../w00/2026-10-27/ci/40454692840/cache-recovery.json)中，该目标首次为 3 分 34 秒，复跑为 3 分 41 秒。缓存确实命中，真实运行与打包仍占主要时间，这两次不同 runner 的单次结果不是稳定性能比较。
 
 本轮维护提高配置可读性与运行可靠性，不承诺明显缩短桌面回归和打包。后续若优化时长，应先针对实际耗时最大的准备、开发回归和打包步骤测量；既有用例、平台范围与启动采样预算不因追求一个更短的总时间而缩减。

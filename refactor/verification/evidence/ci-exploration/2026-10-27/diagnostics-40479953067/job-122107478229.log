@@ -1,0 +1,646 @@
+﻿2026-10-27T09:19:59.2609658Z Current runner version: '2.338.0'
+2026-10-27T09:19:59.2696168Z ##[group]Runner Image Provisioner
+2026-10-27T09:19:59.2697320Z Hosted Compute Agent
+2026-10-27T09:19:59.2698121Z Version: 20261021.618
+2026-10-27T09:19:59.2699047Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T09:19:59.2699985Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T09:19:59.2701265Z Worker ID: {322e7d17-44d8-42e2-914d-42be1c1bf222}
+2026-10-27T09:19:59.2702234Z Region: westus3
+2026-10-27T09:19:59.2702978Z Cloud: Azure
+2026-10-27T09:19:59.2703780Z ##[endgroup]
+2026-10-27T09:19:59.2705937Z ##[group]Operating System
+2026-10-27T09:19:59.2706831Z Ubuntu
+2026-10-27T09:19:59.2707546Z 22.04.5
+2026-10-27T09:19:59.2708236Z LTS
+2026-10-27T09:19:59.2708939Z ##[endgroup]
+2026-10-27T09:19:59.2709666Z ##[group]Runner Image
+2026-10-27T09:19:59.2710492Z Image: ubuntu-22.04
+2026-10-27T09:19:59.2732093Z Version: 20261012.322.1
+2026-10-27T09:19:59.2734034Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-27T09:19:59.2736139Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-27T09:19:59.2737402Z ##[endgroup]
+2026-10-27T09:19:59.2738937Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T09:19:59.2742294Z Contents: read
+2026-10-27T09:19:59.2743168Z Metadata: read
+2026-10-27T09:19:59.2743917Z ##[endgroup]
+2026-10-27T09:19:59.2746850Z Secret source: Actions
+2026-10-27T09:19:59.2748072Z Cache mode: write
+2026-10-27T09:19:59.2749303Z Prepare workflow directory
+2026-10-27T09:19:59.3327592Z Prepare all required actions
+2026-10-27T09:19:59.3399756Z Getting action download info
+2026-10-27T09:19:59.7317699Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T09:19:59.9188078Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T09:20:00.1443023Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T09:20:00.9259409Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T09:20:01.7027579Z Complete job name: Linux watcher observations
+2026-10-27T09:20:01.7777586Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T09:20:01.7778371Z with:
+2026-10-27T09:20:01.7778792Z   persist-credentials: false
+2026-10-27T09:20:01.7779214Z   repository: ximu3/kisaki-dev
+2026-10-27T09:20:01.7782642Z   token: ***
+2026-10-27T09:20:01.7783000Z   ssh-strict: true
+2026-10-27T09:20:01.7783390Z   ssh-user: git
+2026-10-27T09:20:01.7783742Z   clean: true
+2026-10-27T09:20:01.7784155Z   sparse-checkout-cone-mode: true
+2026-10-27T09:20:01.7784557Z   fetch-depth: 1
+2026-10-27T09:20:01.7784891Z   fetch-tags: false
+2026-10-27T09:20:01.7785298Z   show-progress: true
+2026-10-27T09:20:01.7785684Z   lfs: false
+2026-10-27T09:20:01.7786042Z   submodules: false
+2026-10-27T09:20:01.7786418Z   set-safe-directory: true
+2026-10-27T09:20:01.7786811Z   allow-unsafe-pr-checkout: false
+2026-10-27T09:20:01.7787449Z ##[endgroup]
+2026-10-27T09:20:02.2875535Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T09:20:02.2878912Z ##[group]Getting Git version info
+2026-10-27T09:20:02.2880351Z Working directory is '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T09:20:02.2882381Z [command]/usr/bin/git version
+2026-10-27T09:20:02.2883336Z git version 2.55.0
+2026-10-27T09:20:02.2886365Z ##[endgroup]
+2026-10-27T09:20:02.2893342Z Temporarily overriding HOME='/home/runner/work/_temp/cf3becdb-4a0e-4ca9-9fb1-0ca69b31445e' before making global git config changes
+2026-10-27T09:20:02.2895118Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T09:20:02.2896462Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:20:02.2898985Z Deleting the contents of '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T09:20:02.2900392Z ##[group]Initializing the repository
+2026-10-27T09:20:02.2902006Z [command]/usr/bin/git init /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:20:02.2903289Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T09:20:02.2904476Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T09:20:02.2905569Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T09:20:02.2906468Z hint: call:
+2026-10-27T09:20:02.2907052Z hint:
+2026-10-27T09:20:02.2907831Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T09:20:02.2908631Z hint:
+2026-10-27T09:20:02.2909808Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T09:20:02.2911013Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T09:20:02.2912187Z hint:
+2026-10-27T09:20:02.2912851Z hint: 	git branch -m <name>
+2026-10-27T09:20:02.2913530Z hint:
+2026-10-27T09:20:02.2914456Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T09:20:02.2915697Z Initialized empty Git repository in /home/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T09:20:02.2918608Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T09:20:02.3004564Z ##[endgroup]
+2026-10-27T09:20:02.3018318Z ##[group]Disabling automatic garbage collection
+2026-10-27T09:20:02.3019478Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T09:20:02.3081904Z ##[endgroup]
+2026-10-27T09:20:02.3083034Z ##[group]Setting up auth
+2026-10-27T09:20:02.3084292Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:20:02.3132345Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:20:02.3944588Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:20:02.4013347Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:20:02.4318417Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:20:02.4352064Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:20:02.4544835Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T09:20:02.4582447Z ##[endgroup]
+2026-10-27T09:20:02.4583124Z ##[group]Fetching the repository
+2026-10-27T09:20:02.4599496Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5b5049804842d7a0eb0998952fa85a44e1090956:refs/remotes/origin/research/ci-reliability-diagnostics
+2026-10-27T09:20:03.9966057Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T09:20:03.9969702Z  * [new ref]         5b5049804842d7a0eb0998952fa85a44e1090956 -> origin/research/ci-reliability-diagnostics
+2026-10-27T09:20:03.9984011Z ##[endgroup]
+2026-10-27T09:20:03.9984771Z ##[group]Determining the checkout info
+2026-10-27T09:20:03.9985387Z ##[endgroup]
+2026-10-27T09:20:03.9985802Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T09:20:04.0025183Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T09:20:04.0058906Z ##[group]Checking out the ref
+2026-10-27T09:20:04.0064337Z [command]/usr/bin/git checkout --progress --force -B research/ci-reliability-diagnostics refs/remotes/origin/research/ci-reliability-diagnostics
+2026-10-27T09:20:04.1952237Z Switched to a new branch 'research/ci-reliability-diagnostics'
+2026-10-27T09:20:04.1953184Z branch 'research/ci-reliability-diagnostics' set up to track 'origin/research/ci-reliability-diagnostics'.
+2026-10-27T09:20:04.1955336Z ##[endgroup]
+2026-10-27T09:20:04.1995210Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T09:20:04.2021333Z 5b5049804842d7a0eb0998952fa85a44e1090956
+2026-10-27T09:20:04.2029753Z ##[group]Removing auth
+2026-10-27T09:20:04.2035377Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:20:04.2065810Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:20:04.2265293Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:20:04.2285909Z http.https://github.com/.extraheader
+2026-10-27T09:20:04.2296337Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T09:20:04.2328132Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:20:04.2518903Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:20:04.2545096Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:20:04.2728243Z ##[endgroup]
+2026-10-27T09:20:04.2962120Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T09:20:04.2962493Z with:
+2026-10-27T09:20:04.2962706Z   node-version-file: .node-version
+2026-10-27T09:20:04.2962978Z   package-manager-cache: false
+2026-10-27T09:20:04.2963218Z   always-auth: false
+2026-10-27T09:20:04.2963481Z   check-latest: false
+2026-10-27T09:20:04.2965909Z   token: ***
+2026-10-27T09:20:04.2966101Z ##[endgroup]
+2026-10-27T09:20:04.4707584Z Node version file is not JSON file
+2026-10-27T09:20:04.4715955Z Resolved .node-version as 24.11.1
+2026-10-27T09:20:04.4731216Z Attempting to download 24.11.1...
+2026-10-27T09:20:04.4875190Z (node:1817) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T09:20:04.4876467Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T09:20:05.5564347Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+2026-10-27T09:20:06.1855906Z Extracting ...
+2026-10-27T09:20:06.1995513Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/a32715e6-c512-44e1-bc53-1c7698b31b10 -f /home/runner/work/_temp/b2736129-0d49-4c80-a1a9-d024cfbd1c4d
+2026-10-27T09:20:07.5717291Z Adding to the cache ...
+2026-10-27T09:20:11.7639244Z ##[group]Environment details
+2026-10-27T09:20:12.0282308Z node: v24.11.1
+2026-10-27T09:20:12.0282760Z npm: 11.6.2
+2026-10-27T09:20:12.0301628Z yarn: 1.22.22
+2026-10-27T09:20:12.0302558Z ##[endgroup]
+2026-10-27T09:20:12.0452721Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T09:20:12.0453127Z with:
+2026-10-27T09:20:12.0453324Z   cache: true
+2026-10-27T09:20:12.0453527Z   dest: ~/setup-pnpm
+2026-10-27T09:20:12.0453737Z   run_install: null
+2026-10-27T09:20:12.0453961Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T09:20:12.0454234Z   package_json_file: package.json
+2026-10-27T09:20:12.0454471Z   standalone: false
+2026-10-27T09:20:12.0454670Z ##[endgroup]
+2026-10-27T09:20:12.1955427Z ##[group]Running self-installer...
+2026-10-27T09:20:12.7570982Z (node:1864) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T09:20:12.7572737Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T09:20:12.9572291Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T09:20:12.9699252Z Packages: +1
+2026-10-27T09:20:12.9721540Z +
+2026-10-27T09:20:13.2762594Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T09:20:13.4001648Z 
+2026-10-27T09:20:13.4002983Z dependencies:
+2026-10-27T09:20:13.4007753Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T09:20:13.4008341Z 
+2026-10-27T09:20:13.4041832Z Done in 913ms
+2026-10-27T09:20:13.4176376Z ##[endgroup]
+2026-10-27T09:20:13.4192608Z Installation Completed!
+2026-10-27T09:20:13.4198599Z ##[group]Restoring cache...
+2026-10-27T09:20:13.4211515Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T09:20:14.0022282Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T09:20:14.2493058Z Cache hit for: pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T09:20:20.4960918Z Received 54525952 of 131550435 (41.4%), 52.0 MBs/sec
+2026-10-27T09:20:20.9435431Z Received 131550435 of 131550435 (100.0%), 86.6 MBs/sec
+2026-10-27T09:20:20.9437721Z Cache Size: ~125 MB (131550435 B)
+2026-10-27T09:20:20.9555056Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5f99fc4d-b712-4a2a-84c2-d3aae5cd9438/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T09:20:22.0153835Z Cache restored successfully
+2026-10-27T09:20:22.0342625Z Cache restored from key: pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T09:20:22.0344117Z ##[endgroup]
+2026-10-27T09:20:22.0552304Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T09:20:22.0552762Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T09:20:22.0801202Z shell: /usr/bin/bash -e {0}
+2026-10-27T09:20:22.0801503Z env:
+2026-10-27T09:20:22.0801799Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:20:22.0802119Z ##[endgroup]
+2026-10-27T09:20:22.6163324Z Scope: all 46 workspace projects
+2026-10-27T09:20:22.7836504Z ? Verifying lockfile against supply-chain policies (877 entries)...
+2026-10-27T09:20:22.8092202Z Lockfile is up to date, resolution step is skipped
+2026-10-27T09:20:22.9478926Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T09:20:23.0242189Z Packages: +698
+2026-10-27T09:20:23.0269739Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T09:20:23.9577941Z Progress: resolved 698, reused 422, downloaded 0, added 0
+2026-10-27T09:20:24.9687203Z Progress: resolved 698, reused 543, downloaded 0, added 0
+2026-10-27T09:20:25.9695252Z Progress: resolved 698, reused 649, downloaded 0, added 0
+2026-10-27T09:20:27.0176671Z Progress: resolved 698, reused 698, downloaded 0, added 89
+2026-10-27T09:20:28.0565989Z Progress: resolved 698, reused 698, downloaded 0, added 256
+2026-10-27T09:20:28.7486185Z ✓ Lockfile passes supply-chain policies (877 entries in 5.9s)
+2026-10-27T09:20:29.0555260Z Progress: resolved 698, reused 698, downloaded 0, added 490
+2026-10-27T09:20:30.0564467Z Progress: resolved 698, reused 698, downloaded 0, added 668
+2026-10-27T09:20:30.2255810Z Progress: resolved 698, reused 698, downloaded 0, added 698, done
+2026-10-27T09:20:31.3038170Z 
+2026-10-27T09:20:31.3039110Z devDependencies:
+2026-10-27T09:20:31.3040033Z + @commitlint/cli 21.2.4
+2026-10-27T09:20:31.3040887Z + @commitlint/config-conventional 21.2.4
+2026-10-27T09:20:31.3041738Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T09:20:31.3042447Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T09:20:31.3043322Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T09:20:31.3044015Z + @playwright/test 1.64.1
+2026-10-27T09:20:31.3044555Z + @types/node 24.19.2
+2026-10-27T09:20:31.3045034Z + @types/semver 7.8.0
+2026-10-27T09:20:31.3045531Z + dependency-cruiser 18.7.0
+2026-10-27T09:20:31.3045954Z + eslint 10.13.0
+2026-10-27T09:20:31.3046377Z + husky 9.1.7
+2026-10-27T09:20:31.3046766Z + jiti 2.7.0
+2026-10-27T09:20:31.3047185Z + lint-staged 17.6.0
+2026-10-27T09:20:31.3048040Z + prettier 3.9.10
+2026-10-27T09:20:31.3048889Z + semver 7.8.5
+2026-10-27T09:20:31.3049336Z + tar 7.5.22
+2026-10-27T09:20:31.3049756Z + tsx 4.23.15
+2026-10-27T09:20:31.3050147Z + turbo 2.11.10
+2026-10-27T09:20:31.3050748Z + typescript 6.0.3
+2026-10-27T09:20:31.3051260Z + vite 8.3.3
+2026-10-27T09:20:31.3051671Z + vitest 5.0.5
+2026-10-27T09:20:31.3052322Z + yaml 2.9.1
+2026-10-27T09:20:31.3052642Z 
+2026-10-27T09:20:31.5173492Z Done in 9.4s using pnpm v11.11.0
+2026-10-27T09:20:31.5640945Z ##[group]Run pnpm exec tsx tools/ci-watch-probe.ts
+2026-10-27T09:20:31.5641368Z [36;1mpnpm exec tsx tools/ci-watch-probe.ts[0m
+2026-10-27T09:20:31.5681908Z shell: /usr/bin/bash -e {0}
+2026-10-27T09:20:31.5682195Z env:
+2026-10-27T09:20:31.5682469Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:20:31.5682791Z ##[endgroup]
+2026-10-27T09:20:33.4892670Z [2m9:20:33 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:35.7274227Z [2m9:20:35 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:37.9484686Z [2m9:20:37 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:40.1582738Z {
+2026-10-27T09:20:40.1583508Z   "platform": "linux",
+2026-10-27T09:20:40.1585036Z   "arch": "x64",
+2026-10-27T09:20:40.1585512Z   "node": "v24.11.1",
+2026-10-27T09:20:40.1586182Z   "note": "Public Vite watcher observation in an isolated fixture on the recorded host.",
+2026-10-27T09:20:40.1586844Z   "events": [
+2026-10-27T09:20:40.1587331Z     {
+2026-10-27T09:20:40.1587701Z       "elapsedMs": 419.26,
+2026-10-27T09:20:40.1588163Z       "event": "configure-server",
+2026-10-27T09:20:40.1588620Z       "generation": 0
+2026-10-27T09:20:40.1589021Z     },
+2026-10-27T09:20:40.1589352Z     {
+2026-10-27T09:20:40.1589711Z       "elapsedMs": 428.02,
+2026-10-27T09:20:40.1590152Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1590812Z       "generation": 0
+2026-10-27T09:20:40.1591237Z     },
+2026-10-27T09:20:40.1591576Z     {
+2026-10-27T09:20:40.1591944Z       "elapsedMs": 428.05,
+2026-10-27T09:20:40.1592391Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1592851Z       "generation": 0
+2026-10-27T09:20:40.1593207Z     },
+2026-10-27T09:20:40.1593544Z     {
+2026-10-27T09:20:40.1593929Z       "elapsedMs": 428.16,
+2026-10-27T09:20:40.1594442Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1594897Z       "generation": 0
+2026-10-27T09:20:40.1595299Z     },
+2026-10-27T09:20:40.1595670Z     {
+2026-10-27T09:20:40.1596010Z       "elapsedMs": 437.29,
+2026-10-27T09:20:40.1596442Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1596870Z       "generation": 0
+2026-10-27T09:20:40.1597251Z     },
+2026-10-27T09:20:40.1597614Z     {
+2026-10-27T09:20:40.1597983Z       "elapsedMs": 443.28,
+2026-10-27T09:20:40.1598416Z       "event": "listen-returned"
+2026-10-27T09:20:40.1598832Z     },
+2026-10-27T09:20:40.1599165Z     {
+2026-10-27T09:20:40.1599524Z       "elapsedMs": 478.94,
+2026-10-27T09:20:40.1599950Z       "event": "configure-server",
+2026-10-27T09:20:40.1600404Z       "generation": 1
+2026-10-27T09:20:40.1600929Z     },
+2026-10-27T09:20:40.1601241Z     {
+2026-10-27T09:20:40.1601585Z       "elapsedMs": 487.61,
+2026-10-27T09:20:40.1602036Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1602468Z       "generation": 1
+2026-10-27T09:20:40.1602825Z     },
+2026-10-27T09:20:40.1603134Z     {
+2026-10-27T09:20:40.1603454Z       "elapsedMs": 487.63,
+2026-10-27T09:20:40.1603889Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1604308Z       "generation": 1
+2026-10-27T09:20:40.1604697Z     },
+2026-10-27T09:20:40.1605014Z     {
+2026-10-27T09:20:40.1605358Z       "elapsedMs": 487.72,
+2026-10-27T09:20:40.1605798Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1606212Z       "generation": 1
+2026-10-27T09:20:40.1606597Z     },
+2026-10-27T09:20:40.1606911Z     {
+2026-10-27T09:20:40.1607245Z       "elapsedMs": 493.44,
+2026-10-27T09:20:40.1607697Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1608130Z       "generation": 1
+2026-10-27T09:20:40.1608508Z     },
+2026-10-27T09:20:40.1608845Z     {
+2026-10-27T09:20:40.1609203Z       "elapsedMs": 525.18,
+2026-10-27T09:20:40.1610052Z       "event": "restart-returned",
+2026-10-27T09:20:40.1610520Z       "restart": 0
+2026-10-27T09:20:40.1611064Z     },
+2026-10-27T09:20:40.1611636Z     {
+2026-10-27T09:20:40.1612024Z       "elapsedMs": 525.3,
+2026-10-27T09:20:40.1612435Z       "event": "write-start",
+2026-10-27T09:20:40.1612862Z       "restart": 0,
+2026-10-27T09:20:40.1613248Z       "kind": "runtime",
+2026-10-27T09:20:40.1614036Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1614534Z     },
+2026-10-27T09:20:40.1614918Z     {
+2026-10-27T09:20:40.1615318Z       "elapsedMs": 528.96,
+2026-10-27T09:20:40.1615793Z       "event": "watcher-event",
+2026-10-27T09:20:40.1616268Z       "generation": 1,
+2026-10-27T09:20:40.1616727Z       "kind": "change",
+2026-10-27T09:20:40.1617379Z       "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+2026-10-27T09:20:40.1618038Z     },
+2026-10-27T09:20:40.1618413Z     {
+2026-10-27T09:20:40.1618869Z       "elapsedMs": 529.12,
+2026-10-27T09:20:40.1619395Z       "event": "write-finished",
+2026-10-27T09:20:40.1619863Z       "restart": 0,
+2026-10-27T09:20:40.1620252Z       "kind": "runtime"
+2026-10-27T09:20:40.1622238Z     },
+2026-10-27T09:20:40.1622599Z     {
+2026-10-27T09:20:40.1622948Z       "elapsedMs": 1630.33,
+2026-10-27T09:20:40.1623369Z       "event": "write-start",
+2026-10-27T09:20:40.1623766Z       "restart": 0,
+2026-10-27T09:20:40.1624122Z       "kind": "package",
+2026-10-27T09:20:40.1624618Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1625088Z     },
+2026-10-27T09:20:40.1625478Z     {
+2026-10-27T09:20:40.1625840Z       "elapsedMs": 1631.34,
+2026-10-27T09:20:40.1626291Z       "event": "watcher-event",
+2026-10-27T09:20:40.1626686Z       "generation": 1,
+2026-10-27T09:20:40.1627059Z       "kind": "change",
+2026-10-27T09:20:40.1627630Z       "path": "package/config/typescript/tsconfig.lib.json"
+2026-10-27T09:20:40.1628212Z     },
+2026-10-27T09:20:40.1628567Z     {
+2026-10-27T09:20:40.1628948Z       "elapsedMs": 1632.01,
+2026-10-27T09:20:40.1629445Z       "event": "write-finished",
+2026-10-27T09:20:40.1629987Z       "restart": 0,
+2026-10-27T09:20:40.1630440Z       "kind": "package"
+2026-10-27T09:20:40.1631138Z     },
+2026-10-27T09:20:40.1631554Z     {
+2026-10-27T09:20:40.1632002Z       "elapsedMs": 2758.08,
+2026-10-27T09:20:40.1632454Z       "event": "configure-server",
+2026-10-27T09:20:40.1632896Z       "generation": 2
+2026-10-27T09:20:40.1633304Z     },
+2026-10-27T09:20:40.1633654Z     {
+2026-10-27T09:20:40.1634005Z       "elapsedMs": 2760.05,
+2026-10-27T09:20:40.1634468Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1634909Z       "generation": 2
+2026-10-27T09:20:40.1635328Z     },
+2026-10-27T09:20:40.1635654Z     {
+2026-10-27T09:20:40.1636014Z       "elapsedMs": 2760.09,
+2026-10-27T09:20:40.1636478Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1636921Z       "generation": 2
+2026-10-27T09:20:40.1637295Z     },
+2026-10-27T09:20:40.1637672Z     {
+2026-10-27T09:20:40.1638053Z       "elapsedMs": 2760.25,
+2026-10-27T09:20:40.1638504Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1638938Z       "generation": 2
+2026-10-27T09:20:40.1639356Z     },
+2026-10-27T09:20:40.1639717Z     {
+2026-10-27T09:20:40.1640101Z       "elapsedMs": 2763.29,
+2026-10-27T09:20:40.1640762Z       "event": "restart-returned",
+2026-10-27T09:20:40.1641245Z       "restart": 1
+2026-10-27T09:20:40.1641609Z     },
+2026-10-27T09:20:40.1641962Z     {
+2026-10-27T09:20:40.1642359Z       "elapsedMs": 2763.31,
+2026-10-27T09:20:40.1642829Z       "event": "write-start",
+2026-10-27T09:20:40.1643314Z       "restart": 1,
+2026-10-27T09:20:40.1643755Z       "kind": "runtime",
+2026-10-27T09:20:40.1644276Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1644765Z     },
+2026-10-27T09:20:40.1645151Z     {
+2026-10-27T09:20:40.1645542Z       "elapsedMs": 2764.4,
+2026-10-27T09:20:40.1646035Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1646523Z       "generation": 2
+2026-10-27T09:20:40.1646933Z     },
+2026-10-27T09:20:40.1647277Z     {
+2026-10-27T09:20:40.1647674Z       "elapsedMs": 2764.57,
+2026-10-27T09:20:40.1648463Z       "event": "watcher-event",
+2026-10-27T09:20:40.1648883Z       "generation": 2,
+2026-10-27T09:20:40.1649315Z       "kind": "change",
+2026-10-27T09:20:40.1649945Z       "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+2026-10-27T09:20:40.1650841Z     },
+2026-10-27T09:20:40.1651287Z     {
+2026-10-27T09:20:40.1651723Z       "elapsedMs": 2764.6,
+2026-10-27T09:20:40.1652489Z       "event": "write-finished",
+2026-10-27T09:20:40.1653100Z       "restart": 1,
+2026-10-27T09:20:40.1653541Z       "kind": "runtime"
+2026-10-27T09:20:40.1653932Z     },
+2026-10-27T09:20:40.1654315Z     {
+2026-10-27T09:20:40.1654715Z       "elapsedMs": 3865.93,
+2026-10-27T09:20:40.1655211Z       "event": "write-start",
+2026-10-27T09:20:40.1655692Z       "restart": 1,
+2026-10-27T09:20:40.1656129Z       "kind": "package",
+2026-10-27T09:20:40.1656588Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1657073Z     },
+2026-10-27T09:20:40.1657471Z     {
+2026-10-27T09:20:40.1657888Z       "elapsedMs": 3866.96,
+2026-10-27T09:20:40.1658402Z       "event": "watcher-event",
+2026-10-27T09:20:40.1658906Z       "generation": 2,
+2026-10-27T09:20:40.1659364Z       "kind": "change",
+2026-10-27T09:20:40.1659971Z       "path": "package/config/typescript/tsconfig.lib.json"
+2026-10-27T09:20:40.1660754Z     },
+2026-10-27T09:20:40.1661175Z     {
+2026-10-27T09:20:40.1661542Z       "elapsedMs": 3867.41,
+2026-10-27T09:20:40.1662026Z       "event": "write-finished",
+2026-10-27T09:20:40.1662491Z       "restart": 1,
+2026-10-27T09:20:40.1662891Z       "kind": "package"
+2026-10-27T09:20:40.1663307Z     },
+2026-10-27T09:20:40.1663649Z     {
+2026-10-27T09:20:40.1663976Z       "elapsedMs": 4980.59,
+2026-10-27T09:20:40.1664398Z       "event": "configure-server",
+2026-10-27T09:20:40.1664899Z       "generation": 3
+2026-10-27T09:20:40.1665333Z     },
+2026-10-27T09:20:40.1665670Z     {
+2026-10-27T09:20:40.1666003Z       "elapsedMs": 4981.85,
+2026-10-27T09:20:40.1666414Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1666822Z       "generation": 3
+2026-10-27T09:20:40.1667197Z     },
+2026-10-27T09:20:40.1667526Z     {
+2026-10-27T09:20:40.1667882Z       "elapsedMs": 4981.86,
+2026-10-27T09:20:40.1668294Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1668708Z       "generation": 3
+2026-10-27T09:20:40.1669088Z     },
+2026-10-27T09:20:40.1669435Z     {
+2026-10-27T09:20:40.1669784Z       "elapsedMs": 4981.89,
+2026-10-27T09:20:40.1670244Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1671021Z       "generation": 3
+2026-10-27T09:20:40.1671427Z     },
+2026-10-27T09:20:40.1671778Z     {
+2026-10-27T09:20:40.1672168Z       "elapsedMs": 4984.3,
+2026-10-27T09:20:40.1672790Z       "event": "restart-returned",
+2026-10-27T09:20:40.1673258Z       "restart": 2
+2026-10-27T09:20:40.1673659Z     },
+2026-10-27T09:20:40.1674047Z     {
+2026-10-27T09:20:40.1674445Z       "elapsedMs": 4984.32,
+2026-10-27T09:20:40.1674886Z       "event": "write-start",
+2026-10-27T09:20:40.1675344Z       "restart": 2,
+2026-10-27T09:20:40.1675721Z       "kind": "runtime",
+2026-10-27T09:20:40.1676203Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1676667Z     },
+2026-10-27T09:20:40.1677019Z     {
+2026-10-27T09:20:40.1677387Z       "elapsedMs": 4985.07,
+2026-10-27T09:20:40.1677849Z       "event": "watcher-ready",
+2026-10-27T09:20:40.1678288Z       "generation": 3
+2026-10-27T09:20:40.1678668Z     },
+2026-10-27T09:20:40.1679002Z     {
+2026-10-27T09:20:40.1679369Z       "elapsedMs": 4985.63,
+2026-10-27T09:20:40.1679826Z       "event": "watcher-event",
+2026-10-27T09:20:40.1680258Z       "generation": 3,
+2026-10-27T09:20:40.1680854Z       "kind": "change",
+2026-10-27T09:20:40.1681514Z       "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+2026-10-27T09:20:40.1682061Z     },
+2026-10-27T09:20:40.1682441Z     {
+2026-10-27T09:20:40.1682871Z       "elapsedMs": 4985.76,
+2026-10-27T09:20:40.1683375Z       "event": "write-finished",
+2026-10-27T09:20:40.1683877Z       "restart": 2,
+2026-10-27T09:20:40.1684287Z       "kind": "runtime"
+2026-10-27T09:20:40.1684703Z     },
+2026-10-27T09:20:40.1685441Z     {
+2026-10-27T09:20:40.1685816Z       "elapsedMs": 6086.26,
+2026-10-27T09:20:40.1686293Z       "event": "write-start",
+2026-10-27T09:20:40.1686749Z       "restart": 2,
+2026-10-27T09:20:40.1687176Z       "kind": "package",
+2026-10-27T09:20:40.1687698Z       "presentInGetWatched": true
+2026-10-27T09:20:40.1688184Z     },
+2026-10-27T09:20:40.1688549Z     {
+2026-10-27T09:20:40.1689113Z       "elapsedMs": 6087.28,
+2026-10-27T09:20:40.1689606Z       "event": "watcher-event",
+2026-10-27T09:20:40.1690079Z       "generation": 3,
+2026-10-27T09:20:40.1690527Z       "kind": "change",
+2026-10-27T09:20:40.1691394Z       "path": "package/config/typescript/tsconfig.lib.json"
+2026-10-27T09:20:40.1691935Z     },
+2026-10-27T09:20:40.1692275Z     {
+2026-10-27T09:20:40.1692619Z       "elapsedMs": 6087.69,
+2026-10-27T09:20:40.1693084Z       "event": "write-finished",
+2026-10-27T09:20:40.1693528Z       "restart": 2,
+2026-10-27T09:20:40.1693929Z       "kind": "package"
+2026-10-27T09:20:40.1694309Z     },
+2026-10-27T09:20:40.1694664Z     {
+2026-10-27T09:20:40.1695019Z       "elapsedMs": 7189.98,
+2026-10-27T09:20:40.1695484Z       "event": "server-closed"
+2026-10-27T09:20:40.1695902Z     }
+2026-10-27T09:20:40.1696259Z   ]
+2026-10-27T09:20:40.1696614Z }
+2026-10-27T09:20:40.2045843Z ##[group]Run failure=0
+2026-10-27T09:20:40.2046140Z [36;1mfailure=0[0m
+2026-10-27T09:20:40.2046372Z [36;1mfor attempt in 1 2 3 4 5; do[0m
+2026-10-27T09:20:40.2047144Z [36;1m  if ! pnpm --filter @kisaki3/desktop test tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile="test-results/watch-diagnostics/attempt-${attempt}.json"; then[0m
+2026-10-27T09:20:40.2047884Z [36;1m    failure=1[0m
+2026-10-27T09:20:40.2048107Z [36;1m  fi[0m
+2026-10-27T09:20:40.2048305Z [36;1mdone[0m
+2026-10-27T09:20:40.2048507Z [36;1mexit "$failure"[0m
+2026-10-27T09:20:40.2094119Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T09:20:40.2094468Z env:
+2026-10-27T09:20:40.2094748Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:20:40.2095071Z ##[endgroup]
+2026-10-27T09:20:40.7412654Z $ vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-1.json
+2026-10-27T09:20:41.0941501Z 
+2026-10-27T09:20:41.0982801Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T09:20:41.1001038Z 
+2026-10-27T09:20:41.8732451Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:41.8733682Z [22m[39m[2m9:20:41 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:41.8734351Z 
+2026-10-27T09:20:41.9375863Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:41.9406817Z [22m[39mWATCHER_TIMELINE [{"at":636.835616,"event":"configure","generation":0},{"at":673.512393,"event":"ready","generation":0},{"at":673.768175,"event":"ready","generation":0},{"at":674.878931,"event":"ready","generation":0},{"at":674.976241,"event":"ready","generation":0},{"at":675.067355,"event":"ready","generation":0},{"at":676.15539,"event":"ready","generation":0},{"at":679.330803,"event":"ready","generation":0},{"at":715.479233,"event":"configure","generation":1},{"at":729.966951,"event":"ready","generation":1},{"at":730.040464,"event":"ready","generation":1},{"at":730.386989,"event":"ready","generation":1},{"at":730.447994,"event":"ready","generation":1},{"at":730.515977,"event":"ready","generation":1},{"at":731.128461,"event":"ready","generation":1},{"at":737.238093,"event":"ready","generation":1},{"at":758.772155,"event":"adopt-returned"},{"at":760.614676,"event":"write-start","path":"clients/desktop/app/config/vite/vite.config.main.ts","presentInGetWatched":true},{"at":763.149962,"event":"change","generation":1,"path":"clients/desktop/app/config/vite/vite.config.main.ts"},{"at":766.285191,"event":"write-start","path":"clients/desktop/app/package.json","presentInGetWatched":true},{"at":769.112501,"event":"change","generation":1,"path":"clients/desktop/app/package.json"},{"at":769.366525,"event":"write-start","path":"package/config/typescript/tsconfig.lib.json","presentInGetWatched":true},{"at":770.402651,"event":"change","generation":1,"path":"package/config/typescript/tsconfig.lib.json"},{"at":770.629453,"event":"write-start","path":"clients/desktop/app/src/main/added.ts","presentInGetWatched":false},{"at":776.161377,"event":"add","generation":1,"path":"clients/desktop/app/src/main/added.ts"},{"at":822.787581,"event":"before-close","watched":{"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/config/vite":["vite.config.main.ts","vite.config.renderer.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/package":["config","package.json","src","tools"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app":["assets","native","package.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D":["pnpm-lock.yaml"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/package/src":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/package/tools":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/package/config":["typescript"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/native":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/assets":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src":["extension-host","main","preload","shared"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/main":["added.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/preload":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/extension-host":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/shared":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer":["windows"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer/windows":["game-panel","main","player","reader"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/package/config/typescript":["tsconfig.lib.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/config":["vite"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer/windows/game-panel":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer/windows/main":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer/windows/player":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-cm8w2D/clients/desktop/app/src/renderer/windows/reader":["index.html"]}}]
+2026-10-27T09:20:41.9429703Z 
+2026-10-27T09:20:41.9478620Z  [32m✓[39m tests/tools/renderer.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 500[2mms[22m[39m
+2026-10-27T09:20:41.9521718Z 
+2026-10-27T09:20:41.9541732Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:41.9562273Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:41.9581688Z [2m   Start at [22m 09:20:41
+2026-10-27T09:20:41.9582572Z [2m   Duration [22m 847ms[2m (tests 68%, import 20%, transform 12%)[22m
+2026-10-27T09:20:41.9583089Z 
+2026-10-27T09:20:41.9583886Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/watch-diagnostics/attempt-1.json
+2026-10-27T09:20:42.5048910Z $ vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-2.json
+2026-10-27T09:20:42.8344069Z 
+2026-10-27T09:20:42.8363211Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T09:20:42.8381020Z 
+2026-10-27T09:20:43.5777754Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:43.5791023Z [22m[39m[2m9:20:43 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:43.5791645Z 
+2026-10-27T09:20:44.6012598Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:44.6046483Z [22m[39mWATCHER_TIMELINE [{"at":592.181,"event":"configure","generation":0},{"at":629.415985,"event":"ready","generation":0},{"at":629.53531,"event":"ready","generation":0},{"at":630.538572,"event":"ready","generation":0},{"at":630.712743,"event":"ready","generation":0},{"at":630.813911,"event":"ready","generation":0},{"at":632.182764,"event":"ready","generation":0},{"at":637.023541,"event":"ready","generation":0},{"at":674.717001,"event":"configure","generation":1},{"at":693.22516,"event":"ready","generation":1},{"at":693.260521,"event":"ready","generation":1},{"at":697.986626,"event":"ready","generation":1},{"at":698.061298,"event":"ready","generation":1},{"at":698.111609,"event":"ready","generation":1},{"at":698.503209,"event":"ready","generation":1},{"at":701.222703,"event":"ready","generation":1},{"at":714.127107,"event":"adopt-returned"},{"at":716.05134,"event":"write-start","path":"clients/desktop/app/config/vite/vite.config.main.ts","presentInGetWatched":true},{"at":718.668604,"event":"change","generation":1,"path":"clients/desktop/app/config/vite/vite.config.main.ts"},{"at":721.130157,"event":"write-start","path":"clients/desktop/app/package.json","presentInGetWatched":true},{"at":723.565316,"event":"change","generation":1,"path":"clients/desktop/app/package.json"},{"at":724.201282,"event":"write-start","path":"package/config/typescript/tsconfig.lib.json","presentInGetWatched":false},{"at":1730.996196,"event":"before-close","watched":{"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/config/vite":["vite.config.main.ts","vite.config.renderer.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/package":["config","package.json","src","tools"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app":["assets","native","package.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd":["pnpm-lock.yaml"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/package/src":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/package/tools":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/package/config":["typescript"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/native":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/assets":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src":["extension-host","main","preload","shared"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/main":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/preload":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/extension-host":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/shared":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer":["windows"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer/windows":["game-panel","main","player","reader"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/package/config/typescript":["tsconfig.lib.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/config":["vite"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer/windows/game-panel":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer/windows/main":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer/windows/reader":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-nseRCd/clients/desktop/app/src/renderer/windows/player":["index.html"]}}]
+2026-10-27T09:20:44.6068915Z 
+2026-10-27T09:20:44.6079195Z  [31m❯[39m tests/tools/renderer.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1461[2mms[22m[39m
+2026-10-27T09:20:44.6081677Z [31m   [31m×[31m runtime configuration and nested public-package inputs remain watched after Vite restarts[39m[33m 1016[2mms[22m[39m
+2026-10-27T09:20:44.6381787Z 
+2026-10-27T09:20:44.6385463Z [31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+2026-10-27T09:20:44.6386142Z 
+2026-10-27T09:20:44.6387722Z [41m[1m FAIL [22m[49m tests/tools/renderer.test.ts[2m > [22mruntime configuration and nested public-package inputs remain watched after Vite restarts
+2026-10-27T09:20:44.6390166Z [31m[1mAssertionError[22m: Expected public-package notification for package/config/typescript/tsconfig.lib.json: expected 0 to be greater than 0[39m
+2026-10-27T09:20:44.6392273Z [36m [2m❯[22m tests/tools/renderer.test.ts:[2m121:8[22m[39m
+2026-10-27T09:20:44.6456408Z     [90m119|[39m         message: `Expected ${kind} notification for ${relative(paths.r…
+2026-10-27T09:20:44.6458950Z 
+2026-10-27T09:20:44.6472023Z     [90m120|[39m       })
+2026-10-27T09:20:44.6472903Z [2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+2026-10-27T09:20:44.6474380Z     [90m121|[39m       .toBeGreaterThan(before)
+2026-10-27T09:20:44.6475231Z [2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+2026-10-27T09:20:44.6476349Z     [90m   |[39m        [31m^[39m
+2026-10-27T09:20:44.6477000Z [2m   Start at [22m 09:20:42
+2026-10-27T09:20:44.6477792Z     [90m122|[39m   }
+2026-10-27T09:20:44.6478662Z [2m   Duration [22m 1.79s[2m (tests 89%, import 8%, transform 2%)[22m
+2026-10-27T09:20:44.6479640Z     [90m123|[39m })
+2026-10-27T09:20:44.6480177Z 
+2026-10-27T09:20:44.6481079Z [31m[1mCaused by: Error[22m: Matcher did not succeed in time.[39m
+2026-10-27T09:20:44.6481570Z 
+2026-10-27T09:20:44.6482334Z [36m [2m❯[22m tests/tools/renderer.test.ts:[2m117:5[22m[39m
+2026-10-27T09:20:44.6483053Z 
+2026-10-27T09:20:44.6483587Z [31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+2026-10-27T09:20:44.6484069Z 
+2026-10-27T09:20:44.6494204Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/watch-diagnostics/attempt-2.json
+2026-10-27T09:20:44.6808917Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app:
+2026-10-27T09:20:44.6811301Z [ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @kisaki3/desktop@0.1.0-dev.0 test: `vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-2.json`
+2026-10-27T09:20:44.6813010Z Exit status 1
+2026-10-27T09:20:45.1895880Z $ vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-3.json
+2026-10-27T09:20:45.5401405Z 
+2026-10-27T09:20:45.5413071Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T09:20:45.5414011Z 
+2026-10-27T09:20:46.2752752Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:46.2756536Z [22m[39m[2m9:20:46 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:46.2757454Z 
+2026-10-27T09:20:46.3439881Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:46.3481001Z [22m[39mWATCHER_TIMELINE [{"at":591.142418,"event":"configure","generation":0},{"at":628.175339,"event":"ready","generation":0},{"at":628.329058,"event":"ready","generation":0},{"at":629.241513,"event":"ready","generation":0},{"at":629.366107,"event":"ready","generation":0},{"at":629.457349,"event":"ready","generation":0},{"at":630.390371,"event":"ready","generation":0},{"at":634.725997,"event":"ready","generation":0},{"at":674.803638,"event":"configure","generation":1},{"at":692.286936,"event":"ready","generation":1},{"at":692.362501,"event":"ready","generation":1},{"at":693.115851,"event":"ready","generation":1},{"at":693.228828,"event":"ready","generation":1},{"at":693.298588,"event":"ready","generation":1},{"at":693.763795,"event":"ready","generation":1},{"at":698.673664,"event":"ready","generation":1},{"at":712.250014,"event":"adopt-returned"},{"at":714.116916,"event":"write-start","path":"clients/desktop/app/config/vite/vite.config.main.ts","presentInGetWatched":true},{"at":718.857978,"event":"change","generation":1,"path":"clients/desktop/app/config/vite/vite.config.main.ts"},{"at":719.684755,"event":"write-start","path":"clients/desktop/app/package.json","presentInGetWatched":true},{"at":722.542788,"event":"change","generation":1,"path":"clients/desktop/app/package.json"},{"at":722.737348,"event":"write-start","path":"package/config/typescript/tsconfig.lib.json","presentInGetWatched":true},{"at":724.636789,"event":"change","generation":1,"path":"package/config/typescript/tsconfig.lib.json"},{"at":724.807583,"event":"write-start","path":"clients/desktop/app/src/main/added.ts","presentInGetWatched":false},{"at":731.300511,"event":"add","generation":1,"path":"clients/desktop/app/src/main/added.ts"},{"at":781.002218,"event":"before-close","watched":{"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/config/vite":["vite.config.main.ts","vite.config.renderer.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/package":["config","package.json","src","tools"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app":["assets","native","package.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr":["pnpm-lock.yaml"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/package/src":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/package/tools":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/package/config":["typescript"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/native":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/assets":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src":["extension-host","main","preload","shared"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/main":["added.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/preload":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/extension-host":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/shared":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer":["windows"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer/windows":["game-panel","main","player","reader"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/package/config/typescript":["tsconfig.lib.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/config":["vite"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer/windows/game-panel":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer/windows/main":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer/windows/player":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-X0m7tr/clients/desktop/app/src/renderer/windows/reader":["index.html"]}}]
+2026-10-27T09:20:46.3505236Z 
+2026-10-27T09:20:46.3506492Z  [32m✓[39m tests/tools/renderer.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 525[2mms[22m[39m
+2026-10-27T09:20:46.3591584Z 
+2026-10-27T09:20:46.3609353Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:46.3614547Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:46.3615480Z [2m   Start at [22m 09:20:45
+2026-10-27T09:20:46.3616628Z [2m   Duration [22m 806ms[2m (tests 76%, import 21%, transform 2%, worker 1%)[22m
+2026-10-27T09:20:46.3617405Z 
+2026-10-27T09:20:46.3640811Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/watch-diagnostics/attempt-3.json
+2026-10-27T09:20:46.8558629Z $ vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-4.json
+2026-10-27T09:20:47.2311348Z 
+2026-10-27T09:20:47.2332945Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T09:20:47.2350981Z 
+2026-10-27T09:20:47.9434452Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:47.9436063Z [22m[39m[2m9:20:47 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:47.9436902Z 
+2026-10-27T09:20:48.0059711Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:48.0092710Z [22m[39mWATCHER_TIMELINE [{"at":559.840938,"event":"configure","generation":0},{"at":597.842102,"event":"ready","generation":0},{"at":598.003489,"event":"ready","generation":0},{"at":598.923286,"event":"ready","generation":0},{"at":599.054791,"event":"ready","generation":0},{"at":599.175533,"event":"ready","generation":0},{"at":600.251721,"event":"ready","generation":0},{"at":604.626392,"event":"ready","generation":0},{"at":638.122519,"event":"configure","generation":1},{"at":653.933263,"event":"ready","generation":1},{"at":654.033205,"event":"ready","generation":1},{"at":654.451863,"event":"ready","generation":1},{"at":654.509588,"event":"ready","generation":1},{"at":654.578352,"event":"ready","generation":1},{"at":655.066614,"event":"ready","generation":1},{"at":657.507516,"event":"ready","generation":1},{"at":687.712406,"event":"adopt-returned"},{"at":689.621907,"event":"write-start","path":"clients/desktop/app/config/vite/vite.config.main.ts","presentInGetWatched":true},{"at":691.588566,"event":"change","generation":1,"path":"clients/desktop/app/config/vite/vite.config.main.ts"},{"at":694.245519,"event":"write-start","path":"clients/desktop/app/package.json","presentInGetWatched":true},{"at":696.679573,"event":"change","generation":1,"path":"clients/desktop/app/package.json"},{"at":696.972083,"event":"write-start","path":"package/config/typescript/tsconfig.lib.json","presentInGetWatched":true},{"at":697.869286,"event":"change","generation":1,"path":"package/config/typescript/tsconfig.lib.json"},{"at":698.020909,"event":"write-start","path":"clients/desktop/app/src/main/added.ts","presentInGetWatched":false},{"at":703.63824,"event":"add","generation":1,"path":"clients/desktop/app/src/main/added.ts"},{"at":749.997726,"event":"before-close","watched":{"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/config/vite":["vite.config.main.ts","vite.config.renderer.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/package":["config","package.json","src","tools"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app":["assets","native","package.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9":["pnpm-lock.yaml"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/package/src":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/package/tools":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/package/config":["typescript"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/native":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/assets":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src":["extension-host","main","preload","shared"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/main":["added.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/preload":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/extension-host":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/shared":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer":["windows"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer/windows":["game-panel","main","player","reader"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/package/config/typescript":["tsconfig.lib.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/config":["vite"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer/windows/game-panel":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer/windows/main":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer/windows/player":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-o6P1u9/clients/desktop/app/src/renderer/windows/reader":["index.html"]}}]
+2026-10-27T09:20:48.0117085Z 
+2026-10-27T09:20:48.0142602Z  [32m✓[39m tests/tools/renderer.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 507[2mms[22m[39m
+2026-10-27T09:20:48.0211515Z 
+2026-10-27T09:20:48.0231939Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:48.0252698Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:48.0253548Z [2m   Start at [22m 09:20:47
+2026-10-27T09:20:48.0266918Z [2m   Duration [22m 776ms[2m (tests 77%, import 22%, transform 1%, worker 1%)[22m
+2026-10-27T09:20:48.0271388Z 
+2026-10-27T09:20:48.0274782Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/watch-diagnostics/attempt-4.json
+2026-10-27T09:20:48.5336820Z $ vitest run tests/tools/renderer.test.ts --reporter=default --reporter=json --outputFile=test-results/watch-diagnostics/attempt-5.json
+2026-10-27T09:20:48.8911208Z 
+2026-10-27T09:20:48.8933019Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T09:20:48.8938190Z 
+2026-10-27T09:20:49.6262735Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:49.6265537Z [22m[39m[2m9:20:49 AM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T09:20:49.6266057Z 
+2026-10-27T09:20:49.7412574Z [90mstdout[2m | tests/tools/renderer.test.ts
+2026-10-27T09:20:49.7484136Z [22m[39mWATCHER_TIMELINE [{"at":590.191096,"event":"configure","generation":0},{"at":628.338639,"event":"ready","generation":0},{"at":628.517161,"event":"ready","generation":0},{"at":629.459046,"event":"ready","generation":0},{"at":629.572489,"event":"ready","generation":0},{"at":629.666857,"event":"ready","generation":0},{"at":630.648248,"event":"ready","generation":0},{"at":633.971189,"event":"ready","generation":0},{"at":672.55576,"event":"configure","generation":1},{"at":695.566503,"event":"ready","generation":1},{"at":695.619567,"event":"ready","generation":1},{"at":695.878481,"event":"ready","generation":1},{"at":695.934993,"event":"ready","generation":1},{"at":695.976915,"event":"ready","generation":1},{"at":696.395947,"event":"ready","generation":1},{"at":698.92359,"event":"ready","generation":1},{"at":710.91033,"event":"adopt-returned"},{"at":712.692089,"event":"write-start","path":"clients/desktop/app/config/vite/vite.config.main.ts","presentInGetWatched":true},{"at":716.975044,"event":"change","generation":1,"path":"clients/desktop/app/config/vite/vite.config.main.ts"},{"at":718.161228,"event":"write-start","path":"clients/desktop/app/package.json","presentInGetWatched":true},{"at":720.874036,"event":"change","generation":1,"path":"clients/desktop/app/package.json"},{"at":721.066556,"event":"write-start","path":"package/config/typescript/tsconfig.lib.json","presentInGetWatched":false},{"at":723.963444,"event":"change","generation":1,"path":"package/config/typescript/tsconfig.lib.json"},{"at":773.639702,"event":"write-start","path":"clients/desktop/app/src/main/added.ts","presentInGetWatched":false},{"at":774.95472,"event":"add","generation":1,"path":"clients/desktop/app/src/main/added.ts"},{"at":825.806848,"event":"before-close","watched":{"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/config/vite":["vite.config.main.ts","vite.config.renderer.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/package":["config","package.json","src","tools"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app":["assets","native","package.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp":["pnpm-lock.yaml"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/package/tools":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/package/config":["typescript"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/package/src":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/assets":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/native":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src":["extension-host","main","preload","shared"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/preload":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/main":["added.ts"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/extension-host":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/shared":[],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer":["windows"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer/windows":["game-panel","main","player","reader"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/package/config/typescript":["tsconfig.lib.json"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/config":["vite"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer/windows/game-panel":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer/windows/main":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer/windows/player":["index.html"],"/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.local/renderer-test-3hcWKp/clients/desktop/app/src/renderer/windows/reader":["index.html"]}}]
+2026-10-27T09:20:49.7512620Z 
+2026-10-27T09:20:49.7579352Z  [32m✓[39m tests/tools/renderer.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 562[2mms[22m[39m
+2026-10-27T09:20:49.7753687Z 
+2026-10-27T09:20:49.7772224Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:49.7780348Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T09:20:49.7781885Z [2m   Start at [22m 09:20:48
+2026-10-27T09:20:49.7783010Z [2m   Duration [22m 871ms[2m (tests 76%, import 19%, transform 4%)[22m
+2026-10-27T09:20:49.7783707Z 
+2026-10-27T09:20:49.7784661Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/watch-diagnostics/attempt-5.json
+2026-10-27T09:20:49.7999284Z ##[error]Process completed with exit code 1.
+2026-10-27T09:20:49.8075508Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T09:20:49.8075986Z with:
+2026-10-27T09:20:49.8076339Z   name: linux-watcher-diagnostics
+2026-10-27T09:20:49.8076790Z   path: clients/desktop/app/test-results/watch-diagnostics/
+2026-10-27T09:20:49.8077220Z   if-no-files-found: error
+2026-10-27T09:20:49.8077592Z   compression-level: 6
+2026-10-27T09:20:49.8077936Z   overwrite: false
+2026-10-27T09:20:49.8078278Z   include-hidden-files: false
+2026-10-27T09:20:49.8078621Z   archive: true
+2026-10-27T09:20:49.8078905Z env:
+2026-10-27T09:20:49.8079308Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:20:49.8079698Z ##[endgroup]
+2026-10-27T09:20:49.9616104Z With the provided path, there will be 6 files uploaded
+2026-10-27T09:20:49.9642246Z Artifact name is valid!
+2026-10-27T09:20:49.9661654Z Root directory input is valid!
+2026-10-27T09:20:50.2701028Z Uploading artifact: linux-watcher-diagnostics.zip
+2026-10-27T09:20:50.2738615Z Beginning upload of artifact content to blob storage
+2026-10-27T09:20:50.5427505Z Uploaded bytes 3971
+2026-10-27T09:20:50.6148042Z Finished uploading artifact content to blob storage!
+2026-10-27T09:20:50.6169946Z SHA256 digest of uploaded artifact is f66c7f22f9e2ceba812d4de1e6a8618ad893015d9670331697824a6105bbcea0
+2026-10-27T09:20:50.6171662Z Finalizing artifact upload
+2026-10-27T09:20:51.1974978Z Artifact linux-watcher-diagnostics successfully finalized. Artifact ID 12723160208
+2026-10-27T09:20:51.1977125Z Artifact linux-watcher-diagnostics has been successfully uploaded! Final size is 3971 bytes. Artifact ID is 12723160208
+2026-10-27T09:20:51.1978557Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40479953067/artifacts/12723160208
+2026-10-27T09:20:51.2129260Z Post job cleanup.
+2026-10-27T09:20:51.3601617Z Pruning is unnecessary.
+2026-10-27T09:20:51.3604308Z Cache hit occurred on the primary key pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd, not saving cache.
+2026-10-27T09:20:51.3824906Z Post job cleanup.
+2026-10-27T09:20:51.4839028Z [command]/usr/bin/git version
+2026-10-27T09:20:51.4876004Z git version 2.55.0
+2026-10-27T09:20:51.4947719Z Temporarily overriding HOME='/home/runner/work/_temp/cc8ded9d-14fc-4c7b-af24-31bd2b3a48d2' before making global git config changes
+2026-10-27T09:20:51.4949373Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T09:20:51.4951228Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:20:51.4996127Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:20:51.5068148Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:20:51.5641872Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:20:51.5697234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:20:51.6391935Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:20:51.6442533Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:20:51.6933804Z Cleaning up orphan processes

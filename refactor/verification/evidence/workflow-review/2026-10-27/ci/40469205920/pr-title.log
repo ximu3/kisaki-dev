@@ -1,0 +1,229 @@
+﻿2026-10-27T07:47:09.7639737Z Current runner version: '2.338.0'
+2026-10-27T07:47:09.7657540Z ##[group]Runner Image Provisioner
+2026-10-27T07:47:09.7658067Z Hosted Compute Agent
+2026-10-27T07:47:09.7658442Z Version: 20261021.618
+2026-10-27T07:47:09.7658812Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T07:47:09.7659225Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T07:47:09.7659635Z Worker ID: {0349eb70-7237-45a7-9e08-465ff4be2828}
+2026-10-27T07:47:09.7660030Z Region: westus3
+2026-10-27T07:47:09.7660350Z Cloud: Azure
+2026-10-27T07:47:09.7660666Z ##[endgroup]
+2026-10-27T07:47:09.7661614Z ##[group]Operating System
+2026-10-27T07:47:09.7661979Z Ubuntu
+2026-10-27T07:47:09.7662281Z 22.04.5
+2026-10-27T07:47:09.7662557Z LTS
+2026-10-27T07:47:09.7662872Z ##[endgroup]
+2026-10-27T07:47:09.7663453Z ##[group]Runner Image
+2026-10-27T07:47:09.7663805Z Image: ubuntu-22.04
+2026-10-27T07:47:09.7664124Z Version: 20261012.322.1
+2026-10-27T07:47:09.7664853Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-27T07:47:09.7665701Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-27T07:47:09.7666387Z ##[endgroup]
+2026-10-27T07:47:09.7667074Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T07:47:09.7668325Z Contents: read
+2026-10-27T07:47:09.7668652Z Metadata: read
+2026-10-27T07:47:09.7668953Z ##[endgroup]
+2026-10-27T07:47:09.7670296Z Secret source: Actions
+2026-10-27T07:47:09.7670805Z Cache mode: write
+2026-10-27T07:47:09.7671241Z Prepare workflow directory
+2026-10-27T07:47:09.7913899Z Prepare all required actions
+2026-10-27T07:47:09.7958681Z Getting action download info
+2026-10-27T07:47:10.1624136Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T07:47:10.2350938Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T07:47:10.3729630Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T07:47:11.1094752Z Complete job name: PR title
+2026-10-27T07:47:11.1573072Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T07:47:11.1573878Z with:
+2026-10-27T07:47:11.1574137Z   persist-credentials: false
+2026-10-27T07:47:11.1574439Z   repository: ximu3/kisaki-dev
+2026-10-27T07:47:11.1576623Z   token: ***
+2026-10-27T07:47:11.1576874Z   ssh-strict: true
+2026-10-27T07:47:11.1577127Z   ssh-user: git
+2026-10-27T07:47:11.1577377Z   clean: true
+2026-10-27T07:47:11.1577680Z   sparse-checkout-cone-mode: true
+2026-10-27T07:47:11.1577981Z   fetch-depth: 1
+2026-10-27T07:47:11.1578230Z   fetch-tags: false
+2026-10-27T07:47:11.1578494Z   show-progress: true
+2026-10-27T07:47:11.1578755Z   lfs: false
+2026-10-27T07:47:11.1578995Z   submodules: false
+2026-10-27T07:47:11.1579257Z   set-safe-directory: true
+2026-10-27T07:47:11.1579551Z   allow-unsafe-pr-checkout: false
+2026-10-27T07:47:11.1579948Z ##[endgroup]
+2026-10-27T07:47:11.2404521Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T07:47:11.2406981Z ##[group]Getting Git version info
+2026-10-27T07:47:11.2409894Z Working directory is '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T07:47:11.2413804Z [command]/usr/bin/git version
+2026-10-27T07:47:11.2414431Z git version 2.55.0
+2026-10-27T07:47:11.2416429Z ##[endgroup]
+2026-10-27T07:47:11.2421041Z Temporarily overriding HOME='/home/runner/work/_temp/50f18455-171f-4186-8098-54e674bbad8a' before making global git config changes
+2026-10-27T07:47:11.2422502Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T07:47:11.2423771Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T07:47:11.2444661Z Deleting the contents of '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T07:47:11.2445882Z ##[group]Initializing the repository
+2026-10-27T07:47:11.2447131Z [command]/usr/bin/git init /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T07:47:11.2509819Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T07:47:11.2524872Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T07:47:11.2531363Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T07:47:11.2532183Z hint: call:
+2026-10-27T07:47:11.2532965Z hint:
+2026-10-27T07:47:11.2533687Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T07:47:11.2534310Z hint:
+2026-10-27T07:47:11.2534916Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T07:47:11.2535842Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T07:47:11.2536593Z hint:
+2026-10-27T07:47:11.2537053Z hint: 	git branch -m <name>
+2026-10-27T07:47:11.2537561Z hint:
+2026-10-27T07:47:11.2538208Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T07:47:11.2539234Z Initialized empty Git repository in /home/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T07:47:11.2541109Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T07:47:11.2607387Z ##[endgroup]
+2026-10-27T07:47:11.2624155Z ##[group]Disabling automatic garbage collection
+2026-10-27T07:47:11.2653745Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T07:47:11.2694310Z ##[endgroup]
+2026-10-27T07:47:11.2695038Z ##[group]Setting up auth
+2026-10-27T07:47:11.2695790Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T07:47:11.2697993Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T07:47:11.2895781Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T07:47:11.2912735Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T07:47:11.3023715Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T07:47:11.3044641Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T07:47:11.3150152Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T07:47:11.3205184Z ##[endgroup]
+2026-10-27T07:47:11.3206184Z ##[group]Fetching the repository
+2026-10-27T07:47:11.3212630Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +26c70fa5ef6d227bcea57b74885c1e82c4824179:refs/remotes/pull/1/merge
+2026-10-27T07:47:12.6606471Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T07:47:12.6614427Z  * [new ref]         26c70fa5ef6d227bcea57b74885c1e82c4824179 -> pull/1/merge
+2026-10-27T07:47:12.6618339Z ##[endgroup]
+2026-10-27T07:47:12.6619659Z ##[group]Determining the checkout info
+2026-10-27T07:47:12.6621172Z ##[endgroup]
+2026-10-27T07:47:12.6622107Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T07:47:12.6649487Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T07:47:12.6672363Z ##[group]Checking out the ref
+2026-10-27T07:47:12.6674379Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+2026-10-27T07:47:12.7771865Z Note: switching to 'refs/remotes/pull/1/merge'.
+2026-10-27T07:47:12.7783421Z 
+2026-10-27T07:47:12.7789510Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-27T07:47:12.7791481Z changes and commit them, and you can discard any commits you make in this
+2026-10-27T07:47:12.7795977Z state without impacting any branches by switching back to a branch.
+2026-10-27T07:47:12.7797151Z 
+2026-10-27T07:47:12.7797960Z If you want to create a new branch to retain commits you create, you may
+2026-10-27T07:47:12.7799951Z do so (now or later) by using -c with the switch command. Example:
+2026-10-27T07:47:12.7800920Z 
+2026-10-27T07:47:12.7801423Z   git switch -c <new-branch-name>
+2026-10-27T07:47:12.7802161Z 
+2026-10-27T07:47:12.7802721Z Or undo this operation with:
+2026-10-27T07:47:12.7803716Z 
+2026-10-27T07:47:12.7804347Z   git switch -
+2026-10-27T07:47:12.7805226Z 
+2026-10-27T07:47:12.7806194Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-27T07:47:12.7807660Z 
+2026-10-27T07:47:12.7809103Z HEAD is now at 26c70fa Merge 18a6346c90dcabcff9476088664829dc0960fc12 into e0ac47204390b1828ad5fba869ece2e226dc0938
+2026-10-27T07:47:12.7815022Z ##[endgroup]
+2026-10-27T07:47:12.7817416Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T07:47:12.7830211Z 26c70fa5ef6d227bcea57b74885c1e82c4824179
+2026-10-27T07:47:12.7838851Z ##[group]Removing auth
+2026-10-27T07:47:12.7841537Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T07:47:12.7862334Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T07:47:12.7975073Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T07:47:12.7991249Z http.https://github.com/.extraheader
+2026-10-27T07:47:12.7999034Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T07:47:12.8016325Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T07:47:12.8123666Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T07:47:12.8146272Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T07:47:12.8246337Z ##[endgroup]
+2026-10-27T07:47:12.8489945Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T07:47:12.8490960Z with:
+2026-10-27T07:47:12.8491513Z   node-version-file: .node-version
+2026-10-27T07:47:12.8492250Z   package-manager-cache: false
+2026-10-27T07:47:12.8492931Z   always-auth: false
+2026-10-27T07:47:12.8493670Z   check-latest: false
+2026-10-27T07:47:12.8499428Z   token: ***
+2026-10-27T07:47:12.8499961Z ##[endgroup]
+2026-10-27T07:47:12.9411918Z Node version file is not JSON file
+2026-10-27T07:47:12.9414165Z Resolved .node-version as 24.11.1
+2026-10-27T07:47:12.9426347Z Attempting to download 24.11.1...
+2026-10-27T07:47:12.9500498Z (node:1794) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T07:47:12.9503454Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T07:47:14.1320027Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+2026-10-27T07:47:14.6741721Z Extracting ...
+2026-10-27T07:47:14.6816902Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/f403e51a-a912-4dee-b85f-7b0599420e29 -f /home/runner/work/_temp/52b7a4dc-e067-4c24-96f7-a16517844213
+2026-10-27T07:47:15.5924897Z Adding to the cache ...
+2026-10-27T07:47:18.9665448Z ##[group]Environment details
+2026-10-27T07:47:19.1452433Z node: v24.11.1
+2026-10-27T07:47:19.1453109Z npm: 11.6.2
+2026-10-27T07:47:19.1453684Z yarn: 1.22.22
+2026-10-27T07:47:19.1454344Z ##[endgroup]
+2026-10-27T07:47:19.1602442Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T07:47:19.1602692Z with:
+2026-10-27T07:47:19.1602814Z   cache: true
+2026-10-27T07:47:19.1602955Z   dest: ~/setup-pnpm
+2026-10-27T07:47:19.1603098Z   run_install: null
+2026-10-27T07:47:19.1603424Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T07:47:19.1603785Z   package_json_file: package.json
+2026-10-27T07:47:19.1603943Z   standalone: false
+2026-10-27T07:47:19.1604074Z ##[endgroup]
+2026-10-27T07:47:19.2528685Z ##[group]Running self-installer...
+2026-10-27T07:47:19.6002999Z (node:1840) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T07:47:19.6005002Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T07:47:19.7905219Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T07:47:19.7965896Z Packages: +1
+2026-10-27T07:47:19.7968862Z +
+2026-10-27T07:47:20.0144931Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T07:47:20.1219443Z 
+2026-10-27T07:47:20.1219732Z dependencies:
+2026-10-27T07:47:20.1220287Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T07:47:20.1220477Z 
+2026-10-27T07:47:20.1254416Z Done in 726ms
+2026-10-27T07:47:20.1565034Z ##[endgroup]
+2026-10-27T07:47:20.1574268Z Installation Completed!
+2026-10-27T07:47:20.1574843Z ##[group]Restoring cache...
+2026-10-27T07:47:20.1597719Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T07:47:20.5401032Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T07:47:20.7554621Z Cache hit for: pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T07:47:21.9901548Z Received 64553974 of 64553974 (100.0%), 63.1 MBs/sec
+2026-10-27T07:47:21.9902486Z Cache Size: ~62 MB (64553974 B)
+2026-10-27T07:47:22.0059827Z [command]/usr/bin/tar -xf /home/runner/work/_temp/826be143-f137-4558-b505-07ef713e8cb9/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T07:47:22.2991878Z Cache restored successfully
+2026-10-27T07:47:22.3054677Z Cache restored from key: pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T07:47:22.3055845Z ##[endgroup]
+2026-10-27T07:47:22.3170845Z ##[group]Run pnpm install --filter @kisaki3/workspace --frozen-lockfile --ignore-scripts
+2026-10-27T07:47:22.3171284Z [36;1mpnpm install --filter @kisaki3/workspace --frozen-lockfile --ignore-scripts[0m
+2026-10-27T07:47:22.3345638Z shell: /usr/bin/bash -e {0}
+2026-10-27T07:47:22.3345833Z env:
+2026-10-27T07:47:22.3346011Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T07:47:22.3346226Z ##[endgroup]
+2026-10-27T07:47:22.7586820Z ? Verifying lockfile against supply-chain policies (877 entries)...
+2026-10-27T07:47:22.7706011Z Lockfile is up to date, resolution step is skipped
+2026-10-27T07:47:22.8585503Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T07:47:22.8895825Z .                                        | +270 +++++++++++++++++++++++++++
+2026-10-27T07:47:23.8624897Z Progress: resolved 270, reused 182, downloaded 0, added 0
+2026-10-27T07:47:24.8712949Z Progress: resolved 270, reused 270, downloaded 0, added 116
+2026-10-27T07:47:25.6426527Z Progress: resolved 270, reused 270, downloaded 0, added 270, done
+2026-10-27T07:47:26.2038485Z ✓ Lockfile passes supply-chain policies (877 entries in 3.4s)
+2026-10-27T07:47:26.3664693Z Done in 4s using pnpm v11.11.0
+2026-10-27T07:47:26.4307475Z ##[group]Run printf '%s\n' "$PR_TITLE" | pnpm exec commitlint
+2026-10-27T07:47:26.4307931Z [36;1mprintf '%s\n' "$PR_TITLE" | pnpm exec commitlint[0m
+2026-10-27T07:47:26.4352859Z shell: /usr/bin/bash -e {0}
+2026-10-27T07:47:26.4353222Z env:
+2026-10-27T07:47:26.4353474Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T07:47:26.4353864Z   PR_TITLE: refactor: unify desktop tooling and verification
+2026-10-27T07:47:26.4354200Z ##[endgroup]
+2026-10-27T07:47:27.5649181Z Post job cleanup.
+2026-10-27T07:47:27.6928840Z Pruning is unnecessary.
+2026-10-27T07:47:27.6944431Z Cache hit occurred on the primary key pnpm-cache-Linux-x64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd, not saving cache.
+2026-10-27T07:47:27.7142253Z Post job cleanup.
+2026-10-27T07:47:27.8315878Z (node:1935) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T07:47:27.8332663Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T07:47:27.8641161Z Post job cleanup.
+2026-10-27T07:47:27.9867942Z [command]/usr/bin/git version
+2026-10-27T07:47:27.9946083Z git version 2.55.0
+2026-10-27T07:47:28.0085883Z Temporarily overriding HOME='/home/runner/work/_temp/7258ee65-1081-4310-bc2c-dfe16e3b4ab5' before making global git config changes
+2026-10-27T07:47:28.0124176Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T07:47:28.0144009Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T07:47:28.0245247Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T07:47:28.0359892Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T07:47:28.0478551Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T07:47:28.0510458Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T07:47:28.0864144Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T07:47:28.0914427Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T07:47:28.1341413Z Cleaning up orphan processes

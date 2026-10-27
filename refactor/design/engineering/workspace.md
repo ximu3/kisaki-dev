@@ -233,11 +233,11 @@ persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障�
 
 桌面工具直接使用 Vite 的公开 API，由项目开发会话拥有进程和就绪交接。[桌面工具布局](layout.md#desktop-tools)中的 dev/session.ts 负责一个完整开发会话，依次完成有限依赖构建、当前目标资源准备、服务与程序监听、首次编译和 renderer 就绪，然后启动 Electron。就绪由回调或明确信号确认，不解析日志或依靠固定延时。
 
-项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、HMR、watch 和打包使用 Vite 的公开能力。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)。
+项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)与[监听就绪验证](../../verification/evidence/ci-exploration/2026-10-27/README.md)。
 
 main 与 extension-host 使用 Vite 的 SSR 构建选择 Node 解析和插件语义；target 只负责生成语法，不能替代宿主配置。普通 JavaScript 依赖按制品布局打包，Electron、Node 内建模块和实际原生资源按所属部署合同处理。preload 保持沙箱可消费的独立 CommonJS 输出，renderer 使用浏览器环境，不套用完整 Node 宿主的缺省配置。
 
-开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。额外源码路径和变更通知在 configureServer 中注册，使 Vite 重启后仍能观察应用配置和公共包输入。对应取舍与验证见[工具链修正](../../verification/evidence/tooling-review/2026-10-26/implementation/README.md)。
+开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。renderer 服务只拥有页面热更新与快照解析，运行时和公共包输入监听由开发会话独立拥有。对应快照取舍与验证见[工具链修正](../../verification/evidence/tooling-review/2026-10-26/implementation/README.md)。
 
 renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
 

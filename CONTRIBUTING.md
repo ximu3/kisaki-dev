@@ -1,6 +1,6 @@
 # 开发与验证
 
-使用 `.node-version` 和根 `packageManager` 指定的版本。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定；Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要对应系统构建工具。当前桌面工程使用 Electron 44.5.1，开发 Node 与 Electron 内置 Node 分开验证。
+使用 `.node-version` 和根 `packageManager` 指定的版本。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定；Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要对应系统构建工具。当前桌面工程使用 Electron 45.0.0，开发 Node 与 Electron 内置 Node 分开验证。
 
 ## 准备
 
@@ -35,7 +35,7 @@ pnpm desktop:build --target windows-x64
 pnpm desktop:package --target windows-x64
 ```
 
-开发会话先完成依赖与资源准备，再由 Vite 管理 renderer 服务和监听。窗口源码与样式使用 HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
+开发会话先完成依赖与资源准备，再启动 Vite renderer 服务和独立的 Chokidar 输入监听；监听就绪后开始程序编译。窗口源码与样式使用 Vite HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
 
 公共依赖快照保留到会话结束，以免撤销仍被读取的代码；总量限制为 256 MiB，达到预算时停止采用新快照并报告需要重启。工具自身或锁定工具链变更后重新启动开发命令。
 

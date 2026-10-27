@@ -1,0 +1,1477 @@
+﻿2026-10-27T09:39:11.3008870Z Current runner version: '2.338.0'
+2026-10-27T09:39:11.3020040Z ##[group]Runner Image Provisioner
+2026-10-27T09:39:11.3020480Z Hosted Compute Agent
+2026-10-27T09:39:11.3020810Z Version: 20260828.587
+2026-10-27T09:39:11.3021160Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-10-27T09:39:11.3021630Z Build Date: 2026-08-28T16:44:25Z
+2026-10-27T09:39:11.3022010Z Worker ID: {b1640d43-20eb-4baa-8be8-a31703f4ea8a}
+2026-10-27T09:39:11.3022410Z Azure Region: westus
+2026-10-27T09:39:11.3022740Z ##[endgroup]
+2026-10-27T09:39:11.3023530Z ##[group]Operating System
+2026-10-27T09:39:11.3023870Z macOS
+2026-10-27T09:39:11.3024150Z 15.7.9
+2026-10-27T09:39:11.3024440Z 24G830
+2026-10-27T09:39:11.3024740Z ##[endgroup]
+2026-10-27T09:39:11.3025060Z ##[group]Runner Image
+2026-10-27T09:39:11.3025400Z Image: macos-15-arm64
+2026-10-27T09:39:11.3025750Z Version: 20260907.0337.1
+2026-10-27T09:39:11.3026460Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+2026-10-27T09:39:11.3027350Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260907.0337
+2026-10-27T09:39:11.3059230Z ##[endgroup]
+2026-10-27T09:39:11.3059930Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T09:39:11.3061130Z Contents: read
+2026-10-27T09:39:11.3061780Z Metadata: read
+2026-10-27T09:39:11.3062230Z ##[endgroup]
+2026-10-27T09:39:11.3063610Z Secret source: Actions
+2026-10-27T09:39:11.3064110Z Cache mode: write
+2026-10-27T09:39:11.3064480Z Prepare workflow directory
+2026-10-27T09:39:11.3277420Z Prepare all required actions
+2026-10-27T09:39:11.3305510Z Getting action download info
+2026-10-27T09:39:11.5946820Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T09:39:11.7157740Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T09:39:11.7789150Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T09:39:12.4382830Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T09:39:13.2197600Z Complete job name: Apple Silicon uncaught exception observation (1)
+2026-10-27T09:39:13.2714030Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T09:39:13.2715060Z with:
+2026-10-27T09:39:13.2715600Z   persist-credentials: false
+2026-10-27T09:39:13.2716370Z   repository: ximu3/kisaki-dev
+2026-10-27T09:39:13.2722670Z   token: ***
+2026-10-27T09:39:13.2723160Z   ssh-strict: true
+2026-10-27T09:39:13.2723700Z   ssh-user: git
+2026-10-27T09:39:13.2724230Z   clean: true
+2026-10-27T09:39:13.2724810Z   sparse-checkout-cone-mode: true
+2026-10-27T09:39:13.2725490Z   fetch-depth: 1
+2026-10-27T09:39:13.2725990Z   fetch-tags: false
+2026-10-27T09:39:13.2726630Z   show-progress: true
+2026-10-27T09:39:13.2727250Z   lfs: false
+2026-10-27T09:39:13.2727860Z   submodules: false
+2026-10-27T09:39:13.2728390Z   set-safe-directory: true
+2026-10-27T09:39:13.2729090Z   allow-unsafe-pr-checkout: false
+2026-10-27T09:39:13.2729830Z env:
+2026-10-27T09:39:13.2730470Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:13.2731150Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:13.2731870Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:13.2732520Z ##[endgroup]
+2026-10-27T09:39:13.3779190Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T09:39:13.3780800Z ##[group]Getting Git version info
+2026-10-27T09:39:13.3781650Z Working directory is '/Users/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T09:39:13.3783030Z [command]/opt/homebrew/bin/git version
+2026-10-27T09:39:13.4195430Z git version 2.55.0
+2026-10-27T09:39:13.4205670Z ##[endgroup]
+2026-10-27T09:39:13.4211080Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/0dd5632d-887a-4920-b004-3f43ac2a3288/.gitconfig'
+2026-10-27T09:39:13.4217940Z Temporarily overriding HOME='/Users/runner/work/_temp/0dd5632d-887a-4920-b004-3f43ac2a3288' before making global git config changes
+2026-10-27T09:39:13.4220020Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T09:39:13.4221670Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:39:13.4293600Z Deleting the contents of '/Users/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T09:39:13.4296810Z ##[group]Initializing the repository
+2026-10-27T09:39:13.4300100Z [command]/opt/homebrew/bin/git init /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:39:13.4432440Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T09:39:13.4433660Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T09:39:13.4434810Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T09:39:13.4435730Z hint: call:
+2026-10-27T09:39:13.4450130Z hint:
+2026-10-27T09:39:13.4450890Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T09:39:13.4451690Z hint:
+2026-10-27T09:39:13.4452380Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T09:39:13.4453480Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T09:39:13.4454350Z hint:
+2026-10-27T09:39:13.4454830Z hint: 	git branch -m <name>
+2026-10-27T09:39:13.4455370Z hint:
+2026-10-27T09:39:13.4456080Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T09:39:13.4457370Z Initialized empty Git repository in /Users/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T09:39:13.4459330Z [command]/opt/homebrew/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T09:39:13.4491630Z ##[endgroup]
+2026-10-27T09:39:13.4492500Z ##[group]Disabling automatic garbage collection
+2026-10-27T09:39:13.4493910Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-27T09:39:13.4534330Z ##[endgroup]
+2026-10-27T09:39:13.4535250Z ##[group]Setting up auth
+2026-10-27T09:39:13.4538310Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:39:13.4579330Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:39:13.5131570Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:39:13.5169720Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:39:13.5665650Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:39:13.5703840Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:39:13.6205950Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T09:39:13.6248040Z ##[endgroup]
+2026-10-27T09:39:13.6248810Z ##[group]Fetching the repository
+2026-10-27T09:39:13.6253780Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +404e1c229d39f11ed3e2137cbb6f9b02338b7fa0:refs/remotes/origin/research/ci-reliability-diagnostics
+2026-10-27T09:39:14.9101330Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T09:39:14.9101900Z  * [new ref]         404e1c229d39f11ed3e2137cbb6f9b02338b7fa0 -> origin/research/ci-reliability-diagnostics
+2026-10-27T09:39:14.9103690Z ##[endgroup]
+2026-10-27T09:39:14.9104070Z ##[group]Determining the checkout info
+2026-10-27T09:39:14.9105100Z ##[endgroup]
+2026-10-27T09:39:14.9108760Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-27T09:39:14.9159810Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T09:39:14.9206620Z ##[group]Checking out the ref
+2026-10-27T09:39:14.9212890Z [command]/opt/homebrew/bin/git checkout --progress --force -B research/ci-reliability-diagnostics refs/remotes/origin/research/ci-reliability-diagnostics
+2026-10-27T09:39:15.1846440Z Switched to a new branch 'research/ci-reliability-diagnostics'
+2026-10-27T09:39:15.1851380Z branch 'research/ci-reliability-diagnostics' set up to track 'origin/research/ci-reliability-diagnostics'.
+2026-10-27T09:39:15.1863780Z ##[endgroup]
+2026-10-27T09:39:15.1921580Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-27T09:39:15.1965590Z 404e1c229d39f11ed3e2137cbb6f9b02338b7fa0
+2026-10-27T09:39:15.1971640Z ##[group]Removing auth
+2026-10-27T09:39:15.1974520Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:39:15.2017570Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:39:15.2587010Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:39:15.2629120Z http.https://github.com/.extraheader
+2026-10-27T09:39:15.2633720Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T09:39:15.2679110Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:39:15.3281440Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:39:15.3325010Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:39:15.3897500Z ##[endgroup]
+2026-10-27T09:39:15.4038430Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T09:39:15.4038780Z with:
+2026-10-27T09:39:15.4038950Z   node-version-file: .node-version
+2026-10-27T09:39:15.4039140Z   architecture: arm64
+2026-10-27T09:39:15.4039350Z   package-manager-cache: false
+2026-10-27T09:39:15.4039590Z   always-auth: false
+2026-10-27T09:39:15.4039850Z   check-latest: false
+2026-10-27T09:39:15.4041860Z   token: ***
+2026-10-27T09:39:15.4041990Z env:
+2026-10-27T09:39:15.4042130Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:15.4042330Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:15.4042530Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:15.4042870Z ##[endgroup]
+2026-10-27T09:39:15.4985580Z Node version file is not JSON file
+2026-10-27T09:39:15.4986280Z Resolved .node-version as 24.11.1
+2026-10-27T09:39:15.4991370Z Attempting to download 24.11.1...
+2026-10-27T09:39:15.5070680Z (node:1872) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T09:39:15.5071280Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T09:39:16.5777650Z Acquiring 24.11.1 - arm64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-darwin-arm64.tar.gz
+2026-10-27T09:39:17.1691150Z Extracting ...
+2026-10-27T09:39:17.1778240Z [command]/usr/bin/tar xz --strip 1 -C /Users/runner/work/_temp/e10716af-569e-494f-9e0f-fbfbf1bf6c36 -f /Users/runner/work/_temp/ebd3a593-2dea-49dc-837c-d67d95352a6f
+2026-10-27T09:39:17.9139490Z Adding to the cache ...
+2026-10-27T09:39:19.4062980Z ##[group]Environment details
+2026-10-27T09:39:19.5819460Z node: v24.11.1
+2026-10-27T09:39:19.5819720Z npm: 11.6.2
+2026-10-27T09:39:19.5820120Z yarn: 1.22.22
+2026-10-27T09:39:19.5820530Z ##[endgroup]
+2026-10-27T09:39:19.5918840Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T09:39:19.5919150Z with:
+2026-10-27T09:39:19.5924950Z   cache: true
+2026-10-27T09:39:19.5925280Z   dest: ~/setup-pnpm
+2026-10-27T09:39:19.5925450Z   run_install: null
+2026-10-27T09:39:19.5925640Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T09:39:19.5925860Z   package_json_file: package.json
+2026-10-27T09:39:19.5926060Z   standalone: false
+2026-10-27T09:39:19.5926230Z env:
+2026-10-27T09:39:19.5926380Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:19.5926540Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:19.5926710Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:19.5926850Z ##[endgroup]
+2026-10-27T09:39:19.6890890Z ##[group]Running self-installer...
+2026-10-27T09:39:19.8946730Z (node:1893) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T09:39:19.8947630Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T09:39:20.0468260Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T09:39:20.0504050Z Packages: +1
+2026-10-27T09:39:20.0504230Z +
+2026-10-27T09:39:20.3338750Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T09:39:20.3664720Z 
+2026-10-27T09:39:20.3665020Z dependencies:
+2026-10-27T09:39:20.3665330Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T09:39:20.3665470Z 
+2026-10-27T09:39:20.3755580Z Done in 585ms
+2026-10-27T09:39:20.3822760Z ##[endgroup]
+2026-10-27T09:39:20.3823140Z Installation Completed!
+2026-10-27T09:39:20.3826920Z ##[group]Restoring cache...
+2026-10-27T09:39:20.3849540Z [command]/Users/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T09:39:20.7321990Z /Users/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T09:39:20.8724910Z Cache hit for: pnpm-cache-macOS-arm64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T09:39:22.0298770Z Received 104857600 of 126642184 (82.8%), 100.0 MBs/sec
+2026-10-27T09:39:22.2197330Z Received 126642184 of 126642184 (100.0%), 101.5 MBs/sec
+2026-10-27T09:39:22.2426360Z Cache Size: ~121 MB (126642184 B)
+2026-10-27T09:39:22.2469870Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/c1c6f4c4-d220-4f61-9b11-8d42ea0f4b6a/cache.tzst -P -C /Users/runner/work/kisaki-dev/kisaki-dev --delay-directory-restore --use-compress-program unzstd
+2026-10-27T09:39:27.6415310Z Cache restored successfully
+2026-10-27T09:39:27.6440610Z Cache restored from key: pnpm-cache-macOS-arm64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd
+2026-10-27T09:39:27.6441480Z ##[endgroup]
+2026-10-27T09:39:27.6563800Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T09:39:27.6564070Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T09:39:27.6599710Z shell: /bin/bash -e {0}
+2026-10-27T09:39:27.6599870Z env:
+2026-10-27T09:39:27.6600000Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:27.6600200Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:27.6600550Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:27.6600990Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:39:27.6601330Z ##[endgroup]
+2026-10-27T09:39:27.9582090Z Scope: all 46 workspace projects
+2026-10-27T09:39:28.0114070Z ? Verifying lockfile against supply-chain policies (877 entries)...
+2026-10-27T09:39:28.0194850Z Lockfile is up to date, resolution step is skipped
+2026-10-27T09:39:28.0861270Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T09:39:28.1249790Z Packages: +699
+2026-10-27T09:39:28.1290750Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T09:39:29.0920300Z Progress: resolved 699, reused 699, downloaded 0, added 195
+2026-10-27T09:39:30.0961800Z Progress: resolved 699, reused 699, downloaded 0, added 569
+2026-10-27T09:39:30.5479120Z Progress: resolved 699, reused 699, downloaded 0, added 699, done
+2026-10-27T09:39:31.7043640Z ✓ Lockfile passes supply-chain policies (877 entries in 3.6s)
+2026-10-27T09:39:31.8314460Z 
+2026-10-27T09:39:31.8315020Z devDependencies:
+2026-10-27T09:39:31.8315370Z + @commitlint/cli 21.2.4
+2026-10-27T09:39:31.8326390Z + @commitlint/config-conventional 21.2.4
+2026-10-27T09:39:31.8326820Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T09:39:31.8327160Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T09:39:31.8328180Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T09:39:31.8328530Z + @playwright/test 1.64.1
+2026-10-27T09:39:31.8328810Z + @types/node 24.19.2
+2026-10-27T09:39:31.8329030Z + @types/semver 7.8.0
+2026-10-27T09:39:31.8329220Z + dependency-cruiser 18.7.0
+2026-10-27T09:39:31.8329420Z + eslint 10.13.0
+2026-10-27T09:39:31.8329570Z + husky 9.1.7
+2026-10-27T09:39:31.8329720Z + jiti 2.7.0
+2026-10-27T09:39:31.8329890Z + lint-staged 17.6.0
+2026-10-27T09:39:31.8330070Z + prettier 3.9.10
+2026-10-27T09:39:31.8330240Z + semver 7.8.5
+2026-10-27T09:39:31.8330390Z + tar 7.5.22
+2026-10-27T09:39:31.8330520Z + tsx 4.23.15
+2026-10-27T09:39:31.8330670Z + turbo 2.11.10
+2026-10-27T09:39:31.8330850Z + typescript 6.0.3
+2026-10-27T09:39:31.8331080Z + vite 8.3.3
+2026-10-27T09:39:31.8331260Z + vitest 5.0.5
+2026-10-27T09:39:31.8331420Z + yaml 2.9.1
+2026-10-27T09:39:31.8331520Z 
+2026-10-27T09:39:31.9476960Z Done in 4.2s using pnpm v11.11.0
+2026-10-27T09:39:31.9731300Z ##[group]Run pnpm --filter @kisaki3/desktop exec node -e "console.log(require('electron'))"
+2026-10-27T09:39:31.9731750Z [36;1mpnpm --filter @kisaki3/desktop exec node -e "console.log(require('electron'))"[0m
+2026-10-27T09:39:31.9759850Z shell: /bin/bash -e {0}
+2026-10-27T09:39:31.9759990Z env:
+2026-10-27T09:39:31.9760110Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:31.9760340Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:31.9760500Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:31.9760680Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:39:31.9760870Z ##[endgroup]
+2026-10-27T09:39:32.3133970Z Downloading Electron binary...
+2026-10-27T09:39:33.9815680Z /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron
+2026-10-27T09:39:33.9913920Z ##[group]Run pnpm desktop:build --target macos-arm64
+2026-10-27T09:39:33.9914270Z [36;1mpnpm desktop:build --target macos-arm64[0m
+2026-10-27T09:39:33.9944830Z shell: /bin/bash -e {0}
+2026-10-27T09:39:33.9945050Z env:
+2026-10-27T09:39:33.9945180Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:33.9945350Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:33.9945530Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:33.9945720Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:39:33.9945930Z ##[endgroup]
+2026-10-27T09:39:34.2768250Z $ turbo run build --filter=@kisaki3/desktop -- --target macos-arm64
+2026-10-27T09:39:34.3865420Z 
+2026-10-27T09:39:34.3868390Z    • Packages in scope: @kisaki3/desktop
+2026-10-27T09:39:34.3868780Z    • Running build in 1 package
+2026-10-27T09:39:34.3869020Z    • Remote caching disabled
+2026-10-27T09:39:34.3869130Z 
+2026-10-27T09:39:35.5602600Z ##[group]@kisaki3/desktop-contracts:build
+2026-10-27T09:39:35.5603250Z cache miss, executing 972ce1282d708c36
+2026-10-27T09:39:35.5603570Z $ tsx tools/build.ts --target macos-arm64
+2026-10-27T09:39:35.5604400Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T09:39:35.5605120Z ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T09:39:35.5605660Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T09:39:35.5606000Z ℹ Build start
+2026-10-27T09:39:35.5606500Z ℹ .cache/output-staging/dist-R1Uvtt/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T09:39:35.5607110Z ℹ .cache/output-staging/dist-R1Uvtt/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T09:39:35.5607670Z ℹ .cache/output-staging/dist-R1Uvtt/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T09:39:35.5608250Z ℹ .cache/output-staging/dist-R1Uvtt/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T09:39:35.5608920Z ℹ .cache/output-staging/dist-R1Uvtt/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T09:39:35.5609920Z ℹ .cache/output-staging/dist-R1Uvtt/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T09:39:35.5610290Z ℹ 6 files, total: 9.14 kB
+2026-10-27T09:39:35.5610550Z ✔ Build complete in 431ms
+2026-10-27T09:39:35.5610940Z ##[endgroup]
+2026-10-27T09:39:35.5654510Z ##[group]@kisaki3/appearance:build
+2026-10-27T09:39:35.5655030Z cache miss, executing 2726dee0ace4c85d
+2026-10-27T09:39:35.5655380Z $ tsx tools/build.ts --target macos-arm64
+2026-10-27T09:39:35.5656190Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T09:39:35.5656740Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T09:39:35.5657080Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T09:39:35.5657350Z ℹ Build start
+2026-10-27T09:39:35.5657800Z ℹ .cache/output-staging/dist-no7LE5/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T09:39:35.5658320Z ℹ .cache/output-staging/dist-no7LE5/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T09:39:35.5658860Z ℹ .cache/output-staging/dist-no7LE5/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T09:39:35.5659410Z ℹ .cache/output-staging/dist-no7LE5/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T09:39:35.5659910Z ℹ 4 files, total: 6.51 kB
+2026-10-27T09:39:35.5660150Z ✔ Build complete in 430ms
+2026-10-27T09:39:35.5660530Z ##[endgroup]
+2026-10-27T09:39:36.6962750Z ##[group]@kisaki3/extension-cli:build
+2026-10-27T09:39:36.6963200Z cache miss, executing 23332e0681440c44
+2026-10-27T09:39:36.6963490Z $ tsx tools/build.ts --target macos-arm64
+2026-10-27T09:39:36.6964370Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T09:39:36.6965040Z ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T09:39:36.6965380Z ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T09:39:36.6965670Z ℹ Build start
+2026-10-27T09:39:36.6966120Z ℹ .cache/output-staging/dist-cLU7O7/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T09:39:36.6966800Z ℹ .cache/output-staging/dist-cLU7O7/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T09:39:36.6968160Z ℹ .cache/output-staging/dist-cLU7O7/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T09:39:36.6968880Z ℹ .cache/output-staging/dist-cLU7O7/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T09:39:36.6969370Z ℹ 4 files, total: 8.14 kB
+2026-10-27T09:39:36.6969700Z ✔ Build complete in 593ms
+2026-10-27T09:39:36.6970230Z ##[endgroup]
+2026-10-27T09:39:37.2799970Z ##[group]@kisaki3/ui:build
+2026-10-27T09:39:37.2800360Z cache miss, executing 7a3eca633eaab0d0
+2026-10-27T09:39:37.2807270Z $ tsx tools/build.ts --target macos-arm64
+2026-10-27T09:39:37.2808570Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T09:39:37.2809170Z ℹ entry: src/index.ts
+2026-10-27T09:39:37.2809590Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T09:39:37.2809850Z ℹ Build start
+2026-10-27T09:39:37.2810190Z ℹ .cache/output-staging/dist-GeJLlr/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T09:39:37.2810650Z ℹ .cache/output-staging/dist-GeJLlr/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T09:39:37.2810940Z ℹ 2 files, total: 1.05 kB
+2026-10-27T09:39:37.2811170Z ✔ Build complete in 561ms
+2026-10-27T09:39:37.2811880Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T09:39:37.2812050Z 
+2026-10-27T09:39:37.2812150Z Done in [32m30ms[39m
+2026-10-27T09:39:37.2812450Z ##[endgroup]
+2026-10-27T09:39:57.1681350Z ##[group]@kisaki3/desktop:build
+2026-10-27T09:39:57.1681780Z cache bypass, force executing 593f0f71d7819ef1
+2026-10-27T09:39:57.1682110Z $ tsx tools/build/cli.ts --target macos-arm64
+2026-10-27T09:39:57.1682510Z info: syncing channel updates for 1.90.0-aarch64-apple-darwin
+2026-10-27T09:39:57.1682950Z info: latest update on 2025-09-18 for version 1.90.0 (1159e78c4 2025-09-14)
+2026-10-27T09:39:57.1683310Z info: downloading 5 components
+2026-10-27T09:39:57.1683560Z info: component rust-std is up to date
+2026-10-27T09:39:57.1683780Z    Compiling proc-macro2 v1.0.107
+2026-10-27T09:39:57.1684710Z    Compiling unicode-ident v1.0.27
+2026-10-27T09:39:57.1684980Z    Compiling quote v1.0.47
+2026-10-27T09:39:57.1685200Z    Compiling napi-build v2.6.0
+2026-10-27T09:39:57.1685400Z    Compiling futures-core v0.3.34
+2026-10-27T09:39:57.1685600Z    Compiling futures-sink v0.3.34
+2026-10-27T09:39:57.1685780Z    Compiling slab v0.4.12
+2026-10-27T09:39:57.1686060Z    Compiling futures-channel v0.3.34
+2026-10-27T09:39:57.1686310Z    Compiling memchr v2.8.3
+2026-10-27T09:39:57.1686570Z    Compiling futures-io v0.3.34
+2026-10-27T09:39:57.1686810Z    Compiling futures-task v0.3.34
+2026-10-27T09:39:57.1687090Z    Compiling pin-project-lite v0.2.17
+2026-10-27T09:39:57.1687290Z    Compiling cfg-if v1.0.5
+2026-10-27T09:39:57.1687570Z    Compiling libc v0.2.186
+2026-10-27T09:39:57.1687790Z    Compiling napi-sys v3.4.1
+2026-10-27T09:39:57.1688030Z    Compiling unicode-segmentation v1.13.3
+2026-10-27T09:39:57.1688290Z    Compiling convert_case v0.12.0
+2026-10-27T09:39:57.1688540Z    Compiling libloading v0.9.0
+2026-10-27T09:39:57.1688880Z    Compiling napi v3.15.0
+2026-10-27T09:39:57.1689060Z    Compiling semver v1.0.28
+2026-10-27T09:39:57.1689610Z    Compiling kisaki-native v0.1.0-dev.0 (/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/native)
+2026-10-27T09:39:57.1690060Z    Compiling ctor v1.0.13
+2026-10-27T09:39:57.1690320Z    Compiling rustc-hash v2.1.3
+2026-10-27T09:39:57.1690530Z    Compiling nohash-hasher v0.2.0
+2026-10-27T09:39:57.1690750Z    Compiling bitflags v2.13.2
+2026-10-27T09:39:57.1690920Z    Compiling syn v3.0.9
+2026-10-27T09:39:57.1691140Z    Compiling napi-derive-backend v6.1.6
+2026-10-27T09:39:57.1691550Z    Compiling futures-macro v0.3.34
+2026-10-27T09:39:57.1691800Z    Compiling futures-util v0.3.34
+2026-10-27T09:39:57.1692110Z    Compiling napi-derive v3.6.13
+2026-10-27T09:39:57.1692330Z    Compiling futures-executor v0.3.34
+2026-10-27T09:39:57.1692580Z    Compiling futures v0.3.34
+2026-10-27T09:39:57.1692920Z     Finished `release` profile [optimized] target(s) in 9.98s
+2026-10-27T09:39:57.1693990Z [36mvite v8.3.3 [32mbuilding ssr environment for production...[36m[39m
+2026-10-27T09:39:57.1694580Z [36mvite v8.3.3 [32mbuilding ssr environment for production...[36m[39m
+2026-10-27T09:39:57.1695190Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T09:39:57.1695520Z transforming...
+2026-10-27T09:39:57.1695660Z transforming...
+2026-10-27T09:39:57.1695800Z transforming...
+2026-10-27T09:39:57.1695990Z ✓ 2 modules transformed.
+2026-10-27T09:39:57.1696180Z ✓ 3 modules transformed.
+2026-10-27T09:39:57.1696370Z ✓ 17 modules transformed.
+2026-10-27T09:39:57.1696750Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T09:39:57.1697150Z transforming...
+2026-10-27T09:39:57.1697380Z rendering chunks...
+2026-10-27T09:39:57.1697580Z rendering chunks...
+2026-10-27T09:39:57.1697730Z rendering chunks...
+2026-10-27T09:39:57.1697940Z computing gzip size...
+2026-10-27T09:39:57.1698530Z .cache/output-staging/macos-arm64-Jdd9A5/extension-host/entry.js  0.35 kB │ gzip: 0.25 kB
+2026-10-27T09:39:57.1698820Z 
+2026-10-27T09:39:57.1698910Z computing gzip size...
+2026-10-27T09:39:57.1705990Z computing gzip size...
+2026-10-27T09:39:57.1706350Z [32m✓ built in 244ms[39m
+2026-10-27T09:39:57.1706760Z .cache/output-staging/macos-arm64-Jdd9A5/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T09:39:57.1706990Z 
+2026-10-27T09:39:57.1707270Z .cache/output-staging/macos-arm64-Jdd9A5/main/entry.js  22.85 kB │ gzip: 7.09 kB
+2026-10-27T09:39:57.1707490Z 
+2026-10-27T09:39:57.1707590Z [32m✓ built in 91ms[39m
+2026-10-27T09:39:57.1707780Z [32m✓ built in 249ms[39m
+2026-10-27T09:39:57.1708170Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T09:39:57.1708500Z transforming...
+2026-10-27T09:39:57.1708800Z ✓ 3 modules transformed.
+2026-10-27T09:39:57.1708990Z rendering chunks...
+2026-10-27T09:39:57.1709140Z computing gzip size...
+2026-10-27T09:39:57.1709560Z .cache/output-staging/macos-arm64-Jdd9A5/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T09:39:57.1710170Z 
+2026-10-27T09:39:57.1710280Z [32m✓ built in 6ms[39m
+2026-10-27T09:39:57.1710660Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T09:39:57.1710940Z transforming...
+2026-10-27T09:39:57.1711150Z ✓ 3 modules transformed.
+2026-10-27T09:39:57.1711340Z ✓ 19 modules transformed.
+2026-10-27T09:39:57.1711570Z rendering chunks...
+2026-10-27T09:39:57.1711860Z computing gzip size...
+2026-10-27T09:39:57.1712030Z rendering chunks...
+2026-10-27T09:39:57.1712480Z .cache/output-staging/macos-arm64-Jdd9A5/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T09:39:57.1712730Z 
+2026-10-27T09:39:57.1712840Z [32m✓ built in 85ms[39m
+2026-10-27T09:39:57.1713180Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T09:39:57.1714220Z transforming...
+2026-10-27T09:39:57.1714380Z computing gzip size...
+2026-10-27T09:39:57.1714860Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+2026-10-27T09:39:57.1715520Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-27T09:39:57.1716160Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-27T09:39:57.1716810Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+2026-10-27T09:39:57.1717460Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+2026-10-27T09:39:57.1718170Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+2026-10-27T09:39:57.1718860Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+2026-10-27T09:39:57.1719560Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+2026-10-27T09:39:57.1720400Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+2026-10-27T09:39:57.1721120Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+2026-10-27T09:39:57.1721820Z .cache/output-staging/macos-arm64-Jdd9A5/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+2026-10-27T09:39:57.1722110Z 
+2026-10-27T09:39:57.1722210Z [32m✓ built in 210ms[39m
+2026-10-27T09:39:57.1722520Z ✓ 3 modules transformed.
+2026-10-27T09:39:57.1722710Z rendering chunks...
+2026-10-27T09:39:57.1722860Z computing gzip size...
+2026-10-27T09:39:57.1723260Z .cache/output-staging/macos-arm64-Jdd9A5/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+2026-10-27T09:39:57.1723500Z 
+2026-10-27T09:39:57.1723600Z [32m✓ built in 7ms[39m
+2026-10-27T09:39:57.1724020Z Desktop build ready: macos-arm64 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16
+2026-10-27T09:39:57.1724500Z ##[endgroup]
+2026-10-27T09:39:57.1724590Z 
+2026-10-27T09:39:57.1724700Z  Tasks:    5 successful, 5 total
+2026-10-27T09:39:57.1724900Z Cached:    0 cached, 5 total
+2026-10-27T09:39:57.1725060Z   Time:    22.817s 
+2026-10-27T09:39:57.1725140Z 
+2026-10-27T09:39:57.1819780Z ##[group]Run pnpm --filter @kisaki3/desktop test:performance
+2026-10-27T09:39:57.1820130Z [36;1mpnpm --filter @kisaki3/desktop test:performance[0m
+2026-10-27T09:39:57.1847190Z shell: /bin/bash -e {0}
+2026-10-27T09:39:57.1847330Z env:
+2026-10-27T09:39:57.1847450Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:39:57.1847610Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:39:57.1847770Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:39:57.1847950Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:39:57.1848160Z   DEBUG: pw:api,pw:browser
+2026-10-27T09:39:57.1848300Z ##[endgroup]
+2026-10-27T09:39:57.4680860Z $ playwright test --config config/playwright/playwright.config.performance.ts
+2026-10-27T09:39:57.8520850Z 
+2026-10-27T09:39:57.8521170Z Running 1 test using 1 worker
+2026-10-27T09:39:57.8521690Z 
+2026-10-27T09:39:58.0790530Z   pw:api => electron.launch started +0ms
+2026-10-27T09:39:58.0800710Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:39:58.0812200Z   pw:browser <launched> pid=3117 +2ms
+2026-10-27T09:39:58.2135110Z   pw:browser [pid=3117][err] Debugger listening on ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 +130ms
+2026-10-27T09:39:58.2137020Z   pw:browser [pid=3117][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:39:58.2137660Z   pw:browser <ws connecting> ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 +0ms
+2026-10-27T09:39:58.2162150Z   pw:browser [pid=3117][err] Debugger attached. +4ms
+2026-10-27T09:39:58.2170840Z   pw:browser <ws connected> ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 +1ms
+2026-10-27T09:39:58.3627370Z   pw:browser [pid=3117][out] [app] Starting +146ms
+2026-10-27T09:39:58.5614970Z   pw:browser [pid=3117][err]  +198ms
+2026-10-27T09:39:58.5626870Z   pw:browser [pid=3117][err] DevTools listening on ws://127.0.0.1:49245/devtools/browser/2fc3061a-0891-471c-bd97-3d9cd5079a27 +0ms
+2026-10-27T09:39:58.5637610Z   pw:browser <ws connecting> ws://127.0.0.1:49245/devtools/browser/2fc3061a-0891-471c-bd97-3d9cd5079a27 +0ms
+2026-10-27T09:39:58.7423190Z   pw:browser <ws connected> ws://127.0.0.1:49245/devtools/browser/2fc3061a-0891-471c-bd97-3d9cd5079a27 +181ms
+2026-10-27T09:39:58.7448460Z   pw:browser [pid=3117][out] [app] Native resources loaded +3ms
+2026-10-27T09:39:58.7448830Z   pw:browser [pid=3117][out] [app] Electron ready +0ms
+2026-10-27T09:39:58.7785280Z   pw:browser [pid=3117][err] 2026-10-27 09:39:58.777 Electron Helper[3125:13418] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid +33ms
+2026-10-27T09:39:58.7786350Z   pw:browser [pid=3117][err] 2026-10-27 09:39:58.777 Electron Helper[3125:13422] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid +0ms
+2026-10-27T09:39:58.7795400Z   pw:browser [pid=3117][err] 2026-10-27 09:39:58.779 Electron Helper[3125:13422] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid +2ms
+2026-10-27T09:39:58.7822440Z   pw:api <= electron.launch succeeded +703ms
+2026-10-27T09:39:58.8402680Z   pw:browser [pid=3117][out] [extensions] Host ready +60ms
+2026-10-27T09:39:58.9668160Z   pw:api   "commit" event fired +185ms
+2026-10-27T09:39:58.9732170Z   pw:api   "commit" event fired +6ms
+2026-10-27T09:39:58.9732550Z   pw:api   navigated to "kisaki-app://native/main/index.html" +1ms
+2026-10-27T09:39:58.9743070Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:39:58.9759980Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:39:58.9764210Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +1ms
+2026-10-27T09:39:58.9859610Z   pw:api   "domcontentloaded" event fired +9ms
+2026-10-27T09:39:58.9871600Z   pw:api   "load" event fired +1ms
+2026-10-27T09:39:59.0006730Z   pw:browser [pid=3117][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +157ms
+2026-10-27T09:39:59.0387810Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +52ms
+2026-10-27T09:39:59.0389600Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:39:59.0400730Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:39:59.0426810Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999042,"event":"observers-installed","details":{"pid":3117}} +46ms
+2026-10-27T09:39:59.0437100Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:39:59.0460290Z   pw:api => electronApplication.close started +2ms
+2026-10-27T09:39:59.0477810Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999047,"event":"before-quit","details":{"prevented":false}} +5ms
+2026-10-27T09:39:59.0483220Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999047,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:39:59.1530740Z   pw:browser <ws disconnecting> ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 +105ms
+2026-10-27T09:39:59.1583550Z   pw:browser [pid=3117][err] Debugger ending on ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 +1ms
+2026-10-27T09:39:59.1584340Z   pw:browser [pid=3117][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:39:59.1585010Z   pw:browser <ws disconnected> ws://127.0.0.1:49243/6c4be6be-7731-4438-89bd-987e82c42907 code=1005 reason= +1ms
+2026-10-27T09:39:59.1585640Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999154,"event":"web-contents-destroyed","details":{"id":1}} +0ms
+2026-10-27T09:39:59.1586280Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999154,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:39:59.1587060Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999154,"event":"will-quit","details":{"prevented":true}} +1ms
+2026-10-27T09:39:59.3755650Z   pw:browser [pid=3117][out] [extensions] Host stopped +220ms
+2026-10-27T09:39:59.3756260Z   pw:browser [pid=3117][out] [app] Shutdown complete +0ms
+2026-10-27T09:39:59.3756920Z   pw:browser [pid=3117][out] SHUTDOWN_OBSERVATION {"at":1793093999375,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:39:59.6115170Z   pw:browser [pid=3117] <process did exit: exitCode=0, signal=null> +230ms
+2026-10-27T09:39:59.6231320Z   pw:browser [pid=3117] starting temporary directories cleanup +1ms
+2026-10-27T09:39:59.6332650Z   pw:browser <ws disconnected> ws://127.0.0.1:49245/devtools/browser/2fc3061a-0891-471c-bd97-3d9cd5079a27 code=1006 reason= +1ms
+2026-10-27T09:39:59.6420500Z   pw:api <= electronApplication.close succeeded +563ms
+2026-10-27T09:39:59.6421070Z   pw:api => electron.launch started +5ms
+2026-10-27T09:39:59.6421700Z   pw:browser [pid=3117] finished temporary directories cleanup +9ms
+2026-10-27T09:39:59.6423250Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +1ms
+2026-10-27T09:39:59.6424390Z   pw:browser <launched> pid=3132 +3ms
+2026-10-27T09:39:59.6897740Z   pw:browser [pid=3132][err] Debugger listening on ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 +69ms
+2026-10-27T09:39:59.6898350Z   pw:browser [pid=3132][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:39:59.6898920Z   pw:browser <ws connecting> ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 +0ms
+2026-10-27T09:39:59.6905860Z   pw:browser [pid=3132][err] Debugger attached. +1ms
+2026-10-27T09:39:59.6910090Z   pw:browser <ws connected> ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 +0ms
+2026-10-27T09:39:59.7009220Z   pw:browser [pid=3132][out] [app] Starting +10ms
+2026-10-27T09:39:59.7121240Z   pw:browser [pid=3132][err]  +11ms
+2026-10-27T09:39:59.7124260Z   pw:browser [pid=3132][err] DevTools listening on ws://127.0.0.1:49249/devtools/browser/ac19ace8-abc0-4cb0-aa34-2fac10b4b380 +0ms
+2026-10-27T09:39:59.7131690Z   pw:browser <ws connecting> ws://127.0.0.1:49249/devtools/browser/ac19ace8-abc0-4cb0-aa34-2fac10b4b380 +0ms
+2026-10-27T09:39:59.7348980Z   pw:browser <ws connected> ws://127.0.0.1:49249/devtools/browser/ac19ace8-abc0-4cb0-aa34-2fac10b4b380 +23ms
+2026-10-27T09:39:59.7366900Z   pw:browser [pid=3132][out] [app] Native resources loaded +2ms
+2026-10-27T09:39:59.7412930Z   pw:browser [pid=3132][out] [app] Electron ready +0ms
+2026-10-27T09:39:59.7543590Z   pw:api <= electron.launch succeeded +140ms
+2026-10-27T09:39:59.8069230Z   pw:browser [pid=3132][out] [extensions] Host ready +70ms
+2026-10-27T09:39:59.8691530Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:39:59.8740620Z   pw:api   "commit" event fired +5ms
+2026-10-27T09:39:59.8743030Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:39:59.8746110Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:39:59.8751980Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:39:59.8752500Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +1ms
+2026-10-27T09:39:59.8856880Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:39:59.8857710Z   pw:api   "load" event fired +0ms
+2026-10-27T09:39:59.8933260Z   pw:browser [pid=3132][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +87ms
+2026-10-27T09:39:59.9275170Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +42ms
+2026-10-27T09:39:59.9276050Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:39:59.9281960Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:39:59.9304220Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999929,"event":"observers-installed","details":{"pid":3132}} +37ms
+2026-10-27T09:39:59.9313730Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:39:59.9328910Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:39:59.9336280Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999933,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:39:59.9339640Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999933,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:39:59.9555630Z   pw:browser <ws disconnecting> ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 +22ms
+2026-10-27T09:39:59.9557060Z   pw:browser [pid=3132][err] Debugger ending on ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 +0ms
+2026-10-27T09:39:59.9557650Z   pw:browser [pid=3132][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:39:59.9558320Z   pw:browser <ws disconnected> ws://127.0.0.1:49247/427389b1-ba44-4e4d-b2f7-99efffefd1c7 code=1005 reason= +0ms
+2026-10-27T09:39:59.9573890Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999957,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:39:59.9575360Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999957,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:39:59.9576920Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999957,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:39:59.9844920Z   pw:browser [pid=3132][out] [extensions] Host stopped +27ms
+2026-10-27T09:39:59.9845250Z   pw:browser [pid=3132][out] [app] Shutdown complete +0ms
+2026-10-27T09:39:59.9846260Z   pw:browser [pid=3132][out] SHUTDOWN_OBSERVATION {"at":1793093999984,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:00.1614040Z   pw:browser <ws disconnected> ws://127.0.0.1:49249/devtools/browser/ac19ace8-abc0-4cb0-aa34-2fac10b4b380 code=1006 reason= +176ms
+2026-10-27T09:40:00.1713630Z   pw:browser [pid=3132] <process did exit: exitCode=0, signal=null> +2ms
+2026-10-27T09:40:00.1798710Z   pw:browser [pid=3132] starting temporary directories cleanup +0ms
+2026-10-27T09:40:00.1799220Z   pw:api <= electronApplication.close succeeded +230ms
+2026-10-27T09:40:00.1799580Z   pw:api => electron.launch started +3ms
+2026-10-27T09:40:00.1800150Z   pw:browser [pid=3132] finished temporary directories cleanup +3ms
+2026-10-27T09:40:00.1807200Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:00.1809010Z   pw:browser <launched> pid=3138 +2ms
+2026-10-27T09:40:00.2325790Z   pw:browser [pid=3138][err] Debugger listening on ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 +65ms
+2026-10-27T09:40:00.2326350Z   pw:browser [pid=3138][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:00.2326820Z   pw:browser <ws connecting> ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 +0ms
+2026-10-27T09:40:00.2332570Z   pw:browser [pid=3138][err] Debugger attached. +1ms
+2026-10-27T09:40:00.2333030Z   pw:browser <ws connected> ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 +0ms
+2026-10-27T09:40:00.2445900Z   pw:browser [pid=3138][out] [app] Starting +11ms
+2026-10-27T09:40:00.2550550Z   pw:browser [pid=3138][err]  +10ms
+2026-10-27T09:40:00.2552630Z   pw:browser [pid=3138][err] DevTools listening on ws://127.0.0.1:49253/devtools/browser/66918b65-d27c-4324-880b-2901cd02b2bd +0ms
+2026-10-27T09:40:00.2554840Z   pw:browser <ws connecting> ws://127.0.0.1:49253/devtools/browser/66918b65-d27c-4324-880b-2901cd02b2bd +0ms
+2026-10-27T09:40:00.2777200Z   pw:browser <ws connected> ws://127.0.0.1:49253/devtools/browser/66918b65-d27c-4324-880b-2901cd02b2bd +23ms
+2026-10-27T09:40:00.2794270Z   pw:browser [pid=3138][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:00.2794680Z   pw:browser [pid=3138][out] [app] Electron ready +0ms
+2026-10-27T09:40:00.2956390Z   pw:api <= electron.launch succeeded +130ms
+2026-10-27T09:40:00.3469740Z   pw:browser [pid=3138][out] [extensions] Host ready +67ms
+2026-10-27T09:40:00.4138070Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:40:00.4152770Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:00.4155780Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:00.4156920Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:00.4157520Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:00.4157960Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:00.4253680Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:00.4254160Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:00.4335170Z   pw:browser [pid=3138][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +85ms
+2026-10-27T09:40:00.4582090Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +32ms
+2026-10-27T09:40:00.4582550Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:00.4589370Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:00.4618930Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000461,"event":"observers-installed","details":{"pid":3138}} +30ms
+2026-10-27T09:40:00.4627190Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:00.4640150Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:00.4646040Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000464,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:00.4650780Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000464,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:00.4963630Z   pw:browser <ws disconnecting> ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 +32ms
+2026-10-27T09:40:00.4964280Z   pw:browser [pid=3138][err] Debugger ending on ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 +0ms
+2026-10-27T09:40:00.4964830Z   pw:browser [pid=3138][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:00.4965870Z   pw:browser <ws disconnected> ws://127.0.0.1:49251/2e3cf22d-b5cb-4c41-a193-4eb98bcc0681 code=1005 reason= +0ms
+2026-10-27T09:40:00.4982090Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000497,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:00.4985980Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000498,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:00.4986970Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000498,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:00.5264170Z   pw:browser [pid=3138][out] [extensions] Host stopped +28ms
+2026-10-27T09:40:00.5315340Z   pw:browser [pid=3138][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:00.5317030Z   pw:browser [pid=3138][out] SHUTDOWN_OBSERVATION {"at":1793094000526,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:00.5736440Z   pw:browser <ws disconnected> ws://127.0.0.1:49253/devtools/browser/66918b65-d27c-4324-880b-2901cd02b2bd code=1006 reason= +46ms
+2026-10-27T09:40:00.5780380Z   pw:browser [pid=3138] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:00.5797720Z   pw:browser [pid=3138] starting temporary directories cleanup +1ms
+2026-10-27T09:40:00.5798120Z   pw:api <= electronApplication.close succeeded +111ms
+2026-10-27T09:40:00.5798420Z   pw:api => electron.launch started +3ms
+2026-10-27T09:40:00.5798790Z   pw:browser [pid=3138] finished temporary directories cleanup +3ms
+2026-10-27T09:40:00.5805540Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:00.5806680Z   pw:browser <launched> pid=3144 +1ms
+2026-10-27T09:40:00.6422530Z   pw:browser [pid=3144][err] Debugger listening on ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 +63ms
+2026-10-27T09:40:00.6423140Z   pw:browser [pid=3144][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:00.6423640Z   pw:browser <ws connecting> ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 +1ms
+2026-10-27T09:40:00.6426770Z   pw:browser [pid=3144][err] Debugger attached. +0ms
+2026-10-27T09:40:00.6428220Z   pw:browser <ws connected> ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 +0ms
+2026-10-27T09:40:00.6537950Z   pw:browser [pid=3144][out] [app] Starting +11ms
+2026-10-27T09:40:00.6648720Z   pw:browser [pid=3144][err]  +10ms
+2026-10-27T09:40:00.6658010Z   pw:browser [pid=3144][err] DevTools listening on ws://127.0.0.1:49257/devtools/browser/242f9bdc-5440-44d0-a44e-f053ef90d12f +0ms
+2026-10-27T09:40:00.6662500Z   pw:browser <ws connecting> ws://127.0.0.1:49257/devtools/browser/242f9bdc-5440-44d0-a44e-f053ef90d12f +1ms
+2026-10-27T09:40:00.6877310Z   pw:browser <ws connected> ws://127.0.0.1:49257/devtools/browser/242f9bdc-5440-44d0-a44e-f053ef90d12f +23ms
+2026-10-27T09:40:00.6894110Z   pw:browser [pid=3144][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:00.6913630Z   pw:browser [pid=3144][out] [app] Electron ready +0ms
+2026-10-27T09:40:00.7066350Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:00.7590440Z   pw:browser [pid=3144][out] [extensions] Host ready +69ms
+2026-10-27T09:40:00.8211490Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:40:00.8257700Z   pw:api   "commit" event fired +5ms
+2026-10-27T09:40:00.8263530Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:00.8264560Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:00.8264860Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:00.8265200Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:00.8367320Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:00.8367710Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:00.8437820Z   pw:browser [pid=3144][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +85ms
+2026-10-27T09:40:00.8747560Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +38ms
+2026-10-27T09:40:00.8750520Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:00.8756510Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:00.8785010Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000878,"event":"observers-installed","details":{"pid":3144}} +35ms
+2026-10-27T09:40:00.8793660Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:00.8806870Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:00.8813220Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000880,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:00.8815670Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000881,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:00.9076430Z   pw:browser <ws disconnecting> ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 +26ms
+2026-10-27T09:40:00.9077630Z   pw:browser [pid=3144][err] Debugger ending on ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 +0ms
+2026-10-27T09:40:00.9078230Z   pw:browser [pid=3144][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:00.9078880Z   pw:browser <ws disconnected> ws://127.0.0.1:49255/351ec530-cfe2-43c0-865e-4203f3fb2653 code=1005 reason= +0ms
+2026-10-27T09:40:00.9097820Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000909,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:00.9098520Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000909,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:00.9101540Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000909,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:00.9517510Z   pw:browser [pid=3144][out] [extensions] Host stopped +34ms
+2026-10-27T09:40:00.9523270Z   pw:browser [pid=3144][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:00.9524560Z   pw:browser [pid=3144][out] SHUTDOWN_OBSERVATION {"at":1793094000943,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:00.9609980Z   pw:browser <ws disconnected> ws://127.0.0.1:49257/devtools/browser/242f9bdc-5440-44d0-a44e-f053ef90d12f code=1006 reason= +17ms
+2026-10-27T09:40:00.9639530Z   pw:browser [pid=3144] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:00.9647010Z   pw:browser [pid=3144] starting temporary directories cleanup +0ms
+2026-10-27T09:40:00.9655730Z   pw:api <= electronApplication.close succeeded +81ms
+2026-10-27T09:40:00.9656370Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:00.9656680Z   pw:browser [pid=3144] finished temporary directories cleanup +2ms
+2026-10-27T09:40:00.9659760Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:00.9660910Z   pw:browser <launched> pid=3149 +1ms
+2026-10-27T09:40:01.0287070Z   pw:browser [pid=3149][err] Debugger listening on ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d +64ms
+2026-10-27T09:40:01.0287700Z   pw:browser [pid=3149][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:01.0288200Z   pw:browser <ws connecting> ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d +0ms
+2026-10-27T09:40:01.0291770Z   pw:browser [pid=3149][err] Debugger attached. +1ms
+2026-10-27T09:40:01.0293900Z   pw:browser <ws connected> ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d +0ms
+2026-10-27T09:40:01.0400870Z   pw:browser [pid=3149][out] [app] Starting +10ms
+2026-10-27T09:40:01.0509050Z   pw:browser [pid=3149][err]  +11ms
+2026-10-27T09:40:01.0509760Z   pw:browser [pid=3149][err] DevTools listening on ws://127.0.0.1:49261/devtools/browser/74cb2431-a3de-4f3c-bfd6-166903dd1436 +0ms
+2026-10-27T09:40:01.0511910Z   pw:browser <ws connecting> ws://127.0.0.1:49261/devtools/browser/74cb2431-a3de-4f3c-bfd6-166903dd1436 +0ms
+2026-10-27T09:40:01.0747630Z   pw:browser <ws connected> ws://127.0.0.1:49261/devtools/browser/74cb2431-a3de-4f3c-bfd6-166903dd1436 +24ms
+2026-10-27T09:40:01.0763840Z   pw:browser [pid=3149][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:01.0783910Z   pw:browser [pid=3149][out] [app] Electron ready +0ms
+2026-10-27T09:40:01.0928100Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:01.1463280Z   pw:browser [pid=3149][out] [extensions] Host ready +69ms
+2026-10-27T09:40:01.2098030Z   pw:api   "commit" event fired +117ms
+2026-10-27T09:40:01.2198770Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:01.2299420Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:01.2400120Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:40:01.2501290Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:01.2607880Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:01.2708860Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:01.2712620Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:01.2714300Z   pw:browser [pid=3149][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:01.2717240Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +32ms
+2026-10-27T09:40:01.2718380Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:01.2722820Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:01.2725020Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001262,"event":"observers-installed","details":{"pid":3149}} +31ms
+2026-10-27T09:40:01.2726100Z   pw:api <= electronApplication.evaluate succeeded +6ms
+2026-10-27T09:40:01.2727600Z   pw:api => electronApplication.close started +2ms
+2026-10-27T09:40:01.2728500Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001265,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:01.2737270Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001266,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:01.2951430Z   pw:browser <ws disconnecting> ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d +28ms
+2026-10-27T09:40:01.2952220Z   pw:browser [pid=3149][err] Debugger ending on ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d +1ms
+2026-10-27T09:40:01.2952810Z   pw:browser [pid=3149][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:01.2955610Z   pw:browser <ws disconnected> ws://127.0.0.1:49259/03bbac7d-910b-4219-a443-3cbb95916e3d code=1005 reason= +0ms
+2026-10-27T09:40:01.2972420Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001296,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:01.2974500Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001296,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:01.2975610Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001297,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:01.3024990Z   pw:browser [pid=3149][out] [extensions] Host stopped +5ms
+2026-10-27T09:40:01.3025760Z   pw:browser [pid=3149][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:01.3026250Z   pw:browser [pid=3149][out] SHUTDOWN_OBSERVATION {"at":1793094001302,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:01.3168080Z   pw:browser [pid=3149] <process did exit: exitCode=0, signal=null> +14ms
+2026-10-27T09:40:01.3206800Z   pw:browser [pid=3149] starting temporary directories cleanup +0ms
+2026-10-27T09:40:01.3207430Z   pw:browser <ws disconnected> ws://127.0.0.1:49261/devtools/browser/74cb2431-a3de-4f3c-bfd6-166903dd1436 code=1006 reason= +0ms
+2026-10-27T09:40:01.3207920Z   pw:api <= electronApplication.close succeeded +52ms
+2026-10-27T09:40:01.3208700Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:01.3209020Z   pw:browser [pid=3149] finished temporary directories cleanup +3ms
+2026-10-27T09:40:01.3210440Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +1ms
+2026-10-27T09:40:01.3211570Z   pw:browser <launched> pid=3155 +0ms
+2026-10-27T09:40:01.3856270Z   pw:browser [pid=3155][err] Debugger listening on ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 +65ms
+2026-10-27T09:40:01.3856880Z   pw:browser [pid=3155][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:01.3857380Z   pw:browser <ws connecting> ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 +0ms
+2026-10-27T09:40:01.3861250Z   pw:browser [pid=3155][err] Debugger attached. +0ms
+2026-10-27T09:40:01.3862150Z   pw:browser <ws connected> ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 +1ms
+2026-10-27T09:40:01.3974990Z   pw:browser [pid=3155][out] [app] Starting +11ms
+2026-10-27T09:40:01.4085330Z   pw:browser [pid=3155][err]  +10ms
+2026-10-27T09:40:01.4087560Z   pw:browser [pid=3155][err] DevTools listening on ws://127.0.0.1:49265/devtools/browser/03f449ea-769e-46d4-9d5c-2692fac23578 +1ms
+2026-10-27T09:40:01.4088190Z   pw:browser <ws connecting> ws://127.0.0.1:49265/devtools/browser/03f449ea-769e-46d4-9d5c-2692fac23578 +0ms
+2026-10-27T09:40:01.4311570Z   pw:browser <ws connected> ws://127.0.0.1:49265/devtools/browser/03f449ea-769e-46d4-9d5c-2692fac23578 +22ms
+2026-10-27T09:40:01.4327840Z   pw:browser [pid=3155][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:01.4328320Z   pw:browser [pid=3155][out] [app] Electron ready +0ms
+2026-10-27T09:40:01.4483510Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:01.5017570Z   pw:browser [pid=3155][out] [extensions] Host ready +69ms
+2026-10-27T09:40:01.5907210Z   pw:api   "commit" event fired +143ms
+2026-10-27T09:40:01.6050110Z   pw:api   "commit" event fired +6ms
+2026-10-27T09:40:01.6151310Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:01.6254170Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:01.6357640Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:01.6458950Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:01.6559060Z   pw:api   "domcontentloaded" event fired +19ms
+2026-10-27T09:40:01.6637300Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:01.6638070Z   pw:browser [pid=3155][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +121ms
+2026-10-27T09:40:01.6639260Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +37ms
+2026-10-27T09:40:01.6639740Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:01.6640410Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:01.6640960Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001655,"event":"observers-installed","details":{"pid":3155}} +34ms
+2026-10-27T09:40:01.6641430Z   pw:api <= electronApplication.evaluate succeeded +3ms
+2026-10-27T09:40:01.6641720Z   pw:api => electronApplication.close started +2ms
+2026-10-27T09:40:01.6642220Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001659,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:01.6642900Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001659,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:01.7652920Z   pw:browser <ws disconnecting> ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 +104ms
+2026-10-27T09:40:01.7722310Z   pw:browser [pid=3155][err] Debugger ending on ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 +1ms
+2026-10-27T09:40:01.7724510Z   pw:browser [pid=3155][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:01.7725370Z   pw:browser <ws disconnected> ws://127.0.0.1:49263/ca09ee5d-08d8-403d-bb4e-9b286e714162 code=1005 reason= +0ms
+2026-10-27T09:40:01.7729750Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001766,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:01.7731570Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001766,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:01.7733030Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001766,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:01.7733600Z   pw:browser [pid=3155][out] [extensions] Host stopped +5ms
+2026-10-27T09:40:01.7734210Z   pw:browser [pid=3155][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:01.7734820Z   pw:browser [pid=3155][out] SHUTDOWN_OBSERVATION {"at":1793094001771,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:01.7877930Z   pw:browser <ws disconnected> ws://127.0.0.1:49265/devtools/browser/03f449ea-769e-46d4-9d5c-2692fac23578 code=1006 reason= +15ms
+2026-10-27T09:40:01.7931340Z   pw:browser [pid=3155] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:01.7932260Z   pw:browser [pid=3155] starting temporary directories cleanup +0ms
+2026-10-27T09:40:01.7932650Z   pw:api <= electronApplication.close succeeded +128ms
+2026-10-27T09:40:01.7932930Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:01.7933230Z   pw:browser [pid=3155] finished temporary directories cleanup +2ms
+2026-10-27T09:40:01.7934620Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +1ms
+2026-10-27T09:40:01.7935790Z   pw:browser <launched> pid=3163 +1ms
+2026-10-27T09:40:01.8569620Z   pw:browser [pid=3163][err] Debugger listening on ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc +65ms
+2026-10-27T09:40:01.8570220Z   pw:browser [pid=3163][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:01.8570720Z   pw:browser <ws connecting> ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc +0ms
+2026-10-27T09:40:01.8575020Z   pw:browser [pid=3163][err] Debugger attached. +1ms
+2026-10-27T09:40:01.8575970Z   pw:browser <ws connected> ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc +0ms
+2026-10-27T09:40:01.8684090Z   pw:browser [pid=3163][out] [app] Starting +11ms
+2026-10-27T09:40:01.8809870Z   pw:browser [pid=3163][err]  +12ms
+2026-10-27T09:40:01.8811660Z   pw:browser [pid=3163][err] DevTools listening on ws://127.0.0.1:49269/devtools/browser/494e7ca9-384a-43f2-bd4d-9b8202dec0f8 +0ms
+2026-10-27T09:40:01.8812800Z   pw:browser <ws connecting> ws://127.0.0.1:49269/devtools/browser/494e7ca9-384a-43f2-bd4d-9b8202dec0f8 +0ms
+2026-10-27T09:40:01.9049140Z   pw:browser <ws connected> ws://127.0.0.1:49269/devtools/browser/494e7ca9-384a-43f2-bd4d-9b8202dec0f8 +24ms
+2026-10-27T09:40:01.9067750Z   pw:browser [pid=3163][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:01.9068240Z   pw:browser [pid=3163][out] [app] Electron ready +0ms
+2026-10-27T09:40:01.9223750Z   pw:api <= electron.launch succeeded +133ms
+2026-10-27T09:40:01.9755160Z   pw:browser [pid=3163][out] [extensions] Host ready +69ms
+2026-10-27T09:40:02.0382180Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:40:02.0484110Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:02.0589480Z   pw:api   navigated to "kisaki-app://native/main/index.html" +1ms
+2026-10-27T09:40:02.0689640Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:02.0790870Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:02.0891760Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:02.0992980Z   pw:api   "domcontentloaded" event fired +9ms
+2026-10-27T09:40:02.1021210Z   pw:api   "load" event fired +1ms
+2026-10-27T09:40:02.1022590Z   pw:browser [pid=3163][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +84ms
+2026-10-27T09:40:02.1025480Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +39ms
+2026-10-27T09:40:02.1026040Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:02.1026330Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:02.1026860Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002095,"event":"observers-installed","details":{"pid":3163}} +36ms
+2026-10-27T09:40:02.1027340Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:02.1027630Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:02.1028150Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002098,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:02.1028820Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002098,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:02.1244000Z   pw:browser <ws disconnecting> ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc +26ms
+2026-10-27T09:40:02.1246010Z   pw:browser [pid=3163][err] Debugger ending on ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc +0ms
+2026-10-27T09:40:02.1246900Z   pw:browser [pid=3163][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:02.1248550Z   pw:browser <ws disconnected> ws://127.0.0.1:49267/f95ef9b6-ee8e-46d7-aa35-3417daaafffc code=1005 reason= +0ms
+2026-10-27T09:40:02.1263510Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002126,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:02.1265530Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002126,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:02.1267230Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002126,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:02.1772630Z   pw:browser [pid=3163][out] [extensions] Host stopped +50ms
+2026-10-27T09:40:02.1773010Z   pw:browser [pid=3163][out] [app] Shutdown complete +1ms
+2026-10-27T09:40:02.1773480Z   pw:browser [pid=3163][out] SHUTDOWN_OBSERVATION {"at":1793094002176,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:02.1928820Z   pw:browser [pid=3163] <process did exit: exitCode=0, signal=null> +15ms
+2026-10-27T09:40:02.1976220Z   pw:browser [pid=3163] starting temporary directories cleanup +0ms
+2026-10-27T09:40:02.1976820Z   pw:browser <ws disconnected> ws://127.0.0.1:49269/devtools/browser/494e7ca9-384a-43f2-bd4d-9b8202dec0f8 code=1006 reason= +1ms
+2026-10-27T09:40:02.1977330Z   pw:api <= electronApplication.close succeeded +96ms
+2026-10-27T09:40:02.1977600Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:02.1978240Z   pw:browser [pid=3163] finished temporary directories cleanup +2ms
+2026-10-27T09:40:02.1979690Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +1ms
+2026-10-27T09:40:02.1980820Z   pw:browser <launched> pid=3169 +1ms
+2026-10-27T09:40:02.2615740Z   pw:browser [pid=3169][err] Debugger listening on ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c +64ms
+2026-10-27T09:40:02.2616370Z   pw:browser [pid=3169][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:02.2616870Z   pw:browser <ws connecting> ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c +0ms
+2026-10-27T09:40:02.2620460Z   pw:browser [pid=3169][err] Debugger attached. +0ms
+2026-10-27T09:40:02.2621930Z   pw:browser <ws connected> ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c +1ms
+2026-10-27T09:40:02.2729920Z   pw:browser [pid=3169][out] [app] Starting +10ms
+2026-10-27T09:40:02.2834780Z   pw:browser [pid=3169][err]  +11ms
+2026-10-27T09:40:02.2836550Z   pw:browser [pid=3169][err] DevTools listening on ws://127.0.0.1:49273/devtools/browser/0a244c0c-9a2d-4961-bb94-93ded85f2e26 +0ms
+2026-10-27T09:40:02.2837200Z   pw:browser <ws connecting> ws://127.0.0.1:49273/devtools/browser/0a244c0c-9a2d-4961-bb94-93ded85f2e26 +0ms
+2026-10-27T09:40:02.3069760Z   pw:browser <ws connected> ws://127.0.0.1:49273/devtools/browser/0a244c0c-9a2d-4961-bb94-93ded85f2e26 +23ms
+2026-10-27T09:40:02.3092610Z   pw:browser [pid=3169][out] [app] Native resources loaded +3ms
+2026-10-27T09:40:02.3092990Z   pw:browser [pid=3169][out] [app] Electron ready +0ms
+2026-10-27T09:40:02.3246220Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:02.3784540Z   pw:browser [pid=3169][out] [extensions] Host ready +69ms
+2026-10-27T09:40:02.4424500Z   pw:api   "commit" event fired +118ms
+2026-10-27T09:40:02.4525230Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:02.4627660Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:02.4633950Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:02.4634680Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:02.4635100Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:02.4637220Z   pw:api   "domcontentloaded" event fired +9ms
+2026-10-27T09:40:02.4727180Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:02.4747880Z   pw:browser [pid=3169][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:02.4918830Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +35ms
+2026-10-27T09:40:02.4921830Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:02.4926660Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:02.4959880Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002495,"event":"observers-installed","details":{"pid":3169}} +31ms
+2026-10-27T09:40:02.4968280Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:02.4981140Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:02.4986790Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002498,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:02.4991010Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002498,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:02.5280170Z   pw:browser <ws disconnecting> ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c +29ms
+2026-10-27T09:40:02.5281340Z   pw:browser [pid=3169][err] Debugger ending on ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c +0ms
+2026-10-27T09:40:02.5282440Z   pw:browser [pid=3169][err] For help, see: https://nodejs.org/learn/getting-started/debugging +1ms
+2026-10-27T09:40:02.5283140Z   pw:browser <ws disconnected> ws://127.0.0.1:49271/7a313e50-e70d-469c-aff3-a410098fcf3c code=1005 reason= +0ms
+2026-10-27T09:40:02.5300180Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002529,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:02.5300930Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002529,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:02.5301690Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002529,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:02.5583750Z   pw:browser [pid=3169][out] [extensions] Host stopped +28ms
+2026-10-27T09:40:02.5584670Z   pw:browser [pid=3169][out] [app] Shutdown complete +1ms
+2026-10-27T09:40:02.5585380Z   pw:browser [pid=3169][out] SHUTDOWN_OBSERVATION {"at":1793094002557,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:02.5743720Z   pw:browser <ws disconnected> ws://127.0.0.1:49273/devtools/browser/0a244c0c-9a2d-4961-bb94-93ded85f2e26 code=1006 reason= +15ms
+2026-10-27T09:40:02.5779340Z   pw:browser [pid=3169] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:02.5791070Z   pw:browser [pid=3169] starting temporary directories cleanup +0ms
+2026-10-27T09:40:02.5791700Z   pw:api <= electronApplication.close succeeded +77ms
+2026-10-27T09:40:02.5794210Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:02.5794640Z   pw:browser [pid=3169] finished temporary directories cleanup +3ms
+2026-10-27T09:40:02.5796190Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:02.5797390Z   pw:browser <launched> pid=3175 +2ms
+2026-10-27T09:40:02.6428590Z   pw:browser [pid=3175][err] Debugger listening on ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 +63ms
+2026-10-27T09:40:02.6429250Z   pw:browser [pid=3175][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:02.6429730Z   pw:browser <ws connecting> ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 +0ms
+2026-10-27T09:40:02.6431790Z   pw:browser [pid=3175][err] Debugger attached. +1ms
+2026-10-27T09:40:02.6432670Z   pw:browser <ws connected> ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 +0ms
+2026-10-27T09:40:02.6546350Z   pw:browser [pid=3175][out] [app] Starting +11ms
+2026-10-27T09:40:02.6656660Z   pw:browser [pid=3175][err]  +11ms
+2026-10-27T09:40:02.6659900Z   pw:browser [pid=3175][err] DevTools listening on ws://127.0.0.1:49277/devtools/browser/66ea9786-8158-440d-b39a-b25777fa5092 +0ms
+2026-10-27T09:40:02.6660510Z   pw:browser <ws connecting> ws://127.0.0.1:49277/devtools/browser/66ea9786-8158-440d-b39a-b25777fa5092 +0ms
+2026-10-27T09:40:02.6888840Z   pw:browser <ws connected> ws://127.0.0.1:49277/devtools/browser/66ea9786-8158-440d-b39a-b25777fa5092 +23ms
+2026-10-27T09:40:02.6920550Z   pw:browser [pid=3175][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:02.6952560Z   pw:browser [pid=3175][out] [app] Electron ready +0ms
+2026-10-27T09:40:02.7075720Z   pw:api <= electron.launch succeeded +130ms
+2026-10-27T09:40:02.7603430Z   pw:browser [pid=3175][out] [extensions] Host ready +69ms
+2026-10-27T09:40:02.8257710Z   pw:api   "commit" event fired +119ms
+2026-10-27T09:40:02.8296600Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:02.8297120Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:02.8300370Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:02.8303320Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:02.8304970Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:02.8403180Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:02.8403560Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:02.8464920Z   pw:browser [pid=3175][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +87ms
+2026-10-27T09:40:02.8762230Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +35ms
+2026-10-27T09:40:02.8763360Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:02.8769410Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:02.8796330Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002879,"event":"observers-installed","details":{"pid":3175}} +33ms
+2026-10-27T09:40:02.8804200Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:02.8817850Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:02.8824530Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002882,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:02.8827760Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002882,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:02.9090950Z   pw:browser <ws disconnecting> ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 +26ms
+2026-10-27T09:40:02.9091810Z   pw:browser [pid=3175][err] Debugger ending on ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 +1ms
+2026-10-27T09:40:02.9092410Z   pw:browser [pid=3175][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:02.9094810Z   pw:browser <ws disconnected> ws://127.0.0.1:49275/3403b295-2ef9-4686-9283-4a56ef87eb10 code=1005 reason= +0ms
+2026-10-27T09:40:02.9111450Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002910,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:02.9119000Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002911,"event":"window-closed","details":{"id":1}} +1ms
+2026-10-27T09:40:02.9119650Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002911,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:02.9389660Z   pw:browser [pid=3175][out] [extensions] Host stopped +27ms
+2026-10-27T09:40:02.9390170Z   pw:browser [pid=3175][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:02.9390730Z   pw:browser [pid=3175][out] SHUTDOWN_OBSERVATION {"at":1793094002938,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:02.9558770Z   pw:browser <ws disconnected> ws://127.0.0.1:49277/devtools/browser/66ea9786-8158-440d-b39a-b25777fa5092 code=1006 reason= +17ms
+2026-10-27T09:40:02.9613090Z   pw:browser [pid=3175] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:02.9622830Z   pw:browser [pid=3175] starting temporary directories cleanup +0ms
+2026-10-27T09:40:02.9623490Z   pw:api <= electronApplication.close succeeded +75ms
+2026-10-27T09:40:02.9623760Z   pw:api => electron.launch started +3ms
+2026-10-27T09:40:02.9624060Z   pw:browser [pid=3175] finished temporary directories cleanup +4ms
+2026-10-27T09:40:02.9625430Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:02.9626530Z   pw:browser <launched> pid=3180 +1ms
+2026-10-27T09:40:03.0247680Z   pw:browser [pid=3180][err] Debugger listening on ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d +63ms
+2026-10-27T09:40:03.0248350Z   pw:browser [pid=3180][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:03.0248860Z   pw:browser <ws connecting> ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d +0ms
+2026-10-27T09:40:03.0254480Z   pw:browser [pid=3180][err] Debugger attached. +1ms
+2026-10-27T09:40:03.0256390Z   pw:browser <ws connected> ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d +0ms
+2026-10-27T09:40:03.0361660Z   pw:browser [pid=3180][out] [app] Starting +10ms
+2026-10-27T09:40:03.0468920Z   pw:browser [pid=3180][err]  +11ms
+2026-10-27T09:40:03.0469610Z   pw:browser [pid=3180][err] DevTools listening on ws://127.0.0.1:49281/devtools/browser/2b096348-523d-4aba-8dac-85b8ba212660 +0ms
+2026-10-27T09:40:03.0472320Z   pw:browser <ws connecting> ws://127.0.0.1:49281/devtools/browser/2b096348-523d-4aba-8dac-85b8ba212660 +0ms
+2026-10-27T09:40:03.0696640Z   pw:browser <ws connected> ws://127.0.0.1:49281/devtools/browser/2b096348-523d-4aba-8dac-85b8ba212660 +23ms
+2026-10-27T09:40:03.0712700Z   pw:browser [pid=3180][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:03.0713050Z   pw:browser [pid=3180][out] [app] Electron ready +0ms
+2026-10-27T09:40:03.0875900Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:03.1385250Z   pw:browser [pid=3180][out] [extensions] Host ready +67ms
+2026-10-27T09:40:03.2009430Z   pw:api   "commit" event fired +113ms
+2026-10-27T09:40:03.2130560Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:03.2151920Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:03.2152850Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:40:03.2153300Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:03.2154060Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:03.2154450Z   pw:api   "domcontentloaded" event fired +9ms
+2026-10-27T09:40:03.2154690Z   pw:api   "load" event fired +1ms
+2026-10-27T09:40:03.2221500Z   pw:browser [pid=3180][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +83ms
+2026-10-27T09:40:03.2522570Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +36ms
+2026-10-27T09:40:03.2523520Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:03.2528230Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:03.2548070Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003254,"event":"observers-installed","details":{"pid":3180}} +33ms
+2026-10-27T09:40:03.2556870Z   pw:api <= electronApplication.evaluate succeeded +3ms
+2026-10-27T09:40:03.2569000Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:03.2575070Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003257,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:03.2578330Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003257,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:03.2879980Z   pw:browser <ws disconnecting> ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d +30ms
+2026-10-27T09:40:03.2881170Z   pw:browser [pid=3180][err] Debugger ending on ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d +0ms
+2026-10-27T09:40:03.2881770Z   pw:browser [pid=3180][err] For help, see: https://nodejs.org/learn/getting-started/debugging +1ms
+2026-10-27T09:40:03.2882330Z   pw:browser <ws disconnected> ws://127.0.0.1:49279/4e77b032-146c-4f56-b3df-0b18d23e8f1d code=1005 reason= +0ms
+2026-10-27T09:40:03.2898650Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003289,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:03.2901590Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003289,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:03.2902250Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003289,"event":"will-quit","details":{"prevented":true}} +1ms
+2026-10-27T09:40:03.3274660Z   pw:browser [pid=3180][out] [extensions] Host stopped +37ms
+2026-10-27T09:40:03.3275030Z   pw:browser [pid=3180][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:03.3275510Z   pw:browser [pid=3180][out] SHUTDOWN_OBSERVATION {"at":1793094003327,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:03.3438600Z   pw:browser [pid=3180] <process did exit: exitCode=0, signal=null> +16ms
+2026-10-27T09:40:03.3491150Z   pw:browser [pid=3180] starting temporary directories cleanup +0ms
+2026-10-27T09:40:03.3492000Z   pw:browser <ws disconnected> ws://127.0.0.1:49281/devtools/browser/2b096348-523d-4aba-8dac-85b8ba212660 code=1006 reason= +0ms
+2026-10-27T09:40:03.3492500Z   pw:api <= electronApplication.close succeeded +88ms
+2026-10-27T09:40:03.3492760Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:03.3493060Z   pw:browser [pid=3180] finished temporary directories cleanup +3ms
+2026-10-27T09:40:03.3494450Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:03.3495760Z   pw:browser <launched> pid=3186 +2ms
+2026-10-27T09:40:03.4131040Z   pw:browser [pid=3186][err] Debugger listening on ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e +64ms
+2026-10-27T09:40:03.4131650Z   pw:browser [pid=3186][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:03.4132210Z   pw:browser <ws connecting> ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e +0ms
+2026-10-27T09:40:03.4135520Z   pw:browser [pid=3186][err] Debugger attached. +1ms
+2026-10-27T09:40:03.4136660Z   pw:browser <ws connected> ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e +0ms
+2026-10-27T09:40:03.4248120Z   pw:browser [pid=3186][out] [app] Starting +11ms
+2026-10-27T09:40:03.4361200Z   pw:browser [pid=3186][err]  +11ms
+2026-10-27T09:40:03.4361780Z   pw:browser [pid=3186][err] DevTools listening on ws://127.0.0.1:49285/devtools/browser/48c2adee-427a-4bbf-99b3-92fc6ae0fa2f +0ms
+2026-10-27T09:40:03.4362410Z   pw:browser <ws connecting> ws://127.0.0.1:49285/devtools/browser/48c2adee-427a-4bbf-99b3-92fc6ae0fa2f +0ms
+2026-10-27T09:40:03.4586310Z   pw:browser <ws connected> ws://127.0.0.1:49285/devtools/browser/48c2adee-427a-4bbf-99b3-92fc6ae0fa2f +23ms
+2026-10-27T09:40:03.4608130Z   pw:browser [pid=3186][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:03.4626170Z   pw:browser [pid=3186][out] [app] Electron ready +0ms
+2026-10-27T09:40:03.4772110Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:03.5304490Z   pw:browser [pid=3186][out] [extensions] Host ready +70ms
+2026-10-27T09:40:03.5929450Z   pw:api   "commit" event fired +117ms
+2026-10-27T09:40:03.5972070Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:03.5972910Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:03.5973590Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:40:03.5977350Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:03.5978580Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:03.6081540Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:03.6083540Z   pw:api   "load" event fired +1ms
+2026-10-27T09:40:03.6154350Z   pw:browser [pid=3186][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +85ms
+2026-10-27T09:40:03.6431170Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +34ms
+2026-10-27T09:40:03.6431610Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:03.6436370Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:03.6465770Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003646,"event":"observers-installed","details":{"pid":3186}} +31ms
+2026-10-27T09:40:03.6474000Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:03.6487230Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:03.6493830Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003649,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:03.6496890Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003649,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:03.6777610Z   pw:browser <ws disconnecting> ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e +28ms
+2026-10-27T09:40:03.6778790Z   pw:browser [pid=3186][err] Debugger ending on ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e +0ms
+2026-10-27T09:40:03.6779350Z   pw:browser [pid=3186][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:03.6781640Z   pw:browser <ws disconnected> ws://127.0.0.1:49283/2e89f340-bf28-4256-8e91-7d7f64b7101e code=1005 reason= +0ms
+2026-10-27T09:40:03.6796710Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003679,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:03.6799530Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003679,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:03.6800140Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003679,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:03.7107020Z   pw:browser [pid=3186][out] [extensions] Host stopped +31ms
+2026-10-27T09:40:03.7107340Z   pw:browser [pid=3186][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:03.7107760Z   pw:browser [pid=3186][out] SHUTDOWN_OBSERVATION {"at":1793094003710,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:03.7296260Z   pw:browser <ws disconnected> ws://127.0.0.1:49285/devtools/browser/48c2adee-427a-4bbf-99b3-92fc6ae0fa2f code=1006 reason= +16ms
+2026-10-27T09:40:03.7309940Z   pw:browser [pid=3186] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:03.7310690Z   pw:browser [pid=3186] starting temporary directories cleanup +0ms
+2026-10-27T09:40:03.7311070Z   pw:api <= electronApplication.close succeeded +80ms
+2026-10-27T09:40:03.7311340Z   pw:api => electron.launch started +1ms
+2026-10-27T09:40:03.7311640Z   pw:browser [pid=3186] finished temporary directories cleanup +3ms
+2026-10-27T09:40:03.7312980Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:03.7314100Z   pw:browser <launched> pid=3191 +1ms
+2026-10-27T09:40:03.7944570Z   pw:browser [pid=3191][err] Debugger listening on ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb +63ms
+2026-10-27T09:40:03.7945190Z   pw:browser [pid=3191][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:03.7945720Z   pw:browser <ws connecting> ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb +0ms
+2026-10-27T09:40:03.7949340Z   pw:browser [pid=3191][err] Debugger attached. +0ms
+2026-10-27T09:40:03.7950760Z   pw:browser <ws connected> ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb +0ms
+2026-10-27T09:40:03.8062690Z   pw:browser [pid=3191][out] [app] Starting +12ms
+2026-10-27T09:40:03.8174790Z   pw:browser [pid=3191][err]  +11ms
+2026-10-27T09:40:03.8175770Z   pw:browser [pid=3191][err] DevTools listening on ws://127.0.0.1:49289/devtools/browser/bea24c9a-cc2f-40b9-adf3-3bc50d63cfba +0ms
+2026-10-27T09:40:03.8176410Z   pw:browser <ws connecting> ws://127.0.0.1:49289/devtools/browser/bea24c9a-cc2f-40b9-adf3-3bc50d63cfba +0ms
+2026-10-27T09:40:03.8416690Z   pw:browser <ws connected> ws://127.0.0.1:49289/devtools/browser/bea24c9a-cc2f-40b9-adf3-3bc50d63cfba +24ms
+2026-10-27T09:40:03.8436330Z   pw:browser [pid=3191][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:03.8465580Z   pw:browser [pid=3191][out] [app] Electron ready +0ms
+2026-10-27T09:40:03.8590930Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:03.9121800Z   pw:browser [pid=3191][out] [extensions] Host ready +68ms
+2026-10-27T09:40:03.9741960Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:40:03.9791510Z   pw:api   "commit" event fired +5ms
+2026-10-27T09:40:03.9793730Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:03.9794430Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:03.9794730Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:03.9795080Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:03.9892960Z   pw:api   "domcontentloaded" event fired +11ms
+2026-10-27T09:40:03.9893860Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:03.9964110Z   pw:browser [pid=3191][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +85ms
+2026-10-27T09:40:04.0264980Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +36ms
+2026-10-27T09:40:04.0266040Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:04.0270680Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:04.0304890Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004030,"event":"observers-installed","details":{"pid":3191}} +34ms
+2026-10-27T09:40:04.0313260Z   pw:api <= electronApplication.evaluate succeeded +5ms
+2026-10-27T09:40:04.0329860Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:04.0330700Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004032,"event":"before-quit","details":{"prevented":false}} +2ms
+2026-10-27T09:40:04.0333860Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004033,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:04.0609600Z   pw:browser <ws disconnecting> ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb +27ms
+2026-10-27T09:40:04.0611100Z   pw:browser [pid=3191][err] Debugger ending on ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb +0ms
+2026-10-27T09:40:04.0611790Z   pw:browser [pid=3191][err] For help, see: https://nodejs.org/learn/getting-started/debugging +1ms
+2026-10-27T09:40:04.0612370Z   pw:browser <ws disconnected> ws://127.0.0.1:49287/f2cf5a63-adec-4716-b0c6-44eb4e3d1ebb code=1005 reason= +0ms
+2026-10-27T09:40:04.0628420Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004062,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:04.0631140Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004062,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:04.0631870Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004062,"event":"will-quit","details":{"prevented":true}} +1ms
+2026-10-27T09:40:04.0929220Z   pw:browser [pid=3191][out] [extensions] Host stopped +29ms
+2026-10-27T09:40:04.0929590Z   pw:browser [pid=3191][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:04.0930070Z   pw:browser [pid=3191][out] SHUTDOWN_OBSERVATION {"at":1793094004092,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:04.1087460Z   pw:browser <ws disconnected> ws://127.0.0.1:49289/devtools/browser/bea24c9a-cc2f-40b9-adf3-3bc50d63cfba code=1006 reason= +15ms
+2026-10-27T09:40:04.1125350Z   pw:browser [pid=3191] <process did exit: exitCode=0, signal=null> +2ms
+2026-10-27T09:40:04.1135060Z   pw:browser [pid=3191] starting temporary directories cleanup +0ms
+2026-10-27T09:40:04.1135760Z   pw:api <= electronApplication.close succeeded +77ms
+2026-10-27T09:40:04.1136170Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:04.1139380Z   pw:browser [pid=3191] finished temporary directories cleanup +3ms
+2026-10-27T09:40:04.1140900Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:04.1142570Z   pw:browser <launched> pid=3196 +1ms
+2026-10-27T09:40:04.1782960Z   pw:browser [pid=3196][err] Debugger listening on ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 +64ms
+2026-10-27T09:40:04.1783560Z   pw:browser [pid=3196][err] For help, see: https://nodejs.org/learn/getting-started/debugging +1ms
+2026-10-27T09:40:04.1784110Z   pw:browser <ws connecting> ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 +0ms
+2026-10-27T09:40:04.1787280Z   pw:browser [pid=3196][err] Debugger attached. +0ms
+2026-10-27T09:40:04.1787890Z   pw:browser <ws connected> ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 +0ms
+2026-10-27T09:40:04.1895880Z   pw:browser [pid=3196][out] [app] Starting +11ms
+2026-10-27T09:40:04.2005830Z   pw:browser [pid=3196][err]  +10ms
+2026-10-27T09:40:04.2011050Z   pw:browser [pid=3196][err] DevTools listening on ws://127.0.0.1:49293/devtools/browser/ad1e92ac-6ccf-4580-b0f0-488230cdea3e +1ms
+2026-10-27T09:40:04.2011970Z   pw:browser <ws connecting> ws://127.0.0.1:49293/devtools/browser/ad1e92ac-6ccf-4580-b0f0-488230cdea3e +0ms
+2026-10-27T09:40:04.2236470Z   pw:browser <ws connected> ws://127.0.0.1:49293/devtools/browser/ad1e92ac-6ccf-4580-b0f0-488230cdea3e +23ms
+2026-10-27T09:40:04.2253590Z   pw:browser [pid=3196][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:04.2253930Z   pw:browser [pid=3196][out] [app] Electron ready +0ms
+2026-10-27T09:40:04.2414870Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:04.2956040Z   pw:browser [pid=3196][out] [extensions] Host ready +70ms
+2026-10-27T09:40:04.3594980Z   pw:api   "commit" event fired +119ms
+2026-10-27T09:40:04.3638530Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:04.3639770Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:04.3640450Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:04.3644420Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:04.3644810Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:04.3748450Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:04.3749440Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:04.3823340Z   pw:browser [pid=3196][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +87ms
+2026-10-27T09:40:04.4131490Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +38ms
+2026-10-27T09:40:04.4131950Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:04.4136890Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:04.4157370Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004415,"event":"observers-installed","details":{"pid":3196}} +33ms
+2026-10-27T09:40:04.4165500Z   pw:api <= electronApplication.evaluate succeeded +3ms
+2026-10-27T09:40:04.4177380Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:04.4183190Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004418,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:04.4186190Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004418,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:04.4455100Z   pw:browser <ws disconnecting> ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 +27ms
+2026-10-27T09:40:04.4458130Z   pw:browser [pid=3196][err] Debugger ending on ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 +0ms
+2026-10-27T09:40:04.4458800Z   pw:browser [pid=3196][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:04.4459340Z   pw:browser <ws disconnected> ws://127.0.0.1:49291/e734438a-dedd-49bb-97a7-22e3c73ef9d2 code=1005 reason= +0ms
+2026-10-27T09:40:04.4474370Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004447,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:04.4475400Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004447,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:04.4477580Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004447,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:04.4801100Z   pw:browser [pid=3196][out] [extensions] Host stopped +32ms
+2026-10-27T09:40:04.4801460Z   pw:browser [pid=3196][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:04.4801900Z   pw:browser [pid=3196][out] SHUTDOWN_OBSERVATION {"at":1793094004479,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:04.5072540Z   pw:browser <ws disconnected> ws://127.0.0.1:49293/devtools/browser/ad1e92ac-6ccf-4580-b0f0-488230cdea3e code=1006 reason= +27ms
+2026-10-27T09:40:04.5116220Z   pw:browser [pid=3196] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:04.5127380Z   pw:browser [pid=3196] starting temporary directories cleanup +0ms
+2026-10-27T09:40:04.5132210Z   pw:api <= electronApplication.close succeeded +90ms
+2026-10-27T09:40:04.5132520Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:04.5132820Z   pw:browser [pid=3196] finished temporary directories cleanup +3ms
+2026-10-27T09:40:04.5134170Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:04.5135390Z   pw:browser <launched> pid=3202 +1ms
+2026-10-27T09:40:04.5767470Z   pw:browser [pid=3202][err] Debugger listening on ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 +65ms
+2026-10-27T09:40:04.5768050Z   pw:browser [pid=3202][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:04.5772920Z   pw:browser <ws connecting> ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 +0ms
+2026-10-27T09:40:04.5773320Z   pw:browser [pid=3202][err] Debugger attached. +1ms
+2026-10-27T09:40:04.5773800Z   pw:browser <ws connected> ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 +0ms
+2026-10-27T09:40:04.5885660Z   pw:browser [pid=3202][out] [app] Starting +11ms
+2026-10-27T09:40:04.5990190Z   pw:browser [pid=3202][err]  +10ms
+2026-10-27T09:40:04.5991970Z   pw:browser [pid=3202][err] DevTools listening on ws://127.0.0.1:49297/devtools/browser/40fa6347-06b1-4c53-98c5-e2aec52c53e4 +0ms
+2026-10-27T09:40:04.5993010Z   pw:browser <ws connecting> ws://127.0.0.1:49297/devtools/browser/40fa6347-06b1-4c53-98c5-e2aec52c53e4 +0ms
+2026-10-27T09:40:04.6221970Z   pw:browser <ws connected> ws://127.0.0.1:49297/devtools/browser/40fa6347-06b1-4c53-98c5-e2aec52c53e4 +23ms
+2026-10-27T09:40:04.6237780Z   pw:browser [pid=3202][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:04.6238140Z   pw:browser [pid=3202][out] [app] Electron ready +0ms
+2026-10-27T09:40:04.6390370Z   pw:api <= electron.launch succeeded +129ms
+2026-10-27T09:40:04.6928210Z   pw:browser [pid=3202][out] [extensions] Host ready +69ms
+2026-10-27T09:40:04.7553980Z   pw:api   "commit" event fired +117ms
+2026-10-27T09:40:04.7600360Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:04.7600850Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:04.7602510Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:40:04.7606270Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:04.7608170Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:04.7707130Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:04.7707670Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:04.7787700Z   pw:browser [pid=3202][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:04.8099520Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +39ms
+2026-10-27T09:40:04.8102390Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:04.8106750Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:04.8136470Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004813,"event":"observers-installed","details":{"pid":3202}} +35ms
+2026-10-27T09:40:04.8144090Z   pw:api <= electronApplication.evaluate succeeded +4ms
+2026-10-27T09:40:04.8155260Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:04.8160360Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004815,"event":"before-quit","details":{"prevented":false}} +2ms
+2026-10-27T09:40:04.8164460Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004816,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:04.8418940Z   pw:browser <ws disconnecting> ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 +25ms
+2026-10-27T09:40:04.8420950Z   pw:browser [pid=3202][err] Debugger ending on ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 +1ms
+2026-10-27T09:40:04.8421500Z   pw:browser [pid=3202][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:04.8422030Z   pw:browser <ws disconnected> ws://127.0.0.1:49295/16ff7422-06d7-4d62-bb8f-0c24af19f5f8 code=1005 reason= +0ms
+2026-10-27T09:40:04.8436800Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004843,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:04.8438700Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004843,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:04.8439390Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004843,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:04.8793760Z   pw:browser [pid=3202][out] [extensions] Host stopped +36ms
+2026-10-27T09:40:04.8813970Z   pw:browser [pid=3202][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:04.8815410Z   pw:browser [pid=3202][out] SHUTDOWN_OBSERVATION {"at":1793094004879,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:04.8942690Z   pw:browser <ws disconnected> ws://127.0.0.1:49297/devtools/browser/40fa6347-06b1-4c53-98c5-e2aec52c53e4 code=1006 reason= +14ms
+2026-10-27T09:40:04.8997580Z   pw:browser [pid=3202] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:04.9004340Z   pw:browser [pid=3202] starting temporary directories cleanup +0ms
+2026-10-27T09:40:04.9006500Z   pw:api <= electronApplication.close succeeded +80ms
+2026-10-27T09:40:04.9006790Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:04.9007090Z   pw:browser [pid=3202] finished temporary directories cleanup +3ms
+2026-10-27T09:40:04.9008470Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:04.9009590Z   pw:browser <launched> pid=3207 +2ms
+2026-10-27T09:40:04.9628330Z   pw:browser [pid=3207][err] Debugger listening on ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 +63ms
+2026-10-27T09:40:04.9628940Z   pw:browser [pid=3207][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:04.9629430Z   pw:browser <ws connecting> ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 +0ms
+2026-10-27T09:40:04.9632620Z   pw:browser [pid=3207][err] Debugger attached. +1ms
+2026-10-27T09:40:04.9633980Z   pw:browser <ws connected> ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 +0ms
+2026-10-27T09:40:04.9739590Z   pw:browser [pid=3207][out] [app] Starting +10ms
+2026-10-27T09:40:04.9849030Z   pw:browser [pid=3207][err]  +11ms
+2026-10-27T09:40:04.9850830Z   pw:browser [pid=3207][err] DevTools listening on ws://127.0.0.1:49301/devtools/browser/b4d638af-a59d-4ebd-af76-d4d7a8fda512 +0ms
+2026-10-27T09:40:04.9851610Z   pw:browser <ws connecting> ws://127.0.0.1:49301/devtools/browser/b4d638af-a59d-4ebd-af76-d4d7a8fda512 +0ms
+2026-10-27T09:40:05.0084880Z   pw:browser <ws connected> ws://127.0.0.1:49301/devtools/browser/b4d638af-a59d-4ebd-af76-d4d7a8fda512 +24ms
+2026-10-27T09:40:05.0103720Z   pw:browser [pid=3207][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:05.0104060Z   pw:browser [pid=3207][out] [app] Electron ready +0ms
+2026-10-27T09:40:05.0260450Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:05.0787740Z   pw:browser [pid=3207][out] [extensions] Host ready +68ms
+2026-10-27T09:40:05.1411310Z   pw:api   "commit" event fired +115ms
+2026-10-27T09:40:05.1457680Z   pw:api   "commit" event fired +5ms
+2026-10-27T09:40:05.1458050Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:05.1459480Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:05.1463560Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:05.1464190Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:05.1565420Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:05.1565880Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:05.1635080Z   pw:browser [pid=3207][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +85ms
+2026-10-27T09:40:05.1939990Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +37ms
+2026-10-27T09:40:05.1945720Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:05.1946240Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:05.1970670Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005196,"event":"observers-installed","details":{"pid":3207}} +33ms
+2026-10-27T09:40:05.1978500Z   pw:api <= electronApplication.evaluate succeeded +3ms
+2026-10-27T09:40:05.1989300Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:05.1994440Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005199,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:05.1998370Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005199,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:05.2268150Z   pw:browser <ws disconnecting> ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 +27ms
+2026-10-27T09:40:05.2270450Z   pw:browser [pid=3207][err] Debugger ending on ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 +0ms
+2026-10-27T09:40:05.2271140Z   pw:browser [pid=3207][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:05.2271680Z   pw:browser <ws disconnected> ws://127.0.0.1:49299/7a54bd68-b590-42b5-81d2-96bf1fff7191 code=1005 reason= +0ms
+2026-10-27T09:40:05.2286540Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005228,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:05.2288590Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005228,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:05.2289930Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005228,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:05.2820240Z   pw:browser [pid=3207][out] [extensions] Host stopped +51ms
+2026-10-27T09:40:05.2856990Z   pw:browser [pid=3207][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:05.2858280Z   pw:browser [pid=3207][out] SHUTDOWN_OBSERVATION {"at":1793094005278,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:05.3062700Z   pw:browser <ws disconnected> ws://127.0.0.1:49301/devtools/browser/b4d638af-a59d-4ebd-af76-d4d7a8fda512 code=1006 reason= +17ms
+2026-10-27T09:40:05.3066070Z   pw:browser [pid=3207] <process did exit: exitCode=0, signal=null> +3ms
+2026-10-27T09:40:05.3066670Z   pw:browser [pid=3207] starting temporary directories cleanup +0ms
+2026-10-27T09:40:05.3067140Z   pw:api <= electronApplication.close succeeded +102ms
+2026-10-27T09:40:05.3068330Z   pw:api => electron.launch started +1ms
+2026-10-27T09:40:05.3068720Z   pw:browser [pid=3207] finished temporary directories cleanup +2ms
+2026-10-27T09:40:05.3070630Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:05.3073170Z   pw:browser <launched> pid=3218 +2ms
+2026-10-27T09:40:05.3672340Z   pw:browser [pid=3218][err] Debugger listening on ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 +63ms
+2026-10-27T09:40:05.3672990Z   pw:browser [pid=3218][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:05.3673920Z   pw:browser <ws connecting> ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 +1ms
+2026-10-27T09:40:05.3676630Z   pw:browser [pid=3218][err] Debugger attached. +0ms
+2026-10-27T09:40:05.3677870Z   pw:browser <ws connected> ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 +0ms
+2026-10-27T09:40:05.3807330Z   pw:browser [pid=3218][out] [app] Starting +13ms
+2026-10-27T09:40:05.3910930Z   pw:browser [pid=3218][err]  +10ms
+2026-10-27T09:40:05.3926910Z   pw:browser [pid=3218][err] DevTools listening on ws://127.0.0.1:49305/devtools/browser/71f83060-3eea-48a8-9b93-ee44aaa50c4c +0ms
+2026-10-27T09:40:05.3928120Z   pw:browser <ws connecting> ws://127.0.0.1:49305/devtools/browser/71f83060-3eea-48a8-9b93-ee44aaa50c4c +0ms
+2026-10-27T09:40:05.4151750Z   pw:browser <ws connected> ws://127.0.0.1:49305/devtools/browser/71f83060-3eea-48a8-9b93-ee44aaa50c4c +24ms
+2026-10-27T09:40:05.4167670Z   pw:browser [pid=3218][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:05.4168020Z   pw:browser [pid=3218][out] [app] Electron ready +0ms
+2026-10-27T09:40:05.4319400Z   pw:api <= electron.launch succeeded +130ms
+2026-10-27T09:40:05.4855690Z   pw:browser [pid=3218][out] [extensions] Host ready +69ms
+2026-10-27T09:40:05.5497820Z   pw:api   "commit" event fired +118ms
+2026-10-27T09:40:05.5535690Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:05.5541380Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:05.5542470Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:05.5542780Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:05.5543130Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:05.5644510Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:05.5644800Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:05.5720630Z   pw:browser [pid=3218][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:05.6038140Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +39ms
+2026-10-27T09:40:05.6038720Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:05.6043450Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:05.6062880Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005605,"event":"observers-installed","details":{"pid":3218}} +35ms
+2026-10-27T09:40:05.6071290Z   pw:api <= electronApplication.evaluate succeeded +2ms
+2026-10-27T09:40:05.6143130Z   pw:api => electronApplication.close started +6ms
+2026-10-27T09:40:05.6193070Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005614,"event":"before-quit","details":{"prevented":false}} +8ms
+2026-10-27T09:40:05.6195040Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005615,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:05.6362380Z   pw:browser <ws disconnecting> ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 +21ms
+2026-10-27T09:40:05.6365070Z   pw:browser [pid=3218][err] Debugger ending on ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 +0ms
+2026-10-27T09:40:05.6365660Z   pw:browser [pid=3218][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:05.6366330Z   pw:browser <ws disconnected> ws://127.0.0.1:49303/5be34185-9a4f-4d20-8c17-0cfc087c3237 code=1005 reason= +0ms
+2026-10-27T09:40:05.6382480Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005637,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:05.6384130Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005638,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:05.6385070Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005638,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:05.6788500Z   pw:browser [pid=3218][out] [extensions] Host stopped +40ms
+2026-10-27T09:40:05.6789140Z   pw:browser [pid=3218][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:05.6789590Z   pw:browser [pid=3218][out] SHUTDOWN_OBSERVATION {"at":1793094005678,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:05.6947400Z   pw:browser <ws disconnected> ws://127.0.0.1:49305/devtools/browser/71f83060-3eea-48a8-9b93-ee44aaa50c4c code=1006 reason= +16ms
+2026-10-27T09:40:05.6982140Z   pw:browser [pid=3218] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:05.7003860Z   pw:browser [pid=3218] starting temporary directories cleanup +0ms
+2026-10-27T09:40:05.7004370Z   pw:api <= electronApplication.close succeeded +83ms
+2026-10-27T09:40:05.7004730Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:05.7016970Z   pw:browser [pid=3218] finished temporary directories cleanup +2ms
+2026-10-27T09:40:05.7018480Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:05.7019750Z   pw:browser <launched> pid=3224 +1ms
+2026-10-27T09:40:05.7630570Z   pw:browser [pid=3224][err] Debugger listening on ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 +64ms
+2026-10-27T09:40:05.7631170Z   pw:browser [pid=3224][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:05.7631660Z   pw:browser <ws connecting> ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 +0ms
+2026-10-27T09:40:05.7637180Z   pw:browser [pid=3224][err] Debugger attached. +1ms
+2026-10-27T09:40:05.7638490Z   pw:browser <ws connected> ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 +0ms
+2026-10-27T09:40:05.7743420Z   pw:browser [pid=3224][out] [app] Starting +11ms
+2026-10-27T09:40:05.7852200Z   pw:browser [pid=3224][err]  +10ms
+2026-10-27T09:40:05.7854000Z   pw:browser [pid=3224][err] DevTools listening on ws://127.0.0.1:49309/devtools/browser/96e477a7-fcc9-4d8f-8892-bbd9c71ecbfd +0ms
+2026-10-27T09:40:05.7854650Z   pw:browser <ws connecting> ws://127.0.0.1:49309/devtools/browser/96e477a7-fcc9-4d8f-8892-bbd9c71ecbfd +0ms
+2026-10-27T09:40:05.8079720Z   pw:browser <ws connected> ws://127.0.0.1:49309/devtools/browser/96e477a7-fcc9-4d8f-8892-bbd9c71ecbfd +23ms
+2026-10-27T09:40:05.8098030Z   pw:browser [pid=3224][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:05.8099830Z   pw:browser [pid=3224][out] [app] Electron ready +0ms
+2026-10-27T09:40:05.8261660Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:05.8803940Z   pw:browser [pid=3224][out] [extensions] Host ready +71ms
+2026-10-27T09:40:05.9424070Z   pw:api   "commit" event fired +117ms
+2026-10-27T09:40:05.9469700Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:05.9470080Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:05.9472190Z   pw:api <= electronApplication.firstWindow succeeded +1ms
+2026-10-27T09:40:05.9476120Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:05.9477230Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:05.9578090Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:05.9614960Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:05.9712620Z   pw:browser [pid=3224][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +84ms
+2026-10-27T09:40:05.9989680Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +41ms
+2026-10-27T09:40:05.9992670Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:05.9994320Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:06.0013630Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006000,"event":"observers-installed","details":{"pid":3224}} +37ms
+2026-10-27T09:40:06.0019400Z   pw:api <= electronApplication.evaluate succeeded +2ms
+2026-10-27T09:40:06.0030210Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:06.0036260Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006003,"event":"before-quit","details":{"prevented":false}} +2ms
+2026-10-27T09:40:06.0041240Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006003,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:06.0282810Z   pw:browser <ws disconnecting> ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 +24ms
+2026-10-27T09:40:06.0284360Z   pw:browser [pid=3224][err] Debugger ending on ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 +1ms
+2026-10-27T09:40:06.0284890Z   pw:browser [pid=3224][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:06.0285420Z   pw:browser <ws disconnected> ws://127.0.0.1:49307/304165f1-ba00-4052-a194-7bc936258cb1 code=1005 reason= +0ms
+2026-10-27T09:40:06.0303070Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006029,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:06.0303820Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006030,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:06.0305350Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006030,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:06.0609320Z   pw:browser [pid=3224][out] [extensions] Host stopped +30ms
+2026-10-27T09:40:06.0610870Z   pw:browser [pid=3224][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:06.0611500Z   pw:browser [pid=3224][out] SHUTDOWN_OBSERVATION {"at":1793094006060,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:06.0773670Z   pw:browser <ws disconnected> ws://127.0.0.1:49309/devtools/browser/96e477a7-fcc9-4d8f-8892-bbd9c71ecbfd code=1006 reason= +16ms
+2026-10-27T09:40:06.0804080Z   pw:browser [pid=3224] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:06.0804960Z   pw:browser [pid=3224] starting temporary directories cleanup +0ms
+2026-10-27T09:40:06.0813840Z   pw:api <= electronApplication.close succeeded +76ms
+2026-10-27T09:40:06.0814160Z   pw:api => electron.launch started +1ms
+2026-10-27T09:40:06.0814460Z   pw:browser [pid=3224] finished temporary directories cleanup +3ms
+2026-10-27T09:40:06.0815800Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:06.0816880Z   pw:browser <launched> pid=3232 +0ms
+2026-10-27T09:40:06.1444290Z   pw:browser [pid=3232][err] Debugger listening on ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be +64ms
+2026-10-27T09:40:06.1448910Z   pw:browser [pid=3232][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:06.1449610Z   pw:browser <ws connecting> ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be +0ms
+2026-10-27T09:40:06.1450170Z   pw:browser [pid=3232][err] Debugger attached. +0ms
+2026-10-27T09:40:06.1450560Z   pw:browser <ws connected> ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be +0ms
+2026-10-27T09:40:06.1559670Z   pw:browser [pid=3232][out] [app] Starting +11ms
+2026-10-27T09:40:06.1667710Z   pw:browser [pid=3232][err]  +11ms
+2026-10-27T09:40:06.1672920Z   pw:browser [pid=3232][err] DevTools listening on ws://127.0.0.1:49313/devtools/browser/380a1df0-19ce-458c-af6c-1a54267d62ee +0ms
+2026-10-27T09:40:06.1690600Z   pw:browser <ws connecting> ws://127.0.0.1:49313/devtools/browser/380a1df0-19ce-458c-af6c-1a54267d62ee +0ms
+2026-10-27T09:40:06.1895020Z   pw:browser <ws connected> ws://127.0.0.1:49313/devtools/browser/380a1df0-19ce-458c-af6c-1a54267d62ee +23ms
+2026-10-27T09:40:06.1910940Z   pw:browser [pid=3232][out] [app] Native resources loaded +1ms
+2026-10-27T09:40:06.1911500Z   pw:browser [pid=3232][out] [app] Electron ready +0ms
+2026-10-27T09:40:06.2062830Z   pw:api <= electron.launch succeeded +126ms
+2026-10-27T09:40:06.2605940Z   pw:browser [pid=3232][out] [extensions] Host ready +70ms
+2026-10-27T09:40:06.3237560Z   pw:api   "commit" event fired +118ms
+2026-10-27T09:40:06.3283540Z   pw:api   "commit" event fired +5ms
+2026-10-27T09:40:06.3283890Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:06.3287300Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:06.3295470Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:06.3295940Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +1ms
+2026-10-27T09:40:06.3392780Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:06.3393590Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:06.3467210Z   pw:browser [pid=3232][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:06.3773530Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +37ms
+2026-10-27T09:40:06.3775330Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:06.3779990Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:06.3814740Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006381,"event":"observers-installed","details":{"pid":3232}} +35ms
+2026-10-27T09:40:06.3822680Z   pw:api <= electronApplication.evaluate succeeded +5ms
+2026-10-27T09:40:06.3834920Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:06.3840170Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006383,"event":"before-quit","details":{"prevented":false}} +2ms
+2026-10-27T09:40:06.3843220Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006384,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:06.4090120Z   pw:browser <ws disconnecting> ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be +24ms
+2026-10-27T09:40:06.4091910Z   pw:browser [pid=3232][err] Debugger ending on ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be +0ms
+2026-10-27T09:40:06.4092500Z   pw:browser [pid=3232][err] For help, see: https://nodejs.org/learn/getting-started/debugging +1ms
+2026-10-27T09:40:06.4093060Z   pw:browser <ws disconnected> ws://127.0.0.1:49311/8d1cc36c-ca0e-47d5-a933-34c39d0804be code=1005 reason= +0ms
+2026-10-27T09:40:06.4109360Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006410,"event":"web-contents-destroyed","details":{"id":1}} +1ms
+2026-10-27T09:40:06.4111770Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006410,"event":"window-closed","details":{"id":1}} +1ms
+2026-10-27T09:40:06.4112410Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006411,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:06.4438430Z   pw:browser [pid=3232][out] [extensions] Host stopped +32ms
+2026-10-27T09:40:06.4438980Z   pw:browser [pid=3232][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:06.4439700Z   pw:browser [pid=3232][out] SHUTDOWN_OBSERVATION {"at":1793094006443,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:06.4604640Z   pw:browser <ws disconnected> ws://127.0.0.1:49313/devtools/browser/380a1df0-19ce-458c-af6c-1a54267d62ee code=1006 reason= +15ms
+2026-10-27T09:40:06.4613980Z   pw:browser [pid=3232] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:06.4640550Z   pw:browser [pid=3232] starting temporary directories cleanup +1ms
+2026-10-27T09:40:06.4641030Z   pw:api <= electronApplication.close succeeded +77ms
+2026-10-27T09:40:06.4642160Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:06.4643520Z   pw:browser [pid=3232] finished temporary directories cleanup +3ms
+2026-10-27T09:40:06.4645110Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +0ms
+2026-10-27T09:40:06.4646620Z   pw:browser <launched> pid=3238 +1ms
+2026-10-27T09:40:06.5282090Z   pw:browser [pid=3238][err] Debugger listening on ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b +63ms
+2026-10-27T09:40:06.5282760Z   pw:browser [pid=3238][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:06.5283260Z   pw:browser <ws connecting> ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b +1ms
+2026-10-27T09:40:06.5286930Z   pw:browser [pid=3238][err] Debugger attached. +0ms
+2026-10-27T09:40:06.5287610Z   pw:browser <ws connected> ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b +0ms
+2026-10-27T09:40:06.5395970Z   pw:browser [pid=3238][out] [app] Starting +11ms
+2026-10-27T09:40:06.5506020Z   pw:browser [pid=3238][err]  +11ms
+2026-10-27T09:40:06.5507760Z   pw:browser [pid=3238][err] DevTools listening on ws://127.0.0.1:49317/devtools/browser/452c3355-7575-42f5-a1ce-4e4db9094105 +0ms
+2026-10-27T09:40:06.5508460Z   pw:browser <ws connecting> ws://127.0.0.1:49317/devtools/browser/452c3355-7575-42f5-a1ce-4e4db9094105 +0ms
+2026-10-27T09:40:06.5736940Z   pw:browser <ws connected> ws://127.0.0.1:49317/devtools/browser/452c3355-7575-42f5-a1ce-4e4db9094105 +23ms
+2026-10-27T09:40:06.5755180Z   pw:browser [pid=3238][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:06.5756570Z   pw:browser [pid=3238][out] [app] Electron ready +0ms
+2026-10-27T09:40:06.5910990Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:06.6457630Z   pw:browser [pid=3238][out] [extensions] Host ready +70ms
+2026-10-27T09:40:06.7130410Z   pw:api   "commit" event fired +120ms
+2026-10-27T09:40:06.7147060Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:06.7147890Z   pw:api   navigated to "kisaki-app://native/main/index.html" +0ms
+2026-10-27T09:40:06.7150650Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:06.7152540Z   pw:api => locator.waitFor started +1ms
+2026-10-27T09:40:06.7153460Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:06.7254750Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:06.7255360Z   pw:api   "load" event fired +0ms
+2026-10-27T09:40:06.7321650Z   pw:browser [pid=3238][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +86ms
+2026-10-27T09:40:06.7603820Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +34ms
+2026-10-27T09:40:06.7604790Z   pw:api <= locator.waitFor succeeded +1ms
+2026-10-27T09:40:06.7609630Z   pw:api => electronApplication.evaluate started +0ms
+2026-10-27T09:40:06.7644350Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006764,"event":"observers-installed","details":{"pid":3238}} +33ms
+2026-10-27T09:40:06.7652140Z   pw:api <= electronApplication.evaluate succeeded +5ms
+2026-10-27T09:40:06.7665770Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:06.7670990Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006766,"event":"before-quit","details":{"prevented":false}} +2ms
+2026-10-27T09:40:06.7674160Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006767,"event":"window-close","details":{"id":1,"prevented":false}} +1ms
+2026-10-27T09:40:06.7947040Z   pw:browser <ws disconnecting> ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b +27ms
+2026-10-27T09:40:06.7948450Z   pw:browser [pid=3238][err] Debugger ending on ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b +0ms
+2026-10-27T09:40:06.7948980Z   pw:browser [pid=3238][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:06.7949760Z   pw:browser <ws disconnected> ws://127.0.0.1:49315/06b08078-1de6-4535-8a15-3f9d10e61f2b code=1005 reason= +0ms
+2026-10-27T09:40:06.7968870Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006796,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:06.7969570Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006796,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:06.7971020Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006796,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:06.8293780Z   pw:browser [pid=3238][out] [extensions] Host stopped +33ms
+2026-10-27T09:40:06.8294210Z   pw:browser [pid=3238][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:06.8300110Z   pw:browser [pid=3238][out] SHUTDOWN_OBSERVATION {"at":1793094006829,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:06.8452790Z   pw:browser <ws disconnected> ws://127.0.0.1:49317/devtools/browser/452c3355-7575-42f5-a1ce-4e4db9094105 code=1006 reason= +15ms
+2026-10-27T09:40:06.8480770Z   pw:browser [pid=3238] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:06.8497540Z   pw:browser [pid=3238] starting temporary directories cleanup +0ms
+2026-10-27T09:40:06.8498000Z   pw:api <= electronApplication.close succeeded +79ms
+2026-10-27T09:40:06.8498380Z   pw:api => electron.launch started +2ms
+2026-10-27T09:40:06.8498810Z   pw:browser [pid=3238] finished temporary directories cleanup +2ms
+2026-10-27T09:40:06.8500260Z   pw:browser <launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-jIEO0t +1ms
+2026-10-27T09:40:06.8501820Z   pw:browser <launched> pid=3243 +1ms
+2026-10-27T09:40:06.9131110Z   pw:browser [pid=3243][err] Debugger listening on ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a +63ms
+2026-10-27T09:40:06.9131720Z   pw:browser [pid=3243][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:06.9132330Z   pw:browser <ws connecting> ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a +0ms
+2026-10-27T09:40:06.9135750Z   pw:browser [pid=3243][err] Debugger attached. +1ms
+2026-10-27T09:40:06.9137030Z   pw:browser <ws connected> ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a +0ms
+2026-10-27T09:40:06.9245160Z   pw:browser [pid=3243][out] [app] Starting +11ms
+2026-10-27T09:40:06.9352120Z   pw:browser [pid=3243][err]  +10ms
+2026-10-27T09:40:06.9353590Z   pw:browser [pid=3243][err] DevTools listening on ws://127.0.0.1:49321/devtools/browser/66a0ef37-41f7-41dc-809a-8d8155bbe642 +0ms
+2026-10-27T09:40:06.9354200Z   pw:browser <ws connecting> ws://127.0.0.1:49321/devtools/browser/66a0ef37-41f7-41dc-809a-8d8155bbe642 +0ms
+2026-10-27T09:40:06.9587270Z   pw:browser <ws connected> ws://127.0.0.1:49321/devtools/browser/66a0ef37-41f7-41dc-809a-8d8155bbe642 +24ms
+2026-10-27T09:40:06.9606220Z   pw:browser [pid=3243][out] [app] Native resources loaded +2ms
+2026-10-27T09:40:06.9606690Z   pw:browser [pid=3243][out] [app] Electron ready +0ms
+2026-10-27T09:40:06.9767420Z   pw:api <= electron.launch succeeded +128ms
+2026-10-27T09:40:07.0321410Z   pw:browser [pid=3243][out] [extensions] Host ready +71ms
+2026-10-27T09:40:07.0966270Z   pw:api   "commit" event fired +121ms
+2026-10-27T09:40:07.1011660Z   pw:api   "commit" event fired +4ms
+2026-10-27T09:40:07.1015680Z   pw:api   navigated to "kisaki-app://native/main/index.html" +1ms
+2026-10-27T09:40:07.1016060Z   pw:api <= electronApplication.firstWindow succeeded +0ms
+2026-10-27T09:40:07.1017040Z   pw:api => locator.waitFor started +0ms
+2026-10-27T09:40:07.1018310Z   pw:api waiting for getByRole('button', { name: 'Close window' }) to be visible +0ms
+2026-10-27T09:40:07.1122700Z   pw:api   "domcontentloaded" event fired +10ms
+2026-10-27T09:40:07.1123000Z   pw:api   "load" event fired +1ms
+2026-10-27T09:40:07.1199960Z   pw:browser [pid=3243][out] [app] Ready 6c8fce031b74b79401e2cd75cc14313bce4506d4a50ec89ffdb820f7c3a65a16 +88ms
+2026-10-27T09:40:07.1424990Z   pw:api   locator resolved to visible <button type="button" class="kisaki-button ">Close window</button> +30ms
+2026-10-27T09:40:07.1425610Z   pw:api <= locator.waitFor succeeded +0ms
+2026-10-27T09:40:07.1431700Z   pw:api => electronApplication.evaluate started +1ms
+2026-10-27T09:40:07.1476360Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007147,"event":"observers-installed","details":{"pid":3243}} +28ms
+2026-10-27T09:40:07.1483700Z   pw:api <= electronApplication.evaluate succeeded +5ms
+2026-10-27T09:40:07.1497290Z   pw:api => electronApplication.close started +1ms
+2026-10-27T09:40:07.1503270Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007149,"event":"before-quit","details":{"prevented":false}} +3ms
+2026-10-27T09:40:07.1507480Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007150,"event":"window-close","details":{"id":1,"prevented":false}} +0ms
+2026-10-27T09:40:07.1810980Z   pw:browser <ws disconnecting> ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a +30ms
+2026-10-27T09:40:07.1813100Z   pw:browser [pid=3243][err] Debugger ending on ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a +1ms
+2026-10-27T09:40:07.1814090Z   pw:browser [pid=3243][err] For help, see: https://nodejs.org/learn/getting-started/debugging +0ms
+2026-10-27T09:40:07.1814650Z   pw:browser <ws disconnected> ws://127.0.0.1:49319/f924172b-af22-449e-bd5e-4c44f1c21c8a code=1005 reason= +0ms
+2026-10-27T09:40:07.1831850Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007182,"event":"web-contents-destroyed","details":{"id":1}} +2ms
+2026-10-27T09:40:07.1834380Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007183,"event":"window-closed","details":{"id":1}} +0ms
+2026-10-27T09:40:07.1838040Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007183,"event":"will-quit","details":{"prevented":true}} +0ms
+2026-10-27T09:40:07.1887060Z   pw:browser [pid=3243][out] [extensions] Host stopped +5ms
+2026-10-27T09:40:07.1887760Z   pw:browser [pid=3243][out] [app] Shutdown complete +0ms
+2026-10-27T09:40:07.1888220Z   pw:browser [pid=3243][out] SHUTDOWN_OBSERVATION {"at":1793094007188,"event":"quit","details":{"code":0}} +0ms
+2026-10-27T09:40:07.2038650Z   pw:browser <ws disconnected> ws://127.0.0.1:49321/devtools/browser/66a0ef37-41f7-41dc-809a-8d8155bbe642 code=1006 reason= +14ms
+2026-10-27T09:40:07.2078720Z   pw:browser [pid=3243] <process did exit: exitCode=0, signal=null> +1ms
+2026-10-27T09:40:07.2139820Z   pw:browser [pid=3243] starting temporary directories cleanup +0ms
+2026-10-27T09:40:07.2140560Z   pw:api <= electronApplication.close succeeded +55ms
+2026-10-27T09:40:07.2141120Z   pw:browser [pid=3243] finished temporary directories cleanup +3ms
+2026-10-27T09:40:07.2166300Z   ✓  1 tests/performance/startup.test.ts:13:1 › measures twenty fresh processes and confirms all observed child processes exit (9.1s)
+2026-10-27T09:40:07.2250740Z 
+2026-10-27T09:40:07.2252130Z   1 passed (9.4s)
+2026-10-27T09:40:07.2464660Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T09:40:07.2464940Z with:
+2026-10-27T09:40:07.2465070Z   name: macos-arm64-uncaught-1
+2026-10-27T09:40:07.2465240Z   path: clients/desktop/app/test-results/
+2026-10-27T09:40:07.2465420Z   if-no-files-found: error
+2026-10-27T09:40:07.2465570Z   compression-level: 6
+2026-10-27T09:40:07.2465710Z   overwrite: false
+2026-10-27T09:40:07.2465840Z   include-hidden-files: false
+2026-10-27T09:40:07.2465980Z   archive: true
+2026-10-27T09:40:07.2466100Z env:
+2026-10-27T09:40:07.2466220Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T09:40:07.2466370Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T09:40:07.2466520Z   DESKTOP_TARGET: macos-arm64
+2026-10-27T09:40:07.2466710Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T09:40:07.2466900Z ##[endgroup]
+2026-10-27T09:40:07.3670070Z With the provided path, there will be 1 file uploaded
+2026-10-27T09:40:07.3673500Z Artifact name is valid!
+2026-10-27T09:40:07.3680780Z Root directory input is valid!
+2026-10-27T09:40:07.6323370Z Uploading artifact: macos-arm64-uncaught-1.zip
+2026-10-27T09:40:07.6353740Z Beginning upload of artifact content to blob storage
+2026-10-27T09:40:07.8538510Z Uploaded bytes 21916
+2026-10-27T09:40:07.8949380Z Finished uploading artifact content to blob storage!
+2026-10-27T09:40:07.8950070Z SHA256 digest of uploaded artifact is 77c310bf9012f8737c96d7f131df7baeeda6bb51e572e4ff4d10bb0b0e326a52
+2026-10-27T09:40:07.8950780Z Finalizing artifact upload
+2026-10-27T09:40:08.4683230Z Artifact macos-arm64-uncaught-1 successfully finalized. Artifact ID 12722788959
+2026-10-27T09:40:08.4684070Z Artifact macos-arm64-uncaught-1 has been successfully uploaded! Final size is 21916 bytes. Artifact ID is 12722788959
+2026-10-27T09:40:08.4688090Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40482395686/artifacts/12722788959
+2026-10-27T09:40:08.4812000Z Post job cleanup.
+2026-10-27T09:40:08.5758330Z Pruning is unnecessary.
+2026-10-27T09:40:08.5759610Z Cache hit occurred on the primary key pnpm-cache-macOS-arm64-26cb97fb582b171bea5682f3358bebf49073f28ad9b434312b8c593ed0e2f0bd, not saving cache.
+2026-10-27T09:40:08.5825130Z Post job cleanup.
+2026-10-27T09:40:08.6685860Z (node:3375) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T09:40:08.6686520Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T09:40:08.6775640Z Post job cleanup.
+2026-10-27T09:40:08.7423600Z [command]/opt/homebrew/bin/git version
+2026-10-27T09:40:08.7470780Z git version 2.55.0
+2026-10-27T09:40:08.7486240Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/47a4c7c5-aaa6-413a-a6a4-345d6bda4b22/.gitconfig'
+2026-10-27T09:40:08.7492150Z Temporarily overriding HOME='/Users/runner/work/_temp/47a4c7c5-aaa6-413a-a6a4-345d6bda4b22' before making global git config changes
+2026-10-27T09:40:08.7492870Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T09:40:08.7494740Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T09:40:08.7545120Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T09:40:08.7593550Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T09:40:08.8133360Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T09:40:08.8175920Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T09:40:08.8772570Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T09:40:08.8813940Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T09:40:08.9434270Z Cleaning up orphan processes

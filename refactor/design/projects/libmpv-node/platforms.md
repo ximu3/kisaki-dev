@@ -46,7 +46,7 @@ NativeFrame 交付时，库必须已经完成必要的生产端同步，使消�
 
 帧保存像素尺寸、有效矩形、像素格式、颜色解释及有依据的时序。原生控制指针继续私有；平台共享资源描述是专门的互操作合同，与普通 MpvNode 数据不同。交付结构必须说明句柄所在进程和借用／持有边界，不能宣称普通结构化克隆能够转移 OS 句柄。
 
-Electron 44.5.1 的导入分别接受 Windows NT 句柄、macOS IOSurface 和 Linux nativePixmap。Windows 导入会复制句柄，macOS 会保留引用，Linux 会复制各 plane 的 fd；这些动作不允许生产者提前覆盖底层内容。Kisaki 在 allReferencesReleased 后归还相应 NativeFrame 持有。[导入结构](https://github.com/electron/electron/blob/19c601167d4ae75989938416c18ed81eb21c6020/docs/api/structures/shared-texture-handle.md)、[导入实现](https://github.com/electron/electron/blob/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc)
+Electron 45.0.0 的导入分别接受 Windows NT 句柄、macOS IOSurface 和 Linux nativePixmap。Windows 导入会复制句柄，macOS 会保留引用，Linux 会复制各 plane 的 fd；这些动作不允许生产者提前覆盖底层内容。Kisaki 在 allReferencesReleased 后归还相应 NativeFrame 持有。[导入结构](https://github.com/electron/electron/blob/v45.0.0/docs/api/structures/shared-texture-handle.md)、[导入实现](https://github.com/electron/electron/blob/v45.0.0/shell/common/api/electron_api_shared_texture.cc)
 
 Windows 的 NT 句柄不能用旧式 GetSharedHandle 返回值替代。RGB 输出所需的 keyed-mutex 条件也不能照搬解码纹理；所选 Electron 版本的 RGB 共享路径使用不同的同步约定，须与生产者一起验证。
 

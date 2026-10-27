@@ -166,6 +166,7 @@ clients/desktop/app/tools/
 ├── dev/
 │   ├── cli.ts
 │   ├── session.ts
+│   ├── inputs.ts
 │   ├── renderer.ts
 │   ├── electron-executable.ts
 │   ├── generation.ts
@@ -197,7 +198,7 @@ clients/desktop/app/tools/
 
 | 位置                             | 职责与调用关系                                                                                                                                                                     |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dev/session.ts                   | 拥有完整开发会话与构建交接，通过 extension-cli/extension 启动真实应用；renderer 管理 Vite 和输入监听，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
+| dev/session.ts                   | 拥有完整开发会话与构建交接，通过 extension-cli/extension 启动真实应用；inputs 管理 Chokidar 输入监听，renderer 管理 Vite，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。 |
 | build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                 |
 | build/programs.ts                | 依据应用 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。 |

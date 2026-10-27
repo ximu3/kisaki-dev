@@ -1,0 +1,32 @@
+{
+  "ci": {
+    "runId": 40472606213,
+    "head": "18a6346c90dcabcff9476088664829dc0960fc12",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "skipped",
+    "jobs": [
+      {
+        "id": 122083068376,
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "title": {
+    "runId": 40472606040,
+    "head": "18a6346c90dcabcff9476088664829dc0960fc12",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 122083066257,
+        "name": "PR title",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  }
+}

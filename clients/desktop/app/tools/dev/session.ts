@@ -5,6 +5,7 @@ import type { DevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'
+import { startInputWatcher } from './inputs'
 import { sourceIdentity } from '../build/identity'
 import { prepareResources } from '../resources/prepare'
 import { electronExecutable } from './electron-executable'
@@ -54,6 +55,7 @@ export async function startDevelopmentSession(
   const signal = controller.signal
   let directory: string | undefined
   let rendererToClose: Awaited<ReturnType<typeof startRenderer>> | undefined
+  let inputsToClose: Awaited<ReturnType<typeof startInputWatcher>> | undefined
   let child: DevelopmentApplication | undefined
   const snapshots = new Map<string, DependencySnapshot>()
 
@@ -92,7 +94,7 @@ export async function startDevelopmentSession(
     let stopping = false
     let replacing = false
     let stopped = false
-    let connectionFailed = false
+    let resourceFailed = false
     // An abnormal main exit cannot confirm that every runtime reader has stopped.
     let retainOutputs = false
     let stopPromise: Promise<'cancelled' | 'stopped'> | undefined
@@ -117,6 +119,14 @@ export async function startDevelopmentSession(
     void ready.catch(() => undefined)
     void closed.catch(() => undefined)
 
+    /** Keep the current application owned while preventing further adoption after a resource fails. */
+    function failSession(cause: unknown): void {
+      resourceFailed = true
+      buildPending = false
+      rejectReady(cause)
+      options.onState?.('failed', cause)
+    }
+
     /** Build dependencies, capture their complete exports and compile the next private generation. */
     async function rebuild(): Promise<void> {
       options.onState?.('building')
@@ -136,18 +146,18 @@ export async function startDevelopmentSession(
         if (!current || forced || (await programInputsChanged(programInputs))) {
           runtime = await buildGeneration(target, candidate, signal)
           if (runtime.buildId !== (await sourceIdentity())) {
-            buildPending = !stopping
+            buildPending = !stopping && !resourceFailed
             await rm(candidate, { recursive: true, force: true })
             return
           }
         }
-        if (stopping || connectionFailed) {
+        if (stopping || resourceFailed) {
           await rm(candidate, { recursive: true, force: true })
           return
         }
         if (!runtime) {
           await renderer.adopt(dependencies)
-          options.onState?.('ready')
+          if (!resourceFailed) options.onState?.('ready')
           return
         }
 
@@ -164,9 +174,18 @@ export async function startDevelopmentSession(
         }
         child = undefined
         current = undefined
+        const { launchDevelopmentApplication } = await import('@kisaki3/extension-cli/extension')
+        signal.throwIfAborted()
+        if (stopping || resourceFailed) {
+          await rm(candidate, { recursive: true, force: true })
+          return
+        }
         await renderer.adopt(dependencies)
         signal.throwIfAborted()
-        const { launchDevelopmentApplication } = await import('@kisaki3/extension-cli/extension')
+        if (stopping || resourceFailed) {
+          await rm(candidate, { recursive: true, force: true })
+          return
+        }
         launching = true
         child = await launchDevelopmentApplication({
           executable: electronExecutable(),
@@ -176,11 +195,7 @@ export async function startDevelopmentSession(
           buildId: runtime.buildId,
           signal,
           startupTimeoutMs: 30_000,
-          onFailure: (cause) => {
-            connectionFailed = true
-            buildPending = false
-            options.onState?.('failed', cause)
-          },
+          onFailure: failSession,
         })
         current = { buildId: runtime.buildId, directory: candidate, processId: child.pid }
         const launched = child
@@ -196,6 +211,7 @@ export async function startDevelopmentSession(
         })
         programInputs = runtime.inputs
         if (previous && !retainOutputs) await rm(previous, { recursive: true, force: true })
+        if (resourceFailed) return
         options.signal?.removeEventListener('abort', cancelPreparation)
         options.onState?.('ready')
         resolveReady()
@@ -212,12 +228,12 @@ export async function startDevelopmentSession(
 
     /** Coalesce changes into serial rebuilds owned by this development session. */
     function enqueue(force = false): void {
-      if (stopped || connectionFailed) return
+      if (stopped || resourceFailed) return
       forceRuntimeBuild ||= force
       buildPending = true
       if (stopping) return
       buildLoop ??= (async () => {
-        while (buildPending && !stopping) {
+        while (buildPending && !stopping && !resourceFailed) {
           buildPending = false
           await rebuild()
         }
@@ -226,7 +242,6 @@ export async function startDevelopmentSession(
       })
     }
 
-    const stopWatching = renderer.watch((change) => enqueue(change === 'runtime'))
     const cancel = () => {
       void session.stop().catch((cause: unknown) => {
         options.onState?.('failed', cause)
@@ -256,11 +271,15 @@ export async function startDevelopmentSession(
           signal.removeEventListener('abort', cancel)
           options.signal?.removeEventListener('abort', cancelPreparation)
           controller.abort(new Error('Development session stopping'))
-          stopWatching()
           const failures: unknown[] = []
           child = undefined
           current = undefined
           let rendererClosed = false
+          try {
+            await inputs.close()
+          } catch (cause) {
+            failures.push(cause)
+          }
           try {
             await renderer.close()
             rendererClosed = true
@@ -307,14 +326,34 @@ export async function startDevelopmentSession(
         await session.stop()
       },
     }
+    const inputs = await startInputWatcher(members, {
+      signal,
+      onChange: (change) => enqueue(change === 'runtime'),
+      onError: failSession,
+    })
+    inputsToClose = inputs
     signal.addEventListener('abort', cancel, { once: true })
     enqueue()
     if (signal.aborted) cancel()
     return session
   } catch (cause) {
     options.signal?.removeEventListener('abort', cancelPreparation)
-    if (child) await child.terminate()
-    await rendererToClose?.close()
+    const failures: unknown[] = [cause]
+    try {
+      await child?.terminate()
+    } catch (failure) {
+      failures.push(failure)
+    }
+    for (const resource of [inputsToClose, rendererToClose]) {
+      try {
+        await resource?.close()
+      } catch (failure) {
+        failures.push(failure)
+      }
+    }
+    if (failures.length > 1) {
+      throw new AggregateError(failures, 'Development startup and cleanup failed', { cause })
+    }
     if (directory) await rm(directory, { recursive: true, force: true })
     throw cause
   }

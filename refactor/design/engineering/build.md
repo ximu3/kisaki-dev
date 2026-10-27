@@ -104,7 +104,7 @@ libmpv、FFmpeg 及其匹配运行依赖由 libmpv-node 按固定版本、目标
 | Linux RPM      | x64/arm64 各自的 RPM                                                                                 | 普通                 | 应用内下载、校验，经系统授权调用包管理器安装；须完成目标验证 |
 | Linux 免安装   | x64/arm64 各自的 AppImage                                                                            | 默认普通，可启用便携 | 应用检查、下载并沿共同退出流程替换 AppImage 文件             |
 
-基线使用 Electron 44.5.1、electron-builder 26.15.3 和 electron-updater 6.8.9，锁定组合按六目标验收。应用负责版本选择、四语说明、准备安装状态与完整退出；底层工具通过公开接口及其标准更新元数据完成下载、校验和安装。
+基线使用 Electron 45.0.0、electron-builder 26.15.3 和 electron-updater 6.8.9，锁定组合按六目标验收。应用负责版本选择、四语说明、准备安装状态与完整退出；底层工具通过公开接口及其标准更新元数据完成下载、校验和安装。
 
 各架构分别提供表中制品。Windows 每个架构交付单一 NSIS 安装包和文件夹式 ZIP；macOS 交付 DMG 与更新 ZIP；Linux 交付 DEB、RPM 和 AppImage。交付集合不包含 Universal、MSI、MSIX、web installer、portable.exe、TAR.GZ、Snap 或 Flatpak。
 

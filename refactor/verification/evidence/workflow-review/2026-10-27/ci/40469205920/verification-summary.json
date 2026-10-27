@@ -1,0 +1,88 @@
+{
+  "runId": 40469205920,
+  "head": "18a6346c90dcabcff9476088664829dc0960fc12",
+  "attempt": 1,
+  "conclusion": "success",
+  "requiredChecks": "success",
+  "titleRunId": 40469205896,
+  "titleCheck": "success",
+  "targets": [
+    {
+      "target": "windows-x64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T08:00:14.4344993Z   ok 1 tests\\performance\\startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (14.1s)"
+    },
+    {
+      "target": "windows-arm64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T08:06:09.4207676Z   ok 1 tests\\performance\\startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (17.4s)"
+    },
+    {
+      "target": "macos-x64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T08:00:42.6507460Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (31.1s)"
+    },
+    {
+      "target": "macos-arm64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T07:52:11.3512750Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (8.8s)"
+    },
+    {
+      "target": "linux-x64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T07:55:41.9766983Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (15.5s)"
+    },
+    {
+      "target": "linux-arm64",
+      "conclusion": "success",
+      "performanceResult": "2026-10-27T07:54:14.2123754Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (10.3s)"
+    }
+  ],
+  "packageBuildId": "4fa13827461ad4cf3dddcaa6750fa8715844727645ccbc71c0c67b4bfaf1c1d1",
+  "packageCount": 8,
+  "macosArm64Diagnostics": {
+    "head": "18a6346c90dcabcff9476088664829dc0960fc12",
+    "runId": 40469205920,
+    "jobId": 122072662986,
+    "attempt": 1,
+    "target": "macos-arm64",
+    "status": "passed",
+    "samples": 20,
+    "stepCount": 100,
+    "phases": {
+      "launch": {
+        "count": 20,
+        "maxMs": 170,
+        "totalMs": 2979
+      },
+      "window ready": {
+        "count": 20,
+        "maxMs": 198,
+        "totalMs": 3765
+      },
+      "process metrics": {
+        "count": 20,
+        "maxMs": 5,
+        "totalMs": 64
+      },
+      "close": {
+        "count": 20,
+        "maxMs": 245,
+        "totalMs": 1966
+      },
+      "observed processes exit": {
+        "count": 20,
+        "maxMs": 3,
+        "totalMs": 20
+      }
+    },
+    "interpretation": "Diagnostic steps completed without a runtime or shutdown behavior change; this success does not establish the root cause or resolution of the earlier timeouts."
+  },
+  "localArchiveScope": [
+    "repository-verification",
+    "desktop-macos-arm64"
+  ],
+  "artifactScope": "All seven remote artifact metadata retained. Repository and macOS arm64 archives downloaded and verified. Other five diagnostic-round archives are not duplicated; full candidate evidence remains at 40463344626 with unchanged application inputs.",
+  "warmCacheEvidence": "warm-cache/attempt-2/cache-recovery.json",
+  "limitation": "Earlier macOS arm64 timeouts are not attributed to a confirmed root cause or counted as fixed."
+}

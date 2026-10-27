@@ -1,0 +1,42 @@
+{
+  "package": "@turbo/windows-arm64",
+  "version": "2.11.10",
+  "declaredOs": [
+    "win32"
+  ],
+  "declaredCpu": [
+    "arm64"
+  ],
+  "tarball": "https://registry.npmjs.org/@turbo/windows-arm64/-/windows-arm64-2.11.10.tgz",
+  "integrity": "sha512-xOkEjF3ws/b/YNlc+bvJHMYBn+vL+QbEISZFVi0qS+ImmhA1X3/gmNmBrjjIG3dg6aeN+n6gQitzSkXQ286qJQ==",
+  "verified": true,
+  "executableBytes": 50406400,
+  "executableSha256": "e9d56ce82846c54ca36f47e6d52e0fc9f2ea24099f41ec1f60c29537e1765fd5",
+  "peMachine": "0x8664",
+  "actualArchitecture": "x64",
+  "executed": false,
+  "sources": [
+    {
+      "url": "https://github.com/vercel/turborepo/blob/v2.11.10/.github/workflows/turborepo-release.yml",
+      "blobSha": "670aa39a9adf80ff0ffb627f152d661ded1d2ddd"
+    },
+    {
+      "url": "https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/local_turbo_state.rs",
+      "blobSha": "f58fafca4324ef68028616a756c1fd8a833e0651"
+    },
+    {
+      "url": "https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/turbo_state.rs",
+      "blobSha": "0d17075fc3a1c5bbea98f3e8f2905a85af2beaec"
+    },
+    {
+      "url": "https://github.com/vercel/turborepo/blob/v2.11.10/crates/turborepo-shim/src/run.rs",
+      "blobSha": "b31169cd97d707db86a83f994a93afa89a3b4714"
+    }
+  ],
+  "interpretation": {
+    "release": "The Windows x64 release is copied into the Windows arm64 package.",
+    "resolution": "The JavaScript launcher selects windows-arm64 from Node architecture, while the compiled x64 shim probes windows-64 for its local package.",
+    "warning": "The unresolved local probe enters the existing executable branch labelled global; it does not install or select another version.",
+    "scope": "Observed in Windows arm64 build and package logs; Electron packaging still targets arm64."
+  }
+}

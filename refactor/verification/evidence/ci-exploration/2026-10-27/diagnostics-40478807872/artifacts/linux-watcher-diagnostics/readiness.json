@@ -1,0 +1,251 @@
+{
+  "platform": "linux",
+  "arch": "x64",
+  "node": "v24.11.1",
+  "note": "Public Vite watcher observation in an isolated fixture on the recorded host.",
+  "events": [
+    {
+      "elapsedMs": 407.62,
+      "event": "configure-server",
+      "generation": 0
+    },
+    {
+      "elapsedMs": 416.99,
+      "event": "watcher-ready",
+      "generation": 0
+    },
+    {
+      "elapsedMs": 417.03,
+      "event": "watcher-ready",
+      "generation": 0
+    },
+    {
+      "elapsedMs": 417.13,
+      "event": "watcher-ready",
+      "generation": 0
+    },
+    {
+      "elapsedMs": 432.95,
+      "event": "listen-returned"
+    },
+    {
+      "elapsedMs": 443.02,
+      "event": "watcher-ready",
+      "generation": 0
+    },
+    {
+      "elapsedMs": 479.42,
+      "event": "configure-server",
+      "generation": 1
+    },
+    {
+      "elapsedMs": 484.28,
+      "event": "watcher-ready",
+      "generation": 1
+    },
+    {
+      "elapsedMs": 484.32,
+      "event": "watcher-ready",
+      "generation": 1
+    },
+    {
+      "elapsedMs": 484.46,
+      "event": "watcher-ready",
+      "generation": 1
+    },
+    {
+      "elapsedMs": 497.63,
+      "event": "watcher-ready",
+      "generation": 1
+    },
+    {
+      "elapsedMs": 516.65,
+      "event": "restart-returned",
+      "restart": 0
+    },
+    {
+      "elapsedMs": 516.77,
+      "event": "write-start",
+      "restart": 0,
+      "kind": "runtime",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 519.67,
+      "event": "watcher-event",
+      "generation": 1,
+      "kind": "change",
+      "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+    },
+    {
+      "elapsedMs": 521.28,
+      "event": "write-finished",
+      "restart": 0,
+      "kind": "runtime"
+    },
+    {
+      "elapsedMs": 1622.7,
+      "event": "write-start",
+      "restart": 0,
+      "kind": "package",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 1623.84,
+      "event": "watcher-event",
+      "generation": 1,
+      "kind": "change",
+      "path": "package/config/typescript/tsconfig.lib.json"
+    },
+    {
+      "elapsedMs": 1624.2,
+      "event": "write-finished",
+      "restart": 0,
+      "kind": "package"
+    },
+    {
+      "elapsedMs": 2748.82,
+      "event": "configure-server",
+      "generation": 2
+    },
+    {
+      "elapsedMs": 2751.03,
+      "event": "watcher-ready",
+      "generation": 2
+    },
+    {
+      "elapsedMs": 2751.05,
+      "event": "watcher-ready",
+      "generation": 2
+    },
+    {
+      "elapsedMs": 2751.12,
+      "event": "watcher-ready",
+      "generation": 2
+    },
+    {
+      "elapsedMs": 2755.05,
+      "event": "restart-returned",
+      "restart": 1
+    },
+    {
+      "elapsedMs": 2755.07,
+      "event": "write-start",
+      "restart": 1,
+      "kind": "runtime",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 2756.44,
+      "event": "watcher-event",
+      "generation": 2,
+      "kind": "change",
+      "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+    },
+    {
+      "elapsedMs": 2756.64,
+      "event": "write-finished",
+      "restart": 1,
+      "kind": "runtime"
+    },
+    {
+      "elapsedMs": 2757.72,
+      "event": "watcher-ready",
+      "generation": 2
+    },
+    {
+      "elapsedMs": 3857.51,
+      "event": "write-start",
+      "restart": 1,
+      "kind": "package",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 3858.42,
+      "event": "watcher-event",
+      "generation": 2,
+      "kind": "change",
+      "path": "package/config/typescript/tsconfig.lib.json"
+    },
+    {
+      "elapsedMs": 3858.85,
+      "event": "write-finished",
+      "restart": 1,
+      "kind": "package"
+    },
+    {
+      "elapsedMs": 4973.99,
+      "event": "configure-server",
+      "generation": 3
+    },
+    {
+      "elapsedMs": 4975.39,
+      "event": "watcher-ready",
+      "generation": 3
+    },
+    {
+      "elapsedMs": 4975.4,
+      "event": "watcher-ready",
+      "generation": 3
+    },
+    {
+      "elapsedMs": 4975.46,
+      "event": "watcher-ready",
+      "generation": 3
+    },
+    {
+      "elapsedMs": 4978.43,
+      "event": "restart-returned",
+      "restart": 2
+    },
+    {
+      "elapsedMs": 4978.45,
+      "event": "write-start",
+      "restart": 2,
+      "kind": "runtime",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 4980.49,
+      "event": "watcher-event",
+      "generation": 3,
+      "kind": "change",
+      "path": "clients/desktop/app/config/vite/vite.config.main.ts"
+    },
+    {
+      "elapsedMs": 4980.65,
+      "event": "write-finished",
+      "restart": 2,
+      "kind": "runtime"
+    },
+    {
+      "elapsedMs": 4981.61,
+      "event": "watcher-ready",
+      "generation": 3
+    },
+    {
+      "elapsedMs": 6080.89,
+      "event": "write-start",
+      "restart": 2,
+      "kind": "package",
+      "presentInGetWatched": true
+    },
+    {
+      "elapsedMs": 6081.81,
+      "event": "watcher-event",
+      "generation": 3,
+      "kind": "change",
+      "path": "package/config/typescript/tsconfig.lib.json"
+    },
+    {
+      "elapsedMs": 6082.28,
+      "event": "write-finished",
+      "restart": 2,
+      "kind": "package"
+    },
+    {
+      "elapsedMs": 7182.64,
+      "event": "server-closed"
+    }
+  ]
+}
