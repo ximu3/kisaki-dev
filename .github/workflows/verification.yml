@@ -315,6 +315,7 @@ jobs:
             packages/tooling/test-results/
             clients/desktop/app/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json
+            clients/desktop/app/dist/${{ matrix.target }}/Kisaki-*
             clients/desktop/app/dist/${{ matrix.target }}/*.yml
           if-no-files-found: error
   development:
