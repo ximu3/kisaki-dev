@@ -8,6 +8,9 @@ on:
         default: false
 permissions:
   contents: read
+env:
+  # Optional cache restoration should fall back before consuming the feedback budget.
+  SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
 jobs:
   select:
     name: Select checks

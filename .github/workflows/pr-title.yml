@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+env:
+  # Optional cache restoration should fall back before consuming the feedback budget.
+  SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
+
 concurrency:
   group: pr-title-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: true
