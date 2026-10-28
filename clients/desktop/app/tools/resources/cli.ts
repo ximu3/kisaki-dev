@@ -9,5 +9,7 @@ await runCli(async (signal) => {
   const { values } = parseArgs({ options: { target: { type: 'string' } } })
   const target = values.target ? parseTarget(values.target) : hostTarget()
 
-  console.info(await prepareResources(target, signal))
+  const resourceDirectory = await prepareResources(target, signal)
+
+  console.info(resourceDirectory)
 })

@@ -11,9 +11,11 @@ import '@kisaki3/ui/styles.css'
 
 function Counter() {
   const [count, setCount] = createSignal(0)
+
   return <Button onClick={() => setCount((value) => value + 1)}>Count {count()}</Button>
 }
 
 const root = document.getElementById('root')
 if (!root) throw new Error('Consumer root is missing')
+
 render(() => <Counter />, root)

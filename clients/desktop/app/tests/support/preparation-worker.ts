@@ -14,4 +14,5 @@ await writeFile(
   join(directory, 'dependency-preparation.json'),
   JSON.stringify({ pid: process.pid }),
 )
+
 setInterval(() => undefined, 1_000)

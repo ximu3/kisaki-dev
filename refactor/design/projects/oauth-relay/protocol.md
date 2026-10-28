@@ -2,6 +2,13 @@
 
 本页定义服务的公开 HTTP 合同与短期会话规则。provider 的实际能力、编码与传输见[上游适配](providers.md)。
 
+| 阅读目的 | 入口 |
+| --- | --- |
+| 接入 HTTP 请求与响应 | [端点和编码](#http) · [请求参数](#parameters) · [错误结果](#errors) |
+| 理解授权与续期 | [授权流程](#authorization) · [短期会话与刷新](#sessions) |
+| 实现并发、到期和关闭 | [会话与 HTTP 资源次序](#state) |
+| 准备部署配置 | [启动配置](#protocol-configuration) · [HTTP 边界](#configuration) |
+
 <a id="authorization"></a>
 
 ## 授权流程

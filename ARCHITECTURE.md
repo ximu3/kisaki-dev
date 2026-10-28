@@ -20,4 +20,6 @@
 
 测试按目的归所属项目：纯逻辑就近，工程工作流归 `tests/tools`，真实驱动归 `tests/integration`，浏览器、Electron、性能和最终制品分别配置。根测试只拥有仓库工具与跨包消费。正式程序不导入测试、fixture 或工具代码。
 
+CI 工作流负责选择与执行顺序，共同环境信息由根 `tools/host-environment.ts` 提供。桌面 `tests/support/build-reuse.ts` 记录测试前的构建并核对打包后的复用结果；构建、打包和验证观测各有对应入口。
+
 完整产品职责与目标布局以 [运行架构](refactor/design/architecture.md)、[源码布局](refactor/design/engineering/layout.md) 和 [工作包](refactor/implementation/work-packages.md) 为准。

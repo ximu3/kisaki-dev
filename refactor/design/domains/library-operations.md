@@ -97,23 +97,99 @@ note_entry_links 的 order_in_note 与 order_in_entry，以及其他 order_in_*�
 
 ## 公开操作目录
 
-| API 拥有者                         | 公开输入及结果                                                                                                                                                                                                                                                                                                                                                                                                                               | 完整性与开放边界                                                                                                                                                                         |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| library.entries                    | create 接收七种 EntryCreateInput 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](library-queries.md#api)                                                                                                                                                                  | 七类具体字段来自[条目字段](catalog.md#entry-fields)；类型与私人记录的适用性在输入分支体现；禁止修改派生值；SDK Node 开放                                                                 |
-| library.entries 的个人操作         | setEvaluation 和 setWorkStatus 使用[个人记录合同](records.md#operations)；四类作品附加时长按[共同合同](records.md#duration)通过 record.additionalDurationMs 写入绝对值；成功返回 void                                                                                                                                                                                                                                                        | 当前个人值也可随 entries.update 明确修改；三种当前状态或 null；历史通过 completions 管理，个人值不进入 MetadataCandidate；SDK Node 开放                                                  |
-| library.completions                | list、get、statistics、create、createMany、recordCurrent、recordCurrentMany、update 和 delete 的输入、结果按[完成记录合同](records.md#operations)                                                                                                                                                                                                                                                                                            | 完成事实有稳定 ID，日期使用 CalendarDate 或 null；记录本次完成与清除当前状态原子提交；不开放计数递增或汇总替换；SDK Node 开放                                                            |
-| library.parts                      | list、get、create、update、delete、merge、changeKind、reorder、setCompleted 和 setCompletedMany；创建和种类更正返回 PartRef，merge 按[分部合并](#part-merges)接收 { source, target } 并返回实际保留的 PartRef，其余修改返回 void；完成设置接收明确 PartRef 或非空集合及一个布尔值                                                                                                                                                            | 五种 Part 只保存完成标记；批量共同提交；changeKind 仅更正同一动画内的 Episode 与 Extra，按[更正规则](anime.md#kind-correction)保留资料、关联和标记；SDK Node 开放                        |
-| library.relations                  | workCharacters、personWorks、organizationWorks、workRelations 各自 list/get/create/update/delete/reorder；创建返回实际关系 id，更新保持 id                                                                                                                                                                                                                                                                                                   | 四张资料关系表的必要端点、职责/类型、可选 character 及属性按 [模型范围](../product.md#model)、[关系表与业务键](relations.md#schema)；不增人物—组织等关系；普通创建或更新遇到重复业务键返回 Conflict，明确条目合并按固定合并规则处理 |
-| library.collections / library.tags | 各自 list/get/create/update/delete、人工排列及合并；合集成员和条目标签通过明确增减/替换及关联属性修改操作维护                                                                                                                                                                                                                                                                                                                                | create 返回所属对象 id；merge 按[确定合同](collections-and-tags.md#merges)返回 { targetId, removedIds }，其他修改返回 void；查询为本地有界区间与 total，不把可见片段当全集               |
-| library.notes                      | list/get/create/update/delete；输入为标题、Markdown 正文、正文附件和本次相关条目关联及排列                                                                                                                                                                                                                                                                                                                                                   | create 返回 noteId；update/delete 返回 void；笔记无条目关联仍可独立存在，正文与关联按同次保存提交                                                                                        |
-| library.annotations                | list/get/create/update/delete；create/update 接收[Note 与 Annotation 的分工](annotations.md#model)按 Work 类型区分的完整标注值、实际位置及所需图像准备结果                                                                                                                                                                                                                                                                                   | create 返回 annotationId；其余修改返回 void；既有标注改选同时替换位置及 quote，单纯重定位按规则保留正文与摘录                                                                            |
-| library.activities                 | list/get/create/update/delete 与统计读取；create 接收所属作品、起止时间、有效时长及适用的真实上下文，返回 activityId；update/delete 使用作品与 activityId，具体范围见[活动编辑](#activities)                                                                                                                                                                                                                                                 | 四类作品共用补录、修正与删除语义；不开放递增统计列；没有明确时间段的四类作品累计量使用附加时长，不生成活动                                                                               |
-| library.holdings                   | 按 Work 类型维护各自内容目录、正式文件、Part 关联、首选、重定位和明确重新识别；游戏目录与启动配置分别维护；分部首选可按明确配对完整批量设置；查询复用实际归属和可用性值；registerLocalContent 按[本地登记](holdings.md#registration)返回 LocalContentRegistrationResult；files.setAssociationMode 按[关联方式](holdings.md#association-mode)返回 void；files.merge 按[文件合并](file-maintenance.md#file-merges)返回保留、移除身份及实际路径 | 创建返回所属目录/文件/配置身份；编辑返回 void；刷新/识别返回实际处理报告；技术观察与用户决定分别处理，不删除用户字节                                                                     |
-| library.holdings 的文件识别方案    | 按动画、漫画、小说分别提供 list/get/create/update/delete/reorder、引用目录查询和 listPresets；复制及预设采用使用普通草稿和 create/update，定义与引用遵守[文件识别方案](file-recognition.md#recognition-profiles)                                                                                                                                                                                                                             | 管理返回值复用[配置管理](scanner.md#configuration)；方案定义整体校验，目录使用同类真实外键；共享编辑、复制和预设采用分别保持各自更新语义，不创建分部或改写非空文件关联                   |
-| library.holdings.backups           | list/get/create/restore、lock/unlock、备注修改与明确删除；recoveries 提供 list/get/inspect/resolve/remove，输入和结果复用[存档与恢复记录](backups.md#recovery)                                                                                                                                                                                                                                                                               | 备份实现位于 library/holdings/game/backups；恢复结果保留实际目标与恢复材料，不由 Task 代替业务结果                                                                                       |
-| library.showcase                   | list/listPresets/applyChanges；输入为明确创建/修改/删除及最终排列，按 [展示柜](../ui/showcase.md) 完整合同交付当前正式区块                                                                                                                                                                                                                                                                                                                   | 查询内容复用 entries / collections / tags；SDK Node 开放                                                                                                                                 |
-| library.writeGraph                 | 接受 entries、parts、tags、资料关系、内容组织关系及初始本地登记；返回 entries / parts / tags 的请求内 key → 正式引用映射和 changed: boolean                                                                                                                                                                                                                                                                                                  | changed 表示实际业务事实是否发生修改；空映射合法，未创建对象不伪造 key；单个图原子提交。删除、合并、备份及任意调用脚本不进入图合同                                                       |
-| library 合并、删除与重排           | 按[合并、删除与目标集合](#identity-operations)接收明确对象、保留目标和实际列表范围；合并使用固定规则，重排表达真实位置意图                                                                                                                                                                                                                                                                                                                   | 保留目标及删去身份来自真实提交；完整校验使用占用、引用及关联；不设置差异编辑或统一预览阶段                                                                                               |
+### 条目资料：library.entries
+
+create 接收七种 EntryCreateInput 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](library-queries.md#api)。
+
+七类具体字段来自[条目字段](catalog.md#entry-fields)；类型与私人记录的适用性在输入分支体现；禁止修改派生值；SDK Node 开放。
+
+### 当前个人值：library.entries
+
+setEvaluation 和 setWorkStatus 使用[个人记录合同](records.md#operations)；四类作品附加时长按[共同合同](records.md#duration)通过 record.additionalDurationMs 写入绝对值；成功返回 void。
+
+当前个人值也可随 entries.update 明确修改；三种当前状态或 null；历史通过 completions 管理，个人值不进入 MetadataCandidate；SDK Node 开放。
+
+### 作品完成记录：library.completions
+
+list、get、statistics、create、createMany、recordCurrent、recordCurrentMany、update 和 delete 的输入、结果按[完成记录合同](records.md#operations)。
+
+完成事实有稳定 ID，日期使用 CalendarDate 或 null；记录本次完成与清除当前状态原子提交；不开放计数递增或汇总替换；SDK Node 开放。
+
+### 真实分部：library.parts
+
+list、get、create、update、delete、merge、changeKind、reorder、setCompleted 和 setCompletedMany；创建和种类更正返回 PartRef，merge 按[分部合并](#part-merges)接收 { source, target } 并返回实际保留的 PartRef，其余修改返回 void；完成设置接收明确 PartRef 或非空集合及一个布尔值。
+
+五种 Part 只保存完成标记；批量共同提交；changeKind 仅更正同一动画内的 Episode 与 Extra，按[更正规则](anime.md#kind-correction)保留资料、关联和标记；SDK Node 开放。
+
+### 资料关系：library.relations
+
+workCharacters、personWorks、organizationWorks、workRelations 各自 list/get/create/update/delete/reorder；创建返回实际关系 id，更新保持 id。
+
+四张资料关系表的必要端点、职责/类型、可选 character 及属性按 [模型范围](../product.md#model)、[关系表与业务键](relations.md#schema)；不增人物—组织等关系；普通创建或更新遇到重复业务键返回 Conflict，明确条目合并按固定合并规则处理。
+
+### 合集与标签：library.collections / library.tags
+
+各自 list/get/create/update/delete、人工排列及合并；合集成员和条目标签通过明确增减/替换及关联属性修改操作维护。
+
+create 返回所属对象 id；merge 按[确定合同](collections-and-tags.md#merges)返回 { targetId, removedIds }，其他修改返回 void；查询为本地有界区间与 total，不把可见片段当全集。
+
+### 私人笔记：library.notes
+
+list/get/create/update/delete；输入为标题、Markdown 正文、正文附件和本次相关条目关联及排列。
+
+create 返回 noteId；update/delete 返回 void；笔记无条目关联仍可独立存在，正文与关联按同次保存提交。
+
+### 内容标注：library.annotations
+
+提供 list/get/create/update/delete。create/update 接收按 Work 类型区分的完整标注值、实际位置及所需图像准备结果；对象范围见[Note 与 Annotation 的分工](annotations.md#model)。
+
+create 返回 annotationId；其余修改返回 void；既有标注改选同时替换位置及 quote，单纯重定位按规则保留正文与摘录。
+
+### 实际活动：library.activities
+
+list/get/create/update/delete 与统计读取；create 接收所属作品、起止时间、有效时长及适用的真实上下文，返回 activityId；update/delete 使用作品与 activityId，具体范围见[活动编辑](#activities)。
+
+四类作品共用补录、修正与删除语义；不开放递增统计列；没有明确时间段的四类作品累计量使用附加时长，不生成活动。
+
+### 本地内容：library.holdings
+
+按 Work 类型维护各自内容目录、正式文件、Part 关联、首选、重定位和明确重新识别；游戏目录与启动配置分别维护。分部首选可按明确配对完整批量设置，查询复用实际归属和可用性值。
+
+registerLocalContent 按[本地登记](holdings.md#registration)返回 LocalContentRegistrationResult；files.setAssociationMode 按[关联方式](holdings.md#association-mode)返回 void；files.merge 按[文件合并](file-maintenance.md#file-merges)返回保留、移除身份及实际路径。
+
+创建返回所属目录/文件/配置身份；编辑返回 void；刷新/识别返回实际处理报告；技术观察与用户决定分别处理，不删除用户字节。
+
+### 文件识别方案：library.holdings
+
+按动画、漫画、小说分别提供 list/get/create/update/delete/reorder、引用目录查询和 listPresets；复制及预设采用使用普通草稿和 create/update，定义与引用遵守[文件识别方案](file-recognition.md#recognition-profiles)。
+
+管理返回值复用[配置管理](scanner.md#configuration)；方案定义整体校验，目录使用同类真实外键；共享编辑、复制和预设采用分别保持各自更新语义，不创建分部或改写非空文件关联。
+
+### 存档备份：library.holdings.backups
+
+list/get/create/restore、lock/unlock、备注修改与明确删除；recoveries 提供 list/get/inspect/resolve/remove，输入和结果复用[存档与恢复记录](backups.md#recovery)。
+
+备份实现位于 library/holdings/game/backups；恢复结果保留实际目标与恢复材料，不由 Task 代替业务结果。
+
+### 展示区块：library.showcase
+
+list/listPresets/applyChanges；输入为明确创建/修改/删除及最终排列，按 [展示柜](../ui/showcase.md) 完整合同交付当前正式区块。
+
+查询内容复用 entries / collections / tags；SDK Node 开放。
+
+### 资料图提交：library.writeGraph
+
+接受 entries、parts、tags、资料关系、内容组织关系及初始本地登记；返回 entries / parts / tags 的请求内 key → 正式引用映射和 changed: boolean。
+
+changed 表示实际业务事实是否发生修改；空映射合法，未创建对象不伪造 key；单个图原子提交。删除、合并、备份及任意调用脚本不进入图合同。
+
+### 合并、删除与重排
+
+按[合并、删除与目标集合](#identity-operations)接收明确对象、保留目标和实际列表范围；合并使用固定规则，重排表达真实位置意图。
+
+保留目标及删去身份来自真实提交；完整校验使用占用、引用及关联；不设置差异编辑或统一预览阶段。
+
+### 共同行为
 
 普通 get 未命中时返回 null，修改操作的目标缺失时失败。只有所属合同明确允许时，delete 才是幂等操作；接入层不能统一忽略 NotFound。返回 void 表示该操作承诺的修改已经完成，不表示其他消费者已经同步采用。
 

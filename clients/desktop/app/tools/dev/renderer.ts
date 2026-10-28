@@ -43,6 +43,7 @@ export async function startRenderer(
         async resolveId(source, importer, options) {
           // Imports inside a snapshot keep that generation's package resolution.
           if (importer && contains(snapshotDirectory, importer)) return null
+
           const specifier = source.replace(/[?#].*$/, '')
           const member = members.find(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
@@ -51,6 +52,7 @@ export async function startRenderer(
 
           const packageRoot = snapshot?.packages.get(member.name)
           if (!packageRoot) throw new Error('Public dependencies are not ready')
+
           return this.resolve(source, join(packageRoot, 'package.json'), {
             ...options,
             skipSelf: true,
@@ -64,6 +66,7 @@ export async function startRenderer(
     await server.listen()
     const initialUrl = server.resolvedUrls?.local[0]
     if (!initialUrl) throw new Error('Renderer server did not publish a listening address')
+
     let url = initialUrl
 
     return {
@@ -78,11 +81,13 @@ export async function startRenderer(
 
         const initialBuild = snapshot === undefined
         snapshot = nextSnapshot
+
         if (initialBuild) {
           // Dependencies were unavailable at startup; discard unresolved optimizer entries.
           await server.restart()
           const address = server.resolvedUrls?.local[0]
           if (!address) throw new Error('Renderer restart did not publish a listening address')
+
           url = address
         } else {
           server.moduleGraph.invalidateAll()

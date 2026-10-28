@@ -38,21 +38,25 @@ export function registerShutdown(
         if (event.defaultPrevented) void notify({ type: 'stopResult', outcome: 'cancelled' })
       })
     })
+
     window.webContents.on('will-prevent-unload', (event) => {
       queueMicrotask(() => {
         if (!event.defaultPrevented) void notify({ type: 'stopResult', outcome: 'cancelled' })
       })
     })
   }
+
   app.on('browser-window-created', (_event, window) => observeWindow(window))
 
   app.on('will-quit', (event) => {
     event.preventDefault()
+
     stopping ??= (async () => {
       try {
         await host.stop()
         logLifecycle('app', 'Shutdown complete')
         await notify({ type: 'stopResult', outcome: 'exiting' })
+
         // The normal quit sequence has already accepted every window close.
         app.exit(0)
       } catch (cause) {
@@ -65,9 +69,11 @@ export function registerShutdown(
             message: 'Application shutdown failed',
           },
         })
+
         app.exit(1)
       }
     })()
   })
+
   app.on('window-all-closed', () => app.quit())
 }

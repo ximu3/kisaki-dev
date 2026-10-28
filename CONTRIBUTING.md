@@ -72,7 +72,7 @@ pnpm desktop:package --target windows-x64
 
 ## 验证任务
 
-按[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
+先按[可读性](refactor/design/engineering/conventions.md#readability-principle)核对改动的职责、命名、组织与完整阅读路径，再按[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
 
 仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `root:typecheck`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.desktop-consumers.ts`。
 

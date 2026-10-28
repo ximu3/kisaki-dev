@@ -18,6 +18,7 @@ let globalConfig: string
 function git(args: string[], cwd = repository) {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8', windowsHide: true })
   if (result.error) throw result.error
+
   return result
 }
 
@@ -30,18 +31,22 @@ beforeEach(async () => {
     globalConfig,
     '[user]\n\tname = Hook Fixture\n\temail = fixture@example.invalid\n',
   )
+
   vi.stubEnv('GIT_CONFIG_GLOBAL', globalConfig)
   vi.stubEnv('GIT_CONFIG_NOSYSTEM', '1')
   vi.stubEnv('XDG_CONFIG_HOME', join(directory, 'config'))
   vi.stubEnv('CI', '')
   vi.stubEnv('HUSKY', '1')
+
   expect(git(['init', '-b', 'main']).status).toBe(0)
+
   await mkdir(join(repository, '.husky'))
   await copyFile(resolve('.husky/pre-commit'), join(repository, '.husky/pre-commit'))
 })
 
 afterEach(async () => {
   vi.unstubAllEnvs()
+
   await rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 })
 })
 
@@ -51,10 +56,12 @@ test('installs idempotently, uninstalls cleanly, and never edits inherited confi
 
   expect((await configureHooks(repository, 'install')).status).toBe('installed')
   const firstPath = git(['config', '--local', '--get', 'core.hooksPath']).stdout
+
   expect((await configureHooks(repository, 'install')).status).toBe('installed')
   expect(git(['config', '--local', '--get', 'core.hooksPath']).stdout).toBe(firstPath)
 
   expect((await configureHooks(repository, 'uninstall')).status).toBe('uninstalled')
+
   expect(git(['config', '--local', '--get', 'core.hooksPath']).status).toBe(1)
   expect(git(['config', '--local', '--get', 'fixture.keep']).stdout.trim()).toBe('present')
   expect(await readFile(globalConfig, 'utf8')).toBe(originalGlobal)
@@ -65,12 +72,15 @@ test.each(['', '.other-hooks'])('preserves an explicit local hook path %j', asyn
   const original = await readFile(join(repository, '.git/config'), 'utf8')
 
   await expect(configureHooks(repository, 'install')).rejects.toThrow('conflicts')
+
   expect(await readFile(join(repository, '.git/config'), 'utf8')).toBe(original)
 })
 
 test('rejects an inherited hook path, including an explicitly empty value', async () => {
   await writeFile(globalConfig, '[core]\n\thooksPath =\n')
+
   await expect(configureHooks(repository, 'install')).rejects.toThrow('conflicts')
+
   expect(git(['config', '--local', '--get', 'core.hooksPath']).status).toBe(1)
   expect(await readFile(globalConfig, 'utf8')).toBe('[core]\n\thooksPath =\n')
 })
@@ -78,21 +88,28 @@ test('rejects an inherited hook path, including an explicitly empty value', asyn
 test('preserves a hook path changed by the user after installation', async () => {
   await configureHooks(repository, 'install')
   git(['config', '--local', 'core.hooksPath', '.user-hooks'])
+
   expect((await configureHooks(repository, 'uninstall')).status).toBe('preserved')
+
   expect(git(['config', '--local', '--get', 'core.hooksPath']).stdout.trim()).toBe('.user-hooks')
 })
 
 test('one repository-local installation and removal governs all worktrees', async () => {
   git(['add', '.husky/pre-commit'])
   expect(git(['commit', '-m', 'chore: initialize fixture']).status).toBe(0)
+
   const linked = join(directory, 'linked')
   expect(git(['worktree', 'add', '-b', 'linked', linked]).status).toBe(0)
+
   await configureHooks(repository, 'install')
+
   expect((await configureHooks(linked, 'install')).message).toContain('all worktrees')
   expect(git(['config', '--local', '--get', 'core.hooksPath'], linked).stdout).toBe(
     git(['config', '--local', '--get', 'core.hooksPath']).stdout,
   )
+
   await configureHooks(linked, 'uninstall')
+
   expect(git(['config', '--local', '--get', 'core.hooksPath']).status).toBe(1)
 })
 
@@ -120,15 +137,19 @@ test('a failed partial-staging check restores both worktree and index without mo
     'eslint.config.ts',
   ])
   expect(git(['commit', '-m', 'chore: initialize fixture']).status).toBe(0)
+
   await configureHooks(repository, 'install')
+
   await writeFile(source, 'export const value="staged";\n')
   git(['add', 'fixture.ts'])
   await writeFile(source, 'export const value="staged";\nexport const unstaged = true\n')
+
   const index = git(['show', ':fixture.ts']).stdout
   const working = await readFile(source, 'utf8')
   const stashes = git(['stash', 'list']).stdout
 
   const result = git(['commit', '-m', 'test: reject unformatted source'])
+
   expect(result.status, result.stdout + result.stderr).not.toBe(0)
   expect(await readFile(source, 'utf8')).toBe(working)
   expect(git(['show', ':fixture.ts']).stdout).toBe(index)
@@ -137,7 +158,9 @@ test('a failed partial-staging check restores both worktree and index without mo
 
 test('source archives and CI are explicit no-op environments', async () => {
   expect((await configureHooks(directory, 'install')).status).toBe('skipped')
+
   vi.stubEnv('CI', 'true')
+
   expect((await configureHooks(repository, 'install')).status).toBe('skipped')
   expect(git(['config', '--local', '--get', 'core.hooksPath']).status).toBe(1)
 })

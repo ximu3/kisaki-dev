@@ -21,6 +21,7 @@ export async function replaceOutput<T>(
   if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
     throw new Error('Output is outside its project')
   }
+
   signal?.throwIfAborted()
 
   await mkdir(dirname(destination), { recursive: true })
@@ -29,9 +30,11 @@ export async function replaceOutput<T>(
   const staging = await mkdtemp(join(candidates, `${basename(destination)}-`))
   const previous = `${staging}.previous`
   let movedPrevious = false
+
   try {
     const value = await prepare(staging)
     signal?.throwIfAborted()
+
     try {
       await stat(destination)
       await rename(destination, previous)
@@ -46,7 +49,9 @@ export async function replaceOutput<T>(
       if (movedPrevious) await rename(previous, destination)
       throw cause
     }
+
     await rm(previous, { recursive: true, force: true })
+
     return value
   } finally {
     await rm(staging, { recursive: true, force: true })

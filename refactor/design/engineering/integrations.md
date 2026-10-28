@@ -4,9 +4,9 @@
 
 | 接入        | 直接消费的合同                                                                       | Kisaki 拥有的工作                                                       |
 | ----------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| Vantage     | [公共 API](../projects/vantage/api.md)                                               | 监测集合、计时、窗口选择、完整采集及退出后的业务处理                    |
-| Kana        | [阅读 API](../projects/kana/api.md)                                                  | 文件与窗口、偏好解析、持久值映射、记录与标注                            |
-| libmpv-node | [调用](../projects/libmpv-node/api.md)及[视频输出](../projects/libmpv-node/video.md) | 媒体就绪、操作排序、Electron 显示引用与产品会话                         |
+| [Vantage](#vantage) | [公共 API](../projects/vantage/api.md)                                               | 监测集合、计时、窗口选择、完整采集及退出后的业务处理                    |
+| [Kana](#reading) | [阅读 API](../projects/kana/api.md)                                                  | 文件与窗口、偏好解析、持久值映射、记录与标注                            |
+| [libmpv-node](#media) | [调用](../projects/libmpv-node/api.md)及[视频输出](../projects/libmpv-node/video.md) | 媒体就绪、操作排序、Electron 显示引用与产品会话                         |
 | oauth-relay | [HTTP 协议](../projects/oauth-relay/protocol.md)                                     | [授权、账号核验和凭据采用](../extensions/private-data.md#authorization) |
 
 独立项目不导入 Work、Part、Session、数据库或 desktop-contracts；接入不复制解析、原生身份和播放内核。
@@ -70,7 +70,7 @@ infrastructure/media 负责加载、初始定位和内容就绪，协调截图�
 
 <a id="integration"></a>
 
-## 宿主接入分清播放核心与文件会话
+## 播放核心与文件会话的接续
 
 每个播放器执行者独立创建、持有和关闭 Mpv 与 VideoOutput，正常切换文件时复用这份资源。并行播放、明确的独立环境或设备／核心失效可以要求创建新实例；更换核心按这些实际条件决定。
 
@@ -110,7 +110,7 @@ Electron sharedTexture 是官方标记为 Experimental 的接口。Kisaki 固定
 
 <a id="host-lifecycle"></a>
 
-## 宿主的显示变化与故障分别处理
+## 播放宿主的显示变化与故障
 
 Kisaki 使用以下接入策略，库本身不因一个消费界面的行为自动关闭播放核心：
 
@@ -131,7 +131,7 @@ Kisaki 的输出目标固定为 sRGB，HDR 片源和系统设置按这条显示�
 
 <a id="adapter"></a>
 
-## 宿主转换字段，不重建媒体管线
+## 视频帧的 Electron 字段映射
 
 Kisaki 的 infrastructure/media 负责将 NativeFrameSurface 映射到当前 Electron 的输入形状；libmpv-node 不导入 Electron，也不返回 Electron 对象。
 
@@ -157,7 +157,7 @@ Linux 的 WebGPU usage 按当前平台导入能力解释，supportsZeroCopyWebGp
 
 <a id="screenshot"></a>
 
-## 截图布局与颜色分别解释
+## 视频截图的布局与颜色
 
 Kisaki 沿同一 command 入口请求 screenshot-raw subtitles rgba，使用已就绪的受管 sRGB GPU 输出，并明确设置 screenshot-sw=no。subtitles 取得视频内容和字幕；rgba 指定通道排列，不表达颜色空间。screenshot-sw=yes 不属于本体这条 SDR 采集路径的使用条件，可检测的配置冲突沿既有约定处理，不增加原生配置锁。
 
@@ -169,7 +169,7 @@ media 只接纳 source 为 vo、属于本次有效受管 GPU 输出且仍满足 
 
 <a id="host"></a>
 
-## Electron 接入与像素尺度
+## 阅读画面采集与 Electron 像素尺度
 
 Kisaki 阅读接入在 readView 回调中调用受控窗口采集。主进程核对真实来源与当前绑定，使用对应 webContents.capturePage 取得像素；回调不接收任意 windowId，也不允许调用方截取其他窗口。
 
@@ -199,7 +199,7 @@ Kisaki 构建把清单中的资源复制到程序资源目录的 kana／资产�
 
 <a id="values"></a>
 
-## 两侧的值按含义对应
+## Kisaki 与 Kana 的值映射
 
 | Kisaki 拥有的事实               | Kana 的对应能力                             | 接入时保留的含义                                                                   |
 | ------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------- |

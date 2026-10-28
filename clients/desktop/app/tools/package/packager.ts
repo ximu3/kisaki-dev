@@ -52,6 +52,7 @@ export async function packageDesktop(
   ) {
     throw new Error('Desktop packaging requires a build matching the current target and inputs')
   }
+
   const actual = await runtimeFiles(runtime)
   if (Object.keys(actual).length !== Object.keys(desktop.files).length) {
     throw new Error('Desktop runtime file set changed before packaging')
@@ -108,10 +109,12 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
     output,
     buildResources: join(appRoot, 'packaging'),
   })
+
   config.set('extraResources', [{ from: join(staging, 'resources'), to: 'resources' }])
   config.setIn(['win', 'icon'], join(staging, 'resources', 'icons', 'icon.ico'))
   config.setIn(['mac', 'icon'], join(staging, 'resources', 'icons', 'icon.png'))
   config.setIn(['linux', 'icon'], join(staging, 'resources', 'icons', 'icon.png'))
+
   config.set('artifactName', `Kisaki-${build.version}-${build.target}.\${ext}`)
 
   if (testOnly) {
@@ -126,6 +129,7 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
 
   const configPath = join(staging, 'electron-builder.yml')
   await writeFile(configPath, config.toString())
+
   return configPath
 }
 

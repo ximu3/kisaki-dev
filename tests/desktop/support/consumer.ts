@@ -24,11 +24,13 @@ export async function consumerCommand(directory: string, args: string[]): Promis
   try {
     const command = pnpm.endsWith('.exe') ? pnpm : process.execPath
     const commandArguments = pnpm.endsWith('.exe') ? args : [pnpm, ...args]
+
     const result = await promisify(execFile)(command, commandArguments, {
       cwd: directory,
       windowsHide: true,
       maxBuffer: 2 * 1024 * 1024,
     })
+
     return result.stdout
   } catch (cause) {
     const failure = cause as { stdout?: string; stderr?: string }
@@ -55,8 +57,10 @@ export async function prepareConsumer(): Promise<{
   const dependencies: Record<string, string> = { 'solid-js': '1.9.16' }
   const overrides: Record<string, string> = {}
   const versions = new Map(inputs.packages.map((input) => [input.name, input.version]))
+
   for (const input of inputs.packages) {
     if (!/^[a-z0-9-]+\.tgz$/.test(input.path)) throw new Error('Unsafe package input path')
+
     const archive = join(dirname(receipt), input.path)
     if (
       createHash('sha256')
@@ -99,6 +103,7 @@ export async function prepareConsumer(): Promise<{
       ...manifest.peerDependencies,
     })) {
       if (!name.startsWith('@kisaki3/')) continue
+
       const version = versions.get(name)
       if (!version || !satisfies(version, range)) {
         throw new Error(`Consumer input does not satisfy ${name}@${range}`)
@@ -136,6 +141,7 @@ export async function prepareConsumer(): Promise<{
         2,
       ),
     )
+
     // Unpublished packages resolve to these tarballs after their declared version ranges are checked.
     await writeFile(
       join(directory, 'pnpm-workspace.yaml'),
@@ -143,6 +149,7 @@ export async function prepareConsumer(): Promise<{
     )
 
     await consumerCommand(directory, ['install', '--ignore-scripts', '--prefer-offline'])
+
     for (const input of inputs.packages) {
       const installed: { name: string; version: string } = JSON.parse(
         await readFile(join(directory, 'node_modules', input.name, 'package.json'), 'utf8'),
@@ -159,6 +166,7 @@ export async function prepareConsumer(): Promise<{
     }
   } catch (cause) {
     await rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 })
+
     throw cause
   }
 }

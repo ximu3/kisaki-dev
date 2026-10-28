@@ -11,15 +11,18 @@ import { join } from 'node:path'
 import { consumerCommand, prepareConsumer } from '../support/consumer'
 
 let consumer: Awaited<ReturnType<typeof prepareConsumer>>
+
 beforeAll(async () => {
   consumer = await prepareConsumer()
 })
+
 afterAll(async () => {
   await consumer?.close()
 })
 
 test('strict TypeScript and ordinary Node consume the supplied public entries outside the repository', async () => {
   await consumerCommand(consumer.directory, ['run', 'typecheck'])
+
   expect(await consumerCommand(consumer.directory, ['run', 'test:node'])).toContain(
     'consumer-ready',
   )
@@ -31,6 +34,7 @@ test('strict TypeScript and ordinary Node consume the supplied public entries ou
 
 test('framework-independent and Solid pages consume built styles without a Tailwind toolchain', async () => {
   await consumerCommand(consumer.directory, ['run', 'build'])
+
   const server = await preview({
     root: consumer.directory,
     configFile: false,
@@ -42,12 +46,15 @@ test('framework-independent and Solid pages consume built styles without a Tailw
       const page = await browser.newPage()
       const url = server.resolvedUrls?.local[0]
       if (!url) throw new Error('Consumer preview has no listening address')
+
       await page.goto(new URL('webview/index.html', url).href)
       expect(await page.locator('h1').textContent()).toBe('Framework-independent consumer')
+
       const themes = await page.evaluate(() => {
         const root = document.documentElement
         const expected: { light: Record<string, string>; dark: Record<string, string> } =
           JSON.parse(root.dataset.tokens!)
+
         const probe = document.createElement('span')
         document.body.append(probe)
 
@@ -61,6 +68,7 @@ test('framework-independent and Solid pages consume built styles without a Tailw
             (name) => style.getPropertyValue(name).trim() === '',
           )
           const names = ['--background', '--foreground', '--primary', '--primary-foreground']
+
           return {
             missing,
             colors: names.map((name) => color(`var(${name})`)),
@@ -70,9 +78,12 @@ test('framework-independent and Solid pages consume built styles without a Tailw
 
         // The consumer's CSS optimizer may rewrite equivalent color syntax.
         const light = read(expected.light)
+
         root.dataset.colorScheme = 'dark'
         const dark = read(expected.dark)
+
         probe.remove()
+
         return { light, dark }
       })
       expect(themes.light.missing).toEqual([])
@@ -83,6 +94,7 @@ test('framework-independent and Solid pages consume built styles without a Tailw
       await page.goto(new URL('solid/index.html', url).href)
       await page.getByRole('button', { name: 'Count 0' }).click()
       expect(await page.getByRole('button', { name: 'Count 1' }).count()).toBe(1)
+
       expect(
         await page
           .getByRole('button')

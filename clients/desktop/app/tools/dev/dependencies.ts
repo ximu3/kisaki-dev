@@ -26,6 +26,7 @@ export async function desktopDependencies(signal?: AbortSignal): Promise<Desktop
     ),
   )
   if (!Array.isArray(value)) throw new Error('Desktop dependencies are unavailable')
+
   return Promise.all(
     value.map(async (member: unknown) => {
       if (
@@ -39,6 +40,7 @@ export async function desktopDependencies(signal?: AbortSignal): Promise<Desktop
       ) {
         throw new Error('Invalid desktop workspace dependency')
       }
+
       return { name: member.name, path: await realpath(member.path) }
     }),
   )
@@ -89,6 +91,7 @@ export async function captureDependencies(
     if (!/^@kisaki3\/[a-z0-9-]+$/.test(member.name)) {
       throw new Error('Unexpected desktop workspace dependency')
     }
+
     const manifest = await readFile(join(member.path, 'package.json'))
     manifests.set(member.name, JSON.parse(manifest.toString()))
     content.set(`${member.name}/package.json`, manifest)
@@ -132,6 +135,7 @@ export async function captureDependencies(
         throw new Error('Desktop package exports must be explicit')
       }
     }
+
     packages.set(name, join(root, name))
     entries.set(name, exports)
   }
@@ -170,5 +174,6 @@ export async function captureDependencies(
 
   const snapshot = previous ?? { id, sizeBytes, packages }
   existing.set(id, snapshot)
+
   return snapshot
 }

@@ -45,6 +45,7 @@ test('the actual task graph excludes generated inputs and always executes runtim
     ],
     { cwd: process.cwd(), encoding: 'utf8', windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   )
+
   const plan: { tasks: PlannedTask[] } = JSON.parse(stdout)
   const boundary = plan.tasks.find((task) => task.taskId === '//#check:boundaries')!
   expect(boundary).toBeDefined()
@@ -57,6 +58,7 @@ test('the actual task graph excludes generated inputs and always executes runtim
 
   const desktopPackage = plan.tasks.find((task) => task.taskId === '@kisaki3/desktop#package')!
   expect(desktopPackage.resolvedTaskDefinition.env).toContain('KISAKI_MAC_SIGNING_IDENTITY')
+
   for (const name of ['build', 'dev', 'package', 'test:dev']) {
     const task = plan.tasks.find((task) => task.taskId === `@kisaki3/desktop#${name}`)!
     expect(task.resolvedTaskDefinition.env, name).toContain('MACOSX_DEPLOYMENT_TARGET')
@@ -79,6 +81,7 @@ test('the actual task graph excludes generated inputs and always executes runtim
       /(^|\/)(node_modules|out|dist|\.cache|\.turbo|\.local|target)\//.test(file),
     )
     expect(generated, task.taskId).toEqual([])
+
     if (task.command === '<NONEXISTENT>') continue
     if (liveTasks.has(task.task)) {
       expect(task.resolvedTaskDefinition.cache, task.taskId).toBe(false)
@@ -184,6 +187,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       consumers: true,
     },
   ]
+
   try {
     const members: { path: string }[] = JSON.parse(
       await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
@@ -200,16 +204,20 @@ test('affected tasks follow verification inputs without promoting documentation 
       'config/turbo/verification.graphql',
       ...members.map((member) => join(relative(root, member.path), 'package.json')),
     ])
+
     for (const file of files) {
       await mkdir(dirname(join(directory, file)), { recursive: true })
       await copyFile(join(root, file), join(directory, file))
     }
+
     for (const item of cases) {
       await mkdir(dirname(join(directory, item.path)), { recursive: true })
       await writeFile(join(directory, item.path), 'initial fixture input\n')
     }
+
     await execute('git', ['init', '--initial-branch=main'], options)
     await execute('git', ['add', '.'], options)
+
     const commit = [
       '-c',
       'core.hooksPath=',
@@ -224,6 +232,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       'Fixture input',
     ]
     await execute('git', commit, options)
+
     const variables = join(directory, '.local/verification-refs.json')
     await mkdir(dirname(variables), { recursive: true })
     await writeFile(variables, JSON.stringify({ base: 'HEAD^', head: 'HEAD' }))
@@ -240,6 +249,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       await writeFile(join(directory, item.path), 'changed fixture input\n')
       await execute('git', ['add', item.path], options)
       await execute('git', commit, options)
+
       const { stdout } = await execute(
         process.execPath,
         [
@@ -251,6 +261,7 @@ test('affected tasks follow verification inputs without promoting documentation 
         ],
         options,
       )
+
       const report: {
         errors?: unknown[]
         data: {
@@ -266,6 +277,7 @@ test('affected tasks follow verification inputs without promoting documentation 
         }
       } = JSON.parse(stdout)
       expect(report.errors, item.path).toBeUndefined()
+
       const tasks = report.data.affectedTasks.items.filter((task) => task.command !== null)
       const desktop = tasks
         .filter(
@@ -276,11 +288,13 @@ test('affected tasks follow verification inputs without promoting documentation 
         .map((task) => task.name)
         .sort()
       expect(desktop, item.path).toEqual(item.desktop)
+
       if (item.packageTest) {
         expect(
           tasks.some((task) => task.fullName === item.packageTest),
           item.path,
         ).toBe(true)
+
         const { stdout: lintOutput } = await execute(
           process.execPath,
           [
@@ -292,6 +306,7 @@ test('affected tasks follow verification inputs without promoting documentation 
           ],
           options,
         )
+
         const lintReport: typeof report = JSON.parse(lintOutput)
         expect(lintReport.errors).toBeUndefined()
         expect(
@@ -301,6 +316,7 @@ test('affected tasks follow verification inputs without promoting documentation 
           item.path,
         ).toEqual([item.packageTest.replace('#test', '#lint')])
       }
+
       if (item.path.includes('/src/renderer/')) {
         // Unchanged build prerequisites remain in the plan without selecting other desktop suites.
         expect(
@@ -314,6 +330,7 @@ test('affected tasks follow verification inputs without promoting documentation 
           ),
         ).toBe(false)
       }
+
       expect(
         tasks.some(
           (task) =>
@@ -343,6 +360,7 @@ test('affected tasks follow verification inputs without promoting documentation 
           ],
           { ...options, env: { ...process.env, TURBO_SCM_BASE: 'HEAD^', TURBO_SCM_HEAD: 'HEAD' } },
         )
+
         const plan: { tasks: PlannedTask[] } = JSON.parse(dryRun)
         expect(
           plan.tasks
@@ -359,6 +377,7 @@ test('affected tasks follow verification inputs without promoting documentation 
     await writeFile(join(directory, '.node-version'), 'changed toolchain input\n')
     await execute('git', ['add', '.node-version'], options)
     await execute('git', commit, options)
+
     const { stdout } = await execute(
       process.execPath,
       [
@@ -370,6 +389,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       ],
       options,
     )
+
     const complete: { data: { affectedTasks: { items: { reason: { __typename: string } }[] } } } =
       JSON.parse(stdout)
     expect([

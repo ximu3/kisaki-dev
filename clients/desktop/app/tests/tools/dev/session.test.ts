@@ -13,7 +13,7 @@ import { prepareDevelopmentWorkspace } from '../../support/development-workspace
 import {
   developmentStartupTimeoutMs,
   startDevelopmentController,
-} from '../../support/development-session'
+} from '../../support/development-controller'
 
 let workspace: Awaited<ReturnType<typeof prepareDevelopmentWorkspace>>
 
@@ -42,6 +42,7 @@ app.once('browser-window-created', (_event, window) => {
 })
 `,
   )
+
   const controller = startDevelopmentController(workspace.app)
   try {
     await expect
@@ -49,6 +50,7 @@ app.once('browser-window-created', (_event, window) => {
         timeout: developmentStartupTimeoutMs,
       })
       .toBe(true)
+
     const first = controller.states.find((state) => state.state === 'ready')!
     expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
     if (process.platform === 'win32') {
@@ -66,6 +68,7 @@ app.once('browser-window-created', (_event, window) => {
       .poll(() => controller.states.some((state) => state.state === 'cancelled'))
       .toBe(true)
     expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
+
     const hostPids: number[] = JSON.parse(
       await readFile(join(workspace.app, '.local/development/cancelled-hosts.json'), 'utf8'),
     )
@@ -74,7 +77,9 @@ app.once('browser-window-created', (_event, window) => {
 
     const marker = join(workspace.app, '.local/development/retained.txt')
     await writeFile(marker, 'synthetic retained development state')
+
     await closeNativeWindow(first.current!.processId)
+
     expect(await controller.closed, controller.diagnostics()).toBe(0)
     expect(await readFile(marker, 'utf8')).toBe('synthetic retained development state')
     expect(() => process.kill(first.current!.processId, 0)).toThrow()
@@ -94,6 +99,7 @@ test('a failed runtime build retains the old process and a renamed source hands 
     entry,
     `${original}\nvoid import('./app/development-fixture').then((module) => console.info(module.value))\n`,
   )
+
   const controller = startDevelopmentController(workspace.app)
   try {
     await expect
@@ -101,8 +107,10 @@ test('a failed runtime build retains the old process and a renamed source hands 
         timeout: developmentStartupTimeoutMs,
       })
       .toBe(true)
+
     const good = controller.states.find((state) => state.state === 'ready')!
     await writeFile(helper, 'export const value =\n')
+
     await expect
       .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
       .toBe(true)
@@ -115,6 +123,7 @@ test('a failed runtime build retains the old process and a renamed source hands 
       entry,
       `${original}\nvoid import('./app/renamed-fixture').then((module) => console.info(module.value))\n`,
     )
+
     await expect
       .poll(
         () =>
@@ -141,6 +150,7 @@ test('public-package recovery retains a usable session and renderer-only updates
   const originals = await Promise.all(
     [styles, configuration, button].map((path) => readFile(path, 'utf8')),
   )
+
   const controller = startDevelopmentController(workspace.app)
   let browser: Browser | undefined
   try {
@@ -150,6 +160,7 @@ test('public-package recovery retains a usable session and renderer-only updates
         timeout: developmentStartupTimeoutMs,
       })
       .toBe(true)
+
     const first = controller.states.find((state) => state.state === 'ready')!
     const page = await browser.newPage()
     // Chromium observes HMR; the concurrent Electron process supplies the actual desktop lifecycle.
@@ -160,19 +171,24 @@ test('public-package recovery retains a usable session and renderer-only updates
     })
     await page.goto(new URL('main/index.html', first.rendererUrl!).href)
     await page.getByRole('button', { name: 'Close window' }).waitFor()
+
     await writeFile(styles, `${originals[0]}\n.window-shell { padding: 73px; }\n`)
+
     await expect
       .poll(() => page.locator('main').evaluate((element) => getComputedStyle(element).paddingLeft))
       .toBe('73px')
 
     await writeFile(configuration, '{')
+
     await expect
       .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
       .toBe(true)
     expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
     expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
+
     const readyBeforeRepair = controller.states.filter((state) => state.state === 'ready').length
     await writeFile(configuration, originals[1]!)
+
     await expect
       .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
         timeout: 60_000,
@@ -182,6 +198,7 @@ test('public-package recovery retains a usable session and renderer-only updates
 
     const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
     await writeFile(button, originals[2]!.replace('<button', '<button data-fixture="updated"'))
+
     await expect
       .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
         timeout: 60_000,

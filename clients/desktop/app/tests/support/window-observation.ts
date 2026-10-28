@@ -15,8 +15,10 @@ async function runWindowCommand(
   signal?: AbortSignal,
 ): Promise<string> {
   signal?.throwIfAborted()
+
   const result = execute(command, args, { windowsHide: true, encoding: 'utf8', signal })
   const closed = new Promise<void>((resolve) => result.child.once('close', () => resolve()))
+
   try {
     return (await result).stdout
   } finally {
@@ -38,8 +40,10 @@ export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promis
       ],
       signal,
     )
+
     return Number(stdout.trim()) > 0
   }
+
   if (process.platform === 'darwin') {
     const stdout = await runWindowCommand(
       'osascript',
@@ -49,14 +53,18 @@ export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promis
       ],
       signal,
     )
+
     return Number(stdout.trim()) > 0
   }
+
   if (process.env.XDG_SESSION_TYPE === 'wayland') {
     throw new Error(
       'Use the documented native Wayland observation procedure; X11 observation is not a substitute',
     )
   }
+
   const stdout = await runWindowCommand('wmctrl', ['-lp'], signal)
+
   return stdout.split('\n').some((line) => Number(line.trim().split(/\s+/)[2]) === pid)
 }
 
@@ -92,6 +100,7 @@ export async function closeNativeWindow(pid: number, signal?: AbortSignal): Prom
     if (!id || !/^0x[0-9a-f]+$/i.test(id)) {
       throw new Error('The packaged window is no longer available')
     }
+
     await runWindowCommand('wmctrl', ['-ic', id], signal)
   }
 }

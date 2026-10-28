@@ -10,6 +10,7 @@
 
 .kisaki-button {
   @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2;
+
   appearance: none;
   border: 1px solid var(--border);
   background: var(--primary);

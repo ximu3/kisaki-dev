@@ -11,7 +11,7 @@ import { prepareDevelopmentWorkspace } from '../../support/development-workspace
 import {
   developmentStartupTimeoutMs,
   startDevelopmentController,
-} from '../../support/development-session'
+} from '../../support/development-controller'
 
 test('cancelling initial dependency preparation closes its command and permits a complete retry', async () => {
   const workspace = await prepareDevelopmentWorkspace()
@@ -23,6 +23,7 @@ test('cancelling initial dependency preparation closes its command and permits a
     const manifest: { scripts: Record<string, string> } = JSON.parse(original)
     manifest.scripts.build = 'tsx ../../app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
+
     first = startDevelopmentController(workspace.app)
     const sessions = join(workspace.app, 'out', 'development', hostTarget())
     let preparation: { pid: number } | undefined
@@ -36,17 +37,20 @@ test('cancelling initial dependency preparation closes its command and permits a
             return true
           } catch (cause) {
             if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+
             return false
           }
         },
         { timeout: 60_000 },
       )
       .toBe(true)
+
     first.process.send({ type: 'stop' })
     expect(await first.closed, first.diagnostics()).toBe(0)
     expect(first.states.some((state) => state.state === 'ready')).toBe(false)
     expect(await readdir(sessions)).toEqual([])
     expect(preparation).toBeDefined()
+
     await expect
       .poll(() => {
         try {
@@ -54,6 +58,7 @@ test('cancelling initial dependency preparation closes its command and permits a
           return true
         } catch (cause) {
           if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+
           return false
         }
       })
@@ -66,14 +71,17 @@ test('cancelling initial dependency preparation closes its command and permits a
         timeout: developmentStartupTimeoutMs,
       })
       .toBe(true)
+
     retry.process.send({ type: 'stop' })
     expect(await retry.closed, retry.diagnostics()).toBe(0)
     expect(await readdir(sessions)).toEqual([])
   } finally {
     for (const item of [first, retry]) {
       if (!item) continue
+
       await item.close()
     }
+
     await workspace.close()
   }
 })

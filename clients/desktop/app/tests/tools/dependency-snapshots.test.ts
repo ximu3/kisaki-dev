@@ -37,6 +37,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
     await writeFile(join(packageRoot, 'dist/browser.js'), "export const value = 'browser'\n")
     await writeFile(join(packageRoot, 'dist/node.js'), "export const value = 'node'\n")
     await writeFile(join(packageRoot, 'dist/styles.css'), ':root { --fixture: 1 }\n')
+
     const members = [{ name, path: packageRoot }]
     const snapshots = new Map<string, DependencySnapshot>()
     renderer = await startRenderer(members, snapshotsRoot)
@@ -48,11 +49,13 @@ test('Vite resolves complete snapshots and preserves the active generation after
       renderer.resolveDependency,
     )
     await renderer.adopt(first)
+
     const firstPackage = first.packages.get(name)!
     const initial = await renderer.resolveDependency(name, join(appRoot, 'package.json'))
     expect(resolve(initial!.id.replace(/[?#].*$/, ''))).toBe(
       join(firstPackage, 'dist/development.js'),
     )
+
     const stylesheet = await renderer.resolveDependency(
       `${name}/styles.css?inline`,
       join(appRoot, 'package.json'),
@@ -63,11 +66,13 @@ test('Vite resolves complete snapshots and preserves the active generation after
       join(packageRoot, 'package.json'),
       JSON.stringify({ ...manifest, exports: { '.': './dist/missing.js' } }),
     )
+
     await expect(
       captureDependencies(members, snapshotsRoot, snapshots, renderer.resolveDependency),
     ).rejects.toThrow()
     expect([...snapshots.keys()]).toEqual([first.id])
     expect(await readdir(snapshotsRoot)).toEqual([first.id])
+
     const retained = await renderer.resolveDependency(name, join(appRoot, 'package.json'))
     expect(resolve(retained!.id.replace(/[?#].*$/, ''))).toBe(
       join(firstPackage, 'dist/development.js'),
@@ -75,6 +80,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
 
     await writeFile(join(packageRoot, 'package.json'), JSON.stringify(manifest))
     await writeFile(join(packageRoot, 'dist/development.js'), "export const value = 'second'\n")
+
     const second = await captureDependencies(
       members,
       snapshotsRoot,
@@ -82,10 +88,12 @@ test('Vite resolves complete snapshots and preserves the active generation after
       renderer.resolveDependency,
     )
     await renderer.adopt(second)
+
     const adopted = await renderer.resolveDependency(name, join(appRoot, 'package.json'))
     expect(resolve(adopted!.id.replace(/[?#].*$/, ''))).toBe(
       join(second.packages.get(name)!, 'dist/development.js'),
     )
+
     const previousImport = await renderer.resolveDependency(
       name,
       join(firstPackage, 'dist/development.js'),

@@ -20,11 +20,14 @@ export async function buildPackage(signal?: AbortSignal): Promise<void> {
     'dist',
     async (candidate) => {
       await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
+
       const defaults: typeof DefaultTokens = await import(
         pathToFileURL(join(candidate, 'index.js')).href
       )
+
       const light = cssTokens(':root', defaults.defaultLightTokens)
       const dark = cssTokens(":root[data-color-scheme='dark']", defaults.defaultDarkTokens)
+
       await writeFile(join(candidate, 'styles.css'), light + '\n\n' + dark + '\n')
     },
     signal,

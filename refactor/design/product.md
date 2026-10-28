@@ -8,7 +8,7 @@ Kisaki 是面向 ACGN 收藏、使用与记忆的本地资料库。它帮助用�
 
 <a id="judgment"></a>
 
-先确认完整的用户目标和实际问题，再比较实现方式。[终态实现与整体一致性](engineering/conventions.md#final-state)首先约束体验、架构、实现与说明；[简洁与原生](engineering/conventions.md#simplicity-native)共同参与取舍。设计依据是已确认的交付目标、受支持的使用场景和有依据的技术约束。
+先确认完整的用户目标和实际问题，再比较实现方式。[终态实现与整体一致性](engineering/conventions.md#final-state)首先约束体验、架构、实现与说明；[可读性](engineering/conventions.md#readability-principle)要求概念、组织和表达能够被清楚理解，[简洁与原生](engineering/conventions.md#simplicity-native)共同参与取舍。设计依据是已确认的交付目标、受支持的使用场景和有依据的技术约束。
 
 设计按以下顺序判断：
 

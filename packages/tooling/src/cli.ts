@@ -9,15 +9,19 @@ import { CommandFailed } from './process'
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
   const controller = new AbortController()
   let cancelledCode = 130
+
   const interrupt = () => controller.abort(new Error('Operation interrupted'))
   const terminate = () => {
     cancelledCode = 143
     controller.abort(new Error('Operation terminated'))
   }
+
   process.once('SIGINT', interrupt)
   process.once('SIGTERM', terminate)
+
   try {
     await action(controller.signal)
+
     if (controller.signal.aborted) process.exitCode = cancelledCode
   } catch (cause) {
     if (controller.signal.aborted) {

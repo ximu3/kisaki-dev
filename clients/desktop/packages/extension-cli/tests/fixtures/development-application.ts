@@ -9,8 +9,10 @@ import {
 } from '@kisaki3/desktop-contracts/development'
 
 let requests = 0
+
 process.on('message', (value: unknown) => {
   const message = parseDevelopmentCommand(value)
+
   if (message.type === 'initialize') {
     process.send?.({
       type: 'ready',

@@ -16,6 +16,7 @@ export async function checkDeclarations(
     await writeFile(sourcePath, generated)
     return
   }
+
   const source = (await readFile(sourcePath, 'utf8')).replaceAll('\r\n', '\n')
   if (source !== generated) {
     throw new Error('Native declarations changed; regenerate and review native/node/binding.d.ts')

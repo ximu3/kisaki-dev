@@ -4,7 +4,7 @@
 
 <a id="scope"></a>
 
-## 两个项目各自独立
+## 项目边界与源码结构
 
 Vantage 与 libmpv-node 分别维护自己的 Git 仓库、pnpm 与 Cargo 锁文件、测试、说明、版本和发行。对外入口分别是 @ximu3/vantage 与 @ximu3/libmpv-node，Rust 承担原生实现，Node 是明确承诺的公共消费环境。内部 Cargo crate 不另行发布为需要独立维护版本的 Rust 产品。
 
@@ -22,9 +22,7 @@ Vantage 与 libmpv-node 分别维护自己的 Git 仓库、pnpm 与 Cargo 锁文
     docs/                 公共合同、平台接入与发行维护说明
     release-notes/        本项目各版本的英语说明及按需译文
 
-这是按运行边界划分的两项内部 crate：core 不持有 napi_env、JavaScript 对象或 Node 回调，binding 不重新维护另一份进程、窗口或播放器状态。Rust 测试能够直接验证核心规则，Node 集成测试再验证真实边界和声明。单一功能在某一层即可完成时，不在其他层建立同义包装。
-
-两个库各自通过 core 与 binding 两项 crate 分离需要独立测试的系统、线程与资源规则，以及 Node 接入。依赖方向为 binding → core，crate 内部按实际职责组合模块。
+两个内部 crate 按运行边界划分，依赖方向为 binding → core。core 拥有系统、线程与资源规则，不持有 napi_env、JavaScript 对象或 Node 回调；binding 负责 Node 接入，不重新维护另一份进程、窗口或播放器状态。Rust 测试直接验证核心规则，Node 集成测试验证真实边界和声明。crate 内部按实际职责组合模块；单一功能在某一层即可完成时，不在其他层建立同义包装。
 
 Node 主包由根 package.json 定义，优先使用 napi-rs 生成原生加载入口与声明，放入明确的运行输出。src 保存公共 API 确需的 JavaScript 适配；binding 已能直接提供全部能力时，发布生成入口即可。存在 index.ts 时，只列出实际公开导出。声明以真实导出为依据生成和检查；类型消费独立于二进制加载与图形初始化。
 

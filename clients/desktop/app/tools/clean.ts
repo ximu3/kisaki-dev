@@ -13,6 +13,7 @@ import { runCli } from '@kisaki3/tooling/cli'
 export async function cleanOutputs(signal?: AbortSignal): Promise<void> {
   for (const name of ['out', 'dist']) {
     signal?.throwIfAborted()
+
     await rm(join(appRoot, name), { recursive: true, force: true })
   }
 }

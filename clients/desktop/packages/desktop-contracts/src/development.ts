@@ -70,7 +70,7 @@ export type DevelopmentEvent =
   | { type: 'failed'; error: ErrorSummary }
 
 /** Require a JSON record with exactly the fields defined by its message branch. */
-function record<const Keys extends readonly string[]>(
+function assertRecordFields<const Keys extends readonly string[]>(
   value: unknown,
   keys: Keys,
 ): asserts value is Record<Keys[number], unknown> {
@@ -85,29 +85,30 @@ function record<const Keys extends readonly string[]>(
   }
 }
 
-function text(value: unknown): asserts value is string {
+function assertNonemptyText(value: unknown): asserts value is string {
   if (typeof value !== 'string' || value.length === 0) throw new Error('Invalid development text')
 }
 
-function integer(value: unknown): void {
+function validatePositiveInteger(value: unknown): void {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1) {
     throw new Error('Invalid development integer')
   }
 }
 
-function error(value: unknown): void {
-  record(value, ['code', 'message'])
-  text(value.code)
-  text(value.message)
+function validateErrorSummary(value: unknown): void {
+  assertRecordFields(value, ['code', 'message'])
+  assertNonemptyText(value.code)
+  assertNonemptyText(value.message)
 }
 
-function reference(value: Record<string, unknown>): void {
-  text(value.extensionId)
-  integer(value.buildId)
+function validateBuildReference(value: Record<string, unknown>): void {
+  assertNonemptyText(value.extensionId)
+  validatePositiveInteger(value.buildId)
 }
 
-function array(value: unknown, check: (item: unknown) => void): asserts value is unknown[] {
+function assertArray(value: unknown, check: (item: unknown) => void): asserts value is unknown[] {
   if (!Array.isArray(value)) throw new Error('Invalid development list')
+
   value.forEach(check)
 }
 
@@ -116,36 +117,42 @@ export function parseDevelopmentCommand(value: unknown): DevelopmentCommand {
   if (!value || typeof value !== 'object' || !('type' in value)) {
     throw new Error('Invalid development command')
   }
+
   switch (value.type) {
     case 'initialize':
-      record(value, ['type', 'protocolVersion'])
-      integer(value.protocolVersion)
+      assertRecordFields(value, ['type', 'protocolVersion'])
+      validatePositiveInteger(value.protocolVersion)
       break
     case 'stop':
-      record(value, ['type'])
+      assertRecordFields(value, ['type'])
       break
     case 'buildsReady': {
-      record(value, ['type', 'builds'])
+      assertRecordFields(value, ['type', 'builds'])
+
       const ids = new Set<string>()
-      array(value.builds, (build) => {
-        record(build, ['extensionId', 'buildId', 'rootPath', 'webviews'])
-        reference(build)
-        text(build.rootPath)
-        text(build.extensionId)
+      assertArray(value.builds, (build) => {
+        assertRecordFields(build, ['extensionId', 'buildId', 'rootPath', 'webviews'])
+        validateBuildReference(build)
+        assertNonemptyText(build.rootPath)
+        assertNonemptyText(build.extensionId)
         if (ids.has(build.extensionId)) throw new Error('Duplicate development extension')
+
         ids.add(build.extensionId)
-        array(build.webviews, (view) => {
-          record(view, ['document', 'url'])
-          text(view.document)
-          text(view.url)
+
+        assertArray(build.webviews, (view) => {
+          assertRecordFields(view, ['document', 'url'])
+          assertNonemptyText(view.document)
+          assertNonemptyText(view.url)
         })
       })
+
       if (!value.builds.length) throw new Error('Empty development build batch')
       break
     }
     default:
       throw new Error('Unknown development command')
   }
+
   return value as DevelopmentCommand
 }
 
@@ -154,80 +161,86 @@ export function parseDevelopmentEvent(value: unknown): DevelopmentEvent {
   if (!value || typeof value !== 'object' || !('type' in value)) {
     throw new Error('Invalid development event')
   }
+
   switch (value.type) {
     case 'ready':
-      record(value, ['type', 'protocolVersion', 'appVersion', 'apiVersion', 'buildId'])
-      integer(value.protocolVersion)
-      text(value.appVersion)
-      if (value.apiVersion !== null) text(value.apiVersion)
-      text(value.buildId)
+      assertRecordFields(value, ['type', 'protocolVersion', 'appVersion', 'apiVersion', 'buildId'])
+      validatePositiveInteger(value.protocolVersion)
+      assertNonemptyText(value.appVersion)
+      if (value.apiVersion !== null) assertNonemptyText(value.apiVersion)
+      assertNonemptyText(value.buildId)
       break
     case 'failed':
-      record(value, ['type', 'error'])
-      error(value.error)
+      assertRecordFields(value, ['type', 'error'])
+      validateErrorSummary(value.error)
       break
     case 'stopResult':
       if ('outcome' in value && value.outcome === 'failed') {
-        record(value, ['type', 'outcome', 'error'])
-        error(value.error)
+        assertRecordFields(value, ['type', 'outcome', 'error'])
+        validateErrorSummary(value.error)
       } else {
-        record(value, ['type', 'outcome'])
+        assertRecordFields(value, ['type', 'outcome'])
         if (!['cancelled', 'exiting'].includes(value.outcome as string)) {
           throw new Error('Invalid development stop outcome')
         }
       }
       break
     case 'buildsReleased':
-      record(value, ['type', 'builds'])
-      array(value.builds, (build) => {
-        record(build, ['extensionId', 'buildId'])
-        reference(build)
+      assertRecordFields(value, ['type', 'builds'])
+      assertArray(value.builds, (build) => {
+        assertRecordFields(build, ['extensionId', 'buildId'])
+        validateBuildReference(build)
       })
       break
     case 'adoptionResult':
       if ('outcome' in value && value.outcome === 'interrupted') {
-        record(value, ['type', 'builds', 'activations', 'outcome', 'error'])
-        error(value.error)
+        assertRecordFields(value, ['type', 'builds', 'activations', 'outcome', 'error'])
+        validateErrorSummary(value.error)
       } else {
-        record(value, ['type', 'builds', 'activations', 'outcome'])
+        assertRecordFields(value, ['type', 'builds', 'activations', 'outcome'])
         if (value.outcome !== 'completed') throw new Error('Invalid development adoption outcome')
       }
-      array(value.builds, (build) => {
+
+      assertArray(value.builds, (build) => {
         if (
           build &&
           typeof build === 'object' &&
           'outcome' in build &&
           build.outcome === 'notAdopted'
         ) {
-          record(build, ['extensionId', 'buildId', 'outcome', 'error'])
-          error(build.error)
+          assertRecordFields(build, ['extensionId', 'buildId', 'outcome', 'error'])
+          validateErrorSummary(build.error)
         } else {
-          record(build, ['extensionId', 'buildId', 'outcome'])
+          assertRecordFields(build, ['extensionId', 'buildId', 'outcome'])
           if (build.outcome !== 'adopted') throw new Error('Invalid development build outcome')
         }
-        reference(build)
+
+        validateBuildReference(build)
       })
-      array(value.activations, (activation) => {
+
+      assertArray(value.activations, (activation) => {
         if (
           activation &&
           typeof activation === 'object' &&
           'outcome' in activation &&
           activation.outcome === 'failed'
         ) {
-          record(activation, ['extensionId', 'outcome', 'error'])
-          error(activation.error)
+          assertRecordFields(activation, ['extensionId', 'outcome', 'error'])
+          validateErrorSummary(activation.error)
         } else {
-          record(activation, ['extensionId', 'instanceId', 'outcome'])
+          assertRecordFields(activation, ['extensionId', 'instanceId', 'outcome'])
           if (activation.outcome !== 'activated') {
             throw new Error('Invalid development activation outcome')
           }
-          text(activation.instanceId)
+          assertNonemptyText(activation.instanceId)
         }
-        text(activation.extensionId)
+
+        assertNonemptyText(activation.extensionId)
       })
       break
     default:
       throw new Error('Unknown development event')
   }
+
   return value as DevelopmentEvent
 }

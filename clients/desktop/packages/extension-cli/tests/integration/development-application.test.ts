@@ -26,10 +26,12 @@ test('shares a pending stop, preserves a cancelled connection and observes exit 
   })
   try {
     expect(application.ready.apiVersion).toBeNull()
+
     const stop = application.stop()
     expect(application.stop()).toBe(stop)
     expect(await stop).toBe('cancelled')
     expect(() => process.kill(application.pid, 0)).not.toThrow()
+
     expect(await application.stop()).toBe('exited')
     expect(await application.exited).toEqual({ code: 0, signal: null })
   } finally {

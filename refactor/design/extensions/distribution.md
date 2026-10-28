@@ -192,9 +192,13 @@ applyUpdates 接收明确的准备值，并与宿主实际持有的内容核对�
 
 ## 管理投影与结果值
 
+### 安装与运行状态
+
 安装摘要固定包含 id、version、enabled、updateRepositoryId、allowPrerelease 和 preparedUpdate；详情另行提供能够取得的 manifest。packageState 为 available、missing 或 invalid，invalid 附带 ErrorSummary，没有包时不制造 manifest。compatibility 为 compatible、incompatible 或 unavailable。incompatible 列出实际不满足的平台、API、Node 或 Electron 条件；缺少有效声明时为 unavailable，不能判断为兼容。
 
 activation 为 { status: inactive | activating | active | deactivating }，或 { status: failed, error }。共享 runtime 的 status 为 stopped、starting、running、stopping 或 failed，失败时附安全 error。两层都提供当前快照和 observe，不能遗漏初次读取与订阅之间的变化。界面可以同时显示正在运行 1.4 和已经准备 1.5，不能压成一个互斥总状态。provider 的业务失败不会改变 activation 或 enabled。
+
+### 制品来源与操作结果
 
 ExtensionPackageSource 为 { type: repository, repositoryId, extensionId, version, sha256 } 或 { type: file, path }。仓库来源从已验证目录选择唯一目标制品；文件来源通过本体选择，Webview 不能任意提交主机路径。PreparedExtensionUpdate 固定 extensionId、version、sha256、targets 和 source。仓库来源保留声明与信任依据，调用者回传的值不能绕过哈希、信任或目标核对。
 

@@ -36,6 +36,7 @@ beforeEach(async () => {
       packageManager: manifest.packageManager,
     }),
   )
+
   await writeInput(
     `${applicationPath}/package.json`,
     JSON.stringify({
@@ -45,6 +46,7 @@ beforeEach(async () => {
       dependencies: { '@kisaki3/identity-fixture': 'workspace:*' },
     }),
   )
+
   await writeInput(
     `${packagePath}/package.json`,
     JSON.stringify({
@@ -53,6 +55,7 @@ beforeEach(async () => {
       scripts: { build: 'node build.js' },
     }),
   )
+
   for (const file of [
     'turbo.json',
     'pnpm-workspace.yaml',
@@ -66,6 +69,7 @@ beforeEach(async () => {
     join(repositoryRoot, applicationPath, 'turbo.json'),
     join(root, applicationPath, 'turbo.json'),
   )
+
   await writeInput(`${applicationPath}/src/main/entry.ts`, 'export const value = 1\n')
   await writeInput(`${applicationPath}/config/vite/vite.config.main.ts`, 'export default {}\n')
   await writeInput(`${packagePath}/src/index.ts`, 'export const value = 1\n')
@@ -76,6 +80,7 @@ beforeEach(async () => {
 
   // The real package manager records the local dependency edge; no tools are installed here.
   await readPnpm(['install', '--lockfile-only', '--offline', '--ignore-scripts'], root)
+
   await run('git', ['init', '--quiet'], { cwd: root })
   await run('git', ['config', 'core.autocrlf', 'false'], { cwd: root })
   await run('git', ['add', '.'], { cwd: root })
@@ -106,6 +111,7 @@ afterEach(async () => {
 test('production source, compiler configuration and global inputs change the build identity', async () => {
   const baseline = await buildInputIdentity({ root })
   expect(baseline).toMatch(/\S/)
+
   const changes: readonly (readonly [string, string])[] = [
     [`${applicationPath}/src/main/entry.ts`, 'export const value = 2\n'],
     [
@@ -170,6 +176,7 @@ test('generated output stays outside input identity while runtime bytes retain t
   }
 
   expect(await buildInputIdentity({ root })).toBe(baseline)
+
   const current = await runtimeFiles(runtime)
   expect(Object.keys(current)).toEqual(['main/entry.js'])
   expect(current['main/entry.js']).not.toBe(previous['main/entry.js'])

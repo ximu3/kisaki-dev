@@ -35,11 +35,13 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
 
     if (process.platform === 'win32') {
       await extractZip(archivePath, { dir: directory })
+
       executablePath = join(directory, 'Kisaki.exe')
       resourceDirectory = join(directory, 'resources')
       fusePath = executablePath
     } else if (process.platform === 'darwin') {
       await promisify(execFile)('ditto', ['-x', '-k', archivePath, directory])
+
       const application = join(directory, 'Kisaki.app')
       executablePath = join(application, 'Contents', 'MacOS', 'Kisaki')
       resourceDirectory = join(application, 'Contents', 'Resources')
@@ -49,6 +51,7 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       await copyFile(archivePath, executablePath)
       await promisify(execFile)('chmod', ['+x', executablePath])
       await promisify(execFile)(executablePath, ['--appimage-extract'], { cwd: directory })
+
       resourceDirectory = join(directory, 'squashfs-root', 'resources')
       fusePath = join(directory, 'squashfs-root', 'kisaki')
     }
@@ -66,6 +69,7 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
     }
   } catch (cause) {
     await rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
+
     throw cause
   }
 }

@@ -7,6 +7,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
+
   --radius-sm: max(0px, calc(var(--radius) - 2px));
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) * 1.5);

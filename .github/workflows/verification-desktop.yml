@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |-
           mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+          pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Select checks
         id: affected
         shell: bash
@@ -94,7 +94,15 @@ jobs:
             complete=true
           fi
           if [[ "$complete" == false ]]; then
-            orchestration=$(git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- .github/workflows/ci.yml .github/workflows/verification.yml .github/workflows/verification-desktop.yml config/turbo/verification.graphql)
+            orchestration=$(
+              git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- \
+                .github/workflows/ci.yml \
+                .github/workflows/verification.yml \
+                .github/workflows/verification-desktop.yml \
+                config/turbo/verification.graphql \
+                tools/host-environment.ts \
+                clients/desktop/app/tests/support/build-reuse.ts
+            )
             if [[ -n "$orchestration" ]]; then complete=true; fi
           fi
           mkdir -p test-results/verification
@@ -104,39 +112,58 @@ jobs:
             pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"
             jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null
             # Required build prerequisites also use TaskAllChanged; they do not expand verification.
-            if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then
+            if jq -e '
+              any(.data.affectedTasks.items[];
+                .reason.__typename == "TaskGlobalFileChanged" or
+                .reason.__typename == "TaskGlobalDepsChanged")
+            ' "$report" > /dev/null; then
               complete=true
             fi
           else
             jq -n '{complete: true}' > "$report"
           fi
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
-          platform=false
+          requiresAllTargets=false
           browser=false
           for task in native browser e2e dev performance artifacts; do
             selected="$complete"
             if [[ "$complete" == false ]]; then
-              selected=$(jq -r --arg task "test:$task" 'any(.data.affectedTasks.items[]; .command != null and .package.name == "@kisaki3/desktop" and (.name == $task or ($task == "test:artifacts" and .name == "package")))' "$report")
+              selected=$(jq -r --arg task "test:$task" '
+                any(.data.affectedTasks.items[];
+                  .command != null and
+                  .package.name == "@kisaki3/desktop" and
+                  (.name == $task or
+                    ($task == "test:artifacts" and .name == "package")))
+              ' "$report")
             fi
             echo "$task=$selected" >> "$GITHUB_OUTPUT"
             if [[ "$task" == browser ]]; then
               browser="$selected"
             elif [[ "$selected" == true ]]; then
-              platform=true
+              requiresAllTargets=true
             fi
           done
           consumers="$complete"
           if [[ "$complete" == false ]]; then
-            consumers=$(jq -r 'any(.data.affectedTasks.items[]; .command != null and (.fullName == "//#desktop:packages:test:consumers:prepared" or (.name == "check:package" and (.package.path | startswith("clients/desktop/packages/")))))' "$report")
+            consumers=$(jq -r '
+              any(.data.affectedTasks.items[];
+                .command != null and
+                (.fullName == "//#desktop:packages:test:consumers:prepared" or
+                  (.name == "check:package" and
+                    (.package.path | startswith("clients/desktop/packages/")))))
+            ' "$report")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           tooling="$complete"
           if [[ "$complete" == false ]]; then
-            tooling=$(jq -r 'any(.data.affectedTasks.items[]; .fullName == "@kisaki3/tooling#test" and .command != null)' "$report")
+            tooling=$(jq -r '
+              any(.data.affectedTasks.items[];
+                .fullName == "@kisaki3/tooling#test" and .command != null)
+            ' "$report")
           fi
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
-          if [[ "$tooling" == true ]]; then platform=true; fi
-          if [[ "$platform" == true ]]; then
+          if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
+          if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
             selected=true
           elif [[ "$browser" == true || "$consumers" == true ]]; then
@@ -204,7 +231,7 @@ jobs:
         shell: bash
         run: |-
           mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+          pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Install Linux desktop tools
         if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
@@ -233,7 +260,7 @@ jobs:
         if: needs.select.outputs.artifacts == 'true'
         shell: bash
         run: |
-          node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const bytes=fs.readFileSync(path);fs.writeFileSync('test-results/verification/tested-build.json',JSON.stringify({buildId:JSON.parse(bytes).buildId,manifestSha256:crypto.createHash('sha256').update(bytes).digest('hex'),mtimeMs:fs.statSync(path).mtimeMs},null,2))"
+          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts record --target "$DESKTOP_TARGET"
       - name: Test browser interactions
         if: needs.select.outputs.browser == 'true' && matrix.target == 'linux-x64'
         run: pnpm desktop:test:browser
@@ -274,7 +301,7 @@ jobs:
         if: needs.select.outputs.artifacts == 'true'
         shell: bash
         run: |
-          node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const before=JSON.parse(fs.readFileSync('test-results/verification/tested-build.json'));const bytes=fs.readFileSync(path);const receipt=JSON.parse(fs.readFileSync('clients/desktop/app/dist/'+process.env.DESKTOP_TARGET+'/artifacts.json'));if(before.manifestSha256!==crypto.createHash('sha256').update(bytes).digest('hex')||before.mtimeMs!==fs.statSync(path).mtimeMs||before.buildId!==receipt.buildId)throw Error('The tested build was replaced or not packaged');fs.writeFileSync('test-results/verification/build-reuse.json',JSON.stringify({...before,reused:true,candidateFiles:receipt.files.length},null,2))"
+          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts check --target "$DESKTOP_TARGET"
       - name: Test packaged application
         if: needs.select.outputs.artifacts == 'true' && runner.os != 'Linux'
         run: pnpm desktop:test:artifacts

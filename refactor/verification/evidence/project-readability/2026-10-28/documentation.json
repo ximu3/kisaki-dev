@@ -1,0 +1,16 @@
+{
+  "baseline": "db217ce32007edf96069eb9e6406633bcf0e1b78",
+  "markdownFiles": 221,
+  "localLinksChecked": 3214,
+  "issues": [],
+  "removedExplicitAnchors": [],
+  "changedCodeFenceFiles": [
+    "clients/desktop/packages/extension-api/README.md",
+    "clients/desktop/packages/extension-distribution/README.md",
+    "clients/desktop/packages/extension-sdk/README.md",
+    "clients/desktop/packages/rpc/README.md",
+    "clients/desktop/packages/ui/README.md",
+    "refactor/design/engineering/layout.md",
+    "refactor/design/engineering/native.md"
+  ]
+}

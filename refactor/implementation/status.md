@@ -8,9 +8,10 @@
 
 | 范围 | 状态 |
 | --- | --- |
-| 产品、领域、界面、工程及扩展设计 | 正式合同已建立；终态实现与整体一致性已列为首要准则。本轮按确认补齐播放控制记忆、预设单行范围及 oauth-relay 最终公开仓库合同。 |
-| W00 工程与验证入口 | PR #1、#3、#4、#5、#6、#7、#8 已合并，当前基线为 ad9113d。工程外壳、四类窗口、公共包消费及六目标运行有对应提交的证据。 |
-| 全项目终态一致性审查 | 已逐项审阅当前维护文件，修正合同冲突、语言扩展 ID、固定源码摘要、工程说明和资源清理。构建输入改由 Turbo 任务定义拥有；整仓检查、53 项常规测试、Windows 构建、4 项真实开发回归及原样 ZIP 验证通过。六项原生检查通过、一项因同文件系统跳过；首轮 CI 五目标通过，macOS x64 冷准备等待超时已据轨迹定位并调整，输入时序与新提交复验见[审查记录](../verification/evidence/final-state-coherence/2026-10-28/README.md)。 |
+| 产品、领域、界面、工程及扩展设计 | 正式合同已建立；终态实现与整体一致性为首要准则，可读性与编码风格列为核心质量要求和交付门槛。播放控制记忆、预设单行范围及 oauth-relay 最终公开仓库合同已确认。 |
+| W00 工程与验证入口 | PR #1、#3、#4、#5、#6、#7、#8、#9 已合并，当前基线为 db217ce。工程外壳、四类窗口、公共包消费及六目标运行有对应提交的证据。 |
+| 全项目终态一致性审查 | 684 份维护输入的审查与修正已合并。构建输入由 Turbo 任务定义拥有；本机整仓、真实开发和制品验证，以及[最终六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40683835030)通过。macOS x64 冷准备等待的首轮失败、调整及复验保留在[审查记录](../verification/evidence/final-state-coherence/2026-10-28/README.md)。 |
+| 全项目可读性与编码风格 | 已审阅当前 686 份输入（含 220 篇文档），落实核心规范、导航和语义分段，明确开发测试父子角色及两个 CI 辅助的职责。整仓检查、八包消费、四项开发回归、Windows 构建与原样 ZIP 验证通过；覆盖和验证范围见[审查记录](../verification/evidence/project-readability/2026-10-28/README.md)，远端结果由交付 PR 检查记录。 |
 | 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)与现有文件补齐已合并为 ad9113d；[412 份输入覆盖及验证](../verification/evidence/file-module-comments/2026-10-28/README.md)保留实际范围。 |
 | W01–W13 与四个独立项目 | 未开始正式实施；33 项官方扩展只具备工程身份与配置，三个译本尚未完成正式资源交付。 |
 | 正式应用与发行 | 完整产品、正式签署、安装升级、系统支持下限和主要运行后端的最终验收未完成；未执行 npm、正式下载、更新索引或生产服务发布。 |
@@ -50,7 +51,7 @@
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00) | 工程基线、六目标与缓存证据已建立；当前维护验证见[本轮审查](../verification/evidence/final-state-coherence/2026-10-28/README.md)，范围内 A24、A26、A28、A31 与完整产品验收分别记录。 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00) | 工程基线、六目标与缓存证据已建立；当前维护验证见[可读性审查](../verification/evidence/project-readability/2026-10-28/README.md)，范围内 A24、A26、A28、A31 与完整产品验收分别记录。 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |
@@ -88,6 +89,7 @@ W00 已建立 45 个 workspace 成员、四类程序构建与开发会话、私�
 | CI 事件、任务与目标 | [元信息事件](../verification/evidence/ci-events/2026-10-26/README.md)、[工程工作流和目标组织](../verification/evidence/ci-architecture/2026-10-28/README.md)、[脚本与消费者范围](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)。PR #5、#6、#7 已合并。 |
 | 类型与声明检查 | [声明检查分工](../verification/evidence/declaration-checks/2026-10-27/README.md)；常规项目保留 strict，公开声明消费者及自有声明拥有层完整检查。 |
 | 文件与模块概述 | [覆盖和输出核对](../verification/evidence/file-module-comments/2026-10-28/README.md)；[PR #8](https://github.com/ximu3/kisaki-dev/pull/8)已于 2026-10-28 合并为 ad9113d。 |
-| 终态与整体一致性 | [本轮完整覆盖、取舍与验证](../verification/evidence/final-state-coherence/2026-10-28/README.md)。 |
+| 终态与整体一致性 | [完整覆盖、取舍与验证](../verification/evidence/final-state-coherence/2026-10-28/README.md)；[PR #9](https://github.com/ximu3/kisaki-dev/pull/9)已合并为 db217ce，最终六目标及 Required checks 通过。 |
+| 可读性与编码风格 | [全项目覆盖、命名与职责、语义分段及验证](../verification/evidence/project-readability/2026-10-28/README.md)。 |
 
 早期探索、失败、修复前状态与各次运行的原始记录保留在[证据索引](../verification/evidence/README.md)，不再作为当前待办重复列出。本页维护当前结论，原始证据中的提交、环境、摘要与当时结果保持不变。

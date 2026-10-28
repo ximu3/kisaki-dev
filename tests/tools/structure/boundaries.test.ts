@@ -103,6 +103,7 @@ let result: {
 
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-boundaries-'))
+
   for (const file of [
     '.dependency-cruiser.json',
     'tsconfig.json',
@@ -114,15 +115,18 @@ beforeAll(async () => {
     await mkdir(dirname(target), { recursive: true })
     await copyFile(resolve(file), target)
   }
+
   const manifest: { devDependencies: { electron: string } } = JSON.parse(
     await readFile(join(directory, 'clients/desktop/app/package.json'), 'utf8'),
   )
   const electronVersion = manifest.devDependencies.electron
+
   // Ancestor availability must not substitute for the importing project's declaration.
   await writeFile(
     join(directory, 'package.json'),
     JSON.stringify({ private: true, devDependencies: { 'undeclared-tool': '1.0.0' } }),
   )
+
   const fixturePackages = [
     {
       path: 'clients/desktop/packages/appearance',
@@ -155,6 +159,7 @@ beforeAll(async () => {
       files: { 'index.js': 'exports.value = 1\n' },
     },
   ]
+
   for (const fixture of fixturePackages) {
     const root = join(directory, fixture.path)
     await mkdir(root, { recursive: true })
@@ -164,6 +169,7 @@ beforeAll(async () => {
       await writeFile(join(root, file), content!)
     }
   }
+
   const scope = join(directory, 'node_modules', '@kisaki3')
   await mkdir(scope, { recursive: true })
   await symlink(join(directory, 'clients/desktop/packages/ui'), join(scope, 'ui'), 'junction')
@@ -172,6 +178,7 @@ beforeAll(async () => {
     join(directory, 'node_modules/electron'),
     'junction',
   )
+
   await mkdir(join(directory, 'packages', 'tooling'), { recursive: true })
   await writeFile(
     join(directory, 'packages', 'tooling', 'package.json'),
@@ -181,14 +188,17 @@ beforeAll(async () => {
       exports: { './process': './src/process.ts' },
     }),
   )
+
   for (const member of ['typescript-config', 'tooling']) {
     await symlink(join(directory, 'packages', member), join(scope, member), 'junction')
   }
+
   const files: [string, string][] = cases.flatMap(({ from, to, source }) => {
     const inputs: [string, string][] = [[from, source]]
     if (to) inputs.push([to, 'export interface Value { name: string }\n'])
     return inputs
   })
+
   for (const [path, content] of files) {
     const file = join(directory, path)
     await mkdir(dirname(file), { recursive: true })
@@ -223,9 +233,11 @@ afterAll(async () => {
 test.each(cases)('enforces module boundaries: $name from $from', ({ name, from, allowed }) => {
   const source = from
   expect(result.modules.some((module) => module.source === source)).toBe(true)
+
   const violations = result.summary.violations
     .filter((violation) => violation.from === source)
     .map((violation) => violation.rule.name)
+
   if (allowed) expect(violations).toEqual([])
   else expect(violations).toContain(name)
 })

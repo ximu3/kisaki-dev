@@ -2,9 +2,11 @@
 
 各领域以[终态实现与整体一致性](../engineering/conventions.md#final-state)为首要准则，按事实、完整操作与资源寿命明确拥有者；共同语义在所属合同统一定义，各入口直接引用。
 
+阅读从[条目与分部](catalog.md)、[公共值](values.md)建立模型，再按任务进入[完整操作](library-operations.md)或[查询](library-queries.md)及对应领域。名称、结构和说明共同遵守[可读性准则](../engineering/conventions.md#readability-principle)。
+
 | 责任           | 文档                                                                                                                                                                                    |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 调用值细化     | [候选资料](metadata-contracts.md) · [原子图写入](library-graph-contracts.md) · [标注查询与写入](annotation-contracts.md)                                                                |
+| 调用值合同     | [候选资料](metadata-contracts.md) · [原子图写入](library-graph-contracts.md) · [标注查询与写入](annotation-contracts.md)                                                                |
 | 内容身份与资料 | [条目与分部](catalog.md) · [公共值](values.md) · [四类资料关系](relations.md)                                                                                                           |
 | 四类作品       | [游戏](games.md) · [动画](anime.md) · [漫画](comics.md) · [小说](novels.md)                                                                                                             |
 | 个人整理与内容 | [当前状态与完成记录](records.md) · [合集和标签](collections-and-tags.md) · [Note](notes.md) · [Annotation](annotations.md)                                                              |

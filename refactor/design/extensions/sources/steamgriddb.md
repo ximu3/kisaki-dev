@@ -117,7 +117,7 @@ client 负责真实 HTTP、取消、重试和响应校验；metadata 负责身�
 
 <a id="核验要求"></a>
 
-## 实现与采用
+## 证据与验收
 
 来源依据见[只读核验](../../../verification/evidence/artwork-sources/live-api.md)。
 

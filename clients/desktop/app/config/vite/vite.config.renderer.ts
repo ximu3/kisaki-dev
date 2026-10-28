@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       name: 'desktop-development-csp',
       transformIndexHtml(html) {
         if (mode !== 'development') return html
+
         return html
           .replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")
           .replace("connect-src 'self'", "connect-src 'self' ws://127.0.0.1:*")

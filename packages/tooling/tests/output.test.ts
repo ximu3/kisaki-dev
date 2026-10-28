@@ -10,9 +10,11 @@ import { tmpdir } from 'node:os'
 import { replaceOutput } from '@kisaki3/tooling/output'
 
 let directory: string
+
 beforeEach(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-output-'))
 })
+
 afterEach(async () => {
   await rm(directory, { recursive: true, force: true })
 })
@@ -28,12 +30,14 @@ test('failed preparation retains prior output and a successful retry removes old
       throw new Error('Synthetic compiler failure')
     }),
   ).rejects.toThrow('Synthetic compiler failure')
+
   expect(await readFile(join(output, 'entry.js'), 'utf8')).toBe('previous bytes')
   expect(await readdir(join(directory, '.cache', 'output-staging'))).toEqual([])
 
   await replaceOutput(directory, output, async (staging) => {
     await writeFile(join(staging, 'renamed.js'), 'complete bytes')
   })
+
   expect(await readdir(output)).toEqual(['renamed.js'])
 })
 
@@ -54,6 +58,7 @@ test('cancellation after preparation preserves prior output and removes the unus
       controller.signal,
     ),
   ).rejects.toMatchObject({ name: 'AbortError' })
+
   expect(await readFile(join(output, 'entry.js'), 'utf8')).toBe('previous bytes')
   expect(await readdir(join(directory, '.cache', 'output-staging'))).toEqual([])
 })

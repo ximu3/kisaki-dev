@@ -34,6 +34,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
           args: [join(runtime, 'main/entry.js'), `--profile=${profile}`],
           env,
         })
+
         return { application, start }
       })
 
@@ -42,14 +43,17 @@ test('measures twenty fresh processes and confirms all observed child processes 
         const milliseconds = await test.step(`${sample}: window ready`, async () => {
           const window = await application.firstWindow()
           await window.getByRole('button', { name: 'Close window' }).waitFor()
+
           return performance.now() - start
         })
+
         const metrics = await test.step(`${sample}: process metrics`, () =>
           application.evaluate(({ app }) =>
             app
               .getAppMetrics()
               .map(({ pid, memory }) => ({ pid, workingSetSize: memory.workingSetSize })),
           ))
+
         pids = metrics.map((metric) => metric.pid)
         samples.push({
           milliseconds,
@@ -102,6 +106,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
       body: JSON.stringify(report, null, 2),
       contentType: 'application/json',
     })
+
     expect(p95).toBeLessThanOrEqual(budgets.engineeringShellStartupP95Ms)
   } finally {
     await rm(profile, { recursive: true, force: true })

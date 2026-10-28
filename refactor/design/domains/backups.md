@@ -2,6 +2,8 @@
 
 library/holdings/game/backups 负责将游戏存档保存为完整归档，并恢复到明确目标。备份有自己的身份、来源和保留规则，不依赖启动配置持续存在。恢复过程保存可校验的操作凭据，使应用在中断后仍能判断实际目标状态并找到回退材料。
 
+创建备份先看[来源](#source)、[创建流程](#creation)与[保留规则](#retention)。恢复从[目标与结果](#restore)进入，再查[保护与替换](#protection)；中断后的检查、继续、撤回和材料清理集中在[恢复记录](#recovery)。
+
 <a id="source"></a>
 
 ## 配置、来源与创建输入
@@ -184,7 +186,16 @@ interface GameBackupRestoreResult {
 
 游戏仍在运行或目标被占用时不执行替换。会话 interrupted 或 detached 均不证明进程已经退出，仍须检查实际实例；无法确认时要求关闭游戏。准备期间目标或配置发生变化，必须重新核对覆盖范围。
 
-正常恢复完成返回 targetState: restored。preserved 表示目标没有修改，或已经完整回退；recoveryRequired 表示替换或回退没有安全完成，或无法确认目标状态。keptCurrent 仅由用户明确“保留现状并结束恢复”产生，表示不再改动当前目标，不证明它等于所选备份或原存档。这些值不能根据任务终态推断。
+targetState 表达实际目标状态：
+
+| 值 | 含义 |
+| --- | --- |
+| restored | 正常恢复完成时返回此值。 |
+| preserved | 目标没有修改，或已经完整回退。 |
+| recoveryRequired | 替换或回退没有安全完成，或无法确认目标状态。 |
+| keptCurrent | 用户明确选择“保留现状并结束恢复”，不再改动当前目标；不证明它等于所选备份或原存档。 |
+
+这些值不能根据任务终态推断。
 
 失败或取消时，如果已经形成合法结果，通过 `ExecutionFailure<GameBackupRestoreResult>.partialResult` 返回；准备阶段尚未形成结果时不能伪造报告。protectionBackupId 指向锁定的保护备份，原本没有目标时可以为空。recoveryId 用于定位备份模块自己的恢复材料，不依赖任务历史。 recoveryId 为空时 recoveryResolution 也为空；ID 非空且 resolution 为 null 表示仍需处理，非空 resolution 表示已经处理但尚有材料或清理结果。调用方不必借任务终态猜测这一区别。
 

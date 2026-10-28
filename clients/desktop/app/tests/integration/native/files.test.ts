@@ -24,6 +24,7 @@ afterEach(async () => {
 test('preserves the native loading cause at the supplied module path', async () => {
   const path = join(directory, 'invalid.node')
   await writeFile(path, 'not a native module')
+
   let failure: unknown
   try {
     loadNative(path)
@@ -41,19 +42,24 @@ test('moves files and directories without replacing existing targets', async () 
   const target = join(directory, 'target')
   await writeFile(source, 'new content')
   await writeFile(target, 'keep content')
+
   await expect(files.moveNoReplace(source, target)).rejects.toMatchObject({
     name: 'FileMoveError',
     reason: 'targetExists',
   })
   expect(await readFile(target, 'utf8')).toBe('keep content')
+
   await files.moveNoReplace(source, join(directory, 'moved'))
   expect(await readFile(join(directory, 'moved'), 'utf8')).toBe('new content')
+
   await mkdir(source)
   const existingDirectory = join(directory, 'existing-directory')
   await mkdir(existingDirectory)
+
   await expect(files.moveNoReplace(source, existingDirectory)).rejects.toMatchObject({
     reason: 'targetExists',
   })
+
   await files.moveNoReplace(source, join(directory, 'moved-directory'))
 })
 
@@ -64,10 +70,12 @@ test('racing moves publish exactly one source and leave the other intact', async
   const target = join(directory, 'target')
   await writeFile(first, 'first')
   await writeFile(second, 'second')
+
   const results = await Promise.allSettled([
     files.moveNoReplace(first, target),
     files.moveNoReplace(second, target),
   ])
+
   expect(results.filter((result) => result.status === 'fulfilled')).toHaveLength(1)
   const winner = await readFile(target, 'utf8')
   const remaining = winner === 'first' ? second : first
@@ -79,13 +87,16 @@ test('reports absent sources and rejects invalid paths before scheduling native 
   await expect(
     files.moveNoReplace(join(directory, 'missing'), join(directory, 'target')),
   ).rejects.toMatchObject({ reason: 'sourceMissing' })
+
   await writeFile(join(directory, 'source'), 'retained')
+
   const missingParent = files.moveNoReplace(
     join(directory, 'source'),
     join(directory, 'absent-parent', 'target'),
   )
   await expect(missingParent).rejects.toBeInstanceOf(FileMoveError)
   await expect(missingParent).rejects.toMatchObject({ reason: 'ioFailure' })
+
   await expect(files.moveNoReplace('relative', join(directory, 'target'))).rejects.toThrow(
     TypeError,
   )
@@ -97,9 +108,11 @@ test('a cross-volume move fails without copying or deleting the source', async (
     if ((await stat(directory)).dev === (await stat(other)).dev) {
       context.skip('The test environment exposes only one filesystem for these temporary roots')
     }
+
     const { files } = loadNative(binding)
     const source = join(directory, 'source')
     await writeFile(source, 'retained')
+
     await expect(files.moveNoReplace(source, join(other, 'target'))).rejects.toMatchObject({
       reason: 'crossDevice',
     })
@@ -114,20 +127,26 @@ test('synchronizes existing regular files and reports missing or wrong-type path
   const { files } = loadNative(binding)
   const path = join(directory, 'file')
   await writeFile(path, '')
+
   await files.syncFile(path)
+
   await chmod(path, 0)
   try {
     await expect(files.syncFile(path)).rejects.toMatchObject({ reason: 'permissionDenied' })
   } finally {
     await chmod(path, 0o600)
   }
+
   await writeFile(path, 'content')
+
   await files.syncFile(path)
+
   await expect(files.syncFile(directory)).rejects.toMatchObject({ reason: 'wrongType' })
   await expect(files.syncFile(join(directory, 'missing'))).rejects.toMatchObject({
     reason: 'pathMissing',
   })
   await expect(files.syncFile('relative')).rejects.toBeInstanceOf(FileSyncError)
+
   // Windows rejects deleting an open file: cleanup also proves the worker released its handle.
   await rm(path)
 })

@@ -30,6 +30,7 @@ clients/desktop/app/
 ├── native/
 │   ├── Cargo.toml
 │   ├── Cargo.lock
+│   ├── build.rs
 │   ├── rust-toolchain.toml
 │   ├── src/
 │   │   ├── lib.rs
@@ -44,7 +45,7 @@ clients/desktop/app/
 └── tests/integration/native/
 ```
 
-native 使用一个 Cargo crate；lib.rs 声明实际模块与原生导出，files.rs 是当前文件能力的实现。能力需要多文件协作时再拆为同名目录，平台实现归相应能力内部。crate 拆分依据独立职责、依赖和测试需要，不为每项能力建立一份原生工程。
+native 使用一个 Cargo crate；build.rs 执行 napi-build 的构建接入，lib.rs 声明实际模块与原生导出，files.rs 是当前文件能力的实现。能力需要多文件协作时再拆为同名目录，平台实现归相应能力内部。crate 拆分依据独立职责、依赖和测试需要，不为每项能力建立一份原生工程。
 
 node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 

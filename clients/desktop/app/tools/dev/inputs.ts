@@ -70,6 +70,7 @@ export async function startInputWatcher(
   options: InputWatchOptions,
 ): Promise<FSWatcher> {
   options.signal?.throwIfAborted()
+
   const packageInputs = (
     await Promise.all(members.map((member) => publicPackageInputs(member.path)))
   ).flat()
@@ -106,6 +107,7 @@ export async function startInputWatcher(
         options.onChange('runtime')
       }
     })
+
     return watcher
   } catch (cause) {
     await watcher.close()

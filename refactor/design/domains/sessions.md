@@ -2,6 +2,8 @@
 
 sessions 管理一次实际游玩、播放或阅读。它确定目标，协调内容执行与使用界面，观察有效使用，保存可信事实，并完成结束和资源释放。正式资料、个人记录和历史仍由 library 管理。
 
+调用入口从[打开与复用](#open)、[文件切换](#switch)和[当前内容控制](#controls)查阅；记录依据见[有效计时](#timing)，结束与失败处理见[关闭收尾](#close)、[停止游戏记录](#detach)和[未保存记录](#pending-recordings)。[内容执行与窗口通信](#execution)说明这些操作怎样交给实际执行者。
+
 <a id="ownership"></a>
 
 ## 产品会话与记录归属
@@ -294,7 +296,9 @@ sessions.anime 的运行设置都绑定 sessionId。仅控制当前运行的 set
 
 setSpeed 是当前文件的临时倍速控制，只采用到实际播放器，不写入全局、作品或文件配置，也不自动启用自定义。暂停后继续、聚焦、同一文件的定位和普通复用保留当前倍速；切换到下一集或其他实际文件、关闭后重新打开时，重新采用目标的完整配置中的 playbackSpeed。临时倍速不随连播交给新文件。需要长期默认值时，用户在播放设置中明确选择范围并保存。
 
-同步偏移使用有符号秒数，字幕缩放使用倍数。倍速、字幕缩放与音量复用[偏好字段值域](preferences.md#fields)，在保存或控制前完成校验；volumePercent 为 0–100 的有限数，超限拒绝，不静默钳制。sessions.anime.getTracks(sessionId) 返回当前轨道列表。observeTracks(sessionId, listener) 先交付当前列表，再交付变化，返回 Disposable。
+同步偏移使用有符号秒数，字幕缩放使用倍数。倍速、字幕缩放与音量复用[偏好字段值域](preferences.md#fields)，在保存或控制前完成校验；volumePercent 为 0–100 的有限数，超限拒绝，不静默钳制。
+
+sessions.anime.getTracks(sessionId) 返回当前轨道列表。observeTracks(sessionId, listener) 先交付当前列表，再交付变化，返回 Disposable。
 
 轨道项包含展示资料、实际选择及 PlaybackTrackRef。允许记忆的轨道还提供由主进程接入生成的 FileTrackSelection，调用者不能解析运行 ID 来推导源文件或序号。
 
@@ -308,7 +312,9 @@ await sessions.anime.selectTrack(sessionId, track, { remember: true })
 
 sessions 固定并校验实际会话、文件和轨道，协调保存与采用的执行顺序。保存失败时不继续采用；保存成功而采用失败时，由该操作按共同失败合同明确报告已经保存和未生效的事实，运行观察继续交付实际状态。会话结束或换文件后，原请求不能转投新的内容。界面负责输入和反馈，不自行拼接 library 写入与播放控制。恢复和临时控制使用不记忆的输入，也不通过观察反写设置。
 
-音量与静音由 preferences.playback 保存应用级控制记忆，轨道与同步偏移由 library 保存为文件选择，速度和字幕缩放等长期默认值属于完整播放配置。setVolume 与 setMuted 固定当前会话，分别通过 preferences.update 只保存 volumePercent 或 muted，再采用到该执行者；它们是即时设置，沿用普通逐字段写入，不改变另一字段，也不联动其他已打开实例。临时倍速不进入保存流程，观察不能反推用户设置。
+音量与静音由 preferences.playback 保存应用级控制记忆，轨道与同步偏移由 library 保存为文件选择，速度和字幕缩放等长期默认值属于完整播放配置。
+
+setVolume 与 setMuted 固定当前会话，分别通过 preferences.update 只保存 volumePercent 或 muted，再采用到该执行者；它们是即时设置，沿用普通逐字段写入，不改变另一字段，也不联动其他已打开实例。临时倍速不进入保存流程，观察不能反推用户设置。
 
 新文件的执行者准备从 preferences.playback 读取当时的正式音量与静音，首次使用为 100% 和未静音；初始采用不回调会保存设置的公共控制方法。普通同文件复用保留当前值，切换实际文件或关闭后重新打开则读取最新正式记忆。完整播放配置的保存或重新采用不覆盖这两个独立控制值。
 

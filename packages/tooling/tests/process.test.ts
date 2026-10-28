@@ -35,6 +35,7 @@ test('an explicit environment preserves removals from the parent environment', a
 test('cancelling a command waits for the command and its descendant to exit', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-command-'))
   const controller = new AbortController()
+
   const operation = run(
     process.execPath,
     ['--import', loader, resolve('tests/support/command-worker.ts'), directory],
@@ -58,6 +59,7 @@ test('cancelling a command waits for the command and its descendant to exit', as
         { timeout: 10_000 },
       )
       .toBe(true)
+
     controller.abort()
     await cancelled
 
@@ -78,6 +80,7 @@ test('cancelling a command waits for the command and its descendant to exit', as
   } finally {
     controller.abort()
     await operation.catch(() => undefined)
+
     await rm(directory, { recursive: true, force: true })
   }
 }, 20_000)

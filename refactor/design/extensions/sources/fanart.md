@@ -128,7 +128,7 @@ client 解释本来源请求、凭据方式和响应；metadata 拥有资源种�
 
 <a id="核验要求"></a>
 
-## 实现与采用
+## 预设与验收
 
 来源依据见[只读核验](../../../verification/evidence/artwork-sources/live-api.md)。
 

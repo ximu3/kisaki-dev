@@ -28,6 +28,7 @@ test('keyboard activation calls the owning window and close failures stay visibl
   const button = page.getByRole('button', { name: 'Close window' })
   await userEvent.tab()
   await expect.element(button).toHaveFocus()
+
   await userEvent.keyboard('{Enter}')
 
   expect(close).toHaveBeenCalledTimes(1)

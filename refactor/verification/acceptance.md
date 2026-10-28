@@ -4,6 +4,10 @@
 
 [终态实现与整体一致性](../design/engineering/conventions.md#final-state)是整体质量门槛。审查按完整职责与相关场景核对模型、接口、实现、测试和说明，确认共同规则在各入口成立；既有结构与检查方式同样接受复核。
 
+[可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
+
+源码审查逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
+
 <a id="verification-scope"></a>
 
 ## 验证范围与投入

@@ -19,6 +19,7 @@ const failure: ExecutionFailure<{ count: number }> = { ...summary, partialResult
 const text: LocalizedText = { en: 'Consumer', 'zh-Hans': '消费者' }
 const config = defineConfig({ entry: 'src/entry.ts' })
 const transport: MessageTransport | undefined = undefined
+
 const initialization = parseDevelopmentCommand({
   type: 'initialize',
   protocolVersion: developmentProtocolVersion,
@@ -26,8 +27,10 @@ const initialization = parseDevelopmentCommand({
 if (typeof launchDevelopmentApplication !== 'function' || initialization.type !== 'initialize') {
   throw new Error('Development entries are unavailable')
 }
+
 // @ts-expect-error Failure codes are text, not implicit numeric database codes.
 const invalid: ErrorSummary = { code: 1, message: 'invalid' }
+
 console.info(
   'consumer-ready',
   appearanceTokenNames.length,
