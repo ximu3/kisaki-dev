@@ -12,7 +12,7 @@
 | W00 工程与验证入口               | PR #1、#3、#4、#5、#6、#7 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
 | CI 编排与反馈时间 | 反馈目标已按确认调整为 [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；PR #6 实现提交的完整九项 CI 通过，用时 19 分 36 秒，消费者增量为 1 分 49 秒；历史运行按当时目标保留，原 macOS x64 首次启动偶发超时仍未确定原因 |
 | 脚本与扩展边界审查 | [49 份清单、164 个当前脚本及工程边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)已完成；发现消费者选择／执行范围、pack 文档调用及输入传播等问题，命名和归属方案已确认并落实，[本机检查与八包消费](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)通过，15 组实际工作流选择和 10 组汇总门禁通过，[PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 已 Squash 合并为 1a4c6f4 |
-| 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)及现有文件补齐已落实；[412 份维护输入](../verification/evidence/file-module-comments/2026-10-28/README.md)覆盖核对、本机检查与八包消费通过，交付分支待 CI 验证 |
+| 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)及现有文件补齐已落实；[412 份维护输入](../verification/evidence/file-module-comments/2026-10-28/README.md)覆盖核对、本机检查与八包消费通过，[PR #8](https://github.com/ximu3/kisaki-dev/pull/8) 待合并，远端结果随 PR 检查记录 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |

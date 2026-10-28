@@ -29,4 +29,4 @@
 - Rust 格式、Clippy 和本机原生构建通过，生成绑定声明保持一致。
 - 五份 workflow 通过 actionlint 1.7.12，配置文档的相对引用核对通过。
 
-本地原始日志、注释覆盖核对及构建基线保存在忽略目录 artifacts/file-module-comments/2026-10-28/local。平台执行与最终门禁由交付 PR 的 CI 记录，本机结果不代替未执行的目标。未新增仅检查注释形式的常驻测试，也未调整现有运行断言或预算。
+本地原始日志、注释覆盖核对及构建基线保存在忽略目录 artifacts/file-module-comments/2026-10-28/local。平台执行与最终门禁由 [PR #8](https://github.com/ximu3/kisaki-dev/pull/8) 的 CI 记录，本机结果不代替未执行的目标。未新增仅检查注释形式的常驻测试，也未调整现有运行断言或预算。
