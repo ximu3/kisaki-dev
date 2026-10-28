@@ -10,8 +10,6 @@ const root = process.cwd()
 async function sourceFiles(directory: string): Promise<string[]> {
   const ignored = new Set([
     '.git',
-    'refactor',
-    'artifacts',
     'node_modules',
     'out',
     'dist',
@@ -27,6 +25,7 @@ async function sourceFiles(directory: string): Promise<string[]> {
   const result: string[] = []
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (ignored.has(entry.name)) continue
+    if (directory === root && ['refactor', 'artifacts'].includes(entry.name)) continue
     const path = join(directory, entry.name)
     if (entry.isDirectory()) result.push(...(await sourceFiles(path)))
     else result.push(path)
