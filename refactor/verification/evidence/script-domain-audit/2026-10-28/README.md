@@ -1,6 +1,6 @@
 # 脚本命名、作用域与扩展边界审查
 
-审查基线为 `d949e3629ea6e72514c4fe04e4ab1370a5a88918`，即 PR #5 合并后的 main。用户要求核对所有 package.json 中脚本的实际用途、命名和前缀顺序，并检查项目中同类扩展边界问题。本页记录已确认的事实和建议，尚未修改命令、正式命名规则或运行流程。
+审查基线为 `d949e3629ea6e72514c4fe04e4ab1370a5a88918`，即 PR #5 合并后的 main。用户要求核对所有 package.json 中脚本的实际用途、命名和前缀顺序，并检查项目中同类扩展边界问题。本页保留审查时的事实和建议；后续已获确认并[实施修正](implementation/README.md)。下文名称与探针结果均对应审查基线。
 
 ## 范围与结论
 
@@ -14,7 +14,7 @@
 
 ### 1. 消费者的选择范围与执行范围不一致
 
-[仓库工作流](../../../../../.github/workflows/verification-repository.yml)只要看到任意工程的 test:consumers 就选择消费者验证；执行时却调用根 test:consumers，后者固定筛选 clients/desktop/packages 下的八包。[收集工具](../../../../../tools/release/package-inputs.ts)还明确要求数量为八。
+[仓库工作流](https://github.com/ximu3/kisaki-dev/blob/d949e3629ea6e72514c4fe04e4ab1370a5a88918/.github/workflows/verification-repository.yml)只要看到任意工程的 test:consumers 就选择消费者验证；执行时却调用根 test:consumers，后者固定筛选 clients/desktop/packages 下的八包。[收集工具](https://github.com/ximu3/kisaki-dev/blob/d949e3629ea6e72514c4fe04e4ab1370a5a88918/tools/release/package-inputs.ts)还明确要求数量为八。
 
 以一个符合命名规则的其他域任务 `@kisaki3/web-fixture#test:consumers` 作为合成输入，实际消费者判定段输出 consumers=true，后续命令仍指向桌面八包。该探针只验证路由条件，没有建立 Web 产品或执行未来工程。原始输入、判定与执行命令见 [scope-probes.json](scope-probes.json)。
 
