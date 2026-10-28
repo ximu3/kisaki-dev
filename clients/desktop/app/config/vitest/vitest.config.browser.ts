@@ -10,6 +10,8 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/browser/**/*.test.tsx'],
     globals: false,
+    reporters: ['default', 'json'],
+    outputFile: { json: 'test-results/browser/results.json' },
     browser: {
       enabled: true,
       headless: true,

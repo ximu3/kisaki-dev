@@ -1,0 +1,293 @@
+name: Desktop verification
+on:
+  workflow_call:
+    inputs:
+      base:
+        description: Git revision to compare against; missing baselines request complete checks.
+        type: string
+        default: ''
+      head:
+        description: Exact Git revision to check out and verify.
+        type: string
+        required: true
+      complete:
+        description: Run every applicable check owned by this workflow.
+        type: boolean
+        default: false
+    outputs:
+      selected:
+        description: Whether any desktop target requires verification.
+        value: ${{ jobs.select.outputs.selected }}
+      verified:
+        description: Completion marker for an executed target matrix; workflow success covers all targets.
+        value: ${{ jobs.desktop.outputs.verified }}
+permissions:
+  contents: read
+env:
+  # Optional cache restoration should fall back before consuming the feedback budget.
+  SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
+jobs:
+  select:
+    name: Select checks
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    outputs:
+      complete: ${{ steps.affected.outputs.complete }}
+      native: ${{ steps.affected.outputs.native }}
+      browser: ${{ steps.affected.outputs.browser }}
+      e2e: ${{ steps.affected.outputs.e2e }}
+      dev: ${{ steps.affected.outputs.dev }}
+      performance: ${{ steps.affected.outputs.performance }}
+      artifacts: ${{ steps.affected.outputs.artifacts }}
+      tooling: ${{ steps.affected.outputs.tooling }}
+      selected: ${{ steps.affected.outputs.selected }}
+      matrix: ${{ steps.affected.outputs.matrix }}
+    env:
+      TURBO_TELEMETRY_DISABLED: '1'
+      TURBO_CONCURRENCY: '2'
+      TURBO_SCM_BASE: ${{ inputs.base }}
+      TURBO_SCM_HEAD: ${{ inputs.head }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ inputs.head }}
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+        with:
+          cache: true
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Record runner environment
+        shell: bash
+        run: |-
+          mkdir -p test-results/verification
+          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+      - name: Select checks
+        id: affected
+        shell: bash
+        env:
+          REQUEST_COMPLETE: ${{ inputs.complete }}
+          TARGETS: |-
+            [
+              {"target":"windows-x64","runner":"windows-2025","arch":"x64"},
+              {"target":"windows-arm64","runner":"windows-11-arm","arch":"arm64"},
+              {"target":"macos-x64","runner":"macos-15-intel","arch":"x64"},
+              {"target":"macos-arm64","runner":"macos-15","arch":"arm64"},
+              {"target":"linux-x64","runner":"ubuntu-22.04","arch":"x64"},
+              {"target":"linux-arm64","runner":"ubuntu-22.04-arm","arch":"arm64"}
+            ]
+        run: |
+          complete="$REQUEST_COMPLETE"
+          if [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]] || ! git cat-file -e "$TURBO_SCM_BASE^{commit}"; then
+            complete=true
+          fi
+          mkdir -p test-results/verification
+          report=test-results/verification/affected.json
+          if [[ "$complete" == false ]]; then
+            jq -n --arg base "$TURBO_SCM_BASE" --arg head "$TURBO_SCM_HEAD" '{base: $base, head: $head}' > "$RUNNER_TEMP/verification-refs.json"
+            pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"
+            jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null
+            # Required build prerequisites also use TaskAllChanged; they do not expand verification.
+            if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then
+              complete=true
+            fi
+          else
+            jq -n '{complete: true}' > "$report"
+          fi
+          echo "complete=$complete" >> "$GITHUB_OUTPUT"
+          platform=false
+          browser=false
+          for task in native browser e2e dev performance artifacts; do
+            selected="$complete"
+            if [[ "$complete" == false ]]; then
+              selected=$(jq -r --arg task "test:$task" 'any(.data.affectedTasks.items[]; .command != null and .package.name == "@kisaki3/desktop" and (.name == $task or ($task == "test:artifacts" and .name == "package")))' "$report")
+            fi
+            echo "$task=$selected" >> "$GITHUB_OUTPUT"
+            if [[ "$task" == browser ]]; then
+              browser="$selected"
+            elif [[ "$selected" == true ]]; then
+              platform=true
+            fi
+          done
+          tooling="$complete"
+          if [[ "$complete" == false ]]; then
+            tooling=$(jq -r 'any(.data.affectedTasks.items[]; .fullName == "@kisaki3/tooling#test" and .command != null)' "$report")
+          fi
+          echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
+          if [[ "$tooling" == true ]]; then platform=true; fi
+          if [[ "$platform" == true ]]; then
+            matrix=$(jq -c . <<< "$TARGETS")
+            selected=true
+          elif [[ "$browser" == true ]]; then
+            matrix=$(jq -c 'map(select(.target == "linux-x64"))' <<< "$TARGETS")
+            selected=true
+          else
+            matrix='[]'
+            selected=false
+          fi
+          echo "selected=$selected" >> "$GITHUB_OUTPUT"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          cp "$GITHUB_OUTPUT" test-results/verification/selected.txt
+      - name: Upload selected scope
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: desktop-scope
+          path: test-results/verification/
+          if-no-files-found: error
+  desktop:
+    name: ${{ matrix.target }}
+    outputs:
+      verified: ${{ steps.verified.outputs.verified }}
+    needs: select
+    if: needs.select.outputs.selected == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.select.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    env:
+      TURBO_TELEMETRY_DISABLED: '1'
+      DESKTOP_TARGET: ${{ matrix.target }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.head }}
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          architecture: ${{ matrix.arch }}
+          package-manager-cache: false
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+        with:
+          cache: true
+      - name: Configure macOS deployment target
+        if: runner.os == 'macOS'
+        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Restore Turbo cache
+        id: turbo-cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .turbo/cache
+          key: turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-
+            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
+      - name: Record runner environment
+        shell: bash
+        run: |-
+          mkdir -p test-results/verification
+          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+      - name: Install Linux desktop tools
+        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true')
+        run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
+      - name: Install Chromium
+        run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.browser == 'true' && matrix.target == 'linux-x64')
+      - name: Test tooling
+        if: needs.select.outputs.tooling == 'true'
+        run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
+      - name: Check native source
+        if: needs.select.outputs.native == 'true'
+        run: pnpm --filter @kisaki3/desktop native:check
+      - name: Build desktop
+        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: pnpm desktop:build --target "$DESKTOP_TARGET"
+        id: build-desktop
+      - name: Prepare native build for development
+        shell: bash
+        run: pnpm --filter @kisaki3/desktop native:build --target "$DESKTOP_TARGET"
+        if: needs.select.outputs.dev == 'true' && steps.build-desktop.outcome == 'skipped'
+      - name: Record tested build
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: |
+          node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const bytes=fs.readFileSync(path);fs.writeFileSync('test-results/verification/tested-build.json',JSON.stringify({buildId:JSON.parse(bytes).buildId,manifestSha256:crypto.createHash('sha256').update(bytes).digest('hex'),mtimeMs:fs.statSync(path).mtimeMs},null,2))"
+      - name: Test browser interactions
+        if: needs.select.outputs.browser == 'true' && matrix.target == 'linux-x64'
+        run: pnpm desktop:test:browser
+      - name: Test native bindings and database
+        if: needs.select.outputs.native == 'true'
+        run: pnpm --filter @kisaki3/desktop test:native
+      - name: Test desktop workflows
+        shell: bash
+        env:
+          CHECK_E2E: ${{ needs.select.outputs.e2e }}
+          CHECK_PERFORMANCE: ${{ needs.select.outputs.performance }}
+        run: |
+          prefix=()
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          for task in e2e performance; do
+            case "$task" in
+              e2e) selected="$CHECK_E2E" ;;
+              performance) selected="$CHECK_PERFORMANCE" ;;
+            esac
+            if [[ "$selected" == true ]]; then "${prefix[@]}" pnpm --filter @kisaki3/desktop "test:$task"; fi
+          done
+      - name: Test development workflows
+        shell: bash
+        run: |-
+          prefix=()
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          "${prefix[@]}" pnpm exec turbo run test:dev --filter=@kisaki3/desktop
+        if: needs.select.outputs.dev == 'true'
+      - name: Package desktop
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: pnpm --filter @kisaki3/desktop package --target "$DESKTOP_TARGET" --test-only
+      - name: Confirm tested build reuse
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: |
+          node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const before=JSON.parse(fs.readFileSync('test-results/verification/tested-build.json'));const bytes=fs.readFileSync(path);const receipt=JSON.parse(fs.readFileSync('clients/desktop/app/dist/'+process.env.DESKTOP_TARGET+'/artifacts.json'));if(before.manifestSha256!==crypto.createHash('sha256').update(bytes).digest('hex')||before.mtimeMs!==fs.statSync(path).mtimeMs||before.buildId!==receipt.buildId)throw Error('The tested build was replaced or not packaged');fs.writeFileSync('test-results/verification/build-reuse.json',JSON.stringify({...before,reused:true,candidateFiles:receipt.files.length},null,2))"
+      - name: Test packaged application
+        if: needs.select.outputs.artifacts == 'true' && runner.os != 'Linux'
+        run: pnpm desktop:test:artifacts
+      - name: Test packaged application (X11)
+        if: needs.select.outputs.artifacts == 'true' && runner.os == 'Linux'
+        env:
+          XDG_SESSION_TYPE: x11
+        run: xvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'
+      - name: Save Turbo cache
+        if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .turbo/cache
+          key: ${{ steps.turbo-cache.outputs.cache-primary-key }}
+      - name: Upload desktop artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: desktop-${{ matrix.target }}
+          path: |-
+            test-results/verification/
+            packages/tooling/test-results/
+            clients/desktop/app/test-results/
+            clients/desktop/app/dist/${{ matrix.target }}/artifacts.json
+            clients/desktop/app/dist/${{ matrix.target }}/Kisaki-*
+            clients/desktop/app/dist/${{ matrix.target }}/*.yml
+          if-no-files-found: error
+      - name: Confirm selected checks completed
+        id: verified
+        shell: bash
+        run: echo "verified=true" >> "$GITHUB_OUTPUT"

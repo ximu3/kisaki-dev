@@ -6,4 +6,6 @@ development 入口提供父子开发消息、启动参数名、协议版本与�
 
 `pnpm build` 在独立候选目录生成代码、声明与适用样式，成功后交接完整 `dist`。`pnpm pack` 生成 `out/package.tgz`；`pnpm test:consumers` 使用 publint 与 Are the Types Wrong 检查这份已完成的 tarball。真实跨包消费由根 `tests/consumers` 验证。
 
+`pnpm test` 在普通 Node 中验证本包的纯开发消息合同，单元测试与被测源码相邻。
+
 本包采用 MIT；正式合同与后续范围见 [工作包](../../../../refactor/implementation/work-packages.md)。
