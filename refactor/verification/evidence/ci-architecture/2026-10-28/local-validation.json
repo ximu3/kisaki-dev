@@ -1,0 +1,312 @@
+{
+  "implementationCommit": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+  "ordinaryTestsPassed": 51,
+  "developmentTestsPassed": 4,
+  "developmentSuiteSeconds": 102.74,
+  "browserTestsPassed": 1,
+  "workflowLinter": {
+    "version": "1.7.12",
+    "workflows": 5,
+    "passed": true
+  },
+  "selectorMethod": "Actual workflow Bash and Turbo queries against isolated-index Git commits; real branch, index and sources unchanged.",
+  "selectionCases": [
+    {
+      "name": "unchanged",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": [],
+      "targets": [],
+      "passed": true
+    },
+    {
+      "name": "contract-test",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "c13f31369438a34b3efcbcea7d7577fdee7daac0",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": [],
+      "targets": [],
+      "passed": true
+    },
+    {
+      "name": "launcher-test",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "2d4d22a8f8a431f5b212057a08a5d54a5994a95e",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": [],
+      "targets": [],
+      "passed": true
+    },
+    {
+      "name": "browser",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "fe9ff4f2c98544c4c4d93bf3f5f75c0e7b24e762",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["browser"],
+      "targets": ["linux-x64"],
+      "passed": true
+    },
+    {
+      "name": "development",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "71b12e581fb1c7a9db5e78165af1931a92ee4531",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["dev"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "packaging",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "e2fe2d5415088a58ae8235070d97b731e3a96ee8",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["artifacts"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "windows",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "3ad9e134a9f47cbfabf6601014a65cdd5ec347b4",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["e2e"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "native",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "16c0555fc1841414ac2ac289713d89f3e542c59b",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["native", "e2e", "dev", "performance", "artifacts"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "renderer",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "5866a9805870a46c639e01bd255cdabef11a963a",
+      "complete": false,
+      "consumers": false,
+      "selectedDesktopSuites": ["browser", "e2e", "performance", "artifacts"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "public-ui",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "8a052a25bb725385db6e4b79ddc940df59ca5235",
+      "complete": false,
+      "consumers": true,
+      "selectedDesktopSuites": ["browser", "e2e", "performance", "artifacts"],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "workflow",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "539484bcfb4ac60f6f5a5a5d45b0e818055b282d",
+      "complete": true,
+      "consumers": true,
+      "selectedDesktopSuites": [
+        "native",
+        "browser",
+        "e2e",
+        "dev",
+        "performance",
+        "artifacts",
+        "tooling"
+      ],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "missing-base",
+      "base": "0000000000000000000000000000000000000000",
+      "head": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "complete": true,
+      "consumers": true,
+      "selectedDesktopSuites": [
+        "native",
+        "browser",
+        "e2e",
+        "dev",
+        "performance",
+        "artifacts",
+        "tooling"
+      ],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    },
+    {
+      "name": "explicit-complete",
+      "base": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "head": "39f7e5fd083fc393c01c82687ebbfcb2e231dac3",
+      "complete": true,
+      "consumers": true,
+      "selectedDesktopSuites": [
+        "native",
+        "browser",
+        "e2e",
+        "dev",
+        "performance",
+        "artifacts",
+        "tooling"
+      ],
+      "targets": [
+        "windows-x64",
+        "windows-arm64",
+        "macos-x64",
+        "macos-arm64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "passed": true
+    }
+  ],
+  "gateCases": [
+    {
+      "name": "selected-complete",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "true",
+        "DESKTOP_VERIFIED": "true"
+      },
+      "accepted": true
+    },
+    {
+      "name": "unselected-skipped",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "false",
+        "DESKTOP_VERIFIED": ""
+      },
+      "accepted": true
+    },
+    {
+      "name": "selected-missing-completion",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "true",
+        "DESKTOP_VERIFIED": ""
+      },
+      "accepted": false
+    },
+    {
+      "name": "unselected-but-executed",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "false",
+        "DESKTOP_VERIFIED": "true"
+      },
+      "accepted": false
+    },
+    {
+      "name": "failed-repository",
+      "env": {
+        "REPOSITORY_RESULT": "failure",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "true",
+        "DESKTOP_VERIFIED": "true"
+      },
+      "accepted": false
+    },
+    {
+      "name": "cancelled-desktop",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "cancelled",
+        "DESKTOP_SELECTED": "true",
+        "DESKTOP_VERIFIED": "true"
+      },
+      "accepted": false
+    },
+    {
+      "name": "missing-selection",
+      "env": {
+        "REPOSITORY_RESULT": "success",
+        "DESKTOP_WORKFLOW_RESULT": "success",
+        "DESKTOP_SELECTED": "",
+        "DESKTOP_VERIFIED": "true"
+      },
+      "accepted": false
+    }
+  ],
+  "gateProbePassed": true,
+  "knownLocalFailure": {
+    "operation": "extension-sdk candidate-to-dist rename during first full lint task graph",
+    "code": "EPERM",
+    "unchangedRetryPassed": true,
+    "causeConfirmed": false
+  },
+  "rawEvidenceDirectory": ".local/ci-test-review"
+}

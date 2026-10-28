@@ -19,4 +19,6 @@ jobs:
       cancel-in-progress: true
     uses: ./.github/workflows/verification.yml
     with:
+      base: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+      head: ${{ github.sha }}
       complete: ${{ github.event_name == 'workflow_dispatch' }}

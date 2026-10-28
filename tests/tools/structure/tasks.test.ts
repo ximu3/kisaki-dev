@@ -110,6 +110,18 @@ test('affected tasks follow verification inputs without promoting documentation 
       consumers: false,
     },
     { path: 'tests/consumers/packages.test.ts', desktop: [], consumers: true },
+    {
+      path: 'clients/desktop/packages/desktop-contracts/src/development.test.ts',
+      desktop: [],
+      consumers: false,
+      packageTest: '@kisaki3/desktop-contracts#test',
+    },
+    {
+      path: 'clients/desktop/packages/extension-cli/tests/integration/development-application.test.ts',
+      desktop: [],
+      consumers: false,
+      packageTest: '@kisaki3/extension-cli#test',
+    },
     { path: 'clients/desktop/app/tools/dev/session.ts', desktop: ['test:dev'], consumers: false },
     {
       path: 'clients/desktop/app/src/renderer/windows/main/entry.tsx',
@@ -235,6 +247,12 @@ test('affected tasks follow verification inputs without promoting documentation 
         .map((task) => task.name)
         .sort()
       expect(desktop, item.path).toEqual(item.desktop)
+      if (item.packageTest) {
+        expect(
+          tasks.some((task) => task.fullName === item.packageTest),
+          item.path,
+        ).toBe(true)
+      }
       if (item.path.includes('/src/renderer/')) {
         // Unchanged build prerequisites remain in the plan without selecting other desktop suites.
         expect(

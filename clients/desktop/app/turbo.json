@@ -199,7 +199,6 @@
         "tests/support/development*.ts",
         "tests/support/preparation-worker.ts",
         "tests/support/window-observation.ts",
-        "tests/fixtures/development-application.ts",
         "$TURBO_ROOT$/clients/desktop/packages/*/package.json",
         "$TURBO_ROOT$/clients/desktop/packages/*/tsdown.config.ts",
         "$TURBO_ROOT$/clients/desktop/packages/*/config/**",

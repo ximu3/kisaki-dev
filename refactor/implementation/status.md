@@ -4,13 +4,13 @@
 
 ## 当前进度
 
-截至 2026-10-27：
+截至 2026-10-28：
 
 | 范围                                                                | 状态   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口               | PR #1 已合并；Chokidar 6、Electron 45 与开发副本修正已通过六目标 CI，PR #3 待合并；开发仓库已按要求公开 |
-| CI 编排与反馈时间 | [编排与窗口观察修正已通过完整 CI](../verification/evidence/ci-design/2026-10-27/adoption/README.md)；可选缓存下载等待预算已配置，原 macOS x64 首次启动偶发超时仍未确定原因；PR #4 基于 PR #3，当前保持草稿 |
+| W00 工程与验证入口               | PR #1、#3、#4 已合并；Chokidar 6、Electron 45、开发副本和 CI 编排修正已通过六目标验证；开发仓库已按要求公开 |
+| CI 编排与反馈时间 | [按工程组织、按目标统一验证](../verification/evidence/ci-architecture/2026-10-28/README.md)及[公共包测试归属](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)已落实并通过本机核对，尚未合并；最终远端结果随对应提交检查记录；原 macOS x64 首次启动偶发超时仍未确定原因 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -19,7 +19,11 @@
 
 用户授权后，[PR #1](https://github.com/ximu3/kisaki-dev/pull/1) 已 Squash 合并为 `1efc7ad`，原分支已删除。随后主线 CI 的 renderer 文件监听回归失败，六目标未开始；该失败保留。[可靠性与反馈时间探索](../verification/evidence/ci-exploration/2026-10-27/README.md)确认了三个问题：Vite 追加输入未扫描完成时漏掉首次修改；开发副本没有有效 Git HEAD，导致 Turbo 将生成日志纳入输入而反复失去缓存；Apple Silicon 的 Electron 内部 visibilityChanged 回调访问已销毁窗口，默认错误对话框阻塞退出。按用户确认采用会话独立拥有的 Chokidar 6 和移除该回调的 Electron 45.0.0，并为开发试件建立有效 Git 上下文、显式准备 Electron 分发文件。
 
-正式修正已提交至 [PR #3](https://github.com/ximu3/kisaki-dev/pull/3)。源码提交 `be06a2f` 的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40486930578)通过仓库检查、六目标与 Required checks；每个目标完成四窗口、七项开发场景、二十次启动／正常退出及最终载体验证。六目标的 Electron 45.0.0 构建身份一致，本机全仓检查与 48 项常规测试也通过。Windows arm64 开发回归本轮为 500.68 秒，修正前为 641.66 秒，独立诊断为 238.19 秒；不同 runner 的观察不作为稳定提速比例。当前 PR 尚未合并，正式产品、签署、安装升级及后续工作包的未完成范围不变。
+正式修正通过 [PR #3](https://github.com/ximu3/kisaki-dev/pull/3) 交付，并于 2026-10-28 经用户授权 Squash 合并为 `ba809a0`。源码提交 `be06a2f` 的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40486930578)通过仓库检查、六目标与 Required checks；每个目标完成四窗口、七项开发场景、二十次启动／正常退出及最终载体验证。六目标的 Electron 45.0.0 构建身份一致，本机全仓检查与 48 项常规测试也通过。Windows arm64 开发回归本轮为 500.68 秒，修正前为 641.66 秒，独立诊断为 238.19 秒；不同 runner 的观察不作为稳定提速比例。正式产品、签署、安装升级及后续工作包的未完成范围不变。
+
+[PR #4](https://github.com/ximu3/kisaki-dev/pull/4) 随后接到新 main，文件树与此前通过的版本一致；[接续 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40619620294)十五项任务全部通过，用时 12 分 43 秒，标题检查也通过。该 PR 已按授权 Squash 合并为 `b015c09`，两个合并分支均已清理；[合并后的主线 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40621346283)十五项任务也全部通过。
+
+随后按讨论落实[CI 工程边界和统一目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)，公共包的三个 Node／纯合同用例回归所属包，四个真实开发场景保留独有的会话保证。全仓类型、lint、格式、51 项常规测试、四项真实开发场景、浏览器交互和工作流静态核对通过；十三种实际选择输入和七种门禁情况符合预期。首轮本机 SDK 目录交接的 EPERM 未在相同重试中复现，按原始失败记录，未宣称修复。新实现尚未合并，远端结果随关联提交检查留存。
 
 Kisaki 的项目级开发仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，当时保持 private；2026-10-27 按用户要求改为 public，并以未认证 API 请求确认公开可读，见[可见性变更](../verification/evidence/repository/2026-10-27/README.md)。目前实际存在的开发仓库只有这一项；四个独立项目尚未建仓，规范已统一为公开开发仓库。仓库 ID、main 默认分支和未归档状态保持原值；改名前后的记录见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址与可见性。
 
@@ -79,7 +83,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 既有[六目标及暖缓存证据](../verification/evidence/workflow-review/2026-10-27/README.md)保留；监听与 Electron 修正已通过六目标，PR #3 待合并；[CI 编排与观察器修正](../verification/evidence/ci-design/2026-10-27/adoption/README.md)已落实并通过首轮完整验证，后续 macOS x64 偶发超时未定位，PR #4 保持草稿 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 既有[六目标及暖缓存证据](../verification/evidence/workflow-review/2026-10-27/README.md)保留；PR #3、#4 已合并；[CI 工程组织与测试归属](../verification/evidence/ci-architecture/2026-10-28/README.md)已落实并通过本机核对，尚未合并，远端结果见对应提交检查；原 macOS x64 偶发超时未定位 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

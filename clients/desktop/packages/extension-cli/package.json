@@ -32,6 +32,7 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
     "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
     "clean": "tsx tools/clean.ts"
   },
