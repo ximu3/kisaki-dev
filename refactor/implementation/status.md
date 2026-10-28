@@ -11,7 +11,7 @@
 | 产品、领域、界面、工程及扩展设计 | 正式合同已建立；终态实现与整体一致性为首要准则，可读性与编码风格列为核心质量要求和交付门槛。播放控制记忆、预设单行范围及 oauth-relay 最终公开仓库合同已确认。 |
 | W00 工程与验证入口 | PR #1、#3、#4、#5、#6、#7、#8、#9 已合并，当前基线为 db217ce。工程外壳、四类窗口、公共包消费及六目标运行有对应提交的证据。 |
 | 全项目终态一致性审查 | 684 份维护输入的审查与修正已合并。构建输入由 Turbo 任务定义拥有；本机整仓、真实开发和制品验证，以及[最终六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40683835030)通过。macOS x64 冷准备等待的首轮失败、调整及复验保留在[审查记录](../verification/evidence/final-state-coherence/2026-10-28/README.md)。 |
-| 全项目可读性与编码风格 | 已审阅当前 686 份输入（含 220 篇文档），落实核心规范、导航和语义分段，明确开发测试父子角色及两个 CI 辅助的职责。整仓检查、八包消费、四项开发回归、Windows 构建与原样 ZIP 验证通过；覆盖和验证范围见[审查记录](../verification/evidence/project-readability/2026-10-28/README.md)，远端结果由交付 PR 检查记录。 |
+| 全项目可读性与编码风格 | 已审阅当前 686 份输入（含 220 篇文档），落实核心规范、导航和语义分段，明确开发测试父子角色及两个 CI 辅助的职责。整仓检查、八包消费、四项开发回归、Windows 构建与原样 ZIP 验证通过；覆盖和验证范围见[审查记录](../verification/evidence/project-readability/2026-10-28/README.md)，远端结果由 [PR #10](https://github.com/ximu3/kisaki-dev/pull/10) 的当前提交检查记录。 |
 | 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)与现有文件补齐已合并为 ad9113d；[412 份输入覆盖及验证](../verification/evidence/file-module-comments/2026-10-28/README.md)保留实际范围。 |
 | W01–W13 与四个独立项目 | 未开始正式实施；33 项官方扩展只具备工程身份与配置，三个译本尚未完成正式资源交付。 |
 | 正式应用与发行 | 完整产品、正式签署、安装升级、系统支持下限和主要运行后端的最终验收未完成；未执行 npm、正式下载、更新索引或生产服务发布。 |

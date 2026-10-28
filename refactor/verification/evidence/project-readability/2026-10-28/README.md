@@ -40,4 +40,4 @@
 - 文档本地链接与原有显式锚点核对通过，详见 [documentation.json](documentation.json)。代码围栏变化仅涉及五个公共包新增导入示例、工程工具树和原生 build.rs 入口。
 - 五份工作流通过 actionlint 1.7.12。选择与汇总逻辑沿实际工作流脚本验证，结果由 [validation.json](validation.json)登记。
 
-运行环境、命令、报告摘要和实际覆盖见 [validation.json](validation.json)。本轮远端结果由交付 PR 的当前提交检查记录；本机结果不替代其他平台执行。正式签署、安装升级、完整产品、四个独立项目与主要运行后端的未完成项继续由[实施状态](../../../../implementation/status.md)维护。
+运行环境、命令、报告摘要和实际覆盖见 [validation.json](validation.json)。本轮远端结果由 [PR #10](https://github.com/ximu3/kisaki-dev/pull/10) 的当前提交检查记录；本机结果不替代其他平台执行。正式签署、安装升级、完整产品、四个独立项目与主要运行后端的未完成项继续由[实施状态](../../../../implementation/status.md)维护。

@@ -143,5 +143,6 @@
       "bytes": 1885
     }
   },
-  "runtimeEvidenceScope": "Local runtime results apply to Windows x64. Other target executions and the required gate are recorded by the delivery PR checks. No formal signing, install/upgrade or independent-project/backend acceptance was added."
+  "runtimeEvidenceScope": "Local runtime results apply to Windows x64. Other target executions and the required gate are recorded by the delivery PR checks. No formal signing, install/upgrade or independent-project/backend acceptance was added.",
+  "pullRequest": "https://github.com/ximu3/kisaki-dev/pull/10"
 }
