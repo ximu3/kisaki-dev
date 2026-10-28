@@ -26,7 +26,7 @@ Windows x64、Node 24.11.1、pnpm 11.11.0，继续使用锁定依赖：
 | 实际 Turbo 图回归 | 标题 workflow、包测试配置、应用测试类型配置不选择桌面验收；包测试文件仅选择所属包 lint |
 | 输入与依赖回归 | 测试配置不改变构建身份、不发出包重建通知；新生产配置继续发出通知；域外源码遵守工程隔离，普通共享产品库不被误拦 |
 
-本机完整检查和消费者日志分别见 [check.log](check.log)、[consumers.log](consumers.log)，消费者报告见 [consumer-results.json](consumer-results.json)，八包收据见 [package-inputs.json](package-inputs.json)。基于实现提交 84c6679 的实际 Bash 选择脚本与 Turbo 查询通过 15 种输入；其他域的同名包检查不选择桌面消费者；统一门禁通过 10 种成功、失败、取消、缺失和错误跳过情况。输入、工作流摘要及结果见 [workflow-probes.json](workflow-probes.json)，复现源码见 [probe-workflows.ts](probe-workflows.ts)。远端六目标结果由交付 PR 的检查和报告记录，本机结果不代替平台验收。
+本机完整检查和消费者日志分别见 [check.log](check.log)、[consumers.log](consumers.log)，消费者报告见 [consumer-results.json](consumer-results.json)，八包收据见 [package-inputs.json](package-inputs.json)。基于实现提交 84c6679 的实际 Bash 选择脚本与 Turbo 查询通过 15 种输入；其他域的同名包检查不选择桌面消费者；统一门禁通过 10 种成功、失败、取消、缺失和错误跳过情况。输入、工作流摘要及结果见 [workflow-probes.json](workflow-probes.json)，复现源码见 [probe-workflows.ts](probe-workflows.ts)。远端六目标结果由 [PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 的检查和报告记录，本机结果不代替平台验收。
 
 实现中的首次检查发现并修正了共享 ESLint 通配输入包含生成目录、dependency-cruiser 拒绝过于复杂的过滤表达式，以及改名后换行触发的 curly 错误。使用未提交工作区验证 Git 范围时，Turbo 同时纳入未提交的全局配置变化；该探针不用于判定单文件选择；改在已提交的干净基线上重跑后，15 组实际选择全部符合预期。
 
