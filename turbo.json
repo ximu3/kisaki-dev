@@ -1,13 +1,9 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "futureFlags": { "affectedUsingTaskInputs": true },
-  "globalDependencies": [
-    ".node-version",
-    ".npmrc",
-    "pnpm-workspace.yaml",
-    ".github/workflows/*.yml",
-    "config/turbo/verification.graphql"
-  ],
+  "futureFlags": {
+    "affectedUsingTaskInputs": true
+  },
+  "globalDependencies": [".node-version", ".npmrc", "pnpm-workspace.yaml"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -18,7 +14,11 @@
         "!**/*.test.ts",
         "!**/*.test.tsx",
         "!vitest.config.ts",
-        "!config/vitest/**"
+        "!playwright.config.ts",
+        "!config/vitest/**",
+        "!config/playwright/**",
+        "!config/typescript/tsconfig.tests.json",
+        "!eslint.config.ts"
       ],
       "outputs": ["dist/**"],
       "env": ["TSDOWN_*"]
@@ -29,19 +29,18 @@
       "outputs": []
     },
     "lint": {
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "outputs": [],
-      "dependsOn": ["transit"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/*.md",
+        "$TURBO_ROOT$/packages/eslint-config/src/**",
+        "$TURBO_ROOT$/packages/eslint-config/package.json"
+      ],
+      "outputs": []
     },
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": [],
-      "cache": false
-    },
-    "test:consumers": {
-      "dependsOn": ["pack"],
-      "inputs": ["package.json"],
       "cache": false
     },
     "pack": {
@@ -56,38 +55,38 @@
     "clean": {
       "cache": false
     },
-    "transit": {
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "dependsOn": ["^transit"]
-    },
-    "//#typecheck:root": {
+    "//#root:typecheck": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": []
     },
-    "//#lint:root": {
-      "dependsOn": ["^transit"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "outputs": []
-    },
-    "//#test:root": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "cache": false
-    },
-    "//#test:consumers:run": {
+    "//#root:lint": {
       "inputs": [
-        "tests/consumers/**",
-        "tests/support/**",
-        "config/vitest/vitest.config.consumers.ts",
-        "config/typescript/**",
-        "tools/release/**",
-        "tsconfig.json"
+        "*.config.ts",
+        "config/**/*.ts",
+        "tools/**/*.ts",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "$TURBO_ROOT$/packages/eslint-config/src/**",
+        "$TURBO_ROOT$/packages/eslint-config/package.json"
       ],
+      "outputs": []
+    },
+    "//#root:test": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     },
     "//#check:boundaries": {
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/*.md",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!**/tests/**/fixtures/**",
+        "!refactor/**",
+        "!.github/**"
+      ],
       "dependsOn": [
         "@kisaki3/appearance#build",
         "@kisaki3/desktop-contracts#build",
@@ -99,6 +98,20 @@
         "@kisaki3/ui#build"
       ],
       "outputs": []
+    },
+    "check:package": {
+      "dependsOn": ["pack"],
+      "inputs": ["package.json"],
+      "cache": false
+    },
+    "//#desktop:packages:test:consumers:prepared": {
+      "inputs": [
+        "tests/desktop/**",
+        "config/vitest/vitest.config.desktop-consumers.ts",
+        "tools/desktop/**",
+        "!**/*.md"
+      ],
+      "cache": false
     }
   }
 }

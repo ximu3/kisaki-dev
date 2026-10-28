@@ -6,10 +6,10 @@
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm hooks:install
+pnpm install:hooks
 ```
 
-hooks 是明确安装的本地检查。安装器只管理仓库本地 `core.hooksPath` 和公共 Git 目录中的自有 Husky 文件，作用于该仓库的全部 worktree。其他显式配置会报告冲突并保持原样。`pnpm hooks:uninstall` 只撤销仍由项目持有的配置；CI 和源码压缩包跳过安装。
+hooks 是明确安装的本地检查。安装器只管理仓库本地 `core.hooksPath` 和公共 Git 目录中的自有 Husky 文件，作用于该仓库的全部 worktree。其他显式配置会报告冲突并保持原样。`pnpm uninstall:hooks` 只撤销仍由项目持有的配置；CI 和源码压缩包跳过安装。
 
 pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重新暂存文件。文件清单按 4,000 字符分批，适应 Windows 命令包装器的长度限制；ESLint 沿用既有忽略范围，不将忽略提示计作源码警告。修复后自行审阅和暂存。提交消息使用 Conventional Commits，首次提交为 `chore: initial commit`；PR 标题和主线提交由 CI 检查。
 
@@ -22,12 +22,14 @@ pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重
 开发与构建会自动准备资源，也可单独执行：
 
 ```sh
-pnpm --filter @kisaki3/desktop resources:prepare --target windows-x64
+pnpm --filter @kisaki3/desktop prepare:resources --target windows-x64
 ```
 
 媒体文件信息与播放沿 libmpv-node 接入，其 FFmpeg 依赖由该包统一交付。本体没有独立 ffprobe 下载或构建步骤。
 
 ## 构建与开发
+
+根定向入口先标范围，如 `desktop:packages:pack`、`root:typecheck`；包内按动作命名，如 `build:native`、`check:package`。全仓聚合的 `build`、`check` 等保持简短名称。调用与 pnpm 内置命令同名的包脚本时使用 `pnpm run pack`，普通 `pnpm pack` 不执行自定义脚本。
 
 ```sh
 pnpm desktop:dev
@@ -47,7 +49,7 @@ pnpm desktop:package --target windows-x64
 
 根 `desktop:package` 由 Turbo 的本包构建依赖完成准备，独立执行会先构建一次。已完成构建的流程使用 `pnpm --filter @kisaki3/desktop package --target <host-target>` 消费同一输出；入口核对现有 `build.json` 的目标、输入身份、完整文件集合和摘要，不在打包阶段重建。缺失、过时或被改写的构建会使任务失败，原有候选保留。
 
-独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `native:build`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`native:check` 在固定 Rust 工具链下执行格式与 Clippy 检查。
+独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `build:native`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`check:native` 在固定 Rust 工具链下执行格式与 Clippy 检查。
 
 普通构建位于应用 `out/<target>`，每个开发会话使用独立的 `out/development/<target>/session-*`，安装和归档制品位于 `dist/<target>`。相关任务停止后执行 `pnpm run clean`，仅清理已声明的工程输出，保留 `.local`、下载缓存和根 `artifacts` 中留存的制品。
 
@@ -55,7 +57,7 @@ pnpm desktop:package --target windows-x64
 
 按[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
 
-仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `typecheck:root`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.consumers.ts`。
+仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `root:typecheck`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.desktop-consumers.ts`。
 
 工具和测试引用共用函数时声明 `@kisaki3/tooling` 的 workspace devDependency，并使用其 `/cli`、`/output` 或 `/process` exports。TypeScript 与 ESLint 共享配置分别由 `@kisaki3/typescript-config`、`@kisaki3/eslint-config` 提供。三者是固定工具链内直接加载的私有工程包，不预构建，不进入产品运行依赖或仓库外作者模板。
 
@@ -75,21 +77,22 @@ pnpm desktop:package --target windows-x64
 
 TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc` 检查通过不代表此类提示为零。API 与配置迁移还须核对相应弃用提示，处理依据见[弃用接口规则](refactor/design/engineering/conventions.md#deprecated-apis)；上游传递依赖的弃用通知与自维护代码的 API 调用分别记录。
 
-| 命令                            | 输入与运行环境                                                       |
-| ------------------------------- | -------------------------------------------------------------------- |
-| `pnpm check`                    | 全仓类型、lint、格式、根工具与各项目常规 Node 测试                   |
-| `pnpm test:consumers`           | 构建并打包八包，执行 publint、Are the Types Wrong 和仓库外消费者     |
-| `pnpm test:consumers:run`       | 只消费已准备的 `artifacts/packages/inputs.json`，不重建产品          |
-| `pnpm desktop:test:native`      | 先构建，再由开发 Electron 的 Node 模式执行实际 SQLite 与原生文件测试 |
-| `pnpm desktop:test:browser`     | 真正的 Playwright Chromium 与 Vitest Browser Mode                    |
-| `pnpm desktop:test:e2e`         | 完整构建、隔离 profile、真实 Electron 窗口和正常退出                 |
-| `pnpm desktop:test:dev`         | 独立源码副本中的构建恢复、改名、HMR、启动取消和会话收尾              |
-| `pnpm desktop:test:performance` | 20 次新进程测量、固定预算、内存和退出观察                            |
-| `pnpm desktop:test:artifacts`   | 已完成打包的目标文件，保留正式 fuses，以外部方式观察启动与关闭       |
+| 命令                                            | 输入与运行环境                                                       |
+| ----------------------------------------------- | -------------------------------------------------------------------- |
+| `pnpm check`                                    | 全仓类型、lint、格式、根工具与各项目常规 Node 测试                   |
+| `pnpm desktop:packages:pack`                    | 构建并打包桌面八包，收集到 `artifacts/desktop/packages`              |
+| `pnpm desktop:packages:test:consumers`          | 构建并打包八包，执行 publint、Are the Types Wrong 和仓库外消费者     |
+| `pnpm desktop:packages:test:consumers:prepared` | 只消费已准备的 `artifacts/desktop/packages/inputs.json`，不重建产品  |
+| `pnpm desktop:test:native`                      | 先构建，再由开发 Electron 的 Node 模式执行实际 SQLite 与原生文件测试 |
+| `pnpm desktop:test:browser`                     | 真正的 Playwright Chromium 与 Vitest Browser Mode                    |
+| `pnpm desktop:test:e2e`                         | 完整构建、隔离 profile、真实 Electron 窗口和正常退出                 |
+| `pnpm desktop:test:dev`                         | 独立源码副本中的构建恢复、改名、HMR、启动取消和会话收尾              |
+| `pnpm desktop:test:performance`                 | 20 次新进程测量、固定预算、内存和退出观察                            |
+| `pnpm desktop:test:artifacts`                   | 已完成打包的目标文件，保留正式 fuses，以外部方式观察启动与关闭       |
 
 浏览器首次准备使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`。Linux CI 还需对应浏览器系统依赖、Xvfb、窗口管理器、wmctrl 和 AppImage 的 FUSE 条件。原生测试的宿主在启动 Vitest 前选择，不能在测试内部设置变量来改变 ABI。
 
-消费者输入可用 `KISAKI_PACKAGE_INPUTS` 指定。尚未发布的作用域内依赖在核对 tarball 中的真实版本范围后，映射到同组实际 tarball；没有源码链接或长期私有 registry。JavaScript 声明由工具检查，CSS 入口由真实浏览器消费验证，ATTW 不将 CSS 当作 JavaScript 入口。
+消费者输入可用 `KISAKI_DESKTOP_PACKAGE_INPUTS` 指定。尚未发布的作用域内依赖在核对 tarball 中的真实版本范围后，映射到同组实际 tarball；没有源码链接或长期私有 registry。JavaScript 声明由工具检查，CSS 入口由真实浏览器消费验证，ATTW 不将 CSS 当作 JavaScript 入口。
 
 制品输入可用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认读取当前目标 `dist/<target>/artifacts.json`。测试核对版本、目标、构建身份、摘要、资源和 fuses；不重新打包。Windows 使用窗口句柄，macOS 使用获准的系统辅助功能，Linux X11 使用窗口管理器；原生 Wayland 另按实际桌面操作记录，不将 X11 结果记作 Wayland 通过。
 
@@ -101,9 +104,9 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果单独留存，各执行分支保存自身报告。
 
-ci.yml 处理事件和并发入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml。仓库工作流调度各包自己的常规检查和跨包消费者；桌面工作流拥有范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互在 Linux x64 参考目标执行，仅浏览器变化时只安排该目标。Required checks 核对工作流、选择过程和选中任务成功，以及未选中矩阵按依据跳过。
+ci.yml 处理事件和并发入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml。仓库工作流调度各包自己的常规检查；桌面工作流拥有八包消费者、桌面范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互与八包消费者在 Linux x64 参考目标执行，仅这两类变化时只安排该目标。所有工程通过 selected／verified 输出表达选择与完成，Required checks 对每个 needs 结果使用同一判定。工程 workflow 的修改只请求自身完整验证，共同协调器修改请求全部验证，标题 workflow 不进入产品的全局输入。
 
-CI 先准备固定的 Node，再由 pnpm 官方 Action 安装 packageManager 指定版本并管理依赖存储缓存。Turbo 缓存按操作系统、架构、Node 和任务职责分组，主键已命中时跳过重复保存。macOS 部署目标在依赖安装前单独设置。反馈目标及统计口径见[工程工作区合同](refactor/design/engineering/workspace.md#ci-feedback)；作业级超时为环境准备与 runner 波动留出余量，由 workflow 配置拥有，不替代反馈目标或应用性能预算。
+CI 先准备固定的 Node，再由 pnpm 官方 Action 安装 packageManager 指定版本并管理依赖存储缓存。Turbo 缓存按工程命名空间、操作系统、架构和 Node 分组，主键已命中时跳过重复保存。macOS 部署目标在依赖安装前单独设置。反馈目标及统计口径见[工程工作区合同](refactor/design/engineering/workspace.md#ci-feedback)；作业级超时为环境准备与 runner 波动留出余量，由 workflow 配置拥有，不替代反馈目标或应用性能预算。
 
 手动运行 CI 请求完整验收；可调用验证工作流通过 `base`、`head` 和 `complete` 接收比较基线、目标提交与完整范围请求。初次提交、缺失基线及全局工具链变化也执行完整范围；选择工具失败直接导致检查失败。首次交付和发行前的六目标与主要后端要求保持。`Required checks` 始终运行，并区分有依据的未选择与应执行但未完成的任务。普通 PR 只有读取权限，正式发布和签名凭据不进入这些检查。
 

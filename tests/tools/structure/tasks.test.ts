@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { execFile } from 'node:child_process'
-import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { promisify } from 'node:util'
@@ -25,8 +25,8 @@ test('the actual task graph excludes generated inputs and always executes runtim
       'lint',
       'check:boundaries',
       'test',
-      'test:root',
-      'test:consumers',
+      'root:test',
+      'check:package',
       'test:native',
       'test:browser',
       'test:e2e',
@@ -93,6 +93,22 @@ test('affected tasks follow verification inputs without promoting documentation 
   }
   const cases = [
     { path: 'refactor/README.md', desktop: [], consumers: false },
+    { path: '.github/workflows/pr-title.yml', desktop: [], consumers: false },
+    {
+      path: 'clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tests.json',
+      desktop: [],
+      consumers: false,
+    },
+    {
+      path: 'clients/desktop/packages/desktop-contracts/vitest.config.ts',
+      desktop: [],
+      consumers: false,
+    },
+    {
+      path: 'clients/desktop/app/config/typescript/tsconfig.tests.json',
+      desktop: [],
+      consumers: false,
+    },
     {
       path: 'clients/desktop/app/electron-builder.yml',
       desktop: ['package', 'test:artifacts'],
@@ -109,7 +125,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       desktop: ['test:e2e'],
       consumers: false,
     },
-    { path: 'tests/consumers/packages.test.ts', desktop: [], consumers: true },
+    { path: 'tests/desktop/consumers/packages.test.ts', desktop: [], consumers: true },
     {
       path: 'clients/desktop/packages/desktop-contracts/src/development.test.ts',
       desktop: [],
@@ -206,6 +222,14 @@ test('affected tasks follow verification inputs without promoting documentation 
     const variables = join(directory, '.local/verification-refs.json')
     await mkdir(dirname(variables), { recursive: true })
     await writeFile(variables, JSON.stringify({ base: 'HEAD^', head: 'HEAD' }))
+    const lintQuery = join(directory, '.local/lint.graphql')
+    await writeFile(
+      lintQuery,
+      (await readFile(join(root, 'config/turbo/verification.graphql'), 'utf8')).replace(
+        /tasks:\s*\[[\s\S]*?\]/,
+        'tasks: ["lint", "root:lint", "check:boundaries"]',
+      ),
+    )
 
     for (const item of cases) {
       await writeFile(join(directory, item.path), 'changed fixture input\n')
@@ -252,6 +276,25 @@ test('affected tasks follow verification inputs without promoting documentation 
           tasks.some((task) => task.fullName === item.packageTest),
           item.path,
         ).toBe(true)
+        const { stdout: lintOutput } = await execute(
+          process.execPath,
+          [
+            resolve(root, 'node_modules/turbo/bin/turbo'),
+            'query',
+            lintQuery,
+            '--variables',
+            variables,
+          ],
+          options,
+        )
+        const lintReport: typeof report = JSON.parse(lintOutput)
+        expect(lintReport.errors).toBeUndefined()
+        expect(
+          lintReport.data.affectedTasks.items
+            .filter((task) => task.command !== null)
+            .map((task) => task.fullName),
+          item.path,
+        ).toEqual([item.packageTest.replace('#test', '#lint')])
       }
       if (item.path.includes('/src/renderer/')) {
         // Unchanged build prerequisites remain in the plan without selecting other desktop suites.
@@ -269,8 +312,8 @@ test('affected tasks follow verification inputs without promoting documentation 
       expect(
         tasks.some(
           (task) =>
-            task.fullName === '//#test:consumers:run' ||
-            (task.name === 'test:consumers' &&
+            task.fullName === '//#desktop:packages:test:consumers:prepared' ||
+            (task.name === 'check:package' &&
               task.package.path.startsWith('clients/desktop/packages/')),
         ),
         item.path,

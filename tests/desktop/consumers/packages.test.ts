@@ -15,7 +15,9 @@ afterAll(async () => {
 
 test('strict TypeScript and ordinary Node consume the supplied public entries outside the repository', async () => {
   await consumerCommand(consumer.directory, ['run', 'typecheck'])
-  expect(await consumerCommand(consumer.directory, ['run', 'node'])).toContain('consumer-ready')
+  expect(await consumerCommand(consumer.directory, ['run', 'test:node'])).toContain(
+    'consumer-ready',
+  )
 
   const manifest = await readFile(join(consumer.directory, 'package.json'), 'utf8')
   expect(manifest).not.toContain('workspace:')

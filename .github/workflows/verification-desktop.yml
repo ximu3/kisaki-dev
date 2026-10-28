@@ -35,6 +35,7 @@ jobs:
       complete: ${{ steps.affected.outputs.complete }}
       native: ${{ steps.affected.outputs.native }}
       browser: ${{ steps.affected.outputs.browser }}
+      consumers: ${{ steps.affected.outputs.consumers }}
       e2e: ${{ steps.affected.outputs.e2e }}
       dev: ${{ steps.affected.outputs.dev }}
       performance: ${{ steps.affected.outputs.performance }}
@@ -89,6 +90,10 @@ jobs:
           if [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]] || ! git cat-file -e "$TURBO_SCM_BASE^{commit}"; then
             complete=true
           fi
+          if [[ "$complete" == false ]]; then
+            orchestration=$(git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- .github/workflows/ci.yml .github/workflows/verification.yml .github/workflows/verification-desktop.yml config/turbo/verification.graphql)
+            if [[ -n "$orchestration" ]]; then complete=true; fi
+          fi
           mkdir -p test-results/verification
           report=test-results/verification/affected.json
           if [[ "$complete" == false ]]; then
@@ -117,6 +122,11 @@ jobs:
               platform=true
             fi
           done
+          consumers="$complete"
+          if [[ "$complete" == false ]]; then
+            consumers=$(jq -r 'any(.data.affectedTasks.items[]; .command != null and (.fullName == "//#desktop:packages:test:consumers:prepared" or (.name == "check:package" and (.package.path | startswith("clients/desktop/packages/")))))' "$report")
+          fi
+          echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           tooling="$complete"
           if [[ "$complete" == false ]]; then
             tooling=$(jq -r 'any(.data.affectedTasks.items[]; .fullName == "@kisaki3/tooling#test" and .command != null)' "$report")
@@ -126,7 +136,7 @@ jobs:
           if [[ "$platform" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
             selected=true
-          elif [[ "$browser" == true ]]; then
+          elif [[ "$browser" == true || "$consumers" == true ]]; then
             matrix=$(jq -c 'map(select(.target == "linux-x64"))' <<< "$TARGETS")
             selected=true
           else
@@ -184,10 +194,9 @@ jobs:
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .turbo/cache
-          key: turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-${{ github.sha }}
+          key: turbo-v3-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
           restore-keys: |
-            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-
-            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
+            turbo-v3-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
       - name: Record runner environment
         shell: bash
         run: |-
@@ -198,13 +207,16 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - name: Install Chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.browser == 'true' && matrix.target == 'linux-x64')
+        if: needs.select.outputs.dev == 'true' || ((needs.select.outputs.browser == 'true' || needs.select.outputs.consumers == 'true') && matrix.target == 'linux-x64')
+      - name: Test desktop package consumers
+        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
+        run: pnpm desktop:packages:test:consumers
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
       - name: Check native source
         if: needs.select.outputs.native == 'true'
-        run: pnpm --filter @kisaki3/desktop native:check
+        run: pnpm --filter @kisaki3/desktop check:native
       - name: Build desktop
         if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true'
         shell: bash
@@ -212,7 +224,7 @@ jobs:
         id: build-desktop
       - name: Prepare native build for development
         shell: bash
-        run: pnpm --filter @kisaki3/desktop native:build --target "$DESKTOP_TARGET"
+        run: pnpm --filter @kisaki3/desktop build:native --target "$DESKTOP_TARGET"
         if: needs.select.outputs.dev == 'true' && steps.build-desktop.outcome == 'skipped'
       - name: Record tested build
         if: needs.select.outputs.artifacts == 'true'
@@ -281,6 +293,8 @@ jobs:
           name: desktop-${{ matrix.target }}
           path: |-
             test-results/verification/
+            test-results/desktop/consumers/
+            artifacts/desktop/packages/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json

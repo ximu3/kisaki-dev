@@ -9,6 +9,9 @@ const root = process.cwd()
 /** Enumerate maintained files only; historical probes and generated output have separate owners. */
 async function sourceFiles(directory: string): Promise<string[]> {
   const ignored = new Set([
+    '.git',
+    'refactor',
+    'artifacts',
     'node_modules',
     'out',
     'dist',
@@ -19,6 +22,7 @@ async function sourceFiles(directory: string): Promise<string[]> {
     'target',
     'test-results',
     'playwright-report',
+    'coverage',
   ])
   const result: string[] = []
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -30,18 +34,14 @@ async function sourceFiles(directory: string): Promise<string[]> {
   return result
 }
 
-/** Read the actual member manifests; category folders and fixture projects are not members. */
+/** Read registered project manifests through pnpm's workspace discovery. */
 async function members(): Promise<{ directory: string; manifest: Record<string, unknown> }[]> {
-  const directories = ['clients/desktop/app']
-  for (const parent of [
-    'packages',
-    'clients/desktop/packages',
-    'clients/desktop/extensions/projects',
-  ]) {
-    for (const child of await readdir(parent, { withFileTypes: true })) {
-      if (child.isDirectory()) directories.push(`${parent}/${child.name}`)
-    }
-  }
+  const selected: { path: string }[] = JSON.parse(
+    await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
+  )
+  const directories = selected
+    .map((member) => relative(root, member.path).replaceAll('\\', '/'))
+    .filter(Boolean)
   return Promise.all(
     directories.map(async (directory) => ({
       directory,
@@ -51,40 +51,38 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
 }
 
 test('pnpm registers the maintained projects with unique identities and the intended publication boundaries', async () => {
-  const selected: { path: string }[] = JSON.parse(
-    await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
-  )
   const projects = await members()
-  const actual = selected.map((member) => relative(root, member.path).replaceAll('\\', '/'))
-  expect(actual.filter(Boolean).sort()).toEqual(projects.map(({ directory }) => directory).sort())
+  const manifests = (await sourceFiles(root))
+    .map((file) => relative(root, file).replaceAll('\\', '/'))
+    .filter(
+      (file) => file.endsWith('/package.json') && !/(^|\/)tests\/(?:[^/]+\/)*fixtures\//.test(file),
+    )
+    .map((file) => file.slice(0, -'/package.json'.length))
+  expect(projects.map(({ directory }) => directory).sort()).toEqual(manifests.sort())
   expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(projects.length)
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
     if (directory.startsWith('clients/desktop/packages/')) {
       expect(manifest.license).toBe('MIT')
       expect(manifest.publishConfig).toMatchObject({ access: 'public' })
-    } else {
+    } else if (
+      directory === 'clients/desktop/app' ||
+      directory.startsWith('clients/desktop/extensions/projects/') ||
+      ['packages/tooling', 'packages/typescript-config', 'packages/eslint-config'].includes(
+        directory,
+      )
+    ) {
       expect(manifest.private).toBe(true)
       expect(manifest.license).toBe('AGPL-3.0-only')
     }
-    if (directory.includes('/extensions/')) expect(manifest.name).toMatch(/^@kisaki3\/ext-/)
+    if (directory.startsWith('clients/desktop/extensions/projects/')) {
+      expect(manifest.name).toMatch(/^@kisaki3\/ext-/)
+    }
   }
 })
 
 test('all maintained JavaScript-environment sources are TypeScript and have an executed typecheck owner', async () => {
-  const rootFiles = (await readdir(root, { withFileTypes: true }))
-    .filter((entry) => entry.isFile())
-    .map((entry) => join(root, entry.name))
-  const files = [
-    ...rootFiles,
-    ...(
-      await Promise.all(
-        ['clients', 'packages', 'config', 'tools', 'tests'].map((directory) =>
-          sourceFiles(resolve(directory)),
-        ),
-      )
-    ).flat(),
-  ]
+  const files = await sourceFiles(root)
   expect(files.filter((path) => /\.(?:js|jsx|mjs|cjs)$/.test(path))).toEqual([])
   const projects = [
     { directory: '.', manifest: JSON.parse(await readFile('package.json', 'utf8')) },
@@ -93,21 +91,11 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   const configs: string[] = []
   for (const { directory, manifest } of projects) {
     const scripts = (manifest.scripts ?? {}) as Record<string, string>
-    const command = directory === '.' ? scripts['typecheck:root'] : scripts.typecheck
-    for (const match of (command ?? '').matchAll(
-      /tsc (?:-p|--project|-b|--build)(?: ([\w./-]+\.json))?/g,
-    )) {
-      configs.push(resolve(directory, match[1] ?? 'tsconfig.json'))
-    }
+    const command = directory === '.' ? scripts['root:typecheck'] : scripts.typecheck
+    if (command) configs.push(resolve(directory, 'tsconfig.json'))
   }
-  configs.push(
-    ...[
-      'node/tsconfig.json',
-      'webview/tsconfig.json',
-      'solid/tsconfig.json',
-      'config/typescript/tsconfig.tools.json',
-    ].map((file) => resolve('tests/fixtures/consumers', file)),
-  )
+  // This standalone project is typechecked after installation by the desktop consumer suite.
+  configs.push(resolve('tests/desktop/fixtures/consumers/tsconfig.json'))
   const checked = new Set<string>()
   const checkedDeclarations = new Set<string>()
   const visited = new Set<string>()

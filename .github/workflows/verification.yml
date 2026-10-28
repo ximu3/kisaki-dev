@@ -42,17 +42,10 @@ jobs:
     steps:
       - name: Check required results
         env:
-          REPOSITORY_RESULT: ${{ needs.repository.result }}
-          DESKTOP_WORKFLOW_RESULT: ${{ needs.desktop.result }}
-          DESKTOP_SELECTED: ${{ needs.desktop.outputs.selected }}
-          DESKTOP_VERIFIED: ${{ needs.desktop.outputs.verified }}
+          PROJECT_RESULTS: ${{ toJSON(needs) }}
         run: |
-          test "$REPOSITORY_RESULT" = success
-          test "$DESKTOP_WORKFLOW_RESULT" = success
-          # Workflow success covers every matrix child; the marker distinguishes execution from skipping.
-          if [ "$DESKTOP_SELECTED" = true ]; then
-            test "$DESKTOP_VERIFIED" = true
-          else
-            test "$DESKTOP_SELECTED" = false
-            test -z "$DESKTOP_VERIFIED"
-          fi
+          # Workflow success covers every matrix child; markers distinguish execution from skipping.
+          jq -e 'all(.[];
+            .result == "success" and
+            ((.outputs.selected == "true" and .outputs.verified == "true") or
+             (.outputs.selected == "false" and (.outputs.verified // "") == "")))' <<< "$PROJECT_RESULTS"

@@ -20,7 +20,8 @@
         "!src/**/*.test.ts",
         "!src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "!config/typescript/tsconfig.tests.json"
       ],
       "outputs": ["out/**"],
       "cache": false
@@ -53,7 +54,8 @@
         "!tools/**/*.test.ts",
         "!native/**/*.test.ts",
         "tools/package/**",
-        "packaging/**"
+        "packaging/**",
+        "!config/typescript/tsconfig.tests.json"
       ],
       "cache": false
     },
@@ -102,7 +104,8 @@
         "!src/**/*.test.ts",
         "!src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "!config/typescript/tsconfig.tests.json"
       ],
       "cache": false
     },
@@ -133,7 +136,8 @@
         "!src/**/*.test.tsx",
         "!tools/**/*.test.ts",
         "!native/**/*.test.ts",
-        "packaging/**"
+        "packaging/**",
+        "!config/typescript/tsconfig.tests.json"
       ],
       "cache": false
     },
@@ -170,7 +174,8 @@
         "!src/**/*.test.ts",
         "!src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "!config/typescript/tsconfig.tests.json"
       ],
       "cache": false
     },
@@ -206,7 +211,11 @@
         "!src/**/*.test.ts",
         "!src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "!config/typescript/tsconfig.tests.json",
+        "!$TURBO_ROOT$/clients/desktop/packages/*/config/typescript/tsconfig.tests.json",
+        "!$TURBO_ROOT$/clients/desktop/packages/*/config/vitest/**",
+        "!$TURBO_ROOT$/clients/desktop/packages/*/config/playwright/**"
       ],
       "cache": false
     }

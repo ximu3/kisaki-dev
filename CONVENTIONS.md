@@ -24,6 +24,8 @@
 
 package.json 的依赖块按包名排序，脚本按开发、构建、验证和维护组织，同类任务相邻；条件 exports 保留实际匹配顺序。工程用途与清单归属遵守[工作区规则](refactor/design/engineering/workspace.md#workspace)，不以减少声明数量代替用途判断。
 
+脚本命名按[任务规则](refactor/design/engineering/workspace.md#tasks)：根定向入口先标范围，包内入口先标动作，全仓聚合入口保持简短名称。名称与实际输入、调用范围及输出归属一致。
+
 目录按职责与所有权组织，同级保持相近粒度。专用实现随拥有者放置，共同机制归最小合理共享范围；入口、配置与内部支撑的角色清楚，测试复用本身不构成上移理由。文件或目录按协作需要和工程边界选择，名称说明实际工作，具体要求见[目录规则](refactor/design/engineering/conventions.md#directory-readability)。
 
 各工程的内部工具配置按工具归入自身 `config/<工具名>/`，默认发现入口、明确共享的配置基线及工具规定的位置保持稳定。配置归属不以文件数量或项目规模决定，不增加纯转发入口或空目录；完整规则见[配置归属](refactor/design/engineering/conventions.md#configuration-layout)。

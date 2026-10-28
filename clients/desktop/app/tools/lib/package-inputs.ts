@@ -1,11 +1,29 @@
 import { readdir } from 'node:fs/promises'
-import { join } from 'node:path'
+import { basename, join } from 'node:path'
 
-/** Select public-package inputs shared by build identity and development change watching. */
+/** Exclude verification-only files from package builds and live change notifications. */
+export function isPackageBuildInput(path: string): boolean {
+  const name = basename(path)
+  return (
+    ![
+      'vitest.config.ts',
+      'playwright.config.ts',
+      'eslint.config.ts',
+      'tsconfig.tests.json',
+    ].includes(name) &&
+    !/\.test\.tsx?$/.test(name) &&
+    !/(?:^|[/\\])config[/\\](?:vitest|playwright)(?:[/\\]|$)/.test(path)
+  )
+}
+
+/** Select input roots; the shared predicate also filters nested files and future watcher additions. */
 export async function publicPackageBuildInputs(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })
   const files = entries
-    .filter((entry) => entry.isFile() && /\.(?:ts|json)$/.test(entry.name))
+    .filter(
+      (entry) =>
+        entry.isFile() && /\.(?:ts|json)$/.test(entry.name) && isPackageBuildInput(entry.name),
+    )
     .map((entry) => entry.name)
     .sort()
 

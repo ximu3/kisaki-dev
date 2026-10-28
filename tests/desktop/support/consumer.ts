@@ -4,7 +4,7 @@ import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
-import type { PackageInputs } from '../../tools/release/package-inputs'
+import type { DesktopPackageInputs } from '../../../tools/desktop/package-inputs'
 import { t as readTar } from 'tar'
 import { satisfies } from 'semver'
 import { stringify } from 'yaml'
@@ -12,7 +12,9 @@ import { stringify } from 'yaml'
 /** Run pnpm in the isolated consumer and return its standard output. */
 export async function consumerCommand(directory: string, args: string[]): Promise<string> {
   const pnpm = process.env.npm_execpath
-  if (!pnpm) throw new Error('Run consumer verification through pnpm test:consumers')
+  if (!pnpm) {
+    throw new Error('Run consumer verification through pnpm desktop:packages:test:consumers')
+  }
 
   try {
     const command = pnpm.endsWith('.exe') ? pnpm : process.execPath
@@ -35,11 +37,12 @@ export async function consumerCommand(directory: string, args: string[]): Promis
 /** Install exact supplied tarballs in an unrelated temporary project, with its own lockfile. */
 export async function prepareConsumer(): Promise<{
   directory: string
-  inputs: PackageInputs
+  inputs: DesktopPackageInputs
   close(): Promise<void>
 }> {
-  const receipt = process.env.KISAKI_PACKAGE_INPUTS ?? resolve('artifacts/packages/inputs.json')
-  const inputs: PackageInputs = JSON.parse(await readFile(receipt, 'utf8'))
+  const receipt =
+    process.env.KISAKI_DESKTOP_PACKAGE_INPUTS ?? resolve('artifacts/desktop/packages/inputs.json')
+  const inputs: DesktopPackageInputs = JSON.parse(await readFile(receipt, 'utf8'))
   if (inputs.packages.length !== 8 || !/^[a-f0-9]{64}$/.test(inputs.buildId)) {
     throw new Error('Invalid package input receipt')
   }
@@ -98,23 +101,22 @@ export async function prepareConsumer(): Promise<{
     }
   }
 
-  const directory = await mkdtemp(join(tmpdir(), 'kisaki-consumer-'))
+  const directory = await mkdtemp(join(tmpdir(), 'kisaki-desktop-consumer-'))
   try {
-    await cp(resolve('tests/fixtures/consumers'), directory, { recursive: true })
+    await cp(resolve('tests/desktop/fixtures/consumers'), directory, { recursive: true })
 
     await writeFile(
       join(directory, 'package.json'),
       JSON.stringify(
         {
-          name: 'kisaki-external-consumer',
+          name: 'kisaki-desktop-consumer',
           private: true,
           type: 'module',
           packageManager: 'pnpm@11.11.0',
           scripts: {
-            typecheck:
-              'tsc -p node/tsconfig.json && tsc -p webview/tsconfig.json && tsc -p solid/tsconfig.json && tsc -p config/typescript/tsconfig.tools.json',
+            typecheck: 'tsc -b',
             build: 'vite build',
-            node: 'tsx node/consumer.ts',
+            'test:node': 'tsx node/consumer.ts',
           },
           dependencies,
           devDependencies: {

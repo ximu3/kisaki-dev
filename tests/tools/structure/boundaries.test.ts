@@ -16,64 +16,76 @@ const cases: {
 }[] = [
   {
     name: 'runtime-does-not-import-engineering',
-    from: 'app/src/main/engineering.ts',
-    to: '../../packages/tooling/src/process.ts',
+    from: 'site/src/engineering.ts',
+    source: "export type { Value } from '@kisaki3/tooling/process'\n",
+  },
+  {
+    name: 'runtime may use a shared product library',
+    allowed: true,
+    from: 'site/src/library.ts',
+    to: 'packages/shared/src/value.ts',
+    source: "export type { Value } from '../../packages/shared/src/value'\n",
+  },
+  {
+    name: 'runtime-does-not-import-engineering',
+    from: 'clients/desktop/app/src/main/engineering.ts',
+    to: 'packages/tooling/src/process.ts',
     source: "import type { Value } from '@kisaki3/tooling/process'\nexport type Alias = Value\n",
   },
   {
     name: 'main-and-extension-host-are-independent',
-    from: 'app/src/main/host.ts',
-    to: 'app/src/extension-host/entry.ts',
+    from: 'clients/desktop/app/src/main/host.ts',
+    to: 'clients/desktop/app/src/extension-host/entry.ts',
     source: "import type { Value } from '../extension-host/entry'\nexport type Alias = Value\n",
   },
   {
     name: 'renderer-has-no-node',
-    from: 'app/src/renderer/node.ts',
+    from: 'clients/desktop/app/src/renderer/node.ts',
     source: "import { readFile } from 'node:fs/promises'\nexport { readFile }\n",
   },
   {
     name: 'renderer-has-no-node',
-    from: 'app/src/renderer/contest.ts',
+    from: 'clients/desktop/app/src/renderer/contest.ts',
     source: "export { readFile } from 'node:fs/promises'\n",
   },
   {
     name: 'renderer-cannot-load-electron-or-native',
-    from: 'app/src/renderer/electron.ts',
+    from: 'clients/desktop/app/src/renderer/electron.ts',
     source: "export { app } from 'electron'\n",
   },
   {
     name: 'runtime-does-not-import-engineering',
-    from: 'app/src/main/fixture.ts',
-    to: 'app/tests/fixture.test.ts',
+    from: 'clients/desktop/app/src/main/fixture.ts',
+    to: 'clients/desktop/app/tests/fixture.test.ts',
     source: "export type { Value } from '../../tests/fixture.test'\n",
   },
   {
     name: 'appearance-dependency-direction',
-    from: 'packages/appearance/src/entry.ts',
+    from: 'clients/desktop/packages/appearance/src/entry.ts',
     source: "export type { Value } from '@kisaki3/ui'\n",
   },
   {
     name: 'no-undeclared-packages',
-    from: 'app/tools/undeclared.ts',
+    from: 'clients/desktop/app/tools/undeclared.ts',
     source: "export { value } from 'undeclared-tool'\n",
   },
   {
     name: 'native-is-main-only',
-    from: 'app/src/preload/main.ts',
-    to: 'app/native/node/index.ts',
+    from: 'clients/desktop/app/src/preload/main.ts',
+    to: 'clients/desktop/app/native/node/index.ts',
     source: "import type { Value } from '#native'\nexport type Alias = Value\n",
   },
   {
     name: 'package-private-source',
-    from: 'packages/rpc/src/index.ts',
-    to: 'packages/appearance/src/value.ts',
+    from: 'clients/desktop/packages/rpc/src/index.ts',
+    to: 'clients/desktop/packages/appearance/src/value.ts',
     source: "export type { Value } from '../../appearance/src/value'\n",
   },
   {
     name: 'engineering tools use private package exports',
     allowed: true,
-    from: 'app/tools/process.ts',
-    to: '../../packages/tooling/src/process.ts',
+    from: 'clients/desktop/app/tools/process.ts',
+    to: 'packages/tooling/src/process.ts',
     source: "import type { Value } from '@kisaki3/tooling/process'\nexport type Alias = Value\n",
   },
 ]
@@ -173,7 +185,7 @@ beforeAll(async () => {
     return inputs
   })
   for (const [path, content] of files) {
-    const file = join(directory, 'clients/desktop', path)
+    const file = join(directory, path)
     await mkdir(dirname(file), { recursive: true })
     await writeFile(file, content)
   }
@@ -183,7 +195,7 @@ beforeAll(async () => {
     output = (
       await promisify(execFile)(
         process.execPath,
-        [executable, '--config', '.dependency-cruiser.json', '--output-type', 'json', 'clients'],
+        [executable, '--config', '.dependency-cruiser.json', '--output-type', 'json', '.'],
         { cwd: directory, windowsHide: true },
       )
     ).stdout
@@ -204,7 +216,7 @@ afterAll(async () => {
 })
 
 test.each(cases)('enforces module boundaries: $name from $from', ({ name, from, allowed }) => {
-  const source = `clients/desktop/${from}`
+  const source = from
   expect(result.modules.some((module) => module.source === source)).toBe(true)
   const violations = result.summary.violations
     .filter((violation) => violation.from === source)

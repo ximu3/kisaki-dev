@@ -4,7 +4,7 @@
 
 extension 入口现提供 launchDevelopmentApplication：直接启动显式可执行文件，通过 JSON 父子 IPC 等待就绪，传入隔离 profile，并拥有实际进程寿命。stop 可返回 cancelled；exited 只依据进程真实退出，terminate 是调用方明确要求的强制结束。signal 只取消启动，startupTimeoutMs 只限制调用方选择的启动阶段，不限制用户退出决定。config 仍按纯环境检查，extension 的进程实现按 Node 环境检查。
 
-`pnpm build` 在独立候选目录生成代码、声明与适用样式，成功后交接完整 `dist`。`pnpm pack` 生成 `out/package.tgz`；`pnpm test:consumers` 使用 publint 与 Are the Types Wrong 检查这份已完成的 tarball。真实跨包消费由根 `tests/consumers` 验证。
+`pnpm build` 在独立候选目录生成代码、声明与适用样式，成功后交接完整 `dist`。`pnpm run pack` 生成 `out/package.tgz`；`pnpm check:package` 使用 publint 与 Are the Types Wrong 检查这份已完成的 tarball。真实跨包消费由根 `tests/desktop/consumers` 验证。
 
 `pnpm test` 在普通 Node 中通过隔离子进程验证开发启动器的就绪、取消退出和实际结束。根 Turbo 测试入口按依赖准备上游公共包输出；真实桌面会话与应用退出仍由应用的开发回归验证。
 

@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./node/tsconfig.json" },
+    { "path": "./webview/tsconfig.json" },
+    { "path": "./solid/tsconfig.json" },
+    { "path": "./config/typescript/tsconfig.tools.json" }
+  ]
+}

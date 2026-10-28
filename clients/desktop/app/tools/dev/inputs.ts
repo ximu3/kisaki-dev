@@ -3,7 +3,7 @@ import { isAbsolute, join, relative, sep } from 'node:path'
 import { watch } from 'chokidar'
 import type { FSWatcher } from 'chokidar'
 import { appRoot, repositoryRoot } from '../lib/paths'
-import { publicPackageBuildInputs } from '../lib/package-inputs'
+import { isPackageBuildInput, publicPackageBuildInputs } from '../lib/package-inputs'
 import type { DesktopDependency } from './dependencies'
 
 /** Session callbacks receive changes and terminal watcher failures after initial readiness. */
@@ -38,7 +38,10 @@ export async function startInputWatcher(
     join(repositoryRoot, 'pnpm-lock.yaml'),
   ]
 
-  const watcher = watch([...packageInputs, ...runtimeInputs], { ignoreInitial: true })
+  const watcher = watch([...packageInputs, ...runtimeInputs], {
+    ignoreInitial: true,
+    ignored: (path) => !isPackageBuildInput(path),
+  })
   let initialized = false
   watcher.on('error', (cause) => {
     // once() rejects initialization errors; subsequent failures belong to the live session.
