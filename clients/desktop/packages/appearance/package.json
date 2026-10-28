@@ -36,7 +36,7 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
-    "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
+    "check:package": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
     "clean": "tsx tools/clean.ts"
   },
   "devDependencies": {

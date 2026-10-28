@@ -10,6 +10,7 @@
 | 当前 W00 CI | [新工程提交、并发调整与实际失败记录](w00/2026-10-27/ci/README.md) |
 | CI 编排与反馈时间 | [任务依赖、构建复用、范围误触发修正与完整／增量实测](ci-design/2026-10-27/README.md) · [正式采用与验证](ci-design/2026-10-27/adoption/README.md) |
 | CI 工程组织与测试职责 | [PR 接续、按工程组织与目标任务](ci-architecture/2026-10-28/README.md) · [开发测试职责复核与迁移](ci-architecture/2026-10-28/development-tests.md) |
+| 脚本命名与跨域边界 | [全部 package.json 用途、前缀方案、消费者路由与扩展输入审查](script-domain-audit/2026-10-28/README.md) · [确认后的实施与验证](script-domain-audit/2026-10-28/implementation/README.md) |
 | Monorepo 与 CI 完成度 | [工程结构、Turbo 使用、旧 CI 的实际边界及打包输入／环境补漏](monorepo-review/2026-10-27/README.md) |
 | 测试必要性收敛 | [用例分层、Turbo 任务选择、CI 与文档义务调整及本机验证](testing-cleanup/2026-10-27/README.md) |
 | 新准则全项目复核 | [实现与文档覆盖、环境变量传递和消费者资源清理修正](comprehensive-review/2026-10-26/README.md) · [全面测试必要性复核](comprehensive-review/2026-10-26/testing.md) |

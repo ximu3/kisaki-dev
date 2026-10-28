@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { sourceIdentity } from '../../../tools/build/identity'
 
 let root: string
@@ -45,6 +45,23 @@ test('public-package outputs and local state do not change the desktop build ide
   for (const directory of ['dist', 'out', '.cache', '.local']) {
     await mkdir(join(packageRoot, directory))
     await writeFile(join(packageRoot, directory, 'generated.json'), '{}\n')
+  }
+
+  expect(await sourceIdentity(root)).toBe(previous)
+})
+
+test('verification configuration and lint rules do not change the desktop build identity', async () => {
+  const previous = await sourceIdentity(root)
+  for (const owner of [packageRoot, join(root, 'clients/desktop/app')]) {
+    for (const file of [
+      'config/typescript/tsconfig.tests.json',
+      'vitest.config.ts',
+      'eslint.config.ts',
+      'config/vitest/vitest.config.browser.ts',
+    ]) {
+      await mkdir(dirname(join(owner, file)), { recursive: true })
+      await writeFile(join(owner, file), 'verification input\n')
+    }
   }
 
   expect(await sourceIdentity(root)).toBe(previous)

@@ -14,6 +14,13 @@ on:
         description: Run every applicable check owned by this workflow.
         type: boolean
         default: false
+    outputs:
+      selected:
+        description: Repository checks run for every code verification.
+        value: 'true'
+      verified:
+        description: Completion marker for successful repository checks.
+        value: ${{ jobs.repository.outputs.verified }}
 permissions:
   contents: read
 env:
@@ -22,6 +29,8 @@ env:
 jobs:
   repository:
     name: Checks
+    outputs:
+      verified: ${{ steps.verified.outputs.verified }}
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     env:
@@ -62,6 +71,10 @@ jobs:
           if [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]] || ! git cat-file -e "$TURBO_SCM_BASE^{commit}"; then
             complete=true
           fi
+          if [[ "$complete" == false ]]; then
+            orchestration=$(git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- .github/workflows/ci.yml .github/workflows/verification.yml .github/workflows/verification-repository.yml config/turbo/verification.graphql)
+            if [[ -n "$orchestration" ]]; then complete=true; fi
+          fi
           mkdir -p test-results/verification
           report=test-results/verification/affected.json
           if [[ "$complete" == false ]]; then
@@ -76,21 +89,15 @@ jobs:
             jq -n '{complete: true}' > "$report"
           fi
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
-          consumers="$complete"
-          if [[ "$complete" == false ]]; then
-            consumers=$(jq -r 'any(.data.affectedTasks.items[]; .command != null and (.name == "test:consumers" or .fullName == "//#test:consumers:run"))' "$report")
-          fi
-          echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           cp "$GITHUB_OUTPUT" test-results/verification/selected.txt
       - name: Restore Turbo cache
         id: turbo-cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .turbo/cache
-          key: turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-${{ github.sha }}
+          key: turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
           restore-keys: |
-            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.job }}-
-            turbo-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
+            turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
       - name: Check commit title
         if: github.event_name == 'push'
         run: git log -1 --format=%s | pnpm exec commitlint
@@ -105,12 +112,6 @@ jobs:
           pnpm lint "${selection[@]}" --log-order=stream
           pnpm format:check
           pnpm test "${selection[@]}" --log-order=stream
-      - name: Install Chromium
-        if: steps.affected.outputs.consumers == 'true'
-        run: pnpm exec playwright install --with-deps chromium
-      - name: Test public package consumers
-        if: steps.affected.outputs.consumers == 'true'
-        run: pnpm test:consumers
       - name: Save Turbo cache
         if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
@@ -124,5 +125,7 @@ jobs:
           name: repository-verification
           path: |
             test-results/
-            artifacts/packages/
           if-no-files-found: error
+      - name: Confirm repository checks completed
+        id: verified
+        run: echo "verified=true" >> "$GITHUB_OUTPUT"

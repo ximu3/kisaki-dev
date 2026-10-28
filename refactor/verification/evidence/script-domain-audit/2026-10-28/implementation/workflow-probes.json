@@ -1,0 +1,587 @@
+{
+  "parent": "84c6679b81f2faa1f3cfafa215c9a5872bc59199",
+  "sourceSnapshot": "84c6679b81f2faa1f3cfafa215c9a5872bc59199",
+  "workflowSha256": {
+    "desktop": "96379dedfd2a2a9f94f3c3140a95245e781964500863aadb27eadad93c2dae96",
+    "repository": "d7b8c3bbf44f8ac02775e44ff7c1ef74c80374eb2421c7450d5fed16d7ff8497",
+    "coordinator": "d2046bcb11c1b79c847c1d9a08a0d401fbe7b5181340eeaf35aed3e0f3d8a664"
+  },
+  "observations": [
+    {
+      "path": ".github/workflows/pr-title.yml",
+      "targets": 0,
+      "consumers": false,
+      "head": "a7ab873e7ef02836ff4e18a88e46026524eaf79e",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/vitest.config.ts",
+      "targets": 0,
+      "consumers": false,
+      "head": "30699b433ae4cf916a2c1a8b7d47b570367d664d",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tests.json",
+      "targets": 0,
+      "consumers": false,
+      "head": "e303c8a567a682ba9cf4f4fa63f4a2230127b6ee",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/packages/desktop-contracts/src/development.test.ts",
+      "targets": 0,
+      "consumers": false,
+      "head": "2cbb913a0be3e0464fef99c4431881c434d672d6",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/app/config/typescript/tsconfig.tests.json",
+      "targets": 0,
+      "consumers": false,
+      "head": "8827656844534eca5baadf7d5484a17f18fe7f83",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "tests/desktop/consumers/packages.test.ts",
+      "targets": 1,
+      "consumers": true,
+      "head": "cf1359f133cc7d69501819814e52b16e5868fb26",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "true",
+        "tooling": "false",
+        "selected": "true",
+        "matrix": "[{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"}]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "tests/desktop/fixtures/consumers/node/consumer.ts",
+      "targets": 1,
+      "consumers": true,
+      "head": "371406ab37db219caf272d0a2c7d06d497c7e920",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "true",
+        "tooling": "false",
+        "selected": "true",
+        "matrix": "[{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"}]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/packages/ui/README.md",
+      "targets": 1,
+      "consumers": true,
+      "head": "3a77e9e54c3aec332fdaece3b811bd0f739fd1f6",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "true",
+        "tooling": "false",
+        "selected": "true",
+        "matrix": "[{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"}]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": "clients/desktop/app/tests/browser/window.test.tsx",
+      "targets": 1,
+      "consumers": false,
+      "head": "32b5f225dfbb9d485e679ccb8c0cecfe76c16b47",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "true",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "true",
+        "matrix": "[{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"}]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": ".github/workflows/verification-repository.yml",
+      "targets": 0,
+      "consumers": false,
+      "repositoryComplete": true,
+      "head": "afb42d75fa985350fbdd044ebd7520a16f31d9a0",
+      "desktop": {
+        "complete": "false",
+        "native": "false",
+        "browser": "false",
+        "e2e": "false",
+        "dev": "false",
+        "performance": "false",
+        "artifacts": "false",
+        "consumers": "false",
+        "tooling": "false",
+        "selected": "false",
+        "matrix": "[]"
+      },
+      "repository": {
+        "complete": "true"
+      }
+    },
+    {
+      "path": ".github/workflows/verification-desktop.yml",
+      "targets": 6,
+      "consumers": true,
+      "desktopComplete": true,
+      "head": "801cffe21472fbfcb13912917d0fe5106c1f460e",
+      "desktop": {
+        "complete": "true",
+        "native": "true",
+        "browser": "true",
+        "e2e": "true",
+        "dev": "true",
+        "performance": "true",
+        "artifacts": "true",
+        "consumers": "true",
+        "tooling": "true",
+        "selected": "true",
+        "matrix": "[{\"target\":\"windows-x64\",\"runner\":\"windows-2025\",\"arch\":\"x64\"},{\"target\":\"windows-arm64\",\"runner\":\"windows-11-arm\",\"arch\":\"arm64\"},{\"target\":\"macos-x64\",\"runner\":\"macos-15-intel\",\"arch\":\"x64\"},{\"target\":\"macos-arm64\",\"runner\":\"macos-15\",\"arch\":\"arm64\"},{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"},{\"target\":\"linux-arm64\",\"runner\":\"ubuntu-22.04-arm\",\"arch\":\"arm64\"}]"
+      },
+      "repository": {
+        "complete": "false"
+      }
+    },
+    {
+      "path": ".github/workflows/verification.yml",
+      "targets": 6,
+      "consumers": true,
+      "desktopComplete": true,
+      "repositoryComplete": true,
+      "head": "abf0ce0a4a8715a79328c15c17e3c1238039fe24",
+      "desktop": {
+        "complete": "true",
+        "native": "true",
+        "browser": "true",
+        "e2e": "true",
+        "dev": "true",
+        "performance": "true",
+        "artifacts": "true",
+        "consumers": "true",
+        "tooling": "true",
+        "selected": "true",
+        "matrix": "[{\"target\":\"windows-x64\",\"runner\":\"windows-2025\",\"arch\":\"x64\"},{\"target\":\"windows-arm64\",\"runner\":\"windows-11-arm\",\"arch\":\"arm64\"},{\"target\":\"macos-x64\",\"runner\":\"macos-15-intel\",\"arch\":\"x64\"},{\"target\":\"macos-arm64\",\"runner\":\"macos-15\",\"arch\":\"arm64\"},{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"},{\"target\":\"linux-arm64\",\"runner\":\"ubuntu-22.04-arm\",\"arch\":\"arm64\"}]"
+      },
+      "repository": {
+        "complete": "true"
+      }
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "targets": 6,
+      "consumers": true,
+      "desktopComplete": true,
+      "repositoryComplete": true,
+      "head": "6a593a1f196046bd309090c411a5fd419f6c1e2d",
+      "desktop": {
+        "complete": "true",
+        "native": "true",
+        "browser": "true",
+        "e2e": "true",
+        "dev": "true",
+        "performance": "true",
+        "artifacts": "true",
+        "consumers": "true",
+        "tooling": "true",
+        "selected": "true",
+        "matrix": "[{\"target\":\"windows-x64\",\"runner\":\"windows-2025\",\"arch\":\"x64\"},{\"target\":\"windows-arm64\",\"runner\":\"windows-11-arm\",\"arch\":\"arm64\"},{\"target\":\"macos-x64\",\"runner\":\"macos-15-intel\",\"arch\":\"x64\"},{\"target\":\"macos-arm64\",\"runner\":\"macos-15\",\"arch\":\"arm64\"},{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"},{\"target\":\"linux-arm64\",\"runner\":\"ubuntu-22.04-arm\",\"arch\":\"arm64\"}]"
+      },
+      "repository": {
+        "complete": "true"
+      }
+    },
+    {
+      "path": "config/turbo/verification.graphql",
+      "targets": 6,
+      "consumers": true,
+      "desktopComplete": true,
+      "repositoryComplete": true,
+      "head": "1720a581b9efc24a1102260b70589323f5b2c40f",
+      "desktop": {
+        "complete": "true",
+        "native": "true",
+        "browser": "true",
+        "e2e": "true",
+        "dev": "true",
+        "performance": "true",
+        "artifacts": "true",
+        "consumers": "true",
+        "tooling": "true",
+        "selected": "true",
+        "matrix": "[{\"target\":\"windows-x64\",\"runner\":\"windows-2025\",\"arch\":\"x64\"},{\"target\":\"windows-arm64\",\"runner\":\"windows-11-arm\",\"arch\":\"arm64\"},{\"target\":\"macos-x64\",\"runner\":\"macos-15-intel\",\"arch\":\"x64\"},{\"target\":\"macos-arm64\",\"runner\":\"macos-15\",\"arch\":\"arm64\"},{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"},{\"target\":\"linux-arm64\",\"runner\":\"ubuntu-22.04-arm\",\"arch\":\"arm64\"}]"
+      },
+      "repository": {
+        "complete": "true"
+      }
+    },
+    {
+      "path": ".node-version",
+      "targets": 6,
+      "consumers": true,
+      "desktopComplete": true,
+      "repositoryComplete": true,
+      "head": "680008918e87d170fc9648ee64d79877bd481e7a",
+      "desktop": {
+        "complete": "true",
+        "native": "true",
+        "browser": "true",
+        "e2e": "true",
+        "dev": "true",
+        "performance": "true",
+        "artifacts": "true",
+        "consumers": "true",
+        "tooling": "true",
+        "selected": "true",
+        "matrix": "[{\"target\":\"windows-x64\",\"runner\":\"windows-2025\",\"arch\":\"x64\"},{\"target\":\"windows-arm64\",\"runner\":\"windows-11-arm\",\"arch\":\"arm64\"},{\"target\":\"macos-x64\",\"runner\":\"macos-15-intel\",\"arch\":\"x64\"},{\"target\":\"macos-arm64\",\"runner\":\"macos-15\",\"arch\":\"arm64\"},{\"target\":\"linux-x64\",\"runner\":\"ubuntu-22.04\",\"arch\":\"x64\"},{\"target\":\"linux-arm64\",\"runner\":\"ubuntu-22.04-arm\",\"arch\":\"arm64\"}]"
+      },
+      "repository": {
+        "complete": "true"
+      }
+    }
+  ],
+  "foreignRouting": {
+    "input": {
+      "data": {
+        "affectedTasks": {
+          "items": [
+            {
+              "name": "check:package",
+              "fullName": "@kisaki3/web-fixture#check:package",
+              "command": "check-web-package",
+              "package": {
+                "name": "@kisaki3/web-fixture",
+                "path": "clients/web/packages/fixture"
+              },
+              "reason": {
+                "__typename": "TaskInputChanged"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "selected": "native=false\nbrowser=false\ne2e=false\ndev=false\nperformance=false\nartifacts=false\nconsumers=false\ntooling=false\nselected=false\nmatrix=[]\n"
+  },
+  "gateCases": [
+    {
+      "name": "all-selected",
+      "pass": true,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        }
+      }
+    },
+    {
+      "name": "desktop-not-selected",
+      "pass": true,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "false",
+            "verified": ""
+          }
+        }
+      }
+    },
+    {
+      "name": "additional-project",
+      "pass": true,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "false",
+            "verified": ""
+          }
+        },
+        "site": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        }
+      }
+    },
+    {
+      "name": "additional-project-fails",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "false",
+            "verified": ""
+          }
+        },
+        "site": {
+          "result": "failure",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        }
+      }
+    },
+    {
+      "name": "missing-completion",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": ""
+          }
+        }
+      }
+    },
+    {
+      "name": "unexpected-completion",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "false",
+            "verified": "true"
+          }
+        }
+      }
+    },
+    {
+      "name": "missing-selection",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {}
+        }
+      }
+    },
+    {
+      "name": "unexpected-skip",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "skipped",
+          "outputs": {
+            "selected": "false",
+            "verified": ""
+          }
+        }
+      }
+    },
+    {
+      "name": "cancelled",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "cancelled",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        }
+      }
+    },
+    {
+      "name": "repository-fails",
+      "pass": false,
+      "results": {
+        "repository": {
+          "result": "failure",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        },
+        "desktop": {
+          "result": "success",
+          "outputs": {
+            "selected": "true",
+            "verified": "true"
+          }
+        }
+      }
+    }
+  ]
+}

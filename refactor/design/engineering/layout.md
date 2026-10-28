@@ -137,7 +137,7 @@ tools/
 
 hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于 .husky。其集成测试归根 tests/tools/hooks，使用隔离 Git 仓库验证配置冲突、重复安装、卸载和 worktree 行为。它与本体的运行事件或扩展 hook 无关。
 
-跨包制品消费归根 tests/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归根 tests/support，固定输入归 tests/fixtures。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
+桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归 tests/desktop/support，固定输入归 tests/desktop/fixtures；收据收集工具归 tools/desktop，输出归 artifacts/desktop/packages。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
 当前 release/package-inputs.ts 汇集八个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。版本差、依赖、说明检查和正式发行元数据生成由后续工作包沿[发行合同](releases.md)建立，按实际协作需要形成文件。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 

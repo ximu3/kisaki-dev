@@ -200,15 +200,15 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                            |
 | pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                      |
 | pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                           |
-| pnpm test:consumers                                  | 调度各包及根跨包消费者任务，核对实际 tarball 的结构、声明、样式与作者接入 |
+| pnpm desktop:packages:test:consumers                                  | 调度各包及根跨包消费者任务，核对实际 tarball 的结构、声明、样式与作者接入 |
 | `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵                    |
 | pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                          |
-| pnpm hooks:install / pnpm hooks:uninstall            | 当前仓库 hooks 的明确生命周期                                             |
+| pnpm install:hooks / pnpm uninstall:hooks            | 当前仓库 hooks 的明确生命周期                                             |
 | pnpm run clean                                       | 仅清理项目声明的构建输出                                                  |
 
 根命令区分全仓任务与 clients/desktop/app 目标。desktop:* 不隐式构建或发布全部 .kisx，build 和 check 根据真实 workspace 依赖图执行，桌面开发入口固定为 desktop:dev。根 tools 处理机械交付工作，clients/desktop/app/tools 处理桌面会话与制品。项目级操作使用 pnpm filter，扩展作者使用 kisx。
 
-工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。各工程的 test:consumers 验证自身公开包，根任务同时调度根 tests/consumers 的跨包组合。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
+工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。公共包的 check:package 检查自身 tarball 的结构与声明，根 desktop:packages:test:consumers 同时调度这些检查和 tests/desktop/consumers 的真实跨包消费。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
 
 消费者和最终制品任务明确接收待验证文件、版本和构建身份，并核对适用目标，缺失或不匹配时失败。CI 先完成对应构建、打包与适用签名，再执行消费和制品任务，并保存检查与用例的实际结果；测试不重建或替换待发行制品。普通 test 的默认范围与这些任务分别配置，必需但未执行的检查不能计为通过。
 

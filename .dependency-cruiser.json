@@ -28,10 +28,11 @@
       "name": "runtime-does-not-import-engineering",
       "severity": "error",
       "from": {
-        "path": "^clients/desktop/.*/(src|native/node)/"
+        "path": "(^|/)(src|native/node)/",
+        "pathNot": "^packages/(tooling|typescript-config|eslint-config)/"
       },
       "to": {
-        "path": "^packages/|(^|/)(tools|tests)/"
+        "path": "^packages/(tooling|typescript-config|eslint-config)/|(^|/)(tools|tests)/"
       }
     },
     {
@@ -321,7 +322,7 @@
       "fileName": "tsconfig.json"
     },
     "doNotFollow": {
-      "path": "^refactor/|(^|/)(node_modules|dist|out|target|test-results|playwright-report|coverage|\\.cache|\\.local|\\.turbo|\\.vitest)/|\\.test\\.tsx?$"
+      "path": "^refactor/|^artifacts/|(^|/)(node_modules|dist|out|target|test-results|playwright-report|coverage|\\.git|\\.cache|\\.local|\\.turbo|\\.vitest)/|(^|/)tests/.*fixtures/|\\.test\\.tsx?$"
     },
     "enhancedResolveOptions": {
       "conditionNames": ["types", "import", "node", "default"],

@@ -4,8 +4,8 @@ query Verification($base: String!, $head: String!) {
     head: $head
     tasks: [
       "test"
-      "test:consumers"
-      "test:consumers:run"
+      "check:package"
+      "desktop:packages:test:consumers:prepared"
       "test:browser"
       "test:native"
       "test:e2e"

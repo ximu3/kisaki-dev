@@ -8,7 +8,7 @@ import { runCli } from '@kisaki3/tooling/cli'
 const root = fileURLToPath(new URL('../..', import.meta.url))
 
 /** A tarball selected for consumer testing, identified by package version and digest. */
-export interface PackageInput {
+export interface DesktopPackageInput {
   name: string
   version: string
   path: string
@@ -16,22 +16,22 @@ export interface PackageInput {
 }
 
 /** A portable set of already-packed files with a common content identity. */
-export interface PackageInputs {
+export interface DesktopPackageInputs {
   buildId: string
   lockfileSha256: string
-  packages: PackageInput[]
+  packages: DesktopPackageInput[]
 }
 
 /** Copy the built tarballs to the artifact directory and write their completed input receipt. */
-export async function collectPackageInputs(signal?: AbortSignal): Promise<string> {
+export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise<string> {
   const args = ['list', '--filter', './clients/desktop/packages/*', '--depth', '-1', '--json']
   const stdout = await readPnpm(args, root, { signal })
   const members: { name: string; path: string }[] = JSON.parse(stdout)
   if (members.length !== 8) throw new Error('Expected the eight public desktop packages')
 
-  const output = join(root, 'artifacts', 'packages')
+  const output = join(root, 'artifacts', 'desktop', 'packages')
   await mkdir(output, { recursive: true })
-  const packages: PackageInput[] = []
+  const packages: DesktopPackageInput[] = []
   for (const member of members.sort((left, right) => left.name.localeCompare(right.name, 'en'))) {
     if (!/^@kisaki3\/[a-z0-9-]+$/.test(member.name)) {
       throw new Error('Unexpected public package identity')
@@ -58,7 +58,7 @@ export async function collectPackageInputs(signal?: AbortSignal): Promise<string
     .update(JSON.stringify({ lockfileSha256, packages }))
     .digest('hex')
 
-  const inputs: PackageInputs = { buildId, lockfileSha256, packages }
+  const inputs: DesktopPackageInputs = { buildId, lockfileSha256, packages }
   signal?.throwIfAborted()
   const temporary = join(output, `inputs.${process.pid}.json`)
   await writeFile(temporary, JSON.stringify(inputs, null, 2))
@@ -68,6 +68,6 @@ export async function collectPackageInputs(signal?: AbortSignal): Promise<string
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   await runCli(async (signal) => {
-    console.info(await collectPackageInputs(signal))
+    console.info(await collectDesktopPackageInputs(signal))
   })
 }

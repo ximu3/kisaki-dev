@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { repositoryRoot } from '../lib/paths'
-import { publicPackageBuildInputs } from '../lib/package-inputs'
+import { isPackageBuildInput, publicPackageBuildInputs } from '../lib/package-inputs'
 import { sha256 } from '../lib/sha256'
 
 /** Hash a workspace's declared engineering inputs, excluding state, caches and earlier outputs. */
@@ -22,14 +22,15 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
   ])
 
   /** Traverse owned inputs in stable order, preserving names in the identity. */
-  async function include(directory: string): Promise<void> {
+  async function include(directory: string, accepts?: (path: string) => boolean): Promise<void> {
     const entries = await readdir(directory, { withFileTypes: true })
     for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name, 'en'))) {
       if (ignored.has(entry.name)) continue
       if (/\.test\.tsx?$/.test(entry.name)) continue
       const path = join(directory, entry.name)
+      if (accepts && !accepts(path)) continue
       if (entry.isDirectory()) {
-        await include(path)
+        await include(path, accepts)
       } else {
         digest.update(relative(root, path).replaceAll('\\', '/'))
         digest.update('\0')
@@ -39,10 +40,13 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
   }
 
   for (const name of ['src', 'native', 'tools', 'assets', 'config']) {
-    await include(join(appRoot, name))
+    await include(join(appRoot, name), isPackageBuildInput)
   }
   for (const entry of await readdir(appRoot)) {
-    if (entry.endsWith('.ts') || entry.endsWith('.json') || entry.endsWith('.yml')) {
+    if (
+      isPackageBuildInput(entry) &&
+      (entry.endsWith('.ts') || entry.endsWith('.json') || entry.endsWith('.yml'))
+    ) {
       digest.update(entry).update(await readFile(join(appRoot, entry)))
     }
   }
@@ -56,7 +60,7 @@ export async function sourceIdentity(root = repositoryRoot): Promise<string> {
     const packageRoot = join(packages, name)
     for (const input of await publicPackageBuildInputs(packageRoot)) {
       if ((await stat(input)).isDirectory()) {
-        await include(input)
+        await include(input, isPackageBuildInput)
       } else {
         digest.update(`${name}/${relative(packageRoot, input)}`).update(await readFile(input))
       }

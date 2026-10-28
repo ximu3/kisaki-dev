@@ -66,6 +66,15 @@ afterAll(async () => {
 })
 
 test('runtime configuration and nested public-package inputs remain watched after Vite restarts', async () => {
+  const previous = changes.length
+  await writeFile(
+    join(paths.repositoryRoot, 'package/config/typescript/tsconfig.tests.json'),
+    '{"compilerOptions":{"strict":true}}',
+  )
+  // Allow real filesystem events to settle before a positive change proves the watcher is live.
+  await new Promise((resolve) => setTimeout(resolve, 200))
+  expect(changes).toHaveLength(previous)
+
   for (const [path, content, kind] of [
     [
       join(paths.appRoot, 'config/vite/vite.config.main.ts'),
@@ -83,6 +92,7 @@ test('runtime configuration and nested public-package inputs remain watched afte
       'public-package',
     ],
     [join(paths.appRoot, 'src/main/added.ts'), 'export const value = 1\n', 'runtime'],
+    [join(paths.repositoryRoot, 'package/config/typescript/added.json'), '{}\n', 'public-package'],
   ] as const) {
     const before = changes.filter((change) => change === kind).length
     await writeFile(path, content)
