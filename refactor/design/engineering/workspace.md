@@ -229,7 +229,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 普通 CI 使用 Turbo 的任务输入与依赖图分别选择常规检查、公共包消费者、浏览器、原生、桌面窗口、开发会话、性能和最终制品任务。当前通用 Chromium 交互在 Ubuntu x64 参考环境执行一次；具有平台差异的原生与桌面任务在六个实际目标执行。开发会话针对构建、监听与生命周期输入，完整性能测量针对启动、加载和资源输入；20 次采样口径不因普通修改而缩减。首次交付、发行前及明确的完整验收仍执行全部所需目标和后端；手动 CI 入口请求完整范围。全局工具链变化、缺失或不可解析的基线按完整范围处理，选择工具失败则让检查失败。
 
-PR 按相对目标分支的整体改动选择任务，主线 push 按推送前后提交比较。PR 中已有共同编排或全局工具链改动时，后续只补文档仍会保留完整验证范围；不能把最后一次提交较小理解为整个 PR 影响较小。affected 决定需要运行哪些任务，缓存决定被选中的可缓存任务是否复用既有结果，两者分别承担职责。
+PR 的比较范围是目标分支与当前版本之间的全部改动，主线 push 比较推送前后提交。affected 决定需要运行的任务，缓存决定被选中的可缓存任务是否复用既有结果。
 
 构建准备与回归选择分别表达。根 desktop:test:native、desktop:test:e2e 和 desktop:test:performance 先完成有限应用构建，再执行所属任务；desktop:test:dev 只提前准备原生编译输出，由 Turbo 准备其公共依赖，测试在隔离副本中执行真实开发构建。应用测试脚本消费已准备输入。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。未改变但被选中任务依赖的构建，不使其他验证范围一起扩大；输入清单随运行器、配置、辅助和资源依赖同步更新。
 
@@ -251,7 +251,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 <a id="ci-feedback"></a>
 
-当前 W00 规模与标准托管 runner 的工程目标为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。目标依据见[初次编排实测](../../verification/evidence/ci-design/2026-10-27/README.md)与[按目标组织后的实测和调整](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+当前 W00 规模与标准托管 runner 的工程目标为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是[实测依据支持的工程预算](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
 
