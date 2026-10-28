@@ -85,10 +85,12 @@
     },
     {
       "command": "actual workflow selector and required gate probes",
-      "result": "pending",
+      "result": "passed",
       "scopeCases": 17,
       "foreignDomainCases": 1,
-      "gateCases": 10
+      "gateCases": 10,
+      "sourceSnapshot": "3c7fc917e87810b92aeebca567a7bbfc948a9307",
+      "report": "workflow-selection.json"
     }
   ],
   "rawReports": {
@@ -135,6 +137,10 @@
     "artifacts/project-readability/2026-10-28/tested-build.json": {
       "sha256": "728b70cceeedaded4d62ec4ae6fe3d68836e33839594d61021ecb659e2ed3afb",
       "bytes": 156
+    },
+    "artifacts/project-readability/2026-10-28/workflow-probes.log": {
+      "sha256": "2f588597172d6ebe4c93d6b86610abb78f6396bde0349720f235d1f762f9a5ad",
+      "bytes": 1885
     }
   },
   "runtimeEvidenceScope": "Local runtime results apply to Windows x64. Other target executions and the required gate are recorded by the delivery PR checks. No formal signing, install/upgrade or independent-project/backend acceptance was added."
