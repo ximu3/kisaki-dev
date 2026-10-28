@@ -27,11 +27,11 @@ export const workloads = {
   video: ['1080p', '4K'],
 } as const
 
-/** Existing design limits plus an absolute budget for the new W00 engineering shell. */
+/** Limits for interactive work and startup of the window and native-module workload. */
 export const budgets = {
   samples: 20,
   backgroundInputP95Ms: 100,
   synchronousMainWorkMs: 50,
-  // The W00 shell has no equivalent old-product workload; this is not a library startup budget.
+  // Measures windows and native-module readiness without a loaded library, business views or extensions.
   engineeringShellStartupP95Ms: 5_000,
 } as const

@@ -2,37 +2,40 @@
 
 <a id="design"></a>
 
-## 当前进度
+## 当前交付
 
-截至 2026-10-28：
+截至 2026-10-28，开发基线为 `cafcfce`。[PR #10](https://github.com/ximu3/kisaki-dev/pull/10) 已合并，其对应输入的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)通过，完整运行用时 20 分 15 秒。
 
 | 范围 | 状态 |
 | --- | --- |
-| 产品、领域、界面、工程及扩展设计 | 正式合同已建立；终态实现与整体一致性为首要准则，可读性与编码风格列为核心质量要求和交付门槛。播放控制记忆、预设单行范围及 oauth-relay 最终公开仓库合同已确认。 |
-| W00 工程与验证入口 | PR #1、#3、#4、#5、#6、#7、#8、#9 已合并，当前基线为 db217ce。工程外壳、四类窗口、公共包消费及六目标运行有对应提交的证据。 |
-| 全项目终态一致性审查 | 684 份维护输入的审查与修正已合并。构建输入由 Turbo 任务定义拥有；本机整仓、真实开发和制品验证，以及[最终六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40683835030)通过。macOS x64 冷准备等待的首轮失败、调整及复验保留在[审查记录](../verification/evidence/final-state-coherence/2026-10-28/README.md)。 |
-| 全项目可读性与编码风格 | 已审阅当前 686 份输入（含 220 篇文档），落实核心规范、导航和语义分段，明确开发测试父子角色及两个 CI 辅助的职责。整仓检查、八包消费、四项开发回归、Windows 构建与原样 ZIP 验证通过；覆盖和验证范围见[审查记录](../verification/evidence/project-readability/2026-10-28/README.md)，远端结果由 [PR #10](https://github.com/ximu3/kisaki-dev/pull/10) 的当前提交检查记录。 |
-| 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)与现有文件补齐已合并为 ad9113d；[412 份输入覆盖及验证](../verification/evidence/file-module-comments/2026-10-28/README.md)保留实际范围。 |
-| W01–W13 与四个独立项目 | 未开始正式实施；33 项官方扩展只具备工程身份与配置，三个译本尚未完成正式资源交付。 |
-| 正式应用与发行 | 完整产品、正式签署、安装升级、系统支持下限和主要运行后端的最终验收未完成；未执行 npm、正式下载、更新索引或生产服务发布。 |
+| 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
+| W00 工程与验证入口 | 主要实现和六目标工程验证完成；[合并约束与稳定性定性](#w00-pending)尚未闭合，整包待收尾。 |
+| W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
+| Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
+| 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
 
-工程完成度不等于产品完成度。已有设计探针、候选装配、公开包的工程入口与真实运行测试分别对应自己的范围，完整交付按[验收标准](../verification/acceptance.md)判断。
+各阶段的实现、运行验证与发行按[验收标准](../verification/acceptance.md)分别记录。
 
-## 尚未完成的合同实施与证据
+<a id="w00-pending"></a>
 
-- preferences.playback 的应用级音量和静音记忆、四种行终止符的扫描预设边界已确认并写入合同；正式播放器、扫描、Worker 和 UI 尚未实现。九项表达式的独立探针通过只证明表达式边界。
-- 本体 Drizzle 1.x 的正式 ORM/Kit 版本组合、完整 schema、codec、迁移及查询性能尚未由正式工程验证。现有 0.45.2 查询试件与 1.0.0-rc.5 候选证据保留各自范围。
-- Google OAuth 应用验证未取得完成证据。既有 Desktop 授权、刷新、OpenID 身份与 Books API 成功不能替代应用审核；原事实与来源缺口见[扩展审查](../verification/evidence/final-state-coherence/2026-10-28/extensions-review.md)。AniList 高级评分、部分导入器的真实软件样本及官方扩展的正式宿主与安装消费仍按[逐项交付清单](delivery-checklist.md#extensions)核对。
-- Vantage、Kana、libmpv-node 和 oauth-relay 尚未建立正式实现仓库与交付制品。六目标、主要图形与桌面后端、完整原生平台包、relay 两架构镜像和实际部署均须取得对应正式实现的证据。
-- libmpv 两项固定源码修改已核对原始 Git blob、精确套用和前后摘要；本轮没有新增媒体库编译、截图、颜色或 GPU 运行结果。
-- 跨文件系统移动仅在 Windows x64 取得运行证据；其他五个 CI 目标的测试根同属一个文件系统，跳过不记为通过。正式签名、公证、安装升级、独立扩展额外许可及完整随包权利材料仍待交付。
-- 历史 macOS x64 首次启动偶发超时、两次 Apple Silicon 性能／收尾超时，以及本机候选目录交接的偶发 EPERM 尚未确定根因。后续通过与未复现保留为实际结果，不等同于问题已修复，详见[CI 维护](../verification/evidence/workflow-review/2026-10-27/README.md)和[工程组织验证](../verification/evidence/ci-architecture/2026-10-28/README.md)。
+## W00 待闭合事项
 
-## 仓库与发布状态
+- **合并约束：** `ximu3/kisaki-dev` 的 `main` 未受保护，ruleset 列表为空。现行[协作规范](../design/engineering/workspace.md#collaboration)要求合并必须通过 `verify / Required checks` 和 `PR title`，仓库配置尚未落实。实际读取结果见[完成度核对](../verification/evidence/project-documentation/2026-10-28/README.md#w00)。
+- **稳定性定性：** macOS x64 首次启动偶发超时、Apple Silicon 性能／收尾超时及本机候选目录交接 EPERM 的历史记录尚未完成根因定性。最新六目标通过不将这些记录改记为已修复；对应输入与诊断见[CI 维护](../verification/evidence/workflow-review/2026-10-27/README.md)、[启动与收尾诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)和[工程组织验证](../verification/evidence/ci-architecture/2026-10-28/README.md)。
 
-项目级开发远端为公开的 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，承担正式接续前的持续开发、PR、CI 与候选制品。改名及公开结果见[仓库改名](../verification/evidence/repository/2026-10-26/rename.json)与[可见性核对](../verification/evidence/repository/2026-10-27/README.md)。
+## 后续工作包的交付范围
 
-旧 ximu3/kisaki 在 2026-10-25 核对时仍公开且未归档，旧资料存档与同名重建未执行。四个独立项目的开发仓库尚未创建，开发可见性统一为公开；oauth-relay 最终仓库也已确认公开。实际建仓、正式接续、发布及服务切换按[仓库合同](../design/engineering/repository.md)与对应授权处理。开发仓库尚无 main 分支保护／ruleset 的配置完成记录，既有规范要求的检查名称不代表已启用保护。
+- 本体 Drizzle 1.x 的正式 ORM/Kit 组合、schema、codec、迁移和查询性能尚未由正式工程验证。现有查询试件与候选证据保持各自适用范围。
+- 正式业务、界面、播放器、扫描与 Worker 尚未实现；播放音量与静音记忆和识别预设的单行规则由相应合同定义。表达式探针只证明其匹配边界。
+- 官方扩展及三个译本尚未完成正式宿主、资源、安装和消费验证。Google OAuth 应用审核、AniList 高级评分及部分导入器的真实软件样本仍有证据缺口，见[逐项交付清单](delivery-checklist.md#extensions)与[来源证据](../verification/evidence/final-state-coherence/2026-10-28/extensions-review.md)。
+- 四个独立项目须完成正式实现、目标制品和各主要后端的联合验证。libmpv 的固定源码补丁已有核对证据；正式媒体库、截图、颜色和 GPU 接入尚未完成。
+- 跨文件系统移动仅在 Windows x64 取得运行证据，其他五个 CI 目标因测试根同属一个文件系统而跳过。完整平台组合、安装升级、正式签署、独立扩展额外许可及随包权利材料仍待对应交付验证。
+
+## 仓库与发布
+
+公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，承载源码、PR、CI、候选制品与跨仓联调。正式仓库接续、npm 发行和服务部署按[仓库合同](../design/engineering/repository.md)及实际授权执行。
+
+旧 ximu3/kisaki 的存档与同名重建尚未执行；实际仓库状态见[完成度核对](../verification/evidence/project-documentation/2026-10-28/README.md#w00)。四个独立项目的正式开发仓库与交付制品尚未登记；开发仓库及 oauth-relay 最终源码仓库采用 public 可见性。
 
 <a id="environments"></a>
 
@@ -42,54 +45,47 @@
 | --- | --- |
 | 本地设备 | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡。 |
 | 本地执行条件 | 普通用户权限的交互桌面；测试使用独立资料与目录。 |
-| 标准 CI | Windows、macOS、Linux 的 x64／arm64 工程基线已取得实际运行与候选制品证据；具体输入、工作流、运行和未覆盖项由对应证据保存。本轮结果单独登记。 |
-| 反馈目标 | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)。PR #6 实现提交的完整九项 CI 为 19 分 36 秒，消费者增量为 1 分 49 秒；单次样本不作为稳定提速比例。 |
+| 标准 CI | Windows、macOS、Linux 的 x64／arm64；各目标有原生架构构建、基础运行与候选载体验证。系统、输入、样本及未覆盖组合由对应证据记录。 |
+| 反馈目标 | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；最新完整 CI 为 20 分 15 秒，增量基准见[任务与反馈证据](../verification/evidence/ci-design/2026-10-27/README.md)。 |
 
 <a id="progress"></a>
 
 ## 工作包与独立项目
 
-| 范围                                                                | 状态   |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00) | 工程基线、六目标与缓存证据已建立；当前维护验证见[可读性审查](../verification/evidence/project-readability/2026-10-28/README.md)，范围内 A24、A26、A28、A31 与完整产品验收分别记录。 |
-| [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
-| [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
-| [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |
-| [W04：完成全部资料库能力](work-packages.md#w04)                     | 未开始 |
-| [W05：完成任务、后台生命周期与偏好](work-packages.md#w05)           | 未开始 |
-| [W06：完成资料获取、采用、扫描和本地文件](work-packages.md#w06)     | 未开始 |
-| [W07：完成游戏、视频、阅读与存档](work-packages.md#w07)             | 未开始 |
-| [W08：完成扩展运行机制与作者工具](work-packages.md#w08)             | 未开始 |
-| [W09：完成全体官方扩展](work-packages.md#w09)                       | 未开始 |
-| [W10：完成主界面与应用管理界面](work-packages.md#w10)               | 未开始 |
-| [W11：完成制品与发行工程](work-packages.md#w11)                   | 未开始 |
-| [W12：完成项目文档与工程一致性核对](work-packages.md#w12)               | 未开始 |
-| [W13：整体验收与交付](work-packages.md#w13)                         | 未开始 |
-| Vantage 独立项目                                                    | 未开始 |
-| Kana 独立项目                                                       | 未开始 |
-| libmpv-node 独立项目                                                | 未开始 |
-| oauth-relay 独立项目                                                | 未开始 |
+| 范围 | 状态 |
+| --- | --- |
+| [W00：工程与测试入口](work-packages.md#w00) | 待收尾，见[未闭合事项](#w00-pending)和[已完成范围](#w00)。 |
+| [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
+| [W02：数据库与原生操作](work-packages.md#w02) | 未开始 |
+| [W03：完整业务链路](work-packages.md#w03) | 未开始 |
+| [W04：资料库能力](work-packages.md#w04) | 未开始 |
+| [W05：任务、后台生命周期与偏好](work-packages.md#w05) | 未开始 |
+| [W06：资料获取、采用、扫描和本地文件](work-packages.md#w06) | 未开始 |
+| [W07：游戏、视频、阅读与存档](work-packages.md#w07) | 未开始 |
+| [W08：扩展运行机制与作者工具](work-packages.md#w08) | 未开始 |
+| [W09：官方扩展](work-packages.md#w09) | 未开始 |
+| [W10：主界面与应用管理界面](work-packages.md#w10) | 未开始 |
+| [W11：制品与发行工程](work-packages.md#w11) | 未开始 |
+| [W12：项目文档与工程一致性](work-packages.md#w12) | 未开始 |
+| [W13：整体验收与交付](work-packages.md#w13) | 未开始 |
+| Vantage、Kana、libmpv-node 与 oauth-relay | 未开始 |
 
-分项进度见[交付检查清单](delivery-checklist.md)，验证记录见[验证证据](../verification/evidence/README.md)。
+扩展及独立项目的分项进度由[交付检查清单](delivery-checklist.md)维护。
 
 <a id="w00"></a>
 
-## W00 工程证据
+## W00 已完成范围
 
-W00 已建立 45 个 workspace 成员、四类程序构建与开发会话、私有 Rust／Node-API 工程、固定资源准备、类型与依赖检查，以及 Node、浏览器、Electron、真实包消费、性能和最终制品验证入口。普通 `check` 与真实宿主、性能、制品的范围分别记录。
-
-| 范围 | 已有结果与入口 |
+| 交付项 | 实现与验证 |
 | --- | --- |
-| 初始工程与六目标 | [2026-10-24 基线](../verification/evidence/w00/2026-10-24/README.md)及[六目标运行与归档](../verification/evidence/w00/2026-10-24/ci/README.md)；后续输入只按仍适用范围复用。 |
-| 工程归属与配置 | [配置归组](../verification/evidence/w00/2026-10-25/config-convention/README.md)、[包内入口](../verification/evidence/w00/2026-10-25/package-imports/README.md)、[弃用接口核对](../verification/evidence/w00/2026-10-25/deprecations/README.md)。四项上游传递依赖的弃用通知保留为维护项。 |
-| 输出与命令寿命 | [顺序执行及六目标验证](../verification/evidence/w00/2026-10-25/sequential-workflows/README.md)；同一副本内独立流程顺序执行，完整候选成功后交接。 |
-| 私有工程包与缓存 | [共享工程及本机验证](../verification/evidence/w00/2026-10-26/monorepo-cache/README.md)、[六目标和跨运行缓存](../verification/evidence/w00/2026-10-27/ci/README.md)。 |
-| 公共父子 IPC 与窗口关闭 | [开发连接实现](../verification/evidence/development-ipc/2026-10-26/implementation/README.md)、[Chokidar 6／Electron 45 修正](../verification/evidence/ci-exploration/2026-10-27/README.md)；PR #3、#4 及主线接续已通过相应运行。 |
-| AppImage | [上游条件兼容策略](../verification/evidence/appimage-policy/2026-10-26/adoption/README.md)；Ubuntu 24.04 x64 十三项启动对照限于所述条件，不代表全部原生 Wayland 后端。 |
-| CI 事件、任务与目标 | [元信息事件](../verification/evidence/ci-events/2026-10-26/README.md)、[工程工作流和目标组织](../verification/evidence/ci-architecture/2026-10-28/README.md)、[脚本与消费者范围](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)。PR #5、#6、#7 已合并。 |
-| 类型与声明检查 | [声明检查分工](../verification/evidence/declaration-checks/2026-10-27/README.md)；常规项目保留 strict，公开声明消费者及自有声明拥有层完整检查。 |
-| 文件与模块概述 | [覆盖和输出核对](../verification/evidence/file-module-comments/2026-10-28/README.md)；[PR #8](https://github.com/ximu3/kisaki-dev/pull/8)已于 2026-10-28 合并为 ad9113d。 |
-| 终态与整体一致性 | [完整覆盖、取舍与验证](../verification/evidence/final-state-coherence/2026-10-28/README.md)；[PR #9](https://github.com/ximu3/kisaki-dev/pull/9)已合并为 db217ce，最终六目标及 Required checks 通过。 |
-| 可读性与编码风格 | [全项目覆盖、命名与职责、语义分段及验证](../verification/evidence/project-readability/2026-10-28/README.md)。 |
+| 工程与程序边界 | 45 个 workspace 成员，main、preload、renderer、extension-host 与私有 Rust/Node-API 入口；类型、依赖和运行环境检查实际执行。 |
+| 构建与资源（A24） | 六目标构建、固定字体与图标、SQLite/native 资源及摘要校验；每份输出由单一任务交接，准备失败保留既有结果。 |
+| 开发会话 | 公共父子 IPC、隔离资料、源码与打包应用接入、输入监听、HMR、完整候选采用、失败恢复及取消收尾。 |
+| Hooks（A26） | 安装、重复安装、卸载、配置冲突、部分暂存失败恢复及 worktree 行为经隔离仓库验证。 |
+| 测试与制品入口（A28） | Node、真实浏览器、Electron Node ABI、四窗口、20 次启动测量和保留生产 fuses 的外部载体验证；六目标均已运行。 |
+| 包消费与工程规则（A31） | 八包 tarball、声明与 CSS 的仓库外消费通过；源码边界、任务输入、资源寿命、文件说明和可读性已核对。 |
+| CI | 按真实输入选择任务和目标，仓库与桌面工作流各自执行，独立标题检查及汇总门禁通过；待落实的仓库合并约束见上方缺项。 |
 
-早期探索、失败、修复前状态与各次运行的原始记录保留在[证据索引](../verification/evidence/README.md)，不再作为当前待办重复列出。本页维护当前结论，原始证据中的提交、环境、摘要与当时结果保持不变。
+当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)和[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
+
+历史输入、失败、修正、原始报告与制品摘要保存在[证据索引](../verification/evidence/README.md)。本页维护当前完成度、缺项及其证据入口。

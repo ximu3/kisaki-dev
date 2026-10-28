@@ -8,7 +8,7 @@
 
 **编码风格同属核心质量要求。** 逻辑分段、间距、控制流、状态与副作用的表达，以及同类代码的一致性，都按[编码风格](refactor/design/engineering/conventions.md#coding-style)逐段审阅。格式工具负责语法排版，人工审查负责职责与语义步骤是否清楚。
 
-通用文档不得加入过程性叙述；只保留现行内容和必要依据，实施经过归状态与证据，遵守[文档归属](refactor/design/engineering/documentation.md#owners)。
+通用文档只保留现行内容和必要依据；当前完成度与缺项归状态页，实施经过与逐次运行记录归验证证据，遵守[文档归属](refactor/design/engineering/documentation.md#owners)。
 
 简洁与原生优先是全项目的重要设计准则，同时约束用户体验、实现、工具和文档。优先直接的流程、清楚的概念，以及平台、语言和工具自身提供的能力与惯例；原生优先不限定现有工具或技术栈，选型仍从目标出发。保留系统交互和浏览器控件的原有语义。避免过度防御、过度测试和过度设计，既有方案同样接受复核。具体遵守[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)。
 

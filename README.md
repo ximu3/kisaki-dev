@@ -1,8 +1,8 @@
 # Kisaki
 
-Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。本仓库提供桌面工程基础及[完整产品规格](refactor/README.md)，当前可运行内容为工程外壳，尚无新版正式发行。
+Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。本仓库提供桌面工程及[完整产品规格](refactor/README.md)。桌面工程包含四类窗口、隔离开发和原生模块的运行与验证入口；可用功能和发行情况见[实施状态](refactor/implementation/status.md)。
 
-桌面工程位于 `clients/desktop/app`，八个公共包和 33 个官方扩展项目分别位于相邻的 `packages` 与 `extensions/projects`。根 `packages` 中的三个私有工程包提供共享 TypeScript、ESLint 配置和工具函数。完整进度与实测范围见 [实施状态](refactor/implementation/status.md)。
+桌面工程位于 `clients/desktop/app`，八个公共包和 33 个官方扩展项目分别位于相邻的 `packages` 与 `extensions/projects`。根 `packages` 中的三个私有工程包提供共享 TypeScript、ESLint 配置和工具函数。
 
 安装 Node 24.11.1、pnpm 11.11.0、Rustup 与当前平台的 C/C++ 构建工具后，运行：
 

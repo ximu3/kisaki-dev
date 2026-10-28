@@ -8,7 +8,7 @@ rpc 包、扩展接入与本地开发连接使用下述协议，分别管理消�
 
 | 版本                             | 定义与核对方式                                                                                                      |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| rpc wireVersion                  | rpc 包拥有，首版为 1；帧字段和请求关联规则变化时更新。双方只接纳自己实现的版本，当前仅有 1，不协商回退              |
+| rpc wireVersion                  | rpc 包拥有，值为 1；帧字段和请求关联规则变化时更新。双方只接纳自己实现的版本，不协商回退                            |
 | 接入 protocolVersion             | 各端点协议拥有，首版为 1；表示该端点的握手、消息目录及资源适配。不能用 npm 包版本替代                               |
 | extension API version            | extension-api 拥有的 SemVer；核对 manifest.apiVersionRange，不等于桌面版本、SDK 版本或 wireVersion                  |
 | manifest／registry schemaVersion | extension-distribution 拥有的文档格式；在读取对应文档时验证，不与 RPC 帧合并                                        |

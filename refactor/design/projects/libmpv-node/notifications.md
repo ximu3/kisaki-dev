@@ -197,7 +197,7 @@ end-file 始终保留以下字段，不根据值是否为零省略它们：
 | ------------------- | ------------------------------------------------------------------ |
 | reason              | eof、stop、quit、error、redirect；未识别的原生码表示为 unknown     |
 | reasonCode          | 原始结束原因枚举码；包括未识别的值                                 |
-| errorCode           | 原始 mpv_event_end_file.error；目前在 error 原因下有意义，其余为 0 |
+| errorCode           | 原始 mpv_event_end_file.error；在 error 原因下有意义，其余为 0     |
 | playlistEntryId     | 被播放或尝试播放的原生条目 ID，bigint                              |
 | playlistInsertId    | 原始第一个插入条目 ID，bigint；没有插入时保留上游值                |
 | playlistInsertCount | 原始插入条目数，number；0 表示没有有效插入范围                     |
