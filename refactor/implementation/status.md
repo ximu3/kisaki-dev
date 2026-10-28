@@ -9,9 +9,9 @@
 | 范围                                                                | 状态   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 产品、领域、界面、工程及扩展设计 | 既有规则已建立；本轮已按确认方案修正入口命名、消费者归属与跨域检查边界 |
-| W00 工程与验证入口               | PR #1、#3、#4、#5 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
-| CI 编排与反馈时间 | [工程工作流与目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)及[测试归属](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)已随 PR #5 合并；完整九项 CI 用时 17 分 24 秒，超过 15 分钟反馈目标，保留实际值；原 macOS x64 首次启动偶发超时仍未确定原因 |
-| 脚本与扩展边界审查 | [49 份清单、164 个当前脚本及工程边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)已完成；发现消费者选择／执行范围、pack 文档调用及输入传播等问题，命名和归属方案已确认并落实，[本机检查与八包消费](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)通过，15 组实际工作流选择和 10 组汇总门禁通过，[PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 交付待合并 |
+| W00 工程与验证入口               | PR #1、#3、#4、#5、#6 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
+| CI 编排与反馈时间 | 反馈目标已按确认调整为 [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；PR #6 实现提交的完整九项 CI 通过，用时 19 分 36 秒，消费者增量为 1 分 49 秒；历史运行按当时目标保留，原 macOS x64 首次启动偶发超时仍未确定原因 |
+| 脚本与扩展边界审查 | [49 份清单、164 个当前脚本及工程边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)已完成；发现消费者选择／执行范围、pack 文档调用及输入传播等问题，命名和归属方案已确认并落实，[本机检查与八包消费](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)通过，15 组实际工作流选择和 10 组汇总门禁通过，[PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 已 Squash 合并为 1a4c6f4 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -26,7 +26,9 @@
 
 随后按讨论落实[CI 工程边界和统一目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)，公共包的三个 Node／纯合同用例回归所属包，四个真实开发场景保留独有的会话保证。全仓类型、lint、格式、51 项常规测试、四项真实开发场景、浏览器交互和工作流静态核对通过；十三种实际选择输入和七种门禁情况符合预期。首轮本机 SDK 目录交接的 EPERM 未在相同重试中复现，按原始失败记录，未宣称修复。[PR #5](https://github.com/ximu3/kisaki-dev/pull/5) 已按授权 Squash 合并为 `d949e36`，合并前的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40627973881)九项全部通过，用时 17 分 24 秒；仅包测试与仅浏览器的远端选择分别通过，耗时 1 分 39 秒与 1 分 32 秒。累计 runner 时间为 71 分 23 秒，独立运行样本不作为稳定提速比例。
 
-本轮[脚本与跨域边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)覆盖当前 46 份清单中的 164 个脚本，另核对三份历史清单及生成消费者脚本。当前命令均有实现或明确用途，但桌面八包流程被通用名称遮蔽，消费者选择范围与实际执行集合不一致，部分检查和输入传播也依赖当前桌面布局。以 pnpm 11.11.0 实测确认 pack 调用差异，并用实际 Git／Turbo 选择与合成跨域输入保留证据。该审查之后，用户确认根范围在前、包内动作在前，以及桌面消费者归桌面参考任务。命名、调用、目录、输出空间、输入选择、成员发现及 CI 门禁已经同步修正；全仓检查和 54 项普通测试、八包制品与真实消费通过，详见[实施验证](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)。15 组实际工作流选择、其他域消费者隔离与 10 组汇总门禁均通过；远端六目标结果随 [PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 的检查与报告留存，当前分支待合并。未新增产品工程。
+本轮[脚本与跨域边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)覆盖当前 46 份清单中的 164 个脚本，另核对三份历史清单及生成消费者脚本。当前命令均有实现或明确用途，但桌面八包流程被通用名称遮蔽，消费者选择范围与实际执行集合不一致，部分检查和输入传播也依赖当前桌面布局。以 pnpm 11.11.0 实测确认 pack 调用差异，并用实际 Git／Turbo 选择与合成跨域输入保留证据。该审查之后，用户确认根范围在前、包内动作在前，以及桌面消费者归桌面参考任务。命名、调用、目录、输出空间、输入选择、成员发现及 CI 门禁已经同步修正；全仓检查和 54 项普通测试、八包制品与真实消费通过，详见[实施验证](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)。15 组实际工作流选择、其他域消费者隔离与 10 组汇总门禁均通过；远端六目标结果随 [PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 的检查与报告留存。PR #6 已于 2026-10-28 Squash 合并为 1a4c6f4，未新增产品工程。
+
+随后按用户确认，将开发、原生及完整验证的反馈目标改为 25 分钟，保留仓库／消费者／浏览器的 4 分钟和 renderer／公共 UI 的 10 分钟目标。依据与六目标实际结果见[反馈目标调整](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)。本轮只更新文档，未改变运行输入、affected 基线、缓存或测试超时；沿用实现提交 10c5f8f 的有效运行证据。PR 的选择范围覆盖相对目标分支的整体改动，不能将快路径实测解释为每次推送都只验证最后一提交。通用文档的内容规则已扩展到全部长期协作与使用文档，明确禁止过程性叙述；CI 指南已收敛为现行规则，规范入口见[文档归属](../design/engineering/documentation.md#owners)。 [PR 描述规范](../design/engineering/documentation.md#pull-request-descriptions)按最终改动与审阅需要取舍，问题、验证等信息不设为必填项。
 
 Kisaki 的项目级开发仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，当时保持 private；2026-10-27 按用户要求改为 public，并以未认证 API 请求确认公开可读，见[可见性变更](../verification/evidence/repository/2026-10-27/README.md)。目前实际存在的开发仓库只有这一项；四个独立项目尚未建仓，规范已统一为公开开发仓库。仓库 ID、main 默认分支和未归档状态保持原值；改名前后的记录见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址与可见性。
 

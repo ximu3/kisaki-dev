@@ -13,6 +13,8 @@ hooks 是明确安装的本地检查。安装器只管理仓库本地 `core.hook
 
 pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重新暂存文件。文件清单按 4,000 字符分批，适应 Windows 命令包装器的长度限制；ESLint 沿用既有忽略范围，不将忽略提示计作源码警告。修复后自行审阅和暂存。提交消息使用 Conventional Commits，首次提交为 `chore: initial commit`；PR 标题和主线提交由 CI 检查。
 
+PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/documentation.md#pull-request-descriptions)。
+
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
 ## 资源输入
@@ -102,7 +104,9 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 正式发布前，在所属项目的[公开开发仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
 
-普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果单独留存，各执行分支保存自身报告。
+普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样；测试文件变化按所属套件选择验证。选择结果单独留存，各执行分支保存自身报告。
+
+PR 的 affected 范围覆盖相对目标分支的全部改动，主线 push 比较推送前后提交。任务选择与缓存分别遵守[工程工作区合同](refactor/design/engineering/workspace.md#tasks)。
 
 ci.yml 处理事件和并发入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml。仓库工作流调度各包自己的常规检查；桌面工作流拥有八包消费者、桌面范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互与八包消费者在 Linux x64 参考目标执行，仅这两类变化时只安排该目标。所有工程通过 selected／verified 输出表达选择与完成，Required checks 对每个 needs 结果使用同一判定。工程 workflow 的修改只请求自身完整验证，共同协调器修改请求全部验证，标题 workflow 不进入产品的全局输入。
 

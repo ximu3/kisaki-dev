@@ -229,6 +229,8 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 普通 CI 使用 Turbo 的任务输入与依赖图分别选择常规检查、公共包消费者、浏览器、原生、桌面窗口、开发会话、性能和最终制品任务。当前通用 Chromium 交互在 Ubuntu x64 参考环境执行一次；具有平台差异的原生与桌面任务在六个实际目标执行。开发会话针对构建、监听与生命周期输入，完整性能测量针对启动、加载和资源输入；20 次采样口径不因普通修改而缩减。首次交付、发行前及明确的完整验收仍执行全部所需目标和后端；手动 CI 入口请求完整范围。全局工具链变化、缺失或不可解析的基线按完整范围处理，选择工具失败则让检查失败。
 
+PR 的比较范围是目标分支与当前版本之间的全部改动，主线 push 比较推送前后提交。affected 决定需要运行的任务，缓存决定被选中的可缓存任务是否复用既有结果。
+
 构建准备与回归选择分别表达。根 desktop:test:native、desktop:test:e2e 和 desktop:test:performance 先完成有限应用构建，再执行所属任务；desktop:test:dev 只提前准备原生编译输出，由 Turbo 准备其公共依赖，测试在隔离副本中执行真实开发构建。应用测试脚本消费已准备输入。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。未改变但被选中任务依赖的构建，不使其他验证范围一起扩大；输入清单随运行器、配置、辅助和资源依赖同步更新。
 
 CI 的工作流按工程职责划分，执行任务按目标环境划分，步骤表达该环境中的验证阶段。根 verification.yml 传递比较基线、目标提交和完整验证请求，调用 verification-repository.yml 与 verification-desktop.yml，并拥有最终 Required checks；工程工作流拥有自己的输入判断、工具链、环境、缓存和报告。后续工程进入实际范围时增加对应的可调用工作流与根层调用，不预建空工程，也不要求沿用桌面工具链或六目标矩阵。
@@ -249,7 +251,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 <a id="ci-feedback"></a>
 
-当前 W00 规模与标准托管 runner 的工程目标为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 15 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。目标依据见[编排与反馈实测](../../verification/evidence/ci-design/2026-10-27/README.md)，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限由 workflow 拥有，和上述反馈目标分开。
+当前 W00 规模与标准托管 runner 的工程目标为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是[实测依据支持的工程预算](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
 
@@ -311,7 +313,7 @@ Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线代码工作流检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
+PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#pull-request-descriptions)。合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线代码工作流检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
 
 <a id="hooks"></a>
 
