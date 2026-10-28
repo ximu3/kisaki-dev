@@ -8,9 +8,10 @@
 
 | 范围                                                                | 状态   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 产品、领域、界面、工程及扩展设计 | 已完成，正式规则与验收要求已确定 |
-| W00 工程与验证入口               | PR #1、#3、#4 已合并；Chokidar 6、Electron 45、开发副本和 CI 编排修正已通过六目标验证；开发仓库已按要求公开 |
-| CI 编排与反馈时间 | [按工程组织、按目标统一验证](../verification/evidence/ci-architecture/2026-10-28/README.md)及[公共包测试归属](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)已落实并通过本机核对，尚未合并；最终远端结果随对应提交检查记录；原 macOS x64 首次启动偶发超时仍未确定原因 |
+| 产品、领域、界面、工程及扩展设计 | 既有规则已建立；工程入口命名与跨域检查边界的修订按本轮审查继续讨论 |
+| W00 工程与验证入口               | PR #1、#3、#4、#5 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
+| CI 编排与反馈时间 | [工程工作流与目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)及[测试归属](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)已随 PR #5 合并；完整九项 CI 用时 17 分 24 秒，超过 15 分钟反馈目标，保留实际值；原 macOS x64 首次启动偶发超时仍未确定原因 |
+| 脚本与扩展边界审查 | [49 份清单、164 个当前脚本及工程边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)已完成；发现消费者选择／执行范围、pack 文档调用及输入传播等问题，命名和归属方案待确认，尚未改动运行脚本 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -23,7 +24,9 @@
 
 [PR #4](https://github.com/ximu3/kisaki-dev/pull/4) 随后接到新 main，文件树与此前通过的版本一致；[接续 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40619620294)十五项任务全部通过，用时 12 分 43 秒，标题检查也通过。该 PR 已按授权 Squash 合并为 `b015c09`，两个合并分支均已清理；[合并后的主线 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40621346283)十五项任务也全部通过。
 
-随后按讨论落实[CI 工程边界和统一目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)，公共包的三个 Node／纯合同用例回归所属包，四个真实开发场景保留独有的会话保证。全仓类型、lint、格式、51 项常规测试、四项真实开发场景、浏览器交互和工作流静态核对通过；十三种实际选择输入和七种门禁情况符合预期。首轮本机 SDK 目录交接的 EPERM 未在相同重试中复现，按原始失败记录，未宣称修复。新实现尚未合并，远端结果随关联提交检查留存。
+随后按讨论落实[CI 工程边界和统一目标任务](../verification/evidence/ci-architecture/2026-10-28/README.md)，公共包的三个 Node／纯合同用例回归所属包，四个真实开发场景保留独有的会话保证。全仓类型、lint、格式、51 项常规测试、四项真实开发场景、浏览器交互和工作流静态核对通过；十三种实际选择输入和七种门禁情况符合预期。首轮本机 SDK 目录交接的 EPERM 未在相同重试中复现，按原始失败记录，未宣称修复。[PR #5](https://github.com/ximu3/kisaki-dev/pull/5) 已按授权 Squash 合并为 `d949e36`，合并前的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/40627973881)九项全部通过，用时 17 分 24 秒；仅包测试与仅浏览器的远端选择分别通过，耗时 1 分 39 秒与 1 分 32 秒。累计 runner 时间为 71 分 23 秒，独立运行样本不作为稳定提速比例。
+
+本轮[脚本与跨域边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)覆盖当前 46 份清单中的 164 个脚本，另核对三份历史清单及生成消费者脚本。当前命令均有实现或明确用途，但桌面八包流程被通用名称遮蔽，消费者选择范围与实际执行集合不一致，部分检查和输入传播也依赖当前桌面布局。以 pnpm 11.11.0 实测确认 pack 调用差异，并用实际 Git／Turbo 选择与合成跨域输入保留证据。本轮没有批量改名、修改验证范围或新增产品工程，建议待讨论后统一落实。
 
 Kisaki 的项目级开发仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，当时保持 private；2026-10-27 按用户要求改为 public，并以未认证 API 请求确认公开可读，见[可见性变更](../verification/evidence/repository/2026-10-27/README.md)。目前实际存在的开发仓库只有这一项；四个独立项目尚未建仓，规范已统一为公开开发仓库。仓库 ID、main 默认分支和未归档状态保持原值；改名前后的记录见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址与可见性。
 
@@ -83,7 +86,7 @@ W00 的[六目标验证记录](../verification/evidence/w00/2026-10-24/ci/README
 
 | 范围                                                                | 状态   |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 既有[六目标及暖缓存证据](../verification/evidence/workflow-review/2026-10-27/README.md)保留；PR #3、#4 已合并；[CI 工程组织与测试归属](../verification/evidence/ci-architecture/2026-10-28/README.md)已落实并通过本机核对，尚未合并，远端结果见对应提交检查；原 macOS x64 偶发超时未定位 |
+| [W00：建立可运行的工程与测试入口](work-packages.md#w00)             | 既有[六目标及暖缓存证据](../verification/evidence/workflow-review/2026-10-27/README.md)保留；PR #3、#4、#5 已合并；[脚本命名与跨域边界](../verification/evidence/script-domain-audit/2026-10-28/README.md)修订待讨论；原 macOS x64 偶发超时未定位 |
 | [W01：实现桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：实现新数据库与原生操作基础](work-packages.md#w02)             | 未开始 |
 | [W03：贯通一个完整业务链路](work-packages.md#w03)                   | 未开始 |

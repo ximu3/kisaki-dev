@@ -1,0 +1,1659 @@
+{
+  "head": "d949e3629ea6e72514c4fe04e4ab1370a5a88918",
+  "entries": [
+    {
+      "file": "clients/desktop/app/package.json",
+      "name": "@kisaki3/desktop",
+      "category": "desktop-app",
+      "private": true,
+      "scripts": {
+        "dev": "tsx tools/dev/cli.ts",
+        "build": "tsx tools/build/cli.ts",
+        "package": "tsx tools/package/cli.ts",
+        "resources:prepare": "tsx tools/resources/cli.ts",
+        "native:build": "tsx tools/native/cli.ts",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "native:check": "tsx tools/native/cli.ts --check",
+        "test": "vitest run",
+        "test:native": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
+        "test:browser": "vitest run --config config/vitest/vitest.config.browser.ts",
+        "test:e2e": "playwright test",
+        "test:dev": "vitest run --config config/vitest/vitest.config.dev.ts",
+        "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
+        "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "dev": {
+          "purpose": "真实桌面开发 CLI，管理启动与退出",
+          "callers": "根 desktop:dev",
+          "recommendation": "保留；当前不承诺自定义 CLI 参数"
+        },
+        "build": {
+          "purpose": "有限应用或单程序构建",
+          "callers": "根构建、Turbo 依赖、CI",
+          "recommendation": "保留"
+        },
+        "package": {
+          "purpose": "验证并包装已准备的桌面构建",
+          "callers": "根完整入口、CI 已准备流程",
+          "recommendation": "保留；package 与 npm pack 产物不同"
+        },
+        "resources:prepare": {
+          "purpose": "单独准备当前目标资源",
+          "callers": "CONTRIBUTING 手动入口",
+          "recommendation": "可统一为 prepare:resources"
+        },
+        "native:build": {
+          "purpose": "准备原生绑定与匹配 ABI 输出",
+          "callers": "根开发测试前置、CI、手动",
+          "recommendation": "可统一为 build:native"
+        },
+        "typecheck": {
+          "purpose": "检查应用各环境、工具、配置和测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查应用 TypeScript 源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留；原生静态检查另有入口"
+        },
+        "native:check": {
+          "purpose": "执行 Rust 格式与 Clippy 检查",
+          "callers": "桌面 CI、手动",
+          "recommendation": "可统一为 check:native"
+        },
+        "test": {
+          "purpose": "普通 Node 单元与较小接入测试",
+          "callers": "根 test、CI",
+          "recommendation": "保留；不误称全部为纯单元"
+        },
+        "test:native": {
+          "purpose": "在匹配 Electron ABI 的 Node 模式运行原生套件",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留环境边界"
+        },
+        "test:browser": {
+          "purpose": "真实 Chromium 中的窗口组件交互",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留环境边界"
+        },
+        "test:e2e": {
+          "purpose": "真实 Electron 窗口、bridge 和关闭",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留"
+        },
+        "test:dev": {
+          "purpose": "隔离工作区中的构建恢复、HMR 和生命周期",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留；职责已另行复核"
+        },
+        "test:artifacts": {
+          "purpose": "启动并验收未改写的打包载体",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留"
+        },
+        "test:performance": {
+          "purpose": "固定次数的启动和正常退出采样",
+          "callers": "根入口、桌面 CI",
+          "recommendation": "保留"
+        },
+        "clean": {
+          "purpose": "清理应用 out 与 dist，保留缓存和 profile",
+          "callers": "根 clean、手动、已有行为测试",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/anilist/package.json",
+      "name": "@kisaki3/ext-anilist",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/anx-reader-importer/package.json",
+      "name": "@kisaki3/ext-anx-reader-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/bangumi/package.json",
+      "name": "@kisaki3/ext-bangumi",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/calibre-importer/package.json",
+      "name": "@kisaki3/ext-calibre-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/fanart-tv/package.json",
+      "name": "@kisaki3/ext-fanart-tv",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/goodreads-importer/package.json",
+      "name": "@kisaki3/ext-goodreads-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/google-books/package.json",
+      "name": "@kisaki3/ext-google-books",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/igdb/package.json",
+      "name": "@kisaki3/ext-igdb",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/itch-io/package.json",
+      "name": "@kisaki3/ext-itch-io",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/koodo-reader-importer/package.json",
+      "name": "@kisaki3/ext-koodo-reader-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/koreader-importer/package.json",
+      "name": "@kisaki3/ext-koreader-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/kotatsu-importer/package.json",
+      "name": "@kisaki3/ext-kotatsu-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/language-ja/package.json",
+      "name": "@kisaki3/ext-language-ja",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/language-zh-hans/package.json",
+      "name": "@kisaki3/ext-language-zh-hans",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/language-zh-hant/package.json",
+      "name": "@kisaki3/ext-language-zh-hant",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/launchbox-importer/package.json",
+      "name": "@kisaki3/ext-launchbox-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/mangadex/package.json",
+      "name": "@kisaki3/ext-mangadex",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/mangaupdates/package.json",
+      "name": "@kisaki3/ext-mangaupdates",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/mihon-importer/package.json",
+      "name": "@kisaki3/ext-mihon-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/myanimelist/package.json",
+      "name": "@kisaki3/ext-myanimelist",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/ndl-search/package.json",
+      "name": "@kisaki3/ext-ndl-search",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/nfo-comicinfo-importer/package.json",
+      "name": "@kisaki3/ext-nfo-comicinfo-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/playnite-importer/package.json",
+      "name": "@kisaki3/ext-playnite-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/potatovn-importer/package.json",
+      "name": "@kisaki3/ext-potatovn-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/ranobedb/package.json",
+      "name": "@kisaki3/ext-ranobedb",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/steam/package.json",
+      "name": "@kisaki3/ext-steam",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/steamgriddb/package.json",
+      "name": "@kisaki3/ext-steamgriddb",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/tmdb/package.json",
+      "name": "@kisaki3/ext-tmdb",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/vndb/package.json",
+      "name": "@kisaki3/ext-vndb",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/vnite-importer/package.json",
+      "name": "@kisaki3/ext-vnite-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/wikidata/package.json",
+      "name": "@kisaki3/ext-wikidata",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/yacreader-importer/package.json",
+      "name": "@kisaki3/ext-yacreader-importer",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/extensions/projects/ymgal/package.json",
+      "name": "@kisaki3/ext-ymgal",
+      "category": "official-extension",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查实际扩展配置的 Node 类型",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查实际扩展配置源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/appearance/package.json",
+      "name": "@kisaki3/appearance",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        },
+        "./tokens": {
+          "types": "./dist/tokens.d.ts",
+          "import": "./dist/tokens.js"
+        },
+        "./styles.css": "./dist/styles.css",
+        "./tailwind.css": "./dist/tailwind.css"
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/desktop-contracts/package.json",
+      "name": "@kisaki3/desktop-contracts",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test": "vitest run",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        },
+        "./development": {
+          "types": "./dist/development.d.ts",
+          "import": "./dist/development.js"
+        },
+        "./errors": {
+          "types": "./dist/errors.d.ts",
+          "import": "./dist/errors.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test": {
+          "purpose": "运行已归属本包的普通测试",
+          "callers": "根 test、包定向调用",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/extension-api/package.json",
+      "name": "@kisaki3/extension-api",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/package.json",
+      "name": "@kisaki3/extension-cli",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test": "vitest run",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        "./extension": {
+          "types": "./dist/extension.d.ts",
+          "import": "./dist/extension.js"
+        },
+        "./config": {
+          "types": "./dist/config.d.ts",
+          "import": "./dist/config.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test": {
+          "purpose": "运行已归属本包的普通测试",
+          "callers": "根 test、包定向调用",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/extension-distribution/package.json",
+      "name": "@kisaki3/extension-distribution",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        },
+        "./metadata": {
+          "types": "./dist/metadata.d.ts",
+          "import": "./dist/metadata.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/extension-sdk/package.json",
+      "name": "@kisaki3/extension-sdk",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/rpc/package.json",
+      "name": "@kisaki3/rpc",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        },
+        "./transport": {
+          "types": "./dist/transport.d.ts",
+          "import": "./dist/transport.js"
+        }
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "clients/desktop/packages/ui/package.json",
+      "name": "@kisaki3/ui",
+      "category": "desktop-public-package",
+      "private": false,
+      "scripts": {
+        "build": "tsx tools/build.ts",
+        "pack": "pnpm pack --out out/package.tgz",
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test:consumers": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css",
+        "clean": "tsx tools/clean.ts"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js"
+        },
+        "./styles.css": "./dist/styles.css"
+      },
+      "bin": null,
+      "review": {
+        "build": {
+          "purpose": "生成代码、声明及适用样式并交接 dist",
+          "callers": "依赖图、打包前置、手动",
+          "recommendation": "保留"
+        },
+        "pack": {
+          "purpose": "将已准备内容打成 out/package.tgz",
+          "callers": "Turbo pack、显式 pnpm run pack",
+          "recommendation": "保留；README 调用需修正"
+        },
+        "typecheck": {
+          "purpose": "检查所属源码、工具、配置及适用测试",
+          "callers": "根 typecheck、CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查所属源码",
+          "callers": "根 lint、CI、手动",
+          "recommendation": "保留"
+        },
+        "test:consumers": {
+          "purpose": "用 publint、attw 检查 tarball 与声明入口",
+          "callers": "根桌面八包消费者流程",
+          "recommendation": "建议 check:package"
+        },
+        "clean": {
+          "purpose": "清除本包 dist 与 out",
+          "callers": "根 clean、手动",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "package.json",
+      "name": "@kisaki3/workspace",
+      "category": "root",
+      "private": true,
+      "scripts": {
+        "desktop:dev": "turbo run dev --filter=@kisaki3/desktop",
+        "build": "turbo run build",
+        "desktop:build": "turbo run build --filter=@kisaki3/desktop --",
+        "desktop:package": "turbo run package --filter=@kisaki3/desktop --",
+        "packages:pack": "turbo run pack --filter=./clients/desktop/packages/* && tsx tools/release/package-inputs.ts",
+        "typecheck": "turbo run typecheck typecheck:root",
+        "typecheck:root": "tsc -b",
+        "lint": "turbo run lint lint:root check:boundaries",
+        "lint:root": "eslint \"*.config.ts\" config tools tests --max-warnings 0",
+        "lint:fix": "pnpm lint:root --fix && pnpm -r --if-present lint --fix",
+        "check:boundaries": "depcruise --config .dependency-cruiser.json clients packages tools",
+        "format:check": "prettier . --check",
+        "format": "prettier . --write",
+        "test": "turbo run test test:root",
+        "test:root": "vitest run",
+        "test:consumers": "pnpm packages:pack && turbo run test:consumers --filter=./clients/desktop/packages/* && pnpm test:consumers:run",
+        "test:consumers:run": "vitest run --config config/vitest/vitest.config.consumers.ts",
+        "desktop:test:native": "pnpm desktop:build && turbo run test:native --filter=@kisaki3/desktop --",
+        "desktop:test:browser": "turbo run test:browser --filter=@kisaki3/desktop --",
+        "desktop:test:e2e": "pnpm desktop:build && turbo run test:e2e --filter=@kisaki3/desktop --",
+        "desktop:test:dev": "pnpm --filter @kisaki3/desktop native:build && turbo run test:dev --filter=@kisaki3/desktop --",
+        "desktop:test:artifacts": "pnpm --filter @kisaki3/desktop test:artifacts",
+        "desktop:test:performance": "pnpm desktop:build && turbo run test:performance --filter=@kisaki3/desktop --",
+        "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+        "hooks:install": "tsx tools/hooks.ts install",
+        "hooks:uninstall": "tsx tools/hooks.ts uninstall",
+        "clean": "turbo run clean"
+      },
+      "exports": null,
+      "bin": null,
+      "review": {
+        "desktop:dev": {
+          "purpose": "启动桌面源码开发会话",
+          "callers": "README、CONTRIBUTING 的手动入口",
+          "recommendation": "保留域范围"
+        },
+        "build": {
+          "purpose": "调度实际 workspace 的 build",
+          "callers": "全仓手动构建、任务图",
+          "recommendation": "保留全局名"
+        },
+        "desktop:build": {
+          "purpose": "准备依赖并构建桌面应用",
+          "callers": "桌面 CI、源测试前置、手动",
+          "recommendation": "保留域范围"
+        },
+        "desktop:package": {
+          "purpose": "通过任务图准备构建再打包桌面",
+          "callers": "手动完整打包入口",
+          "recommendation": "保留；与消费已有制品区分"
+        },
+        "packages:pack": {
+          "purpose": "打包桌面八包并汇集收据",
+          "callers": "根 test:consumers 内调用",
+          "recommendation": "补 desktop 范围"
+        },
+        "typecheck": {
+          "purpose": "聚合 workspace 和根工程类型检查",
+          "callers": "CI、check、手动",
+          "recommendation": "保留全局名"
+        },
+        "typecheck:root": {
+          "purpose": "检查根工具、配置和测试",
+          "callers": "typecheck 聚合、Turbo 根任务",
+          "recommendation": "建议 root:typecheck"
+        },
+        "lint": {
+          "purpose": "聚合项目、根 lint 和依赖边界",
+          "callers": "CI、check、手动",
+          "recommendation": "保留全局名；收敛输入传播"
+        },
+        "lint:root": {
+          "purpose": "检查根配置、工具和测试源码",
+          "callers": "lint 聚合、lint:fix",
+          "recommendation": "建议 root:lint"
+        },
+        "lint:fix": {
+          "purpose": "显式修复根和各 workspace 的 ESLint 问题",
+          "callers": "手动维护入口",
+          "recommendation": "保留；写入操作不重放检查缓存"
+        },
+        "check:boundaries": {
+          "purpose": "运行依赖边界分析",
+          "callers": "lint 聚合、Turbo 根任务",
+          "recommendation": "用途有效；扫描范围需可扩展"
+        },
+        "format:check": {
+          "purpose": "检查 Prettier 支持文件的格式",
+          "callers": "check、CI、手动",
+          "recommendation": "保留"
+        },
+        "format": {
+          "purpose": "显式写入 Prettier 格式修复",
+          "callers": "手动维护入口",
+          "recommendation": "保留"
+        },
+        "test": {
+          "purpose": "聚合各包和根的普通测试",
+          "callers": "CI、check、手动",
+          "recommendation": "保留；不表示全部宿主验收"
+        },
+        "test:root": {
+          "purpose": "运行根工程的结构、边界和 hooks 测试",
+          "callers": "test 聚合、Turbo 根任务",
+          "recommendation": "建议 root:test"
+        },
+        "test:consumers": {
+          "purpose": "准备并检查桌面八包，再运行跨包消费者",
+          "callers": "仓库 CI、手动",
+          "recommendation": "补 desktop:packages 范围"
+        },
+        "test:consumers:run": {
+          "purpose": "只消费已准备的八包收据与 tarball",
+          "callers": "完整消费者入口、Turbo 输入选择",
+          "recommendation": "补范围并表达 prepared 前置"
+        },
+        "desktop:test:native": {
+          "purpose": "先构建，再以 Electron Node 模式验原生与数据库",
+          "callers": "手动、本机验收",
+          "recommendation": "保留独立入口"
+        },
+        "desktop:test:browser": {
+          "purpose": "准备 UI 依赖并执行浏览器交互",
+          "callers": "桌面 CI、手动",
+          "recommendation": "保留独立入口"
+        },
+        "desktop:test:e2e": {
+          "purpose": "先构建，再运行真实桌面窗口场景",
+          "callers": "手动、本机验收",
+          "recommendation": "保留独立入口"
+        },
+        "desktop:test:dev": {
+          "purpose": "准备原生与公共依赖，再测真实开发会话",
+          "callers": "手动、本机验收",
+          "recommendation": "保留；前置不同于有限构建"
+        },
+        "desktop:test:artifacts": {
+          "purpose": "验收已有最终桌面制品",
+          "callers": "桌面 CI、手动",
+          "recommendation": "保留；不能隐式替换待测制品"
+        },
+        "desktop:test:performance": {
+          "purpose": "先构建，再执行启动与退出采样",
+          "callers": "手动、本机验收",
+          "recommendation": "保留独立入口"
+        },
+        "check": {
+          "purpose": "组合普通类型、lint、格式和测试",
+          "callers": "日常完整普通检查",
+          "recommendation": "保留；范围已明确"
+        },
+        "hooks:install": {
+          "purpose": "显式安装本仓库 hooks",
+          "callers": "初次配置文档、手动",
+          "recommendation": "用途有效；可统一为 install:hooks"
+        },
+        "hooks:uninstall": {
+          "purpose": "撤销本工具拥有的 hooks 配置",
+          "callers": "手动维护、验收文档",
+          "recommendation": "用途有效；可统一为 uninstall:hooks"
+        },
+        "clean": {
+          "purpose": "调度有 clean 入口的 workspace 清理其输出",
+          "callers": "手动维护",
+          "recommendation": "保留；不代表清除缓存和用户资料"
+        }
+      }
+    },
+    {
+      "file": "packages/eslint-config/package.json",
+      "name": "@kisaki3/eslint-config",
+      "category": "private-engineering-package",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -p tsconfig.json",
+        "lint": "eslint . --max-warnings 0"
+      },
+      "exports": {
+        "./base": "./src/base.ts",
+        "./node": "./src/node.ts",
+        "./tests": "./src/tests.ts"
+      },
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查工程函数、规则或测试源码的类型",
+          "callers": "根聚合与 CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查工程实现源码",
+          "callers": "根聚合与 CI",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "packages/tooling/package.json",
+      "name": "@kisaki3/tooling",
+      "category": "private-engineering-package",
+      "private": true,
+      "scripts": {
+        "typecheck": "tsc -b",
+        "lint": "eslint . --max-warnings 0",
+        "test": "vitest run"
+      },
+      "exports": {
+        "./cli": "./src/cli.ts",
+        "./output": "./src/output.ts",
+        "./process": "./src/process.ts"
+      },
+      "bin": null,
+      "review": {
+        "typecheck": {
+          "purpose": "检查工程函数、规则或测试源码的类型",
+          "callers": "根聚合与 CI",
+          "recommendation": "保留"
+        },
+        "lint": {
+          "purpose": "检查工程实现源码",
+          "callers": "根聚合与 CI",
+          "recommendation": "保留"
+        },
+        "test": {
+          "purpose": "验证输出交接与进程执行的真实行为",
+          "callers": "根聚合与 CI",
+          "recommendation": "保留"
+        }
+      }
+    },
+    {
+      "file": "packages/typescript-config/package.json",
+      "name": "@kisaki3/typescript-config",
+      "category": "private-engineering-package",
+      "private": true,
+      "scripts": {},
+      "exports": {
+        "./base.json": "./base.json",
+        "./node.json": "./node.json",
+        "./browser.json": "./browser.json",
+        "./solid.json": "./solid.json"
+      },
+      "bin": null,
+      "review": {}
+    },
+    {
+      "file": "refactor/verification/evidence/appimage-policy/2026-10-26/probe/package.json",
+      "name": "kisaki-appimage-policy-probe",
+      "category": "historical",
+      "private": true,
+      "scripts": {
+        "check": "tsc --noEmit",
+        "probe": "tsx run.ts"
+      },
+      "exports": null,
+      "bin": null
+    },
+    {
+      "file": "refactor/verification/evidence/public-contracts/2026-10-22/drizzle/package.json",
+      "name": "kisaki-drizzle-contract-probe",
+      "category": "historical",
+      "private": true,
+      "scripts": {},
+      "exports": null,
+      "bin": null
+    },
+    {
+      "file": "refactor/verification/evidence/technical-tradeoffs/2026-10-22/candidates/package.json",
+      "name": "kisaki-design-candidates",
+      "category": "historical",
+      "private": true,
+      "scripts": {},
+      "exports": null,
+      "bin": null
+    }
+  ],
+  "audit": {
+    "activeManifests": 46,
+    "activeScriptEntries": 164,
+    "historicalManifests": 3,
+    "generatedConsumerScripts": 3,
+    "explicitFileReferencesChecked": 78,
+    "missingExplicitFileReferences": [],
+    "bulkCommandsExecuted": false,
+    "scope": "Current manifests, direct targets, script/Turbo/CI callers, documented manual purposes, and generated consumer scripts."
+  }
+}
