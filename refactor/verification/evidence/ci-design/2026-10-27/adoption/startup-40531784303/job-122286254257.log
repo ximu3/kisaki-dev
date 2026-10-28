@@ -1,0 +1,445 @@
+﻿2026-10-27T15:31:20.8936110Z Current runner version: '2.338.0'
+2026-10-27T15:31:20.8993090Z ##[group]Runner Image Provisioner
+2026-10-27T15:31:20.8995500Z Hosted Compute Agent
+2026-10-27T15:31:20.8996600Z Version: 20260819.586
+2026-10-27T15:31:20.8997680Z Commit: 3cc4a88dfa507ef76119ad1bb3eccc6378bb2b76
+2026-10-27T15:31:20.8999170Z Build Date: 2026-08-18T23:20:18Z
+2026-10-27T15:31:20.9001010Z Worker ID: {ae0a0e1b-3842-4a95-b884-29d82fd618d9}
+2026-10-27T15:31:20.9002540Z Azure Region: westus
+2026-10-27T15:31:20.9003680Z ##[endgroup]
+2026-10-27T15:31:20.9007990Z ##[group]Operating System
+2026-10-27T15:31:20.9009220Z macOS
+2026-10-27T15:31:20.9010200Z 15.7.9
+2026-10-27T15:31:20.9011720Z 24G830
+2026-10-27T15:31:20.9013110Z ##[endgroup]
+2026-10-27T15:31:20.9014340Z ##[group]Runner Image
+2026-10-27T15:31:20.9015880Z Image: macos-15
+2026-10-27T15:31:20.9017190Z Version: 20260824.0482.1
+2026-10-27T15:31:20.9020320Z Included Software: https://github.com/actions/runner-images/blob/macos-15/20260824.0482/images/macos/macos-15-Readme.md
+2026-10-27T15:31:20.9025690Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15%2F20260824.0482
+2026-10-27T15:31:20.9028260Z ##[endgroup]
+2026-10-27T15:31:20.9031110Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T15:31:20.9042630Z Contents: read
+2026-10-27T15:31:20.9043830Z Metadata: read
+2026-10-27T15:31:20.9044940Z ##[endgroup]
+2026-10-27T15:31:20.9049420Z Secret source: Actions
+2026-10-27T15:31:20.9051270Z Cache mode: write
+2026-10-27T15:31:20.9052920Z Prepare workflow directory
+2026-10-27T15:31:20.9970570Z Prepare all required actions
+2026-10-27T15:31:21.0088780Z Getting action download info
+2026-10-27T15:31:21.4212100Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T15:31:21.8278430Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T15:31:22.3948010Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T15:31:23.4698710Z Download action repository 'actions/cache@caa296126883cff596d87d8935842f9db880ef25' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-27T15:31:24.0151790Z Complete job name: Prepare dependency cache
+2026-10-27T15:31:24.2591350Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T15:31:24.2596640Z with:
+2026-10-27T15:31:24.2598760Z   persist-credentials: false
+2026-10-27T15:31:24.2601480Z   repository: ximu3/kisaki-dev
+2026-10-27T15:31:24.2632110Z   token: ***
+2026-10-27T15:31:24.2634550Z   ssh-strict: true
+2026-10-27T15:31:24.2636840Z   ssh-user: git
+2026-10-27T15:31:24.2639060Z   clean: true
+2026-10-27T15:31:24.2641460Z   sparse-checkout-cone-mode: true
+2026-10-27T15:31:24.2644380Z   fetch-depth: 1
+2026-10-27T15:31:24.2646650Z   fetch-tags: false
+2026-10-27T15:31:24.2649050Z   show-progress: true
+2026-10-27T15:31:24.2651920Z   lfs: false
+2026-10-27T15:31:24.2654330Z   submodules: false
+2026-10-27T15:31:24.2657580Z   set-safe-directory: true
+2026-10-27T15:31:24.2660430Z   allow-unsafe-pr-checkout: false
+2026-10-27T15:31:24.2664990Z env:
+2026-10-27T15:31:24.2667150Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:31:24.2669810Z ##[endgroup]
+2026-10-27T15:31:24.9990790Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T15:31:25.0071150Z ##[group]Getting Git version info
+2026-10-27T15:31:25.0169200Z Working directory is '/Users/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T15:31:25.0324980Z [command]/usr/local/bin/git version
+2026-10-27T15:31:25.0368740Z git version 2.55.0
+2026-10-27T15:31:25.0573530Z ##[endgroup]
+2026-10-27T15:31:25.0592760Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/666b0f54-fbe8-4264-b7d7-4f44e19423c4/.gitconfig'
+2026-10-27T15:31:25.0603220Z Temporarily overriding HOME='/Users/runner/work/_temp/666b0f54-fbe8-4264-b7d7-4f44e19423c4' before making global git config changes
+2026-10-27T15:31:25.0612640Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T15:31:25.0622080Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T15:31:25.1993330Z Deleting the contents of '/Users/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T15:31:25.2040390Z ##[group]Initializing the repository
+2026-10-27T15:31:25.2217140Z [command]/usr/local/bin/git init /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T15:31:25.2302940Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T15:31:25.2346810Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T15:31:25.2353100Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T15:31:25.2403770Z hint: call:
+2026-10-27T15:31:25.2472990Z hint:
+2026-10-27T15:31:25.2553260Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T15:31:25.2606830Z hint:
+2026-10-27T15:31:25.2709680Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T15:31:25.2834860Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T15:31:25.2852130Z hint:
+2026-10-27T15:31:25.3016760Z hint: 	git branch -m <name>
+2026-10-27T15:31:25.3081600Z hint:
+2026-10-27T15:31:25.4093030Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T15:31:25.4717040Z Initialized empty Git repository in /Users/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T15:31:25.4841010Z [command]/usr/local/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T15:31:25.4980590Z ##[endgroup]
+2026-10-27T15:31:25.5029200Z ##[group]Disabling automatic garbage collection
+2026-10-27T15:31:25.5070520Z [command]/usr/local/bin/git config --local gc.auto 0
+2026-10-27T15:31:25.5165480Z ##[endgroup]
+2026-10-27T15:31:25.5225630Z ##[group]Setting up auth
+2026-10-27T15:31:25.5299640Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T15:31:25.5366770Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T15:31:25.5437410Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T15:31:25.5504630Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T15:31:25.7629470Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T15:31:25.7779650Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T15:31:26.0287360Z [command]/usr/local/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T15:31:26.0491040Z ##[endgroup]
+2026-10-27T15:31:26.0531230Z ##[group]Fetching the repository
+2026-10-27T15:31:26.0589630Z [command]/usr/local/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb:refs/remotes/origin/research/ci-macos-startup
+2026-10-27T15:31:28.6270790Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T15:31:28.6318420Z  * [new ref]         e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb -> origin/research/ci-macos-startup
+2026-10-27T15:31:28.6416870Z ##[endgroup]
+2026-10-27T15:31:28.6486580Z ##[group]Determining the checkout info
+2026-10-27T15:31:28.6567150Z ##[endgroup]
+2026-10-27T15:31:28.6597510Z [command]/usr/local/bin/git sparse-checkout disable
+2026-10-27T15:31:28.6837470Z [command]/usr/local/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T15:31:28.7383360Z ##[group]Checking out the ref
+2026-10-27T15:31:28.7428410Z [command]/usr/local/bin/git checkout --progress --force -B research/ci-macos-startup refs/remotes/origin/research/ci-macos-startup
+2026-10-27T15:31:29.7160290Z Updating files:  32% (1310/4027)
+2026-10-27T15:31:29.8200330Z Updating files:  33% (1329/4027)
+2026-10-27T15:31:29.9206970Z Updating files:  34% (1370/4027)
+2026-10-27T15:31:29.9416330Z Updating files:  35% (1410/4027)
+2026-10-27T15:31:29.9464560Z Updating files:  36% (1450/4027)
+2026-10-27T15:31:29.9476170Z Updating files:  37% (1490/4027)
+2026-10-27T15:31:29.9507720Z Updating files:  38% (1531/4027)
+2026-10-27T15:31:29.9804430Z Updating files:  39% (1571/4027)
+2026-10-27T15:31:29.9806590Z Updating files:  40% (1611/4027)
+2026-10-27T15:31:29.9828150Z Updating files:  41% (1652/4027)
+2026-10-27T15:31:29.9839320Z Updating files:  42% (1692/4027)
+2026-10-27T15:31:29.9841630Z Updating files:  43% (1732/4027)
+2026-10-27T15:31:29.9844320Z Updating files:  44% (1772/4027)
+2026-10-27T15:31:30.1827520Z Updating files:  45% (1813/4027)
+2026-10-27T15:31:30.2406460Z Updating files:  46% (1853/4027)
+2026-10-27T15:31:30.2721200Z Updating files:  47% (1893/4027)
+2026-10-27T15:31:30.4308770Z Updating files:  48% (1933/4027)
+2026-10-27T15:31:30.5327320Z Updating files:  49% (1974/4027)
+2026-10-27T15:31:30.6338280Z Updating files:  50% (2014/4027)
+2026-10-27T15:31:30.7341790Z Updating files:  51% (2054/4027)
+2026-10-27T15:31:30.8349870Z Updating files:  52% (2095/4027)
+2026-10-27T15:31:30.8455770Z Updating files:  53% (2135/4027)
+2026-10-27T15:31:30.8554510Z Updating files:  54% (2175/4027)
+2026-10-27T15:31:30.8793670Z Updating files:  55% (2215/4027)
+2026-10-27T15:31:30.8943150Z Updating files:  56% (2256/4027)
+2026-10-27T15:31:30.9004530Z Updating files:  57% (2296/4027)
+2026-10-27T15:31:30.9056290Z Updating files:  57% (2307/4027)
+2026-10-27T15:31:30.9275740Z Updating files:  58% (2336/4027)
+2026-10-27T15:31:30.9283360Z Updating files:  59% (2376/4027)
+2026-10-27T15:31:30.9365630Z Updating files:  60% (2417/4027)
+2026-10-27T15:31:30.9444340Z Updating files:  61% (2457/4027)
+2026-10-27T15:31:30.9512180Z Updating files:  62% (2497/4027)
+2026-10-27T15:31:31.0271980Z Updating files:  63% (2538/4027)
+2026-10-27T15:31:31.0557770Z Updating files:  64% (2578/4027)
+2026-10-27T15:31:31.0682620Z Updating files:  65% (2618/4027)
+2026-10-27T15:31:31.2117960Z Updating files:  66% (2658/4027)
+2026-10-27T15:31:31.2637530Z Updating files:  67% (2699/4027)
+2026-10-27T15:31:31.2941520Z Updating files:  68% (2739/4027)
+2026-10-27T15:31:31.3017810Z Updating files:  69% (2779/4027)
+2026-10-27T15:31:31.3949250Z Updating files:  70% (2819/4027)
+2026-10-27T15:31:31.4003570Z Updating files:  71% (2860/4027)
+2026-10-27T15:31:31.4091240Z Updating files:  72% (2900/4027)
+2026-10-27T15:31:31.4160250Z Updating files:  73% (2940/4027)
+2026-10-27T15:31:31.4756690Z Updating files:  74% (2980/4027)
+2026-10-27T15:31:31.4894080Z Updating files:  75% (3021/4027)
+2026-10-27T15:31:31.5009920Z Updating files:  76% (3061/4027)
+2026-10-27T15:31:31.5109480Z Updating files:  77% (3101/4027)
+2026-10-27T15:31:31.5185450Z Updating files:  78% (3142/4027)
+2026-10-27T15:31:31.5298840Z Updating files:  79% (3182/4027)
+2026-10-27T15:31:31.5419840Z Updating files:  80% (3222/4027)
+2026-10-27T15:31:31.5465090Z Updating files:  81% (3262/4027)
+2026-10-27T15:31:31.5732320Z Updating files:  82% (3303/4027)
+2026-10-27T15:31:31.6554260Z Updating files:  83% (3343/4027)
+2026-10-27T15:31:31.7144510Z Updating files:  84% (3383/4027)
+2026-10-27T15:31:31.8080290Z Updating files:  84% (3403/4027)
+2026-10-27T15:31:31.9048310Z Updating files:  85% (3423/4027)
+2026-10-27T15:31:32.1188740Z Updating files:  86% (3464/4027)
+2026-10-27T15:31:32.1352060Z Updating files:  87% (3504/4027)
+2026-10-27T15:31:32.1580840Z Updating files:  88% (3544/4027)
+2026-10-27T15:31:32.1750960Z Updating files:  89% (3585/4027)
+2026-10-27T15:31:32.1941760Z Updating files:  90% (3625/4027)
+2026-10-27T15:31:32.2093900Z Updating files:  91% (3665/4027)
+2026-10-27T15:31:32.2965160Z Updating files:  92% (3705/4027)
+2026-10-27T15:31:32.3119050Z Updating files:  93% (3746/4027)
+2026-10-27T15:31:32.3171890Z Updating files:  94% (3786/4027)
+2026-10-27T15:31:32.3191920Z Updating files:  95% (3826/4027)
+2026-10-27T15:31:32.3199640Z Updating files:  96% (3866/4027)
+2026-10-27T15:31:32.3228800Z Updating files:  97% (3907/4027)
+2026-10-27T15:31:32.3706680Z Updating files:  98% (3947/4027)
+2026-10-27T15:31:32.3892330Z Updating files:  99% (3987/4027)
+2026-10-27T15:31:32.3896930Z Updating files: 100% (4027/4027)
+2026-10-27T15:31:32.3899010Z Updating files: 100% (4027/4027), done.
+2026-10-27T15:31:32.4118680Z Switched to a new branch 'research/ci-macos-startup'
+2026-10-27T15:31:32.4135300Z branch 'research/ci-macos-startup' set up to track 'origin/research/ci-macos-startup'.
+2026-10-27T15:31:32.4181290Z ##[endgroup]
+2026-10-27T15:31:32.4406800Z [command]/usr/local/bin/git log -1 --format=%H
+2026-10-27T15:31:32.4581100Z e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb
+2026-10-27T15:31:32.4614640Z ##[group]Removing auth
+2026-10-27T15:31:32.4628090Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T15:31:32.4791390Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T15:31:32.6600910Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T15:31:32.6710190Z http.https://github.com/.extraheader
+2026-10-27T15:31:32.6723750Z [command]/usr/local/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T15:31:32.6875810Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T15:31:32.8586720Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T15:31:32.8726630Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T15:31:33.1922640Z ##[endgroup]
+2026-10-27T15:31:33.2395500Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T15:31:33.2397000Z with:
+2026-10-27T15:31:33.2397640Z   node-version-file: .node-version
+2026-10-27T15:31:33.2398410Z   package-manager-cache: false
+2026-10-27T15:31:33.2399120Z   always-auth: false
+2026-10-27T15:31:33.2399680Z   check-latest: false
+2026-10-27T15:31:33.2407690Z   token: ***
+2026-10-27T15:31:33.2408340Z env:
+2026-10-27T15:31:33.2408870Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:31:33.2409550Z ##[endgroup]
+2026-10-27T15:31:33.6055810Z Node version file is not JSON file
+2026-10-27T15:31:33.6201030Z Resolved .node-version as 24.11.1
+2026-10-27T15:31:33.6496560Z (node:2131) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T15:31:33.6588280Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T15:31:33.6639200Z Attempting to download 24.11.1...
+2026-10-27T15:31:36.0301070Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-darwin-x64.tar.gz
+2026-10-27T15:31:38.0362500Z Extracting ...
+2026-10-27T15:31:38.3247340Z [command]/usr/bin/tar xz --strip 1 -C /Users/runner/work/_temp/54a02a9d-79fe-4084-8f85-cdefd17bf6f3 -f /Users/runner/work/_temp/bf52c720-16f3-4f5e-83f9-cdd708c229e7
+2026-10-27T15:31:43.9488910Z Adding to the cache ...
+2026-10-27T15:31:54.3996580Z ##[group]Environment details
+2026-10-27T15:31:56.3140340Z node: v24.11.1
+2026-10-27T15:31:56.3150340Z npm: 11.6.2
+2026-10-27T15:31:56.3152370Z yarn: 1.22.22
+2026-10-27T15:31:56.3155040Z ##[endgroup]
+2026-10-27T15:31:56.3556270Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T15:31:56.3557530Z with:
+2026-10-27T15:31:56.3558110Z   cache: true
+2026-10-27T15:31:56.3558730Z   dest: ~/setup-pnpm
+2026-10-27T15:31:56.3559500Z   run_install: null
+2026-10-27T15:31:56.3560970Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T15:31:56.3561940Z   package_json_file: package.json
+2026-10-27T15:31:56.3562760Z   standalone: false
+2026-10-27T15:31:56.3563380Z env:
+2026-10-27T15:31:56.3563970Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:31:56.3564730Z ##[endgroup]
+2026-10-27T15:31:56.7141620Z ##[group]Running self-installer...
+2026-10-27T15:31:57.5394390Z (node:2431) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T15:31:57.5398350Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T15:31:57.8554160Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T15:31:57.8776370Z Packages: +1
+2026-10-27T15:31:57.8952420Z +
+2026-10-27T15:31:58.8646540Z Progress: resolved 1, reused 0, downloaded 1, added 0
+2026-10-27T15:31:59.0913680Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T15:31:59.2376710Z 
+2026-10-27T15:31:59.2378750Z dependencies:
+2026-10-27T15:31:59.2379830Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T15:31:59.2380540Z 
+2026-10-27T15:31:59.3215330Z Done in 2.2s
+2026-10-27T15:31:59.3637120Z ##[endgroup]
+2026-10-27T15:31:59.3738470Z Installation Completed!
+2026-10-27T15:31:59.3807120Z ##[group]Restoring cache...
+2026-10-27T15:31:59.3827740Z [command]/Users/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T15:32:00.7693130Z /Users/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T15:32:00.9978040Z Cache hit for: pnpm-cache-macOS-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T15:32:02.2314840Z Received 75497472 of 131051264 (57.6%), 61.6 MBs/sec
+2026-10-27T15:32:03.7682900Z Received 131051264 of 131051264 (100.0%), 46.2 MBs/sec
+2026-10-27T15:32:03.7736410Z Cache Size: ~125 MB (131051264 B)
+2026-10-27T15:32:03.8066940Z [command]/usr/local/bin/gtar -xf /Users/runner/work/_temp/de72a130-107a-48d2-a11f-1b73d2035dd8/cache.tzst -P -C /Users/runner/work/kisaki-dev/kisaki-dev --delay-directory-restore --use-compress-program unzstd
+2026-10-27T15:32:27.9350000Z Cache restored successfully
+2026-10-27T15:32:27.9451430Z Cache restored from key: pnpm-cache-macOS-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T15:32:28.0448480Z ##[endgroup]
+2026-10-27T15:32:28.0994440Z ##[group]Run echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+2026-10-27T15:32:28.0996820Z [36;1mecho "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"[0m
+2026-10-27T15:32:28.1246020Z shell: /bin/bash -e {0}
+2026-10-27T15:32:28.1246560Z env:
+2026-10-27T15:32:28.1247060Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:32:28.1247760Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:32:28.1248470Z ##[endgroup]
+2026-10-27T15:32:28.1944050Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T15:32:28.1945060Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T15:32:28.2064070Z shell: /bin/bash -e {0}
+2026-10-27T15:32:28.2065310Z env:
+2026-10-27T15:32:28.2066490Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:32:28.2068940Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:32:28.2070400Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T15:32:28.2071350Z ##[endgroup]
+2026-10-27T15:32:30.3138660Z Scope: all 46 workspace projects
+2026-10-27T15:32:30.6893780Z ? Verifying lockfile against supply-chain policies (879 entries)...
+2026-10-27T15:32:30.7099250Z Lockfile is up to date, resolution step is skipped
+2026-10-27T15:32:31.5867500Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T15:32:32.1912390Z Packages: +701
+2026-10-27T15:32:32.1913900Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T15:32:32.6706570Z Progress: resolved 701, reused 3, downloaded 0, added 0
+2026-10-27T15:32:33.7258620Z Progress: resolved 701, reused 34, downloaded 0, added 0
+2026-10-27T15:32:34.7877590Z Progress: resolved 701, reused 138, downloaded 0, added 0
+2026-10-27T15:32:35.8091710Z Progress: resolved 701, reused 229, downloaded 0, added 0
+2026-10-27T15:32:36.8544500Z Progress: resolved 701, reused 289, downloaded 0, added 0
+2026-10-27T15:32:38.0007250Z Progress: resolved 701, reused 349, downloaded 0, added 0
+2026-10-27T15:32:38.9937520Z Progress: resolved 701, reused 419, downloaded 0, added 0
+2026-10-27T15:32:40.0476920Z Progress: resolved 701, reused 439, downloaded 0, added 0
+2026-10-27T15:32:41.1487460Z Progress: resolved 701, reused 500, downloaded 0, added 0
+2026-10-27T15:32:42.6580350Z Progress: resolved 701, reused 531, downloaded 0, added 0
+2026-10-27T15:32:43.9195110Z Progress: resolved 701, reused 538, downloaded 0, added 0
+2026-10-27T15:32:44.9741370Z Progress: resolved 701, reused 568, downloaded 0, added 0
+2026-10-27T15:32:45.6888420Z [WARN] Request took 10020ms: https://registry.npmjs.org/@tailwindcss%2Foxide-win32-x64-msvc
+2026-10-27T15:32:45.9165810Z [WARN] Request took 10357ms: https://registry.npmjs.org/@tailwindcss%2Foxide-darwin-x64
+2026-10-27T15:32:46.1012370Z Progress: resolved 701, reused 609, downloaded 0, added 0
+2026-10-27T15:32:47.1353550Z Progress: resolved 701, reused 666, downloaded 0, added 0
+2026-10-27T15:32:48.3015240Z Progress: resolved 701, reused 694, downloaded 0, added 0
+2026-10-27T15:32:48.7641320Z [WARN] Request took 13153ms: https://registry.npmjs.org/@tailwindcss%2Foxide-linux-arm-gnueabihf
+2026-10-27T15:32:49.3084220Z Progress: resolved 701, reused 701, downloaded 0, added 14
+2026-10-27T15:32:49.6101360Z [WARN] Request took 14018ms: https://registry.npmjs.org/@tailwindcss%2Foxide-linux-arm64-gnu
+2026-10-27T15:32:50.0152990Z [WARN] Request took 14386ms: https://registry.npmjs.org/@tailwindcss%2Foxide-freebsd-x64
+2026-10-27T15:32:50.3201210Z Progress: resolved 701, reused 701, downloaded 0, added 30
+2026-10-27T15:32:51.1734230Z [WARN] Request took 15609ms: https://registry.npmjs.org/@tailwindcss%2Foxide-linux-arm64-musl
+2026-10-27T15:32:51.4134070Z Progress: resolved 701, reused 701, downloaded 0, added 40
+2026-10-27T15:32:52.4845860Z Progress: resolved 701, reused 701, downloaded 0, added 66
+2026-10-27T15:32:53.9129850Z Progress: resolved 701, reused 701, downloaded 0, added 75
+2026-10-27T15:32:54.4186710Z [WARN] Request took 13956ms: https://registry.npmjs.org/dependency-cruiser
+2026-10-27T15:32:54.9085010Z Progress: resolved 701, reused 701, downloaded 0, added 82
+2026-10-27T15:32:54.9524890Z [WARN] Request took 19212ms: https://registry.npmjs.org/@tailwindcss%2Foxide
+2026-10-27T15:32:55.6656460Z [WARN] Request took 17271ms: https://registry.npmjs.org/caniuse-lite
+2026-10-27T15:32:55.8665170Z Progress: resolved 701, reused 701, downloaded 0, added 105
+2026-10-27T15:32:55.9676900Z [WARN] Request took 15301ms: https://registry.npmjs.org/electron-builder
+2026-10-27T15:32:56.2953530Z [WARN] Request took 15176ms: https://registry.npmjs.org/eslint
+2026-10-27T15:32:57.0204440Z Progress: resolved 701, reused 701, downloaded 0, added 125
+2026-10-27T15:32:57.6877660Z [WARN] Request took 21593ms: https://registry.npmjs.org/@types%2Fnode
+2026-10-27T15:32:58.0958390Z Progress: resolved 701, reused 701, downloaded 0, added 163
+2026-10-27T15:32:58.3748320Z [WARN] Request took 17675ms: https://registry.npmjs.org/electron
+2026-10-27T15:32:59.1188180Z Progress: resolved 701, reused 701, downloaded 0, added 196
+2026-10-27T15:32:59.7222410Z [WARN] Request took 18766ms: https://registry.npmjs.org/es-toolkit
+2026-10-27T15:33:00.1249610Z Progress: resolved 701, reused 701, downloaded 0, added 227
+2026-10-27T15:33:00.5591380Z [WARN] Request took 19919ms: https://registry.npmjs.org/electron-to-chromium
+2026-10-27T15:33:01.2638410Z Progress: resolved 701, reused 701, downloaded 0, added 271
+2026-10-27T15:33:02.2141630Z [WARN] Request took 26091ms: https://registry.npmjs.org/@typescript-eslint%2Ftype-utils
+2026-10-27T15:33:02.4978410Z Progress: resolved 701, reused 701, downloaded 0, added 363
+2026-10-27T15:33:02.7216060Z [WARN] Request took 26604ms: https://registry.npmjs.org/@typescript-eslint%2Futils
+2026-10-27T15:33:03.1320090Z [WARN] Request took 27740ms: https://registry.npmjs.org/@playwright%2Ftest
+2026-10-27T15:33:03.8407030Z [WARN] Request took 27695ms: https://registry.npmjs.org/@typescript-eslint%2Ftypes
+2026-10-27T15:33:04.1653840Z Progress: resolved 701, reused 701, downloaded 0, added 437
+2026-10-27T15:33:04.8020120Z [WARN] Request took 28603ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+2026-10-27T15:33:05.1090000Z [WARN] Request took 14540ms: https://registry.npmjs.org/tailwindcss
+2026-10-27T15:33:05.2118120Z Progress: resolved 701, reused 701, downloaded 0, added 467
+2026-10-27T15:33:05.6640030Z [WARN] Request took 29561ms: https://registry.npmjs.org/@typescript-eslint%2Fscope-manager
+2026-10-27T15:33:06.6060730Z Progress: resolved 701, reused 701, downloaded 0, added 511
+2026-10-27T15:33:07.1080510Z [WARN] Request took 30954ms: https://registry.npmjs.org/@typescript-eslint%2Fparser
+2026-10-27T15:33:07.6506800Z [WARN] Request took 31496ms: https://registry.npmjs.org/@typescript-eslint%2Ftypescript-estree
+2026-10-27T15:33:07.9512610Z Progress: resolved 701, reused 701, downloaded 0, added 586
+2026-10-27T15:33:08.3189250Z [WARN] Request took 16594ms: https://registry.npmjs.org/typescript
+2026-10-27T15:33:08.6811300Z [WARN] Request took 20248ms: https://registry.npmjs.org/playwright
+2026-10-27T15:33:08.9365380Z Progress: resolved 701, reused 701, downloaded 0, added 629
+2026-10-27T15:33:09.0526300Z [WARN] Request took 32968ms: https://registry.npmjs.org/@typescript-eslint%2Feslint-plugin
+2026-10-27T15:33:09.7308600Z [WARN] Request took 21354ms: https://registry.npmjs.org/playwright-core
+2026-10-27T15:33:09.9791930Z Progress: resolved 701, reused 701, downloaded 0, added 688
+2026-10-27T15:33:10.2720900Z Progress: resolved 701, reused 701, downloaded 0, added 701, done
+2026-10-27T15:33:12.6112900Z ✓ Lockfile passes supply-chain policies (879 entries in 41.9s)
+2026-10-27T15:33:13.5233940Z 
+2026-10-27T15:33:13.5251520Z devDependencies:
+2026-10-27T15:33:13.5545380Z + @commitlint/cli 21.2.4
+2026-10-27T15:33:13.5584050Z + @commitlint/config-conventional 21.2.4
+2026-10-27T15:33:13.5629080Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T15:33:13.5676780Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T15:33:13.5693040Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T15:33:13.5716600Z + @playwright/test 1.64.1
+2026-10-27T15:33:13.5745800Z + @types/node 24.19.2
+2026-10-27T15:33:13.5775470Z + @types/semver 7.8.0
+2026-10-27T15:33:13.5776750Z + dependency-cruiser 18.7.0
+2026-10-27T15:33:13.5806220Z + eslint 10.13.0
+2026-10-27T15:33:13.5833760Z + husky 9.1.7
+2026-10-27T15:33:13.5864550Z + jiti 2.7.0
+2026-10-27T15:33:13.5898740Z + lint-staged 17.6.0
+2026-10-27T15:33:13.6068840Z + prettier 3.9.10
+2026-10-27T15:33:13.6097850Z + semver 7.8.5
+2026-10-27T15:33:13.6113990Z + tar 7.5.22
+2026-10-27T15:33:13.6145280Z + tsx 4.23.15
+2026-10-27T15:33:13.6379750Z + turbo 2.11.10
+2026-10-27T15:33:13.6473340Z + typescript 6.0.3
+2026-10-27T15:33:13.6504030Z + vite 8.3.3
+2026-10-27T15:33:13.6532810Z + vitest 5.0.5
+2026-10-27T15:33:13.6599050Z + yaml 2.9.1
+2026-10-27T15:33:13.6644230Z 
+2026-10-27T15:33:14.3548770Z Done in 45.8s using pnpm v11.11.0
+2026-10-27T15:33:14.4572170Z ##[group]Run pnpm exec turbo run build --filter=@kisaki3/extension-cli
+2026-10-27T15:33:14.4574180Z [36;1mpnpm exec turbo run build --filter=@kisaki3/extension-cli[0m
+2026-10-27T15:33:14.4725980Z shell: /bin/bash -e {0}
+2026-10-27T15:33:14.4726710Z env:
+2026-10-27T15:33:14.4727310Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:33:14.4728300Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:33:14.4729410Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T15:33:14.4730230Z ##[endgroup]
+2026-10-27T15:33:16.7102670Z 
+2026-10-27T15:33:16.7381340Z    • Packages in scope: @kisaki3/extension-cli
+2026-10-27T15:33:16.7383000Z    • Running build in 1 package
+2026-10-27T15:33:16.7389630Z    • Remote caching disabled
+2026-10-27T15:33:16.7437560Z 
+2026-10-27T15:33:24.3758690Z ##[group]@kisaki3/desktop-contracts:build
+2026-10-27T15:33:24.3884450Z cache miss, executing c1147199ddb72e62
+2026-10-27T15:33:24.3904220Z $ tsx tools/build.ts
+2026-10-27T15:33:24.3939560Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T15:33:24.3966410Z ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T15:33:24.3974110Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T15:33:24.4006370Z ℹ Build start
+2026-10-27T15:33:24.4025200Z ℹ .cache/output-staging/dist-b7LfY5/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T15:33:24.4067580Z ℹ .cache/output-staging/dist-b7LfY5/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T15:33:24.4098400Z ℹ .cache/output-staging/dist-b7LfY5/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T15:33:24.4129550Z ℹ .cache/output-staging/dist-b7LfY5/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T15:33:24.4149520Z ℹ .cache/output-staging/dist-b7LfY5/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T15:33:24.4182610Z ℹ .cache/output-staging/dist-b7LfY5/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T15:33:24.4284350Z ℹ 6 files, total: 9.14 kB
+2026-10-27T15:33:24.4346050Z ✔ Build complete in 1723ms
+2026-10-27T15:33:24.4370000Z ##[endgroup]
+2026-10-27T15:33:29.8680110Z ##[group]@kisaki3/extension-cli:build
+2026-10-27T15:33:29.8719860Z cache miss, executing 7bc731859126210f
+2026-10-27T15:33:29.8765110Z $ tsx tools/build.ts
+2026-10-27T15:33:29.8800990Z ℹ config file: /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T15:33:29.8857820Z ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T15:33:29.8904560Z ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T15:33:29.8957730Z ℹ Build start
+2026-10-27T15:33:29.9016620Z ℹ .cache/output-staging/dist-HXchCs/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T15:33:29.9053440Z ℹ .cache/output-staging/dist-HXchCs/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T15:33:29.9093410Z ℹ .cache/output-staging/dist-HXchCs/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T15:33:29.9118820Z ℹ .cache/output-staging/dist-HXchCs/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T15:33:29.9123870Z ℹ 4 files, total: 8.14 kB
+2026-10-27T15:33:29.9154830Z ✔ Build complete in 2900ms
+2026-10-27T15:33:29.9202040Z ##[endgroup]
+2026-10-27T15:33:29.9205020Z 
+2026-10-27T15:33:29.9205680Z  Tasks:    2 successful, 2 total
+2026-10-27T15:33:29.9207030Z Cached:    0 cached, 2 total
+2026-10-27T15:33:29.9208010Z   Time:    13.27s 
+2026-10-27T15:33:29.9208410Z 
+2026-10-27T15:33:29.9560090Z ##[group]Run actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T15:33:29.9561420Z with:
+2026-10-27T15:33:29.9562210Z   path: .turbo/cache
+2026-10-27T15:33:29.9564880Z   key: startup-dependencies-macOS-X64-e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb
+2026-10-27T15:33:29.9566450Z   enableCrossOsArchive: false
+2026-10-27T15:33:29.9567960Z env:
+2026-10-27T15:33:29.9568790Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:33:29.9570080Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:33:29.9571210Z   MACOSX_DEPLOYMENT_TARGET: 13.0
+2026-10-27T15:33:29.9572190Z ##[endgroup]
+2026-10-27T15:33:30.4915460Z [command]/usr/local/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/kisaki-dev/kisaki-dev --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+2026-10-27T15:33:30.7229710Z Sent 7987 of 7987 (100.0%), 0.1 MBs/sec
+2026-10-27T15:33:31.0421690Z Cache saved with key: startup-dependencies-macOS-X64-e5cbd8f0cbbd78cef96fe2e5e5589290fe367bbb
+2026-10-27T15:33:31.1155790Z Post job cleanup.
+2026-10-27T15:33:31.7445530Z Pruning is unnecessary.
+2026-10-27T15:33:31.7584700Z Cache hit occurred on the primary key pnpm-cache-macOS-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1, not saving cache.
+2026-10-27T15:33:31.8084510Z Post job cleanup.
+2026-10-27T15:33:32.8199450Z (node:3483) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T15:33:32.9207420Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T15:33:33.0955720Z Post job cleanup.
+2026-10-27T15:33:34.3690800Z [command]/usr/local/bin/git version
+2026-10-27T15:33:34.4696790Z git version 2.55.0
+2026-10-27T15:33:34.9716640Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/723cff88-e360-4340-bef2-2d0465840bca/.gitconfig'
+2026-10-27T15:33:35.0138520Z Temporarily overriding HOME='/Users/runner/work/_temp/723cff88-e360-4340-bef2-2d0465840bca' before making global git config changes
+2026-10-27T15:33:35.0207660Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T15:33:35.0390390Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T15:33:35.0736530Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T15:33:35.1278380Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T15:33:35.1552350Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T15:33:35.1763490Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T15:33:35.1972950Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T15:33:35.3145480Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T15:33:35.4086360Z Cleaning up orphan processes

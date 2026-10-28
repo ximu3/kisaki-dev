@@ -1,0 +1,47 @@
+{
+  "mode": "turbo",
+  "method": "powershell-7-dotnet",
+  "node": "v24.11.1",
+  "architecture": "x64",
+  "parallelism": 4,
+  "cpus": [
+    "AMD EPYC 7763 64-Core Processor                ",
+    "AMD EPYC 7763 64-Core Processor                ",
+    "AMD EPYC 7763 64-Core Processor                ",
+    "AMD EPYC 7763 64-Core Processor                "
+  ],
+  "memoryBytes": 17174360064,
+  "psModulePathPresent": true,
+  "samples": [
+    {
+      "code": 0,
+      "signal": null,
+      "timedOut": false,
+      "bodyStartedMs": 299.72020000001066,
+      "elapsedMs": 354.3362000000052,
+      "stdout": "0",
+      "stderr": "probe-script-started\r\n",
+      "failure": null
+    },
+    {
+      "code": 0,
+      "signal": null,
+      "timedOut": false,
+      "bodyStartedMs": 279.99619999999413,
+      "elapsedMs": 329.6334999999963,
+      "stdout": "0",
+      "stderr": "probe-script-started\r\n",
+      "failure": null
+    },
+    {
+      "code": 0,
+      "signal": null,
+      "timedOut": false,
+      "bodyStartedMs": 287.2300000000105,
+      "elapsedMs": 336.56810000000405,
+      "stdout": "0",
+      "stderr": "probe-script-started\r\n",
+      "failure": null
+    }
+  ]
+}

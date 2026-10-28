@@ -1,0 +1,104 @@
+[
+  {
+    "source": ".local/ci-design/prototype-check.log",
+    "file": "prototype-check.log",
+    "sha256": "e7810bd239dcccc27265427ca79b58d962930333c8f233145398619bbb9aa8a3",
+    "bytes": 39875
+  },
+  {
+    "source": ".local/ci-design/local-package.log",
+    "file": "local-package.log",
+    "sha256": "44d7430ac5064f467dd54262d5caa374be86ae8a2c8a691b778611858d1a4d06",
+    "bytes": 16080
+  },
+  {
+    "source": ".local/ci-design/local-package-timing.json",
+    "file": "local-package-timing.json",
+    "sha256": "9c8e268bec9a42638eb53192cb2525c6256adc5966eb537e1edcc5c39c2cf875",
+    "bytes": 161
+  },
+  {
+    "source": ".local/ci-design/package-rejections.json",
+    "file": "package-rejections.json",
+    "sha256": "e6baeb74a540aed0038533eead6e81310faeb9a3bbc39ef4aa1bfe2aec645acd",
+    "bytes": 906
+  },
+  {
+    "source": ".local/ci-design/local-artifacts.log",
+    "file": "local-artifacts.log",
+    "sha256": "198219d8c7ad1089f1ef2ff4c9ae0b28fadaac6419fc8ed4278bfc3c01310f9b",
+    "bytes": 1032
+  },
+  {
+    "source": "clients/desktop/app/test-results/artifacts/results.json",
+    "file": "local-artifacts-results.json",
+    "sha256": "752165173fd827405d45fe4211b74eab8a6add3cb371dae0cfb8f1f56eb61cc6",
+    "bytes": 1030
+  },
+  {
+    "source": ".local/ci-design/local-development.log",
+    "file": "local-development.log",
+    "sha256": "68e7245696ef97cb5579641702d0d1bf5dbb55d2cde915a019243c84f6b2ec28",
+    "bytes": 4858
+  },
+  {
+    "source": ".local/ci-design/local-development-timing.json",
+    "file": "local-development-timing.json",
+    "sha256": "ba225fd9914c12b32b5f3e16116436309e59e51826da4926124424b30bde0e26",
+    "bytes": 150
+  },
+  {
+    "source": "clients/desktop/app/test-results/dev/results.json",
+    "file": "local-development-results.json",
+    "sha256": "d76f8178b1d5d689b37b6570001e571b87cabe6580fe5178f4940be36c1f5a50",
+    "bytes": 3392
+  },
+  {
+    "source": ".local/ci-design/selection-regression.json",
+    "file": "selection-regression.json",
+    "sha256": "90833fc3ab910d3bc54f6041f77d463e49f6ee8023cd2042bb4e4898715738b2",
+    "bytes": 5429
+  },
+  {
+    "source": ".local/ci-design/check-selection.ts",
+    "file": "check-selection-source.txt",
+    "sha256": "cd18491e521d34c06ba01fb46b005d8fe506f773168641dcb96d0bd454833eb3",
+    "bytes": 4311
+  },
+  {
+    "source": ".local/ci-design/renderer-reasons.json",
+    "file": "renderer-reasons.json",
+    "sha256": "0665b263536977449181028d366608e8ab3f68e586aa121cb692897823ca863f",
+    "bytes": 5748
+  },
+  {
+    "source": ".local/ci-design/observation-contract.json",
+    "file": "observation-contract.json",
+    "sha256": "9c38bf0ba013186dd374b4320b2f3572c70be870a834a8f3ea7c94f50643411d",
+    "bytes": 560
+  },
+  {
+    "source": ".local/ci-design/observation-fix-development.log",
+    "file": "observation-fix-development.log",
+    "sha256": "1e64d8a2e35ca811749664c5e252885eb47a7c75db4db54fa28b4c6de6a590a3",
+    "bytes": 4858
+  },
+  {
+    "source": "clients/desktop/app/test-results/dev/results.json",
+    "file": "observation-fix-development.json",
+    "sha256": "bd144c162501143f945941587071faf4a76298468247917501a84f1af9b8c7e8",
+    "bytes": 3374
+  },
+  {
+    "source": ".local/ci-design/observation-fix-artifacts.log",
+    "file": "observation-fix-artifacts.log",
+    "sha256": "bb9b4e1c4bde448a986d38be634bd90288e3be330ccfbf07086a1059778fc285",
+    "bytes": 869
+  },
+  {
+    "source": "clients/desktop/app/test-results/artifacts/results.json",
+    "file": "observation-fix-artifacts.json",
+    "sha256": "60b7922cc85d1e357e26bba7269a98d874a90dbe030e1a66173abfe673acf497",
+    "bytes": 1022
+  }
+]

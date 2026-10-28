@@ -1,0 +1,13 @@
+{
+  "id": 12748242916,
+  "name": "macos-startup-cached-2",
+  "completeArchive": true,
+  "expectedDigest": "sha256:38ff047b8ad4f336e2d8acb1ae7cfd7b46ee48a735fe465981411564e8a47986",
+  "bytes": 20012,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-adoption/2026-10-27/40535262331/macos-startup-cached-2.zip",
+  "sha256": "38ff047b8ad4f336e2d8acb1ae7cfd7b46ee48a735fe465981411564e8a47986"
+}

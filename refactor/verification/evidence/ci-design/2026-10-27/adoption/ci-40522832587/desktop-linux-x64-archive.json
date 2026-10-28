@@ -1,0 +1,36 @@
+{
+  "id": 12743595105,
+  "name": "desktop-linux-x64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:f15724923c7759aa4c84ae901e881e9c91678fdbeafb2129314bee5e44407190",
+  "bytes": 337678926,
+  "reportEntriesCheckedByZipCrc": 10,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [
+    {
+      "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.AppImage",
+      "bytes": 132741536,
+      "zipCrc32": "bdd60ef1",
+      "sha256FromReceipt": "e7859c9526e91e255d1dfe05bb5fe0cbbe50f489d12e1c877ea618b70122002b"
+    },
+    {
+      "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.deb",
+      "bytes": 108288608,
+      "zipCrc32": "c7548eb9",
+      "sha256FromReceipt": "ce4615f47168ed7435abfca6258b630eb664497a7dd17f156bb4b7a73e2bef3b"
+    },
+    {
+      "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.rpm",
+      "bytes": 96904097,
+      "zipCrc32": "2e87ffc5",
+      "sha256FromReceipt": "2ead2e56c3c485237f3050964a97707f8f6b8ed1230ef5d6d32160fd01180ac8"
+    },
+    {
+      "path": "clients/desktop/app/dist/linux-x64/latest-linux.yml",
+      "bytes": 402,
+      "zipCrc32": "384cf9b2",
+      "sha256FromReceipt": "2a1609f9f2ea078eada1a52a59a814bf1e93ae7bcd4290762de34f483d2015e9"
+    }
+  ],
+  "receiptFilesNotInArchive": []
+}

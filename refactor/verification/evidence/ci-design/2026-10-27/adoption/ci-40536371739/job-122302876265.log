@@ -1,0 +1,1965 @@
+﻿2026-10-27T15:59:26.5811607Z Current runner version: '2.338.0'
+2026-10-27T15:59:26.5833909Z ##[group]Runner Image Provisioner
+2026-10-27T15:59:26.5834756Z Hosted Compute Agent
+2026-10-27T15:59:26.5835386Z Version: 20261021.618
+2026-10-27T15:59:26.5835967Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T15:59:26.5836615Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T15:59:26.5837301Z Worker ID: {c5c57305-249c-4f52-aeb9-106b6296b8fd}
+2026-10-27T15:59:26.5838025Z Region: westus3
+2026-10-27T15:59:26.5838619Z Cloud: Azure
+2026-10-27T15:59:26.5839119Z ##[endgroup]
+2026-10-27T15:59:26.5840394Z ##[group]Operating System
+2026-10-27T15:59:26.5841004Z Ubuntu
+2026-10-27T15:59:26.5841478Z 22.04.5
+2026-10-27T15:59:26.5841958Z LTS
+2026-10-27T15:59:26.5842439Z ##[endgroup]
+2026-10-27T15:59:26.5842954Z ##[group]Runner Image
+2026-10-27T15:59:26.5843637Z Image: ubuntu-22.04
+2026-10-27T15:59:26.5844191Z Version: 20261025.340.1
+2026-10-27T15:59:26.5845390Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261025.340/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-27T15:59:26.5846818Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261025.340
+2026-10-27T15:59:26.5847726Z ##[endgroup]
+2026-10-27T15:59:26.5848722Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T15:59:26.5850611Z Contents: read
+2026-10-27T15:59:26.5851138Z Metadata: read
+2026-10-27T15:59:26.5851657Z ##[endgroup]
+2026-10-27T15:59:26.5853858Z Secret source: Actions
+2026-10-27T15:59:26.5854747Z Cache mode: write
+2026-10-27T15:59:26.5855383Z Prepare workflow directory
+2026-10-27T15:59:26.6325897Z Prepare all required actions
+2026-10-27T15:59:26.6372710Z Getting action download info
+2026-10-27T15:59:27.0451863Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T15:59:27.2325041Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T15:59:28.1766226Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T15:59:28.9665448Z Download action repository 'actions/cache@caa296126883cff596d87d8935842f9db880ef25' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-27T15:59:29.2023545Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T15:59:29.7925091Z Uses: ximu3/kisaki-dev/.github/workflows/verification.yml@refs/pull/4/merge (e38a876c96df0d2ef8c127b45e8849517323a15d)
+2026-10-27T15:59:29.7929266Z ##[group] Inputs
+2026-10-27T15:59:29.7930033Z   complete: false
+2026-10-27T15:59:29.7930423Z ##[endgroup]
+2026-10-27T15:59:29.7930859Z Complete job name: verify / Repository checks
+2026-10-27T15:59:29.9423055Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T15:59:29.9424105Z with:
+2026-10-27T15:59:29.9424457Z   fetch-depth: 0
+2026-10-27T15:59:29.9424817Z   persist-credentials: false
+2026-10-27T15:59:29.9425258Z   repository: ximu3/kisaki-dev
+2026-10-27T15:59:29.9427984Z   token: ***
+2026-10-27T15:59:29.9428345Z   ssh-strict: true
+2026-10-27T15:59:29.9428758Z   ssh-user: git
+2026-10-27T15:59:29.9429092Z   clean: true
+2026-10-27T15:59:29.9429458Z   sparse-checkout-cone-mode: true
+2026-10-27T15:59:29.9429826Z   fetch-tags: false
+2026-10-27T15:59:29.9430188Z   show-progress: true
+2026-10-27T15:59:29.9430525Z   lfs: false
+2026-10-27T15:59:29.9430834Z   submodules: false
+2026-10-27T15:59:29.9431213Z   set-safe-directory: true
+2026-10-27T15:59:29.9431578Z   allow-unsafe-pr-checkout: false
+2026-10-27T15:59:29.9432079Z env:
+2026-10-27T15:59:29.9432452Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:29.9432801Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:29.9433551Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:29.9434087Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:29.9434566Z ##[endgroup]
+2026-10-27T15:59:30.0397331Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T15:59:30.0398924Z ##[group]Getting Git version info
+2026-10-27T15:59:30.0399433Z Working directory is '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T15:59:30.0400210Z [command]/usr/bin/git version
+2026-10-27T15:59:30.0457849Z git version 2.56.0
+2026-10-27T15:59:30.0485105Z ##[endgroup]
+2026-10-27T15:59:30.0492597Z Temporarily overriding HOME='/home/runner/work/_temp/4f38d599-1fce-4721-a4c3-d51574809490' before making global git config changes
+2026-10-27T15:59:30.0494552Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T15:59:30.0498491Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T15:59:30.0550828Z Deleting the contents of '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T15:59:30.0552729Z ##[group]Initializing the repository
+2026-10-27T15:59:30.0554118Z [command]/usr/bin/git init /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T15:59:30.1751798Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T15:59:30.1753921Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T15:59:30.1755104Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T15:59:30.1756114Z hint: call:
+2026-10-27T15:59:30.1756668Z hint:
+2026-10-27T15:59:30.1757356Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T15:59:30.1758095Z hint:
+2026-10-27T15:59:30.1758796Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T15:59:30.1759749Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T15:59:30.1760595Z hint:
+2026-10-27T15:59:30.1761092Z hint: 	git branch -m <name>
+2026-10-27T15:59:30.1761776Z hint:
+2026-10-27T15:59:30.1762602Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T15:59:30.1764049Z Initialized empty Git repository in /home/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T15:59:30.1766378Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T15:59:30.4211479Z ##[endgroup]
+2026-10-27T15:59:30.4213172Z ##[group]Disabling automatic garbage collection
+2026-10-27T15:59:30.4214322Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T15:59:30.5345179Z ##[endgroup]
+2026-10-27T15:59:30.5346386Z ##[group]Setting up auth
+2026-10-27T15:59:30.5353101Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T15:59:30.5387477Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T15:59:30.5652824Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T15:59:30.5679447Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T15:59:30.5864440Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T15:59:30.5893824Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T15:59:30.6091725Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T15:59:30.6663676Z ##[endgroup]
+2026-10-27T15:59:30.6664677Z ##[group]Fetching the repository
+2026-10-27T15:59:30.6675817Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +e38a876c96df0d2ef8c127b45e8849517323a15d:refs/remotes/pull/4/merge
+2026-10-27T15:59:32.1432802Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T15:59:32.1434291Z  * [new branch]      ci/verification-orchestration            -> origin/ci/verification-orchestration
+2026-10-27T15:59:32.1435503Z  * [new branch]      main                                     -> origin/main
+2026-10-27T15:59:32.1436271Z  * [new branch]      research/appimage-policy-2026-10-26      -> origin/research/appimage-policy-2026-10-26
+2026-10-27T15:59:32.1437409Z  * [new branch]      research/ci-final-design-measurements    -> origin/research/ci-final-design-measurements
+2026-10-27T15:59:32.1438479Z  * [new branch]      research/ci-macos-startup                -> origin/research/ci-macos-startup
+2026-10-27T15:59:32.1439442Z  * [new branch]      research/ci-reliability-and-feedback     -> origin/research/ci-reliability-and-feedback
+2026-10-27T15:59:32.1440563Z  * [new branch]      research/ci-trigger-alternate-2026-10-26 -> origin/research/ci-trigger-alternate-2026-10-26
+2026-10-27T15:59:32.1441579Z  * [new branch]      research/ci-trigger-base-2026-10-26      -> origin/research/ci-trigger-base-2026-10-26
+2026-10-27T15:59:32.1442514Z  * [new branch]      research/ci-trigger-head-2026-10-26      -> origin/research/ci-trigger-head-2026-10-26
+2026-10-27T15:59:32.1443695Z  * [new branch]      research/ci-window-observation           -> origin/research/ci-window-observation
+2026-10-27T15:59:32.1444583Z  * [new ref]         e38a876c96df0d2ef8c127b45e8849517323a15d -> pull/4/merge
+2026-10-27T15:59:32.1446806Z ##[endgroup]
+2026-10-27T15:59:32.1447398Z ##[group]Determining the checkout info
+2026-10-27T15:59:32.1448015Z ##[endgroup]
+2026-10-27T15:59:32.1467024Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T15:59:32.1544256Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T15:59:32.1571335Z ##[group]Checking out the ref
+2026-10-27T15:59:32.1575265Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/4/merge
+2026-10-27T15:59:32.4458815Z Note: switching to 'refs/remotes/pull/4/merge'.
+2026-10-27T15:59:32.4459099Z 
+2026-10-27T15:59:32.4459281Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-27T15:59:32.4459703Z changes and commit them, and you can discard any commits you make in this
+2026-10-27T15:59:32.4460144Z state without impacting any branches by switching back to a branch.
+2026-10-27T15:59:32.4460638Z 
+2026-10-27T15:59:32.4460923Z If you want to create a new branch to retain commits you create, you may
+2026-10-27T15:59:32.4461417Z do so (now or later) by using -c with the switch command. Example:
+2026-10-27T15:59:32.4461634Z 
+2026-10-27T15:59:32.4461866Z   git switch -c <new-branch-name>
+2026-10-27T15:59:32.4462286Z 
+2026-10-27T15:59:32.4462466Z Or undo this operation with:
+2026-10-27T15:59:32.4462761Z 
+2026-10-27T15:59:32.4462850Z   git switch -
+2026-10-27T15:59:32.4463054Z 
+2026-10-27T15:59:32.4463786Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-27T15:59:32.4464244Z 
+2026-10-27T15:59:32.4464685Z HEAD is now at e38a876 Merge 57fee2473008233b4e171224a577d03c9772e4a9 into ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:32.4513183Z ##[endgroup]
+2026-10-27T15:59:32.4515207Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T15:59:32.4537415Z e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:32.4545440Z ##[group]Removing auth
+2026-10-27T15:59:32.4548043Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T15:59:32.4576070Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T15:59:32.4763505Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T15:59:32.4783632Z http.https://github.com/.extraheader
+2026-10-27T15:59:32.4789216Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T15:59:32.4817078Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T15:59:32.4999299Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T15:59:32.5026658Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T15:59:32.5200262Z ##[endgroup]
+2026-10-27T15:59:32.5412794Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T15:59:32.5413156Z with:
+2026-10-27T15:59:32.5413650Z   node-version-file: .node-version
+2026-10-27T15:59:32.5413920Z   package-manager-cache: false
+2026-10-27T15:59:32.5414159Z   always-auth: false
+2026-10-27T15:59:32.5414373Z   check-latest: false
+2026-10-27T15:59:32.5416714Z   token: ***
+2026-10-27T15:59:32.5416902Z env:
+2026-10-27T15:59:32.5417095Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:32.5417326Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:32.5417591Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:32.5417946Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:32.5418233Z ##[endgroup]
+2026-10-27T15:59:32.6726765Z Node version file is not JSON file
+2026-10-27T15:59:32.6727708Z Resolved .node-version as 24.11.1
+2026-10-27T15:59:32.6745074Z Attempting to download 24.11.1...
+2026-10-27T15:59:32.6845700Z (node:1934) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T15:59:32.6846752Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T15:59:33.7612311Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+2026-10-27T15:59:34.2256485Z Extracting ...
+2026-10-27T15:59:34.2354026Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/4f3014b7-0287-4891-906e-a6345d5e2f21 -f /home/runner/work/_temp/67767b5a-aa37-4bb7-9958-ce5a4ee1ab5a
+2026-10-27T15:59:35.4613212Z Adding to the cache ...
+2026-10-27T15:59:37.5924931Z ##[group]Environment details
+2026-10-27T15:59:37.7988604Z node: v24.11.1
+2026-10-27T15:59:37.7988978Z npm: 11.6.2
+2026-10-27T15:59:37.7989250Z yarn: 1.22.22
+2026-10-27T15:59:37.7989820Z ##[endgroup]
+2026-10-27T15:59:37.8126398Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T15:59:37.8126758Z with:
+2026-10-27T15:59:37.8126953Z   cache: true
+2026-10-27T15:59:37.8127164Z   dest: ~/setup-pnpm
+2026-10-27T15:59:37.8127371Z   run_install: null
+2026-10-27T15:59:37.8127592Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T15:59:37.8127865Z   package_json_file: package.json
+2026-10-27T15:59:37.8128105Z   standalone: false
+2026-10-27T15:59:37.8128296Z env:
+2026-10-27T15:59:37.8128485Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:37.8128714Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:37.8128975Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:37.8129324Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:37.8129637Z ##[endgroup]
+2026-10-27T15:59:37.9422321Z ##[group]Running self-installer...
+2026-10-27T15:59:38.2734911Z (node:1983) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T15:59:38.2735873Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T15:59:38.4649564Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T15:59:38.4732443Z Packages: +1
+2026-10-27T15:59:38.4735692Z +
+2026-10-27T15:59:38.7436834Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T15:59:38.8193919Z 
+2026-10-27T15:59:38.8204361Z dependencies:
+2026-10-27T15:59:38.8238851Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T15:59:38.8242017Z 
+2026-10-27T15:59:38.8390725Z Done in 734ms
+2026-10-27T15:59:38.8509610Z ##[endgroup]
+2026-10-27T15:59:38.8510759Z Installation Completed!
+2026-10-27T15:59:38.8513799Z ##[group]Restoring cache...
+2026-10-27T15:59:38.8540465Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T15:59:39.3524018Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T15:59:39.6262100Z Cache hit for: pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T15:59:45.8681705Z Received 47122540 of 59705452 (78.9%), 44.9 MBs/sec
+2026-10-27T15:59:45.9450044Z Received 59705452 of 59705452 (100.0%), 52.7 MBs/sec
+2026-10-27T15:59:45.9451627Z Cache Size: ~57 MB (59705452 B)
+2026-10-27T15:59:45.9480048Z [command]/usr/bin/tar -xf /home/runner/work/_temp/51bfde32-aba7-4cec-bcb3-3b3b829e529c/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T15:59:46.2953475Z Cache restored successfully
+2026-10-27T15:59:46.3031484Z Cache restored from key: pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T15:59:46.3032654Z ##[endgroup]
+2026-10-27T15:59:46.3175649Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T15:59:46.3176030Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T15:59:46.3216385Z shell: /usr/bin/bash -e {0}
+2026-10-27T15:59:46.3216627Z env:
+2026-10-27T15:59:46.3216810Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:46.3217026Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:46.3217277Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:46.3217591Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:46.3217898Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:59:46.3218151Z ##[endgroup]
+2026-10-27T15:59:46.7447311Z Scope: all 46 workspace projects
+2026-10-27T15:59:46.8364220Z ? Verifying lockfile against supply-chain policies (879 entries)...
+2026-10-27T15:59:46.8472552Z Lockfile is up to date, resolution step is skipped
+2026-10-27T15:59:46.9558706Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T15:59:47.0484508Z Packages: +700
+2026-10-27T15:59:47.0495570Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T15:59:48.0045101Z Progress: resolved 700, reused 270, downloaded 2, added 4
+2026-10-27T15:59:49.0022178Z Progress: resolved 700, reused 270, downloaded 212, added 20
+2026-10-27T15:59:50.0021669Z Progress: resolved 700, reused 270, downloaded 430, added 183
+2026-10-27T15:59:50.6223823Z Progress: resolved 700, reused 270, downloaded 430, added 700, done
+2026-10-27T15:59:51.6105474Z ✓ Lockfile passes supply-chain policies (879 entries in 4.7s)
+2026-10-27T15:59:51.6180904Z .../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+2026-10-27T15:59:51.6740426Z .../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+2026-10-27T15:59:52.0300012Z 
+2026-10-27T15:59:52.0300846Z devDependencies:
+2026-10-27T15:59:52.0301614Z + @commitlint/cli 21.2.4
+2026-10-27T15:59:52.0302180Z + @commitlint/config-conventional 21.2.4
+2026-10-27T15:59:52.0303041Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T15:59:52.0303918Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T15:59:52.0304635Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T15:59:52.0305329Z + @playwright/test 1.64.1
+2026-10-27T15:59:52.0305869Z + @types/node 24.19.2
+2026-10-27T15:59:52.0306362Z + @types/semver 7.8.0
+2026-10-27T15:59:52.0306845Z + dependency-cruiser 18.7.0
+2026-10-27T15:59:52.0307351Z + eslint 10.13.0
+2026-10-27T15:59:52.0307785Z + husky 9.1.7
+2026-10-27T15:59:52.0308174Z + jiti 2.7.0
+2026-10-27T15:59:52.0308592Z + lint-staged 17.6.0
+2026-10-27T15:59:52.0309059Z + prettier 3.9.10
+2026-10-27T15:59:52.0309436Z + semver 7.8.5
+2026-10-27T15:59:52.0309843Z + tar 7.5.22
+2026-10-27T15:59:52.0310214Z + tsx 4.23.15
+2026-10-27T15:59:52.0310603Z + turbo 2.11.10
+2026-10-27T15:59:52.0311041Z + typescript 6.0.3
+2026-10-27T15:59:52.0311446Z + vite 8.3.3
+2026-10-27T15:59:52.0311807Z + vitest 5.0.5
+2026-10-27T15:59:52.0312185Z + yaml 2.9.1
+2026-10-27T15:59:52.0312451Z 
+2026-10-27T15:59:52.2243212Z Done in 5.8s using pnpm v11.11.0
+2026-10-27T15:59:52.3766434Z ##[group]Run mkdir -p test-results/verification
+2026-10-27T15:59:52.3766929Z [36;1mmkdir -p test-results/verification[0m
+2026-10-27T15:59:52.3768378Z [36;1mnode -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json[0m
+2026-10-27T15:59:52.3814386Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T15:59:52.3814842Z env:
+2026-10-27T15:59:52.3815108Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:52.3815426Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:52.3815788Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:52.3816270Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:52.3816741Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:59:52.3817149Z ##[endgroup]
+2026-10-27T15:59:52.5664738Z ##[group]Run actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T15:59:52.5665086Z with:
+2026-10-27T15:59:52.5665267Z   path: .turbo/cache
+2026-10-27T15:59:52.5665830Z   key: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:52.5666912Z   restore-keys: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-
+turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-
+
+2026-10-27T15:59:52.5667651Z   enableCrossOsArchive: false
+2026-10-27T15:59:52.5667877Z   fail-on-cache-miss: false
+2026-10-27T15:59:52.5668082Z   lookup-only: false
+2026-10-27T15:59:52.5668264Z env:
+2026-10-27T15:59:52.5668445Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:52.5668658Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:52.5668902Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:52.5669277Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:52.5669588Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:59:52.5669843Z ##[endgroup]
+2026-10-27T15:59:52.9419059Z Cache hit for restore-key: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-625c6db229c716b5948434cfd68a51e61190565d
+2026-10-27T15:59:53.4711616Z Received 76704 of 76704 (100.0%), 0.2 MBs/sec
+2026-10-27T15:59:53.4712204Z Cache Size: ~0 MB (76704 B)
+2026-10-27T15:59:53.4759261Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2894eed3-e1ff-4131-bb7c-e7b2ba63e1e4/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T15:59:53.4866819Z Cache restored successfully
+2026-10-27T15:59:53.4932227Z Cache restored from key: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-625c6db229c716b5948434cfd68a51e61190565d
+2026-10-27T15:59:53.5025634Z ##[group]Run selection=()
+2026-10-27T15:59:53.5026023Z [36;1mselection=()[0m
+2026-10-27T15:59:53.5026466Z [36;1mif [[ "$COMPLETE" == false ]]; then selection=(--affected); fi[0m
+2026-10-27T15:59:53.5026854Z [36;1mpnpm typecheck "${selection[@]}" --log-order=stream[0m
+2026-10-27T15:59:53.5027177Z [36;1mpnpm lint "${selection[@]}" --log-order=stream[0m
+2026-10-27T15:59:53.5027464Z [36;1mpnpm format:check[0m
+2026-10-27T15:59:53.5027715Z [36;1mpnpm test "${selection[@]}" --log-order=stream[0m
+2026-10-27T15:59:53.5058824Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T15:59:53.5059131Z env:
+2026-10-27T15:59:53.5059324Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T15:59:53.5059559Z   TURBO_CONCURRENCY: 2
+2026-10-27T15:59:53.5059809Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T15:59:53.5060141Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T15:59:53.5060522Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T15:59:53.5060935Z   COMPLETE: true
+2026-10-27T15:59:53.5061254Z ##[endgroup]
+2026-10-27T15:59:53.9090498Z $ turbo run typecheck typecheck:root --log-order=stream
+2026-10-27T15:59:53.9652885Z 
+2026-10-27T15:59:53.9658246Z    • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+2026-10-27T15:59:53.9662153Z    • Running typecheck, typecheck:root in 46 packages
+2026-10-27T15:59:53.9662713Z    • Remote caching disabled
+2026-10-27T15:59:53.9663076Z 
+2026-10-27T15:59:53.9963954Z @kisaki3/eslint-config:typecheck: cache hit, replaying logs eca6f7ef67b19757
+2026-10-27T15:59:53.9965322Z @kisaki3/tooling:typecheck: cache hit, replaying logs 6482b9f8b4a66636
+2026-10-27T15:59:53.9966132Z @kisaki3/eslint-config:typecheck: $ tsc -p tsconfig.json
+2026-10-27T15:59:53.9968893Z @kisaki3/tooling:typecheck: $ tsc -b
+2026-10-27T15:59:53.9969971Z //:typecheck:root: cache miss, executing 41147d407e569f21
+2026-10-27T15:59:53.9972722Z @kisaki3/appearance:typecheck: cache hit, replaying logs 1fb54830577f12f8
+2026-10-27T15:59:53.9973690Z @kisaki3/appearance:typecheck: $ tsc -b
+2026-10-27T15:59:53.9984621Z @kisaki3/appearance:build: cache hit, replaying logs 99a7dfed5cb0eb51
+2026-10-27T15:59:53.9986990Z @kisaki3/appearance:build: $ tsx tools/build.ts
+2026-10-27T15:59:53.9988996Z @kisaki3/appearance:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T15:59:53.9990388Z @kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T15:59:53.9991521Z @kisaki3/appearance:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T15:59:53.9992491Z @kisaki3/appearance:build: ℹ Build start
+2026-10-27T15:59:53.9993777Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T15:59:53.9996615Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T15:59:53.9997941Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T15:59:53.9999322Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T15:59:54.0000380Z @kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+2026-10-27T15:59:54.0001170Z @kisaki3/appearance:build: ✔ Build complete in 779ms
+2026-10-27T15:59:54.0002107Z @kisaki3/extension-distribution:typecheck: cache hit, replaying logs 5d1ab5ce6f4c5bae
+2026-10-27T15:59:54.0003018Z @kisaki3/extension-distribution:typecheck: $ tsc -b
+2026-10-27T15:59:54.0003976Z @kisaki3/rpc:typecheck: cache hit, replaying logs 843c48a1244245b2
+2026-10-27T15:59:54.0004668Z @kisaki3/rpc:typecheck: $ tsc -b
+2026-10-27T15:59:54.0005445Z @kisaki3/desktop-contracts:build: cache hit, replaying logs 21c51f2dd4532e59
+2026-10-27T15:59:54.0006263Z @kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+2026-10-27T15:59:54.0007892Z @kisaki3/desktop-contracts:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T15:59:54.0009815Z @kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T15:59:54.0014143Z @kisaki3/desktop-contracts:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T15:59:54.0015073Z @kisaki3/desktop-contracts:build: ℹ Build start
+2026-10-27T15:59:54.0016257Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T15:59:54.0017715Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T15:59:54.0019235Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T15:59:54.0020754Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T15:59:54.0022246Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T15:59:54.0023802Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T15:59:54.0024911Z @kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.14 kB
+2026-10-27T15:59:54.0025838Z @kisaki3/desktop-contracts:build: ✔ Build complete in 856ms
+2026-10-27T15:59:54.0026853Z @kisaki3/desktop-contracts:typecheck: cache hit, replaying logs cc6052b2face1397
+2026-10-27T15:59:54.0027691Z @kisaki3/desktop-contracts:typecheck: $ tsc -b
+2026-10-27T15:59:54.0028473Z @kisaki3/ui:typecheck: cache hit, replaying logs 5f14704d436ab9a6
+2026-10-27T15:59:54.0029168Z @kisaki3/ui:typecheck: $ tsc -b
+2026-10-27T15:59:54.0048075Z @kisaki3/ui:build: cache hit, replaying logs e3dedc5a55970b74
+2026-10-27T15:59:54.0055245Z @kisaki3/ui:build: $ tsx tools/build.ts
+2026-10-27T15:59:54.0056473Z @kisaki3/ui:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T15:59:54.0057403Z @kisaki3/ui:build: ℹ entry: src/index.ts
+2026-10-27T15:59:54.0058130Z @kisaki3/ui:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T15:59:54.0058770Z @kisaki3/ui:build: ℹ Build start
+2026-10-27T15:59:54.0059609Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T15:59:54.0060717Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T15:59:54.0061494Z @kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+2026-10-27T15:59:54.0062070Z @kisaki3/ui:build: ✔ Build complete in 1417ms
+2026-10-27T15:59:54.0063144Z @kisaki3/ui:build: [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T15:59:54.0064152Z @kisaki3/ui:build: 
+2026-10-27T15:59:54.0068433Z @kisaki3/ui:build: Done in [34m50ms[39m
+2026-10-27T15:59:54.0069194Z @kisaki3/extension-api:build: cache hit, replaying logs a25eaa6ed7942f60
+2026-10-27T15:59:54.0070045Z @kisaki3/extension-api:build: $ tsx tools/build.ts
+2026-10-27T15:59:54.0071247Z @kisaki3/extension-api:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/tsdown.config.ts 
+2026-10-27T15:59:54.0074902Z @kisaki3/extension-api:build: ℹ entry: src/index.ts
+2026-10-27T15:59:54.0075735Z @kisaki3/extension-api:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T15:59:54.0076470Z @kisaki3/extension-api:build: ℹ Build start
+2026-10-27T15:59:54.0078127Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T15:59:54.0079174Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.d.ts  0.13 kB │ gzip: 0.11 kB
+2026-10-27T15:59:54.0080095Z @kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+2026-10-27T15:59:54.0080921Z @kisaki3/extension-api:build: ✔ Build complete in 875ms
+2026-10-27T15:59:54.0081674Z @kisaki3/extension-cli:build: cache hit, replaying logs 916f7bd9f07c14b6
+2026-10-27T15:59:54.0082624Z @kisaki3/extension-cli:build: $ tsx tools/build.ts
+2026-10-27T15:59:54.0084052Z @kisaki3/extension-cli:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T15:59:54.0085104Z @kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T15:59:54.0086836Z @kisaki3/extension-cli:build: ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T15:59:54.0087644Z @kisaki3/extension-cli:build: ℹ Build start
+2026-10-27T15:59:54.0089985Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T15:59:54.0091234Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T15:59:54.0092267Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T15:59:54.0093472Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T15:59:54.0094242Z @kisaki3/extension-cli:build: ℹ 4 files, total: 8.14 kB
+2026-10-27T15:59:54.0094842Z @kisaki3/extension-cli:build: ✔ Build complete in 1676ms
+2026-10-27T15:59:54.0095548Z @kisaki3/extension-api:typecheck: cache hit, replaying logs 6eb5307c22878e36
+2026-10-27T15:59:54.0096153Z @kisaki3/extension-api:typecheck: $ tsc -b
+2026-10-27T15:59:54.0096715Z @kisaki3/extension-cli:typecheck: cache hit, replaying logs 4aa957f8649072b7
+2026-10-27T15:59:54.0097260Z @kisaki3/extension-cli:typecheck: $ tsc -b
+2026-10-27T15:59:54.0097858Z @kisaki3/extension-sdk:typecheck: cache hit, replaying logs 49f91f603b854b45
+2026-10-27T15:59:54.0098388Z @kisaki3/extension-sdk:typecheck: $ tsc -b
+2026-10-27T15:59:54.0098982Z @kisaki3/ext-mangaupdates:typecheck: cache hit, replaying logs 8bd8e5194e443783
+2026-10-27T15:59:54.0099588Z @kisaki3/ext-mangaupdates:typecheck: $ tsc -b
+2026-10-27T15:59:54.0100198Z @kisaki3/ext-vndb:typecheck: cache hit, replaying logs 41ff690f437df230
+2026-10-27T15:59:54.0100758Z @kisaki3/ext-vndb:typecheck: $ tsc -b
+2026-10-27T15:59:54.0101314Z @kisaki3/ext-tmdb:typecheck: cache hit, replaying logs 957f1fe1ca443bbf
+2026-10-27T15:59:54.0101832Z @kisaki3/ext-tmdb:typecheck: $ tsc -b
+2026-10-27T15:59:54.0102457Z @kisaki3/ext-potatovn-importer:typecheck: cache hit, replaying logs c50ca21277b343d0
+2026-10-27T15:59:54.0103082Z @kisaki3/ext-potatovn-importer:typecheck: $ tsc -b
+2026-10-27T15:59:54.0105118Z @kisaki3/desktop:typecheck: cache miss, executing a5032b5016187c37
+2026-10-27T15:59:54.3821086Z //:typecheck:root: $ tsc -b
+2026-10-27T15:59:54.4924247Z @kisaki3/desktop:typecheck: $ tsc -b
+2026-10-27T15:59:56.6969328Z @kisaki3/ext-ndl-search:typecheck: cache hit, replaying logs 19cfd84f117d2e28
+2026-10-27T15:59:56.6970322Z @kisaki3/ext-ndl-search:typecheck: $ tsc -b
+2026-10-27T15:59:56.6971368Z @kisaki3/ext-bangumi:typecheck: cache hit, replaying logs 01914cd90ed058ab
+2026-10-27T15:59:56.6972447Z @kisaki3/ext-bangumi:typecheck: $ tsc -b
+2026-10-27T15:59:56.6974395Z @kisaki3/ext-itch-io:typecheck: cache hit, replaying logs 3469427dd89a3298
+2026-10-27T15:59:56.6975133Z @kisaki3/ext-itch-io:typecheck: $ tsc -b
+2026-10-27T15:59:56.6975966Z @kisaki3/ext-anilist:typecheck: cache hit, replaying logs a3c3dc1016e6530c
+2026-10-27T15:59:56.6976658Z @kisaki3/ext-anilist:typecheck: $ tsc -b
+2026-10-27T15:59:56.6978315Z @kisaki3/ext-mihon-importer:typecheck: cache hit, replaying logs 6a7fc48d6de9eaa6
+2026-10-27T15:59:56.6982814Z @kisaki3/ext-mihon-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.6985073Z @kisaki3/ext-calibre-importer:typecheck: cache hit, replaying logs 339f25e07891ad6c
+2026-10-27T15:59:56.6985948Z @kisaki3/ext-calibre-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.6988286Z @kisaki3/ext-goodreads-importer:typecheck: cache hit, replaying logs f5de15bed70f438c
+2026-10-27T15:59:56.6989281Z @kisaki3/ext-goodreads-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.6991907Z @kisaki3/ext-wikidata:typecheck: cache hit, replaying logs 6aa6e672ecb92348
+2026-10-27T15:59:56.6994038Z @kisaki3/ext-wikidata:typecheck: $ tsc -b
+2026-10-27T15:59:56.6996775Z @kisaki3/ext-language-ja:typecheck: cache hit, replaying logs 019f53cb260b0e9b
+2026-10-27T15:59:56.6998193Z @kisaki3/ext-language-ja:typecheck: $ tsc -b
+2026-10-27T15:59:56.7002091Z @kisaki3/ext-igdb:typecheck: cache hit, replaying logs 9586ce0a6ff1d48f
+2026-10-27T15:59:56.7004139Z @kisaki3/ext-igdb:typecheck: $ tsc -b
+2026-10-27T15:59:56.7006107Z @kisaki3/ext-mangadex:typecheck: cache hit, replaying logs eba0ba86391501ce
+2026-10-27T15:59:56.7007666Z @kisaki3/ext-mangadex:typecheck: $ tsc -b
+2026-10-27T15:59:56.7013040Z @kisaki3/ext-ymgal:typecheck: cache hit, replaying logs 02444cf2851d0e54
+2026-10-27T15:59:56.7013987Z @kisaki3/ext-ymgal:typecheck: $ tsc -b
+2026-10-27T15:59:56.7015586Z @kisaki3/ext-nfo-comicinfo-importer:typecheck: cache hit, replaying logs f832b4019be59c2d
+2026-10-27T15:59:56.7016482Z @kisaki3/ext-nfo-comicinfo-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7019027Z @kisaki3/ext-vnite-importer:typecheck: cache hit, replaying logs 4a82fdf61b254ff5
+2026-10-27T15:59:56.7019789Z @kisaki3/ext-vnite-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7022688Z @kisaki3/ext-fanart-tv:typecheck: cache hit, replaying logs d8726d7b09e5ecb5
+2026-10-27T15:59:56.7023751Z @kisaki3/ext-fanart-tv:typecheck: $ tsc -b
+2026-10-27T15:59:56.7026408Z @kisaki3/ext-steamgriddb:typecheck: cache hit, replaying logs 4459185668824e9b
+2026-10-27T15:59:56.7027290Z @kisaki3/ext-steamgriddb:typecheck: $ tsc -b
+2026-10-27T15:59:56.7029385Z @kisaki3/ext-language-zh-hans:typecheck: cache hit, replaying logs bc05b35dc7745dbd
+2026-10-27T15:59:56.7030258Z @kisaki3/ext-language-zh-hans:typecheck: $ tsc -b
+2026-10-27T15:59:56.7033490Z @kisaki3/ext-koodo-reader-importer:typecheck: cache hit, replaying logs 2fefcad8225751ae
+2026-10-27T15:59:56.7034451Z @kisaki3/ext-koodo-reader-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7037805Z @kisaki3/ext-myanimelist:typecheck: cache hit, replaying logs 455f944818a826ee
+2026-10-27T15:59:56.7038644Z @kisaki3/ext-myanimelist:typecheck: $ tsc -b
+2026-10-27T15:59:56.7042142Z @kisaki3/ext-playnite-importer:typecheck: cache hit, replaying logs a7abe41e7f07b110
+2026-10-27T15:59:56.7042988Z @kisaki3/ext-playnite-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7045460Z @kisaki3/ext-kotatsu-importer:typecheck: cache hit, replaying logs 7b4bc4b0d5eb5299
+2026-10-27T15:59:56.7046349Z @kisaki3/ext-kotatsu-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7049015Z @kisaki3/ext-google-books:typecheck: cache hit, replaying logs e10004d9ef4c5313
+2026-10-27T15:59:56.7049820Z @kisaki3/ext-google-books:typecheck: $ tsc -b
+2026-10-27T15:59:56.7055658Z @kisaki3/ext-yacreader-importer:typecheck: cache hit, replaying logs 4dc8ec0d69b5454b
+2026-10-27T15:59:56.7056435Z @kisaki3/ext-yacreader-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7069558Z @kisaki3/ext-anx-reader-importer:typecheck: cache hit, replaying logs 6b6c2f10cf6e98f0
+2026-10-27T15:59:56.7070541Z @kisaki3/ext-anx-reader-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7071403Z @kisaki3/ext-launchbox-importer:typecheck: cache hit, replaying logs c878eda961e4906e
+2026-10-27T15:59:56.7072175Z @kisaki3/ext-launchbox-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7072863Z @kisaki3/ext-steam:typecheck: cache hit, replaying logs 61b0969006ca6835
+2026-10-27T15:59:56.7073602Z @kisaki3/ext-steam:typecheck: $ tsc -b
+2026-10-27T15:59:56.7074249Z @kisaki3/ext-ranobedb:typecheck: cache hit, replaying logs 4a2eb8b3b477b836
+2026-10-27T15:59:56.7074865Z @kisaki3/ext-ranobedb:typecheck: $ tsc -b
+2026-10-27T15:59:56.7078666Z @kisaki3/ext-koreader-importer:typecheck: cache hit, replaying logs 4d3ec8943b1e2d0b
+2026-10-27T15:59:56.7094275Z @kisaki3/ext-koreader-importer:typecheck: $ tsc -b
+2026-10-27T15:59:56.7095042Z @kisaki3/ext-language-zh-hant:typecheck: cache hit, replaying logs 32a3bc84606f9f1a
+2026-10-27T15:59:56.7095749Z @kisaki3/ext-language-zh-hant:typecheck: $ tsc -b
+2026-10-27T16:00:00.1721128Z 
+2026-10-27T16:00:00.1722127Z  Tasks:    50 successful, 50 total
+2026-10-27T16:00:00.1722659Z Cached:    48 cached, 50 total
+2026-10-27T16:00:00.1723677Z   Time:    6.228s 
+2026-10-27T16:00:00.1723852Z 
+2026-10-27T16:00:00.5763528Z $ turbo run lint lint:root check:boundaries --log-order=stream
+2026-10-27T16:00:00.6353626Z 
+2026-10-27T16:00:00.6362071Z    • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+2026-10-27T16:00:00.6368754Z    • Running lint, lint:root, check:boundaries in 46 packages
+2026-10-27T16:00:00.6369450Z    • Remote caching disabled
+2026-10-27T16:00:00.6369846Z 
+2026-10-27T16:00:00.6532735Z @kisaki3/tooling:lint: cache hit, replaying logs f5c1cf91f5b6ce60
+2026-10-27T16:00:00.6533729Z @kisaki3/tooling:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6534392Z @kisaki3/eslint-config:lint: cache hit, replaying logs 44e174c27cc3c670
+2026-10-27T16:00:00.6535073Z @kisaki3/eslint-config:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6535713Z //:lint:root: cache miss, executing 49e3adbd03b614fc
+2026-10-27T16:00:00.6541178Z @kisaki3/appearance:lint: cache hit, replaying logs 53e6aca2df275ed1
+2026-10-27T16:00:00.6541839Z @kisaki3/appearance:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6545304Z @kisaki3/desktop-contracts:lint: cache hit, replaying logs 3e95675011884f22
+2026-10-27T16:00:00.6545926Z @kisaki3/desktop-contracts:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6549175Z @kisaki3/extension-distribution:lint: cache hit, replaying logs 21118919f5cdb5ce
+2026-10-27T16:00:00.6549950Z @kisaki3/extension-distribution:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6552181Z @kisaki3/rpc:lint: cache hit, replaying logs 0a357cd3efba3a89
+2026-10-27T16:00:00.6552838Z @kisaki3/rpc:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6568263Z @kisaki3/extension-distribution:build: cache hit, replaying logs aad6ec28eaac5e9e
+2026-10-27T16:00:00.6569128Z @kisaki3/extension-distribution:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6570985Z @kisaki3/extension-distribution:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-distribution/tsdown.config.ts 
+2026-10-27T16:00:00.6571797Z @kisaki3/extension-distribution:build: ℹ entry: src/index.ts, src/metadata.ts
+2026-10-27T16:00:00.6572381Z @kisaki3/extension-distribution:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6572854Z @kisaki3/extension-distribution:build: ℹ Build start
+2026-10-27T16:00:00.6573728Z @kisaki3/extension-distribution:build: ℹ .cache/output-staging/dist-xx67cv/index.js       0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6574536Z @kisaki3/extension-distribution:build: ℹ .cache/output-staging/dist-xx67cv/metadata.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6575316Z @kisaki3/extension-distribution:build: ℹ .cache/output-staging/dist-xx67cv/metadata.d.ts  0.14 kB │ gzip: 0.13 kB
+2026-10-27T16:00:00.6576197Z @kisaki3/extension-distribution:build: ℹ .cache/output-staging/dist-xx67cv/index.d.ts     0.08 kB │ gzip: 0.08 kB
+2026-10-27T16:00:00.6577355Z @kisaki3/extension-distribution:build: ℹ 4 files, total: 0.24 kB
+2026-10-27T16:00:00.6578102Z @kisaki3/extension-distribution:build: ✔ Build complete in 833ms
+2026-10-27T16:00:00.6578658Z @kisaki3/appearance:build: cache hit, replaying logs 99a7dfed5cb0eb51
+2026-10-27T16:00:00.6579068Z @kisaki3/appearance:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6579798Z @kisaki3/appearance:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T16:00:00.6580478Z @kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T16:00:00.6580982Z @kisaki3/appearance:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6581425Z @kisaki3/appearance:build: ℹ Build start
+2026-10-27T16:00:00.6581962Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T16:00:00.6582660Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T16:00:00.6583506Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T16:00:00.6584484Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T16:00:00.6585226Z @kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+2026-10-27T16:00:00.6585806Z @kisaki3/appearance:build: ✔ Build complete in 779ms
+2026-10-27T16:00:00.6594353Z @kisaki3/rpc:build: cache hit, replaying logs 7f8a55c615a6078b
+2026-10-27T16:00:00.6594909Z @kisaki3/rpc:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6596023Z @kisaki3/rpc:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/rpc/tsdown.config.ts 
+2026-10-27T16:00:00.6596936Z @kisaki3/rpc:build: ℹ entry: src/index.ts, src/transport.ts
+2026-10-27T16:00:00.6597632Z @kisaki3/rpc:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6598234Z @kisaki3/rpc:build: ℹ Build start
+2026-10-27T16:00:00.6598979Z @kisaki3/rpc:build: ℹ .cache/output-staging/dist-6S4g0L/index.js        0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6599915Z @kisaki3/rpc:build: ℹ .cache/output-staging/dist-6S4g0L/transport.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6600801Z @kisaki3/rpc:build: ℹ .cache/output-staging/dist-6S4g0L/transport.d.ts  0.60 kB │ gzip: 0.33 kB
+2026-10-27T16:00:00.6601440Z @kisaki3/rpc:build: ℹ .cache/output-staging/dist-6S4g0L/index.d.ts      0.08 kB │ gzip: 0.07 kB
+2026-10-27T16:00:00.6601908Z @kisaki3/rpc:build: ℹ 4 files, total: 0.71 kB
+2026-10-27T16:00:00.6602257Z @kisaki3/rpc:build: ✔ Build complete in 784ms
+2026-10-27T16:00:00.6602675Z @kisaki3/desktop-contracts:build: cache hit, replaying logs 21c51f2dd4532e59
+2026-10-27T16:00:00.6603095Z @kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6604234Z @kisaki3/desktop-contracts:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T16:00:00.6605053Z @kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T16:00:00.6605670Z @kisaki3/desktop-contracts:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6606129Z @kisaki3/desktop-contracts:build: ℹ Build start
+2026-10-27T16:00:00.6606739Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T16:00:00.6607485Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6608231Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6608964Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T16:00:00.6609709Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T16:00:00.6610456Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T16:00:00.6611135Z @kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.14 kB
+2026-10-27T16:00:00.6611573Z @kisaki3/desktop-contracts:build: ✔ Build complete in 856ms
+2026-10-27T16:00:00.6614904Z @kisaki3/ui:lint: cache hit, replaying logs f5600371016c4151
+2026-10-27T16:00:00.6615411Z @kisaki3/ui:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6620731Z @kisaki3/extension-api:lint: cache hit, replaying logs 5063c5d9508b0b95
+2026-10-27T16:00:00.6621481Z @kisaki3/extension-api:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6625637Z @kisaki3/extension-cli:lint: cache hit, replaying logs 8c776af8ccc2788a
+2026-10-27T16:00:00.6626407Z @kisaki3/extension-cli:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6628811Z @kisaki3/ui:build: cache hit, replaying logs e3dedc5a55970b74
+2026-10-27T16:00:00.6629243Z @kisaki3/ui:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6630240Z @kisaki3/ui:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T16:00:00.6630840Z @kisaki3/ui:build: ℹ entry: src/index.ts
+2026-10-27T16:00:00.6631523Z @kisaki3/ui:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6632169Z @kisaki3/ui:build: ℹ Build start
+2026-10-27T16:00:00.6632952Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T16:00:00.6634226Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T16:00:00.6634961Z @kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+2026-10-27T16:00:00.6635648Z @kisaki3/ui:build: ✔ Build complete in 1417ms
+2026-10-27T16:00:00.6636364Z @kisaki3/ui:build: [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T16:00:00.6636847Z @kisaki3/ui:build: 
+2026-10-27T16:00:00.6637250Z @kisaki3/ui:build: Done in [34m50ms[39m
+2026-10-27T16:00:00.6637871Z @kisaki3/extension-api:build: cache hit, replaying logs a25eaa6ed7942f60
+2026-10-27T16:00:00.6638349Z @kisaki3/extension-api:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6639080Z @kisaki3/extension-api:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/tsdown.config.ts 
+2026-10-27T16:00:00.6639683Z @kisaki3/extension-api:build: ℹ entry: src/index.ts
+2026-10-27T16:00:00.6640155Z @kisaki3/extension-api:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:00.6640563Z @kisaki3/extension-api:build: ℹ Build start
+2026-10-27T16:00:00.6641099Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:00.6641754Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.d.ts  0.13 kB │ gzip: 0.11 kB
+2026-10-27T16:00:00.6642255Z @kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+2026-10-27T16:00:00.6642647Z @kisaki3/extension-api:build: ✔ Build complete in 875ms
+2026-10-27T16:00:00.6643216Z @kisaki3/extension-cli:build: cache hit, replaying logs 916f7bd9f07c14b6
+2026-10-27T16:00:00.6643940Z @kisaki3/extension-cli:build: $ tsx tools/build.ts
+2026-10-27T16:00:00.6644692Z @kisaki3/extension-cli:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T16:00:00.6645373Z @kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T16:00:00.6645890Z @kisaki3/extension-cli:build: ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T16:00:00.6646309Z @kisaki3/extension-cli:build: ℹ Build start
+2026-10-27T16:00:00.6646864Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T16:00:00.6647557Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T16:00:00.6648239Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T16:00:00.6648935Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T16:00:00.6649533Z @kisaki3/extension-cli:build: ℹ 4 files, total: 8.14 kB
+2026-10-27T16:00:00.6649961Z @kisaki3/extension-cli:build: ✔ Build complete in 1676ms
+2026-10-27T16:00:00.6650373Z @kisaki3/extension-sdk:lint: cache hit, replaying logs 58c078596845933f
+2026-10-27T16:00:00.6650776Z @kisaki3/extension-sdk:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6651181Z @kisaki3/ext-ymgal:lint: cache hit, replaying logs 0f42886b523e1b47
+2026-10-27T16:00:00.6651549Z @kisaki3/ext-ymgal:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6657223Z @kisaki3/ext-language-ja:lint: cache hit, replaying logs 460c4a4d741bbfb3
+2026-10-27T16:00:00.6659857Z @kisaki3/ext-language-ja:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6660787Z @kisaki3/ext-mangaupdates:lint: cache hit, replaying logs 026b88b65f883e81
+2026-10-27T16:00:00.6661577Z @kisaki3/ext-mangaupdates:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6662784Z @kisaki3/ext-itch-io:lint: cache hit, replaying logs 071550598751eec3
+2026-10-27T16:00:00.6665766Z @kisaki3/ext-itch-io:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6666722Z @kisaki3/ext-calibre-importer:lint: cache hit, replaying logs 81644f87938ed0f5
+2026-10-27T16:00:00.6667553Z @kisaki3/ext-calibre-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6669646Z @kisaki3/ext-mangadex:lint: cache hit, replaying logs bea3c17cb0b29483
+2026-10-27T16:00:00.6670619Z @kisaki3/ext-mangadex:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6671764Z @kisaki3/ext-language-zh-hant:lint: cache hit, replaying logs 4d10151b5ad8eeff
+2026-10-27T16:00:00.6672696Z @kisaki3/ext-language-zh-hant:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6674673Z @kisaki3/ext-launchbox-importer:lint: cache hit, replaying logs 59a34f9a66d7be8b
+2026-10-27T16:00:00.6676435Z @kisaki3/ext-launchbox-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6678243Z @kisaki3/ext-igdb:lint: cache hit, replaying logs dc21bdcc78d3526c
+2026-10-27T16:00:00.6678943Z @kisaki3/ext-igdb:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6681635Z @kisaki3/ext-koreader-importer:lint: cache hit, replaying logs 4ed04382a47c14a4
+2026-10-27T16:00:00.6682655Z @kisaki3/ext-koreader-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6686981Z @kisaki3/ext-steamgriddb:lint: cache hit, replaying logs 597137edc30e7a3d
+2026-10-27T16:00:00.6687925Z @kisaki3/ext-steamgriddb:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6693410Z @kisaki3/ext-language-zh-hans:lint: cache hit, replaying logs 32841dcff027057f
+2026-10-27T16:00:00.6694293Z @kisaki3/ext-language-zh-hans:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6696975Z @kisaki3/ext-mihon-importer:lint: cache hit, replaying logs 4f6473d41d7dfced
+2026-10-27T16:00:00.6697749Z @kisaki3/ext-mihon-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6699748Z @kisaki3/ext-nfo-comicinfo-importer:lint: cache hit, replaying logs 910728766148ae49
+2026-10-27T16:00:00.6700724Z @kisaki3/ext-nfo-comicinfo-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6702461Z @kisaki3/ext-ndl-search:lint: cache hit, replaying logs ad650c5e1e93923b
+2026-10-27T16:00:00.6703517Z @kisaki3/ext-ndl-search:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6735674Z @kisaki3/ext-steam:lint: cache hit, replaying logs f209b8c6ec7df9d5
+2026-10-27T16:00:00.6736357Z @kisaki3/ext-steam:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6739893Z @kisaki3/ext-google-books:lint: cache hit, replaying logs 4bb9b86c9a651b71
+2026-10-27T16:00:00.6740596Z @kisaki3/ext-google-books:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6742749Z @kisaki3/ext-bangumi:lint: cache hit, replaying logs f278a3b5a968fe61
+2026-10-27T16:00:00.6743669Z @kisaki3/ext-bangumi:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6745779Z @kisaki3/ext-vnite-importer:lint: cache hit, replaying logs 72a42c70314a1e7b
+2026-10-27T16:00:00.6746719Z @kisaki3/ext-vnite-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:00.6747757Z @kisaki3/desktop:lint: cache miss, executing 3a1da3030df1fdc2
+2026-10-27T16:00:01.0579798Z @kisaki3/desktop:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:01.1544530Z //:lint:root: $ eslint "*.config.ts" config tools tests --max-warnings 0
+2026-10-27T16:00:02.4990499Z @kisaki3/ext-tmdb:lint: cache hit, replaying logs f87d03a7b5d487ca
+2026-10-27T16:00:02.4991801Z @kisaki3/ext-tmdb:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5009362Z @kisaki3/ext-koodo-reader-importer:lint: cache hit, replaying logs 3d6e28e7f6497e93
+2026-10-27T16:00:02.5011156Z @kisaki3/ext-koodo-reader-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5018064Z @kisaki3/ext-potatovn-importer:lint: cache hit, replaying logs fc3b757c1eb99cd7
+2026-10-27T16:00:02.5019353Z @kisaki3/ext-potatovn-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5025643Z @kisaki3/ext-yacreader-importer:lint: cache hit, replaying logs 9204b4729d5ab4db
+2026-10-27T16:00:02.5027975Z @kisaki3/ext-yacreader-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5037751Z @kisaki3/ext-playnite-importer:lint: cache hit, replaying logs 1133e36641852338
+2026-10-27T16:00:02.5038587Z @kisaki3/ext-playnite-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5043747Z @kisaki3/ext-fanart-tv:lint: cache hit, replaying logs e695f0768b0f99c7
+2026-10-27T16:00:02.5046787Z @kisaki3/ext-fanart-tv:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5051189Z @kisaki3/ext-anx-reader-importer:lint: cache hit, replaying logs 04b2a766c3b4a547
+2026-10-27T16:00:02.5054765Z @kisaki3/ext-anx-reader-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5057500Z @kisaki3/ext-goodreads-importer:lint: cache hit, replaying logs 93afb3e9ddc5b349
+2026-10-27T16:00:02.5060141Z @kisaki3/ext-goodreads-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5062763Z @kisaki3/ext-anilist:lint: cache hit, replaying logs 70f655412a4ff45a
+2026-10-27T16:00:02.5064038Z @kisaki3/ext-anilist:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5074049Z @kisaki3/ext-vndb:lint: cache hit, replaying logs be52169b52f6daa6
+2026-10-27T16:00:02.5075134Z @kisaki3/ext-vndb:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5078058Z @kisaki3/ext-ranobedb:lint: cache hit, replaying logs 1e3a534d123bc8f3
+2026-10-27T16:00:02.5079108Z @kisaki3/ext-ranobedb:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5085376Z @kisaki3/ext-wikidata:lint: cache hit, replaying logs a96f6a16cffbc4f0
+2026-10-27T16:00:02.5086081Z @kisaki3/ext-wikidata:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5086682Z @kisaki3/ext-myanimelist:lint: cache hit, replaying logs 8b18b3bcd6b60ca6
+2026-10-27T16:00:02.5087336Z @kisaki3/ext-myanimelist:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5088024Z @kisaki3/ext-kotatsu-importer:lint: cache hit, replaying logs 6e60e4776b491551
+2026-10-27T16:00:02.5088674Z @kisaki3/ext-kotatsu-importer:lint: $ eslint . --max-warnings 0
+2026-10-27T16:00:02.5089518Z @kisaki3/extension-sdk:build: cache hit, replaying logs 74acfa6bf89088bc
+2026-10-27T16:00:02.5090661Z @kisaki3/extension-sdk:build: $ tsx tools/build.ts
+2026-10-27T16:00:02.5092423Z @kisaki3/extension-sdk:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-sdk/tsdown.config.ts 
+2026-10-27T16:00:02.5093957Z @kisaki3/extension-sdk:build: ℹ entry: src/index.ts
+2026-10-27T16:00:02.5095045Z @kisaki3/extension-sdk:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:02.5096062Z @kisaki3/extension-sdk:build: ℹ Build start
+2026-10-27T16:00:02.5097249Z @kisaki3/extension-sdk:build: ℹ .cache/output-staging/dist-EUtPf2/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:02.5098653Z @kisaki3/extension-sdk:build: ℹ .cache/output-staging/dist-EUtPf2/index.d.ts  0.12 kB │ gzip: 0.10 kB
+2026-10-27T16:00:02.5099752Z @kisaki3/extension-sdk:build: ℹ 2 files, total: 0.13 kB
+2026-10-27T16:00:02.5100696Z @kisaki3/extension-sdk:build: ✔ Build complete in 733ms
+2026-10-27T16:00:02.5908640Z //:check:boundaries: cache miss, executing e0b4bd4da05681cf
+2026-10-27T16:00:03.0059364Z //:check:boundaries: $ depcruise --config .dependency-cruiser.json clients packages tools
+2026-10-27T16:00:03.9122292Z //:check:boundaries: 
+2026-10-27T16:00:03.9123533Z //:check:boundaries: ✔ no dependency violations found (253 modules, 546 dependencies cruised)
+2026-10-27T16:00:03.9124063Z //:check:boundaries: 
+2026-10-27T16:00:03.9319829Z 
+2026-10-27T16:00:03.9320801Z  Tasks:    54 successful, 54 total
+2026-10-27T16:00:03.9321632Z Cached:    51 cached, 54 total
+2026-10-27T16:00:03.9322574Z   Time:    3.321s 
+2026-10-27T16:00:03.9322980Z 
+2026-10-27T16:00:04.3379292Z $ prettier . --check
+2026-10-27T16:00:04.4117063Z Checking formatting...
+2026-10-27T16:00:06.5548902Z All matched files use Prettier code style!
+2026-10-27T16:00:06.9681504Z $ turbo run test test:root --log-order=stream
+2026-10-27T16:00:07.0247306Z 
+2026-10-27T16:00:07.0255973Z    • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+2026-10-27T16:00:07.0288099Z    • Running test, test:root in 46 packages
+2026-10-27T16:00:07.0328239Z    • Remote caching disabled
+2026-10-27T16:00:07.0329044Z 
+2026-10-27T16:00:07.0382043Z @kisaki3/tooling:test: cache bypass, force executing f05d54138b34c484
+2026-10-27T16:00:07.0405703Z @kisaki3/appearance:build: cache hit, replaying logs 99a7dfed5cb0eb51
+2026-10-27T16:00:07.0406549Z @kisaki3/appearance:build: $ tsx tools/build.ts
+2026-10-27T16:00:07.0408299Z @kisaki3/appearance:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T16:00:07.0409556Z @kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T16:00:07.0410766Z @kisaki3/appearance:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:07.0424157Z @kisaki3/appearance:build: ℹ Build start
+2026-10-27T16:00:07.0441131Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T16:00:07.0454718Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T16:00:07.0494960Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T16:00:07.0496504Z @kisaki3/appearance:build: ℹ .cache/output-staging/dist-1X9ydU/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T16:00:07.0497676Z @kisaki3/appearance:build: ℹ 4 files, total: 6.51 kB
+2026-10-27T16:00:07.0498561Z @kisaki3/appearance:build: ✔ Build complete in 779ms
+2026-10-27T16:00:07.0499454Z @kisaki3/desktop-contracts:build: cache hit, replaying logs 21c51f2dd4532e59
+2026-10-27T16:00:07.0500432Z @kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+2026-10-27T16:00:07.0502060Z @kisaki3/desktop-contracts:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T16:00:07.0503951Z @kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T16:00:07.0505587Z @kisaki3/desktop-contracts:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:07.0506589Z @kisaki3/desktop-contracts:build: ℹ Build start
+2026-10-27T16:00:07.0507745Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T16:00:07.0509227Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:07.0510677Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:07.0512076Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T16:00:07.0513659Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T16:00:07.0515109Z @kisaki3/desktop-contracts:build: ℹ .cache/output-staging/dist-OFgJaj/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T16:00:07.0516266Z @kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.14 kB
+2026-10-27T16:00:07.0517119Z @kisaki3/desktop-contracts:build: ✔ Build complete in 856ms
+2026-10-27T16:00:07.0518022Z //:test:root: cache bypass, force executing 9ddbccdd0795655d
+2026-10-27T16:00:07.4933575Z //:test:root: $ vitest run
+2026-10-27T16:00:07.4978756Z @kisaki3/tooling:test: $ vitest run
+2026-10-27T16:00:07.7852521Z //:test:root: 
+2026-10-27T16:00:07.7865232Z //:test:root: [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev[39m
+2026-10-27T16:00:07.7874381Z //:test:root: 
+2026-10-27T16:00:07.7877786Z @kisaki3/tooling:test: 
+2026-10-27T16:00:07.7881840Z @kisaki3/tooling:test: [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/packages/tooling[39m
+2026-10-27T16:00:07.7883137Z @kisaki3/tooling:test: 
+2026-10-27T16:00:08.1249106Z @kisaki3/tooling:test:  [32m✓[39m tests/output.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+2026-10-27T16:00:08.7910713Z @kisaki3/tooling:test:  [32m✓[39m tests/process.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 670[2mms[22m[39m
+2026-10-27T16:00:08.7925640Z @kisaki3/tooling:test:    [33m[2m✓[22m[39m cancelling a command waits for the command and its descendant to exit[33m 419[2mms[22m[39m
+2026-10-27T16:00:08.7967387Z @kisaki3/tooling:test: 
+2026-10-27T16:00:08.7995044Z @kisaki3/tooling:test: [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-27T16:00:08.7996439Z @kisaki3/tooling:test: [2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+2026-10-27T16:00:08.7997580Z @kisaki3/tooling:test: [2m   Start at [22m 16:00:07
+2026-10-27T16:00:08.7998725Z @kisaki3/tooling:test: [2m   Duration [22m 1.00s[2m (tests 79%, transform 13%, import 5%, worker 3%)[22m
+2026-10-27T16:00:08.8005792Z @kisaki3/tooling:test: 
+2026-10-27T16:00:08.8362779Z @kisaki3/ui:build: cache hit, replaying logs e3dedc5a55970b74
+2026-10-27T16:00:08.8377749Z @kisaki3/ui:build: $ tsx tools/build.ts
+2026-10-27T16:00:08.8379339Z @kisaki3/ui:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T16:00:08.8380576Z @kisaki3/ui:build: ℹ entry: src/index.ts
+2026-10-27T16:00:08.8381551Z @kisaki3/ui:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:08.8389806Z @kisaki3/ui:build: ℹ Build start
+2026-10-27T16:00:08.8391049Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T16:00:08.8392333Z @kisaki3/ui:build: ℹ .cache/output-staging/dist-svv7Ji/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T16:00:08.8393503Z @kisaki3/ui:build: ℹ 2 files, total: 1.05 kB
+2026-10-27T16:00:08.8394383Z @kisaki3/ui:build: ✔ Build complete in 1417ms
+2026-10-27T16:00:08.8395408Z @kisaki3/ui:build: [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T16:00:08.8396238Z @kisaki3/ui:build: 
+2026-10-27T16:00:08.8397299Z @kisaki3/ui:build: Done in [34m50ms[39m
+2026-10-27T16:00:08.8398254Z @kisaki3/extension-cli:build: cache hit, replaying logs 916f7bd9f07c14b6
+2026-10-27T16:00:08.8399146Z @kisaki3/extension-cli:build: $ tsx tools/build.ts
+2026-10-27T16:00:08.8400719Z @kisaki3/extension-cli:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T16:00:08.8402143Z @kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T16:00:08.8410158Z @kisaki3/extension-cli:build: ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T16:00:08.8413840Z @kisaki3/extension-cli:build: ℹ Build start
+2026-10-27T16:00:08.8415095Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T16:00:08.8416547Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T16:00:08.8417896Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T16:00:08.8419302Z @kisaki3/extension-cli:build: ℹ .cache/output-staging/dist-YaceNR/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T16:00:08.8420269Z @kisaki3/extension-cli:build: ℹ 4 files, total: 8.14 kB
+2026-10-27T16:00:08.8421186Z @kisaki3/extension-cli:build: ✔ Build complete in 1676ms
+2026-10-27T16:00:08.8421993Z @kisaki3/extension-api:build: cache hit, replaying logs a25eaa6ed7942f60
+2026-10-27T16:00:08.8422948Z @kisaki3/extension-api:build: $ tsx tools/build.ts
+2026-10-27T16:00:08.8424502Z @kisaki3/extension-api:build: ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/tsdown.config.ts 
+2026-10-27T16:00:08.8425943Z @kisaki3/extension-api:build: ℹ entry: src/index.ts
+2026-10-27T16:00:08.8426950Z @kisaki3/extension-api:build: ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:00:08.8427999Z @kisaki3/extension-api:build: ℹ Build start
+2026-10-27T16:00:08.8429128Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:00:08.8430520Z @kisaki3/extension-api:build: ℹ .cache/output-staging/dist-rIDDgx/index.d.ts  0.13 kB │ gzip: 0.11 kB
+2026-10-27T16:00:08.8431621Z @kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+2026-10-27T16:00:08.8432443Z @kisaki3/extension-api:build: ✔ Build complete in 875ms
+2026-10-27T16:00:08.8433529Z @kisaki3/desktop:test: cache bypass, force executing f73d3a17b2359d74
+2026-10-27T16:00:09.4485953Z //:test:root:  [32m✓[39m tests/tools/structure/boundaries.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1308[2mms[22m[39m
+2026-10-27T16:00:09.4774740Z @kisaki3/desktop:test: $ vitest run
+2026-10-27T16:00:09.9537073Z @kisaki3/desktop:test: 
+2026-10-27T16:00:09.9576181Z @kisaki3/desktop:test: [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T16:00:09.9616065Z @kisaki3/desktop:test: 
+2026-10-27T16:00:10.2715274Z //:test:root:  [32m✓[39m tests/tools/hooks/lifecycle.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 2143[2mms[22m[39m
+2026-10-27T16:00:10.2759515Z //:test:root:    [33m[2m✓[22m[39m a failed partial-staging check restores both worktree and index without modifying files[33m 1400[2mms[22m[39m
+2026-10-27T16:00:10.6223675Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/build/identity.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 161[2mms[22m[39m
+2026-10-27T16:00:11.2874653Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/build/programs.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 198[2mms[22m[39m
+2026-10-27T16:00:11.4915322Z @kisaki3/desktop:test: [90mstdout[2m | tests/tools/inputs.test.ts
+2026-10-27T16:00:11.4947112Z @kisaki3/desktop:test: [22m[39m[2m4:00:11 PM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T16:00:11.4963663Z @kisaki3/desktop:test: 
+2026-10-27T16:00:11.6005595Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/inputs.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 869[2mms[22m[39m
+2026-10-27T16:00:11.7282143Z //:test:root:  [32m✓[39m tests/tools/structure/workspace.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1321[2mms[22m[39m
+2026-10-27T16:00:11.7308285Z //:test:root:    [33m[2m✓[22m[39m pnpm registers the maintained projects with unique identities and the intended publication boundaries[33m 1074[2mms[22m[39m
+2026-10-27T16:00:11.7528173Z @kisaki3/desktop:test: [90mstdout[2m | tests/tools/dependency-snapshots.test.ts[2m > [22m[2mVite resolves complete snapshots and preserves the active generation after a failed export
+2026-10-27T16:00:11.7541048Z @kisaki3/desktop:test: [22m[39m[2m4:00:11 PM[22m [36m[1m[vite][22m[39m server restarted.
+2026-10-27T16:00:11.7581434Z @kisaki3/desktop:test: 
+2026-10-27T16:00:11.7602549Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/resources/fonts.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+2026-10-27T16:00:11.8198335Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/dependency-snapshots.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1050[2mms[22m[39m
+2026-10-27T16:00:11.8215847Z @kisaki3/desktop:test:    [33m[2m✓[22m[39m Vite resolves complete snapshots and preserves the active generation after a failed export[33m 1046[2mms[22m[39m
+2026-10-27T16:00:11.8687629Z @kisaki3/desktop:test:  [32m✓[39m tests/integration/portable.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+2026-10-27T16:00:12.0225664Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/clean.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 12[2mms[22m[39m
+2026-10-27T16:00:12.5525859Z //:test:root:  [32m✓[39m tests/tools/structure/lint.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1820[2mms[22m[39m
+2026-10-27T16:00:12.5529854Z //:test:root:    [33m[2m✓[22m[39m one staged-file lint run can load root, application, package and extension configurations[33m 1814[2mms[22m[39m
+2026-10-27T16:00:12.5900306Z @kisaki3/desktop:test:  [32m✓[39m tests/tools/dependencies.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 577[2mms[22m[39m
+2026-10-27T16:00:12.5903088Z @kisaki3/desktop:test:    [33m[2m✓[22m[39m development snapshots include production workspace packages and exclude private engineering dependencies[33m 575[2mms[22m[39m
+2026-10-27T16:00:12.5944383Z @kisaki3/desktop:test: 
+2026-10-27T16:00:12.5946413Z @kisaki3/desktop:test: [2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+2026-10-27T16:00:12.5947575Z @kisaki3/desktop:test: [2m      Tests [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+2026-10-27T16:00:12.5948565Z @kisaki3/desktop:test: [2m   Start at [22m 16:00:09
+2026-10-27T16:00:12.5949902Z @kisaki3/desktop:test: [2m   Duration [22m 2.63s[2m (tests 63%, import 25%, transform 11%, worker 1%)[22m
+2026-10-27T16:00:12.5957721Z @kisaki3/desktop:test: 
+2026-10-27T16:00:12.5959601Z @kisaki3/desktop:test: [2m    Isolate [22m [33m8 workers spawned[39m[2m · ~209ms startup each (spawn + environment, per file)[22m
+2026-10-27T16:00:12.5961458Z @kisaki3/desktop:test: [2m            [22m [2mat least ~349ms faster with [22m[33misolate: false[39m[2m — reuses workers across files instead of one per file[22m
+2026-10-27T16:00:12.5962564Z @kisaki3/desktop:test: 
+2026-10-27T16:00:13.4511303Z //:test:root:  [32m✓[39m tests/tools/structure/tasks.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 5300[2mms[22m[39m
+2026-10-27T16:00:13.4512491Z //:test:root:    [33m[2m✓[22m[39m the actual task graph excludes generated inputs and always executes runtime validation[33m 321[2mms[22m[39m
+2026-10-27T16:00:13.4514757Z //:test:root:    [33m[2m✓[22m[39m affected tasks follow verification inputs without promoting documentation or test edits to full desktop acceptance[33m 4976[2mms[22m[39m
+2026-10-27T16:00:13.4547826Z //:test:root: 
+2026-10-27T16:00:13.4550826Z //:test:root: [2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+2026-10-27T16:00:13.4552155Z //:test:root: [2m      Tests [22m [1m[32m24 passed[39m[22m[90m (24)[39m
+2026-10-27T16:00:13.4553018Z //:test:root: [2m   Start at [22m 16:00:07
+2026-10-27T16:00:13.4554716Z //:test:root: [2m   Duration [22m 5.66s[2m (tests 89%, import 7%, transform 3%)[22m
+2026-10-27T16:00:13.4563198Z //:test:root: 
+2026-10-27T16:00:13.4781413Z 
+2026-10-27T16:00:13.4781976Z  Tasks:    8 successful, 8 total
+2026-10-27T16:00:13.4782538Z Cached:    5 cached, 8 total
+2026-10-27T16:00:13.4783139Z   Time:    6.476s 
+2026-10-27T16:00:13.4783531Z 
+2026-10-27T16:00:13.4980821Z ##[group]Run pnpm exec playwright install --with-deps chromium
+2026-10-27T16:00:13.4981297Z [36;1mpnpm exec playwright install --with-deps chromium[0m
+2026-10-27T16:00:13.5011942Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:00:13.5012243Z env:
+2026-10-27T16:00:13.5012613Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T16:00:13.5012911Z   TURBO_CONCURRENCY: 2
+2026-10-27T16:00:13.5013446Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T16:00:13.5013852Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:00:13.5014270Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T16:00:13.5014662Z ##[endgroup]
+2026-10-27T16:00:14.3164649Z Installing dependencies...
+2026-10-27T16:00:14.3232661Z Switching to root user to install dependencies...
+2026-10-27T16:00:14.4102315Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-27T16:00:14.4652993Z Get:6 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3632 B]
+2026-10-27T16:00:14.4831716Z Hit:2 http://azure.archive.ubuntu.com/ubuntu jammy InRelease
+2026-10-27T16:00:14.4846986Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+2026-10-27T16:00:14.4883207Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+2026-10-27T16:00:14.4890369Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+2026-10-27T16:00:14.5170000Z Get:7 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main arm64 Packages [688 kB]
+2026-10-27T16:00:14.5315478Z Get:8 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main amd64 Packages [952 kB]
+2026-10-27T16:00:14.6284156Z Get:9 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3909 kB]
+2026-10-27T16:00:14.6492683Z Get:10 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [576 kB]
+2026-10-27T16:00:14.6544966Z Get:11 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1289 kB]
+2026-10-27T16:00:14.6635523Z Get:12 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [326 kB]
+2026-10-27T16:00:14.7534034Z Get:13 http://azure.archive.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3643 kB]
+2026-10-27T16:00:14.7730925Z Get:14 http://azure.archive.ubuntu.com/ubuntu jammy-security/main Translation-en [510 kB]
+2026-10-27T16:00:14.7764065Z Get:15 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1055 kB]
+2026-10-27T16:00:14.7820262Z Get:16 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe Translation-en [238 kB]
+2026-10-27T16:00:21.0359283Z Fetched 13.6 MB in 1s (9552 kB/s)
+2026-10-27T16:00:22.2873066Z Reading package lists...
+2026-10-27T16:00:22.3420985Z Reading package lists...
+2026-10-27T16:00:22.5829063Z Building dependency tree...
+2026-10-27T16:00:22.5838243Z Reading state information...
+2026-10-27T16:00:22.7626483Z fonts-liberation is already the newest version (1:1.07.4-11).
+2026-10-27T16:00:22.7627385Z fonts-liberation set to manually installed.
+2026-10-27T16:00:22.7627976Z libatk-bridge2.0-0 is already the newest version (2.38.0-3).
+2026-10-27T16:00:22.7628443Z libatk-bridge2.0-0 set to manually installed.
+2026-10-27T16:00:22.7628941Z libatk1.0-0 is already the newest version (2.36.0-3build1).
+2026-10-27T16:00:22.7629332Z libatk1.0-0 set to manually installed.
+2026-10-27T16:00:22.7629822Z libatspi2.0-0 is already the newest version (2.44.0-3).
+2026-10-27T16:00:22.7630215Z libatspi2.0-0 set to manually installed.
+2026-10-27T16:00:22.7631340Z libfontconfig1 is already the newest version (2.13.1-4.2ubuntu5).
+2026-10-27T16:00:22.7631800Z libfontconfig1 set to manually installed.
+2026-10-27T16:00:22.7632214Z libxcb1 is already the newest version (1.14-3ubuntu3).
+2026-10-27T16:00:22.7632649Z libxcb1 set to manually installed.
+2026-10-27T16:00:22.7633069Z libxcomposite1 is already the newest version (1:0.4.5-1build2).
+2026-10-27T16:00:22.7633936Z libxcomposite1 set to manually installed.
+2026-10-27T16:00:22.7634547Z libxdamage1 is already the newest version (1:1.1.5-2build2).
+2026-10-27T16:00:22.7635010Z libxdamage1 set to manually installed.
+2026-10-27T16:00:22.7635420Z libxext6 is already the newest version (2:1.3.4-1build1).
+2026-10-27T16:00:22.7635859Z libxext6 set to manually installed.
+2026-10-27T16:00:22.7636252Z libxfixes3 is already the newest version (1:6.0.0-1).
+2026-10-27T16:00:22.7636674Z libxfixes3 set to manually installed.
+2026-10-27T16:00:22.7637088Z libxkbcommon0 is already the newest version (1.4.0-1).
+2026-10-27T16:00:22.7637507Z libxkbcommon0 set to manually installed.
+2026-10-27T16:00:22.7637948Z libxrandr2 is already the newest version (2:1.5.2-1build1).
+2026-10-27T16:00:22.7638352Z libxrandr2 set to manually installed.
+2026-10-27T16:00:22.7638883Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.22.04.1).
+2026-10-27T16:00:22.7639415Z libasound2 is already the newest version (1.2.6.1-1ubuntu1.2).
+2026-10-27T16:00:22.7639861Z libasound2 set to manually installed.
+2026-10-27T16:00:22.7640277Z libcairo2 is already the newest version (1.16.0-5ubuntu2.1).
+2026-10-27T16:00:22.7640681Z libcairo2 set to manually installed.
+2026-10-27T16:00:22.7641226Z libcups2 is already the newest version (2.4.1op1-1ubuntu4.21).
+2026-10-27T16:00:22.7641668Z libcups2 set to manually installed.
+2026-10-27T16:00:22.7642092Z libdbus-1-3 is already the newest version (1.12.20-2ubuntu4.1).
+2026-10-27T16:00:22.7642531Z libdbus-1-3 set to manually installed.
+2026-10-27T16:00:22.7642961Z libdrm2 is already the newest version (2.4.113-2~ubuntu0.22.04.1).
+2026-10-27T16:00:22.7643513Z libdrm2 set to manually installed.
+2026-10-27T16:00:22.7643927Z libfreetype6 is already the newest version (2.11.1+dfsg-1ubuntu0.4).
+2026-10-27T16:00:22.7644446Z libfreetype6 set to manually installed.
+2026-10-27T16:00:22.7644871Z libgbm1 is already the newest version (23.2.1-1ubuntu3.1~22.04.4).
+2026-10-27T16:00:22.7645329Z libgbm1 set to manually installed.
+2026-10-27T16:00:22.7645770Z libglib2.0-0 is already the newest version (2.72.4-0ubuntu2.10).
+2026-10-27T16:00:22.7646189Z libglib2.0-0 set to manually installed.
+2026-10-27T16:00:22.7646661Z libnspr4 is already the newest version (2:4.35-0ubuntu0.22.04.1).
+2026-10-27T16:00:22.7647111Z libnss3 is already the newest version (2:3.98-0ubuntu0.22.04.5).
+2026-10-27T16:00:22.7647670Z libpango-1.0-0 is already the newest version (1.50.6+ds-2ubuntu1).
+2026-10-27T16:00:22.7648089Z libpango-1.0-0 set to manually installed.
+2026-10-27T16:00:22.7648598Z libwayland-client0 is already the newest version (1.20.0-1ubuntu0.1).
+2026-10-27T16:00:22.7649052Z libwayland-client0 set to manually installed.
+2026-10-27T16:00:22.7649538Z libx11-6 is already the newest version (2:1.7.5-1ubuntu0.4).
+2026-10-27T16:00:22.7649926Z libx11-6 set to manually installed.
+2026-10-27T16:00:22.7650387Z xvfb is already the newest version (2:21.1.4-2ubuntu1.7~22.04.16).
+2026-10-27T16:00:22.7650842Z The following additional packages will be installed:
+2026-10-27T16:00:22.7651251Z   xfonts-encodings xfonts-utils
+2026-10-27T16:00:22.7651612Z Recommended packages:
+2026-10-27T16:00:22.7651968Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-10-27T16:00:22.7788488Z The following NEW packages will be installed:
+2026-10-27T16:00:22.7789086Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-27T16:00:22.7794445Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-27T16:00:22.7794982Z   xfonts-utils
+2026-10-27T16:00:22.7937650Z 0 upgraded, 9 newly installed, 0 to remove and 15 not upgraded.
+2026-10-27T16:00:22.7938448Z Need to get 18.4 MB of archives.
+2026-10-27T16:00:22.7938897Z After this operation, 56.8 MB of additional disk space will be used.
+2026-10-27T16:00:22.7939696Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-27T16:00:23.3628244Z Get:2 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-27T16:01:40.2747749Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 fonts-freefont-ttf all 20120503-10build1 [2388 kB]
+2026-10-27T16:02:32.8478358Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-27T16:02:35.7759753Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-unifont all 1:14.0.01-1 [3551 kB]
+2026-10-27T16:03:56.4892744Z Get:6 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-27T16:06:48.9564672Z Get:7 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-27T16:07:02.9107087Z Get:8 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 xfonts-utils amd64 1:7.7+6build2 [94.6 kB]
+2026-10-27T16:07:05.5493818Z Get:9 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 xfonts-cyrillic all 1:1.0.5 [386 kB]
+2026-10-27T16:07:14.7255166Z Get:10 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 xfonts-scalable all 1:1.0.3-1.2ubuntu1 [306 kB]
+2026-10-27T16:07:21.8291160Z Fetched 18.4 MB in 6min 59s (43.9 kB/s)
+2026-10-27T16:07:21.8496144Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-27T16:07:21.8692690Z (Reading database ... 
+2026-10-27T16:07:21.8693083Z (Reading database ... 5%
+2026-10-27T16:07:21.8693733Z (Reading database ... 10%
+2026-10-27T16:07:21.8694136Z (Reading database ... 15%
+2026-10-27T16:07:21.8694636Z (Reading database ... 20%
+2026-10-27T16:07:21.8694955Z (Reading database ... 25%
+2026-10-27T16:07:21.8695274Z (Reading database ... 30%
+2026-10-27T16:07:21.8695611Z (Reading database ... 35%
+2026-10-27T16:07:21.8695966Z (Reading database ... 40%
+2026-10-27T16:07:21.8696335Z (Reading database ... 45%
+2026-10-27T16:07:21.8696755Z (Reading database ... 50%
+2026-10-27T16:07:21.9116627Z (Reading database ... 55%
+2026-10-27T16:07:22.1641944Z (Reading database ... 60%
+2026-10-27T16:07:22.3855756Z (Reading database ... 65%
+2026-10-27T16:07:22.5129817Z (Reading database ... 70%
+2026-10-27T16:07:22.7215262Z (Reading database ... 75%
+2026-10-27T16:07:22.9207854Z (Reading database ... 80%
+2026-10-27T16:07:23.2862285Z (Reading database ... 85%
+2026-10-27T16:07:23.4594299Z (Reading database ... 90%
+2026-10-27T16:07:23.6810632Z (Reading database ... 95%
+2026-10-27T16:07:23.6811292Z (Reading database ... 100%
+2026-10-27T16:07:23.6811880Z (Reading database ... 263322 files and directories currently installed.)
+2026-10-27T16:07:23.6870425Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-27T16:07:23.7009777Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-27T16:07:23.9674211Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-27T16:07:23.9822715Z Preparing to unpack .../1-fonts-freefont-ttf_20120503-10build1_all.deb ...
+2026-10-27T16:07:23.9832455Z Unpacking fonts-freefont-ttf (20120503-10build1) ...
+2026-10-27T16:07:24.1652401Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-27T16:07:24.1800727Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-27T16:07:24.1807967Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-27T16:07:24.1971538Z Selecting previously unselected package fonts-unifont.
+2026-10-27T16:07:24.2118610Z Preparing to unpack .../3-fonts-unifont_1%3a14.0.01-1_all.deb ...
+2026-10-27T16:07:24.2130355Z Unpacking fonts-unifont (1:14.0.01-1) ...
+2026-10-27T16:07:24.3587944Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-27T16:07:24.3734719Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-27T16:07:24.3814461Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-27T16:07:24.9258896Z Selecting previously unselected package xfonts-encodings.
+2026-10-27T16:07:24.9405361Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-27T16:07:24.9415824Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-27T16:07:24.9698834Z Selecting previously unselected package xfonts-utils.
+2026-10-27T16:07:24.9844792Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+6build2_amd64.deb ...
+2026-10-27T16:07:24.9855324Z Unpacking xfonts-utils (1:7.7+6build2) ...
+2026-10-27T16:07:25.0138353Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-27T16:07:25.0286921Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5_all.deb ...
+2026-10-27T16:07:25.0295791Z Unpacking xfonts-cyrillic (1:1.0.5) ...
+2026-10-27T16:07:25.0711253Z Selecting previously unselected package xfonts-scalable.
+2026-10-27T16:07:25.0857469Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.2ubuntu1_all.deb ...
+2026-10-27T16:07:25.0867496Z Unpacking xfonts-scalable (1:1.0.3-1.2ubuntu1) ...
+2026-10-27T16:07:25.1337958Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-27T16:07:25.1434282Z Setting up fonts-freefont-ttf (20120503-10build1) ...
+2026-10-27T16:07:25.1450257Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-27T16:07:25.1466952Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-27T16:07:25.1483050Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-27T16:07:25.1540467Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-27T16:07:25.1552152Z Setting up fonts-unifont (1:14.0.01-1) ...
+2026-10-27T16:07:25.1569976Z Setting up xfonts-utils (1:7.7+6build2) ...
+2026-10-27T16:07:25.1601580Z Setting up xfonts-cyrillic (1:1.0.5) ...
+2026-10-27T16:07:25.2011162Z Setting up xfonts-scalable (1:1.0.3-1.2ubuntu1) ...
+2026-10-27T16:07:25.2206456Z Processing triggers for man-db (2.10.2-1) ...
+2026-10-27T16:07:25.2224267Z Not building database; man-db/auto-update is not 'true'.
+2026-10-27T16:07:25.2234790Z Processing triggers for fontconfig (2.13.1-4.2ubuntu5) ...
+2026-10-27T16:07:25.8220355Z 
+2026-10-27T16:07:25.8221352Z Running kernel seems to be up-to-date.
+2026-10-27T16:07:25.8221790Z 
+2026-10-27T16:07:25.8221981Z No services need to be restarted.
+2026-10-27T16:07:25.8222216Z 
+2026-10-27T16:07:25.8222373Z No containers need to be restarted.
+2026-10-27T16:07:25.8222596Z 
+2026-10-27T16:07:25.8222852Z No user sessions are running outdated binaries.
+2026-10-27T16:07:25.8223105Z 
+2026-10-27T16:07:25.8223600Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-27T16:07:26.8824066Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+2026-10-27T16:07:27.2652237Z |                                                                                |   0% of 191.1 MiB
+2026-10-27T16:07:27.4098351Z |■■■■■■■■                                                                        |  10% of 191.1 MiB
+2026-10-27T16:07:27.5009633Z |■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+2026-10-27T16:07:27.5771822Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+2026-10-27T16:07:27.6218646Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+2026-10-27T16:07:27.6842652Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+2026-10-27T16:07:27.7441712Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+2026-10-27T16:07:27.7806823Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+2026-10-27T16:07:27.8417751Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+2026-10-27T16:07:27.8961573Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+2026-10-27T16:07:27.9608231Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+2026-10-27T16:07:30.8413026Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+2026-10-27T16:07:30.8417128Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+2026-10-27T16:07:31.1703033Z |                                                                                |   0% of 2.2 MiB
+2026-10-27T16:07:31.1905041Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+2026-10-27T16:07:31.1985694Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+2026-10-27T16:07:31.2058740Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+2026-10-27T16:07:31.2074118Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+2026-10-27T16:07:31.2094040Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+2026-10-27T16:07:31.2148571Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+2026-10-27T16:07:31.2161160Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+2026-10-27T16:07:31.2205030Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+2026-10-27T16:07:31.2217053Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+2026-10-27T16:07:31.2224661Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+2026-10-27T16:07:31.2722725Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+2026-10-27T16:07:31.2725578Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+2026-10-27T16:07:31.6181586Z |                                                                                |   0% of 120 MiB
+2026-10-27T16:07:31.7061077Z |■■■■■■■■                                                                        |  10% of 120 MiB
+2026-10-27T16:07:31.7664890Z |■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+2026-10-27T16:07:31.8123491Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+2026-10-27T16:07:31.8701729Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+2026-10-27T16:07:31.8975635Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+2026-10-27T16:07:31.9441341Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+2026-10-27T16:07:31.9951473Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+2026-10-27T16:07:32.0401995Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+2026-10-27T16:07:32.0996498Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+2026-10-27T16:07:32.1549740Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+2026-10-27T16:07:34.2632269Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+2026-10-27T16:07:34.2845670Z ##[group]Run pnpm test:consumers
+2026-10-27T16:07:34.2846036Z [36;1mpnpm test:consumers[0m
+2026-10-27T16:07:34.2878616Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:07:34.2878992Z env:
+2026-10-27T16:07:34.2879278Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T16:07:34.2879622Z   TURBO_CONCURRENCY: 2
+2026-10-27T16:07:34.2879959Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T16:07:34.2880409Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:34.2880803Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T16:07:34.2881177Z ##[endgroup]
+2026-10-27T16:07:34.6664870Z $ pnpm packages:pack && turbo run test:consumers --filter=./clients/desktop/packages/* && pnpm test:consumers:run
+2026-10-27T16:07:35.0338815Z $ turbo run pack --filter=./clients/desktop/packages/* && tsx tools/release/package-inputs.ts
+2026-10-27T16:07:35.0904144Z 
+2026-10-27T16:07:35.0906278Z    • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+2026-10-27T16:07:35.0907300Z    • Running pack in 8 packages
+2026-10-27T16:07:35.0907998Z    • Remote caching disabled
+2026-10-27T16:07:35.0913834Z 
+2026-10-27T16:07:35.1117161Z ##[group]@kisaki3/extension-distribution:build
+2026-10-27T16:07:35.1118060Z cache hit, replaying logs aad6ec28eaac5e9e
+2026-10-27T16:07:35.1118915Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1120077Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-distribution/tsdown.config.ts 
+2026-10-27T16:07:35.1121152Z ℹ entry: src/index.ts, src/metadata.ts
+2026-10-27T16:07:35.1121886Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1122604Z ℹ Build start
+2026-10-27T16:07:35.1123486Z ℹ .cache/output-staging/dist-xx67cv/index.js       0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1124460Z ℹ .cache/output-staging/dist-xx67cv/metadata.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1125425Z ℹ .cache/output-staging/dist-xx67cv/metadata.d.ts  0.14 kB │ gzip: 0.13 kB
+2026-10-27T16:07:35.1126367Z ℹ .cache/output-staging/dist-xx67cv/index.d.ts     0.08 kB │ gzip: 0.08 kB
+2026-10-27T16:07:35.1127015Z ℹ 4 files, total: 0.24 kB
+2026-10-27T16:07:35.1127666Z ✔ Build complete in 833ms
+2026-10-27T16:07:35.1128460Z ##[endgroup]
+2026-10-27T16:07:35.1129090Z ##[group]@kisaki3/desktop-contracts:build
+2026-10-27T16:07:35.1129657Z cache hit, replaying logs 21c51f2dd4532e59
+2026-10-27T16:07:35.1130091Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1131159Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T16:07:35.1131971Z ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T16:07:35.1132631Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1133098Z ℹ Build start
+2026-10-27T16:07:35.1134345Z ℹ .cache/output-staging/dist-OFgJaj/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T16:07:35.1135186Z ℹ .cache/output-staging/dist-OFgJaj/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1135867Z ℹ .cache/output-staging/dist-OFgJaj/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1136753Z ℹ .cache/output-staging/dist-OFgJaj/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T16:07:35.1137707Z ℹ .cache/output-staging/dist-OFgJaj/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T16:07:35.1141773Z ℹ .cache/output-staging/dist-OFgJaj/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T16:07:35.1142782Z ℹ 6 files, total: 9.14 kB
+2026-10-27T16:07:35.1143527Z ✔ Build complete in 856ms
+2026-10-27T16:07:35.1144123Z ##[endgroup]
+2026-10-27T16:07:35.1144740Z ##[group]@kisaki3/appearance:build
+2026-10-27T16:07:35.1145325Z cache hit, replaying logs 99a7dfed5cb0eb51
+2026-10-27T16:07:35.1145701Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1146342Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T16:07:35.1147123Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T16:07:35.1147602Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1147966Z ℹ Build start
+2026-10-27T16:07:35.1148475Z ℹ .cache/output-staging/dist-1X9ydU/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T16:07:35.1149070Z ℹ .cache/output-staging/dist-1X9ydU/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T16:07:35.1149657Z ℹ .cache/output-staging/dist-1X9ydU/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T16:07:35.1150222Z ℹ .cache/output-staging/dist-1X9ydU/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T16:07:35.1150668Z ℹ 4 files, total: 6.51 kB
+2026-10-27T16:07:35.1151026Z ✔ Build complete in 779ms
+2026-10-27T16:07:35.1151473Z ##[endgroup]
+2026-10-27T16:07:35.1151952Z ##[group]@kisaki3/rpc:build
+2026-10-27T16:07:35.1152331Z cache hit, replaying logs 7f8a55c615a6078b
+2026-10-27T16:07:35.1152686Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1153435Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/rpc/tsdown.config.ts 
+2026-10-27T16:07:35.1155024Z ℹ entry: src/index.ts, src/transport.ts
+2026-10-27T16:07:35.1155650Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1156189Z ℹ Build start
+2026-10-27T16:07:35.1157205Z ℹ .cache/output-staging/dist-6S4g0L/index.js        0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1157991Z ℹ .cache/output-staging/dist-6S4g0L/transport.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1158704Z ℹ .cache/output-staging/dist-6S4g0L/transport.d.ts  0.60 kB │ gzip: 0.33 kB
+2026-10-27T16:07:35.1159297Z ℹ .cache/output-staging/dist-6S4g0L/index.d.ts      0.08 kB │ gzip: 0.07 kB
+2026-10-27T16:07:35.1159890Z ℹ 4 files, total: 0.71 kB
+2026-10-27T16:07:35.1160206Z ✔ Build complete in 784ms
+2026-10-27T16:07:35.1160727Z ##[endgroup]
+2026-10-27T16:07:35.1161231Z ##[group]@kisaki3/extension-distribution:pack
+2026-10-27T16:07:35.1161649Z cache hit, replaying logs 81243833b9072761
+2026-10-27T16:07:35.1162023Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1162473Z package: @kisaki3/extension-distribution@0.1.0-dev.0
+2026-10-27T16:07:35.1162823Z Tarball Contents
+2026-10-27T16:07:35.1163136Z dist/index.d.ts
+2026-10-27T16:07:35.1164270Z dist/index.js
+2026-10-27T16:07:35.1164680Z dist/metadata.d.ts
+2026-10-27T16:07:35.1165122Z dist/metadata.js
+2026-10-27T16:07:35.1165494Z LICENSE
+2026-10-27T16:07:35.1165915Z package.json
+2026-10-27T16:07:35.1166286Z README.md
+2026-10-27T16:07:35.1166703Z Tarball Details
+2026-10-27T16:07:35.1167503Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-distribution/out/package.tgz
+2026-10-27T16:07:35.1168569Z ##[endgroup]
+2026-10-27T16:07:35.1169300Z ##[group]@kisaki3/extension-api:build
+2026-10-27T16:07:35.1169889Z cache hit, replaying logs a25eaa6ed7942f60
+2026-10-27T16:07:35.1170342Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1171086Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/tsdown.config.ts 
+2026-10-27T16:07:35.1171609Z ℹ entry: src/index.ts
+2026-10-27T16:07:35.1172051Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1172439Z ℹ Build start
+2026-10-27T16:07:35.1172915Z ℹ .cache/output-staging/dist-rIDDgx/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1173798Z ℹ .cache/output-staging/dist-rIDDgx/index.d.ts  0.13 kB │ gzip: 0.11 kB
+2026-10-27T16:07:35.1174413Z ℹ 2 files, total: 0.14 kB
+2026-10-27T16:07:35.1174920Z ✔ Build complete in 875ms
+2026-10-27T16:07:35.1175595Z ##[endgroup]
+2026-10-27T16:07:35.1176183Z ##[group]@kisaki3/desktop-contracts:pack
+2026-10-27T16:07:35.1176769Z cache hit, replaying logs ccbaa147afde998d
+2026-10-27T16:07:35.1177405Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1177803Z package: @kisaki3/desktop-contracts@0.1.0-dev.0
+2026-10-27T16:07:35.1178163Z Tarball Contents
+2026-10-27T16:07:35.1178450Z dist/development.d.ts
+2026-10-27T16:07:35.1178775Z dist/development.js
+2026-10-27T16:07:35.1179021Z dist/errors.d.ts
+2026-10-27T16:07:35.1179346Z dist/errors.js
+2026-10-27T16:07:35.1179597Z dist/index.d.ts
+2026-10-27T16:07:35.1180029Z dist/index.js
+2026-10-27T16:07:35.1180332Z LICENSE
+2026-10-27T16:07:35.1180590Z package.json
+2026-10-27T16:07:35.1180882Z README.md
+2026-10-27T16:07:35.1181173Z Tarball Details
+2026-10-27T16:07:35.1181741Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/out/package.tgz
+2026-10-27T16:07:35.1182387Z ##[endgroup]
+2026-10-27T16:07:35.1182847Z ##[group]@kisaki3/extension-cli:build
+2026-10-27T16:07:35.1183214Z cache hit, replaying logs 916f7bd9f07c14b6
+2026-10-27T16:07:35.1183880Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1184761Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T16:07:35.1185707Z ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T16:07:35.1186307Z ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T16:07:35.1186868Z ℹ Build start
+2026-10-27T16:07:35.1187542Z ℹ .cache/output-staging/dist-YaceNR/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T16:07:35.1188494Z ℹ .cache/output-staging/dist-YaceNR/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T16:07:35.1193186Z ℹ .cache/output-staging/dist-YaceNR/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T16:07:35.1194333Z ℹ .cache/output-staging/dist-YaceNR/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T16:07:35.1195105Z ℹ 4 files, total: 8.14 kB
+2026-10-27T16:07:35.1195442Z ✔ Build complete in 1676ms
+2026-10-27T16:07:35.1196028Z ##[endgroup]
+2026-10-27T16:07:35.1196498Z ##[group]@kisaki3/ui:build
+2026-10-27T16:07:35.1196841Z cache hit, replaying logs e3dedc5a55970b74
+2026-10-27T16:07:35.1197215Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1197790Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T16:07:35.1198297Z ℹ entry: src/index.ts
+2026-10-27T16:07:35.1198716Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1199062Z ℹ Build start
+2026-10-27T16:07:35.1199554Z ℹ .cache/output-staging/dist-svv7Ji/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T16:07:35.1200114Z ℹ .cache/output-staging/dist-svv7Ji/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T16:07:35.1200575Z ℹ 2 files, total: 1.05 kB
+2026-10-27T16:07:35.1200906Z ✔ Build complete in 1417ms
+2026-10-27T16:07:35.1201365Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T16:07:35.1201646Z 
+2026-10-27T16:07:35.1201785Z Done in [34m50ms[39m
+2026-10-27T16:07:35.1202217Z ##[endgroup]
+2026-10-27T16:07:35.1202695Z ##[group]@kisaki3/appearance:pack
+2026-10-27T16:07:35.1203084Z cache hit, replaying logs cf8913d72bf6a78d
+2026-10-27T16:07:35.1203718Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1204089Z package: @kisaki3/appearance@0.1.0-dev.0
+2026-10-27T16:07:35.1204430Z Tarball Contents
+2026-10-27T16:07:35.1204742Z dist/index.d.ts
+2026-10-27T16:07:35.1205013Z dist/index.js
+2026-10-27T16:07:35.1205309Z dist/styles.css
+2026-10-27T16:07:35.1205571Z dist/tailwind.css
+2026-10-27T16:07:35.1205847Z dist/tokens.d.ts
+2026-10-27T16:07:35.1206119Z dist/tokens.js
+2026-10-27T16:07:35.1206415Z LICENSE
+2026-10-27T16:07:35.1206703Z package.json
+2026-10-27T16:07:35.1207038Z README.md
+2026-10-27T16:07:35.1207308Z Tarball Details
+2026-10-27T16:07:35.1207777Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/out/package.tgz
+2026-10-27T16:07:35.1208417Z ##[endgroup]
+2026-10-27T16:07:35.1208963Z ##[group]@kisaki3/extension-sdk:build
+2026-10-27T16:07:35.1209329Z cache hit, replaying logs 74acfa6bf89088bc
+2026-10-27T16:07:35.1209680Z $ tsx tools/build.ts
+2026-10-27T16:07:35.1210322Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-sdk/tsdown.config.ts 
+2026-10-27T16:07:35.1210862Z ℹ entry: src/index.ts
+2026-10-27T16:07:35.1211277Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.1211652Z ℹ Build start
+2026-10-27T16:07:35.1212567Z ℹ .cache/output-staging/dist-EUtPf2/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.1213142Z ℹ .cache/output-staging/dist-EUtPf2/index.d.ts  0.12 kB │ gzip: 0.10 kB
+2026-10-27T16:07:35.1213918Z ℹ 2 files, total: 0.13 kB
+2026-10-27T16:07:35.1214261Z ✔ Build complete in 733ms
+2026-10-27T16:07:35.1214745Z ##[endgroup]
+2026-10-27T16:07:35.1215168Z ##[group]@kisaki3/rpc:pack
+2026-10-27T16:07:35.1215585Z cache hit, replaying logs 9b3bc2cd15dabb98
+2026-10-27T16:07:35.1215951Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1216346Z package: @kisaki3/rpc@0.1.0-dev.0
+2026-10-27T16:07:35.1216647Z Tarball Contents
+2026-10-27T16:07:35.1216948Z dist/index.d.ts
+2026-10-27T16:07:35.1217210Z dist/index.js
+2026-10-27T16:07:35.1217507Z dist/transport.d.ts
+2026-10-27T16:07:35.1217814Z dist/transport.js
+2026-10-27T16:07:35.1218071Z LICENSE
+2026-10-27T16:07:35.1218367Z package.json
+2026-10-27T16:07:35.1218616Z README.md
+2026-10-27T16:07:35.1218924Z Tarball Details
+2026-10-27T16:07:35.1219367Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/rpc/out/package.tgz
+2026-10-27T16:07:35.1219991Z ##[endgroup]
+2026-10-27T16:07:35.1220434Z ##[group]@kisaki3/extension-api:pack
+2026-10-27T16:07:35.1220865Z cache hit, replaying logs d8e3ecdb06e4015a
+2026-10-27T16:07:35.1221214Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1221618Z package: @kisaki3/extension-api@0.1.0-dev.0
+2026-10-27T16:07:35.1221932Z Tarball Contents
+2026-10-27T16:07:35.1222327Z dist/index.d.ts
+2026-10-27T16:07:35.1222594Z dist/index.js
+2026-10-27T16:07:35.1222856Z LICENSE
+2026-10-27T16:07:35.1223154Z package.json
+2026-10-27T16:07:35.1223579Z README.md
+2026-10-27T16:07:35.1223892Z Tarball Details
+2026-10-27T16:07:35.1224385Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/out/package.tgz
+2026-10-27T16:07:35.1225042Z ##[endgroup]
+2026-10-27T16:07:35.1225484Z ##[group]@kisaki3/ui:pack
+2026-10-27T16:07:35.1225859Z cache hit, replaying logs d834e07cd49ce5b4
+2026-10-27T16:07:35.1226219Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1226597Z package: @kisaki3/ui@0.1.0-dev.0
+2026-10-27T16:07:35.1226900Z Tarball Contents
+2026-10-27T16:07:35.1227187Z dist/index.d.ts
+2026-10-27T16:07:35.1227464Z dist/index.js
+2026-10-27T16:07:35.1227741Z dist/styles.css
+2026-10-27T16:07:35.1228025Z LICENSE
+2026-10-27T16:07:35.1228269Z package.json
+2026-10-27T16:07:35.1228574Z README.md
+2026-10-27T16:07:35.1228818Z Tarball Details
+2026-10-27T16:07:35.1229292Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/out/package.tgz
+2026-10-27T16:07:35.1229897Z ##[endgroup]
+2026-10-27T16:07:35.1230352Z ##[group]@kisaki3/extension-cli:pack
+2026-10-27T16:07:35.1230708Z cache hit, replaying logs 6fdd721f2dae6960
+2026-10-27T16:07:35.1231120Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1231468Z package: @kisaki3/extension-cli@0.1.0-dev.0
+2026-10-27T16:07:35.1231820Z Tarball Contents
+2026-10-27T16:07:35.1232092Z dist/config.d.ts
+2026-10-27T16:07:35.1232378Z dist/config.js
+2026-10-27T16:07:35.1232673Z dist/extension.d.ts
+2026-10-27T16:07:35.1232986Z dist/extension.js
+2026-10-27T16:07:35.1233515Z LICENSE
+2026-10-27T16:07:35.1233817Z package.json
+2026-10-27T16:07:35.1234135Z README.md
+2026-10-27T16:07:35.1234405Z Tarball Details
+2026-10-27T16:07:35.1234931Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/out/package.tgz
+2026-10-27T16:07:35.1235623Z ##[endgroup]
+2026-10-27T16:07:35.1236088Z ##[group]@kisaki3/extension-sdk:pack
+2026-10-27T16:07:35.1236453Z cache hit, replaying logs b1e760ed246e7205
+2026-10-27T16:07:35.1236848Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.1237210Z package: @kisaki3/extension-sdk@0.1.0-dev.0
+2026-10-27T16:07:35.1237551Z Tarball Contents
+2026-10-27T16:07:35.1237832Z dist/index.d.ts
+2026-10-27T16:07:35.1238125Z dist/index.js
+2026-10-27T16:07:35.1238387Z LICENSE
+2026-10-27T16:07:35.1238661Z package.json
+2026-10-27T16:07:35.1238906Z README.md
+2026-10-27T16:07:35.1239157Z Tarball Details
+2026-10-27T16:07:35.1239650Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-sdk/out/package.tgz
+2026-10-27T16:07:35.1240438Z ##[endgroup]
+2026-10-27T16:07:35.1240653Z 
+2026-10-27T16:07:35.1240875Z  Tasks:    16 successful, 16 total
+2026-10-27T16:07:35.1241520Z Cached:    16 cached, 16 total
+2026-10-27T16:07:35.1241863Z   Time:    52ms >>> FULL TURBO
+2026-10-27T16:07:35.1242066Z 
+2026-10-27T16:07:35.7578950Z /home/runner/work/kisaki-dev/kisaki-dev/artifacts/packages/inputs.json
+2026-10-27T16:07:35.8235377Z 
+2026-10-27T16:07:35.8236868Z    • Packages in scope: @kisaki3/appearance, @kisaki3/desktop-contracts, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/ui
+2026-10-27T16:07:35.8237847Z    • Running test:consumers in 8 packages
+2026-10-27T16:07:35.8238321Z    • Remote caching disabled
+2026-10-27T16:07:35.8238537Z 
+2026-10-27T16:07:35.8442471Z ##[group]@kisaki3/appearance:build
+2026-10-27T16:07:35.8444877Z cache hit, replaying logs 99a7dfed5cb0eb51
+2026-10-27T16:07:35.8449811Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8451234Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T16:07:35.8454393Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T16:07:35.8455881Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8456630Z ℹ Build start
+2026-10-27T16:07:35.8457393Z ℹ .cache/output-staging/dist-1X9ydU/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T16:07:35.8458512Z ℹ .cache/output-staging/dist-1X9ydU/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T16:07:35.8459236Z ℹ .cache/output-staging/dist-1X9ydU/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T16:07:35.8459987Z ℹ .cache/output-staging/dist-1X9ydU/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T16:07:35.8460565Z ℹ 4 files, total: 6.51 kB
+2026-10-27T16:07:35.8461045Z ✔ Build complete in 779ms
+2026-10-27T16:07:35.8461752Z ##[endgroup]
+2026-10-27T16:07:35.8462312Z ##[group]@kisaki3/rpc:build
+2026-10-27T16:07:35.8462736Z cache hit, replaying logs 7f8a55c615a6078b
+2026-10-27T16:07:35.8463201Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8464691Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/rpc/tsdown.config.ts 
+2026-10-27T16:07:35.8465609Z ℹ entry: src/index.ts, src/transport.ts
+2026-10-27T16:07:35.8466274Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8466928Z ℹ Build start
+2026-10-27T16:07:35.8467611Z ℹ .cache/output-staging/dist-6S4g0L/index.js        0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8468350Z ℹ .cache/output-staging/dist-6S4g0L/transport.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8468936Z ℹ .cache/output-staging/dist-6S4g0L/transport.d.ts  0.60 kB │ gzip: 0.33 kB
+2026-10-27T16:07:35.8469603Z ℹ .cache/output-staging/dist-6S4g0L/index.d.ts      0.08 kB │ gzip: 0.07 kB
+2026-10-27T16:07:35.8470048Z ℹ 4 files, total: 0.71 kB
+2026-10-27T16:07:35.8470441Z ✔ Build complete in 784ms
+2026-10-27T16:07:35.8471057Z ##[endgroup]
+2026-10-27T16:07:35.8471568Z ##[group]@kisaki3/desktop-contracts:build
+2026-10-27T16:07:35.8471938Z cache hit, replaying logs 21c51f2dd4532e59
+2026-10-27T16:07:35.8472346Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8473010Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T16:07:35.8474175Z ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T16:07:35.8474873Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8475347Z ℹ Build start
+2026-10-27T16:07:35.8476158Z ℹ .cache/output-staging/dist-OFgJaj/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T16:07:35.8476841Z ℹ .cache/output-staging/dist-OFgJaj/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8477737Z ℹ .cache/output-staging/dist-OFgJaj/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8478460Z ℹ .cache/output-staging/dist-OFgJaj/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T16:07:35.8479162Z ℹ .cache/output-staging/dist-OFgJaj/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T16:07:35.8480082Z ℹ .cache/output-staging/dist-OFgJaj/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T16:07:35.8480820Z ℹ 6 files, total: 9.14 kB
+2026-10-27T16:07:35.8481269Z ✔ Build complete in 856ms
+2026-10-27T16:07:35.8482342Z ##[endgroup]
+2026-10-27T16:07:35.8483038Z ##[group]@kisaki3/extension-distribution:build
+2026-10-27T16:07:35.8483813Z cache hit, replaying logs aad6ec28eaac5e9e
+2026-10-27T16:07:35.8484542Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8485664Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-distribution/tsdown.config.ts 
+2026-10-27T16:07:35.8486636Z ℹ entry: src/index.ts, src/metadata.ts
+2026-10-27T16:07:35.8487240Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8487798Z ℹ Build start
+2026-10-27T16:07:35.8488245Z ℹ .cache/output-staging/dist-xx67cv/index.js       0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8488919Z ℹ .cache/output-staging/dist-xx67cv/metadata.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8489510Z ℹ .cache/output-staging/dist-xx67cv/metadata.d.ts  0.14 kB │ gzip: 0.13 kB
+2026-10-27T16:07:35.8490145Z ℹ .cache/output-staging/dist-xx67cv/index.d.ts     0.08 kB │ gzip: 0.08 kB
+2026-10-27T16:07:35.8490602Z ℹ 4 files, total: 0.24 kB
+2026-10-27T16:07:35.8490987Z ✔ Build complete in 833ms
+2026-10-27T16:07:35.8491506Z ##[endgroup]
+2026-10-27T16:07:35.8491991Z ##[group]@kisaki3/ui:build
+2026-10-27T16:07:35.8492334Z cache hit, replaying logs e3dedc5a55970b74
+2026-10-27T16:07:35.8492911Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8493934Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T16:07:35.8501042Z ℹ entry: src/index.ts
+2026-10-27T16:07:35.8501621Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8502202Z ℹ Build start
+2026-10-27T16:07:35.8502890Z ℹ .cache/output-staging/dist-svv7Ji/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T16:07:35.8503938Z ℹ .cache/output-staging/dist-svv7Ji/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T16:07:35.8504680Z ℹ 2 files, total: 1.05 kB
+2026-10-27T16:07:35.8505174Z ✔ Build complete in 1417ms
+2026-10-27T16:07:35.8505900Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T16:07:35.8506372Z 
+2026-10-27T16:07:35.8506620Z Done in [34m50ms[39m
+2026-10-27T16:07:35.8507364Z ##[endgroup]
+2026-10-27T16:07:35.8508180Z ##[group]@kisaki3/rpc:pack
+2026-10-27T16:07:35.8508701Z cache hit, replaying logs 9b3bc2cd15dabb98
+2026-10-27T16:07:35.8509309Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.8509917Z package: @kisaki3/rpc@0.1.0-dev.0
+2026-10-27T16:07:35.8510382Z Tarball Contents
+2026-10-27T16:07:35.8510811Z dist/index.d.ts
+2026-10-27T16:07:35.8511352Z dist/index.js
+2026-10-27T16:07:35.8511752Z dist/transport.d.ts
+2026-10-27T16:07:35.8512182Z dist/transport.js
+2026-10-27T16:07:35.8512577Z LICENSE
+2026-10-27T16:07:35.8512941Z package.json
+2026-10-27T16:07:35.8513415Z README.md
+2026-10-27T16:07:35.8513809Z Tarball Details
+2026-10-27T16:07:35.8514510Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/rpc/out/package.tgz
+2026-10-27T16:07:35.8515447Z ##[endgroup]
+2026-10-27T16:07:35.8516105Z ##[group]@kisaki3/appearance:pack
+2026-10-27T16:07:35.8516698Z cache hit, replaying logs cf8913d72bf6a78d
+2026-10-27T16:07:35.8517193Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.8517730Z package: @kisaki3/appearance@0.1.0-dev.0
+2026-10-27T16:07:35.8518172Z Tarball Contents
+2026-10-27T16:07:35.8518556Z dist/index.d.ts
+2026-10-27T16:07:35.8519010Z dist/index.js
+2026-10-27T16:07:35.8519433Z dist/styles.css
+2026-10-27T16:07:35.8520172Z dist/tailwind.css
+2026-10-27T16:07:35.8520661Z dist/tokens.d.ts
+2026-10-27T16:07:35.8521139Z dist/tokens.js
+2026-10-27T16:07:35.8521594Z LICENSE
+2026-10-27T16:07:35.8522050Z package.json
+2026-10-27T16:07:35.8522528Z README.md
+2026-10-27T16:07:35.8522917Z Tarball Details
+2026-10-27T16:07:35.8525305Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/out/package.tgz
+2026-10-27T16:07:35.8526259Z ##[endgroup]
+2026-10-27T16:07:35.8526887Z ##[group]@kisaki3/extension-api:build
+2026-10-27T16:07:35.8527436Z cache hit, replaying logs a25eaa6ed7942f60
+2026-10-27T16:07:35.8528055Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8529426Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/tsdown.config.ts 
+2026-10-27T16:07:35.8530435Z ℹ entry: src/index.ts
+2026-10-27T16:07:35.8531116Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:35.8531692Z ℹ Build start
+2026-10-27T16:07:35.8532449Z ℹ .cache/output-staging/dist-rIDDgx/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:35.8533648Z ℹ .cache/output-staging/dist-rIDDgx/index.d.ts  0.13 kB │ gzip: 0.11 kB
+2026-10-27T16:07:35.8534478Z ℹ 2 files, total: 0.14 kB
+2026-10-27T16:07:35.8535021Z ✔ Build complete in 875ms
+2026-10-27T16:07:35.8535815Z ##[endgroup]
+2026-10-27T16:07:35.8536580Z ##[group]@kisaki3/desktop-contracts:pack
+2026-10-27T16:07:35.8537243Z cache hit, replaying logs ccbaa147afde998d
+2026-10-27T16:07:35.8537848Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.8538589Z package: @kisaki3/desktop-contracts@0.1.0-dev.0
+2026-10-27T16:07:35.8539122Z Tarball Contents
+2026-10-27T16:07:35.8539584Z dist/development.d.ts
+2026-10-27T16:07:35.8540143Z dist/development.js
+2026-10-27T16:07:35.8540589Z dist/errors.d.ts
+2026-10-27T16:07:35.8541100Z dist/errors.js
+2026-10-27T16:07:35.8541498Z dist/index.d.ts
+2026-10-27T16:07:35.8541949Z dist/index.js
+2026-10-27T16:07:35.8542511Z LICENSE
+2026-10-27T16:07:35.8543700Z package.json
+2026-10-27T16:07:35.8544087Z README.md
+2026-10-27T16:07:35.8544510Z Tarball Details
+2026-10-27T16:07:35.8545440Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/out/package.tgz
+2026-10-27T16:07:35.8546612Z ##[endgroup]
+2026-10-27T16:07:35.8547353Z ##[group]@kisaki3/extension-cli:build
+2026-10-27T16:07:35.8548069Z cache hit, replaying logs 916f7bd9f07c14b6
+2026-10-27T16:07:35.8548592Z $ tsx tools/build.ts
+2026-10-27T16:07:35.8549698Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T16:07:35.8550725Z ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T16:07:35.8551414Z ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T16:07:35.8552098Z ℹ Build start
+2026-10-27T16:07:35.8552853Z ℹ .cache/output-staging/dist-YaceNR/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T16:07:35.8564604Z ℹ .cache/output-staging/dist-YaceNR/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T16:07:35.8565286Z ℹ .cache/output-staging/dist-YaceNR/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T16:07:35.8565986Z ℹ .cache/output-staging/dist-YaceNR/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T16:07:35.8566434Z ℹ 4 files, total: 8.14 kB
+2026-10-27T16:07:35.8566829Z ✔ Build complete in 1676ms
+2026-10-27T16:07:35.8567434Z ##[endgroup]
+2026-10-27T16:07:35.8567922Z ##[group]@kisaki3/extension-distribution:pack
+2026-10-27T16:07:35.8568325Z cache hit, replaying logs 81243833b9072761
+2026-10-27T16:07:35.8568744Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.8569148Z package: @kisaki3/extension-distribution@0.1.0-dev.0
+2026-10-27T16:07:35.8569525Z Tarball Contents
+2026-10-27T16:07:35.8569807Z dist/index.d.ts
+2026-10-27T16:07:35.8570083Z dist/index.js
+2026-10-27T16:07:35.8570403Z dist/metadata.d.ts
+2026-10-27T16:07:35.8570678Z dist/metadata.js
+2026-10-27T16:07:35.8570984Z LICENSE
+2026-10-27T16:07:35.8571298Z package.json
+2026-10-27T16:07:35.8571690Z README.md
+2026-10-27T16:07:35.8572094Z Tarball Details
+2026-10-27T16:07:35.8572756Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-distribution/out/package.tgz
+2026-10-27T16:07:35.8574068Z ##[endgroup]
+2026-10-27T16:07:35.8574762Z ##[group]@kisaki3/ui:pack
+2026-10-27T16:07:35.8575272Z cache hit, replaying logs d834e07cd49ce5b4
+2026-10-27T16:07:35.8575710Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:35.8576076Z package: @kisaki3/ui@0.1.0-dev.0
+2026-10-27T16:07:35.8576397Z Tarball Contents
+2026-10-27T16:07:35.8576712Z dist/index.d.ts
+2026-10-27T16:07:35.8577005Z dist/index.js
+2026-10-27T16:07:35.8577298Z dist/styles.css
+2026-10-27T16:07:35.8577559Z LICENSE
+2026-10-27T16:07:35.8577858Z package.json
+2026-10-27T16:07:35.8578127Z README.md
+2026-10-27T16:07:35.8578410Z Tarball Details
+2026-10-27T16:07:35.8579101Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/out/package.tgz
+2026-10-27T16:07:35.8579802Z ##[endgroup]
+2026-10-27T16:07:36.9792707Z ##[group]@kisaki3/rpc:test:consumers
+2026-10-27T16:07:36.9798585Z cache bypass, force executing 491ef25131502958
+2026-10-27T16:07:36.9800892Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:36.9803909Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:36.9805474Z Unpacking tarball...
+2026-10-27T16:07:36.9806102Z Linting...
+2026-10-27T16:07:36.9806642Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:36.9807033Z 
+2026-10-27T16:07:36.9807356Z @kisaki3/rpc v0.1.0-dev.0
+2026-10-27T16:07:36.9807751Z 
+2026-10-27T16:07:36.9808013Z Build tools:
+2026-10-27T16:07:36.9808470Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:36.9809046Z - typescript@6.0.3
+2026-10-27T16:07:36.9809552Z - tsdown@0.23.0
+2026-10-27T16:07:36.9809912Z 
+2026-10-27T16:07:36.9810326Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:36.9810751Z 
+2026-10-27T16:07:36.9812266Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:36.9813945Z 
+2026-10-27T16:07:36.9815806Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:36.9817161Z 
+2026-10-27T16:07:36.9817259Z 
+2026-10-27T16:07:36.9817933Z ┌───────────────────┬────────────────────────────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:36.9818958Z │                   │ "@kisaki3/rpc"                         │ "@kisaki3/rpc/transport"               │
+2026-10-27T16:07:36.9820055Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:36.9822669Z │ node16 (from ESM) │ 🟢 (ESM)                               │ 🟢 (ESM)                               │
+2026-10-27T16:07:36.9823909Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:36.9826406Z │ bundler           │ 🟢                                     │ 🟢                                     │
+2026-10-27T16:07:36.9827439Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:36.9828497Z │ node10            │ (ignored) 💀 Resolution failed         │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:36.9829588Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:36.9830655Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:36.9831922Z └───────────────────┴────────────────────────────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:36.9832848Z ##[endgroup]
+2026-10-27T16:07:36.9833734Z ##[group]@kisaki3/extension-sdk:build
+2026-10-27T16:07:36.9834423Z cache hit, replaying logs 74acfa6bf89088bc
+2026-10-27T16:07:36.9835029Z $ tsx tools/build.ts
+2026-10-27T16:07:36.9836050Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-sdk/tsdown.config.ts 
+2026-10-27T16:07:36.9836978Z ℹ entry: src/index.ts
+2026-10-27T16:07:36.9837630Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:36.9839251Z ℹ Build start
+2026-10-27T16:07:36.9840038Z ℹ .cache/output-staging/dist-EUtPf2/index.js    0.01 kB │ gzip: 0.03 kB
+2026-10-27T16:07:36.9840892Z ℹ .cache/output-staging/dist-EUtPf2/index.d.ts  0.12 kB │ gzip: 0.10 kB
+2026-10-27T16:07:36.9841651Z ℹ 2 files, total: 0.13 kB
+2026-10-27T16:07:36.9842163Z ✔ Build complete in 733ms
+2026-10-27T16:07:36.9842924Z ##[endgroup]
+2026-10-27T16:07:36.9848009Z ##[group]@kisaki3/extension-api:pack
+2026-10-27T16:07:36.9848759Z cache hit, replaying logs d8e3ecdb06e4015a
+2026-10-27T16:07:36.9849481Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:36.9850341Z package: @kisaki3/extension-api@0.1.0-dev.0
+2026-10-27T16:07:36.9850961Z Tarball Contents
+2026-10-27T16:07:36.9851471Z dist/index.d.ts
+2026-10-27T16:07:36.9851987Z dist/index.js
+2026-10-27T16:07:36.9852450Z LICENSE
+2026-10-27T16:07:36.9852934Z package.json
+2026-10-27T16:07:36.9853517Z README.md
+2026-10-27T16:07:36.9853968Z Tarball Details
+2026-10-27T16:07:36.9854885Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-api/out/package.tgz
+2026-10-27T16:07:36.9855962Z ##[endgroup]
+2026-10-27T16:07:37.0801481Z ##[group]@kisaki3/appearance:test:consumers
+2026-10-27T16:07:37.0802526Z cache bypass, force executing 4f765c6ffd652d97
+2026-10-27T16:07:37.0803956Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css
+2026-10-27T16:07:37.0805495Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:37.0806214Z Unpacking tarball...
+2026-10-27T16:07:37.0806765Z Linting...
+2026-10-27T16:07:37.0807314Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:37.0807714Z 
+2026-10-27T16:07:37.0808179Z @kisaki3/appearance v0.1.0-dev.0
+2026-10-27T16:07:37.0808594Z 
+2026-10-27T16:07:37.0808849Z Build tools:
+2026-10-27T16:07:37.0809396Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:37.0810009Z - typescript@6.0.3
+2026-10-27T16:07:37.0810532Z - tsdown@0.23.0
+2026-10-27T16:07:37.0810886Z 
+2026-10-27T16:07:37.0811289Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:37.0811687Z 
+2026-10-27T16:07:37.0813046Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:37.0814229Z 
+2026-10-27T16:07:37.0816062Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:37.0817454Z 
+2026-10-27T16:07:37.0817568Z 
+2026-10-27T16:07:37.0818258Z ┌───────────────────┬────────────────────────────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:37.0819289Z │                   │ "@kisaki3/appearance"                  │ "@kisaki3/appearance/tokens"           │
+2026-10-27T16:07:37.0820413Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:37.0834236Z │ node16 (from ESM) │ 🟢 (ESM)                               │ 🟢 (ESM)                               │
+2026-10-27T16:07:37.0843818Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:37.0845679Z │ bundler           │ 🟢                                     │ 🟢                                     │
+2026-10-27T16:07:37.0848099Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:37.0849422Z │ node10            │ (ignored) 💀 Resolution failed         │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:37.0850807Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:37.0851999Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:37.0853187Z └───────────────────┴────────────────────────────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:37.0854523Z ##[endgroup]
+2026-10-27T16:07:37.0855090Z ##[group]@kisaki3/extension-cli:pack
+2026-10-27T16:07:37.0855607Z cache hit, replaying logs 6fdd721f2dae6960
+2026-10-27T16:07:37.0856073Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:37.0856588Z package: @kisaki3/extension-cli@0.1.0-dev.0
+2026-10-27T16:07:37.0857146Z Tarball Contents
+2026-10-27T16:07:37.0857617Z dist/config.d.ts
+2026-10-27T16:07:37.0858085Z dist/config.js
+2026-10-27T16:07:37.0858629Z dist/extension.d.ts
+2026-10-27T16:07:37.0859109Z dist/extension.js
+2026-10-27T16:07:37.0859648Z LICENSE
+2026-10-27T16:07:37.0860086Z package.json
+2026-10-27T16:07:37.0860591Z README.md
+2026-10-27T16:07:37.0861021Z Tarball Details
+2026-10-27T16:07:37.0861958Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/out/package.tgz
+2026-10-27T16:07:37.0863043Z ##[endgroup]
+2026-10-27T16:07:38.1540782Z ##[group]@kisaki3/desktop-contracts:test:consumers
+2026-10-27T16:07:38.1564842Z cache bypass, force executing dee94db6936080db
+2026-10-27T16:07:38.1614599Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:38.1616214Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:38.1634325Z Unpacking tarball...
+2026-10-27T16:07:38.1635192Z Linting...
+2026-10-27T16:07:38.1635832Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:38.1636221Z 
+2026-10-27T16:07:38.1636602Z @kisaki3/desktop-contracts v0.1.0-dev.0
+2026-10-27T16:07:38.1637049Z 
+2026-10-27T16:07:38.1637275Z Build tools:
+2026-10-27T16:07:38.1637802Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:38.1638327Z - typescript@6.0.3
+2026-10-27T16:07:38.1638804Z - tsdown@0.23.0
+2026-10-27T16:07:38.1639137Z 
+2026-10-27T16:07:38.1639494Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:38.1639896Z 
+2026-10-27T16:07:38.1641340Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:38.1642257Z 
+2026-10-27T16:07:38.1644512Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:38.1645866Z 
+2026-10-27T16:07:38.1645877Z 
+2026-10-27T16:07:38.1646157Z "@kisaki3/desktop-contracts"
+2026-10-27T16:07:38.1646573Z 
+2026-10-27T16:07:38.1646944Z node16 (from ESM): 🟢 (ESM)
+2026-10-27T16:07:38.1647329Z bundler: 🟢 
+2026-10-27T16:07:38.1647802Z node10: (ignored) 💀 Resolution failed
+2026-10-27T16:07:38.1648450Z node16 (from CJS): (ignored) ⚠️ ESM (dynamic import only)
+2026-10-27T16:07:38.1648797Z 
+2026-10-27T16:07:38.1648989Z ***********************************
+2026-10-27T16:07:38.1649310Z 
+2026-10-27T16:07:38.1649527Z "@kisaki3/desktop-contracts/development"
+2026-10-27T16:07:38.1649826Z 
+2026-10-27T16:07:38.1650059Z node16 (from ESM): 🟢 (ESM)
+2026-10-27T16:07:38.1650494Z bundler: 🟢 
+2026-10-27T16:07:38.1650995Z node10: (ignored) 💀 Resolution failed
+2026-10-27T16:07:38.1651596Z node16 (from CJS): (ignored) ⚠️ ESM (dynamic import only)
+2026-10-27T16:07:38.1651963Z 
+2026-10-27T16:07:38.1652234Z ***********************************
+2026-10-27T16:07:38.1652511Z 
+2026-10-27T16:07:38.1652686Z "@kisaki3/desktop-contracts/errors"
+2026-10-27T16:07:38.1653011Z 
+2026-10-27T16:07:38.1653374Z node16 (from ESM): 🟢 (ESM)
+2026-10-27T16:07:38.1653793Z bundler: 🟢 
+2026-10-27T16:07:38.1654286Z node10: (ignored) 💀 Resolution failed
+2026-10-27T16:07:38.1654905Z node16 (from CJS): (ignored) ⚠️ ESM (dynamic import only)
+2026-10-27T16:07:38.1655218Z 
+2026-10-27T16:07:38.1655481Z ***********************************
+2026-10-27T16:07:38.1656192Z ##[endgroup]
+2026-10-27T16:07:38.1949426Z ##[group]@kisaki3/extension-distribution:test:consumers
+2026-10-27T16:07:38.1974228Z cache bypass, force executing 925f408f911008a3
+2026-10-27T16:07:38.1984771Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:38.1985799Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:38.1986628Z Unpacking tarball...
+2026-10-27T16:07:38.1987021Z Linting...
+2026-10-27T16:07:38.1987563Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:38.1987798Z 
+2026-10-27T16:07:38.1988095Z @kisaki3/extension-distribution v0.1.0-dev.0
+2026-10-27T16:07:38.1988441Z 
+2026-10-27T16:07:38.1988645Z Build tools:
+2026-10-27T16:07:38.1989098Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:38.1989563Z - typescript@6.0.3
+2026-10-27T16:07:38.1990001Z - tsdown@0.23.0
+2026-10-27T16:07:38.1990229Z 
+2026-10-27T16:07:38.1990494Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:38.1990777Z 
+2026-10-27T16:07:38.1992172Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:38.1993167Z 
+2026-10-27T16:07:38.1995427Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:38.1996807Z 
+2026-10-27T16:07:38.1996815Z 
+2026-10-27T16:07:38.1997494Z ┌───────────────────┬────────────────────────────────────────┬────────────────────────────────────────────┐
+2026-10-27T16:07:38.1998565Z │                   │ "@kisaki3/extension-distribution"      │ "@kisaki3/extension-distribution/metadata" │
+2026-10-27T16:07:38.1999737Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────────┤
+2026-10-27T16:07:38.2000719Z │ node16 (from ESM) │ 🟢 (ESM)                               │ 🟢 (ESM)                                   │
+2026-10-27T16:07:38.2001775Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────────┤
+2026-10-27T16:07:38.2002730Z │ bundler           │ 🟢                                     │ 🟢                                         │
+2026-10-27T16:07:38.2003918Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────────┤
+2026-10-27T16:07:38.2004984Z │ node10            │ (ignored) 💀 Resolution failed         │ (ignored) 💀 Resolution failed             │
+2026-10-27T16:07:38.2006291Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────────┤
+2026-10-27T16:07:38.2007348Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │ (ignored) ⚠️ ESM (dynamic import only)     │
+2026-10-27T16:07:38.2008521Z └───────────────────┴────────────────────────────────────────┴────────────────────────────────────────────┘
+2026-10-27T16:07:38.2009451Z ##[endgroup]
+2026-10-27T16:07:38.2010107Z ##[group]@kisaki3/extension-sdk:pack
+2026-10-27T16:07:38.2010695Z cache hit, replaying logs b1e760ed246e7205
+2026-10-27T16:07:38.2011269Z $ pnpm pack --out out/package.tgz
+2026-10-27T16:07:38.2011800Z package: @kisaki3/extension-sdk@0.1.0-dev.0
+2026-10-27T16:07:38.2012339Z Tarball Contents
+2026-10-27T16:07:38.2012692Z dist/index.d.ts
+2026-10-27T16:07:38.2013165Z dist/index.js
+2026-10-27T16:07:38.2013652Z LICENSE
+2026-10-27T16:07:38.2014032Z package.json
+2026-10-27T16:07:38.2014423Z README.md
+2026-10-27T16:07:38.2014792Z Tarball Details
+2026-10-27T16:07:38.2015615Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-sdk/out/package.tgz
+2026-10-27T16:07:38.2016592Z ##[endgroup]
+2026-10-27T16:07:39.2463936Z ##[group]@kisaki3/ui:test:consumers
+2026-10-27T16:07:39.2467848Z cache bypass, force executing b389e37cea085adc
+2026-10-27T16:07:39.2469545Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css
+2026-10-27T16:07:39.2471206Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:39.2472058Z Unpacking tarball...
+2026-10-27T16:07:39.2472655Z Linting...
+2026-10-27T16:07:39.2473985Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:39.2474560Z 
+2026-10-27T16:07:39.2474902Z @kisaki3/ui v0.1.0-dev.0
+2026-10-27T16:07:39.2476049Z 
+2026-10-27T16:07:39.2476697Z Build tools:
+2026-10-27T16:07:39.2477319Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:39.2478015Z - typescript@6.0.3
+2026-10-27T16:07:39.2478403Z - tsdown@0.23.0
+2026-10-27T16:07:39.2478619Z 
+2026-10-27T16:07:39.2478969Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:39.2479314Z 
+2026-10-27T16:07:39.2480569Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:39.2481544Z 
+2026-10-27T16:07:39.2483128Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:39.2498329Z 
+2026-10-27T16:07:39.2498341Z 
+2026-10-27T16:07:39.2498958Z ┌───────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:39.2499685Z │                   │ "@kisaki3/ui"                          │
+2026-10-27T16:07:39.2500557Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.2501535Z │ node16 (from ESM) │ 🟢 (ESM)                               │
+2026-10-27T16:07:39.2502364Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.2503062Z │ bundler           │ 🟢                                     │
+2026-10-27T16:07:39.2504069Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.2504743Z │ node10            │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:39.2505313Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.2505803Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:39.2506375Z └───────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:39.2507023Z ##[endgroup]
+2026-10-27T16:07:39.3333920Z ##[group]@kisaki3/extension-api:test:consumers
+2026-10-27T16:07:39.3334685Z cache bypass, force executing bd661619b3d2dd4f
+2026-10-27T16:07:39.3335492Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:39.3336580Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:39.3337187Z Unpacking tarball...
+2026-10-27T16:07:39.3337609Z Linting...
+2026-10-27T16:07:39.3337979Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:39.3338185Z 
+2026-10-27T16:07:39.3338348Z @kisaki3/extension-api v0.1.0-dev.0
+2026-10-27T16:07:39.3338558Z 
+2026-10-27T16:07:39.3338696Z Build tools:
+2026-10-27T16:07:39.3339010Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:39.3339356Z - typescript@6.0.3
+2026-10-27T16:07:39.3339619Z - tsdown@0.23.0
+2026-10-27T16:07:39.3339812Z 
+2026-10-27T16:07:39.3339997Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:39.3340202Z 
+2026-10-27T16:07:39.3341614Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:39.3342565Z 
+2026-10-27T16:07:39.3344340Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:39.3345702Z 
+2026-10-27T16:07:39.3345711Z 
+2026-10-27T16:07:39.3346126Z ┌───────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:39.3346820Z │                   │ "@kisaki3/extension-api"               │
+2026-10-27T16:07:39.3347503Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.3348128Z │ node16 (from ESM) │ 🟢 (ESM)                               │
+2026-10-27T16:07:39.3348640Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.3349142Z │ bundler           │ 🟢                                     │
+2026-10-27T16:07:39.3349668Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.3350158Z │ node10            │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:39.3350852Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:39.3351352Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:39.3351855Z └───────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:39.3352464Z ##[endgroup]
+2026-10-27T16:07:40.4302754Z ##[group]@kisaki3/extension-cli:test:consumers
+2026-10-27T16:07:40.4303624Z cache bypass, force executing b59ceed0a130ed23
+2026-10-27T16:07:40.4304254Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:40.4305109Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:40.4305545Z Unpacking tarball...
+2026-10-27T16:07:40.4305859Z Linting...
+2026-10-27T16:07:40.4306244Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:40.4306396Z 
+2026-10-27T16:07:40.4306609Z @kisaki3/extension-cli v0.1.0-dev.0
+2026-10-27T16:07:40.4306821Z 
+2026-10-27T16:07:40.4306974Z Build tools:
+2026-10-27T16:07:40.4307279Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:40.4307657Z - typescript@6.0.3
+2026-10-27T16:07:40.4307912Z - tsdown@0.23.0
+2026-10-27T16:07:40.4308112Z 
+2026-10-27T16:07:40.4308314Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:40.4308519Z 
+2026-10-27T16:07:40.4309373Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:40.4310118Z 
+2026-10-27T16:07:40.4311312Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:40.4312141Z 
+2026-10-27T16:07:40.4312146Z 
+2026-10-27T16:07:40.4312525Z ┌───────────────────┬────────────────────────────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:40.4313366Z │                   │ "@kisaki3/extension-cli/extension"     │ "@kisaki3/extension-cli/config"        │
+2026-10-27T16:07:40.4314355Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.4315704Z │ node16 (from ESM) │ 🟢 (ESM)                               │ 🟢 (ESM)                               │
+2026-10-27T16:07:40.4317092Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.4318411Z │ bundler           │ 🟢                                     │ 🟢                                     │
+2026-10-27T16:07:40.4319782Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.4321350Z │ node10            │ (ignored) 💀 Resolution failed         │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:40.4322481Z ├───────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.4324275Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:40.4325342Z └───────────────────┴────────────────────────────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:40.4326225Z ##[endgroup]
+2026-10-27T16:07:40.4697285Z ##[group]@kisaki3/extension-sdk:test:consumers
+2026-10-27T16:07:40.4700295Z cache bypass, force executing e39e282d73aacc36
+2026-10-27T16:07:40.4713911Z $ publint out/package.tgz --strict && attw out/package.tgz --profile esm-only
+2026-10-27T16:07:40.4719066Z Running [1mpublint v0.3.25[22m for [1mout/package.tgz[22m...
+2026-10-27T16:07:40.4719862Z Unpacking tarball...
+2026-10-27T16:07:40.4720424Z Linting...
+2026-10-27T16:07:40.4720929Z [1m[32mAll good![39m[22m
+2026-10-27T16:07:40.4721291Z 
+2026-10-27T16:07:40.4721547Z @kisaki3/extension-sdk v0.1.0-dev.0
+2026-10-27T16:07:40.4721960Z 
+2026-10-27T16:07:40.4722163Z Build tools:
+2026-10-27T16:07:40.4722680Z - @arethetypeswrong/cli@0.18.5
+2026-10-27T16:07:40.4723008Z - typescript@6.0.3
+2026-10-27T16:07:40.4723468Z - tsdown@0.23.0
+2026-10-27T16:07:40.4723651Z 
+2026-10-27T16:07:40.4723848Z  (ignoring resolutions: 'node10', 'node16-cjs')
+2026-10-27T16:07:40.4724071Z 
+2026-10-27T16:07:40.4725723Z (ignored per resolution) 💀 Import failed to resolve to type declarations or JavaScript files. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md
+2026-10-27T16:07:40.4726628Z 
+2026-10-27T16:07:40.4728174Z (ignored per resolution) ⚠️ A require call resolved to an ESM JavaScript file, which is an error in Node and some bundlers. CommonJS consumers will need to use a dynamic import. https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+2026-10-27T16:07:40.4729045Z 
+2026-10-27T16:07:40.4729052Z 
+2026-10-27T16:07:40.4729359Z ┌───────────────────┬────────────────────────────────────────┐
+2026-10-27T16:07:40.4729918Z │                   │ "@kisaki3/extension-sdk"               │
+2026-10-27T16:07:40.4730652Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.8257640Z $ vitest run --config config/vitest/vitest.config.consumers.ts
+2026-10-27T16:07:40.8258826Z │ node16 (from ESM) │ 🟢 (ESM)                               │
+2026-10-27T16:07:40.8259657Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.8260476Z │ bundler           │ 🟢                                     │
+2026-10-27T16:07:40.8261268Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.8262024Z │ node10            │ (ignored) 💀 Resolution failed         │
+2026-10-27T16:07:40.8262812Z ├───────────────────┼────────────────────────────────────────┤
+2026-10-27T16:07:40.8263798Z │ node16 (from CJS) │ (ignored) ⚠️ ESM (dynamic import only) │
+2026-10-27T16:07:40.8264616Z └───────────────────┴────────────────────────────────────────┘
+2026-10-27T16:07:40.8265523Z ##[endgroup]
+2026-10-27T16:07:40.8266213Z 
+2026-10-27T16:07:40.8266430Z  Tasks:    24 successful, 24 total
+2026-10-27T16:07:40.8267001Z Cached:    16 cached, 24 total
+2026-10-27T16:07:40.8267445Z   Time:    4.667s 
+2026-10-27T16:07:40.8267695Z 
+2026-10-27T16:07:41.0705774Z 
+2026-10-27T16:07:41.0708748Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev[39m
+2026-10-27T16:07:41.0709601Z 
+2026-10-27T16:07:53.3571807Z  [32m✓[39m tests/consumers/packages.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 11783[2mms[22m[39m
+2026-10-27T16:07:53.3573679Z    [33m[2m✓[22m[39m strict TypeScript and ordinary Node consume the supplied public entries outside the repository[33m 8000[2mms[22m[39m
+2026-10-27T16:07:53.3575352Z    [33m[2m✓[22m[39m framework-independent and Solid pages consume built styles without a Tailwind toolchain[33m 1407[2mms[22m[39m
+2026-10-27T16:07:53.3606770Z 
+2026-10-27T16:07:53.3612189Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T16:07:53.3613020Z [2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-27T16:07:53.3613749Z [2m   Start at [22m 16:07:41
+2026-10-27T16:07:53.3614633Z [2m   Duration [22m 12.29s[2m (tests 97%, import 3%)[22m
+2026-10-27T16:07:53.3622693Z 
+2026-10-27T16:07:53.3631871Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/test-results/consumers/results.json
+2026-10-27T16:07:53.3976318Z ##[group]Run pnpm desktop:test:browser --reporter=default --reporter=json --outputFile=test-results/browser/results.json
+2026-10-27T16:07:53.3977067Z [36;1mpnpm desktop:test:browser --reporter=default --reporter=json --outputFile=test-results/browser/results.json[0m
+2026-10-27T16:07:53.4010713Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:07:53.4011133Z env:
+2026-10-27T16:07:53.4011435Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T16:07:53.4011741Z   TURBO_CONCURRENCY: 2
+2026-10-27T16:07:53.4012132Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T16:07:53.4012553Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:53.4012995Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T16:07:53.4013473Z ##[endgroup]
+2026-10-27T16:07:53.7892012Z $ turbo run test:browser --filter=@kisaki3/desktop -- --reporter=default --reporter=json --outputFile=test-results/browser/results.json
+2026-10-27T16:07:53.8402254Z 
+2026-10-27T16:07:53.8403586Z    • Packages in scope: @kisaki3/desktop
+2026-10-27T16:07:53.8404348Z    • Running test:browser in 1 package
+2026-10-27T16:07:53.8405036Z    • Remote caching disabled
+2026-10-27T16:07:53.8405294Z 
+2026-10-27T16:07:53.8608103Z ##[group]@kisaki3/appearance:build
+2026-10-27T16:07:53.8618767Z cache hit, replaying logs f901105b93a78ff6
+2026-10-27T16:07:53.8619740Z $ tsx tools/build.ts
+2026-10-27T16:07:53.8621109Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T16:07:53.8622686Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T16:07:53.8624011Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:53.8624804Z ℹ Build start
+2026-10-27T16:07:53.8625824Z ℹ .cache/output-staging/dist-x75YVi/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T16:07:53.8629007Z ℹ .cache/output-staging/dist-x75YVi/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T16:07:53.8832995Z ℹ .cache/output-staging/dist-x75YVi/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T16:07:53.8834116Z ℹ .cache/output-staging/dist-x75YVi/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T16:07:53.8834786Z ℹ 4 files, total: 6.51 kB
+2026-10-27T16:07:53.8835213Z ✔ Build complete in 662ms
+2026-10-27T16:07:53.8835891Z ##[endgroup]
+2026-10-27T16:07:53.8838949Z ##[group]@kisaki3/ui:build
+2026-10-27T16:07:53.8854438Z cache hit, replaying logs c9b67efd17811917
+2026-10-27T16:07:53.8863913Z $ tsx tools/build.ts
+2026-10-27T16:07:53.8884498Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T16:07:53.8893842Z ℹ entry: src/index.ts
+2026-10-27T16:07:53.8894604Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T16:07:53.8895211Z ℹ Build start
+2026-10-27T16:07:53.8896022Z ℹ .cache/output-staging/dist-agQAoB/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T16:07:53.8896951Z ℹ .cache/output-staging/dist-agQAoB/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T16:07:53.8897683Z ℹ 2 files, total: 1.05 kB
+2026-10-27T16:07:53.8898613Z ✔ Build complete in 1082ms
+2026-10-27T16:07:53.8899230Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T16:07:53.8899529Z 
+2026-10-27T16:07:53.8899716Z Done in [32m43ms[39m
+2026-10-27T16:07:53.8900256Z ##[endgroup]
+2026-10-27T16:07:55.9108452Z ##[group]@kisaki3/desktop:test:browser
+2026-10-27T16:07:55.9108983Z cache bypass, force executing b214b6077a7cda78
+2026-10-27T16:07:55.9109873Z $ vitest run --config config/vitest/vitest.config.browser.ts --reporter=default --reporter=json --outputFile=test-results/browser/results.json
+2026-10-27T16:07:55.9110471Z 
+2026-10-27T16:07:55.9111278Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T16:07:55.9112110Z       [2m[32mAPI started at http://127.0.0.1:23315/[39m[22m
+2026-10-27T16:07:55.9112321Z 
+2026-10-27T16:07:55.9112772Z  [32m✓[39m [30m[43m chromium [49m[39m tests/browser/window.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 25[2mms[22m[39m
+2026-10-27T16:07:55.9113576Z 
+2026-10-27T16:07:55.9113847Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T16:07:55.9114268Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T16:07:55.9114621Z [2m   Start at [22m 16:07:55
+2026-10-27T16:07:55.9115011Z [2m   Duration [22m 781ms[2m (worker 84%, tests 11%, import 5%)[22m
+2026-10-27T16:07:55.9115230Z 
+2026-10-27T16:07:55.9115610Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/browser/results.json
+2026-10-27T16:07:55.9116215Z ##[endgroup]
+2026-10-27T16:07:55.9116337Z 
+2026-10-27T16:07:55.9116453Z  Tasks:    3 successful, 3 total
+2026-10-27T16:07:55.9116711Z Cached:    2 cached, 3 total
+2026-10-27T16:07:55.9116933Z   Time:    2.088s 
+2026-10-27T16:07:55.9117052Z 
+2026-10-27T16:07:55.9326834Z ##[group]Run actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T16:07:55.9327200Z with:
+2026-10-27T16:07:55.9327389Z   path: .turbo/cache
+2026-10-27T16:07:55.9327996Z   key: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:55.9328609Z   enableCrossOsArchive: false
+2026-10-27T16:07:55.9328827Z env:
+2026-10-27T16:07:55.9329021Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T16:07:55.9329231Z   TURBO_CONCURRENCY: 2
+2026-10-27T16:07:55.9329478Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T16:07:55.9329802Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:55.9330119Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T16:07:55.9330520Z ##[endgroup]
+2026-10-27T16:07:56.0580296Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --files-from manifest.txt --use-compress-program zstdmt
+2026-10-27T16:07:56.6625483Z Sent 76825 of 76825 (100.0%), 0.2 MBs/sec
+2026-10-27T16:07:56.8788626Z Cache saved with key: turbo-v2-Linux-X64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-repository-e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:56.8876462Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T16:07:56.8876808Z with:
+2026-10-27T16:07:56.8877014Z   name: repository-verification
+2026-10-27T16:07:56.8877372Z   path: test-results/
+clients/desktop/app/test-results/browser/
+artifacts/packages/
+
+2026-10-27T16:07:56.8877738Z   if-no-files-found: error
+2026-10-27T16:07:56.8877952Z   compression-level: 6
+2026-10-27T16:07:56.8878151Z   overwrite: false
+2026-10-27T16:07:56.8878347Z   include-hidden-files: false
+2026-10-27T16:07:56.8878579Z   archive: true
+2026-10-27T16:07:56.8878757Z env:
+2026-10-27T16:07:56.8878942Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T16:07:56.8879154Z   TURBO_CONCURRENCY: 2
+2026-10-27T16:07:56.8879406Z   TURBO_SCM_BASE: ffa1c9de6887b6324348ef85e3cf2db08f6809cf
+2026-10-27T16:07:56.8879727Z   TURBO_SCM_HEAD: e38a876c96df0d2ef8c127b45e8849517323a15d
+2026-10-27T16:07:56.8880044Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T16:07:56.8880327Z ##[endgroup]
+2026-10-27T16:07:57.0141646Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T16:07:57.0143920Z The least common ancestor is /home/runner/work/kisaki-dev/kisaki-dev. This will be the root directory of the artifact
+2026-10-27T16:07:57.0144806Z With the provided path, there will be 12 files uploaded
+2026-10-27T16:07:57.0147603Z Artifact name is valid!
+2026-10-27T16:07:57.0148342Z Root directory input is valid!
+2026-10-27T16:07:57.3422548Z Uploading artifact: repository-verification.zip
+2026-10-27T16:07:57.3452242Z Beginning upload of artifact content to blob storage
+2026-10-27T16:07:57.6650801Z Uploaded bytes 30189
+2026-10-27T16:07:57.7263055Z Finished uploading artifact content to blob storage!
+2026-10-27T16:07:57.7264093Z SHA256 digest of uploaded artifact is 8be368e6477f7448552110c12a29b1f66065da6776fbd700a75b22a6c9f24c30
+2026-10-27T16:07:57.7264726Z Finalizing artifact upload
+2026-10-27T16:07:58.3538838Z Artifact repository-verification successfully finalized. Artifact ID 12749536488
+2026-10-27T16:07:58.3540001Z Artifact repository-verification has been successfully uploaded! Final size is 30189 bytes. Artifact ID is 12749536488
+2026-10-27T16:07:58.3542815Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40536371739/artifacts/12749536488
+2026-10-27T16:07:58.3673021Z Post job cleanup.
+2026-10-27T16:07:58.4848311Z Pruning is unnecessary.
+2026-10-27T16:07:58.4850424Z Cache hit occurred on the primary key pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1, not saving cache.
+2026-10-27T16:07:58.4980133Z Post job cleanup.
+2026-10-27T16:07:58.6086068Z (node:5635) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T16:07:58.6086727Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T16:07:58.6234006Z Post job cleanup.
+2026-10-27T16:07:58.7061477Z [command]/usr/bin/git version
+2026-10-27T16:07:58.7093634Z git version 2.56.0
+2026-10-27T16:07:58.7122690Z Temporarily overriding HOME='/home/runner/work/_temp/4a412818-a2e3-4476-816b-10b70e4a0fdc' before making global git config changes
+2026-10-27T16:07:58.7124096Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T16:07:58.7126288Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T16:07:58.7159448Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T16:07:58.7188678Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T16:07:58.7382662Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T16:07:58.7409624Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T16:07:58.7591824Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T16:07:58.7618230Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T16:07:58.7917478Z Cleaning up orphan processes

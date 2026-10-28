@@ -1,0 +1,95 @@
+{
+  "id": 12732484231,
+  "name": "repository-verification",
+  "completeArchive": true,
+  "expectedDigest": "sha256:a52314c80462c4feba26e96e72a28d41184b3bb65de27c41fc1bef4295c26feb",
+  "bytes": 30180,
+  "reportEntriesCheckedByZipCrc": 4,
+  "verifiedFiles": [
+    {
+      "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+      "sha256": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+    },
+    {
+      "path": "artifacts/packages/desktop-contracts-62f5689068ed3493d8b6970e996bbd1ce772a872eb4ec963112d078af6cd487a.tgz",
+      "sha256": "62f5689068ed3493d8b6970e996bbd1ce772a872eb4ec963112d078af6cd487a"
+    },
+    {
+      "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+      "sha256": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+    },
+    {
+      "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+      "sha256": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+    },
+    {
+      "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+      "sha256": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+    },
+    {
+      "path": "artifacts/packages/extension-sdk-8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38.tgz",
+      "sha256": "8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38"
+    },
+    {
+      "path": "artifacts/packages/rpc-f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827.tgz",
+      "sha256": "f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827"
+    },
+    {
+      "path": "artifacts/packages/ui-3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15.tgz",
+      "sha256": "3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15"
+    }
+  ],
+  "receiptFilesListedInArchive": [
+    {
+      "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+      "bytes": 4157,
+      "zipCrc32": "4a41a0a6",
+      "sha256FromReceipt": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+    },
+    {
+      "path": "artifacts/packages/desktop-contracts-62f5689068ed3493d8b6970e996bbd1ce772a872eb4ec963112d078af6cd487a.tgz",
+      "bytes": 4768,
+      "zipCrc32": "9862f7fb",
+      "sha256FromReceipt": "62f5689068ed3493d8b6970e996bbd1ce772a872eb4ec963112d078af6cd487a"
+    },
+    {
+      "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+      "bytes": 1997,
+      "zipCrc32": "0ffb058f",
+      "sha256FromReceipt": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+    },
+    {
+      "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+      "bytes": 5124,
+      "zipCrc32": "238cb65f",
+      "sha256FromReceipt": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+    },
+    {
+      "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+      "bytes": 2086,
+      "zipCrc32": "c6d61c7e",
+      "sha256FromReceipt": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+    },
+    {
+      "path": "artifacts/packages/extension-sdk-8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38.tgz",
+      "bytes": 2023,
+      "zipCrc32": "67425f82",
+      "sha256FromReceipt": "8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38"
+    },
+    {
+      "path": "artifacts/packages/rpc-f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827.tgz",
+      "bytes": 2330,
+      "zipCrc32": "8b34861a",
+      "sha256FromReceipt": "f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827"
+    },
+    {
+      "path": "artifacts/packages/ui-3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15.tgz",
+      "bytes": 2869,
+      "zipCrc32": "06061f7f",
+      "sha256FromReceipt": "3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15"
+    }
+  ],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40501831388/repository-verification.zip",
+  "sha256": "a52314c80462c4feba26e96e72a28d41184b3bb65de27c41fc1bef4295c26feb"
+}

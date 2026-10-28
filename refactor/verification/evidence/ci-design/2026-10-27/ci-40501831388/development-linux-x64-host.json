@@ -1,0 +1,13 @@
+{
+  "node": "v24.11.1",
+  "platform": "linux",
+  "architecture": "x64",
+  "parallelism": 4,
+  "cpus": [
+    "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+    "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+    "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+    "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz"
+  ],
+  "memoryBytes": 16764375040
+}

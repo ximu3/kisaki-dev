@@ -1,0 +1,16 @@
+[
+  {
+    "runId": 40525500828,
+    "head": "85d2078338e3b5e5f0d9afba4da6f66906a14c65",
+    "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40525500828",
+    "conclusion": "failure",
+    "reason": "Excluded from successful timing samples; preserve raw run, jobs, logs and artifacts."
+  },
+  {
+    "runId": 40533584014,
+    "head": "511110c3515db3b9e7b326c681b9e52602a10c70",
+    "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40533584014",
+    "conclusion": "failure",
+    "reason": "Excluded from successful timing samples; preserve raw run, jobs, logs and artifacts."
+  }
+]

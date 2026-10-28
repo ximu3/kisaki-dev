@@ -1,0 +1,285 @@
+{
+  "total_count": 14,
+  "artifacts": [
+    {
+      "id": 12733775207,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzc3NTIwNw==",
+      "name": "development-macos-arm64",
+      "size_in_bytes": 324,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733775207",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733775207/zip",
+      "expired": false,
+      "digest": "sha256:89b25c714c391d94a4950ead4eaaaecb00c5e0f7a93a00d6d5915743e5df688a",
+      "created_at": "2026-10-27T12:08:37Z",
+      "updated_at": "2026-10-27T12:08:37Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733705348,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzcwNTM0OA==",
+      "name": "development-linux-arm64",
+      "size_in_bytes": 313,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733705348",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733705348/zip",
+      "expired": false,
+      "digest": "sha256:0e93aee9ee2091347799a6bc311bf00efa5f8e45bf3c14057e4df51a89425483",
+      "created_at": "2026-10-27T12:08:38Z",
+      "updated_at": "2026-10-27T12:08:38Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733580388,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzU4MDM4OA==",
+      "name": "repository-verification",
+      "size_in_bytes": 30177,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733580388",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733580388/zip",
+      "expired": false,
+      "digest": "sha256:4458b688265759d1e0cc26bf86307399fd8ff4c9e186c5ddf4601ad3e63317fb",
+      "created_at": "2026-10-27T12:07:37Z",
+      "updated_at": "2026-10-27T12:07:37Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733550543,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzU1MDU0Mw==",
+      "name": "development-linux-x64",
+      "size_in_bytes": 1401,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733550543",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733550543/zip",
+      "expired": false,
+      "digest": "sha256:e7e6e37c561f580da2c5648a71a13d498ed5b88f3fda4fd0883e8dc2965ed261",
+      "created_at": "2026-10-27T12:08:27Z",
+      "updated_at": "2026-10-27T12:08:27Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733121391,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzEyMTM5MQ==",
+      "name": "desktop-windows-x64",
+      "size_in_bytes": 3333,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733121391",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733121391/zip",
+      "expired": false,
+      "digest": "sha256:3a3b72875adb8960383a94272415d80874efd7ea9fa60a142eca9227ee469999",
+      "created_at": "2026-10-27T12:08:30Z",
+      "updated_at": "2026-10-27T12:08:30Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733101466,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzEwMTQ2Ng==",
+      "name": "desktop-linux-x64",
+      "size_in_bytes": 16789,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733101466",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733101466/zip",
+      "expired": false,
+      "digest": "sha256:8a767a7356cbd0e1807103a00b5200955ba5e08109387c0bdcc2601291890b36",
+      "created_at": "2026-10-27T12:08:35Z",
+      "updated_at": "2026-10-27T12:08:35Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12733021642,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMzAyMTY0Mg==",
+      "name": "desktop-windows-arm64",
+      "size_in_bytes": 1161,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733021642",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12733021642/zip",
+      "expired": false,
+      "digest": "sha256:30bf4f0c435fae06eada7c2b2535fb8b7961a2c18ab12c11485fe651943ccfa1",
+      "created_at": "2026-10-27T12:08:23Z",
+      "updated_at": "2026-10-27T12:08:23Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732931788,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjkzMTc4OA==",
+      "name": "desktop-macos-arm64",
+      "size_in_bytes": 256003581,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732931788",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732931788/zip",
+      "expired": false,
+      "digest": "sha256:9bb83fed4010abf968ce211c0d8f958c70278cfbbb22feb0ef36c0229a0fc82a",
+      "created_at": "2026-10-27T12:08:36Z",
+      "updated_at": "2026-10-27T12:08:36Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732592561,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjU5MjU2MQ==",
+      "name": "development-windows-arm64",
+      "size_in_bytes": 316,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732592561",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732592561/zip",
+      "expired": false,
+      "digest": "sha256:bfea9a8b74071ac1d39b45c92950bf20e82eab75e2dcd47580fcba3db2499f09",
+      "created_at": "2026-10-27T12:08:23Z",
+      "updated_at": "2026-10-27T12:08:23Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732522976,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjUyMjk3Ng==",
+      "name": "desktop-macos-x64",
+      "size_in_bytes": 1209,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732522976",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732522976/zip",
+      "expired": false,
+      "digest": "sha256:3c28beaa9a732dff0fedb0247c408bf0485bcd5690dcfc39553c06b24a9c6eb2",
+      "created_at": "2026-10-27T12:08:38Z",
+      "updated_at": "2026-10-27T12:08:38Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732398111,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjM5ODExMQ==",
+      "name": "development-macos-x64",
+      "size_in_bytes": 348,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732398111",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732398111/zip",
+      "expired": false,
+      "digest": "sha256:252fa4a1590da7ba5fdd4915bd1d057ee8fec60eadc188e6520115254880ff01",
+      "created_at": "2026-10-27T12:08:38Z",
+      "updated_at": "2026-10-27T12:08:38Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732373319,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjM3MzMxOQ==",
+      "name": "desktop-linux-arm64",
+      "size_in_bytes": 16714,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732373319",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732373319/zip",
+      "expired": false,
+      "digest": "sha256:4338a1a791b7c1204588c09be9ef77caab173656c590f14559f702cabda4a986",
+      "created_at": "2026-10-27T12:08:38Z",
+      "updated_at": "2026-10-27T12:08:38Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732339643,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjMzOTY0Mw==",
+      "name": "development-windows-x64",
+      "size_in_bytes": 339,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732339643",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732339643/zip",
+      "expired": false,
+      "digest": "sha256:dc263da87398bf61bc103eac4b23f8827fe5cbb5f32432f24d08d1e734519881",
+      "created_at": "2026-10-27T12:08:23Z",
+      "updated_at": "2026-10-27T12:08:23Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    },
+    {
+      "id": 12732219657,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMjIxOTY1Nw==",
+      "name": "verification-scope",
+      "size_in_bytes": 922,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732219657",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12732219657/zip",
+      "expired": false,
+      "digest": "sha256:a755b7ae2e0a2139f21d74e5ab7ad50e1f87816090532ed41499a471c391da07",
+      "created_at": "2026-10-27T12:05:45Z",
+      "updated_at": "2026-10-27T12:05:45Z",
+      "expires_at": "2027-01-25T12:05:16Z",
+      "workflow_run": {
+        "id": 40501024765,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-final-design-measurements",
+        "head_sha": "313351cb1848a8cfe732c27919a2a7ec1fef425a"
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": 12732708895,
+  "name": "desktop-windows-x64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:1f6701def8d5a81b27dd3af1567a0ae7d5ed9d33052414c7b6ae777a27dc5521",
+  "bytes": 280209701,
+  "reportEntriesCheckedByZipCrc": 10,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [
+    {
+      "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.exe",
+      "bytes": 119837482,
+      "zipCrc32": "c1ddd3d7",
+      "sha256FromReceipt": "5eec2f85575f5cfed79a5201b1e8355335777af962f97de547659de0b77eaa15"
+    },
+    {
+      "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap",
+      "bytes": 126380,
+      "zipCrc32": "93332eb6",
+      "sha256FromReceipt": "a1e283ff0f98886dd58f16443f7d39215fec515f1f9485c3bd8c406f27b6fbde"
+    },
+    {
+      "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.zip",
+      "bytes": 160752579,
+      "zipCrc32": "268346c3",
+      "sha256FromReceipt": "2aa53a4d13989c2b32664c811c6504581727e2dbf22ef26d6dc12029e2ba1616"
+    },
+    {
+      "path": "clients/desktop/app/dist/windows-x64/latest.yml",
+      "bytes": 371,
+      "zipCrc32": "49a58d10",
+      "sha256FromReceipt": "a10183c6e5ae36b3a9de9567fa80fa9114fcf4466c6c48cee34f2185e14a046d"
+    }
+  ],
+  "receiptFilesNotInArchive": []
+}

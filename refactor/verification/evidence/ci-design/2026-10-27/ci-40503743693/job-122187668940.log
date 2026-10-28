@@ -1,0 +1,364 @@
+﻿2026-10-27T12:26:23.3594349Z Current runner version: '2.338.0'
+2026-10-27T12:26:23.3622670Z ##[group]Runner Image Provisioner
+2026-10-27T12:26:23.3623533Z Hosted Compute Agent
+2026-10-27T12:26:23.3624069Z Version: 20261021.618
+2026-10-27T12:26:23.3624609Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T12:26:23.3625572Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T12:26:23.3626143Z Worker ID: {13c0e62c-a8f6-4106-90cd-f449de5d409d}
+2026-10-27T12:26:23.3626770Z Region: centralus
+2026-10-27T12:26:23.3627258Z Cloud: Azure
+2026-10-27T12:26:23.3627737Z ##[endgroup]
+2026-10-27T12:26:23.3629188Z ##[group]Operating System
+2026-10-27T12:26:23.3629752Z Ubuntu
+2026-10-27T12:26:23.3630265Z 22.04.5
+2026-10-27T12:26:23.3630726Z LTS
+2026-10-27T12:26:23.3631197Z ##[endgroup]
+2026-10-27T12:26:23.3631716Z ##[group]Runner Image
+2026-10-27T12:26:23.3632232Z Image: ubuntu-22.04
+2026-10-27T12:26:23.3632696Z Version: 20261012.322.1
+2026-10-27T12:26:23.3633892Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-27T12:26:23.3635198Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-27T12:26:23.3636002Z ##[endgroup]
+2026-10-27T12:26:23.3636999Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T12:26:23.3639167Z Contents: read
+2026-10-27T12:26:23.3639713Z Metadata: read
+2026-10-27T12:26:23.3640354Z ##[endgroup]
+2026-10-27T12:26:23.3642233Z Secret source: Actions
+2026-10-27T12:26:23.3643102Z Cache mode: write
+2026-10-27T12:26:23.3643909Z Prepare workflow directory
+2026-10-27T12:26:23.4115123Z Prepare all required actions
+2026-10-27T12:26:23.4172470Z Getting action download info
+2026-10-27T12:26:23.7087232Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T12:26:23.8032258Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T12:26:23.9719611Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T12:26:24.3945471Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T12:26:24.8664872Z Uses: ximu3/kisaki-dev/.github/workflows/verification.yml@refs/heads/research/ci-final-design-measurements (0aca1991905009c32b190b0f07297df96c5b9b48)
+2026-10-27T12:26:24.8669224Z ##[group] Inputs
+2026-10-27T12:26:24.8670113Z   complete: false
+2026-10-27T12:26:24.8670559Z ##[endgroup]
+2026-10-27T12:26:24.8671004Z Complete job name: verify / Select checks
+2026-10-27T12:26:24.9410778Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T12:26:24.9411804Z with:
+2026-10-27T12:26:24.9412204Z   fetch-depth: 0
+2026-10-27T12:26:24.9412611Z   persist-credentials: false
+2026-10-27T12:26:24.9413080Z   repository: ximu3/kisaki-dev
+2026-10-27T12:26:24.9416956Z   token: ***
+2026-10-27T12:26:24.9417414Z   ssh-strict: true
+2026-10-27T12:26:24.9417835Z   ssh-user: git
+2026-10-27T12:26:24.9418208Z   clean: true
+2026-10-27T12:26:24.9418625Z   sparse-checkout-cone-mode: true
+2026-10-27T12:26:24.9419263Z   fetch-tags: false
+2026-10-27T12:26:24.9419662Z   show-progress: true
+2026-10-27T12:26:24.9420074Z   lfs: false
+2026-10-27T12:26:24.9420455Z   submodules: false
+2026-10-27T12:26:24.9420857Z   set-safe-directory: true
+2026-10-27T12:26:24.9421307Z   allow-unsafe-pr-checkout: false
+2026-10-27T12:26:24.9422038Z env:
+2026-10-27T12:26:24.9422413Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:24.9422891Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:24.9423481Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:24.9424179Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:24.9424753Z ##[endgroup]
+2026-10-27T12:26:25.0337033Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T12:26:25.0339565Z ##[group]Getting Git version info
+2026-10-27T12:26:25.0341187Z Working directory is '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T12:26:25.0342795Z [command]/usr/bin/git version
+2026-10-27T12:26:25.0751462Z git version 2.55.0
+2026-10-27T12:26:25.0770951Z ##[endgroup]
+2026-10-27T12:26:25.0779721Z Temporarily overriding HOME='/home/runner/work/_temp/17ba83e2-cf5c-40cf-8c1b-42ed0d55d57d' before making global git config changes
+2026-10-27T12:26:25.0782026Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:26:25.0785351Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T12:26:25.0830170Z Deleting the contents of '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T12:26:25.0832236Z ##[group]Initializing the repository
+2026-10-27T12:26:25.0835864Z [command]/usr/bin/git init /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T12:26:25.0917279Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T12:26:25.0919700Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T12:26:25.0921523Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T12:26:25.0922867Z hint: call:
+2026-10-27T12:26:25.0923597Z hint:
+2026-10-27T12:26:25.0924473Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T12:26:25.0925516Z hint:
+2026-10-27T12:26:25.0926517Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T12:26:25.0928085Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T12:26:25.0929522Z hint:
+2026-10-27T12:26:25.0930256Z hint: 	git branch -m <name>
+2026-10-27T12:26:25.0931113Z hint:
+2026-10-27T12:26:25.0932199Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T12:26:25.0934181Z Initialized empty Git repository in /home/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T12:26:25.0937313Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T12:26:25.0970818Z ##[endgroup]
+2026-10-27T12:26:25.0971920Z ##[group]Disabling automatic garbage collection
+2026-10-27T12:26:25.0974961Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T12:26:25.1017816Z ##[endgroup]
+2026-10-27T12:26:25.1019200Z ##[group]Setting up auth
+2026-10-27T12:26:25.1024683Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:26:25.1063965Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:26:25.1350957Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:26:25.1390361Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:26:25.1656590Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:26:25.1695131Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:26:25.1927959Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T12:26:25.1975760Z ##[endgroup]
+2026-10-27T12:26:25.1977591Z ##[group]Fetching the repository
+2026-10-27T12:26:25.1985313Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-27T12:26:26.6453557Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T12:26:26.6454677Z  * [new branch]      main       -> origin/main
+2026-10-27T12:26:26.6455411Z  * [new branch]      research/appimage-policy-2026-10-26 -> origin/research/appimage-policy-2026-10-26
+2026-10-27T12:26:26.6456380Z  * [new branch]      research/ci-final-design-measurements -> origin/research/ci-final-design-measurements
+2026-10-27T12:26:26.6457697Z  * [new branch]      research/ci-reliability-and-feedback -> origin/research/ci-reliability-and-feedback
+2026-10-27T12:26:26.6458642Z  * [new branch]      research/ci-trigger-alternate-2026-10-26 -> origin/research/ci-trigger-alternate-2026-10-26
+2026-10-27T12:26:26.6459431Z  * [new branch]      research/ci-trigger-base-2026-10-26 -> origin/research/ci-trigger-base-2026-10-26
+2026-10-27T12:26:26.6459995Z  * [new branch]      research/ci-trigger-head-2026-10-26 -> origin/research/ci-trigger-head-2026-10-26
+2026-10-27T12:26:26.6463490Z [command]/usr/bin/git branch --list --remote origin/research/ci-final-design-measurements
+2026-10-27T12:26:26.6493201Z   origin/research/ci-final-design-measurements
+2026-10-27T12:26:26.6501265Z [command]/usr/bin/git rev-parse refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T12:26:26.6526918Z 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:26.6530731Z ##[endgroup]
+2026-10-27T12:26:26.6531174Z ##[group]Determining the checkout info
+2026-10-27T12:26:26.6532253Z ##[endgroup]
+2026-10-27T12:26:26.6537433Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T12:26:26.6589545Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T12:26:26.6620928Z ##[group]Checking out the ref
+2026-10-27T12:26:26.6625367Z [command]/usr/bin/git checkout --progress --force -B research/ci-final-design-measurements refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T12:26:26.8908714Z Switched to a new branch 'research/ci-final-design-measurements'
+2026-10-27T12:26:26.8909860Z branch 'research/ci-final-design-measurements' set up to track 'origin/research/ci-final-design-measurements'.
+2026-10-27T12:26:26.8927529Z ##[endgroup]
+2026-10-27T12:26:26.8970900Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T12:26:26.8999533Z 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:26.9007662Z ##[group]Removing auth
+2026-10-27T12:26:26.9011069Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:26:26.9042984Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:26:26.9278357Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:26:26.9308540Z http.https://github.com/.extraheader
+2026-10-27T12:26:26.9315093Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T12:26:26.9357255Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:26:26.9602510Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:26:26.9647119Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:26:26.9896899Z ##[endgroup]
+2026-10-27T12:26:27.0126641Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T12:26:27.0126976Z with:
+2026-10-27T12:26:27.0127151Z   node-version-file: .node-version
+2026-10-27T12:26:27.0127372Z   package-manager-cache: false
+2026-10-27T12:26:27.0127571Z   always-auth: false
+2026-10-27T12:26:27.0127751Z   check-latest: false
+2026-10-27T12:26:27.0130012Z   token: ***
+2026-10-27T12:26:27.0130183Z env:
+2026-10-27T12:26:27.0130350Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:27.0130552Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:27.0130776Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:27.0131070Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:27.0131310Z ##[endgroup]
+2026-10-27T12:26:27.1395454Z Node version file is not JSON file
+2026-10-27T12:26:27.1396348Z Resolved .node-version as 24.11.1
+2026-10-27T12:26:27.1413416Z Attempting to download 24.11.1...
+2026-10-27T12:26:27.1507284Z (node:2056) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T12:26:27.1507895Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T12:26:27.9401621Z Acquiring 24.11.1 - x64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-x64.tar.gz
+2026-10-27T12:26:28.4767189Z Extracting ...
+2026-10-27T12:26:28.4868315Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/a0db420b-efd2-4e26-a722-4e6bc0e89909 -f /home/runner/work/_temp/081955d4-6416-41e4-acce-76d2a83d9206
+2026-10-27T12:26:29.5245084Z Adding to the cache ...
+2026-10-27T12:26:31.7865522Z ##[group]Environment details
+2026-10-27T12:26:32.1177524Z node: v24.11.1
+2026-10-27T12:26:32.1177855Z npm: 11.6.2
+2026-10-27T12:26:32.1178102Z yarn: 1.22.22
+2026-10-27T12:26:32.1178725Z ##[endgroup]
+2026-10-27T12:26:32.1360136Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T12:26:32.1360441Z with:
+2026-10-27T12:26:32.1360603Z   cache: true
+2026-10-27T12:26:32.1360764Z   dest: ~/setup-pnpm
+2026-10-27T12:26:32.1360948Z   run_install: null
+2026-10-27T12:26:32.1361134Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T12:26:32.1361371Z   package_json_file: package.json
+2026-10-27T12:26:32.1361571Z   standalone: false
+2026-10-27T12:26:32.1361733Z env:
+2026-10-27T12:26:32.1361893Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:32.1362087Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:32.1362303Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:32.1362587Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:32.1362824Z ##[endgroup]
+2026-10-27T12:26:32.2642396Z ##[group]Running self-installer...
+2026-10-27T12:26:32.5918372Z (node:2103) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T12:26:32.5919987Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T12:26:32.7532748Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T12:26:32.7608116Z Packages: +1
+2026-10-27T12:26:32.7608576Z +
+2026-10-27T12:26:33.0339761Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T12:26:33.1537403Z 
+2026-10-27T12:26:33.1537910Z dependencies:
+2026-10-27T12:26:33.1538382Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T12:26:33.1538589Z 
+2026-10-27T12:26:33.1704782Z Done in 758ms
+2026-10-27T12:26:33.1891840Z ##[endgroup]
+2026-10-27T12:26:33.1892449Z Installation Completed!
+2026-10-27T12:26:33.1900153Z ##[group]Restoring cache...
+2026-10-27T12:26:33.1924785Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T12:26:33.6796318Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T12:26:33.8717277Z Cache hit for: pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T12:26:35.0035773Z Received 127345068 of 131539372 (96.8%), 121.3 MBs/sec
+2026-10-27T12:26:35.9964993Z Received 131539372 of 131539372 (100.0%), 62.8 MBs/sec
+2026-10-27T12:26:35.9966175Z Cache Size: ~125 MB (131539372 B)
+2026-10-27T12:26:35.9994314Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e0296031-c688-4485-aae4-d5d668de7f4c/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T12:26:37.0106568Z Cache restored successfully
+2026-10-27T12:26:37.0373835Z Cache restored from key: pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T12:26:37.0374976Z ##[endgroup]
+2026-10-27T12:26:37.0631457Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T12:26:37.0631852Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T12:26:37.0915723Z shell: /usr/bin/bash -e {0}
+2026-10-27T12:26:37.0916226Z env:
+2026-10-27T12:26:37.0916416Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:37.0916631Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:37.0916857Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:37.0917170Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:37.0917486Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T12:26:37.0917737Z ##[endgroup]
+2026-10-27T12:26:37.4982218Z Scope: all 46 workspace projects
+2026-10-27T12:26:37.5908072Z ? Verifying lockfile against supply-chain policies (879 entries)...
+2026-10-27T12:26:37.6046754Z Lockfile is up to date, resolution step is skipped
+2026-10-27T12:26:37.7135198Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T12:26:37.8083703Z Packages: +700
+2026-10-27T12:26:37.8084559Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T12:26:38.7146279Z Progress: resolved 700, reused 700, downloaded 0, added 102
+2026-10-27T12:26:39.7147928Z Progress: resolved 700, reused 700, downloaded 0, added 513
+2026-10-27T12:26:40.2380370Z Progress: resolved 700, reused 700, downloaded 0, added 700, done
+2026-10-27T12:26:41.9977820Z ✓ Lockfile passes supply-chain policies (879 entries in 4.4s)
+2026-10-27T12:26:42.3181897Z 
+2026-10-27T12:26:42.3183135Z devDependencies:
+2026-10-27T12:26:42.3189220Z + @commitlint/cli 21.2.4
+2026-10-27T12:26:42.3189639Z + @commitlint/config-conventional 21.2.4
+2026-10-27T12:26:42.3190164Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T12:26:42.3190663Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T12:26:42.3191341Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T12:26:42.3191793Z + @playwright/test 1.64.1
+2026-10-27T12:26:42.3192098Z + @types/node 24.19.2
+2026-10-27T12:26:42.3192435Z + @types/semver 7.8.0
+2026-10-27T12:26:42.3192745Z + dependency-cruiser 18.7.0
+2026-10-27T12:26:42.3193043Z + eslint 10.13.0
+2026-10-27T12:26:42.3193314Z + husky 9.1.7
+2026-10-27T12:26:42.3193574Z + jiti 2.7.0
+2026-10-27T12:26:42.3193844Z + lint-staged 17.6.0
+2026-10-27T12:26:42.3194107Z + prettier 3.9.10
+2026-10-27T12:26:42.3194374Z + semver 7.8.5
+2026-10-27T12:26:42.3194604Z + tar 7.5.22
+2026-10-27T12:26:42.3194870Z + tsx 4.23.15
+2026-10-27T12:26:42.3195167Z + turbo 2.11.10
+2026-10-27T12:26:42.3195441Z + typescript 6.0.3
+2026-10-27T12:26:42.3195712Z + vite 8.3.3
+2026-10-27T12:26:42.3195974Z + vitest 5.0.5
+2026-10-27T12:26:42.3196245Z + yaml 2.9.1
+2026-10-27T12:26:42.3196350Z 
+2026-10-27T12:26:42.5004319Z Done in 5.3s using pnpm v11.11.0
+2026-10-27T12:26:42.5616914Z ##[group]Run mkdir -p test-results/verification
+2026-10-27T12:26:42.5617262Z [36;1mmkdir -p test-results/verification[0m
+2026-10-27T12:26:42.5618138Z [36;1mnode -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json[0m
+2026-10-27T12:26:42.5686215Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:26:42.5686514Z env:
+2026-10-27T12:26:42.5686693Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:42.5686891Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:42.5687122Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:42.5687412Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:42.5687686Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T12:26:42.5687932Z ##[endgroup]
+2026-10-27T12:26:42.6085598Z ##[group]Run complete="$REQUEST_COMPLETE"
+2026-10-27T12:26:42.6085936Z [36;1mcomplete="$REQUEST_COMPLETE"[0m
+2026-10-27T12:26:42.6086419Z [36;1mif [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]] || ! git cat-file -e "$TURBO_SCM_BASE^{commit}"; then[0m
+2026-10-27T12:26:42.6086883Z [36;1m  complete=true[0m
+2026-10-27T12:26:42.6087071Z [36;1mfi[0m
+2026-10-27T12:26:42.6087262Z [36;1mmkdir -p test-results/verification[0m
+2026-10-27T12:26:42.6087700Z [36;1mreport=test-results/verification/affected.json[0m
+2026-10-27T12:26:42.6087971Z [36;1mif [[ "$complete" == false ]]; then[0m
+2026-10-27T12:26:42.6088410Z [36;1m  jq -n --arg base "$TURBO_SCM_BASE" --arg head "$TURBO_SCM_HEAD" '{base: $base, head: $head}' > "$RUNNER_TEMP/verification-refs.json"[0m
+2026-10-27T12:26:42.6089364Z [36;1m  pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"[0m
+2026-10-27T12:26:42.6090253Z [36;1m  jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null[0m
+2026-10-27T12:26:42.6090750Z [36;1m  # Required build prerequisites also use TaskAllChanged; they do not expand verification.[0m
+2026-10-27T12:26:42.6091411Z [36;1m  if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then[0m
+2026-10-27T12:26:42.6091942Z [36;1m    complete=true[0m
+2026-10-27T12:26:42.6092294Z [36;1m  fi[0m
+2026-10-27T12:26:42.6113178Z [36;1melse[0m
+2026-10-27T12:26:42.6113455Z [36;1m  jq -n '{complete: true}' > "$report"[0m
+2026-10-27T12:26:42.6113800Z [36;1mfi[0m
+2026-10-27T12:26:42.6114077Z [36;1mecho "complete=$complete" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T12:26:42.6114439Z [36;1mfor task in native browser e2e dev performance artifacts; do[0m
+2026-10-27T12:26:42.6114727Z [36;1m  selected="$complete"[0m
+2026-10-27T12:26:42.6114974Z [36;1m  if [[ "$complete" == false ]]; then[0m
+2026-10-27T12:26:42.6115634Z [36;1m    selected=$(jq -r --arg task "test:$task" 'any(.data.affectedTasks.items[]; .command != null and .package.name == "@kisaki3/desktop" and (.name == $task or ($task == "test:artifacts" and .name == "package")))' "$report")[0m
+2026-10-27T12:26:42.6116263Z [36;1m  fi[0m
+2026-10-27T12:26:42.6116458Z [36;1m  echo "$task=$selected" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T12:26:42.6116808Z [36;1m  if [[ "$task" != browser && "$task" != dev && "$selected" == true ]]; then desktop=true; fi[0m
+2026-10-27T12:26:42.6117121Z [36;1mdone[0m
+2026-10-27T12:26:42.6117289Z [36;1mconsumers="$complete"[0m
+2026-10-27T12:26:42.6117490Z [36;1mtooling="$complete"[0m
+2026-10-27T12:26:42.6117694Z [36;1mif [[ "$complete" == false ]]; then[0m
+2026-10-27T12:26:42.6118332Z [36;1m  consumers=$(jq -r 'any(.data.affectedTasks.items[]; .command != null and (.fullName == "//#test:consumers:run" or (.name == "test:consumers" and (.package.path | startswith("clients/desktop/packages/")))))' "$report")[0m
+2026-10-27T12:26:42.6119320Z [36;1m  tooling=$(jq -r 'any(.data.affectedTasks.items[]; .fullName == "@kisaki3/tooling#test" and .command != null)' "$report")[0m
+2026-10-27T12:26:42.6119739Z [36;1mfi[0m
+2026-10-27T12:26:42.6119933Z [36;1mif [[ "$tooling" == true ]]; then desktop=true; fi[0m
+2026-10-27T12:26:42.6120227Z [36;1mecho "consumers=$consumers" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T12:26:42.6120510Z [36;1mecho "tooling=$tooling" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T12:26:42.6120796Z [36;1mecho "desktop=${desktop:-false}" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T12:26:42.6184588Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:26:42.6184881Z env:
+2026-10-27T12:26:42.6185066Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:42.6185269Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:42.6185487Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:42.6185780Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:42.6186359Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T12:26:42.6186616Z   REQUEST_COMPLETE: false
+2026-10-27T12:26:42.6186806Z ##[endgroup]
+2026-10-27T12:26:43.7046096Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T12:26:43.7046425Z with:
+2026-10-27T12:26:43.7046607Z   name: verification-scope
+2026-10-27T12:26:43.7046815Z   path: test-results/verification/
+2026-10-27T12:26:43.7047027Z   if-no-files-found: error
+2026-10-27T12:26:43.7047380Z   compression-level: 6
+2026-10-27T12:26:43.7047567Z   overwrite: false
+2026-10-27T12:26:43.7047744Z   include-hidden-files: false
+2026-10-27T12:26:43.7047935Z   archive: true
+2026-10-27T12:26:43.7048096Z env:
+2026-10-27T12:26:43.7048258Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T12:26:43.7048451Z   TURBO_CONCURRENCY: 2
+2026-10-27T12:26:43.7048667Z   TURBO_SCM_BASE: 410f5c79ed52951d3839f16c2c751076726e3480
+2026-10-27T12:26:43.7049143Z   TURBO_SCM_HEAD: 0aca1991905009c32b190b0f07297df96c5b9b48
+2026-10-27T12:26:43.7049435Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T12:26:43.7049676Z ##[endgroup]
+2026-10-27T12:26:43.8332969Z With the provided path, there will be 2 files uploaded
+2026-10-27T12:26:43.8337371Z Artifact name is valid!
+2026-10-27T12:26:43.8337981Z Root directory input is valid!
+2026-10-27T12:26:44.0962602Z Uploading artifact: verification-scope.zip
+2026-10-27T12:26:44.0993737Z Beginning upload of artifact content to blob storage
+2026-10-27T12:26:44.2563772Z Uploaded bytes 925
+2026-10-27T12:26:44.2939796Z Finished uploading artifact content to blob storage!
+2026-10-27T12:26:44.2940716Z SHA256 digest of uploaded artifact is 2e6861a1fd4ca04c49c6e5583da64c7889dc8bbb38971b823cc8923ff8931291
+2026-10-27T12:26:44.2941373Z Finalizing artifact upload
+2026-10-27T12:26:44.8272082Z Artifact verification-scope successfully finalized. Artifact ID 12734430507
+2026-10-27T12:26:44.8272882Z Artifact verification-scope has been successfully uploaded! Final size is 925 bytes. Artifact ID is 12734430507
+2026-10-27T12:26:44.8275698Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40503743693/artifacts/12734430507
+2026-10-27T12:26:44.8432414Z Post job cleanup.
+2026-10-27T12:26:44.9693676Z Pruning is unnecessary.
+2026-10-27T12:26:44.9695575Z Cache hit occurred on the primary key pnpm-cache-Linux-x64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1, not saving cache.
+2026-10-27T12:26:44.9823066Z Post job cleanup.
+2026-10-27T12:26:45.1003847Z (node:2265) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T12:26:45.1004491Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T12:26:45.1192959Z Post job cleanup.
+2026-10-27T12:26:45.2063824Z [command]/usr/bin/git version
+2026-10-27T12:26:45.2107428Z git version 2.55.0
+2026-10-27T12:26:45.2141977Z Temporarily overriding HOME='/home/runner/work/_temp/3706d9b9-e1cd-4da3-8de9-8ed1858aecf2' before making global git config changes
+2026-10-27T12:26:45.2143231Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:26:45.2146249Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T12:26:45.2188919Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:26:45.2228070Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:26:45.2508057Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:26:45.2551207Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:26:45.2833359Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:26:45.2905262Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:26:45.3299540Z Evaluate and set job outputs
+2026-10-27T12:26:45.3306379Z Set output 'complete'
+2026-10-27T12:26:45.3307709Z Set output 'desktop'
+2026-10-27T12:26:45.3308424Z Set output 'native'
+2026-10-27T12:26:45.3308678Z Set output 'browser'
+2026-10-27T12:26:45.3309384Z Set output 'e2e'
+2026-10-27T12:26:45.3309617Z Set output 'dev'
+2026-10-27T12:26:45.3309862Z Set output 'performance'
+2026-10-27T12:26:45.3310130Z Set output 'artifacts'
+2026-10-27T12:26:45.3310381Z Set output 'tooling'
+2026-10-27T12:26:45.3310623Z Set output 'consumers'
+2026-10-27T12:26:45.3311217Z Cleaning up orphan processes

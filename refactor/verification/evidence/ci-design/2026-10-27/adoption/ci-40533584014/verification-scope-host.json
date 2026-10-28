@@ -1,0 +1,13 @@
+{
+  "node": "v24.11.1",
+  "platform": "linux",
+  "architecture": "x64",
+  "parallelism": 4,
+  "cpus": [
+    "INTEL(R) XEON(R) PLATINUM 8573C",
+    "INTEL(R) XEON(R) PLATINUM 8573C",
+    "INTEL(R) XEON(R) PLATINUM 8573C",
+    "INTEL(R) XEON(R) PLATINUM 8573C"
+  ],
+  "memoryBytes": 16764350464
+}

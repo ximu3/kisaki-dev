@@ -1,0 +1,28 @@
+[
+  {
+    "id": 12747065201,
+    "name": "macos-startup-1",
+    "completeArchive": true,
+    "expectedDigest": "sha256:863a346d8febc58b10a70f3bc91bc24c553e3889d3004fb6eac888726d1849db",
+    "bytes": 9489,
+    "reportEntriesCheckedByZipCrc": 6,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-adoption/2026-10-27/40529204600/macos-startup-1.zip",
+    "sha256": "863a346d8febc58b10a70f3bc91bc24c553e3889d3004fb6eac888726d1849db"
+  },
+  {
+    "id": 12745387600,
+    "name": "macos-startup-2",
+    "completeArchive": true,
+    "expectedDigest": "sha256:976eea450738055ef8671625cf22322dfca40f8cf5e36164fb26f5f65d849a5e",
+    "bytes": 10326,
+    "reportEntriesCheckedByZipCrc": 6,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-adoption/2026-10-27/40529204600/macos-startup-2.zip",
+    "sha256": "976eea450738055ef8671625cf22322dfca40f8cf5e36164fb26f5f65d849a5e"
+  }
+]

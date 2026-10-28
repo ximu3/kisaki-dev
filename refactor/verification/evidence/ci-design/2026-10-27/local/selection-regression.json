@@ -1,0 +1,169 @@
+{
+  "host": "win32",
+  "node": "v24.11.1",
+  "bash": "Git for Windows Bash",
+  "jq": "1.8.2 (verified official SHA-256)",
+  "method": "Execute the actual Select checks step read from each workflow with its original Bash and jq logic.",
+  "results": [
+    {
+      "name": "previous-renderer-overselection",
+      "base": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+      "head": "313351cb1848a8cfe732c27919a2a7ec1fef425a",
+      "workflowSha256": "96efe1c318488e91e7df8070f2c81ae4cdb89bb066351457afd58664501db2e1",
+      "selectorSha256": "f6ed02b5824c9ff252c9e1bf35a23cab09bfabcf09054701700cea52146b1be7",
+      "selected": {
+        "complete": true,
+        "native": true,
+        "browser": true,
+        "e2e": true,
+        "dev": true,
+        "performance": true,
+        "artifacts": true,
+        "consumers": true,
+        "tooling": true,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "renderer",
+      "base": "410f5c79ed52951d3839f16c2c751076726e3480",
+      "head": "0aca1991905009c32b190b0f07297df96c5b9b48",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": false,
+        "native": false,
+        "browser": true,
+        "e2e": true,
+        "dev": false,
+        "performance": true,
+        "artifacts": true,
+        "consumers": false,
+        "tooling": false,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "public-ui",
+      "base": "0aca1991905009c32b190b0f07297df96c5b9b48",
+      "head": "caf64a7456678bec44ad95cb417a0deb0d8080a5",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": false,
+        "native": false,
+        "browser": true,
+        "e2e": true,
+        "dev": false,
+        "performance": true,
+        "artifacts": true,
+        "consumers": true,
+        "tooling": false,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "development",
+      "base": "caf64a7456678bec44ad95cb417a0deb0d8080a5",
+      "head": "10b89aa1657442aa58d3531748b8845b9143facb",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": false,
+        "native": false,
+        "browser": false,
+        "e2e": false,
+        "dev": true,
+        "performance": false,
+        "artifacts": false,
+        "consumers": false,
+        "tooling": false,
+        "desktop": false
+      },
+      "passed": true
+    },
+    {
+      "name": "native",
+      "base": "10b89aa1657442aa58d3531748b8845b9143facb",
+      "head": "a604e96b429a9e722a99a9e745212629d586a24a",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": false,
+        "native": true,
+        "browser": false,
+        "e2e": true,
+        "dev": true,
+        "performance": true,
+        "artifacts": true,
+        "consumers": false,
+        "tooling": false,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "global-workflow",
+      "base": "5e0a8dc03211a6ffe119bede4ccf4d1efc516005",
+      "head": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": true,
+        "native": true,
+        "browser": true,
+        "e2e": true,
+        "dev": true,
+        "performance": true,
+        "artifacts": true,
+        "consumers": true,
+        "tooling": true,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "missing-base",
+      "base": "0000000000000000000000000000000000000000",
+      "head": "410f5c79ed52951d3839f16c2c751076726e3480",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": true,
+        "native": true,
+        "browser": true,
+        "e2e": true,
+        "dev": true,
+        "performance": true,
+        "artifacts": true,
+        "consumers": true,
+        "tooling": true,
+        "desktop": true
+      },
+      "passed": true
+    },
+    {
+      "name": "unchanged",
+      "base": "410f5c79ed52951d3839f16c2c751076726e3480",
+      "head": "410f5c79ed52951d3839f16c2c751076726e3480",
+      "workflowSha256": "d877c13df0a5f77a0963e34da8b84344f035a811b147bd58f9754886753f8bc7",
+      "selectorSha256": "76ab78c02d12bdd5f9b22c714ff91a76c5d6ff0cb4e0d4d5989f9c7f8268b6f3",
+      "selected": {
+        "complete": false,
+        "native": false,
+        "browser": false,
+        "e2e": false,
+        "dev": false,
+        "performance": false,
+        "artifacts": false,
+        "consumers": false,
+        "tooling": false,
+        "desktop": false
+      },
+      "passed": true
+    }
+  ]
+}

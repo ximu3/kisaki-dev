@@ -1,0 +1,24 @@
+{
+  "target": "windows-arm64",
+  "version": "0.1.0-dev.0",
+  "buildId": "0ed9b736e9eab1cb0c2df14fc61d1b8935314ac281f093cc4b64b9ebccad119e",
+  "testOnly": true,
+  "files": [
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-arm64.exe",
+      "sha256": "1378c354889f2715b3a50f4b69fa27707acdde423666dcd79f07b0830b538da9"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-arm64.exe.blockmap",
+      "sha256": "6eb10e822a97003a4e9e7190311423823057daa936e7c4f75fcd049b08f378bd"
+    },
+    {
+      "path": "Kisaki-0.1.0-dev.0-windows-arm64.zip",
+      "sha256": "c12e93353a5dad78c5af3e562b6ae98ae9654382c82b02d2871d23fd34c78850"
+    },
+    {
+      "path": "latest.yml",
+      "sha256": "ce269f50d98bb6bf55acd804c6301800e3695f9fe08d3a7aeda68c30c8c6fa4b"
+    }
+  ]
+}

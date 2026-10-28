@@ -1,0 +1,48 @@
+{
+  "head": "511110c3515db3b9e7b326c681b9e52602a10c70",
+  "turboVersion": "2.11.10",
+  "host": "Windows x64",
+  "matchedTaskInputsEnvironmentAndDefinition": true,
+  "sameHostLocalPlans": [
+    {
+      "task": "@kisaki3/desktop-contracts#build",
+      "preparation": {
+        "hash": "21c51f2dd4532e59",
+        "cliArguments": []
+      },
+      "targetedProbe": {
+        "hash": "c8c63ee8a73594ef",
+        "cliArguments": [
+          "tests/tools/dev/session.test.ts",
+          "--testNamePattern=^a refused quit retains utility processes and normal window close preserves the profile$",
+          "--outputFile=test-results/startup-probe/results.json"
+        ]
+      },
+      "formalEntry": {
+        "hash": "21c51f2dd4532e59",
+        "cliArguments": []
+      }
+    },
+    {
+      "task": "@kisaki3/extension-cli#build",
+      "preparation": {
+        "hash": "916f7bd9f07c14b6",
+        "cliArguments": []
+      },
+      "targetedProbe": {
+        "hash": "993502c5afc61520",
+        "cliArguments": [
+          "tests/tools/dev/session.test.ts",
+          "--testNamePattern=^a refused quit retains utility processes and normal window close preserves the profile$",
+          "--outputFile=test-results/startup-probe/results.json"
+        ]
+      },
+      "formalEntry": {
+        "hash": "916f7bd9f07c14b6",
+        "cliArguments": []
+      }
+    }
+  ],
+  "source": "https://turborepo.dev/docs/crafting-your-repository/caching#global-hash-inputs",
+  "conclusion": "The targeted probe arguments changed dependency task hashes. The no-argument formal test entry matches preparation."
+}

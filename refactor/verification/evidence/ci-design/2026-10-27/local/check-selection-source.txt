@@ -1,0 +1,43 @@
+import { execFile } from 'node:child_process'
+import { createHash } from 'node:crypto'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { promisify } from 'node:util'
+import assert from 'node:assert/strict'
+import { parse } from 'yaml'
+
+const execute = promisify(execFile)
+const current = await readFile('.github/workflows/verification.yml', 'utf8')
+const previous = (await execute('git', ['show', '27cc3e0c2972491a336dbbfdcba327b1b380c341:.github/workflows/verification.yml'])).stdout
+const all = { complete: true, native: true, browser: true, e2e: true, dev: true, performance: true, artifacts: true, consumers: true, tooling: true, desktop: true }
+const renderer = { complete: false, native: false, browser: true, e2e: true, dev: false, performance: true, artifacts: true, consumers: false, tooling: false, desktop: true }
+const cases = [
+  { name: 'previous-renderer-overselection', source: previous, base: '27cc3e0c2972491a336dbbfdcba327b1b380c341', head: '313351cb1848a8cfe732c27919a2a7ec1fef425a', expected: all },
+  { name: 'renderer', source: current, base: '410f5c79ed52951d3839f16c2c751076726e3480', head: '0aca1991905009c32b190b0f07297df96c5b9b48', expected: renderer },
+  { name: 'public-ui', source: current, base: '0aca1991905009c32b190b0f07297df96c5b9b48', head: 'caf64a7456678bec44ad95cb417a0deb0d8080a5', expected: { ...renderer, consumers: true } },
+  { name: 'development', source: current, base: 'caf64a7456678bec44ad95cb417a0deb0d8080a5', head: '10b89aa1657442aa58d3531748b8845b9143facb', expected: { complete: false, native: false, browser: false, e2e: false, dev: true, performance: false, artifacts: false, consumers: false, tooling: false, desktop: false } },
+  { name: 'native', source: current, base: '10b89aa1657442aa58d3531748b8845b9143facb', head: 'a604e96b429a9e722a99a9e745212629d586a24a', expected: { complete: false, native: true, browser: false, e2e: true, dev: true, performance: true, artifacts: true, consumers: false, tooling: false, desktop: true } },
+  { name: 'global-workflow', source: current, base: '5e0a8dc03211a6ffe119bede4ccf4d1efc516005', head: '27cc3e0c2972491a336dbbfdcba327b1b380c341', expected: all },
+  { name: 'missing-base', source: current, base: '0000000000000000000000000000000000000000', head: '410f5c79ed52951d3839f16c2c751076726e3480', expected: all },
+  { name: 'unchanged', source: current, base: '410f5c79ed52951d3839f16c2c751076726e3480', head: '410f5c79ed52951d3839f16c2c751076726e3480', expected: Object.fromEntries(Object.keys(all).map((key) => [key, false])) },
+]
+const results = []
+await mkdir('.local/ci-design/selection-working', { recursive: true })
+for (const item of cases) {
+  const workflow = parse(item.source)
+  const script = workflow.jobs.select.steps.find((step: { id?: string }) => step.id === 'affected').run
+  const output = `.local/ci-design/${item.name}-selection.txt`
+  const file = `.local/ci-design/${item.name}-selection.sh`
+  await writeFile(output, '')
+  await writeFile(file, `export PATH="$PWD/.local/ci-design/bin:$PATH"\n${script}`)
+  await execute('D:/Git/bin/bash.exe', ['--noprofile', '--norc', '-e', '-o', 'pipefail', file], {
+    cwd: process.cwd(),
+    windowsHide: true,
+    maxBuffer: 16 * 1024 * 1024,
+    env: { ...process.env, REQUEST_COMPLETE: 'false', TURBO_SCM_BASE: item.base, TURBO_SCM_HEAD: item.head, RUNNER_TEMP: '.local/ci-design/selection-working', GITHUB_OUTPUT: output },
+  })
+  const selected = Object.fromEntries((await readFile(output, 'utf8')).trim().split(/\r?\n/).map((line) => { const [key, value] = line.split('='); assert(value === 'true' || value === 'false'); return [key, value === 'true'] }))
+  assert.deepEqual(selected, item.expected, item.name)
+  results.push({ name: item.name, base: item.base, head: item.head, workflowSha256: createHash('sha256').update(item.source).digest('hex'), selectorSha256: createHash('sha256').update(script).digest('hex'), selected, passed: true })
+  console.log(`${item.name}: passed`)
+}
+await writeFile('.local/ci-design/selection-regression.json', JSON.stringify({ host: process.platform, node: process.version, bash: 'Git for Windows Bash', jq: '1.8.2 (verified official SHA-256)', method: 'Execute the actual Select checks step read from each workflow with its original Bash and jq logic.', results }, null, 2) + '\n')

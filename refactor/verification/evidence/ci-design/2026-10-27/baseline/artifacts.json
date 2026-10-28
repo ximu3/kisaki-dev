@@ -1,0 +1,145 @@
+{
+  "total_count": 7,
+  "artifacts": [
+    {
+      "id": 12730116381,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMDExNjM4MQ==",
+      "name": "desktop-windows-arm64",
+      "size_in_bytes": 271277808,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12730116381",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12730116381/zip",
+      "expired": false,
+      "digest": "sha256:a7f29ee51dd750a3cad403927fd07f533a78a6745fb2103eb6c731ccbc82eb71",
+      "created_at": "2026-10-27T11:10:05Z",
+      "updated_at": "2026-10-27T11:10:05Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12730070351,
+      "node_id": "MDg6QXJ0aWZhY3QxMjczMDA3MDM1MQ==",
+      "name": "desktop-windows-x64",
+      "size_in_bytes": 280443498,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12730070351",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12730070351/zip",
+      "expired": false,
+      "digest": "sha256:3e57394542f14ff5775dc6e688302c4b273a8a41f5c1d7ede0b853362de1a371",
+      "created_at": "2026-10-27T11:04:30Z",
+      "updated_at": "2026-10-27T11:04:30Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12728844229,
+      "node_id": "MDg6QXJ0aWZhY3QxMjcyODg0NDIyOQ==",
+      "name": "desktop-macos-arm64",
+      "size_in_bytes": 256236983,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728844229",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728844229/zip",
+      "expired": false,
+      "digest": "sha256:7de6f395ae5e0fe47ebd0abd95be10aa763b2ef5a067113ac85ca08abf670715",
+      "created_at": "2026-10-27T10:58:04Z",
+      "updated_at": "2026-10-27T10:58:04Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12728779833,
+      "node_id": "MDg6QXJ0aWZhY3QxMjcyODc3OTgzMw==",
+      "name": "desktop-linux-arm64",
+      "size_in_bytes": 328600928,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728779833",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728779833/zip",
+      "expired": false,
+      "digest": "sha256:3f78c7f918cffbe5500cbc5caf5acc935f9ec25bdfa8d2e19c15191521c3bfda",
+      "created_at": "2026-10-27T11:00:30Z",
+      "updated_at": "2026-10-27T11:00:30Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12728139463,
+      "node_id": "MDg6QXJ0aWZhY3QxMjcyODEzOTQ2Mw==",
+      "name": "desktop-linux-x64",
+      "size_in_bytes": 337735181,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728139463",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728139463/zip",
+      "expired": false,
+      "digest": "sha256:d5b0c82689206972f4177d481978d977c742cd999d078fd3dd622b0a745925f3",
+      "created_at": "2026-10-27T10:57:55Z",
+      "updated_at": "2026-10-27T10:57:55Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12728048578,
+      "node_id": "MDg6QXJ0aWZhY3QxMjcyODA0ODU3OA==",
+      "name": "repository-verification",
+      "size_in_bytes": 30627,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728048578",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12728048578/zip",
+      "expired": false,
+      "digest": "sha256:9c26550c8704a5da767a7ed4434651502080df01711996a40469aa013effeb0b",
+      "created_at": "2026-10-27T10:52:21Z",
+      "updated_at": "2026-10-27T10:52:21Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    },
+    {
+      "id": 12727709502,
+      "node_id": "MDg6QXJ0aWZhY3QxMjcyNzcwOTUwMg==",
+      "name": "desktop-macos-x64",
+      "size_in_bytes": 264936397,
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12727709502",
+      "archive_download_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/artifacts/12727709502/zip",
+      "expired": false,
+      "digest": "sha256:0602663ed5d95a3d2f4bade809c9708087bb2051e23a380fef8785cdc8c0a6e8",
+      "created_at": "2026-10-27T11:00:08Z",
+      "updated_at": "2026-10-27T11:00:08Z",
+      "expires_at": "2027-01-25T10:50:50Z",
+      "workflow_run": {
+        "id": 40491626331,
+        "repository_id": 1432214248,
+        "head_repository_id": 1432214248,
+        "head_branch": "research/ci-reliability-and-feedback",
+        "head_sha": "ffa1c9de6887b6324348ef85e3cf2db08f6809cf"
+      }
+    }
+  ]
+}

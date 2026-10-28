@@ -1,0 +1,13 @@
+{
+  "id": 12732917013,
+  "name": "development-windows-x64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:dff9260fe5d9a72653b6f99c47230d8eb57f8863431a4e73c1e36e41ee8dbe38",
+  "bytes": 1394,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-design/2026-10-27/40499251641/development-windows-x64.zip",
+  "sha256": "dff9260fe5d9a72653b6f99c47230d8eb57f8863431a4e73c1e36e41ee8dbe38"
+}

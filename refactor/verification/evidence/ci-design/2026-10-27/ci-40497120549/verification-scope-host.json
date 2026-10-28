@@ -1,0 +1,13 @@
+{
+  "node": "v24.11.1",
+  "platform": "linux",
+  "architecture": "x64",
+  "parallelism": 4,
+  "cpus": [
+    "AMD EPYC 7763 64-Core Processor",
+    "AMD EPYC 7763 64-Core Processor",
+    "AMD EPYC 7763 64-Core Processor",
+    "AMD EPYC 7763 64-Core Processor"
+  ],
+  "memoryBytes": 16765386752
+}

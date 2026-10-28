@@ -1,0 +1,416 @@
+[
+  {
+    "id": 12732917013,
+    "name": "development-windows-x64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:dff9260fe5d9a72653b6f99c47230d8eb57f8863431a4e73c1e36e41ee8dbe38",
+    "bytes": 1394,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-windows-x64.zip",
+    "sha256": "dff9260fe5d9a72653b6f99c47230d8eb57f8863431a4e73c1e36e41ee8dbe38"
+  },
+  {
+    "id": 12732565244,
+    "name": "repository-verification",
+    "completeArchive": true,
+    "expectedDigest": "sha256:645e2cbb4302a04db10bbd19268a596adf558467058a3b08f689f64c6c799b4d",
+    "bytes": 30184,
+    "reportEntriesCheckedByZipCrc": 4,
+    "verifiedFiles": [
+      {
+        "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+        "sha256": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+      },
+      {
+        "path": "artifacts/packages/desktop-contracts-3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996.tgz",
+        "sha256": "3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996"
+      },
+      {
+        "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+        "sha256": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+      },
+      {
+        "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+        "sha256": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+      },
+      {
+        "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+        "sha256": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+      },
+      {
+        "path": "artifacts/packages/extension-sdk-8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38.tgz",
+        "sha256": "8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38"
+      },
+      {
+        "path": "artifacts/packages/rpc-59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31.tgz",
+        "sha256": "59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31"
+      },
+      {
+        "path": "artifacts/packages/ui-3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15.tgz",
+        "sha256": "3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15"
+      }
+    ],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+        "bytes": 4157,
+        "zipCrc32": "4a41a0a6",
+        "sha256FromReceipt": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+      },
+      {
+        "path": "artifacts/packages/desktop-contracts-3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996.tgz",
+        "bytes": 4769,
+        "zipCrc32": "d76ab212",
+        "sha256FromReceipt": "3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996"
+      },
+      {
+        "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+        "bytes": 1997,
+        "zipCrc32": "0ffb058f",
+        "sha256FromReceipt": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+      },
+      {
+        "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+        "bytes": 5124,
+        "zipCrc32": "238cb65f",
+        "sha256FromReceipt": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+      },
+      {
+        "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+        "bytes": 2086,
+        "zipCrc32": "c6d61c7e",
+        "sha256FromReceipt": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+      },
+      {
+        "path": "artifacts/packages/extension-sdk-8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38.tgz",
+        "bytes": 2023,
+        "zipCrc32": "67425f82",
+        "sha256FromReceipt": "8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38"
+      },
+      {
+        "path": "artifacts/packages/rpc-59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31.tgz",
+        "bytes": 2329,
+        "zipCrc32": "65b06a37",
+        "sha256FromReceipt": "59302c0f8967aae43bafff1e7eac1fb70700a597a8edf2e028465b66d41a0d31"
+      },
+      {
+        "path": "artifacts/packages/ui-3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15.tgz",
+        "bytes": 2869,
+        "zipCrc32": "06061f7f",
+        "sha256FromReceipt": "3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15"
+      }
+    ],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/repository-verification.zip",
+    "sha256": "645e2cbb4302a04db10bbd19268a596adf558467058a3b08f689f64c6c799b4d"
+  },
+  {
+    "id": 12732446133,
+    "name": "desktop-linux-x64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:42b68da111649d202f587503dcc6c1ea0fdffcfc365b1272934b43cd5f55c411",
+    "bytes": 337504050,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.AppImage",
+        "bytes": 132741573,
+        "zipCrc32": "961ca885",
+        "sha256FromReceipt": "20f7ebfea906b21b16930d0bc815688961e30c145e44840c71219a427ea9f165"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.deb",
+        "bytes": 108288568,
+        "zipCrc32": "9678b808",
+        "sha256FromReceipt": "01fe6a6f3c471ec95672509e1471715ee7697b23e21e602814ac4875481117f9"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-x64/Kisaki-0.1.0-dev.0-linux-x64.rpm",
+        "bytes": 96915381,
+        "zipCrc32": "b31f844e",
+        "sha256FromReceipt": "42f48c7aa43029390887ae37573bbe4f33cd0ebdb6d474dd037b890fa3fae175"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-x64/latest-linux.yml",
+        "bytes": 402,
+        "zipCrc32": "d4d21748",
+        "sha256FromReceipt": "7dd86207157474f097e0b169be08dc5042ebbd0eb00092795da29f239afa30fc"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  },
+  {
+    "id": 12732347476,
+    "name": "desktop-macos-arm64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:a8727e47a1ddb3906c29bb37f81dd3879ebfc991b5210c6e6e3af1e74bd5f060",
+    "bytes": 256003666,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.dmg",
+        "bytes": 128441582,
+        "zipCrc32": "7d804179",
+        "sha256FromReceipt": "8497f700b861536aaac60ffe10b0009a88e9bcb6ffe7b9c26743776839605194"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.dmg.blockmap",
+        "bytes": 135593,
+        "zipCrc32": "dfdd9d26",
+        "sha256FromReceipt": "3d2a5d9d2365a992fd7e838e7f7789ec87c5f4f3af73909feced4f1244cfb918"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.zip",
+        "bytes": 127820388,
+        "zipCrc32": "ea5ec4af",
+        "sha256FromReceipt": "5d5d23bef7f741d10f2ffab7b310bc3d2e35c1069c5cd8a52ae105964e68e0e3"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.zip.blockmap",
+        "bytes": 134231,
+        "zipCrc32": "42d7a81c",
+        "sha256FromReceipt": "62e5287109575dd113534cd401185d7ef07645245ba60d099717b5342e031d0c"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-arm64/latest-mac.yml",
+        "bytes": 536,
+        "zipCrc32": "ea905bab",
+        "sha256FromReceipt": "29abcbf3f779592c193b4fa36e84fb69294fbafc5646bbbf0c9c05edb5a0369b"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  },
+  {
+    "id": 12732274155,
+    "name": "development-windows-arm64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:f8e1edab3c6decaa6356bb25a0061e69d1c110cf203f44a360303ab1c35aba20",
+    "bytes": 1376,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-windows-arm64.zip",
+    "sha256": "f8e1edab3c6decaa6356bb25a0061e69d1c110cf203f44a360303ab1c35aba20"
+  },
+  {
+    "id": 12732243515,
+    "name": "desktop-windows-arm64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:b74c6bbc6a73c36680b1c2b74a95b60e896af3b5553e782119d66d366dfa9586",
+    "bytes": 271044280,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/windows-arm64/Kisaki-0.1.0-dev.0-windows-arm64.exe",
+        "bytes": 113080696,
+        "zipCrc32": "2d2ac422",
+        "sha256FromReceipt": "c3e1cc41de8b40082d7262bb3f7ac2638560ef9bc3b676618981ebd799466fa4"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-arm64/Kisaki-0.1.0-dev.0-windows-arm64.exe.blockmap",
+        "bytes": 119735,
+        "zipCrc32": "24e54613",
+        "sha256FromReceipt": "8f9a6f4b3e7e3ecc6c52fff6a158b3086077737df551c851f5f4ac67cbb5c572"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-arm64/Kisaki-0.1.0-dev.0-windows-arm64.zip",
+        "bytes": 158349135,
+        "zipCrc32": "e10e8b0e",
+        "sha256FromReceipt": "079795e8869e313f83f72a1875fa09ca674efeba4e0a925bee1427092807a42a"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-arm64/latest.yml",
+        "bytes": 375,
+        "zipCrc32": "724bbf18",
+        "sha256FromReceipt": "51e594dc5eb5468ccd75a52dac9ef81146d60157bd030d7d5d6c34586014ecbe"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  },
+  {
+    "id": 12732232900,
+    "name": "development-linux-x64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:eacbcb27c58a204bec17b4624f5dec8af40c1dfe5e76d32da7d76335c3e0012b",
+    "bytes": 1414,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-linux-x64.zip",
+    "sha256": "eacbcb27c58a204bec17b4624f5dec8af40c1dfe5e76d32da7d76335c3e0012b"
+  },
+  {
+    "id": 12732148687,
+    "name": "development-macos-x64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:39166dba9bb1e31514643ea810d230d9f6145ebb690962d7ba2b2b402c108393",
+    "bytes": 1421,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-macos-x64.zip",
+    "sha256": "39166dba9bb1e31514643ea810d230d9f6145ebb690962d7ba2b2b402c108393"
+  },
+  {
+    "id": 12732068191,
+    "name": "development-linux-arm64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:cff8cc7d7debb0097b756cbd8dcb3f570c5ec30cb2d82e8f7c02999cdf08842f",
+    "bytes": 1383,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-linux-arm64.zip",
+    "sha256": "cff8cc7d7debb0097b756cbd8dcb3f570c5ec30cb2d82e8f7c02999cdf08842f"
+  },
+  {
+    "id": 12731878613,
+    "name": "desktop-macos-x64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:d758970366300098cfd008f2e0d52467e0dd0f4ab7b37ef754a7aa7b2a5ee6e1",
+    "bytes": 264702934,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/macos-x64/Kisaki-0.1.0-dev.0-macos-x64.dmg",
+        "bytes": 132760671,
+        "zipCrc32": "b5bab16c",
+        "sha256FromReceipt": "8aca2fbc53f39dd2220f10dcb0737cdfc2331e08a0cdaf47b36a29a0c87b5b97"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-x64/Kisaki-0.1.0-dev.0-macos-x64.dmg.blockmap",
+        "bytes": 138915,
+        "zipCrc32": "16ab2b6e",
+        "sha256FromReceipt": "762287da1f92fa87f6058dc91ebe024506693a31b6a1991bbaf51474f8514650"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-x64/Kisaki-0.1.0-dev.0-macos-x64.zip",
+        "bytes": 132179166,
+        "zipCrc32": "63cb619a",
+        "sha256FromReceipt": "6a00ab5c310f4f1745c01fb30e83d97ca503eeab4224d9497dc513552ce3574e"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-x64/Kisaki-0.1.0-dev.0-macos-x64.zip.blockmap",
+        "bytes": 138852,
+        "zipCrc32": "e31ef9ae",
+        "sha256FromReceipt": "046741bb6a40bf8f37065e0b09a84eb369ba53cecc4c8043da40add015b9bb27"
+      },
+      {
+        "path": "clients/desktop/app/dist/macos-x64/latest-mac.yml",
+        "bytes": 530,
+        "zipCrc32": "efc7d54f",
+        "sha256FromReceipt": "a7b80bf56841987c8336374d062c43082db9edb9251f58a9bc64d3c65b18dea6"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  },
+  {
+    "id": 12731798538,
+    "name": "development-macos-arm64",
+    "completeArchive": true,
+    "expectedDigest": "sha256:1fa59f8a9ae1c18df29bdd74c6043cb7f66a0dbc2fcbbd8d37a48c873e82aac3",
+    "bytes": 1406,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/development-macos-arm64.zip",
+    "sha256": "1fa59f8a9ae1c18df29bdd74c6043cb7f66a0dbc2fcbbd8d37a48c873e82aac3"
+  },
+  {
+    "id": 12731704291,
+    "name": "desktop-windows-x64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:8c28ae55bd72e2aeb48867dfb2d17b7694432f4e2b36ea2b1a01ed08e3c0018a",
+    "bytes": 280209442,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.exe",
+        "bytes": 119837300,
+        "zipCrc32": "8efc1f6b",
+        "sha256FromReceipt": "d6373ec7355f7837ce4b362666674b6f5cdcc5ad1c8b1cc175a7438eabe3f24d"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.exe.blockmap",
+        "bytes": 126426,
+        "zipCrc32": "658f5548",
+        "sha256FromReceipt": "982c8c4ae5cc6be0f9540352b68c383a51583a308b6f6ce8a0b23dd29b8f6425"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-x64/Kisaki-0.1.0-dev.0-windows-x64.zip",
+        "bytes": 160752577,
+        "zipCrc32": "adc785cf",
+        "sha256FromReceipt": "815c8f3ae0c8c92a4e5da089cf2b2f233fb1fc31fa656df963401601899c6604"
+      },
+      {
+        "path": "clients/desktop/app/dist/windows-x64/latest.yml",
+        "bytes": 371,
+        "zipCrc32": "52ef1b1d",
+        "sha256FromReceipt": "23c8c6eeeb8caec8ad8a4ea9d9519fa37856e408ea01d1153bcf0f0b6fe015a6"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  },
+  {
+    "id": 12731184354,
+    "name": "verification-scope",
+    "completeArchive": true,
+    "expectedDigest": "sha256:3d699febb00d8cbfa516caba12919150fbb9cb6fdd32fcd520ee32c454067a7f",
+    "bytes": 3204,
+    "reportEntriesCheckedByZipCrc": 2,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [],
+    "receiptFilesNotInArchive": [],
+    "path": "artifacts/ci-design/2026-10-27/40499251641/verification-scope.zip",
+    "sha256": "3d699febb00d8cbfa516caba12919150fbb9cb6fdd32fcd520ee32c454067a7f"
+  },
+  {
+    "id": 12731159986,
+    "name": "desktop-linux-arm64",
+    "completeArchive": false,
+    "expectedDigest": "sha256:7d411106df10ec11c2e1dcfff6b0c34dd88ba4f2fb78a70eb8712ea152776a78",
+    "bytes": 328426774,
+    "reportEntriesCheckedByZipCrc": 10,
+    "verifiedFiles": [],
+    "receiptFilesListedInArchive": [
+      {
+        "path": "clients/desktop/app/dist/linux-arm64/Kisaki-0.1.0-dev.0-linux-arm64.AppImage",
+        "bytes": 133974361,
+        "zipCrc32": "6dc1d7a8",
+        "sha256FromReceipt": "1df39be9eeb2d4c04f2999a5f152a9a4a40d1abd8f9478d1f7c58870d292cb09"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-arm64/Kisaki-0.1.0-dev.0-linux-arm64.deb",
+        "bytes": 103027952,
+        "zipCrc32": "484667df",
+        "sha256FromReceipt": "bb24282ba3762c278faf870d240948874f20e9e8962ae7744fc707d818cd0550"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-arm64/Kisaki-0.1.0-dev.0-linux-arm64.rpm",
+        "bytes": 91887853,
+        "zipCrc32": "40ee92b6",
+        "sha256FromReceipt": "57d0ea4fc889ca063afa843f07787f8d2983670a0f6b439ee52093c843b5f39c"
+      },
+      {
+        "path": "clients/desktop/app/dist/linux-arm64/latest-linux-arm64.yml",
+        "bytes": 406,
+        "zipCrc32": "3ec96cf7",
+        "sha256FromReceipt": "714e0e817391150b62a2910b0d6e4f51c21611b05d49c4937500e235d1ed7337"
+      }
+    ],
+    "receiptFilesNotInArchive": []
+  }
+]

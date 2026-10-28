@@ -1,0 +1,13 @@
+{
+  "id": 12743199483,
+  "name": "development-macos-arm64",
+  "completeArchive": true,
+  "expectedDigest": "sha256:92f30f3939d4db535b92c39b39a6b8d4b0673edcc16b112673bb7daa6fc39788",
+  "bytes": 1394,
+  "reportEntriesCheckedByZipCrc": 2,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [],
+  "receiptFilesNotInArchive": [],
+  "path": "artifacts/ci-adoption/2026-10-27/40525500828/development-macos-arm64.zip",
+  "sha256": "92f30f3939d4db535b92c39b39a6b8d4b0673edcc16b112673bb7daa6fc39788"
+}

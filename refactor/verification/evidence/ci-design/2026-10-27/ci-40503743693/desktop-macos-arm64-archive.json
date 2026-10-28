@@ -1,0 +1,42 @@
+{
+  "id": 12734635381,
+  "name": "desktop-macos-arm64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:5111d13e2662ded189c8a136fea1fe8a2667919bad59d730ba8cc0fc5e98a995",
+  "bytes": 256002674,
+  "reportEntriesCheckedByZipCrc": 9,
+  "verifiedFiles": [],
+  "receiptFilesListedInArchive": [
+    {
+      "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.dmg",
+      "bytes": 128441434,
+      "zipCrc32": "a18b5c5f",
+      "sha256FromReceipt": "5782cd696536662044342d5693ce1efc4d7496704e06b6ff60c22684e0a89108"
+    },
+    {
+      "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.dmg.blockmap",
+      "bytes": 135520,
+      "zipCrc32": "2fbd8562",
+      "sha256FromReceipt": "e4ecb551d573a19f5a37cb5397bdabdc564d635763c71cb764c23cf7ad5ac4f3"
+    },
+    {
+      "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.zip",
+      "bytes": 127820389,
+      "zipCrc32": "a21b86b8",
+      "sha256FromReceipt": "0732b43e9a658d3781f0cab8684c678d29bae16cc77ee2ee2b4f46182dfe616f"
+    },
+    {
+      "path": "clients/desktop/app/dist/macos-arm64/Kisaki-0.1.0-dev.0-macos-arm64.zip.blockmap",
+      "bytes": 134215,
+      "zipCrc32": "725f6151",
+      "sha256FromReceipt": "47b8953728d59cdb697ac472c9e89ed80e4a235f5e99262362391353297d1a61"
+    },
+    {
+      "path": "clients/desktop/app/dist/macos-arm64/latest-mac.yml",
+      "bytes": 536,
+      "zipCrc32": "52ba5136",
+      "sha256FromReceipt": "5cfd5dabee02ef0b3e8ff2aafad2b9dc910a025cac92dd692b7f4608129c56c1"
+    }
+  ],
+  "receiptFilesNotInArchive": []
+}

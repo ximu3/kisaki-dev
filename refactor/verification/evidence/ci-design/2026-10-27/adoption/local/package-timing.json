@@ -1,0 +1,5 @@
+{
+  "exitCode": 0,
+  "command": "pnpm desktop:package --test-only",
+  "elapsedSeconds": 104.8264155
+}

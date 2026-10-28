@@ -1,0 +1,26 @@
+{
+  "target": "windows-x64",
+  "buildId": "6d75e52f2e9ae383b17ed444427adbde7039a7ed21fcae92c19d3cf0be38eb18",
+  "cases": [
+    {
+      "name": "missing manifest",
+      "failure": "ENOENT: no such file or directory, open 'C:\\Users\\ximu\\.codex\\worktrees\\appimage-policy-probe\\kisaki\\clients\\desktop\\app\\out\\windows-x64\\build.json'",
+      "existingReceiptUnchanged": true
+    },
+    {
+      "name": "stale input identity",
+      "failure": "Desktop packaging requires a build matching the current target and inputs",
+      "existingReceiptUnchanged": true
+    },
+    {
+      "name": "changed runtime bytes",
+      "failure": "Desktop build changed before packaging: main/entry.js",
+      "existingReceiptUnchanged": true
+    },
+    {
+      "name": "unexpected runtime file",
+      "failure": "Desktop runtime file set changed before packaging",
+      "existingReceiptUnchanged": true
+    }
+  ]
+}

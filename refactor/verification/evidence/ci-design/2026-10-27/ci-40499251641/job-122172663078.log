@@ -1,0 +1,956 @@
+﻿2026-10-27T11:51:49.9991357Z Current runner version: '2.338.0'
+2026-10-27T11:51:50.0022438Z ##[group]Runner Image Provisioner
+2026-10-27T11:51:50.0023521Z Hosted Compute Agent
+2026-10-27T11:51:50.0024427Z Version: 20261021.618
+2026-10-27T11:51:50.0025161Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T11:51:50.0026262Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T11:51:50.0027036Z Worker ID: {5a008826-2561-478d-9221-1fa54ab5fc12}
+2026-10-27T11:51:50.0027760Z Region: northcentralus
+2026-10-27T11:51:50.0028454Z Cloud: Azure
+2026-10-27T11:51:50.0029016Z ##[endgroup]
+2026-10-27T11:51:50.0031634Z ##[group]Operating System
+2026-10-27T11:51:50.0032546Z Ubuntu
+2026-10-27T11:51:50.0033102Z 22.04.5
+2026-10-27T11:51:50.0033677Z LTS
+2026-10-27T11:51:50.0034258Z ##[endgroup]
+2026-10-27T11:51:50.0034820Z ##[group]Runner Image
+2026-10-27T11:51:50.0035490Z Image: ubuntu-22.04-arm
+2026-10-27T11:51:50.0036396Z Version: 20261025.172.1
+2026-10-27T11:51:50.0037884Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22-arm64/20261025.172/images/ubuntu/Ubuntu2204-Arm64-Readme.md
+2026-10-27T11:51:50.0039501Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22-arm64%2F20261025.172
+2026-10-27T11:51:50.0040594Z ##[endgroup]
+2026-10-27T11:51:50.0041714Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T11:51:50.0045375Z Contents: read
+2026-10-27T11:51:50.0046410Z Metadata: read
+2026-10-27T11:51:50.0047124Z ##[endgroup]
+2026-10-27T11:51:50.0050108Z Secret source: Actions
+2026-10-27T11:51:50.0051286Z Cache mode: write
+2026-10-27T11:51:50.0052360Z Prepare workflow directory
+2026-10-27T11:51:50.0605302Z Prepare all required actions
+2026-10-27T11:51:50.0655207Z Getting action download info
+2026-10-27T11:51:50.3240621Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-27T11:51:50.4714613Z Download action repository 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-10-27T11:51:50.7341334Z Download action repository 'pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320' (SHA:fc06bc1257f339d1d5d8b3a19a8cae5388b55320)
+2026-10-27T11:51:51.0458620Z Download action repository 'actions/cache@caa296126883cff596d87d8935842f9db880ef25' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-27T11:51:51.2202022Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T11:51:51.4158907Z Uses: ximu3/kisaki-dev/.github/workflows/verification.yml@refs/heads/research/ci-final-design-measurements (27cc3e0c2972491a336dbbfdcba327b1b380c341)
+2026-10-27T11:51:51.4165061Z ##[group] Inputs
+2026-10-27T11:51:51.4166662Z   complete: false
+2026-10-27T11:51:51.4167523Z ##[endgroup]
+2026-10-27T11:51:51.4168285Z Complete job name: verify / Desktop (linux-arm64)
+2026-10-27T11:51:51.5173573Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-27T11:51:51.5175415Z with:
+2026-10-27T11:51:51.5176414Z   persist-credentials: false
+2026-10-27T11:51:51.5177175Z   repository: ximu3/kisaki-dev
+2026-10-27T11:51:51.5183818Z   token: ***
+2026-10-27T11:51:51.5184506Z   ssh-strict: true
+2026-10-27T11:51:51.5185212Z   ssh-user: git
+2026-10-27T11:51:51.5185831Z   clean: true
+2026-10-27T11:51:51.5186679Z   sparse-checkout-cone-mode: true
+2026-10-27T11:51:51.5187618Z   fetch-depth: 1
+2026-10-27T11:51:51.5188251Z   fetch-tags: false
+2026-10-27T11:51:51.5188904Z   show-progress: true
+2026-10-27T11:51:51.5189673Z   lfs: false
+2026-10-27T11:51:51.5190284Z   submodules: false
+2026-10-27T11:51:51.5191398Z   set-safe-directory: true
+2026-10-27T11:51:51.5192245Z   allow-unsafe-pr-checkout: false
+2026-10-27T11:51:51.5193460Z env:
+2026-10-27T11:51:51.5194300Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:51:51.5195096Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:51:51.5196196Z ##[endgroup]
+2026-10-27T11:51:51.6083470Z Syncing repository: ximu3/kisaki-dev
+2026-10-27T11:51:51.6086649Z ##[group]Getting Git version info
+2026-10-27T11:51:51.6088473Z Working directory is '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T11:51:51.6090104Z [command]/usr/bin/git version
+2026-10-27T11:51:51.6108462Z git version 2.56.0
+2026-10-27T11:51:51.6128617Z ##[endgroup]
+2026-10-27T11:51:51.6140946Z Temporarily overriding HOME='/home/runner/work/_temp/27cfda8b-8910-441f-8219-169f509d5222' before making global git config changes
+2026-10-27T11:51:51.6147552Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T11:51:51.6149345Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T11:51:51.6186386Z Deleting the contents of '/home/runner/work/kisaki-dev/kisaki-dev'
+2026-10-27T11:51:51.6191836Z ##[group]Initializing the repository
+2026-10-27T11:51:51.6196047Z [command]/usr/bin/git init /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T11:51:51.6277245Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T11:51:51.6279754Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T11:51:51.6288168Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T11:51:51.6289576Z hint: call:
+2026-10-27T11:51:51.6290263Z hint:
+2026-10-27T11:51:51.6291057Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T11:51:51.6292049Z hint:
+2026-10-27T11:51:51.6292959Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T11:51:51.6294412Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T11:51:51.6295482Z hint:
+2026-10-27T11:51:51.6296314Z hint: 	git branch -m <name>
+2026-10-27T11:51:51.6297143Z hint:
+2026-10-27T11:51:51.6298057Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T11:51:51.6299575Z Initialized empty Git repository in /home/runner/work/kisaki-dev/kisaki-dev/.git/
+2026-10-27T11:51:51.6302225Z [command]/usr/bin/git remote add origin https://github.com/ximu3/kisaki-dev
+2026-10-27T11:51:51.6325629Z ##[endgroup]
+2026-10-27T11:51:51.6327474Z ##[group]Disabling automatic garbage collection
+2026-10-27T11:51:51.6329448Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T11:51:51.6366477Z ##[endgroup]
+2026-10-27T11:51:51.6368161Z ##[group]Setting up auth
+2026-10-27T11:51:51.6372210Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T11:51:51.6412554Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T11:51:51.6730363Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T11:51:51.6764300Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T11:51:51.6973375Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T11:51:51.7008795Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T11:51:51.7221058Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T11:51:51.7262395Z ##[endgroup]
+2026-10-27T11:51:51.7263620Z ##[group]Fetching the repository
+2026-10-27T11:51:51.7272546Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +27cc3e0c2972491a336dbbfdcba327b1b380c341:refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T11:51:52.7490508Z From https://github.com/ximu3/kisaki-dev
+2026-10-27T11:51:52.7492351Z  * [new ref]         27cc3e0c2972491a336dbbfdcba327b1b380c341 -> origin/research/ci-final-design-measurements
+2026-10-27T11:51:52.7494718Z ##[endgroup]
+2026-10-27T11:51:52.7496335Z ##[group]Determining the checkout info
+2026-10-27T11:51:52.7497420Z ##[endgroup]
+2026-10-27T11:51:52.7503002Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T11:51:52.7547870Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T11:51:52.7577333Z ##[group]Checking out the ref
+2026-10-27T11:51:52.7582972Z [command]/usr/bin/git checkout --progress --force -B research/ci-final-design-measurements refs/remotes/origin/research/ci-final-design-measurements
+2026-10-27T11:51:52.9196758Z Switched to a new branch 'research/ci-final-design-measurements'
+2026-10-27T11:51:52.9198890Z branch 'research/ci-final-design-measurements' set up to track 'origin/research/ci-final-design-measurements'.
+2026-10-27T11:51:52.9213802Z ##[endgroup]
+2026-10-27T11:51:52.9258421Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T11:51:52.9282667Z 27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T11:51:52.9297997Z ##[group]Removing auth
+2026-10-27T11:51:52.9298788Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T11:51:52.9325121Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T11:51:52.9540238Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T11:51:52.9563898Z http.https://github.com/.extraheader
+2026-10-27T11:51:52.9573165Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T11:51:52.9605674Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T11:51:52.9820701Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T11:51:52.9852100Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T11:51:53.0063195Z ##[endgroup]
+2026-10-27T11:51:53.0353750Z ##[group]Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+2026-10-27T11:51:53.0354370Z with:
+2026-10-27T11:51:53.0354669Z   node-version-file: .node-version
+2026-10-27T11:51:53.0355109Z   architecture: arm64
+2026-10-27T11:51:53.0355422Z   package-manager-cache: false
+2026-10-27T11:51:53.0355750Z   always-auth: false
+2026-10-27T11:51:53.0356538Z   check-latest: false
+2026-10-27T11:51:53.0359374Z   token: ***
+2026-10-27T11:51:53.0359754Z env:
+2026-10-27T11:51:53.0360003Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:51:53.0360301Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:51:53.0360639Z ##[endgroup]
+2026-10-27T11:51:53.1583082Z Node version file is not JSON file
+2026-10-27T11:51:53.1583677Z Resolved .node-version as 24.11.1
+2026-10-27T11:51:53.1599943Z Attempting to download 24.11.1...
+2026-10-27T11:51:53.1703545Z (node:2127) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T11:51:53.1704692Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T11:51:53.8322914Z Acquiring 24.11.1 - arm64 from https://github.com/actions/node-versions/releases/download/24.11.1-19282993875/node-24.11.1-linux-arm64.tar.gz
+2026-10-27T11:51:54.3307959Z Extracting ...
+2026-10-27T11:51:54.3412470Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/98dd3fb6-5d2d-4efd-a597-261c76830652 -f /home/runner/work/_temp/aa52a3d8-e28d-4fc3-91c6-27fa30d421c3
+2026-10-27T11:51:55.2371321Z Adding to the cache ...
+2026-10-27T11:51:57.0463251Z ##[group]Environment details
+2026-10-27T11:51:57.2428292Z node: v24.11.1
+2026-10-27T11:51:57.2428637Z npm: 11.6.2
+2026-10-27T11:51:57.2428907Z yarn: 1.22.22
+2026-10-27T11:51:57.2429471Z ##[endgroup]
+2026-10-27T11:51:57.2620143Z ##[group]Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+2026-10-27T11:51:57.2621016Z with:
+2026-10-27T11:51:57.2621269Z   cache: true
+2026-10-27T11:51:57.2621494Z   dest: ~/setup-pnpm
+2026-10-27T11:51:57.2621805Z   run_install: null
+2026-10-27T11:51:57.2622049Z   cache_dependency_path: pnpm-lock.yaml
+2026-10-27T11:51:57.2622391Z   package_json_file: package.json
+2026-10-27T11:51:57.2622675Z   standalone: false
+2026-10-27T11:51:57.2622891Z env:
+2026-10-27T11:51:57.2623156Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:51:57.2623421Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:51:57.2623657Z ##[endgroup]
+2026-10-27T11:51:57.3820234Z ##[group]Running self-installer...
+2026-10-27T11:51:57.7149637Z (node:2177) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T11:51:57.7151075Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T11:51:57.8620555Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T11:51:57.8692041Z Packages: +1
+2026-10-27T11:51:57.8692439Z +
+2026-10-27T11:51:58.1075373Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-10-27T11:51:58.1607817Z 
+2026-10-27T11:51:58.1609043Z dependencies:
+2026-10-27T11:51:58.1609870Z + pnpm 11.11.0 (12.15.0 is available)
+2026-10-27T11:51:58.1610110Z 
+2026-10-27T11:51:58.1717496Z Done in 641ms
+2026-10-27T11:51:58.1911568Z ##[endgroup]
+2026-10-27T11:51:58.1912574Z Installation Completed!
+2026-10-27T11:51:58.1916301Z ##[group]Restoring cache...
+2026-10-27T11:51:58.1950297Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-10-27T11:51:58.7118154Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+2026-10-27T11:51:58.8526742Z Cache hit for: pnpm-cache-Linux-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T11:51:59.9453190Z Received 129678833 of 129678833 (100.0%), 128.8 MBs/sec
+2026-10-27T11:51:59.9454905Z Cache Size: ~124 MB (129678833 B)
+2026-10-27T11:51:59.9511817Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ad60d674-fdca-4998-8624-9e32e8811c4e/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T11:52:00.5465380Z Cache restored successfully
+2026-10-27T11:52:00.5625554Z Cache restored from key: pnpm-cache-Linux-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1
+2026-10-27T11:52:00.5626469Z ##[endgroup]
+2026-10-27T11:52:00.5855506Z ##[group]Run pnpm install --frozen-lockfile
+2026-10-27T11:52:00.5856227Z [36;1mpnpm install --frozen-lockfile[0m
+2026-10-27T11:52:00.5884840Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:52:00.5885086Z env:
+2026-10-27T11:52:00.5885264Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:00.5885493Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:00.5885770Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:00.5886340Z ##[endgroup]
+2026-10-27T11:52:01.0226372Z Scope: all 46 workspace projects
+2026-10-27T11:52:01.1040123Z ? Verifying lockfile against supply-chain policies (879 entries)...
+2026-10-27T11:52:01.1189741Z Lockfile is up to date, resolution step is skipped
+2026-10-27T11:52:01.2345604Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-27T11:52:01.2943120Z Packages: +700
+2026-10-27T11:52:01.2967702Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-27T11:52:02.2388976Z Progress: resolved 700, reused 700, downloaded 0, added 156
+2026-10-27T11:52:03.2400476Z Progress: resolved 700, reused 700, downloaded 0, added 520
+2026-10-27T11:52:03.6943455Z Progress: resolved 700, reused 700, downloaded 0, added 700, done
+2026-10-27T11:52:05.4591269Z ✓ Lockfile passes supply-chain policies (879 entries in 4.3s)
+2026-10-27T11:52:05.6960273Z 
+2026-10-27T11:52:05.6960920Z devDependencies:
+2026-10-27T11:52:05.6961476Z + @commitlint/cli 21.2.4
+2026-10-27T11:52:05.6961972Z + @commitlint/config-conventional 21.2.4
+2026-10-27T11:52:05.6962536Z + @kisaki3/eslint-config 0.0.0 <- packages/eslint-config
+2026-10-27T11:52:05.6963646Z + @kisaki3/tooling 0.0.0 <- packages/tooling
+2026-10-27T11:52:05.6964175Z + @kisaki3/typescript-config 0.0.0 <- packages/typescript-config
+2026-10-27T11:52:05.6964708Z + @playwright/test 1.64.1
+2026-10-27T11:52:05.6965029Z + @types/node 24.19.2
+2026-10-27T11:52:05.6965322Z + @types/semver 7.8.0
+2026-10-27T11:52:05.6965627Z + dependency-cruiser 18.7.0
+2026-10-27T11:52:05.6966212Z + eslint 10.13.0
+2026-10-27T11:52:05.6966580Z + husky 9.1.7
+2026-10-27T11:52:05.6966898Z + jiti 2.7.0
+2026-10-27T11:52:05.6967282Z + lint-staged 17.6.0
+2026-10-27T11:52:05.6967547Z + prettier 3.9.10
+2026-10-27T11:52:05.6967753Z + semver 7.8.5
+2026-10-27T11:52:05.6967940Z + tar 7.5.22
+2026-10-27T11:52:05.6968223Z + tsx 4.23.15
+2026-10-27T11:52:05.6968652Z + turbo 2.11.10
+2026-10-27T11:52:05.6968854Z + typescript 6.0.3
+2026-10-27T11:52:05.6969046Z + vite 8.3.3
+2026-10-27T11:52:05.6969218Z + vitest 5.0.5
+2026-10-27T11:52:05.6969394Z + yaml 2.9.1
+2026-10-27T11:52:05.6969502Z 
+2026-10-27T11:52:05.8942656Z Done in 5.2s using pnpm v11.11.0
+2026-10-27T11:52:06.0886977Z ##[group]Run actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T11:52:06.0887403Z with:
+2026-10-27T11:52:06.0887584Z   path: .turbo/cache
+2026-10-27T11:52:06.0888189Z   key: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T11:52:06.0889431Z   restore-keys: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-
+turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-
+
+2026-10-27T11:52:06.0890289Z   enableCrossOsArchive: false
+2026-10-27T11:52:06.0890517Z   fail-on-cache-miss: false
+2026-10-27T11:52:06.0890730Z   lookup-only: false
+2026-10-27T11:52:06.0890911Z env:
+2026-10-27T11:52:06.0891082Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:06.0891311Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:06.0891579Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:06.0891923Z ##[endgroup]
+2026-10-27T11:52:06.3037681Z Cache hit for restore-key: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-5e0a8dc03211a6ffe119bede4ccf4d1efc516005
+2026-10-27T11:52:06.5006371Z Received 12486 of 12486 (100.0%), 0.1 MBs/sec
+2026-10-27T11:52:06.5006849Z Cache Size: ~0 MB (12486 B)
+2026-10-27T11:52:06.5073537Z [command]/usr/bin/tar -xf /home/runner/work/_temp/39c3e2b7-5136-4976-a211-ddc39a7adf5b/cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --use-compress-program unzstd
+2026-10-27T11:52:06.5121950Z Cache restored successfully
+2026-10-27T11:52:06.5210711Z Cache restored from key: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-5e0a8dc03211a6ffe119bede4ccf4d1efc516005
+2026-10-27T11:52:06.5316897Z ##[group]Run mkdir -p test-results/verification
+2026-10-27T11:52:06.5317525Z [36;1mmkdir -p test-results/verification[0m
+2026-10-27T11:52:06.5318708Z [36;1mnode -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json[0m
+2026-10-27T11:52:06.5338584Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:52:06.5339134Z env:
+2026-10-27T11:52:06.5339384Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:06.5339674Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:06.5340047Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:06.5340374Z ##[endgroup]
+2026-10-27T11:52:06.5646654Z ##[group]Run sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
+2026-10-27T11:52:06.5647398Z [36;1msudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm[0m
+2026-10-27T11:52:06.5664279Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:52:06.5664709Z env:
+2026-10-27T11:52:06.5664965Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:06.5665528Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:06.5666179Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:06.5666612Z ##[endgroup]
+2026-10-27T11:52:06.8893797Z Get:1 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3632 B]
+2026-10-27T11:52:07.0047613Z Hit:2 http://ports.ubuntu.com/ubuntu-ports jammy InRelease
+2026-10-27T11:52:07.0314587Z Get:3 http://ports.ubuntu.com/ubuntu-ports jammy-updates InRelease [128 kB]
+2026-10-27T11:52:07.0315818Z Get:4 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main amd64 Packages [952 kB]
+2026-10-27T11:52:07.0567760Z Get:5 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main arm64 Packages [688 kB]
+2026-10-27T11:52:07.1432429Z Get:6 http://ports.ubuntu.com/ubuntu-ports jammy-backports InRelease [127 kB]
+2026-10-27T11:52:07.1871868Z Get:7 http://ports.ubuntu.com/ubuntu-ports jammy-security InRelease [129 kB]
+2026-10-27T11:52:07.2288594Z Get:8 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 Packages [3766 kB]
+2026-10-27T11:52:07.3772972Z Get:9 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main Translation-en [576 kB]
+2026-10-27T11:52:07.4080349Z Get:10 http://ports.ubuntu.com/ubuntu-ports jammy-updates/universe arm64 Packages [1366 kB]
+2026-10-27T11:52:07.4417239Z Get:11 http://ports.ubuntu.com/ubuntu-ports jammy-updates/universe Translation-en [326 kB]
+2026-10-27T11:52:07.4700970Z Get:12 http://ports.ubuntu.com/ubuntu-ports jammy-security/main arm64 Packages [3512 kB]
+2026-10-27T11:52:07.5164446Z Get:13 http://ports.ubuntu.com/ubuntu-ports jammy-security/main Translation-en [510 kB]
+2026-10-27T11:52:07.5458300Z Get:14 http://ports.ubuntu.com/ubuntu-ports jammy-security/universe arm64 Packages [1137 kB]
+2026-10-27T11:52:07.5761052Z Get:15 http://ports.ubuntu.com/ubuntu-ports jammy-security/universe Translation-en [238 kB]
+2026-10-27T11:52:21.3024408Z Fetched 13.5 MB in 1s (9360 kB/s)
+2026-10-27T11:52:22.7897911Z Reading package lists...
+2026-10-27T11:52:22.8559576Z Reading package lists...
+2026-10-27T11:52:23.1974566Z Building dependency tree...
+2026-10-27T11:52:23.1983732Z Reading state information...
+2026-10-27T11:52:23.4611231Z rpm is already the newest version (4.17.0+dfsg1-4build1).
+2026-10-27T11:52:23.4611776Z xvfb is already the newest version (2:21.1.4-2ubuntu1.7~22.04.16).
+2026-10-27T11:52:23.4612477Z The following additional packages will be installed:
+2026-10-27T11:52:23.4612922Z   libid3tag0 libimlib2 libobrender32v5 libobt2v5 libpangoxft-1.0-0
+2026-10-27T11:52:23.4627166Z   libstartup-notification0 libxcb-util1 obconf scrot
+2026-10-27T11:52:23.4627548Z Suggested packages:
+2026-10-27T11:52:23.4627874Z   tint2 openbox-gnome-session openbox-kde-session
+2026-10-27T11:52:23.5495163Z The following NEW packages will be installed:
+2026-10-27T11:52:23.5496424Z   libfuse2 libid3tag0 libimlib2 libobrender32v5 libobt2v5 libpangoxft-1.0-0
+2026-10-27T11:52:23.5503305Z   libstartup-notification0 libxcb-util1 obconf openbox scrot wmctrl
+2026-10-27T11:52:23.6196973Z 0 upgraded, 12 newly installed, 0 to remove and 14 not upgraded.
+2026-10-27T11:52:23.6197433Z Need to get 963 kB of archives.
+2026-10-27T11:52:23.6197847Z After this operation, 3912 kB of additional disk space will be used.
+2026-10-27T11:52:23.6198516Z Get:1 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 libfuse2 arm64 2.9.9-5ubuntu3 [89.2 kB]
+2026-10-27T11:52:23.7200800Z Get:2 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 libid3tag0 arm64 0.15.1b-14 [29.4 kB]
+2026-10-27T11:52:23.7525987Z Get:3 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 libimlib2 arm64 1.7.4-1build1 [187 kB]
+2026-10-27T11:52:23.8334659Z Get:4 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 libobt2v5 arm64 3.6.1-10 [34.5 kB]
+2026-10-27T11:52:23.8616769Z Get:5 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 libpangoxft-1.0-0 arm64 1.50.6+ds-2ubuntu1 [30.2 kB]
+2026-10-27T11:52:23.8899059Z Get:6 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 libobrender32v5 arm64 3.6.1-10 [39.8 kB]
+2026-10-27T11:52:23.9191812Z Get:7 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 libxcb-util1 arm64 0.4.0-1build2 [11.2 kB]
+2026-10-27T11:52:23.9456023Z Get:8 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 libstartup-notification0 arm64 0.12-6build2 [19.4 kB]
+2026-10-27T11:52:23.9739488Z Get:9 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 obconf arm64 1:2.0.4+git20150213-2build1 [138 kB]
+2026-10-27T11:52:24.0117176Z Get:10 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 openbox arm64 3.6.1-10 [305 kB]
+2026-10-27T11:52:24.0620071Z Get:11 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 scrot arm64 1.7-1 [60.1 kB]
+2026-10-27T11:52:24.0902014Z Get:12 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 wmctrl arm64 1.07-7build1 [18.5 kB]
+2026-10-27T11:52:24.4600136Z Fetched 963 kB in 1s (1808 kB/s)
+2026-10-27T11:52:24.5624329Z Selecting previously unselected package libfuse2:arm64.
+2026-10-27T11:52:24.6662192Z (Reading database ... 
+2026-10-27T11:52:24.6662519Z (Reading database ... 5%
+2026-10-27T11:52:24.6663751Z (Reading database ... 10%
+2026-10-27T11:52:24.6664072Z (Reading database ... 15%
+2026-10-27T11:52:24.6664321Z (Reading database ... 20%
+2026-10-27T11:52:24.6664556Z (Reading database ... 25%
+2026-10-27T11:52:24.6664798Z (Reading database ... 30%
+2026-10-27T11:52:24.6665030Z (Reading database ... 35%
+2026-10-27T11:52:24.6665269Z (Reading database ... 40%
+2026-10-27T11:52:24.6665507Z (Reading database ... 45%
+2026-10-27T11:52:24.6665740Z (Reading database ... 50%
+2026-10-27T11:52:25.0641833Z (Reading database ... 55%
+2026-10-27T11:52:25.6292960Z (Reading database ... 60%
+2026-10-27T11:52:26.1342639Z (Reading database ... 65%
+2026-10-27T11:52:26.5651181Z (Reading database ... 70%
+2026-10-27T11:52:27.3662542Z (Reading database ... 75%
+2026-10-27T11:52:28.5263602Z (Reading database ... 80%
+2026-10-27T11:52:29.6767459Z (Reading database ... 85%
+2026-10-27T11:52:30.7450090Z (Reading database ... 90%
+2026-10-27T11:52:31.9448236Z (Reading database ... 95%
+2026-10-27T11:52:31.9448566Z (Reading database ... 100%
+2026-10-27T11:52:31.9449025Z (Reading database ... 209402 files and directories currently installed.)
+2026-10-27T11:52:31.9499740Z Preparing to unpack .../00-libfuse2_2.9.9-5ubuntu3_arm64.deb ...
+2026-10-27T11:52:31.9649477Z Unpacking libfuse2:arm64 (2.9.9-5ubuntu3) ...
+2026-10-27T11:52:32.0036529Z Selecting previously unselected package libid3tag0:arm64.
+2026-10-27T11:52:32.0398729Z Preparing to unpack .../01-libid3tag0_0.15.1b-14_arm64.deb ...
+2026-10-27T11:52:32.0407520Z Unpacking libid3tag0:arm64 (0.15.1b-14) ...
+2026-10-27T11:52:32.0609596Z Selecting previously unselected package libimlib2:arm64.
+2026-10-27T11:52:32.0914190Z Preparing to unpack .../02-libimlib2_1.7.4-1build1_arm64.deb ...
+2026-10-27T11:52:32.0923747Z Unpacking libimlib2:arm64 (1.7.4-1build1) ...
+2026-10-27T11:52:32.1295010Z Selecting previously unselected package libobt2v5.
+2026-10-27T11:52:32.1598006Z Preparing to unpack .../03-libobt2v5_3.6.1-10_arm64.deb ...
+2026-10-27T11:52:32.1606072Z Unpacking libobt2v5 (3.6.1-10) ...
+2026-10-27T11:52:32.1814001Z Selecting previously unselected package libpangoxft-1.0-0:arm64.
+2026-10-27T11:52:32.2098148Z Preparing to unpack .../04-libpangoxft-1.0-0_1.50.6+ds-2ubuntu1_arm64.deb ...
+2026-10-27T11:52:32.2107248Z Unpacking libpangoxft-1.0-0:arm64 (1.50.6+ds-2ubuntu1) ...
+2026-10-27T11:52:32.2386915Z Selecting previously unselected package libobrender32v5.
+2026-10-27T11:52:32.2672932Z Preparing to unpack .../05-libobrender32v5_3.6.1-10_arm64.deb ...
+2026-10-27T11:52:32.2681812Z Unpacking libobrender32v5 (3.6.1-10) ...
+2026-10-27T11:52:32.2886667Z Selecting previously unselected package libxcb-util1:arm64.
+2026-10-27T11:52:32.3254664Z Preparing to unpack .../06-libxcb-util1_0.4.0-1build2_arm64.deb ...
+2026-10-27T11:52:32.3262865Z Unpacking libxcb-util1:arm64 (0.4.0-1build2) ...
+2026-10-27T11:52:32.3450125Z Selecting previously unselected package libstartup-notification0:arm64.
+2026-10-27T11:52:32.3837227Z Preparing to unpack .../07-libstartup-notification0_0.12-6build2_arm64.deb ...
+2026-10-27T11:52:32.3846364Z Unpacking libstartup-notification0:arm64 (0.12-6build2) ...
+2026-10-27T11:52:32.4199809Z Selecting previously unselected package obconf.
+2026-10-27T11:52:32.4586836Z Preparing to unpack .../08-obconf_1%3a2.0.4+git20150213-2build1_arm64.deb ...
+2026-10-27T11:52:32.4595662Z Unpacking obconf (1:2.0.4+git20150213-2build1) ...
+2026-10-27T11:52:32.6148564Z Selecting previously unselected package openbox.
+2026-10-27T11:52:32.6515429Z Preparing to unpack .../09-openbox_3.6.1-10_arm64.deb ...
+2026-10-27T11:52:32.6584325Z Unpacking openbox (3.6.1-10) ...
+2026-10-27T11:52:32.7433410Z Selecting previously unselected package scrot.
+2026-10-27T11:52:32.7718109Z Preparing to unpack .../10-scrot_1.7-1_arm64.deb ...
+2026-10-27T11:52:32.7725052Z Unpacking scrot (1.7-1) ...
+2026-10-27T11:52:32.7908988Z Selecting previously unselected package wmctrl.
+2026-10-27T11:52:32.8188677Z Preparing to unpack .../11-wmctrl_1.07-7build1_arm64.deb ...
+2026-10-27T11:52:32.8197395Z Unpacking wmctrl (1.07-7build1) ...
+2026-10-27T11:52:32.8723210Z Setting up libpangoxft-1.0-0:arm64 (1.50.6+ds-2ubuntu1) ...
+2026-10-27T11:52:32.8742074Z Setting up libfuse2:arm64 (2.9.9-5ubuntu3) ...
+2026-10-27T11:52:32.8761803Z Setting up wmctrl (1.07-7build1) ...
+2026-10-27T11:52:32.8778033Z Setting up libxcb-util1:arm64 (0.4.0-1build2) ...
+2026-10-27T11:52:32.8797200Z Setting up libid3tag0:arm64 (0.15.1b-14) ...
+2026-10-27T11:52:32.8815448Z Setting up libobt2v5 (3.6.1-10) ...
+2026-10-27T11:52:32.8831255Z Setting up libimlib2:arm64 (1.7.4-1build1) ...
+2026-10-27T11:52:32.8847175Z Setting up libobrender32v5 (3.6.1-10) ...
+2026-10-27T11:52:32.8862144Z Setting up scrot (1.7-1) ...
+2026-10-27T11:52:32.8877092Z Setting up libstartup-notification0:arm64 (0.12-6build2) ...
+2026-10-27T11:52:32.8890998Z Setting up obconf (1:2.0.4+git20150213-2build1) ...
+2026-10-27T11:52:32.8904971Z Setting up openbox (3.6.1-10) ...
+2026-10-27T11:52:32.8983380Z update-alternatives: using /usr/bin/openbox to provide /usr/bin/x-window-manager (x-window-manager) in auto mode
+2026-10-27T11:52:32.9025504Z update-alternatives: using /usr/bin/openbox-session to provide /usr/bin/x-session-manager (x-session-manager) in auto mode
+2026-10-27T11:52:32.9102994Z Processing triggers for mailcap (3.70+nmu1ubuntu1.22.04.1) ...
+2026-10-27T11:52:33.0124302Z Processing triggers for libc-bin (2.35-0ubuntu3.15) ...
+2026-10-27T11:52:33.1079779Z Processing triggers for man-db (2.10.2-1) ...
+2026-10-27T11:52:33.1183174Z Not building database; man-db/auto-update is not 'true'.
+2026-10-27T11:52:33.1199364Z Processing triggers for shared-mime-info (2.1-2) ...
+2026-10-27T11:52:36.7457285Z 
+2026-10-27T11:52:36.7460129Z Running kernel seems to be up-to-date.
+2026-10-27T11:52:36.7460383Z 
+2026-10-27T11:52:36.7460523Z No services need to be restarted.
+2026-10-27T11:52:36.7460696Z 
+2026-10-27T11:52:36.7460938Z No containers need to be restarted.
+2026-10-27T11:52:36.7461112Z 
+2026-10-27T11:52:36.7461290Z No user sessions are running outdated binaries.
+2026-10-27T11:52:36.7461494Z 
+2026-10-27T11:52:36.7477113Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-27T11:52:38.1843566Z ##[group]Run pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
+2026-10-27T11:52:38.1844436Z [36;1mpnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json[0m
+2026-10-27T11:52:38.1862133Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:52:38.1862374Z env:
+2026-10-27T11:52:38.1862559Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:38.1862805Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:38.1863083Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:38.1863373Z ##[endgroup]
+2026-10-27T11:52:38.6311728Z $ vitest run --reporter=default --reporter=json --outputFile=test-results/results.json
+2026-10-27T11:52:38.8976771Z 
+2026-10-27T11:52:38.8979310Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/packages/tooling[39m
+2026-10-27T11:52:38.8980350Z 
+2026-10-27T11:52:39.0829625Z  [32m✓[39m tests/output.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+2026-10-27T11:52:39.4580362Z  [32m✓[39m tests/process.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 393[2mms[22m[39m
+2026-10-27T11:52:39.4620624Z 
+2026-10-27T11:52:39.4623778Z [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-27T11:52:39.4624638Z [2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+2026-10-27T11:52:39.4625395Z [2m   Start at [22m 11:52:38
+2026-10-27T11:52:39.4629373Z [2m   Duration [22m 559ms[2m (tests 79%, transform 14%, import 5%, worker 2%)[22m
+2026-10-27T11:52:39.4642267Z 
+2026-10-27T11:52:39.4656687Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/packages/tooling/test-results/results.json
+2026-10-27T11:52:39.6511560Z ##[group]Run pnpm --filter @kisaki3/desktop native:check
+2026-10-27T11:52:39.6512005Z [36;1mpnpm --filter @kisaki3/desktop native:check[0m
+2026-10-27T11:52:39.6528125Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:52:39.6528368Z env:
+2026-10-27T11:52:39.6528552Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:39.6528787Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:39.6529070Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:39.6529359Z ##[endgroup]
+2026-10-27T11:52:40.0958733Z $ tsx tools/native/cli.ts --check
+2026-10-27T11:52:40.3224326Z info: syncing channel updates for 1.90.0-aarch64-unknown-linux-gnu
+2026-10-27T11:52:40.5521947Z info: latest update on 2025-09-18 for version 1.90.0 (1159e78c4 2025-09-14)
+2026-10-27T11:52:40.5613881Z info: downloading 5 components
+2026-10-27T11:52:45.6604420Z warn: the missing active toolchain `1.90.0-aarch64-unknown-linux-gnu` has been auto-installed
+2026-10-27T11:52:45.7914924Z warn: this might cause rustup commands to take longer time to finish than expected
+2026-10-27T11:52:45.7915635Z info: you may opt out with `RUSTUP_AUTO_INSTALL=0` or `rustup set auto-install disable`
+2026-10-27T11:52:45.7916489Z     Updating crates.io index
+2026-10-27T11:52:45.8893156Z  Downloading crates ...
+2026-10-27T11:52:45.9708038Z   Downloaded convert_case v0.12.0
+2026-10-27T11:52:45.9725395Z   Downloaded futures-sink v0.3.34
+2026-10-27T11:52:45.9733614Z   Downloaded futures-channel v0.3.34
+2026-10-27T11:52:45.9748953Z   Downloaded futures-io v0.3.34
+2026-10-27T11:52:45.9754780Z   Downloaded cfg-if v1.0.5
+2026-10-27T11:52:45.9768579Z   Downloaded nohash-hasher v0.2.0
+2026-10-27T11:52:45.9774410Z   Downloaded futures-core v0.3.34
+2026-10-27T11:52:45.9786342Z   Downloaded slab v0.4.12
+2026-10-27T11:52:45.9795066Z   Downloaded futures-task v0.3.34
+2026-10-27T11:52:45.9805706Z   Downloaded rustc-hash v2.1.3
+2026-10-27T11:52:45.9814917Z   Downloaded semver v1.0.28
+2026-10-27T11:52:45.9834186Z   Downloaded unicode-segmentation v1.13.3
+2026-10-27T11:52:45.9859788Z   Downloaded unicode-ident v1.0.27
+2026-10-27T11:52:45.9877911Z   Downloaded libloading v0.9.0
+2026-10-27T11:52:45.9893002Z   Downloaded memchr v2.8.3
+2026-10-27T11:52:45.9927339Z   Downloaded futures v0.3.34
+2026-10-27T11:52:45.9957362Z   Downloaded bitflags v2.13.2
+2026-10-27T11:52:45.9983109Z   Downloaded proc-macro2 v1.0.107
+2026-10-27T11:52:46.0002568Z   Downloaded napi-derive-backend v6.1.6
+2026-10-27T11:52:46.0016989Z   Downloaded ctor v1.0.13
+2026-10-27T11:52:46.0032766Z   Downloaded quote v1.0.47
+2026-10-27T11:52:46.0050178Z   Downloaded pin-project-lite v0.2.17
+2026-10-27T11:52:46.0079691Z   Downloaded futures-util v0.3.34
+2026-10-27T11:52:46.0150383Z   Downloaded syn v3.0.9
+2026-10-27T11:52:46.0224174Z   Downloaded napi v3.15.0
+2026-10-27T11:52:46.0284561Z   Downloaded napi-derive v3.6.13
+2026-10-27T11:52:46.0294974Z   Downloaded futures-executor v0.3.34
+2026-10-27T11:52:46.0303927Z   Downloaded napi-sys v3.4.1
+2026-10-27T11:52:46.0310766Z   Downloaded napi-build v2.6.0
+2026-10-27T11:52:46.0317783Z   Downloaded futures-macro v0.3.34
+2026-10-27T11:52:46.0331188Z   Downloaded libc v0.2.186
+2026-10-27T11:52:46.0949901Z    Compiling proc-macro2 v1.0.107
+2026-10-27T11:52:46.0950669Z    Compiling quote v1.0.47
+2026-10-27T11:52:46.0950940Z    Compiling unicode-ident v1.0.27
+2026-10-27T11:52:46.0951227Z     Checking futures-core v0.3.34
+2026-10-27T11:52:46.1373672Z     Checking futures-sink v0.3.34
+2026-10-27T11:52:46.1411896Z    Compiling napi-build v2.6.0
+2026-10-27T11:52:46.1777340Z     Checking futures-channel v0.3.34
+2026-10-27T11:52:46.2762899Z     Checking slab v0.4.12
+2026-10-27T11:52:46.3447993Z     Checking memchr v2.8.3
+2026-10-27T11:52:46.3496407Z     Checking futures-task v0.3.34
+2026-10-27T11:52:46.4073815Z     Checking pin-project-lite v0.2.17
+2026-10-27T11:52:46.4317484Z     Checking futures-io v0.3.34
+2026-10-27T11:52:46.4762000Z     Checking cfg-if v1.0.5
+2026-10-27T11:52:46.5047148Z    Compiling napi-sys v3.4.1
+2026-10-27T11:52:46.5729336Z    Compiling unicode-segmentation v1.13.3
+2026-10-27T11:52:46.5824896Z    Compiling libc v0.2.186
+2026-10-27T11:52:46.6268325Z     Checking libloading v0.9.0
+2026-10-27T11:52:46.6971865Z    Compiling napi v3.15.0
+2026-10-27T11:52:46.8341910Z    Compiling convert_case v0.12.0
+2026-10-27T11:52:46.8413296Z    Compiling semver v1.0.28
+2026-10-27T11:52:47.0974664Z    Compiling kisaki-native v0.1.0-dev.0 (/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/native)
+2026-10-27T11:52:47.1991797Z    Compiling syn v3.0.9
+2026-10-27T11:52:47.2124918Z     Checking nohash-hasher v0.2.0
+2026-10-27T11:52:47.2447193Z     Checking ctor v1.0.13
+2026-10-27T11:52:47.2472509Z     Checking bitflags v2.13.2
+2026-10-27T11:52:47.3100124Z     Checking rustc-hash v2.1.3
+2026-10-27T11:52:49.3371970Z    Compiling napi-derive-backend v6.1.6
+2026-10-27T11:52:49.9276048Z    Compiling futures-macro v0.3.34
+2026-10-27T11:52:50.5018322Z     Checking futures-util v0.3.34
+2026-10-27T11:52:50.6569655Z    Compiling napi-derive v3.6.13
+2026-10-27T11:52:52.0900926Z     Checking futures-executor v0.3.34
+2026-10-27T11:52:52.1464050Z     Checking futures v0.3.34
+2026-10-27T11:52:54.9259251Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.16s
+2026-10-27T11:52:54.9808093Z ##[group]Run pnpm desktop:build --target "$DESKTOP_TARGET"
+2026-10-27T11:52:54.9808566Z [36;1mpnpm desktop:build --target "$DESKTOP_TARGET"[0m
+2026-10-27T11:52:54.9824577Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:52:54.9824897Z env:
+2026-10-27T11:52:54.9825084Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:52:54.9825317Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:52:54.9825587Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:52:54.9826094Z ##[endgroup]
+2026-10-27T11:52:55.4057055Z $ turbo run build --filter=@kisaki3/desktop -- --target linux-arm64
+2026-10-27T11:52:55.4482870Z 
+2026-10-27T11:52:55.4491317Z    • Packages in scope: @kisaki3/desktop
+2026-10-27T11:52:55.4504435Z    • Running build in 1 package
+2026-10-27T11:52:55.4539642Z    • Remote caching disabled
+2026-10-27T11:52:55.4544188Z 
+2026-10-27T11:52:56.8553015Z ##[group]@kisaki3/desktop-contracts:build
+2026-10-27T11:52:56.8553890Z cache miss, executing dee99be0e15368b1
+2026-10-27T11:52:56.8563047Z $ tsx tools/build.ts --target linux-arm64
+2026-10-27T11:52:56.8568955Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/desktop-contracts/tsdown.config.ts 
+2026-10-27T11:52:56.8569929Z ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+2026-10-27T11:52:56.8570562Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T11:52:56.8571026Z ℹ Build start
+2026-10-27T11:52:56.8571656Z ℹ .cache/output-staging/dist-Gm6yEi/development.js    5.32 kB │ gzip: 1.46 kB
+2026-10-27T11:52:56.8572439Z ℹ .cache/output-staging/dist-Gm6yEi/errors.js         0.01 kB │ gzip: 0.03 kB
+2026-10-27T11:52:56.8573218Z ℹ .cache/output-staging/dist-Gm6yEi/index.js          0.01 kB │ gzip: 0.03 kB
+2026-10-27T11:52:56.8573962Z ℹ .cache/output-staging/dist-Gm6yEi/development.d.ts  3.34 kB │ gzip: 1.18 kB
+2026-10-27T11:52:56.8576363Z ℹ .cache/output-staging/dist-Gm6yEi/errors.d.ts       0.34 kB │ gzip: 0.23 kB
+2026-10-27T11:52:56.8577590Z ℹ .cache/output-staging/dist-Gm6yEi/index.d.ts        0.11 kB │ gzip: 0.09 kB
+2026-10-27T11:52:56.8578560Z ℹ 6 files, total: 9.14 kB
+2026-10-27T11:52:56.8578849Z ✔ Build complete in 563ms
+2026-10-27T11:52:56.8579294Z ##[endgroup]
+2026-10-27T11:52:56.9251623Z ##[group]@kisaki3/appearance:build
+2026-10-27T11:52:56.9252106Z cache miss, executing 5c2c2d07c463c780
+2026-10-27T11:52:56.9252440Z $ tsx tools/build.ts --target linux-arm64
+2026-10-27T11:52:56.9253349Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/appearance/tsdown.config.ts 
+2026-10-27T11:52:56.9253936Z ℹ entry: src/index.ts, src/tokens.ts
+2026-10-27T11:52:56.9254314Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T11:52:56.9254618Z ℹ Build start
+2026-10-27T11:52:56.9255050Z ℹ .cache/output-staging/dist-fVKif0/index.js     3.87 kB │ gzip: 0.86 kB
+2026-10-27T11:52:56.9255632Z ℹ .cache/output-staging/dist-fVKif0/tokens.js    1.00 kB │ gzip: 0.37 kB
+2026-10-27T11:52:56.9256601Z ℹ .cache/output-staging/dist-fVKif0/tokens.d.ts  1.20 kB │ gzip: 0.49 kB
+2026-10-27T11:52:56.9257204Z ℹ .cache/output-staging/dist-fVKif0/index.d.ts   0.44 kB │ gzip: 0.23 kB
+2026-10-27T11:52:56.9257597Z ℹ 4 files, total: 6.51 kB
+2026-10-27T11:52:56.9257861Z ✔ Build complete in 598ms
+2026-10-27T11:52:56.9258242Z ##[endgroup]
+2026-10-27T11:52:58.6483979Z ##[group]@kisaki3/extension-cli:build
+2026-10-27T11:52:58.6567329Z cache miss, executing 3383d09417e5a1fa
+2026-10-27T11:52:58.6567745Z $ tsx tools/build.ts --target linux-arm64
+2026-10-27T11:52:58.6568705Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/extension-cli/tsdown.config.ts 
+2026-10-27T11:52:58.6569313Z ℹ entry: src/config.ts, src/extension.ts
+2026-10-27T11:52:58.6569711Z ℹ tsconfig: config/typescript/tsconfig.node.json
+2026-10-27T11:52:58.6570013Z ℹ Build start
+2026-10-27T11:52:58.6570458Z ℹ .cache/output-staging/dist-aAWdNE/extension.js    5.44 kB │ gzip: 1.80 kB
+2026-10-27T11:52:58.6571065Z ℹ .cache/output-staging/dist-aAWdNE/config.js       0.18 kB │ gzip: 0.15 kB
+2026-10-27T11:52:58.6572168Z ℹ .cache/output-staging/dist-aAWdNE/extension.d.ts  1.84 kB │ gzip: 0.83 kB
+2026-10-27T11:52:58.6572914Z ℹ .cache/output-staging/dist-aAWdNE/config.d.ts     0.68 kB │ gzip: 0.38 kB
+2026-10-27T11:52:58.6573330Z ℹ 4 files, total: 8.14 kB
+2026-10-27T11:52:58.6573592Z ✔ Build complete in 946ms
+2026-10-27T11:52:58.6574047Z ##[endgroup]
+2026-10-27T11:52:59.6292594Z ##[group]@kisaki3/ui:build
+2026-10-27T11:52:59.6293025Z cache miss, executing 5c7276469d15855d
+2026-10-27T11:52:59.6293380Z $ tsx tools/build.ts --target linux-arm64
+2026-10-27T11:52:59.6294249Z ℹ config file: /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/packages/ui/tsdown.config.ts 
+2026-10-27T11:52:59.6294749Z ℹ entry: src/index.ts
+2026-10-27T11:52:59.6295086Z ℹ tsconfig: config/typescript/tsconfig.lib.json
+2026-10-27T11:52:59.6295385Z ℹ Build start
+2026-10-27T11:52:59.6295813Z ℹ .cache/output-staging/dist-Q0fSqo/index.js    0.68 kB │ gzip: 0.41 kB
+2026-10-27T11:52:59.6296918Z ℹ .cache/output-staging/dist-Q0fSqo/index.d.ts  0.37 kB │ gzip: 0.25 kB
+2026-10-27T11:52:59.6297347Z ℹ 2 files, total: 1.05 kB
+2026-10-27T11:52:59.6297615Z ✔ Build complete in 921ms
+2026-10-27T11:52:59.6298035Z [3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.3.3[39m
+2026-10-27T11:52:59.6298254Z 
+2026-10-27T11:52:59.6298375Z Done in [32m39ms[39m
+2026-10-27T11:52:59.6298758Z ##[endgroup]
+2026-10-27T11:53:17.5691214Z ##[group]@kisaki3/desktop:build
+2026-10-27T11:53:17.5691690Z cache bypass, force executing 58fc15f80d8bac06
+2026-10-27T11:53:17.5692062Z $ tsx tools/build/cli.ts --target linux-arm64
+2026-10-27T11:53:17.5692474Z info: component rust-std is up to date
+2026-10-27T11:53:17.5692775Z    Compiling proc-macro2 v1.0.107
+2026-10-27T11:53:17.5693059Z    Compiling unicode-ident v1.0.27
+2026-10-27T11:53:17.5693312Z    Compiling quote v1.0.47
+2026-10-27T11:53:17.5693566Z    Compiling futures-sink v0.3.34
+2026-10-27T11:53:17.5693836Z    Compiling napi-build v2.6.0
+2026-10-27T11:53:17.5694100Z    Compiling futures-core v0.3.34
+2026-10-27T11:53:17.5694423Z    Compiling futures-channel v0.3.34
+2026-10-27T11:53:17.5695406Z    Compiling futures-task v0.3.34
+2026-10-27T11:53:17.5695656Z    Compiling memchr v2.8.3
+2026-10-27T11:53:17.5696117Z    Compiling slab v0.4.12
+2026-10-27T11:53:17.5696422Z    Compiling pin-project-lite v0.2.17
+2026-10-27T11:53:17.5696706Z    Compiling futures-io v0.3.34
+2026-10-27T11:53:17.5696949Z    Compiling cfg-if v1.0.5
+2026-10-27T11:53:17.5697181Z    Compiling napi-sys v3.4.1
+2026-10-27T11:53:17.5697417Z    Compiling libc v0.2.186
+2026-10-27T11:53:17.5697683Z    Compiling unicode-segmentation v1.13.3
+2026-10-27T11:53:17.5697957Z    Compiling syn v3.0.9
+2026-10-27T11:53:17.5698197Z    Compiling convert_case v0.12.0
+2026-10-27T11:53:17.5698463Z    Compiling libloading v0.9.0
+2026-10-27T11:53:17.5698707Z    Compiling napi v3.15.0
+2026-10-27T11:53:17.5698934Z    Compiling semver v1.0.28
+2026-10-27T11:53:17.5699445Z    Compiling kisaki-native v0.1.0-dev.0 (/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/native)
+2026-10-27T11:53:17.5699968Z    Compiling rustc-hash v2.1.3
+2026-10-27T11:53:17.5700223Z    Compiling ctor v1.0.13
+2026-10-27T11:53:17.5700484Z    Compiling nohash-hasher v0.2.0
+2026-10-27T11:53:17.5700740Z    Compiling bitflags v2.13.2
+2026-10-27T11:53:17.5701017Z    Compiling napi-derive-backend v6.1.6
+2026-10-27T11:53:17.5701318Z    Compiling futures-macro v0.3.34
+2026-10-27T11:53:17.5701595Z    Compiling futures-util v0.3.34
+2026-10-27T11:53:17.5701874Z    Compiling napi-derive v3.6.13
+2026-10-27T11:53:17.5702159Z    Compiling futures-executor v0.3.34
+2026-10-27T11:53:17.5702427Z    Compiling futures v0.3.34
+2026-10-27T11:53:17.5702774Z     Finished `release` profile [optimized] target(s) in 14.74s
+2026-10-27T11:53:17.5703563Z [36mvite v8.3.3 [32mbuilding ssr environment for production...[36m[39m
+2026-10-27T11:53:17.5704166Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T11:53:17.5704744Z [36mvite v8.3.3 [32mbuilding ssr environment for production...[36m[39m
+2026-10-27T11:53:17.5705524Z transforming...
+2026-10-27T11:53:17.5705785Z transforming...
+2026-10-27T11:53:17.5706210Z transforming...
+2026-10-27T11:53:17.5706534Z ✓ 2 modules transformed.
+2026-10-27T11:53:17.5706797Z ✓ 3 modules transformed.
+2026-10-27T11:53:17.5707057Z ✓ 17 modules transformed.
+2026-10-27T11:53:17.5707512Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T11:53:17.5707892Z rendering chunks...
+2026-10-27T11:53:17.5708102Z rendering chunks...
+2026-10-27T11:53:17.5708312Z rendering chunks...
+2026-10-27T11:53:17.5708508Z transforming...
+2026-10-27T11:53:17.5708723Z computing gzip size...
+2026-10-27T11:53:17.5709262Z .cache/output-staging/linux-arm64-SyYoai/extension-host/entry.js  0.35 kB │ gzip: 0.25 kB
+2026-10-27T11:53:17.5709617Z 
+2026-10-27T11:53:17.5709795Z [32m✓ built in 62ms[39m
+2026-10-27T11:53:17.5710031Z computing gzip size...
+2026-10-27T11:53:17.5710252Z computing gzip size...
+2026-10-27T11:53:17.5710816Z .cache/output-staging/linux-arm64-SyYoai/preload/main.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T11:53:17.5711149Z 
+2026-10-27T11:53:17.5711501Z .cache/output-staging/linux-arm64-SyYoai/main/entry.js  22.55 kB │ gzip: 6.95 kB
+2026-10-27T11:53:17.5711809Z 
+2026-10-27T11:53:17.5711939Z [32m✓ built in 140ms[39m
+2026-10-27T11:53:17.5712238Z [32m✓ built in 424ms[39m
+2026-10-27T11:53:17.5712702Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T11:53:17.5713060Z transforming...
+2026-10-27T11:53:17.5713301Z ✓ 3 modules transformed.
+2026-10-27T11:53:17.5713528Z rendering chunks...
+2026-10-27T11:53:17.5713740Z computing gzip size...
+2026-10-27T11:53:17.5714407Z .cache/output-staging/linux-arm64-SyYoai/preload/reader.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T11:53:17.5714772Z 
+2026-10-27T11:53:17.5714901Z [32m✓ built in 11ms[39m
+2026-10-27T11:53:17.5717904Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T11:53:17.5718287Z transforming...
+2026-10-27T11:53:17.5718537Z ✓ 3 modules transformed.
+2026-10-27T11:53:17.5719111Z rendering chunks...
+2026-10-27T11:53:17.5719329Z computing gzip size...
+2026-10-27T11:53:17.5719894Z .cache/output-staging/linux-arm64-SyYoai/preload/player.cjs  0.53 kB │ gzip: 0.31 kB
+2026-10-27T11:53:17.5720224Z 
+2026-10-27T11:53:17.5720360Z [32m✓ built in 53ms[39m
+2026-10-27T11:53:17.5720623Z ✓ 19 modules transformed.
+2026-10-27T11:53:17.5720852Z rendering chunks...
+2026-10-27T11:53:17.5721290Z [36mvite v8.3.3 [32mbuilding client environment for production...[36m[39m
+2026-10-27T11:53:17.5721650Z transforming...
+2026-10-27T11:53:17.5721855Z computing gzip size...
+2026-10-27T11:53:17.5722496Z .cache/output-staging/linux-arm64-SyYoai/renderer/main/index.html                   0.80 kB │ gzip: 0.41 kB
+2026-10-27T11:53:17.5723379Z .cache/output-staging/linux-arm64-SyYoai/renderer/player/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-27T11:53:17.5724261Z .cache/output-staging/linux-arm64-SyYoai/renderer/reader/index.html                 0.80 kB │ gzip: 0.41 kB
+2026-10-27T11:53:17.5725148Z .cache/output-staging/linux-arm64-SyYoai/renderer/game-panel/index.html             0.81 kB │ gzip: 0.41 kB
+2026-10-27T11:53:17.5726571Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/window-root-hGs9LGEj.css   0.19 kB │ gzip: 0.16 kB
+2026-10-27T11:53:17.5727553Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/main-DXYWVB_D.css          3.57 kB │ gzip: 0.99 kB
+2026-10-27T11:53:17.5728433Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/main-O7_wFIMp.js           0.27 kB │ gzip: 0.21 kB
+2026-10-27T11:53:17.5729309Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/player-CsHaC4aF.js         0.27 kB │ gzip: 0.22 kB
+2026-10-27T11:53:17.5730188Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/reader-BlzfokVc.js         0.27 kB │ gzip: 0.21 kB
+2026-10-27T11:53:17.5731296Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/game-panel-pBx1zxBp.js     0.27 kB │ gzip: 0.22 kB
+2026-10-27T11:53:17.5732871Z .cache/output-staging/linux-arm64-SyYoai/renderer/assets/window-root-wcvkIIjt.js   19.36 kB │ gzip: 7.44 kB
+2026-10-27T11:53:17.5733354Z 
+2026-10-27T11:53:17.5733556Z [32m✓ built in 236ms[39m
+2026-10-27T11:53:17.5733826Z ✓ 3 modules transformed.
+2026-10-27T11:53:17.5734056Z rendering chunks...
+2026-10-27T11:53:17.5734267Z computing gzip size...
+2026-10-27T11:53:17.5734802Z .cache/output-staging/linux-arm64-SyYoai/preload/game-panel.cjs  0.54 kB │ gzip: 0.32 kB
+2026-10-27T11:53:17.5735148Z 
+2026-10-27T11:53:17.5735270Z [32m✓ built in 13ms[39m
+2026-10-27T11:53:17.5735791Z Desktop build ready: linux-arm64 6d75e52f2e9ae383b17ed444427adbde7039a7ed21fcae92c19d3cf0be38eb18
+2026-10-27T11:53:17.5736731Z ##[endgroup]
+2026-10-27T11:53:17.5736871Z 
+2026-10-27T11:53:17.5736996Z  Tasks:    5 successful, 5 total
+2026-10-27T11:53:17.5737259Z Cached:    0 cached, 5 total
+2026-10-27T11:53:17.5737481Z   Time:    22.133s 
+2026-10-27T11:53:17.5737599Z 
+2026-10-27T11:53:17.6399497Z ##[group]Run node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const bytes=fs.readFileSync(path);fs.writeFileSync('test-results/verification/tested-build.json',JSON.stringify({buildId:JSON.parse(bytes).buildId,manifestSha256:crypto.createHash('sha256').update(bytes).digest('hex'),mtimeMs:fs.statSync(path).mtimeMs},null,2))"
+2026-10-27T11:53:17.6402286Z [36;1mnode -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const bytes=fs.readFileSync(path);fs.writeFileSync('test-results/verification/tested-build.json',JSON.stringify({buildId:JSON.parse(bytes).buildId,manifestSha256:crypto.createHash('sha256').update(bytes).digest('hex'),mtimeMs:fs.statSync(path).mtimeMs},null,2))"[0m
+2026-10-27T11:53:17.6419673Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:53:17.6419992Z env:
+2026-10-27T11:53:17.6420222Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:53:17.6420460Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:53:17.6421051Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:53:17.6421339Z ##[endgroup]
+2026-10-27T11:53:17.8441427Z ##[group]Run pnpm --filter @kisaki3/desktop test:native
+2026-10-27T11:53:17.8441924Z [36;1mpnpm --filter @kisaki3/desktop test:native[0m
+2026-10-27T11:53:17.8457445Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:53:17.8457684Z env:
+2026-10-27T11:53:17.8457867Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:53:17.8458106Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:53:17.8458382Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:53:17.8458673Z ##[endgroup]
+2026-10-27T11:53:18.3050338Z $ cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts
+2026-10-27T11:53:18.3806984Z Downloading Electron binary...
+2026-10-27T11:53:21.1742194Z 
+2026-10-27T11:53:21.1744630Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T11:53:21.1745254Z 
+2026-10-27T11:53:21.3740617Z  [32m✓[39m tests/integration/database/abi.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 18[2mms[22m[39m
+2026-10-27T11:53:21.3864369Z  [32m✓[39m tests/integration/native/files.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 26[2mms[22m[39m
+2026-10-27T11:53:21.3895981Z 
+2026-10-27T11:53:21.3898980Z [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+2026-10-27T11:53:21.3899684Z [2m      Tests [22m [1m[32m6 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (7)[39m
+2026-10-27T11:53:21.3900360Z [2m   Start at [22m 11:53:21
+2026-10-27T11:53:21.3903579Z [2m   Duration [22m 210ms[2m (transform 51%, tests 26%, import 18%, worker 5%)[22m
+2026-10-27T11:53:21.3914222Z 
+2026-10-27T11:53:21.5053538Z ##[group]Run prefix=()
+2026-10-27T11:53:21.5053850Z [36;1mprefix=()[0m
+2026-10-27T11:53:21.5054072Z [36;1mif [[ "$RUNNER_OS" == Linux ]]; then[0m
+2026-10-27T11:53:21.5054563Z [36;1m  prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)[0m
+2026-10-27T11:53:21.5054935Z [36;1mfi[0m
+2026-10-27T11:53:21.5055133Z [36;1mfor task in e2e performance; do[0m
+2026-10-27T11:53:21.5055390Z [36;1m  case "$task" in[0m
+2026-10-27T11:53:21.5055622Z [36;1m    e2e) selected="$CHECK_E2E" ;;[0m
+2026-10-27T11:53:21.5056195Z [36;1m    performance) selected="$CHECK_PERFORMANCE" ;;[0m
+2026-10-27T11:53:21.5056491Z [36;1m  esac[0m
+2026-10-27T11:53:21.5056843Z [36;1m  if [[ "$selected" == true ]]; then "${prefix[@]}" pnpm --filter @kisaki3/desktop "test:$task"; fi[0m
+2026-10-27T11:53:21.5057251Z [36;1mdone[0m
+2026-10-27T11:53:21.5072441Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:53:21.5072752Z env:
+2026-10-27T11:53:21.5072969Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:53:21.5073216Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:53:21.5073491Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:53:21.5073775Z   CHECK_E2E: true
+2026-10-27T11:53:21.5073965Z   CHECK_PERFORMANCE: true
+2026-10-27T11:53:21.5074187Z ##[endgroup]
+2026-10-27T11:53:23.1476803Z Openbox-Message: Unable to find a valid menu file "/var/lib/openbox/debian-menu.xml"
+2026-10-27T11:53:23.1989003Z $ playwright test
+2026-10-27T11:53:23.8491333Z 
+2026-10-27T11:53:23.8492001Z Running 4 tests using 1 worker
+2026-10-27T11:53:23.8492346Z 
+2026-10-27T11:53:25.8447661Z   ✓  1 tests/e2e/windows.test.ts:6:5 › main › renders in its own sandbox with a minimal bridge and closes normally (1.6s)
+2026-10-27T11:53:26.2640704Z   ✓  2 tests/e2e/windows.test.ts:6:5 › reader › renders in its own sandbox with a minimal bridge and closes normally (409ms)
+2026-10-27T11:53:26.6794562Z   ✓  3 tests/e2e/windows.test.ts:6:5 › player › renders in its own sandbox with a minimal bridge and closes normally (402ms)
+2026-10-27T11:53:27.0868561Z   ✓  4 tests/e2e/windows.test.ts:6:5 › game-panel › renders in its own sandbox with a minimal bridge and closes normally (396ms)
+2026-10-27T11:53:27.1036354Z 
+2026-10-27T11:53:27.1040023Z   4 passed (3.4s)
+2026-10-27T11:53:27.1349830Z X connection to :99 broken (explicit kill or server shutdown).
+2026-10-27T11:53:27.2091509Z Openbox-Message: Unable to find a valid menu file "/var/lib/openbox/debian-menu.xml"
+2026-10-27T11:53:27.6234305Z $ playwright test --config config/playwright/playwright.config.performance.ts
+2026-10-27T11:53:28.2546969Z 
+2026-10-27T11:53:28.2547428Z Running 1 test using 1 worker
+2026-10-27T11:53:28.2547797Z 
+2026-10-27T11:53:35.6837379Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (7.0s)
+2026-10-27T11:53:35.7048994Z 
+2026-10-27T11:53:35.7052304Z   1 passed (7.5s)
+2026-10-27T11:53:35.7396134Z X connection to :100 broken (explicit kill or server shutdown).
+2026-10-27T11:53:35.7440680Z ##[group]Run pnpm --filter @kisaki3/desktop package --target "$DESKTOP_TARGET" --test-only
+2026-10-27T11:53:35.7441408Z [36;1mpnpm --filter @kisaki3/desktop package --target "$DESKTOP_TARGET" --test-only[0m
+2026-10-27T11:53:35.7456984Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:53:35.7457305Z env:
+2026-10-27T11:53:35.7457486Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:53:35.7457723Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:53:35.7457997Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:53:35.7458282Z ##[endgroup]
+2026-10-27T11:53:36.1953781Z $ tsx tools/package/cli.ts --target linux-arm64 --test-only
+2026-10-27T11:53:37.4378312Z   • electron-builder  version=26.15.3 os=6.8.0-1070-azure
+2026-10-27T11:53:37.4456202Z   • loaded configuration  file=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs/electron-builder.yml
+2026-10-27T11:53:37.9466739Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:53:38.3669816Z   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@11.11.0 resolved=/home/runner/work/kisaki-dev/kisaki-dev projectDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:53:38.3711098Z   • skipped dependencies rebuild  reason=npmRebuild is set to false
+2026-10-27T11:53:38.3712362Z   • packaging       platform=linux arch=arm64 electron=45.0.0 appOutDir=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:53:38.7915089Z   • downloaded      label=electron progress=100%
+2026-10-27T11:53:40.6934562Z   • downloaded electron zip extracted successfully  output=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:53:40.7059201Z   • searching for node modules  pm=pnpm searchDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs
+2026-10-27T11:53:42.2816283Z   • executing @electron/fuses  electronPath=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked/kisaki
+2026-10-27T11:53:42.8315328Z   • building        target=deb arch=arm64 file=.cache/output-staging/linux-arm64-65IX8n/Kisaki-0.1.0-dev.0-linux-arm64.deb
+2026-10-27T11:53:42.8319814Z   • adding autoupdate files for: deb  resourceDir=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked/resources
+2026-10-27T11:53:42.9461842Z   • downloaded      label=fpm-1.17.0-ruby-3.4.3-linux-arm64v8.7z progress=100%
+2026-10-27T11:53:43.1316563Z   • downloaded      label=7zip-linux-arm64.tar.gz progress=100%
+2026-10-27T11:55:00.3544653Z   • electron-builder  version=26.15.3 os=6.8.0-1070-azure
+2026-10-27T11:55:00.3622599Z   • loaded configuration  file=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs/electron-builder.yml
+2026-10-27T11:55:00.8722429Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:55:01.2857356Z   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@11.11.0 resolved=/home/runner/work/kisaki-dev/kisaki-dev projectDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:55:01.2896286Z   • skipped dependencies rebuild  reason=npmRebuild is set to false
+2026-10-27T11:55:01.2897377Z   • packaging       platform=linux arch=arm64 electron=45.0.0 appOutDir=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:55:01.3828837Z   • downloaded      label=electron progress=100%
+2026-10-27T11:55:03.3360500Z   • downloaded electron zip extracted successfully  output=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:55:03.3483590Z   • searching for node modules  pm=pnpm searchDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs
+2026-10-27T11:55:04.9719367Z   • executing @electron/fuses  electronPath=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked/kisaki
+2026-10-27T11:55:05.5142639Z   • building        target=rpm arch=arm64 file=.cache/output-staging/linux-arm64-65IX8n/Kisaki-0.1.0-dev.0-linux-arm64.rpm
+2026-10-27T11:55:05.5149616Z   • adding autoupdate files for: rpm  resourceDir=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked/resources
+2026-10-27T11:57:11.8767494Z   • electron-builder  version=26.15.3 os=6.8.0-1070-azure
+2026-10-27T11:57:11.8844473Z   • loaded configuration  file=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs/electron-builder.yml
+2026-10-27T11:57:12.3837290Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:57:12.8053598Z   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@11.11.0 resolved=/home/runner/work/kisaki-dev/kisaki-dev projectDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app
+2026-10-27T11:57:12.8105109Z   • skipped dependencies rebuild  reason=npmRebuild is set to false
+2026-10-27T11:57:12.8107131Z   • packaging       platform=linux arch=arm64 electron=45.0.0 appOutDir=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:57:12.8934385Z   • downloaded      label=electron progress=100%
+2026-10-27T11:57:14.8323512Z   • downloaded electron zip extracted successfully  output=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked
+2026-10-27T11:57:14.8450167Z   • searching for node modules  pm=pnpm searchDir=/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/package-m9K0xs
+2026-10-27T11:57:16.4801236Z   • executing @electron/fuses  electronPath=.cache/output-staging/linux-arm64-65IX8n/linux-arm64-unpacked/kisaki
+2026-10-27T11:57:17.1525716Z   • building        target=AppImage arch=arm64 file=.cache/output-staging/linux-arm64-65IX8n/Kisaki-0.1.0-dev.0-linux-arm64.AppImage
+2026-10-27T11:57:17.1858808Z   • downloaded      label=appimage-12.0.1.7z progress=100%
+2026-10-27T11:57:22.3167002Z   • building embedded block map  file=.cache/output-staging/linux-arm64-65IX8n/Kisaki-0.1.0-dev.0-linux-arm64.AppImage
+2026-10-27T11:57:27.3113708Z /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/dist/linux-arm64/artifacts.json
+2026-10-27T11:57:27.3561438Z ##[group]Run node -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const before=JSON.parse(fs.readFileSync('test-results/verification/tested-build.json'));const bytes=fs.readFileSync(path);const receipt=JSON.parse(fs.readFileSync('clients/desktop/app/dist/'+process.env.DESKTOP_TARGET+'/artifacts.json'));if(before.manifestSha256!==crypto.createHash('sha256').update(bytes).digest('hex')||before.mtimeMs!==fs.statSync(path).mtimeMs||before.buildId!==receipt.buildId)throw Error('The tested build was replaced or not packaged');fs.writeFileSync('test-results/verification/build-reuse.json',JSON.stringify({...before,reused:true,candidateFiles:receipt.files.length},null,2))"
+2026-10-27T11:57:27.3567875Z [36;1mnode -e "const fs=require('node:fs'),crypto=require('node:crypto');const path='clients/desktop/app/out/'+process.env.DESKTOP_TARGET+'/build.json';const before=JSON.parse(fs.readFileSync('test-results/verification/tested-build.json'));const bytes=fs.readFileSync(path);const receipt=JSON.parse(fs.readFileSync('clients/desktop/app/dist/'+process.env.DESKTOP_TARGET+'/artifacts.json'));if(before.manifestSha256!==crypto.createHash('sha256').update(bytes).digest('hex')||before.mtimeMs!==fs.statSync(path).mtimeMs||before.buildId!==receipt.buildId)throw Error('The tested build was replaced or not packaged');fs.writeFileSync('test-results/verification/build-reuse.json',JSON.stringify({...before,reused:true,candidateFiles:receipt.files.length},null,2))"[0m
+2026-10-27T11:57:27.3586832Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T11:57:27.3587217Z env:
+2026-10-27T11:57:27.3587509Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:57:27.3587830Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:57:27.3588155Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:57:27.3588561Z ##[endgroup]
+2026-10-27T11:57:27.3903709Z ##[group]Run xvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'
+2026-10-27T11:57:27.3904417Z [36;1mxvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'[0m
+2026-10-27T11:57:27.3920392Z shell: /usr/bin/bash -e {0}
+2026-10-27T11:57:27.3920877Z env:
+2026-10-27T11:57:27.3921108Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:57:27.3921431Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:57:27.3921785Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:57:27.3922149Z   XDG_SESSION_TYPE: x11
+2026-10-27T11:57:27.3922437Z ##[endgroup]
+2026-10-27T11:57:27.4732890Z Openbox-Message: Unable to find a valid menu file "/var/lib/openbox/debian-menu.xml"
+2026-10-27T11:57:27.8668381Z $ pnpm --filter @kisaki3/desktop test:artifacts
+2026-10-27T11:57:28.3040526Z $ vitest run --config config/vitest/vitest.config.artifacts.ts
+2026-10-27T11:57:28.5807454Z 
+2026-10-27T11:57:28.5810352Z [1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90m/home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app[39m
+2026-10-27T11:57:28.5811053Z 
+2026-10-27T11:57:32.5985313Z [app] Starting
+2026-10-27T11:57:32.6719473Z [7980:1027/115732.671488:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T11:57:32.7129614Z [7980:1027/115732.712378:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T11:57:32.7131438Z [7980:1027/115732.712499:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T11:57:32.7190321Z [7980:1027/115732.718736:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+2026-10-27T11:57:32.7274206Z [app] Native resources loaded
+2026-10-27T11:57:32.7275947Z [app] Electron ready
+2026-10-27T11:57:32.9197871Z [extensions] Host ready
+2026-10-27T11:57:32.9448740Z [7980:1027/115732.944291:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+2026-10-27T11:57:33.1157932Z [app] Ready 6d75e52f2e9ae383b17ed444427adbde7039a7ed21fcae92c19d3cf0be38eb18
+2026-10-27T11:57:33.1358583Z [extensions] Host stopped
+2026-10-27T11:57:33.1359200Z [app] Shutdown complete
+2026-10-27T11:57:33.9153971Z  [32m✓[39m tests/artifacts/desktop.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 5112[2mms[22m[39m
+2026-10-27T11:57:33.9155407Z    [33m[2m✓[22m[39m the exact packaged carrier retains production fuses and starts and closes externally[33m 5110[2mms[22m[39m
+2026-10-27T11:57:33.9195409Z 
+2026-10-27T11:57:33.9200282Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T11:57:33.9201815Z [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-10-27T11:57:33.9202465Z [2m   Start at [22m 11:57:28
+2026-10-27T11:57:33.9203133Z [2m   Duration [22m 5.33s[2m (tests 98%, transform 1%, import 1%)[22m
+2026-10-27T11:57:33.9212339Z 
+2026-10-27T11:57:33.9222061Z JSON report written to /home/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/artifacts/results.json
+2026-10-27T11:57:33.9671714Z X connection to :99 broken (explicit kill or server shutdown).
+2026-10-27T11:57:33.9753188Z ##[group]Run actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+2026-10-27T11:57:33.9753660Z with:
+2026-10-27T11:57:33.9753984Z   path: .turbo/cache
+2026-10-27T11:57:33.9754683Z   key: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T11:57:33.9755501Z   enableCrossOsArchive: false
+2026-10-27T11:57:33.9756141Z env:
+2026-10-27T11:57:33.9756369Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:57:33.9756744Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:57:33.9757066Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:57:33.9757449Z ##[endgroup]
+2026-10-27T11:57:34.0983524Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/kisaki-dev/kisaki-dev --files-from manifest.txt --use-compress-program zstdmt
+2026-10-27T11:57:34.3931822Z Sent 17431 of 17431 (100.0%), 0.1 MBs/sec
+2026-10-27T11:57:34.5138925Z Cache saved with key: turbo-v2-Linux-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-desktop-27cc3e0c2972491a336dbbfdcba327b1b380c341
+2026-10-27T11:57:34.5258122Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-27T11:57:34.5258650Z with:
+2026-10-27T11:57:34.5259007Z   name: desktop-linux-arm64
+2026-10-27T11:57:34.5259970Z   path: test-results/verification/
+packages/tooling/test-results/
+clients/desktop/app/test-results/
+clients/desktop/app/dist/linux-arm64/artifacts.json
+clients/desktop/app/dist/linux-arm64/Kisaki-*
+clients/desktop/app/dist/linux-arm64/*.yml
+2026-10-27T11:57:34.5261052Z   if-no-files-found: error
+2026-10-27T11:57:34.5261340Z   compression-level: 6
+2026-10-27T11:57:34.5261613Z   overwrite: false
+2026-10-27T11:57:34.5261920Z   include-hidden-files: false
+2026-10-27T11:57:34.5262233Z   archive: true
+2026-10-27T11:57:34.5262505Z env:
+2026-10-27T11:57:34.5262765Z   TURBO_TELEMETRY_DISABLED: 1
+2026-10-27T11:57:34.5263088Z   DESKTOP_TARGET: linux-arm64
+2026-10-27T11:57:34.5263455Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-10-27T11:57:34.5263847Z ##[endgroup]
+2026-10-27T11:57:34.6547105Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T11:57:34.6549540Z The least common ancestor is /home/runner/work/kisaki-dev/kisaki-dev. This will be the root directory of the artifact
+2026-10-27T11:57:34.6550414Z With the provided path, there will be 13 files uploaded
+2026-10-27T11:57:34.6552869Z Artifact name is valid!
+2026-10-27T11:57:34.6553513Z Root directory input is valid!
+2026-10-27T11:57:34.8676995Z Uploading artifact: desktop-linux-arm64.zip
+2026-10-27T11:57:34.8708719Z Beginning upload of artifact content to blob storage
+2026-10-27T11:57:35.5098963Z Uploaded bytes 8388608
+2026-10-27T11:57:35.7146749Z Uploaded bytes 16777216
+2026-10-27T11:57:35.7434237Z Uploaded bytes 25165824
+2026-10-27T11:57:35.9170360Z Uploaded bytes 33554432
+2026-10-27T11:57:36.1637770Z Uploaded bytes 41943040
+2026-10-27T11:57:36.4349289Z Uploaded bytes 50331648
+2026-10-27T11:57:36.6441444Z Uploaded bytes 58720256
+2026-10-27T11:57:36.7482890Z Uploaded bytes 67108864
+2026-10-27T11:57:36.9980851Z Uploaded bytes 75497472
+2026-10-27T11:57:37.2140785Z Uploaded bytes 83886080
+2026-10-27T11:57:37.3609261Z Uploaded bytes 92274688
+2026-10-27T11:57:37.6381613Z Uploaded bytes 100663296
+2026-10-27T11:57:37.7259011Z Uploaded bytes 109051904
+2026-10-27T11:57:37.9325796Z Uploaded bytes 117440512
+2026-10-27T11:57:38.1229928Z Uploaded bytes 125829120
+2026-10-27T11:57:38.3772721Z Uploaded bytes 134217728
+2026-10-27T11:57:38.5552113Z Uploaded bytes 142606336
+2026-10-27T11:57:38.6583072Z Uploaded bytes 150994944
+2026-10-27T11:57:38.8851309Z Uploaded bytes 159383552
+2026-10-27T11:57:39.0789585Z Uploaded bytes 167772160
+2026-10-27T11:57:39.2872253Z Uploaded bytes 176160768
+2026-10-27T11:57:39.4450645Z Uploaded bytes 184549376
+2026-10-27T11:57:39.6980917Z Uploaded bytes 192937984
+2026-10-27T11:57:39.8880449Z Uploaded bytes 201326592
+2026-10-27T11:57:40.1300149Z Uploaded bytes 209715200
+2026-10-27T11:57:40.1935199Z Uploaded bytes 218103808
+2026-10-27T11:57:40.3991291Z Uploaded bytes 226492416
+2026-10-27T11:57:40.6358204Z Uploaded bytes 234881024
+2026-10-27T11:57:40.8700816Z Uploaded bytes 243269632
+2026-10-27T11:57:40.9452176Z Uploaded bytes 251658240
+2026-10-27T11:57:41.1082958Z Uploaded bytes 260046848
+2026-10-27T11:57:41.3434590Z Uploaded bytes 268435456
+2026-10-27T11:57:41.4925107Z Uploaded bytes 276824064
+2026-10-27T11:57:41.6776841Z Uploaded bytes 285212672
+2026-10-27T11:57:41.8539869Z Uploaded bytes 293601280
+2026-10-27T11:57:42.0171712Z Uploaded bytes 301989888
+2026-10-27T11:57:42.2181232Z Uploaded bytes 310378496
+2026-10-27T11:57:42.4628404Z Uploaded bytes 318767104
+2026-10-27T11:57:42.7263232Z Uploaded bytes 327155712
+2026-10-27T11:57:42.7782058Z Uploaded bytes 328426774
+2026-10-27T11:57:42.8105086Z Finished uploading artifact content to blob storage!
+2026-10-27T11:57:42.8108788Z SHA256 digest of uploaded artifact is 7d411106df10ec11c2e1dcfff6b0c34dd88ba4f2fb78a70eb8712ea152776a78
+2026-10-27T11:57:42.8110412Z Finalizing artifact upload
+2026-10-27T11:57:43.2487081Z Artifact desktop-linux-arm64 successfully finalized. Artifact ID 12731159986
+2026-10-27T11:57:43.2488041Z Artifact desktop-linux-arm64 has been successfully uploaded! Final size is 328426774 bytes. Artifact ID is 12731159986
+2026-10-27T11:57:43.2492083Z Artifact download URL: https://github.com/ximu3/kisaki-dev/actions/runs/40499251641/artifacts/12731159986
+2026-10-27T11:57:43.2698761Z Post job cleanup.
+2026-10-27T11:57:43.3931878Z Pruning is unnecessary.
+2026-10-27T11:57:43.3933799Z Cache hit occurred on the primary key pnpm-cache-Linux-arm64-a18c32dfa46f60482db457e1e9a4484450925b5323a2c0f82f226a3241bc09e1, not saving cache.
+2026-10-27T11:57:43.4057112Z Post job cleanup.
+2026-10-27T11:57:43.5126541Z (node:8166) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T11:57:43.5127343Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T11:57:43.5285720Z Post job cleanup.
+2026-10-27T11:57:43.6005733Z [command]/usr/bin/git version
+2026-10-27T11:57:43.6043164Z git version 2.56.0
+2026-10-27T11:57:43.6077729Z Temporarily overriding HOME='/home/runner/work/_temp/f1b31c62-8b9f-424a-a89b-e8294ad7496f' before making global git config changes
+2026-10-27T11:57:43.6078881Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T11:57:43.6082474Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/kisaki-dev/kisaki-dev
+2026-10-27T11:57:43.6124051Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T11:57:43.6161430Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T11:57:43.6379109Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T11:57:43.6421374Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T11:57:43.6643868Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T11:57:43.6676497Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T11:57:43.7037981Z Cleaning up orphan processes

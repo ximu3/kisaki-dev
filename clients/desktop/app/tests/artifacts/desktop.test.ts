@@ -140,9 +140,9 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       if (!child.pid) throw new Error('Packaged process could not start')
       await expect
         .poll(
-          async () => {
+          async ({ signal }) => {
             if (child.exitCode !== null) throw new Error(`Packaged process exited: ${diagnostic}`)
-            return hasNativeWindow(child.pid!)
+            return hasNativeWindow(child.pid!, signal)
           },
           { timeout: 30_000, interval: 250 },
         )
@@ -168,7 +168,13 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     })
     try {
       expect(application.ready).toMatchObject({ appVersion: build.version, apiVersion: null })
-      expect(await hasNativeWindow(application.pid)).toBe(true)
+      // The system window list can lag behind the application's completed show request.
+      await expect
+        .poll(({ signal }) => hasNativeWindow(application.pid, signal), {
+          timeout: 30_000,
+          interval: 250,
+        })
+        .toBe(true)
       expect(await application.stop()).toBe('exited')
       expect(await application.exited).toEqual({ code: 0, signal: null })
       expect((await readdir(join(developmentProfile, 'browser'))).length).toBeGreaterThan(0)

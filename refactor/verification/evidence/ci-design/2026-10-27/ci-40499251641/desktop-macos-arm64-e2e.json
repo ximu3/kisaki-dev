@@ -1,0 +1,345 @@
+{
+  "config": {
+    "argv": [
+      "/Users/runner/hostedtoolcache/node/24.11.1/arm64/bin/node",
+      "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/node_modules/playwright/cli.js",
+      "test"
+    ],
+    "configFile": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/playwright.config.ts",
+    "rootDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+      },
+      "gitCommit": {
+        "shortHash": "27cc3e0",
+        "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "subject": "test: measure CI with retained desktop artifacts",
+        "body": "test: measure CI with retained desktop artifacts\n",
+        "author": {
+          "name": "ximu3",
+          "email": "ximu_simo@outlook.com",
+          "time": 1793101824000
+        },
+        "committer": {
+          "name": "ximu3",
+          "email": "ximu_simo@outlook.com",
+          "time": 1793101824000
+        },
+        "branch": "research/ci-final-design-measurements"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+          },
+          "gitCommit": {
+            "shortHash": "27cc3e0",
+            "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "subject": "test: measure CI with retained desktop artifacts",
+            "body": "test: measure CI with retained desktop artifacts\n",
+            "author": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "committer": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "branch": "research/ci-final-design-measurements"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.test.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+          },
+          "gitCommit": {
+            "shortHash": "27cc3e0",
+            "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "subject": "test: measure CI with retained desktop artifacts",
+            "body": "test: measure CI with retained desktop artifacts\n",
+            "author": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "committer": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "branch": "research/ci-final-design-measurements"
+          },
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+        "snapshotDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.test.ts",
+        "timeout": 30000,
+        "use": {
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "windows.test.ts",
+      "file": "windows.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "main",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4915,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T11:53:09.656Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2fef7b5faf58b814563a",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "reader",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 850,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T11:53:14.610Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-019cdcfa78680240cd82",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "player",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 989,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T11:53:15.474Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-f40ccb7f718b930a0e30",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "game-panel",
+          "file": "windows.test.ts",
+          "line": 4,
+          "column": 8,
+          "specs": [
+            {
+              "title": "renders in its own sandbox with a minimal bridge and closes normally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 930,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-27T11:53:16.475Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f9e501b862ea12467e2-2252153537811e43ef22",
+              "file": "windows.test.ts",
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T11:53:08.783Z",
+    "duration": 8643.319,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

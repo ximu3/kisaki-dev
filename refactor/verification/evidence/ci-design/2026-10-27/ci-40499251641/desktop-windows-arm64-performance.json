@@ -1,0 +1,617 @@
+{
+  "config": {
+    "argv": [
+      "C:\\hostedtoolcache\\windows\\node\\24.11.1\\arm64\\node.exe",
+      "C:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config",
+      "config/playwright/playwright.config.performance.ts"
+    ],
+    "configFile": "C:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\config\\playwright\\playwright.config.performance.ts",
+    "rootDir": "C:/a/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+      },
+      "gitCommit": {
+        "shortHash": "27cc3e0",
+        "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+        "subject": "test: measure CI with retained desktop artifacts",
+        "body": "test: measure CI with retained desktop artifacts\n",
+        "author": {
+          "name": "ximu3",
+          "email": "ximu_simo@outlook.com",
+          "time": 1793101824000
+        },
+        "committer": {
+          "name": "ximu3",
+          "email": "ximu_simo@outlook.com",
+          "time": 1793101824000
+        },
+        "branch": "research/ci-final-design-measurements"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/a/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/performance",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+          },
+          "gitCommit": {
+            "shortHash": "27cc3e0",
+            "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "subject": "test: measure CI with retained desktop artifacts",
+            "body": "test: measure CI with retained desktop artifacts\n",
+            "author": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "committer": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "branch": "research/ci-final-design-measurements"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/a/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.test.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\test-results\\performance",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "commitHash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40499251641"
+          },
+          "gitCommit": {
+            "shortHash": "27cc3e0",
+            "hash": "27cc3e0c2972491a336dbbfdcba327b1b380c341",
+            "subject": "test: measure CI with retained desktop artifacts",
+            "body": "test: measure CI with retained desktop artifacts\n",
+            "author": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "committer": {
+              "name": "ximu3",
+              "email": "ximu_simo@outlook.com",
+              "time": 1793101824000
+            },
+            "branch": "research/ci-final-design-measurements"
+          },
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "C:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\tests\\performance",
+        "snapshotDir": "C:\\a\\kisaki-dev\\kisaki-dev\\clients\\desktop\\app\\tests\\performance",
+        "testIgnore": [],
+        "testMatch": "**/*.test.ts",
+        "timeout": 180000,
+        "use": {},
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../test-results/performance/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "startup.test.ts",
+      "file": "startup.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "measures twenty fresh processes and confirms all observed child processes exit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10451,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Sample 1: launch",
+                      "duration": 205
+                    },
+                    {
+                      "title": "Sample 1: window ready",
+                      "duration": 359
+                    },
+                    {
+                      "title": "Sample 1: process metrics",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Sample 1: close",
+                      "duration": 186
+                    },
+                    {
+                      "title": "Sample 1: observed processes exit",
+                      "duration": 4
+                    },
+                    {
+                      "title": "Sample 2: launch",
+                      "duration": 162
+                    },
+                    {
+                      "title": "Sample 2: window ready",
+                      "duration": 211
+                    },
+                    {
+                      "title": "Sample 2: process metrics",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Sample 2: close",
+                      "duration": 110
+                    },
+                    {
+                      "title": "Sample 2: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 3: launch",
+                      "duration": 194
+                    },
+                    {
+                      "title": "Sample 3: window ready",
+                      "duration": 181
+                    },
+                    {
+                      "title": "Sample 3: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 3: close",
+                      "duration": 77
+                    },
+                    {
+                      "title": "Sample 3: observed processes exit",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Sample 4: launch",
+                      "duration": 189
+                    },
+                    {
+                      "title": "Sample 4: window ready",
+                      "duration": 202
+                    },
+                    {
+                      "title": "Sample 4: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 4: close",
+                      "duration": 71
+                    },
+                    {
+                      "title": "Sample 4: observed processes exit",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Sample 5: launch",
+                      "duration": 178
+                    },
+                    {
+                      "title": "Sample 5: window ready",
+                      "duration": 241
+                    },
+                    {
+                      "title": "Sample 5: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 5: close",
+                      "duration": 83
+                    },
+                    {
+                      "title": "Sample 5: observed processes exit",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Sample 6: launch",
+                      "duration": 197
+                    },
+                    {
+                      "title": "Sample 6: window ready",
+                      "duration": 192
+                    },
+                    {
+                      "title": "Sample 6: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 6: close",
+                      "duration": 78
+                    },
+                    {
+                      "title": "Sample 6: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 7: launch",
+                      "duration": 204
+                    },
+                    {
+                      "title": "Sample 7: window ready",
+                      "duration": 199
+                    },
+                    {
+                      "title": "Sample 7: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 7: close",
+                      "duration": 72
+                    },
+                    {
+                      "title": "Sample 7: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 8: launch",
+                      "duration": 169
+                    },
+                    {
+                      "title": "Sample 8: window ready",
+                      "duration": 220
+                    },
+                    {
+                      "title": "Sample 8: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 8: close",
+                      "duration": 76
+                    },
+                    {
+                      "title": "Sample 8: observed processes exit",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Sample 9: launch",
+                      "duration": 180
+                    },
+                    {
+                      "title": "Sample 9: window ready",
+                      "duration": 217
+                    },
+                    {
+                      "title": "Sample 9: process metrics",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Sample 9: close",
+                      "duration": 76
+                    },
+                    {
+                      "title": "Sample 9: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 10: launch",
+                      "duration": 193
+                    },
+                    {
+                      "title": "Sample 10: window ready",
+                      "duration": 191
+                    },
+                    {
+                      "title": "Sample 10: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 10: close",
+                      "duration": 75
+                    },
+                    {
+                      "title": "Sample 10: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 11: launch",
+                      "duration": 182
+                    },
+                    {
+                      "title": "Sample 11: window ready",
+                      "duration": 213
+                    },
+                    {
+                      "title": "Sample 11: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 11: close",
+                      "duration": 77
+                    },
+                    {
+                      "title": "Sample 11: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 12: launch",
+                      "duration": 178
+                    },
+                    {
+                      "title": "Sample 12: window ready",
+                      "duration": 239
+                    },
+                    {
+                      "title": "Sample 12: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 12: close",
+                      "duration": 158
+                    },
+                    {
+                      "title": "Sample 12: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 13: launch",
+                      "duration": 230
+                    },
+                    {
+                      "title": "Sample 13: window ready",
+                      "duration": 204
+                    },
+                    {
+                      "title": "Sample 13: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 13: close",
+                      "duration": 90
+                    },
+                    {
+                      "title": "Sample 13: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 14: launch",
+                      "duration": 187
+                    },
+                    {
+                      "title": "Sample 14: window ready",
+                      "duration": 230
+                    },
+                    {
+                      "title": "Sample 14: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 14: close",
+                      "duration": 87
+                    },
+                    {
+                      "title": "Sample 14: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 15: launch",
+                      "duration": 177
+                    },
+                    {
+                      "title": "Sample 15: window ready",
+                      "duration": 229
+                    },
+                    {
+                      "title": "Sample 15: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 15: close",
+                      "duration": 88
+                    },
+                    {
+                      "title": "Sample 15: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 16: launch",
+                      "duration": 186
+                    },
+                    {
+                      "title": "Sample 16: window ready",
+                      "duration": 251
+                    },
+                    {
+                      "title": "Sample 16: process metrics",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Sample 16: close",
+                      "duration": 90
+                    },
+                    {
+                      "title": "Sample 16: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 17: launch",
+                      "duration": 191
+                    },
+                    {
+                      "title": "Sample 17: window ready",
+                      "duration": 261
+                    },
+                    {
+                      "title": "Sample 17: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 17: close",
+                      "duration": 84
+                    },
+                    {
+                      "title": "Sample 17: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 18: launch",
+                      "duration": 166
+                    },
+                    {
+                      "title": "Sample 18: window ready",
+                      "duration": 253
+                    },
+                    {
+                      "title": "Sample 18: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 18: close",
+                      "duration": 106
+                    },
+                    {
+                      "title": "Sample 18: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 19: launch",
+                      "duration": 195
+                    },
+                    {
+                      "title": "Sample 19: window ready",
+                      "duration": 255
+                    },
+                    {
+                      "title": "Sample 19: process metrics",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Sample 19: close",
+                      "duration": 89
+                    },
+                    {
+                      "title": "Sample 19: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 20: launch",
+                      "duration": 167
+                    },
+                    {
+                      "title": "Sample 20: window ready",
+                      "duration": 277
+                    },
+                    {
+                      "title": "Sample 20: process metrics",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Sample 20: close",
+                      "duration": 94
+                    },
+                    {
+                      "title": "Sample 20: observed processes exit",
+                      "duration": 1
+                    }
+                  ],
+                  "startTime": "2026-10-27T11:56:01.658Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "startup.json",
+                      "contentType": "application/json",
+                      "body": "ewogICJ0YXJnZXQiOiAid2luZG93cy1hcm02NCIsCiAgIm9zUmVsZWFzZSI6ICIxMC4wLjI2MjAwIiwKICAiY3B1IjogIkNvYmFsdCAxMDAiLAogICJtZW1vcnlCeXRlcyI6IDE3MTY5Mzg3NTIwLAogICJtb2RlIjogImZyZXNoIHByb2Nlc3Nlcywgd2FybSBPUyBkaXNrIGNhY2hlLCBpc29sYXRlZCByZXRhaW5lZCBwcm9maWxlLCBXMDAgc2hlbGwgb25seSIsCiAgImJ1aWxkIjogewogICAgInNjaGVtYVZlcnNpb24iOiAxLAogICAgImJ1aWxkSWQiOiAiNmQ3NWU1MmYyZTlhZTM4M2IxN2VkNDQ0NDI3YWRiZGU3MDM5YTdlZDIxZmNhZTkyYzE5ZDNjZjBiZTM4ZWIxOCIsCiAgICAidGFyZ2V0IjogIndpbmRvd3MtYXJtNjQiLAogICAgInZlcnNpb24iOiAiMC4xLjAtZGV2LjAiLAogICAgImVsZWN0cm9uVmVyc2lvbiI6ICI0NS4wLjAiLAogICAgImZpbGVzIjogewogICAgICAiZXh0ZW5zaW9uLWhvc3QvZW50cnkuanMiOiAiNzg1ZjBkMjZlYmU0NGQ4OThlNmM1MmU4OWU3NzVlMTUzOGM3ZTQzNmI5N2Y1NDE3MDJjYmY3NjhkYzY2NDRjMiIsCiAgICAgICJtYWluL2VudHJ5LmpzIjogIjI0YjJmMjcwZjk1NTZjMWJmNTkzZjlkYmY5OWU5ZmVhMThmNThlNjAyMThmMTViZjg1OGZhMmZhNmYzMDIyOWEiLAogICAgICAicGFja2FnZS5qc29uIjogIjI1NmJlMDQwY2M1YTJlNWVhMzMzZmQxNDlkOWI1NWM4NmYyOGY5NGE1ODllZTJiMmZiMzU0YjFhMWY3Y2RhOWMiLAogICAgICAicHJlbG9hZC9nYW1lLXBhbmVsLmNqcyI6ICIzZDRhNGEzODBjNzYxZmY0ZGIzNTYyZGI2NDFiMjdiMGM2OTQ5MDZmODFhY2QwMjFlMGQ5MTM5YTg3YzE4YjQ3IiwKICAgICAgInByZWxvYWQvbWFpbi5janMiOiAiNjdhZGNlMTg5Yzc3ZDU4OWUyNzA1YzI0ZTRhOTg1Yjg4NTlhNzgyZTRmYzI3ZGEyNWNlOGQ4MGU4MTViNjI5MyIsCiAgICAgICJwcmVsb2FkL3BsYXllci5janMiOiAiMGQxYTNiZDdjOTZkMjY2ZTViNjJiNTE4YjgzNTRjOWMxMmNmNDdhMWIyYzU0NjI5NDdmODgyOThkZWNjZWZjOCIsCiAgICAgICJwcmVsb2FkL3JlYWRlci5janMiOiAiNzkxZDQxNjlhYTI0MTQzZjI2YmZkY2U5M2JlNGU5ZmQ1OGI0YTg2MGQ4ZmY5MThlNjJkZGE4ZTdmODkxMGM1MCIsCiAgICAgICJyZW5kZXJlci9hc3NldHMvZ2FtZS1wYW5lbC1wQngxenhCcC5qcyI6ICI4ZjEwMDAxODNhYTEzYThiNGY5N2E4MWJkNTIzODE1M2M5MzA0Mzc3NmZkMmIwNzQyOTNlYTMxYTgyYmE1YmRhIiwKICAgICAgInJlbmRlcmVyL2Fzc2V0cy9tYWluLURYWVdWQl9ELmNzcyI6ICJhZGFkMWQzNmJiMmI5N2E2NjNjMzQ1NTU3ZWYyMmMwMGM1ODAxNmUyZGNhNjkxYmJmODUyZDUxMjlmNjE5OWVmIiwKICAgICAgInJlbmRlcmVyL2Fzc2V0cy9tYWluLU83X3dGSU1wLmpzIjogImYyMTUyMDk5ODczNmE5MDJhNTc3MjRhNDM1ZTJiYTg0YjM4ODRiNDc5OTllZTAxMGNjMDAyZjViNGU1ZTlhODgiLAogICAgICAicmVuZGVyZXIvYXNzZXRzL3BsYXllci1Dc0hhQzRhRi5qcyI6ICIzY2FlOTgzMDA2ZTA2ZjNlNzY5ZGZjNDIwNjlkZjBmZWRlZjIyZDFjNDJkNDI1ODY0NDVlYWVjMDA4ZWRkNTU2IiwKICAgICAgInJlbmRlcmVyL2Fzc2V0cy9yZWFkZXItQmx6Zm9rVmMuanMiOiAiYTY2YjBmNDA2ZDAzM2RlZGQ0ODE4MDJiMWFiM2QyODM5Mjc3NDc0OTk2YjQ2NTEyN2NhZmJmZjQ0YjQ0NjcxYyIsCiAgICAgICJyZW5kZXJlci9hc3NldHMvd2luZG93LXJvb3QtaEdzOUxHRWouY3NzIjogIjk2YTI0ODBlNWM1ODk1ZTg0MTAxODI1MzE5MGIzNjJmNzliMDllYzk0NGFmNDgwOTIxNzIwZjQxMjc0M2QxMDgiLAogICAgICAicmVuZGVyZXIvYXNzZXRzL3dpbmRvdy1yb290LXdjdmtJSWp0LmpzIjogImE2YjZjN2M1YjA3ODQ1NGEyYzlmZTE5Nzg3MjAyNGY0ZTBhMWNkZjZjYzI3MTUwYTBjNTE2NDM1Nzc0YzUwMTAiLAogICAgICAicmVuZGVyZXIvZ2FtZS1wYW5lbC9pbmRleC5odG1sIjogIjg3MWIxZDc2YjU2NzA2MGNjOGYxMDFlNzgyZTNjYmJkOTU2N2YwZTE2Yzk3YmNjMTAwZTgyOTIxMmM3M2QzZjQiLAogICAgICAicmVuZGVyZXIvbWFpbi9pbmRleC5odG1sIjogImE3MTZhMTI5N2U4YWZmYjQyMzVhYjlhZGNiNmYwZDc4OGRmZmQ1N2IyNGYxYTZmNGM3ZjBkNjljZWJkYzg3M2IiLAogICAgICAicmVuZGVyZXIvcGxheWVyL2luZGV4Lmh0bWwiOiAiMjBmZDkzMzJkYjVhYTUwYTZjMzU2OGUyNDM0MGI1ODg1MzQxZDZhMmU3YTgxYzI5YzJmMjIzZDMxYzc1OGZiZCIsCiAgICAgICJyZW5kZXJlci9yZWFkZXIvaW5kZXguaHRtbCI6ICI0NzEzZWNmZTJkZTkwOWQ2MTU3YjY1ZWQ4ZjhiNWI0NDZiNmM1MWRjYzZhMWI3NjI5ZDU0NDRiOTQyZjlkZTBmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1jeXJpbGxpYy1leHQtc3RhbmRhcmQtbm9ybWFsLndvZmYyIjogImMxZWY3NTg2YjhkZTU2NGYyNjI4MGEyNmJhMzJmY2EzN2Y3MzcwMjYxY2Q5ZWQ1NjZjMTdhNGM3YmU5YmY3YTciLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWN5cmlsbGljLWV4dC13ZHRoLW5vcm1hbC53b2ZmMiI6ICJjMWVmNzU4NmI4ZGU1NjRmMjYyODBhMjZiYTMyZmNhMzdmNzM3MDI2MWNkOWVkNTY2YzE3YTRjN2JlOWJmN2E3IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1jeXJpbGxpYy1leHQtd2dodC1ub3JtYWwud29mZjIiOiAiMGMyNGYyMWFkM2JkMjQ4ZTM5ZDQyODY3OWNkZGQ3OTY5ZjkwZWI2Y2ViZTIwZjE2NzBlODFhODllOGQzZjc1MSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tY3lyaWxsaWMtc3RhbmRhcmQtbm9ybWFsLndvZmYyIjogIjFkNzdlOThkM2EwZGU3NzBkNGM0ZjRmZTI2MzEwNTE3NjhiMjMwZTRiZGZiYWRlOTQ4NGFhNjg2ODZhNzg5ZjQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWN5cmlsbGljLXdkdGgtbm9ybWFsLndvZmYyIjogIjFkNzdlOThkM2EwZGU3NzBkNGM0ZjRmZTI2MzEwNTE3NjhiMjMwZTRiZGZiYWRlOTQ4NGFhNjg2ODZhNzg5ZjQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWN5cmlsbGljLXdnaHQtbm9ybWFsLndvZmYyIjogImY3ZTEwMjNjZTAwOTllYmM0YTY3ZDI2NjA3ZjZmMmViYWE1ZGUxMzg4NjM1ZmRmNzQ4ZThmMjkwMzU0MTQ3ZDYiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWdyZWVrLWV4dC1zdGFuZGFyZC1ub3JtYWwud29mZjIiOiAiMTMwYTI3OTE2YWViZmQ0N2U5MzhhOWFjOGQ5ZTljZmViNzU5ZDllNWNkNzc2YTcwNjNhOGQ0YmQyMTk5MDEzOSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tZ3JlZWstZXh0LXdkdGgtbm9ybWFsLndvZmYyIjogIjEzMGEyNzkxNmFlYmZkNDdlOTM4YTlhYzhkOWU5Y2ZlYjc1OWQ5ZTVjZDc3NmE3MDYzYThkNGJkMjE5OTAxMzkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWdyZWVrLWV4dC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIxMDlhODQyMjllNDRjYzM1YjVlMmU5ZWIwYmZiZDA2MzNhZjBjMmI2ZjgxOWU3NzUyYTM5NDI2NDQ2ZjUyYTg0IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1ncmVlay1zdGFuZGFyZC1ub3JtYWwud29mZjIiOiAiYTg5NTE2N2FhNTJkZmZlYmYwMGNlZWZmNTlkYjkxMzE5YzM3NTc5MzFmZmM5N2Y5YmE1ZDI0MGRhMTg4M2U5NiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tZ3JlZWstd2R0aC1ub3JtYWwud29mZjIiOiAiYTg5NTE2N2FhNTJkZmZlYmYwMGNlZWZmNTlkYjkxMzE5YzM3NTc5MzFmZmM5N2Y5YmE1ZDI0MGRhMTg4M2U5NiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tZ3JlZWstd2dodC1ub3JtYWwud29mZjIiOiAiMjVmOTI2YmUyZjgwZmRmOTY0ZDE0ZTU2YmI5YmFhN2RkYzFlZDAxNWYxNDQ0OWQ0MGZkNGYxMjMyMmU1ZWM2OCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tbGF0aW4tZXh0LXN0YW5kYXJkLW5vcm1hbC53b2ZmMiI6ICI2NTczNTFhOGZjNDk1ZTYyZGYwYjEwODQ5YTJiNTE0YWFlODNmY2IxMjJhNjE3ODE3OGYzODVmYWQwODk0YzBmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1sYXRpbi1leHQtd2R0aC1ub3JtYWwud29mZjIiOiAiNjU3MzUxYThmYzQ5NWU2MmRmMGIxMDg0OWEyYjUxNGFhZTgzZmNiMTIyYTYxNzgxNzhmMzg1ZmFkMDg5NGMwZiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vZmlsZXMvbm90by1zYW5zLW1vbm8tbGF0aW4tZXh0LXdnaHQtbm9ybWFsLndvZmYyIjogImFlZDY4Yzg3NThkMmE1ZTIyNGRkODQ5ZmU0Y2FmMDcyOGJjMzNlMjliNDcxNjYyZjlhNmIzNmY2MDZkMTQyMDIiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLWxhdGluLXN0YW5kYXJkLW5vcm1hbC53b2ZmMiI6ICIyZjY2YWVmYTUwN2JhYzRlMTQ1ODc2NGI1ZTVlNzIxYzgyZmVhMTEwOWI5M2YyYzQxNTUxODQ3ZmU0NmUyZWViIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1sYXRpbi13ZHRoLW5vcm1hbC53b2ZmMiI6ICIyZjY2YWVmYTUwN2JhYzRlMTQ1ODc2NGI1ZTVlNzIxYzgyZmVhMTEwOWI5M2YyYzQxNTUxODQ3ZmU0NmUyZWViIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby1sYXRpbi13Z2h0LW5vcm1hbC53b2ZmMiI6ICI3MWY2YzIyZDVkZDI1NmVhYTllNDgzNDdiZGE2YWMyYzY1ZjU4OTgwZGQzNzJlZDU3ODBmYmRhY2ExMTg2MzMxIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby12aWV0bmFtZXNlLXN0YW5kYXJkLW5vcm1hbC53b2ZmMiI6ICI5NzcyNzJhMWFlMjVlNDNhZTdkN2NiMWI2MDQ2ZTE0Mjk3NjkwMjVmYzRhYTYzZWEzN2U4ZGU2YThiZGUzOGE5IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9maWxlcy9ub3RvLXNhbnMtbW9uby12aWV0bmFtZXNlLXdkdGgtbm9ybWFsLndvZmYyIjogIjk3NzI3MmExYWUyNWU0M2FlN2Q3Y2IxYjYwNDZlMTQyOTc2OTAyNWZjNGFhNjNlYTM3ZThkZTZhOGJkZTM4YTkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL2ZpbGVzL25vdG8tc2Fucy1tb25vLXZpZXRuYW1lc2Utd2dodC1ub3JtYWwud29mZjIiOiAiMzA3NWJkNjlkNTI3MTlkNmY1NzNkYTdkMDJhODNkODgxZjUwODAxMzExYTEzZTkxZGMyOTMxZjFmYjQ2ZDI1MSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vaW5kZXguY3NzIjogImY1OTMzZWJiYWIzYjQyNzM5NGEwYjE4MzEzMTQwMjlkNGU1ZWI3ZTcwYzc3NTE5MmI2MGViY2RmYjU0ZjAxNGUiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1tb25vL0xJQ0VOU0UiOiAiOWU3M2MzNjdjYTc5YzU0ZjliY2U5NmQ4NzliN2E3ZjdmYTI3OTExOWVkNGIzZTYxMjk5ZjA2MWIzNGYzNjFjYiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vbWV0YWRhdGEuanNvbiI6ICI1OTkxMDEyZjQxMWJmMGQwMTBmZDQ3MjUxYTc1ZGUwOWY2ZmEwOTU5MjQ1Yzc2OTI2ZmYyMmEwNmYxMTNmYjExIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtbW9uby9zdGFuZGFyZC5jc3MiOiAiMmVjNTYwYTNkMjQ2YTVlNzI0ZmQ1OWRkNDRmNDAyZDg5YWJiYzBmMWU2MGMxNmYxMDA0YWI2NjA5Yjc4YTc1YyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vd2R0aC5jc3MiOiAiNDU3YjI1NzVhNzNkZDFlMDgzMDM4ZGI1NjM0MTJhYjI3OTI1MDQ2OGVjZWY2NmU2YTc3YzYzMzczNDhmMzUwNSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLW1vbm8vd2dodC5jc3MiOiAiZjU5MzNlYmJhYjNiNDI3Mzk0YTBiMTgzMTMxNDAyOWQ0ZTVlYjdlNzBjNzc1MTkyYjYwZWJjZGZiNTRmMDE0ZSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDAtd2dodC1ub3JtYWwud29mZjIiOiAiMmM1ZGRmOWNkZmFkNzNhZmI1MjM1ZTA2YmM4ZWQzYjVjNjI3ODQ5MjAwZDY3Mzk3ODE0ODcwMGM3OGY4NDE2MCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDEtd2dodC1ub3JtYWwud29mZjIiOiAiYTMzMzA4YmY2NTJlNjRhYzI4ODRiZmU4MzA5OTZlOTMzMzIyYjkzOWI5MTViYjgyM2ZkNDczODM1ODA2NjRhZCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDItd2dodC1ub3JtYWwud29mZjIiOiAiNGVhODVlMTQ0Y2IzODVjZTA4NmIyMWIzMDc3MzBkM2ZkYjcwYTU4N2FhZjM1MGIxMmQwYzRjMmYxM2U2NmQyNyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDMtd2dodC1ub3JtYWwud29mZjIiOiAiMWJmZGIxZjAwMTAwNmM2MjQzNDU3N2I2MDA2NGMzZWMwNTYyZTRhNjgxOTFhY2JjN2ZlZWJhNGIzMDNiZjA5NSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDQtd2dodC1ub3JtYWwud29mZjIiOiAiMWU3MTZiNzg2NTVlMzk2MDc1ODA4YmU1MmE5ZTc0OWRmMWI2YjVkMTdiZDBjY2VkYzZkY2I4OTU4NjkwMzczNyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDUtd2dodC1ub3JtYWwud29mZjIiOiAiYWRlOTEwYTI3YTRiZDY1YmFlZDU5YThhODZhM2E2YTgwZjYwODNkYWE3MTIzYmI5ZmYzMmRhMTVlNTZmZGE5ZCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDYtd2dodC1ub3JtYWwud29mZjIiOiAiZDMxYzgzOGViMGU0MzA0MzEwOWJkNmRkYzIzYzI5NWMzNDBmYzUwZjlhMmYyMzgxMDc2YWU4YzBmYTdmOTgwYiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDctd2dodC1ub3JtYWwud29mZjIiOiAiZDhkOWI1ZmQyYjI2NmZkZjNmNjg1NTQ0NGU3NzY5ZTU0ZjM5ODA2ZTQ4OTk0ZTdmZTVlMGM0YWNlOTU1M2M4MSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDgtd2dodC1ub3JtYWwud29mZjIiOiAiMTJmY2MxMTc1Y2I2MzcwYWNiMDU2NzQzZjRmZWE3ZmRkZTg1YjYzNzZhZGEyZjE1ZGZiYWI1OWYwMmI0NTk4OCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMDktd2dodC1ub3JtYWwud29mZjIiOiAiODVlYmM5OTg1YzY2NWRkNTUzNDZlYmM3OGI5M2Y4ZDhlZjZmZjk3MmQ3OGFmYzI4OGI3NWQ2OTdhMjQyZDc4MCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTAtd2dodC1ub3JtYWwud29mZjIiOiAiNTE3ODVmNGE0ZDJhMDExZDg3NzA1MmNhYjFiYzRjMzZjYWJjYzRlMTg2ZWQwMTc2MjE0MDYxYzE3NGI3ZjAyNCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTEtd2dodC1ub3JtYWwud29mZjIiOiAiYWFhNjdhNzBmNWU4YjM1MWM1NThlMzIzNDUwOTNmZGZkODZmMDg5NzI2YjNiODZkODRiNThkZTZhMjQ3NTEwNCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTItd2dodC1ub3JtYWwud29mZjIiOiAiMzRlNzY2NzVjZWZmZDg5ODI0ZmIxMzBkNzY0OWRjOTJkZjllNTc4NDNhNzNiOTk5NmQ0MDViYWEyZmY5ZWNmZiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTMtd2dodC1ub3JtYWwud29mZjIiOiAiNDAyOTBkOThkNWMxMjFiZGJiMTkwOWUzOWM5YzAyNDJlYWUzYTVhODhmMWJiZTMwMjg1N2U1MjViOTAwNTZkZiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTQtd2dodC1ub3JtYWwud29mZjIiOiAiYzQ5YjJlYjY1OGEwYzJkNzZkZTlhMjc5OTQ1ZGUzMGJmMzJhY2Q4ZmRkNmQ1NmNmODRhZWE5YzZiMTRhYWNhZSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTUtd2dodC1ub3JtYWwud29mZjIiOiAiNmMwY2RhMDU1YjMxMDY2ZmI2MDA1OGFjMzBlZGUzN2Y2ZjljYTAyMjY1YzJlMWE4NGFlZTgxMTc1ZjU2N2ZhOCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTYtd2dodC1ub3JtYWwud29mZjIiOiAiMDAyZTUwMjUxNWJlZThiOWVmYTFiMTdhYmY3ZTUyYjUxZDRjZmEyMDUzOGFlMmIyYmQ4MmFjNTJlMTE1M2Y1ZSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTctd2dodC1ub3JtYWwud29mZjIiOiAiM2Q3Y2VkNzEwMWMwM2RmYTliZjBlNjA0NjBhMWI5MWZjNmYxMTY2ZmIzM2Y3MTg1MDZlODExMGJiMTJlNzRhNyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTgtd2dodC1ub3JtYWwud29mZjIiOiAiZjI2MzMwY2U0MDU2MzgyODMyYzBmMmEwZDdmNDExZTBiNDE0MGZjODc5MzdlODg2NWQ5MTY2NDQxMGNmYjk4YyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0xMTktd2dodC1ub3JtYWwud29mZjIiOiAiMDliOWZhNWE5NTIxZmJlY2NiODI2N2E1YWJlNzQ0M2M4M2NiZTI1YjMyZWIxNWIwMGRlMzE2ZDkxMzIzNTUyNSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0yMS13Z2h0LW5vcm1hbC53b2ZmMiI6ICIwYzVhZmM4NzUyYjE1MWE0NDRjY2IzYjIxZDc0MGNjOGU0MjkzNDdlYTUyYmQ0Y2Y5ZDIyYjczOTM3NjI0YmJmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTIyLXdnaHQtbm9ybWFsLndvZmYyIjogImIxNWIyM2UxOGY3Yjc2NWJkMDhkMTJkMTMyMTBjMGFmOGQzMmJlZTM0NzEyYmMzMTUyZDBiMzg2ZDA0M2VjMDQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMjMtd2dodC1ub3JtYWwud29mZjIiOiAiYThmNjY2NGQ4MzQzOWNkNWQzMjllOWIzNWE1NGZiNGQ5ZDM3ODZlODBkM2VhZWJiYWVhYzI0ZTNhY2Y5NTBmYyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0yNC13Z2h0LW5vcm1hbC53b2ZmMiI6ICJmYzU5NzU3ZGI2NjEyOTA1MmNkOGU0MjQ4MDQ1ZjkyZjgyNzNiMzdmNzE5YmUyYTA1OGE1NTg1OWRlMTkwYTBlIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTI1LXdnaHQtbm9ybWFsLndvZmYyIjogIjA3NGU2MTYyYThiYTRmOWNmMjU4ODFkYTI1Y2U1MjJiYjk0OWMxZTI1MTYxNDI3NDZkYWY4NTQ3MWJjNDhhOWMiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMjYtd2dodC1ub3JtYWwud29mZjIiOiAiNjgwNzQyNDViYTFlYTk3NDVjYWQ5Y2YzNzgwYjY5YzlkZWYzNTY4ODkxMjk2ZTQ0ZDYwZTA3MGU0NWRmN2I3YSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0yNy13Z2h0LW5vcm1hbC53b2ZmMiI6ICI0ZTBkYWZhYTI2ZDkyNGY1NjEyYTEzOGEzNGE4MTdhYTA2YjhmNzJiYWQ5Nzk4ZmU2NGQyMjFmYjEzMDAxZDMxIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTI4LXdnaHQtbm9ybWFsLndvZmYyIjogIjMxYmI3ZmFjZjdhNjJlZTE4OTAyNmY3ZmY3MjViOWM0NjM5YzcxMjc2MjAzNjM5NGMyOTk2ZGIxNDA1NDk3NDYiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMjktd2dodC1ub3JtYWwud29mZjIiOiAiNjdkMTM3ZjczOGJjODI5NGEwMzY1ZjYwNjYxZTMxYjMzYTZlNTM0ZDU2ZDdlNWVkNjk4MmQ1ZTZmZmE1NjYzYyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0zMC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIxMmFjZDc3MTQ3OWM5M2M3NmYwNjRhODE0NDcyNjZjMzQ5ZDZhMzNkMmYxODkzZDU0MTNjNjMwM2IxMTU2ZmVmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTMxLXdnaHQtbm9ybWFsLndvZmYyIjogImRlZjU3OTM0ODNjN2FiYzkyMmRlNjU0YmMxNjI2MjY0NmM5YWUyNjM4MTllNjYzOTkwYjUyZmQ1NmEzZDVkNjkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMzItd2dodC1ub3JtYWwud29mZjIiOiAiMmQ4ODRkMWNmZDk3YzZmNzI1MThhMmQ2OTA1NzNlNDEzMGIwYjcwNzQyM2YyNTk2M2Q3Y2M5NzUzODhhZGYzZSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0zMy13Z2h0LW5vcm1hbC53b2ZmMiI6ICIwMmZkMjczNDg2ZDhlMGM4NzZiM2I1ZDJjM2MxMzFiOWNlODUwNTgxOTZlZTNlZDc3YzdkMzhhN2ExMGUxMzljIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTM0LXdnaHQtbm9ybWFsLndvZmYyIjogIjEzYTE4ZTQ0M2E0YmY2NTU3ZTI1MmE2MzA2MTkxNGNlMTljNGJlMDE4YzliMTZlYWY1Yzc1ODQyZWU4OGJhZjUiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMzUtd2dodC1ub3JtYWwud29mZjIiOiAiNjg0MTNlM2YzZTViOTEyZWZkMjU3MDIyODFhYWU5YWNiMzdjOTkyMGJiN2JiOTQxNDA0NTA2YWI1MjBhZGQ0OSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0zNi13Z2h0LW5vcm1hbC53b2ZmMiI6ICIyMWI4NDFlMjcxODMzMTYxZmU1ZjcwYTIwNTIzOTllNzlmYWFjMDI5NjY3YWJkY2RmZmU4MWYyNjBmMmNlNmI1IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTM3LXdnaHQtbm9ybWFsLndvZmYyIjogImJjYmRmNWZkNzg5OWM3ZWQxOTJhMGM4OWRlOWM2YzkyNDc3YmU3NGI4YzIzNDNlNzQ5MTQzNTliZmQzMmExMGYiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtMzgtd2dodC1ub3JtYWwud29mZjIiOiAiY2EzNzVlNGE2ZWNjMjMwMzMzNjU2YWQxMTA4MWIyNmU2YjhmMzI0MGY0MTYwZTIyZjc1MTUwZDRmZGRkY2M5ZiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy0zOS13Z2h0LW5vcm1hbC53b2ZmMiI6ICJlNzNhOTQ3ZmExZmIxYTczODVlOWQ2NTRmYTBmZTdkZDhhMjI0MWU5YjczMjgyZjY3OTQxYzY1MGM5NGRlMzI2IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTQtd2dodC1ub3JtYWwud29mZjIiOiAiMjk2MzQxNzBkNWViMDdmNDYwYTllYjFiMmQwZWYxMjZhZDBiNWVmNzA1ZTRjMjUxOTFmZDU3OTRkYzkzMGQ0ZCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy00MC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIyZjE4NjE4N2NmZDlhNTQ2ZDE5OWFhYzQxZmJhZWQxMjQxYTQ3YTdkNWFhZDE4MDRmOTgxMjc1MDZhZjgwMzQwIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTQxLXdnaHQtbm9ybWFsLndvZmYyIjogIjdlMmEyMWY5NWU5NjkxNjVmZjMyZTJmZGFiODQyMmI0ODlkMmM3YjBmODk5ZjY5YmZjODNkNzE4NzJjZGUyYWYiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNDItd2dodC1ub3JtYWwud29mZjIiOiAiYzUzMjc5Zjc4NmRkZTM1OTBiYWYwMzQzZDA4MGZhZDhjN2JkOTc2ZTlkY2NlY2QyYWRlYTg5M2NmYWQyZjk5YSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy00My13Z2h0LW5vcm1hbC53b2ZmMiI6ICJhOThmZmEwODM5ZTM1M2ViN2U3NjgwODRlMjc4OTI1OTY2MTZmNmEzZDhiYjY1Yzk0MjAyODk4YmNjYjFmZDY4IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTQ0LXdnaHQtbm9ybWFsLndvZmYyIjogImFhMWE1NDFkZmFjZmNhZDBjNjZmYjdmOWRkNGY5YzEyY2U3MjlkOTgzMTEzMzZjNjM0NzAyZDA2NmFhYmJiYzIiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNDUtd2dodC1ub3JtYWwud29mZjIiOiAiZWExMmFhYTU2MzVlNTNlYWY3NDI5NTAwYmU1N2U5ZThhNjAzMGUwOTA2Zjk4NTQyNjQxMmExMzAzNzYxZjc3ZiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy00Ni13Z2h0LW5vcm1hbC53b2ZmMiI6ICJkNGE3NWFhMTBlYjQ0ODdkY2Q5NGZmMjAwOWVmMGYxODVkMzVmMGUzMjY0ZmE4NzUzMjg4N2M1YzE1MTdjODE2IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTQ3LXdnaHQtbm9ybWFsLndvZmYyIjogImQ1YzQ4YmQzYjU1MDI5MThhZGYyNTNjOTY5MDlmMjdiZTRlZGE3NjUzZmMwMjU0YTY1NjQ1NTdiNTE2Y2IyZTEiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNDgtd2dodC1ub3JtYWwud29mZjIiOiAiYzRmNTNmOGIwNWZhNjM1MGFjMjBmOGExMmI1NTBmOTYzNGVkMzFiMDg0ZGM1MGIxMjYzZjIwODBlMzkyYjlmNyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy00OS13Z2h0LW5vcm1hbC53b2ZmMiI6ICIyNDE4YTc2ZjE0ZjYyOTliMTYwYWY0MWNkMjgzZWQ1MjliMDAzMGUyNDQ4YjJlYzExODk1ZWE1MDA5NTYxZTI1IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTUtd2dodC1ub3JtYWwud29mZjIiOiAiMDhmN2IxN2ZiNmE4ODM4MjI3N2RmYTFiNjk2OWYxZjBiNzNhMWY4NzgxOTcxMzg0OWJiOWUxZmY2MDE3MDg4ZSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy01MC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIwNTBjYmY4NjkwNDg4MDE1ODgzNTZkMDVmMTE0NWM2MDFkZGI5MDYzYTllOWZkMjQxYmJkMDk5N2E1Y2EyNjNmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTUxLXdnaHQtbm9ybWFsLndvZmYyIjogIjQ4ODEwZGY2ODgwN2NiOWEwNjA1MmRhYTUyNDk1MTgzNTc1MzczZGMxZjMyOTRjY2U3NzM5YTZmMzdmZjI1Y2YiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNTItd2dodC1ub3JtYWwud29mZjIiOiAiYmY0MDcxM2MxMmQwYWU4NDFiNGNiZTlkNDg3NzI0ZTRlZTc4MGZkYjg0ODQ0YTk2YmE4ZWJhZTZiNzlhMzE5MSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy01My13Z2h0LW5vcm1hbC53b2ZmMiI6ICIxM2I2ODIxZWI2NTM0ZjFhYzcyYTRiYWI1MDZkZTcwMTJiZWM3ZmUwYjliYjBhNzM3MzNkNWM3OThkZDQ1ZTI5IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTU0LXdnaHQtbm9ybWFsLndvZmYyIjogImRiNjBlZTRjNzU1MTUxYzAzNjAwNGUzOWJkZTM5ZmE5Njc2YzZhOWQxNzUzZDk4NDJhZTFhN2IyZTU4OTliODMiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNTUtd2dodC1ub3JtYWwud29mZjIiOiAiNzAxMDU0OTM4NzFiNzgyOTgxMzUyYTBjZjY5NjQ4N2FmYzA5OGE2OWE0NzA4ZDg3YTc5MzE2MDdmZTE1YTEyOCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy01Ni13Z2h0LW5vcm1hbC53b2ZmMiI6ICJjYzVmZTlhNmRlZGQ5MWU3Yjk1NDgyNzEzYjEyYzg0ZDk5YTA0ZjkwZDUxMjRlNTBkYjNlZmE5ZjI0NTA5MjNmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTU3LXdnaHQtbm9ybWFsLndvZmYyIjogIjNhNGJkZGY2NDQyMjcxYmU4OTgzOTBlMjllMzQ0MTgzZjVmMTBhOTdlZWZhMDQ1OTVjOTUzN2Y1MzVmMzQ5MjciLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNTgtd2dodC1ub3JtYWwud29mZjIiOiAiYjRhOTUyYjUxM2NhMGUxYjU5NGE4NTZlNTM5OGQxZTQwZDY5YjBiZjIyMDgyNTIxMDk1NWZkZTc0N2ZhYThkMCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy01OS13Z2h0LW5vcm1hbC53b2ZmMiI6ICIwNTU3MTA5ZDU1Yzc3ZmY5YzliNWM5NzMyZDczMmM1MzI4YmQwYjYxMDM4Y2ZmZTYxMWQ5ZDYyYjI2ZGVkNDIwIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTYtd2dodC1ub3JtYWwud29mZjIiOiAiNjc1ZmYwOTczMWI0OWFlZmY5MDMxYzZkOGVkYjNkNTQ3NjZhZWM2NGU0YzZjNjk5YmU1NzY2NzI5ZTRkYWQ5OCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy02MC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIxMDVkMDkwOTUzNjQ3ODdiNGVlZjA4ZWNkNGZhYTk3NWQ2NmFkM2NlMmJlNDNiYjk2OGRkMzdiOTI4NWU2NjY3IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTYxLXdnaHQtbm9ybWFsLndvZmYyIjogIjIxYzIxZDIzNzU5MjVmNzQyNTczZWRjNTBlM2JjYTg1YTYzMzUwYmYxZDVkNTY2ZDJkNzYyZjhjZTJiMjU5ZDkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNjItd2dodC1ub3JtYWwud29mZjIiOiAiZDUzMmM4OWEwZGEwNjNjNjhjZTg3MWE3Zjg1ZmE3NTQ0OGVmYzMwODkzMzVlMDEyZjEwN2Q4MDYxODUxMmZkNCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy02My13Z2h0LW5vcm1hbC53b2ZmMiI6ICIwODk3NjU0ZDMxNjM0MmNkZjM3YmIzZDE2ZmNmMWE1MWZkY2MzOGZjZjFmYjM5ODgwYjVkM2YxN2U4N2JmN2RlIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTY0LXdnaHQtbm9ybWFsLndvZmYyIjogImQ0OTA5NjBhNDkxNTIxOTM2Yjg0YTRiZTA3OGE5NTcwNDQ0OTYwYTJkYzczYzU4NGI4MDJkMmM5YzhmYmExYzEiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNjUtd2dodC1ub3JtYWwud29mZjIiOiAiMDg2OTU4YjlmNDQxYTJiYTlmY2E3NmU5YWM0OTI0YmM0YWNiNjA1NTliZDU2MjBkMzQ4YzcwN2ZmMTU0ZWU4MyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy02Ni13Z2h0LW5vcm1hbC53b2ZmMiI6ICI1MGM4YTQ1NWYyODI2MTgyMTFkYWNkNmEwYTMwYzFkZWU1MTBkNmQ0NmVlYTliZTc5OTM3YjI0ZTY5Y2IwMzUzIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTY3LXdnaHQtbm9ybWFsLndvZmYyIjogIjU0ZmM4YzllY2ExYzkyOTQ4MGIyYzA5MDkwN2RmZDlkNDI4NzVjZWM0OTk4OWIwNzM3YWYyYjZhNjAwOTdmMjkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNjgtd2dodC1ub3JtYWwud29mZjIiOiAiM2VkNDA2Y2ViNDNiNmY3M2E2YTQyYWQ5ZThiMmE5YWFiOTZmZDY2MDNiYWI1YjczYTkwOGNhNTNmMGQzNTRhOCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy02OS13Z2h0LW5vcm1hbC53b2ZmMiI6ICJjN2QxZjViMGY5NWYzNThkZWU0Y2Y5ZTc2ZWRhNWMwNDY1ZWI5ZDBmNGUyMWExM2VmMzlkMGNmODc2MWU1YjlkIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTcwLXdnaHQtbm9ybWFsLndvZmYyIjogIjg0NzQ4MjNhNTI2NGJmZGVlMjA4ZmQxNmUyZTVmM2ZlNjg5ZThlYjE4OTQxNDQ2Njc4NDI2ZGM1ZjEyNjRkMTkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNzEtd2dodC1ub3JtYWwud29mZjIiOiAiNzM0ZGExZGNjMjYwY2E2Y2MyOWM5ZTQyMDc4MTI1YWU4ZTQ1ODNmYmMxZjdjYzc2ZDgyNTcyYTczNzY3ZjA0ZCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy03Mi13Z2h0LW5vcm1hbC53b2ZmMiI6ICI3MWQzZGE1YjJkMGUwNWI4ODk5ZTI3MWFhYTQ5OTgyZmE3M2E1ODkxNjhiZTI2YTgzNTBmZjZmNzlmMjBiZmQ3IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTczLXdnaHQtbm9ybWFsLndvZmYyIjogIjkyZjhiOTlkYzFhNzkwODlkMThiMTY4NDQ0N2UzMWVmNjJhYmY0OGRlNzM2NTU1Y2Y1ODQwYjc4MWFlYjlkNTYiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNzQtd2dodC1ub3JtYWwud29mZjIiOiAiNWM4ZmFmNzdmZTAyNzdiOWU1OTkwNDM5NmZkZjNmZTI0MDg4YmNiMmRlY2ZjNTcyOTg5NWIyNzljNTM3NTRmNiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy03NS13Z2h0LW5vcm1hbC53b2ZmMiI6ICIyMTZjMWM5NGVlMDE2ZGI0NmY4ZDFkYzVjNTFmNDAyMjE1ZGJmOTAxM2ZiZjlmNjBmM2RiMzkwMWY5YTNiMDM1IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTc2LXdnaHQtbm9ybWFsLndvZmYyIjogIjhhMzEyNzJiZjMxZjkzNDA3NDc4NjZhZDFhNTlmZjYwNzNiZjkyZmU4MDJlMmJhNWE1MzFmNmE4YWFjMmE0MmIiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtNzctd2dodC1ub3JtYWwud29mZjIiOiAiYmMyNDlmODJmNDBlYzYxZDZlYzA5NmM3NDg2MDNmZGI0ZTk0NmFkYWY2NTkzOTJiMDZjNjgxMDE2OWU4MTUxMyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy03OC13Z2h0LW5vcm1hbC53b2ZmMiI6ICIyNjIxMGMzOGNjZWU5YjUzMTk0NDgxYmVkMWRmYzFhYTRmNzQ4MTBkNTY3MmIyZTdlZDZhMmU0NGIxNjk4MzVkIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTc5LXdnaHQtbm9ybWFsLndvZmYyIjogImRiNzlkZjMzNDIzNWYzZDcyY2MwYTdlNjI1YmZlZTFjM2Q2YTc2MTA0YWYxNWUwODE0YzQ5MjZjZWVlNjE4OGUiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtODAtd2dodC1ub3JtYWwud29mZjIiOiAiYzljZTZlMDY1NDM3OWEyZGQyOTFhNmYyOTMyM2ZmMmQ3ZjA2MTU2Mzg5ZmZiM2U0ZDA4N2E5ZDIxMTg4N2E2YiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy04MS13Z2h0LW5vcm1hbC53b2ZmMiI6ICI5OTU4ZDYxNDkyNGZhNTRkZTRmNjYxZmViZDAyYzFkZTc4N2VmNjQwZDU4OTcwZTRkOTI4ZTFlY2Q3YzE3OTkwIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTgyLXdnaHQtbm9ybWFsLndvZmYyIjogIjIxMjkyNjRlZjM1YzIwM2UzYTJjMmJjMTZhYmM0MzdjMTEwYzU3MDA2ZDEwOGZmMTA3YWQ3NzVkYzdlYTFlMzkiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtODMtd2dodC1ub3JtYWwud29mZjIiOiAiMjRhMDM3Y2JiMDdjYjRkZTFmOTI5OTNhOWNlZGExNmJhNDQ4M2YxZDYzZjZmNTI5ZWEyNmFlNDRmMDEyNDNmZCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy04NC13Z2h0LW5vcm1hbC53b2ZmMiI6ICJlMWI5YjlhZWU4MWE3NGZjNGVjMTllMTcwOWM2NGEwMDQyZDlkODk4YTJmMDBmNmMzYjIwMTI1NjRiNmE0NzgzIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTg1LXdnaHQtbm9ybWFsLndvZmYyIjogImNjZTk3YzM5YjkzMDRjODdlNTVlZDg0ZDUxMWQ0NzlhZmQzMzQzYjkxYzA0YjNhYzdiZGM1YmViOWVjZjcwOWQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtODYtd2dodC1ub3JtYWwud29mZjIiOiAiNTVmZDFhNDJhYjhhY2U3NDQ2OTFiNTljNTM1NDk5YWQyMmIyMmM3Yzk4YjFkNjlhMjJmZTEwMWEyY2Q5YjBlOSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy04Ny13Z2h0LW5vcm1hbC53b2ZmMiI6ICI0MDI5MmExNGY4ZjUyYWNjYjA1MjUyYjdlYzdjNjhlMDBmMzU3ODFkMmE3MjYyMjNiZWMxNjg1ZWVlNjMxMmI1IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTg4LXdnaHQtbm9ybWFsLndvZmYyIjogIjAwOGYzOGRiNzRiYzFjMzQ2YmE4ZjRkNjA2NWRkNDFkMGZlMzNhNGVkMmY5OTA5Y2I4ODBiODFjNWEzZjkzMzQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtODktd2dodC1ub3JtYWwud29mZjIiOiAiNzRhNzUyNDNhYTkzZWI2MTM2N2EyOGQyMTdjZTgyYjc2YzZjZjllODZkMGYyM2ZkOTY3MDhiZmQ5MWI2OGY0NiIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy05MC13Z2h0LW5vcm1hbC53b2ZmMiI6ICI4MGQ1MWY5NWFmYmViY2JlZDBjYzUzOTg1ZmJjZTQzZWVjM2EzN2M4ZWM4OGIwOGQzMTZjNTZhMzJhYTc3ODQzIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTkxLXdnaHQtbm9ybWFsLndvZmYyIjogIjdiZjg1N2Q5ZDEyODU2NzVmZTU3MmU2NGY5NjhhZTFmMzIxM2RhNzY1NGZmZDMzNTYzM2ZiNWIzOTQ5M2MwNTciLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtOTctd2dodC1ub3JtYWwud29mZjIiOiAiNzY3MWY3YjMyZDRjNWMxMWJhNzJkZjllNmI5YTE4YTY0NDFmODYzYWFkZTI2MjNhYzA1NjJlYmQzNGI4MmJjNyIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy05OC13Z2h0LW5vcm1hbC53b2ZmMiI6ICI5NGU1NWI2MGU4N2JmYjkwOTcwOTU5MjE0NDAwMmMwYjEwYTQyMTQ2MTJlYTUxMmIzOGJiNzE5YzllZjQ1YzQ5IiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLTk5LXdnaHQtbm9ybWFsLndvZmYyIjogIjZiMmQxMDY1ZjczN2M4MzYwODA4OGMyZTI0MWM2MDU2ODNkOTRjNjE2MDEyMWNhOTc2NDk2NTA3ZWJjNmNjOTQiLAogICAgICAicmVzb3VyY2VzL2ZvbnRzL25vdG8tc2Fucy1zYy9maWxlcy9ub3RvLXNhbnMtc2MtY3lyaWxsaWMtd2dodC1ub3JtYWwud29mZjIiOiAiODExZTg2OWEyYjIzZmY0NjA4NmVlZmY2ZmE1OTE4NWJiMWFhOTgyZjViY2Q4ZDM0ZGI1MWUxMGVhOGU1ZjdlMSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy1sYXRpbi1leHQtd2dodC1ub3JtYWwud29mZjIiOiAiMDA0OWY3MTU0ZGNjM2ZhMGQ1ODVmODAzODNiMjMyY2I5ZTQ5NzA4NGVlNzdlMTA1MTk3NDdkNjY4ZGIzY2I1NSIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2ZpbGVzL25vdG8tc2Fucy1zYy1sYXRpbi13Z2h0LW5vcm1hbC53b2ZmMiI6ICJjZjUzNDZiMDc0N2NkNzExMjNjOGY3NGRhMGFkNDFmYzBmNjNlZGEwN2I5ZDhlMDM4MmUwMDg4MmFlNzQzNzMzIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvZmlsZXMvbm90by1zYW5zLXNjLXZpZXRuYW1lc2Utd2dodC1ub3JtYWwud29mZjIiOiAiMzEwZTY1ZGE2MzkzMzIwMWMzMzgxMTczMTA2NDE4NDQyZGU2NDQxNzQyNTk0MDAxMjkwYjQwNTZhYmJjOWVkOCIsCiAgICAgICJyZXNvdXJjZXMvZm9udHMvbm90by1zYW5zLXNjL2luZGV4LmNzcyI6ICJlMGFiZjA3MWRlMTE0ZGI0YTdmMDhmNjE4OGFlMmRlMjJiYjVlNDliZjc3NzIxYjAxZDc3MWFmYTQ1YzYyNjIxIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvTElDRU5TRSI6ICIxOGFhYmYxOTA4NDg3MjVlMjU3NmVlZmI1YzI5YmEwNmFhYzEwMjlkMDIxMzIyNTJhN2YzMTJlYWMyZTUwY2YzIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2MvbWV0YWRhdGEuanNvbiI6ICIyNGRlNmE5N2E4Mzc0ZDFmNWM0OGU4MjQwN2U0MTgzNWExY2UzOWQ3MTlkMmRjOWMzZmM3MmY0ZjI1ZmIwNWZmIiwKICAgICAgInJlc291cmNlcy9mb250cy9ub3RvLXNhbnMtc2Mvd2dodC5jc3MiOiAiZTBhYmYwNzFkZTExNGRiNGE3ZjA4ZjYxODhhZTJkZTIyYmI1ZTQ5YmY3NzcyMWIwMWQ3NzFhZmE0NWM2MjYyMSIsCiAgICAgICJyZXNvdXJjZXMvaWNvbnMvaWNvbi5pY28iOiAiOWNlMTNhNzZhNWVmODc0N2FiYmJhYTk3NmQ1ZWJhOTMyZjEzZTJhYzFiMWUyMDMyMmE4ODEzOWJlMGNiZWNlYiIsCiAgICAgICJyZXNvdXJjZXMvaWNvbnMvaWNvbi5wbmciOiAiYTBmYzNmNjcxMzdjNzgyZDMxZGEzMWIzNzUzODU2OWI2YzE2NGJjNDMxZThhMThmM2EzMDUzNDIzNGEyMDYwZiIsCiAgICAgICJyZXNvdXJjZXMvbmF0aXZlL2JldHRlci1zcWxpdGUzLm5vZGUiOiAiYTQ3ODcwZDExNGI5OGJhZWNhZmYwYmFhNTFjZmI5M2Q2MjgwZDQzZjA2NDI4MGFkYWFkZWZhZmI2OTQ5ZjFiZiIsCiAgICAgICJyZXNvdXJjZXMvbmF0aXZlL2tpc2FraS1uYXRpdmUubm9kZSI6ICIxY2ZiOWQxNjY1MWQ4ZDZmNWQ0MTk2ODEzZTQ5MjNhMzVjOGNmYjAzNGU2YjRkYWQwYzE0ZDBlY2ZjOWRiYTc5IiwKICAgICAgInJlc291cmNlcy9uYXRpdmUvbmF0aXZlLmpzb24iOiAiNWRiMzRmNjBiZWMyNDU3ZWUwYmNmMzhkOTM5Y2Q1MDBjMzFmN2I2MTE2NGY3MTZkZjFlOGUzZDQyMmFlZGFmYyIsCiAgICAgICJyZXNvdXJjZXMvcmVzb3VyY2VzLmpzb24iOiAiNTUzMGNiODliNTEyODcwNmE4MWI3ZmIzMjEyYTQ0YTI0OTA2MTJhNjQ3MDcyNjU2NTg0Nzk2Y2UyZDhiMTE2YSIKICAgIH0KICB9LAogICJzYW1wbGVzIjogWwogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNTY1LjE0NDc5OTk5OTk5OTksCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzc1MzEyCiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogMzc0LjQ1NzU5OTk5OTk5OTk2LAogICAgICAid29ya2luZ1NldEtpQiI6IDM3MDY2NAogICAgfSwKICAgIHsKICAgICAgIm1pbGxpc2Vjb25kcyI6IDM3NC41NDcwOTk5OTk5OTk4LAogICAgICAid29ya2luZ1NldEtpQiI6IDM3NzU4MAogICAgfSwKICAgIHsKICAgICAgIm1pbGxpc2Vjb25kcyI6IDM5Mi41ODY4MDAwMDAwMDAwNCwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNjg2MzYKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiA0MjAuMDA1Nzk5OTk5OTk5OSwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzY0MDgKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiAzODguODcxMjAwMDAwMDAwMDQsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzczNDYwCiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDAzLjE1NzAwMDAwMDAwMDE1LAogICAgICAid29ya2luZ1NldEtpQiI6IDM3MTIzMgogICAgfSwKICAgIHsKICAgICAgIm1pbGxpc2Vjb25kcyI6IDM4OC41MzcwMDAwMDAwMDAyNiwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzQzMjQKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiAzOTcuMzU5NTk5OTk5OTk5OCwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzU0NzIKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiAzODUuMTI3NywKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzQ3MDgKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiAzOTYuMzU0Njk5OTk5OTk5ODcsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzczMDQ0CiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDE3LjA2NjMwMDAwMDAwMDQsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzc4MjQ4CiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDM0LjI5OTc5OTk5OTk5OTgsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzczMDI0CiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDE2LjMwMDgsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzY2NTc2CiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDA3LjIyNDI5OTk5OTk5OTg2LAogICAgICAid29ya2luZ1NldEtpQiI6IDM2ODgxMgogICAgfSwKICAgIHsKICAgICAgIm1pbGxpc2Vjb25kcyI6IDQzNy40NzI3OTk5OTk5OTk1NSwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzAxODAKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiA0NTMuMjk1NDAwMDAwMDAwOSwKICAgICAgIndvcmtpbmdTZXRLaUIiOiAzNzE3MDQKICAgIH0sCiAgICB7CiAgICAgICJtaWxsaXNlY29uZHMiOiA0MTkuMzk5Njk5OTk5OTk5OTQsCiAgICAgICJ3b3JraW5nU2V0S2lCIjogMzcxNTc2CiAgICB9LAogICAgewogICAgICAibWlsbGlzZWNvbmRzIjogNDUxLjIyNjg5OTk5OTk5OTY2LAogICAgICAid29ya2luZ1NldEtpQiI6IDM3MjYwMAogICAgfSwKICAgIHsKICAgICAgIm1pbGxpc2Vjb25kcyI6IDQ0My4zODQ0MDAwMDAwMDA4LAogICAgICAid29ya2luZ1NldEtpQiI6IDM3NjI2MAogICAgfQogIF0sCiAgIm1lZGlhbk1zIjogNDExLjc2MjU0OTk5OTk5OTksCiAgInA5NU1zIjogNDUzLjI5NTQwMDAwMDAwMDksCiAgIm1heE1zIjogNTY1LjE0NDc5OTk5OTk5OTksCiAgInN0YW5kYXJkRGV2aWF0aW9uTXMiOiA0MS4wODMyODAyNDg1MzAyNwp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6480d858a13ade2fad83-4786d9732f1efeaa8fa1",
+          "file": "startup.test.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T11:56:00.746Z",
+    "duration": 11448.105000000001,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
