@@ -1,6 +1,6 @@
 # Kisaki
 
-Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。当前仓库按 [refactor](refactor/README.md) 重建，现有交付是 W00 的工程基础；业务能力按后续工作包逐项实现，尚未提供新版正式发行。
+Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。本仓库提供桌面工程基础及[完整产品规格](refactor/README.md)，当前可运行内容为工程外壳，尚无新版正式发行。
 
 桌面工程位于 `clients/desktop/app`，八个公共包和 33 个官方扩展项目分别位于相邻的 `packages` 与 `extensions/projects`。根 `packages` 中的三个私有工程包提供共享 TypeScript、ESLint 配置和工具函数。完整进度与实测范围见 [实施状态](refactor/implementation/status.md)。
 

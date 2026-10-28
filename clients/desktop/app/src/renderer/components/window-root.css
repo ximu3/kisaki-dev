@@ -1,4 +1,4 @@
-/* Defines the layout and heading styles for the shared initial desktop window view. */
+/* Defines the layout and heading styles for the shared desktop window shell. */
 
 .window-shell {
   display: flex;

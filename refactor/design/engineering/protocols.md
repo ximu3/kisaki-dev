@@ -61,7 +61,7 @@ protocol.id 区分 `kisaki.window`、`kisaki.extension-node`、`kisaki.extension
 
 传输关闭时清理待回复、监听、回调与资源映射；仍等待结果的调用以 ConnectionClosed 结束。断连不能证明远端停止、提交失败或回滚，调用方不得重放写入。接纳方按业务寿命取消依赖该连接的工作、保留独立工作；既成结果与必要资源清理由实际拥有者负责。
 
-协议使用本节声明的有限帧，自研内核负责接入、版本、严格帧校验、按调用取消与断连清理。业务结果、身份权限和宿主流程由相应拥有者处理。协议不标称 JSON-RPC 2.0 兼容，也不支持 batch、通用事务、远程对象引用或自动写入重放。[候选比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#rpc)记录 birpc 的能力与当前选择依据；W01 验证正式内核的完整行为，候选库结果只证明其自身覆盖范围。
+协议使用本节声明的有限帧，自研内核负责接入、版本、严格帧校验、按调用取消与断连清理。业务结果、身份权限和宿主流程由相应拥有者处理。协议不标称 JSON-RPC 2.0 兼容，也不支持 batch、通用事务、远程对象引用或自动写入重放。选型依据见[候选比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#rpc)；正式内核的完整行为按下方消息边界验证，候选库证据限于其自身覆盖范围。
 
 <a id="endpoints"></a>
 
@@ -103,7 +103,7 @@ MessagePort 的引导交接由真实浏览器适配层核对 iframe/source/origi
 | stopResult     | 应用 → 启动器   | `outcome: 'exiting' \| 'cancelled' \| 'failed', error?`；只有 failed 带 error。普通界面退出也在正常收尾后报告 exiting |
 | failed         | 应用 → 启动器   | `error: ErrorSummary`；本体启动或连接已无法继续，不冒充编译失败或全部激活失败 |
 
-initialize 只接受一次，未知版本不继续解释后续操作。应用在连接建立后十秒内未收到初始化时报告失败并收尾。ready 等待真实启动完成；启动器可为具体启动环境设置启动预算，不能拿它限制迁移或用户退出选择。当前 W00 尚无扩展运行 API，明确报告 `apiVersion: null`，不能接纳 buildsReady；W03／W08 实现真实扩展接入后才报告所实现的 API 版本。作者工具须在交付构建前检查这一能力及兼容范围，不能把公共包版本冒充运行能力。
+initialize 只接受一次，未知版本不继续解释后续操作。应用在连接建立后十秒内未收到初始化时报告失败并收尾。ready 等待真实启动完成；启动器可为具体启动环境设置启动预算，不能拿它限制迁移或用户退出选择。apiVersion 表达本体实际提供的扩展运行 API；没有该能力时为 null，且不能接纳 buildsReady。作者工具在交付构建前核对实际能力及兼容范围，不能把公共包版本冒充运行能力。
 
 DevelopmentBuild 为 `{ extensionId, buildId, rootPath, webviews }`。buildId 是本连接内该扩展递增的正安全整数，只关联临时构建及其释放，不替代发布版本。rootPath 是已完成且不再改写的完整构建绝对路径。应用正常读取并校验实际 manifest、入口、身份、兼容和运行条件；正式安装包的签名与字节校验仍归安装流程。
 

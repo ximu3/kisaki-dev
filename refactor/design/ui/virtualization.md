@@ -26,7 +26,7 @@
 
 滚动与尺寸更新合并处理，锚点恢复和库的尺寸补偿只由一个明确流程协调，不能重复补偿。隐藏、零尺寸和销毁分别按实际状态暂停或释放，不能当作列表为空。
 
-[2026-10-22 隔离验证](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#virtualization)已覆盖实际 Electron 中的五万行直达、动态高度锚点与分组网格换列。它支持采用这项几何依赖，但不代替正式卡片、数据读取、拖拽、辅助技术和性能预算验收。
+几何依赖的选型依据见[虚拟化验证证据](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#virtualization)。正式界面验收覆盖卡片、数据读取、拖拽、辅助技术和性能预算。
 
 <a id="reorder"></a>
 

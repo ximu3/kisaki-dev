@@ -1,0 +1,22 @@
+$ pnpm --filter @kisaki3/desktop test:artifacts
+$ vitest run --config config/vitest/vitest.config.artifacts.ts
+
+ RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/app
+
+
+[app] Starting
+[app] Native resources loaded
+[app] Electron ready
+[extensions] Host ready
+[app] Ready 72105d1104139d36
+[extensions] Host stopped
+[app] Shutdown complete
+ ✓ tests/artifacts/desktop.test.ts (1 test) 5241ms
+   ✓ the exact packaged carrier retains production fuses and starts and closes externally 5240ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  19:13:36
+   Duration  5.56s (tests 97%, import 2%, transform 1%)
+
+JSON report written to C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/app/test-results/artifacts/results.json

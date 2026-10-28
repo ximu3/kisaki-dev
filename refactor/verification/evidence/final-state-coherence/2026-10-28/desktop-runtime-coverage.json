@@ -1,0 +1,466 @@
+{
+  "checkedAt": "2026-10-28T10:55:03.513880+00:00",
+  "baseline": "ad9113d0c9eb0d83ee32e876a2aa8cab35fdbffe",
+  "scopeRoots": [
+    "clients/desktop/app/src",
+    "clients/desktop/app/native",
+    "clients/desktop/app/tests/browser",
+    "clients/desktop/app/tests/e2e",
+    "clients/desktop/app/tests/integration",
+    "clients/desktop/app/tests/performance",
+    "clients/desktop/app/tests/artifacts",
+    "clients/desktop/app/tests/support"
+  ],
+  "totalFiles": 63,
+  "allFilesReviewed": true,
+  "changedFiles": 4,
+  "productScopeExpanded": false,
+  "platformRuntimeValidation": "Only the changed SQLite ABI test was run under the existing Windows x64 Electron Node host; no six-target/desktop/artifact/performance run.",
+  "entries": [
+    {
+      "path": "clients/desktop/app/native/Cargo.lock",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "完整通读生成锁，直接依赖与Cargo.toml精确版本一致；来源/校验记录保留，不手改第三方生成内容。",
+      "sha256": "693c6005ef97046f03eb01d75a243a6bb8812031c8ad50d9a266bbf34f1697d1"
+    },
+    {
+      "path": "clients/desktop/app/native/Cargo.toml",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "一个私有cdylib、Node-API8及平台真实文件接口，固定依赖与工具配置，无不必要独立产品crate。",
+      "sha256": "f8b47af74eae3cdb0a4911dec406ce7ea2f99a526e1a038adbe5c0e938bdba08"
+    },
+    {
+      "path": "clients/desktop/app/native/build.rs",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "napi-build标准symbol准备，未增加自定义下载/复制或运行时初始化。",
+      "sha256": "c47788e9154fa9aa5e853e1597c2959a82650e8d83ef9c4b82745eb7e063757e"
+    },
+    {
+      "path": "clients/desktop/app/native/node/binding.d.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "NAPI-RS生成声明对应实际Rust导出和字段注释；声明无二进制加载副作用。",
+      "sha256": "8eaa5474efcb0a67c61dc51c8700e5ce669e21ba3eb560ac41966bdec931c2ef"
+    },
+    {
+      "path": "clients/desktop/app/native/node/files.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "Node边界验证绝对/NUL路径，稳定错误分类及系统码；无取消伪回滚、复制删除后备或消息字符串解析。",
+      "sha256": "8c8bae8e7482a4cdbcc3ab51942905db71ae6be1ce17697ad83350893c608f9b"
+    },
+    {
+      "path": "clients/desktop/app/native/node/index.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "仅列真实Node能力/错误导出，不自行加载原生模块。",
+      "sha256": "0075a5b84f08e20cb241948cc3e16296ed7803af4ac0264406c3ba0c164560b4"
+    },
+    {
+      "path": "clients/desktop/app/native/node/loader.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "仅加载给定绝对部署路径，检查必需导出并保留加载cause；无隐式PATH/source查找。",
+      "sha256": "11122e1464d60f212b9538759b8f63f6018f86b3209d914d3db405b40bb18d91"
+    },
+    {
+      "path": "clients/desktop/app/native/rust-toolchain.toml",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "固定Rust1.90工具链和formatter/clippy；编译来源与声明检查可复核。",
+      "sha256": "b53af1a8621489482c78892b6f1af77f5f7a0feeed41bca3b5014925e6425fe6"
+    },
+    {
+      "path": "clients/desktop/app/native/src/files.rs",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "同文件系统不覆盖移动委托OS原语；sync拥有打开/实际句柄类型/同步/关闭；libuv异步工作，取消不伪回滚。",
+      "sha256": "0da75acae0683440dba9bff1001666efdac875598f5446998acbf52d62b01818"
+    },
+    {
+      "path": "clients/desktop/app/native/src/lib.rs",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "按能力导出实际files模块，不追加空壳层或业务流程。",
+      "sha256": "82310e6f0b29d28f090dc57163dc7b6748b3a92535a782fe3b44e35327dc245f"
+    },
+    {
+      "path": "clients/desktop/app/src/extension-host/entry.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "utilityProcess 父端口只承担已实现的 ready/stop；不提供扩展加载成功或业务状态的占位结果。",
+      "sha256": "be55d659fee627d180400108e4a84b5b9be98828f9e9cdef4c3fa2ff8c7e122d"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "ready前确定资料路径与单实例，固定构建/本机目标/native摘要后加载；实际renderer挂载与shared host就绪再报告ready。",
+      "sha256": "4d2b23b5e72c8e195568e378b09cbc2acc6b989e8d53fd83d73201d419ad604a"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/development.ts",
+      "reviewed": true,
+      "decision": "modified-on-main-authorization",
+      "reason": "复用公共父子消息合同，apiVersion:null准确表达W00能力；非法/提前命令失败并退出。已将yet叙述改为当前能力不可用。",
+      "sha256": "41d0c071a6b72f265aec47c431cd20697f4a2baeab4e5248015bda646a59c933"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/extension-host.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "utilityProcess拥有ready/exit/stop关系，初始化失败kill并等待，正常停止有明确期限；当前不承担扩展API。",
+      "sha256": "4d6dd90f25e9dddbc829f84581d2dc1aaaa859d0ce3fc8ccd1a12155b9c2df1d"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/launch.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "管理开发必须有父子IPC和绝对profile；源码测试也要求隔离profile，打包普通启动不允许覆盖真实资料路径。",
+      "sha256": "b7db60654baa16c14f5e0d91ff2b9c4ba756cf863aefb8dbfcaa84d243124201"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/paths.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "载体kind与平台共同决定普通/便携目录；ready前设置Electron路径；私有native显式部署路径，无运行时下载/搜索。",
+      "sha256": "f7a354a2cb01e75d925573473849ccb288e2f344ebeaa3a02c93073dc7351d66"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/portable.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "标记缺席选普通模式，非普通标记或缺少预备目录明确失败，不创建伪便携目录或改写用户数据。",
+      "sha256": "993598acf63453987e777173c7b1d709ad894aef323a892953be22cf4d279277"
+    },
+    {
+      "path": "clients/desktop/app/src/main/app/shutdown.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "按真实窗口取消决定退出；先结束host再通知开发父进程，正常退出和失败分别返回，不把通知失败挡在已接受清理之前。",
+      "sha256": "7b62bbfadd48a4853ac1d8b3338557a63bc974219da4ee776905be6eff05a750"
+    },
+    {
+      "path": "clients/desktop/app/src/main/entry.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "只启动bootstrap并记录致命初始化错误；尚未具备运行资源时以非零退出，不伪装ready。",
+      "sha256": "fa6f7f4699a81ef1bc8a9b54af0734803a19fba22740bd55d78e153632717c11"
+    },
+    {
+      "path": "clients/desktop/app/src/main/infrastructure/log.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "稳定app/extensions领域，生命周期和安全错误消息分开；未自动展开cause、参数或数据。",
+      "sha256": "4e5047db32567e7261bdb480b228c15805ce9ecfc4d9f74e417479bcbf296c89"
+    },
+    {
+      "path": "clients/desktop/app/src/main/infrastructure/windows/native-window.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "当前每次启动一个所选窗口；sandbox/contextIsolation/nodeIntegration配置明确，ready/close按sender和mainFrame绑定，加载失败销毁窗口。",
+      "sha256": "728f7418c23e9843dfba86f35a0f4004ba54c9d63f8860a3164f7e735aaf038d"
+    },
+    {
+      "path": "clients/desktop/app/src/main/infrastructure/windows/protocol.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "ready前登记受控origin；只提供manifest列出的renderer文件，核对host、方法和路径边界，使用Electron原生文件读取。",
+      "sha256": "5bf398e282e62cabd66d8593cc419fa72acb851e9e622fbd7c991c1b16d6f056"
+    },
+    {
+      "path": "clients/desktop/app/src/preload/bridge.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "只开放kind/close并传递一次挂载就绪信号；contextBridge隔离，无Node/业务API暴露。",
+      "sha256": "bea0232cb841bdb978d8e28bde6380b03ee0d8bbea8c7272d67ac9b959c317dd"
+    },
+    {
+      "path": "clients/desktop/app/src/preload/game-panel.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "game-panel窗口独立打包入口，复用唯一最小bridge，窗口身份固定。",
+      "sha256": "126d5ef9ac7ec1db7965d5547ab71366a33285c6d9d14ec5bc58f281a6ebeb55"
+    },
+    {
+      "path": "clients/desktop/app/src/preload/main.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "main窗口独立打包入口，复用唯一最小bridge，窗口身份固定。",
+      "sha256": "c3db7dd615e1be2a62414c296d6702c173efb22e055506fba74d100240520894"
+    },
+    {
+      "path": "clients/desktop/app/src/preload/player.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "player窗口独立打包入口，复用唯一最小bridge，窗口身份固定。",
+      "sha256": "e8ee09fb388a1bab440df7fb8e4f72de369af141cc145e58782bf0def142995f"
+    },
+    {
+      "path": "clients/desktop/app/src/preload/reader.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "reader窗口独立打包入口，复用唯一最小bridge，窗口身份固定。",
+      "sha256": "1a245986b9c402686fd373af54ee35498762475b9327c63ac7ff425e23770348"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/components/window-root.css",
+      "reviewed": true,
+      "decision": "modified-on-main-authorization",
+      "reason": "窗口外壳布局与字体样式，已去initial过程称呼；未引入业务界面假实现。",
+      "sha256": "d976276a320f237db5d853caea594df19f4226b393a45b67b619f85cbbd2f740"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/components/window-root.tsx",
+      "reviewed": true,
+      "decision": "modified-on-main-authorization",
+      "reason": "实际关闭操作与局部失败反馈；按钮保留语义和原生键盘行为，已按外壳职责描述。",
+      "sha256": "ecf65aa569145e16af5501c57c04b17a9e32ca00edff287eab96fe859d27b500"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/environment.d.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "Window仅关联同一最小preload合同，未复制第二份接口。",
+      "sha256": "203e597bb23974da49f8203c59c0c047e430ff0ca2ac48aaecd07e970975faaa"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/styles/base.css",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "消费appearance/ui正式样式导出及必要重置；没有运行逻辑、动态主题占位或文件读取。",
+      "sha256": "60013a1b77972ebac7b0968fec0b518dd8237cdba395775f13cc5bec6a17bd0a"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/game-panel/entry.tsx",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "game-panel窗口实际Solid挂载后通知ready，并在HMR拥有清理；属于批准的W00外壳。",
+      "sha256": "00f648167f82fa1e85039833636ded55d1fee216d814809dff5ccd6bf1f44973"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/game-panel/index.html",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "game-panel独立文档含CSP、语义语言、真实挂载点与模块入口；无远程脚本或假业务内容。",
+      "sha256": "e6960c48636cd2c8368e3e61dd8c0d9e876118063f904e31e685d2bdb82928a9"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/game-panel/styles.css",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "game-panel窗口样式入口引用共同base，职责是独立构建发现，不复制视觉状态。",
+      "sha256": "f34b828594960da4dde9dbba8d88507b18dab010c97ab0aaf9188bec189c8ff4"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/main/entry.tsx",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "main窗口实际Solid挂载后通知ready，并在HMR拥有清理；属于批准的W00外壳。",
+      "sha256": "5c8bd1d2a596d66dbfc17b5d8286b13d46fc782067f25d8ceb3ccaf49f4a6fc7"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/main/index.html",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "main独立文档含CSP、语义语言、真实挂载点与模块入口；无远程脚本或假业务内容。",
+      "sha256": "6684a94c2661bcfe0e5d70f248b9a0f9c23c62661fa1723bb7d590cede12b833"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/main/styles.css",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "main窗口样式入口引用共同base，职责是独立构建发现，不复制视觉状态。",
+      "sha256": "309a5e483742a952f9827dedaaddb4d408f6195178fc619b25f2f92bb535fa67"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/player/entry.tsx",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "player窗口实际Solid挂载后通知ready，并在HMR拥有清理；属于批准的W00外壳。",
+      "sha256": "a9d9e3f0c349b613b522756b0bd22731367d03689bc19ff54b3fbda587039250"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/player/index.html",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "player独立文档含CSP、语义语言、真实挂载点与模块入口；无远程脚本或假业务内容。",
+      "sha256": "cecb7593d3ff383c783b48642befc42337b13cbb055128664f35b893c8749d7b"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/player/styles.css",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "player窗口样式入口引用共同base，职责是独立构建发现，不复制视觉状态。",
+      "sha256": "695cc7ebe80d92bc30af7428f42b68452f9a4edd6676de0df98126e7693751d5"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/reader/entry.tsx",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "reader窗口实际Solid挂载后通知ready，并在HMR拥有清理；属于批准的W00外壳。",
+      "sha256": "fa5dc2f54fcd4dd3afdb9ac53a838c4dc8faf0d5634405f6d2b7eecadfd9c088"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/reader/index.html",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "reader独立文档含CSP、语义语言、真实挂载点与模块入口；无远程脚本或假业务内容。",
+      "sha256": "3be2172b9e3fbc739f6c814667b784d0403e9f97f020ea4eaf2e72cc2621f11e"
+    },
+    {
+      "path": "clients/desktop/app/src/renderer/windows/reader/styles.css",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "reader窗口样式入口引用共同base，职责是独立构建发现，不复制视觉状态。",
+      "sha256": "65a9b77b3abba02c566aeaba0605de1b3c68e7451e6cc26c7774ceab4b84250d"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/build.d.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "纯构建全局声明，buildId来自构建拥有者，不执行运行操作。",
+      "sha256": "8118ede25e8f1f0c62752261396b7cb8a4b13583a4f7ef341972866118c2ffc4"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/distribution.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "载体标识和manifest纯合同；target/testOnly的构建/验证消费留在相应拥有者。",
+      "sha256": "45f625e57c503d1b5da1815c3df4388773a417e82a9aa8e9254ff066e01826dc"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/extension-host.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "仅ready/stop私有进程寿命合同，未混入未来扩展API。",
+      "sha256": "71fcf870f5c98797bd9f67289b66040afc307316ecfedb112cdc672cc0aecc30"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/runtime-manifest.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "六目标与运行文件摘要纯结构；构建和运行消费者共用定义。",
+      "sha256": "301ce86d272d197a30d4226b0a4c8499ac85c3bfc1cc5d10f9af1ce59672ed86"
+    },
+    {
+      "path": "clients/desktop/app/src/shared/window-controls.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "四窗口类型及窗口局部close合同，无业务状态或renderer Node能力。",
+      "sha256": "afd02036b884d0ac83b9ef6102c503282d3910921385f7c47b7a93506de39ce8"
+    },
+    {
+      "path": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "现有载体摘要、ASAR内容、正式fuses和外部真实窗口关闭；个人profile隔离，开发IPC也测拒绝路径。package.json摘要例外交主代理核对。",
+      "sha256": "44a5444c3d561902fb1939b356631b4671d75607365303e23d1b05a03f747073"
+    },
+    {
+      "path": "clients/desktop/app/tests/browser/window.test.tsx",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "真实浏览器验证按钮Tab/Enter及关闭失败可见，替身仅代替传入close，Solid/DOM生命周期正常清理。",
+      "sha256": "a787bfcd0fbc343d0af79acb6e77028de96c2656de3c8ccff4ee9db60077bd08"
+    },
+    {
+      "path": "clients/desktop/app/tests/e2e/windows.test.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "逐窗口种类启动真实Electron并核对最小bridge、隔离profile和正常退出；Linux不可用metrics字段不冒充sandbox缺失。",
+      "sha256": "3e33c21f869d1527125ddab37f7b1e89442ffbf041fe46925839ddff00cf299a"
+    },
+    {
+      "path": "clients/desktop/app/tests/integration/database/abi.test.ts",
+      "reviewed": true,
+      "decision": "modified-on-main-authorization",
+      "reason": "真实交付SQLite binding在Electron Node中验证事务/回滚/重开；已将首次构造纳入目录清理边界，单项复跑通过。",
+      "sha256": "d4a85d782de4478d13fb31ab20cb6716e9ab63ea248224e481897f8712962e75"
+    },
+    {
+      "path": "clients/desktop/app/tests/integration/native/files.test.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "真实文件结果验证加载cause、不覆盖/竞争/缺失/跨卷/同步；环境只单卷时如实skip，不复制删除制造通过。",
+      "sha256": "db716ea6dd4422e43402c4e9b35ca9474bbbc681820ee1448dd22df2950e8b0f"
+    },
+    {
+      "path": "clients/desktop/app/tests/integration/portable.test.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "独立临时目录验证marker选择与失败后文件保持，不使用个人资料。",
+      "sha256": "1a040fc6b7d9a6cbece57ce054a9b48baca07258057f992eeb7cb4c928ef2a1d"
+    },
+    {
+      "path": "clients/desktop/app/tests/performance/budgets.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "保留正式代表负载与W00专用启动预算，明确预算不代表完整资料库性能通过。",
+      "sha256": "b3a2eb3d6e625d1b62d435bd7ad35561ebe600a64dbf8af4ccfaa07ebd078e86"
+    },
+    {
+      "path": "clients/desktop/app/tests/performance/startup.test.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "20次新进程、保留隔离profile、暖OS缓存，记录构建/宿主/分布和观察到的PID退出；标题和报告限定实际测量。",
+      "sha256": "8bc237037a2ab748f9611cca61d3e06f5ccf9c71f6d65b5e23920255cf8a8377"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/artifact-workspace.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "自有临时目录解包/复制既有载体和便携profile，准备失败清理；实际进程退出后才由测试释放。",
+      "sha256": "1b59af5818533f49c4297f91bf15b9cd3a12b9d6b28d2f01715eb25d2080c9cc"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/development-controller.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "测试子进程运行真实开发会话并转交状态；测试专用IPC不进入应用公开合同，失败保留并退出。",
+      "sha256": "59c823fcc94ae9fc11b55a091cacf31eaa851ac9015294163df78467e28a6443"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/development-session.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "持有真实控制器、有限诊断轨迹、停止期限与退出等待；专用于测试会话拥有关系。",
+      "sha256": "e4ec44aeea98770a59391e9e406b21e78519f7cf9e530085373b3cd075b3f250"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/development-workspace.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "隔离复制开发输入，使用原生pnpm离线锁安装/真实git HEAD；保持Electron链接和native输出隔离，失败清理。",
+      "sha256": "a1c4f9c12a56bb9a8cc616bbfe4879b804a32842428d4ddef6e35da60fa1297c",
+      "additionalTaskChange": "User-approved Turbo identity integration: copy .node-version as a declared global build input."
+    },
+    {
+      "path": "clients/desktop/app/tests/support/electron.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "Playwright fixture先核对目标/Electron版本，启动隔离profile，子进程退出后清理资料；无真实个人数据。",
+      "sha256": "ec3847bfbc4a63c784a5334a5bab4a2643c164697feb3761b1f9be06d4e4355d"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/preparation-worker.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "明确的测试依赖构建替身，用pending进程观察取消，不混入正式依赖构建。",
+      "sha256": "0298660b167d8b7059ba24875a979512245ae1dad378948419403cba033f377a"
+    },
+    {
+      "path": "clients/desktop/app/tests/support/window-observation.ts",
+      "reviewed": true,
+      "decision": "retained",
+      "reason": "分别使用宿主窗口API观测/普通关闭；命令取消等流关闭；Wayland不以X11结果替代实测。",
+      "sha256": "135dc9e8045df92090a5e7685f3344eb71b58ed220d268a20abe0d5089b3e68f"
+    }
+  ],
+  "additionalTaskChanges": [
+    "clients/desktop/app/tests/support/development-workspace.ts"
+  ]
+}

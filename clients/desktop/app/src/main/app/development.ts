@@ -81,7 +81,7 @@ export function connectDevelopment(): ApplicationDevelopment {
       }
       if (!initialized || !ready) throw new Error('Development command arrived before readiness')
       if (message.type === 'buildsReady') {
-        throw new Error('This application does not implement extension loading yet')
+        throw new Error('Extension loading is unavailable in this application')
       }
       if (!stopping) {
         stopping = true

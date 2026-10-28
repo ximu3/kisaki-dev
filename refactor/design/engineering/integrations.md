@@ -60,9 +60,9 @@ Kisaki 按[视频宿主接入](#integration)完成打开和切换：执行原生
 
 输出资源经原生同步后交付，宿主导入并呈现，再在 allReferencesReleased 后归还对应 NativeFrame。Mpv.close、帧 release 与产品会话的显示引用回收分别完成；不能把其中一步的结果当作其余步骤已经结束。
 
-screenshot-raw 保持独立截图数据合同，本体使用已就绪的受管 sRGB GPU 输出、screenshot-sw=no、subtitles 与 rgba，核对尺寸、stride、数据范围及同一内容上下文。[截图接入条件](#screenshot)通过逐结果 source 标记核对，Windows 已验证正常 GPU、显式软件与强制回退路径；负 stride、持续采集与完整失败路径继续按真实实现验收。颜色不从通道格式推导，也不把上游软件回退视为同色保证；不增加第二套截图接口或把最后显示帧当作必然逐像素相同的截图。
+screenshot-raw 保持独立截图数据合同，本体使用已就绪的受管 sRGB GPU 输出、screenshot-sw=no、subtitles 与 rgba，核对尺寸、stride、数据范围及同一内容上下文。[截图接入条件](#screenshot)通过逐结果 source 标记核对，验收覆盖正常 GPU、显式软件、强制回退、负 stride、持续采集与完整失败路径。颜色不从通道格式推导，也不把上游软件回退视为同色保证；不增加第二套截图接口或把最后显示帧当作必然逐像素相同的截图。
 
-Kisaki 的完整会话关闭同时完成 Mpv 关闭、显示引用回收与记录保存，各项按自己的寿命收尾。采集图片取得独立数据后，释放所占 NativeFrame，再继续裁剪、编码和保存。
+文件会话结束时完成本次记录保存、显示交接及所属资源收尾；切换文件可以由同一播放器执行者继续持有 Mpv。播放器执行者最终关闭时，完成 Mpv 关闭及其全部显示引用回收。screenshot-raw 交付的独立字节用于后续裁剪、编码和保存，不持有显示 NativeFrame；显示帧统一按 allReferencesReleased 归还。
 
 Kisaki 取得 NativeFrame 后，通过 Electron 接入导入并转交显示端，收到 allReferencesReleased 后再调用 NativeFrame.release。单个导入对象的 release 解除本对象引用，最终回调确认全部下游引用结束，见 [SharedTextureImported](https://www.electronjs.org/docs/latest/api/structures/shared-texture-imported) 与[共享纹理回收](https://www.electronjs.org/docs/latest/api/shared-texture)。独立库保持自身的帧持有和释放合同，Electron 对应由本体完成。
 
@@ -78,6 +78,8 @@ infrastructure/media 负责加载、初始定位和内容就绪，协调截图�
 
 sessions.anime.switchFile 按[文件切换合同](../domains/sessions.md#switch)组织目标准备、旧上下文收尾和新内容就绪，接入交付同一 FileSwitchResult 或带合法部分结果的失败。目标配置、初始位置和暂停意图由本体按会话合同采用；media 的核心复用不改变产品会话的结束与创建边界。
 
+每次打开实际新文件时，sessions 读取 preferences.playback 的正式音量与静音记忆并交给执行者初始化；核心复用也采用这份输入，不从旧 Mpv 的残留值或上游默认值推导产品初值。完整播放配置与这两个控制值分别采用；明确的音量/静音调整按[会话保存合同](../domains/sessions.md#playback-controls)保存后只作用于当前执行者，原生观察不回写偏好。
+
 infrastructure/media 关联打开、控制请求与显示交接。切换、采集和定位按既定次序执行；实际替换开始时停止旧上下文接纳与记录，并撤去待交付旧画面。后续结果只交付给仍有效的对应上下文，旧请求和显示任务各自完成资源归还。
 
 接入按影响范围组织执行顺序：换文件、定位和采集共享内容操作顺序，保证采集原图与紧邻位置之间不插入另一次切换或定位。正常播放中的音量、暂停等普通控制不因此全部等待同一个长队列；开始替换文件时关闭旧上下文的接纳关口，并收尾已经接纳的控制，再采用新文件配置。连续定位可以合并尚未执行的意图，被替代调用按既有合同明确结束，不把最后一次成功当作所有请求成功。
@@ -92,7 +94,7 @@ infrastructure/media 关联打开、控制请求与显示交接。切换、采�
 
 受控换文件与帧持有的依据见[Node／Electron 交接检查](../../verification/evidence/libmpv-handoff/verification.md)，包括跨线程、原生 hook 与迟到消费回调。运行输入和实际覆盖范围保留在证据中；正式接入另验证脚本变化、并发加载取消、公共订阅和同一播放器内的核心复用，不额外建立核心池。
 
-原生层可使用 on_before_start_file 与 on_after_end_file 作为明确协调点。本次直接 D3D11 原型在两种事件／渲染处理顺序下，实际完成同核心换文件、定位、加载失败后恢复，以及旧帧持有关闭检查；也记录到了不应当作新文件就绪的旧画面重绘。[切换证据](../../verification/evidence/libmpv-playback/verification.md#switching)
+原生层可使用 on_before_start_file 与 on_after_end_file 作为明确协调点。接入验证覆盖事件与渲染的不同处理顺序、同核心换文件、定位、加载失败后的恢复及旧帧持有期间关闭；旧画面重绘不构成新文件就绪。依据见[切换证据](../../verification/evidence/libmpv-playback/verification.md#switching)。
 
 Node 接入管理自身的停止与交接。每个 hook 使用独立弱客户端。hook 与属性观察独立接续，开始 hook 时其他属性回调可能尚未完成；按[hook 合同](../projects/libmpv-node/api.md#hooks)停止旧订阅、处理已接纳工作并采用实际上下文对应的结果。正式验收分别覆盖 Node 交付、快速取消及 Electron 在途交接。
 
@@ -104,13 +106,13 @@ Electron sharedTexture 是官方标记为 Experimental 的接口。Kisaki 固定
 
 原生帧订阅与主进程到显示端的传递各自保持有界：传递侧至多维护正在处理的交付与最新待处理帧，被替换的持有立即归还。接收回调不以 Promise 回压播放器；导入失败由适配器归还尚未交接的帧，导入成功后按宿主最终引用回收通知归还。发送失败、窗口关闭和 renderer 崩溃均须验证，不能用固定延时冒充消费完成。
 
-本体采用直接 D3D11、固定上游输入和核心复用，由自身接入负责宿主生命周期与可靠文件归属。最终构建及跨线程交接按正式验收执行。原生接口若无法提供所需依据，应重新比较实例隔离及资源成本，并按实施讨论规则处理策略变更。
+本体在 Windows 采用直接 D3D11，各平台使用固定上游输入和核心复用，由自身接入负责宿主生命周期与可靠文件归属。最终构建及跨线程交接按正式验收执行。原生接口若无法提供所需依据，应重新比较实例隔离及资源成本，并按实施讨论规则处理策略变更。
 
 <a id="host-lifecycle"></a>
 
 ## 宿主的显示变化与故障分别处理
 
-Kisaki 已采用以下接入策略，库本身不因一个消费界面的行为自动关闭播放核心：
+Kisaki 使用以下接入策略，库本身不因一个消费界面的行为自动关闭播放核心：
 
 | 情况                           | Kisaki 的处理                                                                                                |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
@@ -173,7 +175,7 @@ Kisaki 阅读接入在 readView 回调中调用受控窗口采集。主进程核
 
 Kana 交付 CSS 像素矩形；Electron 接入负责将其转换为当前 webContents 页面缩放下的采集矩形，并依据实际返回位图尺寸处理像素边界。外扩的整数边界只用于取得完整像素，最终采用时收敛到请求区域，不反向修改源 region。操作同时核对当前缩放及视图有效性。
 
-devicePixelRatio、Electron zoomFactor、NativeImage 的表示 scaleFactor 和实际位图尺寸分别描述不同的缩放与尺寸事实。当前 Windows 试验在设备缩放 1.5 时取得了更大的实际位图，而 NativeImage 的表示 scaleFactor 仍为 1；采集尺寸应依据真实位图，不能按该标签推断屏幕倍率。
+devicePixelRatio、Electron zoomFactor、NativeImage 的表示 scaleFactor 和实际位图尺寸分别描述不同的缩放与尺寸事实。采集尺寸依据真实位图，不能从表示 scaleFactor 推断设备缩放或实际像素尺寸。
 
 主进程取得原始内容后，像素转换、图片编码、PreparedImage 与 Annotation 保存由已有拥有者接续。存入的源位置、原文或区域来自同次绑定的阅读操作，图片不用于反推源坐标。
 

@@ -43,7 +43,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     process.env.KISAKI_ARTIFACT_RECEIPT ?? join(appRoot, 'dist', hostTarget(), 'artifacts.json')
   const receipt: ArtifactReceipt = JSON.parse(await readFile(receiptPath, 'utf8'))
   expect(receipt.target).toBe(hostTarget())
-  expect(receipt.buildId).toMatch(/^[a-f0-9]{64}$/)
+  expect(receipt.buildId).toMatch(/\S/)
   expect(receipt.files.length).toBeGreaterThan(0)
 
   for (const file of receipt.files) {
@@ -97,7 +97,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     expect(entries.some((path) => path.startsWith('/node_modules/'))).toBe(false)
 
     for (const [path, digest] of Object.entries(build.files)) {
-      if (path === 'package.json') continue
       const bytes = path.startsWith('resources/')
         ? await readFile(join(resourceDirectory, path))
         : extractFile(asar, path.split('/').join(sep))

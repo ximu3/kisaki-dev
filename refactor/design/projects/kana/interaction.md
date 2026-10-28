@@ -123,7 +123,7 @@ interface ReadingKeyInput {
 }
 
 interface OpenReaderOptions {
-  // Other existing options remain defined by the accepted contract.
+  // Receives keyboard input left unhandled by the reading content.
   readonly handleKeyDown?: (input: ReadingKeyInput) => boolean
 }
 ```

@@ -6,7 +6,7 @@
   "type": "module",
   "license": "AGPL-3.0-only",
   "kisaki": {
-    "id": "kisaki.language-zh-hant",
+    "id": "kisaki.language.zh-hant",
     "defaultLocale": "en",
     "name": "Traditional Chinese"
   },

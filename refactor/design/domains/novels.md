@@ -126,7 +126,7 @@ novel_reading_activity 的每一行保存一段有明确起止时间和有效时
 | novel_files        | is_preferred，默认 false | 该记录所属小说的首选文件；同一 novel_id 至多一条为 true |
 | novel_file_volumes | is_preferred，默认 false | 该关联所属卷的首选文件；同一 volume_id 至多一条为 true  |
 
-作品和卷各自允许零条或一条首选。切换时在同一事务中取消旧值并设置新值，选择保存在各自文件关联上。同一个合订文件可以成为不同卷的首选；各卷的选择独立维护。
+作品和卷各自允许零条或一条首选。切换时在同一事务中取消旧值并设置新值；作品首选保存在 novel_files，卷首选保存在 novel_file_volumes。同一个合订文件可以成为不同卷的首选；各卷的选择独立维护。
 
 可以按目录筛选文件，再按[批量默认文件规则](holdings.md#selection)设置明确卷的首选；目录不成为当前阅读版本。目录入口、文件选择与当前阅读各自独立，界面遵守[使用与位置操作](../ui/components.md#local-actions)。
 

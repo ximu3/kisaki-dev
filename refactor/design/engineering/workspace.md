@@ -163,7 +163,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
-当前官方扩展只有 kisx.config.ts 与 eslint.config.ts 两个 Node 工具配置，由各自根 tsconfig.json 共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。实际 Node、Webview、共享合同或测试源码建立后，再按真实环境拆分配置；不为尚不存在的源码预建类型项目。
+官方扩展的 kisx.config.ts 与 eslint.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
 
 仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
@@ -187,7 +187,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                     |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                     |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                       |
-| 根 tools 与私有工程包         | 根工具拥有 Git hooks 与发行输入；私有包提供实际共用的配置和工程函数 |
+| 根 tools 与私有工程包         | 根工具拥有 Git hooks、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -237,7 +237,9 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 每个可调用验证工作流返回 selected 与 verified：选中并完整执行返回 true／true；有依据地不选择返回 false／空。Required checks 对 needs 中的每个工程使用同一判断，工作流状态必须成功，缺失、取消、失败或错误跳过均不通过；矩阵整体状态负责覆盖全部目标。接入新工程时显式增加调用和 needs，并使用独立的工程缓存与报告命名空间，不依赖不同 workflow 的 job ID 恰好不同。
 
-编排文件由所属工作流直接比较 Git 输入：事件入口与共同协调器变动触发全部工程，工程工作流只触发自身完整验证。PR 标题工作流独立验证标题，不进入产品任务的全局输入。生产构建、构建身份和开发监听排除公共包的 Vitest 配置、测试类型配置和测试文件；生产配置与新增生产文件继续参与构建和监听。任务图与真实监听分别验证这些边界。
+编排文件由所属工作流直接比较 Git 输入：事件入口与共同协调器变动触发全部工程，工程工作流只触发自身完整验证。PR 标题工作流独立验证标题，不进入产品任务的全局输入。桌面与公共包的生产任务排除 Markdown、Vitest 配置、测试类型配置和测试文件；开发监听同时排除生成目录与本地状态，生产配置与新增生产文件继续触发相应构建。任务图与真实监听分别验证这些边界。
+
+桌面[构建输入身份](build.md#formats)直接使用正式 build 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
 
 仓库工作流调度各 workspace 自己的常规检查与测试。桌面八包的打包、产物检查和跨包消费者归桌面工作流的 Linux x64 参考目标，输入收据和制品归 artifacts/desktop/packages。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
 
@@ -251,7 +253,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 <a id="ci-feedback"></a>
 
-当前 W00 规模与标准托管 runner 的工程目标为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是[实测依据支持的工程预算](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+标准托管 runner 上的工程反馈目标按[既定验证负载](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)确定：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
 
@@ -329,4 +331,4 @@ hooks 的安装入口只管理本项目的 hook 文件和仓库本地 core.hooks
 
 卸载只移除仍指向本项目的本地 core.hooksPath。当前值已由用户改写时，保留新值并报告。之后只清理自身 hook 文件、脚本和依赖，不恢复第三方配置，也不删除 stash 等恢复资料。
 
-CI、源码压缩包和未安装开发依赖的环境都要有明确、不会重复执行的行为。清理原 Lefthook 时，先识别实际 hook 和备份，只移除项目遗留内容，不强制重置全局设置。CLI 生成的 workspace 遵循相同原则，可以独立安装、提交和卸载 hooks，不引用 Kisaki 私有路径。
+CI、源码压缩包和未安装开发依赖的环境都要有明确、不会重复执行的行为。hook 清理只处理可确认由本项目拥有的文件，备份及其他配置按实际归属保留，不重置全局设置。CLI 生成的 workspace 遵循相同原则，可以独立安装、提交和卸载 hooks，不引用 Kisaki 私有路径。

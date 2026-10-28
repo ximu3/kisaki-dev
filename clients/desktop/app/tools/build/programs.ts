@@ -3,11 +3,10 @@
  * source modules used by the compiler.
  */
 
-import { build } from 'vite'
+import { build, loadConfigFromFile } from 'vite'
 import type { InlineConfig } from 'vite'
 import { isAbsolute, join } from 'node:path'
 import { appRoot } from '../lib/paths'
-import { preloadEntries } from '../../config/vite/vite.config.preload'
 
 /** Independently compiled desktop programs with separate runtime environments. */
 export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as const
@@ -24,7 +23,7 @@ export function programConfig(
   outputDirectory: string,
   buildId: string,
   mode: 'development' | 'production',
-): InlineConfig {
+): InlineConfig & { configFile: string } {
   return {
     configFile: join(appRoot, 'config', 'vite', `vite.config.${program}.ts`),
     root: program === 'renderer' ? join(appRoot, 'src', 'renderer', 'windows') : appRoot,
@@ -65,8 +64,14 @@ export async function buildProgram(
     return { modules: [...modules] }
   }
 
+  const loaded = await loadConfigFromFile({ command: 'build', mode }, config.configFile, appRoot)
+  const library = loaded?.config.build?.lib
+  if (!library || typeof library.entry !== 'object' || Array.isArray(library.entry)) {
+    throw new Error('Preload configuration must provide named entries')
+  }
+
   let first = true
-  for (const [name, entry] of Object.entries(preloadEntries)) {
+  for (const [name, entry] of Object.entries(library.entry)) {
     await compile({
       ...config,
       build: {

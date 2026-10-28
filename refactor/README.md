@@ -2,7 +2,7 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-所有主题优先遵守[简洁、原生与适度复杂度](design/engineering/conventions.md#simplicity-native)：让概念和操作直接易懂，优先采用平台与工具的原有能力，尊重用户熟悉的系统交互；避免过度防御、过度测试和过度设计。设计文档本身同样接受审查，已经写下的规则不能替代目标与技术依据。
+所有主题以[终态实现与整体一致性](design/engineering/conventions.md#final-state)为首要准则，从完整目标形成自洽的设计、代码与说明；调整覆盖全部相关场景，必要时重设架构和实现。[简洁、原生与适度复杂度](design/engineering/conventions.md#simplicity-native)共同约束概念、操作和维护成本。既有规则、实现与文档都按目标及事实接受审查。
 
 旧项目位于 `F:/project/3/kisaki`。
 

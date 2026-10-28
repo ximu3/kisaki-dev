@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import { runtimeFiles, sourceIdentity } from '../build/identity'
+import { runtimeFiles, buildInputIdentity } from '../build/identity'
 import type { DesktopBuild, DesktopTarget } from '../../src/shared/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
 import { sha256 } from '../lib/sha256'
@@ -48,7 +48,7 @@ export async function packageDesktop(
   if (
     desktop.schemaVersion !== 1 ||
     desktop.target !== target ||
-    desktop.buildId !== (await sourceIdentity())
+    desktop.buildId !== (await buildInputIdentity({ signal }))
   ) {
     throw new Error('Desktop packaging requires a build matching the current target and inputs')
   }

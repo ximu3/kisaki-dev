@@ -1,0 +1,332 @@
+{
+  "checkedAt": "2026-10-28T10:46:37.345199+00:00",
+  "baseline": "ad9113d0c9eb0d83ee32e876a2aa8cab35fdbffe",
+  "scope": "30 project documents, 2 OAuth configuration files, 2 libmpv patches and their manifest",
+  "totalFiles": 35,
+  "allFilesReviewed": true,
+  "changedProjectDocuments": 24,
+  "publicContractChanged": false,
+  "nativeRuntimeExecuted": false,
+  "newProjectsCreated": false,
+  "entries": [
+    {
+      "path": "refactor/design/projects/README.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "统一引用终态与整体一致性；独立仓库生命周期回归仓库规范，保留四项目的长期产品定位和联合交付。",
+      "sha256": "cffe075eacefc0e65f9e8ed30ea4224eb537cf5c782a1dc76078556697a4af2e",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/native-runtime.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对 core/binding、Node 环境、运行库与帧资源；将修复和来源标记写为 libmpv-node 的维护责任。",
+      "sha256": "a23d0572ddbb2e81ad51cd11c8a6ab1432ad015b1384f83d5d1cc5736fc0bdb1",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/vantage/README.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "进程、窗口、前台、观察和平台模块拥有者清楚；Linux 组件归独立项目交付，无临时源码或业务模型混入。",
+      "sha256": "9d7fa5b1f20d96549ffb412c4afc94d822878c6e075ebfe7ff5ab738875fbb79",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/vantage/api.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对实例引用、字段不可用、查询/观察、控制完成、取消、授权身份和截图；清除本次重写及当前主机的进度叙述。",
+      "sha256": "4161311aa44af6131fd797132057296b8b15a34cb9607185b427628142abd6d8",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/vantage/backends.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留六目标、原生身份并发边界和权限/颜色/采集路线；将 WGC 迁移叙述改为接口事实与验证范围。",
+      "sha256": "16549a141ad18f9dd8dbdf97e1a93af8ea2bba7dff7ef5fb2416ddb6a8123ff4",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/vantage/linux.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对 D-Bus sender、组件代际、PipeWire/QImage、XRes、KWin 版本登记；把蓝本推进叙述改为当前协议职责。",
+      "sha256": "96c1dd52cdf340cfed5cd1a8ed4af98a651d10f4a5b264f5d5b81ecfb5b1464a",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/README.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留单包、纯合同入口和滚动桌面浏览器窗口；将整体一致性纳入技术取舍原则。",
+      "sha256": "3c14893822f282c0b88af093190b4e853fa2368145d922630f72227968e0bcc4",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/api.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "完整核对 ByteSource/MemberSource 持有、settings/fonts、状态、观察、导航、临时查看、关闭及错误；未发现需要改动的合同冲突。",
+      "sha256": "167105c8afa7fceee8baa991f605ee58bae95a005af7c017af8c27b366ddc876",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/kana/settings.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "核对完整字段、库默认、单位、范围与宿主独立偏好；单/双面、方向、字体和颜色不缩减。",
+      "sha256": "1a6c39f856a8de2f913ccd71a95ab1eec96825496de0659c833b9d53aa49ecb0",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/kana/formats.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对全部格式、URL 稳定输入、XML 编码/实体、CFI、MOBI/KF8、页序及索引；RAR 边界改为当前支持与实际成本依据。",
+      "sha256": "6d21fa743056df60764edc5cf038bae89ff8302bdffd38c6b2a878350956d807",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/positions.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留格式源地址、源树、几何、正文/辅助路径及 href 选择；将实验次数移回证据，保留机制来源与完整格式验收。",
+      "sha256": "3a99f282f3658ddf5209c929390e4dd284a3dd882c0a2aba731c9ab86e8d8609",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/content.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对原文、Unicode 匹配、ruby、几何和 readView 资源；去掉浏览器试验经过、局部误差数字和未来优化叙述。",
+      "sha256": "a32c524813e2891b7a937ae8abfe34e666c5809a746c29c74abcc228e8c529f0",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/layout.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留完整章节投影、明确面数、换轴、原生 CSS 分页范围及辅助语义；将补证/缩减叙述改为当前验收边界。",
+      "sha256": "b53346d514c57a110229ce69541a0de835b52a83108409257e77a68965a79ed3",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/styles.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对字号/字体/配色/伪元素、作者原值、CSS 语法和覆盖次序；保留私用字形的既定元素边界并直接解释代价。",
+      "sha256": "387569d0b9e8c1ed0ef81871a3d167106042f41003cc692400a145ea678dcd23",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/interaction.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对跨文档选择、触摸/键盘、语义副本、焦点、辅助技术和剪贴板；只改示例中的过程性注释，接口不变。",
+      "sha256": "d1e1149bc283865d03e2bdccf6b89e928f96f5287e5f3a1a6ab373ec4fb1d51d",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/resources.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对授权字节、Service Worker、CSP、传输背压、预算、取消和退役；将四环境/停 worker 实测叙述改为当前责任与依据。",
+      "sha256": "7f56c272a6ea98dd81e76271dffcf4f0e4f07f52646796d1955eee5640d2e1a5",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/kana/distribution.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对 ESM/资产闭包、同源部署、ZIP/PDF worker 与 font 资源；移除局部试件通过的进度叙述，保留制品验收责任。",
+      "sha256": "d97b952f9f511e20552f6e8d760454764301176d5e56f0e1e6f459ebe2c4eaad",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/README.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "client/video/runtime 与帧独立寿命归属一致；软件字节和 GPU 持有分开，Electron 接入归本体。",
+      "sha256": "daf83c4dc989430e6145a66dc102d2dde1d9379633ddfde2e6b4c79f0afa2128",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/api.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对完整控制、错误、取消、客户端/hook 和目录；将补齐/已检查等过程说明改为当前接口与语义定义来源。",
+      "sha256": "0cf68238e411d5c593c551acd2502823465364a2a45866e4f3e6fd82fd8b652f",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/values.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留 bigint、字节、MpvNode、格式选择和转换失败快照；清除已确认扩展的过程用语。",
+      "sha256": "06b9301aaec7af7c49f404e452e30c1da6c0e75b9d56f40afe54b79838501439",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/notifications.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对 Observer、创建/停止、初始状态、事件/日志缺口和文本失败；明确当前错误职责和早期日志归属。",
+      "sha256": "1184f0cddae5365b96554e5af06dddabb0296c71f76f4b58a71b7080647aa809",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/lifecycle.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对初始化、脚本、日志、取消、常驻运行库、ref/unref、队列和关闭；用正式次序替代原型经过。",
+      "sha256": "ab3443240d159620eb7598a5173e769c23629fa39784e5e49cb1b7a234fd3f85",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/streams.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "协议登记、字节源交接、open 取消限制、同核心重入与关闭等待均有真实原生/资源依据，无须伪装成普通订阅。",
+      "sha256": "779959fde367e9113d5205b972a9cbc00e921ff47eb7ffddc130173ce0c97e0b",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/video.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留 SDR 双目标、HDR 输入、GPU/软件选择、设备、帧池和时序；删占位形状、旧 HDR/原型选卡等叙述。",
+      "sha256": "4548bfa59052a54f586b8e0670ed7e880202724254ba6b64f5c6ffa234bd2d0d",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/platforms.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留 D3D11/CGL/EGL、各平台共享资源与同步；用固定接口责任替代合入经过和未在某主机执行的状态。",
+      "sha256": "45c1131fd2ce347f9111986ee20c144d132241933211923cbff86ef49570ab8e",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/libmpv-node/distribution.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "明确固定上游修改的共同层职责、维护和当前 SDR 验收边界；与主代理摘要纠错同步明确 Git blob 原始字节及检出换行规则。",
+      "sha256": "c05be61c4857c82aa564734a6d6b3dab3ac1fccbf1af435e90197df897ce78ea",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/README.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "单实例、配置/provider/session 事实边界和独立源码职责自洽，令牌不进入长期服务状态。",
+      "sha256": "6762a9a8160b1b081bc4c14c54c2a73b5e577d7f6e0e35782ede4652a0c0a0d0",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/protocol.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对端点、参数、状态、一次领取、错误、配置和容量；将既有三端点改为公共协议表述，保持原始上游 code 与 S256 边界。",
+      "sha256": "c3cb510aa25628c830a893ec4737f97ce6e1f01f0e973a4629a8d83023634b61",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/providers.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "保留 Bangumi/AniList 刷新、Google 接入与附加操作、固定端点和真实 PKCE 差异；删除迁移和试件操作经过。",
+      "sha256": "d7208af62ee2772c42d8345358f96c6d47987aa1bff5da1ae51187de855098e1",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/deployment.md",
+      "kind": "document",
+      "reviewed": true,
+      "decision": "修改",
+      "conclusion": "核对固定双架构镜像、Compose 输入、秘密、健康和关闭；保留 Node 原生 keep-alive 收尾依据，移除发布进度叙述。",
+      "sha256": "74e20a9799273c68259f2287889f72bd89c7c7a3a87f1f4e50ae40c284bf4e69",
+      "changedByThisAudit": true
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/config.example.json",
+      "kind": "configuration",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "无秘密示例与正文默认值、provider 字段、IPv4/IPv6 回环规则一致；通过 Ajv 8.20.0 的 2020-12 严格结构校验。",
+      "sha256": "131f6bd44ef11d1e0d2bfe78470affca0fd8876b625130b4a0ac616b8475d09b",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/design/projects/oauth-relay/config.schema.json",
+      "kind": "configuration",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "核对字段白名单、required、google 分支、uniqueItems、整数/秒范围和 scope 字符范围；跨字段/URL/环境检查明确归启动语义校验。",
+      "sha256": "5bbff0f316dc5297354d69bf213dfdbe5c17ea72afe0c37ed83437cb2dea9394",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/implementation/patches/libmpv/black-tone-map.patch",
+      "kind": "upstream-patch",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "共用 pass_tone_map 的零分母根因修复；前后源码和补丁摘要全部匹配。现行 HDR→SDR 仍调用该路径，旧线性像素证据不等于当前 SDR 全验收。",
+      "sha256": "2a76d386261c4312e47b10f1336efbf8fba08e381c1038e98ebb8161879b41f9",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/implementation/patches/libmpv/screenshot-source.patch",
+      "kind": "upstream-patch",
+      "reviewed": true,
+      "decision": "保留",
+      "conclusion": "在实际取图拥有层随结果交付 vo/software，完整保留原有取图和回退语义；补丁字节和基线匹配，修改后摘要记录存在换行口径差异，见 PA-01。",
+      "sha256": "a71f6fed21e0a5754f76cf5c0df9e34126488e0330332fc5259ffeb79d316f57",
+      "changedByThisAudit": false
+    },
+    {
+      "path": "refactor/implementation/patches/libmpv/manifest.json",
+      "kind": "manifest",
+      "reviewed": true,
+      "decision": "主代理已修正",
+      "conclusion": "PA-01 已统一为固定上游 Git blob 与精确 git apply 的 LF 摘要，复核通过；原 CRLF 历史收据保持。",
+      "sha256": "e5745a352b384f11a2b9e6e28e2edb736522a0404290a0053330a9cf80c0c426",
+      "changedByThisAudit": false,
+      "changedByMainAgent": true
+    }
+  ],
+  "resolvedFindings": [
+    "PA-01"
+  ]
+}

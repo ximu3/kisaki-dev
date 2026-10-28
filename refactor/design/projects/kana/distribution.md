@@ -22,13 +22,13 @@ assetsBaseUrl 是必需的浏览器部署输入，指定以 / 结尾的同源资
 
 显式部署输入使直接浏览器消费、Vite 和 Electron 采用同一合同。不能假设打包器会自动收集运行期拼接的资源目录，也不把 CSS、PDF worker 或 Wasm 隐藏为 CDN 依赖。Kisaki 使用自己的受控静态资源地址，库不依赖 Electron 的私有部署路径。模块导入不加载这些资源；打开文档后再按实际格式准备所需后端。
 
-导入 contracts 的 Node 消费方不需要安装 DOM 类型、创建窗口或提供 assetsBaseUrl。声明包消费及局部资源交付机制已经运行；包内资产的正式复制、离线运行、CSP／worker 配置以及不同构建器消费仍须完整验证。
+导入 contracts 的 Node 消费方不需要安装 DOM 类型、创建窗口或提供 assetsBaseUrl。制品验证分别覆盖声明消费、包内资产复制、离线运行、CSP／worker 配置和不同构建器消费。
 
 [资源加载与部署](resources.md)规定浏览器使用 HTTPS 或认可的本地安全上下文，同源部署专用作用域；Electron 的受控协议具有标准、安全、fetch 与 Service Worker 能力，并保持必要的同源 DOM 访问。缺少相关内容所需的资产或部署能力时以 assetUnavailable 失败，不自动改用另一套 Blob 改写路线。模块导入不登记 worker，实际需要时再建立或复用。
 
-内容地址、读取与资源占用归本次 Reader，静态转发登记可以跨实例保留。Reader.close 不注销仍供其他实例或标签页使用的登记；登记不持有书籍字节与读取权限。上述条件细化资产部署和寿命，不新增公共资源宿主端口，也不改变输入类型或源位置。
+内容地址、读取与资源占用归本次 Reader，静态转发登记可以跨实例保留。Reader.close 不注销仍供其他实例或标签页使用的登记；登记不持有书籍字节与读取权限。公共输入与源位置分别遵守所属合同。
 
-内部字节交付采用已验证的原生可转移流，准备时核对实际能力和转发程序身份。并存的发行版本使用各自作用域，同页独立库副本分别路由；同域冲突明确失败，不替换其他程序。取消打开不发布迟到的内容地址，共享静态安装可按自身寿命结束；完整规则和证据见[资源执行与部署](resources.md#versions)。
+内部字节交付采用原生可转移流，准备时核对实际能力和转发程序身份。并存的发行版本使用各自作用域，同页独立库副本分别路由；同域冲突明确失败，不替换其他程序。取消打开不发布迟到的内容地址，共享静态安装可按自身寿命结束；完整规则和依据见[资源执行与部署](resources.md#versions)。
 
 <a id="package"></a>
 
@@ -79,7 +79,7 @@ zip.js 2.24.0 的 configure、解码池与 Wasm 状态由模块实例持有，�
 
 PDF 后端从当前资产根创建模块 Worker，以公开的 PDFWorker port 参数交给 PDF.js，再在 getDocument 输入中提供该 worker 和对应 CMap、标准字体、Wasm 地址。不在每次 openReader 时改写全局 workerSrc／workerPort，也不复用另一个 Reader 已经关闭的端口。
 
-每份 PDF 的 loading task、文档与原生 Worker 由 formats/pdf 统一持有。已创建的外部 Worker 必须由自己的拥有者结束；不能只因为 PDFWorker 包装已销毁就假定外部端口已终止。具体入口已由固定 PDF.js 的公开声明核对，完整运行沿既有 PDF 适配实施，不以 ZIP 场景替代 PDF 验收。
+每份 PDF 的 loading task、文档与原生 Worker 由 formats/pdf 统一持有。已创建的外部 Worker 由自己的拥有者结束；PDFWorker 包装销毁与外部端口终止分别确认。接入使用固定 PDF.js 的公开入口，按 PDF 的实际加载、读取与关闭路径验收。
 
 ### XML、字体和显示资源
 

@@ -57,7 +57,7 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 官方范围以[33 项清单](#catalog)为准。来源与导入器的选择依据见[逐站调查与取舍](../../verification/evidence/source-selection/comparison.md)及[逐项格式调查与取舍](../../verification/evidence/importer-selection/comparison.md)。以下来源或迁移输入不提供官方接入：
 
 - AniDB：其细分集型与文件对应有独特价值，但在当前来源组合及未采用文件校验体系的范围内，增量收益不足以承担客户端登记与协议维护；见[调查依据](../../verification/evidence/mangaupdates-anidb/live-api.md#anidb)。
-- CnGal：按用户对实名认证要求的明确取舍，排除全部官方资料、账号、导入与同步接入。
+- CnGal：基于实名认证要求的取舍，排除全部官方资料、账号、导入与同步接入。
 - NeoDB、ANN（Anime News Network）、Annict、Kitsu、Shikimori、TheTVDB、SIMKL、Open Library、MangaBaka、BOOK☆WALKER 日本、BookWalker Global、しょぼいカレンダー：按来源价值、适配职责与维护范围的取舍排除。
 - LunaBox、ReinaManager：按迁移场景、公开维护历史与独立格式维护范围的取舍，不提供官方导入器。
 - Hikarinagi、TVmaze、BookBrainz、媒体艺术数据库 MADB、MobyGames、MusicBrainz、Wikimedia Commons。
@@ -74,8 +74,8 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 | ------------------------ | -------- | --------------------------------------------------------------------------------------------------------- |
 | Tenrai / 旧 MAL 镜像依赖 | 不支持   | 不作为 MAL 读取依赖。                                                                                     |
 | AniZip                   | 不支持   | 不引入该远程映射依赖。                                                                                    |
-| Anime-Lists | 不支持 | 不作为本次扩展的运行或发行资源，不隐含依赖其分季与分集映射。 |
-| anime-offline-database | 不支持 | 不交付该已归档数据集的下载、更新或离线索引；已核对材料仅保留作研究依据。 |
+| Anime-Lists | 不支持 | 不作为官方扩展的运行或发行资源，不依赖其分季与分集映射。 |
+| anime-offline-database | 不支持 | 不交付该已归档数据集的下载、更新或离线索引；来源材料归调查证据。 |
 | VNDBTranslatorLib_       | 支持     | 作为 VNDB 可选中文标签、特征名称的文本参考；静态整理、核对上下文并保留 MIT 数据许可，不引入网页执行脚本。 |
 | YMGal 官方资料集         | 不支持   | YMGal 仅通过在线 API 读取资料，不提供资料集下载、更新、本地索引或读取。                                   |
 
@@ -113,6 +113,6 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 
 官方项目只使用公开 API、SDK 和 CLI。即使同仓，也不能私自导入 main、数据库、host 协议或其他扩展内部。每项交付都是完整、自包含的安装包。发布前必须验证仓库外 tarball 消费、真实宿主运行和独立 .kisx 安装，不能只验证同仓最新代码能够编译。
 
-验收覆盖零扩展启动、在线安装失败、译本选用与卸载后回到英语、独立扩展换版，以及所有 UI、登记、错误、取消和任务结果。新实现不兼容旧 API、设置或协议，但必须明确新 API 版本范围，并提供同时可用的模板。逐项验收见[覆盖表](../../verification/coverage.md)。
+验收覆盖零扩展启动、在线安装失败、译本选用与卸载后回到英语、独立扩展换版，以及所有 UI、登记、错误、取消和任务结果。扩展声明明确的 API 版本范围，并使用与该范围相容的模板；兼容范围不包含旧项目的 API、设置或协议。逐项验收见[覆盖表](../../verification/coverage.md)。
 
 当前进度见[实施状态](../../implementation/status.md#design)，来源与格式核对见[验证记录](../../verification/evidence/extensions.md)。

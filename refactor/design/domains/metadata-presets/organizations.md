@@ -19,7 +19,7 @@ RanobeDB 的 Publisher 与已经明确为组织的 Staff 团体保持不同来�
 | 英文     | Bangumi、VNDB、AniList、YMGal、MangaUpdates、RanobeDB、Wikidata | 7    |
 | 日文     | Bangumi、VNDB、AniList、YMGal、MangaUpdates、RanobeDB、Wikidata | 7    |
 
-AniList 提供[真实 Studio 或已定类 Staff 团体](../../extensions/sources/anilist.md#subjects)的实际能力：Studio 可以搜索、读取名称与作品参与，但没有简介、图片或生平日期；Staff 团体须已有明确类别与身份。下表组织履历保留对应上下文，关联动画时长移除 AniList。
+AniList 提供[真实 Studio 或已定类 Staff 团体](../../extensions/sources/anilist.md#subjects)的实际能力：Studio 可以搜索、读取名称与作品参与，但没有简介、图片或生平日期；Staff 团体须已有明确类别与身份。下表组织履历保留对应上下文，关联动画的整部声明时长只采用 Bangumi。
 
 MangaUpdates 的[来源合同](../../extensions/sources/mangaupdates.md#subjects)区分真实 Publisher 与已定类 Author 团体。前者核对各作品的原作出版参与，后者读取自身履历与原文发表用名；主体类型在读取前确定。Publisher 缺少 actualname 时，originalName 保持未回答。
 

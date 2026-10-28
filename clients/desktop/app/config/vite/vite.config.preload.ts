@@ -5,7 +5,7 @@
 
 import { defineConfig } from 'vite'
 
-export const preloadEntries = {
+const preloadEntries = {
   main: 'src/preload/main.ts',
   reader: 'src/preload/reader.ts',
   player: 'src/preload/player.ts',

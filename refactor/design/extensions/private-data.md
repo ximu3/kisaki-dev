@@ -45,7 +45,7 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 
 扩展负责 PKCE、来源响应解析、令牌交换、账号核验、凭据提交及后续刷新。直连与 relay 的差异体现在 URL 和交换流程中。S256 及明确的兼容例外按来源实现确定，不能在失败后自动降级。使用 API key、个人令牌或 client_credentials 的来源遵循实际凭据流程，不强制增加浏览器授权。
 
-未完成的授权只保存在实例内存中，不跨应用重启恢复；已保存的值正常保留。新合同不读取旧凭据或旧私有数据格式。来源协议和 relay 的权威文档分别属于各自项目，Kisaki 文档只定义自身消费边界，不能让独立服务反向依赖应用内部说明。
+未完成的授权只保存在实例内存中，不跨应用重启恢复；已保存的值正常保留。私有存储只读取本扩展声明的数据格式，旧项目的凭据及私有数据不在接入范围内。来源协议和 relay 的权威文档分别属于各自项目，Kisaki 文档只定义自身消费边界。
 
 <a id="sources"></a>
 
@@ -61,12 +61,14 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 | IGDB                     | 使用用户自己的 Twitch Client ID 与 Client Secret 取得应用令牌；不内嵌维护者的保密客户端 secret，不增加私人账号登录，见[接入设计](sources/igdb.md#settings)                                        |
 | YMGal                    | 按来源的应用访问配置取得令牌，保留既有凭据配置能力；应用凭据与用户账号登录区分，来源公开默认值与需保护的自定义凭据分别处理                                                                        |
 | MangaDex                 | 使用用户自己的已获批个人客户端；client secret 与令牌保护保存，密码只用于主动登录的当次请求，后续刷新令牌；不共享客户端，不使用尚未开放的公共浏览器授权，见[专门方案](sources/mangadex.md#account) |
+| MangaUpdates             | 使用官方账号会话接口登录与续期；Cookie 保存在 secrets，密码仅用于当次登录，见[账号合同](sources/mangaupdates.md#account) |
+| itch.io                  | 使用已登记公共客户端的授权码流程、S256 和 loopback；读取权限、账号核验及共用令牌的断开含义见[账号合同](sources/itchio.md#account) |
 
-TMDB 的应用认证与本人账号授权分别处理。应用访问令牌不作为本扩展取得用户许可或完成本人连接的依据；当前同一账号组合下它能读取私密列表的事实见[实测](../../verification/evidence/tmdb/account-api.md)，不据此增加私人操作的凭据回退。本人连接按 [v4 用户授权流程](https://developer.themoviedb.org/v4/docs/authentication-user)创建请求令牌、打开授权页面，再用已批准令牌取得用户 access token。随后通过[官方转换接口](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)建立所需 v3 session，用户只登录一次。回调继续遵守本篇的 loopback、实例归属和取消规则；用户 access token 与 session_id 作为秘密保存。个人接入只采用[适用动画影片](sources/tmdb.md#account)，不因 v4 列表包含 TV 成员就扩大作品范围。
+TMDB 的应用认证与本人账号授权分别处理。应用访问令牌不作为本扩展取得用户许可或完成本人连接的依据，其可读范围另按[凭据范围核验](../../verification/evidence/tmdb/account-api.md)处理。本人连接按 [v4 用户授权流程](https://developer.themoviedb.org/v4/docs/authentication-user)创建请求令牌、打开授权页面，再用已批准令牌取得用户 access token。随后通过[官方转换接口](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)建立所需 v3 session，用户只登录一次。回调继续遵守本篇的 loopback、实例归属和取消规则；用户 access token 与 session_id 作为秘密保存。个人接入只采用[适用动画影片](sources/tmdb.md#account)，不因 v4 列表包含 TV 成员就扩大作品范围。
 
-Google Books 的官方桌面 client 由项目登记，用户无须自行创建开发者应用。迁移时必须核对客户端类型、权限和回调，不能只修改旧 Web client 的 URL；独立 relay 为其他消费者提供的 Google 能力也应保留。
+Google Books 的官方桌面 client 由项目登记，客户端类型、权限和回调采用官方 Desktop 应用合同，用户无须自行创建开发者应用。独立 relay 为其他消费者提供的 Google 能力遵守其自身合同。
 
-Google Books 当前客户端实测需要桌面 client_secret 配置才能完成交换及刷新；S256 仍保持启用。桌面应用配置不能被当作能够保密的 Web 客户端秘密，用户令牌与自定义凭据仍独立保护。当前 Bookshelf 响应未返回旧文档中的账号 selfLink，因此本人连接按已同意的 books、openid、email 范围验证 Google ID token，以 sub 识别账号、邮箱用于显示，不请求 profile，也不将其冒充 Books user ID。实际核验状态见[来源方案](sources/googlebooks.md#account)。
+Google Books 的 Desktop 客户端交换及刷新使用其桌面 client_secret 配置，同时启用 S256。桌面应用配置不能被当作能够保密的 Web 客户端秘密，用户令牌与自定义凭据仍独立保护。本人连接请求 books、openid、email 范围并验证 Google ID token，以 sub 识别账号、邮箱用于显示；不请求 profile，也不将 sub 当作 Books user ID。客户端配置和身份依据见[来源方案](sources/googlebooks.md#account)。
 
 MAL 的 plain PKCE 和 MangaDex 的个人客户端模式 是明确的兼容范围。它们不构成运行失败后的降级路径，也不允许在后台保存密码并反复登录，不能宣称满足全部现代协议目标。匿名可读资料不强制要求连接账号。各来源实际支持的账号与记录能力见[平台目录](catalog.md)。
 
@@ -94,7 +96,7 @@ MAL 的 plain PKCE 和 MangaDex 的个人客户端模式 是明确的兼容范�
 
 [oauth-relay.ximu.dev](https://oauth-relay.ximu.dev) 的服务规则、部署及配置由[独立项目](../projects/oauth-relay/README.md)拥有。Kisaki 不将扩展、Entry、Task、账号或 SDK 模型带入服务，最后一跳只使用 loopback。
 
-各来源按 application/provider 登记自己的应用、回调和权限；客户端不保存上游保密应用的 client_secret。切换运行服务前，完成真实登记、域名、代理、授权、刷新及错误处理的消费验证，秘密不进入核对材料。新服务不读取旧端点或旧令牌封装。
+各来源按 application/provider 登记自己的应用、回调和权限；客户端不保存上游保密应用的 client_secret。接入验证覆盖实际登记、域名、代理、授权、刷新及错误处理，秘密不进入核对材料。端点与令牌封装以公共协议为准，不读取旧服务格式。
 
 <a id="relay-protocol"></a>
 

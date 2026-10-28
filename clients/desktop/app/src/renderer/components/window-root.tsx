@@ -1,5 +1,5 @@
 /**
- * @fileoverview Shares the initial desktop window view and presents failures from its
+ * @fileoverview Shares the desktop window shell and presents failures from its
  * supplied close operation.
  */
 
@@ -13,7 +13,7 @@ interface WindowRootProps {
   close(): Promise<void>
 }
 
-/** Render the initial native window view and report a rejected close request. */
+/** Render the native window shell and report a rejected close request. */
 export function WindowRoot(props: WindowRootProps) {
   const [error, setError] = createSignal('')
 

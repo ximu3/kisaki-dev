@@ -14,7 +14,7 @@ Kisaki 和四个独立技术项目分别使用项目级临时开发仓库完成�
 | ximu3/vantage              | F:\project\vantage     | 原 ximu3/process-list 仓库与 npm 发行 | 按[原生库定位](../projects/vantage/api.md#surface)完整重写并以新名称建仓；公开包为 @ximu3/vantage，既有 npm 发布记录保留 |
 | ximu3/kana                 | F:\project\kana        | 新独立项目                            | 新建阅读内核仓库，不虚构需要重置的旧 Git 历史                                                                            |
 | ximu3/libmpv-node          | F:\project\libmpv-node | 已确定的新独立项目                    | 新建 libmpv Node 原生绑定仓库，平台二进制与主包按项目自身版本交付                                                        |
-| ximu3/oauth-relay          | F:\project\oauth-relay | 已有运行服务，采用新实现              | 直接新写并建立独立私有仓库；切换前核对现有接入和部署事实，不以旧源码为前置，不把服务器凭据带入源码                       |
+| ximu3/oauth-relay          | F:\project\oauth-relay | 已有运行服务，采用新实现              | 建立独立公开仓库；切换服务前核对现有接入和部署事实，服务器凭据由部署环境独立管理                                         |
 | 原 ximu3/kisaki-extensions | 不建立独立新仓库       | 已有独立源码及发行记录                | 将扩展源码与分发资料纳入 Kisaki monorepo；完成存档与新分发入口核对后撤下旧独立仓库，实际撤下范围纳入重建操作             |
 
 F:/project/3/kisaki 和 F:/project/3/process-list 保留到存档验证完成。创建目标工程前检查目录是否已被占用，不覆盖或自动清理来源目录。Kana 和 libmpv-node 新建独立仓库；oauth-relay 使用独立工程，并在服务切换前核对域名、回调地址、应用配置和当前部署状态。

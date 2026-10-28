@@ -64,9 +64,9 @@ CFI 断言用于验证地址，不以断言或摘录搜索自动改绑到邻近�
 
 定位、选区、搜索与标记共用该映射和源顺序。搜索中的大小写等匹配转换另外保留到源文字的对应；结果不保存搜索用字符串的偏移。纯图片没有文字能力，不能用空正文假装成功完成文字提取。
 
-[TXT／FB2 源地址试件](../../../verification/evidence/kana-source/source-addresses.md)已对 16 份自建文件执行 64 次关闭重开，验证全部样本位置在重新解码、解析和展示分块后保持一致。该结果覆盖源映射机制，不代表完整正文提取、真实长书或所有规范编码已经通过。
+TXT／FB2 地址稳定性的机制依据见[源地址验证](../../../verification/evidence/kana-source/source-addresses.md)。重新解码、解析和展示分块共用上述源规则，完整正文提取、真实长书与编码符合性按[格式验收](../../../verification/scenarios/reading.md#formats)分别检查。
 
-XML 入口采用[Expat](formats.md#xml)，通过标准本地实体目录解释正常 XHTML 实体，同时禁止加载任意外部实体。源解释完整性、CFI 关键结构与字节映射的依据见[联合格式验证](../../../verification/evidence/kana-formats/format-sources.md)；实体处理及解析器选择见[格式与输入验证](../../../verification/evidence/kana-formats/format-inputs.md)，参考实现的能力差异见[Foliate 对照](../../../verification/evidence/kana-foliate-review/reassessment.md)。编码、声明与按需加载由[完整输入链试件](../../../verification/evidence/kana-xml-entry/entry.md)验证；大书索引、完整格式转换与编码符合性继续按正式验收要求检查。
+XML 入口采用[Expat](formats.md#xml)，通过标准本地实体目录解释正常 XHTML 实体，同时禁止加载任意外部实体。源解释完整性、CFI 关键结构与字节映射的依据见[联合格式验证](../../../verification/evidence/kana-formats/format-sources.md)；实体处理及解析器选择见[格式与输入验证](../../../verification/evidence/kana-formats/format-inputs.md)，参考实现的能力差异见[Foliate 对照](../../../verification/evidence/kana-foliate-review/reassessment.md)。编码、声明与按需加载的依据见[输入链验证](../../../verification/evidence/kana-xml-entry/entry.md)。
 
 <a id="native-targets"></a>
 

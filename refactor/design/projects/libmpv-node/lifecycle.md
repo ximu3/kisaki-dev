@@ -93,9 +93,7 @@ options 明确应用在 mpv_initialize 之前。调用方启用 config、profile
 
 调用方显式配置的脚本可能在初始化期间运行命令，甚至加载内容或退出。绑定不能因此假定初始化结束时播放器一定空闲。若已确认引擎在交付前进入关闭，结束清理并拒绝创建；不能交付一个已经知道不可用的实例。交付后发生关闭则按已有 Mpv 寿命规则处理，不承诺实例不会立即受到脚本等后续动作影响。
 
-若启用受管渲染，在 mpv_initialize 前准备图形设备与 Render API 上下文，使显式脚本提前加载也有已经准备的输出。这一顺序需要在各平台的实际后端验证，不能仅凭源码没有初始化检查就认定全部平台支持。Windows 已有下述原型证据；其他后端若无法满足，需要在设计验证中解决，不由实施者临时选择引擎保护补丁、在 JavaScript 交付后补建输出或全面禁止脚本。
-
-后续 [Windows 图形原型](../../../verification/evidence/libmpv-gpu/verification.md)已分别验证 ANGLE 与当前直接 D3D11 路径在初始化前创建渲染上下文，以及启动脚本加载后产帧。该结果限于所记录的输入和平台；最终依赖、其他后端及跨入口设置约束继续分别验证。
+若启用受管渲染，在 mpv_initialize 前准备图形设备与 Render API 上下文，使显式脚本提前加载时已有可用输出。各平台的实际后端验证这一顺序及跨入口设置约束，相关机制依据见[图形初始化验证](../../../verification/evidence/libmpv-gpu/verification.md)。
 
 <a id="logs"></a>
 
@@ -129,7 +127,7 @@ const mpv = await createMpv({
 
 正常结束接收阶段时，交付已经接纳的有界诊断与待报告缺口，然后 complete；随后工厂才完成 Promise。即使引擎初始化失败，日志阶段本身仍可以正常 complete，实际创建错误由 Promise 拒绝表达。complete 只表示这段日志接收结束，不表示创建成功。
 
-日志流自身不能继续时，交付一次 observer.error 并结束这段接收；它不自动将本来可成功的创建改成失败。文本转换继续保留原始日志快照。MpvNotificationConversionError.operation 包含 createMpv，明确指出失败发生在初始化日志中；getNativeNotification 的快照类型与独立持有规则不变。这项初始化日志错误扩展也已确认。
+日志流自身不能继续时，交付一次 observer.error 并结束这段接收；它不自动将本来可成功的创建改成失败。文本转换保留原始日志快照。MpvNotificationConversionError.operation 为 createMpv 时，表示失败发生在初始化日志中；getNativeNotification 遵守通知快照类型与独立持有规则。
 
 同步回调抛错、异步上下文、void 返回值和异步任务归属沿用订阅规则；库不等待接收器启动的 Promise。工厂结束后不再开始初始化日志回调。signal 取消主动停止此次创建，也立即抑制尚未开始的初始化日志与终止回调，继续完成原生清理。
 
@@ -170,9 +168,7 @@ signal 只覆盖此次创建。开始前已经取消时，不申请原生实例�
 
 文件加载失败、输出失败和环境退出各自在已确认的责任边界结束与清理。沿用主进程直接接入的路线，进程级原生故障仍可能影响整个宿主，不能承诺将任意原生终止转换成某一个 Promise 的失败。宿主的暂停与恢复策略见[显示变化与故障](../../engineering/integrations.md#host-lifecycle)。
 
-运行库常驻不表示实验中的重复装载失败已经解决。正式依赖须验证多实例并行、反复创建关闭、Worker 退出、其他实例继续工作，以及已交付帧仍按自身合同有效和回收；尚未归因的实验失败继续保留。
-
-[当前常驻路径检查](../../../verification/evidence/libmpv-runtime/runtime.md)在已采用补丁的固定构建上完成一次装载、五个核心的创建关闭和并发隔离。旧的装载实验、上游测试中的重复装载与普通多核心分别记录，具体范围见[运行时交接](#library)。
+正式依赖的验证覆盖多实例并行、反复创建关闭、Worker 退出、其他实例继续工作，以及已交付帧的独立使用和回收。进程运行库与实例寿命的机制依据见[运行时验证](../../../verification/evidence/libmpv-runtime/runtime.md)，实际进度见[实施状态](../../../implementation/status.md)。
 
 <a id="node-lifetime"></a>
 
@@ -186,7 +182,7 @@ Mpv、MpvClient 和 MpvSubscription 分别通过 Symbol.asyncDispose 接入已�
 
 显式释放是可以等待的资源边界，GC 只作兜底。Node 环境清理使用 Node-API 的异步清理机制，停止 JavaScript 交付、解除未继续的 hook、销毁辅助客户端和渲染资源，再结束核心与原生工作；不依赖已经不可执行的 JavaScript 回调或调用方 Promise。每个 Node 环境分别拥有自己的资源，不能在环境之间共享裸句柄或线程安全函数。
 
-原生线程数、队列容量和完整 Node-API／napi-rs 接入仍须真实 addon 验证。[流提供器原型](../../../verification/evidence/libmpv-node-bridge/verification.md)已有限验证流工作、迟到资源与环境退出，未覆盖完整控制接口、hook、运行引用和渲染。标准的 ref、AbortError 或 asyncDispose 在 Node 中成立，不足以证明本库的所有线程和清理竞争已正确实现。
+真实 addon 验证覆盖原生线程、队列容量、Node-API／napi-rs 交付、控制接口、hook、运行引用、渲染及环境退出。流工作与迟到资源的机制依据见[Node 桥接验证](../../../verification/evidence/libmpv-node-bridge/verification.md)。
 
 <a id="owners"></a>
 

@@ -1,0 +1,86 @@
+/** @fileoverview Audits documented scanner presets against Unicode line separators. */
+import { readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+const directory = import.meta.dirname
+const scanner = readFileSync(resolve(directory, '../../refactor/design/domains/scanner.md'), 'utf8')
+const block = scanner.match(/\r?\n```text\r?\n(bracket-both[\s\S]+?)\r?\n```/)
+if (!block) throw new Error('Scanner preset block is missing.')
+
+const examples: Record<string, string> = {
+  'bracket-both': '[组] 作品 [附注]',
+  'multi-bracket-prefix': '[组][附注] 作品',
+  'release-year-suffix': '作品 (2024)',
+  'version-suffix': '作品_v1.2',
+  'lang-suffix': '作品_CHS',
+  'bracket-prefix': '[组] 作品',
+  'paren-prefix': '(组) 作品',
+  'bracket-suffix': '作品 [附注]',
+  'paren-suffix': '作品 (附注)',
+}
+const separators = { CR: '\r', LF: '\n', LS: '\u2028', PS: '\u2029' }
+const lines = block[1].split(/\r?\n/).filter(Boolean)
+const results = []
+
+for (let index = 0; index < lines.length; index += 2) {
+  const id = lines[index]
+  const pattern = lines[index + 1]
+  const flags = id === 'version-suffix' || id === 'lang-suffix' ? 'ui' : 'u'
+  const expression = new RegExp(`^(?:${pattern})(?![\\s\\S])`, flags)
+  const input = examples[id]
+  const acceptedInsertions = []
+  for (const [name, separator] of Object.entries(separators)) {
+    for (let offset = 0; offset <= input.length; offset++) {
+      if (expression.test(input.slice(0, offset) + separator + input.slice(offset))) {
+        acceptedInsertions.push({ separator: name, offset })
+      }
+    }
+  }
+
+  results.push({
+    id,
+    pattern,
+    baselineMatches: expression.test(input),
+    acceptedInsertions,
+    separatorInsideName: Object.fromEntries(
+      Object.entries(separators).map(([name, separator]) => [
+        name,
+        expression.test(input.replace('作品', `作${separator}品`)),
+      ]),
+    ),
+  })
+}
+
+const customExpression = new RegExp('^(?:[\\s\\S]+)(?![\\s\\S])', 'u')
+const customMatches = Object.fromEntries(
+  Object.entries(separators).map(([name, separator]) => [
+    name,
+    customExpression.test(`作${separator}品`),
+  ]),
+)
+const passed = results.every((item) => item.baselineMatches && item.acceptedInsertions.length === 0)
+  && Object.values(customMatches).every(Boolean)
+
+const report = {
+  nodeVersion: process.version,
+  scope: 'Documented scanner presets only; no scanner, worker, filesystem or UI integration tested.',
+  passed,
+  customMatches,
+  results,
+}
+writeFileSync(resolve(directory, 'scanner-line-separator-probe.json'), JSON.stringify(report, null, 2) + '\n')
+console.log(JSON.stringify({
+  nodeVersion: report.nodeVersion,
+  passed,
+  presets: results.length,
+  customMatches,
+  baselineMatched: results.filter((item) => item.baselineMatches).length,
+  acceptedSeparators: Object.fromEntries(
+    Object.keys(separators).map((name) => [
+      name,
+      results.filter((item) => item.separatorInsideName[name]).map((item) => item.id),
+    ]),
+  ),
+}, null, 2))
+if (!passed) process.exitCode = 1
+

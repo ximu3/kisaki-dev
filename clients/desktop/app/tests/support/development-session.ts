@@ -9,6 +9,9 @@ import { join } from 'node:path'
 import { onTestFinished } from 'vitest'
 import type { DevelopmentBuild } from '../../tools/dev/session'
 
+/** Three minutes cover cold package/native preparation and readiness; the application handshake has its own deadline. */
+export const developmentStartupTimeoutMs = 180_000
+
 /** Observations from the isolated test controller, separate from the application protocol. */
 export interface DevelopmentObservation {
   state: 'building' | 'failed' | 'ready' | 'stopped' | 'cancelled'

@@ -60,7 +60,7 @@ Staff 明确容纳个人、公司和团队，CLAMP 已有实际样本；API 没�
 
 GraphQL 变量承载用户输入，不拼接查询文本。普通字段按请求选择；为核对类别、主体范围或关系方向必须读取的字段，不因它们未被选为普通资料而省略。
 
-分页依赖 hasNextPage、实际页位置和已取得的对象，不使用 total 或 lastPage 控制结束。本次同一作品角色目录前四页各 25 项，total 一直为 500；第五页为空且 hasNextPage=false，最终实际为 100 项。名称搜索的 total 也出现 5000 的估计值。
+分页依赖 hasNextPage、实际页位置和已取得的对象，不使用 total 或 lastPage 控制结束。total 可以是估计值，不能据此补造成员或判定分页尚未结束；字段与分页样本见[接口核验](../../../verification/evidence/anime-platforms/live-api.md)。
 
 只完成部分页、重复页、预算耗尽或发生 GraphQL errors 时，不交付半份成功集合。HTTP 200 不能代替 GraphQL 成功判断；已完成且独立的字段可以沿共同 partialResult 保留，失败部分缺席，不改成空数组。
 
@@ -163,15 +163,13 @@ repeat 不生成多次完成历史；advancedScores 不求平均变成本体总�
 
 ## 本人授权与续期
 
-正式接入采用[已经确定的新 relay 合同](../private-data.md#relay-protocol)：上游授权码经 relay 的 HTTPS 回调，最后一跳为动态 loopback；扩展与 relay 的交付使用 S256 校验，不在桌面制品中内嵌 AniList client secret。
+正式接入采用[relay 公共合同](../private-data.md#relay-protocol)：上游授权码经 relay 的 HTTPS 回调，最后一跳为动态 loopback；扩展与 relay 的交付使用 S256 校验，不在桌面制品中内嵌 AniList client secret。
 
 通过 Viewer 核验本人稳定 ID，保存实际令牌、有效期与账号绑定。公开资料不依赖这个连接；本人 mediaListEntry、私密列表及写入必须使用已核验账号。
 
 AniList 没有细分 scope，账号页不伪称可取得只读授权。扩展只执行用户明确启用的操作，不因令牌具有写权限就自动写入。
 
-官方说明目前仍写“不支持 refresh token”，但本次 authorization_code 响应实际包含刷新令牌，refresh_token grant 返回 200，刷新后的 Viewer 为同一账号。方案因此提供真实已验证的续期流程，通过新 relay 转交上游刷新；不能沿用文档中的“不支持刷新”作为固定行为。保存和轮换遵守秘密原子提交，失效或拒绝时由用户重新授权。
-
-本次来源核验临时使用本机保密客户端取得令牌，原应用回调已经恢复；这不改变正式接入方案，也不代替新 relay 的实现验收。
+本人连接通过 relay 转交上游 refresh_token grant，并核对刷新后的 Viewer 仍为同一账号。保存和轮换遵守秘密原子提交，失效或拒绝时由用户重新授权。该接入能力的依据及上游说明与实际响应的差异见[授权核验](../../../verification/evidence/anime-platforms/live-api.md)。
 
 现有记录的 private 保持原值。连接设置明确选择新列表项的可见性，初值为私密；创建时显式传入，普通更新不重设可见性。收藏不属于私密列表项，按站点自身展示规则处理，不作逐项私密承诺。
 
@@ -214,7 +212,7 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 
 评分读取显式使用 POINT_100，写入使用 scoreRaw。实际 87 分分别显示为 POINT_10 的 8、POINT_10_DECIMAL 的 8.7、POINT_5 的 4、POINT_3 的 3，因此不能先读取用户显示分制再自行线性换算。scoreRaw 的正值 1–100 已有低值样本；0 表示清除。native 的有效 0 分不能写成未评分，null 才发送 0。
 
-高级多维评分模式通过正式总分字段与 scoreRaw 接入，账号评分格式和各维度保持原值。来源自己的重算按实际结果说明，不能将未保留的请求分数报告为成功，也不回写维度来凑出总分。[官方 mutation](https://docs.anilist.co/reference/mutation)分别提供 scoreRaw 与 advancedScores，本接入只写总分。本次实测没有启用高级模式，该模式的实际重算与回读仍需来源验收。
+高级多维评分模式通过正式总分字段与 scoreRaw 接入，账号评分格式和各维度保持原值。来源自己的重算按实际结果说明，不能将未保留的请求分数报告为成功，也不回写维度来凑出总分。[官方 mutation](https://docs.anilist.co/reference/mutation)分别提供 scoreRaw 与 advancedScores，本接入只写总分。高级模式的总分重算与回读属于[来源验收](#verification)范围。
 
 完成日期写入本地最早已知完整日期；清除时显式提交 year、month、day 均为 null 的 FuzzyDateInput。日期可独立更新和清除，不需要把当前状态改为完成。
 
@@ -225,7 +223,7 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 | planned、active、onHold          | PLANNING、CURRENT、PAUSED                      |
 | active，当前来源已经为 REPEATING | 保留 REPEATING                                 |
 | 当前状态空且已有完成历史         | COMPLETED，接受来源正常的进度、日期和次数联动  |
-| 当前状态空且没有完成历史         | 不提供状态清除；status:null 实测会写成 CURRENT |
+| 当前状态空且没有完成历史         | 不提供状态清除；status:null 会写成 CURRENT |
 
 相同状态无需重写，不能为“规范化”而重复提交 COMPLETED。独立评分和日期更新保持原状态、数量和 repeat，CURRENT 与 COMPLETED 均按此处理。
 
@@ -233,20 +231,7 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 
 ## 创建与原生联动
 
-本次真实调用确认如下行为：
-
-| 动作                                         | 实际结果                                             |
-| -------------------------------------------- | ---------------------------------------------------- |
-| 仅提供评分创建列表项                         | 默认 CURRENT，并自动填写开始日期                     |
-| 转为 CURRENT，明确传入空 startedAt           | 可以保持开始日期未知                                 |
-| 转为 COMPLETED，未提供完成日期               | 自动填写完成日期                                     |
-| 转为 COMPLETED，明确传入原完成日期或全空日期 | 能保留该日期                                         |
-| 已知总集数 28，转为 COMPLETED                | progress 强制变为 28；显式传入原值 0 或 2 也不能保留 |
-| REPEATING 转为 COMPLETED                     | repeat 增加；显式传入原次数也不能阻止                |
-| 直接将 progress 提高到已知总量               | 可以联动改为 COMPLETED 并填写日期                    |
-| 小说总话数和总卷数均为 null，转为 COMPLETED  | 本次保留了已有的 2 话、1 卷进度                      |
-
-据此沿[共同原生写入规则](../synchronization.md#writes)执行：
+创建和状态转换会联动来源的日期、进度与次数，具体行为见[来源写入核验](../../../verification/evidence/anime-platforms/live-api.md)。接入沿[共同原生写入规则](../synchronization.md#writes)执行：
 
 1. 已有记录的评分、完成日期和合法状态更新分别提供。没有记录时也可仅凭正评分或完整完成日期创建，接受默认 CURRENT 及来源自动日期，不要求额外选择状态。新项明确传入已选择的 private；仅清除字段且没有记录时无需修改。
 2. 正常提交 CURRENT 或 COMPLETED，接受来源自动填写的日期、已知总量进度和 REPEATING 完成时的 repeat 增量；不以原进度未满或次数会增加为理由拒绝。
@@ -264,7 +249,7 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 
 ToggleFavourite 是切换操作。先读取当前事实，仅在与目标不同的时候调用一次；不能把重试当作幂等设置，也不能为读取下一页重新执行 mutation。
 
-本次切换成功后，首次立即读取 Media.isFavourite 仍曾返回旧值，后续读取才更新。写后结合成功 mutation 的结果与本人收藏读取做有界一致性核对，不因一次旧值再次切换。结果不确定时保留未确认状态，先等待并重读，不能盲目重放。只有完整且有效的读取才可用来确认“未收藏”。
+喜爱切换后，Media.isFavourite 的读取可能短暂返回旧值，见[写后回读证据](../../../verification/evidence/anime-platforms/live-api.md)。写后结合成功 mutation 的结果与本人收藏读取做有界一致性核对，不因一次旧值再次切换。结果不确定时保留未确认状态，先等待并重读，不能盲目重放。只有完整且有效的读取才可用来确认“未收藏”。
 
 撤回喜爱不删除媒体列表项；删除本地条目仅退出同步范围，不自动删除平台记录或喜爱。来源不能表达的占位角色和未明确类型的 Staff 不形成自动写入目标。
 
@@ -278,7 +263,7 @@ ToggleFavourite 是切换操作。先读取当前事实，仅在与目标不同�
 
 账号页管理授权、续期状态、本人摘要、新列表项可见性及断开；导入页负责清单和成员范围、个人字段采用、资料方案、目标合集与自动补齐；同步页负责绑定对象范围、字段、手动执行和默认关闭的自动执行。
 
-所有 GraphQL 调用共用限流。按实际响应头调整预算，本次返回 30 次／分钟；遵守 Retry-After，不按过时的 90 次默认额度持续请求。GraphQL 错误、鉴权失效、来源限制与网络重试分别处理。
+所有 GraphQL 调用共用限流，按实际响应头调整预算并遵守 Retry-After；响应配额的依据见[接口核验](../../../verification/evidence/anime-platforms/live-api.md)。GraphQL 错误、鉴权失效、来源限制与网络重试分别处理。
 
 Node 和 Webview 的职责如下：
 

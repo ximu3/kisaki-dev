@@ -1,10 +1,10 @@
 # @kisaki3/ui
 
-当前提供 Solid 1.9 原生语义的 Button 和可直接加载的 styles.css。Solid 作为 peer；消费者加载 appearance/styles.css，无需 Tailwind 构建链。其余基础组件在 W01 交付。
+本包提供 Solid 1.9 的 Button 和可直接加载的 styles.css。按钮保留原生属性与浏览器交互语义，默认 type 为 button。Solid 作为 peer；消费者加载 appearance/styles.css，无需 Tailwind 构建链。
 
 `pnpm build` 在独立候选目录生成代码、声明与适用样式，成功后交接完整 `dist`。`pnpm run pack` 生成 `out/package.tgz`；`pnpm check:package` 使用 publint 与 Are the Types Wrong 检查这份已完成的 tarball。真实跨包消费由根 `tests/desktop/consumers` 验证。
 
-本包采用 MIT；正式合同与后续范围见 [工作包](../../../../refactor/implementation/work-packages.md)。
+本包采用 MIT。包职责与公开边界见[公共包合同](../../../../refactor/design/engineering/workspace.md#contracts)，实现与交付状态见[实施状态](../../../../refactor/implementation/status.md)。
 
 ## 配置文件
 

@@ -2,6 +2,8 @@
 
 沟通默认使用简体中文。遵守 [CONVENTIONS.md](CONVENTIONS.md)，从 [refactor/README.md](refactor/README.md) 和当前工作包读取正式合同，完成后维护 [实施状态](refactor/implementation/status.md)。有方案取舍时先说明依据、选项与代价，和用户讨论后再定稿；超出任务范围的对外操作也须先讨论。
 
+**终态实现与整体一致性是首要准则。** 从完整目标和全部相关场景确定方案，必要时重新考虑整体设计、架构与实现；同类问题在共同拥有层统一解决，相关代码、合同、测试和文档同步闭合。正式成果直接表达自身职责与行为，不采用临时性、过程性、要求性、反向性或补丁性的实现与叙述。具体遵守[核心准则](refactor/design/engineering/conventions.md#final-state)。
+
 通用文档不得加入过程性叙述；只保留现行内容和必要依据，实施经过归状态与证据，遵守[文档归属](refactor/design/engineering/documentation.md#owners)。
 
 简洁与原生优先是全项目的重要设计准则，同时约束用户体验、实现、工具和文档。优先直接的流程、清楚的概念，以及平台、语言和工具自身提供的能力与惯例；原生优先不限定现有工具或技术栈，选型仍从目标出发。保留系统交互和浏览器控件的原有语义。避免过度防御、过度测试和过度设计，既有方案同样接受复核。具体遵守[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)。

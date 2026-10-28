@@ -10,7 +10,10 @@ import { readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { closeNativeWindow, hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
-import { startDevelopmentController } from '../../support/development-session'
+import {
+  developmentStartupTimeoutMs,
+  startDevelopmentController,
+} from '../../support/development-session'
 
 let workspace: Awaited<ReturnType<typeof prepareDevelopmentWorkspace>>
 
@@ -42,7 +45,9 @@ app.once('browser-window-created', (_event, window) => {
   const controller = startDevelopmentController(workspace.app)
   try {
     await expect
-      .poll(() => controller.states.some((state) => state.state === 'ready'), { timeout: 120_000 })
+      .poll(() => controller.states.some((state) => state.state === 'ready'), {
+        timeout: developmentStartupTimeoutMs,
+      })
       .toBe(true)
     const first = controller.states.find((state) => state.state === 'ready')!
     expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
@@ -92,7 +97,9 @@ test('a failed runtime build retains the old process and a renamed source hands 
   const controller = startDevelopmentController(workspace.app)
   try {
     await expect
-      .poll(() => controller.states.some((state) => state.state === 'ready'), { timeout: 120_000 })
+      .poll(() => controller.states.some((state) => state.state === 'ready'), {
+        timeout: developmentStartupTimeoutMs,
+      })
       .toBe(true)
     const good = controller.states.find((state) => state.state === 'ready')!
     await writeFile(helper, 'export const value =\n')
@@ -139,7 +146,9 @@ test('public-package recovery retains a usable session and renderer-only updates
   try {
     browser = await chromium.launch({ headless: true })
     await expect
-      .poll(() => controller.states.some((state) => state.state === 'ready'), { timeout: 120_000 })
+      .poll(() => controller.states.some((state) => state.state === 'ready'), {
+        timeout: developmentStartupTimeoutMs,
+      })
       .toBe(true)
     const first = controller.states.find((state) => state.state === 'ready')!
     const page = await browser.newPage()

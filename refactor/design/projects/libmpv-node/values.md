@@ -55,7 +55,7 @@ await mpv.setProperty('user-data/copy', raw, {
 
 command 选择原生输入时，整个参数表示为原生 array 或 map 节点，分别对应上游的位置参数与命名参数；选择原生输出不要求同时选择原生输入。普通对象即使包含 format 和 value 字段，也不会被自动识别为原生节点；只有对应输入选项改变它的解释。
 
-初始化选项的 input 与有限初始化日志的独立 output 已在[初始化合同](lifecycle.md)中确认。
+初始化选项的 input 与有限初始化日志的独立 output 见[初始化合同](lifecycle.md)。
 
 <a id="property-formats"></a>
 
@@ -143,7 +143,7 @@ undefined、函数、symbol、循环数据和不属于合同的实例不能直�
 
 ## 转换失败与原始结果
 
-用 MpvConversionError 表达已经取得完整原生值，但无法交付所承诺的普通输出。该错误属于 binding 来源，code 为 valueConversion，reason 区分 invalidUtf8、duplicateMapKey 与 unexpectedShape。operation 标明 command、getProperty、getPropertyText、observeProperty 或 observePropertyText，不自动附带命令参数、完整路径或原始内容。[流提供器合同](streams.md#errors)还规定 openStream 扩展，用于保留无法转换的 URI；该扩展已经确认。
+用 MpvConversionError 表达已经取得完整原生值，但无法交付所承诺的普通输出。该错误属于 binding 来源，code 为 valueConversion，reason 区分 invalidUtf8、duplicateMapKey 与 unexpectedShape。operation 标明 command、getProperty、getPropertyText、observeProperty 或 observePropertyText，不自动附带命令参数、完整路径或原始内容。[流提供器合同](streams.md#errors)定义的 openStream 同样使用该错误，保留无法转换的 URI。
 
 这个错误只在已经保留有效原生结果时成立。对于 command，它说明已收到成功命令回复，随后发生转换失败；不说明文件加载或画面已经就绪，也不能当作命令尚未执行。原生命令失败、输入不合法、未知原生格式或无法取得有效结果的失败，不伪造这一错误及其结果快照。
 

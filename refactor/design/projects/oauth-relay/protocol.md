@@ -6,13 +6,13 @@
 
 ## 授权流程
 
-保留接入前缀 /{application}/{provider} 和 GET /authorize、GET /callback、POST /token。authorization_code 与 refresh_token 仍由 grant_type 区分。client_id 使用上游实际登记值；配置匹配只说明参数符合接入登记，不能作为调用者身份认证。
+授权接入使用前缀 /{application}/{provider} 和 GET /authorize、GET /callback、POST /token。authorization_code 与 refresh_token 由 grant_type 区分。client_id 使用上游实际登记值；配置匹配只说明参数符合接入登记，不能作为调用者身份认证。
 
 authorize 首先校验 application/provider、client_id、客户端 redirect_uri、scope、state 和 S256 challenge。全部本地校验通过且有可用容量后，才创建短期会话，生成独立的上游 state，并用该接入登记的 relay HTTPS 回调构造授权地址。客户端 state 原样保留在会话中，不将其复用为上游关联值。
 
 客户端到 relay 的 S256 校验，与 relay 到上游的 PKCE 是两段能力。前者按已经确认的服务合同执行；后者由 provider 明确声明并验证。上游支持适用的 S256 时，可以沿本次流程传递对应 challenge 和兑换 verifier；兼容方式由具体来源确定。不能把 relay 的 S256 支持宣传为所有上游都已经提供同等保护，也不能在失败后自动降级。
 
-上游 code 与本次上游授权请求的绑定按来源分别核实。relay 校验自己的 challenge，并不能自动证明上游 code 属于该请求；现有受控对照与[真实来源核验](providers.md#upstream-binding)已经明确这一差异。[RFC 9700 的授权码注入分析](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.5)作为核对依据。若要求当前来源尚未提供的强制上游绑定，应先回到能力与支持约定的讨论，不能在实现中悄悄增加第二种授权码或宣称已有同等保护。
+上游 code 与本次上游授权请求的绑定按来源分别核实。relay 对自身 challenge 的校验只保护客户端与 relay 之间的交接，上游授权请求的绑定仍取决于[来源能力](providers.md#upstream-binding)。相关保护条件见 [RFC 9700 的授权码注入分析](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.5)；调整上游绑定要求时，按项目讨论规则确定能力与支持范围。
 
 callback 通过内部 state 找到会话，再核对路径中的应用与来源、阶段、有效期以及上游结果。成功后把原始上游 code 关联到该会话，交付给原客户端回调，并带回原客户端 state。relay 不另发自己的 code。拒绝授权等已关联的失败也返回同一个客户端上下文；未知或失效会话没有可信回调地址，只在 relay 显示安全失败结果。
 
@@ -32,7 +32,7 @@ token 的 authorization_code 请求核对 application/provider、client_id、原
 
 sessions 对会话数量、每次输入长度及整体占用设置明确上限，并拥有到期清理和索引一致性。容量不足时拒绝新的授权，不静默丢弃正在进行的有效会话。它不保存完整上游响应、用户令牌或授权历史。进程重启后未完成授权失效，不恢复旧 state 或未完成交换。
 
-客户端主动取消属于客户端操作：停止等待、关闭 loopback 并拒绝迟到结果。既有三端点协议没有远程取消入口，因此不能声称关闭客户端窗口会立即删除 relay 的会话；服务中的短期状态按结束或到期回收。本地取消、上游用户拒绝和服务重启分别验证。
+客户端主动取消属于客户端操作：停止等待、关闭 loopback 并拒绝迟到结果。公共协议没有远程取消入口，关闭客户端窗口后，relay 的短期状态仍按结束或到期回收。本地取消、上游用户拒绝和服务重启分别验证。
 
 refresh_token 请求直接使用客户端交来的原始上游 refresh_token 和当前接入配置，不依赖以前的登录会话，也不要求重启后重新登录。relay 不按用户、token 或账号建立长期绑定，正常刷新也不写回服务配置。同一连接的刷新合并与新凭据原子采用由客户端拥有。
 

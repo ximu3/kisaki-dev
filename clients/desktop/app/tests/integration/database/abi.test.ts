@@ -17,25 +17,30 @@ test('the shipped SQLite binding creates, commits, rolls back and reopens under 
   const options = {
     nativeBinding: join(buildDirectory(hostTarget()), 'resources/native/better-sqlite3.node'),
   }
-  let database = new Database(path, options)
+  let database: Database.Database | undefined
   try {
+    database = new Database(path, options)
     database.pragma('journal_mode = WAL')
     database.exec('CREATE TABLE fixture (id INTEGER PRIMARY KEY, value TEXT NOT NULL UNIQUE)')
     const insert = database.prepare('INSERT INTO fixture (value) VALUES (?)')
 
     database.transaction(() => insert.run('已提交'))()
-    expect(() =>
+    expect(
       database.transaction(() => {
         insert.run('rolled back')
         insert.run('已提交')
-      })(),
+      }),
     ).toThrow()
 
     database.close()
+    database = undefined
     database = new Database(path, options)
     expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已提交' }])
   } finally {
-    database.close()
-    await rm(directory, { recursive: true, force: true })
+    try {
+      database?.close()
+    } finally {
+      await rm(directory, { recursive: true, force: true })
+    }
   }
 })

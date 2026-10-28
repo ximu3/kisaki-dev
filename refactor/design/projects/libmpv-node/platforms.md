@@ -28,7 +28,7 @@ Windows 使用明确传入的 D3D11 设备，并遵守即时上下文与解码�
 
 颜色、共享资源字段和引用归还见[像素与颜色](#graphics-color)、[帧池与同步](#production)及下述各平台实现。实际链路按[专项场景](../../../verification/scenarios/libmpv.md)验证。
 
-上游于 2026-10-15 合入直接 D3D11 Render API；2026-10-18 核对时稳定发行 v0.41.0 尚未包含它。本项目已确认接受较新固定上游提交的构建与验证责任。直接后端已在独立 Node 进程中运行且未加载 ANGLE，并完成 Electron 消费和最终回收；这些证据不替代最终构建、其他 GPU、ARM64 或完整正常播放验收。[上游提交](https://github.com/mpv-player/mpv/commit/4255130de410e0cbdab694b951085409d466b704)、[版本间源码比对](../../../verification/evidence/libmpv-gpu/source-comparison.json)
+直接 D3D11 入口来自[上游提交](https://github.com/mpv-player/mpv/commit/4255130de410e0cbdab694b951085409d466b704)，固定源码与完整依赖由本项目共同构建和验证。正式验收覆盖实际 GPU、两种架构、媒体播放、宿主消费和最终回收，源码依据见[版本间比对](../../../verification/evidence/libmpv-gpu/source-comparison.json)。
 
 macOS 是主要的长期取舍。Apple 已从 macOS 10.14 起弃用 OpenGL；当前 mpv 的直接 GL／VideoToolbox 路线仍要求 CGL。采用它能沿上游现有边界完成绑定，但需要持续验证系统兼容。改用 ANGLE／Metal 不能只替换上下文名称就保留这条直接互操作路径；采用新的渲染入口则意味着额外的上游开发与维护责任。[Apple 说明](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/OpenGL-MacProgGuide/opengl_intro/opengl_intro.html)、[mpv macOS 接入](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/video/out/hwdec/hwdec_mac_gl.c)
 
@@ -60,9 +60,7 @@ libmpv 负责把源视频转换为请求的 SDR 表示，包括 HDR 片源的色
 
 Kisaki 使用 sRGB，不根据片源或系统 HDR 开关改变输出模式。高位深解码、原生画质选项和必要的八位输出抖动仍需验证；不能把“不输出 HDR”实现成拒绝 HDR 文件或降低十位 SDR 处理精度。[完整颜色合同](video.md#targets)
 
-独立 mpv 播放器的 gpu-next 与当前嵌入 Render API 保持各自边界。本库的直接 D3D11／OpenGL 接入沿既有 gpu 管线完成本次 SDR 要求，不以另一渲染器的功能表替代真实验证，也不为 HDR 输出维护额外入口或显示环境查询。
-
-已验证的黑色字幕修复继续随[源码清单](distribution.md)维护。历史 HDR、线性与单位转换实验保留原数据，当前验收围绕 SDR 表示、HDR 片源映射、字幕、时序与资源展开，不把过去实验状态直接改称新范围通过。
+独立 mpv 播放器的 gpu-next 与嵌入 Render API 保持各自边界。本库的直接 D3D11／OpenGL 接入沿 gpu 管线生成 SDR 输出，验证覆盖 SDR 表示、HDR 片源映射、字幕、时序与资源。共用色调映射的零分母修复由[源码清单](distribution.md)维护。
 
 <a id="startup"></a>
 
@@ -70,7 +68,7 @@ Kisaki 使用 sRGB，不根据片源或系统 HDR 开关改变输出模式。高
 
 每个核心最多一个活动 render context，必须在开始使用相应 VO 前准备好，并在核心销毁前释放。渲染线程遵守上游对 GL 当前上下文和调用顺序的要求；事件读取、渲染更新和 JavaScript 交付各自推进，避免渲染线程等待同一核心的普通控制调用。
 
-[初始化合同](lifecycle.md#publication)已要求显式配置的脚本提前加载也不能越过受管输出的准备边界。Windows 的 [GPU 原型](../../../verification/evidence/libmpv-gpu/verification.md)已分别验证 ANGLE 与直接 D3D11 上下文在初始化前建立，以及显式启动脚本加载。最终构建和其他后端仍需相应证据，不能只根据源码没有初始化检查就概括全部目标。
+[初始化合同](lifecycle.md#publication)规定受管输出在核心初始化前准备，显式启动脚本加载内容时使用同一输出。各后端按实际构建验证创建次序和脚本接续，相关机制依据见[GPU 验证](../../../verification/evidence/libmpv-gpu/verification.md)。
 
 vo、窗口嵌入目标、图形上下文与受管颜色目标等涉及输出所有权的设置，按[使用约定](video.md#constraints)界定。直接可识别的冲突由绑定提前检查；配置文件、profile 和脚本由调用方遵守同一约定，库报告可检测冲突并停止不再可信的新交付，不承诺拦截全部引擎内部改写，不维护原生保护补丁。资源寿命仍由库负责，已有帧不会因此被自动释放。具体约束与失败行为见[视频输出合同](video.md#constraints)，运行行为仍须验证。
 
@@ -134,7 +132,7 @@ NativeFrame 通过 IOSurface 及必要资源独立持有图像，GL 纹理和帧
 
 Electron 接收导入进程内的 IOSurfaceRef 字节，并在入口增加引用。生产者与导入者在既定主进程接入中完成这次交接，后续跨进程传输由 Electron 管理，见[导入分支](https://github.com/electron/electron/blob/19c601167d4ae75989938416c18ed81eb21c6020/shell/common/api/electron_api_shared_texture.cc)。
 
-颜色目标仍由 libmpv 按已确认的 sRGB／Display P3 SDR 合同产生，图像与宿主携带同一目标描述；IOSurface 的附件不会替代实际像素转换。VideoToolbox 的解码表面由引擎按自己的互操作取得，交付池仍是库明确拥有的最终 SDR 图像。实际 CGL、VideoToolbox、Electron 读取与持帧关闭由正式平台验收记录，当前未在 macOS 运行。
+颜色目标由 libmpv 按 sRGB／Display P3 SDR 合同产生，图像与宿主携带同一目标描述；IOSurface 的附件不会替代实际像素转换。VideoToolbox 的解码表面由引擎按自己的互操作取得，交付池是库拥有的最终 SDR 图像。实际 CGL、VideoToolbox、Electron 读取与持帧关闭由正式平台验收记录，运行进度见[实施状态](../../../implementation/status.md)。
 
 <a id="linux"></a>
 

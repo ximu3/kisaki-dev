@@ -11,7 +11,7 @@ import type { DesktopBuild, DesktopTarget } from '../../src/shared/runtime-manif
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { buildNative } from '../native/build'
 import { prepareResources } from '../resources/prepare'
-import { runtimeFiles, sourceIdentity } from './identity'
+import { runtimeFiles, buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 
 /** Build a complete target from fixed inputs, publishing it only when all programs are ready. */
@@ -24,22 +24,21 @@ export async function buildDesktop(
   }
 
   const output = buildDirectory(target)
-  const manifest: {
-    name: string
-    version: string
-    type: string
-    description: string
-    homepage: string
-    author: { name: string; email: string }
-    license: string
-    devDependencies: { electron: string }
-  } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
-
   return replaceOutput(
     appRoot,
     output,
     async (staging) => {
-      const buildId = await sourceIdentity()
+      const buildId = await buildInputIdentity({ signal })
+      const manifest: {
+        name: string
+        version: string
+        type: string
+        description: string
+        homepage: string
+        author: { name: string; email: string }
+        license: string
+        devDependencies: { electron: string }
+      } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
       const resources = await prepareResources(target, signal)
       const native = await buildNative(target, false, signal)
       await cp(resources, join(staging, 'resources'), { recursive: true })
@@ -104,7 +103,7 @@ export async function buildDesktop(
         electronVersion: manifest.devDependencies.electron,
         files,
       }
-      if ((await sourceIdentity()) !== buildId) {
+      if ((await buildInputIdentity({ signal })) !== buildId) {
         throw new Error('Desktop inputs changed during the build; the previous output is retained')
       }
 

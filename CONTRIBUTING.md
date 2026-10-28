@@ -52,7 +52,7 @@ pnpm desktop:build --target windows-x64
 pnpm desktop:package --target windows-x64
 ```
 
-开发会话先完成依赖与资源准备，再启动 Vite renderer 服务和独立的 Chokidar 输入监听；监听就绪后开始程序编译。窗口源码与样式使用 Vite HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
+开发会话准备资源并启动 Vite renderer 服务，构建公共依赖并采用完整快照，再建立独立的 Chokidar 输入监听；监听就绪后开始程序编译。窗口源码与样式使用 Vite HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
 
 公共依赖快照保留到会话结束，以免撤销仍被读取的代码；总量限制为 256 MiB，达到预算时停止采用新快照并报告需要重启。工具自身或锁定工具链变更后重新启动开发命令。
 
@@ -63,6 +63,8 @@ pnpm desktop:package --target windows-x64
 根 `desktop:test:native`、`desktop:test:e2e` 和 `desktop:test:performance` 显式先运行一次 `desktop:build`，再执行所属测试。`desktop:test:dev` 只提前准备原生编译输出，由 Turbo 准备测试所需的公共依赖；开发回归在隔离源码副本内验证真实构建、监听与生命周期。应用测试脚本消费已准备输入，直接调用时自行完成相应准备。浏览器任务通过依赖图准备公共包，制品测试消费已经打包的输入。
 
 根 `desktop:package` 由 Turbo 的本包构建依赖完成准备，独立执行会先构建一次。已完成构建的流程使用 `pnpm --filter @kisaki3/desktop package --target <host-target>` 消费同一输出；入口核对现有 `build.json` 的目标、输入身份、完整文件集合和摘要，不在打包阶段重建。缺失、过时或被改写的构建会使任务失败，原有候选保留。
+
+`buildId` 使用 Turbo 公开任务计划中桌面 build 的输入摘要，覆盖任务定义、依赖、全局工具链文件和声明的环境变量。构建与打包读取同一份正式输入定义，逐文件 SHA-256 则校验实际运行字节。开发监听排除文档、测试及生成输出；工具自身和锁定工具链变化仍按上述规则重新启动开发命令。
 
 独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `build:native`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`check:native` 在固定 Rust 工具链下执行格式与 Clippy 检查。
 

@@ -11,7 +11,7 @@ import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'
 import { startInputWatcher } from './inputs'
-import { sourceIdentity } from '../build/identity'
+import { buildInputIdentity } from '../build/identity'
 import { prepareResources } from '../resources/prepare'
 import { electronExecutable } from './electron-executable'
 import { captureDependencies, desktopDependencies } from './dependencies'
@@ -150,7 +150,7 @@ export async function startDevelopmentSession(
         let runtime: GenerationOutput | undefined
         if (!current || forced || (await programInputsChanged(programInputs))) {
           runtime = await buildGeneration(target, candidate, signal)
-          if (runtime.buildId !== (await sourceIdentity())) {
+          if (runtime.buildId !== (await buildInputIdentity({ signal }))) {
             buildPending = !stopping && !resourceFailed
             await rm(candidate, { recursive: true, force: true })
             return

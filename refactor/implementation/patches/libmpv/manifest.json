@@ -24,7 +24,7 @@
         {
           "path": "player/screenshot.c",
           "beforeSha256": "04cacb714368d1ed330aa1857bf62967fe047e00b222818db62e079aeb709318",
-          "afterSha256": "6d5bbe353c97f114c6eee305495e676b83c330cd6a1b44f464018b541ded8ccf"
+          "afterSha256": "0f8bc0f02942f953f9148f934367747698b2bae153113843d0ddf9ed29f54e13"
         }
       ],
       "verification": "../../../verification/evidence/contract-closure/2026-10-22/README.md#screenshot",
