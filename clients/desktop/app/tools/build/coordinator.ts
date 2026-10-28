@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Assembles a finite desktop runtime from complete program, resource and
+ * native outputs and publishes its build manifest.
+ */
+
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot, buildDirectory } from '../lib/paths'

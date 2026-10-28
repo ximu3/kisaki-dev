@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines connection-owned message transport and subscription cleanup
+ * contracts independently of platform APIs.
+ */
+
 /** A message channel owned by one connection; values still require frame validation. */
 export interface MessageTransport {
   /** Send one message. Throwing means delivery could not be confirmed, not rollback. */

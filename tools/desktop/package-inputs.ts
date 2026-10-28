@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Collects the eight desktop package tarballs into a portable input receipt
+ * for isolated consumers.
+ */
+
 import { createHash } from 'node:crypto'
 import { copyFile, mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'

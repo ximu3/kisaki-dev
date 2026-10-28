@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Removes the ui package's build and tarball outputs while retaining its
+ * project cache.
+ */
+
 import { rm } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'

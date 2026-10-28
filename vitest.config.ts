@@ -1,3 +1,5 @@
+/** @fileoverview Runs repository tooling, structure and hook tests under ordinary Node. */
+
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

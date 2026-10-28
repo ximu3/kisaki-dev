@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/ext-language-zh-hans",
+  "description": "Workspace configuration for the official Simplified Chinese extension project.",
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",

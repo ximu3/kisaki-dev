@@ -1,3 +1,5 @@
+# Routes code-verification events and concurrency to the reusable project coordinator.
+
 name: CI
 
 on:

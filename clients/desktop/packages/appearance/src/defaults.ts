@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides complete light and dark token values while leaving font loading
+ * and theme selection to the host.
+ */
+
 import type { VisualTokens } from './tokens'
 
 /** Default light values; hosts own font loading and color-scheme selection. */

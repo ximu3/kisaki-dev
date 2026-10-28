@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Adapts native file operations to absolute-path inputs and typed errors at
+ * the Node boundary.
+ */
+
 import { isAbsolute } from 'node:path'
 import type * as Binding from './binding'
 

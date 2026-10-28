@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies that one staged-file lint invocation resolves each owning
+ * project's configuration.
+ */
+
 import { expect, test } from 'vitest'
 import { ESLint } from 'eslint'
 

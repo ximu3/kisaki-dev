@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Selects runtime, resource and profile locations for source and packaged
+ * launches before Electron fixes its paths.
+ */
+
 import { app } from 'electron'
 import { mkdirSync, readFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'

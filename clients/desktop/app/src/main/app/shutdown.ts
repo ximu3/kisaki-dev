@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Coordinates window-approved application exit with extension-host cleanup
+ * and development-parent notification.
+ */
+
 import { app } from 'electron'
 import type { BrowserWindow } from 'electron'
 import type { DevelopmentStopResult } from '@kisaki3/desktop-contracts/development'

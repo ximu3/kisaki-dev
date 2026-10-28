@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Mounts the reader window, announces renderer readiness and owns Solid
+ * cleanup during HMR.
+ */
+
 import { render } from 'solid-js/web'
 import { WindowRoot } from '../../components/window-root'
 import './styles.css'

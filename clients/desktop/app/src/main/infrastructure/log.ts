@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Writes lifecycle messages and failures under the application or extension
+ * domain that owns them.
+ */
+
 /** Write a lifecycle message for the responsible domain. */
 export function logLifecycle(domain: 'app' | 'extensions', message: string): void {
   console.info(`[${domain}] ${message}`)

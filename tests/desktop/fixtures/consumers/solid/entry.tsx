@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises the public Solid button and compiled styles in an independent
+ * counter page.
+ */
+
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { Button } from '@kisaki3/ui'

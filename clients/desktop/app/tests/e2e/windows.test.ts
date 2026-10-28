@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies isolation, minimal preload controls and normal closure for each
+ * desktop window kind.
+ */
+
 import { test, expect } from '../support/electron'
 
 for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {

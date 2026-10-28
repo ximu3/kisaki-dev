@@ -1,3 +1,5 @@
+/** @fileoverview Runs pure desktop-contract tests beside their source under ordinary Node. */
+
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies that development snapshots select production workspace packages
+ * and exclude engineering-only dependencies.
+ */
+
 import { expect, test } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'

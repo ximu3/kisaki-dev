@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds the four Solid window documents and configures their loopback
+ * development server and development CSP.
+ */
+
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 import { fileURLToPath } from 'node:url'

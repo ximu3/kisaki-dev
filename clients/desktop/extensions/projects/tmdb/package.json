@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/ext-tmdb",
+  "description": "Workspace configuration for the official TMDB extension project.",
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Runs the desktop development session and translates terminal signals into
+ * startup cancellation and session shutdown.
+ */
+
 import { startDevelopmentSession } from './session'
 import type { DevelopmentSession } from './session'
 

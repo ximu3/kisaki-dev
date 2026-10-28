@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies installed desktop tarballs through strict declarations, Node
+ * execution and real browser consumers.
+ */
+
 import { afterAll, beforeAll, expect, test } from 'vitest'
 import { chromium } from '@playwright/test'
 import { preview } from 'vite'

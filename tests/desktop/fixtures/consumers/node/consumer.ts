@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises public desktop package entries and declarations from an isolated
+ * Node consumer.
+ */
+
 import { defineConfig } from '@kisaki3/extension-cli/config'
 import { launchDevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import {

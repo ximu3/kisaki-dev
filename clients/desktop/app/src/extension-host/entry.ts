@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Runs the shared extension-host utility process and handles its readiness
+ * and shutdown channel.
+ */
+
 import { parentPort } from 'node:worker_threads'
 import type { HostControl, HostStatus } from '../shared/extension-host'
 

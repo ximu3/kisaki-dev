@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies which production, engineering and generated inputs contribute to
+ * desktop build identity.
+ */
+
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

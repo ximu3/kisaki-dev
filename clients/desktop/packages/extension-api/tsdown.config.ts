@@ -1,3 +1,5 @@
+/** @fileoverview Configures the extension API ESM entry and public declarations. */
+
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

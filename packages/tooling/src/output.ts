@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Publishes complete candidate directories to project-owned outputs while
+ * preserving the previous output on preparation failure.
+ */
+
 import { mkdir, mkdtemp, rename, rm, stat } from 'node:fs/promises'
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 

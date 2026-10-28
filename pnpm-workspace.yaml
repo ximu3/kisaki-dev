@@ -1,3 +1,6 @@
+# Registers maintained workspace projects and owns shared dependency versions and build-script
+# permissions.
+
 packages:
   - packages/*
   - clients/desktop/app

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Serves renderer development pages through Vite and adopts public-package
+ * snapshots for module resolution.
+ */
+
 import { createServer } from 'vite'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import { appRoot } from '../lib/paths'

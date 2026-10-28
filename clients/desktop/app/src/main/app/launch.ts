@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Interprets explicit desktop launch switches for development mode,
+ * profiles, window selection and renderer location.
+ */
+
 import { app } from 'electron'
 import { isAbsolute } from 'node:path'
 import { developmentLaunchSwitches } from '@kisaki3/desktop-contracts/development'

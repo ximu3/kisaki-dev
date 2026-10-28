@@ -1,3 +1,6 @@
+//! Implements platform file moves and synchronization on libuv workers, returning stable reasons
+//! and system codes.
+
 use napi::bindgen_prelude::AsyncTask;
 use napi::{Env, Error, Result, Status, Task};
 use napi_derive::napi;

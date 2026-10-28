@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds private main, preload and extension-host generations and records
+ * their compiler inputs.
+ */
+
 import { copyFile, cp, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { DesktopTarget, RuntimeManifest } from '../../src/shared/runtime-manifest'

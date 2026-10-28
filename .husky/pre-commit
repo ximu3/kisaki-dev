@@ -1,1 +1,3 @@
+# Runs staged-file checks with argument batches sized for the supported command hosts.
+
 pnpm exec lint-staged --max-arg-length 4000

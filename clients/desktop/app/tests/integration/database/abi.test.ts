@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises transactions and reopening with the shipped SQLite binding under
+ * Electron.
+ */
+
 import { expect, test } from 'vitest'
 import Database from 'better-sqlite3'
 import { mkdtemp, rm } from 'node:fs/promises'

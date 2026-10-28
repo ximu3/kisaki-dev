@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/extension-distribution",
+  "description": "Static localized metadata contracts for Kisaki extensions.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

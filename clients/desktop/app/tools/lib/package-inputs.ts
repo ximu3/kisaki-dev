@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Selects production package inputs shared by desktop build identities and
+ * development watching.
+ */
+
 import { readdir } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 

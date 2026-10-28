@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Declares extension build inputs without starting builds or loading
+ * extension code.
+ */
+
 /** Source inputs for one extension. Paths are relative to the extension project. */
 export interface ExtensionBuildConfig {
   /** Node activation source, compiled without executing it. */

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies keyboard activation and visible close failures in the shared
+ * desktop window view.
+ */
+
 import { afterEach, expect, test, vi } from 'vitest'
 import { page, userEvent } from 'vitest/browser'
 import { render } from 'solid-js/web'

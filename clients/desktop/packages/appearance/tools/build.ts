@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds appearance code and declarations, then generates CSS defaults from
+ * the same exported token values.
+ */
+
 import { build } from 'tsdown'
 import type * as DefaultTokens from '../src/defaults'
 import { writeFile } from 'node:fs/promises'

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides lint restrictions on browser globals for code that executes in
+ * Node.
+ */
+
 import type { Linter } from 'eslint'
 
 /** Restrict browser globals in Node code even when upstream declarations reference DOM types. */

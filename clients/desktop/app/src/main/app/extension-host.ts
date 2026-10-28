@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Owns the shared extension-host utility process from its readiness
+ * handshake through shutdown.
+ */
+
 import { utilityProcess } from 'electron'
 import { join } from 'node:path'
 import { logFailure, logLifecycle } from '../infrastructure/log'

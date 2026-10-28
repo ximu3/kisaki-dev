@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Models a pending dependency build so development startup cancellation can
+ * be observed.
+ */
+
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { repositoryRoot } from '../../tools/lib/paths'

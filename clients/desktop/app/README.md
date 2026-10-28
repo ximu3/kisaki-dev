@@ -10,7 +10,7 @@
 
 开发监听与输出清理在常规 Node 套件中通过真实 Vite、Chokidar 和文件系统验证。`test:dev` 保留实际 Electron 的退出取消、编译失败与改名恢复、公共包失败与页面交接，以及首次准备取消与重试。独立场景复用隔离工作区准备，各自关闭控制器并恢复自己的输入。
 
-应用测试脚本直接消费已准备的输入，根 `desktop:test:native`、`desktop:test:e2e`、`desktop:test:dev` 与 `desktop:test:performance` 负责先构建。CI 为选中套件共用目标构建，具体触发范围由 `turbo.json` 的任务 inputs 维护；测试、文档或开发工具变更不自动要求重新测量性能和打包。
+应用测试脚本直接消费已准备的输入，根 `desktop:test:native`、`desktop:test:e2e` 与 `desktop:test:performance` 先完成有限应用构建；`desktop:test:dev` 提前准备原生输出，由隔离开发会话完成应用构建。CI 为选中套件共用目标构建，具体触发范围由 `turbo.json` 的任务 inputs 维护；测试、文档或开发工具变更不自动要求重新测量性能和打包。
 
 扩展宿主由 utilityProcess 运行，保留正式关闭 RunAsNode 和调试相关 fuses 的条件。应用 package.json 的 imports 定义私有原生入口 `#native`，主进程与原生集成测试共同消费；主进程构建将其编入输出，产物不依赖源码映射。入口导入不加载二进制；装配明确选择部署路径，并核对运行构建身份和原生字节。
 
@@ -20,4 +20,18 @@ SQLite 13.0.3 使用包内 Node-API 预编译绑定，资源工作流只装配�
 
 性能配置保存了正式代表负载和共同预算。当前运行测量只覆盖 W00 工程外壳的 20 次新进程启动及退出；完整资料、媒体、后台操作与旧版比较由对应工作包接续。
 
-`packaging` 保存打包专用静态输入的工程归属，当前只有说明；执行逻辑在 `tools/package`，生成文件在 `dist`。媒体信息与播放经 libmpv-node 接入，本体不再准备独立 ffprobe。
+`packaging` 保存打包专用静态输入的工程归属，当前只有说明；执行逻辑在 `tools/package`，生成文件在 `dist`。媒体信息与播放经 libmpv-node 接入。
+
+## 配置文件
+
+| 文件                                                                                             | 用途                                                         |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| [tsconfig.json](tsconfig.json)                                                                   | 桌面工程的类型检查入口，组织各运行环境、工具和测试项目。     |
+| [turbo.json](turbo.json)                                                                         | 桌面任务的构建依赖、验证输入、环境变量和缓存规则。           |
+| [config/typescript/tsconfig.main.json](config/typescript/tsconfig.main.json)                     | 检查主进程、共享合同与私有 Node 原生入口，并完整检查其声明。 |
+| [config/typescript/tsconfig.preload.json](config/typescript/tsconfig.preload.json)               | 检查隔离预加载脚本及其共享合同。                             |
+| [config/typescript/tsconfig.renderer.json](config/typescript/tsconfig.renderer.json)             | 检查 Solid renderer、窗口全局声明与共享合同。                |
+| [config/typescript/tsconfig.extension-host.json](config/typescript/tsconfig.extension-host.json) | 检查扩展宿主的 Node 程序和共享合同。                         |
+| [config/typescript/tsconfig.shared.json](config/typescript/tsconfig.shared.json)                 | 独立检查共享纯合同与构建全局声明。                           |
+| [config/typescript/tsconfig.tools.json](config/typescript/tsconfig.tools.json)                   | 检查桌面工程工具与 TypeScript 配置入口。                     |
+| [config/typescript/tsconfig.tests.json](config/typescript/tsconfig.tests.json)                   | 检查各运行环境的测试、辅助和测试使用的窗口声明。             |

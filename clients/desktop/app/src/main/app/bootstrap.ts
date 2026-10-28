@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Assembles desktop paths, native resources, windows and the shared
+ * extension host before reporting readiness.
+ */
+
 import { app, session } from 'electron'
 import { readFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'

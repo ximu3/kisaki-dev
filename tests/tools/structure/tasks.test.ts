@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies real Turbo task inputs, cache policy and affected verification
+ * scope using isolated Git changes.
+ */
+
 import { expect, test } from 'vitest'
 import { execFile } from 'node:child_process'
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'

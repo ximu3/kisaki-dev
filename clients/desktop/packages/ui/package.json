@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/ui",
+  "description": "A Solid button and compiled styles using Kisaki appearance tokens.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

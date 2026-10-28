@@ -1,3 +1,5 @@
+/** @fileoverview Serves declared renderer resources through the private application origin. */
+
 import { net, protocol } from 'electron'
 import { resolve, relative, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'

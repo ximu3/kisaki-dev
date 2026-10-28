@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Checks workspace registration, publication boundaries and maintained
+ * source typecheck coverage.
+ */
+
 import { expect, test } from 'vitest'
 import { readFile, readdir } from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'

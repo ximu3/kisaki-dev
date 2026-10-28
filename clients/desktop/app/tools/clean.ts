@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Removes desktop build and distribution outputs while retaining profiles
+ * and caches.
+ */
+
 import { rm } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'

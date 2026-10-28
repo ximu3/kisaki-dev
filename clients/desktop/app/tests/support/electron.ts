@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides Playwright fixtures that own a prepared desktop launch and its
+ * isolated profile.
+ */
+
 import { _electron, test as base } from '@playwright/test'
 import type { ElectronApplication } from '@playwright/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'

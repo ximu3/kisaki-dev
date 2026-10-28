@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Connects the application to its development parent for initialization,
+ * readiness and normal shutdown requests.
+ */
+
 import { app } from 'electron'
 import {
   developmentProtocolVersion,

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises repository hook ownership, worktree behavior and failed
+ * staged-file checks in isolated Git repositories.
+ */
+
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { spawnSync } from 'node:child_process'
 import { copyFile, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'

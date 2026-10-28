@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Runs real desktop development-session regressions serially and records
+ * their results.
+ */
+
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Prepares an isolated workspace with installed dependencies for tests that
+ * edit and rebuild development inputs.
+ */
+
 import { createRequire } from 'node:module'
 import { cp, copyFile, mkdtemp, realpath, rm } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'

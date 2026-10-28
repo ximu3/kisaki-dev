@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies that Node program builds resolve package entries and retain
+ * external runtime built-ins.
+ */
+
 import { expect, test } from 'vitest'
 import { build, normalizePath } from 'vite'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'

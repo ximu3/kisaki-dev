@@ -1,3 +1,5 @@
+# Checks PR titles independently of code verification and its cancellation group.
+
 name: PR title
 
 on:

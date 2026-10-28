@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Maps supported desktop targets to native toolchains and validates host or
+ * explicit target selection.
+ */
+
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'
 
 /** The six supported toolchain targets, shared by resource, native and package workflows. */

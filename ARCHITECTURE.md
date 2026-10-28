@@ -12,7 +12,7 @@
 
 四个窗口保留各自的 HTML、程序和样式入口，当前相同的初始视图由 `renderer/components/window-root` 共用；窗口入口注入所属能力，视图不操作传输。
 
-构建由项目自己的工具拥有，根 Turbo 从真实 manifests 安排依赖。每个输出只有一个写入者，完整候选成功后才交接。开发会话的协调归 `dev/session`，Vite 与监听归 `dev/renderer`，应用经 `extension-cli/extension` 的公共父子 IPC 入口启动；候选和公共包快照分别归 `generation` 与 `dependencies`。消息唯一归属 `desktop-contracts/development`，源码与打包应用采用同一接入和可取消退出。公共依赖快照根据真实公开制品生成，Node 重启依据 Vite 报告的实际模块输入，而非手写依赖表。
+构建由项目自己的工具拥有，根 Turbo 从真实 manifests 安排依赖。每个输出只有一个写入者，完整候选成功后才交接。开发会话的协调归 `dev/session`，Vite renderer 服务归 `dev/renderer`，运行时与公共包输入监听归 `dev/inputs`，应用经 `extension-cli/extension` 的公共父子 IPC 入口启动；候选和公共包快照分别归 `generation` 与 `dependencies`。消息唯一归属 `desktop-contracts/development`，源码与打包应用采用同一接入和可取消退出。公共依赖快照根据真实公开制品生成，Node 重启依据 Vite 报告的实际模块输入，而非手写依赖表。
 
 工程工具顶层按完整任务组织，应用内部共用的路径、目标与摘要归 `tools/lib`；跨工程的输出交接、命令执行和 CLI 收尾归私有包 `@kisaki3/tooling`，共享类型与 lint 配置由另外两个私有工程包提供。开发 Electron 定位归 `tools/dev/electron-executable.ts`。`packaging` 是打包专用静态输入边界，执行逻辑在 `tools/package`，产物在 `dist`；它与官方 registry 都可以保留 W00 阶段的归属说明。
 

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises explicit command environments and cancellation of real
+ * child-process trees.
+ */
+
 import { expect, test, vi } from 'vitest'
 import { createRequire } from 'node:module'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'

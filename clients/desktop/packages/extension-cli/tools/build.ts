@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds complete extension-cli code and declarations before replacing the
+ * package output.
+ */
+
 import { build } from 'tsdown'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'

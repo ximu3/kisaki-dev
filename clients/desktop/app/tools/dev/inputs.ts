@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Watches runtime and public-package inputs independently of renderer-server
+ * restarts.
+ */
+
 import { once } from 'node:events'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import { watch } from 'chokidar'

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines and parses the shared development-launch and parent-child IPC
+ * protocol used by the desktop and extension tooling.
+ */
+
 import type { ErrorSummary } from './errors'
 
 /** Version of the finite parent-child development messages, independent of extension API versions. */

@@ -1,3 +1,5 @@
+/** @fileoverview Runs isolated desktop package consumer tests and records their results. */
+
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
