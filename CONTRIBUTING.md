@@ -15,6 +15,8 @@ pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重
 
 PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/documentation.md#pull-request-descriptions)。
 
+合并前同步最新 main，并通过必需检查。主线保护同样约束管理员，不要求额外的他人审批；仓库仅允许 Squash，合并后由 GitHub 自动删除远端分支。完整规则见[协作合同](refactor/design/engineering/workspace.md#collaboration)。
+
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
 ## 配置文件

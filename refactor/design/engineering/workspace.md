@@ -325,7 +325,7 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 ## PR、提交与 CI
 
-每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审、Squash 合并并删除分支。main 要求 PR 和检查通过，不要求另一人 Approve。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
+每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审并 Squash 合并，GitHub 自动删除已合并的远端分支。main 通过原生分支保护要求 PR、同步最新主线及必需检查通过，管理员同样遵守；审批人数为 0，不要求另一人 Approve。仓库仅启用 Squash，主线禁止强制推送与删除。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
 
 ci.yml 接收 PR、主线 push 和手动事件，再调用 verification.yml 协调代码验证。verification-repository.yml 与 verification-desktop.yml 分别执行仓库和桌面验证，通过 GitHub 原生 workflow_call 输入与输出连接；workflow 文件直接位于 .github/workflows，以 verification-<工程>.yml 表达归属。PR 打开、提交变化、重新打开及目标分支变化需要代码验证；仅编辑标题或正文时不调用验证工作流，也不进入代码任务的取消组，不生成新的代码汇总结果。GitHub 仍可能显示一个跳过的入口任务；它不作为必需检查，也不能覆盖已有的代码检查结果。
 

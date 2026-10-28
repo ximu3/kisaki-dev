@@ -4,23 +4,23 @@
 
 ## 当前交付
 
-截至 2026-10-28，开发基线为 `cafcfce`。[PR #10](https://github.com/ximu3/kisaki-dev/pull/10) 已合并，其对应输入的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)通过，完整运行用时 20 分 15 秒。
+截至 2026-10-29，W00 的工程与测试入口交付完成。工程基线 `cafcfce` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)通过，完整运行用时 20 分 15 秒；[仓库合并约束](#merge-rules)已配置并读回验证。
 
 | 范围 | 状态 |
 | --- | --- |
 | 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
-| W00 工程与验证入口 | 主要实现和六目标工程验证完成；[仓库合并约束](#w00-pending)尚未落实，整包待收尾。运行记录按下方分类维护。 |
+| W00 工程与验证入口 | 已完成；工程、资源、开发、消费者和测试入口有对应证据，六目标及仓库合并约束已验证。 |
 | W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
 
 各阶段的实现、运行验证与发行按[验收标准](../verification/acceptance.md)分别记录。
 
-<a id="w00-pending"></a>
+<a id="merge-rules"></a>
 
-## W00 待闭合事项
+## 仓库合并约束
 
-`ximu3/kisaki-dev` 的 `main` 未受保护，ruleset 列表为空。现行[协作规范](../design/engineering/workspace.md#collaboration)要求合并必须通过 `verify / Required checks` 和 `PR title`，仓库配置尚未落实。实际读取结果见[完成度核对](../verification/evidence/project-documentation/2026-10-28/README.md#w00)。
+`ximu3/kisaki-dev` 的 `main` 启用原生分支保护：必须通过 PR，分支包含最新主线，`verify / Required checks` 与 `PR title` 由 GitHub Actions 成功提供；管理员同样遵守，审批人数为 0。主线禁止强推和删除，仓库只允许 Squash，并自动删除已合并远端分支。实际配置和读回结果见[W00 收尾验证](../verification/evidence/w00/2026-10-29/closure/README.md#repository)。
 
 ## 运行记录与观察
 
@@ -28,7 +28,7 @@
 | --- | --- |
 | 已定位并处理 | Electron 44 的窗口可见性回调访问已销毁对象、阻塞退出，由 Electron 45 移除该回调处理；正式六目标验证通过，见[退出诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)。有完整轨迹的 macOS x64 开发就绪超时属于冷构建准备耗时，准备预算已按实测配置并验证，见[冷准备核对](../verification/evidence/final-state-coherence/2026-10-28/followup.md)。 |
 | 历史未归因 | 更早的 macOS x64 首次 ready 超时及两次 Apple Silicon 采样超时缺少必要诊断，保留原始结果。它们不能逐次确证为上述原因，也不能直接证明当前输入仍存在同一故障，见[启动记录](../verification/evidence/ci-design/2026-10-27/adoption/README.md)与[采样记录](../verification/evidence/workflow-review/2026-10-27/README.md)。 |
-| 待查占用 | Windows 候选输出目录交接曾返回 EPERM，旧输出已恢复，占用者未确定。需要区分内部未释放句柄与外部占用，再判断是否修改资源收尾；原始记录见[输出交接](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)。 |
+| Windows 输出占用观察 | 历史 EPERM 的占用者未确定。40 次顺序构建和三轮真实 Turbo 调度未复现；受控占用中已识别持有进程，验证改名失败后的旧输出恢复、占用释放后的候选清理及后续构建。实现保持原有错误与交接语义，见[占用核对](../verification/evidence/w00/2026-10-29/closure/README.md#output)。 |
 
 ## 后续工作包的交付范围
 
@@ -61,7 +61,7 @@
 
 | 范围 | 状态 |
 | --- | --- |
-| [W00：工程与测试入口](work-packages.md#w00) | 待收尾，见[未闭合事项](#w00-pending)和[已完成范围](#w00)。 |
+| [W00：工程与测试入口](work-packages.md#w00) | 已完成，见[交付范围](#w00)、[合并约束](#merge-rules)和[收尾验证](../verification/evidence/w00/2026-10-29/closure/README.md)。 |
 | [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：数据库与原生操作](work-packages.md#w02) | 未开始 |
 | [W03：完整业务链路](work-packages.md#w03) | 未开始 |
