@@ -20,6 +20,7 @@ export interface HooksResult {
 function git(directory: string, args: string[]): { status: number | null; output: string } {
   const result = spawnSync('git', args, { cwd: directory, encoding: 'utf8', windowsHide: true })
   if (result.error) throw new Error('Could not run Git', { cause: result.error })
+
   return { status: result.status, output: result.stdout.trim() }
 }
 
@@ -31,6 +32,7 @@ export async function configureHooks(
   if (process.env.CI || process.env.HUSKY === '0') {
     return { status: 'skipped', message: 'Hooks are disabled in this environment.' }
   }
+
   const worktree = git(directory, ['rev-parse', '--show-toplevel'])
   if (worktree.status !== 0) {
     return { status: 'skipped', message: 'Source archives do not install Git hooks.' }
@@ -49,11 +51,14 @@ export async function configureHooks(
     if (localHookPath.status === 0 && localHookPath.output !== ownedPath) {
       return { status: 'preserved', message: 'The user changed core.hooksPath; it was preserved.' }
     }
+
     if (localHookPath.status === 0) {
       const removed = git(root, ['config', '--local', '--unset-all', 'core.hooksPath'])
       if (removed.status !== 0) throw new Error('Could not remove the repository hook path')
     }
+
     await rm(ownedDirectory, { recursive: true, force: true })
+
     return {
       status: 'uninstalled',
       message: 'Repository hooks were removed for all worktrees; recovery stashes were preserved.',
@@ -69,6 +74,7 @@ export async function configureHooks(
     await readFile(huskyBin)
   } catch (cause) {
     if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+
     return {
       status: 'skipped',
       message: 'Install development dependencies before installing hooks.',
@@ -76,7 +82,9 @@ export async function configureHooks(
   }
 
   await readFile(join(root, '.husky', 'pre-commit'))
+
   await mkdir(ownedDirectory, { recursive: true })
+
   const installed = spawnSync(process.execPath, [huskyBin, ownedDirectory.replaceAll('\\', '/')], {
     cwd: root,
     encoding: 'utf8',
@@ -86,7 +94,9 @@ export async function configureHooks(
     if (localHookPath.status !== 0) {
       git(root, ['config', '--local', '--unset-all', 'core.hooksPath'])
     }
+
     await rm(ownedDirectory, { recursive: true, force: true })
+
     throw new Error('Husky installation failed', { cause: installed.error ?? installed.stdout })
   }
 
@@ -94,6 +104,7 @@ export async function configureHooks(
     join(ownedDirectory, 'pre-commit'),
     'sh "$(git rev-parse --show-toplevel)/.husky/pre-commit"\n',
   )
+
   return {
     status: 'installed',
     message: 'Repository pre-commit checks are installed for all worktrees.',
@@ -108,6 +119,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   } else {
     try {
       const result = await configureHooks(projectRoot, operation)
+
       console.info(result.message)
     } catch (cause) {
       console.error(cause instanceof Error ? cause.message : 'Hook operation failed')

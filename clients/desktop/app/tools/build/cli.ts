@@ -16,13 +16,16 @@ await runCli(async (signal) => {
     options: { target: { type: 'string' }, program: { type: 'string' } },
   })
   const target = values.target ? parseTarget(values.target) : hostTarget()
+
   if (values.program) {
     if (!programNames.some((program) => program === values.program)) {
       throw new Error('Unknown desktop program')
     }
+
     const program = values.program as ProgramName
     const output = join(appRoot, 'out', 'programs', target, program)
     const buildId = await buildInputIdentity({ signal })
+
     await replaceOutput(
       appRoot,
       output,
@@ -31,6 +34,7 @@ await runCli(async (signal) => {
     )
   } else {
     const build = await buildDesktop(target, signal)
+
     console.info(`Desktop build ready: ${build.target} ${build.buildId}`)
   }
 })

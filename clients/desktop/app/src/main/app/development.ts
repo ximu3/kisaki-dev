@@ -26,6 +26,7 @@ export function connectDevelopment(): ApplicationDevelopment {
   let ready = false
   let stopping = false
   let failed = false
+
   let resolveInitialization!: () => void
   let rejectInitialization!: (cause: Error) => void
   const initialization = new Promise<void>((resolve, reject) => {
@@ -41,6 +42,7 @@ export function connectDevelopment(): ApplicationDevelopment {
         reject(new Error('Development parent IPC is unavailable'))
         return
       }
+
       process.send(message, (cause) => (cause ? reject(cause) : resolve()))
     })
   }
@@ -48,10 +50,12 @@ export function connectDevelopment(): ApplicationDevelopment {
   /** Invalid startup or command state ends this connection without interpreting further messages. */
   async function fail(cause: Error): Promise<void> {
     if (failed) return
+
     failed = true
     clearTimeout(timeout)
     rejectInitialization(cause)
     logFailure('app', cause)
+
     try {
       await send({
         type: 'failed',
@@ -60,29 +64,35 @@ export function connectDevelopment(): ApplicationDevelopment {
     } catch (sendFailure) {
       logFailure('app', sendFailure)
     }
+
     app.quit()
   }
 
   const timeout = setTimeout(() => {
     void fail(new Error('Development initialization timed out'))
   }, 10_000)
+
   process.on('message', (value: unknown) => {
     if (failed) return
+
     try {
       const message = parseDevelopmentCommand(value)
       if (message.type === 'initialize') {
         if (initialized || message.protocolVersion !== developmentProtocolVersion) {
           throw new Error('Unsupported or repeated development initialization')
         }
+
         initialized = true
         clearTimeout(timeout)
         resolveInitialization()
         return
       }
+
       if (!initialized || !ready) throw new Error('Development command arrived before readiness')
       if (message.type === 'buildsReady') {
         throw new Error('Extension loading is unavailable in this application')
       }
+
       if (!stopping) {
         stopping = true
         app.quit()
@@ -91,9 +101,11 @@ export function connectDevelopment(): ApplicationDevelopment {
       void fail(cause instanceof Error ? cause : new Error('Invalid development command'))
     }
   })
+
   process.once('disconnect', () => {
     clearTimeout(timeout)
     rejectInitialization(new Error('Development parent IPC disconnected'))
+
     if (!stopping) {
       logFailure('app', new Error('Development parent IPC disconnected'))
       app.quit()
@@ -104,6 +116,7 @@ export function connectDevelopment(): ApplicationDevelopment {
     async ready(buildId, appVersion) {
       await initialization
       if (failed) throw new Error('Development connection failed during startup')
+
       ready = true
       await send({
         type: 'ready',
@@ -115,6 +128,7 @@ export function connectDevelopment(): ApplicationDevelopment {
     },
     async shutdown(result) {
       if (!process.connected || (!stopping && result.outcome !== 'exiting')) return
+
       stopping = result.outcome === 'exiting'
       await send(result)
     },

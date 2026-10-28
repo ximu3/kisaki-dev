@@ -16,6 +16,7 @@ test('preload entry changes take effect in a later build within the same process
   try {
     await mkdir(join(paths.appRoot, 'src/preload'), { recursive: true })
     await mkdir(join(paths.appRoot, 'config/vite'), { recursive: true })
+
     const entries = Object.fromEntries(
       ['main', 'reader', 'player', 'game-panel'].map((name) => [name, `src/preload/${name}.ts`]),
     )
@@ -26,6 +27,7 @@ test('preload entry changes take effect in a later build within the same process
       join(paths.appRoot, 'src/preload/changed.ts'),
       "export const value = 'changed'\n",
     )
+
     const configuration = join(paths.appRoot, 'config/vite/vite.config.preload.ts')
     const config = {
       build: {
@@ -38,11 +40,13 @@ test('preload entry changes take effect in a later build within the same process
 
     const first = join(paths.appRoot, 'out/first')
     await buildProgram('preload', first, 'first')
+
     const require = createRequire(join(paths.appRoot, 'package.json'))
     expect(require(join(first, 'main.cjs')).value).toBe('main')
 
     entries.main = 'src/preload/changed.ts'
     await writeFile(configuration, `export default ${JSON.stringify(config)}\n`)
+
     const second = join(paths.appRoot, 'out/second')
     await buildProgram('preload', second, 'second')
 

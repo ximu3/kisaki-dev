@@ -18,6 +18,7 @@ function interrupt(signal: NodeJS.Signals): void {
     process.exitCode = signal === 'SIGINT' ? 130 : 143
     return
   }
+
   const operation = forceOffered ? session.terminate() : session.stop()
   void operation.then(
     (result) => {
@@ -42,9 +43,11 @@ try {
       if (state === 'failed') console.error(cause)
     },
   })
+
   await session.ready
   ready = true
   console.info('Desktop development session ready')
+
   await session.closed
 } catch (cause) {
   if (!startup.signal.aborted) {
@@ -53,6 +56,7 @@ try {
   }
 } finally {
   if (!ready) await session?.stop()
+
   process.off('SIGINT', onInterrupt)
   process.off('SIGTERM', onTerminate)
 }

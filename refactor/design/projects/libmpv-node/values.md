@@ -78,7 +78,7 @@ getProperty 和带值的 observeProperty 使用同一 format 选项：缺省 nod
 
 <a id="values-values"></a>
 
-## 两种公开值
+## MpvValue 与 MpvNode
 
 MpvValue 专指普通 JavaScript 值：null、boolean、bigint、number、string、独立 Uint8Array、递归数组及字符串键对象。延续[类型映射](#values)，原生 INT64 始终对应 bigint，DOUBLE 始终对应 number；不根据当前大小或是否恰好为整数改变类型。
 

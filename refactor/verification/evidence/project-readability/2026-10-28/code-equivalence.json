@@ -1,0 +1,473 @@
+{
+  "base": "db217ce32007edf96069eb9e6406633bcf0e1b78",
+  "results": [
+    {
+      "file": "clients/desktop/app/config/vite/vite.config.renderer.ts",
+      "baselinePath": "clients/desktop/app/config/vite/vite.config.renderer.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/extension-host/entry.ts",
+      "baselinePath": "clients/desktop/app/src/extension-host/entry.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/development.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/development.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/extension-host.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/extension-host.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/launch.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/launch.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/paths.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/paths.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/shutdown.ts",
+      "baselinePath": "clients/desktop/app/src/main/app/shutdown.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/src/main/infrastructure/windows/native-window.ts",
+      "baselinePath": "clients/desktop/app/src/main/infrastructure/windows/native-window.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+      "baselinePath": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/browser/window.test.tsx",
+      "baselinePath": "clients/desktop/app/tests/browser/window.test.tsx",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/e2e/windows.test.ts",
+      "baselinePath": "clients/desktop/app/tests/e2e/windows.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/integration/database/abi.test.ts",
+      "baselinePath": "clients/desktop/app/tests/integration/database/abi.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/integration/native/files.test.ts",
+      "baselinePath": "clients/desktop/app/tests/integration/native/files.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/performance/startup.test.ts",
+      "baselinePath": "clients/desktop/app/tests/performance/startup.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/support/artifact-workspace.ts",
+      "baselinePath": "clients/desktop/app/tests/support/artifact-workspace.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/support/development-controller.ts",
+      "baselinePath": "clients/desktop/app/tests/support/development-session.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Test subprocess entry rename",
+        "Diagnostic process field names the worker it records"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tests/support/development-workspace.ts",
+      "baselinePath": "clients/desktop/app/tests/support/development-workspace.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/support/preparation-worker.ts",
+      "baselinePath": "clients/desktop/app/tests/support/preparation-worker.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/support/window-observation.ts",
+      "baselinePath": "clients/desktop/app/tests/support/window-observation.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/identity.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/build/identity.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/preload.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/build/preload.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/programs.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/build/programs.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/clean.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/clean.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dependency-snapshots.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/dependency-snapshots.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dev/cancellation.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/dev/cancellation.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Test controller import rename"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dev/session.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/dev/session.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Test controller import rename"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/inputs.test.ts",
+      "baselinePath": "clients/desktop/app/tests/tools/inputs.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/build/cli.ts",
+      "baselinePath": "clients/desktop/app/tools/build/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/build/coordinator.ts",
+      "baselinePath": "clients/desktop/app/tools/build/coordinator.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/build/identity.ts",
+      "baselinePath": "clients/desktop/app/tools/build/identity.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/build/programs.ts",
+      "baselinePath": "clients/desktop/app/tools/build/programs.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/clean.ts",
+      "baselinePath": "clients/desktop/app/tools/clean.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/cli.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/dependencies.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/dependencies.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/electron-executable.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/electron-executable.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/generation.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/generation.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/inputs.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/inputs.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/renderer.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/renderer.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/session.ts",
+      "baselinePath": "clients/desktop/app/tools/dev/session.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Counter update made explicit before using the new value"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tools/native/cli.ts",
+      "baselinePath": "clients/desktop/app/tools/native/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Native build result named before presentation"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tools/native/declarations.ts",
+      "baselinePath": "clients/desktop/app/tools/native/declarations.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/package/cli.ts",
+      "baselinePath": "clients/desktop/app/tools/package/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Packaging input and result named before execution and presentation"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tools/package/packager.ts",
+      "baselinePath": "clients/desktop/app/tools/package/packager.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/resources/cli.ts",
+      "baselinePath": "clients/desktop/app/tools/resources/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Resource preparation result named before presentation"
+      ]
+    },
+    {
+      "file": "clients/desktop/app/tools/resources/fonts.ts",
+      "baselinePath": "clients/desktop/app/tools/resources/fonts.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tools/resources/prepare.ts",
+      "baselinePath": "clients/desktop/app/tools/resources/prepare.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/packages/appearance/tools/build.ts",
+      "baselinePath": "clients/desktop/packages/appearance/tools/build.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/packages/desktop-contracts/src/development.test.ts",
+      "baselinePath": "clients/desktop/packages/desktop-contracts/src/development.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/packages/desktop-contracts/src/development.ts",
+      "baselinePath": "clients/desktop/packages/desktop-contracts/src/development.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Private validation names"
+      ]
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/src/extension/development-application.ts",
+      "baselinePath": "clients/desktop/packages/extension-cli/src/extension/development-application.ts",
+      "equivalent": true,
+      "reviewedRewrites": [
+        "Private connection operation names"
+      ]
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/tests/fixtures/development-application.ts",
+      "baselinePath": "clients/desktop/packages/extension-cli/tests/fixtures/development-application.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/tests/integration/development-application.test.ts",
+      "baselinePath": "clients/desktop/packages/extension-cli/tests/integration/development-application.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/packages/ui/tools/build.ts",
+      "baselinePath": "clients/desktop/packages/ui/tools/build.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/src/cli.ts",
+      "baselinePath": "packages/tooling/src/cli.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/src/output.ts",
+      "baselinePath": "packages/tooling/src/output.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/src/process.ts",
+      "baselinePath": "packages/tooling/src/process.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/tests/output.test.ts",
+      "baselinePath": "packages/tooling/tests/output.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/tests/process.test.ts",
+      "baselinePath": "packages/tooling/tests/process.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "packages/tooling/tests/support/command-worker.ts",
+      "baselinePath": "packages/tooling/tests/support/command-worker.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/desktop/consumers/packages.test.ts",
+      "baselinePath": "tests/desktop/consumers/packages.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/desktop/fixtures/consumers/node/consumer.ts",
+      "baselinePath": "tests/desktop/fixtures/consumers/node/consumer.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/desktop/fixtures/consumers/solid/entry.tsx",
+      "baselinePath": "tests/desktop/fixtures/consumers/solid/entry.tsx",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/desktop/fixtures/consumers/webview/entry.ts",
+      "baselinePath": "tests/desktop/fixtures/consumers/webview/entry.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/desktop/support/consumer.ts",
+      "baselinePath": "tests/desktop/support/consumer.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/tools/hooks/lifecycle.test.ts",
+      "baselinePath": "tests/tools/hooks/lifecycle.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/tools/structure/boundaries.test.ts",
+      "baselinePath": "tests/tools/structure/boundaries.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/tools/structure/lint.test.ts",
+      "baselinePath": "tests/tools/structure/lint.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/tools/structure/tasks.test.ts",
+      "baselinePath": "tests/tools/structure/tasks.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tests/tools/structure/workspace.test.ts",
+      "baselinePath": "tests/tools/structure/workspace.test.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tools/desktop/package-inputs.ts",
+      "baselinePath": "tools/desktop/package-inputs.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tools/hooks.ts",
+      "baselinePath": "tools/hooks.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "clients/desktop/app/tests/support/build-reuse.ts",
+      "method": "separate-review",
+      "reason": "Build-reuse report extraction verified separately."
+    },
+    {
+      "file": "clients/desktop/app/tests/support/development-worker.ts",
+      "baselinePath": "clients/desktop/app/tests/support/development-controller.ts",
+      "equivalent": true,
+      "reviewedRewrites": []
+    },
+    {
+      "file": "tools/host-environment.ts",
+      "method": "separate-review",
+      "reason": "Environment report extraction verified separately."
+    }
+  ],
+  "failed": []
+}

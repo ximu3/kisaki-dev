@@ -135,6 +135,8 @@ Developer、Status、Engine 自动分类组是源软件按资料和状态生成�
 
 Version 2 单游戏输入使用 Installation，而非 Game 的旧配置字段。元数据目录不总是游戏目录，尤其 Steam 会将元数据集中存放；迁入本地配置时使用用户明确的实际安装根，不能一律把 meta.json 的父目录或 .PotatoVN 的父目录当安装位置。
 
+### 启动命令与监测
+
 普通启动转为 Windows 完整命令，工作目录单独保存为安装目录。当前源实现把整个 ExeArguments 字符串作为一个 ArgumentList 项传入，不能按空格拆分或当作多个参数拼接；null 和空字符串也分别表示无参数与一个空参数。Windows 参数引用及 cmd 元字符必须在实现验收中验证，不能仅检查生成字符串外观。
 
 | 来源设置                                      | 采用方式                                                                                                               |
@@ -150,6 +152,8 @@ Version 2 单游戏输入使用 Installation，而非 Game 的旧配置字段。
 ProcessName 非空时按 Windows 不带扩展名的进程名解释，转换为本体完整 EXE 名称并使用本体平台比较规则。未指定进程名时，源程序跟踪启动进程并可能在安装目录内重新附着；本项按“从目录创建配置”的正常行为采用已核验安装目录监测，不声称恢复源 PID 或重新附着算法。所采用的监测方式在结果中说明，缺少可用目标的配置不能显示为已经可启动。
 
 PreferredInstallationId 随源软件每次成功启动更新，表达最近采用的安装，不能直接当作本体人工首选。LastSuccessfulLaunchTime 也不生成实际活动。新配置不据此设置首选，已有本体首选保持不变。
+
+### 存档位置
 
 选择存档设置时，优先采用当前 DetectedSavePath：%GameRoot% 绑定本次明确安装根，AppData、LocalAppData、Documents、UserProfile、LocalLow 按当前 Windows 已知目录解析，再核验实际位置。没有该字段时，可采用经核验的 SavePath 所指现有存档位置；两者不叠加为多处备份根。未知标签不任意展开。源云存档的移动、符号链接建立与网盘连接不恢复，现存链接遵守本体存档位置规则，不暗中扩大读取范围。
 

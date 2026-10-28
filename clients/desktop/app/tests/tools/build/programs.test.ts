@@ -22,6 +22,7 @@ test.each(['main', 'extension-host'] as const)(
         await writeFile(join(root, 'node.js'), "export const value = 'node'\n")
         await writeFile(join(root, 'browser.js'), "export const value = 'browser'\n")
       }
+
       await writeFile(
         join(conditional, 'package.json'),
         JSON.stringify({
@@ -39,6 +40,7 @@ test.each(['main', 'extension-host'] as const)(
           browser: './browser.js',
         }),
       )
+
       const entry = join(directory, 'entry.ts')
       await writeFile(
         entry,
@@ -56,8 +58,10 @@ test.each(['main', 'extension-host'] as const)(
         logLevel: 'silent',
         build: { ...config.build, write: false, lib: { entry } },
       })
+
       const chunks = (Array.isArray(result) ? result : [result]).flatMap((bundle) => {
         if (!('output' in bundle)) throw new Error('Expected a finite build')
+
         return bundle.output.filter((output) => output.type === 'chunk')
       })
       const inputs = chunks.flatMap((chunk) => Object.keys(chunk.modules).map(normalizePath))
@@ -67,6 +71,7 @@ test.each(['main', 'extension-host'] as const)(
         expect(inputs).toContain(normalizePath(join(root, 'node.js')))
         expect(inputs).not.toContain(normalizePath(join(root, 'browser.js')))
       }
+
       expect(imports).toContain('node:fs')
       expect(imports).toContain('path')
       expect(imports).not.toContain('conditional-fixture')

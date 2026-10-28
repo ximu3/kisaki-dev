@@ -2,6 +2,13 @@
 
 本页定义 Node 调用方使用的值、操作、观察与资源寿命。平台保证及限制见[后端](backends.md)，Linux 组件的部署与接入见[桌面接入](linux.md)。
 
+| 阅读目的 | 入口 |
+| --- | --- |
+| 查找方法与调用选项 | [方法总览](#calls-surface) · [通用取消](#options) |
+| 解释目标和返回事实 | [实例引用](#references) · [字段状态](#fields) · [前台状态](#foreground) |
+| 处理持续观察与图像 | [观察寿命](#observations) · [回调交付](#delivery) · [图像格式](#image) |
+| 处理失败与系统授权 | [错误分类](#errors) · [macOS 授权](#permissions) |
+
 <a id="surface"></a>
 
 ## 公开入口与职责
@@ -215,7 +222,7 @@ windows.capture(windowRef) 交付自有图像数据、实际像素尺寸、明�
 
 <a id="calls-surface"></a>
 
-## 平台辅助入口与授权归属
+## 方法总览与平台辅助入口
 
 主入口提供 processes、windows、getForeground 和 observeForeground。macOS 的两项应用授权辅助操作由专属子入口 @ximu3/vantage/macos 提供。Windows 按进程执行上下文及对象访问条件接入，Linux 按桌面后端的身份与会话授权接入，各平台操作保持自己的实际作用对象和流程。
 

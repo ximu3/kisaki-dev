@@ -27,10 +27,12 @@ test('validates build facts and rejects unknown fields and outcomes', () => {
       ],
     }),
   ).toMatchObject({ outcome: 'completed' })
+
   expect(() => parseDevelopmentCommand({ type: 'stop', requestId: 'unexpected' })).toThrow()
   expect(() =>
     parseDevelopmentCommand({ type: 'initialize', protocolVersion: 1, sessionId: 'unexpected' }),
   ).toThrow()
+
   expect(() =>
     parseDevelopmentEvent({
       type: 'adoptionResult',

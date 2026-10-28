@@ -33,7 +33,6 @@ async function loadRuntime(paths: ApplicationPaths): Promise<RuntimeManifest> {
     linux: 'linux',
   }
   const target = `${platforms[process.platform]}-${process.arch}`
-
   if (
     build.schemaVersion !== 1 ||
     typeof build.version !== 'string' ||
@@ -52,6 +51,7 @@ async function loadRuntime(paths: ApplicationPaths): Promise<RuntimeManifest> {
   }
 
   loadNative(paths.nativeModulePath)
+
   return build
 }
 
@@ -80,6 +80,7 @@ export async function bootstrap(): Promise<void> {
 
   const build = await loadRuntime(paths)
   logLifecycle('app', 'Native resources loaded')
+
   await app.whenReady()
   logLifecycle('app', 'Electron ready')
 
@@ -98,6 +99,7 @@ export async function bootstrap(): Promise<void> {
     kind: launch.window,
     rendererUrl: launch.rendererUrl,
   })
+
   app.on('second-instance', () => {
     if (window.isMinimized()) window.restore()
     window.focus()

@@ -34,6 +34,7 @@ export function readApplicationLaunch(): ApplicationLaunch {
   if (!['main', 'reader', 'player', 'game-panel'].includes(window)) {
     throw new Error('Unknown development window')
   }
+
   return {
     development,
     profile,

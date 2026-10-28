@@ -64,13 +64,17 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 | MangaUpdates             | 使用官方账号会话接口登录与续期；Cookie 保存在 secrets，密码仅用于当次登录，见[账号合同](sources/mangaupdates.md#account) |
 | itch.io                  | 使用已登记公共客户端的授权码流程、S256 和 loopback；读取权限、账号核验及共用令牌的断开含义见[账号合同](sources/itchio.md#account) |
 
+MAL 的 plain PKCE 和 MangaDex 的个人客户端模式是明确的兼容范围。它们不构成运行失败后的降级路径，也不允许在后台保存密码并反复登录，不能宣称满足全部现代协议目标。匿名可读资料不强制要求连接账号。各来源实际支持的账号与记录能力见[平台目录](catalog.md)。
+
+### TMDB：应用认证与本人授权
+
 TMDB 的应用认证与本人账号授权分别处理。应用访问令牌不作为本扩展取得用户许可或完成本人连接的依据，其可读范围另按[凭据范围核验](../../verification/evidence/tmdb/account-api.md)处理。本人连接按 [v4 用户授权流程](https://developer.themoviedb.org/v4/docs/authentication-user)创建请求令牌、打开授权页面，再用已批准令牌取得用户 access token。随后通过[官方转换接口](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)建立所需 v3 session，用户只登录一次。回调继续遵守本篇的 loopback、实例归属和取消规则；用户 access token 与 session_id 作为秘密保存。个人接入只采用[适用动画影片](sources/tmdb.md#account)，不因 v4 列表包含 TV 成员就扩大作品范围。
+
+### Google Books：桌面客户端与账号身份
 
 Google Books 的官方桌面 client 由项目登记，客户端类型、权限和回调采用官方 Desktop 应用合同，用户无须自行创建开发者应用。独立 relay 为其他消费者提供的 Google 能力遵守其自身合同。
 
 Google Books 的 Desktop 客户端交换及刷新使用其桌面 client_secret 配置，同时启用 S256。桌面应用配置不能被当作能够保密的 Web 客户端秘密，用户令牌与自定义凭据仍独立保护。本人连接请求 books、openid、email 范围并验证 Google ID token，以 sub 识别账号、邮箱用于显示；不请求 profile，也不将 sub 当作 Books user ID。客户端配置和身份依据见[来源方案](sources/googlebooks.md#account)。
-
-MAL 的 plain PKCE 和 MangaDex 的个人客户端模式 是明确的兼容范围。它们不构成运行失败后的降级路径，也不允许在后台保存密码并反复登录，不能宣称满足全部现代协议目标。匿名可读资料不强制要求连接账号。各来源实际支持的账号与记录能力见[平台目录](catalog.md)。
 
 <a id="connection"></a>
 

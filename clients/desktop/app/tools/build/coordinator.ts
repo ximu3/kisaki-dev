@@ -24,6 +24,7 @@ export async function buildDesktop(
   }
 
   const output = buildDirectory(target)
+
   return replaceOutput(
     appRoot,
     output,
@@ -39,8 +40,10 @@ export async function buildDesktop(
         license: string
         devDependencies: { electron: string }
       } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
+
       const resources = await prepareResources(target, signal)
       const native = await buildNative(target, false, signal)
+
       await cp(resources, join(staging, 'resources'), { recursive: true })
       await mkdir(join(staging, 'resources', 'native'), { recursive: true })
       for (const file of ['kisaki-native.node', 'native.json']) {
@@ -108,6 +111,7 @@ export async function buildDesktop(
       }
 
       await writeFile(join(staging, 'build.json'), JSON.stringify(build, null, 2))
+
       return build
     },
     signal,

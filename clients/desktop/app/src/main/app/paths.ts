@@ -74,6 +74,7 @@ export function initializePaths(profile?: string): ApplicationPaths {
 
   const dataDirectory = resolveDataDirectory(runtimeDirectory, profile)
   const sessionDirectory = join(dataDirectory, 'browser')
+
   mkdirSync(dataDirectory, { recursive: true })
   mkdirSync(sessionDirectory, { recursive: true })
 

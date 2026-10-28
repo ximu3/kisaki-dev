@@ -61,6 +61,7 @@ kisaki/
 │   ├── desktop/
 │   │   └── package-inputs.ts
 │   ├── release/
+│   ├── host-environment.ts
 │   └── hooks.ts
 ├── tests/
 ├── config/
@@ -121,7 +122,7 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 
 | 位置                      | 负责的工作                                                           |
 | ------------------------- | -------------------------------------------------------------------- |
-| 根 tools                  | desktop 管理桌面跨包制品输入，release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks。 |
+| 根 tools                  | desktop 管理桌面跨包制品输入，release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
 | packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。 |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。 |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。           |
@@ -133,12 +134,15 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 ```text
 tools/
 ├── hooks.ts
+├── host-environment.ts
 ├── desktop/
 │   └── package-inputs.ts
 └── release/
 ```
 
 hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于 .husky。其集成测试归根 tests/tools/hooks，使用隔离 Git 仓库验证配置冲突、重复安装、卸载和 worktree 行为。它与本体的运行事件或扩展 hook 无关。
+
+host-environment.ts 输出验证进程的 Node 版本、系统、架构、CPU 与内存事实。仓库和桌面工作流调用同一入口，将结果保存到各自验证报告；输出字段由该文件统一维护。
 
 桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归 tests/desktop/support，固定输入归 tests/desktop/fixtures；收据收集工具归 tools/desktop，输出归 artifacts/desktop/packages。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
@@ -234,7 +238,7 @@ clients/desktop/app/tools/
 | tests/performance         | 按[性能合同](performance.md)验证指定负载、预算和测量口径，使用被测行为所需的实际环境。                                                                                  |
 | tests/tools               | 所属工程 tools 的 CLI、工作流和真实文件副作用测试，按工具名组织；不在 integration 中维护另一份相同用例。                                                                |
 | tests/fixtures            | 测试拥有的固定输入、来源样本及消费者样板，按实际使用范围组织，保存来源、许可、合成范围与预期。                                                                          |
-| tests/support             | 测试专用的环境准备、资料构造和清理辅助，按具体职责命名；不同运行环境的辅助代码明确分开。                                                                                |
+| tests/support             | 测试专用的环境准备、资料构造、观测与清理辅助，按具体职责命名；不同运行环境的辅助代码明确分开。                                                                                |
 
 测试按主要验证目的归档：制品消费、最终制品、性能和工程工具分别归 consumers、artifacts、performance 和 tools；其余按所需接入边界归 integration、browser 或 e2e。运行环境在配置中明确，同一场景不因符合多个分类而复制；例如浏览器性能测量归 performance，普通组件交互归 browser。
 
@@ -299,6 +303,8 @@ clients/desktop/app/tests/
 包结构、类型制品和平台文件检查直接采用已有检查工具，其结果与实际消费、运行用例分别记录并纳入对应任务的通过条件。项目脚本与任务配置负责组合调用，不重新实现这些检查，也不为命名统一把所有检查工具包装成测试用例。普通 check 汇总类型、lint、格式和常规测试，制品及其他需要特定环境的任务按阶段显式执行。
 
 原生业务与数据库套件在运行器启动前选定开发 Electron 的 Node 宿主及匹配 ABI；环境变量和启动参数由该任务的脚本与配置提供。测试中的环境变量配置、fixture 或 setup 不能把已经启动的普通 Node 进程变为另一 ABI。构建和原生依赖准备复用已有工程任务；应用实例、临时资料、订阅及清理由运行器 fixture 和 tests/support 管理，确需的测试专用启动辅助也归 tests/support。
+
+桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。build-reuse.ts 在测试前记录已准备的构建，在打包后核对清单字节、修改时间及制品引用，结果归该次工作流的 test-results/verification；它只观察验证输入，构建与打包仍由工程工具执行。
 
 根统一检查包含根工具及实际 workspace 的常规测试，各套件的执行范围与未执行部分分别报告。最终制品保留正式安全配置，通过适用的外部或现场方式验证；测试入口和用例不改变[运行覆盖与交付要求](../../verification/acceptance.md#runtime-coverage)。
 

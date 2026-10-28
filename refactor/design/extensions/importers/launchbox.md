@@ -91,7 +91,7 @@ Progress 采用完整 Category / Value 文字，官方允许自定义类别与�
 
 <a id="duration"></a>
 
-## 累计时长与新版历史
+## 累计时长与逐次历史
 
 Game.PlayTime 按来源主游戏记录的累计秒数读取，非负整数精确转为毫秒；非法值或溢出只影响该时长。选项明确叫“采用来源主记录累计时长”，不声称核实了整组版本的独立总和。
 
@@ -102,6 +102,8 @@ AdditionalApplication.PlayTime 是附加项自己的秒数。当前公开合同�
 多个源主游戏最终对应同一个本体作品时，个人值相容者只采用一份；评分、安排或累计值不同的字段报告冲突，不按最后处理者覆盖、不任意求和。各条独立可转换启动配置仍可迁入。不能把各平台都显示十小时理解为已经游玩二十小时。
 
 <a id="newer-data"></a>
+
+### PlaySessions 与存档管理的输入范围
 
 14.0 起的逐次游玩历史保存在 Data/PlaySessions/<年份>.jsonl；[官方人员说明](https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/page/3/)描述每行包含游戏、起止时间和有效秒数。
 

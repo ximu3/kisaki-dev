@@ -20,10 +20,13 @@ test('clean removes declared outputs and preserves development profiles and cach
       await mkdir(join(paths.appRoot, directory), { recursive: true })
       await writeFile(join(paths.appRoot, directory, 'retained.txt'), directory)
     }
+
     await cleanOutputs()
+
     for (const directory of ['out', 'dist']) {
       await expect(stat(join(paths.appRoot, directory))).rejects.toMatchObject({ code: 'ENOENT' })
     }
+
     for (const directory of ['.local/development', '.cache']) {
       expect(await readFile(join(paths.appRoot, directory, 'retained.txt'), 'utf8')).toBe(directory)
     }

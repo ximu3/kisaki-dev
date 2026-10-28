@@ -19,6 +19,7 @@ export async function buildPackage(signal?: AbortSignal): Promise<void> {
     'dist',
     async (candidate) => {
       await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
+
       await runPnpm(
         [
           'exec',

@@ -21,11 +21,13 @@ if (role === 'leaf') {
     [...process.execArgv, fileURLToPath(import.meta.url), directory, 'leaf'],
     { windowsHide: true, stdio: ['ignore', 'ignore', 'ignore', 'ipc'] },
   )
+
   await new Promise<void>((resolve, reject) => {
     child.once('error', reject)
     child.once('message', () => resolve())
   })
   if (!child.pid) throw new Error('Fixture child process is unavailable')
+
   await writeFile(
     join(directory, 'tree.json'),
     JSON.stringify({ parent: process.pid, leaf: child.pid }),

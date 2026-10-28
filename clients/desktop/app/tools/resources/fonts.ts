@@ -23,10 +23,12 @@ export async function copyFonts(fontInputs: FontInput[], output: string): Promis
       await readFile(join(directory, 'package.json'), 'utf8'),
     )
     if (manifest.version !== font.version) throw new Error('Font input version mismatch')
+
     const destination = join(output, font.package.split('/').at(-1)!)
     for (const [path, digest] of Object.entries(font.files)) {
       const bytes = await readFile(join(directory, path))
       if (sha256(bytes) !== digest) throw new Error('Font input checksum mismatch')
+
       await mkdir(dirname(join(destination, path)), { recursive: true })
       await writeFile(join(destination, path), bytes)
     }

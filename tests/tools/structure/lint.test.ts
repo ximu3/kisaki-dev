@@ -14,6 +14,7 @@ test('one staged-file lint run can load root, application, package and extension
     'clients/desktop/packages/rpc/src/index.ts',
     'clients/desktop/extensions/projects/bangumi/kisx.config.ts',
   ]
+
   const results = await new ESLint().lintFiles(files)
 
   expect(results).toHaveLength(files.length)

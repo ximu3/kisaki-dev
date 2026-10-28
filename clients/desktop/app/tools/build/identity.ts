@@ -70,5 +70,6 @@ export async function runtimeFiles(directory: string): Promise<Record<string, st
   }
 
   await visit(directory)
+
   return files
 }

@@ -9,11 +9,9 @@ await runCli(async (signal) => {
   const { values } = parseArgs({
     options: { target: { type: 'string' }, 'test-only': { type: 'boolean', default: false } },
   })
-  console.info(
-    await packageDesktop(
-      values.target ? parseTarget(values.target) : hostTarget(),
-      values['test-only'],
-      signal,
-    ),
-  )
+  const target = values.target ? parseTarget(values.target) : hostTarget()
+
+  const receiptPath = await packageDesktop(target, values['test-only'], signal)
+
+  console.info(receiptPath)
 })

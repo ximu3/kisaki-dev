@@ -39,6 +39,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     ]) {
       await copyFile(join(repositoryRoot, file), join(root, file))
     }
+
     await cp(join(repositoryRoot, 'config', 'typescript'), join(root, 'config', 'typescript'), {
       recursive: true,
     })
@@ -113,8 +114,10 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     const fixtureRequire = createRequire(join(app, 'package.json'))
     const originalElectron = dirname(originalRequire.resolve('electron/package.json'))
     const fixtureElectron = dirname(fixtureRequire.resolve('electron/package.json'))
+
     // Electron installs its binary on first import; prepare it before copying the distribution.
     electronExecutable()
+
     if ((await realpath(originalElectron)) !== (await realpath(fixtureElectron))) {
       // macOS framework links must keep their relative targets inside the copied application bundle.
       await cp(join(originalElectron, 'dist'), join(fixtureElectron, 'dist'), {
@@ -137,6 +140,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     }
   } catch (cause) {
     await rm(temporary, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
+
     throw cause
   }
 }

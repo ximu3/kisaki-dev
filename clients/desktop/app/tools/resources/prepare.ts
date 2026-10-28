@@ -22,6 +22,7 @@ async function prepareIcons(icons: string): Promise<void> {
   await mkdir(icons, { recursive: true })
   const sourceIcon = join(appRoot, 'assets', 'icons', 'source.png')
   await sharp(sourceIcon).resize(512, 512).png().toFile(join(icons, 'icon.png'))
+
   const ico = await pngToIco(await sharp(sourceIcon).resize(256, 256).png().toBuffer())
   await writeFile(join(icons, 'icon.ico'), ico)
 }
@@ -54,14 +55,19 @@ export async function prepareResources(
       )
 
       const files: Record<string, string> = {}
+
       /** Add each prepared file's digest to the resource manifest. */
       async function record(directory: string, prefix: string): Promise<void> {
         for (const entry of await readdir(directory, { withFileTypes: true })) {
           const relative = prefix ? `${prefix}/${entry.name}` : entry.name
-          if (entry.isDirectory()) await record(join(directory, entry.name), relative)
-          else files[relative] = sha256(await readFile(join(directory, entry.name)))
+          if (entry.isDirectory()) {
+            await record(join(directory, entry.name), relative)
+          } else {
+            files[relative] = sha256(await readFile(join(directory, entry.name)))
+          }
         }
       }
+
       await record(staging, '')
       await writeFile(join(staging, 'resources.json'), JSON.stringify({ target, files }, null, 2))
     },

@@ -10,6 +10,8 @@
 
 开发监听与输出清理在常规 Node 套件中通过真实 Vite、Chokidar 和文件系统验证。`test:dev` 保留实际 Electron 的退出取消、编译失败与改名恢复、公共包失败与页面交接，以及首次准备取消与重试。独立场景复用隔离工作区准备，各自关闭控制器并恢复自己的输入。
 
+`tests/support/development-controller.ts` 启动、观察并关闭开发测试子进程；`development-worker.ts` 在该子进程内运行真实开发会话。CI 的构建复用观测由 `tests/support/build-reuse.ts` 执行，记录与检查分别位于运行测试前和打包后。
+
 应用测试脚本直接消费已准备的输入，根 `desktop:test:native`、`desktop:test:e2e` 与 `desktop:test:performance` 先完成有限应用构建；`desktop:test:dev` 提前准备原生输出，由隔离开发会话完成应用构建。CI 为选中套件共用目标构建，具体触发范围由 `turbo.json` 的任务 inputs 维护；测试、文档或开发工具变更不自动要求重新测量性能和打包。
 
 扩展宿主由 utilityProcess 运行，保留正式关闭 RunAsNode 和调试相关 fuses 的条件。应用 package.json 的 imports 定义私有原生入口 `#native`，主进程与原生集成测试共同消费；主进程构建将其编入输出，产物不依赖源码映射。入口导入不加载二进制；装配明确选择部署路径，并核对运行构建身份和原生字节。

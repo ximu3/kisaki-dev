@@ -16,6 +16,7 @@ const root = fileURLToPath(new URL('../..', import.meta.url))
 export interface DesktopPackageInput {
   name: string
   version: string
+  /** Tarball file name relative to the directory containing this input receipt. */
   path: string
   sha256: string
 }
@@ -36,11 +37,13 @@ export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise
 
   const output = join(root, 'artifacts', 'desktop', 'packages')
   await mkdir(output, { recursive: true })
+
   const packages: DesktopPackageInput[] = []
   for (const member of members.sort((left, right) => left.name.localeCompare(right.name, 'en'))) {
     if (!/^@kisaki3\/[a-z0-9-]+$/.test(member.name)) {
       throw new Error('Unexpected public package identity')
     }
+
     const manifest: { name: string; version: string } = JSON.parse(
       await readFile(join(member.path, 'package.json'), 'utf8'),
     )
@@ -51,6 +54,7 @@ export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise
     const digest = createHash('sha256')
       .update(await readFile(archive))
       .digest('hex')
+
     const path = `${member.name.slice('@kisaki3/'.length)}-${digest}.tgz`
     await copyFile(archive, join(output, path))
     packages.push({ name: member.name, version: manifest.version, path, sha256: digest })
@@ -68,6 +72,7 @@ export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise
   const temporary = join(output, `inputs.${process.pid}.json`)
   await writeFile(temporary, JSON.stringify(inputs, null, 2))
   await rename(temporary, join(output, 'inputs.json'))
+
   return join(output, 'inputs.json')
 }
 

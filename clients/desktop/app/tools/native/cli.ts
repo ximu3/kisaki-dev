@@ -18,12 +18,16 @@ await runCli(async (signal) => {
     },
   })
   const target = values.target ? parseTarget(values.target) : hostTarget()
+
   if (values.check) {
     if (target !== hostTarget() || values['update-declarations']) {
       throw new Error('Native checks use the host target and do not update declarations')
     }
+
     await checkNative(signal)
   } else {
-    console.info(await buildNative(target, values['update-declarations'], signal))
+    const nativeDirectory = await buildNative(target, values['update-declarations'], signal)
+
+    console.info(nativeDirectory)
   }
 })

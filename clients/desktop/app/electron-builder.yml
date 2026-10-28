@@ -4,6 +4,7 @@ appId: me.kisaki
 productName: Kisaki
 asar: true
 npmRebuild: false
+
 files:
   - '!node_modules/**'
   - main/**
@@ -17,6 +18,7 @@ files:
 extraResources:
   - from: resources
     to: resources
+
 electronFuses:
   runAsNode: false
   enableCookieEncryption: true
@@ -25,6 +27,7 @@ electronFuses:
   enableEmbeddedAsarIntegrityValidation: true
   onlyLoadAppFromAsar: true
   grantFileProtocolExtraPrivileges: false
+
 win:
   target: [nsis, zip]
   executableName: Kisaki
@@ -34,12 +37,14 @@ nsis:
   perMachine: false
   allowToChangeInstallationDirectory: true
   deleteAppDataOnUninstall: false
+
 mac:
   target: [dmg, zip]
   minimumSystemVersion: '13.0'
   forceCodeSigning: true
   notarize: false
   hardenedRuntime: true
+
 linux:
   target: [deb, rpm, AppImage]
   category: Utility
@@ -48,6 +53,7 @@ linux:
 appImage:
   # AppRun alone owns the upstream namespace compatibility decision.
   executableArgs: []
+
 publish:
   provider: github
   owner: ximu3

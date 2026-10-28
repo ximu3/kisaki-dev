@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |-
           mkdir -p test-results/verification
-          node -e "const os=require('node:os'); console.log(JSON.stringify({node:process.version,platform:process.platform,architecture:process.arch,parallelism:os.availableParallelism(),cpus:os.cpus().map(c=>c.model),memoryBytes:os.totalmem()},null,2))" > test-results/verification/host.json
+          pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Select checks
         id: affected
         shell: bash
@@ -74,7 +74,14 @@ jobs:
             complete=true
           fi
           if [[ "$complete" == false ]]; then
-            orchestration=$(git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- .github/workflows/ci.yml .github/workflows/verification.yml .github/workflows/verification-repository.yml config/turbo/verification.graphql)
+            orchestration=$(
+              git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- \
+                .github/workflows/ci.yml \
+                .github/workflows/verification.yml \
+                .github/workflows/verification-repository.yml \
+                config/turbo/verification.graphql \
+                tools/host-environment.ts
+            )
             if [[ -n "$orchestration" ]]; then complete=true; fi
           fi
           mkdir -p test-results/verification
@@ -84,7 +91,11 @@ jobs:
             pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"
             jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null
             # Required build prerequisites also use TaskAllChanged; they do not expand verification.
-            if jq -e 'any(.data.affectedTasks.items[]; .reason.__typename == "TaskGlobalFileChanged" or .reason.__typename == "TaskGlobalDepsChanged")' "$report" > /dev/null; then
+            if jq -e '
+              any(.data.affectedTasks.items[];
+                .reason.__typename == "TaskGlobalFileChanged" or
+                .reason.__typename == "TaskGlobalDepsChanged")
+            ' "$report" > /dev/null; then
               complete=true
             fi
           else

@@ -39,10 +39,12 @@ export async function startExtensionHost(runtime: string): Promise<ExtensionHost
         clearTimeout(timeout)
         reject(new Error('Extension host exited before readiness'))
       }
+
       child.once('exit', onExit)
       child.once('message', (message: HostStatus) => {
         clearTimeout(timeout)
         child.off('exit', onExit)
+
         if (message.type !== 'ready') reject(new Error('Invalid extension host readiness message'))
         else resolve()
       })
@@ -50,10 +52,12 @@ export async function startExtensionHost(runtime: string): Promise<ExtensionHost
   } catch (cause) {
     child.kill()
     await completion
+
     throw cause
   }
 
   logLifecycle('extensions', 'Host ready')
+
   let stopping: Promise<void> | undefined
   return {
     stop() {
@@ -68,10 +72,12 @@ export async function startExtensionHost(runtime: string): Promise<ExtensionHost
           logFailure('extensions', new Error('Host stop timed out'))
           child.kill()
         }, 5_000)
+
         await completion
         clearTimeout(timeout)
         logLifecycle('extensions', 'Host stopped')
       })()
+
       return stopping
     },
   }

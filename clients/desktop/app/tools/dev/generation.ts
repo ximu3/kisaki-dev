@@ -29,6 +29,7 @@ export async function buildGeneration(
   signal?: AbortSignal,
 ): Promise<GenerationOutput> {
   signal?.throwIfAborted()
+
   const buildId = await buildInputIdentity({ signal })
   const resources = await prepareResources(target, signal)
   const native = await buildNative(target, false, signal)
@@ -55,6 +56,7 @@ export async function buildGeneration(
   const nextInputs = new Map<string, string>()
   for (const result of results) {
     if (result.status !== 'fulfilled') continue
+
     for (const path of result.value.modules) {
       nextInputs.set(path, sha256(await readFile(path)))
     }

@@ -62,6 +62,7 @@ export async function launchDevelopmentApplication(
 
   const env = { ...process.env, ...options.env }
   delete env.ELECTRON_RUN_AS_NODE
+
   const child = spawn(
     options.executable,
     [
@@ -77,17 +78,20 @@ export async function launchDevelopmentApplication(
       windowsHide: false,
     },
   )
+
   let exit: DevelopmentProcessExit | undefined
   let resolveExit!: (result: DevelopmentProcessExit) => void
   const exited = new Promise<DevelopmentProcessExit>((resolve) => {
     resolveExit = resolve
   })
+
   let resolveReady!: (ready: DevelopmentReady) => void
   let rejectReady!: (cause: Error) => void
   const readiness = new Promise<DevelopmentReady>((resolve, reject) => {
     resolveReady = resolve
     rejectReady = reject
   })
+
   let ready = false
   let exiting = false
   let connectionFailure: Error | undefined
@@ -100,8 +104,9 @@ export async function launchDevelopmentApplication(
   let stopping: Promise<'cancelled' | 'exited'> | undefined
 
   /** Settle connection waiters once; readers remain owned until the process actually exits. */
-  function fail(cause: Error): void {
+  function failConnection(cause: Error): void {
     if (connectionFailure) return
+
     connectionFailure = cause
     rejectReady(cause)
     pendingStop?.reject(cause)
@@ -109,18 +114,19 @@ export async function launchDevelopmentApplication(
   }
 
   /** A send callback confirms transport acceptance, never application execution. */
-  function send(message: DevelopmentCommand): void {
+  function sendCommand(message: DevelopmentCommand): void {
     child.send(message, (cause) => {
-      if (cause) fail(cause)
+      if (cause) failConnection(cause)
     })
   }
 
-  function receive(value: unknown): void {
+  function receiveEvent(value: unknown): void {
     try {
       const message: DevelopmentEvent = parseDevelopmentEvent(value)
       if (message.type === 'failed') {
         throw new Error(message.error.message, { cause: message.error })
       }
+
       if (message.type === 'ready') {
         if (
           ready ||
@@ -129,24 +135,31 @@ export async function launchDevelopmentApplication(
         ) {
           throw new Error('Development application readiness does not match this launch')
         }
+
         ready = true
         resolveReady(message)
       } else if (message.type === 'stopResult' && ready) {
         // The application also announces ordinary UI shutdown before disconnecting.
-        if (message.outcome === 'exiting') exiting = true
-        else if (!pendingStop) throw new Error('Unexpected development stop result')
+        if (message.outcome === 'exiting') {
+          exiting = true
+        } else if (!pendingStop) {
+          throw new Error('Unexpected development stop result')
+        }
+
         pendingStop?.resolve(message)
       } else {
         throw new Error('Unexpected development application event')
       }
     } catch (cause) {
-      fail(cause instanceof Error ? cause : new Error('Invalid development application event'))
+      failConnection(
+        cause instanceof Error ? cause : new Error('Invalid development application event'),
+      )
     }
   }
 
-  child.on('message', receive)
+  child.on('message', receiveEvent)
   child.on('error', (cause) => {
-    fail(cause)
+    failConnection(cause)
     if (!child.pid) resolveExit({ code: null, signal: null })
   })
   child.once('exit', (code, signal) => {
@@ -154,11 +167,12 @@ export async function launchDevelopmentApplication(
     resolveExit(exit)
     rejectReady(new Error('Development application exited before readiness'))
     pendingStop?.resolve({ type: 'stopResult', outcome: 'exiting' })
-    child.off('message', receive)
+    child.off('message', receiveEvent)
   })
   child.once('disconnect', () => {
-    if (!exit && !exiting) fail(new Error('Development application IPC disconnected'))
+    if (!exit && !exiting) failConnection(new Error('Development application IPC disconnected'))
   })
+
   const cancelStartup = () =>
     rejectReady(
       new Error('Development application startup cancelled', { cause: options.signal?.reason }),
@@ -173,13 +187,15 @@ export async function launchDevelopmentApplication(
           () => rejectReady(new Error('Development application readiness timed out')),
           options.startupTimeoutMs,
         )
-  send({ type: 'initialize', protocolVersion: developmentProtocolVersion })
+
+  sendCommand({ type: 'initialize', protocolVersion: developmentProtocolVersion })
   try {
     const applicationReady = await readiness
     options.signal?.throwIfAborted()
     if (connectionFailure) throw connectionFailure
     if (exit) throw new Error('Development application exited during readiness')
     if (!child.pid) throw new Error('Development application process identity is unavailable')
+
     return {
       pid: child.pid,
       ready: applicationReady,
@@ -188,34 +204,41 @@ export async function launchDevelopmentApplication(
         if (exit) return Promise.resolve('exited')
         if (stopping) return stopping
         if (connectionFailure) return Promise.reject(connectionFailure)
+
         stopping = (async () => {
           if (!exiting) {
             const result = await new Promise<DevelopmentStopResult>((resolve, reject) => {
               pendingStop = { resolve, reject }
-              send({ type: 'stop' })
+              sendCommand({ type: 'stop' })
             })
+
             if (result.outcome === 'cancelled') return 'cancelled'
             if (result.outcome === 'failed') {
               throw new Error(result.error.message, { cause: result.error })
             }
           }
+
           const result = await exited
           if (result.code !== 0) throw new Error('Development application exited unsuccessfully')
+
           return 'exited'
         })().finally(() => {
           pendingStop = undefined
           stopping = undefined
         })
+
         return stopping
       },
       async terminate() {
         if (!exit && child.pid) child.kill('SIGKILL')
+
         return exited
       },
     }
   } catch (cause) {
     if (!exit && child.pid) child.kill('SIGKILL')
     await exited
+
     throw cause
   } finally {
     if (timeout) clearTimeout(timeout)

@@ -44,6 +44,7 @@ fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     } else {
         "ioFailure"
     };
+
     #[cfg(windows)]
     let reason = match error.raw_os_error() {
         Some(80 | 183) => "targetExists",
@@ -53,6 +54,7 @@ fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
         Some(5 | 32 | 33) => "permissionDenied",
         _ => "ioFailure",
     };
+
     #[cfg(unix)]
     let reason = match error.raw_os_error() {
         Some(libc::EEXIST | libc::ENOTEMPTY) => "targetExists",
@@ -71,6 +73,7 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
     {
         use std::os::windows::ffi::OsStrExt;
         use windows_sys::Win32::Storage::FileSystem::{MOVEFILE_WRITE_THROUGH, MoveFileExW};
+
         let source: Vec<u16> = std::ffi::OsStr::new(source)
             .encode_wide()
             .chain(Some(0))
@@ -79,16 +82,20 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
             .encode_wide()
             .chain(Some(0))
             .collect();
+
         // SAFETY: Both buffers are NUL-terminated and live throughout the call.
         if unsafe { MoveFileExW(source.as_ptr(), target.as_ptr(), MOVEFILE_WRITE_THROUGH) } != 0 {
             return Ok(());
         }
+
         Err(io::Error::last_os_error())
     }
+
     #[cfg(unix)]
     {
         let source = std::ffi::CString::new(source)?;
         let target = std::ffi::CString::new(target)?;
+
         #[cfg(target_os = "macos")]
         // SAFETY: Absolute, NUL-terminated paths remain valid throughout the call.
         let result = unsafe {
@@ -100,6 +107,7 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
                 libc::RENAME_EXCL,
             )
         };
+
         #[cfg(target_os = "linux")]
         // SAFETY: Both paths are valid C strings; no-replace is delegated to the kernel.
         let result = unsafe {
@@ -111,6 +119,7 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
                 libc::RENAME_NOREPLACE,
             )
         };
+
         if result == 0 {
             Ok(())
         } else {
@@ -150,6 +159,7 @@ pub fn move_no_replace(source: String, target: String) -> Result<AsyncTask<MoveT
             "Expected absolute paths without NUL",
         ));
     }
+
     Ok(AsyncTask::new(MoveTask { source, target }))
 }
 
@@ -180,16 +190,19 @@ impl Task for SyncTask {
         if !metadata.is_file() {
             return Ok(failure("wrongType", None));
         }
+
         let mut options = std::fs::OpenOptions::new();
         options.read(true);
         #[cfg(unix)]
         {
             use std::os::unix::fs::OpenOptionsExt;
+
             // A path replaced by a FIFO must not block the worker before the handle type check.
             options.custom_flags(libc::O_NONBLOCK);
         }
         #[cfg(windows)]
         options.write(true);
+
         let file = match options.open(&self.path) {
             Ok(value) => value,
             Err(error) => return Ok(sync_failure(error)),
@@ -200,9 +213,11 @@ impl Task for SyncTask {
             Ok(_) => return Ok(failure("wrongType", None)),
             Err(error) => return Ok(sync_failure(error)),
         }
+
         #[cfg(target_os = "macos")]
         let result = {
             use std::os::fd::AsRawFd;
+
             // SAFETY: The borrowed descriptor belongs to the live File above.
             if unsafe { libc::fcntl(file.as_raw_fd(), libc::F_FULLFSYNC) } == 0 {
                 Ok(())
@@ -210,8 +225,10 @@ impl Task for SyncTask {
                 Err(io::Error::last_os_error())
             }
         };
+
         #[cfg(not(target_os = "macos"))]
         let result = file.sync_all();
+
         drop(file);
         Ok(match result {
             Ok(()) => success(),
@@ -233,5 +250,6 @@ pub fn sync_file(path: String) -> Result<AsyncTask<SyncTask>> {
             "Expected an absolute path without NUL",
         ));
     }
+
     Ok(AsyncTask::new(SyncTask { path }))
 }

@@ -8,6 +8,7 @@ import { test, expect } from '../support/electron'
 for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
   test.describe(kind, () => {
     test.use({ kind })
+
     test('renders in its own sandbox with a minimal bridge and closes normally', async ({
       desktop,
       profile,
@@ -16,6 +17,7 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       const child = desktop.process()
       const page = await desktop.firstWindow()
       await expect(page.getByRole('button', { name: 'Close window' })).toBeVisible()
+
       const values = await page.evaluate(() => ({
         bridge: Object.keys(window.kisaki).sort(),
         kind: window.kisaki.kind,
@@ -28,6 +30,7 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
         node: 'undefined',
         process: 'undefined',
       })
+
       const runtime = await desktop.evaluate(({ app, BrowserWindow }) => ({
         userData: app.getPath('userData'),
         sessionData: app.getPath('sessionData'),
@@ -51,6 +54,7 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       } catch (cause) {
         if (!page.isClosed()) throw cause
       }
+
       await closed
       expect(child.exitCode).toBe(0)
     })

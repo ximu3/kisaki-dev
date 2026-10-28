@@ -90,6 +90,8 @@ CategoryIds 对应用户分类，迁为手动合集。用户可以选择源分�
 
 根映射作用于已经解析的结构化路径，不全文替换命令、参数或 URL。Playnite 会尝试在其他盘符寻找同一路径，本项只采用用户给出的明确根映射，不跨盘猜测位置。源相对路径以源定义所需的 Playnite 程序根解释，用户未提供这个根时，不把备份目录或 Kisaki 工作目录当作替代。
 
+### 启动动作与参数
+
 只将 IsPlayAction 为 true 的可转换 GameAction 作为启动配置，保留名称和本次输入顺序。GameAction 没有跨输入稳定 ID，固定输入内使用游戏源键与动作序号组成步骤键；继续原批次复用已完成配置，不跨新批次猜测对应。多个动作分别保存，不按第一项设置首选。
 
 | 来源动作                             | 采用方式                                                                                                                |
@@ -108,6 +110,8 @@ CategoryIds 对应用户分类，迁为手动合集。用户可以选择源分�
 所选动作有 PreScript、PostScript、GameStartedScript、模拟器 StartupScript / ExitScript 等源环境依赖时，相关脚本不转换为普通本体回调。已能独立解释的主启动目标可以保留，但在结果中列明相关回调未迁入；启动本身由脚本实现时不能建立伪造的可用配置。全局脚本、HDR、插件启动控制器和应用级监测偏好不恢复。
 
 官方 Steam PluginId 与有效 appid 已明确，且 IncludeLibraryPluginAction 为 true 时，可以生成 steam://rungameid/{appid} 的普通链接配置；这是已知平台入口，不执行或恢复源插件。其他插件动作不按 PluginId 猜测入口。
+
+### 监测与存档
 
 监测独立处理：Directory 采用 TrackingPath，缺省时采用已核验的 InstallDirectory；URL 的 Default 同样采用该安装目录。ProcessName 是不带扩展名的 Windows Process.ProcessName，转换为本体完整 EXE 文件名，仍采用本体自身的平台比较规则。源 Process、OriginalProcess 和普通 File 的 Default 分别依赖进程树或启动 PID，与本体文件监测不同，不能谎称等价。用户选入并成功登记内容目录时，可以按本体“从目录创建配置”的正常行为将该目录填为监测目标；否则保留已有启动目标为未完成配置，使用时通过正常配置编辑补全。采用本体目录监测的动作在结果中说明这一实际设置。
 

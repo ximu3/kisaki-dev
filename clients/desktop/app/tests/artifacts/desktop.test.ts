@@ -50,12 +50,14 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     if (isAbsolute(file.path) || file.path.includes('..') || /[/\\]/.test(file.path)) {
       throw new Error('Unsafe artifact receipt path')
     }
+
     expect(sha256(await readFile(join(dirname(receiptPath), file.path)))).toBe(file.sha256)
   }
 
   const suffix = process.platform === 'linux' ? '.AppImage' : '.zip'
   const file = receipt.files.find((file) => file.path.endsWith(suffix))
   if (!file) throw new Error('The receipt has no movable carrier for this target')
+
   const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path))
   const { directory, executablePath, resourceDirectory, fusePath, dataDirectory } = workspace
 
@@ -79,6 +81,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
         path.endsWith('.desktop'),
       )
       expect(desktopEntries).toHaveLength(1)
+
       const desktopEntry = await readFile(join(applicationDirectory, desktopEntries[0]!), 'utf8')
       expect(desktopEntry.match(/^Exec=(.*)$/m)?.[1]).toBe('AppRun %U')
     }
@@ -115,6 +118,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     expect(fuses[FuseV1Options.OnlyLoadAppFromAsar]).toBe(FuseState.ENABLE)
     expect(fuses[FuseV1Options.EnableCookieEncryption]).toBe(FuseState.ENABLE)
     expect(fuses[FuseV1Options.EnableEmbeddedAsarIntegrityValidation]).toBe(FuseState.ENABLE)
+
     expect((await getCurrentFuseWire(electronExecutable()))[FuseV1Options.RunAsNode]).toBe(
       FuseState.ENABLE,
     )
@@ -128,6 +132,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       },
       stdio: ['ignore', 'pipe', 'pipe'],
     })
+
     let diagnostic = ''
     child.stdout.setEncoding('utf8').on('data', (chunk: string) => {
       diagnostic = (diagnostic + chunk).slice(-8_192)
@@ -135,6 +140,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     child.stderr.setEncoding('utf8').on('data', (chunk: string) => {
       diagnostic = (diagnostic + chunk).slice(-8_192)
     })
+
     const closed = new Promise<number | null>((resolveClose, reject) => {
       child.once('error', reject)
       child.once('close', (code) => resolveClose(code))
@@ -142,10 +148,12 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
     try {
       if (!child.pid) throw new Error('Packaged process could not start')
+
       await expect
         .poll(
           async ({ signal }) => {
             if (child.exitCode !== null) throw new Error(`Packaged process exited: ${diagnostic}`)
+
             return hasNativeWindow(child.pid!, signal)
           },
           { timeout: 30_000, interval: 250 },
@@ -172,6 +180,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     })
     try {
       expect(application.ready).toMatchObject({ appVersion: build.version, apiVersion: null })
+
       // The system window list can lag behind the application's completed show request.
       await expect
         .poll(({ signal }) => hasNativeWindow(application.pid, signal), {
@@ -179,6 +188,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
           interval: 250,
         })
         .toBe(true)
+
       expect(await application.stop()).toBe('exited')
       expect(await application.exited).toEqual({ code: 0, signal: null })
       expect((await readdir(join(developmentProfile, 'browser'))).length).toBeGreaterThan(0)
@@ -196,6 +206,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
         windowsHide: false,
       },
     )
+
     const rejectedExit = new Promise<number | null>((resolve, reject) => {
       rejected.once('error', reject)
       rejected.once('exit', resolve)

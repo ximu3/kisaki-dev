@@ -2,6 +2,14 @@
 
 桌面应用、所属公共包、官方扩展和分发资料在同一仓库的 clients/desktop 下维护。仓库还按[工程分组](layout.md#workspace)区分后续 Web 客户端、官网和候选服务端；本篇的具体工具链与交付检查覆盖当前桌面范围。各项目通过声明的依赖和公开入口协作，构建顺序由实际依赖决定。公开能力需要同时通过类型检查、运行验证和仓库外制品消费验证。
 
+| 阅读目的 | 入口 |
+| --- | --- |
+| 选择公共包与作者入口 | [包与依赖方向](#packages) · [源码组织](#package-organization) · [类型定义](#contracts) · [视觉交付](#visual-packages) |
+| 配置工程和检查环境 | [工作区配置](#workspace) · [工具职责](#tooling) · [声明检查](#declaration-checks) |
+| 选择任务与 CI 范围 | [任务入口](#tasks) · [CI 编排](#ci-selection) · [缓存](#task-cache) · [反馈预算](#ci-feedback) |
+| 运行开发会话 | [桌面开发](#desktop-development) · [输出访问与收尾](#output-access) |
+| 维护依赖与协作流程 | [依赖更新](#dependencies) · [PR 与提交](#collaboration) · [本地 hooks](#hooks) |
+
 <a id="solid"></a>
 
 ## Solid 与控件版本
@@ -187,7 +195,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                     |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                     |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                       |
-| 根 tools 与私有工程包         | 根工具拥有 Git hooks、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
+| 根 tools 与私有工程包         | 根工具拥有 Git hooks、验证环境信息、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -221,11 +229,17 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ## 任务调度、缓存与桌面开发
 
+### 任务名称与项目入口
+
 根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。包级 check:package 表示 publint／Are the Types Wrong 产物检查，test:consumers 表示实际安装和使用公开制品。使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack。
 
 各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。当前非类型 ESLint 检查不依赖上游产品构建或源码，输入只补充实际共用的 ESLint 配置。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
 
 测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
+
+<a id="ci-selection"></a>
+
+### CI 选择与验证编排
 
 普通 CI 使用 Turbo 的任务输入与依赖图分别选择常规检查、公共包消费者、浏览器、原生、桌面窗口、开发会话、性能和最终制品任务。当前通用 Chromium 交互在 Ubuntu x64 参考环境执行一次；具有平台差异的原生与桌面任务在六个实际目标执行。开发会话针对构建、监听与生命周期输入，完整性能测量针对启动、加载和资源输入；20 次采样口径不因普通修改而缩减。首次交付、发行前及明确的完整验收仍执行全部所需目标和后端；手动 CI 入口请求完整范围。全局工具链变化、缺失或不可解析的基线按完整范围处理，选择工具失败则让检查失败。
 
@@ -239,11 +253,17 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 编排文件由所属工作流直接比较 Git 输入：事件入口与共同协调器变动触发全部工程，工程工作流只触发自身完整验证。PR 标题工作流独立验证标题，不进入产品任务的全局输入。桌面与公共包的生产任务排除 Markdown、Vitest 配置、测试类型配置和测试文件；开发监听同时排除生成目录与本地状态，生产配置与新增生产文件继续触发相应构建。任务图与真实监听分别验证这些边界。
 
-桌面[构建输入身份](build.md#formats)直接使用正式 build 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
+工作流通过 tools/host-environment.ts 记录运行环境；该共同输入变化触发其两个消费者的完整验证。桌面构建复用观测归 tests/support/build-reuse.ts，由调用它的桌面工作流声明编排输入。工作流保持选择与执行顺序，报告读取和写入逻辑由所属 TypeScript 入口维护。
+
+桌面[构建输入身份](build.md#pipeline)直接使用正式 build 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
 
 仓库工作流调度各 workspace 自己的常规检查与测试。桌面八包的打包、产物检查和跨包消费者归桌面工作流的 Linux x64 参考目标，输入收据和制品归 artifacts/desktop/packages。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
 
 桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发、性能与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。开发测试仍在隔离副本内验证真实构建与会话生命周期。打包核对既有 build.json 的目标、当前输入身份、完整文件集合和摘要，缺失、过时或改写均失败。根 desktop:package 通过 Turbo 的本包 build 依赖保持独立可运行；已有准备的流程直接调用应用 package 任务，不再重建。
+
+<a id="task-cache"></a>
+
+### 任务缓存与依赖安装
 
 只有结果由完整输入决定的有限任务才使用缓存。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
 
@@ -253,7 +273,13 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 <a id="ci-feedback"></a>
 
+### 工程反馈预算
+
 标准托管 runner 上的工程反馈目标按[既定验证负载](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)确定：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+
+<a id="desktop-development"></a>
+
+### 桌面开发会话
 
 persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
 
@@ -270,6 +296,8 @@ renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同
 每份输出只有一个写入者，build 与 watch 不互相清理，监听过程也不先删除下游正在读取的目录。成功构建后完整交接，并处理文件删除和改名。正式构建使用干净输出，不夹带开发遗留文件。HMR 接入释放旧 Solid root、监听和 DOM。
 
 <a id="output-access"></a>
+
+### 输出访问与开发收尾
 
 同一工作副本内，使用相同构建输出的独立任务顺序执行，不提供跨命令互斥、排队或冲突检测。运行检查、有限构建或打包前停止会重建相同依赖的开发会话；执行 clean 前停止相关任务。独立流程需要并行时使用不同工作副本，单次任务内的依赖顺序、合法并行和缓存由 Turbo 的实际依赖图决定。
 

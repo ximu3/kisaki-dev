@@ -101,10 +101,12 @@ export async function createNativeWindow(options: NativeWindowOptions): Promise<
   try {
     // Loading HTML and mounting the renderer are separate readiness conditions.
     await Promise.all([waitForRenderer(window), window.loadURL(url)])
+
     window.show()
     return window
   } catch (cause) {
     if (!window.isDestroyed()) window.destroy()
+
     throw cause
   }
 }

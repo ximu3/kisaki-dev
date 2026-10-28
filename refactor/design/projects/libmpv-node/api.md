@@ -2,6 +2,13 @@
 
 本页定义调用、错误与控制客户端的公开合同。初始化与清理见[运行寿命](lifecycle.md)，通知单独见[订阅与通知](notifications.md)。
 
+| 阅读目的 | 入口 |
+| --- | --- |
+| 调用命令与属性 | [操作分类](#libmpv-model) · [结构化调用](#commands) · [属性读取与观察](#properties) |
+| 判断失败与取消结果 | [错误类型](#errors) · [取消、关闭与迟到结果](#control-cancellation) |
+| 使用独立控制通道或参与执行 | [额外客户端](#clients) · [异步 hook](#hooks) |
+| 核对完整能力与类型来源 | [Client API 入口](#capabilities) · [制品目录与语义声明](#catalog) |
+
 <a id="model"></a>
 
 ## 绑定模型与调用入口
@@ -32,7 +39,7 @@ command 完成遵守对应 mpv 命令的含义，不自动表示文件、定位�
 
 <a id="libmpv-model"></a>
 
-## 接口与职责
+## 操作、通知与参与执行
 
 公开模型区分一次操作、持续通知和参与执行；各自的完成含义决定接口形式：
 

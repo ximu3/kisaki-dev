@@ -25,6 +25,7 @@ test('the shipped SQLite binding creates, commits, rolls back and reopens under 
     const insert = database.prepare('INSERT INTO fixture (value) VALUES (?)')
 
     database.transaction(() => insert.run('已提交'))()
+
     expect(
       database.transaction(() => {
         insert.run('rolled back')
@@ -35,6 +36,7 @@ test('the shipped SQLite binding creates, commits, rolls back and reopens under 
     database.close()
     database = undefined
     database = new Database(path, options)
+
     expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已提交' }])
   } finally {
     try {

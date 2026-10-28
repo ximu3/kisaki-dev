@@ -2,7 +2,7 @@
 
 四个项目分别维护仓库、公共合同、版本与发行。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目共同遵守[终态实现与整体一致性](../engineering/conventions.md#final-state)及[简洁、原生与适度复杂度](../engineering/conventions.md#simplicity-native)，按各自技术栈复用成熟能力并保留原有语义。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目共同遵守[终态实现与整体一致性](../engineering/conventions.md#final-state)、[可读性](../engineering/conventions.md#readability-principle)及[简洁、原生与适度复杂度](../engineering/conventions.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |
