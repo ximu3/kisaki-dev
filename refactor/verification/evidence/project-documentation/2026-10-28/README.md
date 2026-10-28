@@ -12,14 +12,15 @@ README、架构与应用说明直接描述窗口、开发会话、原生模块�
 
 ## W00 完成度
 
-主要实现与六目标工程验证已完成，完整工程交付仍有未闭合事项。
+主要实现与六目标工程验证已完成，完整工程交付仍需落实仓库合并约束。运行记录区分已处理问题、旧输入未归因事件与待查占用，不将全部历史失败都列为当前输入的缺陷。
 
 | 范围 | 证据与判断 |
 | --- | --- |
 | 工作区、程序、构建、资源、开发与测试入口 | 45 个 workspace 成员与所属入口已经建立；[本机验证](../../project-readability/2026-10-28/validation.json)覆盖常规检查、八包消费、开发回归和保留正式 fuses 的载体启动。 |
 | 六目标及汇总 | [CI 40707331506](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)的仓库、六目标与 Required checks 全部通过，完整运行 20 分 15 秒。被测输入 `e8e5acb` 与本次基线的 Git tree 相同。 |
 | GitHub 合并约束 | 实际 API 返回 main 的 protected 为 false、ruleset 列表为空，见[读取记录](repository-rules.json)。现行规范要求的 `verify / Required checks` 与 `PR title` 尚未成为仓库强制合并条件。 |
-| 稳定性记录 | macOS 首次启动或性能/收尾超时，以及本机候选交接 EPERM 尚未完成根因定性。最新运行通过保留实际范围，不将历史记录改记为已修复；来源见[状态页](../../../../implementation/status.md#w00-pending)。 |
+| 稳定性记录 | 已捕获的 Electron 44 销毁对象回调由 Electron 45 移除；有轨迹的 macOS 冷准备超时已按实测调整。更早无诊断记录保持未归因，Windows EPERM 仍需查明占用者；当前判断和来源见[状态页](../../../../implementation/status.md)。 |
+| 合并方式 | 仓库同时允许 Merge、Squash 和 Rebase，未开启合并后自动删除分支。规范使用 Squash 与短分支；可以用原生设置收敛合并方式并自动清理，本次未修改这些设置。 |
 | 后续工作包 | 正式业务、完整数据库、扩展与译本、四个独立项目、签署和安装升级按各自工作包交付。它们的状态与 W00 工程入口分别维护。 |
 
 本次只读取 GitHub 仓库配置，没有修改分支规则、合并 PR 或发布制品。旧 `ximu3/kisaki` 仍为 public 且未归档，正式仓库接续尚未执行。

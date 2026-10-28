@@ -9,7 +9,7 @@
 | 范围 | 状态 |
 | --- | --- |
 | 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
-| W00 工程与验证入口 | 主要实现和六目标工程验证完成；[合并约束与稳定性定性](#w00-pending)尚未闭合，整包待收尾。 |
+| W00 工程与验证入口 | 主要实现和六目标工程验证完成；[仓库合并约束](#w00-pending)尚未落实，整包待收尾。运行记录按下方分类维护。 |
 | W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
@@ -20,8 +20,15 @@
 
 ## W00 待闭合事项
 
-- **合并约束：** `ximu3/kisaki-dev` 的 `main` 未受保护，ruleset 列表为空。现行[协作规范](../design/engineering/workspace.md#collaboration)要求合并必须通过 `verify / Required checks` 和 `PR title`，仓库配置尚未落实。实际读取结果见[完成度核对](../verification/evidence/project-documentation/2026-10-28/README.md#w00)。
-- **稳定性定性：** macOS x64 首次启动偶发超时、Apple Silicon 性能／收尾超时及本机候选目录交接 EPERM 的历史记录尚未完成根因定性。最新六目标通过不将这些记录改记为已修复；对应输入与诊断见[CI 维护](../verification/evidence/workflow-review/2026-10-27/README.md)、[启动与收尾诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)和[工程组织验证](../verification/evidence/ci-architecture/2026-10-28/README.md)。
+`ximu3/kisaki-dev` 的 `main` 未受保护，ruleset 列表为空。现行[协作规范](../design/engineering/workspace.md#collaboration)要求合并必须通过 `verify / Required checks` 和 `PR title`，仓库配置尚未落实。实际读取结果见[完成度核对](../verification/evidence/project-documentation/2026-10-28/README.md#w00)。
+
+## 运行记录与观察
+
+| 分类 | 当前判断与证据 |
+| --- | --- |
+| 已定位并处理 | Electron 44 的窗口可见性回调访问已销毁对象、阻塞退出，由 Electron 45 移除该回调处理；正式六目标验证通过，见[退出诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)。有完整轨迹的 macOS x64 开发就绪超时属于冷构建准备耗时，准备预算已按实测配置并验证，见[冷准备核对](../verification/evidence/final-state-coherence/2026-10-28/followup.md)。 |
+| 历史未归因 | 更早的 macOS x64 首次 ready 超时及两次 Apple Silicon 采样超时缺少必要诊断，保留原始结果。它们不能逐次确证为上述原因，也不能直接证明当前输入仍存在同一故障，见[启动记录](../verification/evidence/ci-design/2026-10-27/adoption/README.md)与[采样记录](../verification/evidence/workflow-review/2026-10-27/README.md)。 |
+| 待查占用 | Windows 候选输出目录交接曾返回 EPERM，旧输出已恢复，占用者未确定。需要区分内部未释放句柄与外部占用，再判断是否修改资源收尾；原始记录见[输出交接](../verification/evidence/ci-architecture/2026-10-28/development-tests.md)。 |
 
 ## 后续工作包的交付范围
 
@@ -84,7 +91,7 @@
 | Hooks（A26） | 安装、重复安装、卸载、配置冲突、部分暂存失败恢复及 worktree 行为经隔离仓库验证。 |
 | 测试与制品入口（A28） | Node、真实浏览器、Electron Node ABI、四窗口、20 次启动测量和保留生产 fuses 的外部载体验证；六目标均已运行。 |
 | 包消费与工程规则（A31） | 八包 tarball、声明与 CSS 的仓库外消费通过；源码边界、任务输入、资源寿命、文件说明和可读性已核对。 |
-| CI | 按真实输入选择任务和目标，仓库与桌面工作流各自执行，独立标题检查及汇总门禁通过；待落实的仓库合并约束见上方缺项。 |
+| CI | 按真实输入选择任务和目标，仓库与桌面工作流各自执行，独立标题检查及汇总门禁通过。 |
 
 当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)和[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
 
