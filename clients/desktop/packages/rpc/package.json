@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/rpc",
+  "description": "Platform-independent message transport contracts for Kisaki connections.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

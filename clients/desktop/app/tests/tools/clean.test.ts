@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies that desktop cleanup removes declared outputs while retaining
+ * profiles and caches.
+ */
+
 import { expect, test, vi } from 'vitest'
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

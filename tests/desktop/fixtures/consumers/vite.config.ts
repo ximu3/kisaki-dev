@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds the standalone framework-independent and Solid consumer documents
+ * with public package imports.
+ */
+
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 import { resolve } from 'node:path'

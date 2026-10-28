@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies that cancelled dependency preparation closes its command and
+ * allows a fresh development startup.
+ */
+
 import { expect, test } from 'vitest'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

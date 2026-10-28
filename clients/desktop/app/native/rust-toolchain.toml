@@ -1,3 +1,5 @@
+# Pins the compiler, formatter and linter used for the desktop native library.
+
 [toolchain]
 channel = "1.90.0"
 profile = "minimal"

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Assembles fonts, icons and the target's SQLite binding into a complete
+ * desktop resource set with file digests.
+ */
+
 import { createRequire } from 'node:module'
 import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'

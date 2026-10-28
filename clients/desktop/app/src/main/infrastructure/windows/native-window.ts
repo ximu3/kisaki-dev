@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Owns native window creation, renderer readiness and the sender-bound close
+ * capability.
+ */
+
 import { BrowserWindow, ipcMain } from 'electron'
 import { join } from 'node:path'
 import type { WindowKind } from '../../../shared/window-controls'

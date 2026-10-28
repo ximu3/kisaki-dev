@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Creates a persistent parent and leaf process for command-tree cancellation
+ * tests.
+ */
+
 import { spawn } from 'node:child_process'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

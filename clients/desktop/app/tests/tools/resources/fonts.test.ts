@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies font copying against pinned package versions, file digests and
+ * retained license inputs.
+ */
+
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

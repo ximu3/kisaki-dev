@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds Solid components, declarations and compiled utility styles before
+ * adopting the complete UI package output.
+ */
+
 import { build } from 'tsdown'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'

@@ -1,3 +1,5 @@
+/** @fileoverview Runs formatting and Clippy checks under the pinned desktop Rust toolchain. */
+
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'

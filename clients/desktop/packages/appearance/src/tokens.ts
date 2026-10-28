@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines the visual token vocabulary and complete color-scheme value shape
+ * independently of desktop resources.
+ */
+
 /** The fixed vocabulary shared by native windows and extension documents. */
 export const appearanceTokenNames = [
   '--background',

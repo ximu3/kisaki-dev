@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Simulates application readiness, refused shutdown and IPC disconnection
+ * for launcher integration tests.
+ */
+
 import {
   developmentProtocolVersion,
   parseDevelopmentCommand,

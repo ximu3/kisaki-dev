@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Selects database and native-binding tests under the matching development
+ * Electron Node host.
+ */
+
 import { defineConfig } from 'vitest/config'
 import { readFileSync } from 'node:fs'
 

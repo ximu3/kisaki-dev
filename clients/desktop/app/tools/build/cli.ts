@@ -1,3 +1,5 @@
+/** @fileoverview Parses target and program arguments for finite desktop builds. */
+
 import { parseArgs } from 'node:util'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'

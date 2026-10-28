@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Prepares isolated carrier and portable-profile locations for tests of
+ * existing packaged applications.
+ */
+
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'

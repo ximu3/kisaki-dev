@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Shares the initial desktop window view and presents failures from its
+ * supplied close operation.
+ */
+
 import { createSignal, Show } from 'solid-js'
 import { Button } from '@kisaki3/ui'
 import './window-root.css'

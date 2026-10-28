@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies launcher readiness, shared stop requests and the distinction
+ * between IPC closure and process exit.
+ */
+
 import { expect, test } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

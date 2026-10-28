@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Owns a development application's child process and JSON IPC connection
+ * from initialization through cancellable shutdown.
+ */
+
 import { spawn } from 'node:child_process'
 import { isAbsolute } from 'node:path'
 import {

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies a prepared desktop runtime, packages its target carriers and
+ * records the resulting artifact identities.
+ */
+
 import { copyFile, cp, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { parseDocument } from 'yaml'

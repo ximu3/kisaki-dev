@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies accepted development protocol facts and rejection of unsupported
+ * message fields.
+ */
+
 import { expect, test } from 'vitest'
 import { parseDevelopmentCommand, parseDevelopmentEvent } from './development'
 

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Resolves a prepared portable data directory from the marker beside a
+ * movable application carrier.
+ */
+
 import { lstatSync } from 'node:fs'
 import { join } from 'node:path'
 

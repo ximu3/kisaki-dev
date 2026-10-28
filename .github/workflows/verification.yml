@@ -1,3 +1,6 @@
+# Coordinates project verification workflows and validates every selected result in the required
+# gate.
+
 name: Verification
 on:
   workflow_call:

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines window kinds and the minimal controls exposed through each
+ * isolated preload bridge.
+ */
+
 /** Native document kinds, each with its own renderer and sandboxed preload entry. */
 export type WindowKind = 'main' | 'reader' | 'player' | 'game-panel'
 

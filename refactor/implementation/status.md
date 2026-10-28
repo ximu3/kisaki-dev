@@ -9,9 +9,10 @@
 | 范围                                                                | 状态   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 产品、领域、界面、工程及扩展设计 | 既有规则已建立；本轮已按确认方案修正入口命名、消费者归属与跨域检查边界 |
-| W00 工程与验证入口               | PR #1、#3、#4、#5、#6 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
+| W00 工程与验证入口               | PR #1、#3、#4、#5、#6、#7 已合并；既有监听、Electron、开发副本及 CI 组织改动保持对应验证证据；开发仓库已按要求公开 |
 | CI 编排与反馈时间 | 反馈目标已按确认调整为 [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；PR #6 实现提交的完整九项 CI 通过，用时 19 分 36 秒，消费者增量为 1 分 49 秒；历史运行按当时目标保留，原 macOS x64 首次启动偶发超时仍未确定原因 |
 | 脚本与扩展边界审查 | [49 份清单、164 个当前脚本及工程边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)已完成；发现消费者选择／执行范围、pack 文档调用及输入传播等问题，命名和归属方案已确认并落实，[本机检查与八包消费](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)通过，15 组实际工作流选择和 10 组汇总门禁通过，[PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 已 Squash 合并为 1a4c6f4 |
+| 文件与模块说明 | [统一必写规范](../design/engineering/conventions.md#file-module-comments)及现有文件补齐已落实；[412 份维护输入](../verification/evidence/file-module-comments/2026-10-28/README.md)覆盖核对、本机检查与八包消费通过，交付分支待 CI 验证 |
 | W01–W13 与四个独立项目 | 未开始正式实施 |
 | 正式应用、目标制品与平台验收 | 已验证六目标 W00 工程外壳、候选启动及原生／SQLite；完整产品验收未执行 |
 | 对外发行                         | 未执行                                    |
@@ -29,6 +30,8 @@
 本轮[脚本与跨域边界审查](../verification/evidence/script-domain-audit/2026-10-28/README.md)覆盖当前 46 份清单中的 164 个脚本，另核对三份历史清单及生成消费者脚本。当前命令均有实现或明确用途，但桌面八包流程被通用名称遮蔽，消费者选择范围与实际执行集合不一致，部分检查和输入传播也依赖当前桌面布局。以 pnpm 11.11.0 实测确认 pack 调用差异，并用实际 Git／Turbo 选择与合成跨域输入保留证据。该审查之后，用户确认根范围在前、包内动作在前，以及桌面消费者归桌面参考任务。命名、调用、目录、输出空间、输入选择、成员发现及 CI 门禁已经同步修正；全仓检查和 54 项普通测试、八包制品与真实消费通过，详见[实施验证](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md)。15 组实际工作流选择、其他域消费者隔离与 10 组汇总门禁均通过；远端六目标结果随 [PR #6](https://github.com/ximu3/kisaki-dev/pull/6) 的检查与报告留存。PR #6 已于 2026-10-28 Squash 合并为 1a4c6f4，未新增产品工程。
 
 随后按用户确认，将开发、原生及完整验证的反馈目标改为 25 分钟，保留仓库／消费者／浏览器的 4 分钟和 renderer／公共 UI 的 10 分钟目标。依据与六目标实际结果见[反馈目标调整](../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)。本轮只更新文档，未改变运行输入、affected 基线、缓存或测试超时；沿用实现提交 10c5f8f 的有效运行证据。PR 的选择范围覆盖相对目标分支的整体改动，不能将快路径实测解释为每次推送都只验证最后一提交。通用文档的内容规则已扩展到全部长期协作与使用文档，明确禁止过程性叙述；CI 指南已收敛为现行规则，规范入口见[文档归属](../design/engineering/documentation.md#owners)。 [PR 描述规范](../design/engineering/documentation.md#pull-request-descriptions)按最终改动与审阅需要取舍，问题、验证等信息不设为必填项。
+
+PR #7 已 Squash 合并为 6e90fed。随后按用户确认，将文件与模块概述设为统一必需项，并同步补齐现有源码、工具、配置、测试与样板。275 份文件添加原生注释，46 份清单提供 description，91 份不能直接注释的输入在所属文档说明；源码正文保持一致，清单只增说明字段，其余 JSON 输入与生成声明不变。全仓检查、54 项普通测试、八包消费、Rust 检查及本机原生构建通过。31 份公共包输出的运行内容与声明签名一致，详细覆盖和摘要见[文件与模块注释验证](../verification/evidence/file-module-comments/2026-10-28/README.md)。
 
 Kisaki 的项目级开发仓库为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，本地 origin 指向该地址，用于正式接续前的持续开发、联调和 CI。2026-10-26 将原 kisaki-w00-ci 直接改名并更新描述，当时保持 private；2026-10-27 按用户要求改为 public，并以未认证 API 请求确认公开可读，见[可见性变更](../verification/evidence/repository/2026-10-27/README.md)。目前实际存在的开发仓库只有这一项；四个独立项目尚未建仓，规范已统一为公开开发仓库。仓库 ID、main 默认分支和未归档状态保持原值；改名前后的记录见[改名核对](../verification/evidence/repository/2026-10-26/rename.json)。历史证据保持当时的地址与可见性。
 

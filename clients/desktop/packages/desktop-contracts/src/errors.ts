@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines serializable error summaries and partial execution results for
+ * cross-boundary failures.
+ */
+
 /** A safe, serializable failure description; callers classify by code, never by message. */
 export interface ErrorSummary {
   code: string

@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/eslint-config",
+  "description": "Shared ESLint rules for Kisaki source, Node modules and test fixtures.",
   "version": "0.0.0",
   "private": true,
   "type": "module",

@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/desktop-contracts",
+  "description": "Shared desktop error and development-protocol contracts for Kisaki.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

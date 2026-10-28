@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Connects an isolated window's close control and renderer readiness signal
+ * to the main process.
+ */
+
 import { contextBridge, ipcRenderer } from 'electron'
 import type { WindowControls, WindowKind } from '../shared/window-controls'
 

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines packaged-carrier identities used by desktop deployment and
+ * portable-data selection.
+ */
+
 import type { DesktopTarget } from './runtime-manifest'
 
 /** Installer and movable-carrier identities recorded by the packager. */

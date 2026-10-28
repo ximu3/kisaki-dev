@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Builds and verifies one host-native binding before publishing its binary,
+ * declarations and receipt.
+ */
+
 import { createHash } from 'node:crypto'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

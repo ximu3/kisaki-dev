@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises Vite resolution and adoption of complete public-package
+ * snapshots, including failed exports.
+ */
+
 import { expect, test } from 'vitest'
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'

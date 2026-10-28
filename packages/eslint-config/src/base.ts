@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides the shared TypeScript lint baseline and exclusions for generated
+ * and local engineering output.
+ */
+
 import eslint from '@eslint/js'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'

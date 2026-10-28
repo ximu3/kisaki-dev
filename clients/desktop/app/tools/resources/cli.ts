@@ -1,3 +1,5 @@
+/** @fileoverview Selects a desktop target and prepares its declared runtime resources. */
+
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { prepareResources } from './prepare'

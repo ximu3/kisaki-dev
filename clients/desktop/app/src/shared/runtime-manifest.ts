@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines desktop targets and build manifests shared by runtime loading,
+ * tooling and artifact consumers.
+ */
+
 /** An operating-system and native-architecture pair supported by the desktop application. */
 export type DesktopTarget =
   'windows-x64' | 'windows-arm64' | 'macos-x64' | 'macos-arm64' | 'linux-x64' | 'linux-arm64'

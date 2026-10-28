@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Loads the explicitly selected desktop binding and adapts its exports to
+ * application-owned capabilities.
+ */
+
 import { createRequire } from 'node:module'
 import { isAbsolute } from 'node:path'
 import { createNativeFiles } from './files'

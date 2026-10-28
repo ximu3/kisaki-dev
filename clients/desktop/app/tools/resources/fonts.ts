@@ -1,3 +1,5 @@
+/** @fileoverview Verifies and copies pinned font inputs for desktop resources. */
+
 import { createRequire } from 'node:module'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'

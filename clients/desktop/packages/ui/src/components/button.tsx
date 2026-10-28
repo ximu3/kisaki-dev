@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides a themed Solid button while preserving native attributes,
+ * keyboard behavior and form semantics.
+ */
+
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 

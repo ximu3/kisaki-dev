@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises the shipped native loader, no-replace moves and file
+ * synchronization against real filesystem outcomes.
+ */
+
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

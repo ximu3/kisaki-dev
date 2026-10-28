@@ -1,3 +1,5 @@
+# Excludes retained evidence, generated files and local outputs from repository formatting.
+
 refactor/
 pnpm-lock.yaml
 **/Cargo.lock

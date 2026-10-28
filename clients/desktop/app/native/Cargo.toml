@@ -1,3 +1,5 @@
+# Declares the private desktop Node-API library, platform dependencies and release profile.
+
 [package]
 name = "kisaki-native"
 version = "0.1.0-dev.0"

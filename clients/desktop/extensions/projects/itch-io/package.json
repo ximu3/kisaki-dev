@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/ext-itch-io",
+  "description": "Workspace configuration for the official itch.io extension project.",
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",

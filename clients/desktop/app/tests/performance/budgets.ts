@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Defines representative product workloads and the budgets used by desktop
+ * performance measurements.
+ */
+
 /** Design workloads, fixed before the corresponding implementation is measured. */
 export const workloads = {
   library: {

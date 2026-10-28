@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Launches the development test controller, records bounded observations and
+ * exposes its lifecycle to tests.
+ */
+
 import { spawn } from 'node:child_process'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

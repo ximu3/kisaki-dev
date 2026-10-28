@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/typescript-config",
+  "description": "Shared TypeScript baselines for Kisaki Node, browser and Solid projects.",
   "version": "0.0.0",
   "private": true,
   "type": "module",

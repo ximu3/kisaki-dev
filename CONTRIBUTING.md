@@ -17,6 +17,19 @@ PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/docu
 
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
+## 配置文件
+
+| 文件                                                                             | 用途                                                         |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| [.node-version](.node-version)                                                   | 开发与 CI 的 Node 版本声明。                                 |
+| [.prettierrc.json](.prettierrc.json)                                             | 仓库共同的源码与文档格式选项。                               |
+| [.dependency-cruiser.json](.dependency-cruiser.json)                             | 进程、公共包和工程代码的依赖边界、解析方式与扫描范围。       |
+| [turbo.json](turbo.json)                                                         | 工作区共同任务的依赖、输入、输出和缓存规则，以及根任务登记。 |
+| [tsconfig.json](tsconfig.json)                                                   | 根工程的类型检查入口，组织工具、配置和测试项目。             |
+| [config/typescript/tsconfig.tools.json](config/typescript/tsconfig.tools.json)   | 检查根工程工具源码，排除测试文件。                           |
+| [config/typescript/tsconfig.config.json](config/typescript/tsconfig.config.json) | 检查根目录和 config 中的 TypeScript 工具配置。               |
+| [config/typescript/tsconfig.tests.json](config/typescript/tsconfig.tests.json)   | 检查仓库测试与桌面消费者辅助，隔离消费者试件使用自身配置。   |
+
 ## 资源输入
 
 当前资源工作流从固定依赖准备字体与对应目标的 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，并逐文件记录摘要。字体来源、版本与文件清单由应用 `assets/fonts/inputs.json` 和 pnpm 锁文件共同约束。

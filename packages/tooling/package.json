@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/tooling",
+  "description": "Private CLI, process and output helpers for Kisaki engineering workflows.",
   "version": "0.0.0",
   "private": true,
   "type": "module",

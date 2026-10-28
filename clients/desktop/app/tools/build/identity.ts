@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Computes desktop source identities and inventories completed runtime bytes
+ * for loading and packaging.
+ */
+
 import { createHash } from 'node:crypto'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'

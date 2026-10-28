@@ -1,0 +1,219 @@
+[
+  {
+    "file": "clients/desktop/packages/appearance/dist/index.d.ts",
+    "beforeSha256": "714613b0e1feffaf18b49869cdde8c07b05e5e0a197ab03af6798ccccbefa82a",
+    "afterSha256": "714613b0e1feffaf18b49869cdde8c07b05e5e0a197ab03af6798ccccbefa82a",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/appearance/dist/index.js",
+    "beforeSha256": "20166e07b07c765253a1676b31f5596f934f2995ce4124d52efa0f4a71eec74e",
+    "afterSha256": "20166e07b07c765253a1676b31f5596f934f2995ce4124d52efa0f4a71eec74e",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/appearance/dist/styles.css",
+    "beforeSha256": "af2a74e9624e004be40141d06f0a5aaa6a363f470449f2b0c1200f7188c0d802",
+    "afterSha256": "af2a74e9624e004be40141d06f0a5aaa6a363f470449f2b0c1200f7188c0d802",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/appearance/dist/tailwind.css",
+    "beforeSha256": "e88128ba387ded1e32f2ee0f327c39a24b19b4b5172ca8cf2b46b3f2ed3bbf11",
+    "afterSha256": "ff7b1e03dfc9ef418369e921d71b3226f420bc4cec87a4b32ee117bbebcb159c",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/appearance/dist/tokens.d.ts",
+    "beforeSha256": "c07ff7f27ade0cbe1c9ee273747bb9bf458f803deee8d1d3ff6fd9c0b21c6c3f",
+    "afterSha256": "5191a14aaf3827d94d39d647fae4530cabd14a93efa24ad7a87b853f3461a719",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/appearance/dist/tokens.js",
+    "beforeSha256": "ebca5c07e8c0c77d6a6f4216a67881e3737e745a2b6df203e8a5f08e528e9ca2",
+    "afterSha256": "69cbb2cd8da54f96c41727ee98f71259d7cdb297a0ec91450c9c32f2b88e9b17",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/development.d.ts",
+    "beforeSha256": "0834b8d569657111469c92afddc45b52655dcfae21f27477385e329d6adf6fa8",
+    "afterSha256": "0834b8d569657111469c92afddc45b52655dcfae21f27477385e329d6adf6fa8",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/development.js",
+    "beforeSha256": "bb1dd326834a89299f53f92703a7bc28f71260d66a89988bcc52bd2386f7032d",
+    "afterSha256": "bb1dd326834a89299f53f92703a7bc28f71260d66a89988bcc52bd2386f7032d",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/errors.d.ts",
+    "beforeSha256": "863711a17d460021afd28a9d4d8f15486575ce3d0f9ff6c6504b350cc98b8922",
+    "afterSha256": "0ac7bb7e6d0e4b63dd89d1f4f0fbf4735b987eb68414fea973c0e318c21a436c",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/errors.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/index.d.ts",
+    "beforeSha256": "c7e90d482ee6b98f0acc6f3b5e922dffbd58913d3ac94019d2a53114db098e18",
+    "afterSha256": "c7e90d482ee6b98f0acc6f3b5e922dffbd58913d3ac94019d2a53114db098e18",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/desktop-contracts/dist/index.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/dist/index.d.ts",
+    "beforeSha256": "e0bd4bb76e1705069aca23920ba72990e97134fa0cac18a09e940d30b0d89a3d",
+    "afterSha256": "e0bd4bb76e1705069aca23920ba72990e97134fa0cac18a09e940d30b0d89a3d",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-api/dist/index.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/dist/config.d.ts",
+    "beforeSha256": "101b21116860e0c43cbc090cf626231cf97ba37433e1e28680e7a2bb6549d28b",
+    "afterSha256": "3b04a5775e1b85019e32483ec3c0fc1755fac1f63361f34ac3ecd9f35ce528e6",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/dist/config.js",
+    "beforeSha256": "0a49c22bc198cd55d2a5ef1a6f38f2d6b583e4c3c62cbd7037b20f3eb379a60b",
+    "afterSha256": "0a49c22bc198cd55d2a5ef1a6f38f2d6b583e4c3c62cbd7037b20f3eb379a60b",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/dist/extension.d.ts",
+    "beforeSha256": "7c5c4bb10984e658e22c2f59320464b6a39f2ddf41f8548055bc783b3a11948c",
+    "afterSha256": "7c5c4bb10984e658e22c2f59320464b6a39f2ddf41f8548055bc783b3a11948c",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-cli/dist/extension.js",
+    "beforeSha256": "bb880cb9f6b4c6dfd1e306a9110535ca7ea6cea42d39cfee6c6fbd0cd5516bbc",
+    "afterSha256": "dac0e3e6ca20d34c0efafb2a8db91d20436b10a0bc90c44692e5355bb846b637",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/dist/index.d.ts",
+    "beforeSha256": "a57b8cd29b669a39d51b95e7d1c4d0b3ea6a79cc161db1aa3004cc4e1de81168",
+    "afterSha256": "a57b8cd29b669a39d51b95e7d1c4d0b3ea6a79cc161db1aa3004cc4e1de81168",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/dist/index.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/dist/metadata.d.ts",
+    "beforeSha256": "3854fc3e700eebfd18a0d79c1ddd06ed73a950edf0f3be13e5b1a4fa3018b099",
+    "afterSha256": "b20c9cbb880cca58c779c784f416cf6dddf325d4db3d208781ef583c55e02dbe",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-distribution/dist/metadata.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/dist/index.d.ts",
+    "beforeSha256": "36067efa3bdd0b16763aaab140db3cca38e7a8754c27695127f6936d09a8f773",
+    "afterSha256": "36067efa3bdd0b16763aaab140db3cca38e7a8754c27695127f6936d09a8f773",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/extension-sdk/dist/index.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/rpc/dist/index.d.ts",
+    "beforeSha256": "1f72ce9e70ad0d868342341dcc990cdfc26634db2ab5b2c36464cc170dc0d16a",
+    "afterSha256": "1f72ce9e70ad0d868342341dcc990cdfc26634db2ab5b2c36464cc170dc0d16a",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/rpc/dist/index.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/rpc/dist/transport.d.ts",
+    "beforeSha256": "21415be43990fd8de255fd2d4e5b20d4593dac3c1f0a6ee354cd8af84067477c",
+    "afterSha256": "11e4e201526e63966c78800edac1960f495d84b248edd017a94bc630aecac586",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/rpc/dist/transport.js",
+    "beforeSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "afterSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/ui/dist/index.d.ts",
+    "beforeSha256": "e6f6ed6127187a2880a74ba7d2b77e241be56fc391cd75999240c21b332949ac",
+    "afterSha256": "e6f6ed6127187a2880a74ba7d2b77e241be56fc391cd75999240c21b332949ac",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/ui/dist/index.js",
+    "beforeSha256": "4e46f66048592e1642be432919572ae4b1a3945a9588ddee73d2b53d3ed901d2",
+    "afterSha256": "fac649be5487ddffeed108ebb1b0287427e542d46233b12aab6e4a480a442a51",
+    "byteIdentical": false,
+    "nonCommentContentIdentical": true
+  },
+  {
+    "file": "clients/desktop/packages/ui/dist/styles.css",
+    "beforeSha256": "cba6d5ddc03a0bfbfd2900b459276b9245bafc6be4acfff1ebe1340a169eac9e",
+    "afterSha256": "cba6d5ddc03a0bfbfd2900b459276b9245bafc6be4acfff1ebe1340a169eac9e",
+    "byteIdentical": true,
+    "nonCommentContentIdentical": true
+  }
+]

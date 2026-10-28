@@ -1,3 +1,5 @@
+/** @fileoverview Parses desktop packaging targets and the test-only distribution option. */
+
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { packageDesktop } from './packager'

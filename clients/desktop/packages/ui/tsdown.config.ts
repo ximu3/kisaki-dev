@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Compiles Solid components and declarations while keeping the Solid runtime
+ * external.
+ */
+
 import { defineConfig } from 'tsdown'
 import solid from 'unplugin-solid/rolldown'
 

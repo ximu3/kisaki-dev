@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies the supplied desktop carrier, production fuses and external
+ * startup and shutdown behavior.
+ */
+
 import { expect, test } from 'vitest'
 import { spawn } from 'node:child_process'
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'

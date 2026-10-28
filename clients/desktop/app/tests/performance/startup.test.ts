@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Measures fresh desktop launches and working sets, and confirms observed
+ * processes exit after each sample.
+ */
+
 import { _electron, expect, test } from '@playwright/test'
 import { cpus, release, totalmem, tmpdir } from 'node:os'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'

@@ -1,3 +1,5 @@
+/* Defines the layout and heading styles for the shared initial desktop window view. */
+
 .window-shell {
   display: flex;
   min-height: 100vh;

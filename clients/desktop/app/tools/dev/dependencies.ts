@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Discovers production workspace dependencies and captures complete
+ * public-package snapshots for a development session.
+ */
+
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'

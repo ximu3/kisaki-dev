@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises real renderer restarts and input watching for production changes
+ * and excluded verification files.
+ */
+
 import { afterAll, beforeAll, expect, test, vi } from 'vitest'
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies portable marker selection and failure behavior without altering
+ * unrelated filesystem contents.
+ */
+
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

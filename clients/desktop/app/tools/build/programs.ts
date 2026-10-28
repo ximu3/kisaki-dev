@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Compiles desktop programs with their Vite configurations and records the
+ * source modules used by the compiler.
+ */
+
 import { build } from 'vite'
 import type { InlineConfig } from 'vite'
 import { isAbsolute, join } from 'node:path'

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies dependency boundaries with synthetic allowed and forbidden
+ * imports across project scopes.
+ */
+
 import { afterAll, beforeAll, expect, test } from 'vitest'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'

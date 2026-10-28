@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Validates desktop tarball receipts and owns an unrelated temporary project
+ * for package consumer tests.
+ */
+
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'

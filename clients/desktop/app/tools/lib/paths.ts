@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Locates the desktop workspace and its finite build outputs for each
+ * target.
+ */
+
 import { resolve, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { DesktopTarget } from '../../src/shared/runtime-manifest'

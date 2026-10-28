@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Installs and removes repository-owned Husky hooks across worktrees while
+ * preserving unrelated hook configuration.
+ */
+
 import { spawnSync } from 'node:child_process'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'

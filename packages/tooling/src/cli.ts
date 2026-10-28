@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Owns command-line cancellation handlers and maps completed engineering
+ * operations to process exit status.
+ */
+
 import { CommandFailed } from './process'
 
 /** Install cancellation before preparation, and report failure only after the action has closed. */

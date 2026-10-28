@@ -1,3 +1,6 @@
+# Queries affected verification tasks with their owning packages, runnable commands and change
+# reasons.
+
 query Verification($base: String!, $head: String!) {
   affectedTasks(
     base: $base

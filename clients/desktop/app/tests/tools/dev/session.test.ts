@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Exercises real development-session shutdown, failed-build recovery,
+ * generation handoff and renderer updates.
+ */
+
 import { afterAll, beforeAll, expect, test } from 'vitest'
 import { chromium } from '@playwright/test'
 import type { Browser } from '@playwright/test'

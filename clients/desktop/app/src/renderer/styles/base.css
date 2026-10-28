@@ -1,3 +1,8 @@
+/*
+ * Applies shared appearance and component styles to desktop documents, including the
+ * application reset.
+ */
+
 @import '@kisaki3/appearance/styles.css';
 @import '@kisaki3/ui/styles.css';
 

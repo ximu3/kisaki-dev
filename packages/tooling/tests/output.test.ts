@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Verifies candidate adoption, failed preparation, cancellation and output
+ * ownership boundaries.
+ */
+
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

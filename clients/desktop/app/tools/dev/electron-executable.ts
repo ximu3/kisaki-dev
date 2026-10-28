@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Locates the installed development Electron executable from its package
+ * export.
+ */
+
 import { createRequire } from 'node:module'
 
 /** Return the executable path exported by the installed Electron package in Node. */

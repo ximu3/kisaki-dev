@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Runs a real development session in a test-owned child and reports its
+ * state to the parent test.
+ */
+
 import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
 

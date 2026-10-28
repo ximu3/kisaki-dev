@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/ext-mangaupdates",
+  "description": "Workspace configuration for the official MangaUpdates extension project.",
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",

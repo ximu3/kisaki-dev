@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/extension-cli",
+  "description": "Typed extension build configuration and Node development application control.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

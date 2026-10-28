@@ -1,3 +1,8 @@
+/*
+ * Builds component-scoped utility styles from appearance tokens without imposing a document
+ * reset.
+ */
+
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 @import '@kisaki3/appearance/tailwind.css';

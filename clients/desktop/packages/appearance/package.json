@@ -1,5 +1,6 @@
 {
   "name": "@kisaki3/appearance",
+  "description": "Shared appearance tokens and default values for Kisaki windows and extension documents.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

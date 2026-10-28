@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Owns one development session's build generations, input watchers, renderer
+ * server and application lifecycle.
+ */
+
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { runPnpm } from '@kisaki3/tooling/process'
