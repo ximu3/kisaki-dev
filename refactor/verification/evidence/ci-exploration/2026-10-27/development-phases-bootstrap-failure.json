@@ -1,0 +1,18 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.11.1",
+  "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics        ",
+  "note": "One isolated workspace, first and warm unmodified sessions. Local Windows x64 observation, not Windows arm64 CI timing.",
+  "events": [
+    {
+      "elapsedMs": 0.04,
+      "event": "workspace-prepare-start"
+    },
+    {
+      "elapsedMs": 807.66,
+      "event": "probe-failed",
+      "message": "Run this workflow through its pnpm project task"
+    }
+  ]
+}

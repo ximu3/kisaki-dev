@@ -1,0 +1,945 @@
+{
+  "config": {
+    "argv": [
+      "/Users/runner/hostedtoolcache/node/24.11.1/arm64/bin/node",
+      "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "config/playwright/playwright.config.performance.ts"
+    ],
+    "configFile": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/config/playwright/playwright.config.performance.ts",
+    "rootDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/ximu3/kisaki-dev/commit/563b68d5e00c1ed61a13753fcd71a1612789abe1",
+        "commitHash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+        "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40479317018"
+      },
+      "gitCommit": {
+        "shortHash": "563b68d",
+        "hash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+        "subject": "test: capture watcher timing and prepare Electron explicitly",
+        "body": "test: capture watcher timing and prepare Electron explicitly",
+        "author": {
+          "name": "ximu",
+          "email": "152481053+ximu3@users.noreply.github.com",
+          "time": 1793092480000
+        },
+        "committer": {
+          "name": "ximu",
+          "email": "152481053+ximu3@users.noreply.github.com",
+          "time": 1793092480000
+        },
+        "branch": "research/ci-reliability-diagnostics"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/performance",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "commitHash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40479317018"
+          },
+          "gitCommit": {
+            "shortHash": "563b68d",
+            "hash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "subject": "test: capture watcher timing and prepare Electron explicitly",
+            "body": "test: capture watcher timing and prepare Electron explicitly",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793092480000
+            },
+            "committer": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793092480000
+            },
+            "branch": "research/ci-reliability-diagnostics"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.test.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/performance",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/ximu3/kisaki-dev/commit/563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "commitHash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "buildHref": "https://github.com/ximu3/kisaki-dev/actions/runs/40479317018"
+          },
+          "gitCommit": {
+            "shortHash": "563b68d",
+            "hash": "563b68d5e00c1ed61a13753fcd71a1612789abe1",
+            "subject": "test: capture watcher timing and prepare Electron explicitly",
+            "body": "test: capture watcher timing and prepare Electron explicitly",
+            "author": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793092480000
+            },
+            "committer": {
+              "name": "ximu",
+              "email": "152481053+ximu3@users.noreply.github.com",
+              "time": 1793092480000
+            },
+            "branch": "research/ci-reliability-diagnostics"
+          },
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+        "snapshotDir": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/tests/performance",
+        "testIgnore": [],
+        "testMatch": "**/*.test.ts",
+        "timeout": 180000,
+        "use": {},
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../test-results/performance/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "startup.test.ts",
+      "file": "startup.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "measures twenty fresh processes and confirms all observed child processes exit",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 180003,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electron.launch started \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-fGWRwH \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launched> pid=3570 \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] Debugger listening on ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab \u001b[30m+144ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] Debugger attached. \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [app] Starting \u001b[30m+75ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err]  \u001b[30m+360ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] DevTools listening on ws://127.0.0.1:49254/devtools/browser/4f48ad41-e7f8-4170-bd20-471cb46c3e70 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49254/devtools/browser/4f48ad41-e7f8-4170-bd20-471cb46c3e70 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49254/devtools/browser/4f48ad41-e7f8-4170-bd20-471cb46c3e70 \u001b[30m+55ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [app] Native resources loaded \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [app] Electron ready \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] 2026-10-27 09:15:35.962 Electron Helper[3575:14909] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid \u001b[30m+30ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] 2026-10-27 09:15:35.962 Electron Helper[3575:14905] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] 2026-10-27 09:15:35.963 Electron Helper[3575:14909] XPC error for connection com.apple.backupd.sandbox.xpc: Connection invalid \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electron.launch succeeded \u001b[38;5;45m+678ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [extensions] Host ready \u001b[30m+55ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+187ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+6ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  navigated to \"kisaki-app://native/main/index.html\" \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.firstWindow succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> locator.waitFor started \u001b[38;5;45m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0mwaiting for getByRole('button', { name: 'Close window' }) to be visible \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"domcontentloaded\" event fired \u001b[38;5;45m+12ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"load\" event fired \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [app] Ready efd2b15e20661174942b74d44477246395f685465c680bf39da997425961fd22 \u001b[30m+167ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  locator resolved to visible <button type=\"button\" class=\"kisaki-button \">Close window</button> \u001b[38;5;45m+68ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= locator.waitFor succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.evaluate started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.evaluate succeeded \u001b[38;5;45m+5ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.close started \u001b[38;5;45m+4ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnecting> ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab \u001b[30m+174ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] Debugger ending on ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49252/1b5b28a9-0f47-4e3a-baf8-79c1470f5cab code=1005 reason= \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [extensions] Host stopped \u001b[30m+275ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570][out] [app] Shutdown complete \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570] <process did exit: exitCode=0, signal=null> \u001b[30m+140ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570] starting temporary directories cleanup \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49254/devtools/browser/4f48ad41-e7f8-4170-bd20-471cb46c3e70 code=1006 reason= \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.close succeeded \u001b[38;5;45m+522ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electron.launch started \u001b[38;5;45m+4ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3570] finished temporary directories cleanup \u001b[30m+4ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-fGWRwH \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launched> pid=3581 \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] Debugger listening on ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a \u001b[30m+67ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] Debugger attached. \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [app] Starting \u001b[30m+10ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err]  \u001b[30m+11ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] DevTools listening on ws://127.0.0.1:49259/devtools/browser/c5711924-3b9b-4cea-917b-b2ced5fcd91e \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49259/devtools/browser/c5711924-3b9b-4cea-917b-b2ced5fcd91e \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49259/devtools/browser/c5711924-3b9b-4cea-917b-b2ced5fcd91e \u001b[30m+57ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [app] Native resources loaded \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [app] Electron ready \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electron.launch succeeded \u001b[38;5;45m+168ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [extensions] Host ready \u001b[30m+66ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+103ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+4ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  navigated to \"kisaki-app://native/main/index.html\" \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.firstWindow succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> locator.waitFor started \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0mwaiting for getByRole('button', { name: 'Close window' }) to be visible \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"domcontentloaded\" event fired \u001b[38;5;45m+10ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"load\" event fired \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [app] Ready efd2b15e20661174942b74d44477246395f685465c680bf39da997425961fd22 \u001b[30m+70ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  locator resolved to visible <button type=\"button\" class=\"kisaki-button \">Close window</button> \u001b[38;5;45m+26ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= locator.waitFor succeeded \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.evaluate started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.evaluate succeeded \u001b[38;5;45m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.close started \u001b[38;5;45m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnecting> ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a \u001b[30m+65ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] Debugger ending on ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49257/6e0e174c-d273-419c-a688-de85f1dd531a code=1005 reason= \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [extensions] Host stopped \u001b[30m+34ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581][out] [app] Shutdown complete \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49259/devtools/browser/c5711924-3b9b-4cea-917b-b2ced5fcd91e code=1006 reason= \u001b[30m+51ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581] <process did exit: exitCode=0, signal=null> \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581] starting temporary directories cleanup \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.close succeeded \u001b[38;5;45m+124ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electron.launch started \u001b[38;5;45m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3581] finished temporary directories cleanup \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-fGWRwH \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launched> pid=3586 \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] Debugger listening on ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 \u001b[30m+66ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] Debugger attached. \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [app] Starting \u001b[30m+12ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err]  \u001b[30m+10ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] DevTools listening on ws://127.0.0.1:49263/devtools/browser/6e83413c-01ed-4d14-9169-985c179a8b69 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49263/devtools/browser/6e83413c-01ed-4d14-9169-985c179a8b69 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49263/devtools/browser/6e83413c-01ed-4d14-9169-985c179a8b69 \u001b[30m+60ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [app] Native resources loaded \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [app] Electron ready \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electron.launch succeeded \u001b[38;5;45m+167ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [extensions] Host ready \u001b[30m+74ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+115ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+8ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  navigated to \"kisaki-app://native/main/index.html\" \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.firstWindow succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> locator.waitFor started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0mwaiting for getByRole('button', { name: 'Close window' }) to be visible \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"domcontentloaded\" event fired \u001b[38;5;45m+13ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"load\" event fired \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [app] Ready efd2b15e20661174942b74d44477246395f685465c680bf39da997425961fd22 \u001b[30m+87ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  locator resolved to visible <button type=\"button\" class=\"kisaki-button \">Close window</button> \u001b[38;5;45m+31ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= locator.waitFor succeeded \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.evaluate started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.evaluate succeeded \u001b[38;5;45m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.close started \u001b[38;5;45m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnecting> ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 \u001b[30m+52ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] Debugger ending on ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49261/975ad392-09e1-4118-8078-4622a4c1c0f9 code=1005 reason= \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [extensions] Host stopped \u001b[30m+53ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586][out] [app] Shutdown complete \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49263/devtools/browser/6e83413c-01ed-4d14-9169-985c179a8b69 code=1006 reason= \u001b[30m+16ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586] <process did exit: exitCode=0, signal=null> \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586] starting temporary directories cleanup \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.close succeeded \u001b[38;5;45m+94ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electron.launch started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3586] finished temporary directories cleanup \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-fGWRwH \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launched> pid=3654 \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] Debugger listening on ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f \u001b[30m+69ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] Debugger attached. \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [app] Starting \u001b[30m+12ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err]  \u001b[30m+13ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] DevTools listening on ws://127.0.0.1:49267/devtools/browser/6f8ca167-2785-4316-8611-9bdf774c42b2 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49267/devtools/browser/6f8ca167-2785-4316-8611-9bdf774c42b2 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49267/devtools/browser/6f8ca167-2785-4316-8611-9bdf774c42b2 \u001b[30m+60ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [app] Native resources loaded \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [app] Electron ready \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electron.launch succeeded \u001b[38;5;45m+180ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [extensions] Host ready \u001b[30m+74ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+106ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+6ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  navigated to \"kisaki-app://native/main/index.html\" \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.firstWindow succeeded \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> locator.waitFor started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0mwaiting for getByRole('button', { name: 'Close window' }) to be visible \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"domcontentloaded\" event fired \u001b[38;5;45m+10ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"load\" event fired \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [app] Ready efd2b15e20661174942b74d44477246395f685465c680bf39da997425961fd22 \u001b[30m+75ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  locator resolved to visible <button type=\"button\" class=\"kisaki-button \">Close window</button> \u001b[38;5;45m+28ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= locator.waitFor succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.evaluate started \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.evaluate succeeded \u001b[38;5;45m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.close started \u001b[38;5;45m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnecting> ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f \u001b[30m+61ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] Debugger ending on ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49265/9f69bbb5-1ed5-41b9-a12c-25fbb0de542f code=1005 reason= \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [extensions] Host stopped \u001b[30m+55ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654][out] [app] Shutdown complete \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654] <process did exit: exitCode=0, signal=null> \u001b[30m+48ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654] starting temporary directories cleanup \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49267/devtools/browser/6f8ca167-2785-4316-8611-9bdf774c42b2 code=1006 reason= \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.close succeeded \u001b[38;5;45m+138ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electron.launch started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3654] finished temporary directories cleanup \u001b[30m+2ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launching> /Users/runner/work/kisaki-dev/kisaki-dev/node_modules/.pnpm/electron@44.5.1/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/out/macos-arm64/main/entry.js --profile=/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/kisaki-performance-fGWRwH \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<launched> pid=3746 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] Debugger listening on ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb \u001b[30m+72ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb \u001b[30m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] Debugger attached. \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][out] [app] Starting \u001b[30m+14ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err]  \u001b[30m+13ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] DevTools listening on ws://127.0.0.1:49271/devtools/browser/4360cf47-62cc-4284-b988-b9e40ad7d9f1 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connecting> ws://127.0.0.1:49271/devtools/browser/4360cf47-62cc-4284-b988-b9e40ad7d9f1 \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws connected> ws://127.0.0.1:49271/devtools/browser/4360cf47-62cc-4284-b988-b9e40ad7d9f1 \u001b[30m+62ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][out] [app] Native resources loaded \u001b[30m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][out] [app] Electron ready \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electron.launch succeeded \u001b[38;5;45m+181ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][out] [extensions] Host ready \u001b[30m+76ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+128ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"commit\" event fired \u001b[38;5;45m+7ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  navigated to \"kisaki-app://native/main/index.html\" \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.firstWindow succeeded \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> locator.waitFor started \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0mwaiting for getByRole('button', { name: 'Close window' }) to be visible \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"domcontentloaded\" event fired \u001b[38;5;45m+16ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  \"load\" event fired \u001b[38;5;45m+5ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][out] [app] Ready efd2b15e20661174942b74d44477246395f685465c680bf39da997425961fd22 \u001b[30m+98ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m  locator resolved to visible <button type=\"button\" class=\"kisaki-button \">Close window</button> \u001b[38;5;45m+15ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= locator.waitFor succeeded \u001b[38;5;45m+1ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.evaluate started \u001b[38;5;45m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m<= electronApplication.evaluate succeeded \u001b[38;5;45m+3ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[38;5;45;1mpw:api \u001b[0m=> electronApplication.close started \u001b[38;5;45m+6ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnecting> ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb \u001b[30m+115ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] Debugger ending on ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m[pid=3746][err] For help, see: https://nodejs.org/learn/getting-started/debugging \u001b[30m+0ms\u001b[0m\n"
+                    },
+                    {
+                      "text": "  \u001b[30;1mpw:browser \u001b[0m<ws disconnected> ws://127.0.0.1:49269/9a5d6cf7-b275-467a-b652-f577867eaedb code=1005 reason= \u001b[30m+0ms\u001b[0m\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Sample 1: launch",
+                      "duration": 681
+                    },
+                    {
+                      "title": "Sample 1: window ready",
+                      "duration": 278
+                    },
+                    {
+                      "title": "Sample 1: process metrics",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Sample 1: close",
+                      "duration": 526
+                    },
+                    {
+                      "title": "Sample 1: observed processes exit",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Sample 2: launch",
+                      "duration": 169
+                    },
+                    {
+                      "title": "Sample 2: window ready",
+                      "duration": 143
+                    },
+                    {
+                      "title": "Sample 2: process metrics",
+                      "duration": 3
+                    },
+                    {
+                      "title": "Sample 2: close",
+                      "duration": 126
+                    },
+                    {
+                      "title": "Sample 2: observed processes exit",
+                      "duration": 0
+                    },
+                    {
+                      "title": "Sample 3: launch",
+                      "duration": 168
+                    },
+                    {
+                      "title": "Sample 3: window ready",
+                      "duration": 168
+                    },
+                    {
+                      "title": "Sample 3: process metrics",
+                      "duration": 3
+                    },
+                    {
+                      "title": "Sample 3: close",
+                      "duration": 96
+                    },
+                    {
+                      "title": "Sample 3: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 4: launch",
+                      "duration": 180
+                    },
+                    {
+                      "title": "Sample 4: window ready",
+                      "duration": 152
+                    },
+                    {
+                      "title": "Sample 4: process metrics",
+                      "duration": 3
+                    },
+                    {
+                      "title": "Sample 4: close",
+                      "duration": 140
+                    },
+                    {
+                      "title": "Sample 4: observed processes exit",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Sample 5: launch",
+                      "duration": 181
+                    },
+                    {
+                      "title": "Sample 5: window ready",
+                      "duration": 172
+                    },
+                    {
+                      "title": "Sample 5: process metrics",
+                      "duration": 3
+                    },
+                    {
+                      "title": "Sample 5: close",
+                      "duration": -1
+                    }
+                  ],
+                  "startTime": "2026-10-27T09:15:35.268Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/runner/work/kisaki-dev/kisaki-dev/clients/desktop/app/test-results/performance/startup-measures-twenty-fr-173b5-served-child-processes-exit/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6480d858a13ade2fad83-4786d9732f1efeaa8fa1",
+          "file": "startup.test.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "\u001b[31mWorker teardown timeout of 180000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\ntests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit",
+      "stack": "\u001b[31mWorker teardown timeout of 180000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\ntests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-27T09:15:34.964Z",
+    "duration": 360389.777,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

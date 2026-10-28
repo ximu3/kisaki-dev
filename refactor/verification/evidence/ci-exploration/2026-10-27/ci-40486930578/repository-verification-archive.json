@@ -1,0 +1,44 @@
+{
+  "id": 12726021223,
+  "name": "repository-verification",
+  "completeArchive": true,
+  "expectedDigest": "sha256:857d07092048c166ce1aa02b93c2da4d1144cf3ac8c02af48b7dac42a534d19f",
+  "bytes": 30635,
+  "reportEntriesCheckedByZipCrc": 4,
+  "verifiedFiles": [
+    {
+      "path": "artifacts/packages/appearance-d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35.tgz",
+      "sha256": "d9bd378727b2d137717c05a098616b509464d28208315bccb61961c78e4edb35"
+    },
+    {
+      "path": "artifacts/packages/desktop-contracts-3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996.tgz",
+      "sha256": "3027b542db00803499f7c3182a72062d31bb8d6e630d126d593de4a443328996"
+    },
+    {
+      "path": "artifacts/packages/extension-api-a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb.tgz",
+      "sha256": "a748a356a97761a8b277dcded36d8ab13d5ad2a0a549e52f78be48e207ebc7bb"
+    },
+    {
+      "path": "artifacts/packages/extension-cli-60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19.tgz",
+      "sha256": "60b9e6d73c0fe6a58a7aaa003447c0973bbc090e232ee501dae05041c6d73e19"
+    },
+    {
+      "path": "artifacts/packages/extension-distribution-914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2.tgz",
+      "sha256": "914e73dfdd5d833dc0e90e0d5871ee52fd2f9852f97a01a259aefcca865550e2"
+    },
+    {
+      "path": "artifacts/packages/extension-sdk-8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38.tgz",
+      "sha256": "8967faa1f60add431c8897f4670fc61d9f3eb0b922cb387d3ee70f6603e4bb38"
+    },
+    {
+      "path": "artifacts/packages/rpc-f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827.tgz",
+      "sha256": "f6ccc1cecd890127116273cf49de26d92a268ffc43444a0a9adc810fcc998827"
+    },
+    {
+      "path": "artifacts/packages/ui-3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15.tgz",
+      "sha256": "3be4d29427a99c1a7cfb0361be1ec7a1e9b95100e8fc25de737b3a3e1837fb15"
+    }
+  ],
+  "path": "artifacts/ci-reliability/2026-10-27/40486930578/repository-verification.zip",
+  "sha256": "857d07092048c166ce1aa02b93c2da4d1144cf3ac8c02af48b7dac42a534d19f"
+}

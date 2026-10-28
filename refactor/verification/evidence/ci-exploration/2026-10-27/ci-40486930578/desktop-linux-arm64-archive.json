@@ -1,0 +1,9 @@
+{
+  "id": 12726257175,
+  "name": "desktop-linux-arm64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:62fabf068a140d71cfd4e3d81d04faa6c94a292b75adec504b3e83a81779bbc7",
+  "bytes": 328392691,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": []
+}

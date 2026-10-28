@@ -4,7 +4,8 @@ import { dirname, join, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { appRoot, repositoryRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
-import { readPnpm } from '@kisaki3/tooling/process'
+import { electronExecutable } from '../../tools/dev/electron-executable'
+import { readPnpm, run } from '@kisaki3/tooling/process'
 
 /** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
 export async function prepareDevelopmentWorkspace(): Promise<{
@@ -58,6 +59,28 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       })
     }
 
+    // Turbo needs a valid HEAD to keep generated outputs out of its default input set.
+    await run('git', ['init', '--quiet'], { cwd: root })
+    await run(
+      'git',
+      [
+        '-c',
+        'core.hooksPath=',
+        '-c',
+        'commit.gpgSign=false',
+        '-c',
+        'user.name=Fixture',
+        '-c',
+        'user.email=fixture@example.invalid',
+        'commit',
+        '--allow-empty',
+        '--quiet',
+        '-m',
+        'Initialize development fixture',
+      ],
+      { cwd: root },
+    )
+
     const store = await readPnpm(['store', 'path'], repositoryRoot)
     try {
       await readPnpm(
@@ -83,6 +106,8 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     const fixtureRequire = createRequire(join(app, 'package.json'))
     const originalElectron = dirname(originalRequire.resolve('electron/package.json'))
     const fixtureElectron = dirname(fixtureRequire.resolve('electron/package.json'))
+    // Electron installs its binary on first import; prepare it before copying the distribution.
+    electronExecutable()
     if ((await realpath(originalElectron)) !== (await realpath(fixtureElectron))) {
       // macOS framework links must keep their relative targets inside the copied application bundle.
       await cp(join(originalElectron, 'dist'), join(fixtureElectron, 'dist'), {

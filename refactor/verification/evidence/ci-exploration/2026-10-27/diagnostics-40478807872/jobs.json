@@ -1,0 +1,409 @@
+{
+  "total_count": 3,
+  "jobs": [
+    {
+      "id": 122103621683,
+      "run_id": 40478807872,
+      "workflow_name": "CI reliability diagnostics",
+      "head_branch": "research/ci-reliability-diagnostics",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40478807872",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcbfFoMw",
+      "head_sha": "e8efc53c4a77d45c6b44c36f19085156061e6959",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122103621683",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40478807872/job/122103621683",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-27T09:10:44Z",
+      "started_at": "2026-10-27T09:10:47Z",
+      "completed_at": "2026-10-27T09:11:40Z",
+      "name": "Linux watcher observations",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T09:10:48Z",
+          "completed_at": "2026-10-27T09:10:50Z"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T09:10:50Z",
+          "completed_at": "2026-10-27T09:10:53Z"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T09:10:53Z",
+          "completed_at": "2026-10-27T09:10:59Z"
+        },
+        {
+          "name": "Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T09:10:59Z",
+          "completed_at": "2026-10-27T09:11:05Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T09:11:05Z",
+          "completed_at": "2026-10-27T09:11:15Z"
+        },
+        {
+          "name": "Observe watcher readiness",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T09:11:15Z",
+          "completed_at": "2026-10-27T09:11:24Z"
+        },
+        {
+          "name": "Repeat the existing watcher regression five times",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-27T09:11:24Z",
+          "completed_at": "2026-10-27T09:11:36Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-27T09:11:36Z",
+          "completed_at": "2026-10-27T09:11:37Z"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-27T09:11:37Z",
+          "completed_at": "2026-10-27T09:11:37Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-10-27T09:11:37Z",
+          "completed_at": "2026-10-27T09:11:37Z"
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-27T09:11:37Z",
+          "completed_at": "2026-10-27T09:11:38Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-27T09:11:38Z",
+          "completed_at": "2026-10-27T09:11:38Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122103621683",
+      "labels": [
+        "ubuntu-22.04"
+      ],
+      "runner_id": 1000001234,
+      "runner_name": "GitHub Actions 1000001234",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122103621980,
+      "run_id": 40478807872,
+      "workflow_name": "CI reliability diagnostics",
+      "head_branch": "research/ci-reliability-diagnostics",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40478807872",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcbfFpXA",
+      "head_sha": "e8efc53c4a77d45c6b44c36f19085156061e6959",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122103621980",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40478807872/job/122103621980",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-27T09:10:44Z",
+      "started_at": "2026-10-27T09:10:47Z",
+      "completed_at": "2026-10-27T09:11:49Z",
+      "name": "Apple Silicon startup (after-development)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T09:10:46Z",
+          "completed_at": "2026-10-27T09:10:48Z"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T09:10:48Z",
+          "completed_at": "2026-10-27T09:10:51Z"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T09:10:51Z",
+          "completed_at": "2026-10-27T09:10:55Z"
+        },
+        {
+          "name": "Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T09:10:55Z",
+          "completed_at": "2026-10-27T09:10:57Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T09:10:57Z",
+          "completed_at": "2026-10-27T09:11:03Z"
+        },
+        {
+          "name": "Build the merged desktop input",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T09:11:03Z",
+          "completed_at": "2026-10-27T09:11:27Z"
+        },
+        {
+          "name": "Install Chromium for the development comparison",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-27T09:11:27Z",
+          "completed_at": "2026-10-27T09:11:34Z"
+        },
+        {
+          "name": "Run the existing development scenarios",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8,
+          "started_at": "2026-10-27T09:11:34Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Observe twenty startup and shutdown samples",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:46Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-27T09:11:46Z",
+          "completed_at": "2026-10-27T09:11:46Z"
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T09:11:46Z",
+          "completed_at": "2026-10-27T09:11:46Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T09:11:46Z",
+          "completed_at": "2026-10-27T09:11:47Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122103621980",
+      "labels": [
+        "macos-15"
+      ],
+      "runner_id": 1000001233,
+      "runner_name": "GitHub Actions 1000001233",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 122103622081,
+      "run_id": 40478807872,
+      "workflow_name": "CI reliability diagnostics",
+      "head_branch": "research/ci-reliability-diagnostics",
+      "run_url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/runs/40478807872",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVV3a6M8AAAAcbfFpwQ",
+      "head_sha": "e8efc53c4a77d45c6b44c36f19085156061e6959",
+      "url": "https://api.github.com/repos/ximu3/kisaki-dev/actions/jobs/122103622081",
+      "html_url": "https://github.com/ximu3/kisaki-dev/actions/runs/40478807872/job/122103622081",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-27T09:10:44Z",
+      "started_at": "2026-10-27T09:10:47Z",
+      "completed_at": "2026-10-27T09:11:47Z",
+      "name": "Apple Silicon startup (standalone)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-27T09:10:47Z",
+          "completed_at": "2026-10-27T09:10:49Z"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-27T09:10:49Z",
+          "completed_at": "2026-10-27T09:10:51Z"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-27T09:10:51Z",
+          "completed_at": "2026-10-27T09:10:55Z"
+        },
+        {
+          "name": "Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-27T09:10:55Z",
+          "completed_at": "2026-10-27T09:10:57Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-27T09:10:57Z",
+          "completed_at": "2026-10-27T09:11:04Z"
+        },
+        {
+          "name": "Build the merged desktop input",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-27T09:11:04Z",
+          "completed_at": "2026-10-27T09:11:28Z"
+        },
+        {
+          "name": "Install Chromium for the development comparison",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-10-27T09:11:28Z",
+          "completed_at": "2026-10-27T09:11:28Z"
+        },
+        {
+          "name": "Run the existing development scenarios",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-10-27T09:11:28Z",
+          "completed_at": "2026-10-27T09:11:28Z"
+        },
+        {
+          "name": "Observe twenty startup and shutdown samples",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-27T09:11:28Z",
+          "completed_at": "2026-10-27T09:11:40Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-27T09:11:40Z",
+          "completed_at": "2026-10-27T09:11:41Z"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-27T09:11:41Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:44Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-27T09:11:44Z",
+          "completed_at": "2026-10-27T09:11:45Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ximu3/kisaki-dev/check-runs/122103622081",
+      "labels": [
+        "macos-15"
+      ],
+      "runner_id": 1000001235,
+      "runner_name": "GitHub Actions 1000001235",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

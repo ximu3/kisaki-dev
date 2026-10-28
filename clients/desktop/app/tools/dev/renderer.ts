@@ -1,7 +1,6 @@
 import { createServer } from 'vite'
 import { isAbsolute, join, relative, sep } from 'node:path'
-import { appRoot, repositoryRoot } from '../lib/paths'
-import { publicPackageBuildInputs } from '../lib/package-inputs'
+import { appRoot } from '../lib/paths'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { DependencyResolver } from './dependencies'
@@ -13,8 +12,6 @@ export interface DevelopmentRenderer {
   resolveDependency: DependencyResolver
   /** Change public imports after a successful package build and refresh loaded documents. */
   adopt(snapshot: DependencySnapshot): Promise<void>
-  /** Observe runtime and package inputs; returns the watcher subscription cleanup. */
-  watch(listener: (change: 'runtime' | 'public-package') => void): () => void
   close(): Promise<void>
 }
 
@@ -29,33 +26,6 @@ export async function startRenderer(
   snapshotDirectory: string,
 ): Promise<DevelopmentRenderer> {
   let snapshot: DependencySnapshot | undefined
-  const listeners = new Set<(change: 'runtime' | 'public-package') => void>()
-  const packageInputs = (
-    await Promise.all(members.map((member) => publicPackageBuildInputs(member.path)))
-  ).flat()
-  const runtimeInputs = [
-    ...['main', 'preload', 'extension-host', 'shared'].map((name) => join(appRoot, 'src', name)),
-    join(appRoot, 'native'),
-    join(appRoot, 'assets'),
-    ...['main', 'preload', 'extension-host', 'renderer'].map((name) =>
-      join(appRoot, 'config', 'vite', `vite.config.${name}.ts`),
-    ),
-    join(appRoot, 'package.json'),
-    join(repositoryRoot, 'pnpm-lock.yaml'),
-  ]
-
-  /** Forward owned source changes from each watcher created when Vite starts or restarts. */
-  function changed(_event: string, path: string): void {
-    let change: 'runtime' | 'public-package'
-    if (packageInputs.some((input) => contains(input, path))) {
-      change = 'public-package'
-    } else if (runtimeInputs.some((input) => contains(input, path))) {
-      change = 'runtime'
-    } else {
-      return
-    }
-    for (const listener of listeners) listener(change)
-  }
 
   const server = await createServer({
     configFile: join(appRoot, 'config', 'vite', 'vite.config.renderer.ts'),
@@ -65,10 +35,6 @@ export async function startRenderer(
       {
         name: 'desktop-public-dependency-snapshots',
         enforce: 'pre',
-        configureServer(vite) {
-          vite.watcher.add([...packageInputs, ...runtimeInputs])
-          vite.watcher.on('all', changed)
-        },
         async resolveId(source, importer, options) {
           // Imports inside a snapshot keep that generation's package resolution.
           if (importer && contains(snapshotDirectory, importer)) return null
@@ -119,15 +85,7 @@ export async function startRenderer(
         }
       },
 
-      watch(listener) {
-        listeners.add(listener)
-        return () => {
-          listeners.delete(listener)
-        }
-      },
-
       close() {
-        listeners.clear()
         return server.close()
       },
     }

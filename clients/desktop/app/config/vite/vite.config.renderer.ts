@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
   ],
   server: { host: '127.0.0.1', port: 0, strictPort: false },
   build: {
-    target: 'chrome154',
+    target: 'chrome156',
     rolldownOptions: {
       input: {
         main: resolve(root, 'main/index.html'),

@@ -1,6 +1,6 @@
 # 开发与验证
 
-使用 `.node-version` 和根 `packageManager` 指定的版本。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定；Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要对应系统构建工具。当前桌面工程使用 Electron 44.5.1，开发 Node 与 Electron 内置 Node 分开验证。
+使用 `.node-version` 和根 `packageManager` 指定的版本。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定；Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要对应系统构建工具。当前桌面工程使用 Electron 45.0.0，开发 Node 与 Electron 内置 Node 分开验证。
 
 ## 准备
 
@@ -35,7 +35,7 @@ pnpm desktop:build --target windows-x64
 pnpm desktop:package --target windows-x64
 ```
 
-开发会话先完成依赖与资源准备，再由 Vite 管理 renderer 服务和监听。窗口源码与样式使用 HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
+开发会话先完成依赖与资源准备，再启动 Vite renderer 服务和独立的 Chokidar 输入监听；监听就绪后开始程序编译。窗口源码与样式使用 Vite HMR；公共包的完整构建通过保留 `exports` 的只读快照交接，采用新快照时刷新文档。Node 程序真正受影响时，完成候选构建后再正常停止旧 Electron 并启动新实例。源码编译失败保留最后成功实例，停止会话释放服务、监听和进程。
 
 公共依赖快照保留到会话结束，以免撤销仍被读取的代码；总量限制为 256 MiB，达到预算时停止采用新快照并报告需要重启。工具自身或锁定工具链变更后重新启动开发命令。
 
@@ -95,7 +95,7 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 ## CI 与交付
 
-正式发布前，在所属项目的[临时私有仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
+正式发布前，在所属项目的[公开开发仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
 
 普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务继续覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样，不再因一个测试文件变化而一起执行所有桌面任务。选择结果随仓库验证报告保存。
 

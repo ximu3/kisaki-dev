@@ -8,7 +8,7 @@
 
 常规 Node 测试包含 `tests/integration` 中不依赖 Electron ABI 的接入用例；其中的 `database` 与 `native` 套件由 `test:native` 在开发 Electron 的 Node 模式下单独执行。
 
-开发监听与输出清理在常规 Node 套件中通过真实 Vite／文件系统验证。`test:dev` 保留实际 Electron 的退出取消、编译失败与改名恢复、公共包失败与页面交接，以及首次准备取消与重试。独立场景复用隔离工作区准备，各自关闭控制器并恢复自己的输入。
+开发监听与输出清理在常规 Node 套件中通过真实 Vite、Chokidar 和文件系统验证。`test:dev` 保留实际 Electron 的退出取消、编译失败与改名恢复、公共包失败与页面交接，以及首次准备取消与重试。独立场景复用隔离工作区准备，各自关闭控制器并恢复自己的输入。
 
 应用测试脚本直接消费已准备的输入，根 `desktop:test:native`、`desktop:test:e2e`、`desktop:test:dev` 与 `desktop:test:performance` 负责先构建。CI 为选中套件共用目标构建，具体触发范围由 `turbo.json` 的任务 inputs 维护；测试、文档或开发工具变更不自动要求重新测量性能和打包。
 

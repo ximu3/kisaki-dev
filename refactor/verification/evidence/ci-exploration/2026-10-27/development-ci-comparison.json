@@ -1,0 +1,17 @@
+{
+  "baseline": {
+    "commit": "18a6346",
+    "platform": "windows-arm64",
+    "suiteSeconds": 641.66,
+    "sessionFileSeconds": 502.578,
+    "cancellationSeconds": 134.729
+  },
+  "candidate": {
+    "commit": "39f5f98970fd1a5c06d50315f6752eeb6a0d48e3",
+    "platform": "windows-arm64",
+    "suiteSeconds": 238.19,
+    "sessionFileSeconds": 153.779,
+    "cancellationSeconds": 81.873
+  },
+  "scope": "Same seven existing development scenarios and budgets; separate runners and preparation states; observed timing, not a controlled attribution of the full difference."
+}

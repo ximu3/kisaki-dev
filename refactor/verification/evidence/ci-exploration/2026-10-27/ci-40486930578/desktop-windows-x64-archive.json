@@ -1,0 +1,9 @@
+{
+  "id": 12727916616,
+  "name": "desktop-windows-x64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:75fff315b36dbc54322798fb734dbbd2c2f06e4b3c7c9b705fb3767375e2382a",
+  "bytes": 279384599,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": []
+}

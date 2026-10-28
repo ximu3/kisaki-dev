@@ -1,6 +1,6 @@
 # 仓库、公开身份与协作
 
-Kisaki 和四个独立技术项目分别使用项目级临时私有仓库完成正式发布前的开发、联调和验证，再接续各自的正式仓库与发行。仓库重建前保存源码、平台资料和有价值的本地内容，新历史从可运行的工程基线开始。GitHub 仓库、npm 包、应用身份和部署地址各自维护，不因其中一项重建而自动重置其他记录。
+Kisaki 和四个独立技术项目分别使用项目级临时开发仓库完成正式发布前的开发、联调和验证，再接续各自的正式仓库与发行。五个项目的开发仓库统一采用 public 可见性。仓库重建前保存源码、平台资料和有价值的本地内容，新历史从可运行的工程基线开始。GitHub 仓库、npm 包、应用身份和部署地址各自维护，不因其中一项重建而自动重置其他记录。
 
 <a id="identity"></a>
 
@@ -39,13 +39,13 @@ npm 发布资格单独配置：桌面、官方扩展和根工程等不向 npm �
 
 ## 正式发布前的临时仓库
 
-临时私有仓库是一个项目从工程建立到正式公开前的持续开发远端，承载正常提交、PR、CI、跨平台验证、候选制品和跨仓联调，不限于 W00 或任何单次验证。工作包完成只改变对应实施状态，不结束临时仓库的用途，也不为下一工作包另建一份仓库。
+临时开发仓库是一个项目从工程建立到正式接续前的持续开发远端，采用 public 可见性，承载正常提交、PR、CI、跨平台验证、候选制品和跨仓联调，不限于 W00 或任何单次验证。工作包完成只改变对应实施状态，不结束临时仓库的用途，也不为下一工作包另建一份仓库。
 
 Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 分别维护自己的临时仓库与新工程历史，不能把独立项目的实现放进 Kisaki 临时库。Kisaki 内的公共包、官方扩展和分发资料继续沿 monorepo 归属。仓库名称表达项目级持续开发用途，阶段与验证任务由分支、PR 和运行记录说明。实际名称、远端、可见性及接续进度由实施状态记录；改名时同步当前入口，历史证据保留当时的真实地址。
 
-临时远端不改变正式包名、appId、npm 作用域、最终仓库地址和许可。私有阶段按[联调与公开边界](#private-stage)运行，不向公共 npm、正式下载、更新索引或生产服务交付。跨仓消费固定提交生成的真实制品，来源、版本和摘要随结果记录。
+临时远端不改变正式包名、appId、npm 作用域、最终仓库地址和许可。开发阶段按[联调与发布边界](#private-stage)运行，正式 npm、下载、更新索引和生产服务按各自交付条件与授权发布。跨仓消费固定提交生成的真实制品，来源、版本和摘要随结果记录。
 
-各仓库开始使用 CI 前，核对自身 Actions 设置、所需 runner、访问权限、账户额度、存储与产物保留条件，不把另一仓库的验证结果视为已经具备条件。沿用实际已授权的设置，不因额度或权限不足自行付费、提前公开或缩小验收范围。无法读取额度时记录未取得信息，不记作零使用或无限额度，规则见 [GitHub Actions 用量](https://docs.github.com/en/actions/concepts/billing-and-usage)。
+各仓库开始使用 CI 前，核对自身 Actions 设置、所需 runner、访问权限、账户额度、存储与产物保留条件，不把另一仓库的验证结果视为已经具备条件。沿用实际已授权的设置，不因额度或权限不足自行付费、改变可见性或缩小验收范围。无法读取额度时记录未取得信息，不记作零使用或无限额度，规则见 [GitHub Actions 用量](https://docs.github.com/en/actions/concepts/billing-and-usage)。
 
 每次验证固定提交、锁定输入与目标环境，按所属工作内容保存结果。需要继续使用的 Actions 附件、候选制品及报告在保留期结束前另行保存，记录摘要和取得位置，不能依赖临时库或工作流附件始终存在。
 
@@ -86,17 +86,17 @@ Kisaki 的重建包括删除旧远端后建立同名仓库，不只创建 orphan
 
 <a id="private-stage"></a>
 
-## 私有联调与公开发布
+## 开发联调与正式发布
 
-各项目的临时开发仓库与新建或重建的正式仓库，在本项目公开条件满足前保持私有，只向获授权的参与者开放。已有旧公开仓库按[存档与重建](#archive)处理，不因新工程进入临时开发阶段改变其可见性。此阶段不发布新的 npm 版本，不建立付费私有 registry，也不把已有公开包改成私有。beta 或 rc 标签不会隐藏公开内容；仓库可见性、npm 访问权限和 package.private 是不同设置，分别按 [私有包](https://docs.npmjs.com/about-private-packages/) 与 [包可见性](https://docs.npmjs.com/changing-package-visibility/) 规则处理。
+五个项目的临时开发仓库采用 public，可公开读取源码与开发记录；公开可见性本身不代表功能完成、平台验收通过或正式发行。新建或重建的正式仓库按接续授权处理，已有旧公开仓库按[存档与重建](#archive)处理。开发联调不发布新的 npm 版本，不建立付费私有 registry，也不把已有公开包改成私有。beta 或 rc 标签不会隐藏公开内容；仓库可见性、npm 访问权限和 package.private 是不同设置，分别按 [私有包](https://docs.npmjs.com/about-private-packages/) 与 [包可见性](https://docs.npmjs.com/changing-package-visibility/) 规则处理。
 
 跨仓联调使用固定提交构建的实际 .tgz、原生平台包和资源归档，记录来源与哈希。在仓库外检查安装、导入、类型、CSS、真实调用和完整依赖，不使用源码 link，也不把临时凭据写进正式合同。
 
-registry 可以使用隔离测试源。桌面制品、.kisx 和更新资料留在受限 CI 或测试环境，不嵌入长期 GitHub 或 npm 凭据。私有仓库不保证 GitHub Pages 也是私有，因此测试阶段不部署公开 dist 或正式下载索引，见 [Pages 访问规则](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)。先在受限环境验证生成和读取，再随正式公开部署静态资料。
+registry 可以使用隔离测试源。桌面制品、.kisx 和更新资料作为测试候选保留在 CI 或隔离测试环境，不嵌入长期 GitHub 或 npm 凭据。公开仓库的 CI 日志及可取得附件按公开内容处理。正式 dist 与下载索引按部署合同和授权启用，不能以仓库公开代替部署决定，见 [Pages 访问规则](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)。
 
-私有阶段仍执行 PR、CI 和 Squash 流程。缺少必需条件时，保持仓库私有，停止依赖该条件的合并或发布，并记录缺项；独立的本地实现与核验可以继续，但不能代替尚未通过的平台检查。不得减少检查、提前公开或自行付费，相关限制见 [私有仓库分支保护](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)。
+开发阶段执行 PR、CI 和 Squash 流程。缺少必需条件时，停止依赖该条件的合并或发布并记录缺项；独立的本地实现与核验可以继续，但不能代替尚未通过的平台检查。不得减少检查或自行付费，分支规则按 [GitHub 分支保护](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)配置。
 
-每个项目完成适用功能、制品、仓库外消费验证及[项目文档交付](documentation.md#lifecycle)后，核对源码历史中的私密内容、许可来源和发布身份，再公开对应仓库。桌面须覆盖六个目标。公开过程保留已验证的制品字节，并在公开后验证实际 npm、下载、更新、OIDC 和 provenance。私有阶段不能宣称已经具备公开 provenance，限制见 [trusted publishing](https://docs.npmjs.com/trusted-publishers/)。relay 源码公开和运行服务切换分别核对、分别执行。
+每个项目完成适用功能、制品、仓库外消费验证及[项目文档交付](documentation.md#lifecycle)后，核对源码历史中的私密内容、许可来源和发布身份，再接续正式仓库并执行获授权的发行。桌面须覆盖六个目标。发行过程保留已验证的制品字节，并验证实际 npm、下载、更新、OIDC 和 provenance。源码公开不能代替真实发布的 provenance 证据，规则见 [trusted publishing](https://docs.npmjs.com/trusted-publishers/)。relay 源码公开和运行服务切换分别核对、分别执行。
 
 <a id="application"></a>
 
@@ -155,7 +155,7 @@ dist.kisaki.me 由 GitHub Pages 托管 Kisaki monorepo 已发行项目的静态�
 
 已有包按新的 owner、repo 和 release.yml 配置 trusted publisher。每个新增包，包括原生平台包，都要分别建立 npm 身份；同一仓库发布过其他包不代表新包已具备身份。
 
-私有测试完成、源码公开且首个版本 PR 合并后，CI 从同一固定发行提交构建并校验实际 .tgz，再执行首次公开发布。首次发布使用短期 granular token，只授权所需 scope 的发布，不授予组织管理权限，并仅供首次 job 使用。有效期覆盖交付时间，按 [token 规则](https://docs.npmjs.com/creating-and-viewing-access-tokens/) 和 [scoped public 发布规则](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/) 配置所需 Bypass 2FA。
+适用验收完成、源码公开且首个版本 PR 合并后，CI 从同一固定发行提交构建并校验实际 .tgz，再执行首次公开发布。首次发布使用短期 granular token，只授权所需 scope 的发布，不授予组织管理权限，并仅供首次 job 使用。有效期覆盖交付时间，按 [token 规则](https://docs.npmjs.com/creating-and-viewing-access-tokens/) 和 [scoped public 发布规则](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/) 配置所需 Bypass 2FA。
 
 缺少凭据时停止建包，不发布占位内容，不改发另一文件，也不在本机平行发布。public 访问、临时 tag、依赖发布顺序和最后的 dist-tag 更新遵守 [发行流程](releases.md)。GitHub-hosted 首次发布显式生成 provenance 并核对结果；[来源证明](https://docs.npmjs.com/generating-provenance-statements/) 不代表代码安全已经通过验证。
 

@@ -1,0 +1,9 @@
+{
+  "id": 12728171829,
+  "name": "desktop-windows-arm64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:83640b282b1371bfee4998604d331e455d413cb8480294c55b1e10648408bb28",
+  "bytes": 270033669,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": []
+}

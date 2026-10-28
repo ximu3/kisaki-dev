@@ -1,0 +1,9 @@
+{
+  "artifactId": 12717837963,
+  "name": "desktop-macos-arm64",
+  "path": "artifacts/w00-ci/2026-10-27/40469205920/desktop-macos-arm64.zip",
+  "bytes": 272017689,
+  "sha256": "3c89a7d24be460eebf88280580ac41e7a47ca4c0411c420a0b4ddf970ab42f93",
+  "githubDigest": "sha256:3c89a7d24be460eebf88280580ac41e7a47ca4c0411c420a0b4ddf970ab42f93",
+  "verified": true
+}

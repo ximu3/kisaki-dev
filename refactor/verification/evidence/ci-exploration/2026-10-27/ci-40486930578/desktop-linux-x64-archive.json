@@ -1,0 +1,9 @@
+{
+  "id": 12726242432,
+  "name": "desktop-linux-x64",
+  "completeArchive": false,
+  "expectedDigest": "sha256:f33152231618308b6a8b27f29bf0c39789c09a7ee406e3d021cd6267ec069806",
+  "bytes": 337499339,
+  "reportEntriesCheckedByZipCrc": 8,
+  "verifiedFiles": []
+}

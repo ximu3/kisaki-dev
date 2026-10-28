@@ -1,20 +1,23 @@
 import { afterAll, beforeAll, expect, test, vi } from 'vitest'
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { startRenderer } from '../../tools/dev/renderer'
+import { startInputWatcher } from '../../tools/dev/inputs'
 
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
-// Only relocate owned files; use the actual Vite configuration, server and watcher.
+// Only relocate owned files; use the actual Vite server and Chokidar input watcher.
 vi.mock('../../tools/lib/paths', () => paths)
 
 let renderer: Awaited<ReturnType<typeof startRenderer>> | undefined
+let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
 const changes: string[] = []
+const errors: unknown[] = []
 
 beforeAll(async () => {
   const originalApp = fileURLToPath(new URL('../..', import.meta.url))
   await mkdir(join(originalApp, '.local'), { recursive: true })
-  paths.repositoryRoot = await mkdtemp(join(originalApp, '.local', 'renderer-test-'))
+  paths.repositoryRoot = await mkdtemp(join(originalApp, '.local', 'inputs-test-'))
   paths.appRoot = join(paths.repositoryRoot, 'clients/desktop/app')
   for (const directory of [
     'config/vite',
@@ -43,16 +46,18 @@ beforeAll(async () => {
   await mkdir(join(member, 'config/typescript'), { recursive: true })
   await writeFile(join(member, 'package.json'), '{"name":"@kisaki3/watch-fixture"}')
   await writeFile(join(member, 'config/typescript/tsconfig.lib.json'), '{}\n')
-  renderer = await startRenderer(
-    [{ name: '@kisaki3/watch-fixture', path: member }],
-    join(paths.repositoryRoot, 'snapshots'),
-  )
-  renderer.watch((change) => changes.push(change))
+  const members = [{ name: '@kisaki3/watch-fixture', path: member }]
+  renderer = await startRenderer(members, join(paths.repositoryRoot, 'snapshots'))
+  inputs = await startInputWatcher(members, {
+    onChange: (change) => changes.push(change),
+    onError: (cause) => errors.push(cause),
+  })
   // Initial adoption restarts Vite. Watch subscriptions must survive that real restart.
   await renderer.adopt({ id: 'empty-fixture', sizeBytes: 0, packages: new Map() })
 })
 
 afterAll(async () => {
+  await inputs?.close()
   await renderer?.close()
   if (paths.repositoryRoot) {
     // Vite may still finish a cache write as its server closes; retry transient directory removal.
@@ -82,7 +87,10 @@ test('runtime configuration and nested public-package inputs remain watched afte
     const before = changes.filter((change) => change === kind).length
     await writeFile(path, content)
     await expect
-      .poll(() => changes.filter((change) => change === kind).length)
+      .poll(() => changes.filter((change) => change === kind).length, {
+        message: `Expected ${kind} notification for ${relative(paths.repositoryRoot, path)}`,
+      })
       .toBeGreaterThan(before)
   }
+  expect(errors).toEqual([])
 })

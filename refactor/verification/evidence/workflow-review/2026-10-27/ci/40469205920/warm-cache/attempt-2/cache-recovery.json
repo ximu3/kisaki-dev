@@ -1,0 +1,42 @@
+{
+  "runId": 40469205920,
+  "head": "18a6346c90dcabcff9476088664829dc0960fc12",
+  "attempt": 2,
+  "jobId": 122080541646,
+  "runner": "GitHub Actions 1000001227",
+  "runnerId": 1000001227,
+  "startedAt": "2026-10-27T08:11:51Z",
+  "completedAt": "2026-10-27T08:15:21Z",
+  "seconds": 210,
+  "conclusion": "success",
+  "primaryKey": "turbo-v1-macOS-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-26c70fa5ef6d227bcea57b74885c1e82c4824179-desktop",
+  "restoredKey": "turbo-v1-macOS-ARM64-5f3095ad03efa1fac36c840203829766130dcece959d0f508e6f386819aeb208-26c70fa5ef6d227bcea57b74885c1e82c4824179-desktop",
+  "primaryKeyMatched": true,
+  "firstTaskHashes": [
+    "04017d6490a991ef",
+    "572a28b2127d3d6b",
+    "9352440ab5eeb1e8",
+    "2dc3455a405c8309",
+    "3e2f6f945471fbdf",
+    "d8f3e349634224d8",
+    "4123bbbb16aa19d3",
+    "4dac3fdecae86ec9"
+  ],
+  "warmTaskHashes": [
+    "572a28b2127d3d6b",
+    "04017d6490a991ef",
+    "2dc3455a405c8309",
+    "9352440ab5eeb1e8",
+    "d8f3e349634224d8",
+    "3e2f6f945471fbdf",
+    "4123bbbb16aa19d3",
+    "4dac3fdecae86ec9"
+  ],
+  "taskHashesMatched": true,
+  "saveTurboCache": "skipped",
+  "otherSixJobsReused": true,
+  "cacheReservationWarnings": false,
+  "performanceResult": "2026-10-27T08:14:37.9026790Z   ✓  1 tests/performance/startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (8.1s)",
+  "archiveScope": "Warm artifact metadata and job logs retained; duplicate candidate archive not downloaded.",
+  "limitation": "Earlier timeouts remain unexplained; native diagnostic steps do not constitute a runtime fix."
+}
