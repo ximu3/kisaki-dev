@@ -6,7 +6,7 @@
 import { copyFile, cp, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { DesktopTarget, RuntimeManifest } from '../../src/shared/runtime-manifest'
-import { runtimeFiles, sourceIdentity } from '../build/identity'
+import { runtimeFiles, buildInputIdentity } from '../build/identity'
 import { buildProgram } from '../build/programs'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
@@ -29,7 +29,7 @@ export async function buildGeneration(
   signal?: AbortSignal,
 ): Promise<GenerationOutput> {
   signal?.throwIfAborted()
-  const buildId = await sourceIdentity()
+  const buildId = await buildInputIdentity({ signal })
   const resources = await prepareResources(target, signal)
   const native = await buildNative(target, false, signal)
 

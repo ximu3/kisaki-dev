@@ -2,7 +2,7 @@
 
 理解整体先读[产品](product.md)、[架构](architecture.md)和[通信](communication.md)，具体实现按下表进入所属主题。
 
-所有主题共同遵守[简洁、原生与适度复杂度](engineering/conventions.md#simplicity-native)。用户操作、内部机制和工程流程都优先直接、惯用的方案；平台原生能力、控件语义与系统习惯共同参与取舍，现有设计也按同一准则复核。
+所有主题首先遵守[终态实现与整体一致性](engineering/conventions.md#final-state)，从完整职责形成设计并统一处理相关场景；[简洁、原生与适度复杂度](engineering/conventions.md#simplicity-native)约束用户操作、内部机制和工程流程的成本。平台原生能力、控件语义与系统习惯共同参与取舍，现有设计也按同一准则复核。
 
 | 主题     | 入口                                                            |
 | -------- | --------------------------------------------------------------- |

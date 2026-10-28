@@ -33,7 +33,7 @@ Mihon [v0.21.0 发布说明](https://github.com/mihonapp/mihon/releases/tag/v0.2
 
 [旧模型](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt)中为更早备份保留的 brokenSources／brokenHistory 含非标准字段 0，不属于本项标准消息合同；当前 v0.15.3 正常导出的 sources=101、history=104 属于支持范围。legacy JSON、任意分支私有消息和备份查看器自定义 JSON 不作为输入系列。受影响内容明确报告，不假装已经恢复。
 
-源文件始终只读。导入不调用源应用恢复、升级数据库或安装扩展，不把备份上传到在线查看器。正式制品随包提供解析依赖，运行时不从 CDN 下载执行代码；研究脚本使用固定依赖及校验和只为复现格式证据。
+源文件始终只读。导入不调用源应用恢复、升级数据库或安装扩展，不把备份上传到在线查看器。正式制品随包提供解析依赖，运行时不从 CDN 下载执行代码。
 
 <a id="identity"></a>
 

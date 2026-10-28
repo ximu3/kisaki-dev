@@ -1,0 +1,54 @@
+{
+  "node": "v24.11.1",
+  "baseline": {
+    "source": "5f76ca3953d3e242d6e82c35a8d35efe2d00a2eead0fbae4e7a9c06c78150d5d",
+    "turbo": "c8910d9e167ba5d4"
+  },
+  "checks": [
+    {
+      "file": "clients/desktop/app/assets/icons/README.md",
+      "sourceChanged": true,
+      "turboChanged": false
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/cli.ts",
+      "sourceChanged": true,
+      "turboChanged": false
+    },
+    {
+      "file": "clients/desktop/app/electron-builder.yml",
+      "sourceChanged": true,
+      "turboChanged": false
+    },
+    {
+      "file": "packages/tooling/README.md",
+      "sourceChanged": true,
+      "turboChanged": false
+    },
+    {
+      "file": "packages/tooling/config/typescript/tsconfig.tests.json",
+      "sourceChanged": true,
+      "turboChanged": true
+    },
+    {
+      "file": "packages/eslint-config/src/base.ts",
+      "sourceChanged": true,
+      "turboChanged": true
+    },
+    {
+      "file": ".node-version",
+      "sourceChanged": false,
+      "turboChanged": true
+    },
+    {
+      "file": ".npmrc",
+      "sourceChanged": false,
+      "turboChanged": true
+    },
+    {
+      "file": "clients/desktop/app/src/main/entry.ts",
+      "sourceChanged": true,
+      "turboChanged": true
+    }
+  ]
+}

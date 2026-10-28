@@ -1,0 +1,101 @@
+"""Check pinned libmpv patch bytes without compiling or running native code."""
+
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.request import Request, urlopen
+import hashlib
+import json
+import subprocess
+
+
+ROOT = Path(__file__).resolve().parents[2]
+AUDIT = Path(__file__).resolve().parent
+OUTPUT = AUDIT / "upstream-patch-review"
+PATCHES = ROOT / "refactor/implementation/patches/libmpv"
+MANIFEST = PATCHES / "manifest.json"
+
+
+def sha256(data):
+    """Return the digest of the exact bytes supplied."""
+    return hashlib.sha256(data).hexdigest()
+
+
+def fetch(url):
+    """Read a fixed public source resource without line-ending conversion."""
+    request = Request(url, headers={"User-Agent": "Kisaki-static-source-review"})
+    with urlopen(request, timeout=30) as response:
+        return response.read()
+
+
+def apply_patch(patch):
+    """Apply the reviewed patch only inside the generated audit directory."""
+    assert OUTPUT.is_relative_to(AUDIT)
+    prefix = OUTPUT.relative_to(ROOT).as_posix()
+    command = ["git", "apply", "--directory=" + prefix]
+    subprocess.run(command + ["--check", str(patch)], cwd=ROOT, check=True)
+    subprocess.run(command + [str(patch)], cwd=ROOT, check=True)
+
+
+def main():
+    """Record source, patch, applied output and CRLF comparison hashes."""
+    manifest_bytes = MANIFEST.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    commit = manifest["commit"]
+    tree_url = f"https://api.github.com/repos/mpv-player/mpv/git/trees/{commit}?recursive=1"
+    tree = json.loads(fetch(tree_url))
+    assert not tree["truncated"]
+    attributes = [entry["path"] for entry in tree["tree"] if entry["path"].endswith(".gitattributes")]
+    checks = []
+    for item in manifest["patches"]:
+        assert len(item["changedFiles"]) == 1
+        changed = item["changedFiles"][0]
+        url = f"https://raw.githubusercontent.com/mpv-player/mpv/{commit}/{changed['path']}"
+        source = fetch(url)
+        path = (OUTPUT / changed["path"]).resolve()
+        assert path.is_relative_to(OUTPUT)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(source)
+        patch = PATCHES / item["file"]
+        patch_bytes = patch.read_bytes()
+        apply_patch(patch)
+        result = path.read_bytes()
+        crlf_result = result.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+        checks.append({
+            "patch": item["file"],
+            "path": changed["path"],
+            "sourceUrl": url,
+            "patchSha256": sha256(patch_bytes),
+            "expectedPatchSha256": item["sha256"],
+            "sourceSha256": sha256(source),
+            "expectedSourceSha256": changed["beforeSha256"],
+            "sourceCRLFCount": source.count(b"\r\n"),
+            "sourceLFCount": source.count(b"\n"),
+            "exactGitApplyPassed": True,
+            "resultSha256": sha256(result),
+            "expectedResultSha256": changed["afterSha256"],
+            "resultCRLFCount": result.count(b"\r\n"),
+            "resultLFCount": result.count(b"\n"),
+            "crlfResultSha256": sha256(crlf_result),
+            "patchHashMatches": sha256(patch_bytes) == item["sha256"],
+            "sourceHashMatches": sha256(source) == changed["beforeSha256"],
+            "resultHashMatches": sha256(result) == changed["afterSha256"],
+            "crlfResultHashMatches": sha256(crlf_result) == changed["afterSha256"],
+        })
+    receipt = {
+        "checkedAt": datetime.now(timezone.utc).isoformat(),
+        "scope": "Static source and patch integrity; no native build or runtime verification.",
+        "commit": commit,
+        "manifestSha256": sha256(manifest_bytes),
+        "upstreamTreeUrl": tree_url,
+        "treeTruncated": False,
+        "upstreamGitattributes": attributes,
+        "checks": checks,
+    }
+    (AUDIT / "projects-patch-integrity.json").write_text(
+        json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(json.dumps(receipt, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

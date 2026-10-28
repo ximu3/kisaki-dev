@@ -58,6 +58,8 @@ kisaki/
 │   ├── eslint-config/
 │   └── tooling/
 ├── tools/
+│   ├── desktop/
+│   │   └── package-inputs.ts
 │   ├── release/
 │   └── hooks.ts
 ├── tests/
@@ -83,7 +85,7 @@ kisaki/
 └── refactor/                     # Design, implementation and acceptance
 ```
 
-clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付时的归属。W00 可以建立已确认的程序、workspace、打包输入和分发资料边界，并以说明标明当前状态；业务内部层次按实际协作需要展开。目录骨架不表示对应业务或分发能力已经实现。工作区成员限定为实际桌面应用、八个公开包、33 个扩展项目和三个私有工程包：
+clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。工作区成员限定为实际桌面应用、八个公开包、33 个扩展项目和三个私有工程包：
 
 ```yaml
 packages:
@@ -101,7 +103,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展当前的 kisx.config.ts 与 eslint.config.ts 共用根 tsconfig.json 的 Node 环境；实际运行源码建立后再按其宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用根 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
@@ -119,7 +121,7 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 
 | 位置                      | 负责的工作                                                           |
 | ------------------------- | -------------------------------------------------------------------- |
-| 根 tools                  | 跨项目发行输入检查、版本说明与元数据，以及仓库 Git hooks。 |
+| 根 tools                  | desktop 管理桌面跨包制品输入，release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks。 |
 | packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。 |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。 |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。           |
@@ -131,15 +133,16 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 ```text
 tools/
 ├── hooks.ts
+├── desktop/
+│   └── package-inputs.ts
 └── release/
-    └── package-inputs.ts
 ```
 
 hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于 .husky。其集成测试归根 tests/tools/hooks，使用隔离 Git 仓库验证配置冲突、重复安装、卸载和 worktree 行为。它与本体的运行事件或扩展 hook 无关。
 
 桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归 tests/desktop/support，固定输入归 tests/desktop/fixtures；收据收集工具归 tools/desktop，输出归 artifacts/desktop/packages。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
-当前 release/package-inputs.ts 汇集八个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。版本差、依赖、说明检查和正式发行元数据生成由后续工作包沿[发行合同](releases.md)建立，按实际协作需要形成文件。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
+desktop/package-inputs.ts 汇集八个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 
 cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与退出状态。工作流函数通过明确的参数和返回值提供复用，拥有执行次序、外部调用、文件写入及失败后的清理。其他工具与程序化入口复用这些函数，不通过运行 CLI 后解析终端文字取得结果，也不导入 cli.ts。测试按被测边界直接调用工作流，或实际执行 CLI 核对参数、输出与退出状态。工具模块导入不执行任务，可复用实现不调用 process.exit；CLI 在清理完成后设置退出状态。
 
@@ -192,7 +195,6 @@ clients/desktop/app/tools/
 └── lib/
     ├── paths.ts
     ├── targets.ts
-    ├── package-inputs.ts
     └── sha256.ts
 ```
 
@@ -202,12 +204,12 @@ clients/desktop/app/tools/
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。 |
 | build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                 |
 | build/programs.ts                | 依据应用 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。 |
-| build/identity.ts                | 计算构建输入身份与完成输出的文件摘要，供有限构建、开发候选和打包共同消费。 |
+| build/identity.ts                | 读取 Turbo 的桌面 build 任务摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。 |
 | resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                    |
 | native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                     |
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                        |
 | clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                           |
-| lib                             | 提供跨工作流共用的工程路径、目标解析、公共包输入与字节摘要；各工作流拥有自身操作与资源寿命。 |
+| lib                             | 提供跨工作流共用的工程路径、目标解析与字节摘要；生产输入监听归 dev，各工作流拥有自身操作与资源寿命。 |
 
 桌面的 dev、build 和 package 命令分别进入对应 cli.ts，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
@@ -242,12 +244,17 @@ clients/desktop/app/tools/
 
 ```text
 tests/
-├── consumers/
-│   ├── node/
-│   ├── webview/
-│   └── solid/
+├── desktop/
+│   ├── consumers/
+│   ├── fixtures/
+│   │   └── consumers/
+│   │       ├── node/
+│   │       ├── webview/
+│   │       └── solid/
+│   └── support/
 ├── tools/
 │   ├── hooks/
+│   ├── structure/
 │   └── release/
 ├── fixtures/
 └── support/

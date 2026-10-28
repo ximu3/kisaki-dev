@@ -1,78 +1,55 @@
 /**
- * @fileoverview Computes desktop source identities and inventories completed runtime bytes
+ * @fileoverview Reads desktop build input identities and inventories completed runtime bytes
  * for loading and packaging.
  */
 
-import { createHash } from 'node:crypto'
-import { readFile, readdir, stat } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import { join, relative } from 'node:path'
+import { readPnpm } from '@kisaki3/tooling/process'
 import { repositoryRoot } from '../lib/paths'
-import { isPackageBuildInput, publicPackageBuildInputs } from '../lib/package-inputs'
 import { sha256 } from '../lib/sha256'
 
-/** Hash a workspace's declared engineering inputs, excluding state, caches and earlier outputs. */
-export async function sourceIdentity(root = repositoryRoot): Promise<string> {
-  const appRoot = join(root, 'clients', 'desktop', 'app')
-  const digest = createHash('sha256')
-  const ignored = new Set([
-    'node_modules',
-    '.cache',
-    '.turbo',
-    '.local',
-    'target',
-    'dist',
-    'out',
-    'tests',
-    'test-results',
-  ])
-
-  /** Traverse owned inputs in stable order, preserving names in the identity. */
-  async function include(directory: string, accepts?: (path: string) => boolean): Promise<void> {
-    const entries = await readdir(directory, { withFileTypes: true })
-    for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name, 'en'))) {
-      if (ignored.has(entry.name)) continue
-      if (/\.test\.tsx?$/.test(entry.name)) continue
-      const path = join(directory, entry.name)
-      if (accepts && !accepts(path)) continue
-      if (entry.isDirectory()) {
-        await include(path, accepts)
-      } else {
-        digest.update(relative(root, path).replaceAll('\\', '/'))
-        digest.update('\0')
-        digest.update(await readFile(path))
-      }
-    }
+/** Read the locked Turbo build task's input identity, waiting for its query to close on cancellation. */
+export async function buildInputIdentity(
+  options: { root?: string; signal?: AbortSignal | undefined } = {},
+): Promise<string> {
+  const plan: unknown = JSON.parse(
+    await readPnpm(
+      [
+        'exec',
+        'turbo',
+        'run',
+        'build',
+        '--filter=@kisaki3/desktop',
+        '--dry=json',
+        '--cwd',
+        options.root ?? repositoryRoot,
+      ],
+      repositoryRoot,
+      { signal: options.signal },
+    ),
+  )
+  if (!plan || typeof plan !== 'object' || !('tasks' in plan) || !Array.isArray(plan.tasks)) {
+    throw new Error('Turbo did not report desktop build tasks')
   }
 
-  for (const name of ['src', 'native', 'tools', 'assets', 'config']) {
-    await include(join(appRoot, name), isPackageBuildInput)
-  }
-  for (const entry of await readdir(appRoot)) {
+  const tasks: unknown[] = plan.tasks
+  for (const task of tasks) {
     if (
-      isPackageBuildInput(entry) &&
-      (entry.endsWith('.ts') || entry.endsWith('.json') || entry.endsWith('.yml'))
+      task &&
+      typeof task === 'object' &&
+      'taskId' in task &&
+      task.taskId === '@kisaki3/desktop#build'
     ) {
-      digest.update(entry).update(await readFile(join(appRoot, entry)))
-    }
-  }
-  for (const file of ['pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.json']) {
-    digest.update(file).update(await readFile(join(root, file)))
-  }
-  await include(join(root, 'packages'))
-
-  const packages = join(appRoot, '..', 'packages')
-  for (const name of (await readdir(packages)).sort()) {
-    const packageRoot = join(packages, name)
-    for (const input of await publicPackageBuildInputs(packageRoot)) {
-      if ((await stat(input)).isDirectory()) {
-        await include(input, isPackageBuildInput)
-      } else {
-        digest.update(`${name}/${relative(packageRoot, input)}`).update(await readFile(input))
+      if (!('hash' in task) || typeof task.hash !== 'string' || !task.hash) {
+        throw new Error('Turbo reported an invalid desktop build input hash')
       }
+
+      return task.hash
     }
   }
 
-  return digest.digest('hex')
+  throw new Error('Turbo did not report the desktop build task')
 }
 
 /** Record every runtime byte after all owners have completed their outputs. */

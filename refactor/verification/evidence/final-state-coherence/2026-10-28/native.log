@@ -1,0 +1,10 @@
+$ cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts
+
+ RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/app
+
+
+ Test Files  2 passed (2)
+      Tests  6 passed | 1 skipped (7)
+   Start at  19:11:19
+   Duration  292ms (tests 40%, transform 32%, import 23%, worker 4%)
+

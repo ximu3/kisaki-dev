@@ -31,8 +31,10 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       'turbo.json',
       'tsconfig.json',
       '.npmrc',
+      '.node-version',
       '.prettierrc.json',
       '.gitignore',
+      '.gitattributes',
       'eslint.config.ts',
     ]) {
       await copyFile(join(repositoryRoot, file), join(root, file))

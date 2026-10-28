@@ -2,7 +2,7 @@
 
 主应用维护完整英语消息基准，简体中文、繁体中文和日语由普通官方语言扩展在线提供。i18n 管理译本和文本解析，preferences 保存具体选择。扩展自身的界面文案与资料获取语言分别由各自业务负责。
 
-第 31–33 项的具体身份、用语基准、源码与交付范围见[三个官方译本接入方案](../extensions/languages.md)，逐项确认状态见[扩展目录](../../implementation/status.md#design)。
+三个官方译本的具体身份、用语基准、源码与交付范围见[官方译本接入方案](../extensions/languages.md)。
 
 <a id="ownership"></a>
 

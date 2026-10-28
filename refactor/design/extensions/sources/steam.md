@@ -31,11 +31,11 @@ data_request 只请求本次字段需要的数据组，未采用的价格、购�
 
 普通名称发现和清单自动新建只采用已经核实为游戏的 App。music、software、video、购买包、画集与漫画商品不建立 Game；也不为它们新增音乐作品类型或另一类提供者。
 
-GetItems 的 StoreItem.item_type 区分 App 等商品种类，type 则区分 App 内的游戏、demo、DLC、音乐等类别，不能混用两个枚举。本次主游戏 type=0、demo=1、DLC=4、音乐=11；CLANNAD 漫画商品实际属于 DLC，因此不能仅看到 DLC 就认定为游戏扩展。DLC 与 demo 不作为普通清单的新建目标；已经由用户明确作为独立 Game 管理并给出实际 App 身份的适用目标，可以读取其自身普通资料，但不能自动改成 fullgame 的身份、合并时长或创建基础作品。无法满足当前作品范围时明确报告不适用。
+GetItems 的 StoreItem.item_type 区分 App 等商品种类，type 则区分 App 内的游戏、demo、DLC、音乐等类别，不能混用两个枚举。已采用的类型值为主游戏 0、demo 1、DLC 4、音乐 11；CLANNAD 漫画商品实际属于 DLC，因此不能仅看到 DLC 就认定为游戏扩展。DLC 与 demo 不作为普通清单的新建目标；已经由用户明确作为独立 Game 管理并给出实际 App 身份的适用目标，可以读取其自身普通资料，但不能自动改成 fullgame 的身份、合并时长或创建基础作品。无法满足当前作品范围时明确报告不适用。
 
 名称建议使用 SearchSuggestions，只开启 type_filters.include_games；同时开启 include_apps 会扩大到其他 App 类型，不能把它误当作必要的父开关。当前方案最多请求 50 项，并核对 metadata.total_matching_records、count 和实际返回记录；总量大于完整返回候选时，名称 resolve 返回 insufficientInput，不以首项或过滤后的唯一结果宣布对应。SearchSuggestions 没有分页参数，独立名称搜索不伪造下一页。StoreQuery.Query 的条件查询另有真实 start／count，但没有名称搜索字段，本扩展不为此扫描全站目录。
 
-明确 App ID 仍须核对实际响应中的编号与对象范围。GetItems 支持有限批量输入，按每项身份与 success 检查结果，不按返回顺序对应。HTTP 200 不代表每项成功；本次不可用编号返回 success=15、visible=false、appid=0，不能借失败项覆盖正常目标，也不能据此声称编号必然不存在。批量上限、取消与响应字节预算由来源客户端统一维护。
+明确 App ID 仍须核对实际响应中的编号与对象范围。GetItems 支持有限批量输入，按每项身份与 success 检查结果，不按返回顺序对应。HTTP 200 不代表每项成功；例如 success=15、visible=false、appid=0 表示该项没有可采用的正常目标，不能借失败项覆盖正常目标，也不能据此声称编号必然不存在。批量上限、取消与响应字节预算由来源客户端统一维护。
 
 <a id="fields"></a>
 
@@ -57,7 +57,7 @@ GetItems 实测为 CLANNAD 同时返回 2004-04-28 的 original_release_date 与
 
 不推断 originalName、原作语言、原始作者身份、作品敏感性或来源未回答的字段。分级或内容描述缺席不代表非敏感；不声明普通 isNsfw 读取，也不制作没有真实接口依据的成人筛选开关。
 
-资料语言来自本体输入，映射为 context.language 及名称字典的 language，国家／地区统一来自扩展设置并传入 context.country_code。同一作品的日文和繁体请求可能返回英文正文，本次样本已验证这种回退；不能把请求参数当成确有译文的证据。没有的正文保持缺席，不能复制查询词或把名称当简介。
+资料语言来自本体输入，映射为 context.language 及名称字典的 language，国家／地区统一来自扩展设置并传入 context.country_code。同一作品的日文和繁体请求可能返回英文正文，语言回退的依据见[接口核验](../../../verification/evidence/game-sources/steam-storebrowse.md)；不能把请求参数当成确有译文的证据。没有的正文保持缺席，不能复制查询词或把名称当简介。
 
 <a id="images"></a>
 
@@ -82,9 +82,9 @@ GetItems.assets 给出的文件名与 asset_url_format 是实际素材依据；�
 
 本人身份配置和读取验证使用上述 SteamID 与 Web API key。GetPlayerSummaries 核对返回的目标身份，GetOwnedGames 与愿望单接口分别验证读取能力；个人主页公开不保证所有清单可读，配置中的 SteamID 也不能冒充 Web API 对 key 所有者的证明。
 
-实际本次拥有库和愿望单均可读取。GetOwnedGames 使用 include_appinfo、include_played_free_games，显式限定不把家庭共享许可当本人拥有；API 的其他范围开关按其实际意义固定。默认拥有范围不扩展为全部免费游戏、短期访问或所有 App 许可。
+拥有库和愿望单分别读取并核对可访问范围。GetOwnedGames 使用 include_appinfo、include_played_free_games，显式限定不把家庭共享许可当本人拥有；API 的其他范围开关按其实际意义固定。默认拥有范围不扩展为全部免费游戏、短期访问或所有 App 许可。
 
-game_count=0 与缺失 count 分开。本次用空 App 过滤范围得到 game_count=0 且没有 games 字段，这是明确空结果；response={}、认证失败、不可访问或数量不符不能伪装为空库。愿望单读取 GetWishlist，并与 GetWishlistItemCount 核对当前范围；平台同时变化时有界重读，仍不完整则报告，不能提交半份清单。
+game_count=0 与缺失 count 分开。game_count=0 且没有 games 字段表示明确空结果，来源依据见[账号读取核验](../../../verification/evidence/game-sources/live-api.md)；response={}、认证失败、不可访问或数量不符不能伪装为空库。愿望单读取 GetWishlist，并与 GetWishlistItemCount 核对当前范围；平台同时变化时有界重读，仍不完整则报告，不能提交半份清单。
 
 凭据只发送到确需认证的本人读取端点，不按同属 api.steampowered.com 就附加到公开商店请求，也不发到图片 CDN。保存、读取验证、普通设置重置、移除凭据和断开各自明确；断开停止后续本人读取及自动触发，不能影响已有本地资料。换账号不沿用旧清单缓存或自动导入设置。
 

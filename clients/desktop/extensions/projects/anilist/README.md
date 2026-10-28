@@ -1,9 +1,12 @@
-# anilist
+# AniList
 
-本项目已登记到桌面工作区，当前仅提供工程配置。正式入口、API 兼容声明、业务实现、样本与 `.kisx` 交付属于 [W09](../../../../../refactor/implementation/work-packages.md#w09)。尚未提供可安装扩展，构建配置中的入口将在所属实现中建立。
+本目录维护官方 AniList 扩展的工程配置，项目包名为 `@kisaki3/ext-anilist`。目标能力与映射见[接入设计](../../../../../refactor/design/extensions/sources/anilist.md)，实现与制品状态见[逐项交付表](../../../../../refactor/implementation/delivery-checklist.md#extensions)。
 
-## 配置文件
+| 文件                                 | 用途                                                    |
+| ------------------------------------ | ------------------------------------------------------- |
+| [package.json](package.json)         | 项目元信息、工作区依赖，以及 `typecheck`、`lint` 入口。 |
+| [kisx.config.ts](kisx.config.ts)     | 声明扩展构建输入。                                      |
+| [tsconfig.json](tsconfig.json)       | 使用 Node 类型基线检查本项目的工程配置。                |
+| [eslint.config.ts](eslint.config.ts) | 使用公共工程规则检查本项目。                            |
 
-| 文件                           | 用途                                                                         |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| [tsconfig.json](tsconfig.json) | 使用 Node 类型基线检查本项目的 kisx.config.ts、eslint.config.ts 等工程配置。 |
+环境准备与检查方式见[协作指南](../../../../../CONTRIBUTING.md)。

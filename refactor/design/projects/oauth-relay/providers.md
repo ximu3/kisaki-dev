@@ -12,15 +12,15 @@ provider 使用经过验证的当前应用接入参数，不自行查找其他�
 
 | 来源    | 来源差异                                                                                                                |
 | ------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Bangumi | 固有授权／token 协议、应用秘密、短 code 窗口、刷新及实际权限处理；不能拿旧文档的 scope 说明覆盖真实范围验证             |
-| AniList | 独立的授权与 token 接入；保留已经真实验证的 refresh_token grant，不因当前文档仍写无刷新能力而删除它                     |
+| Bangumi | 固有授权／token 协议、应用秘密、短 code 窗口、刷新及实际权限处理；scope 范围按真实登记与令牌核对                          |
+| AniList | 独立的授权与 token 接入，支持有真实来源证据的 refresh_token grant                                                        |
 | Google  | 保留独立服务对其他消费者的 Google 接入，使用其实际登记的 Web 接入与回调；Kisaki Google Books 的桌面直连不因此改走 relay |
 
 Bangumi 和 AniList 的已有来源核验分别见 [Bangumi 本人操作](../../../verification/evidence/bangumi/account-operations.md)与 [AniList 实际授权结果](../../../verification/evidence/anime-platforms/live-api.md)。这些证据支持上游能力判断，未验证新 relay 的整条链路。
 
 客户端到 relay 的 S256 校验适用于所有来源；各上游的绑定能力与参数见[上游授权绑定](#upstream-binding)。
 
-各来源的 PKCE、客户端认证方式、刷新、撤销和状态能力要逐项记录。撤销及状态接口只接入上游真实支持的能力，具体路径与错误形状见[HTTP 合同](protocol.md#http)，不能把查询账号资料包装成 relay 的统一用户状态。切换前还须核对所有真实登记的应用与来源，不能仅凭上述三个文件就宣称旧服务的消费者已完整迁移。
+各来源的 PKCE、客户端认证方式、刷新、撤销和状态能力分别记录。撤销及状态接口接入上游真实支持的能力，具体路径与错误形状见[HTTP 合同](protocol.md#http)。账号资料查询由客户端拥有，服务的来源验收覆盖实际登记的全部应用与来源。
 
 三个 provider 的各操作字段、原生结果、错误归属及调用方采用方式集中在[接入细化](#integration-providers)。同一来源的 SDK 请求样例只作为协议依据，不能把其默认重试、重定向、字段转换和日志行为一并带入本服务。
 
@@ -50,7 +50,7 @@ Bangumi 和 AniList 的当前接入使用授权码、应用秘密与 state，上
 
 两项适配继续采用已约定的原生授权码、应用秘密与 state 流程，上游授权与兑换不发送 PKCE 字段；客户端提供的 challenge 与 verifier 仍用于 relay 自身必须执行的 S256 校验。Google 按其已有依据向上游传递同次 challenge 与 verifier。来源差异在 provider 定义中明确，不设失败后换方法的自动降级，也不声称这些流程都具有端到端 S256 保护。
 
-本地试件明确区分两类受控上游：对同一接入下尚未被 relay 接纳的另一授权 code，带本会话正确 verifier 时，严格校验上游拒绝，未绑定上游接纳。真实核验确认了当前两项接入未执行 S256，但没有将这类 code 注入攻击施加于他人或真实跨用户会话。relay 的本地校验仍不能独立补齐上游授权请求绑定。[RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.5)说明相关保护条件；若以后要求所有来源都具备强制上游 S256，需重新讨论能力与支持约定，不能靠新增第二种 relay code 宣称已经解决。
+对尚未被 relay 接纳的上游 code，本地会话与 verifier 校验不能独立证明它属于对应的上游授权请求。该保证取决于来源实际执行的绑定机制，依据见[来源核验](../../../verification/evidence/oauth-relay-provider/providers.md)与 [RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.5)。统一要求上游 S256 会影响已支持来源，须按项目讨论规则确定能力与支持范围。
 
 <a id="integration-providers"></a>
 

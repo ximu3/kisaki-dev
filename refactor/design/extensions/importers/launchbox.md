@@ -14,7 +14,7 @@ LaunchBox 导入器读取 Windows Data XML 或官方备份中的明确资料，�
 
 本项声明的是已列明字段的 Windows Data XML 系列。旧单体 LaunchBox.xml、Android 导出、公开 Metadata.xml 全站缓存、其他插件私有库和任意 XML 不是本输入。新版 XML 中未改变含义的字段仍按各自结构读取，未知字段不清空目标；未知的必要结构在写入前拒绝。不能依据文件名或用户填写的版本号接受结构不同的文件。
 
-2026-10-17 的[官方更新记录](https://www.launchbox-app.com/about/changelog)已列出 14.0.1 的发布日期，14.1 标为 Released ???。本页不把未注明发布日期的条目当作已发布基线。13.22 后的 Progress 有明确文字合同；14.0 的 JSONL 游玩历史及新版存档管理另见[范围限制](#newer-data)。
+Progress 采用 13.22 起的文字合同；14.0 起的 JSONL 游玩历史及存档管理沿[范围限制](#newer-data)处理。版本与格式依据见[核验记录](../../../verification/evidence/launchbox-importer/source-and-fixtures.md)。
 
 <a id="reading"></a>
 
@@ -103,11 +103,9 @@ AdditionalApplication.PlayTime 是附加项自己的秒数。当前公开合同�
 
 <a id="newer-data"></a>
 
-14.0 开始保存 Data/PlaySessions/<年份>.jsonl。[官方人员说明](https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/page/3/)确认每行含游戏、起止时间和有效秒数；它确实存在，不能沿旧版 API 写成“LaunchBox 没有逐次历史”。
+14.0 起的逐次游玩历史保存在 Data/PlaySessions/<年份>.jsonl；[官方人员说明](https://forums.launchbox-app.com/topic/94244-launchbox-for-windows-140-released/page/3/)描述每行包含游戏、起止时间和有效秒数。
 
-本次没有真实文件，公开说明也未给出足以固定大小写、时间编码、游戏／版本键和总量覆盖关系的完整行格式。因此本版方案明确不承诺读取 JSONL 游玩明细：检测到该目录时在数据范围中说明“逐次游玩历史未迁入”，所选 XML 主记录累计仍可独立采用。不编造字段名制作“官方历史夹具”，也不拿 LastPlayedDate 与总时长反推区间。
-
-正式扩展若要声明逐次历史支持，须先取得其真实文件并验证独立适配：明确游戏归属、UTC／偏移、起止区间与有效时长、暂停、跨日、断裂行及本次重复记录，按普通活动完整操作提交，并重新核实与主累计量的覆盖关系。这是尚未纳入的格式能力，不以当前合成探针冒充完成。
+JSONL 游玩明细不在本项输入合同内：字段形状、时间编码、游戏／版本键及与累计总量的覆盖关系缺少完整格式依据，见[格式核验](../../../verification/evidence/launchbox-importer/source-and-fixtures.md)。检测到该目录时，数据范围说明“逐次游玩历史未迁入”；所选 XML 主记录累计仍可独立采用，不由 LastPlayedDate 与总时长反推区间。
 
 新版 Save Management 的配置、存档位置、状态槽位和备份不在旧 API/XML 证据内。本项不从 Main/AdditionalApplication 的路径推断存档目录，也不把源备份恢复为本体历史；遇到实际保存管理数据时说明未迁入。图片、说明书、视频、成就缓存、排行榜、源主题及账号凭据也不扩大为其他媒体作品或本体设置。
 
@@ -226,6 +224,6 @@ src/
 
 input 只读实际格式和路径；mapping 负责来源字段含义，不写本体。import 通过公开 query、ingest、library、records、collections、attachments、holdings 和游戏配置操作组织任务；实际 API 名称沿各领域既有合同，不新建 ImportProvider、私有写库入口或资料爬虫。页面通过本扩展 IPC 提交一次请求和查看结果；任务寿命归 Node。
 
-格式核验与本体实施验收分别记录。当前合成样本验证明示 XML、关系键、标量存在性、UTF-16、.7z 成员读取、身份范围、评分／进度、累计换算、手动顺序、路径边界、图片歧义和参数优先，不代表在 LaunchBox 或 Kisaki 中实际导入成功。
+格式依据与样本范围见[核验记录](../../../verification/evidence/launchbox-importer/source-and-fixtures.md)。格式验收覆盖明示 XML、关系键、标量存在性、UTF-16、.7z 成员读取、身份范围、评分／进度、累计换算、手动顺序、路径边界、图片歧义和参数优先。
 
-正式交付还必须验证真实 Data 与官方备份、所有声明的序列化分支、真实图片选择与附件复制、Windows 参数与工作目录等价、各目标平台的归档组件、离线 prepared／initial 新增、原批次继续与已有资料采用、已有值保护、空历史条件、重复来源冲突、取消和错误、独立 .kisx 安装及宿主运行。不能把尚未核实的 JSONL、存档管理、动态列表和源运行时启动宣称为已支持。
+完整迁移验收覆盖真实 Data 与官方备份、所有声明的序列化分支、真实图片选择与附件复制、Windows 参数与工作目录等价、各目标平台的归档组件、离线 prepared／initial 新增、原批次继续与已有资料采用、已有值保护、空历史条件、重复来源冲突、取消和错误、独立 .kisx 安装及宿主运行。不能把尚未核实的 JSONL、存档管理、动态列表和源运行时启动宣称为已支持。

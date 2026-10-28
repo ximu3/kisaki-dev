@@ -2,7 +2,7 @@
 
 四个项目分别维护仓库、公共合同、版本与发行。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目共同遵守[简洁、原生与适度复杂度](../engineering/conventions.md#simplicity-native)，按各自技术栈复用成熟能力并保留原有语义。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目共同遵守[终态实现与整体一致性](../engineering/conventions.md#final-state)及[简洁、原生与适度复杂度](../engineering/conventions.md#simplicity-native)，按各自技术栈复用成熟能力并保留原有语义。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |
@@ -45,6 +45,6 @@ Vantage、Kana、libmpv-node 和 oauth-relay 均按可独立消费、独立版�
 | libmpv-node / @ximu3/libmpv-node | libmpv 的 Node 原生绑定、可选受管渲染与帧资源、平台依赖和公开发行                           | 验证主进程加载、Electron 纹理交接、轨道与采集，以及六个目标的制品                          |
 | oauth-relay                      | 基于 Node 和 Hono 的通用中转协议、上游适配、配置、测试、仓库和部署                          | 按 [服务合同](../extensions/private-data.md#relay-protocol) 验证授权、取消、刷新和错误处理 |
 
-Kisaki 与四个独立项目分别位于 F:/project 下的同名目录，仓库建立和来源存档按[仓库规范](../engineering/repository.md)执行。四个独立项目同样从[项目级公开开发仓库](../engineering/repository.md#temporary-repositories)持续开发和验证，在各自条件满足后接续正式仓库；不只为某次联合测试临时建库，也不借用 Kisaki 仓库存放实现。每个项目交付完整源码、工具链、锁文件、测试、发行说明、CI 和使用文档，并按自身环境提供 TypeScript 或 Rust 配置及所需原生制品。oauth-relay 的交付不以存在旧源码为前提。
+Kisaki 与四个独立项目分别位于 F:/project 下的同名目录，仓库建立、开发交付和来源存档按[仓库规范](../engineering/repository.md)执行。独立项目在各自仓库维护完整源码、工具链、锁文件、测试、发行说明、CI 和使用文档，并按自身环境提供 TypeScript 或 Rust 配置及所需原生制品。
 
 正式 manifest 和锁文件引用可实际取得的版本及配套资源。开发联调使用固定提交生成的 tarball 和原生资源，不通过跨仓源码路径或 link 接入。联合验收记录所用版本、制品摘要和服务合同，并检查真实客户端调用；各项目保留独立版本。

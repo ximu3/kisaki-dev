@@ -10,6 +10,7 @@ export type DesktopTarget =
 /** Metadata shared by development and finite runtimes, written beside their program entries. */
 export interface RuntimeManifest {
   schemaVersion: 1
+  /** Opaque Turbo build-task input identity; files separately records the actual runtime bytes. */
   buildId: string
   version: string
   target: DesktopTarget

@@ -18,7 +18,7 @@ workspace 组织源码工程，registry 是发现、安装和更新所用的协�
 
 程序化入口为 extension-cli/workspace、extension-cli/extension、extension-cli/registry 和 extension-cli/config，直接复用 CLI 背后的工作流实现。调用显式传入目录，不修改整个进程的 cwd。只有 CLI 负责交互提问、终端输出和退出码。一次操作完成后返回结构化产物，dev 则返回可停止的会话。config 只提供轻量类型和 defineConfig，不另建配置包。
 
-extension-distribution 定义 manifest、registry、静态展示、兼容规则和纯校验，并通过 Node 子入口提供签名能力，不依赖本体 API。extension-api 定义运行合同，SDK 实现接入。应用只消费制品格式，不依赖 CLI 或编译器。独立创建器并入 CLI，官方扩展同样使用公开工作流，不通过调用 CLI 再解析终端文字完成自动化。
+extension-distribution 定义 manifest、registry、静态展示、兼容规则和纯校验，并通过 Node 子入口提供签名能力，不依赖本体 API。extension-api 定义运行合同，SDK 实现接入。应用只消费制品格式，不依赖 CLI 或编译器。CLI 拥有项目创建工作流，官方扩展同样通过其公开程序化入口完成自动化。
 
 <a id="build"></a>
 
@@ -115,7 +115,7 @@ desktop-contracts/development 拥有纯类型、消息校验、协议版本和�
 
 模板提供基本 Node、Node 加框架无关 Webview，以及 Node 加官方 Solid/ui 三种结构。provider、译本和主题示例复用这些结构。生成内容包括源码、声明、必要依赖、构建配置、脚本，以及开发、发布和兼容说明，可以与 workspace 及按需选用的 hooks、版本工具组合。
 
-模板提供运行与构建起点：Node-only 模板使用 src/entry.ts，Node 加 Webview 的两种模板分别组织 src/node 与 src/webview，共用纯合同放在 src/shared。官方扩展使用哪种结构、提供哪些页面与业务模块，必须在其[逐项设计](../../implementation/status.md#design)中明确；模板不能代替这些决定，也不生成账号、导入或同步的空模块。
+模板提供运行与构建起点：Node-only 模板使用 src/entry.ts，Node 加 Webview 的两种模板分别组织 src/node 与 src/webview，共用纯合同放在 src/shared。官方扩展的结构、页面与业务模块由[逐项设计](catalog.md#catalog)确定；模板按实际能力提供初始结构，不生成账号、导入或同步的空模块。
 
 项目只声明实际导入的包和框架。运行类型从 SDK 的公共作者入口取得，UI、视觉和工具能力分别从其正式入口取得。模板不预装全部八个包，不要求作者直接依赖 desktop-contracts 或 rpc，也不生成私有路径或跨包 src alias。官方 UI 基于 Solid，第三方扩展可以使用 Vue 等其他框架。
 

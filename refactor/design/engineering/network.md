@@ -59,7 +59,7 @@ NetworkResponse 提供 url、redirected、status、statusText、ok、headers、b
 
 ## 代理采用与传输失败
 
-代理模式为 system、direct 或 manual，默认使用 system。选择值及凭据由 [preferences](../domains/preferences.md#network) 保存，network 订阅并采用这些偏好。配置结构合法表示可以开始采用，连接和认证结果由实际请求确定。
+代理模式为 system、direct 或 manual，默认使用 system。选择值及凭据由 [preferences](../domains/preferences.md#network) 保存，app 的[固定绑定](../architecture.md#app-composition)将偏好变化交给 network 的完整采用入口。配置结构合法表示可以开始采用，连接和认证结果由实际请求确定。
 
 偏好保存后，network 采用新设置并重建受影响的连接。这一步可以中断在途请求；新请求等待新配置就绪，已中断请求不自动重放。采用失败时保留用户选择并报告网络未就绪，不能偷偷沿用旧代理或改为直连。system 模式允许的直连行为按系统设置执行。
 

@@ -93,7 +93,7 @@ type PropertyState<T> =
 
 此处的 unavailable 表示这次通知没有可用值。此分支不附带 reason：上游观察事件没有提供具体原因码，绑定不虚构属性不存在、未加载媒体或读取错误中的某一个原因，也不固定填入 unknown。补做 getProperty 是另一次读取，不能用来可靠归因原通知。订阅建立失败、绑定转换失败或事件流中断分别报告，不压入 unavailable。普通值中的 null 仍可以出现在 available 分支，不能与外层状态合并。
 
-订阅交付初始状态及后续变化，并可独立停止；创建和停止的具体回调时序已经在[订阅合同](notifications.md)中确认，仍须 addon 验证。属性通知允许按上游语义合并变化，不承诺交付每一个中间值。需要确认某次命令完成的调用方使用命令回复和相关引擎事件，不把属性观察当作完整操作日志。
+订阅交付初始状态及后续变化，并可独立停止；创建和停止的回调时序遵守[订阅合同](notifications.md)。属性通知允许按上游语义合并变化，不承诺交付每一个中间值。需要确认某次命令完成的调用方使用命令回复和相关引擎事件，不把属性观察当作完整操作日志。
 
 <a id="cancellation"></a>
 
@@ -158,7 +158,7 @@ type PropertyState<T> =
 | observationInterrupted                  | 订阅连续性已经丢失                                                           |
 | valueConversion／notificationConversion | 已确认的两种保留原始结果的转换失败                                           |
 
-frameReleased、renderFailed 与相关视频 operation 依照[输出与帧寿命合同](video.md#errors)纳入同一错误体系，已经在声明样本中联合检查；实际构造与传播仍须运行验证。renderConflict 的保证范围遵守[受管使用约定](video.md#constraints)；配置或脚本遵守同一约定，不意味着绑定拥有覆盖引擎内部写入的前置拦截器。
+frameReleased、renderFailed 与相关视频 operation 依照[输出与帧寿命合同](video.md#errors)纳入同一错误体系。renderConflict 的保证范围遵守[受管使用约定](video.md#constraints)；配置或脚本遵守同一约定，不意味着绑定拥有覆盖引擎内部写入的前置拦截器。
 
 创建中的错误还携带 creation。它是按 stage 判别的记录：input、library、core、initializationLogs、initialize、video、publish，或者 options 加零基 optionIndex。非创建操作不携带该记录；初始化日志转换失败使用 initializationLogs 阶段。阶段描述失败所处的责任位置，终止确定后不被后续清理阶段覆盖。创建 Promise 的错误和初始化日志 observer.error 仍是两个不同结果。
 
@@ -184,7 +184,7 @@ mpv 调用失败、文件播放失败、日志严重级别和订阅失效继续�
 
 继续使用 command、getProperty、setProperty 和三类订阅。重复的 C 字符串／节点／同步／异步入口由绑定的值表示和调度统一，不要求用户选择 C 内存管理或自行运行事件轮询。
 
-补齐以下用途明确的入口：
+其他 Client API 能力使用以下入口：
 
 | 入口                           | 行为                                                                     |
 | ------------------------------ | ------------------------------------------------------------------------ |
@@ -200,7 +200,7 @@ loadConfigFile 保留上游的部分应用语义：即使最终报错，某些�
 
 删除属性使用结构化 del 命令，命令标志通过上游结构化调用表达；微秒值可从纳秒值换算。mpv_free、节点释放、reply_userdata、wakeup 回调、事件轮询和异步请求等待由绑定管理，对外提供对应的值与资源合同。
 
-Client API 的全部函数定位见[覆盖清单](../../../verification/evidence/libmpv-control/client-api-coverage.json)，清单保留当时的检查状态。[属性请求格式](values.md#property-formats)、文字观察与无值提示现已补齐到合同和声明检查；[真实目录采集](../../../verification/evidence/libmpv-catalog/verification.md)现已完成探针构建的名称与定义读取，最终发行目录及完整值声明仍须继续完成。Stream CB 的公开提供器集中见[流提供器合同](streams.md)，Render API 继续按已选平台路线验证，不能仅凭函数清单声称全部原生能力已经交付。
+属性读取、文字观察与无值提示遵守[属性请求格式](values.md#property-formats)，Stream CB 的公开提供器见[流提供器合同](streams.md)，Render API 见[平台图形](platforms.md)。函数归属和目录生成的依据分别见[覆盖清单](../../../verification/evidence/libmpv-control/client-api-coverage.json)与[目录采集](../../../verification/evidence/libmpv-catalog/verification.md)；实现和验证进度由[实施状态](../../../implementation/status.md)记录。
 
 <a id="clients"></a>
 
@@ -273,9 +273,9 @@ Mpv 正常关闭时也先取消并释放活动执行，再按生产者结束规�
 
 ## 制品能力目录与语义声明
 
-已采用源码 01e2533f3143b8940857ca419b0b367f583e05ca 的 Client API 为 2.6。当前头文件中的 45 个函数仍对应既有归属清单，负数错误枚举为 20 项；这项来源衔接不表示函数实现及所有边界与旧基线完全相同。
+固定源码 01e2533f3143b8940857ca419b0b367f583e05ca 的 Client API 为 2.6，头文件包含 45 个函数和 20 项负数错误枚举。函数职责按[覆盖清单](../../../verification/evidence/libmpv-control/client-api-coverage.json)归属。
 
-命令、选项和属性的目录由实际发行构建生成，和源码、功能配置、声明一起交付。已有目录采集证明可以取得完整名字集合与部分参数信息；它没有提供所有属性的返回结构，也不能独自生成全部类型语义。
+命令、选项和属性的目录由实际发行构建生成，和源码、功能配置、声明一起交付。原生目录提供名字集合与部分参数信息，属性返回结构和其他类型语义由受版本控制的语义定义补充。
 
 生成器组合实际目录与受版本控制的语义定义：参数的可省略与默认值、特殊 Choice／Flags 形式、结构化结果和动态属性路径各自明确。保留已知名称的准确类型与未知名称的通用入口；未知入口不能成为绕过已知错误参数的重载。类型、实际导出与配套二进制从同一发行验证，不维护彼此无关的三份公共合同。
 

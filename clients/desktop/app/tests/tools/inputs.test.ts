@@ -5,7 +5,7 @@
 
 import { afterAll, beforeAll, expect, test, vi } from 'vitest'
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { join, relative } from 'node:path'
+import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { startRenderer } from '../../tools/dev/renderer'
 import { startInputWatcher } from '../../tools/dev/inputs'
@@ -26,12 +26,13 @@ beforeAll(async () => {
   paths.appRoot = join(paths.repositoryRoot, 'clients/desktop/app')
   for (const directory of [
     'config/vite',
+    'config/typescript',
     'src/main',
     'src/preload',
     'src/extension-host',
     'src/shared',
     'native',
-    'assets',
+    'assets/icons',
   ]) {
     await mkdir(join(paths.appRoot, directory), { recursive: true })
   }
@@ -45,10 +46,13 @@ beforeAll(async () => {
     await writeFile(join(directory, 'index.html'), '<!doctype html><main>Watcher fixture</main>')
   }
   await writeFile(join(paths.appRoot, 'package.json'), '{"type":"module"}')
+  await writeFile(join(paths.appRoot, 'tsconfig.json'), '{}\n')
   await writeFile(join(paths.appRoot, 'config/vite/vite.config.main.ts'), 'export default {}\n')
   await writeFile(join(paths.repositoryRoot, 'pnpm-lock.yaml'), 'lockfileVersion: 9\n')
   const member = join(paths.repositoryRoot, 'package')
   await mkdir(join(member, 'config/typescript'), { recursive: true })
+  await mkdir(join(member, 'config/vitest'), { recursive: true })
+  await mkdir(join(member, 'src'), { recursive: true })
   await writeFile(join(member, 'package.json'), '{"name":"@kisaki3/watch-fixture"}')
   await writeFile(join(member, 'config/typescript/tsconfig.lib.json'), '{}\n')
   const members = [{ name: '@kisaki3/watch-fixture', path: member }]
@@ -72,10 +76,21 @@ afterAll(async () => {
 
 test('runtime configuration and nested public-package inputs remain watched after Vite restarts', async () => {
   const previous = changes.length
-  await writeFile(
-    join(paths.repositoryRoot, 'package/config/typescript/tsconfig.tests.json'),
-    '{"compilerOptions":{"strict":true}}',
-  )
+  for (const file of [
+    'package/config/typescript/tsconfig.tests.json',
+    'package/config/vitest/vitest.config.browser.ts',
+    'package/src/README.md',
+    'package/src/value.test.ts',
+    'clients/desktop/app/assets/icons/README.md',
+    'clients/desktop/app/config/typescript/tsconfig.tests.json',
+    'clients/desktop/app/src/main/value.test.ts',
+    'clients/desktop/app/native/target/generated.json',
+    'clients/desktop/app/native/.cache/generated.json',
+  ]) {
+    const path = join(paths.repositoryRoot, file)
+    await mkdir(dirname(path), { recursive: true })
+    await writeFile(path, 'excluded input\n')
+  }
   // Allow real filesystem events to settle before a positive change proves the watcher is live.
   await new Promise((resolve) => setTimeout(resolve, 200))
   expect(changes).toHaveLength(previous)
@@ -89,6 +104,12 @@ test('runtime configuration and nested public-package inputs remain watched afte
     [
       join(paths.appRoot, 'package.json'),
       '{"type":"module","imports":{"#fixture":"./src/main/entry.ts"}}',
+      'runtime',
+    ],
+    [join(paths.appRoot, 'tsconfig.json'), '{"compilerOptions":{"strict":true}}', 'runtime'],
+    [
+      join(paths.appRoot, 'config/typescript/tsconfig.main.json'),
+      '{"compilerOptions":{"strict":true}}',
       'runtime',
     ],
     [

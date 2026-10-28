@@ -72,7 +72,7 @@ CSP 可能在导航事件前拒绝目标并使文档进入加载失败。宿主�
 
 HMR 只额外允许本会话的精确 WebSocket 地址；不放行任意 localhost 端口或关闭 webSecurity。必要的开发注入脚本通过每文档随机 nonce 接入；可使用 Vite 的 [CSP nonce 支持](https://vite.dev/guide/features.html#content-security-policy-csp)，占位值必须在响应时替换，不能把固定 nonce 写入发布包。发布 CSP 不保留开发地址或脚本例外。包内 Worker 响应、资源来源与私有端口仍按上述隔离规则处理。
 
-[隔离试件](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#webview)已验证部分实际 Chromium 行为，也记录了仅靠 webRequest 检查 Worker 的失败反例。正式 SDK、开发 HMR、浏览器网络和完整资源寿命仍由对应工作包验证。
+Worker 授权采用上述资源绑定与响应 CSP，不能仅依赖 webRequest。浏览器行为及该限制的依据见[隔离试件](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#webview)，完整接入的验收范围见[Webview 场景](../../verification/scenarios/ui.md#webview-isolation)。
 
 <a id="open"></a>
 

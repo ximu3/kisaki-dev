@@ -6,7 +6,7 @@
 import { expect, test } from 'vitest'
 import { parseDevelopmentCommand, parseDevelopmentEvent } from './development'
 
-test('validates finite build facts and rejects removed transport and queue fields', () => {
+test('validates build facts and rejects unknown fields and outcomes', () => {
   expect(
     parseDevelopmentCommand({
       type: 'buildsReady',
@@ -27,15 +27,15 @@ test('validates finite build facts and rejects removed transport and queue field
       ],
     }),
   ).toMatchObject({ outcome: 'completed' })
-  expect(() => parseDevelopmentCommand({ type: 'stop', requestId: 'removed' })).toThrow()
+  expect(() => parseDevelopmentCommand({ type: 'stop', requestId: 'unexpected' })).toThrow()
   expect(() =>
-    parseDevelopmentCommand({ type: 'initialize', protocolVersion: 1, sessionId: 'removed' }),
+    parseDevelopmentCommand({ type: 'initialize', protocolVersion: 1, sessionId: 'unexpected' }),
   ).toThrow()
   expect(() =>
     parseDevelopmentEvent({
       type: 'adoptionResult',
       outcome: 'completed',
-      builds: [{ extensionId: 'fixture', buildId: 1, outcome: 'superseded' }],
+      builds: [{ extensionId: 'fixture', buildId: 1, outcome: 'unknown' }],
       activations: [],
     }),
   ).toThrow()

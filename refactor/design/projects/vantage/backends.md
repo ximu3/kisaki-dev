@@ -6,9 +6,9 @@
 
 ## 支持范围与后端分工
 
-Windows x64 与 arm64 的最低版本统一为 Windows 10 2004（build 19041），使用一条 Windows Graphics Capture 路线承担指定窗口采集，[系统基线](../../engineering/build.md#platforms)与此一致。macOS 13、glibc Linux 的既定发行版、X11 与 Wayland 桌面范围继续保留。按[运行覆盖与交付](../../../verification/acceptance.md#runtime-coverage)完成六目标基础验证，再覆盖实际后端、系统下限、桌面适配与权限分支；没有实现差异的版本和组合可引用适用证据，不展开所有维度的笛卡尔积。当前 Windows 主机的探针不能代替六目标和其他主要后端验证。
+Windows x64 与 arm64 的最低版本统一为 Windows 10 2004（build 19041），使用 Windows Graphics Capture 承担指定窗口采集，[系统基线](../../engineering/build.md#platforms)与此一致。macOS 13、glibc Linux 的既定发行版、X11 与 Wayland 桌面范围由同一基线定义。按[运行覆盖与交付](../../../verification/acceptance.md#runtime-coverage)完成六目标基础验证，再覆盖实际后端、系统下限、桌面适配与权限分支；没有实现差异的版本和组合可引用适用证据，不展开所有维度的笛卡尔积。
 
-| 环境          | 进程及窗口控制方向                                               | 指定窗口采集方向                                           | 当前需要证明的重点                                                    |
+| 环境          | 进程及窗口控制机制                                               | 指定窗口采集机制                                           | 验证边界                                                              |
 | ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
 | Windows       | 进程对象句柄；顶层窗口枚举、WinEvent 与明确的窗口操作            | Windows Graphics Capture：指定窗口、独立线程帧池和短期会话 | 既定下限与两种架构的实际采集、取消、颜色转换；窗口实例校验的并发边界  |
 | macOS         | 进程信息与生命周期观察；AppKit 应用退出及 Accessibility 窗口操作 | ScreenCaptureKit 的指定窗口过滤和短期 SCStream             | Accessibility 窗口与采集窗口的准确对应、权限、macOS 13 兼容及实例安全 |
@@ -75,9 +75,9 @@ Windows 最低版本为 2004，22H2 可作为常规验证环境。正式制品�
 
 由 Rust 后端创建采集对象、D3D11 帧池与短期会话，在取得有效帧后完成必要转换和自有内存复制，再释放本次资源。帧池事件不直接接触 JavaScript 对象；Node binding 只接收已明确拥有的结果和完成状态。CreateFreeThreaded 消除的是采集帧池对 DispatcherQueue 的依赖，不能据此推断 WinEvent 等其他窗口机制不需要自己的消息处理。
 
-尺寸变化按实际帧信息处理，不能用旧缓冲区尺寸解释新帧，也不能在帧归还池后继续引用原表面。目标关闭、超时、取消、图形设备变化与 Node 环境退出必须完成回调隔离、会话停止和资源释放验证；更换为 WGC 不自动证明这些条件已经满足。
+尺寸变化按实际帧信息处理，不能用旧缓冲区尺寸解释新帧，也不能在帧归还池后继续引用原表面。目标关闭、超时、取消、图形设备变化与 Node 环境退出的验证覆盖回调隔离、会话停止和资源释放。
 
-在明确的系统下限内，库使用同一 WGC 路线完成采集。旧接口的行为与实验范围见[调查记录](../../../verification/evidence/vantage-platforms/platform-routes.md#windows-probe)，正式采集架构按本节的现代接口组织。
+库在声明的系统范围内使用同一 WGC 路线完成采集，接口选型依据见[平台调查](../../../verification/evidence/vantage-platforms/platform-routes.md#windows-probe)。
 
 WGC 仍须验证 GPU 内容、最小化与隐藏状态、受保护内容、有效帧、权限及资源收尾。系统版本达标不等于每个窗口都可采集；失败沿既定合同报告，不切换为桌面裁切或其他未声明的后端。
 

@@ -66,7 +66,7 @@ CSV 中可准确映射的名称、出版信息和页数默认选入来源资料�
 
 Exclusive Shelf 中，to-read 对应 planned，currently-reading 对应 active，read 对应 null，并独立表达至少一次读过。did-not-finish 表达弃读，没有同义的本地当前安排；报告该状态未采用，保留本地安排与既有完成历史，遵守[共同状态映射](../synchronization.md#import)。其他自定义 exclusive shelf 保留来源组织含义。
 
-Read Count 包含尚在进行的阅读记录。实测一条此前为 to-read、Read Count=0 的书，改为 currently-reading 后导出 Read Count=1，Date Read 仍为空。它不能用于完成总数迁移，即使当前书架是 read，也不能由 N 推出此前每条阅读记录都已完成。
+Read Count 包含尚在进行的阅读记录。例如 to-read、Read Count=0 的书改为 currently-reading 后，导出可为 Read Count=1 而 Date Read 仍为空，见[计数核验](../../../verification/evidence/goodreads-importer/live-export.md)。它不能用于完成总数迁移，即使当前书架是 read，也不能由 N 推出此前每条阅读记录都已完成。
 
 Date Read 只导出一个日期，不能恢复全部逐次记录。已读状态或有效非空的完成日期可以说明存在完成事实；本地没有历史且用户选择采用时，至多初始化一条记录，已有历史默认保留。CSV 不提供足以支持逐条历史追加的明细，本扩展不提供“追加 N 次完成”。Part 只采用明确读过的布尔事实，不保存次数或日期，也不由 currently-reading 或正数 Read Count 推出完成。
 

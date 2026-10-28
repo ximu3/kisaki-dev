@@ -19,7 +19,7 @@ YMGal 在线接口没有人物反向作品查询，因此不用于当前人物�
 | 英文     | Bangumi、VNDB、AniList、YMGal、MangaUpdates、RanobeDB、Wikidata       | 7    |
 | 日文     | Bangumi、VNDB、AniList、YMGal、MangaUpdates、RanobeDB、TMDB、Wikidata | 8    |
 
-AniList 只为[已明确为人物的 Staff 身份](../../extensions/sources/anilist.md#subjects)提供档案和本人的非配音制作履历；不提供人物名称搜索或自动判类，也不贡献 voiceActor 工作。下表保留这一真实上下文中的 personWorks 与 note；关联动画时长移除 AniList。
+AniList 只为[已明确为人物的 Staff 身份](../../extensions/sources/anilist.md#subjects)提供档案和本人的非配音制作履历；不提供人物名称搜索或自动判类，也不贡献 voiceActor 工作。下表保留这一真实上下文中的 personWorks 与 note；关联动画的整部声明时长采用 Bangumi，日文版本另以 TMDB 补充。
 
 MangaUpdates 只为[已明确为人物的 Author 身份](../../extensions/sources/mangaupdates.md#subjects)读取档案与自身履历，不按名称或性别自动定类。originalName 使用原文发表用名，deathDate 仅在已故状态及日期均明确时回答；履历说明保留真实署名与职责。
 

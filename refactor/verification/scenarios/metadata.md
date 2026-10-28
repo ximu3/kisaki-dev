@@ -6,8 +6,6 @@
 
 <a id="identities"></a>
 
-关系范围另覆盖两项边界：Character 根的 workCharacters 只替换声明 workTypes 内的出场；TMDB Organization 的 scope:null 成功返回或明确空数组均只补充事实，保留旧关系并报告本次未完成的替换。混合来源时，参与成员选择的 null 范围使该关系键保留旧关系；first 已在更早来源取得回答后，后续未参与来源不影响结果。
-
 ## 完整来源身份
 
 按[来源键清单](../../design/extensions/providers.md#source-keys)核对各接入、跨站映射、导入器和链接示例。品牌拼写 vndb、igdb、tmdb 保留，MyAnimeList 使用 myanimelist，Fanart.tv 使用 fanarttv；月幕和 ISBN 分别保留 ymgal、isbn。上游 links.mal、metadata.vndbId、NFO type=tmdb 和原生编号保持原语法，适配结果使用规范键。
@@ -55,6 +53,8 @@ A14 和 A23 验证[URL 文件输入](../../design/domains/resources.md#input)的
 | 源端点无法唯一对应                               | 保留受影响分类范围的旧关系，采用其余合法事实                     |
 | fetch 结果转交 prepared                          | data 与 relationScopes 一并传递，采用结果与直接 profile 输入一致 |
 | prepared 只提供候选、未声明完整范围              | 追加和属性更新按选择执行，替换报告 incompleteRange 并保留旧成员  |
+
+关系范围另覆盖两项边界：Character 根的 workCharacters 只替换声明 workTypes 内的出场；TMDB Organization 的 scope:null 成功返回或明确空数组均只补充事实，保留旧关系并报告本次未完成的替换。混合来源时，参与成员选择的 null 范围使该关系键保留旧关系；first 已在更早来源取得回答后，后续未参与来源不影响结果。
 
 范围与首选资料语言、相关配置在会话中保持固定，新的配置用于新会话。用户 scope 比来源完整范围小时，实际修改限于用户选择。漫画卷话收录另验证：默认补齐时保留旧关联，明确替换时移除未保留的关联；两种方式均保留卷、话、文件、个人记录和已有人工顺序。
 

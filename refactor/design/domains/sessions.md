@@ -294,7 +294,7 @@ sessions.anime 的运行设置都绑定 sessionId。仅控制当前运行的 set
 
 setSpeed 是当前文件的临时倍速控制，只采用到实际播放器，不写入全局、作品或文件配置，也不自动启用自定义。暂停后继续、聚焦、同一文件的定位和普通复用保留当前倍速；切换到下一集或其他实际文件、关闭后重新打开时，重新采用目标的完整配置中的 playbackSpeed。临时倍速不随连播交给新文件。需要长期默认值时，用户在播放设置中明确选择范围并保存。
 
-同步偏移使用有符号秒数，字幕缩放使用倍数。倍速与字幕缩放复用[播放配置的值域](preferences.md#fields)，在保存或控制前完成校验。sessions.anime.getTracks(sessionId) 返回当前轨道列表。observeTracks(sessionId, listener) 先交付当前列表，再交付变化，返回 Disposable。
+同步偏移使用有符号秒数，字幕缩放使用倍数。倍速、字幕缩放与音量复用[偏好字段值域](preferences.md#fields)，在保存或控制前完成校验；volumePercent 为 0–100 的有限数，超限拒绝，不静默钳制。sessions.anime.getTracks(sessionId) 返回当前轨道列表。observeTracks(sessionId, listener) 先交付当前列表，再交付变化，返回 Disposable。
 
 轨道项包含展示资料、实际选择及 PlaybackTrackRef。允许记忆的轨道还提供由主进程接入生成的 FileTrackSelection，调用者不能解析运行 ID 来推导源文件或序号。
 
@@ -308,7 +308,9 @@ await sessions.anime.selectTrack(sessionId, track, { remember: true })
 
 sessions 固定并校验实际会话、文件和轨道，协调保存与采用的执行顺序。保存失败时不继续采用；保存成功而采用失败时，由该操作按共同失败合同明确报告已经保存和未生效的事实，运行观察继续交付实际状态。会话结束或换文件后，原请求不能转投新的内容。界面负责输入和反馈，不自行拼接 library 写入与播放控制。恢复和临时控制使用不记忆的输入，也不通过观察反写设置。
 
-音量与静音记住上次值，轨道与同步偏移属于文件，速度和字幕缩放等长期默认值属于完整播放配置。需要持久采用的原生操作由相应模块保存，并应用到当前会话；临时倍速不因此进入保存流程。观察不能反推用户设置，也不联动其他窗口。
+音量与静音由 preferences.playback 保存应用级控制记忆，轨道与同步偏移由 library 保存为文件选择，速度和字幕缩放等长期默认值属于完整播放配置。setVolume 与 setMuted 固定当前会话，分别通过 preferences.update 只保存 volumePercent 或 muted，再采用到该执行者；它们是即时设置，沿用普通逐字段写入，不改变另一字段，也不联动其他已打开实例。临时倍速不进入保存流程，观察不能反推用户设置。
+
+新文件的执行者准备从 preferences.playback 读取当时的正式音量与静音，首次使用为 100% 和未静音；初始采用不回调会保存设置的公共控制方法。普通同文件复用保留当前值，切换实际文件或关闭后重新打开则读取最新正式记忆。完整播放配置的保存或重新采用不覆盖这两个独立控制值。
 
 <a id="playback-setting-result"></a>
 
@@ -353,7 +355,7 @@ sessionId、animeId 和 fileId 固定本次实际目标；scope 使用这些 ID 
 
 正常返回不会使用 outcome: saved；它是共同 ExecutionFailure 所允许的合法部分结果。所有调用方直接读取 partialResult.outcome 与 saved，不解析错误文案，也不依靠另一条查询猜测本次保存是否发生。其他独立窗口仍按自己的运行状态呈现，已完成保存不因采用失败回滚。
 
-音量、静音及文件同步偏移同样由 sessions 固定目标，调用所属保存能力后仅采用到当前执行者；观察与初始恢复不会调用这些保存入口。每次结果只描述这一次操作，后续明确修改不改写已交付结果。
+音量和静音通过 preferences 保存，文件同步偏移通过 library 保存，均由 sessions 固定目标并仅采用到当前执行者；观察与初始恢复不会调用这些保存入口。每次结果只描述这一次操作，后续明确修改不改写已交付结果。
 
 <a id="subtitle-scale"></a>
 

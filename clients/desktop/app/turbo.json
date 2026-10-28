@@ -33,7 +33,7 @@
     },
     "package": {
       "dependsOn": ["build"],
-      "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET"],
+      "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
       "inputs": [
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",

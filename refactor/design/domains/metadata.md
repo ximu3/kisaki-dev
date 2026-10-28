@@ -378,7 +378,7 @@ ingest 按完整新增、完整更新及其本地决定组织：
 | adoption.ts | 所选字段与关系的本地采用决定，包括补空、覆盖和替换         |
 | graph.ts    | 将已经明确的采用结果组织成现有 LibraryWriteGraph 输入      |
 
-metadata 实现来源对应，ingest 按本地身份规则完成复用。graph.ts 在本次调用中构造候选图，正式模型校验与数据库事务提交由 library.writeGraph 完成。
+metadata 实现来源对应，ingest 按本地身份规则完成复用。graph.ts 在本次调用中构造本地写入图，正式模型校验与数据库事务提交由 library.writeGraph 完成。
 
 单项、批量与扫描共用实际新增或更新的业务实现，任务包装由明确入口组织一次，不在每个内部步骤或批次成员中嵌套任务。其他 feature 通过 metadata 与 ingest 的完整能力调用，不直接进入 fetch 的内部阶段或自行拼接本地图写入步骤。
 

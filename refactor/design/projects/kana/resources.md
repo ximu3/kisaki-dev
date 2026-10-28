@@ -70,7 +70,7 @@ assetsBaseUrl 表示明确部署的同源发行资产目录。资产清单包括
 
 内容 CSP 禁止书内脚本、可执行动作和未授权加载，允许实际使用的专用传输目录。传输入口再根据请求所属内容文档、本次实例和规范路径交付字节；猜到另一个阅读实例的地址不授予读取权限。请求越界、实例关闭或资源缺失时明确结束，不回到网络寻找同名资源。
 
-实测 Firefox 对合成子资源响应还检查了 Service Worker 脚本地址。只允许每本书路径的 CSP 因此拦下正常资源。统一采用“CSP 约束专用传输目录、资源入口核对实例”的分工后，受查内容在四个运行环境中成立，且受查跨实例取图和目录外加载仍被拒绝。这里没有按 User-Agent 分支，也不能因此把 CSP 放宽为任意同源内容。
+Firefox 对合成子资源响应还检查 Service Worker 脚本地址，因此 CSP 允许库的专用传输目录，由资源入口核对请求所属实例。各浏览器采用相同分工，跨实例读取与目录外加载由这两层边界共同限制。
 
 浏览器看到形似 HTTP 的临时地址，不表示书籍上传到了服务器。资源拥有者在本地响应，转发脚本不持久保存书籍字节，也不取得书内任意网络访问权。实际缓存与临时存储仍服从已有明确合同。
 
@@ -80,7 +80,7 @@ assetsBaseUrl 表示明确部署的同源发行资产目录。资产清单包括
 
 Reader 拥有授权字节的本次使用、响应中的读取和内容地址。关闭时先停止接纳，取消或结束未完成读取，移除内容文档，再释放自身资源；旧地址不能读到新打开的内容。一个 Reader 关闭不撤销其他 Reader 的资源。
 
-Service Worker 可能由浏览器停止并重新启动，不能让它的内存表成为阅读实例或授权的唯一依据。请求应能找到仍存活的拥有者；拥有者不存在或已经撤销该实例时结束请求。试件使用存活页面的 client 身份与本次实例标识完成这个连接，Chromium 已实际停止 worker 后重新取得内容。[规范的寿命约定](https://www.w3.org/TR/service-workers/#service-worker-lifetime)与 [Clients.get](https://developer.mozilla.org/en-US/docs/Web/API/Clients/get)支持这一责任划分。
+Service Worker 可能由浏览器停止并重新启动，阅读实例与授权由仍存活的资源拥有者维护。请求按当前资源拥有关系找到该拥有者；拥有者不存在或已经撤销实例时结束请求。[规范的寿命约定](https://www.w3.org/TR/service-workers/#service-worker-lifetime)与 [Clients.get](https://developer.mozilla.org/en-US/docs/Web/API/Clients/get)支持这一责任划分。
 
 静态转发程序的登记可以跨 Reader 保留，登记中不保存书籍与读取权限。单个 Reader 的 close 不注销共享登记。发行版本使用明确的资产目录和作用域，避免活跃实例被其他版本接管；具体部署协作见下文，不靠无条件 claim 或 skipWaiting 切换活动阅读文档。
 

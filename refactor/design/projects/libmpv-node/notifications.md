@@ -293,7 +293,7 @@ sources 是非空、去重的来源集合；同时包含两者时按 mpv、bindi
 
 普通输出对 client-message 参数、日志 prefix 与 text 严格解码 UTF-8。某次待交付记录无法解码时，与属性观察采用同一终止原则：只结束对应订阅，通过 observer.error 交付转换错误，不改用替换字符，不自动切换为字节，也不把其他订阅关闭。需要连续接收任意原生文本时，建立订阅即选择 native。
 
-由于此处保留的是通知结构，使用 MpvNotificationConversionError，而不扩大已确认 MpvConversionError.getNativeValue() 的返回值：
+通知转换失败使用 MpvNotificationConversionError，保留同一次原生通知结构：
 
 - source 为 binding，code 为 notificationConversion，reason 为 invalidUtf8。
 - operation 为 observeEvents、observeLogs，或初始化日志接收中的 createMpv。
@@ -301,7 +301,7 @@ sources 是非空、去重的来源集合；同时包含两者时按 mpv、bindi
 
 该错误同样私有持有有效快照，不访问临时 C 指针，不重读当前状态，不持有整个 Mpv。重复提取产生独立字节；错误消息和可枚举字段不自动包含诊断内容。缺口由绑定生成，不会出现文本解码失败。
 
-这个错误与专用提取方法已经确认：共用错误来源和终止原则，同时保留 mpv_node 与 C 通知结构的区别。它不改变已经确认的值转换错误，其公共错误基类与其他错误见[控制接口与运行时](api.md#errors)。
+通知转换错误与值转换错误共用错误来源和终止原则，各自保留 C 通知结构与 mpv_node 的数据含义。公共错误基类与其他错误见[控制接口与运行时](api.md#errors)。
 
 <a id="native-plan"></a>
 
@@ -313,4 +313,4 @@ sources 是非空、去重的来源集合；同时包含两者时按 mpv、bindi
 
 辅助客户端不延长播放核心寿命；关闭必须先结束并销毁这些弱客户端，再完成主客户端的终止销毁。上游的最后一个强客户端销毁会等待弱客户端离开，不能在 JavaScript 终止回调之后才开始处理这项原生收尾。数量上限、线程调度和环境退出仍须用真实 addon 验证。
 
-还必须处理一个真实的历史缓冲来源：上游首个 terminal-default 缓冲可能取得初始化阶段的早期日志。为满足已经确认的订阅不补发历史，要求在 createMpv 对外完成前由初始化流程接管该早期缓冲，并在没有初始化诊断接收方时释放它；可用一个内部弱客户端取得后销毁，不能让它留给第一个运行期订阅。初始化诊断的接收方式在[初始化入口](lifecycle.md#logs)中规定。运行期 observeLogs 使用新缓冲，不把初始化日志当成其登记后的记录。这项来源分析尚未替代实际无历史交付的验证。
+上游首个 terminal-default 缓冲可能取得初始化阶段的早期日志。初始化流程在 createMpv 对外完成前接管并释放该缓冲，包括没有初始化诊断接收方的情况；可由内部弱客户端取得后销毁。初始化诊断的接收方式见[初始化入口](lifecycle.md#logs)。运行期 observeLogs 使用新缓冲，只交付登记后接收的记录。

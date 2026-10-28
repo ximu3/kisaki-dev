@@ -13,9 +13,9 @@ Google Books 定位为明确书目范围的资料与个人记录补充来源：�
 | 来源资源或能力       | 已确定边界                                                                                                         |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | Volume               | 出版书目资源；按实际内容范围对应整作或真实卷，不按资源名直接转为 NovelVolume                                       |
-| Series 与 membership | OAuth 已读通，API key 单独访问返回 401；仅使用已经明确对应作品的 Series 范围，不自动把所有 Series 建成作品或卷目录 |
+| Series 与 membership | 需要本人 OAuth，API key 单独访问不提供该能力；仅使用已经明确对应作品的 Series 范围，不自动把所有 Series 建成作品或卷目录 |
 | authors、publisher   | 文字署名，没有可读取的独立人物／组织 ID，不自动创建档案或参与关系                                                  |
-| 本人书架             | 作为手动个人记录导入范围；已验证喜爱与三个阅读书架的独立成员操作，不新建未对应作品或卷                             |
+| 本人书架             | 作为手动个人记录导入范围；喜爱与三个阅读书架使用独立成员操作，不新建未对应作品或卷                             |
 | 本人评价             | 只从 userInfo.review 读取；平台均分不是本人评分，没有公开评价写入方法                                              |
 | 阅读位置与注释       | 虽有 API，坐标与云书籍绑定；不映射成本地文件位置、活动、标注或 Note                                                |
 | 云端购买和正文       | 不下载购买内容、上传文件或建立本地 holdings，不处理购买与 DRM                                                      |
@@ -64,7 +64,7 @@ originalName 与 aliases 只采用同一目标具有明确依据的原名与名�
 
 Series 根只提供实际 title 与 imageUrl 的名称、代表封面，不从首个成员补造介绍、原作语言、日期、声明数量或发行状态。三个不同 Series 的 bannerImageUrl 实际指向同一张通用漫画拼图，已读取图片核对；不提供 backdropImage，不采用该默认素材。
 
-membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume，实际语言、分类、ISBN 和页数需要补读详情。SAO 两页取得 27 个不同成员，全部补读成功。书架成员按实际分页与总量核对，处理重复、空页及并发计数变化；需要根据缺席写 false 时必须已经完整读取相应范围。失败不冒充空集合，独立成功资料可进入 partialResult。
+membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume，实际语言、分类、ISBN 和页数需要补读详情。书架成员按实际分页与总量核对，处理重复、空页及并发计数变化；需要根据缺席写 false 时必须已经完整读取相应范围。失败不冒充空集合，独立成功资料可进入 partialResult。
 
 <a id="account"></a>
 
@@ -72,17 +72,17 @@ membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume�
 
 公共书目需要有效的 Google Books 项目访问配置及配额，不强制用户连接个人账号。保留自定义 API key 配置，发行默认项目也必须实际可用；不能把无 key 请求得到的配额错误当作全站无资料，更不能拿 OAuth Client Secret 充当 API key。
 
-本人连接使用项目登记的官方 Desktop 客户端，S256 PKCE 与动态 loopback。普通用户无须自行注册开发者应用。现有 Web 客户端保持原用途，不用于替代新 Desktop 客户端；OAuth 参数、令牌和实际凭据不得进入页面普通 DTO、日志或核验材料。
+本人连接使用项目登记的官方 Desktop 客户端，S256 PKCE 与动态 loopback。普通用户无须自行注册开发者应用。Desktop 客户端与 Web 客户端的类型及回调分别配置；OAuth 参数、令牌和实际凭据不得进入页面普通 DTO、日志或核验材料。
 
 图书范围使用 https://www.googleapis.com/auth/books，身份范围使用下文的 openid 与 email。Books 没有单独只读 scope，账号页准确说明它包含图书管理权限；具体读取和写入仍由用户启用的操作决定，不随连接自动执行。
 
-当前 Bookshelf.list／get 实际没有返回旧说明中的 selfLink，books-only tokeninfo 也没有用户标识。正式连接按用户已同意的范围请求 books、openid、email，不请求 profile。Google ID token.sub 用于稳定识别 Google 账号，邮箱只用于显示；不把 sub 冒充 Books user ID，个人接口使用 /mylibrary，无须伪造 Books 用户编号。
+本人身份由 OpenID 取得，连接请求 books、openid、email，不请求 profile。Books 端点缺少稳定账号标识的依据见[身份核验](../../../verification/evidence/book-sources/live-api.md)。Google ID token.sub 用于稳定识别 Google 账号，邮箱只用于显示；不把 sub 冒充 Books user ID，个人接口使用 /mylibrary，无须伪造 Books 用户编号。
 
 按官方 OpenID 配置验证签名、issuer、audience、有效期及本次 nonce，并核对实际授予的 books、openid 与 email 范围；刷新时核对同一 sub。换账号、刷新、取消、断开与秘密提交沿[共同连接合同](../private-data.md#connection)，新授权成功前保留旧有效连接。
 
-当前 Desktop 客户端实际要求 token／refresh 请求附带其桌面 client_secret；补齐正确配置后交换及刷新均返回 200，S256 保持不变。这类桌面配置随应用交付，不能宣称桌面程序能将其保密；它与 Web 客户端的保密 secret 不同。用户令牌与自定义凭据仍由 secrets 保护。
+Desktop 客户端的 token／refresh 请求附带其桌面 client_secret，并启用 S256；客户端配置依据见[授权核验](../../../verification/evidence/book-sources/live-api.md)。这类桌面配置随应用交付，不能宣称桌面程序能将其保密；它与 Web 客户端的保密 secret 不同。用户令牌与自定义凭据仍由 secrets 保护。
 
-本次使用的自有 OAuth 应用尚未通过 Google 的应用验证；正式发行前需要完成实际权限要求的应用验证与公开分发条件，不能把 API 测试成功当作应用已获验证。
+正式发行使用满足实际权限验证与公开分发条件的 Google OAuth 应用；API 调用成功与应用验证分别判定。
 
 单册资料使用仅允许 Books API 的专用 key。免登录 Volume 读取和名称查询可用，Series 与 membership 只有本人 OAuth 可用；凭据条件按操作分别处理，不因系列需要登录而关闭免登录单册读取。测试配置不写入仓库，发行默认配置与配额由项目维护。
 
@@ -154,7 +154,7 @@ userInfo.review.rating 的 ONE、TWO、THREE、FOUR、FIVE 分别对应本人评
 
 Node 分为 client、account、metadata 和实际采用的 import／sync 模块；Webview 使用既定 Solid 与公共组件，shared 只存私有纯合同。分页、字段映射和账号状态由 Node 拥有，IPC 薄转发完整操作。没有 ImportProvider、SyncProvider 或平台镜像库。
 
-网络默认单次超时 20 秒、安全读取重试 2 次；限流尊重 Retry-After 和实际项目配额。写入未知结果先读回，不盲目重试；多个书架步骤不承诺远端事务。语言和资料字段选择沿本体方案，不继承旧的按首项匹配或自动拼接系列行为。
+网络默认单次超时 20 秒、安全读取重试 2 次；限流尊重 Retry-After 和实际项目配额。写入未知结果先读回，不盲目重试；多个书架步骤不承诺远端事务。语言、资料字段选择与目标匹配沿本体方案，Series 的对象范围使用本页规则。
 
 书目、授权、身份校验、成员操作与清理的来源证据见[核验报告](../../../verification/evidence/book-sources/live-api.md)。
 

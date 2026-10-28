@@ -255,13 +255,13 @@ progress.json 只含 recoveryId、非负单调 sequence 和 phase，phase 为 re
 
 文件设施拥有归档、prepared、恢复清单及进度文件的写入与发布。完整写入并验证普通文件后，通过[原生 syncFile](../engineering/native.md#file-sync)确认该文件的同步；必要同步失败时不将该准备结果交给后续目标修改。完整保护归档及其正式登记也必须先完成，才允许替换用户目标。
 
-Windows 的关键新文件先写入本体拥有的独立临时路径，完成文件同步后，通过已有 moveNoReplace 及 MOVEFILE_WRITE_THROUGH 发布到尚不存在的位置；目标与恢复材料之间的目录移动使用同一原语。它们提供已选 Windows 发布路线，不追加需要管理员权限的整卷刷新，也不把打开目录句柄视为已经执行了目录同步。
+Windows 的关键新文件先写入本体拥有的独立临时路径，完成文件同步后，通过 moveNoReplace 及 MOVEFILE_WRITE_THROUGH 发布到尚不存在的位置；目标与恢复材料之间的目录移动使用同一原语。Windows 的发布采用这些机制，不追加需要管理员权限的整卷刷新，也不把打开目录句柄视为已经执行了目录同步。
 
 macOS 与 Linux 在准备树形成后同步各层目录，按由内到外的次序完成；新增或移动后同步受影响的父目录，跨目录移动包含来源父目录和目标父目录。同一目录只需完成当前阶段的一次同步。macOS 在命名空间同步后，再对同一工作区中已写入的清单文件执行 F_FULLFSYNC，使关键发布屏障使用对应设备；其他卷上的保护归档和数据库按自己的同步配置完成。目录同步失败按该阶段失败处理，不将文件数据同步代替它。
 
 不可变清单及可发现索引成功后才移动旧目标。新目标就位并完成适用同步后，才将恢复索引标为 restored；持久化失败发生在目标修改之后时，保留索引和所有保护材料，返回实际失败并由 inspect 重新核对磁盘。progress 只是提示，更新失败不授权覆盖、清理或重新执行已经完成的移动。
 
-正式验证分别记录文件系统、挂载方式、权限、同步返回、移动与数据库次序，以及进程终止、系统崩溃或断电的实际执行范围。[Linux 目录同步](https://man7.org/linux/man-pages/man2/fsync.2.html)、[Apple 的写入顺序说明](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fsync.2.html)及[Windows 移动标志](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw)各支持其平台机制，不能合并为任意设备上的掉电保证。尤其 Windows 的目录发布、必要空目录和清单的完整耐久性仍须用实际目标文件系统验证；本体不以已有进程中断试件宣称这一项已经通过。
+正式验证分别记录文件系统、挂载方式、权限、同步返回、移动与数据库次序，以及进程终止、系统崩溃或断电的实际执行范围。[Linux 目录同步](https://man7.org/linux/man-pages/man2/fsync.2.html)、[Apple 的写入顺序说明](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fsync.2.html)及[Windows 移动标志](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw)各支持其平台机制，不能合并为任意设备上的掉电保证。Windows 的目录发布、必要空目录和清单耐久性须在实际目标文件系统上验证；进程中断与掉电分别形成证据。
 
 ### 中断后的判定
 

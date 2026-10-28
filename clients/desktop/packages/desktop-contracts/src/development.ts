@@ -29,7 +29,7 @@ export interface DevelopmentReady {
   type: 'ready'
   protocolVersion: number
   appVersion: string
-  /** Null means this application does not yet implement extension loading. */
+  /** Null means this application does not expose an extension runtime API. */
   apiVersion: string | null
   buildId: string
 }

@@ -1,0 +1,105 @@
+{
+  "nodeVersion": "v24.11.1",
+  "scope": "Documented scanner presets only; no scanner, worker, filesystem or UI integration tested.",
+  "results": [
+    {
+      "id": "bracket-both",
+      "pattern": "^(?:(?:\\[[^\\[\\]【】\\r\\n]+\\]|【[^\\[\\]【】\\r\\n]+】)[\\t\\p{Zs}]*)+(?<name>(?![\\[【])\\S[^\\r\\n]*?)[\\t\\p{Zs}]*(?:\\[[^\\[\\]【】\\r\\n]+\\]|【[^\\[\\]【】\\r\\n]+】)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "multi-bracket-prefix",
+      "pattern": "^(?:(?:\\[[^\\[\\]【】\\r\\n]+\\]|【[^\\[\\]【】\\r\\n]+】)[\\t\\p{Zs}]*){2,}(?<name>(?![\\[【])\\S[^\\r\\n]*)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "release-year-suffix",
+      "pattern": "^(?<name>\\S[^\\r\\n]*?)[\\t\\p{Zs}]*(?=\\([0-9]{4}\\)$|（[0-9]{4}）$)[(（](?<year>[0-9]{4})[)）]$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "version-suffix",
+      "pattern": "^(?<name>\\S[^\\r\\n]*?)_v[0-9]+(?:\\.[0-9]+)*$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "lang-suffix",
+      "pattern": "^(?<name>\\S[^\\r\\n]*?)[-_](?:CHS|CHT|JP|EN|KR|SC|TC)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "bracket-prefix",
+      "pattern": "^(?:\\[[^\\[\\]【】\\r\\n]+\\]|【[^\\[\\]【】\\r\\n]+】)[\\t\\p{Zs}]*(?<name>\\S[^\\r\\n]*)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "paren-prefix",
+      "pattern": "^(?:\\([^()（）\\r\\n]+\\)|（[^()（）\\r\\n]+）)[\\t\\p{Zs}]*(?<name>\\S[^\\r\\n]*)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "bracket-suffix",
+      "pattern": "^(?<name>\\S[^\\r\\n]*?)[\\t\\p{Zs}]*(?:\\[[^\\[\\]【】\\r\\n]+\\]|【[^\\[\\]【】\\r\\n]+】)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    },
+    {
+      "id": "paren-suffix",
+      "pattern": "^(?<name>\\S[^\\r\\n]*?)[\\t\\p{Zs}]*(?:\\([^()（）\\r\\n]+\\)|（[^()（）\\r\\n]+）)$",
+      "baselineMatches": true,
+      "separatorInsideName": {
+        "CR": false,
+        "LF": false,
+        "LS": true,
+        "PS": true
+      }
+    }
+  ]
+}

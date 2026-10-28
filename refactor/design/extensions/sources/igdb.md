@@ -24,7 +24,7 @@ source 使用 igdb，身份分别为 game/{id}、character/{id}、company/{id}�
 
 Main Game、明确的 DLC／Expansion、Standalone Expansion、Mod、Remake、Remaster、Expanded Game、Port、Fork，以及可独立管理的游戏 Episode／Season，按实际游戏记录解释为 Game。Episode／Season 保留游戏含义，不建立 Game Part，也不进入动画模型。Bundle、Pack / Addon、Update 以及普通购买版本不作为自动新建目标；购买组合不能仅因有独立 IGDB ID 就变成合编作品。未知类型不默认当 Main Game。
 
-parent_game 与 version_parent 不构成无条件身份等价。本次 Steam App 324160 明确对应 IGDB 262492，其 Port 父链最终到达 9607；接入保留实际命中的移植记录，不能沿父链把这些编号全部绑定为同一作品，也不能把原作日期与移植日期拼成一份记录。已独立管理的移植、重制和高清版可以使用本体现有作品关系。
+parent_game 与 version_parent 不构成无条件身份等价。例如，Steam App 324160 明确对应 IGDB 262492，其 Port 父链最终到达 9607；接入保留实际命中的移植记录，不能沿父链把这些编号全部绑定为同一作品，也不能把原作日期与移植日期拼成一份记录。已独立管理的移植、重制和高清版可以使用本体现有作品关系。
 
 Steam 对应通过 external_game_sources 的真实 Steam 类型及 external_games 的 uid 核对，必须确认返回记录的 game 归属。一个线索命中多个适用记录时返回候选，不选首项。普通商店链接、父级关系和相似名称不能代替这项核验。
 
@@ -104,7 +104,7 @@ image_types 的 16 种分类按实际用途接入，其中 logos 与带 Icon 标
 
 普通数组必须完整覆盖本次来源范围，不能依赖默认 10 项或只读第一页。查询显式指定字段、limit 和稳定排序；分批上限不超过接口允许的 500，4 次／秒与最多 8 个进行中请求是同一应用凭据的整体限制，所有内部子查询共同调度。
 
-反向关系和图片集合按其拥有者字段查询并完成分页。父记录缓存的编号数组只是线索：本次 CLANNAD 列出 6 个 external_games 编号，其中 2 个已经读不到，按实际 game 归属查询得到 4 条记录。使用完整的归属查询确认当前事实，不从悬空编号制造网站身份，也不将一次不完整的 by-id 读取冒充完整名单。
+反向关系和图片集合按其拥有者字段查询并完成分页。父记录缓存的编号数组只是线索：[CLANNAD 样本](../../../verification/evidence/game-sources/live-api.md)的 external_games 数组含有无法读取的编号，而 game 归属查询可以取得实际记录。使用完整的归属查询确认当前事实，不从悬空编号制造网站身份，也不将一次不完整的 by-id 读取冒充完整名单。
 
 必要请求失败时沿公共 ExecutionFailure 和合法 partialResult 交付独立已完成资料；空数组只表示成功读取的当前范围确实为空。未知字段、未知分类、来源记录缺失和权限失败分别处理，不通过错误文案分支。
 

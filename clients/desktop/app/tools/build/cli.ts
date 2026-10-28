@@ -7,7 +7,7 @@ import { hostTarget, parseTarget } from '../lib/targets'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { runCli } from '@kisaki3/tooling/cli'
 import { buildDesktop } from './coordinator'
-import { sourceIdentity } from './identity'
+import { buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 import type { ProgramName } from './programs'
 
@@ -22,7 +22,7 @@ await runCli(async (signal) => {
     }
     const program = values.program as ProgramName
     const output = join(appRoot, 'out', 'programs', target, program)
-    const buildId = await sourceIdentity()
+    const buildId = await buildInputIdentity({ signal })
     await replaceOutput(
       appRoot,
       output,

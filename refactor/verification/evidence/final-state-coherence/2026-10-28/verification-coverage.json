@@ -1,0 +1,138 @@
+{
+  "baseline": "ad9113d0c9eb0d83ee32e876a2aa8cab35fdbffe",
+  "reviewDate": "2026-10-28",
+  "counts": {
+    "files": 16,
+    "scenarios": 13
+  },
+  "entries": [
+    {
+      "path": "refactor/verification/scenarios/engineering.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "私有原生、真实宿主、CI、AppImage、持久化、事实接纳、deeplink、首屏/生命周期、开发IPC及公开包消费与各拥有层合同一致；真实平台和未完成链路保留。",
+      "optionalEditorialFollowup": false,
+      "sha256": "d13e9a1575b1bcdfa723373e3ad04244087c7d9b338a42f56baf53765f156e44"
+    },
+    {
+      "path": "refactor/verification/scenarios/holdings.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "目录发现与已登记维护分开，manual/automatic、识别顺序、固定目标、重定位/合并和使用占用与正式领域规则一致；九项扫描预设与十项文件预设没有混同。",
+      "optionalEditorialFollowup": false,
+      "sha256": "6c64f3020ebf14c9fbef21d465f05e8a128df7f5690bcd7b98091eb09fcc4f45"
+    },
+    {
+      "path": "refactor/verification/scenarios/importers.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "十三项逐源映射、共用 prepared/initial、空历史、绝对时长与 uncertain 接续覆盖完整；本轮移出的探针进度不改变场景。",
+      "optionalEditorialFollowup": false,
+      "sha256": "0271dcaf717523997c59fb458905d413f58d601412855aa38e9cb68a97b01fce"
+    },
+    {
+      "path": "refactor/verification/scenarios/libmpv.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "绑定命令/值与本体媒体操作分工、真实线程和实例/帧寿命、截图来源与颜色、平台传递及整包消费保持正式范围。",
+      "optionalEditorialFollowup": false,
+      "sha256": "27c6f3d2a081b8ee57401506608df7a45bc159230c23622a4debbb4ac0d47c83"
+    },
+    {
+      "path": "refactor/verification/scenarios/library.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "当前安排/完成/活动独立，图写入与 expected、分部更正/合并、标签/合集顺序、查询统计及标注内容与领域合同一致。",
+      "optionalEditorialFollowup": false,
+      "sha256": "756cc13d95c5ae7bccb59e5dfb95b55d780f7a0eeeedd327eaeecee6a6712c13"
+    },
+    {
+      "path": "refactor/verification/scenarios/metadata.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "修改",
+      "reason": "来源身份、同话多身份、Part 唯一对应、relationScopes、图片、更新入口和处理链失败与正式合同一致；关系范围段已归入 updates，原断言及锚点保持。",
+      "optionalEditorialFollowup": false,
+      "sha256": "1d8ae96cd47911af022b1814d1e272d24e07b2128879947d2750bc786d835f50"
+    },
+    {
+      "path": "refactor/verification/scenarios/oauth-relay.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "一次性交换、S256、各provider能力、明确未知结果、不重放和客户端条件保存，以及正式镜像/停止/部署验证分别成立。",
+      "optionalEditorialFollowup": false,
+      "sha256": "13632e76765d5dea69e5eafe1d4ce7c2255d67c4e4182ef8879b0718662669e7"
+    },
+    {
+      "path": "refactor/verification/scenarios/projects.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "四项目独立候选/正式制品与联合消费分开；两原生库、Kana浏览器范围及relay服务各按本身环境取证，不以W00或类型试件代替。",
+      "optionalEditorialFollowup": false,
+      "sha256": "93f52d5f93d9a88c58c7c1135c07017f0422e68c68b037d28a70d15ae268354a"
+    },
+    {
+      "path": "refactor/verification/scenarios/reading.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "阅读偏好与内核设置、源地址/CFI、复杂样式、资源流、真实浏览器/辅助技术、格式/部署和作品导航与既定Kana合同一致。",
+      "optionalEditorialFollowup": false,
+      "sha256": "82ea71049f4ce16c26c3e3ca7dc4e6a11a89205595d2ded22ad4ff21113f82af"
+    },
+    {
+      "path": "refactor/verification/scenarios/sessions.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "目标选择、时钟、启动/监测、关闭/脱离、最后保存失败、FileSwitchResult、播放设置及备份恢复范围完整，真实运行阶段不能因终态准则删除。",
+      "optionalEditorialFollowup": false,
+      "sha256": "84ed017f67e446372d2f9de9e22003a3e3fa2830f71175eea00417599c322536"
+    },
+    {
+      "path": "refactor/verification/scenarios/sources.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "17来源覆盖表与针对性场景保持同一对象/授权/写入合同；MAL无进度独立同步、AniList高级模式未核验与TMDB来源联动准确保留。",
+      "optionalEditorialFollowup": false,
+      "sha256": "9aa9deec9022d929747c154a314f3ba3cc3cfd584a7dfb8681103ad108ec12d0"
+    },
+    {
+      "path": "refactor/verification/scenarios/ui.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "修改",
+      "reason": "原生交互、译本、草稿、搜索/排序、引导原子采用、虚拟化和Webview隔离一致；历史共享检查计数改为原证据引用，完整验收要求保持。",
+      "optionalEditorialFollowup": false,
+      "sha256": "cd72d554f4571176715df8689d321a3b76db2e23c68b9c297f6377177bbc0c5c"
+    },
+    {
+      "path": "refactor/verification/scenarios/vantage.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "真实实例引用、快照/观察、协作结束、单窗采集及平台权限分别验收；未知与退出、进程能力与图形能力不混同。",
+      "optionalEditorialFollowup": false,
+      "sha256": "d80e788d1ebe7bc3caf1df64a7f2b4eb3a7c252d12c7bd2a038add2d2b4e3f03"
+    },
+    {
+      "path": "refactor/verification/coverage.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "R01–R32责任表、跨领域、17来源/13导入器/3译本及三作者模板覆盖完整；引用有效，阶段/样本不缩减正式要求。",
+      "optionalEditorialFollowup": false,
+      "sha256": "ddf73fd52afc79a6a6cd734656a2dcc9f71397cf278e8f1f50650d750b378b75"
+    },
+    {
+      "path": "refactor/implementation/work-packages.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "W00–W13依赖与当前终态/整体一致性原则兼容；W00实际工程与W03/W08运行接续如实分开，工作包安排不构成占位能力或隐式发布。",
+      "optionalEditorialFollowup": false,
+      "sha256": "6ac15ac4ddac21782f51a26da50168fa531a7984f78e210654ddca44e03e6331"
+    },
+    {
+      "path": "refactor/implementation/delivery-checklist.md",
+      "conclusion": "已全文审阅，与相关正式合同及本轮修订无新增语义冲突",
+      "decision": "保留",
+      "reason": "W07子交付、W09-01–33、四独立项目和外部输入状态各自拥有；未开始/未实测/未执行是必要进度事实，保留。",
+      "optionalEditorialFollowup": false,
+      "sha256": "919c05571573c7df7c639c8051102a6b80288e601831f55a26b9d51546f15be3"
+    }
+  ]
+}

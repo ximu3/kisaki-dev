@@ -8,7 +8,7 @@ Kisaki 是面向 ACGN 收藏、使用与记忆的本地资料库。它帮助用�
 
 <a id="judgment"></a>
 
-先确认要解决的实际问题，再比较实现方式。简洁与原生优先是产品和工程的重要判断依据，按[全项目准则](engineering/conventions.md#simplicity-native)共同约束体验、实现、测试和文档。已确认的交付目标、受支持的使用场景和有依据的技术约束可以支撑设计；假想需求、形式上的完整或单纯“更保险”不能成为增加机制的理由。
+先确认完整的用户目标和实际问题，再比较实现方式。[终态实现与整体一致性](engineering/conventions.md#final-state)首先约束体验、架构、实现与说明；[简洁与原生](engineering/conventions.md#simplicity-native)共同参与取舍。设计依据是已确认的交付目标、受支持的使用场景和有依据的技术约束。
 
 设计按以下顺序判断：
 

@@ -40,7 +40,7 @@
 | metadata.profiles、scanner.configs、文件识别方案                 | 名称和其他可编辑独立字段分别比较，definition 整体比较；MetadataProfile 设置 isDefault: true 另允许 defaultProfileId，见[默认方案](metadata-profiles.md)                               |
 | preferences.update                                               | 只允许本次修改的正式配置字段；数组、选择引用和完整凭据按[偏好合同](preferences.md)作为相应单位，凭据只比较读取状态／revision                                                          |
 | showcase.applyChanges                                            | 修改项只比较 name、query、layout、itemSize、limit、openMode、isVisible 的实际修改项，query 整体比较；表单删除按本区块完整原配置比较，最终排列核对完整原顺序，不能把可见区块片段当全集 |
-| appearance 的主题保存与选用                                      | 主题内容按其完整定义；条件选用只比较正式主题选择引用。保存成功但选用失败保留已保存主题，不伪造整体回滚                                                                                |
+| appearance 的主题保存与选用                                      | 名称与分支 token 按实际修改比较，整体替换分支时比较该分支完整原值；条件选用只比较正式主题选择引用。保存成功但选用失败保留已保存主题                                                  |
 
 外部身份、标签、手动合集等集合的“完整”，指该编辑范围的正式事实，包含普通隐藏的关联；普通列表片段、搜索结果和读到的一页不能作为替换基线。没有编辑这些集合时，不要求查询它们，也不阻止其他字段保存。
 
@@ -123,7 +123,7 @@ ErrorSummary.code 的传输类型保留 string，以便同一通信机制承载�
 | 凭据保护   | CredentialProtectionUnavailable：当前系统保护能力不可用；CredentialUnreadable：已存密文无法读取。均保留原凭据，与真实未配置和远端认证失效分开。            |
 | 协议接入   | ProtocolMismatch：帧版本／配置不匹配；ApiIncompatible：正式 API 兼容范围不满足；ProtocolViolation：非法帧或非法消息顺序；PayloadTooLarge：超过明确传输容量 |
 
-上述扩展目录只纳入当前规格已有或本页明确建立的本体分支。来源、安装、更新等正常逐项 issues 仍使用所属业务结果的判别值，不把每个结果分支都提升为异常；没有细分合同的整体失败使用 OperationFailed，不能靠底层库 error.message 生成新 code。独立项目的 MpvError 等保留其自身体系，在本体拥有边界转换，不把第三方所有错误码放进桌面联合。
+上述领域错误目录定义本体失败分支。来源、安装、更新等正常逐项 issues 仍使用所属业务结果的判别值，不把每个结果分支都提升为异常；没有细分合同的整体失败使用 OperationFailed，不能靠底层库 error.message 生成新 code。独立项目的 MpvError 等保留其自身体系，在本体拥有边界转换，不把第三方所有错误码放进桌面联合。
 
 失败结果的 code、message、partialResult 按[共同失败合同](../communication.md#failure)传递；不增加任意 details、retryable 或“强制保存”开关。需要让程序处理逐项上下文时，由所属业务的合法结果／issues 定义明确字段。没有合法结果的普通原子写入不带 partialResult，不能把半份请求装成成功内容。
 
@@ -135,6 +135,6 @@ ErrorSummary.code 的传输类型保留 string，以便同一通信机制承载�
 
 ## 类型与运行验证
 
-W01 正式包的类型与运行校验覆盖表单正常保存与未知 expected 键、非 Work record、无关字段条件、错误关系 binding、局部关联假装完整基线等拒绝样例。W02–W07 在真实短事务中验证：不同字段并发保存可共存，同字段／相关值组冲突不留下部分修改，排序只改变指定侧，显式重复增减保持幂等边界。
+公共包的类型与运行校验覆盖表单正常保存与未知 expected 键、非 Work record、无关字段条件、错误关系 binding、局部关联假装完整基线等拒绝样例。数据库接入在真实短事务中验证：不同字段并发保存可共存，同字段／相关值组冲突不留下部分修改，排序只改变指定侧，显式重复增减保持幂等边界。
 
 公共操作按上述目录声明比较单位与错误分支。需要增加分支时，先更新所属合同与样例；内部 helper 按实际职责安排。公共基线只接受合同明确允许的事实，不接受 `Record<string, unknown>`、任意 SQL 条件或整行时间戳。

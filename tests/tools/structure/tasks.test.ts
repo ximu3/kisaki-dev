@@ -60,7 +60,7 @@ test('the actual task graph excludes generated inputs and always executes runtim
   for (const name of ['build', 'dev', 'package', 'test:dev']) {
     const task = plan.tasks.find((task) => task.taskId === `@kisaki3/desktop#${name}`)!
     expect(task.resolvedTaskDefinition.env, name).toContain('MACOSX_DEPLOYMENT_TARGET')
-    if (name !== 'package') expect(task.resolvedTaskDefinition.env, name).toContain('TSDOWN_*')
+    expect(task.resolvedTaskDefinition.env, name).toContain('TSDOWN_*')
   }
 
   const liveTasks = new Set([

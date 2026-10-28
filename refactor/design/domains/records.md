@@ -45,7 +45,7 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 
 附加时长用于保留没有本地活动明细的游玩、观看或阅读时间，游戏、动画、漫画和小说使用相同规则。累计使用时长等于本体已保存有效活动之和，加上 additional_duration_ms；当前尚未提交的有效增量可以另行显示，不能重复计入。不保存另一列可编辑的 total_duration 镜像。
 
-公开当前记录字段统一为 record.additionalDurationMs，随 entries.create／update、原生新增的 initial 或明确图写入采用。修改只设置非负绝对值，不提供递增总时长或按来源账号保存累计值的接口。已有值编辑沿用 expected.record.additionalDurationMs；缺行的基线为 0。来源资料候选不携带此个人值，不增加游戏专属旧字段或兼容别名。
+公开当前记录字段统一为 record.additionalDurationMs，随 entries.create／update、原生新增的 initial 或明确图写入采用。修改只设置非负绝对值，不提供递增总时长或按来源账号保存累计值的接口。已有值编辑沿用 expected.record.additionalDurationMs；缺行的基线为 0。四类作品共用这一字段与修改合同，来源资料候选不携带此个人值。
 
 四类作品详情都允许编辑附加时长，无需本地文件、启动配置、分部完成或作品完成记录。表单区分已经记录的活动时长与附加时长，只编辑后者。已知明确发生区间时使用[活动补录](library-operations.md#activities)；活动更正或删除不自动反算附加值，也不允许用负附加值抵消错误活动。
 
