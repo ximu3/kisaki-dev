@@ -1,0 +1,724 @@
+$ pnpm typecheck && pnpm lint && pnpm format:check && pnpm test
+$ turbo run typecheck root:typecheck
+
+   • turbo 2.11.10
+   • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+   • Running typecheck, root:typecheck in 46 packages
+   • Remote caching disabled, using shared worktree cache
+
+@kisaki3/eslint-config:typecheck: cache hit, replaying logs 55b4aa5cd26d085d
+@kisaki3/eslint-config:typecheck: $ tsc -p tsconfig.json
+@kisaki3/tooling:typecheck: cache hit, replaying logs b0d700efddc6c5bc
+//:root:typecheck: cache miss, executing 2c255ec3aa97d45a
+@kisaki3/tooling:typecheck: $ tsc -b
+@kisaki3/extension-distribution:typecheck: cache hit, replaying logs 03b17686fbda2b2c
+@kisaki3/appearance:typecheck: cache hit, replaying logs f796bd442d4217f7
+@kisaki3/extension-distribution:typecheck: $ tsc -b
+@kisaki3/appearance:typecheck: $ tsc -b
+@kisaki3/desktop-contracts:typecheck: cache hit, replaying logs 1336704f25c0b56f
+@kisaki3/rpc:typecheck: cache hit, replaying logs 1f0628d79d6ae95e
+@kisaki3/desktop-contracts:typecheck: $ tsc -b
+@kisaki3/rpc:typecheck: $ tsc -b
+@kisaki3/desktop-contracts:build: cache hit, replaying logs 5a5148f59c7be9c3
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.js    5.32 kB │ gzip: 1.46 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.js         0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.js          0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.d.ts  3.34 kB │ gzip: 1.18 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.d.ts       0.47 kB │ gzip: 0.28 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.d.ts        0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.27 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 574ms
+@kisaki3/appearance:build: cache hit, replaying logs 3598ead0095e966a
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.js    1.14 kB │ gzip: 0.45 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.d.ts  1.34 kB │ gzip: 0.55 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.78 kB
+@kisaki3/appearance:build: ✔ Build complete in 824ms
+@kisaki3/extension-api:typecheck: cache hit, replaying logs f82faa97b2c93410
+@kisaki3/extension-cli:build: cache hit, replaying logs deca2f3808d06eb5
+@kisaki3/extension-cli:typecheck: cache hit, replaying logs be5bf99bac151b48
+@kisaki3/extension-api:typecheck: $ tsc -b
+@kisaki3/extension-cli:typecheck: $ tsc -b
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.node.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.js    5.58 kB │ gzip: 1.86 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.js       0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.d.ts  1.84 kB │ gzip: 0.83 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.d.ts     0.79 kB │ gzip: 0.42 kB
+@kisaki3/extension-cli:build: ℹ 4 files, total: 8.39 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 840ms
+@kisaki3/ui:typecheck: cache hit, replaying logs 19ec14f0e8ac8ad0
+@kisaki3/extension-api:build: cache hit, replaying logs 32816e4170d65fe5
+@kisaki3/ui:typecheck: $ tsc -b
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 433ms
+@kisaki3/ext-anilist:typecheck: cache hit, replaying logs 73f8b7f495ee34e9
+@kisaki3/ext-anilist:typecheck: $ tsc -b
+@kisaki3/ext-tmdb:typecheck: cache hit, replaying logs 9524aa4b3a4eb887
+@kisaki3/ext-myanimelist:typecheck: cache hit, replaying logs 6e6969e71375e21b
+@kisaki3/ext-tmdb:typecheck: $ tsc -b
+@kisaki3/ext-myanimelist:typecheck: $ tsc -b
+@kisaki3/ext-goodreads-importer:typecheck: cache hit, replaying logs 8abc5dead9b4c9d0
+@kisaki3/ext-goodreads-importer:typecheck: $ tsc -b
+@kisaki3/ext-koreader-importer:typecheck: cache hit, replaying logs 5cb28d399b6b6446
+@kisaki3/ext-mangaupdates:typecheck: cache hit, replaying logs e2cdab1d24316421
+@kisaki3/ext-koreader-importer:typecheck: $ tsc -b
+@kisaki3/ext-vnite-importer:typecheck: cache hit, replaying logs 49db3294b6af406f
+@kisaki3/ext-mangaupdates:typecheck: $ tsc -b
+@kisaki3/ext-vnite-importer:typecheck: $ tsc -b
+@kisaki3/ext-language-zh-hans:typecheck: cache hit, replaying logs dbed87ead0d77438
+@kisaki3/ext-calibre-importer:typecheck: cache hit, replaying logs 65e255f09e284f7c
+@kisaki3/ext-language-zh-hans:typecheck: $ tsc -b
+@kisaki3/ext-koodo-reader-importer:typecheck: cache hit, replaying logs 036cfa47dc7b59f9
+@kisaki3/ext-calibre-importer:typecheck: $ tsc -b
+@kisaki3/ext-koodo-reader-importer:typecheck: $ tsc -b
+@kisaki3/ext-nfo-comicinfo-importer:typecheck: cache hit, replaying logs 518e9fa93c924fb2
+@kisaki3/ext-yacreader-importer:typecheck: cache hit, replaying logs 06469e83b152ea35
+@kisaki3/ext-nfo-comicinfo-importer:typecheck: $ tsc -b
+@kisaki3/ext-yacreader-importer:typecheck: $ tsc -b
+@kisaki3/ext-google-books:typecheck: cache hit, replaying logs 747ce3ca3637b234
+@kisaki3/ext-kotatsu-importer:typecheck: cache hit, replaying logs de9cc68cd2eba259
+@kisaki3/ext-google-books:typecheck: $ tsc -b
+@kisaki3/ext-language-zh-hant:typecheck: cache hit, replaying logs ed5eac5a89d7cd37
+@kisaki3/ext-kotatsu-importer:typecheck: $ tsc -b
+@kisaki3/ext-igdb:typecheck: cache hit, replaying logs 9d9ac232e0526b48
+@kisaki3/ext-language-zh-hant:typecheck: $ tsc -b
+@kisaki3/ext-ndl-search:typecheck: cache hit, replaying logs e919fbcb03d4d2ba
+@kisaki3/ext-igdb:typecheck: $ tsc -b
+@kisaki3/ext-playnite-importer:typecheck: cache hit, replaying logs 978fd73e848104f3
+@kisaki3/ext-ndl-search:typecheck: $ tsc -b
+@kisaki3/ext-mihon-importer:typecheck: cache hit, replaying logs 7de413906306730b
+@kisaki3/ext-playnite-importer:typecheck: $ tsc -b
+@kisaki3/ext-mihon-importer:typecheck: $ tsc -b
+@kisaki3/ext-bangumi:typecheck: cache hit, replaying logs c39a7c47c29643bb
+@kisaki3/ext-bangumi:typecheck: $ tsc -b
+@kisaki3/ext-steamgriddb:typecheck: cache hit, replaying logs e779dd26a86f8057
+@kisaki3/ext-steamgriddb:typecheck: $ tsc -b
+@kisaki3/ext-wikidata:typecheck: cache hit, replaying logs 123f1a13d07117dc
+@kisaki3/ext-itch-io:typecheck: cache hit, replaying logs 9ac6624eb30d3847
+@kisaki3/ext-wikidata:typecheck: $ tsc -b
+@kisaki3/ext-mangadex:typecheck: cache hit, replaying logs 509c1950adf6d263
+@kisaki3/ext-itch-io:typecheck: $ tsc -b
+@kisaki3/ext-ranobedb:typecheck: cache hit, replaying logs 7c64c0ba5a32d2c4
+@kisaki3/ext-mangadex:typecheck: $ tsc -b
+@kisaki3/ext-ranobedb:typecheck: $ tsc -b
+@kisaki3/ext-language-ja:typecheck: cache hit, replaying logs 214a0e38d0664e8c
+@kisaki3/ext-anx-reader-importer:typecheck: cache hit, replaying logs 3064e5caf9eeff51
+@kisaki3/ext-steam:typecheck: cache hit, replaying logs 79135e500d35c499
+@kisaki3/ext-language-ja:typecheck: $ tsc -b
+@kisaki3/ext-steam:typecheck: $ tsc -b
+@kisaki3/ext-ymgal:typecheck: cache hit, replaying logs 668aad6b712b4f4c
+@kisaki3/ext-anx-reader-importer:typecheck: $ tsc -b
+@kisaki3/ext-ymgal:typecheck: $ tsc -b
+@kisaki3/ext-launchbox-importer:typecheck: cache hit, replaying logs 5442ad2438bfc34d
+@kisaki3/ext-potatovn-importer:typecheck: cache hit, replaying logs c4b563615099124a
+@kisaki3/ext-fanart-tv:typecheck: cache hit, replaying logs 7537f52a14ae6efe
+@kisaki3/ext-launchbox-importer:typecheck: $ tsc -b
+@kisaki3/ext-potatovn-importer:typecheck: $ tsc -b
+@kisaki3/ext-fanart-tv:typecheck: $ tsc -b
+@kisaki3/ext-vndb:typecheck: cache hit, replaying logs b1cace961d3e6473
+@kisaki3/extension-sdk:typecheck: cache hit, replaying logs cd6b64576cbfd34c
+@kisaki3/ext-vndb:typecheck: $ tsc -b
+@kisaki3/extension-sdk:typecheck: $ tsc -b
+@kisaki3/ui:build: cache hit, replaying logs 17d67b4a42e32333
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.js    0.81 kB │ gzip: 0.48 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.18 kB
+@kisaki3/ui:build: ✔ Build complete in 1418ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 134ms
+@kisaki3/desktop:typecheck: cache miss, executing 5d9e7884d225a09c
+//:root:typecheck: $ tsc -b
+@kisaki3/desktop:typecheck: $ tsc -b
+
+ Tasks:    50 successful, 50 total
+Cached:    48 cached, 50 total
+  Time:    2.773s 
+
+$ turbo run lint root:lint check:boundaries
+
+   • turbo 2.11.10
+   • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+   • Running lint, root:lint, check:boundaries in 46 packages
+   • Remote caching disabled, using shared worktree cache
+
+@kisaki3/desktop:lint: cache miss, executing 66da90f2c0096dc7
+@kisaki3/ext-calibre-importer:lint: cache hit, replaying logs 29e28fe414f9a49f
+@kisaki3/ext-anx-reader-importer:lint: cache hit, replaying logs 770cf87bd4e511dc
+@kisaki3/ext-calibre-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-wikidata:lint: cache hit, replaying logs 4b28b84bdb95b776
+@kisaki3/ext-anx-reader-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-wikidata:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-language-zh-hans:lint: cache hit, replaying logs 5baddfffec2d6702
+@kisaki3/ext-language-ja:lint: cache hit, replaying logs 6aeb65ab01ef55f8
+@kisaki3/extension-sdk:lint: cache hit, replaying logs 4407f861b8456b04
+@kisaki3/ext-language-zh-hans:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-language-ja:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-mangaupdates:lint: cache hit, replaying logs 63097878bd42a609
+@kisaki3/appearance:lint: cache hit, replaying logs 3c71bedc9120aca2
+@kisaki3/extension-sdk:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-mangaupdates:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-launchbox-importer:lint: cache hit, replaying logs 6a0eb33816158a1a
+@kisaki3/appearance:lint: $ eslint . --max-warnings 0
+@kisaki3/rpc:lint: cache hit, replaying logs 5c77458971715d81
+@kisaki3/ext-launchbox-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/rpc:lint: $ eslint . --max-warnings 0
+@kisaki3/desktop-contracts:lint: cache hit, replaying logs bb2bb7ebca62254c
+@kisaki3/desktop-contracts:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-vnite-importer:lint: cache hit, replaying logs c068b7727280cb2e
+@kisaki3/ext-itch-io:lint: cache hit, replaying logs 7c137957eaaffe3d
+@kisaki3/ext-vnite-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-itch-io:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-fanart-tv:lint: cache hit, replaying logs ac661a1e11852dda
+@kisaki3/ext-igdb:lint: cache hit, replaying logs e6fadc28fee11cbe
+@kisaki3/ext-igdb:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-ndl-search:lint: cache hit, replaying logs d25a79e28d8c96fd
+@kisaki3/ext-fanart-tv:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-ndl-search:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-playnite-importer:lint: cache hit, replaying logs 4056b9a4c1498cec
+@kisaki3/ext-goodreads-importer:lint: cache hit, replaying logs b0b28e8b947f7499
+@kisaki3/ext-playnite-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-vndb:lint: cache hit, replaying logs f90a2079bc4c8f71
+@kisaki3/ext-goodreads-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-vndb:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-language-zh-hant:lint: cache hit, replaying logs b00ce7f22887d961
+@kisaki3/ext-language-zh-hant:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-yacreader-importer:lint: cache hit, replaying logs 0aa4fa1e8079b695
+@kisaki3/ext-yacreader-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-ranobedb:lint: cache hit, replaying logs 9cac7f51002d3584
+@kisaki3/ext-ranobedb:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-kotatsu-importer:lint: cache hit, replaying logs 6797da2dd894e247
+@kisaki3/ext-google-books:lint: cache hit, replaying logs 0336226707c255e7
+@kisaki3/ext-kotatsu-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/extension-distribution:lint: cache hit, replaying logs db991f5e49d65096
+@kisaki3/ext-google-books:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-koodo-reader-importer:lint: cache hit, replaying logs 7c81b596bdb3792a
+@kisaki3/extension-distribution:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-koodo-reader-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-potatovn-importer:lint: cache hit, replaying logs 1e4c112a7adc0ac8
+@kisaki3/ext-myanimelist:lint: cache hit, replaying logs 6138a4d86f0fcbec
+@kisaki3/ext-potatovn-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-myanimelist:lint: $ eslint . --max-warnings 0
+@kisaki3/tooling:lint: cache hit, replaying logs 7f549d978c4d493f
+@kisaki3/ext-anilist:lint: cache hit, replaying logs 551afcd46bd018f2
+@kisaki3/tooling:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-anilist:lint: $ eslint . --max-warnings 0
+@kisaki3/extension-api:lint: cache hit, replaying logs 26c24f06448bdbaa
+@kisaki3/extension-api:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-steamgriddb:lint: cache hit, replaying logs b87202e17aa4b4f1
+@kisaki3/ext-steamgriddb:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-tmdb:lint: cache hit, replaying logs 034e58031796a7c9
+@kisaki3/ext-mangadex:lint: cache hit, replaying logs f2a847167fe68620
+@kisaki3/ext-tmdb:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-koreader-importer:lint: cache hit, replaying logs 963dbeee7b7bae6b
+@kisaki3/ext-mangadex:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-koreader-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-nfo-comicinfo-importer:lint: cache hit, replaying logs 1a6c3f499a4fa80d
+@kisaki3/ext-nfo-comicinfo-importer:lint: $ eslint . --max-warnings 0
+//:root:lint: cache hit, replaying logs 736a7584bc710439
+@kisaki3/extension-cli:lint: cache hit, replaying logs aa659681c83eb17e
+//:root:lint: $ eslint "*.config.ts" config tools tests --max-warnings 0
+@kisaki3/extension-cli:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-mihon-importer:lint: cache hit, replaying logs 8be13ddc094d6541
+@kisaki3/eslint-config:lint: cache hit, replaying logs e820091586f650ef
+@kisaki3/ext-mihon-importer:lint: $ eslint . --max-warnings 0
+@kisaki3/eslint-config:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-ymgal:lint: cache hit, replaying logs 16cb232fb359da8f
+@kisaki3/ui:lint: cache hit, replaying logs e9d77fe4aef74a4d
+@kisaki3/ext-steam:lint: cache hit, replaying logs 5de6e3ddd8d203b3
+@kisaki3/ui:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-ymgal:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-steam:lint: $ eslint . --max-warnings 0
+@kisaki3/ext-bangumi:lint: cache hit, replaying logs 8637277ae31893b9
+@kisaki3/ext-bangumi:lint: $ eslint . --max-warnings 0
+@kisaki3/extension-distribution:build: cache hit, replaying logs aa6f1d853d725bdb
+@kisaki3/extension-distribution:build: $ tsx tools/build.ts
+@kisaki3/extension-distribution:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-distribution\tsdown.config.ts 
+@kisaki3/extension-distribution:build: ℹ entry: src/index.ts, src/metadata.ts
+@kisaki3/extension-distribution:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-distribution:build: ℹ Build start
+@kisaki3/extension-distribution:build: ℹ Cleaning 1 files
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-ppJmH0\index.js       0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-ppJmH0\metadata.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-ppJmH0\metadata.d.ts  0.26 kB │ gzip: 0.20 kB
+@kisaki3/extension-distribution:build: ℹ .cache\output-staging\dist-ppJmH0\index.d.ts     0.08 kB │ gzip: 0.08 kB
+@kisaki3/extension-distribution:build: ℹ 4 files, total: 0.36 kB
+@kisaki3/extension-distribution:build: ✔ Build complete in 556ms
+@kisaki3/rpc:build: cache hit, replaying logs fe997288323672da
+@kisaki3/desktop-contracts:build: cache hit, replaying logs 5a5148f59c7be9c3
+@kisaki3/appearance:build: cache hit, replaying logs 3598ead0095e966a
+@kisaki3/rpc:build: $ tsx tools/build.ts
+@kisaki3/rpc:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\rpc\tsdown.config.ts 
+@kisaki3/rpc:build: ℹ entry: src/index.ts, src/transport.ts
+@kisaki3/rpc:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/rpc:build: ℹ Build start
+@kisaki3/rpc:build: ℹ Cleaning 1 files
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-fsbNNA\index.js        0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-fsbNNA\transport.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-fsbNNA\transport.d.ts  0.74 kB │ gzip: 0.40 kB
+@kisaki3/rpc:build: ℹ .cache\output-staging\dist-fsbNNA\index.d.ts      0.08 kB │ gzip: 0.07 kB
+@kisaki3/rpc:build: ℹ 4 files, total: 0.85 kB
+@kisaki3/rpc:build: ✔ Build complete in 569ms
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.js    5.32 kB │ gzip: 1.46 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.js         0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.js          0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.d.ts  3.34 kB │ gzip: 1.18 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.d.ts       0.47 kB │ gzip: 0.28 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.d.ts        0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.27 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 574ms
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.js    1.14 kB │ gzip: 0.45 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.d.ts  1.34 kB │ gzip: 0.55 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.78 kB
+@kisaki3/appearance:build: ✔ Build complete in 824ms
+@kisaki3/extension-api:build: cache hit, replaying logs 32816e4170d65fe5
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 433ms
+@kisaki3/ui:build: cache hit, replaying logs 17d67b4a42e32333
+@kisaki3/extension-cli:build: cache hit, replaying logs deca2f3808d06eb5
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.js    0.81 kB │ gzip: 0.48 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.18 kB
+@kisaki3/ui:build: ✔ Build complete in 1418ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 134ms
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.node.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.js    5.58 kB │ gzip: 1.86 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.js       0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.d.ts  1.84 kB │ gzip: 0.83 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.d.ts     0.79 kB │ gzip: 0.42 kB
+@kisaki3/extension-cli:build: ℹ 4 files, total: 8.39 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 840ms
+@kisaki3/extension-sdk:build: cache hit, replaying logs b85f28e81cdc2ac8
+@kisaki3/extension-sdk:build: $ tsx tools/build.ts
+@kisaki3/extension-sdk:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-sdk\tsdown.config.ts 
+@kisaki3/extension-sdk:build: ℹ entry: src/index.ts
+@kisaki3/extension-sdk:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-sdk:build: ℹ Build start
+@kisaki3/extension-sdk:build: ℹ Cleaning 1 files
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-P3KvvH\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-sdk:build: ℹ .cache\output-staging\dist-P3KvvH\index.d.ts  0.12 kB │ gzip: 0.10 kB
+@kisaki3/extension-sdk:build: ℹ 2 files, total: 0.13 kB
+@kisaki3/extension-sdk:build: ✔ Build complete in 609ms
+//:check:boundaries: cache miss, executing 38d2c7b892050e0e
+@kisaki3/desktop:lint: $ eslint . --max-warnings 0
+//:check:boundaries: $ depcruise --config .dependency-cruiser.json .
+//:check:boundaries: 
+//:check:boundaries: ✔ no dependency violations found (261 modules, 558 dependencies cruised)
+//:check:boundaries: 
+
+ Tasks:    54 successful, 54 total
+Cached:    52 cached, 54 total
+  Time:    2.535s 
+
+$ prettier . --check
+Checking formatting...
+All matched files use Prettier code style!
+$ turbo run test root:test
+
+   • turbo 2.11.10
+   • Packages in scope: //, @kisaki3/appearance, @kisaki3/desktop, @kisaki3/desktop-contracts, @kisaki3/eslint-config, @kisaki3/ext-anilist, @kisaki3/ext-anx-reader-importer, @kisaki3/ext-bangumi, @kisaki3/ext-calibre-importer, @kisaki3/ext-fanart-tv, @kisaki3/ext-goodreads-importer, @kisaki3/ext-google-books, @kisaki3/ext-igdb, @kisaki3/ext-itch-io, @kisaki3/ext-koodo-reader-importer, @kisaki3/ext-koreader-importer, @kisaki3/ext-kotatsu-importer, @kisaki3/ext-language-ja, @kisaki3/ext-language-zh-hans, @kisaki3/ext-language-zh-hant, @kisaki3/ext-launchbox-importer, @kisaki3/ext-mangadex, @kisaki3/ext-mangaupdates, @kisaki3/ext-mihon-importer, @kisaki3/ext-myanimelist, @kisaki3/ext-ndl-search, @kisaki3/ext-nfo-comicinfo-importer, @kisaki3/ext-playnite-importer, @kisaki3/ext-potatovn-importer, @kisaki3/ext-ranobedb, @kisaki3/ext-steam, @kisaki3/ext-steamgriddb, @kisaki3/ext-tmdb, @kisaki3/ext-vndb, @kisaki3/ext-vnite-importer, @kisaki3/ext-wikidata, @kisaki3/ext-yacreader-importer, @kisaki3/ext-ymgal, @kisaki3/extension-api, @kisaki3/extension-cli, @kisaki3/extension-distribution, @kisaki3/extension-sdk, @kisaki3/rpc, @kisaki3/tooling, @kisaki3/typescript-config, @kisaki3/ui
+   • Running test, root:test in 46 packages
+   • Remote caching disabled, using shared worktree cache
+
+@kisaki3/tooling:test: cache bypass, force executing 3ea8cb27d7248d0a
+@kisaki3/desktop-contracts:test: cache bypass, force executing c046d90d3543e8f9
+//:root:test: cache bypass, force executing 4036911cfd651c3c
+@kisaki3/appearance:build: cache hit, replaying logs 3598ead0095e966a
+@kisaki3/desktop-contracts:build: cache hit, replaying logs 5a5148f59c7be9c3
+@kisaki3/appearance:build: $ tsx tools/build.ts
+@kisaki3/appearance:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\appearance\tsdown.config.ts 
+@kisaki3/appearance:build: ℹ entry: src/index.ts, src/tokens.ts
+@kisaki3/appearance:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/appearance:build: ℹ Build start
+@kisaki3/appearance:build: ℹ Cleaning 1 files
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.js     3.87 kB │ gzip: 0.86 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.js    1.14 kB │ gzip: 0.45 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\tokens.d.ts  1.34 kB │ gzip: 0.55 kB
+@kisaki3/appearance:build: ℹ .cache\output-staging\dist-EZ314e\index.d.ts   0.44 kB │ gzip: 0.23 kB
+@kisaki3/appearance:build: ℹ 4 files, total: 6.78 kB
+@kisaki3/appearance:build: ✔ Build complete in 824ms
+@kisaki3/desktop-contracts:build: $ tsx tools/build.ts
+@kisaki3/desktop-contracts:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\desktop-contracts\tsdown.config.ts 
+@kisaki3/desktop-contracts:build: ℹ entry: src/index.ts, src/errors.ts, src/development.ts
+@kisaki3/desktop-contracts:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/desktop-contracts:build: ℹ Build start
+@kisaki3/desktop-contracts:build: ℹ Cleaning 1 files
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.js    5.32 kB │ gzip: 1.46 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.js         0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.js          0.01 kB │ gzip: 0.03 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\development.d.ts  3.34 kB │ gzip: 1.18 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\errors.d.ts       0.47 kB │ gzip: 0.28 kB
+@kisaki3/desktop-contracts:build: ℹ .cache\output-staging\dist-m13F0j\index.d.ts        0.11 kB │ gzip: 0.09 kB
+@kisaki3/desktop-contracts:build: ℹ 6 files, total: 9.27 kB
+@kisaki3/desktop-contracts:build: ✔ Build complete in 574ms
+@kisaki3/extension-cli:test: cache bypass, force executing 7dce338421e43a1d
+@kisaki3/extension-cli:build: cache hit, replaying logs deca2f3808d06eb5
+@kisaki3/extension-cli:build: $ tsx tools/build.ts
+@kisaki3/extension-cli:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-cli\tsdown.config.ts 
+@kisaki3/extension-cli:build: ℹ entry: src/config.ts, src/extension.ts
+@kisaki3/extension-cli:build: ℹ tsconfig: config\typescript\tsconfig.node.json
+@kisaki3/extension-cli:build: ℹ Build start
+@kisaki3/extension-cli:build: ℹ Cleaning 1 files
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.js    5.58 kB │ gzip: 1.86 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.js       0.18 kB │ gzip: 0.15 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\extension.d.ts  1.84 kB │ gzip: 0.83 kB
+@kisaki3/extension-cli:build: ℹ .cache\output-staging\dist-kpliXw\config.d.ts     0.79 kB │ gzip: 0.42 kB
+@kisaki3/extension-cli:build: ℹ 4 files, total: 8.39 kB
+@kisaki3/extension-cli:build: ✔ Build complete in 840ms
+@kisaki3/ui:build: cache hit, replaying logs 17d67b4a42e32333
+@kisaki3/extension-api:build: cache hit, replaying logs 32816e4170d65fe5
+@kisaki3/ui:build: $ tsx tools/build.ts
+@kisaki3/ui:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\ui\tsdown.config.ts 
+@kisaki3/ui:build: ℹ entry: src/index.ts
+@kisaki3/ui:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/ui:build: ℹ Build start
+@kisaki3/ui:build: ℹ Cleaning 1 files
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.js    0.81 kB │ gzip: 0.48 kB
+@kisaki3/ui:build: ℹ .cache\output-staging\dist-SJHlA8\index.d.ts  0.37 kB │ gzip: 0.25 kB
+@kisaki3/ui:build: ℹ 2 files, total: 1.18 kB
+@kisaki3/ui:build: ✔ Build complete in 1418ms
+@kisaki3/ui:build: ≈ tailwindcss v4.3.3
+@kisaki3/ui:build: 
+@kisaki3/ui:build: Done in 134ms
+@kisaki3/extension-api:build: $ tsx tools/build.ts
+@kisaki3/extension-api:build: ℹ config file: C:\Users\ximu\.codex\worktrees\appimage-policy-probe\kisaki\clients\desktop\packages\extension-api\tsdown.config.ts 
+@kisaki3/extension-api:build: ℹ entry: src/index.ts
+@kisaki3/extension-api:build: ℹ tsconfig: config\typescript\tsconfig.lib.json
+@kisaki3/extension-api:build: ℹ Build start
+@kisaki3/extension-api:build: ℹ Cleaning 1 files
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.js    0.01 kB │ gzip: 0.03 kB
+@kisaki3/extension-api:build: ℹ .cache\output-staging\dist-KN9lYE\index.d.ts  0.13 kB │ gzip: 0.11 kB
+@kisaki3/extension-api:build: ℹ 2 files, total: 0.14 kB
+@kisaki3/extension-api:build: ✔ Build complete in 433ms
+@kisaki3/desktop:test: cache bypass, force executing 7fc5d414c10d8473
+@kisaki3/tooling:test: $ vitest run
+@kisaki3/desktop-contracts:test: $ vitest run
+//:root:test: $ vitest run
+@kisaki3/extension-cli:test: $ vitest run
+@kisaki3/desktop:test: $ vitest run
+@kisaki3/tooling:test: 
+@kisaki3/tooling:test:  RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/packages/tooling
+@kisaki3/tooling:test: 
+@kisaki3/desktop-contracts:test: 
+@kisaki3/desktop-contracts:test:  RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/packages/desktop-contracts
+@kisaki3/desktop-contracts:test: 
+//:root:test: 
+//:root:test:  RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki
+//:root:test: 
+@kisaki3/tooling:test:  ✓ tests/output.test.ts (3 tests) 41ms
+@kisaki3/desktop-contracts:test:  ✓ src/development.test.ts (1 test) 4ms
+@kisaki3/desktop-contracts:test: 
+@kisaki3/desktop-contracts:test:  Test Files  1 passed (1)
+@kisaki3/desktop-contracts:test:       Tests  1 passed (1)
+@kisaki3/desktop-contracts:test:    Start at  19:41:03
+@kisaki3/desktop-contracts:test:    Duration  280ms (import 53%, transform 21%, worker 16%, tests 9%)
+@kisaki3/desktop-contracts:test: 
+@kisaki3/extension-cli:test: 
+@kisaki3/extension-cli:test:  RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/packages/extension-cli
+@kisaki3/extension-cli:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  RUN  v5.0.5 C:/Users/ximu/.codex/worktrees/appimage-policy-probe/kisaki/clients/desktop/app
+@kisaki3/desktop:test: 
+@kisaki3/extension-cli:test:  ✓ tests/integration/development-application.test.ts (2 tests) 630ms
+@kisaki3/extension-cli:test:    ✓ shares a pending stop, preserves a cancelled connection and observes exit after explicit disconnect 348ms
+@kisaki3/extension-cli:test: 
+@kisaki3/extension-cli:test:  Test Files  1 passed (1)
+@kisaki3/extension-cli:test:       Tests  2 passed (2)
+@kisaki3/extension-cli:test:    Start at  19:41:03
+@kisaki3/extension-cli:test:    Duration  969ms (tests 90%, import 5%, transform 3%, worker 1%)
+@kisaki3/extension-cli:test: 
+@kisaki3/desktop:test:  ✓ tests/tools/resources/fonts.test.ts (3 tests) 43ms
+@kisaki3/desktop:test:  ✓ tests/tools/clean.test.ts (1 test) 31ms
+@kisaki3/desktop:test:  ✓ tests/integration/portable.test.ts (4 tests) 32ms
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  ✓ tests/tools/build/programs.test.ts (2 tests) 245ms
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/first/main.cjs  0.20 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 34ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/first/reader.cjs  0.21 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 22ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/first/player.cjs  0.21 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 15ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/first/game-panel.cjs  0.22 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 16ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/second/main.cjs  0.21 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 15ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/second/reader.cjs  0.21 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 16ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/second/player.cjs  0.21 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 17ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stderr | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+@kisaki3/desktop:test:   - ESM syntax in a file loaded as CommonJS (config/vite/vite.config.preload.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+@kisaki3/desktop:test: Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: vite v8.3.3 building client environment for production...
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: transforming...
+@kisaki3/desktop:test: ✓ 2 modules transformed.
+@kisaki3/desktop:test: rendering chunks...
+@kisaki3/desktop:test: computing gzip size...
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ../../../../../../../AppData/Local/Temp/kisaki-preload-config-1fwnmm/out/second/game-panel.cjs  0.22 kB │ gzip: 0.17 kB
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/build/preload.test.ts > preload entry changes take effect in a later build within the same process
+@kisaki3/desktop:test: ✓ built in 20ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  ✓ tests/tools/dependencies.test.ts (1 test) 957ms
+@kisaki3/desktop:test:    ✓ development snapshots include production workspace packages and exclude private engineering dependencies 956ms
+@kisaki3/desktop:test:  ✓ tests/tools/build/preload.test.ts (1 test) 498ms
+@kisaki3/desktop:test:    ✓ preload entry changes take effect in a later build within the same process 496ms
+@kisaki3/tooling:test:  ✓ tests/process.test.ts (2 tests) 2186ms
+@kisaki3/tooling:test:    ✓ cancelling a command waits for the command and its descendant to exit 1966ms
+@kisaki3/tooling:test: 
+@kisaki3/tooling:test:  Test Files  2 passed (2)
+@kisaki3/tooling:test:       Tests  5 passed (5)
+@kisaki3/tooling:test:    Start at  19:41:03
+@kisaki3/tooling:test:    Duration  2.46s (tests 97%, import 2%, transform 1%, worker 1%)
+@kisaki3/tooling:test: 
+@kisaki3/desktop:test: stdout | tests/tools/dependency-snapshots.test.ts > Vite resolves complete snapshots and preserves the active generation after a failed export
+@kisaki3/desktop:test: 19:41:06 [vite] server restarted.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test: stdout | tests/tools/inputs.test.ts
+@kisaki3/desktop:test: 19:41:06 [vite] server restarted.
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  ✓ tests/tools/dependency-snapshots.test.ts (1 test) 1459ms
+@kisaki3/desktop:test:    ✓ Vite resolves complete snapshots and preserves the active generation after a failed export 1457ms
+//:root:test:  ✓ tests/tools/structure/boundaries.test.ts (13 tests) 2550ms
+//:root:test:  ✓ tests/tools/structure/lint.test.ts (1 test) 2272ms
+//:root:test:    ✓ one staged-file lint run can load root, application, package and extension configurations 2270ms
+//:root:test:  ✓ tests/tools/structure/workspace.test.ts (2 tests) 2153ms
+//:root:test:    ✓ pnpm registers the maintained projects with unique identities and the intended publication boundaries 964ms
+//:root:test:    ✓ all maintained JavaScript-environment sources are TypeScript and have an executed typecheck owner 1187ms
+@kisaki3/desktop:test:  ✓ tests/tools/inputs.test.ts (1 test) 2092ms
+@kisaki3/desktop:test:    ✓ runtime configuration and nested public-package inputs remain watched after Vite restarts 707ms
+//:root:test:  ✓ tests/tools/hooks/lifecycle.test.ts (8 tests) 14627ms
+//:root:test:    ✓ installs idempotently, uninstalls cleanly, and never edits inherited configuration 2976ms
+//:root:test:    ✓ preserves an explicit local hook path "" 530ms
+//:root:test:    ✓ preserves an explicit local hook path ".other-hooks" 463ms
+//:root:test:    ✓ rejects an inherited hook path, including an explicitly empty value 418ms
+//:root:test:    ✓ preserves a hook path changed by the user after installation 1070ms
+//:root:test:    ✓ one repository-local installation and removal governs all worktrees 1842ms
+//:root:test:    ✓ a failed partial-staging check restores both worktree and index without modifying files 7109ms
+@kisaki3/desktop:test:  ✓ tests/tools/build/identity.test.ts (5 tests) 14672ms
+@kisaki3/desktop:test:    ✓ production source, compiler configuration and global inputs change the build identity 6522ms
+@kisaki3/desktop:test:    ✓ documentation, development and packaging inputs do not change the finite build identity 2119ms
+@kisaki3/desktop:test:    ✓ generated output stays outside input identity while runtime bytes retain their own digests 2430ms
+@kisaki3/desktop:test:    ✓ declared build environment values contribute to the input identity 2142ms
+@kisaki3/desktop:test:    ✓ rejects when the desktop build task is unavailable 1456ms
+@kisaki3/desktop:test: 
+@kisaki3/desktop:test:  Test Files  9 passed (9)
+@kisaki3/desktop:test:       Tests  19 passed (19)
+@kisaki3/desktop:test:    Start at  19:41:04
+@kisaki3/desktop:test:    Duration  15.28s (tests 91%, import 7%, transform 1%, worker 1%)
+@kisaki3/desktop:test: 
+//:root:test:  ✓ tests/tools/structure/tasks.test.ts (2 tests) 19642ms
+//:root:test:    ✓ the actual task graph excludes generated inputs and always executes runtime validation 592ms
+//:root:test:    ✓ affected tasks follow verification inputs without promoting documentation or test edits to full desktop acceptance 19048ms
+//:root:test: 
+//:root:test:  Test Files  5 passed (5)
+//:root:test:       Tests  26 passed (26)
+//:root:test:    Start at  19:41:03
+//:root:test:    Duration  19.96s (tests 97%, import 3%)
+//:root:test: 
+
+ Tasks:    10 successful, 10 total
+Cached:    5 cached, 10 total
+  Time:    21.32s 
+

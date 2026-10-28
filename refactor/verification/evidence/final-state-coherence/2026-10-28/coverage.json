@@ -8,7 +8,10 @@
     "codeAndConfiguration": 413,
     "otherInputs": 51,
     "historicalEvidenceFilesRetained": 3826,
-    "removedMaintainedFiles": 1
+    "removedMaintainedFiles": 1,
+    "addedMaintainedFiles": 1,
+    "currentMaintainedFiles": 684,
+    "reviewedEntries": 685
   },
   "entries": [
     {
@@ -296,8 +299,8 @@
       "kind": "code-or-configuration",
       "review": "main",
       "method": "semantic-review",
-      "result": "retained",
-      "sha256": "5895071999756b3ddf43b718da0499abd45e54ded54e49e3110c1e51da1c20af"
+      "result": "modified",
+      "sha256": "b7e79eae30a07fa132eb78d2b3f33c3b8783f146a273905a3f98640c89b0bd22"
     },
     {
       "path": "clients/desktop/app/config/vite/vite.config.renderer.ts",
@@ -848,8 +851,8 @@
       "kind": "code-or-configuration",
       "review": "desktop-runtime",
       "method": "semantic-review",
-      "result": "retained",
-      "sha256": "e4ec44aeea98770a59391e9e406b21e78519f7cf9e530085373b3cd075b3f250"
+      "result": "modified",
+      "sha256": "a8b7a9ad56b0266cc21074a55ad3ac9a4dee0dbd6c9ec6fba8e2545f028fec5e"
     },
     {
       "path": "clients/desktop/app/tests/support/development-workspace.ts",
@@ -928,16 +931,16 @@
       "kind": "code-or-configuration",
       "review": "main",
       "method": "semantic-review",
-      "result": "retained",
-      "sha256": "7838505e755d59c7378b54402473b3b831e2642cece6fa367a97c0b092ebad66"
+      "result": "modified",
+      "sha256": "27860596cf26312555c12420a23e6b4a97d29b2db3cfed393e6241fdcf49b6c5"
     },
     {
       "path": "clients/desktop/app/tests/tools/dev/session.test.ts",
       "kind": "code-or-configuration",
       "review": "main",
       "method": "semantic-review",
-      "result": "retained",
-      "sha256": "9978b5e8401511407f9afcd749aaef75a1b3eb8129ad6a22b51d4ad718dcc126"
+      "result": "modified",
+      "sha256": "2dcc60b4c03579e805b7f1ab7bd0c6efe03101337a534021ee77fb8aef57a33f"
     },
     {
       "path": "clients/desktop/app/tests/tools/inputs.test.ts",
@@ -969,7 +972,7 @@
       "review": "main",
       "method": "semantic-review",
       "result": "modified",
-      "sha256": "92b6abfda0f8769de2990b275ab9c5a2e6b3d8da81ba6f1ad319fe75a3d37959"
+      "sha256": "b5ae846ecf0dc212e27ec773374a64653e55a9d92e269aab992aa5d13cdb43ee"
     },
     {
       "path": "clients/desktop/app/tools/build/identity.ts",
@@ -984,8 +987,8 @@
       "kind": "code-or-configuration",
       "review": "main",
       "method": "semantic-review",
-      "result": "retained",
-      "sha256": "61ca041b1d7e78b84fd72ce7a47342d42ebab159179d9d42e7a3790d83e89e6e"
+      "result": "modified",
+      "sha256": "882c4b5805e5d9f069509b64ac8ac97f1b4b377b89aeba3030e1ce082392ffb3"
     },
     {
       "path": "clients/desktop/app/tools/clean.ts",
@@ -4337,7 +4340,7 @@
       "review": "engineering",
       "method": "semantic-review",
       "result": "modified",
-      "sha256": "89d44aa9fa488ec2d2fcea2c835c79f5fbc8b1c302ffada80bc23f9ab469e512"
+      "sha256": "0332d53b328886e2f14e1eca4c4967f087bb632253baade84bd7468d638008e8"
     },
     {
       "path": "refactor/design/engineering/conventions.md",
@@ -5145,7 +5148,7 @@
       "review": "main",
       "method": "semantic-review",
       "result": "modified",
-      "sha256": "80bd86817a598ca45573275d6f726f21fdaa9a0e9eaa9f5089429f557aa8ca92"
+      "sha256": "b7e27a4cecf199d0243c639a8a188346f811c6d6f32c73dd4acdbda4134f4bdd"
     },
     {
       "path": "refactor/implementation/work-packages.md",
@@ -5482,6 +5485,14 @@
       "method": "semantic-review",
       "result": "retained",
       "sha256": "228f3e51898205e585db0fad69d9c197a5f3b87a8537b40d9827b6805233b42b"
+    },
+    {
+      "path": "clients/desktop/app/tests/tools/build/preload.test.ts",
+      "kind": "code-or-configuration",
+      "review": "main",
+      "method": "real-Vite-configuration-and-consumer-regression",
+      "result": "added",
+      "sha256": "55627b9161584bdbd8a3a6a0b5c148d657853d75c616a0c769a352a3e584fbd1"
     }
   ]
 }

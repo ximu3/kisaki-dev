@@ -8,7 +8,10 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { hostTarget } from '../../../tools/lib/targets'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
-import { startDevelopmentController } from '../../support/development-session'
+import {
+  developmentStartupTimeoutMs,
+  startDevelopmentController,
+} from '../../support/development-session'
 
 test('cancelling initial dependency preparation closes its command and permits a complete retry', async () => {
   const workspace = await prepareDevelopmentWorkspace()
@@ -59,7 +62,9 @@ test('cancelling initial dependency preparation closes its command and permits a
     await writeFile(manifestPath, original)
     retry = startDevelopmentController(workspace.app)
     await expect
-      .poll(() => retry!.states.some((state) => state.state === 'ready'), { timeout: 120_000 })
+      .poll(() => retry!.states.some((state) => state.state === 'ready'), {
+        timeout: developmentStartupTimeoutMs,
+      })
       .toBe(true)
     retry.process.send({ type: 'stop' })
     expect(await retry.closed, retry.diagnostics()).toBe(0)

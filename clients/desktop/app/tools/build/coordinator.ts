@@ -24,22 +24,21 @@ export async function buildDesktop(
   }
 
   const output = buildDirectory(target)
-  const manifest: {
-    name: string
-    version: string
-    type: string
-    description: string
-    homepage: string
-    author: { name: string; email: string }
-    license: string
-    devDependencies: { electron: string }
-  } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
-
   return replaceOutput(
     appRoot,
     output,
     async (staging) => {
       const buildId = await buildInputIdentity({ signal })
+      const manifest: {
+        name: string
+        version: string
+        type: string
+        description: string
+        homepage: string
+        author: { name: string; email: string }
+        license: string
+        devDependencies: { electron: string }
+      } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
       const resources = await prepareResources(target, signal)
       const native = await buildNative(target, false, signal)
       await cp(resources, join(staging, 'resources'), { recursive: true })
