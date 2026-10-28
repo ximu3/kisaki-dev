@@ -13,6 +13,8 @@ hooks 是明确安装的本地检查。安装器只管理仓库本地 `core.hook
 
 pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重新暂存文件。文件清单按 4,000 字符分批，适应 Windows 命令包装器的长度限制；ESLint 沿用既有忽略范围，不将忽略提示计作源码警告。修复后自行审阅和暂存。提交消息使用 Conventional Commits，首次提交为 `chore: initial commit`；PR 标题和主线提交由 CI 检查。
 
+PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/documentation.md#pull-request-descriptions)。
+
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
 ## 资源输入

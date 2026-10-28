@@ -313,7 +313,7 @@ Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线代码工作流检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
+PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#pull-request-descriptions)。合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线代码工作流检查最终提交消息。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
 
 <a id="hooks"></a>
 
