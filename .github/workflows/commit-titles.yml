@@ -1,10 +1,12 @@
-# Checks PR titles independently of code verification and its cancellation group.
+# Validates PR titles and committed main-branch titles with the shared commit rules.
 
-name: PR title
+name: Commit titles
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -14,12 +16,12 @@ env:
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
 
 concurrency:
-  group: pr-title-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+  group: commit-title-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
   title:
-    name: PR title
+    name: ${{ github.event_name == 'pull_request' && 'PR title' || 'Commit title' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
@@ -39,6 +41,10 @@ jobs:
       - name: Install title-check dependencies
         run: pnpm install --filter @kisaki3/workspace --frozen-lockfile --ignore-scripts
       - name: Check PR title
+        if: github.event_name == 'pull_request'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint
+      - name: Check commit title
+        if: github.event_name == 'push'
+        run: git log -1 --format=%s | pnpm exec commitlint

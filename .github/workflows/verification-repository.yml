@@ -111,9 +111,6 @@ jobs:
           key: turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
           restore-keys: |
             turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
-      - name: Check commit title
-        if: github.event_name == 'push'
-        run: git log -1 --format=%s | pnpm exec commitlint
       - name: Check repository
         shell: bash
         env:
