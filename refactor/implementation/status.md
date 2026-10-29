@@ -4,12 +4,12 @@
 
 ## 当前交付
 
-截至 2026-10-29，W00 的工程与测试入口已实现。工程基线 `cafcfce` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)通过，完整运行用时 20 分 15 秒；[仓库合并约束](#merge-rules)已配置并读回验证。PR 元信息编辑使用独立标题工作流；代码 CI 的原生事件入口已修正，真实 PR 门禁行为待验证，见[门禁核对](../verification/evidence/w00/2026-10-29/ci-gate/README.md)。
+截至 2026-10-29，W00 的工程与测试入口交付完成。工程基线 `51a4130` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)通过，完整运行用时 18 分 39 秒；[仓库合并约束](#merge-rules)已配置，并通过真实 PR 的元信息编辑与可合并状态核对，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。
 
 | 范围 | 状态 |
 | --- | --- |
 | 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
-| W00 工程与验证入口 | 工程、资源、开发、消费者和测试入口有对应证据，六目标通过；仓库规则已配置，PR 元信息编辑与必需检查的衔接待验证。 |
+| W00 工程与验证入口 | 已完成；工程、资源、开发、消费者和测试入口有对应证据，六目标与严格合并门禁均已验证。 |
 | W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
@@ -26,7 +26,7 @@
 
 | 分类 | 当前判断与证据 |
 | --- | --- |
-| CI 元信息编辑 | PR #11 的代码检查通过后，标题编辑触发的新 CI 仅报告跳过的 `verify`，合并区仍等待 `verify / Required checks`。单独重跑原汇总任务未解除阻塞；原生代码触发入口已修正，真实 PR 行为待验证，见[门禁核对](../verification/evidence/w00/2026-10-29/ci-gate/README.md)。 |
+| CI 元信息编辑 | 已通过原生 PR 事件入口处理。运行中及通过后的标题、正文编辑保持原代码验证；无效标题、正文编辑与标题修正的独立结果均已验证，严格保护下合并状态正常，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。 |
 | 已定位并处理 | Electron 44 的窗口可见性回调访问已销毁对象、阻塞退出，由 Electron 45 移除该回调处理；正式六目标验证通过，见[退出诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)。有完整轨迹的 macOS x64 开发就绪超时属于冷构建准备耗时，准备预算已按实测配置并验证，见[冷准备核对](../verification/evidence/final-state-coherence/2026-10-28/followup.md)。 |
 | 历史未归因 | 更早的 macOS x64 首次 ready 超时及两次 Apple Silicon 采样超时缺少必要诊断，保留原始结果。它们不能逐次确证为上述原因，也不能直接证明当前输入仍存在同一故障，见[启动记录](../verification/evidence/ci-design/2026-10-27/adoption/README.md)与[采样记录](../verification/evidence/workflow-review/2026-10-27/README.md)。 |
 | Windows 输出占用观察 | 历史 EPERM 的占用者未确定。40 次顺序构建和三轮真实 Turbo 调度未复现；受控占用中已识别持有进程，验证改名失败后的旧输出恢复、占用释放后的候选清理及后续构建。实现保持原有错误与交接语义，见[占用核对](../verification/evidence/w00/2026-10-29/closure/README.md#output)。 |
@@ -62,7 +62,7 @@
 
 | 范围 | 状态 |
 | --- | --- |
-| [W00：工程与测试入口](work-packages.md#w00) | 工程实现与六目标验证完成，合并门禁衔接待验证；见[交付范围](#w00)、[合并约束](#merge-rules)和[门禁核对](../verification/evidence/w00/2026-10-29/ci-gate/README.md)。 |
+| [W00：工程与测试入口](work-packages.md#w00) | 已完成，见[交付范围](#w00)、[合并约束](#merge-rules)和[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。 |
 | [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
 | [W02：数据库与原生操作](work-packages.md#w02) | 未开始 |
 | [W03：完整业务链路](work-packages.md#w03) | 未开始 |
@@ -92,8 +92,8 @@
 | Hooks（A26） | 安装、重复安装、卸载、配置冲突、部分暂存失败恢复及 worktree 行为经隔离仓库验证。 |
 | 测试与制品入口（A28） | Node、真实浏览器、Electron Node ABI、四窗口、20 次启动测量和保留生产 fuses 的外部载体验证；六目标均已运行。 |
 | 包消费与工程规则（A31） | 八包 tarball、声明与 CSS 的仓库外消费通过；源码边界、任务输入、资源寿命、文件说明和可读性已核对。 |
-| CI | 按真实输入选择任务和目标，仓库与桌面工作流各自执行，独立标题检查及汇总门禁通过。 |
+| CI | 按真实输入选择任务和目标，仓库与桌面工作流各自执行；原生代码事件、独立标题检查及严格合并门禁均已验证。 |
 
-当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)和[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40707331506)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
+当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)、[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)和[合并门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
 
 历史输入、失败、修正、原始报告与制品摘要保存在[证据索引](../verification/evidence/README.md)。本页维护当前完成度、缺项及其证据入口。
