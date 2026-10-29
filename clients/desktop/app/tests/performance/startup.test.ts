@@ -92,7 +92,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
       osRelease: release(),
       cpu: cpus()[0]?.model,
       memoryBytes: totalmem(),
-      mode: 'fresh processes, warm OS disk cache, isolated retained profile, W00 shell only',
+      mode: 'fresh processes, warm OS disk cache, isolated retained profile, windows and native modules only',
       build: JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')),
       samples,
       medianMs: median,

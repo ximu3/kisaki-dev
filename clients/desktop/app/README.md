@@ -1,6 +1,6 @@
 # 桌面应用工程
 
-本工程统一管理 main、preload、renderer、extension-host 和私有原生代码。当前可运行四类窗口的工程外壳，提供隔离开发、受控退出和原生资源装配；完整产品的交付情况见[实施状态](../../../refactor/implementation/status.md)。
+本工程统一管理 main、preload、renderer、extension-host 和私有原生代码，提供四类窗口的程序入口、隔离开发、受控退出和原生资源装配。功能与制品的交付情况见[实施状态](../../../refactor/implementation/status.md)。
 
 程序由 `config/vite` 中各自的 `vite.config.*.ts` 编译。主进程在 ready 前确定路径，以 `kisaki-app://native/` 只读提供本次构建声明的窗口资源；预加载脚本是独立、完整打包的 CommonJS。主进程的启动就绪等待实际 renderer 挂载信号，HTML 加载成功本身不算界面就绪。
 
@@ -20,7 +20,7 @@
 
 SQLite 13.0.3 使用包内 Node-API 预编译绑定，资源工作流只装配所选目标；测试在启动前选择 Electron Node 宿主，直接验证将要交付的同一绑定，不在共享 node_modules 内切换 ABI。
 
-性能配置保存正式代表负载和共同预算。可执行用例测量工程外壳的 20 次新进程启动及退出，实际结果及完整产品测量范围见[实施状态](../../../refactor/implementation/status.md)。
+性能配置保存代表负载和测量预算。启动用例在隔离资料下运行 20 个新进程，测量窗口与原生模块就绪、进程资源及正常退出；该负载不包含资料库、业务视图和扩展。实际结果及产品负载覆盖见[实施状态](../../../refactor/implementation/status.md)。
 
 `packaging` 是打包专用静态输入边界；执行逻辑在 `tools/package`，生成文件在 `dist`。媒体信息与播放的产品接入合同见[libmpv-node 接入](../../../refactor/design/engineering/integrations.md#media)。
 

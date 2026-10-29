@@ -15,6 +15,8 @@ pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重
 
 PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/documentation.md#pull-request-descriptions)。
 
+合并前同步最新 main，并通过必需检查。主线保护同样约束管理员，不要求额外的他人审批；仓库仅允许 Squash，合并后由 GitHub 自动删除远端分支。完整规则见[协作合同](refactor/design/engineering/workspace.md#collaboration)。
+
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
 ## 配置文件
@@ -122,6 +124,8 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样；测试文件变化按所属套件选择验证。选择结果单独留存，各执行分支保存自身报告。
 
 PR 的 affected 范围覆盖相对目标分支的全部改动，主线 push 比较推送前后提交。任务选择与缓存分别遵守[工程工作区合同](refactor/design/engineering/workspace.md#tasks)。
+
+PR 打开、源分支提交变化及重新打开时运行代码 CI；标题和正文编辑由独立标题工作流处理。更换目标分支后的验证入口见[协作规则](refactor/design/engineering/workspace.md#collaboration)。
 
 ci.yml 处理事件和并发入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml。仓库工作流调度各包自己的常规检查；桌面工作流拥有八包消费者、桌面范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互与八包消费者在 Linux x64 参考目标执行，仅这两类变化时只安排该目标。所有工程通过 selected／verified 输出表达选择与完成，Required checks 对每个 needs 结果使用同一判定。工程 workflow 的修改只请求自身完整验证，共同协调器修改请求全部验证，标题 workflow 不进入产品的全局输入。
 

@@ -1,0 +1,183 @@
+{
+  "sourceHead": "13279515c0ef92694aff2cc41fb69356a96222a0",
+  "checkedAt": "2026-10-28T16:41:17.542304+00:00",
+  "environment": {
+    "os": "Windows 10 x64",
+    "node": "24.11.1",
+    "powershell": "7.6.9",
+    "filesystem": "NTFS",
+    "elevated": false
+  },
+  "sourceFile": "packages/tooling/src/output.ts",
+  "sourceSha256": "d98ea930956ca8a2332d50b7d1f7f0ac12a4d25d3c8431c5bbf1ed02adef1deb",
+  "repositorySettingsVerified": true,
+  "controlledLock": {
+    "holderPid": 480212,
+    "observed": {
+      "startStatus": 0,
+      "registerStatus": 0,
+      "listStatus": 0,
+      "rebootReasons": 0,
+      "processes": [
+        {
+          "pid": 480212,
+          "name": "PowerShell 7",
+          "service": "",
+          "type": 5,
+          "status": 1,
+          "sessionId": 1,
+          "restartable": false
+        }
+      ]
+    },
+    "directoryRenameRejected": true
+  },
+  "sequentialBuilds": {
+    "total": 40,
+    "passed": 40,
+    "packages": [
+      "extension-sdk",
+      "extension-distribution"
+    ]
+  },
+  "freshOrchestration": {
+    "command": "pnpm lint --force",
+    "rounds": 3,
+    "tasksPerRound": 54,
+    "allPassed": true,
+    "cacheUsed": false,
+    "naturalEPERMObserved": false
+  },
+  "rollback": {
+    "evidence": {
+      "holderPid": 486448,
+      "users": {
+        "startStatus": 0,
+        "registerStatus": 0,
+        "listStatus": 0,
+        "rebootReasons": 0,
+        "processes": [
+          {
+            "pid": 486448,
+            "name": "PowerShell 7",
+            "service": "",
+            "type": 5,
+            "status": 1,
+            "sessionId": 1,
+            "restartable": false
+          }
+        ]
+      },
+      "originalFailure": {
+        "code": "EPERM",
+        "syscall": "rename"
+      },
+      "previousOutputDuringFailure": "previous complete output"
+    },
+    "oldOutputRestored": true,
+    "failedCandidateRemoved": true,
+    "explicitSubsequentBuildPassed": true,
+    "automaticRetriesAdded": false
+  },
+  "productionCodeChanged": false,
+  "automaticRetriesAdded": false,
+  "historicalOwnerIdentified": false,
+  "diagnosticsArchive": {
+    "file": "diagnostics.zip",
+    "sha256": "026edb4bf6e2c5a3460d419b23880655f1bd424c029f39342a544e1587772970",
+    "files": {
+      "before.json": {
+        "bytes": 589,
+        "sha256": "32a3a8e9a1840c35f6f4182ca4c1993e7d60d82cda436266929756c02c119e0e"
+      },
+      "after.json": {
+        "bytes": 2304,
+        "sha256": "dff5aa8219684e671a36aeeaca2cecb86b83c600000d380cb196191b88b24005"
+      },
+      "repository-settings-request.json": {
+        "bytes": 129,
+        "sha256": "60335e663435f8f8de7caa33fc01050e6e26614183c10b0cab53f5fb538bef4c"
+      },
+      "main-protection-first-request.json": {
+        "bytes": 604,
+        "sha256": "e582d1de1b796827fdd49df4d9186e569c12be6e4e923c9be0298f1c50178845"
+      },
+      "main-protection-request.json": {
+        "bytes": 584,
+        "sha256": "a0329292d77da3f5f9f683bf22163b16b7d0f0a053b18e597e07335d48f32613"
+      },
+      "main-protection-write.json": {
+        "bytes": 1622,
+        "sha256": "64fef2021db5fca133f3f235ea755c279205d3f7c0471839c3b175a7c8fb3e8f"
+      },
+      "controlled-lock.json": {
+        "bytes": 386,
+        "sha256": "ee4cb955c6dc3c58702c5c0db7eb703c4df2f7cc89d0bd914edae2cd983ae639"
+      },
+      "rollback-probe.json": {
+        "bytes": 686,
+        "sha256": "3d261536bec74040e92609e53783d50203aad293beb7afb9449c18aaf605c0e2"
+      },
+      "build-probe.json": {
+        "bytes": 5383,
+        "sha256": "233e3abce43605ea97e8899b88122a219e1f8e8376eedaa09d43da43084e0a77"
+      },
+      "build-probe.log": {
+        "bytes": 22308,
+        "sha256": "0d46d3e355939a278e50a0dab4c1ee2e431826a8fb64ec3868b751740b10b975"
+      },
+      "probe-output.ts": {
+        "bytes": 4883,
+        "sha256": "22952823851e088a71a1df31949e01f247eaf0689248e5fb47bad762e5a99328"
+      },
+      "probe-rollback.ts": {
+        "bytes": 3851,
+        "sha256": "bdd2d850747baa52e460bff1936030fd30d7edf2e7dfe6cd9c3d31f1a1a0f85c"
+      },
+      "query-file-users.ps1": {
+        "bytes": 3823,
+        "sha256": "1f9b64c676c6941f4c557dcbb0a0ee136eacad16baf77d883016406794cedd7d"
+      },
+      "hold-file.ps1": {
+        "bytes": 360,
+        "sha256": "ae746124148626f83bb456c46d01732a097e224b0cce089ec407849bed6da778"
+      },
+      "rename-monitor.ts": {
+        "bytes": 2542,
+        "sha256": "1cfa1ca8dfb0b1def1402e62ef3b5713e8d3be107f61361d1a66964dfee90527"
+      },
+      "lint-probe.log": {
+        "bytes": 16360,
+        "sha256": "7aec144e1bc3ec40c88d7225b66f0f7589ed708aafca688e42e278b98dd836d0"
+      },
+      "lint-probe-2.log": {
+        "bytes": 16360,
+        "sha256": "b69adf9e1a46eb0cb51d2e374df862279e4a27e6842e4a7c7c1b974b30c6abeb"
+      },
+      "lint-probe-3.log": {
+        "bytes": 16360,
+        "sha256": "46363fd79ce4aca099fb63f0bcc815150bbe5e56dc00fb440e0818394b5fb433"
+      }
+    }
+  },
+  "documentation": {
+    "baseline": "cafcfced8283319b5169efc958244a1a89465234",
+    "markdownFiles": 222,
+    "localLinksChecked": 3204,
+    "issues": [],
+    "removedExplicitAnchors": [],
+    "changedCodeFenceFiles": []
+  },
+  "nativeRequiredChecks": [
+    {
+      "bucket": "pass",
+      "name": "verify / Required checks",
+      "state": "SUCCESS"
+    },
+    {
+      "bucket": "pass",
+      "name": "PR title",
+      "state": "SUCCESS"
+    }
+  ]
+}

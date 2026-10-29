@@ -1,0 +1,120 @@
+{
+  "observedAt": "2026-10-29T03:35:29.441500+00:00",
+  "head": "51a4130a27a1b65f96f018afda7476212fdacab6",
+  "pullRequest": "https://github.com/ximu3/kisaki-dev/pull/11",
+  "codeVerification": {
+    "runId": 40811103983,
+    "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40811103983",
+    "attempt": 1,
+    "conclusion": "success",
+    "elapsedSeconds": 1119.0,
+    "jobCount": 9,
+    "targets": [
+      {
+        "target": "windows-x64",
+        "runner": "windows-2025",
+        "arch": "x64"
+      },
+      {
+        "target": "windows-arm64",
+        "runner": "windows-11-arm",
+        "arch": "arm64"
+      },
+      {
+        "target": "macos-x64",
+        "runner": "macos-15-intel",
+        "arch": "x64"
+      },
+      {
+        "target": "macos-arm64",
+        "runner": "macos-15",
+        "arch": "arm64"
+      },
+      {
+        "target": "linux-x64",
+        "runner": "ubuntu-22.04",
+        "arch": "x64"
+      },
+      {
+        "target": "linux-arm64",
+        "runner": "ubuntu-22.04-arm",
+        "arch": "arm64"
+      }
+    ],
+    "scope": {
+      "complete": true,
+      "native": true,
+      "browser": true,
+      "e2e": true,
+      "dev": true,
+      "performance": true,
+      "artifacts": true,
+      "consumers": true,
+      "tooling": true,
+      "selected": true
+    }
+  },
+  "metadataEdits": {
+    "whileRunning": {
+      "codeRunCount": 1,
+      "codeRunPreserved": true,
+      "titleRun": 40811161631
+    },
+    "invalidTitle": {
+      "run": 40812165941,
+      "conclusion": "failure",
+      "expected": true,
+      "rules": [
+        "subject-empty",
+        "type-empty"
+      ]
+    },
+    "bodyEditWithInvalidTitle": {
+      "run": 40812274697,
+      "conclusion": "failure",
+      "expected": true,
+      "rules": [
+        "subject-empty",
+        "type-empty"
+      ]
+    },
+    "correctedTitle": {
+      "run": 40812368104,
+      "conclusion": "success"
+    },
+    "afterCodeSuccess": {
+      "titleRun": 40812944162,
+      "titleConclusion": "success",
+      "sameCodeRun": 40811103983,
+      "sameCodeGateJob": 123246969490,
+      "codeRunCount": 1,
+      "mergeState": "CLEAN"
+    }
+  },
+  "requiredChecks": [
+    {
+      "bucket": "pass",
+      "link": "https://github.com/ximu3/kisaki-dev/actions/runs/40812944162/job/123247299528",
+      "name": "PR title",
+      "state": "SUCCESS"
+    },
+    {
+      "bucket": "pass",
+      "link": "https://github.com/ximu3/kisaki-dev/actions/runs/40811103983/job/123246969490",
+      "name": "verify / Required checks",
+      "state": "SUCCESS"
+    }
+  ],
+  "branchProtection": {
+    "strict": true,
+    "adminsEnforced": true,
+    "requiredApprovals": 0
+  },
+  "merged": false,
+  "coverageNote": "Observed real metadata edits while code verification was running and after it succeeded. No new failing code revision was introduced; metadata edits preserved the original code run and check identities.",
+  "archive": {
+    "file": "verification.zip",
+    "bytes": 21301,
+    "sha256": "8810dee8ec37f72927c23f108f95ebbe479c5127e6c87dffc70192104036195f"
+  }
+}
