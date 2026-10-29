@@ -54,7 +54,7 @@
 | 本地设备 | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡。 |
 | 本地执行条件 | 普通用户权限的交互桌面；测试使用独立资料与目录。 |
 | 标准 CI | Windows、macOS、Linux 的 x64／arm64；各目标有原生架构构建、基础运行与候选载体验证。系统、输入、样本及未覆盖组合由对应证据记录。 |
-| 反馈目标 | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；最新完整 CI 为 20 分 15 秒，增量基准见[任务与反馈证据](../verification/evidence/ci-design/2026-10-27/README.md)。 |
+| 反馈目标 | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)；增量基准见[任务与反馈证据](../verification/evidence/ci-design/2026-10-27/README.md)。 |
 
 <a id="progress"></a>
 
