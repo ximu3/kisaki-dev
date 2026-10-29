@@ -1,6 +1,6 @@
 # Validates PR titles and committed main-branch titles with the shared commit rules.
 
-name: Commit titles
+name: Title checks
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ env:
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
 
 concurrency:
-  group: commit-title-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  group: title-checks-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:

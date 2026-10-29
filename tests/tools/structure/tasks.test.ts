@@ -101,7 +101,7 @@ test('affected tasks follow verification inputs without promoting documentation 
   }
   const cases = [
     { path: 'refactor/README.md', desktop: [], consumers: false },
-    { path: '.github/workflows/commit-titles.yml', desktop: [], consumers: false },
+    { path: '.github/workflows/title-checks.yml', desktop: [], consumers: false },
     {
       path: 'clients/desktop/packages/desktop-contracts/config/typescript/tsconfig.tests.json',
       desktop: [],
