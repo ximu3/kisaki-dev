@@ -1,10 +1,8 @@
-# Runs code verification for pull request commits, main pushes and manual requests.
+# Runs code verification for pull request commits and explicit complete checks.
 
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -18,6 +16,6 @@ jobs:
       cancel-in-progress: true
     uses: ./.github/workflows/verification.yml
     with:
-      base: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+      base: ${{ github.event.pull_request.base.sha || '' }}
       head: ${{ github.sha }}
       complete: ${{ github.event_name == 'workflow_dispatch' }}

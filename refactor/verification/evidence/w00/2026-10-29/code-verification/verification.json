@@ -1,0 +1,53 @@
+{
+  "observedAt": "2026-10-29T04:50:35.050140+00:00",
+  "sourceHead": "9b0a194eff8a4e83f515edf06e77f4a7a8305d76",
+  "productionBranch": "ci/pr-code-verification",
+  "probeBranch": "research/ci-title-events-2026-10-29",
+  "override": "Only the push branch filter in commit-titles.yml changes from main to this isolated probe branch. ci.yml and all job steps match production.",
+  "localChecks": {
+    "actionlint": "1.7.12 passed",
+    "eslint": "changed task-graph test passed",
+    "taskGraph": "pnpm root:test tests/tools/structure/tasks.test.ts: final path, 2 passed in 17.83 seconds",
+    "invocationNote": "Direct pnpm exec vitest was rejected because npm_execpath is supplied by the project script; the formal pnpm project task passed."
+  },
+  "pushCases": [
+    {
+      "head": "5e5c2c5b388513b0aa3744e9e322be47162fc758",
+      "run": 40818957784,
+      "job": "Commit title",
+      "conclusion": "success",
+      "codeWorkflowsTriggered": 0
+    },
+    {
+      "head": "94a178e62e9eb120dc8d69d6b5dcc33e8f6f26e1",
+      "run": 40819112109,
+      "job": "Commit title",
+      "conclusion": "failure",
+      "expectedFailure": true,
+      "rules": [
+        "subject-empty",
+        "type-empty"
+      ],
+      "codeWorkflowsTriggered": 0
+    }
+  ],
+  "probeBranchDeletedAt": "2026-10-29T04:42:50.448300+00:00",
+  "scope": "Hosted push checks use an isolated branch filter; all actual job steps and the absence of code-verification push triggers match the production candidate. These runs are not desktop acceptance evidence.",
+  "archive": {
+    "file": "verification.zip",
+    "bytes": 19316,
+    "sha256": "27d64e9f59fddecf336b69803b3e7a085c35ee3a1c54801ba8f92ff7c339e8a6"
+  },
+  "finalWorkflow": {
+    "originalWorkflowSha256": "c452f67201f7f3eae483edca1ba9ef288b156c1d048b16e42e5fe82cfcb22787",
+    "finalWorkflowSha256": "cd717570b5ba6acf30d71d107282aaf4a96b23048acaf3c63b67fbaf47fa107c",
+    "finalPath": ".github/workflows/title-checks.yml",
+    "approvedDifferences": [
+      "file name",
+      "workflow display name",
+      "concurrency group prefix"
+    ],
+    "remainingWorkflowContentIdentical": true,
+    "codeWorkflowIdentical": true
+  }
+}
