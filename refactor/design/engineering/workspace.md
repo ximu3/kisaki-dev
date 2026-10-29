@@ -329,13 +329,13 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 ci.yml 接收 PR 和手动事件，再调用 verification.yml 协调代码验证。verification-repository.yml 与 verification-desktop.yml 分别执行仓库和桌面验证，通过 GitHub 原生 workflow_call 输入与输出连接；workflow 文件直接位于 .github/workflows，以 verification-<工程>.yml 表达归属。PR 使用 GitHub 的默认事件：打开、源分支提交变化及重新打开时执行代码验证。标题和正文编辑只触发独立的标题检查，保持代码验证的运行和结果。
 
-main push 只检查最终提交标题。严格合并门禁使代码在进入主线前完成对当前合并结果的验证，合入后沿用这些证据；明确请求的完整验证由手动入口执行，正式发行按所属工作包验收。
+日常验证在 PR 合并前完成。严格合并门禁使代码在进入主线前完成对当前合并结果的验证，合入后沿用这些证据；main push 不触发普通 CI。明确请求的完整验证由手动入口执行，正式发行按所属工作包验收。
 
 常规 PR 合入 main。更换目标分支后，通过重新打开 PR 或更新源分支提交，按新的目标分支发起代码验证；原运行的比较基线保持其触发时的值。
 
 实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。同一 PR 的新代码验证可以取消过时验证；标题检查使用独立取消组。
 
-title-checks.yml 统一检查 PR 标题和 main 的最终提交标题，共用根 commitlint 规则与依赖准备；分别报告 `PR title` 和 `Commit title`，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
+pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
 
 纯规则使用普通 Node 下的 Vitest，Solid 组件使用 Browser Mode，数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包 tarball 消费和扩展真实安装各自完成，不能相互代替。
 
@@ -347,7 +347,7 @@ Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#pull-request-descriptions)。合并前整理最终说明，不拼接临时提交消息。标题工作流在 PR 打开、提交变化、重新打开及编辑时检查当前标题，在 main push 时读取最新提交的标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。主线事后检查不能阻止界面中的手动改写，因此合并者仍须核对。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
+PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#pull-request-descriptions)。合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。合并者确认最终 Squash 标题；如在合并界面改写，仍须符合上述提交规范。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
 
 <a id="hooks"></a>
 
@@ -355,7 +355,7 @@ PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#
 
 Husky 和 lint-staged 提供 pre-commit，只执行 Prettier check 与 ESLint，不使用 --write、--fix、git add 或 stage_fixed。修复格式后由用户自行暂存。lint-staged 负责文件列表、长参数和部分暂存内容的隐藏与恢复，必须验证失败时的恢复行为。
 
-默认 hooks 限定为上述 pre-commit 检查，文件选择与命令参数由 lint-staged 管理。提交消息在 PR 与主线检查，版本、发行说明和 tag 由发行流程管理。
+默认 hooks 限定为上述 pre-commit 检查，文件选择与命令参数由 lint-staged 管理。提交规范通过 PR 标题检查与合并确认落实，版本、发行说明和 tag 由发行流程管理。
 
 hooks 的安装入口只管理本项目的 hook 文件和仓库本地 core.hooksPath。没有显式配置时设置为本项目路径；本地已经使用本项目路径时，重复安装幂等完成。其他显式配置，包括空值或继承的设置，按冲突报告，由用户处理后重试，不保存或接管原配置。无关本地配置保持不变。
 

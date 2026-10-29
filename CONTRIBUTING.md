@@ -11,7 +11,7 @@ pnpm install:hooks
 
 hooks 是明确安装的本地检查。安装器只管理仓库本地 `core.hooksPath` 和公共 Git 目录中的自有 Husky 文件，作用于该仓库的全部 worktree。其他显式配置会报告冲突并保持原样。`pnpm uninstall:hooks` 只撤销仍由项目持有的配置；CI 和源码压缩包跳过安装。
 
-pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重新暂存文件。文件清单按 4,000 字符分批，适应 Windows 命令包装器的长度限制；ESLint 沿用既有忽略范围，不将忽略提示计作源码警告。修复后自行审阅和暂存。提交消息使用 Conventional Commits，首次提交为 `chore: initial commit`；PR 标题和主线最终提交标题由标题工作流检查。
+pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重新暂存文件。文件清单按 4,000 字符分批，适应 Windows 命令包装器的长度限制；ESLint 沿用既有忽略范围，不将忽略提示计作源码警告。修复后自行审阅和暂存。提交消息使用 Conventional Commits，首次提交为 `chore: initial commit`；PR 标题由标题工作流检查，最终 Squash 标题在合并时确认。
 
 PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/documentation.md#pull-request-descriptions)。
 
@@ -125,9 +125,9 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 PR 的 affected 范围覆盖相对目标分支的全部改动。任务选择与缓存分别遵守[工程工作区合同](refactor/design/engineering/workspace.md#tasks)。
 
-PR 打开、源分支提交变化及重新打开时运行代码 CI；标题和正文编辑由独立标题工作流处理。main push 只检查最终提交标题，代码沿用严格合并门禁前通过的验证结果。更换目标分支后的验证入口见[协作规则](refactor/design/engineering/workspace.md#collaboration)。
+PR 打开、源分支提交变化及重新打开时运行代码 CI；标题和正文编辑由独立标题工作流处理。合入主线后沿用严格合并门禁前通过的代码验证结果。更换目标分支后的验证入口见[协作规则](refactor/design/engineering/workspace.md#collaboration)。
 
-ci.yml 处理 PR 与手动代码验证入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml；title-checks.yml 检查 PR 和主线提交标题。仓库工作流调度各包自己的常规检查；桌面工作流拥有八包消费者、桌面范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互与八包消费者在 Linux x64 参考目标执行，仅这两类变化时只安排该目标。所有工程通过 selected／verified 输出表达选择与完成，Required checks 对每个 needs 结果使用同一判定。工程 workflow 的修改只请求自身完整验证，共同协调器修改请求全部验证，标题 workflow 不进入产品的全局输入。
+ci.yml 处理 PR 与手动代码验证入口，verification.yml 协调 verification-repository.yml 与 verification-desktop.yml；pr-title.yml 检查 PR 标题。仓库工作流调度各包自己的常规检查；桌面工作流拥有八包消费者、桌面范围选择与目标矩阵。每个桌面目标在同一 runner 中执行选中的运行、开发、性能和制品步骤，有限应用只构建一次，打包复用同一输出；开发检查复用已准备的原生输出，仅开发检查时才单独准备。桌面浏览器交互与八包消费者在 Linux x64 参考目标执行，仅这两类变化时只安排该目标。所有工程通过 selected／verified 输出表达选择与完成，Required checks 对每个 needs 结果使用同一判定。工程 workflow 的修改只请求自身完整验证，共同协调器修改请求全部验证，标题 workflow 不进入产品的全局输入。
 
 CI 先准备固定的 Node，再由 pnpm 官方 Action 安装 packageManager 指定版本并管理依赖存储缓存。Turbo 缓存按工程命名空间、操作系统、架构和 Node 分组，主键已命中时跳过重复保存。macOS 部署目标在依赖安装前单独设置。反馈目标及统计口径见[工程工作区合同](refactor/design/engineering/workspace.md#ci-feedback)；作业级超时为环境准备与 runner 波动留出余量，由 workflow 配置拥有，不替代反馈目标或应用性能预算。
 

@@ -92,7 +92,7 @@
 | Hooks（A26） | 安装、重复安装、卸载、配置冲突、部分暂存失败恢复及 worktree 行为经隔离仓库验证。 |
 | 测试与制品入口（A28） | Node、真实浏览器、Electron Node ABI、四窗口、20 次启动测量和保留生产 fuses 的外部载体验证；六目标均已运行。 |
 | 包消费与工程规则（A31） | 八包 tarball、声明与 CSS 的仓库外消费通过；源码边界、任务输入、资源寿命、文件说明和可读性已核对。 |
-| CI | PR 按真实输入选择代码验证，手动入口执行完整验证；主线推送仅检查最终提交标题。共用标题规则、任务图及隔离推送的结果见[入口分工验证](../verification/evidence/w00/2026-10-29/code-verification/README.md)，严格合并门禁继续生效。 |
+| CI | PR 按真实输入选择代码验证并独立校验标题，手动入口执行完整验证；主线沿用合并前的代码证据。入口分工及验证范围见[CI 入口记录](../verification/evidence/w00/2026-10-29/code-verification/README.md)，严格合并门禁继续生效。 |
 
 当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)、[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)和[合并门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
 
