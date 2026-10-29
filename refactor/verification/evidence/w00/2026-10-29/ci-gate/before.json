@@ -1,0 +1,432 @@
+{
+  "observedAt": "2026-10-29T03:01:06.622879+00:00",
+  "pullRequest": 11,
+  "head": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+  "base": "cafcfced8283319b5169efc958244a1a89465234",
+  "mergeable": true,
+  "mergeableState": "blocked",
+  "runs": [
+    {
+      "id": 40729400673,
+      "event": "pull_request",
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "workflow": ".github/workflows/ci.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 2,
+      "createdAt": "2026-10-28T16:47:21Z",
+      "updatedAt": "2026-10-29T02:48:36Z",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673",
+      "jobs": [
+        {
+          "id": 122961294964,
+          "name": "verify / Repository / Checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:24Z",
+          "completedAt": "2026-10-28T16:48:08Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961294964"
+        },
+        {
+          "id": 122961295535,
+          "name": "verify / Desktop / Select checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:24Z",
+          "completedAt": "2026-10-28T16:47:55Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961295535"
+        },
+        {
+          "id": 122961622868,
+          "name": "verify / Desktop / macos-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:59Z",
+          "completedAt": "2026-10-28T16:49:42Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622868"
+        },
+        {
+          "id": 122961622898,
+          "name": "verify / Desktop / linux-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:58Z",
+          "completedAt": "2026-10-28T16:49:39Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622898"
+        },
+        {
+          "id": 122961622955,
+          "name": "verify / Desktop / windows-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:58Z",
+          "completedAt": "2026-10-28T16:52:42Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622955"
+        },
+        {
+          "id": 122961623080,
+          "name": "verify / Desktop / linux-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:48:00Z",
+          "completedAt": "2026-10-28T16:49:55Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623080"
+        },
+        {
+          "id": 122961623147,
+          "name": "verify / Desktop / windows-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:48:00Z",
+          "completedAt": "2026-10-28T16:50:30Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623147"
+        },
+        {
+          "id": 122961623275,
+          "name": "verify / Desktop / macos-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:59Z",
+          "completedAt": "2026-10-28T16:53:33Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623275"
+        },
+        {
+          "id": 122964847820,
+          "name": "verify / Required checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:53:35Z",
+          "completedAt": "2026-10-28T16:53:39Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122964847820"
+        },
+        {
+          "id": 123233121376,
+          "name": "verify / Required checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-29T02:48:33Z",
+          "completedAt": "2026-10-29T02:48:36Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121376"
+        },
+        {
+          "id": 123233121544,
+          "name": "verify / Repository / Checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:24Z",
+          "completedAt": "2026-10-28T16:48:08Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121544"
+        },
+        {
+          "id": 123233121744,
+          "name": "verify / Desktop / macos-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:59Z",
+          "completedAt": "2026-10-28T16:53:33Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121744"
+        },
+        {
+          "id": 123233122036,
+          "name": "verify / Desktop / windows-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:58Z",
+          "completedAt": "2026-10-28T16:52:42Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122036"
+        },
+        {
+          "id": 123233122443,
+          "name": "verify / Desktop / linux-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:48:00Z",
+          "completedAt": "2026-10-28T16:49:55Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122443"
+        },
+        {
+          "id": 123233122456,
+          "name": "verify / Desktop / linux-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:58Z",
+          "completedAt": "2026-10-28T16:49:39Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122456"
+        },
+        {
+          "id": 123233156502,
+          "name": "verify / Desktop / macos-arm64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:59Z",
+          "completedAt": "2026-10-28T16:49:42Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233156502"
+        },
+        {
+          "id": 123233164678,
+          "name": "verify / Desktop / windows-x64",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:48:00Z",
+          "completedAt": "2026-10-28T16:50:30Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233164678"
+        },
+        {
+          "id": 123233170260,
+          "name": "verify / Desktop / Select checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:47:24Z",
+          "completedAt": "2026-10-28T16:47:55Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233170260"
+        }
+      ]
+    },
+    {
+      "id": 40729511047,
+      "event": "pull_request",
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "workflow": ".github/workflows/ci.yml",
+      "status": "completed",
+      "conclusion": "skipped",
+      "attempt": 1,
+      "createdAt": "2026-10-28T16:48:01Z",
+      "updatedAt": "2026-10-28T16:48:02Z",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729511047",
+      "jobs": [
+        {
+          "id": 122961686145,
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "skipped",
+          "startedAt": "2026-10-28T16:48:02Z",
+          "completedAt": "2026-10-28T16:48:01Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729511047/job/122961686145"
+        }
+      ]
+    },
+    {
+      "id": 40729510932,
+      "event": "pull_request",
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "workflow": ".github/workflows/pr-title.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "createdAt": "2026-10-28T16:48:01Z",
+      "updatedAt": "2026-10-28T16:48:25Z",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729510932",
+      "jobs": [
+        {
+          "id": 122961684101,
+          "name": "PR title",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-28T16:48:04Z",
+          "completedAt": "2026-10-28T16:48:24Z",
+          "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729510932/job/122961684101"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": 123233170260,
+      "name": "verify / Desktop / Select checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233170260"
+    },
+    {
+      "id": 123233164678,
+      "name": "verify / Desktop / windows-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233164678"
+    },
+    {
+      "id": 123233156502,
+      "name": "verify / Desktop / macos-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233156502"
+    },
+    {
+      "id": 123233122456,
+      "name": "verify / Desktop / linux-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122456"
+    },
+    {
+      "id": 123233122443,
+      "name": "verify / Desktop / linux-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122443"
+    },
+    {
+      "id": 123233122036,
+      "name": "verify / Desktop / windows-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233122036"
+    },
+    {
+      "id": 123233121744,
+      "name": "verify / Desktop / macos-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121744"
+    },
+    {
+      "id": 123233121544,
+      "name": "verify / Repository / Checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121544"
+    },
+    {
+      "id": 123233121376,
+      "name": "verify / Required checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/123233121376"
+    },
+    {
+      "id": 122964847820,
+      "name": "verify / Required checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122964847820"
+    },
+    {
+      "id": 122961686145,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "skipped",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729511047/job/122961686145"
+    },
+    {
+      "id": 122961684101,
+      "name": "PR title",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729510932/job/122961684101"
+    },
+    {
+      "id": 122961623275,
+      "name": "verify / Desktop / macos-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623275"
+    },
+    {
+      "id": 122961623147,
+      "name": "verify / Desktop / windows-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623147"
+    },
+    {
+      "id": 122961623080,
+      "name": "verify / Desktop / linux-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961623080"
+    },
+    {
+      "id": 122961622955,
+      "name": "verify / Desktop / windows-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622955"
+    },
+    {
+      "id": 122961622898,
+      "name": "verify / Desktop / linux-x64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622898"
+    },
+    {
+      "id": 122961622868,
+      "name": "verify / Desktop / macos-arm64",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961622868"
+    },
+    {
+      "id": 122961295537,
+      "name": "PR title",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400391/job/122961295537"
+    },
+    {
+      "id": 122961295535,
+      "name": "verify / Desktop / Select checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961295535"
+    },
+    {
+      "id": 122961294964,
+      "name": "verify / Repository / Checks",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "headSha": "5a61f004e16abcd63e99c3d9f37395dccff699de",
+      "url": "https://github.com/ximu3/kisaki-dev/actions/runs/40729400673/job/122961294964"
+    }
+  ],
+  "mergeUi": {
+    "evidence": "User-supplied screenshot on 2026-10-29",
+    "requiredCheck": "verify / Required checks",
+    "requiredCheckState": "Expected - Waiting for status to be reported",
+    "visibleCodeCheck": "CI / verify (pull_request)",
+    "visibleCodeConclusion": "Skipped",
+    "titleCheck": "PR title / PR title (pull_request)",
+    "titleConclusion": "Successful"
+  }
+}

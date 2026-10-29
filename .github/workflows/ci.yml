@@ -1,4 +1,4 @@
-# Routes code-verification events and concurrency to the reusable project coordinator.
+# Runs code verification for pull request commits, main pushes and manual requests.
 
 name: CI
 
@@ -6,7 +6,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened, edited]
   workflow_dispatch:
 
 permissions:
@@ -14,8 +13,6 @@ permissions:
 
 jobs:
   verify:
-    # Retargeting changes the merge base; title and body edits do not request code checks.
-    if: github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.base != null
     concurrency:
       group: ci-${{ github.ref }}
       cancel-in-progress: true

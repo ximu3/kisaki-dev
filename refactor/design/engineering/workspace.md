@@ -327,9 +327,11 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审并 Squash 合并，GitHub 自动删除已合并的远端分支。main 通过原生分支保护要求 PR、同步最新主线及必需检查通过，管理员同样遵守；审批人数为 0，不要求另一人 Approve。仓库仅启用 Squash，主线禁止强制推送与删除。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
 
-ci.yml 接收 PR、主线 push 和手动事件，再调用 verification.yml 协调代码验证。verification-repository.yml 与 verification-desktop.yml 分别执行仓库和桌面验证，通过 GitHub 原生 workflow_call 输入与输出连接；workflow 文件直接位于 .github/workflows，以 verification-<工程>.yml 表达归属。PR 打开、提交变化、重新打开及目标分支变化需要代码验证；仅编辑标题或正文时不调用验证工作流，也不进入代码任务的取消组，不生成新的代码汇总结果。GitHub 仍可能显示一个跳过的入口任务；它不作为必需检查，也不能覆盖已有的代码检查结果。
+ci.yml 接收 PR、主线 push 和手动事件，再调用 verification.yml 协调代码验证。verification-repository.yml 与 verification-desktop.yml 分别执行仓库和桌面验证，通过 GitHub 原生 workflow_call 输入与输出连接；workflow 文件直接位于 .github/workflows，以 verification-<工程>.yml 表达归属。PR 使用 GitHub 的默认事件：打开、源分支提交变化及重新打开时执行代码验证。标题和正文编辑只触发独立的标题检查，保持代码验证的运行和结果。
 
-实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。代码任务的并发组仅由新的代码验证参与，同一 PR 的新提交或目标分支变化可以取消过时验证。
+常规 PR 合入 main。更换目标分支后，通过重新打开 PR 或更新源分支提交，按新的目标分支发起代码验证；原运行的比较基线保持其触发时的值。
+
+实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。同一 PR 的新代码验证可以取消过时验证；标题检查使用独立取消组。
 
 pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
 
