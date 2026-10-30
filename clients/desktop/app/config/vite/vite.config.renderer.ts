@@ -1,8 +1,3 @@
-/**
- * @fileoverview Builds the four Solid window documents and configures their loopback
- * development server and development CSP.
- */
-
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 import { fileURLToPath } from 'node:url'
@@ -22,6 +17,7 @@ export default defineConfig(({ mode }) => ({
           return html
         }
 
+        // Vite injects startup scripts and uses a WebSocket connection for HMR.
         return html
           .replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")
           .replace("connect-src 'self'", "connect-src 'self' ws://127.0.0.1:*")

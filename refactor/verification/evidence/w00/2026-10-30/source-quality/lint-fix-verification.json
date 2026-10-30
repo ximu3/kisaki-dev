@@ -1,0 +1,7 @@
+{
+  "exitCode": 0,
+  "declarationOutputsAbsentBeforeRun": 8,
+  "sourceChanges": [],
+  "command": "turbo run lint root:lint --cache=local:,remote: -- --fix",
+  "tasksSucceeded": 50
+}

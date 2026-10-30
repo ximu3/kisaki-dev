@@ -1,8 +1,3 @@
-/**
- * @fileoverview Bundles the extension-host program with Node resolution while retaining
- * native Node imports.
- */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

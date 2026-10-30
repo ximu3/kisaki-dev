@@ -16,6 +16,8 @@
 
 编码规范归属与类型感知检查已完成本机验证，包含完整 lint、54 项普通 Node 测试和仓库外包消费，验证范围见[规范与检查验证](../verification/evidence/readability-conventions/2026-10-30/README.md)。
 
+源码概述与配置说明已按职责区分，窗口与输出寿命、lint 修复前置、错误结果和开发会话说明已完成相应修正。本机类型、lint、普通测试、五项窗口回归、四项开发流程和二十次启动检查通过；本次六目标 CI 尚待对应提交验证，见[源码与工程验证](../verification/evidence/w00/2026-10-30/source-quality/README.md)。
+
 各阶段的实现、运行验证与发行按[验收标准](../verification/acceptance.md)分别记录。
 
 <a id="merge-rules"></a>
@@ -31,7 +33,7 @@
 | CI 元信息编辑 | 已通过原生 PR 事件入口处理。运行中及通过后的标题、正文编辑保持原代码验证；无效标题、正文编辑与标题修正的独立结果均已验证，严格保护下合并状态正常，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。 |
 | 已定位并处理 | Electron 44 的窗口可见性回调访问已销毁对象、阻塞退出，由 Electron 45 移除该回调处理；正式六目标验证通过，见[退出诊断](../verification/evidence/ci-exploration/2026-10-27/README.md)。有完整轨迹的 macOS x64 开发就绪超时属于冷构建准备耗时，准备预算已按实测配置并验证，见[冷准备核对](../verification/evidence/final-state-coherence/2026-10-28/followup.md)。 |
 | 历史未归因 | 更早的 macOS x64 首次 ready 超时及两次 Apple Silicon 采样超时缺少必要诊断，保留原始结果。它们不能逐次确证为上述原因，也不能直接证明当前输入仍存在同一故障，见[启动记录](../verification/evidence/ci-design/2026-10-27/adoption/README.md)与[采样记录](../verification/evidence/workflow-review/2026-10-27/README.md)。 |
-| Windows 输出占用观察 | 历史 EPERM 的占用者未确定。40 次顺序构建和三轮真实 Turbo 调度未复现；受控占用中已识别持有进程，验证改名失败后的旧输出恢复、占用释放后的候选清理及后续构建。实现保持原有错误与交接语义，见[占用核对](../verification/evidence/w00/2026-10-29/closure/README.md#output)。 |
+| Windows 输出占用观察 | 候选交接曾出现 EPERM，占用者尚未确定。2026-10-30 一次桌面构建失败后，带只读诊断的显式重建通过；既有受控占用验证覆盖旧输出恢复与后续构建，见[占用核对](../verification/evidence/w00/2026-10-29/closure/README.md#output)和[本次观察](../verification/evidence/w00/2026-10-30/source-quality/README.md#observations)。 |
 
 ## 后续工作包的交付范围
 

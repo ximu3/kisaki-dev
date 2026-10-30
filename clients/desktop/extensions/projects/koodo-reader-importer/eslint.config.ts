@@ -1,8 +1,3 @@
-/**
- * @fileoverview Configures lint rules for the official koodo-reader-importer extension
- * project.
- */
-
 import { defineConfig } from 'eslint/config'
 import base from '@kisaki3/eslint-config/base'
 

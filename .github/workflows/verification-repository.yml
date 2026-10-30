@@ -1,5 +1,3 @@
-# Selects and runs repository checks with their reference environment, cache and reports.
-
 name: Repository verification
 on:
   workflow_call:

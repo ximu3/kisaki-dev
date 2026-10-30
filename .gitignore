@@ -1,6 +1,3 @@
-# Excludes dependencies, generated outputs, local profiles and private environment files from
-# version control.
-
 node_modules/
 .turbo/
 .cache/

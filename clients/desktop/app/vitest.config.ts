@@ -1,8 +1,3 @@
-/**
- * @fileoverview Selects ordinary desktop Node tests separately from native, browser and
- * real development-session suites.
- */
-
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

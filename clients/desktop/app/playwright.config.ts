@@ -1,8 +1,3 @@
-/**
- * @fileoverview Runs the desktop window suite serially and retains failure traces and
- * screenshots.
- */
-
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({

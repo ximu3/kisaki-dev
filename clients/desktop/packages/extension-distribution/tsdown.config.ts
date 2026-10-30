@@ -1,5 +1,3 @@
-/** @fileoverview Configures ESM and declaration outputs for extension metadata entries. */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

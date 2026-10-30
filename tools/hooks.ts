@@ -4,7 +4,7 @@
  */
 
 import { spawnSync } from 'node:child_process'
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -16,9 +16,14 @@ export interface HooksResult {
   message: string
 }
 
-/** Run Git in the selected repository and return its exit status and standard output. */
+/** Run Git in the selected repository, forwarding diagnostics and returning status and standard output. */
 function git(directory: string, args: string[]): { status: number | null; output: string } {
-  const result = spawnSync('git', args, { cwd: directory, encoding: 'utf8', windowsHide: true })
+  const result = spawnSync('git', args, {
+    cwd: directory,
+    encoding: 'utf8',
+    windowsHide: true,
+    stdio: ['ignore', 'pipe', 'inherit'],
+  })
   if (result.error) {
     throw new Error('Could not run Git', { cause: result.error })
   }
@@ -26,7 +31,7 @@ function git(directory: string, args: string[]): { status: number | null; output
   return { status: result.status, output: result.stdout.trim() }
 }
 
-/** Install or remove Kisaki hooks for every worktree; report a conflict with an existing hook path. */
+/** Install or remove hooks from the project root for every worktree; report conflicting hook configuration. */
 export async function configureHooks(
   directory: string,
   operation: 'install' | 'uninstall',
@@ -35,9 +40,18 @@ export async function configureHooks(
     return { status: 'skipped', message: 'Hooks are disabled in this environment.' }
   }
 
+  try {
+    await access(join(directory, '.git'))
+  } catch (cause) {
+    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') {
+      return { status: 'skipped', message: 'Source archives do not install Git hooks.' }
+    }
+    throw cause
+  }
+
   const worktree = git(directory, ['rev-parse', '--show-toplevel'])
   if (worktree.status !== 0) {
-    return { status: 'skipped', message: 'Source archives do not install Git hooks.' }
+    throw new Error('Could not resolve the project Git root')
   }
 
   const root = worktree.output
@@ -50,6 +64,11 @@ export async function configureHooks(
   const ownedPath = join(ownedDirectory, '_').replaceAll('\\', '/')
   const localHookPath = git(root, ['config', '--local', '--get-all', 'core.hooksPath'])
   const effectiveHookPath = git(root, ['config', '--show-scope', '--get-all', 'core.hooksPath'])
+  for (const result of [localHookPath, effectiveHookPath]) {
+    if (result.status !== 0 && result.status !== 1) {
+      throw new Error('Could not read the Git hook configuration')
+    }
+  }
 
   if (operation === 'uninstall') {
     if (localHookPath.status === 0 && localHookPath.output !== ownedPath) {

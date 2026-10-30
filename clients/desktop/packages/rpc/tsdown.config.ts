@@ -1,5 +1,3 @@
-/** @fileoverview Configures ESM and declaration outputs for RPC transport contracts. */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

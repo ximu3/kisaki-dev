@@ -1,5 +1,3 @@
-# Runs code verification for pull request commits and explicit complete checks.
-
 name: CI
 
 on:

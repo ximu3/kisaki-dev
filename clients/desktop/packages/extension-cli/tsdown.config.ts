@@ -1,8 +1,3 @@
-/**
- * @fileoverview Configures Node ESM outputs for extension build configuration and
- * development application control.
- */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

@@ -28,9 +28,12 @@ export interface DevelopmentBuild {
 
 /** A development session owns its processes, watchers and private output directories until closed. */
 export interface DevelopmentSession {
+  /** First ready application; compilation failures can recover, while stopped startup or resource failure rejects. */
   readonly ready: Promise<void>
+  /** Settles after teardown; cleanup errors reject, and outputs with unconfirmed readers remain on disk. */
   readonly closed: Promise<void>
   readonly rendererUrl: string
+  /** Current running generation; absent before launch, during replacement and after process exit. */
   readonly current: DevelopmentBuild | undefined
   /** Request normal application exit, then close tools and outputs; cancellation keeps the session usable. */
   stop(): Promise<'cancelled' | 'stopped'>
@@ -45,7 +48,7 @@ export interface DevelopmentOptions {
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/** Start a development session and publish only complete private generations to its readers. */
+/** Return a watching session before its first build completes; await ready for the first usable application. */
 export async function startDevelopmentSession(
   options: DevelopmentOptions = {},
 ): Promise<DevelopmentSession> {

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Applies desktop lint rules with Node global restrictions for main,
- * extension-host and native boundary code.
- */
-
 import { defineConfig } from 'eslint/config'
 import base from '@kisaki3/eslint-config/base'
 import node from '@kisaki3/eslint-config/node'

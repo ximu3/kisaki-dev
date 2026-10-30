@@ -1,8 +1,3 @@
-/**
- * @fileoverview Runs extension CLI integration tests with the Node process host they
- * exercise.
- */
-
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

@@ -69,7 +69,7 @@ pnpm desktop:package --target windows-x64
 
 每个 TypeScript 项目维护自己的 `eslint.config.ts` 和 lint 任务，声明 ESLint、jiti 与共享配置依赖，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`。类型感知 lint 沿 TypeScript Project Service 使用源码实际所属的 tsconfig 和 references，跨项目的暂存文件检查也采用各自环境；官方扩展的两个配置入口共用自身 Node 类型项目。
 
-根 `pnpm lint` 通过 Turbo 准备依赖包的构建声明，再调度项目 lint、根工程 lint 与全仓依赖检查。首次检查使用根任务；直接调用 ESLint、编辑器和 pre-commit 消费已准备的声明。仓库外消费者样板在安装 tarball 后执行完整类型感知 lint，仓库内保留语法检查。共享规则与适用边界见 [ESLint 配置](packages/eslint-config/README.md)。
+根 `pnpm lint` 通过 Turbo 准备依赖包的构建声明，再调度项目 lint、根工程 lint 与全仓依赖检查。`pnpm lint:fix` 沿同一依赖图准备声明并修复源码，本次运行不读写任务缓存，完成后自行审阅差异。首次检查或修复使用根任务；直接调用 ESLint、编辑器和 pre-commit 消费已准备的声明。仓库外消费者样板在安装 tarball 后执行完整类型感知 lint，仓库内保留语法检查。共享规则与适用边界见 [ESLint 配置](packages/eslint-config/README.md)。
 
 根 `turbo.json` 提供共同任务，应用 `turbo.json` 声明桌面任务。CI 用 GitHub Actions 官方 cache 保存 `.turbo/cache`，按系统、架构和 Node 版本隔离；fork PR 只读取缓存。原生、桌面运行、开发会话、消费者与制品验证始终实际执行。
 

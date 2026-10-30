@@ -71,7 +71,10 @@ test('measures twenty fresh processes and confirms all observed child processes 
                 try {
                   process.kill(pid, 0)
                   return true
-                } catch {
+                } catch (cause) {
+                  if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+                    throw cause
+                  }
                   return false
                 }
               }),

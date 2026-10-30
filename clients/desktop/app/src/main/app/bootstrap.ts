@@ -100,12 +100,14 @@ export async function bootstrap(): Promise<void> {
     rendererUrl: launch.rendererUrl,
   })
 
-  app.on('second-instance', () => {
+  const onSecondInstance = () => {
     if (window.isMinimized()) {
       window.restore()
     }
     window.focus()
-  })
+  }
+  app.on('second-instance', onSecondInstance)
+  window.once('closed', () => app.off('second-instance', onSecondInstance))
 
   logLifecycle('app', `Ready ${__KISAKI_BUILD_ID__}`)
   await development?.ready(__KISAKI_BUILD_ID__, build.version)
