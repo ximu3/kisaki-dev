@@ -6,9 +6,9 @@
 import { defineConfig } from 'vitest/config'
 import { readFileSync } from 'node:fs'
 
-const manifest: { devDependencies: { electron: string } } = JSON.parse(
+const manifest = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
-)
+) as { devDependencies: { electron: string } }
 if (
   process.versions.electron !== manifest.devDependencies.electron ||
   process.env.ELECTRON_RUN_AS_NODE !== '1' ||

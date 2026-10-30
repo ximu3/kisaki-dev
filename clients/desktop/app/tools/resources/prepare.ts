@@ -33,9 +33,9 @@ export async function prepareResources(
   signal?: AbortSignal,
 ): Promise<string> {
   const output = join(appRoot, 'out', 'resources', target)
-  const fontInputs: FontInput[] = JSON.parse(
+  const fontInputs = JSON.parse(
     await readFile(join(appRoot, 'assets', 'fonts', 'inputs.json'), 'utf8'),
-  )
+  ) as FontInput[]
 
   await replaceOutput(
     appRoot,

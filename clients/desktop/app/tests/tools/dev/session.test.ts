@@ -69,11 +69,13 @@ app.once('browser-window-created', (_event, window) => {
       .toBe(true)
     expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
 
-    const hostPids: number[] = JSON.parse(
+    const hostPids = JSON.parse(
       await readFile(join(workspace.app, '.local/development/cancelled-hosts.json'), 'utf8'),
-    )
+    ) as number[]
     expect(hostPids.length).toBeGreaterThan(0)
-    for (const pid of hostPids) expect(() => process.kill(pid, 0)).not.toThrow()
+    for (const pid of hostPids) {
+      expect(() => process.kill(pid, 0)).not.toThrow()
+    }
 
     const marker = join(workspace.app, '.local/development/retained.txt')
     await writeFile(marker, 'synthetic retained development state')

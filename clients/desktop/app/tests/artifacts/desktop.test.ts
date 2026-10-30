@@ -41,7 +41,7 @@ async function waitForExit(
 test('the exact packaged carrier retains production fuses and starts and closes externally', async () => {
   const receiptPath =
     process.env.KISAKI_ARTIFACT_RECEIPT ?? join(appRoot, 'dist', hostTarget(), 'artifacts.json')
-  const receipt: ArtifactReceipt = JSON.parse(await readFile(receiptPath, 'utf8'))
+  const receipt = JSON.parse(await readFile(receiptPath, 'utf8')) as ArtifactReceipt
   expect(receipt.target).toBe(hostTarget())
   expect(receipt.buildId).toMatch(/\S/)
   expect(receipt.files.length).toBeGreaterThan(0)
@@ -56,17 +56,19 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
   const suffix = process.platform === 'linux' ? '.AppImage' : '.zip'
   const file = receipt.files.find((file) => file.path.endsWith(suffix))
-  if (!file) throw new Error('The receipt has no movable carrier for this target')
+  if (!file) {
+    throw new Error('The receipt has no movable carrier for this target')
+  }
 
   const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path))
   const { directory, executablePath, resourceDirectory, fusePath, dataDirectory } = workspace
 
   try {
     const asar = join(resourceDirectory, 'app.asar')
-    const build: DesktopBuild = JSON.parse(extractFile(asar, 'build.json').toString())
-    const distribution: DistributionManifest = JSON.parse(
+    const build = JSON.parse(extractFile(asar, 'build.json').toString()) as DesktopBuild
+    const distribution = JSON.parse(
       extractFile(asar, 'distribution.json').toString(),
-    )
+    ) as DistributionManifest
     const carriers: Partial<Record<NodeJS.Platform, DistributionKind>> = {
       win32: 'zip',
       darwin: 'app',
@@ -147,12 +149,16 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     })
 
     try {
-      if (!child.pid) throw new Error('Packaged process could not start')
+      if (!child.pid) {
+        throw new Error('Packaged process could not start')
+      }
 
       await expect
         .poll(
           async ({ signal }) => {
-            if (child.exitCode !== null) throw new Error(`Packaged process exited: ${diagnostic}`)
+            if (child.exitCode !== null) {
+              throw new Error(`Packaged process exited: ${diagnostic}`)
+            }
 
             return hasNativeWindow(child.pid!, signal)
           },
@@ -166,7 +172,9 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     } catch (cause) {
       throw new Error(`Packaged application verification failed:\n${diagnostic}`, { cause })
     } finally {
-      if (child.exitCode === null) child.kill()
+      if (child.exitCode === null) {
+        child.kill()
+      }
       await waitForExit(closed, 10_000)
     }
 
@@ -215,7 +223,9 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       expect(await waitForExit(rejectedExit, 15_000)).not.toBe(0)
       await expect(readdir(missingChannelProfile)).rejects.toMatchObject({ code: 'ENOENT' })
     } finally {
-      if (rejected.exitCode === null) rejected.kill()
+      if (rejected.exitCode === null) {
+        rejected.kill()
+      }
       await waitForExit(rejectedExit, 10_000)
     }
   } finally {

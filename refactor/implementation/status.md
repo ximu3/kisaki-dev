@@ -4,7 +4,7 @@
 
 ## 当前交付
 
-截至 2026-10-29，W00 的工程与测试入口交付完成。工程基线 `51a4130` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)通过，完整运行用时 18 分 39 秒；[仓库合并约束](#merge-rules)已配置，并通过真实 PR 的元信息编辑与可合并状态核对，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。
+截至 2026-10-30，W00 的工程与测试入口交付完成。工程基线 `51a4130` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)通过，完整运行用时 18 分 39 秒；[仓库合并约束](#merge-rules)已配置，并通过真实 PR 的元信息编辑与可合并状态核对，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。
 
 | 范围 | 状态 |
 | --- | --- |
@@ -13,6 +13,8 @@
 | W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
+
+编码规范归属与类型感知检查已完成本机验证，包含完整 lint、54 项普通 Node 测试和仓库外包消费，验证范围见[规范与检查验证](../verification/evidence/readability-conventions/2026-10-30/README.md)。
 
 各阶段的实现、运行验证与发行按[验收标准](../verification/acceptance.md)分别记录。
 

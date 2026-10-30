@@ -40,13 +40,17 @@ export async function replaceOutput<T>(
       await rename(destination, previous)
       movedPrevious = true
     } catch (cause) {
-      if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+      if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw cause
+      }
     }
 
     try {
       await rename(staging, destination)
     } catch (cause) {
-      if (movedPrevious) await rename(previous, destination)
+      if (movedPrevious) {
+        await rename(previous, destination)
+      }
       throw cause
     }
 

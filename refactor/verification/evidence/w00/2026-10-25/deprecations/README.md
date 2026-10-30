@@ -1,6 +1,6 @@
 # 弃用 API 与工程配置检查
 
-本轮依据当前锁定版本检查自维护源码、声明、工具、配置、测试及消费者样板。实现质量要求原已见[编码规范](../../../../../design/engineering/conventions.md#quality)，本轮补充了[弃用接口处理](../../../../../design/engineering/conventions.md#deprecated-apis)的具体边界。
+本轮依据当前锁定版本检查自维护源码、声明、工具、配置、测试及消费者样板。实现质量要求原已见[编码规范](../../../../../../CONVENTIONS.md#quality)，本轮补充了[弃用接口处理](../../../../../../CONVENTIONS.md#deprecated-apis)的具体边界。
 
 ## 已处理的调用
 

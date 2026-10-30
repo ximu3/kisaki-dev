@@ -19,19 +19,6 @@ PR 描述的内容与格式遵守[写作规范](refactor/design/engineering/docu
 
 验证证据目录保留原始字节，Git 不转换其文本换行，以保持记录的文件摘要可核验。普通源码继续采用 LF。
 
-## 配置文件
-
-| 文件                                                                             | 用途                                                         |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [.node-version](.node-version)                                                   | 开发与 CI 的 Node 版本声明。                                 |
-| [.prettierrc.json](.prettierrc.json)                                             | 仓库共同的源码与文档格式选项。                               |
-| [.dependency-cruiser.json](.dependency-cruiser.json)                             | 进程、公共包和工程代码的依赖边界、解析方式与扫描范围。       |
-| [turbo.json](turbo.json)                                                         | 工作区共同任务的依赖、输入、输出和缓存规则，以及根任务登记。 |
-| [tsconfig.json](tsconfig.json)                                                   | 根工程的类型检查入口，组织工具、配置和测试项目。             |
-| [config/typescript/tsconfig.tools.json](config/typescript/tsconfig.tools.json)   | 检查根工程工具源码，排除测试文件。                           |
-| [config/typescript/tsconfig.config.json](config/typescript/tsconfig.config.json) | 检查根目录和 config 中的 TypeScript 工具配置。               |
-| [config/typescript/tsconfig.tests.json](config/typescript/tsconfig.tests.json)   | 检查仓库测试与桌面消费者辅助，隔离消费者试件使用自身配置。   |
-
 ## 资源输入
 
 当前资源工作流从固定依赖准备字体与对应目标的 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，并逐文件记录摘要。字体来源、版本与文件清单由应用 `assets/fonts/inputs.json` 和 pnpm 锁文件共同约束。
@@ -74,27 +61,31 @@ pnpm desktop:package --target windows-x64
 
 ## 验证任务
 
-先按[可读性](refactor/design/engineering/conventions.md#readability-principle)核对改动的职责、命名、组织与完整阅读路径，再按[简洁、原生与适度复杂度](refactor/design/engineering/conventions.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
+先按[可读性](CONVENTIONS.md#readability-principle)核对改动的职责、命名、组织与完整阅读路径，再按[简洁、原生与适度复杂度](CONVENTIONS.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
 
 仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `root:typecheck`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.desktop-consumers.ts`。
 
 工具和测试引用共用函数时声明 `@kisaki3/tooling` 的 workspace devDependency，并使用其 `/cli`、`/output` 或 `/process` exports。TypeScript 与 ESLint 共享配置分别由 `@kisaki3/typescript-config`、`@kisaki3/eslint-config` 提供。三者是固定工具链内直接加载的私有工程包，不预构建，不进入产品运行依赖或仓库外作者模板。
 
-每个 TypeScript 项目维护自己的 `eslint.config.ts` 和 lint 任务，显式声明 ESLint、jiti 与共享配置依赖，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`，支持跨项目的暂存文件检查。官方扩展的 `kisx.config.ts` 与 `eslint.config.ts` 共用自身的 Node 工具类型项目。根 lint 调度项目任务、根工程 lint 与全仓依赖检查。根 `turbo.json` 提供共同任务，应用 `turbo.json` 声明桌面任务。CI 用 GitHub Actions 官方 cache 保存 `.turbo/cache`，按系统、架构和 Node 版本隔离；fork PR 只读取缓存。原生、桌面运行、开发会话、消费者与制品验证始终实际执行。
+每个 TypeScript 项目维护自己的 `eslint.config.ts` 和 lint 任务，声明 ESLint、jiti 与共享配置依赖，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`。类型感知 lint 沿 TypeScript Project Service 使用源码实际所属的 tsconfig 和 references，跨项目的暂存文件检查也采用各自环境；官方扩展的两个配置入口共用自身 Node 类型项目。
+
+根 `pnpm lint` 通过 Turbo 准备依赖包的构建声明，再调度项目 lint、根工程 lint 与全仓依赖检查。首次检查使用根任务；直接调用 ESLint、编辑器和 pre-commit 消费已准备的声明。仓库外消费者样板在安装 tarball 后执行完整类型感知 lint，仓库内保留语法检查。共享规则与适用边界见 [ESLint 配置](packages/eslint-config/README.md)。
+
+根 `turbo.json` 提供共同任务，应用 `turbo.json` 声明桌面任务。CI 用 GitHub Actions 官方 cache 保存 `.turbo/cache`，按系统、架构和 Node 版本隔离；fork PR 只读取缓存。原生、桌面运行、开发会话、消费者与制品验证始终实际执行。
 
 全仓依赖图由根 `.dependency-cruiser.json` 检查。第三方包、构建输出和测试目标保留直接依赖边，通过 `doNotFollow` 停止继续扫描；不能用全局排除让这些边消失。检查同时核对导入者自己的依赖声明，祖先目录能够解析某个包不代表该项目已经声明它。
 
-应用的 `#native` 由应用 `package.json#imports` 唯一定义，不复制到根 paths。配置继承不改变包作用域：在根目录启动构建仍能解析应用源码的 `#native`，根工程自己的模块则不拥有该入口。具体导入范围见[模块导入规则](refactor/design/engineering/conventions.md#module-imports)。
+应用的 `#native` 由应用 `package.json#imports` 唯一定义，不复制到根 paths。配置继承不改变包作用域：在根目录启动构建仍能解析应用源码的 `#native`，根工程自己的模块则不拥有该入口。具体导入范围见[模块导入规则](CONVENTIONS.md#module-imports)。
 
 应用的 `tsconfig.json` 是七个类型项目的共同入口，`pnpm --filter @kisaki3/desktop typecheck` 通过 `tsc -b` 检查全部环境。具体配置位于 `config/typescript`，增量信息归应用 `.cache/typescript`，不生成运行代码；需要完整重检时使用 `pnpm --filter @kisaki3/desktop typecheck --force`。
 
-八个公共包同样由根 `tsconfig.json` 组织各自 `config/typescript` 中的库源码与工具项目，类型任务使用 `tsc -b`。库源码配置为 `config/typescript/tsconfig.lib.json`，根 `tsdown.config.ts` 显式读取它进行代码与声明构建；工具及其构建配置使用同目录的 `tsconfig.tools.json`。增量信息归各包 `.cache/typescript`，各环境的严格性独立保持。各类工程和样板遵守同一[配置归属规则](refactor/design/engineering/conventions.md#configuration-layout)。
+八个公共包同样由根 `tsconfig.json` 组织各自 `config/typescript` 中的库源码与工具项目，类型任务使用 `tsc -b`。库源码配置为 `config/typescript/tsconfig.lib.json`，根 `tsdown.config.ts` 显式读取它进行代码与声明构建；工具及其构建配置使用同目录的 `tsconfig.tools.json`。增量信息归各包 `.cache/typescript`，各环境的严格性独立保持。各类工程和样板遵守同一[配置归属规则](CONVENTIONS.md#configuration-layout)。
 
 常规 Node 与桌面端到端测试保留应用根目录的默认配置，其他运行方式由 `config/vitest` 和 `config/playwright` 中的配置明确指定。脚本与 CI 继续使用下列任务入口。
 
 各工程显式设置 `fsModuleCachePath: 'node_modules/.vitest-cache'`，将 Vitest 转换缓存放在自身项目根目录下，避免工作区级默认缓存的并发清理冲突。工程依赖按构建、测试、类型、配置、资产和 peer 等实际用途保留，不仅根据产品源码的直接导入判断。
 
-TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc` 检查通过不代表此类提示为零。API 与配置迁移还须核对相应弃用提示，处理依据见[弃用接口规则](refactor/design/engineering/conventions.md#deprecated-apis)；上游传递依赖的弃用通知与自维护代码的 API 调用分别记录。
+TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc` 检查通过不代表此类提示为零。API 与配置迁移还须核对相应弃用提示，处理依据见[弃用接口规则](CONVENTIONS.md#deprecated-apis)；上游传递依赖的弃用通知与自维护代码的 API 调用分别记录。
 
 | 命令                                            | 输入与运行环境                                                       |
 | ----------------------------------------------- | -------------------------------------------------------------------- |

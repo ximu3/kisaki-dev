@@ -6,6 +6,8 @@
 
 根 `tsconfig.json` 关联 `config/typescript` 中的七个类型项目，`typecheck` 通过 `tsc -b` 执行，增量信息保存在 `.cache/typescript`。根 `vitest.config.ts` 与 `playwright.config.ts` 分别提供常规 Node 测试和桌面端到端测试；浏览器、原生、开发链路与制品配置归 `config/vitest`，性能配置归 `config/playwright`。各入口与对应运行环境见根 [验证任务](../../../CONTRIBUTING.md#验证任务)。
 
+共享合同、main、preload、renderer 与 extension-host 分别采用自身的类型环境，main 项目完整检查自有原生声明；工具与测试项目覆盖相应工程输入。lint 沿用这些类型项目，公共依赖声明由根任务提前准备。
+
 常规 Node 测试包含 `tests/integration` 中不依赖 Electron ABI 的接入用例；其中的 `database` 与 `native` 套件由 `test:native` 在开发 Electron 的 Node 模式下单独执行。
 
 开发监听与输出清理在常规 Node 套件中通过真实 Vite、Chokidar 和文件系统验证。`test:dev` 保留实际 Electron 的退出取消、编译失败与改名恢复、公共包失败与页面交接，以及首次准备取消与重试。独立场景复用隔离工作区准备，各自关闭控制器并恢复自己的输入。
@@ -23,17 +25,3 @@ SQLite 13.0.3 使用包内 Node-API 预编译绑定，资源工作流只装配�
 性能配置保存代表负载和测量预算。启动用例在隔离资料下运行 20 个新进程，测量窗口与原生模块就绪、进程资源及正常退出；该负载不包含资料库、业务视图和扩展。实际结果及产品负载覆盖见[实施状态](../../../refactor/implementation/status.md)。
 
 `packaging` 是打包专用静态输入边界；执行逻辑在 `tools/package`，生成文件在 `dist`。媒体信息与播放的产品接入合同见[libmpv-node 接入](../../../refactor/design/engineering/integrations.md#media)。
-
-## 配置文件
-
-| 文件                                                                                             | 用途                                                         |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| [tsconfig.json](tsconfig.json)                                                                   | 桌面工程的类型检查入口，组织各运行环境、工具和测试项目。     |
-| [turbo.json](turbo.json)                                                                         | 桌面任务的构建依赖、验证输入、环境变量和缓存规则。           |
-| [config/typescript/tsconfig.main.json](config/typescript/tsconfig.main.json)                     | 检查主进程、共享合同与私有 Node 原生入口，并完整检查其声明。 |
-| [config/typescript/tsconfig.preload.json](config/typescript/tsconfig.preload.json)               | 检查隔离预加载脚本及其共享合同。                             |
-| [config/typescript/tsconfig.renderer.json](config/typescript/tsconfig.renderer.json)             | 检查 Solid renderer、窗口全局声明与共享合同。                |
-| [config/typescript/tsconfig.extension-host.json](config/typescript/tsconfig.extension-host.json) | 检查扩展宿主的 Node 程序和共享合同。                         |
-| [config/typescript/tsconfig.shared.json](config/typescript/tsconfig.shared.json)                 | 独立检查共享纯合同与构建全局声明。                           |
-| [config/typescript/tsconfig.tools.json](config/typescript/tsconfig.tools.json)                   | 检查桌面工程工具与 TypeScript 配置入口。                     |
-| [config/typescript/tsconfig.tests.json](config/typescript/tsconfig.tests.json)                   | 检查各运行环境的测试、辅助和测试使用的窗口声明。             |

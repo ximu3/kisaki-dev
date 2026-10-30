@@ -1,6 +1,6 @@
 # 包内模块入口与配置归组验证
 
-本轮基于 `93a06c29beddb41b1083549c004ab830fcc29ff5` 的工作区变更，落实已确认的[模块导入规则](../../../../../design/engineering/conventions.md#module-imports)：跨包消费公开 exports，包内稳定入口使用所属 package.json 的 imports，模块内部使用相对导入。范围为工程入口与模块解析，不推进后续业务工作包。
+本轮基于 `93a06c29beddb41b1083549c004ab830fcc29ff5` 的工作区变更，落实已确认的[模块导入规则](../../../../../../CONVENTIONS.md#module-imports)：跨包消费公开 exports，包内稳定入口使用所属 package.json 的 imports，模块内部使用相对导入。范围为工程入口与模块解析，不推进后续业务工作包。
 
 ## 实现与边界
 

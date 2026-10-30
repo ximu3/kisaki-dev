@@ -9,7 +9,9 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const [directory, role] = process.argv.slice(2)
-if (!directory) throw new Error('The fixture directory is required')
+if (!directory) {
+  throw new Error('The fixture directory is required')
+}
 
 // Both fixture processes remain alive until the command cancellation ends their process tree.
 if (role === 'leaf') {
@@ -26,7 +28,9 @@ if (role === 'leaf') {
     child.once('error', reject)
     child.once('message', () => resolve())
   })
-  if (!child.pid) throw new Error('Fixture child process is unavailable')
+  if (!child.pid) {
+    throw new Error('Fixture child process is unavailable')
+  }
 
   await writeFile(
     join(directory, 'tree.json'),

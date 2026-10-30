@@ -16,7 +16,9 @@ interface NativeWindowOptions {
 }
 
 function windowUrl(kind: WindowKind, rendererUrl?: string): string {
-  if (!rendererUrl) return `kisaki-app://native/${kind}/index.html`
+  if (!rendererUrl) {
+    return `kisaki-app://native/${kind}/index.html`
+  }
 
   const base = new URL(rendererUrl)
   if (base.protocol !== 'http:' || base.hostname !== '127.0.0.1') {
@@ -86,7 +88,9 @@ export async function createNativeWindow(options: NativeWindowOptions): Promise<
 
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
   window.webContents.on('will-navigate', (event, destination) => {
-    if (destination !== window.webContents.getURL()) event.preventDefault()
+    if (destination !== window.webContents.getURL()) {
+      event.preventDefault()
+    }
   })
 
   ipcMain.handle('window:close', (event) => {
@@ -105,7 +109,9 @@ export async function createNativeWindow(options: NativeWindowOptions): Promise<
     window.show()
     return window
   } catch (cause) {
-    if (!window.isDestroyed()) window.destroy()
+    if (!window.isDestroyed()) {
+      window.destroy()
+    }
 
     throw cause
   }

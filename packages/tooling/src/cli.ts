@@ -22,13 +22,19 @@ export async function runCli(action: (signal: AbortSignal) => Promise<void>): Pr
   try {
     await action(controller.signal)
 
-    if (controller.signal.aborted) process.exitCode = cancelledCode
+    if (controller.signal.aborted) {
+      process.exitCode = cancelledCode
+    }
   } catch (cause) {
     if (controller.signal.aborted) {
       process.exitCode = cancelledCode
     } else if (cause instanceof CommandFailed) {
-      if (cause.stdout) process.stdout.write(cause.stdout)
-      if (cause.stderr) process.stderr.write(cause.stderr)
+      if (cause.stdout) {
+        process.stdout.write(cause.stdout)
+      }
+      if (cause.stderr) {
+        process.stderr.write(cause.stderr)
+      }
       process.exitCode = cause.exitCode
     } else {
       console.error(cause)

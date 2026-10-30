@@ -31,14 +31,4 @@ config 入口提供 ExtensionBuildConfig 与 defineConfig，声明扩展构建�
 
 `pnpm test` 在普通 Node 中通过隔离子进程验证开发启动器的就绪、取消退出和实际结束。根 Turbo 测试入口按依赖准备上游公共包输出；真实桌面会话与应用退出仍由应用的开发回归验证。
 
-## 配置文件
-
-| 文件                                                                           | 用途                                                         |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| [tsconfig.json](tsconfig.json)                                                 | 本包的类型检查入口，通过 references 组织源码和工程项目。     |
-| [config/typescript/tsconfig.lib.json](config/typescript/tsconfig.lib.json)     | 检查不执行 I/O 的扩展构建配置合同。                          |
-| [config/typescript/tsconfig.tools.json](config/typescript/tsconfig.tools.json) | 使用 Node 类型基线检查本包构建工具与根目录 TypeScript 配置。 |
-| [config/typescript/tsconfig.node.json](config/typescript/tsconfig.node.json)   | 检查开发应用启动器的 Node 源码，并作为本包构建的类型配置。   |
-| [config/typescript/tsconfig.tests.json](config/typescript/tsconfig.tests.json) | 检查启动器集成测试及其子进程试件。                           |
-
 本包采用 MIT。包职责与公开边界见[公共包合同](../../../../refactor/design/engineering/workspace.md#contracts)，实现与交付状态见[实施状态](../../../../refactor/implementation/status.md)。

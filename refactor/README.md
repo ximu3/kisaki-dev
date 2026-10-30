@@ -2,13 +2,13 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-所有主题以[终态实现与整体一致性](design/engineering/conventions.md#final-state)为首要准则，从完整目标形成自洽的设计、代码与说明；调整覆盖全部相关场景，必要时重设架构和实现。[可读性](design/engineering/conventions.md#readability-principle)是贯穿代码、组织、目录、命名和文档的核心准则与交付门槛；[简洁、原生与适度复杂度](design/engineering/conventions.md#simplicity-native)共同约束概念、操作和维护成本。既有规则、实现与文档都按目标及事实接受审查。
+所有主题遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
 
 旧项目位于 `F:/project/3/kisaki`。
 
 <a id="rewrite"></a>
 
-按已确认目标完整重设计架构、重写代码并重建工程。新方案独立推导，不受现有实现及其目录、命名、分层、抽象和配套规范的任何影响；具体约束见[编码与实现质量](design/engineering/conventions.md#quality)。
+按已确认目标完整重设计架构、重写代码并重建工程。新方案独立推导，不受现有实现及其目录、命名、分层、抽象和配套规范的任何影响；具体约束见[编码与实现质量](../CONVENTIONS.md#quality)。
 
 本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。各实施阶段共同完成这份合同，阶段划分、原型覆盖和验证进度只安排工作顺序。尚未解决的设计事项记录为未完成，在形成完整实施依据前继续闭合。
 

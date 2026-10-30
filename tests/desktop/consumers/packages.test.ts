@@ -1,11 +1,13 @@
 /**
- * @fileoverview Verifies installed desktop tarballs through strict declarations, Node
- * execution and real browser consumers.
+ * @fileoverview Verifies installed desktop tarballs through declaration and typed-lint
+ * checks, Node execution and real browser consumers.
  */
 
 import { afterAll, beforeAll, expect, test } from 'vitest'
 import { chromium } from '@playwright/test'
 import { preview } from 'vite'
+import { ESLint } from 'eslint'
+import lintConfig from '@kisaki3/eslint-config/base'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { consumerCommand, prepareConsumer } from '../support/consumer'
@@ -20,8 +22,22 @@ afterAll(async () => {
   await consumer?.close()
 })
 
-test('strict TypeScript and ordinary Node consume the supplied public entries outside the repository', async () => {
+test('strict declarations, typed lint and Node consume the supplied public entries outside the repository', async () => {
   await consumerCommand(consumer.directory, ['run', 'typecheck'])
+
+  const lint = new ESLint({
+    cwd: consumer.directory,
+    overrideConfigFile: true,
+    overrideConfig: [
+      ...lintConfig,
+      { languageOptions: { parserOptions: { tsconfigRootDir: consumer.directory } } },
+    ],
+  })
+  const results = await lint.lintFiles(['node', 'webview', 'solid', 'vite.config.ts'])
+  expect(results.length).toBeGreaterThan(0)
+  for (const result of results) {
+    expect(result.messages, result.filePath).toEqual([])
+  }
 
   expect(await consumerCommand(consumer.directory, ['run', 'test:node'])).toContain(
     'consumer-ready',
@@ -45,15 +61,19 @@ test('framework-independent and Solid pages consume built styles without a Tailw
     try {
       const page = await browser.newPage()
       const url = server.resolvedUrls?.local[0]
-      if (!url) throw new Error('Consumer preview has no listening address')
+      if (!url) {
+        throw new Error('Consumer preview has no listening address')
+      }
 
       await page.goto(new URL('webview/index.html', url).href)
       expect(await page.locator('h1').textContent()).toBe('Framework-independent consumer')
 
       const themes = await page.evaluate(() => {
         const root = document.documentElement
-        const expected: { light: Record<string, string>; dark: Record<string, string> } =
-          JSON.parse(root.dataset.tokens!)
+        const expected = JSON.parse(root.dataset.tokens!) as {
+          light: Record<string, string>
+          dark: Record<string, string>
+        }
 
         const probe = document.createElement('span')
         document.body.append(probe)

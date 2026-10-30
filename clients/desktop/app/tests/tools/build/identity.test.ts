@@ -24,9 +24,9 @@ async function writeInput(path: string, contents: string): Promise<void> {
 
 beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), 'kisaki-build-inputs-'))
-  const manifest: { packageManager: string } = JSON.parse(
-    await readFile(join(repositoryRoot, 'package.json'), 'utf8'),
-  )
+  const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8')) as {
+    packageManager: string
+  }
 
   await writeInput(
     'package.json',
@@ -193,8 +193,11 @@ test('declared build environment values contribute to the input identity', async
 
     expect(await buildInputIdentity({ root })).not.toBe(baseline)
   } finally {
-    if (previous === undefined) delete process.env.TSDOWN_IDENTITY_FIXTURE
-    else process.env.TSDOWN_IDENTITY_FIXTURE = previous
+    if (previous === undefined) {
+      delete process.env.TSDOWN_IDENTITY_FIXTURE
+    } else {
+      process.env.TSDOWN_IDENTITY_FIXTURE = previous
+    }
   }
 })
 

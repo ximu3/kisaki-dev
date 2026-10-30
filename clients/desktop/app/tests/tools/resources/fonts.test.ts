@@ -17,9 +17,9 @@ let input: FontInput
 
 beforeEach(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-fonts-'))
-  const inputs: FontInput[] = JSON.parse(
+  const inputs = JSON.parse(
     await readFile(join(appRoot, 'assets/fonts/inputs.json'), 'utf8'),
-  )
+  ) as FontInput[]
   const font = inputs[0]!
   input = {
     ...font,

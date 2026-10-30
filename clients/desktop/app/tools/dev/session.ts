@@ -51,7 +51,9 @@ export async function startDevelopmentSession(
 ): Promise<DevelopmentSession> {
   const target = hostTarget()
   const profile = options.profile ?? join(appRoot, '.local', 'development')
-  if (!isAbsolute(profile)) throw new Error('Development profile must be an absolute path')
+  if (!isAbsolute(profile)) {
+    throw new Error('Development profile must be an absolute path')
+  }
 
   options.signal?.throwIfAborted()
 
@@ -95,7 +97,9 @@ export async function startDevelopmentSession(
       )
       await renderer.adopt(initialDependencies)
     } catch (cause) {
-      if (signal.aborted) throw cause
+      if (signal.aborted) {
+        throw cause
+      }
 
       options.onState?.('failed', cause)
     }
@@ -178,7 +182,9 @@ export async function startDevelopmentSession(
 
         if (!runtime) {
           await renderer.adopt(dependencies)
-          if (!resourceFailed) options.onState?.('ready')
+          if (!resourceFailed) {
+            options.onState?.('ready')
+          }
           return
         }
 
@@ -226,8 +232,12 @@ export async function startDevelopmentSession(
 
         const launched = child
         void launched.exited.then((result) => {
-          if (result.code !== 0) retainOutputs = true
-          if (child !== launched || replacing || stopping) return
+          if (result.code !== 0) {
+            retainOutputs = true
+          }
+          if (child !== launched || replacing || stopping) {
+            return
+          }
 
           child = undefined
           current = undefined
@@ -239,8 +249,12 @@ export async function startDevelopmentSession(
         })
 
         programInputs = runtime.inputs
-        if (previous && !retainOutputs) await rm(previous, { recursive: true, force: true })
-        if (resourceFailed) return
+        if (previous && !retainOutputs) {
+          await rm(previous, { recursive: true, force: true })
+        }
+        if (resourceFailed) {
+          return
+        }
 
         options.signal?.removeEventListener('abort', cancelPreparation)
         options.onState?.('ready')
@@ -253,17 +267,23 @@ export async function startDevelopmentSession(
           await rm(candidate, { recursive: true, force: true })
         }
 
-        if (!signal.aborted) options.onState?.('failed', cause)
+        if (!signal.aborted) {
+          options.onState?.('failed', cause)
+        }
       }
     }
 
     /** Coalesce changes into serial rebuilds owned by this development session. */
     function enqueue(force = false): void {
-      if (stopped || resourceFailed) return
+      if (stopped || resourceFailed) {
+        return
+      }
 
       forceRuntimeBuild ||= force
       buildPending = true
-      if (stopping) return
+      if (stopping) {
+        return
+      }
 
       buildLoop ??= (async () => {
         while (buildPending && !stopping && !resourceFailed) {
@@ -293,12 +313,18 @@ export async function startDevelopmentSession(
       },
 
       stop() {
-        if (stopped) return Promise.resolve('stopped')
-        if (stopPromise) return stopPromise
+        if (stopped) {
+          return Promise.resolve('stopped')
+        }
+        if (stopPromise) {
+          return stopPromise
+        }
 
         stopping = true
         signal.removeEventListener('abort', cancel)
-        if (!current) controller.abort(new Error('Development startup cancelled'))
+        if (!current) {
+          controller.abort(new Error('Development startup cancelled'))
+        }
 
         stopPromise = (async () => {
           await buildLoop
@@ -359,7 +385,9 @@ export async function startDevelopmentSession(
           stopPromise = undefined
           if (!stopped && !signal.aborted) {
             stopping = false
-            if (buildPending) enqueue()
+            if (buildPending) {
+              enqueue()
+            }
           }
         })
 
@@ -381,7 +409,9 @@ export async function startDevelopmentSession(
     inputsToClose = inputs
     signal.addEventListener('abort', cancel, { once: true })
     enqueue()
-    if (signal.aborted) cancel()
+    if (signal.aborted) {
+      cancel()
+    }
 
     return session
   } catch (cause) {
@@ -406,7 +436,9 @@ export async function startDevelopmentSession(
       throw new AggregateError(failures, 'Development startup and cleanup failed', { cause })
     }
 
-    if (directory) await rm(directory, { recursive: true, force: true })
+    if (directory) {
+      await rm(directory, { recursive: true, force: true })
+    }
 
     throw cause
   }

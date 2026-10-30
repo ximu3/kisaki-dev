@@ -20,7 +20,7 @@ test('cancelling initial dependency preparation closes its command and permits a
   try {
     const manifestPath = join(workspace.root, 'clients/desktop/packages/ui/package.json')
     const original = await readFile(manifestPath, 'utf8')
-    const manifest: { scripts: Record<string, string> } = JSON.parse(original)
+    const manifest = JSON.parse(original) as { scripts: Record<string, string> }
     manifest.scripts.build = 'tsx ../../app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
 
@@ -33,10 +33,12 @@ test('cancelling initial dependency preparation closes its command and permits a
           try {
             preparation = JSON.parse(
               await readFile(join(workspace.root, '.cache', 'dependency-preparation.json'), 'utf8'),
-            )
+            ) as typeof preparation
             return true
           } catch (cause) {
-            if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+            if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+              throw cause
+            }
 
             return false
           }
@@ -57,7 +59,9 @@ test('cancelling initial dependency preparation closes its command and permits a
           process.kill(preparation!.pid, 0)
           return true
         } catch (cause) {
-          if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+          if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+            throw cause
+          }
 
           return false
         }
@@ -77,7 +81,9 @@ test('cancelling initial dependency preparation closes its command and permits a
     expect(await readdir(sessions)).toEqual([])
   } finally {
     for (const item of [first, retry]) {
-      if (!item) continue
+      if (!item) {
+        continue
+      }
 
       await item.close()
     }

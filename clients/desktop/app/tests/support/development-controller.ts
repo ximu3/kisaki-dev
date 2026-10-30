@@ -41,7 +41,9 @@ export function startDevelopmentController(app: string) {
   child.on('message', (message: DevelopmentObservation) => {
     states.push(message)
     observations.push({ elapsedMs: performance.now() - start, observation: message })
-    if (observations.length > 32) observations.shift()
+    if (observations.length > 32) {
+      observations.shift()
+    }
   })
 
   for (const stream of [child.stdout!, child.stderr!]) {
@@ -82,7 +84,9 @@ export function startDevelopmentController(app: string) {
     closed,
     diagnostics: () => `${JSON.stringify(observations)}\n${output}`,
     async close() {
-      if (child.connected) child.send({ type: 'stop' })
+      if (child.connected) {
+        child.send({ type: 'stop' })
+      }
 
       const timeout = setTimeout(() => child.kill('SIGKILL'), 15_000)
       try {

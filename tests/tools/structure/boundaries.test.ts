@@ -116,9 +116,9 @@ beforeAll(async () => {
     await copyFile(resolve(file), target)
   }
 
-  const manifest: { devDependencies: { electron: string } } = JSON.parse(
+  const manifest = JSON.parse(
     await readFile(join(directory, 'clients/desktop/app/package.json'), 'utf8'),
-  )
+  ) as { devDependencies: { electron: string } }
   const electronVersion = manifest.devDependencies.electron
 
   // Ancestor availability must not substitute for the importing project's declaration.
@@ -195,7 +195,9 @@ beforeAll(async () => {
 
   const files: [string, string][] = cases.flatMap(({ from, to, source }) => {
     const inputs: [string, string][] = [[from, source]]
-    if (to) inputs.push([to, 'export interface Value { name: string }\n'])
+    if (to) {
+      inputs.push([to, 'export interface Value { name: string }\n'])
+    }
     return inputs
   })
 
@@ -215,19 +217,25 @@ beforeAll(async () => {
       )
     ).stdout
   } catch (cause) {
-    if (!cause || typeof cause !== 'object' || !('stdout' in cause)) throw cause
+    if (!cause || typeof cause !== 'object' || !('stdout' in cause)) {
+      throw cause
+    }
     output = String(cause.stdout)
-    if (!output.trim()) throw cause
+    if (!output.trim()) {
+      throw cause
+    }
   }
 
-  result = JSON.parse(output)
+  result = JSON.parse(output) as typeof result
   expect(result.summary.violations.map((violation) => violation.rule.name)).not.toContain(
     'no-unresolved',
   )
 })
 
 afterAll(async () => {
-  if (directory) await rm(directory, { recursive: true, force: true })
+  if (directory) {
+    await rm(directory, { recursive: true, force: true })
+  }
 })
 
 test.each(cases)('enforces module boundaries: $name from $from', ({ name, from, allowed }) => {
@@ -238,6 +246,9 @@ test.each(cases)('enforces module boundaries: $name from $from', ({ name, from, 
     .filter((violation) => violation.from === source)
     .map((violation) => violation.rule.name)
 
-  if (allowed) expect(violations).toEqual([])
-  else expect(violations).toContain(name)
+  if (allowed) {
+    expect(violations).toEqual([])
+  } else {
+    expect(violations).toContain(name)
+  }
 })

@@ -1,8 +1,8 @@
 # 界面与交互
 
-界面遵守[终态实现与整体一致性](../engineering/conventions.md#final-state)及[简洁与原生准则](../engineering/conventions.md#simplicity-native)，让用户用熟悉的方式直接完成任务。系统能力、控件语义和有意义的平台差异沿[共同交互规则](components.md#native-interaction)落实。
+界面遵守[终态实现与整体一致性](../../../CONVENTIONS.md#final-state)及[简洁与原生准则](../../../CONVENTIONS.md#simplicity-native)，让用户用熟悉的方式直接完成任务。系统能力、控件语义和有意义的平台差异沿[共同交互规则](components.md#native-interaction)落实。
 
-理解界面时先读共同交互与视图状态，再查具体浏览或导航场景；信息组织、名称与说明遵守[可读性准则](../engineering/conventions.md#readability-principle)。
+理解界面时先读共同交互与视图状态，再查具体浏览或导航场景；信息组织、名称与说明遵守[可读性准则](../../../CONVENTIONS.md#readability-principle)。
 
 | 文档                              | 主要责任                                                 |
 | --------------------------------- | -------------------------------------------------------- |

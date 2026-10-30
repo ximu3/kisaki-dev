@@ -42,16 +42,22 @@ export async function startRenderer(
         enforce: 'pre',
         async resolveId(source, importer, options) {
           // Imports inside a snapshot keep that generation's package resolution.
-          if (importer && contains(snapshotDirectory, importer)) return null
+          if (importer && contains(snapshotDirectory, importer)) {
+            return null
+          }
 
           const specifier = source.replace(/[?#].*$/, '')
           const member = members.find(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
           )
-          if (!member) return null
+          if (!member) {
+            return null
+          }
 
           const packageRoot = snapshot?.packages.get(member.name)
-          if (!packageRoot) throw new Error('Public dependencies are not ready')
+          if (!packageRoot) {
+            throw new Error('Public dependencies are not ready')
+          }
 
           return this.resolve(source, join(packageRoot, 'package.json'), {
             ...options,
@@ -65,7 +71,9 @@ export async function startRenderer(
   try {
     await server.listen()
     const initialUrl = server.resolvedUrls?.local[0]
-    if (!initialUrl) throw new Error('Renderer server did not publish a listening address')
+    if (!initialUrl) {
+      throw new Error('Renderer server did not publish a listening address')
+    }
 
     let url = initialUrl
 
@@ -77,7 +85,9 @@ export async function startRenderer(
       resolveDependency: (...args) => server.environments.client.pluginContainer.resolveId(...args),
 
       async adopt(nextSnapshot) {
-        if (snapshot?.id === nextSnapshot.id) return
+        if (snapshot?.id === nextSnapshot.id) {
+          return
+        }
 
         const initialBuild = snapshot === undefined
         snapshot = nextSnapshot
@@ -86,7 +96,9 @@ export async function startRenderer(
           // Dependencies were unavailable at startup; discard unresolved optimizer entries.
           await server.restart()
           const address = server.resolvedUrls?.local[0]
-          if (!address) throw new Error('Renderer restart did not publish a listening address')
+          if (!address) {
+            throw new Error('Renderer restart did not publish a listening address')
+          }
 
           url = address
         } else {

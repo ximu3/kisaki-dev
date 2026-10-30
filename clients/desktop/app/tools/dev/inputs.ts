@@ -94,7 +94,9 @@ export async function startInputWatcher(
   let initialized = false
   watcher.on('error', (cause) => {
     // once() rejects initialization errors; subsequent failures belong to the live session.
-    if (initialized) options.onError(cause)
+    if (initialized) {
+      options.onError(cause)
+    }
   })
 
   try {

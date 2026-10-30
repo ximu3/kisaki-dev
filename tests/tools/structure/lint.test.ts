@@ -18,5 +18,20 @@ test('one staged-file lint run can load root, application, package and extension
   const results = await new ESLint().lintFiles(files)
 
   expect(results).toHaveLength(files.length)
-  for (const result of results) expect(result.messages, result.filePath).toEqual([])
+  for (const result of results) {
+    expect(result.messages, result.filePath).toEqual([])
+  }
+})
+
+test('typed lint follows imported promise contracts and accepts handled work', async () => {
+  const eslint = new ESLint()
+  const source = "import { readPnpm } from '@kisaki3/tooling/process'\n"
+  const options = { filePath: 'tools/hooks.ts' }
+  const [unhandled] = await eslint.lintText(source + "readPnpm(['--version'], '.')\n", options)
+  expect(unhandled?.messages.map((message) => message.ruleId)).toEqual([
+    '@typescript-eslint/no-floating-promises',
+  ])
+
+  const [handled] = await eslint.lintText(source + "await readPnpm(['--version'], '.')\n", options)
+  expect(handled?.messages).toEqual([])
 })

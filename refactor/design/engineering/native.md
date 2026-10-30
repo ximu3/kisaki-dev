@@ -47,9 +47,9 @@ clients/desktop/app/
 
 native 使用一个 Cargo crate；build.rs 执行 napi-build 的构建接入，lib.rs 声明实际模块与原生导出，files.rs 是当前文件能力的实现。能力需要多文件协作时再拆为同名目录，平台实现归相应能力内部。crate 拆分依据独立职责、依赖和测试需要，不为每项能力建立一份原生工程。
 
-node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
+node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](../../../CONVENTIONS.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 
-应用 package.json 的 imports 唯一定义 `#native` 入口，指向 native/node/index.ts，遵守[模块导入规则](conventions.md#module-imports)。main 与原生集成测试从该入口消费接口，原生模块内部使用相对导入。main/app 调用 `loadNative(modulePath)`，传入 app/paths 提供的绝对制品路径，取得按能力组织的接口，再向设施注入其所需部分。当前文件能力通过 `native.files.moveNoReplace(source, target)` 调用。设施直接使用该接口及其类型，不穿透绑定或重新实现加载；只有应用语义和宿主转换留在设施中。
+应用 package.json 的 imports 唯一定义 `#native` 入口，指向 native/node/index.ts，遵守[模块导入规则](../../../CONVENTIONS.md#module-imports)。main 与原生集成测试从该入口消费接口，原生模块内部使用相对导入。main/app 调用 `loadNative(modulePath)`，传入 app/paths 提供的绝对制品路径，取得按能力组织的接口，再向设施注入其所需部分。当前文件能力通过 `native.files.moveNoReplace(source, target)` 调用。设施直接使用该接口及其类型，不穿透绑定或重新实现加载；只有应用语义和宿主转换留在设施中。
 
 入口导入不隐式加载二进制或创建系统资源，加载由装配显式发起。无状态操作使用普通方法；持有会话、观察或其他资源的能力按自己的合同创建和关闭实例，不要求所有能力具备同一套生命周期方法。
 

@@ -15,7 +15,9 @@ test('development snapshots include production workspace packages and exclude pr
   expect(names).toContain('@kisaki3/appearance')
   expect(names).toContain('@kisaki3/ui')
   for (const member of members) {
-    const manifest = JSON.parse(await readFile(join(member.path, 'package.json'), 'utf8'))
+    const manifest = JSON.parse(
+      await readFile(join(member.path, 'package.json'), 'utf8'),
+    ) as Record<string, unknown>
     expect(manifest.private, member.name).not.toBe(true)
     expect(manifest.exports, member.name).toBeDefined()
   }

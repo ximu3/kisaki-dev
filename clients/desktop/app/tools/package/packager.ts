@@ -41,10 +41,12 @@ export async function packageDesktop(
   testOnly = false,
   signal?: AbortSignal,
 ): Promise<string> {
-  if (target !== hostTarget()) throw new Error('Package on the corresponding native target runner')
+  if (target !== hostTarget()) {
+    throw new Error('Package on the corresponding native target runner')
+  }
 
   const runtime = buildDirectory(target)
-  const desktop: DesktopBuild = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8'))
+  const desktop = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as DesktopBuild
   if (
     desktop.schemaVersion !== 1 ||
     desktop.target !== target ||
@@ -122,7 +124,9 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
     config.setIn(['mac', 'forceCodeSigning'], false)
   } else if (build.target.startsWith('macos-')) {
     const identity = process.env.KISAKI_MAC_SIGNING_IDENTITY
-    if (!identity) throw new Error('The project macOS signing identity is required')
+    if (!identity) {
+      throw new Error('The project macOS signing identity is required')
+    }
 
     config.setIn(['mac', 'identity'], identity)
   }
@@ -177,7 +181,9 @@ async function writeArtifactReceipt(context: PackagingContext): Promise<void> {
       /^Kisaki-.*\.(exe|zip|dmg|deb|rpm|AppImage|blockmap)$/.test(name) ||
       /^(latest|dev|beta|rc)(?:-[a-z0-9_-]+)?\.yml$/.test(name),
   )
-  if (names.length === 0) throw new Error('The packager produced no final files')
+  if (names.length === 0) {
+    throw new Error('The packager produced no final files')
+  }
 
   const files: ArtifactReceipt['files'] = []
   for (const path of names) {

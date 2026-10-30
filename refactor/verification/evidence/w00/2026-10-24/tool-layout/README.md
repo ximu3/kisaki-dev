@@ -1,6 +1,6 @@
 # 通用目录规范与桌面工具归属复核
 
-通用目录规则补入根 [CONVENTIONS.md](../../../../../../CONVENTIONS.md) 与[工程约定](../../../../../design/engineering/conventions.md#directory-readability)，明确同级职责粒度、专用实现随拥有者、最小共享范围、入口与支撑角色，以及文件和目录的选择依据。具体名称和依赖约束继续由所在工程确定，保留 W00 已确认的工程边界。
+通用目录规则补入根 [CONVENTIONS.md](../../../../../../CONVENTIONS.md) 与[工程约定](../../../../../../CONVENTIONS.md#directory-readability)，明确同级职责粒度、专用实现随拥有者、最小共享范围、入口与支撑角色，以及文件和目录的选择依据。具体名称和依赖约束继续由所在工程确定，保留 W00 已确认的工程边界。
 
 桌面工具作为实际示例：开发、构建、资源、原生、打包目录与 clean.ts 表达完整任务；paths、targets、output、process、sha256 五个共用模块归 tools/lib；开发 Electron 定位归 tools/dev/electron-executable.ts。测试随新的拥有关系引用实现。目录树及职责见[桌面工具布局](../../../../../design/engineering/layout.md#desktop-tools)。
 

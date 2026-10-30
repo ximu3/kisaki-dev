@@ -100,7 +100,7 @@ Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
-各工程遵守[通用配置归属](conventions.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。工具、配置、测试三个类型项目归根 config/typescript；仓库外消费者测试配置归根 config/vitest，由所属命令显式指定。
+各工程遵守[通用配置归属](../../../CONVENTIONS.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。工具、配置、测试三个类型项目归根 config/typescript；仓库外消费者测试配置归根 config/vitest，由所属命令显式指定。
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
@@ -150,7 +150,7 @@ desktop/package-inputs.ts 汇集八个公共包已完成的 tarball，记录包�
 
 cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与退出状态。工作流函数通过明确的参数和返回值提供复用，拥有执行次序、外部调用、文件写入及失败后的清理。其他工具与程序化入口复用这些函数，不通过运行 CLI 后解析终端文字取得结果，也不导入 cli.ts。测试按被测边界直接调用工作流，或实际执行 CLI 核对参数、输出与退出状态。工具模块导入不执行任务，可复用实现不调用 process.exit；CLI 在清理完成后设置退出状态。
 
-工具专用的辅助实现放在对应工作流内部；同一工程多个工具共同使用的内部支撑归该工程的 tools/lib，仅在确有共用实现时建立。lib 以具体职责命名模块，不提供命令入口，也不导入工作流或 CLI。跨工程稳定共享的函数由 packages/tooling 的正式入口提供。测试复用专用模块不改变其拥有者，目录归属遵守[通用规则](conventions.md#directory-readability)。
+工具专用的辅助实现放在对应工作流内部；同一工程多个工具共同使用的内部支撑归该工程的 tools/lib，仅在确有共用实现时建立。lib 以具体职责命名模块，不提供命令入口，也不导入工作流或 CLI。跨工程稳定共享的函数由 packages/tooling 的正式入口提供。测试复用专用模块不改变其拥有者，目录归属遵守[通用规则](../../../CONVENTIONS.md#directory-readability)。
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
@@ -158,7 +158,7 @@ packages/tooling/src 中的 output.ts 提供候选准备与成功交接，proces
 
 候选失败、取消和文件替换的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
-工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过相同项目脚本调用工程工作流、现成检查工具或测试运行器；脚本转交参数与退出状态，工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
+工具源码与配置遵守[源码语言](../../../CONVENTIONS.md#source-language)、[可读性](../../../CONVENTIONS.md#readability)和[注释覆盖](../../../CONVENTIONS.md#comments)。本地与 CI 通过相同项目脚本调用工程工作流、现成检查工具或测试运行器；脚本转交参数与退出状态，工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
 
 每项工具声明实际输入、输出、工作目录和清理范围。构建、验证和发布使用不同的明确操作，输出与缓存按工作区任务规则登记；分类目录不增加总 index.ts，工作流不为形式一致而建立空的 planner、manager 或 adapter。
 

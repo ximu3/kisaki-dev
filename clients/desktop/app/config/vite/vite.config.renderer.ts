@@ -18,7 +18,9 @@ export default defineConfig(({ mode }) => ({
     {
       name: 'desktop-development-csp',
       transformIndexHtml(html) {
-        if (mode !== 'development') return html
+        if (mode !== 'development') {
+          return html
+        }
 
         return html
           .replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")

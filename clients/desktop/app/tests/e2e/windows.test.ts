@@ -44,7 +44,9 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       }))
       expect(runtime.userData).toBe(profile)
       expect(runtime.sessionData.startsWith(profile)).toBe(true)
-      if (process.platform !== 'linux') expect(runtime.sandboxed).toBe(true)
+      if (process.platform !== 'linux') {
+        expect(runtime.sandboxed).toBe(true)
+      }
       expect(runtime.metrics).toContain('Utility')
 
       const closed = desktop.waitForEvent('close')
@@ -52,7 +54,9 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
       try {
         await page.getByRole('button', { name: 'Close window' }).click()
       } catch (cause) {
-        if (!page.isClosed()) throw cause
+        if (!page.isClosed()) {
+          throw cause
+        }
       }
 
       await closed

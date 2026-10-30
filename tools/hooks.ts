@@ -19,7 +19,9 @@ export interface HooksResult {
 /** Run Git in the selected repository and return its exit status and standard output. */
 function git(directory: string, args: string[]): { status: number | null; output: string } {
   const result = spawnSync('git', args, { cwd: directory, encoding: 'utf8', windowsHide: true })
-  if (result.error) throw new Error('Could not run Git', { cause: result.error })
+  if (result.error) {
+    throw new Error('Could not run Git', { cause: result.error })
+  }
 
   return { status: result.status, output: result.stdout.trim() }
 }
@@ -40,7 +42,9 @@ export async function configureHooks(
 
   const root = worktree.output
   const commonDirectory = git(root, ['rev-parse', '--path-format=absolute', '--git-common-dir'])
-  if (commonDirectory.status !== 0) throw new Error('Could not resolve the shared Git directory')
+  if (commonDirectory.status !== 0) {
+    throw new Error('Could not resolve the shared Git directory')
+  }
 
   const ownedDirectory = join(commonDirectory.output, 'kisaki-hooks')
   const ownedPath = join(ownedDirectory, '_').replaceAll('\\', '/')
@@ -54,7 +58,9 @@ export async function configureHooks(
 
     if (localHookPath.status === 0) {
       const removed = git(root, ['config', '--local', '--unset-all', 'core.hooksPath'])
-      if (removed.status !== 0) throw new Error('Could not remove the repository hook path')
+      if (removed.status !== 0) {
+        throw new Error('Could not remove the repository hook path')
+      }
     }
 
     await rm(ownedDirectory, { recursive: true, force: true })
@@ -73,7 +79,9 @@ export async function configureHooks(
   try {
     await readFile(huskyBin)
   } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+    if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+      throw cause
+    }
 
     return {
       status: 'skipped',

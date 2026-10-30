@@ -24,10 +24,12 @@ export class NativeLoadError extends Error {
 
 /** Load the binding at the absolute deployment path; wrap load failures in NativeLoadError. */
 export function loadNative(modulePath: string): NativeCapabilities {
-  if (!isAbsolute(modulePath)) throw new TypeError('Expected an absolute native module path')
+  if (!isAbsolute(modulePath)) {
+    throw new TypeError('Expected an absolute native module path')
+  }
 
   try {
-    const binding: typeof Binding = createRequire(import.meta.url)(modulePath)
+    const binding = createRequire(import.meta.url)(modulePath) as typeof Binding
     if (typeof binding.moveNoReplace !== 'function' || typeof binding.syncFile !== 'function') {
       throw new TypeError('The native module does not provide the required capabilities')
     }

@@ -1,0 +1,71 @@
+{
+  "baseline": "660e51a3403eb51af03cfcafeae07b98aa49ed78",
+  "environment": {
+    "platform": "win32-x64",
+    "node": "24.11.1",
+    "pnpm": "11.11.0",
+    "typescript": "6.0.3",
+    "eslint": "10.13.0",
+    "typescriptEslint": "8.72.0"
+  },
+  "typecheck": {
+    "tasks": 50,
+    "passed": true
+  },
+  "formatting": {
+    "passed": true
+  },
+  "lint": {
+    "tasks": 54,
+    "cachedTasks": 5,
+    "seconds": 35.7808109,
+    "passed": true,
+    "boundaryModules": 263,
+    "dependencies": 568
+  },
+  "lintComparison": [
+    {
+      "mode": "syntax",
+      "files": 245,
+      "errors": 0,
+      "warnings": 0,
+      "seconds": 2.7526302
+    },
+    {
+      "mode": "typed",
+      "files": 245,
+      "errors": 0,
+      "warnings": 0,
+      "seconds": 23.335543899999998
+    }
+  ],
+  "nodeTests": {
+    "passed": 54,
+    "rootSuiteRecheck": 27,
+    "otherSuites": 27
+  },
+  "consumers": {
+    "packages": 8,
+    "integrationTests": 2,
+    "typedLint": true,
+    "declarations": true,
+    "node": true,
+    "browser": true,
+    "packageValidation": true
+  },
+  "documents": {
+    "documents": 219,
+    "checked": 2823,
+    "broken": []
+  },
+  "additionalRuntimeValidation": {
+    "electron": false,
+    "native": false,
+    "performance": false,
+    "sixTargets": false
+  },
+  "sourceOverviews": {
+    "files": 262,
+    "missing": []
+  }
+}
