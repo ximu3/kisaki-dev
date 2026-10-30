@@ -42,7 +42,15 @@
 
 运行构建标识为 `c56e3af0f1ea78b2`。最后的测试类型标注与说明调整不改变运行行为。配置等价核对、检查命令与结果见 [verification.json](verification.json)，原始日志和诊断保存在 [logs.zip](logs.zip)。
 
-本机没有额外重复公共包仓库外消费、原生文件接口或完整载体验收；这些入口在对应修改前已有证据，跨平台结果由本次 PR 的实际 CI 另行记录。未执行正式签署、npm 发行或服务部署。
+本机没有额外重复公共包仓库外消费、原生文件接口或完整载体验收；这些入口由下述实际 CI 覆盖。未执行正式签署、npm 发行或服务部署。
+
+<a id="ci"></a>
+
+## 六目标 CI
+
+源码提交 `557d30cbfefbd3d93802c4708c688f24ef8aed10` 的[完整 CI](https://github.com/ximu3/kisaki-dev/actions/runs/41032668672)通过，用时 18 分 24 秒。Windows、macOS、Linux 的 x64／arm64 六个目标、仓库检查及 `verify / Required checks` 均成功；[PR 标题检查](https://github.com/ximu3/kisaki-dev/actions/runs/41032706150)独立通过。
+
+六目标实际执行所选原生、窗口、启动采样、开发流程和候选制品检查；Linux x64 同时完成八包仓库外消费与浏览器验证。逐任务与步骤结果保存在 [ci.json](ci.json)。结果限于工程与当前实现范围，正式签署、产品功能与后续工作包仍按各自状态记录。
 
 <a id="observations"></a>
 

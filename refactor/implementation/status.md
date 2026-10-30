@@ -4,7 +4,7 @@
 
 ## 当前交付
 
-截至 2026-10-30，W00 的工程与测试入口交付完成。工程基线 `51a4130` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)通过，完整运行用时 18 分 39 秒；[仓库合并约束](#merge-rules)已配置，并通过真实 PR 的元信息编辑与可合并状态核对，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。
+截至 2026-10-30，W00 的工程与测试入口交付完成。源码提交 `557d30c` 对应的[六目标 CI 与汇总门禁](https://github.com/ximu3/kisaki-dev/actions/runs/41032668672)通过，完整运行用时 18 分 24 秒；[仓库合并约束](#merge-rules)已配置，并通过真实 PR 的元信息编辑与可合并状态核对，见[门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)。
 
 | 范围 | 状态 |
 | --- | --- |
@@ -14,9 +14,7 @@
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
 
-编码规范归属与类型感知检查已完成本机验证，包含完整 lint、54 项普通 Node 测试和仓库外包消费，验证范围见[规范与检查验证](../verification/evidence/readability-conventions/2026-10-30/README.md)。
-
-源码概述与配置说明已按职责区分，窗口与输出寿命、lint 修复前置、错误结果和开发会话说明已完成相应修正。本机类型、lint、普通测试、五项窗口回归、四项开发流程和二十次启动检查通过；本次六目标 CI 尚待对应提交验证，见[源码与工程验证](../verification/evidence/w00/2026-10-30/source-quality/README.md)。
+规范归属、类型感知检查、源码与配置说明，以及整仓审查的窗口与输出寿命、检查入口、错误交付和开发会话说明均已完成相应修正。验证范围见[规范与检查验证](../verification/evidence/readability-conventions/2026-10-30/README.md)和[源码与工程验证](../verification/evidence/w00/2026-10-30/source-quality/README.md)。
 
 各阶段的实现、运行验证与发行按[验收标准](../verification/acceptance.md)分别记录。
 
@@ -98,6 +96,6 @@
 | 包消费与工程规则（A31） | 八包 tarball、声明与 CSS 的仓库外消费通过；源码边界、任务输入、资源寿命、文件说明和可读性已核对。 |
 | CI | PR 按真实输入选择代码验证并独立校验标题，手动入口执行完整验证；主线沿用合并前的代码证据。入口分工及验证范围见[CI 入口记录](../verification/evidence/w00/2026-10-29/code-verification/README.md)，严格合并门禁继续生效。 |
 
-当前源码的[审查与本机验证](../verification/evidence/project-readability/2026-10-28/README.md)、[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/40811103983)和[合并门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
+当前源码的[审查与本机验证](../verification/evidence/w00/2026-10-30/source-quality/README.md)、[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/41032668672)和[合并门禁验证](../verification/evidence/w00/2026-10-29/ci-gate/README.md#verification)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
 
 历史输入、失败、修正、原始报告与制品摘要保存在[证据索引](../verification/evidence/README.md)。本页维护当前完成度、缺项及其证据入口。

@@ -125,5 +125,5 @@
     "platform signing",
     "publication"
   ],
-  "ci": "Recorded separately for the pushed pull request commit."
+  "ci": "See ci.json for the verified source commit and workflow conclusions."
 }
