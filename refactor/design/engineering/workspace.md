@@ -169,6 +169,8 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码与公开声明不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
 
+类型感知 lint 使用 TypeScript Project Service 读取实际类型项目与 references，跨项目暂存文件也按各自环境检查。lint 与 root:lint 通过 ^build 准备依赖包声明，缓存输入包含所用 TypeScript 配置和共享规则；构建前置不扩大其他运行验收范围。仓库外消费者样板在安装实际 tarball 后执行完整规则，仓库内采用语法检查。具体配置与入口见[共享 ESLint 规则](../../../packages/eslint-config/README.md)。
+
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
 官方扩展的 kisx.config.ts 与 eslint.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
@@ -177,7 +179,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -205,7 +207,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定共同严格性，各项目限制实际可用的 globals、模块和测试类型，手写 d.ts 也作为源码检查。ESLint 检查局部导入规则，dependency-cruiser 检查进程边界、私有依赖、循环及绕过路径。格式和 lint 共享配置只保留必要的环境差异。
 
-自维护源码按[TypeScript 要求](conventions.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
+自维护源码按[TypeScript 要求](../../../CONVENTIONS.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
 
 项目 manifest 和版本 PR 提供版本事实，Turbo 安排依赖任务，CI 调用项目自身的构建入口。根 tools 校验发行输入、生成元数据并执行交付，不另行推导版本或依赖图。所有工具采用经过兼容验证的锁定版本，TypeScript 和声明检查使用同一编译器。
 

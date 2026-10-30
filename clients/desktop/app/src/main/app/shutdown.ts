@@ -27,7 +27,9 @@ export function registerShutdown(
 
   app.on('before-quit', (event) => {
     queueMicrotask(() => {
-      if (event.defaultPrevented) void notify({ type: 'stopResult', outcome: 'cancelled' })
+      if (event.defaultPrevented) {
+        void notify({ type: 'stopResult', outcome: 'cancelled' })
+      }
     })
   })
 
@@ -35,13 +37,17 @@ export function registerShutdown(
   function observeWindow(window: BrowserWindow): void {
     window.on('close', (event) => {
       queueMicrotask(() => {
-        if (event.defaultPrevented) void notify({ type: 'stopResult', outcome: 'cancelled' })
+        if (event.defaultPrevented) {
+          void notify({ type: 'stopResult', outcome: 'cancelled' })
+        }
       })
     })
 
     window.webContents.on('will-prevent-unload', (event) => {
       queueMicrotask(() => {
-        if (!event.defaultPrevented) void notify({ type: 'stopResult', outcome: 'cancelled' })
+        if (!event.defaultPrevented) {
+          void notify({ type: 'stopResult', outcome: 'cancelled' })
+        }
       })
     })
   }

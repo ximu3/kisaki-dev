@@ -49,10 +49,14 @@ test('cancelling a command waits for the command and its descendant to exit', as
       .poll(
         async () => {
           try {
-            processes = JSON.parse(await readFile(join(directory, 'tree.json'), 'utf8'))
+            processes = JSON.parse(
+              await readFile(join(directory, 'tree.json'), 'utf8'),
+            ) as typeof processes
             return true
           } catch (cause) {
-            if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+            if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+              throw cause
+            }
             return false
           }
         },
@@ -71,7 +75,9 @@ test('cancelling a command waits for the command and its descendant to exit', as
             process.kill(pid, 0)
             return true
           } catch (cause) {
-            if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+            if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+              throw cause
+            }
             return false
           }
         })

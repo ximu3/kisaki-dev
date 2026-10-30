@@ -105,18 +105,24 @@ export async function launchDevelopmentApplication(
 
   /** Settle connection waiters once; readers remain owned until the process actually exits. */
   function failConnection(cause: Error): void {
-    if (connectionFailure) return
+    if (connectionFailure) {
+      return
+    }
 
     connectionFailure = cause
     rejectReady(cause)
     pendingStop?.reject(cause)
-    if (ready) options.onFailure?.(cause)
+    if (ready) {
+      options.onFailure?.(cause)
+    }
   }
 
   /** A send callback confirms transport acceptance, never application execution. */
   function sendCommand(message: DevelopmentCommand): void {
     child.send(message, (cause) => {
-      if (cause) failConnection(cause)
+      if (cause) {
+        failConnection(cause)
+      }
     })
   }
 
@@ -160,7 +166,9 @@ export async function launchDevelopmentApplication(
   child.on('message', receiveEvent)
   child.on('error', (cause) => {
     failConnection(cause)
-    if (!child.pid) resolveExit({ code: null, signal: null })
+    if (!child.pid) {
+      resolveExit({ code: null, signal: null })
+    }
   })
   child.once('exit', (code, signal) => {
     exit = { code, signal }
@@ -170,7 +178,9 @@ export async function launchDevelopmentApplication(
     child.off('message', receiveEvent)
   })
   child.once('disconnect', () => {
-    if (!exit && !exiting) failConnection(new Error('Development application IPC disconnected'))
+    if (!exit && !exiting) {
+      failConnection(new Error('Development application IPC disconnected'))
+    }
   })
 
   const cancelStartup = () =>
@@ -178,7 +188,9 @@ export async function launchDevelopmentApplication(
       new Error('Development application startup cancelled', { cause: options.signal?.reason }),
     )
   options.signal?.addEventListener('abort', cancelStartup, { once: true })
-  if (options.signal?.aborted) cancelStartup()
+  if (options.signal?.aborted) {
+    cancelStartup()
+  }
 
   const timeout =
     options.startupTimeoutMs === undefined
@@ -192,18 +204,30 @@ export async function launchDevelopmentApplication(
   try {
     const applicationReady = await readiness
     options.signal?.throwIfAborted()
-    if (connectionFailure) throw connectionFailure
-    if (exit) throw new Error('Development application exited during readiness')
-    if (!child.pid) throw new Error('Development application process identity is unavailable')
+    if (connectionFailure) {
+      throw connectionFailure
+    }
+    if (exit) {
+      throw new Error('Development application exited during readiness')
+    }
+    if (!child.pid) {
+      throw new Error('Development application process identity is unavailable')
+    }
 
     return {
       pid: child.pid,
       ready: applicationReady,
       exited,
       stop() {
-        if (exit) return Promise.resolve('exited')
-        if (stopping) return stopping
-        if (connectionFailure) return Promise.reject(connectionFailure)
+        if (exit) {
+          return Promise.resolve('exited')
+        }
+        if (stopping) {
+          return stopping
+        }
+        if (connectionFailure) {
+          return Promise.reject(connectionFailure)
+        }
 
         stopping = (async () => {
           if (!exiting) {
@@ -212,14 +236,18 @@ export async function launchDevelopmentApplication(
               sendCommand({ type: 'stop' })
             })
 
-            if (result.outcome === 'cancelled') return 'cancelled'
+            if (result.outcome === 'cancelled') {
+              return 'cancelled'
+            }
             if (result.outcome === 'failed') {
               throw new Error(result.error.message, { cause: result.error })
             }
           }
 
           const result = await exited
-          if (result.code !== 0) throw new Error('Development application exited unsuccessfully')
+          if (result.code !== 0) {
+            throw new Error('Development application exited unsuccessfully')
+          }
 
           return 'exited'
         })().finally(() => {
@@ -230,18 +258,24 @@ export async function launchDevelopmentApplication(
         return stopping
       },
       async terminate() {
-        if (!exit && child.pid) child.kill('SIGKILL')
+        if (!exit && child.pid) {
+          child.kill('SIGKILL')
+        }
 
         return exited
       },
     }
   } catch (cause) {
-    if (!exit && child.pid) child.kill('SIGKILL')
+    if (!exit && child.pid) {
+      child.kill('SIGKILL')
+    }
     await exited
 
     throw cause
   } finally {
-    if (timeout) clearTimeout(timeout)
+    if (timeout) {
+      clearTimeout(timeout)
+    }
     options.signal?.removeEventListener('abort', cancelStartup)
   }
 }

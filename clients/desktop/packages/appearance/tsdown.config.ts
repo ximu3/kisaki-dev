@@ -1,8 +1,3 @@
-/**
- * @fileoverview Configures appearance ESM entries, declarations and the copied Tailwind
- * token mapping.
- */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

@@ -48,14 +48,16 @@ export async function buildGeneration(
   const failures = results.filter((result) => result.status === 'rejected')
   if (failures.length) {
     throw new AggregateError(
-      failures.map((result) => result.reason),
+      failures.map((result): unknown => result.reason),
       'Development program compilation failed',
     )
   }
 
   const nextInputs = new Map<string, string>()
   for (const result of results) {
-    if (result.status !== 'fulfilled') continue
+    if (result.status !== 'fulfilled') {
+      continue
+    }
 
     for (const path of result.value.modules) {
       nextInputs.set(path, sha256(await readFile(path)))
@@ -81,7 +83,9 @@ export async function buildGeneration(
 export async function programInputsChanged(inputs: ReadonlyMap<string, string>): Promise<boolean> {
   for (const [path, digest] of inputs) {
     try {
-      if (sha256(await readFile(path)) !== digest) return true
+      if (sha256(await readFile(path)) !== digest) {
+        return true
+      }
     } catch {
       return true
     }

@@ -26,7 +26,9 @@ function readDistributionKind(runtimeDirectory: string): DistributionKind {
   )
   if (value && typeof value === 'object' && 'kind' in value) {
     for (const kind of distributionKinds) {
-      if (value.kind === kind) return kind
+      if (value.kind === kind) {
+        return kind
+      }
     }
   }
 
@@ -35,13 +37,17 @@ function readDistributionKind(runtimeDirectory: string): DistributionKind {
 
 /** Resolve this launch's data location; portable marker errors propagate to startup. */
 function resolveDataDirectory(runtimeDirectory: string, profile?: string): string {
-  if (profile) return profile
+  if (profile) {
+    return profile
+  }
 
   const kind = readDistributionKind(runtimeDirectory)
   const ordinaryDirectory = join(app.getPath('appData'), 'Kisaki')
 
   if (process.platform === 'win32') {
-    if (kind === 'nsis') return ordinaryDirectory
+    if (kind === 'nsis') {
+      return ordinaryDirectory
+    }
     if (kind === 'zip') {
       return portableDataDirectory(dirname(process.execPath), 'data') ?? ordinaryDirectory
     }
@@ -49,7 +55,9 @@ function resolveDataDirectory(runtimeDirectory: string, profile?: string): strin
     const applicationParent = resolve(process.execPath, '../../../..')
     return portableDataDirectory(applicationParent, 'kisaki-portable-data') ?? ordinaryDirectory
   } else if (process.platform === 'linux') {
-    if (kind === 'deb' || kind === 'rpm') return ordinaryDirectory
+    if (kind === 'deb' || kind === 'rpm') {
+      return ordinaryDirectory
+    }
     if (kind === 'appimage') {
       const appImage = process.env.APPIMAGE
       if (!appImage || !isAbsolute(appImage)) {

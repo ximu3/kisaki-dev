@@ -49,7 +49,7 @@ export async function prepareConsumer(): Promise<{
 }> {
   const receipt =
     process.env.KISAKI_DESKTOP_PACKAGE_INPUTS ?? resolve('artifacts/desktop/packages/inputs.json')
-  const inputs: DesktopPackageInputs = JSON.parse(await readFile(receipt, 'utf8'))
+  const inputs = JSON.parse(await readFile(receipt, 'utf8')) as DesktopPackageInputs
   if (inputs.packages.length !== 8 || !/^[a-f0-9]{64}$/.test(inputs.buildId)) {
     throw new Error('Invalid package input receipt')
   }
@@ -59,7 +59,9 @@ export async function prepareConsumer(): Promise<{
   const versions = new Map(inputs.packages.map((input) => [input.name, input.version]))
 
   for (const input of inputs.packages) {
-    if (!/^[a-z0-9-]+\.tgz$/.test(input.path)) throw new Error('Unsafe package input path')
+    if (!/^[a-z0-9-]+\.tgz$/.test(input.path)) {
+      throw new Error('Unsafe package input path')
+    }
 
     const archive = join(dirname(receipt), input.path)
     if (
@@ -86,13 +88,13 @@ export async function prepareConsumer(): Promise<{
       },
     })
 
-    const manifest: {
+    const manifest = JSON.parse(text) as {
       name: string
       version: string
       dependencies?: Record<string, string>
       peerDependencies?: Record<string, string>
       optionalDependencies?: Record<string, string>
-    } = JSON.parse(text)
+    }
     if (manifest.name !== input.name || manifest.version !== input.version) {
       throw new Error('Tarball identity mismatch')
     }
@@ -102,7 +104,9 @@ export async function prepareConsumer(): Promise<{
       ...manifest.optionalDependencies,
       ...manifest.peerDependencies,
     })) {
-      if (!name.startsWith('@kisaki3/')) continue
+      if (!name.startsWith('@kisaki3/')) {
+        continue
+      }
 
       const version = versions.get(name)
       if (!version || !satisfies(version, range)) {
@@ -151,9 +155,9 @@ export async function prepareConsumer(): Promise<{
     await consumerCommand(directory, ['install', '--ignore-scripts', '--prefer-offline'])
 
     for (const input of inputs.packages) {
-      const installed: { name: string; version: string } = JSON.parse(
+      const installed = JSON.parse(
         await readFile(join(directory, 'node_modules', input.name, 'package.json'), 'utf8'),
-      )
+      ) as { name: string; version: string }
       if (installed.name !== input.name || installed.version !== input.version) {
         throw new Error('Installed consumer input identity mismatch')
       }

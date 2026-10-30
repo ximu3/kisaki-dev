@@ -49,13 +49,19 @@ export async function buildProgram(
     const bundles = Array.isArray(result) ? result : [result]
 
     for (const bundle of bundles) {
-      if (!('output' in bundle)) throw new Error('A finite program build returned a watcher')
+      if (!('output' in bundle)) {
+        throw new Error('A finite program build returned a watcher')
+      }
 
       for (const chunk of bundle.output) {
-        if (chunk.type !== 'chunk') continue
+        if (chunk.type !== 'chunk') {
+          continue
+        }
 
         for (const path of Object.keys(chunk.modules)) {
-          if (isAbsolute(path)) modules.add(path)
+          if (isAbsolute(path)) {
+            modules.add(path)
+          }
         }
       }
     }

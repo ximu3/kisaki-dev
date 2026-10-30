@@ -1,8 +1,3 @@
-/**
- * @fileoverview Bundles the main program with Node resolution while keeping Electron and
- * native runtime dependencies external.
- */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

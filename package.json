@@ -17,7 +17,7 @@
     "root:typecheck": "tsc -b",
     "lint": "turbo run lint root:lint check:boundaries",
     "root:lint": "eslint \"*.config.ts\" config tools tests --max-warnings 0",
-    "lint:fix": "pnpm root:lint --fix && pnpm -r --if-present lint --fix",
+    "lint:fix": "turbo run lint root:lint --cache=local:,remote: -- --fix",
     "check:boundaries": "depcruise --config .dependency-cruiser.json .",
     "format:check": "prettier . --check",
     "format": "prettier . --write",

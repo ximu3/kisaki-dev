@@ -1,0 +1,399 @@
+{
+  "baseline": "660e51a3403eb51af03cfcafeae07b98aa49ed78",
+  "normalization": "TypeScript emit without comments; equivalent single-statement control blocks and parentheses around non-optional calls or await expressions normalized.",
+  "results": [
+    {
+      "file": "clients/desktop/app/config/vite/vite.config.renderer.ts",
+      "sameEmission": true,
+      "before": "ff58742f03d0e1dc393f3ea708fe348b73b38b12949d860c602432fe094f47c5",
+      "after": "ff58742f03d0e1dc393f3ea708fe348b73b38b12949d860c602432fe094f47c5"
+    },
+    {
+      "file": "clients/desktop/app/config/vitest/vitest.config.native.ts",
+      "sameEmission": true,
+      "before": "562803ff6cf2b204c088550e436318fb6e7c604fd0d6753a835f0ec6dc27b4bc",
+      "after": "562803ff6cf2b204c088550e436318fb6e7c604fd0d6753a835f0ec6dc27b4bc"
+    },
+    {
+      "file": "clients/desktop/app/native/node/files.ts",
+      "sameEmission": true,
+      "before": "cd98bbf0bae6723e80d855fb432382e1634fc219febbd153fe97bc205350f437",
+      "after": "cd98bbf0bae6723e80d855fb432382e1634fc219febbd153fe97bc205350f437"
+    },
+    {
+      "file": "clients/desktop/app/native/node/loader.ts",
+      "sameEmission": true,
+      "before": "3c3779eb22d82053c0171a9a7586129fe025fe7800678dece03e428b37867738",
+      "after": "3c3779eb22d82053c0171a9a7586129fe025fe7800678dece03e428b37867738"
+    },
+    {
+      "file": "clients/desktop/app/src/extension-host/entry.ts",
+      "sameEmission": true,
+      "before": "99bb0293fe04a02bc6ba075c63a4e5f5cce9c8a03a3e196849abbe7664fbb5e4",
+      "after": "99bb0293fe04a02bc6ba075c63a4e5f5cce9c8a03a3e196849abbe7664fbb5e4"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/bootstrap.ts",
+      "sameEmission": true,
+      "before": "c164fa14ee12f513f51cecc2f6d4757189256f7a070e5fe3b84b55694c72f3f8",
+      "after": "c164fa14ee12f513f51cecc2f6d4757189256f7a070e5fe3b84b55694c72f3f8"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/development.ts",
+      "sameEmission": true,
+      "before": "e5c44d200f3aa18d9245c2df4d508fc345ee811ab1468c3d934f2dc1152bef4b",
+      "after": "e5c44d200f3aa18d9245c2df4d508fc345ee811ab1468c3d934f2dc1152bef4b"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/extension-host.ts",
+      "sameEmission": true,
+      "before": "eafa56a05e4d84fde637caa0a73c49ae4c073bfbfd3fd8acbd7d6443894c104f",
+      "after": "eafa56a05e4d84fde637caa0a73c49ae4c073bfbfd3fd8acbd7d6443894c104f"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/paths.ts",
+      "sameEmission": true,
+      "before": "a08b7d2cdf0ba0774b1a24f286b95308a2840bba0b22c3b1cf17cc3df96fd366",
+      "after": "a08b7d2cdf0ba0774b1a24f286b95308a2840bba0b22c3b1cf17cc3df96fd366"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/portable.ts",
+      "sameEmission": true,
+      "before": "50ceed990b4d4af08669f4f6a6a592202c8b68453553a8d7116a1cde308f2c04",
+      "after": "50ceed990b4d4af08669f4f6a6a592202c8b68453553a8d7116a1cde308f2c04"
+    },
+    {
+      "file": "clients/desktop/app/src/main/app/shutdown.ts",
+      "sameEmission": true,
+      "before": "921ada442f79e6428293f0afa0382c94f677a18b842cec8ba57704909bd9ece7",
+      "after": "921ada442f79e6428293f0afa0382c94f677a18b842cec8ba57704909bd9ece7"
+    },
+    {
+      "file": "clients/desktop/app/src/main/infrastructure/windows/native-window.ts",
+      "sameEmission": true,
+      "before": "5bd0aaa7abd77e4514aa9e75f1408777fbe4e836ffb66590594a8832656114f3",
+      "after": "5bd0aaa7abd77e4514aa9e75f1408777fbe4e836ffb66590594a8832656114f3"
+    },
+    {
+      "file": "clients/desktop/app/src/renderer/windows/game-panel/entry.tsx",
+      "sameEmission": true,
+      "before": "bbc29e356efdab2fa2793a03d000d808a1284fe7a8bed78ede2956db9684bb33",
+      "after": "bbc29e356efdab2fa2793a03d000d808a1284fe7a8bed78ede2956db9684bb33"
+    },
+    {
+      "file": "clients/desktop/app/src/renderer/windows/main/entry.tsx",
+      "sameEmission": true,
+      "before": "2119b65451621fe5865db4bf05185e726b39cf46392cd5d93b2be230902afd33",
+      "after": "2119b65451621fe5865db4bf05185e726b39cf46392cd5d93b2be230902afd33"
+    },
+    {
+      "file": "clients/desktop/app/src/renderer/windows/player/entry.tsx",
+      "sameEmission": true,
+      "before": "48643ec5fa861a24be470c048dcbc9d33932f91ee2a86c0b6c09cb41420a5ccc",
+      "after": "48643ec5fa861a24be470c048dcbc9d33932f91ee2a86c0b6c09cb41420a5ccc"
+    },
+    {
+      "file": "clients/desktop/app/src/renderer/windows/reader/entry.tsx",
+      "sameEmission": true,
+      "before": "a11291290455d6a321f92dd35c98da8e88f45ad24af1b98ecc2ab81d04c10e2e",
+      "after": "a11291290455d6a321f92dd35c98da8e88f45ad24af1b98ecc2ab81d04c10e2e"
+    },
+    {
+      "file": "clients/desktop/app/tests/artifacts/desktop.test.ts",
+      "sameEmission": true,
+      "before": "8d9575b0ff49afb419448df165624b648fcd3a2afe3c026c35cf7e753d7c1b25",
+      "after": "8d9575b0ff49afb419448df165624b648fcd3a2afe3c026c35cf7e753d7c1b25"
+    },
+    {
+      "file": "clients/desktop/app/tests/e2e/windows.test.ts",
+      "sameEmission": true,
+      "before": "1b2e8ecb75b01e0ec24017e745b43ec8c758d7cef8450fa68f25c97e62a54053",
+      "after": "1b2e8ecb75b01e0ec24017e745b43ec8c758d7cef8450fa68f25c97e62a54053"
+    },
+    {
+      "file": "clients/desktop/app/tests/performance/startup.test.ts",
+      "sameEmission": true,
+      "before": "c72f7da6dc842dcbda45af03074b9cd84b6d3ae20056538e5d3559496af38ee3",
+      "after": "c72f7da6dc842dcbda45af03074b9cd84b6d3ae20056538e5d3559496af38ee3"
+    },
+    {
+      "file": "clients/desktop/app/tests/support/build-reuse.ts",
+      "sameEmission": true,
+      "before": "c18ee7ba19f293abe7e0aeea4f20a4969dc3c5e786da5be71bb9c6823bb0681e",
+      "after": "c18ee7ba19f293abe7e0aeea4f20a4969dc3c5e786da5be71bb9c6823bb0681e"
+    },
+    {
+      "file": "clients/desktop/app/tests/support/development-controller.ts",
+      "sameEmission": true,
+      "before": "9e5ffbc57ea071e934210bd2efa1bf1ca182148d5772afb73ee6d7e6eabfaad5",
+      "after": "9e5ffbc57ea071e934210bd2efa1bf1ca182148d5772afb73ee6d7e6eabfaad5"
+    },
+    {
+      "file": "clients/desktop/app/tests/support/development-worker.ts",
+      "sameEmission": true,
+      "before": "1c2cdab4a49154acebe8e66a9e221a111a28ca42c1700367483461d1268155d7",
+      "after": "1c2cdab4a49154acebe8e66a9e221a111a28ca42c1700367483461d1268155d7"
+    },
+    {
+      "file": "clients/desktop/app/tests/support/electron.ts",
+      "sameEmission": true,
+      "before": "4b1310f75e28f10d0665ddbc7059982c2aca835dfba9bcec1f1ae118ca772b2f",
+      "after": "4b1310f75e28f10d0665ddbc7059982c2aca835dfba9bcec1f1ae118ca772b2f"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/identity.test.ts",
+      "sameEmission": true,
+      "before": "4a7b927c6a7b3119bc83bbf6a543a7a5f35c5184dd2e35f9d517fd928eccc93d",
+      "after": "4a7b927c6a7b3119bc83bbf6a543a7a5f35c5184dd2e35f9d517fd928eccc93d"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/preload.test.ts",
+      "sameEmission": false,
+      "before": "dd21393aa7b5e4f04c8d992db397705ac60c344d13ed53f0301f56beb1fadf95",
+      "after": "4dfc1f2753954848755cb2ffdd92e771a0ea9e6ec291a8df00d6af64f62e65b6"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/build/programs.test.ts",
+      "sameEmission": true,
+      "before": "387c02c50b894ebd24ea2a9af222828afca1a47633e3232dd195a83f1aca44d6",
+      "after": "387c02c50b894ebd24ea2a9af222828afca1a47633e3232dd195a83f1aca44d6"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dependencies.test.ts",
+      "sameEmission": true,
+      "before": "25cd7567773b9898399ef8115d6140db405380f1fd39bad94d50c6c53d06fc78",
+      "after": "25cd7567773b9898399ef8115d6140db405380f1fd39bad94d50c6c53d06fc78"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dev/cancellation.test.ts",
+      "sameEmission": true,
+      "before": "602408bc7f7d482650dd4bb2523c1525c18f1aa837a225258c54cbb5d214019d",
+      "after": "602408bc7f7d482650dd4bb2523c1525c18f1aa837a225258c54cbb5d214019d"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/dev/session.test.ts",
+      "sameEmission": true,
+      "before": "5de45d2507413cba3455bb8014efa918a8db6f54aa5b59807635a6e73b7a990b",
+      "after": "5de45d2507413cba3455bb8014efa918a8db6f54aa5b59807635a6e73b7a990b"
+    },
+    {
+      "file": "clients/desktop/app/tests/tools/resources/fonts.test.ts",
+      "sameEmission": true,
+      "before": "ccf415bec220da2ef6359ef944db021abfbbab019610d777c82d2203696331bf",
+      "after": "ccf415bec220da2ef6359ef944db021abfbbab019610d777c82d2203696331bf"
+    },
+    {
+      "file": "clients/desktop/app/tools/build/coordinator.ts",
+      "sameEmission": true,
+      "before": "cf3c87e11507007f73f6caf9524ef2dcd2fd4fec11be055f0cde58a457162581",
+      "after": "cf3c87e11507007f73f6caf9524ef2dcd2fd4fec11be055f0cde58a457162581"
+    },
+    {
+      "file": "clients/desktop/app/tools/build/identity.ts",
+      "sameEmission": true,
+      "before": "87085c7a637b6ce1e1b7612daba34d8fe5cbe40e379cb8a837058f4d61e66136",
+      "after": "87085c7a637b6ce1e1b7612daba34d8fe5cbe40e379cb8a837058f4d61e66136"
+    },
+    {
+      "file": "clients/desktop/app/tools/build/programs.ts",
+      "sameEmission": true,
+      "before": "c2f9b2d011cb044a8c32cb55c8e5d6600599daf58f3d6f69aa0399269ad4d592",
+      "after": "c2f9b2d011cb044a8c32cb55c8e5d6600599daf58f3d6f69aa0399269ad4d592"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/cli.ts",
+      "sameEmission": true,
+      "before": "f6d667b5a2ba00d99064384d9af7138fce2c9ed3a68af26d86ef0db3a8dde3dc",
+      "after": "f6d667b5a2ba00d99064384d9af7138fce2c9ed3a68af26d86ef0db3a8dde3dc"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/dependencies.ts",
+      "sameEmission": true,
+      "before": "eefe54451174ccc8916647f4d600909abdd5213340d270d81fc6e3277a050f7e",
+      "after": "eefe54451174ccc8916647f4d600909abdd5213340d270d81fc6e3277a050f7e"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/generation.ts",
+      "sameEmission": true,
+      "before": "e92d4e4cabeafe3be7eca0a3e5adf4c507d5c6dd263998fbbeb2d1ce619507f7",
+      "after": "e92d4e4cabeafe3be7eca0a3e5adf4c507d5c6dd263998fbbeb2d1ce619507f7"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/inputs.ts",
+      "sameEmission": true,
+      "before": "da88a1525704800bad3b1bf0cdb2da0df091e7d59853466cdadc44ef9cb77db1",
+      "after": "da88a1525704800bad3b1bf0cdb2da0df091e7d59853466cdadc44ef9cb77db1"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/renderer.ts",
+      "sameEmission": true,
+      "before": "2c49767dd3cb08447d38bf185a0aed61bf729d098367c5998668cf45a213c55a",
+      "after": "2c49767dd3cb08447d38bf185a0aed61bf729d098367c5998668cf45a213c55a"
+    },
+    {
+      "file": "clients/desktop/app/tools/dev/session.ts",
+      "sameEmission": true,
+      "before": "4b9c70e8062c066e23281ce1e919ccda54a5b5f163fc534ed4af8c3988441033",
+      "after": "4b9c70e8062c066e23281ce1e919ccda54a5b5f163fc534ed4af8c3988441033"
+    },
+    {
+      "file": "clients/desktop/app/tools/lib/targets.ts",
+      "sameEmission": true,
+      "before": "bb5965702f5560d4dc04e00d40e5eafdbef1b95486687c225a776c1042bc7e6f",
+      "after": "bb5965702f5560d4dc04e00d40e5eafdbef1b95486687c225a776c1042bc7e6f"
+    },
+    {
+      "file": "clients/desktop/app/tools/package/packager.ts",
+      "sameEmission": true,
+      "before": "7976152effe94bdc39231b11caf94b75c7db6865c3323c826cc99533455cd324",
+      "after": "7976152effe94bdc39231b11caf94b75c7db6865c3323c826cc99533455cd324"
+    },
+    {
+      "file": "clients/desktop/app/tools/resources/fonts.ts",
+      "sameEmission": true,
+      "before": "6e76f1cc9d61a8d66893750e5b8e6a6b8fc1da489d7e1ef64182f11e8157e262",
+      "after": "6e76f1cc9d61a8d66893750e5b8e6a6b8fc1da489d7e1ef64182f11e8157e262"
+    },
+    {
+      "file": "clients/desktop/app/tools/resources/prepare.ts",
+      "sameEmission": true,
+      "before": "0af63c4d62b8ff082da7c9e705f296813123cafd92906021857a44e4f8db6772",
+      "after": "0af63c4d62b8ff082da7c9e705f296813123cafd92906021857a44e4f8db6772"
+    },
+    {
+      "file": "clients/desktop/packages/appearance/tools/build.ts",
+      "sameEmission": true,
+      "before": "f140238ebdd3c485223423622a1708f07b357dbe910d076661f512952f4ab589",
+      "after": "f140238ebdd3c485223423622a1708f07b357dbe910d076661f512952f4ab589"
+    },
+    {
+      "file": "clients/desktop/packages/desktop-contracts/src/development.ts",
+      "sameEmission": true,
+      "before": "f71f9662d2fd76bc2a28afcccde551401f5f83c59ef62463571edba368faed22",
+      "after": "f71f9662d2fd76bc2a28afcccde551401f5f83c59ef62463571edba368faed22"
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/src/extension/development-application.ts",
+      "sameEmission": true,
+      "before": "0e98c5348d780a849a46a23ab3343ab113275edda05b0cdf4d71d5aefc7bfb8d",
+      "after": "0e98c5348d780a849a46a23ab3343ab113275edda05b0cdf4d71d5aefc7bfb8d"
+    },
+    {
+      "file": "clients/desktop/packages/extension-cli/tests/fixtures/development-application.ts",
+      "sameEmission": true,
+      "before": "45cbe1c92f79c133367fa942c97198da7d6b329bb233d10287e293652d2648e3",
+      "after": "45cbe1c92f79c133367fa942c97198da7d6b329bb233d10287e293652d2648e3"
+    },
+    {
+      "file": "eslint.config.ts",
+      "sameEmission": false,
+      "before": "eecf7339f9a803841928c6d0e0c565546d12b1b3101fb769e766ae201ced2a07",
+      "after": "330f328779659d3eeaf16d82a49d3f7ca750e71e6557c7f335556a34ca7706b5"
+    },
+    {
+      "file": "packages/eslint-config/src/base.ts",
+      "sameEmission": false,
+      "before": "c12adea29afad1e3ccd70bd6f216c4784c6d6a3d0e1ac90e86cbb75a4696fcb8",
+      "after": "6a2547ba0b0c6a17c6fe4dd755cf49055e82de8a25ed20af499ee02003c8c622"
+    },
+    {
+      "file": "packages/tooling/src/cli.ts",
+      "sameEmission": true,
+      "before": "85a4d921b9fb084b79f38d97121fe782c21c77299909091d93bc321abfb26917",
+      "after": "85a4d921b9fb084b79f38d97121fe782c21c77299909091d93bc321abfb26917"
+    },
+    {
+      "file": "packages/tooling/src/output.ts",
+      "sameEmission": true,
+      "before": "e28e9cf806742b4d47b4f28632f4563a72f00c62c465b3d774dabb89a599fb34",
+      "after": "e28e9cf806742b4d47b4f28632f4563a72f00c62c465b3d774dabb89a599fb34"
+    },
+    {
+      "file": "packages/tooling/src/process.ts",
+      "sameEmission": true,
+      "before": "98d782c358f5363a3c64f8ac2129bd060b6a31586b1e7477c307d5ef8f02fcd4",
+      "after": "98d782c358f5363a3c64f8ac2129bd060b6a31586b1e7477c307d5ef8f02fcd4"
+    },
+    {
+      "file": "packages/tooling/tests/process.test.ts",
+      "sameEmission": true,
+      "before": "5af649e49777df7f08e4807b282d7c285399b72007fc243d54221187f1818f28",
+      "after": "5af649e49777df7f08e4807b282d7c285399b72007fc243d54221187f1818f28"
+    },
+    {
+      "file": "packages/tooling/tests/support/command-worker.ts",
+      "sameEmission": true,
+      "before": "747e3063c163a9e291fbf54b00baa6999d06ea66d1e641c79d9c85fa04b09662",
+      "after": "747e3063c163a9e291fbf54b00baa6999d06ea66d1e641c79d9c85fa04b09662"
+    },
+    {
+      "file": "tests/desktop/consumers/packages.test.ts",
+      "sameEmission": false,
+      "before": "f70e1a33e711700f34bb2ad49a296be719d4df9934ca92c8a1e9b851e26b1eac",
+      "after": "969e42c89c773be6898ed53ee1bb5e64f860c58ec16289951ff85bdb5eeda5da"
+    },
+    {
+      "file": "tests/desktop/fixtures/consumers/solid/entry.tsx",
+      "sameEmission": true,
+      "before": "d43ab5ba19af34f4454dc01ea3b84ed2542a50979f31a583c13fdd5de83d1cbb",
+      "after": "d43ab5ba19af34f4454dc01ea3b84ed2542a50979f31a583c13fdd5de83d1cbb"
+    },
+    {
+      "file": "tests/desktop/support/consumer.ts",
+      "sameEmission": true,
+      "before": "5d82fbd1883f0f76d453070a4b07354ff3eda7c5e8bf143da4d1815efd5f6805",
+      "after": "5d82fbd1883f0f76d453070a4b07354ff3eda7c5e8bf143da4d1815efd5f6805"
+    },
+    {
+      "file": "tests/tools/hooks/lifecycle.test.ts",
+      "sameEmission": true,
+      "before": "fdb7a39ee59e735af65fe00678fb68d28d2de05b0188eee6418fc5853ecedd5a",
+      "after": "fdb7a39ee59e735af65fe00678fb68d28d2de05b0188eee6418fc5853ecedd5a"
+    },
+    {
+      "file": "tests/tools/structure/boundaries.test.ts",
+      "sameEmission": true,
+      "before": "3c750999518ef88db595b12d54b15f3c7672080890eee5e6be65dcbc7958f929",
+      "after": "3c750999518ef88db595b12d54b15f3c7672080890eee5e6be65dcbc7958f929"
+    },
+    {
+      "file": "tests/tools/structure/lint.test.ts",
+      "sameEmission": false,
+      "before": "f185cdca16e41c2658622c75f77b0fc77563084256cd9ff5a8e41933f89d892a",
+      "after": "c348601de8438c9f122284b1b73694bcc80e3b5b057384f2ea379a7cd022b661"
+    },
+    {
+      "file": "tests/tools/structure/tasks.test.ts",
+      "sameEmission": false,
+      "before": "4b96eaff6f9b72a6516026df27ce516ae80a77adc1ca8d17943182cb8e2e83cd",
+      "after": "c6183fb98175dd65dff975815d9ed5f10d92e6e0735e9e4e646fb4a9dbc59a11"
+    },
+    {
+      "file": "tests/tools/structure/workspace.test.ts",
+      "sameEmission": false,
+      "before": "8374f8f01bd43c338dbf0e733c5e1590902881292e5b2e9978675bb94dfd8dce",
+      "after": "ac4b8b6b34001d66f3763a8d5e15286bb2490009118d09c64a9d970b06fd4c60"
+    },
+    {
+      "file": "tools/desktop/package-inputs.ts",
+      "sameEmission": true,
+      "before": "7f3c5a76a1a119fa1080b09fa01f535a2bbf325770be1b50be7f87cc37e604e0",
+      "after": "7f3c5a76a1a119fa1080b09fa01f535a2bbf325770be1b50be7f87cc37e604e0"
+    },
+    {
+      "file": "tools/hooks.ts",
+      "sameEmission": true,
+      "before": "3ed3ef89a8568c41330f53deda2c874090c853fd3b5a00ef86668937e0c98aeb",
+      "after": "3ed3ef89a8568c41330f53deda2c874090c853fd3b5a00ef86668937e0c98aeb"
+    }
+  ],
+  "reviewedDifferences": {
+    "tests/tools/structure/tasks.test.ts": "Verifies the required declaration build without selecting unrelated runtime checks.",
+    "clients/desktop/app/tests/tools/build/preload.test.ts": "The native matcher checks the same exported property without accessing an untyped require result.",
+    "tests/tools/structure/workspace.test.ts": "Only emitted object layout differs after local Record type assertions; the checked values and operations are unchanged.",
+    "eslint.config.ts": "Consumer templates use syntax checks before installation; complete typed checks run in the isolated consumer.",
+    "tests/tools/structure/lint.test.ts": "Checks imported Promise diagnostics and the accepted awaited form.",
+    "packages/eslint-config/src/base.ts": "Adds selected type-aware checks, Project Service, control blocks and the native syntax-only preset.",
+    "tests/desktop/consumers/packages.test.ts": "Runs the shared typed lint rules after installing the actual package artifacts."
+  }
+}

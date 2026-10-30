@@ -1,5 +1,3 @@
-# Defines desktop carrier layouts, platform packaging options and production Electron fuses.
-
 appId: me.kisaki
 productName: Kisaki
 asar: true

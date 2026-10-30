@@ -67,7 +67,9 @@ export function createNativeFiles(binding: typeof Binding): NativeFiles {
       }
     },
     async syncFile(path) {
-      if (!validPath(path)) throw new FileSyncError('invalidArgument', undefined)
+      if (!validPath(path)) {
+        throw new FileSyncError('invalidArgument', undefined)
+      }
 
       const result = await binding.syncFile(path)
       if (result.reason) {

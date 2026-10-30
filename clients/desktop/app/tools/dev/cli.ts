@@ -22,7 +22,9 @@ function interrupt(signal: NodeJS.Signals): void {
   const operation = forceOffered ? session.terminate() : session.stop()
   void operation.then(
     (result) => {
-      if (result === 'cancelled') console.info('Application exit cancelled; development continues')
+      if (result === 'cancelled') {
+        console.info('Application exit cancelled; development continues')
+      }
     },
     (cause: unknown) => {
       console.error(cause)
@@ -40,7 +42,9 @@ try {
   session = await startDevelopmentSession({
     signal: startup.signal,
     onState(state, cause) {
-      if (state === 'failed') console.error(cause)
+      if (state === 'failed') {
+        console.error(cause)
+      }
     },
   })
 
@@ -55,7 +59,9 @@ try {
     process.exitCode = 1
   }
 } finally {
-  if (!ready) await session?.stop()
+  if (!ready) {
+    await session?.stop()
+  }
 
   process.off('SIGINT', onInterrupt)
   process.off('SIGTERM', onTerminate)

@@ -1,6 +1,6 @@
 # 工程导入可读性验证
 
-本轮保留现有工程结构，以三个明确的 `@repo-tools` 名称引用根共有工具源码，改善跨多层目录的导入可读性。应用的 `#native` 包内入口保持原定义。正式范围与解析规则见[模块导入规范](../../../../../design/engineering/conventions.md#module-imports)，实施进度见[状态页](../../../../../implementation/status.md#w00)。
+本轮保留现有工程结构，以三个明确的 `@repo-tools` 名称引用根共有工具源码，改善跨多层目录的导入可读性。应用的 `#native` 包内入口保持原定义。正式范围与解析规则见[模块导入规范](../../../../../../CONVENTIONS.md#module-imports)，实施进度见[状态页](../../../../../implementation/status.md#w00)。
 
 ## 实现与输入
 

@@ -22,7 +22,7 @@ interface BuildManifestState {
 async function readManifestState(target: DesktopTarget): Promise<BuildManifestState> {
   const manifestPath = join(buildDirectory(target), 'build.json')
   const bytes = await readFile(manifestPath)
-  const manifest: DesktopBuild = JSON.parse(bytes.toString('utf8'))
+  const manifest = JSON.parse(bytes.toString('utf8')) as DesktopBuild
   const attributes = await stat(manifestPath)
 
   return {
@@ -57,10 +57,10 @@ await runCli(async () => {
     return
   }
 
-  const testedBuild: BuildManifestState = JSON.parse(await readFile(recordPath, 'utf8'))
-  const packagedArtifacts: ArtifactReceipt = JSON.parse(
+  const testedBuild = JSON.parse(await readFile(recordPath, 'utf8')) as BuildManifestState
+  const packagedArtifacts = JSON.parse(
     await readFile(join(appRoot, 'dist', target, 'artifacts.json'), 'utf8'),
-  )
+  ) as ArtifactReceipt
   if (
     testedBuild.manifestSha256 !== currentBuild.manifestSha256 ||
     testedBuild.mtimeMs !== currentBuild.mtimeMs ||

@@ -46,7 +46,7 @@ test('the actual task graph excludes generated inputs and always executes runtim
     { cwd: process.cwd(), encoding: 'utf8', windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   )
 
-  const plan: { tasks: PlannedTask[] } = JSON.parse(stdout)
+  const plan = JSON.parse(stdout) as { tasks: PlannedTask[] }
   const boundary = plan.tasks.find((task) => task.taskId === '//#check:boundaries')!
   expect(boundary).toBeDefined()
   expect(
@@ -82,7 +82,9 @@ test('the actual task graph excludes generated inputs and always executes runtim
     )
     expect(generated, task.taskId).toEqual([])
 
-    if (task.command === '<NONEXISTENT>') continue
+    if (task.command === '<NONEXISTENT>') {
+      continue
+    }
     if (liveTasks.has(task.task)) {
       expect(task.resolvedTaskDefinition.cache, task.taskId).toBe(false)
     }
@@ -145,6 +147,7 @@ test('affected tasks follow verification inputs without promoting documentation 
       desktop: [],
       consumers: false,
       packageTest: '@kisaki3/extension-cli#test',
+      lintBuilds: ['@kisaki3/desktop-contracts#build'],
     },
     { path: 'clients/desktop/app/tools/dev/session.ts', desktop: ['test:dev'], consumers: false },
     {
@@ -189,9 +192,9 @@ test('affected tasks follow verification inputs without promoting documentation 
   ]
 
   try {
-    const members: { path: string }[] = JSON.parse(
+    const members = JSON.parse(
       await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
-    )
+    ) as { path: string }[]
     const files = new Set([
       'package.json',
       'pnpm-workspace.yaml',
@@ -262,7 +265,7 @@ test('affected tasks follow verification inputs without promoting documentation 
         options,
       )
 
-      const report: {
+      const report = JSON.parse(stdout) as {
         errors?: unknown[]
         data: {
           affectedTasks: {
@@ -275,7 +278,7 @@ test('affected tasks follow verification inputs without promoting documentation 
             }[]
           }
         }
-      } = JSON.parse(stdout)
+      }
       expect(report.errors, item.path).toBeUndefined()
 
       const tasks = report.data.affectedTasks.items.filter((task) => task.command !== null)
@@ -307,14 +310,20 @@ test('affected tasks follow verification inputs without promoting documentation 
           options,
         )
 
-        const lintReport: typeof report = JSON.parse(lintOutput)
+        const lintReport = JSON.parse(lintOutput) as typeof report
         expect(lintReport.errors).toBeUndefined()
         expect(
           lintReport.data.affectedTasks.items
             .filter((task) => task.command !== null)
-            .map((task) => task.fullName),
+            .map((task) => task.fullName)
+            .sort(),
           item.path,
-        ).toEqual([item.packageTest.replace('#test', '#lint')])
+        ).toEqual([...(item.lintBuilds ?? []), item.packageTest.replace('#test', '#lint')].sort())
+        for (const task of lintReport.data.affectedTasks.items.filter(
+          (task) => task.name === 'build',
+        )) {
+          expect(task.reason.__typename, task.fullName).toBe('TaskAllChanged')
+        }
       }
 
       if (item.path.includes('/src/renderer/')) {
@@ -361,7 +370,7 @@ test('affected tasks follow verification inputs without promoting documentation 
           { ...options, env: { ...process.env, TURBO_SCM_BASE: 'HEAD^', TURBO_SCM_HEAD: 'HEAD' } },
         )
 
-        const plan: { tasks: PlannedTask[] } = JSON.parse(dryRun)
+        const plan = JSON.parse(dryRun) as { tasks: PlannedTask[] }
         expect(
           plan.tasks
             .filter(
@@ -390,8 +399,9 @@ test('affected tasks follow verification inputs without promoting documentation 
       options,
     )
 
-    const complete: { data: { affectedTasks: { items: { reason: { __typename: string } }[] } } } =
-      JSON.parse(stdout)
+    const complete = JSON.parse(stdout) as {
+      data: { affectedTasks: { items: { reason: { __typename: string } }[] } }
+    }
     expect([
       ...new Set(complete.data.affectedTasks.items.map((task) => task.reason.__typename)),
     ]).toEqual(['TaskGlobalDepsChanged'])

@@ -32,8 +32,10 @@ export interface DesktopPackageInputs {
 export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise<string> {
   const args = ['list', '--filter', './clients/desktop/packages/*', '--depth', '-1', '--json']
   const stdout = await readPnpm(args, root, { signal })
-  const members: { name: string; path: string }[] = JSON.parse(stdout)
-  if (members.length !== 8) throw new Error('Expected the eight public desktop packages')
+  const members = JSON.parse(stdout) as { name: string; path: string }[]
+  if (members.length !== 8) {
+    throw new Error('Expected the eight public desktop packages')
+  }
 
   const output = join(root, 'artifacts', 'desktop', 'packages')
   await mkdir(output, { recursive: true })
@@ -44,10 +46,13 @@ export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise
       throw new Error('Unexpected public package identity')
     }
 
-    const manifest: { name: string; version: string } = JSON.parse(
-      await readFile(join(member.path, 'package.json'), 'utf8'),
-    )
-    if (manifest.name !== member.name) throw new Error('Workspace package identity changed')
+    const manifest = JSON.parse(await readFile(join(member.path, 'package.json'), 'utf8')) as {
+      name: string
+      version: string
+    }
+    if (manifest.name !== member.name) {
+      throw new Error('Workspace package identity changed')
+    }
 
     signal?.throwIfAborted()
     const archive = join(member.path, 'out', 'package.tgz')

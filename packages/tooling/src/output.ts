@@ -8,7 +8,8 @@ import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'nod
 
 /**
  * Prepare a private candidate and replace one project-owned output after success.
- * Failure or cancellation before adoption preserves the previous output and removes the candidate.
+ * Preparation failure or cancellation observed before handoff keeps the previous output in place.
+ * Failed adoption restores the previous output; cleanup or rollback failures retain both errors.
  */
 export async function replaceOutput<T>(
   project: string,
@@ -40,20 +41,42 @@ export async function replaceOutput<T>(
       await rename(destination, previous)
       movedPrevious = true
     } catch (cause) {
-      if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') throw cause
+      if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw cause
+      }
     }
 
     try {
       await rename(staging, destination)
     } catch (cause) {
-      if (movedPrevious) await rename(previous, destination)
+      if (movedPrevious) {
+        try {
+          await rename(previous, destination)
+        } catch (rollbackFailure) {
+          throw new AggregateError(
+            [cause, rollbackFailure],
+            'Output adoption and rollback failed',
+            {
+              cause: rollbackFailure,
+            },
+          )
+        }
+      }
       throw cause
     }
 
     await rm(previous, { recursive: true, force: true })
 
     return value
-  } finally {
-    await rm(staging, { recursive: true, force: true })
+  } catch (cause) {
+    try {
+      await rm(staging, { recursive: true, force: true })
+    } catch (cleanupFailure) {
+      throw new AggregateError([cause, cleanupFailure], 'Output operation and cleanup failed', {
+        cause: cleanupFailure,
+      })
+    }
+
+    throw cause
   }
 }

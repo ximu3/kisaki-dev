@@ -1,6 +1,6 @@
 # 必要性与复杂度复核
 
-本轮依据用户提出的“不要过度防御、过度测试、过度设计”检查全项目。审查基线为 `f3f74f5880f3fd74be63f119a231e38fff4478c1`，日期为 2026-10-26。共同规则已提升到 [AGENTS](../../../../../AGENTS.md)、[CONVENTIONS](../../../../../CONVENTIONS.md)及[设计、实现与验证准则](../../../../design/engineering/conventions.md#proportionality)的前部，并由设计入口、产品原则、工作包与验收入口引用。
+本轮依据用户提出的“不要过度防御、过度测试、过度设计”检查全项目。审查基线为 `f3f74f5880f3fd74be63f119a231e38fff4478c1`，日期为 2026-10-26。共同规则已提升到 [AGENTS](../../../../../AGENTS.md)、[CONVENTIONS](../../../../../CONVENTIONS.md)及[设计、实现与验证准则](../../../../../CONVENTIONS.md#proportionality)的前部，并由设计入口、产品原则、工作包与验收入口引用。
 
 ## 覆盖与方法
 

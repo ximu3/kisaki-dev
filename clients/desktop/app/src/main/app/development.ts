@@ -49,7 +49,9 @@ export function connectDevelopment(): ApplicationDevelopment {
 
   /** Invalid startup or command state ends this connection without interpreting further messages. */
   async function fail(cause: Error): Promise<void> {
-    if (failed) return
+    if (failed) {
+      return
+    }
 
     failed = true
     clearTimeout(timeout)
@@ -73,7 +75,9 @@ export function connectDevelopment(): ApplicationDevelopment {
   }, 10_000)
 
   process.on('message', (value: unknown) => {
-    if (failed) return
+    if (failed) {
+      return
+    }
 
     try {
       const message = parseDevelopmentCommand(value)
@@ -88,7 +92,9 @@ export function connectDevelopment(): ApplicationDevelopment {
         return
       }
 
-      if (!initialized || !ready) throw new Error('Development command arrived before readiness')
+      if (!initialized || !ready) {
+        throw new Error('Development command arrived before readiness')
+      }
       if (message.type === 'buildsReady') {
         throw new Error('Extension loading is unavailable in this application')
       }
@@ -115,7 +121,9 @@ export function connectDevelopment(): ApplicationDevelopment {
   return {
     async ready(buildId, appVersion) {
       await initialization
-      if (failed) throw new Error('Development connection failed during startup')
+      if (failed) {
+        throw new Error('Development connection failed during startup')
+      }
 
       ready = true
       await send({
@@ -127,7 +135,9 @@ export function connectDevelopment(): ApplicationDevelopment {
       })
     },
     async shutdown(result) {
-      if (!process.connected || (!stopping && result.outcome !== 'exiting')) return
+      if (!process.connected || (!stopping && result.outcome !== 'exiting')) {
+        return
+      }
 
       stopping = result.outcome === 'exiting'
       await send(result)

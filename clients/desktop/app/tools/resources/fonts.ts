@@ -19,15 +19,19 @@ export interface FontInput {
 export async function copyFonts(fontInputs: FontInput[], output: string): Promise<void> {
   for (const font of fontInputs) {
     const directory = dirname(requireDependency.resolve(`${font.package}/package.json`))
-    const manifest: { version: string } = JSON.parse(
-      await readFile(join(directory, 'package.json'), 'utf8'),
-    )
-    if (manifest.version !== font.version) throw new Error('Font input version mismatch')
+    const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as {
+      version: string
+    }
+    if (manifest.version !== font.version) {
+      throw new Error('Font input version mismatch')
+    }
 
     const destination = join(output, font.package.split('/').at(-1)!)
     for (const [path, digest] of Object.entries(font.files)) {
       const bytes = await readFile(join(directory, path))
-      if (sha256(bytes) !== digest) throw new Error('Font input checksum mismatch')
+      if (sha256(bytes) !== digest) {
+        throw new Error('Font input checksum mismatch')
+      }
 
       await mkdir(dirname(join(destination, path)), { recursive: true })
       await writeFile(join(destination, path), bytes)

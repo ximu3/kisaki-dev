@@ -12,13 +12,13 @@ W00–W13 将目标系统划分为可以审阅和验证的实施工作。产品�
 
 工作包按[重写范围](../README.md#rewrite)建立目标实现，按产品合同验证界面与行为。
 
-所有工作包共同遵守[编码与实现质量](../design/engineering/conventions.md)、[界面文案](../design/ui/components.md#copy)和[项目文档](../design/engineering/documentation.md#owners)规范。
+所有工作包共同遵守[编码与实现质量](../../CONVENTIONS.md)、[界面文案](../design/ui/components.md#copy)和[项目文档](../design/engineering/documentation.md#owners)规范。
 
-[终态实现与整体一致性](../design/engineering/conventions.md#final-state)是实施与审查的首要准则。每项交付按完整职责成立，调整贯通相关模型、接口、实现、调用方与文档；实现路径和架构选择依据整体目标确定。
+[终态实现与整体一致性](../../CONVENTIONS.md#final-state)是实施与审查的首要准则。每项交付按完整职责成立，调整贯通相关模型、接口、实现、调用方与文档；实现路径和架构选择依据整体目标确定。
 
-[可读性](../design/engineering/conventions.md#readability-principle)是全部工作包的核心设计准则与完成门槛，覆盖编码、组织、目录、命名、配置和文档。交付须能从任务入口追踪职责、行为与结果，局部表达与整体阅读路径共同核对；源码逐段满足[编码风格](../design/engineering/conventions.md#coding-style)对间距、分组、控制流和副作用表达的要求。
+[可读性](../../CONVENTIONS.md#readability-principle)是全部工作包的核心设计准则与完成门槛，覆盖编码、组织、目录、命名、配置和文档。交付须能从任务入口追踪职责、行为与结果，局部表达与整体阅读路径共同核对；源码逐段满足[编码风格](../../CONVENTIONS.md#coding-style)对间距、分组、控制流和副作用表达的要求。
 
-[简洁、原生与适度复杂度](../design/engineering/conventions.md#simplicity-native)优先约束设计、实现和验证投入。实施前核对用户操作是否直接、平台或工具已有能力是否足够，以及定制机制的实际职责；已有设计或测试不构成自动扩展范围的依据。验证按[变更影响](../verification/acceptance.md#verification-scope)选择，不因工作包列出了完整验收范围就每次全部重跑。
+[简洁、原生与适度复杂度](../../CONVENTIONS.md#simplicity-native)优先约束设计、实现和验证投入。实施前核对用户操作是否直接、平台或工具已有能力是否足够，以及定制机制的实际职责；已有设计或测试不构成自动扩展范围的依据。验证按[变更影响](../verification/acceptance.md#verification-scope)选择，不因工作包列出了完整验收范围就每次全部重跑。
 
 整体方案、共同原则和影响范围明确后，模块组织、索引、具体 API 调用和同语义优化由实现者完成。模型、公开合同、主要行为、架构和交付范围按已确认规格执行，实现者不得擅自改变。实现须完成全部必需工作，并通过相应验收后才能标记为完成。不能通过擅自改写要求、减小范围或返回空值消除验收失败；对外仓库、npm 和部署操作按实际任务授权执行。
 
@@ -284,9 +284,9 @@ Webview 按[实际来源、CSP、Worker 与权限场景](../verification/scenari
 
 按[文档职责](../design/engineering/documentation.md#owners)完成 Kisaki monorepo 的 README、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、AGENTS、skill、模块与包说明、官方扩展使用说明及模板配套说明。内容依据实际实现，核对命令、公开示例、接口说明、适用规范和协作入口；四个独立项目的文档由各自维护，检查其消费说明与 Kisaki 接入一致。
 
-按[可读性](../design/engineering/conventions.md#readability)、[注释覆盖](../design/engineering/conventions.md#comments)和[工具结构](../design/engineering/layout.md#tools)审查实际实现，核对已有代码注释与文档，删除范围内未采用的实现、依赖、资源与入口。检查唯一拥有者、四类关系、exports、延迟加载、循环和生成资源，并保留必要的存储边界行为。
+按[可读性](../../CONVENTIONS.md#readability)、[注释覆盖](../../CONVENTIONS.md#comments)和[工具结构](../design/engineering/layout.md#tools)审查实际实现，核对已有代码注释与文档，删除范围内未采用的实现、依赖、资源与入口。检查唯一拥有者、四类关系、exports、延迟加载、循环和生成资源，并保留必要的存储边界行为。
 
-实施依据：[项目文档与协作规范](../design/engineering/documentation.md) · [编码、命名与运行规范](../design/engineering/conventions.md) · [运行架构与职责](../design/architecture.md)。
+实施依据：[项目文档与协作规范](../design/engineering/documentation.md) · [编码、命名与运行规范](../../CONVENTIONS.md) · [运行架构与职责](../design/architecture.md)。
 
 完成门槛：A31、A32 和[结构一致性](../verification/acceptance.md#structure)通过，日常运行与开发入口都符合本规格。
 

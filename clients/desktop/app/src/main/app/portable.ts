@@ -14,9 +14,13 @@ export function portableDataDirectory(
   const marker = join(programDirectory, 'kisaki-portable.txt')
   try {
     const info = lstatSync(marker)
-    if (!info.isFile()) throw new Error('The portable mode marker must be a regular file')
+    if (!info.isFile()) {
+      throw new Error('The portable mode marker must be a regular file')
+    }
   } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return undefined
+    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') {
+      return undefined
+    }
     throw cause
   }
 

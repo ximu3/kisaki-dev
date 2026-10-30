@@ -1,6 +1,3 @@
-# Selects desktop suites and targets, then verifies package consumers and applicable desktop
-# runtimes and carriers.
-
 name: Desktop verification
 on:
   workflow_call:

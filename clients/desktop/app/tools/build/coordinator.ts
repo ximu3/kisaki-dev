@@ -30,7 +30,7 @@ export async function buildDesktop(
     output,
     async (staging) => {
       const buildId = await buildInputIdentity({ signal })
-      const manifest: {
+      const manifest = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8')) as {
         name: string
         version: string
         type: string
@@ -39,7 +39,7 @@ export async function buildDesktop(
         author: { name: string; email: string }
         license: string
         devDependencies: { electron: string }
-      } = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8'))
+      }
 
       const resources = await prepareResources(target, signal)
       const native = await buildNative(target, false, signal)
@@ -50,13 +50,14 @@ export async function buildDesktop(
         await copyFile(join(native, file), join(staging, 'resources', 'native', file))
       }
 
+      // Wait for every compiler to finish before candidate cleanup can begin.
       const results = await Promise.allSettled(
         programNames.map((program) => buildProgram(program, join(staging, program), buildId)),
       )
       const failures = results.filter((result) => result.status === 'rejected')
       if (failures.length) {
         throw new AggregateError(
-          failures.map((result) => result.reason),
+          failures.map((result): unknown => result.reason),
           'Desktop program compilation failed',
         )
       }
@@ -95,7 +96,9 @@ export async function buildDesktop(
         'resources/native/kisaki-native.node',
         'resources/native/better-sqlite3.node',
       ]) {
-        if (!files[required]) throw new Error(`Desktop build is missing ${required}`)
+        if (!files[required]) {
+          throw new Error(`Desktop build is missing ${required}`)
+        }
       }
 
       const build: DesktopBuild = {

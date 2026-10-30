@@ -32,7 +32,9 @@ const stop = () => {
 }
 
 const message = (value: unknown) => {
-  if (value && typeof value === 'object' && 'type' in value && value.type === 'stop') stop()
+  if (value && typeof value === 'object' && 'type' in value && value.type === 'stop') {
+    stop()
+  }
 }
 
 process.on('message', message)
@@ -51,7 +53,9 @@ try {
             error: error instanceof Error ? error.message : undefined,
           },
           (cause) => {
-            if (cause) controller.abort(cause)
+            if (cause) {
+              controller.abort(cause)
+            }
           },
         )
       }
@@ -60,7 +64,9 @@ try {
 
   await session.closed
 } catch (cause) {
-  if (!controller.signal.aborted || cause instanceof AggregateError) failure = cause
+  if (!controller.signal.aborted || cause instanceof AggregateError) {
+    failure = cause
+  }
 } finally {
   try {
     await session?.stop()
@@ -70,7 +76,9 @@ try {
 
   process.off('message', message)
   process.off('disconnect', stop)
-  if (process.connected) process.disconnect()
+  if (process.connected) {
+    process.disconnect()
+  }
 }
 
 if (failure) {

@@ -86,7 +86,9 @@ function assertRecordFields<const Keys extends readonly string[]>(
 }
 
 function assertNonemptyText(value: unknown): asserts value is string {
-  if (typeof value !== 'string' || value.length === 0) throw new Error('Invalid development text')
+  if (typeof value !== 'string' || value.length === 0) {
+    throw new Error('Invalid development text')
+  }
 }
 
 function validatePositiveInteger(value: unknown): void {
@@ -107,7 +109,9 @@ function validateBuildReference(value: Record<string, unknown>): void {
 }
 
 function assertArray(value: unknown, check: (item: unknown) => void): asserts value is unknown[] {
-  if (!Array.isArray(value)) throw new Error('Invalid development list')
+  if (!Array.isArray(value)) {
+    throw new Error('Invalid development list')
+  }
 
   value.forEach(check)
 }
@@ -135,7 +139,9 @@ export function parseDevelopmentCommand(value: unknown): DevelopmentCommand {
         validateBuildReference(build)
         assertNonemptyText(build.rootPath)
         assertNonemptyText(build.extensionId)
-        if (ids.has(build.extensionId)) throw new Error('Duplicate development extension')
+        if (ids.has(build.extensionId)) {
+          throw new Error('Duplicate development extension')
+        }
 
         ids.add(build.extensionId)
 
@@ -146,7 +152,9 @@ export function parseDevelopmentCommand(value: unknown): DevelopmentCommand {
         })
       })
 
-      if (!value.builds.length) throw new Error('Empty development build batch')
+      if (!value.builds.length) {
+        throw new Error('Empty development build batch')
+      }
       break
     }
     default:
@@ -167,7 +175,9 @@ export function parseDevelopmentEvent(value: unknown): DevelopmentEvent {
       assertRecordFields(value, ['type', 'protocolVersion', 'appVersion', 'apiVersion', 'buildId'])
       validatePositiveInteger(value.protocolVersion)
       assertNonemptyText(value.appVersion)
-      if (value.apiVersion !== null) assertNonemptyText(value.apiVersion)
+      if (value.apiVersion !== null) {
+        assertNonemptyText(value.apiVersion)
+      }
       assertNonemptyText(value.buildId)
       break
     case 'failed':
@@ -198,7 +208,9 @@ export function parseDevelopmentEvent(value: unknown): DevelopmentEvent {
         validateErrorSummary(value.error)
       } else {
         assertRecordFields(value, ['type', 'builds', 'activations', 'outcome'])
-        if (value.outcome !== 'completed') throw new Error('Invalid development adoption outcome')
+        if (value.outcome !== 'completed') {
+          throw new Error('Invalid development adoption outcome')
+        }
       }
 
       assertArray(value.builds, (build) => {
@@ -212,7 +224,9 @@ export function parseDevelopmentEvent(value: unknown): DevelopmentEvent {
           validateErrorSummary(build.error)
         } else {
           assertRecordFields(build, ['extensionId', 'buildId', 'outcome'])
-          if (build.outcome !== 'adopted') throw new Error('Invalid development build outcome')
+          if (build.outcome !== 'adopted') {
+            throw new Error('Invalid development build outcome')
+          }
         }
 
         validateBuildReference(build)

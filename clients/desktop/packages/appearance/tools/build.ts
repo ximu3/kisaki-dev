@@ -21,9 +21,9 @@ export async function buildPackage(signal?: AbortSignal): Promise<void> {
     async (candidate) => {
       await build({ config: join(root, 'tsdown.config.ts'), outDir: candidate, clean: true })
 
-      const defaults: typeof DefaultTokens = await import(
+      const defaults = (await import(
         pathToFileURL(join(candidate, 'index.js')).href
-      )
+      )) as typeof DefaultTokens
 
       const light = cssTokens(':root', defaults.defaultLightTokens)
       const dark = cssTokens(":root[data-color-scheme='dark']", defaults.defaultDarkTokens)

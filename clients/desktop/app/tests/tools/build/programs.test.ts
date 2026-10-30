@@ -60,7 +60,9 @@ test.each(['main', 'extension-host'] as const)(
       })
 
       const chunks = (Array.isArray(result) ? result : [result]).flatMap((bundle) => {
-        if (!('output' in bundle)) throw new Error('Expected a finite build')
+        if (!('output' in bundle)) {
+          throw new Error('Expected a finite build')
+        }
 
         return bundle.output.filter((output) => output.type === 'chunk')
       })

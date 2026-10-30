@@ -25,7 +25,9 @@ export async function desktopDependencies(signal?: AbortSignal): Promise<Desktop
       { signal },
     ),
   )
-  if (!Array.isArray(value)) throw new Error('Desktop dependencies are unavailable')
+  if (!Array.isArray(value)) {
+    throw new Error('Desktop dependencies are unavailable')
+  }
 
   return Promise.all(
     value.map(async (member: unknown) => {
@@ -99,7 +101,9 @@ export async function captureDependencies(
     await collect(join(member.path, 'dist'), `${member.name}/dist`)
   }
 
-  for (const [name, value] of content) digest.update(name).update('\0').update(value)
+  for (const [name, value] of content) {
+    digest.update(name).update('\0').update(value)
+  }
   const id = digest.digest('hex')
   const previous = existing.get(id)
 
@@ -168,7 +172,9 @@ export async function captureDependencies(
       }
     }
   } catch (cause) {
-    if (!previous) await rm(join(directory, id), { recursive: true, force: true })
+    if (!previous) {
+      await rm(join(directory, id), { recursive: true, force: true })
+    }
     throw cause
   }
 

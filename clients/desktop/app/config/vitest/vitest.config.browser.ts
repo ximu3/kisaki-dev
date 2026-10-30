@@ -1,8 +1,3 @@
-/**
- * @fileoverview Runs Solid interaction tests in headless Chromium through Vitest Browser
- * Mode.
- */
-
 import { defineConfig } from 'vitest/config'
 import { playwright } from '@vitest/browser-playwright'
 import solid from 'vite-plugin-solid'

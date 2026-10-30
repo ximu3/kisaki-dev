@@ -64,7 +64,9 @@ export async function runtimeFiles(directory: string): Promise<Record<string, st
         await visit(path)
       } else {
         const name = relative(directory, path).replaceAll('\\', '/')
-        if (name !== 'build.json') files[name] = sha256(await readFile(path))
+        if (name !== 'build.json') {
+          files[name] = sha256(await readFile(path))
+        }
       }
     }
   }

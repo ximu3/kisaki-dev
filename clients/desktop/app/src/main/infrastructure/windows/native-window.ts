@@ -3,7 +3,7 @@
  * capability.
  */
 
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow } from 'electron'
 import { join } from 'node:path'
 import type { WindowKind } from '../../../shared/window-controls'
 
@@ -16,7 +16,9 @@ interface NativeWindowOptions {
 }
 
 function windowUrl(kind: WindowKind, rendererUrl?: string): string {
-  if (!rendererUrl) return `kisaki-app://native/${kind}/index.html`
+  if (!rendererUrl) {
+    return `kisaki-app://native/${kind}/index.html`
+  }
 
   const base = new URL(rendererUrl)
   if (base.protocol !== 'http:' || base.hostname !== '127.0.0.1') {
@@ -28,6 +30,8 @@ function windowUrl(kind: WindowKind, rendererUrl?: string): string {
 
 /** Resolve after the main frame mounts; reject on window closure or a 30-second startup timeout. */
 function waitForRenderer(window: BrowserWindow): Promise<void> {
+  const ipc = window.webContents.ipc
+
   return new Promise((resolveReady, reject) => {
     const timeout = setTimeout(() => {
       cleanup()
@@ -35,10 +39,7 @@ function waitForRenderer(window: BrowserWindow): Promise<void> {
     }, 30_000)
 
     const onReady = (event: Electron.IpcMainEvent) => {
-      if (
-        event.sender !== window.webContents ||
-        event.senderFrame !== window.webContents.mainFrame
-      ) {
+      if (event.senderFrame !== window.webContents.mainFrame) {
         return
       }
 
@@ -54,11 +55,11 @@ function waitForRenderer(window: BrowserWindow): Promise<void> {
     /** Release the readiness subscriptions on either completion or failure. */
     function cleanup(): void {
       clearTimeout(timeout)
-      ipcMain.off('window:ready', onReady)
+      ipc.off('window:ready', onReady)
       window.off('closed', onClosed)
     }
 
-    ipcMain.on('window:ready', onReady)
+    ipc.on('window:ready', onReady)
     window.once('closed', onClosed)
   })
 }
@@ -84,28 +85,33 @@ export async function createNativeWindow(options: NativeWindowOptions): Promise<
     },
   })
 
-  window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
-  window.webContents.on('will-navigate', (event, destination) => {
-    if (destination !== window.webContents.getURL()) event.preventDefault()
-  })
-
-  ipcMain.handle('window:close', (event) => {
-    if (event.sender !== window.webContents || event.senderFrame !== window.webContents.mainFrame) {
-      throw new Error('Window control is not available to this sender')
-    }
-
-    window.close()
-  })
-  window.once('closed', () => ipcMain.removeHandler('window:close'))
-
   try {
+    window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
+    window.webContents.on('will-navigate', (event, destination) => {
+      if (destination !== window.webContents.getURL()) {
+        event.preventDefault()
+      }
+    })
+
+    const ipc = window.webContents.ipc
+    ipc.handle('window:close', (event) => {
+      if (event.senderFrame !== window.webContents.mainFrame) {
+        throw new Error('Window control is not available to this sender')
+      }
+
+      window.close()
+    })
+    window.once('closed', () => ipc.removeHandler('window:close'))
+
     // Loading HTML and mounting the renderer are separate readiness conditions.
     await Promise.all([waitForRenderer(window), window.loadURL(url)])
 
     window.show()
     return window
   } catch (cause) {
-    if (!window.isDestroyed()) window.destroy()
+    if (!window.isDestroyed()) {
+      window.destroy()
+    }
 
     throw cause
   }

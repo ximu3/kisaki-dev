@@ -32,12 +32,13 @@ export const test = base.extend<DesktopFixtures>({
   },
   desktop: async ({ profile, kind }, use) => {
     const runtime = buildDirectory(hostTarget())
-    const build: { target: string; electronVersion: string } = JSON.parse(
-      await readFile(join(runtime, 'build.json'), 'utf8'),
-    )
-    const manifest: { devDependencies: { electron: string } } = JSON.parse(
+    const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {
+      target: string
+      electronVersion: string
+    }
+    const manifest = JSON.parse(
       await readFile(new URL('../../package.json', import.meta.url), 'utf8'),
-    )
+    ) as { devDependencies: { electron: string } }
     if (
       build.target !== hostTarget() ||
       build.electronVersion !== manifest.devDependencies.electron
@@ -62,7 +63,9 @@ export const test = base.extend<DesktopFixtures>({
     try {
       await use(application)
     } finally {
-      if (child.exitCode === null) await application.close()
+      if (child.exitCode === null) {
+        await application.close()
+      }
     }
   },
 })

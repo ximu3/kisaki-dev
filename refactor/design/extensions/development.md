@@ -33,7 +33,7 @@ extension-distribution 定义 manifest、registry、静态展示、兼容规则�
 
 package.json.version 是唯一版本来源，package.json.kisaki 保存扩展元信息。kisx.config.ts 只配置 Node 入口、Webview 构建输入、资源、输出和构建选项。工具生成的 manifest 描述完整包内运行布局。Webview 如何构建文档，与运行时如何使用 document 是两个职责；构建器不能执行 activate 来猜测所有页面。
 
-三种作者模板与官方扩展遵守[通用配置归属](../engineering/conventions.md#configuration-layout)：tsconfig.json、kisx.config.ts 等实际默认入口保留在项目根目录，Node、Webview、测试等内部配置按工具归入自身 config，不增加空目录或纯转发入口。源码工作区的共享基线由工作区提供，单项目仍能独立使用其实际配置。
+三种作者模板与官方扩展遵守[通用配置归属](../../../CONVENTIONS.md#configuration-layout)：tsconfig.json、kisx.config.ts 等实际默认入口保留在项目根目录，Node、Webview、测试等内部配置按工具归入自身 config，不增加空目录或纯转发入口。源码工作区的共享基线由工作区提供，单项目仍能独立使用其实际配置。
 
 extension 命令组提供 create、dev、validate、build 和 pack。build 依次检查声明、编译代码、装配运行依赖与资源，再验证完整布局。pack 默认完成必要构建，也允许明确指定已有的完整目录。validate 可以检查源码、构建目录和 .kisx，并给出可定位诊断。build 与 pack 自动执行必要检查，不要求作者先手动运行 validate。静态检查不执行贡献，也不能冒充运行验收；类型、lint、格式和测试仍使用普通项目脚本。
 

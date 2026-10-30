@@ -8,7 +8,9 @@ import { WindowRoot } from '../../components/window-root'
 import './styles.css'
 
 const element = document.getElementById('root')
-if (!element) throw new Error('Window root is unavailable')
+if (!element) {
+  throw new Error('Window root is unavailable')
+}
 
 const dispose = render(() => <WindowRoot title="Player" close={window.kisaki.close} />, element)
 

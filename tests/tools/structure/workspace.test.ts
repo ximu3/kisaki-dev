@@ -30,12 +30,19 @@ async function sourceFiles(directory: string): Promise<string[]> {
   const result: string[] = []
 
   for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (ignored.has(entry.name)) continue
-    if (directory === root && ['refactor', 'artifacts'].includes(entry.name)) continue
+    if (ignored.has(entry.name)) {
+      continue
+    }
+    if (directory === root && ['refactor', 'artifacts'].includes(entry.name)) {
+      continue
+    }
 
     const path = join(directory, entry.name)
-    if (entry.isDirectory()) result.push(...(await sourceFiles(path)))
-    else result.push(path)
+    if (entry.isDirectory()) {
+      result.push(...(await sourceFiles(path)))
+    } else {
+      result.push(path)
+    }
   }
 
   return result
@@ -43,9 +50,9 @@ async function sourceFiles(directory: string): Promise<string[]> {
 
 /** Read registered project manifests through pnpm's workspace discovery. */
 async function members(): Promise<{ directory: string; manifest: Record<string, unknown> }[]> {
-  const selected: { path: string }[] = JSON.parse(
+  const selected = JSON.parse(
     await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
-  )
+  ) as { path: string }[]
 
   const directories = selected
     .map((member) => relative(root, member.path).replaceAll('\\', '/'))
@@ -54,7 +61,10 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
   return Promise.all(
     directories.map(async (directory) => ({
       directory,
-      manifest: JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')),
+      manifest: JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as Record<
+        string,
+        unknown
+      >,
     })),
   )
 }
@@ -98,7 +108,10 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   expect(files.filter((path) => /\.(?:js|jsx|mjs|cjs)$/.test(path))).toEqual([])
 
   const projects = [
-    { directory: '.', manifest: JSON.parse(await readFile('package.json', 'utf8')) },
+    {
+      directory: '.',
+      manifest: JSON.parse(await readFile('package.json', 'utf8')) as Record<string, unknown>,
+    },
     ...(await members()),
   ]
   const configs: string[] = []
@@ -106,7 +119,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   for (const { directory, manifest } of projects) {
     const scripts = (manifest.scripts ?? {}) as Record<string, string>
     const command = directory === '.' ? scripts['root:typecheck'] : scripts.typecheck
-    if (command) configs.push(resolve(directory, 'tsconfig.json'))
+    if (command) {
+      configs.push(resolve(directory, 'tsconfig.json'))
+    }
   }
 
   // This standalone project is typechecked after installation by the desktop consumer suite.
@@ -117,7 +132,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   const visited = new Set<string>()
 
   for (const config of configs) {
-    if (visited.has(config)) continue
+    if (visited.has(config)) {
+      continue
+    }
     visited.add(config)
 
     const content = ts.readConfigFile(config, ts.sys.readFile)
@@ -128,7 +145,9 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     for (const path of parsed.fileNames) {
       const file = resolve(path).toLowerCase()
       checked.add(file)
-      if (!parsed.options.skipLibCheck) checkedDeclarations.add(file)
+      if (!parsed.options.skipLibCheck) {
+        checkedDeclarations.add(file)
+      }
     }
 
     for (const reference of parsed.projectReferences ?? []) {

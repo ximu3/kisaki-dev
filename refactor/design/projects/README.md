@@ -2,7 +2,7 @@
 
 四个项目分别维护仓库、公共合同、版本与发行。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目共同遵守[终态实现与整体一致性](../engineering/conventions.md#final-state)、[可读性](../engineering/conventions.md#readability-principle)及[简洁、原生与适度复杂度](../engineering/conventions.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目共同遵守[终态实现与整体一致性](../../../CONVENTIONS.md#final-state)、[可读性](../../../CONVENTIONS.md#readability-principle)及[简洁、原生与适度复杂度](../../../CONVENTIONS.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |
@@ -30,7 +30,7 @@ Vantage、Kana、libmpv-node 和 oauth-relay 均按可独立消费、独立版�
 
 独立维护包括公开合同、示例、类型与制品消费、兼容性、发行说明及必要平台资源。测试样例证明实际消费方式，不据此宣称已经存在其他真实产品用户。库内验证各自承诺，Kisaki 验证新增的业务接入风险，不在每层重复整套用例。
 
-各项目独立构建、消费和维护，编码规范遵守[归属规则](../engineering/conventions.md#ownership)。
+各项目独立构建、消费和维护，编码规范遵守[归属规则](../../../CONVENTIONS.md#ownership)。
 
 本体的私有能力仍由本体拥有，例如恢复所需的不覆盖移动不扩入 Vantage。独立边界同样不替本体承担 Work、Part、Session、数据库与用户流程。范围依据与确认记录见[项目取舍](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#projects)，正式交付仍须通过各项目自己的完整验收。
 

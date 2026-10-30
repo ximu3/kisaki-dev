@@ -1,8 +1,3 @@
-/**
- * @fileoverview Configures public error, development-protocol and root contract entries
- * with their declarations.
- */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

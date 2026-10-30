@@ -1,0 +1,24 @@
+{
+  "buildsBefore": [
+    "@kisaki3/appearance#build",
+    "@kisaki3/desktop-contracts#build",
+    "@kisaki3/extension-api#build",
+    "@kisaki3/extension-cli#build",
+    "@kisaki3/extension-distribution#build",
+    "@kisaki3/extension-sdk#build",
+    "@kisaki3/rpc#build",
+    "@kisaki3/ui#build"
+  ],
+  "buildsAfter": [
+    "@kisaki3/appearance#build",
+    "@kisaki3/desktop-contracts#build",
+    "@kisaki3/extension-api#build",
+    "@kisaki3/extension-cli#build",
+    "@kisaki3/extension-distribution#build",
+    "@kisaki3/extension-sdk#build",
+    "@kisaki3/rpc#build",
+    "@kisaki3/ui#build"
+  ],
+  "sameBuildSet": true,
+  "applicationBuildIncluded": false
+}

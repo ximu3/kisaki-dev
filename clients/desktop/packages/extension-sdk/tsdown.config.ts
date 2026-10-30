@@ -1,5 +1,3 @@
-/** @fileoverview Configures the SDK ESM entry and public declarations. */
-
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({

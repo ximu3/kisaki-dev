@@ -27,7 +27,9 @@ process.on('message', (value: unknown) => {
       { type: 'stopResult', outcome: requests === 1 ? 'cancelled' : 'exiting' },
       () => {
         // Connection closure and process exit are separate lifecycle events.
-        if (requests === 2) process.disconnect()
+        if (requests === 2) {
+          process.disconnect()
+        }
       },
     )
   }

@@ -45,8 +45,11 @@ export async function startExtensionHost(runtime: string): Promise<ExtensionHost
         clearTimeout(timeout)
         child.off('exit', onExit)
 
-        if (message.type !== 'ready') reject(new Error('Invalid extension host readiness message'))
-        else resolve()
+        if (message.type !== 'ready') {
+          reject(new Error('Invalid extension host readiness message'))
+        } else {
+          resolve()
+        }
       })
     })
   } catch (cause) {
@@ -62,7 +65,9 @@ export async function startExtensionHost(runtime: string): Promise<ExtensionHost
   return {
     stop() {
       stopping ??= (async () => {
-        if (exited) return
+        if (exited) {
+          return
+        }
 
         const stop: HostControl = { type: 'stop' }
         child.postMessage(stop)

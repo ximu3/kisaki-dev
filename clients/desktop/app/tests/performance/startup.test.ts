@@ -71,7 +71,10 @@ test('measures twenty fresh processes and confirms all observed child processes 
                 try {
                   process.kill(pid, 0)
                   return true
-                } catch {
+                } catch (cause) {
+                  if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+                    throw cause
+                  }
                   return false
                 }
               }),
@@ -93,7 +96,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
       cpu: cpus()[0]?.model,
       memoryBytes: totalmem(),
       mode: 'fresh processes, warm OS disk cache, isolated retained profile, windows and native modules only',
-      build: JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')),
+      build: JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as unknown,
       samples,
       medianMs: median,
       p95Ms: p95,

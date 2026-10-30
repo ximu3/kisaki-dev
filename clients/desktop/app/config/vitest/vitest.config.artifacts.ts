@@ -1,8 +1,3 @@
-/**
- * @fileoverview Runs verification of prepared desktop carriers and writes artifact-test
- * results.
- */
-
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

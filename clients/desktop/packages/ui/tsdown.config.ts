@@ -1,8 +1,3 @@
-/**
- * @fileoverview Compiles Solid components and declarations while keeping the Solid runtime
- * external.
- */
-
 import { defineConfig } from 'tsdown'
 import solid from 'unplugin-solid/rolldown'
 
@@ -14,5 +9,6 @@ export default defineConfig({
   fixedExtension: false,
   clean: true,
   plugins: [solid()],
+  // Components share the consumer's Solid runtime and reactive ownership.
   deps: { neverBundle: ['solid-js', 'solid-js/web'] },
 })

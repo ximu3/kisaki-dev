@@ -1,8 +1,3 @@
-/**
- * @fileoverview Runs desktop startup measurements serially and records their performance
- * report.
- */
-
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({

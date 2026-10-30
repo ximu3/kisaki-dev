@@ -35,7 +35,9 @@ export class CommandFailed extends Error {
 
 /** Terminate the spawned command tree and wait for the platform termination request. */
 async function stopCommand(child: ChildProcess): Promise<void> {
-  if (!child.pid || child.exitCode !== null || child.signalCode !== null) return
+  if (!child.pid || child.exitCode !== null || child.signalCode !== null) {
+    return
+  }
 
   if (process.platform === 'win32') {
     try {
@@ -43,7 +45,9 @@ async function stopCommand(child: ChildProcess): Promise<void> {
         windowsHide: true,
       })
     } catch (cause) {
-      if (child.exitCode === null && child.signalCode === null) throw cause
+      if (child.exitCode === null && child.signalCode === null) {
+        throw cause
+      }
     }
 
     return
@@ -52,7 +56,9 @@ async function stopCommand(child: ChildProcess): Promise<void> {
   try {
     process.kill(-child.pid, 'SIGTERM')
   } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+      throw cause
+    }
     return
   }
 
@@ -61,7 +67,9 @@ async function stopCommand(child: ChildProcess): Promise<void> {
     try {
       process.kill(-child.pid, 0)
     } catch (cause) {
-      if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+      if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+        throw cause
+      }
       return
     }
 
@@ -72,7 +80,9 @@ async function stopCommand(child: ChildProcess): Promise<void> {
   try {
     process.kill(-child.pid, 'SIGKILL')
   } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') throw cause
+    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+      throw cause
+    }
   }
 }
 
@@ -85,7 +95,9 @@ async function execute(
 ): Promise<string> {
   const limit = new AbortController()
   const signals = [limit.signal]
-  if (options.signal) signals.push(options.signal)
+  if (options.signal) {
+    signals.push(options.signal)
+  }
   const signal = AbortSignal.any(signals)
   signal.throwIfAborted()
 
@@ -110,7 +122,9 @@ async function execute(
   }
 
   signal.addEventListener('abort', cancel, { once: true })
-  if (signal.aborted) cancel()
+  if (signal.aborted) {
+    cancel()
+  }
   child.once('error', (cause) => {
     failure = cause
   })
@@ -123,8 +137,11 @@ async function execute(
       return
     }
 
-    if (error) stderr += value
-    else stdout += value
+    if (error) {
+      stderr += value
+    } else {
+      stdout += value
+    }
   }
 
   child.stdout?.setEncoding('utf8').on('data', (value: string) => collect(value, false))
@@ -136,7 +153,9 @@ async function execute(
     })
     await stopping
 
-    if (failure) throw failure
+    if (failure) {
+      throw failure
+    }
     signal.throwIfAborted()
     if (result.code !== 0) {
       throw new CommandFailed(command, result.code, result.signal, stdout, stderr)
@@ -160,7 +179,9 @@ export async function run(
 /** Resolve the pinned pnpm executable that started this project task. */
 function pnpmCommand(args: string[]): { command: string; args: string[] } {
   const executable = process.env.npm_execpath
-  if (!executable) throw new Error('Run this workflow through its pnpm project task')
+  if (!executable) {
+    throw new Error('Run this workflow through its pnpm project task')
+  }
 
   return executable.endsWith('.exe')
     ? { command: executable, args }

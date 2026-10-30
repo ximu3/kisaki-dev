@@ -10,7 +10,7 @@
 
 [sourceIdentity](../../../../../../clients/desktop/app/tools/build/identity.ts) 在第 43–49 行只读取公共包的 src、tools 和根目录 `.ts`／`.json` 文件。辅助类型配置迁入 config/typescript 后，没有同步纳入这个输入集合。
 
-因此，改变有效的库构建配置不会改变桌面 buildId，构建前后的输入核对也不能发现这类变化。该问题违反[配置迁移](../../../../../design/engineering/conventions.md#configuration-layout)对构建身份输入的要求；上一轮归组已验证的编译选项、公开输出与制品等效，不能替代这个检查。
+因此，改变有效的库构建配置不会改变桌面 buildId，构建前后的输入核对也不能发现这类变化。该问题违反[配置迁移](../../../../../../CONVENTIONS.md#configuration-layout)对构建身份输入的要求；上一轮归组已验证的编译选项、公开输出与制品等效，不能替代这个检查。
 
 隔离复现使用与当前源码逐字节相同的 identity.ts、paths.ts 和 sha256.ts，按实际目录结构建立样本。将嵌套 tsconfig.lib.json 的 target 从 ES2023 改为 ES2022，修改前后的身份相同；修改根 tsdown.config.ts 的对照操作则正常改变身份。结果见[复现数据](reproductions.json)中的 identity。应将实际公共包配置输入纳入同一身份计算，并验证有效配置变化及构建期间变化能够被识别。
 

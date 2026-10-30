@@ -1,8 +1,3 @@
-/**
- * @fileoverview Defines isolated CommonJS preload entries with Electron as their runtime
- * dependency.
- */
-
 import { defineConfig } from 'vite'
 
 const preloadEntries = {

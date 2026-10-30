@@ -1,6 +1,6 @@
 # 文件与模块注释覆盖
 
-基线为 PR #7 合并后的 6e90fed4f877eb2032acc3e12ae23d20b9d40442。按确认的统一要求，文件与模块都提供简短概述，并补齐当前维护的源码、工具、配置、测试和消费者样板。规范由[注释规则](../../../../design/engineering/conventions.md#file-module-comments)定义。
+基线为 PR #7 合并后的 6e90fed4f877eb2032acc3e12ae23d20b9d40442。按确认的统一要求，文件与模块都提供简短概述，并补齐当前维护的源码、工具、配置、测试和消费者样板。规范由[注释规则](../../../../../CONVENTIONS.md#file-module-comments)定义。
 
 ## 覆盖范围
 

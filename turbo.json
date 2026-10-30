@@ -29,11 +29,13 @@
       "outputs": []
     },
     "lint": {
+      "dependsOn": ["^build"],
       "inputs": [
         "$TURBO_DEFAULT$",
         "!**/*.md",
         "$TURBO_ROOT$/packages/eslint-config/src/**",
-        "$TURBO_ROOT$/packages/eslint-config/package.json"
+        "$TURBO_ROOT$/packages/eslint-config/package.json",
+        "$TURBO_ROOT$/packages/typescript-config/*.json"
       ],
       "outputs": []
     },
@@ -61,14 +63,19 @@
       "outputs": []
     },
     "//#root:lint": {
+      "dependsOn": ["^build"],
       "inputs": [
+        "package.json",
+        "tsconfig.json",
+        "config/typescript/**",
         "*.config.ts",
         "config/**/*.ts",
         "tools/**/*.ts",
         "tests/**/*.ts",
         "tests/**/*.tsx",
         "$TURBO_ROOT$/packages/eslint-config/src/**",
-        "$TURBO_ROOT$/packages/eslint-config/package.json"
+        "$TURBO_ROOT$/packages/eslint-config/package.json",
+        "$TURBO_ROOT$/packages/typescript-config/*.json"
       ],
       "outputs": []
     },
