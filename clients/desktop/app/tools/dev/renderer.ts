@@ -41,15 +41,38 @@ export async function startRenderer(
         name: 'desktop-public-dependency-snapshots',
         enforce: 'pre',
         async resolveId(source, importer, options) {
-          // Imports inside a snapshot keep that generation's package resolution.
-          if (importer && contains(snapshotDirectory, importer)) {
-            return null
-          }
-
           const specifier = source.replace(/[?#].*$/, '')
           const member = members.find(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
           )
+
+          if (importer && contains(snapshotDirectory, importer)) {
+            // Public and relative imports stay in their generation. Installed third-party
+            // dependencies retain the original package's pnpm resolution context.
+            if (
+              member ||
+              source.startsWith('.') ||
+              source.startsWith('#') ||
+              source.startsWith('\0') ||
+              isAbsolute(source) ||
+              source.includes(':')
+            ) {
+              return null
+            }
+
+            const generation = relative(snapshotDirectory, importer).split(sep)[0]!
+            const owner = members.find(({ name }) =>
+              contains(join(snapshotDirectory, generation, 'node_modules', name), importer),
+            )
+            if (owner) {
+              return this.resolve(source, join(owner.path, 'package.json'), {
+                ...options,
+                skipSelf: true,
+              })
+            }
+            return null
+          }
+
           if (!member) {
             return null
           }

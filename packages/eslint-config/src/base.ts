@@ -45,10 +45,6 @@ export default defineConfig(
       '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
-      'no-restricted-syntax': [
-        'error',
-        { selector: 'ExportAllDeclaration', message: 'List public exports explicitly.' },
-      ],
     },
   },
 )

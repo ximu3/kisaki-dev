@@ -4,5 +4,5 @@
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/tools.tsbuildinfo"
   },
-  "include": ["../../tools/**/*.ts", "../../*.config.ts"]
+  "include": ["../../tools/**/*.ts", "../../config/**/*.ts", "../../*.config.ts"]
 }

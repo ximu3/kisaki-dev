@@ -24,6 +24,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
     const manifest = {
       name,
       type: 'module',
+      dependencies: { 'snapshot-dependency': '1.0.0' },
       exports: {
         '.': {
           browser: { development: './dist/development.js', default: './dist/browser.js' },
@@ -37,6 +38,14 @@ test('Vite resolves complete snapshots and preserves the active generation after
     await writeFile(join(packageRoot, 'dist/browser.js'), "export const value = 'browser'\n")
     await writeFile(join(packageRoot, 'dist/node.js'), "export const value = 'node'\n")
     await writeFile(join(packageRoot, 'dist/styles.css'), ':root { --fixture: 1 }\n')
+
+    const dependency = join(packageRoot, 'node_modules/snapshot-dependency')
+    await mkdir(dependency, { recursive: true })
+    await writeFile(
+      join(dependency, 'package.json'),
+      JSON.stringify({ name: 'snapshot-dependency', type: 'module', exports: './index.js' }),
+    )
+    await writeFile(join(dependency, 'index.js'), "export const value = 'installed dependency'\n")
 
     const members = [{ name, path: packageRoot }]
     const snapshots = new Map<string, DependencySnapshot>()
@@ -55,6 +64,16 @@ test('Vite resolves complete snapshots and preserves the active generation after
     expect(resolve(initial!.id.replace(/[?#].*$/, ''))).toBe(
       join(firstPackage, 'dist/development.js'),
     )
+    const installed = await renderer.resolveDependency(
+      'snapshot-dependency',
+      join(firstPackage, 'dist/development.js'),
+    )
+    const originalInstalled = await renderer.resolveDependency(
+      'snapshot-dependency',
+      join(packageRoot, 'package.json'),
+    )
+    expect(installed).not.toBeNull()
+    expect(installed?.id).toBe(originalInstalled?.id)
 
     const stylesheet = await renderer.resolveDependency(
       `${name}/styles.css?inline`,

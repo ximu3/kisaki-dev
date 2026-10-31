@@ -1,0 +1,15 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "test:browser": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "src/**",
+        "tests/browser/**",
+        "config/vitest/**",
+        "config/typescript/tsconfig.tests.json"
+      ],
+      "cache": false
+    }
+  }
+}

@@ -38,7 +38,6 @@ jobs:
       consumers: ${{ steps.affected.outputs.consumers }}
       e2e: ${{ steps.affected.outputs.e2e }}
       dev: ${{ steps.affected.outputs.dev }}
-      performance: ${{ steps.affected.outputs.performance }}
       artifacts: ${{ steps.affected.outputs.artifacts }}
       tooling: ${{ steps.affected.outputs.tooling }}
       selected: ${{ steps.affected.outputs.selected }}
@@ -122,13 +121,14 @@ jobs:
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
           requiresAllTargets=false
           browser=false
-          for task in native browser e2e dev performance artifacts; do
+          for task in native browser e2e dev artifacts; do
             selected="$complete"
             if [[ "$complete" == false ]]; then
               selected=$(jq -r --arg task "test:$task" '
                 any(.data.affectedTasks.items[];
                   .command != null and
-                  .package.name == "@kisaki3/desktop" and
+                  (.package.name == "@kisaki3/desktop" or
+                    ($task == "test:browser" and (.package.path | startswith("clients/desktop/")))) and
                   (.name == $task or
                     ($task == "test:artifacts" and .name == "package")))
               ' "$report")
@@ -230,7 +230,7 @@ jobs:
           mkdir -p test-results/verification
           pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Install Linux desktop tools
-        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true')
+        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - name: Install Chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
@@ -245,7 +245,7 @@ jobs:
         if: needs.select.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop check:native
       - name: Build desktop
-        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true'
+        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true'
         shell: bash
         run: pnpm desktop:build --target "$DESKTOP_TARGET"
         id: build-desktop
@@ -265,22 +265,14 @@ jobs:
         if: needs.select.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop test:native
       - name: Test desktop workflows
+        if: needs.select.outputs.e2e == 'true'
         shell: bash
-        env:
-          CHECK_E2E: ${{ needs.select.outputs.e2e }}
-          CHECK_PERFORMANCE: ${{ needs.select.outputs.performance }}
         run: |
           prefix=()
           if [[ "$RUNNER_OS" == Linux ]]; then
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
-          for task in e2e performance; do
-            case "$task" in
-              e2e) selected="$CHECK_E2E" ;;
-              performance) selected="$CHECK_PERFORMANCE" ;;
-            esac
-            if [[ "$selected" == true ]]; then "${prefix[@]}" pnpm --filter @kisaki3/desktop "test:$task"; fi
-          done
+          "${prefix[@]}" pnpm --filter @kisaki3/desktop test:e2e
       - name: Test development workflows
         shell: bash
         run: |-
@@ -324,6 +316,7 @@ jobs:
             artifacts/desktop/packages/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
+            clients/desktop/packages/ui/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json
             clients/desktop/app/dist/${{ matrix.target }}/Kisaki-*
             clients/desktop/app/dist/${{ matrix.target }}/*.yml

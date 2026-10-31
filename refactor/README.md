@@ -2,7 +2,7 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-所有主题遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
+简洁、干净与克制是本目录的首要设计标准。所有主题及其限制、验证要求遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
 
 旧项目位于 `F:/project/3/kisaki`。
 

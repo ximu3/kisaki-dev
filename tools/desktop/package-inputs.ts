@@ -4,7 +4,7 @@
  */
 
 import { createHash } from 'node:crypto'
-import { copyFile, mkdir, readFile, rename, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { readPnpm } from '@kisaki3/tooling/process'
@@ -75,8 +75,20 @@ export async function collectDesktopPackageInputs(signal?: AbortSignal): Promise
   const inputs: DesktopPackageInputs = { buildId, lockfileSha256, packages }
   signal?.throwIfAborted()
   const temporary = join(output, `inputs.${process.pid}.json`)
-  await writeFile(temporary, JSON.stringify(inputs, null, 2))
-  await rename(temporary, join(output, 'inputs.json'))
+  try {
+    await writeFile(temporary, JSON.stringify(inputs, null, 2))
+    signal?.throwIfAborted()
+    await rename(temporary, join(output, 'inputs.json'))
+  } catch (cause) {
+    try {
+      await rm(temporary, { force: true })
+    } catch (cleanupFailure) {
+      throw new AggregateError([cause, cleanupFailure], 'Package receipt and cleanup failed', {
+        cause: cleanupFailure,
+      })
+    }
+    throw cause
+  }
 
   return join(output, 'inputs.json')
 }

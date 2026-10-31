@@ -5,7 +5,7 @@
 
 import { build } from 'tsdown'
 import type * as DefaultTokens from '../src/defaults'
-import { writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { replaceOutput } from '@kisaki3/tooling/output'
@@ -28,7 +28,8 @@ export async function buildPackage(signal?: AbortSignal): Promise<void> {
       const light = cssTokens(':root', defaults.defaultLightTokens)
       const dark = cssTokens(":root[data-color-scheme='dark']", defaults.defaultDarkTokens)
 
-      await writeFile(join(candidate, 'styles.css'), light + '\n\n' + dark + '\n')
+      const styles = await readFile(join(root, 'src/styles.css'), 'utf8')
+      await writeFile(join(candidate, 'styles.css'), light + '\n\n' + dark + '\n\n' + styles)
     },
     signal,
   )

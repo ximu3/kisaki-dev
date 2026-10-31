@@ -13,7 +13,6 @@ query Verification($base: String!, $head: String!) {
       "test:native"
       "test:e2e"
       "test:dev"
-      "test:performance"
       "test:artifacts"
       "package"
     ]

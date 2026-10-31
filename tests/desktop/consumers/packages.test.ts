@@ -46,6 +46,14 @@ test('strict declarations, typed lint and Node consume the supplied public entri
   const manifest = await readFile(join(consumer.directory, 'package.json'), 'utf8')
   expect(manifest).not.toContain('workspace:')
   expect(manifest).not.toContain('tailwindcss')
+  const notices = await readFile(
+    join(consumer.directory, 'node_modules/@kisaki3/ui/dist/THIRD_PARTY_NOTICES.txt'),
+    'utf8',
+  )
+  expect(notices).toContain('@kobalte/core@')
+  expect(notices).toContain('@unovis/ts@')
+  expect(notices).toContain('Apache License')
+  expect(notices).toContain('Permission is hereby granted')
 })
 
 test('framework-independent and Solid pages consume built styles without a Tailwind toolchain', async () => {
@@ -117,9 +125,53 @@ test('framework-independent and Solid pages consume built styles without a Tailw
 
       expect(
         await page
-          .getByRole('button')
+          .getByRole('button', { name: 'Count 1' })
           .evaluate((element) => getComputedStyle(element).borderRadius),
-      ).toBe('6px')
+      ).toBe('4px')
+
+      await page.getByRole('button', { name: 'Open dialog' }).click()
+      await expect.poll(() => page.getByRole('dialog', { name: 'Consumer dialog' }).count()).toBe(1)
+      const input = page.getByRole('textbox', { name: 'Library name' })
+      expect(await input.getAttribute('aria-invalid')).toBe('true')
+      await input.fill('Synthetic library')
+      await page.keyboard.press('Escape')
+      await expect.poll(() => page.getByRole('dialog').count()).toBe(0)
+      expect(
+        await page
+          .getByRole('button', { name: 'Open dialog' })
+          .evaluate((element) => document.activeElement === element),
+      ).toBe(true)
+
+      await expect.poll(() => page.locator('[data-row]').count()).toBeGreaterThan(0)
+      expect(await page.locator('[data-row]').count()).toBeLessThan(30)
+      await page.getByRole('button', { name: 'Last row' }).click()
+      await expect.poll(() => page.locator('[data-row="4999"]').count()).toBe(1)
+      await page.getByRole('button', { name: 'Tall rows' }).click()
+      await expect
+        .poll(() =>
+          page
+            .locator('[data-row]')
+            .first()
+            .evaluate((element) => element.getBoundingClientRect().height),
+        )
+        .toBe(48)
+      await page.getByRole('button', { name: 'Toggle virtual view' }).click()
+      expect(await page.locator('[data-virtual-viewport]').count()).toBe(0)
+      await page.getByRole('button', { name: 'Toggle virtual view' }).click()
+      await expect.poll(() => page.locator('[data-row="0"]').count()).toBe(1)
+
+      await expect
+        .poll(() => page.locator('[data-consumer-chart] svg path').count())
+        .toBeGreaterThan(0)
+      const markdown = page.getByRole('textbox', { name: 'Markdown note' })
+      await markdown.fill('Verified')
+      await page.keyboard.press('ControlOrMeta+A')
+      await page.getByRole('button', { name: 'Bold', exact: true }).click()
+      await expect
+        .poll(() => page.locator('[data-consumer-markdown] strong').textContent())
+        .toBe('Verified')
+      await page.getByRole('button', { name: 'Move item' }).click()
+      expect(await page.getByText('Moves 1', { exact: true }).count()).toBe(1)
 
       // A package stylesheet must not impose a document reset on unrelated author content.
       expect(

@@ -1,0 +1,124 @@
+/* Generated Markdown markup uses semantic elements; these rules do not alter the surrounding document. */
+
+.kisaki-markdown {
+  overflow-wrap: anywhere;
+  & > :first-child {
+    margin-top: 0;
+  }
+  & > :last-child {
+    margin-bottom: 0;
+  }
+  & p,
+  & ul,
+  & ol,
+  & blockquote,
+  & pre,
+  & table {
+    margin-block: 0.75em;
+  }
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
+    margin-block: 1.25em 0.5em;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  & h1 {
+    font-size: 1.75em;
+  }
+  & h2 {
+    font-size: 1.5em;
+  }
+  & h3 {
+    font-size: 1.25em;
+  }
+  & h4,
+  & h5,
+  & h6 {
+    font-size: 1em;
+  }
+  & a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  & a:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 2px;
+  }
+  & ul,
+  & ol {
+    padding-inline-start: 1.75em;
+  }
+  & li + li {
+    margin-top: 0.25em;
+  }
+  & blockquote {
+    margin-inline: 0;
+    border-inline-start: 3px solid var(--border);
+    padding-inline-start: 1em;
+    color: var(--muted-foreground);
+  }
+  & code,
+  & pre {
+    font-family: var(--font-mono);
+  }
+  & code {
+    border-radius: var(--kisaki-radius-sm);
+    background: var(--muted);
+    padding: 0.1em 0.3em;
+    font-size: 0.9em;
+  }
+  & pre {
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--kisaki-radius-md);
+    background: var(--muted);
+    padding: 0.75em;
+  }
+  & pre code {
+    background: transparent;
+    padding: 0;
+  }
+  & table {
+    display: block;
+    max-width: 100%;
+    overflow: auto;
+    border-collapse: collapse;
+  }
+  & th,
+  & td {
+    border: 1px solid var(--border);
+    padding: 0.35em 0.65em;
+    text-align: start;
+  }
+  & th {
+    background: var(--muted);
+    font-weight: 600;
+  }
+  & img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--kisaki-radius-md);
+  }
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin-block: 1.25em;
+  }
+  & .task-list-item {
+    list-style: none;
+  }
+  & .task-list-item-checkbox {
+    margin-inline: -1.4em 0.4em;
+    accent-color: var(--primary);
+  }
+  & .footnotes {
+    color: var(--muted-foreground);
+    font-size: var(--kisaki-text-xs);
+  }
+}

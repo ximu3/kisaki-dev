@@ -2,6 +2,8 @@
   "extends": "@kisaki3/typescript-config/base.json",
   "files": [],
   "references": [
+    { "path": "./config/typescript/tsconfig.node.json" },
+    { "path": "./config/typescript/tsconfig.tests.json" },
     {
       "path": "./config/typescript/tsconfig.lib.json"
     },

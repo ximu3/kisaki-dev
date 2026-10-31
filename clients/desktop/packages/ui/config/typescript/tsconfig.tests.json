@@ -1,0 +1,9 @@
+{
+  "extends": "@kisaki3/typescript-config/solid.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
+    "types": ["vite/client"]
+  },
+  "include": ["../../tests/**/*.ts", "../../tests/**/*.tsx"]
+}

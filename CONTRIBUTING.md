@@ -61,7 +61,7 @@ pnpm desktop:package --target windows-x64
 
 ## 验证任务
 
-先按[可读性](CONVENTIONS.md#readability-principle)核对改动的职责、命名、组织与完整阅读路径，再按[简洁、原生与适度复杂度](CONVENTIONS.md#simplicity-native)及[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。构建身份变化不自动触发全部桌面、性能、打包和六目标回归，已有证据仍适用时注明范围并复用。
+先按[简洁、干净与克制](CONVENTIONS.md#quality)判断机制与投入是否必要，再按[可读性](CONVENTIONS.md#readability-principle)核对职责、命名、组织与完整阅读路径，并依据[变更影响](refactor/verification/acceptance.md#verification-scope)选择检查。下表是可用入口，不是每次修改都要逐项执行的清单。文档、注释和等价调整优先核对自身差异；改变运行行为、构建接入或制品时，再执行相应验证。已有证据仍适用时注明范围并复用。性能采样不进入自动 CI；有明确性能问题或验收目标时，显式运行 `pnpm desktop:test:performance`。
 
 仓库根 `tsconfig.json` 组织 `config/typescript` 中工具、配置和测试三个类型项目，Turbo 同时调度各 workspace 与根 `root:typecheck`。工具只使用 Node 环境；配置与测试按实际声明和浏览器回调需要包含 DOM 类型。共同规则来自 `@kisaki3/typescript-config`，依赖检查读取根默认配置，并按导入方的 package.json imports 解析包内入口。根 `vitest.config.ts` 提供常规测试入口，仓库外消费者任务显式读取 `config/vitest/vitest.config.desktop-consumers.ts`。
 
@@ -112,7 +112,7 @@ TypeScript 的 `@deprecated` 提示属于语言服务建议诊断，普通 `tsc`
 
 正式发布前，在所属项目的[公开开发仓库](refactor/design/engineering/repository.md#temporary-repositories)持续开发、审阅和验证；工作包完成不结束该仓库的用途。当前远端与正式接续状态见[实施状态](refactor/implementation/status.md)。正式身份、公开发行和服务切换按各自合同与实际授权执行。
 
-普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话、性能与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务覆盖六个目标。开发工具变化触发开发回归，启动、加载和资源变化触发完整 20 次性能采样；测试文件变化按所属套件选择验证。选择结果单独留存，各执行分支保存自身报告。
+普通 CI 通过 Turbo 的任务 inputs 和依赖图选择常规检查、八包消费者、浏览器、原生、四窗口、开发会话与制品检查。通用浏览器交互只在 Ubuntu x64 运行；选中的原生与桌面任务覆盖六个目标。开发工具变化触发开发回归，测试文件变化按所属套件选择验证。选择结果单独留存，各执行分支保存自身报告。
 
 PR 的 affected 范围覆盖相对目标分支的全部改动。任务选择与缓存分别遵守[工程工作区合同](refactor/design/engineering/workspace.md#tasks)。
 

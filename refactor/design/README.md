@@ -2,7 +2,7 @@
 
 理解整体先读[产品](product.md)、[架构](architecture.md)和[通信](communication.md)，具体实现按下表进入所属主题。
 
-所有主题首先遵守[终态实现与整体一致性](../../CONVENTIONS.md#final-state)，从完整职责形成设计并统一处理相关场景；[可读性](../../CONVENTIONS.md#readability-principle)要求代码、组织、目录、名称和文档的关系可以被清楚理解；[简洁、原生与适度复杂度](../../CONVENTIONS.md#simplicity-native)约束用户操作、内部机制和工程流程的成本。平台原生能力、控件语义与系统习惯共同参与取舍，现有设计也按同一准则复核。
+所有主题以[简洁、干净与克制](../../CONVENTIONS.md#quality)为首要原则，从实际目标与完整职责形成设计，并落实[终态实现与整体一致性](../../CONVENTIONS.md#final-state)。[可读性](../../CONVENTIONS.md#readability-principle)和[原生能力](../../CONVENTIONS.md#simplicity-native)约束表达与实现；既有设计、限制和验证要求同样接受必要性与维护成本的审查。
 
 | 主题     | 入口                                                            |
 | -------- | --------------------------------------------------------------- |

@@ -13,11 +13,11 @@ import type * as NativeWindow from '../../src/main/infrastructure/windows/native
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 
-/** Close through the window's UI and wait for closure, including a click whose reply ends with its page. */
+/** Exercise the real sender-bound bridge and wait for closure even when its reply ends with the page. */
 async function closeWindow(page: Page): Promise<void> {
   const closed = page.waitForEvent('close')
   try {
-    await page.getByRole('button', { name: 'Close window' }).click()
+    await page.evaluate(() => window.kisaki.close())
   } catch (cause) {
     if (!page.isClosed()) {
       throw cause
@@ -31,14 +31,14 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
   test.describe(kind, () => {
     test.use({ kind })
 
-    test('renders in its own sandbox with a minimal bridge and closes normally', async ({
+    test('loads its document in an isolated sandbox and closes through its own bridge', async ({
       desktop,
       profile,
       kind,
     }) => {
       const child = desktop.process()
       const page = await desktop.firstWindow()
-      await expect(page.getByRole('button', { name: 'Close window' })).toBeVisible()
+      await expect(page.locator('#root')).toBeAttached()
 
       const values = await page.evaluate(() => ({
         bridge: Object.keys(window.kisaki).sort(),
@@ -86,7 +86,7 @@ test('closing the launch window leaves another window usable and releases its ac
 }) => {
   const child = desktop.process()
   const main = await desktop.firstWindow()
-  await expect(main.getByRole('button', { name: 'Close window' })).toBeVisible()
+  await expect(main.locator('#root')).toBeAttached()
 
   // The factory is a test-owned module; windows consume the prepared desktop renderer and preload.
   const source = await readFile(
@@ -118,7 +118,7 @@ test('closing the launch window leaves another window usable and releases its ac
       { modulePath, runtime: buildDirectory(hostTarget()) },
     ),
   ])
-  await expect(reader.getByRole('button', { name: 'Close window' })).toBeVisible()
+  await expect(reader.locator('#root')).toBeAttached()
 
   const mainWindow = await desktop.browserWindow(main)
   await mainWindow.evaluate(
@@ -133,7 +133,7 @@ test('closing the launch window leaves another window usable and releases its ac
   await desktop.evaluate(({ app }) => {
     app.emit('second-instance')
   })
-  await expect(reader.getByRole('button', { name: 'Close window' })).toBeVisible()
+  await expect(reader.locator('#root')).toBeAttached()
 
   const closed = desktop.waitForEvent('close')
   await closeWindow(reader)

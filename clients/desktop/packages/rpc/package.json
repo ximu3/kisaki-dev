@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/rpc",
-  "description": "Platform-independent message transport contracts for Kisaki connections.",
+  "description": "Platform-independent RPC with strict frames, handshakes, cancellation and owned cleanup.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",
@@ -33,6 +33,7 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
     "check:package": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
     "clean": "tsx tools/clean.ts"
   },

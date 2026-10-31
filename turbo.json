@@ -42,7 +42,12 @@
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "outputs": [],
+      "outputs": []
+    },
+    "@kisaki3/tooling#test": {
+      "cache": false
+    },
+    "@kisaki3/extension-cli#test": {
       "cache": false
     },
     "pack": {

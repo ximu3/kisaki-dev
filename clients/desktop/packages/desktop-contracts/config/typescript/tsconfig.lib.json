@@ -1,6 +1,7 @@
 {
   "extends": "@kisaki3/typescript-config/base.json",
   "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/lib.tsbuildinfo"
   },

@@ -1,6 +1,3 @@
-/**
- * @fileoverview Public SDK contract entry, consuming desktop-facing values only through
- * extension-api.
- */
+/** @fileoverview Reuses the complete extension-api author surface without starting a Node instance or Webview connection. */
 
-export type { ErrorSummary, ExecutionFailure } from '@kisaki3/extension-api'
+export * from '@kisaki3/extension-api'

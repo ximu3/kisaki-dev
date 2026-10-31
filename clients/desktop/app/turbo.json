@@ -1,6 +1,9 @@
 {
   "extends": ["//"],
   "tasks": {
+    "test": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
@@ -138,16 +141,6 @@
         "!native/**/*.test.ts",
         "packaging/**",
         "!config/typescript/tsconfig.tests.json"
-      ],
-      "cache": false
-    },
-    "test:browser": {
-      "dependsOn": ["@kisaki3/ui#build"],
-      "inputs": [
-        "src/renderer/**",
-        "src/shared/**",
-        "tests/browser/**",
-        "config/vitest/vitest.config.browser.ts"
       ],
       "cache": false
     },
