@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/extension-distribution",
-  "description": "Static localized metadata contracts for Kisaki extensions.",
+  "description": "Extension manifests, registries, compatibility, localization and Ed25519 signing.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",
@@ -19,6 +19,26 @@
   ],
   "sideEffects": false,
   "exports": {
+    "./identity": {
+      "types": "./dist/identity.d.ts",
+      "import": "./dist/identity.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.js"
+    },
+    "./registry": {
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js"
+    },
+    "./compatibility": {
+      "types": "./dist/compatibility.d.ts",
+      "import": "./dist/compatibility.js"
+    },
+    "./node/signing": {
+      "types": "./dist/node/signing.d.ts",
+      "import": "./dist/node/signing.js"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
@@ -33,6 +53,7 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
     "check:package": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only",
     "clean": "tsx tools/clean.ts"
   },
@@ -42,6 +63,7 @@
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
+    "@types/semver": "7.8.0",
     "eslint": "catalog:",
     "jiti": "catalog:",
     "publint": "0.3.25",
@@ -49,5 +71,12 @@
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "0.9.0",
+    "canonicalize": "5.1.0",
+    "jsonc-parser": "3.3.1",
+    "semver": "7.8.5",
+    "valibot": "1.5.0"
   }
 }

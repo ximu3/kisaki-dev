@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/desktop-contracts",
-  "description": "Shared desktop error and development-protocol contracts for Kisaki.",
+  "description": "Pure desktop values, validation, business operations and participation contracts for Kisaki.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",
@@ -19,6 +19,46 @@
   ],
   "sideEffects": false,
   "exports": {
+    "./i18n": {
+      "types": "./dist/i18n.d.ts",
+      "import": "./dist/i18n.js"
+    },
+    "./i18n/english": {
+      "types": "./dist/i18n/english.d.ts",
+      "import": "./dist/i18n/english.js"
+    },
+    "./date": {
+      "types": "./dist/date.d.ts",
+      "import": "./dist/date.js"
+    },
+    "./geometry": {
+      "types": "./dist/geometry.d.ts",
+      "import": "./dist/geometry.js"
+    },
+    "./execution": {
+      "types": "./dist/execution.d.ts",
+      "import": "./dist/execution.js"
+    },
+    "./resources": {
+      "types": "./dist/resources.d.ts",
+      "import": "./dist/resources.js"
+    },
+    "./images": {
+      "types": "./dist/images.d.ts",
+      "import": "./dist/images.js"
+    },
+    "./library": {
+      "types": "./dist/library.d.ts",
+      "import": "./dist/library.js"
+    },
+    "./metadata": {
+      "types": "./dist/metadata.d.ts",
+      "import": "./dist/metadata.js"
+    },
+    "./deeplink": {
+      "types": "./dist/deeplink.d.ts",
+      "import": "./dist/deeplink.js"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
@@ -30,10 +70,83 @@
     "./errors": {
       "types": "./dist/errors.d.ts",
       "import": "./dist/errors.js"
+    },
+    "./appearance": {
+      "types": "./dist/appearance.d.ts",
+      "import": "./dist/appearance.js"
+    },
+    "./fonts": {
+      "types": "./dist/fonts.d.ts",
+      "import": "./dist/fonts.js"
+    },
+    "./preferences": {
+      "types": "./dist/preferences.d.ts",
+      "import": "./dist/preferences.js"
+    },
+    "./sessions": {
+      "types": "./dist/sessions.d.ts",
+      "import": "./dist/sessions.js"
+    },
+    "./tasks": {
+      "types": "./dist/tasks.d.ts",
+      "import": "./dist/tasks.js"
+    },
+    "./network": {
+      "types": "./dist/network.d.ts",
+      "import": "./dist/network.js"
+    },
+    "./json": {
+      "types": "./dist/json.d.ts",
+      "import": "./dist/json.js"
+    },
+    "./definition": {
+      "types": "./dist/definition.d.ts",
+      "import": "./dist/definition.js"
+    },
+    "./paths": {
+      "types": "./dist/paths.d.ts",
+      "import": "./dist/paths.js"
+    },
+    "./text-rules": {
+      "types": "./dist/text-rules.d.ts",
+      "import": "./dist/text-rules.js"
+    },
+    "./search": {
+      "types": "./dist/search.d.ts",
+      "import": "./dist/search.js"
+    },
+    "./ui": {
+      "types": "./dist/ui.d.ts",
+      "import": "./dist/ui.js"
+    },
+    "./ingest": {
+      "types": "./dist/ingest.d.ts",
+      "import": "./dist/ingest.js"
+    },
+    "./scanner": {
+      "types": "./dist/scanner.d.ts",
+      "import": "./dist/scanner.js"
+    },
+    "./extensions": {
+      "types": "./dist/extensions.d.ts",
+      "import": "./dist/extensions.js"
+    },
+    "./updates": {
+      "types": "./dist/updates.d.ts",
+      "import": "./dist/updates.js"
+    },
+    "./onboarding": {
+      "types": "./dist/onboarding.d.ts",
+      "import": "./dist/onboarding.js"
+    },
+    "./events": {
+      "types": "./dist/events.d.ts",
+      "import": "./dist/events.js"
     }
   },
   "scripts": {
     "build": "tsx tools/build.ts",
+    "generate:messages": "tsx tools/generate-messages.ts",
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
@@ -47,12 +160,22 @@
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
+    "@types/semver": "7.8.0",
     "eslint": "catalog:",
     "jiti": "catalog:",
+    "prettier": "3.9.10",
     "publint": "0.3.25",
     "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "3.5.22",
+    "@kisaki3/appearance": "workspace:^",
+    "@kisaki3/extension-distribution": "workspace:^",
+    "jsonc-parser": "3.3.1",
+    "semver": "7.8.5",
+    "valibot": "1.5.0"
   }
 }

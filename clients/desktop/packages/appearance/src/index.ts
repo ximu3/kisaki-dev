@@ -6,3 +6,10 @@
 export { appearanceTokenNames } from './tokens'
 export type { AppearanceTokenName, VisualTokens } from './tokens'
 export { defaultLightTokens, defaultDarkTokens } from './defaults'
+export {
+  VisualValueError,
+  getAppearanceTokenKind,
+  parseVisualToken,
+  parseVisualTokens,
+} from './values'
+export type { AppearanceTokenKind } from './values'

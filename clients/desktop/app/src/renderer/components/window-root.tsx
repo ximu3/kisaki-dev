@@ -5,6 +5,7 @@
 
 import { createSignal, Show } from 'solid-js'
 import { Button } from '@kisaki3/ui'
+import { englishMessages } from '@kisaki3/desktop-contracts/i18n/english'
 import './window-root.css'
 
 interface WindowRootProps {
@@ -22,14 +23,14 @@ export function WindowRoot(props: WindowRootProps) {
     try {
       await props.close()
     } catch {
-      setError('This window could not be closed.')
+      setError(englishMessages.window.closeFailed)
     }
   }
 
   return (
     <main class="window-shell">
       <h1>{props.title}</h1>
-      <Button onClick={() => void closeWindow()}>Close window</Button>
+      <Button onClick={() => void closeWindow()}>{englishMessages.window.close}</Button>
       <Show when={error()}>
         <p role="alert">{error()}</p>
       </Show>

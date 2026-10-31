@@ -1,0 +1,8 @@
+{
+  "extends": "@kisaki3/typescript-config/node.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo"
+  },
+  "include": ["../../src/**/*.test.ts"]
+}

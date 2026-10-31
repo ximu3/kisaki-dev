@@ -1,0 +1,86 @@
+/** @fileoverview Owns only the type applicability of public Entry query and projection fields. */
+
+import { entryTypes, workTypes, type EntryType } from './identity'
+
+const media = ['anime', 'comic', 'novel'] as const
+const books = ['comic', 'novel'] as const
+const people = ['character', 'person'] as const
+
+/** Field applicability contains no SQL, components, persistence policy, or runtime instances. */
+export const entryFieldApplicability = {
+  name: entryTypes,
+  originalName: entryTypes,
+  sortName: entryTypes,
+  effectiveSortName: entryTypes,
+  description: entryTypes,
+  aliases: entryTypes,
+  externalLinks: entryTypes,
+  primaryImageId: entryTypes,
+  favorite: entryTypes,
+  isNsfw: entryTypes,
+  hasNotes: entryTypes,
+  hasPrimaryImage: entryTypes,
+  rating: entryTypes,
+  addedDate: entryTypes,
+  effectiveAddedDate: entryTypes,
+  createdAt: entryTypes,
+  updatedAt: entryTypes,
+  tags: entryTypes,
+  manualCollections: entryTypes,
+  sources: entryTypes,
+  status: workTypes,
+  originalLanguages: workTypes,
+  hasBackdrop: workTypes,
+  hasTitleLogo: workTypes,
+  hasIcon: ['game'],
+  releaseDate: workTypes,
+  releaseStatus: media,
+  releaseEndDate: media,
+  additionalDurationMs: workTypes,
+  totalDurationMs: workTypes,
+  completionCount: workTypes,
+  lastActiveAt: workTypes,
+  firstCompletedDate: workTypes,
+  lastCompletedDate: workTypes,
+  completions: workTypes,
+  declaredDurationMs: ['anime'],
+  declaredRegularEpisodeCount: ['anime'],
+  declaredSpecialEpisodeCount: ['anime'],
+  declaredPageCount: books,
+  declaredVolumeCount: books,
+  declaredChapterCount: ['comic'],
+  gender: people,
+  birthDate: people,
+  birthMonthDay: people,
+  deathDate: ['person'],
+  bloodType: ['character'],
+  age: ['character'],
+  height: ['character'],
+  weight: ['character'],
+  bust: ['character'],
+  waist: ['character'],
+  hips: ['character'],
+  cupSize: ['character'],
+  foundedDate: ['organization'],
+  dissolvedDate: ['organization'],
+  registeredFileCount: media,
+  accessibleFileCount: media,
+  uncheckedFileCount: media,
+  parts: media,
+  partCounts: media,
+  workCharacters: workTypes,
+  workPersons: workTypes,
+  workCharacterPersons: workTypes,
+  workOrganizations: workTypes,
+  relatedWorks: workTypes,
+  characterWorks: ['character'],
+  characterPersons: ['character'],
+  personWorks: ['person'],
+  personCharacters: ['person'],
+  organizationWorks: ['organization'],
+} as const satisfies Record<string, readonly EntryType[]>
+
+/** Return the kinds that share this field's product meaning, without consulting current data. */
+export function entryFieldTypes(field: keyof typeof entryFieldApplicability): readonly EntryType[] {
+  return entryFieldApplicability[field]
+}

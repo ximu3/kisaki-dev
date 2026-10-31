@@ -1,19 +1,21 @@
 # @kisaki3/appearance
 
-本包提供 45 项视觉 token、亮暗默认值、普通 CSS 与 Tailwind 4 映射。宿主管理字体资源；视觉词表、默认值与样式使用同一份定义。
+本包提供 45 项视觉 token、亮暗默认值、纯值校验、普通 CSS 与 Tailwind 4 映射。宿主管理字体资源；视觉词表、默认值与样式使用同一份定义。
 
 ## 公开入口
 
-| 导入路径                           | 内容                                |
-| ---------------------------------- | ----------------------------------- |
-| `@kisaki3/appearance`              | 视觉 token 词表、类型及亮暗默认值。 |
-| `@kisaki3/appearance/tokens`       | token 词表和类型。                  |
-| `@kisaki3/appearance/styles.css`   | 可直接加载的默认样式。              |
-| `@kisaki3/appearance/tailwind.css` | 供 Tailwind 4 构建使用的可选映射。  |
+| 导入路径                           | 内容                                      |
+| ---------------------------------- | ----------------------------------------- |
+| `@kisaki3/appearance`              | 视觉 token 词表、类型、亮暗默认值与校验。 |
+| `@kisaki3/appearance/tokens`       | token 词表和类型。                        |
+| `@kisaki3/appearance/styles.css`   | 可直接加载的默认样式。                    |
+| `@kisaki3/appearance/tailwind.css` | 供 Tailwind 4 构建使用的可选映射。        |
 
 默认色值由 `src/defaults.ts` 维护。构建从同一份已编译导出生成 `dist/styles.css`，CSS 与 JavaScript 消费者使用一致的默认值。
 
 根元素的 `data-color-scheme="dark"` 选用暗色默认值；未设置时使用亮色默认值。
+
+普通样式包含通用圆角、阴影和焦点基础。Tailwind 入口只映射这些变量，不要求组件消费者引入 Tailwind，也不附带全局文档重置。
 
 ## 构建与验证
 

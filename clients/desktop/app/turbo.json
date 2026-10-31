@@ -1,6 +1,9 @@
 {
   "extends": ["//"],
   "tasks": {
+    "test": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],

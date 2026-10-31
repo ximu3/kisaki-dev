@@ -197,7 +197,7 @@
         "path": "^clients/desktop/packages/appearance/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
       }
     },
     {
@@ -207,7 +207,7 @@
         "path": "^clients/desktop/packages/ui/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli|rpc)/"
       }
     },
     {
@@ -217,7 +217,7 @@
         "path": "^clients/desktop/packages/rpc/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(appearance|ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(appearance|ui|desktop-contracts|extension-distribution|extension-api|extension-sdk|extension-cli)/"
       }
     },
     {
@@ -227,7 +227,7 @@
         "path": "^clients/desktop/packages/extension-distribution/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|extension-api|extension-sdk|extension-cli|rpc|ui)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(desktop-contracts|extension-api|extension-sdk|extension-cli|rpc|ui)/"
       }
     },
     {
@@ -237,7 +237,7 @@
         "path": "^clients/desktop/packages/desktop-contracts/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(extension-api|extension-sdk|extension-cli|rpc|ui)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(extension-api|extension-sdk|extension-cli|rpc|ui)/"
       }
     },
     {
@@ -247,7 +247,7 @@
         "path": "^clients/desktop/packages/extension-api/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(extension-sdk|extension-cli|rpc|ui)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(extension-sdk|extension-cli|rpc|ui)/"
       }
     },
     {
@@ -257,7 +257,7 @@
         "path": "^clients/desktop/packages/extension-sdk/src/"
       },
       "to": {
-        "path": "(^|/)(?:@kisaki3/)?(desktop-contracts|ui|extension-cli)/"
+        "path": "(^clients/desktop/packages/|(^|/)@kisaki3/)(desktop-contracts|ui|extension-cli)/"
       }
     },
     {

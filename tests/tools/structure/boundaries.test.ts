@@ -70,6 +70,18 @@ const cases: {
     source: "export type { Value } from '@kisaki3/ui'\n",
   },
   {
+    name: 'desktop-contracts may contain its own UI contracts',
+    allowed: true,
+    from: 'clients/desktop/packages/desktop-contracts/src/ui/contract.ts',
+    to: 'clients/desktop/packages/desktop-contracts/src/ui/value.ts',
+    source: "export type { Value } from './value'\n",
+  },
+  {
+    name: 'desktop-contracts-dependency-direction',
+    from: 'clients/desktop/packages/desktop-contracts/src/component.ts',
+    source: "export type { Value } from '@kisaki3/ui'\n",
+  },
+  {
     name: 'no-undeclared-packages',
     from: 'clients/desktop/app/tools/undeclared.ts',
     source: "export { value } from 'undeclared-tool'\n",
@@ -128,6 +140,14 @@ beforeAll(async () => {
   )
 
   const fixturePackages = [
+    {
+      path: 'clients/desktop/packages/desktop-contracts',
+      manifest: {
+        name: '@kisaki3/desktop-contracts',
+        dependencies: { '@kisaki3/ui': '1.0.0' },
+      },
+      files: {},
+    },
     {
       path: 'clients/desktop/packages/appearance',
       manifest: {

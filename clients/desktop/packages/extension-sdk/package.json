@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/extension-sdk",
-  "description": "Public SDK entry for extension-facing Kisaki contracts.",
+  "description": "Central author types and pure public values for Kisaki extensions.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",

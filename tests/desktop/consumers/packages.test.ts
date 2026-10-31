@@ -117,9 +117,40 @@ test('framework-independent and Solid pages consume built styles without a Tailw
 
       expect(
         await page
-          .getByRole('button')
+          .getByRole('button', { name: 'Count 1' })
           .evaluate((element) => getComputedStyle(element).borderRadius),
       ).toBe('6px')
+
+      await page.getByRole('button', { name: 'Open dialog' }).click()
+      await expect.poll(() => page.getByRole('dialog', { name: 'Consumer dialog' }).count()).toBe(1)
+      const input = page.getByRole('textbox', { name: 'Library name' })
+      expect(await input.getAttribute('aria-invalid')).toBe('true')
+      await input.fill('Synthetic library')
+      await page.keyboard.press('Escape')
+      await expect.poll(() => page.getByRole('dialog').count()).toBe(0)
+      expect(
+        await page
+          .getByRole('button', { name: 'Open dialog' })
+          .evaluate((element) => document.activeElement === element),
+      ).toBe(true)
+
+      await expect.poll(() => page.locator('[data-row]').count()).toBeGreaterThan(0)
+      expect(await page.locator('[data-row]').count()).toBeLessThan(30)
+      await page.getByRole('button', { name: 'Last row' }).click()
+      await expect.poll(() => page.locator('[data-row="4999"]').count()).toBe(1)
+      await page.getByRole('button', { name: 'Tall rows' }).click()
+      await expect
+        .poll(() =>
+          page
+            .locator('[data-row]')
+            .first()
+            .evaluate((element) => element.getBoundingClientRect().height),
+        )
+        .toBe(48)
+      await page.getByRole('button', { name: 'Toggle virtual view' }).click()
+      expect(await page.locator('[data-virtual-viewport]').count()).toBe(0)
+      await page.getByRole('button', { name: 'Toggle virtual view' }).click()
+      await expect.poll(() => page.locator('[data-row="0"]').count()).toBe(1)
 
       // A package stylesheet must not impose a document reset on unrelated author content.
       expect(

@@ -37,6 +37,7 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
     "check:package": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css tailwind.css",
     "clean": "tsx tools/clean.ts"
   },
@@ -45,6 +46,7 @@
     "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
+    "@types/css-tree": "2.3.11",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "jiti": "catalog:",
@@ -53,5 +55,8 @@
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "dependencies": {
+    "css-tree": "3.2.1"
   }
 }

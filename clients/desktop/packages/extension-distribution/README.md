@@ -1,6 +1,6 @@
 # @kisaki3/extension-distribution
 
-包根与 metadata 入口提供 LocalizedText，表达扩展静态展示文字；多语言值按所属声明的 defaultLocale 解释。
+本包拥有扩展身份、manifest、registry、兼容性与静态多语言文字合同。纯入口不读取文件或建立网络连接；Node 签名入口单独提供 JCS／Ed25519 签署与验证。
 
 ## 公开入口
 
@@ -8,7 +8,9 @@
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 ```
 
-包根也导出同一类型。值可以是普通字符串，或以 locale 为键的文字映射。
+`/metadata` 的 LocalizedText 可以是普通字符串，或以 locale 为键的文字映射，按声明的 defaultLocale 解析。`/identity`、`/manifest`、`/registry` 与 `/compatibility` 提供相应纯值及校验，包根集中导出这些能力。
+
+`/node/signing` 接收显式密钥与完整 registry 文本，签名覆盖允许的扩展字段；验签失败不会返回可用目录。密钥取得、信任管理、网络获取及安装由调用方负责。
 
 ## 构建与验证
 

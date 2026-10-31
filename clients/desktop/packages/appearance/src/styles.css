@@ -1,0 +1,12 @@
+/* Provides derived visual values without resetting or styling the consumer's document. */
+
+:root {
+  --kisaki-radius-sm: max(0px, calc(var(--radius) - 2px));
+  --kisaki-radius-md: var(--radius);
+  --kisaki-radius-lg: calc(var(--radius) * 1.5);
+  --kisaki-radius-xl: calc(var(--radius) * 2);
+  --kisaki-text-xs: calc(var(--text-base-size) * 0.75);
+  --kisaki-text-sm: calc(var(--text-base-size) * 0.875);
+  --kisaki-text-lg: calc(var(--text-base-size) * 1.125);
+  --kisaki-text-xl: calc(var(--text-base-size) * 1.25);
+}

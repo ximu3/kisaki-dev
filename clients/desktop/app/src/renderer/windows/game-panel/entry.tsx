@@ -4,6 +4,7 @@
  */
 
 import { render } from 'solid-js/web'
+import { englishMessages } from '@kisaki3/desktop-contracts/i18n/english'
 import { WindowRoot } from '../../components/window-root'
 import './styles.css'
 
@@ -12,7 +13,10 @@ if (!element) {
   throw new Error('Window root is unavailable')
 }
 
-const dispose = render(() => <WindowRoot title="Game panel" close={window.kisaki.close} />, element)
+const dispose = render(
+  () => <WindowRoot title={englishMessages.windows.gamePanel} close={window.kisaki.close} />,
+  element,
+)
 
 window.dispatchEvent(new Event('kisaki:renderer-ready'))
 import.meta.hot?.dispose(dispose)

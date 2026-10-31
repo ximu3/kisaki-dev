@@ -28,3 +28,80 @@
   opacity: 0.5;
   cursor: default;
 }
+
+.kisaki-input {
+  @apply rounded-md px-3 py-2;
+
+  box-sizing: border-box;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  background: var(--input);
+  color: var(--input-foreground);
+  font: inherit;
+}
+
+.kisaki-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.kisaki-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+.kisaki-field-label {
+  font-weight: 500;
+}
+.kisaki-field-description {
+  color: var(--muted-foreground);
+}
+.kisaki-field-error {
+  color: var(--destructive);
+}
+
+.kisaki-input[data-invalid] {
+  border-color: var(--destructive);
+}
+.kisaki-input:disabled {
+  opacity: 0.5;
+}
+.kisaki-textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.kisaki-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(0 0 0 / 0.45);
+}
+
+.kisaki-dialog {
+  @apply rounded-lg p-6;
+
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 101;
+  transform: translate(-50%, -50%);
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  border: 1px solid var(--border);
+  background: var(--dialog);
+  color: var(--dialog-foreground);
+  box-shadow: var(--shadow-modal);
+  font-family: var(--font-sans);
+}
+
+.kisaki-dialog-title {
+  margin: 0 0 0.5rem;
+  font-size: var(--kisaki-text-xl);
+}
+.kisaki-dialog-description {
+  margin: 0 0 1rem;
+  color: var(--muted-foreground);
+}

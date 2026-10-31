@@ -36,7 +36,10 @@
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
-    "@kisaki3/appearance": "workspace:^"
+    "@kisaki3/appearance": "workspace:^",
+    "@kobalte/core": "0.13.14",
+    "@tanstack/solid-virtual": "3.13.48",
+    "@tanstack/virtual-core": "3.19.6"
   },
   "peerDependencies": {
     "solid-js": "^1.9.16"

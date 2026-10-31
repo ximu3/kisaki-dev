@@ -47,6 +47,17 @@ test('the actual task graph excludes generated inputs and always executes runtim
   )
 
   const plan = JSON.parse(stdout) as { tasks: PlannedTask[] }
+  expect(
+    plan.tasks.find((task) => task.taskId === '@kisaki3/desktop-contracts#test')
+      ?.resolvedTaskDefinition.cache,
+  ).toBe(true)
+  for (const owner of ['desktop', 'tooling', 'extension-cli']) {
+    expect(
+      plan.tasks.find((task) => task.taskId === `@kisaki3/${owner}#test`)?.resolvedTaskDefinition
+        .cache,
+      owner,
+    ).toBe(false)
+  }
   const boundary = plan.tasks.find((task) => task.taskId === '//#check:boundaries')!
   expect(boundary).toBeDefined()
   expect(
@@ -147,46 +158,31 @@ test('affected tasks follow verification inputs without promoting documentation 
       desktop: [],
       consumers: false,
       packageTest: '@kisaki3/extension-cli#test',
-      lintBuilds: ['@kisaki3/desktop-contracts#build'],
     },
     { path: 'clients/desktop/app/tools/dev/session.ts', desktop: ['test:dev'], consumers: false },
     {
       path: 'clients/desktop/app/src/renderer/windows/main/entry.tsx',
-      desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e', 'test:performance'],
+      desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e'],
       consumers: false,
     },
     {
       path: 'clients/desktop/packages/ui/src/components/button.tsx',
-      desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e', 'test:performance'],
+      desktop: ['package', 'test:artifacts', 'test:browser', 'test:e2e'],
       consumers: true,
     },
     {
       path: 'clients/desktop/packages/ui/config/typescript/tsconfig.lib.json',
-      desktop: [
-        'package',
-        'test:artifacts',
-        'test:browser',
-        'test:dev',
-        'test:e2e',
-        'test:performance',
-      ],
+      desktop: ['package', 'test:artifacts', 'test:browser', 'test:dev', 'test:e2e'],
       consumers: true,
     },
     {
       path: 'clients/desktop/app/native/src/lib.rs',
-      desktop: [
-        'package',
-        'test:artifacts',
-        'test:dev',
-        'test:e2e',
-        'test:native',
-        'test:performance',
-      ],
+      desktop: ['package', 'test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
       consumers: false,
     },
     {
       path: 'clients/desktop/packages/extension-cli/src/extension.ts',
-      desktop: ['package', 'test:artifacts', 'test:dev', 'test:e2e', 'test:performance'],
+      desktop: ['package', 'test:artifacts', 'test:dev', 'test:e2e'],
       consumers: true,
     },
   ]
@@ -314,11 +310,11 @@ test('affected tasks follow verification inputs without promoting documentation 
         expect(lintReport.errors).toBeUndefined()
         expect(
           lintReport.data.affectedTasks.items
-            .filter((task) => task.command !== null)
+            .filter((task) => task.command !== null && task.name !== 'build')
             .map((task) => task.fullName)
             .sort(),
           item.path,
-        ).toEqual([...(item.lintBuilds ?? []), item.packageTest.replace('#test', '#lint')].sort())
+        ).toEqual([item.packageTest.replace('#test', '#lint')])
         for (const task of lintReport.data.affectedTasks.items.filter(
           (task) => task.name === 'build',
         )) {

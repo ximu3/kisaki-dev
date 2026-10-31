@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/extension-api",
-  "description": "Public error contracts for Kisaki extensions.",
+  "description": "Public extension capabilities, author contracts, and versioned SDK endpoint messages for Kisaki.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",
@@ -22,6 +22,18 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js"
+    },
+    "./webview": {
+      "types": "./dist/webview.d.ts",
+      "import": "./dist/webview.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol.d.ts",
+      "import": "./dist/protocol.js"
     }
   },
   "scripts": {
@@ -33,7 +45,10 @@
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
-    "@kisaki3/desktop-contracts": "workspace:^"
+    "@kisaki3/desktop-contracts": "workspace:^",
+    "@kisaki3/extension-distribution": "workspace:^",
+    "semver": "7.8.5",
+    "valibot": "1.5.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
@@ -41,6 +56,7 @@
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
+    "@types/semver": "7.8.0",
     "eslint": "catalog:",
     "jiti": "catalog:",
     "publint": "0.3.25",

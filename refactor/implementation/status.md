@@ -10,7 +10,8 @@
 | --- | --- |
 | 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
 | W00 工程与验证入口 | 已完成；工程、资源、开发、消费者和测试入口有对应证据，六目标与严格合并门禁均已验证。 |
-| W01–W13 | 未开始正式实施；八个公共包具备工程入口，33 个官方扩展具备工程身份与配置。 |
+| W01 | 本地实现与验收完成；远端检查及合入待完成，见[交付范围](#w01)。 |
+| W02–W13 | 未开始正式实施；33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
 
@@ -54,7 +55,7 @@
 | 范围 | 状态 |
 | --- | --- |
 | [W00：工程与测试入口](work-packages.md#w00) | 已完成，见[交付范围](#w00)、[合并约束](#merge-rules)和[门禁验证](../verification/evidence/w00/ci.md#merge)。 |
-| [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 未开始 |
+| [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 本地验收通过；远端检查及合入待完成，见[交付范围](#w01)。 |
 | [W02：数据库与原生操作](work-packages.md#w02) | 未开始 |
 | [W03：完整业务链路](work-packages.md#w03) | 未开始 |
 | [W04：资料库能力](work-packages.md#w04) | 未开始 |
@@ -86,5 +87,22 @@
 | CI | PR 按真实输入选择代码验证并独立校验标题，手动入口执行完整验证；主线沿用合并前的代码证据。入口分工及验证范围见[CI 入口记录](../verification/evidence/w00/ci.md)，严格合并门禁继续生效。 |
 
 当前源码的[审查与本机验证](../verification/evidence/w00/README.md)、[六目标运行](https://github.com/ximu3/kisaki-dev/actions/runs/41036094212)和[合并门禁验证](../verification/evidence/w00/ci.md#merge)共同覆盖以上范围。单项验收的完整产品要求继续按所属工作包执行。
+
+<a id="w01"></a>
+
+## W01 交付范围
+
+公共纯值、资料查询与编辑、图写入、资料获取与采用、扫描、会话、偏好、资源、事件、UI 和管理合同已有正式类型与适用校验。extension-api 选择扩展可用能力，SDK 复用其作者入口；RPC 提供有限帧、握手、双向调用、取消与断连收尾。appearance 与 UI 提供纯视觉规则、编译样式、Solid 控件及 TanStack Virtual 几何；英语文案源生成消息参数类型，deeplink 共用标准 URL 解析与格式化。
+
+2026-10-31 在上述 Windows x64 环境取得以下本地结果：
+
+| 验证入口 | 实际结果 |
+| --- | --- |
+| `pnpm check` | 全仓类型、lint、依赖边界、格式及 293 项测试通过。 |
+| `pnpm desktop:packages:test:consumers` | 八包 tarball 的 publint／Are the Types Wrong 检查、仓库外严格声明与 typed lint、Node 消费、无 Tailwind 的真实 Chromium 消费通过；包括 Dialog 焦点、字段无障碍和虚拟列表。 |
+| `pnpm desktop:test:browser` | 真实 Chromium 中的窗口键盘操作与关闭失败反馈通过。 |
+| 任务输入与缓存 | 隔离 Git 变更核对验证选择；纯逻辑测试实际命中 Turbo 缓存，现场进程／文件系统验证不缓存；性能采样已移出自动 CI。 |
+
+本包覆盖 A03、A04 的纯值，以及 A23 基础 tarball 与 A31 的公共包范围。实际数据库操作、Node／Webview SDK 运行适配、扩展实例与资源通道由后续工作包接入；完整产品、签名和发布仍未完成。本次未运行性能采样，未执行 npm 或服务发布。
 
 现行验收与技术依据见[证据索引](../verification/evidence/README.md)。本页维护当前完成度、缺项及其证据入口。
