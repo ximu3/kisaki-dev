@@ -1,6 +1,6 @@
 {
   "name": "@kisaki3/ui",
-  "description": "A Solid button and compiled styles using Kisaki appearance tokens.",
+  "description": "Solid components and compiled styles for Kisaki interfaces and extension views.",
   "version": "0.1.0-dev.0",
   "type": "module",
   "license": "MIT",
@@ -25,6 +25,18 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./chart": {
+      "types": "./dist/chart.d.ts",
+      "import": "./dist/chart.js"
+    },
+    "./drag": {
+      "types": "./dist/drag.d.ts",
+      "import": "./dist/drag.js"
+    },
+    "./markdown": {
+      "types": "./dist/markdown.d.ts",
+      "import": "./dist/markdown.js"
+    },
     "./styles.css": "./dist/styles.css"
   },
   "scripts": {
@@ -32,14 +44,35 @@
     "pack": "pnpm pack --out out/package.tgz",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "test:browser": "vitest run --config config/vitest/vitest.config.browser.ts",
     "check:package": "publint out/package.tgz --strict && attw out/package.tgz --profile esm-only --exclude-entrypoints styles.css",
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "3.1.0",
+    "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "3.2.0",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "2.2.0",
+    "@atlaskit/pragmatic-drag-and-drop-live-region": "2.1.0",
+    "@codemirror/commands": "6.11.1",
+    "@codemirror/lang-markdown": "6.5.2",
+    "@codemirror/language": "6.13.1",
+    "@codemirror/state": "6.7.6",
+    "@codemirror/view": "6.43.15",
     "@kisaki3/appearance": "workspace:^",
     "@kobalte/core": "0.13.14",
+    "@lezer/highlight": "1.2.5",
+    "@mdit/plugin-footnote": "1.1.3",
+    "@mdit/plugin-tasklist": "1.1.4",
     "@tanstack/solid-virtual": "3.13.48",
-    "@tanstack/virtual-core": "3.19.6"
+    "@tanstack/virtual-core": "3.19.6",
+    "@types/d3-scale": "4.0.9",
+    "@types/d3-selection": "3.0.12",
+    "@types/throttle-debounce": "5.0.2",
+    "@unovis/solid": "1.7.1",
+    "@unovis/ts": "1.7.1",
+    "csstype": "3.2.3",
+    "markdown-it": "15.0.3",
+    "tailwind-merge": "3.7.0"
   },
   "peerDependencies": {
     "solid-js": "^1.9.16"
@@ -51,6 +84,7 @@
     "@kisaki3/typescript-config": "workspace:*",
     "@tailwindcss/cli": "4.3.3",
     "@types/node": "catalog:",
+    "@vitest/browser-playwright": "5.0.5",
     "eslint": "catalog:",
     "jiti": "catalog:",
     "publint": "0.3.25",
@@ -60,6 +94,8 @@
     "tsx": "catalog:",
     "typescript": "catalog:",
     "unplugin-solid": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-solid": "catalog:",
     "vitest": "catalog:"
   }
 }

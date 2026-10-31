@@ -11,7 +11,8 @@ renderer 保存当前视图需要的查询快照和交互状态。正式数据�
 | app                      | 路由、窗口根、宿主、全局装配                            | 组合场景、业务 UI 和设施                                |
 | features                 | 统计页、库管理、导入向导、扩展管理场景                  | 使用 domain-ui 和设施，不导入另一个场景的内部组件与状态 |
 | domain-ui                | EntryPicker、EntryDetails、EntryEditor、ActivitySummary | 理解产品对象，调用类型化 API；不依赖场景或 app          |
-| 基础 UI / infrastructure | Button、Dialog、图表原语、查询生命周期、通用弹窗宿主    | 不包含资料保存规则或场景政策                            |
+| 公共 ui                  | 控件、图表、Markdown、拖拽接入与虚拟几何                | 拥有通用呈现、交互及自身资源寿命，边界见[UI 包](package.md) |
+| 应用 infrastructure      | 窗口客户端、查询生命周期、通用弹窗宿主                  | 接入本窗口的能力与资源，不拥有领域保存规则或场景政策     |
 
 domain-ui 是桌面应用私有的业务界面层。多个窗口共用的能力放在 renderer/domain-ui，单窗口能力留在对应窗口中，文件按业务职责组织。组件通过显式参数和窗口提供的狭窄接口接入，每个挂载实例独立拥有草稿、查询和资源。组件不能导入另一窗口的路由、客户端或当前选择。
 

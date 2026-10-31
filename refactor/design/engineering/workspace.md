@@ -79,11 +79,11 @@ exports 不提供安全隔离。静态检查还要覆盖相对路径、绝对路
 | 包                     | 主要源码位置与责任                                                                                                                                               |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | appearance             | tokens.ts 维护词表与类型，values.ts 维护纯值规则，defaults.ts 维护默认视觉值；CSS 与可选映射遵守[视觉交付边界](#visual-packages)                                 |
-| ui                     | components 按实际基础组件组织，复杂组件在自己的目录内协作；样式随包交付，组件不取得桌面业务依赖                                                                  |
+| ui                     | components 按[实际职责](../ui/package.md#organization)组织，单文件优先；根入口明确选择公开能力，virtual.ts 提供通用几何；组件不取得桌面业务依赖                 |
 | extension-distribution | manifest 与 registry 分别组织声明和索引格式；metadata.ts 维护静态展示值，compatibility.ts 维护兼容规则，node/signing.ts 实现签名与验证                           |
 | desktop-contracts      | library、metadata、ingest、scanner、sessions、tasks 等语义模块拥有各自的值、操作和参与合同；错误、日期、几何等基础值使用明确叶模块，development 提供工具开发接入 |
 | extension-api          | node 组织 ExtensionContext、生命周期及领域能力的选用和登记差异，webview 组织视图能力与私有通信合同，protocol 组织宿主与 SDK 的公开接入消息；全部保持纯粹         |
-| rpc                    | connection.ts 组织连接与关闭，frames.ts 定义和校验消息帧，requests.ts 处理请求回复及取消关联，transport.ts 定义传输适配接口；通知与断连清理由对应机制承担        |
+| rpc                    | connection.ts 拥有连接、调用关联、取消与关闭；frames.ts 定义和校验消息帧，transport.ts 定义传输适配接口；按真实职责与寿命组织内部协作                           |
 | extension-sdk          | node 实现扩展上下文、登记、回调和实例资源映射；webview 实现实际视图连接、私有通信及宿主环境接入；根 index.ts 明确集中导出作者类型与必要纯定义                    |
 | extension-cli          | cli 负责命令参数、交互和终端反馈；workspace、extension、registry 分别拥有实际工作流，config.ts 提供轻量配置声明；templates 保存正式生成模板                      |
 
@@ -139,7 +139,9 @@ desktop-contracts/appearance 在字体槽中组合桌面字体选择，直接引
 
 ui 通过 props、事件、回调和普通呈现值接入行为，不导入桌面合同、SDK、数据库或客户端查询层。应用内的 domain-ui 提供桌面业务界面。非 Solid 扩展可以只使用 appearance 和框架无关 SDK。
 
-ui 使用 Tailwind 4 编写和构建组件的常规样式，src/styles.css 是包内编译入口，接入 Tailwind、appearance 的映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。组件专属 CSS 与组件就近放置，只有实际出现多份共享样式时才拆分 styles 目录。
+公共组件的 Kobalte 选型、组合、Field 与文本输入职责、目录及公开入口由[UI 包规范](../ui/package.md)统一定义。appearance 自身维护共同默认视觉值，ui 自身维护组件样式；应用通过公开入口消费。旧应用用于[视觉对照](../ui/components.md#existing-ui)，不成为公共包的依赖。类型、样式消费与实际视觉分别验证。
+
+ui 使用 Tailwind 4 编写和构建组件的常规样式，TSX 中的工具类与变体组织遵守[UI 包规范](../ui/package.md#organization)。src/styles.css 是包内编译入口，接入 Tailwind、appearance 的映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。
 
 UI 成品包含组件自身必要的基础规则，不无条件注入影响整个文档的 [Preflight](https://tailwindcss.com/docs/preflight#disabling-preflight)。文档级重置由实际宿主统一安排。应用或扩展自己的 Tailwind 构建只处理自身代码及实际共享组件，并通过 appearance 采用同一映射；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
 

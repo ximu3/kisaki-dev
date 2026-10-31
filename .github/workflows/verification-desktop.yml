@@ -127,7 +127,8 @@ jobs:
               selected=$(jq -r --arg task "test:$task" '
                 any(.data.affectedTasks.items[];
                   .command != null and
-                  .package.name == "@kisaki3/desktop" and
+                  (.package.name == "@kisaki3/desktop" or
+                    ($task == "test:browser" and (.package.path | startswith("clients/desktop/")))) and
                   (.name == $task or
                     ($task == "test:artifacts" and .name == "package")))
               ' "$report")
@@ -315,6 +316,7 @@ jobs:
             artifacts/desktop/packages/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
+            clients/desktop/packages/ui/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json
             clients/desktop/app/dist/${{ matrix.target }}/Kisaki-*
             clients/desktop/app/dist/${{ matrix.target }}/*.yml

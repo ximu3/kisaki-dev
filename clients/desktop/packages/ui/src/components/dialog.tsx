@@ -1,97 +1,67 @@
-/** @fileoverview Owns themed dialog composition, controlled opening, focus restoration, and close requests. */
+/** @fileoverview Composes themed dialog surfaces with Kobalte focus, visibility and dismissal semantics. */
 
 import * as Primitive from '@kobalte/core/dialog'
-import { splitProps, type JSX } from 'solid-js'
+import type { PolymorphicProps } from '@kobalte/core/polymorphic'
+import { splitProps, type JSX, type ValidComponent } from 'solid-js'
+import { twMerge } from 'tailwind-merge'
+import { Button } from './button'
+import type { ButtonProps } from './button'
 
-/** One dialog owner. Modal dialogs trap focus and make outside content inert; modal defaults to true. */
-export interface DialogProps {
-  readonly children?: JSX.Element
-  readonly open?: boolean
-  readonly defaultOpen?: boolean
-  readonly onOpenChange?: (open: boolean) => void
-  readonly id?: string
-  readonly modal?: boolean
+/** The primitive owns visibility and descendant associations; a controlled host decides when to close. */
+export { Root as Dialog } from '@kobalte/core/dialog'
+export type { DialogRootProps as DialogProps } from '@kobalte/core/dialog'
+
+/** A themed native trigger with the owning dialog's activation and return-focus behavior. */
+export type DialogTriggerProps = Omit<
+  PolymorphicProps<typeof Button, Primitive.DialogTriggerProps<'button'>>,
+  'as'
+>
+
+/** Open the owning dialog using Button's variants and native form semantics. */
+export function DialogTrigger(props: DialogTriggerProps): JSX.Element {
+  return <Primitive.Trigger as={Button} {...props} />
 }
 
-/** Own the dialog's visibility and descendant associations within the current Solid owner. */
-export function Dialog(props: DialogProps): JSX.Element {
-  return <Primitive.Root {...props} />
-}
+/** A themed close action; a controlled host can retain open while it coordinates confirmation. */
+export type DialogCloseProps = Omit<
+  PolymorphicProps<typeof Button, Primitive.DialogCloseButtonProps<'button'>>,
+  'as'
+>
 
-/** Open this dialog with a native themed button and retain it as the return-focus target. */
-export function DialogTrigger(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'type', 'ref', 'onClick'])
-  return (
-    <Primitive.Trigger
-      as="button"
-      type={local.type ?? 'button'}
-      class={`kisaki-button ${local.class ?? ''}`}
-      {...rest}
-      {...(local.ref === undefined ? {} : { ref: local.ref })}
-      {...(local.onClick === undefined ? {} : { onClick: local.onClick })}
-    />
-  )
-}
-
-/** Request closure from a native button; a controlled owner decides when to change its open value. */
-export function DialogClose(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'type', 'ref', 'onClick', 'aria-label'])
+/** Request closure through Kobalte; this component does not save data or await a business decision. */
+export function DialogClose(props: DialogCloseProps): JSX.Element {
   return (
     <Primitive.CloseButton
-      as="button"
-      type={local.type ?? 'button'}
-      class={`kisaki-button ${local.class ?? ''}`}
-      {...rest}
-      {...(local.ref === undefined ? {} : { ref: local.ref })}
-      {...(local.onClick === undefined ? {} : { onClick: local.onClick })}
-      {...(local['aria-label'] === undefined ? {} : { 'aria-label': local['aria-label'] })}
+      {...props}
+      as={(buttonProps: ButtonProps) => {
+        // Visible content supplies the native name unless the caller provides an explicit label.
+        const [, nativeProps] = splitProps(buttonProps, ['aria-label'])
+        return <Button {...nativeProps} aria-label={props['aria-label']} />
+      }}
     />
   )
 }
 
-/** The dismissal cause is local UI intent. preventDefault must be called synchronously before awaiting a draft decision. */
-export interface DialogCloseRequest {
-  readonly reason: 'escape' | 'outside'
-  preventDefault(): void
-}
-/** Native surface attributes with explicit focus and dismissal coordination owned by the calling view. */
-export type DialogContentProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  readonly onCloseRequest?: (request: DialogCloseRequest) => void
-  readonly onOpenAutoFocus?: (event: Event) => void
-  readonly onCloseAutoFocus?: (event: Event) => void
-}
+/** Surface attributes and the primitive's cancellable focus and dismissal events. */
+export type DialogContentProps = Omit<
+  PolymorphicProps<'div', Primitive.DialogContentProps<'div'>>,
+  'as'
+>
 
-/** Portal one surface; required naming comes from DialogTitle. Dismissal can be prevented without discarding a draft. */
+/** Portal one modal surface; DialogTitle supplies its accessible name. The host owns asynchronous closing. */
 export function DialogContent(props: DialogContentProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
-    'class',
-    'children',
-    'id',
-    'ref',
-    'onCloseRequest',
-    'onOpenAutoFocus',
-    'onCloseAutoFocus',
-  ])
+  const [local, rest] = splitProps(props, ['class', 'children'])
+
   return (
     <Primitive.Portal>
-      <Primitive.Overlay class="kisaki-dialog-overlay" />
+      <Primitive.Overlay class="fixed inset-0 z-[100] bg-black/45" />
       <Primitive.Content
         as="div"
-        class={`kisaki-dialog ${local.class ?? ''}`}
-        onOpenAutoFocus={(event) => local.onOpenAutoFocus?.(event)}
-        onCloseAutoFocus={(event) => local.onCloseAutoFocus?.(event)}
-        onEscapeKeyDown={(event) =>
-          local.onCloseRequest?.({ reason: 'escape', preventDefault: () => event.preventDefault() })
-        }
-        onInteractOutside={(event) =>
-          local.onCloseRequest?.({
-            reason: 'outside',
-            preventDefault: () => event.preventDefault(),
-          })
-        }
         {...rest}
-        {...(local.id === undefined ? {} : { id: local.id })}
-        {...(local.ref === undefined ? {} : { ref: local.ref })}
+        class={twMerge(
+          'box-border fixed top-1/2 left-1/2 z-[101] max-h-[calc(100dvh-2rem)] w-[min(32rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-md border border-solid border-border bg-dialog p-4 font-ui text-dialog-foreground shadow-modal outline-none',
+          local.class,
+        )}
       >
         {local.children}
       </Primitive.Content>
@@ -99,28 +69,38 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   )
 }
 
-/** Name the dialog with a real heading, preserving its accessible relationship to the surface. */
-export function DialogTitle(props: JSX.HTMLAttributes<HTMLHeadingElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'id'])
+/** Heading attributes associated with the owning dialog surface. */
+export type DialogTitleProps<T extends ValidComponent = 'h2'> = PolymorphicProps<
+  T,
+  Primitive.DialogTitleProps<T>
+> & { class?: string | undefined }
+
+/** Name the dialog with a real heading and preserve Kobalte's accessible association. */
+export function DialogTitle<T extends ValidComponent = 'h2'>(
+  props: DialogTitleProps<T>,
+): JSX.Element {
   return (
-    <Primitive.Title
-      as="h2"
-      class={`kisaki-dialog-title ${local.class ?? ''}`}
-      {...rest}
-      {...(local.id === undefined ? {} : { id: local.id })}
+    <Primitive.Title<T>
+      {...props}
+      class={twMerge('m-0 min-w-0 truncate font-ui text-sm font-medium', props.class)}
     />
   )
 }
 
-/** Associate optional descriptive text with the dialog without treating arbitrary content as its name. */
-export function DialogDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'id'])
+/** Description attributes associated with the owning dialog surface. */
+export type DialogDescriptionProps<T extends ValidComponent = 'p'> = PolymorphicProps<
+  T,
+  Primitive.DialogDescriptionProps<T>
+> & { class?: string | undefined }
+
+/** Describe the dialog without treating its arbitrary body content as the accessible name. */
+export function DialogDescription<T extends ValidComponent = 'p'>(
+  props: DialogDescriptionProps<T>,
+): JSX.Element {
   return (
-    <Primitive.Description
-      as="p"
-      class={`kisaki-dialog-description ${local.class ?? ''}`}
-      {...rest}
-      {...(local.id === undefined ? {} : { id: local.id })}
+    <Primitive.Description<T>
+      {...props}
+      class={twMerge('m-0 mt-1 font-ui text-xs text-muted-foreground', props.class)}
     />
   )
 }

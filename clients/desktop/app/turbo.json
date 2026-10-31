@@ -144,16 +144,6 @@
       ],
       "cache": false
     },
-    "test:browser": {
-      "dependsOn": ["@kisaki3/ui#build"],
-      "inputs": [
-        "src/renderer/**",
-        "src/shared/**",
-        "tests/browser/**",
-        "config/vitest/vitest.config.browser.ts"
-      ],
-      "cache": false
-    },
     "test:performance": {
       "dependsOn": ["^build"],
       "inputs": [

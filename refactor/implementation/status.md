@@ -10,7 +10,7 @@
 | --- | --- |
 | 产品与技术设计 | 产品、领域、界面、工程、扩展及独立项目的正式合同已建立。 |
 | W00 工程与验证入口 | 已完成；工程、资源、开发、消费者和测试入口有对应证据，六目标与严格合并门禁均已验证。 |
-| W01 | 实现与本地验收完成，见[交付范围](#w01)；CI 与合入状态见 [PR #16](https://github.com/ximu3/kisaki-dev/pull/16)。 |
+| W01 | 已实现职责矩阵中的完整能力并通过本机验收；范围与证据见[当前进度](#w01)，[PR #16](https://github.com/ximu3/kisaki-dev/pull/16) 记录远端检查与合并状态。 |
 | W02–W13 | 未开始正式实施；33 个官方扩展具备工程身份与配置。 |
 | Vantage、Kana、libmpv-node、oauth-relay | 未开始正式实现与制品交付。 |
 | 正式应用与发行 | 完整产品、签署、公证、安装升级、系统支持下限及主要后端验收未完成；npm、正式下载、更新索引和生产服务未发布。 |
@@ -55,7 +55,7 @@
 | 范围 | 状态 |
 | --- | --- |
 | [W00：工程与测试入口](work-packages.md#w00) | 已完成，见[交付范围](#w00)、[合并约束](#merge-rules)和[门禁验证](../verification/evidence/w00/ci.md#merge)。 |
-| [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 实现与本地验收完成；[交付范围](#w01)，[PR #16](https://github.com/ximu3/kisaki-dev/pull/16)。 |
+| [W01：桌面与扩展合同、视觉基础及通信内核](work-packages.md#w01) | 已实现并通过本机验收，见[交付范围与证据](#w01)；PR #16 待合并。 |
 | [W02：数据库与原生操作](work-packages.md#w02) | 未开始 |
 | [W03：完整业务链路](work-packages.md#w03) | 未开始 |
 | [W04：资料库能力](work-packages.md#w04) | 未开始 |
@@ -90,20 +90,21 @@
 
 <a id="w01"></a>
 
-## W01 交付范围
+## W01 当前进度
 
-公共纯值、资料查询与编辑、图写入、资料获取与采用、扫描、会话、偏好、资源、事件、UI 和管理合同已有正式类型与适用校验。extension-api 选择扩展可用能力，SDK 复用其作者入口；RPC 提供有限帧、握手、双向调用、取消与断连收尾。appearance 与 UI 提供纯视觉规则、编译样式、Solid 控件及 TanStack Virtual 几何；英语文案源生成消息参数类型，deeplink 共用标准 URL 解析与格式化。
+公共纯值、资料查询与编辑、图写入、资料获取与采用、扫描、会话、偏好、资源、事件、UI 和管理合同已有正式类型与适用校验。extension-api 选择扩展可用能力，SDK 复用其作者入口；RPC 提供有限帧、握手、双向调用、取消与断连收尾。appearance 提供完整纯视觉规则、默认值和样式；ui 完成 29 个控件家族、Unovis 图表、CodeMirror／Markdown、拖拽接入及 TanStack Virtual 几何。英语文案源生成消息参数类型，deeplink 共用标准 URL 解析与格式化。
 
 2026-10-31 在上述 Windows x64 环境取得以下本地结果：
 
 | 验证入口 | 实际结果 |
 | --- | --- |
 | `pnpm check` | 全仓类型、lint、依赖边界、格式及 293 项测试通过。 |
-| `pnpm desktop:packages:test:consumers` | 八包 tarball 的 publint／Are the Types Wrong 检查、仓库外严格声明与 typed lint、Node 消费、无 Tailwind 的真实 Chromium 消费通过；包括 Dialog 焦点、字段无障碍和虚拟列表。 |
-| `pnpm desktop:test:browser` | 真实 Chromium 中的窗口键盘操作与关闭失败反馈通过。 |
+| `pnpm desktop:packages:test:consumers` | 八包 tarball 的 publint／Are the Types Wrong、仓库外 NodeNext 严格声明与 typed lint、Node 和无 Tailwind 的 Chromium 消费通过，包含图表、Markdown、拖拽入口及第三方通知。 |
+| `pnpm desktop:test:browser` | 公共 ui 的 14 项 Chromium 测试通过，覆盖控件、原生表单和输入法、焦点、明暗主题、图表、Markdown、拖拽及资源清理。 |
+| `pnpm desktop:test:e2e` | 四类隔离窗口、最小 bridge 关闭及剩余窗口继续使用的 5 项实际 Electron 回归通过。 |
 | `pnpm desktop:test:dev` | 四项真实开发回归通过；公共包各代快照保持独立，第三方依赖沿原包的 Vite 解析上下文消费，覆盖启动、热更新、失败恢复、取消和关闭。 |
 | 任务输入与缓存 | 隔离 Git 变更核对验证选择；纯逻辑测试实际命中 Turbo 缓存，现场进程／文件系统验证不缓存；性能采样已移出自动 CI。 |
 
-本包覆盖 A03、A04 的纯值，以及 A23 基础 tarball 与 A31 的公共包范围。实际数据库操作、Node／Webview SDK 运行适配、扩展实例与资源通道由后续工作包接入；完整产品、签名和发布仍未完成。本次未运行性能采样，未执行 npm 或服务发布。
+上述结果覆盖 [W01 职责矩阵](work-packages.md#w01)对应的 A03、A04 纯值、A23／A31 包消费和完整公共视觉能力；具体运行范围、来源与截图见 [W01 证据](../verification/evidence/w01/README.md)。全仓及全部工作包的职责、简洁性与终态实现已复核，正式窗口的工程演示已删除。实际数据库操作、Node／Webview SDK 运行适配、扩展实例与资源通道按后续工作包安排；这些职责不由纯合同或组件验证代替。完整产品、签名和发布未完成。本次未运行性能采样，未执行 npm 或服务发布。
 
 现行验收与技术依据见[证据索引](../verification/evidence/README.md)。本页维护当前完成度、缺项及其证据入口。

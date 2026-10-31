@@ -144,13 +144,25 @@ test('a failed runtime build retains the old process and a renamed source hands 
 
 test('public-package recovery retains a usable session and renderer-only updates preserve its process', async () => {
   const styles = join(workspace.app, 'src/renderer/windows/main/styles.css')
+  const renderer = join(workspace.app, 'src/renderer/windows/main/entry.tsx')
   const configuration = join(
     workspace.root,
     'clients/desktop/packages/ui/config/typescript/tsconfig.lib.json',
   )
   const button = join(workspace.root, 'clients/desktop/packages/ui/src/components/button.tsx')
   const originals = await Promise.all(
-    [styles, configuration, button].map((path) => readFile(path, 'utf8')),
+    [styles, configuration, button, renderer].map((path) => readFile(path, 'utf8')),
+  )
+
+  // The isolated test adds the component needed to observe package updates; production has no demo view.
+  await writeFile(
+    renderer,
+    `${originals[3]}
+import { render } from 'solid-js/web'
+import { Button } from '@kisaki3/ui'
+const dispose = render(() => <Button>Development fixture</Button>, document.getElementById('root')!)
+import.meta.hot?.dispose(dispose)
+`,
   )
 
   const controller = startDevelopmentController(workspace.app)
@@ -172,12 +184,14 @@ test('public-package recovery retains a usable session and renderer-only updates
       })
     })
     await page.goto(new URL('main/index.html', first.rendererUrl!).href)
-    await page.getByRole('button', { name: 'Close window' }).waitFor()
+    await page.getByRole('button', { name: 'Development fixture' }).waitFor()
 
-    await writeFile(styles, `${originals[0]}\n.window-shell { padding: 73px; }\n`)
+    await writeFile(styles, `${originals[0]}\n#root { padding: 73px; }\n`)
 
     await expect
-      .poll(() => page.locator('main').evaluate((element) => getComputedStyle(element).paddingLeft))
+      .poll(() =>
+        page.locator('#root').evaluate((element) => getComputedStyle(element).paddingLeft),
+      )
       .toBe('73px')
 
     await writeFile(configuration, '{')
@@ -199,7 +213,10 @@ test('public-package recovery retains a usable session and renderer-only updates
     const recovered = controller.states.filter((state) => state.state === 'ready').at(-1)!
 
     const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
-    await writeFile(button, originals[2]!.replace('<button', '<button data-fixture="updated"'))
+    await writeFile(
+      button,
+      originals[2]!.replace('<Primitive.Root', '<Primitive.Root data-fixture="updated"'),
+    )
 
     await expect
       .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
@@ -212,12 +229,14 @@ test('public-package recovery retains a usable session and renderer-only updates
     await expect
       .poll(() => page.getByRole('button').getAttribute('data-fixture'), { timeout: 15_000 })
       .toBe('updated')
-    expect(await page.locator('main').count()).toBe(1)
+    expect(await page.getByRole('button', { name: 'Development fixture' }).count()).toBe(1)
   } finally {
     await controller.close()
     await browser?.close()
     await Promise.all(
-      [styles, configuration, button].map((path, index) => writeFile(path, originals[index]!)),
+      [styles, configuration, button, renderer].map((path, index) =>
+        writeFile(path, originals[index]!),
+      ),
     )
   }
 })

@@ -26,7 +26,7 @@
     "desktop:packages:test:consumers": "pnpm desktop:packages:pack && turbo run check:package --filter=./clients/desktop/packages/* && pnpm desktop:packages:test:consumers:prepared",
     "desktop:packages:test:consumers:prepared": "vitest run --config config/vitest/vitest.config.desktop-consumers.ts",
     "desktop:test:native": "pnpm desktop:build && turbo run test:native --filter=@kisaki3/desktop --",
-    "desktop:test:browser": "turbo run test:browser --filter=@kisaki3/desktop --",
+    "desktop:test:browser": "turbo run test:browser --filter=./clients/desktop/** --",
     "desktop:test:e2e": "pnpm desktop:build && turbo run test:e2e --filter=@kisaki3/desktop --",
     "desktop:test:dev": "pnpm --filter @kisaki3/desktop build:native && turbo run test:dev --filter=@kisaki3/desktop --",
     "desktop:test:artifacts": "pnpm --filter @kisaki3/desktop test:artifacts",
