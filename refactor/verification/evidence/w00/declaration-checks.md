@@ -17,4 +17,4 @@
 
 单次诊断说明该项目的主要成本来自声明内部检查，不是 CI 峰值内存或稳定性能基准。代价是普通项目不再发现所有未使用的依赖声明内部冲突；公共消费者与自有声明拥有层承担相应检查，依赖升级中的实际不兼容继续处理。
 
-类型感知 ESLint 使用 [Project Service](https://typescript-eslint.io/getting-started/typed-linting/)读取实际项目与依赖声明，规则按异步和类型风险选择。根 `lint:fix` 经原有 Turbo 依赖图准备声明，并使用其原生 cache 选项关闭修复运行的任务缓存。干净副本、类型、lint 与消费者结果见[W00 验收](README.md)。
+类型感知 ESLint 使用 [Project Service](https://typescript-eslint.io/getting-started/typed-linting/)读取实际项目与依赖声明，规则按异步和类型风险选择。根 `lint:fix` 经原有 Turbo 依赖图准备声明，并使用其原生 cache 选项关闭修复运行的任务缓存；根测试的跨项目 lint 用例通过显式任务依赖取得 extension-cli 的构建声明。干净副本、类型、lint 与消费者结果见[W00 验收](README.md)。

@@ -80,7 +80,7 @@
       "outputs": []
     },
     "//#root:test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "@kisaki3/extension-cli#build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     },
