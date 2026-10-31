@@ -101,6 +101,7 @@
 | `pnpm check` | 全仓类型、lint、依赖边界、格式及 293 项测试通过。 |
 | `pnpm desktop:packages:test:consumers` | 八包 tarball 的 publint／Are the Types Wrong 检查、仓库外严格声明与 typed lint、Node 消费、无 Tailwind 的真实 Chromium 消费通过；包括 Dialog 焦点、字段无障碍和虚拟列表。 |
 | `pnpm desktop:test:browser` | 真实 Chromium 中的窗口键盘操作与关闭失败反馈通过。 |
+| `pnpm desktop:test:dev` | 四项真实开发回归通过；公共包各代快照保持独立，第三方依赖沿原包的 Vite 解析上下文消费，覆盖启动、热更新、失败恢复、取消和关闭。 |
 | 任务输入与缓存 | 隔离 Git 变更核对验证选择；纯逻辑测试实际命中 Turbo 缓存，现场进程／文件系统验证不缓存；性能采样已移出自动 CI。 |
 
 本包覆盖 A03、A04 的纯值，以及 A23 基础 tarball 与 A31 的公共包范围。实际数据库操作、Node／Webview SDK 运行适配、扩展实例与资源通道由后续工作包接入；完整产品、签名和发布仍未完成。本次未运行性能采样，未执行 npm 或服务发布。
