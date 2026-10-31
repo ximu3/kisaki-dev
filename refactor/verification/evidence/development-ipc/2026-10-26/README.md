@@ -61,4 +61,4 @@ Node 的标准 IPC 自动建立和交付消息通道，选择 JSON 可避免为�
 
 作者 socket 方案目前只存在于正式设计和历史探针，extension-cli 与 desktop-contracts 的现行源码尚未实现该协议。可以直接替换未发布合同，不建设双协议、自动回退或旧客户端兼容层。
 
-W00 已有的私有 ready／shutdown 通道、!app.isPackaged 开关、资料目录选择及不可取消的 stop 收尾要一并收敛；只修改工程文档里的传输名称无法完成替换。具体拥有者、消息、停止行为、文件清单与验证边界在[完整方案](proposal.md)中列明。此前[必要性复核](../../proportionality/2026-10-26/README.md)中的另一项 CI 调整继续独立讨论。
+该方案同时覆盖 ready／shutdown 通道、开发能力接入、资料目录与可取消停止。具体拥有者、消息和验证边界见[方案依据](proposal.md)，采用结果见[实现验证](implementation/README.md)。

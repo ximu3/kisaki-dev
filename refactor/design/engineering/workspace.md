@@ -215,7 +215,7 @@ tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定
 
 ## 实现与公开声明的类型检查
 
-共同基线使用 strict: true 与 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/monorepo-review/2026-10-27/skip-lib-check.md)。
+共同基线使用 strict: true 与 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/w00/declaration-checks.md)。
 
 skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍读取声明并依据它检查调用。该选项不修复错误声明，可能掩盖声明内部冲突，不能被用来证明声明本身准确。
 
@@ -277,7 +277,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 ### 工程反馈预算
 
-标准托管 runner 上的工程反馈目标按[既定验证负载](../../verification/evidence/script-domain-audit/2026-10-28/implementation/README.md#feedback-target)确定：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+标准托管 runner 上的工程反馈目标按[既定验证负载](../../verification/evidence/w00/ci.md#feedback)确定：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，不通过缩减六目标、二十次采样、断言或真实运行验证达标；失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 <a id="desktop-development"></a>
 
@@ -287,11 +287,11 @@ persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障�
 
 桌面工具直接使用 Vite 的公开 API，由项目开发会话拥有进程和就绪交接。[桌面工具布局](layout.md#desktop-tools)中的 dev/session.ts 负责一个完整开发会话，依次完成有限依赖构建、当前目标资源准备、服务与程序监听、首次编译和 renderer 就绪，然后启动 Electron。就绪由回调或明确信号确认，不解析日志或依靠固定延时。
 
-项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)与[监听就绪验证](../../verification/evidence/ci-exploration/2026-10-27/README.md)。
+项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)与[监听就绪验证](../../verification/evidence/w00/development.md)。
 
 main 与 extension-host 使用 Vite 的 SSR 构建选择 Node 解析和插件语义；target 只负责生成语法，不能替代宿主配置。普通 JavaScript 依赖按制品布局打包，Electron、Node 内建模块和实际原生资源按所属部署合同处理。preload 保持沙箱可消费的独立 CommonJS 输出，renderer 使用浏览器环境，不套用完整 Node 宿主的缺省配置。
 
-开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。renderer 服务只拥有页面热更新与快照解析，运行时和公共包输入监听由开发会话独立拥有。对应快照取舍与验证见[工具链修正](../../verification/evidence/tooling-review/2026-10-26/implementation/README.md)。
+开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。renderer 服务只拥有页面热更新与快照解析，运行时和公共包输入监听由开发会话独立拥有。对应快照取舍与验证见[工具链修正](../../verification/evidence/w00/build-tools.md)。
 
 renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
 

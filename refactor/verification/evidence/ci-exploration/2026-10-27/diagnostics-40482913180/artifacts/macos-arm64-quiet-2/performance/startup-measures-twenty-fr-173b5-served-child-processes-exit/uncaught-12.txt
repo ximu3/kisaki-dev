@@ -1,1 +1,0 @@
-{"at":1793094249877,"origin":"uncaughtException","name":"TypeError","message":"Object has been destroyed","stack":"TypeError: Object has been destroyed\n    at BrowserWindow.visibilityChanged (node:electron/js2c/browser_init:1:18097)\n    at BrowserWindow.emit (node:events:514:28)"}

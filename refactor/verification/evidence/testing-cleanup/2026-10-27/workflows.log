@@ -1,3 +1,0 @@
-go: github.com/rhysd/actionlint@v1.7.12 requires go >= 1.25.0; switching to go1.26.10
-go: downloading go1.26.10 (windows/amd64)
-Actionlint 1.7.12: ci.yml and verification.yml passed.
