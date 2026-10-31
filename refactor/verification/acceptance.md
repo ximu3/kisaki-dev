@@ -245,7 +245,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 此外，按[构建合同](../design/engineering/build.md)验证 Windows 10 双架构、macOS 稳定代码身份下的更新，以及 Linux 原生桌面能力。按[独立项目合同](../design/projects/README.md)验证 Kana 源坐标与原生帧释放。
 
-工作包完成须满足已确认的模型、主要行为和支持范围，并取得所需验收证据。现有合同内的实现问题由实施者修复和验证；需要改变已确认规则或缺少必要规则时，按[实施讨论规则](../implementation/work-packages.md#unexpected-issues)暂停受影响部分并与用户讨论。不受影响的工作可以继续。不得擅自重写设计、删除失败用例或将必需能力改为可选来宣告完成。
+工作包按已确认的模型、主要行为、支持范围及适用验证结果判断完成。现有合同内的实现问题由实施者修复和验证；需要用户决定的变化按[实施讨论规则](../implementation/work-packages.md#unexpected-issues)处理。报告与材料按[实际用途](../design/engineering/documentation.md#evidence)维护。
 
 验收覆盖已确认的业务语义和失败处理，不以穷尽理论上的异常时序或补建恢复机制作为完成条件。
 

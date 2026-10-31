@@ -1,9 +1,0 @@
-{
-  "artifactId": 12716382856,
-  "name": "desktop-macos-x64",
-  "path": "artifacts/w00-ci/2026-10-27/40463344626/desktop-macos-x64.zip",
-  "bytes": 279955663,
-  "sha256": "3091a8add75ea8e607022f70ed8f5bb8aa9ea78eb558406723afaab959795725",
-  "githubDigest": "sha256:3091a8add75ea8e607022f70ed8f5bb8aa9ea78eb558406723afaab959795725",
-  "verified": true
-}

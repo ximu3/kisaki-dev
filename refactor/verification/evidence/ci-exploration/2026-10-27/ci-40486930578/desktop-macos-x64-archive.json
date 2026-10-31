@@ -1,9 +1,0 @@
-{
-  "id": 12728620365,
-  "name": "desktop-macos-x64",
-  "completeArchive": false,
-  "expectedDigest": "sha256:4d12ed348765efca0d03a259de545c30e65e1353a14c3b13016f331892352a41",
-  "bytes": 264703601,
-  "reportEntriesCheckedByZipCrc": 8,
-  "verifiedFiles": []
-}

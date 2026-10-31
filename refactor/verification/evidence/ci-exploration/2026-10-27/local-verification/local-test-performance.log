@@ -1,9 +1,0 @@
-$ playwright test --config config/playwright/playwright.config.performance.ts
-
-Running 1 test using 1 worker
-
-(node:273564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
-(Use `node --trace-warnings ...` to show where the warning was created)
-  ok 1 tests\performance\startup.test.ts:11:1 › measures twenty fresh processes and confirms all observed child processes exit (9.2s)
-
-  1 passed (9.7s)

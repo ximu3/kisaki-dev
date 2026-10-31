@@ -1,9 +1,0 @@
-{
-  "artifactId": 12716930323,
-  "name": "desktop-windows-arm64",
-  "path": "artifacts/w00-ci/2026-10-27/40463344626/desktop-windows-arm64.zip",
-  "bytes": 269814149,
-  "sha256": "dbad61183118468a51ec7da85a851b06794fede619100628c86f0fc443882cf1",
-  "githubDigest": "sha256:dbad61183118468a51ec7da85a851b06794fede619100628c86f0fc443882cf1",
-  "verified": true
-}

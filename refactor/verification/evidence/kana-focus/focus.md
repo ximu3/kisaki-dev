@@ -1,6 +1,6 @@
 # 多面展示的语义文档与焦点验证
 
-2026-10-26 后续决定：用户确认顺序焦点导航遵循平台与用户键盘设置，只补必要接续，见[简洁与原生复核](../simplicity-native/2026-10-26/README.md)。下文统一 Tab 协调的结果保留为当时的试件事实，不作为新规则的运行验收。
+现行顺序焦点导航遵循平台与用户键盘设置，只补必要接续，见[交互规则](../../../design/projects/kana/interaction.md)。下文统一 Tab 协调的结果用于说明 2026-10-20 试件的能力范围，不作为现行规则的运行验收。
 
 2026-10-20，使用[已准备并记录的浏览器构建](../kana-browser-scope/source-input.json)运行 [probe.mjs](probe.mjs) 与 [run.cjs](run.cjs)。运行时为 Chromium 149.0.7827.55、Firefox 153.0、Windows WebKit 测试构建 26.5；每个引擎执行横排、vertical-rl、vertical-lr，共九组受控场景。详细数据、代码指纹及未覆盖项见 [browser-contract.json](browser-contract.json)。这些构建说明本轮机制验证的环境，不充当当前稳定版本名单或维护窗口的完整验收记录。
 

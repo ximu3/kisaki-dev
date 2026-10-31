@@ -57,7 +57,7 @@ pnpm desktop:package --target windows-x64
 
 独立程序可通过应用任务构建，例如 `pnpm --filter @kisaki3/desktop build --program preload`。私有原生构建使用 `build:native`，生成声明变化时显式添加 `--update-declarations` 并审阅结果；`check:native` 在固定 Rust 工具链下执行格式与 Clippy 检查。
 
-普通构建位于应用 `out/<target>`，每个开发会话使用独立的 `out/development/<target>/session-*`，安装和归档制品位于 `dist/<target>`。相关任务停止后执行 `pnpm run clean`，仅清理已声明的工程输出，保留 `.local`、下载缓存和根 `artifacts` 中留存的制品。
+普通构建位于应用 `out/<target>`，每个开发会话使用独立的 `out/development/<target>/session-*`，安装和归档制品位于 `dist/<target>`。相关任务停止后执行 `pnpm run clean` 清理声明输出；`.local`、下载缓存和根 `artifacts` 不在该命令范围内，按[实际用途](refactor/design/engineering/documentation.md#evidence)另行清理。
 
 ## 验证任务
 

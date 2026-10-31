@@ -1,6 +1,6 @@
 # Kisaki
 
-沟通默认使用简体中文。先从 [refactor/README.md](refactor/README.md) 和当前工作包读取正式合同，代码、组织、注释与审阅遵守根目录 [CONVENTIONS.md](CONVENTIONS.md)。完成任务后维护[实施状态](refactor/implementation/status.md)与适用证据。
+沟通默认使用简体中文。先从 [refactor/README.md](refactor/README.md) 和当前工作包读取正式合同，代码、组织、注释与审阅遵守根目录 [CONVENTIONS.md](CONVENTIONS.md)。交付状态变化时更新[实施状态](refactor/implementation/status.md)，验证材料按[实际用途](refactor/design/engineering/documentation.md#evidence)维护。
 
 终态实现、整体一致性、可读性、简洁与原生共同约束交付，完整要求由[共同原则](CONVENTIONS.md#quality)定义。编写时落实职责、分段和合同说明，收尾时沿正常、失败、取消与清理路径审阅；格式、类型和测试通过不能代替人工判断。
 
@@ -12,6 +12,6 @@ main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最�
 
 数据、错误、并发、取消与资源寿命遵循所属设计。失败不通过缩减范围、返回空值或关闭检查消除。测试不用真实个人资料，Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。
 
-环境准备和任务入口见 [CONTRIBUTING.md](CONTRIBUTING.md)。普通 check 不包含真实桌面、制品和性能验收；按实际影响选择验证，记录已执行范围。通用文档维护现行规则与必要依据，完成度归状态页，实施经过与逐次运行归验证证据，见[文档归属](refactor/design/engineering/documentation.md#owners)。
+环境准备和任务入口见 [CONTRIBUTING.md](CONTRIBUTING.md)。普通 check 不包含真实桌面、制品和性能验收；按实际影响选择验证。通用文档维护现行规则与必要依据，完成度归状态页，Git 与 PR 承载修改经过，见[文档归属](refactor/design/engineering/documentation.md#owners)。
 
 构建、测试和打包不隐含外部发布。GitHub 仓库重建、npm 发布、平台签署身份及部署按实际授权处理，超出任务范围的对外操作先讨论。未取得的六目标、签名或后端运行证据保持未完成。

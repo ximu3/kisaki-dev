@@ -1,9 +1,0 @@
-{
-  "artifactId": 12716616370,
-  "name": "desktop-windows-x64",
-  "path": "artifacts/w00-ci/2026-10-27/40463344626/desktop-windows-x64.zip",
-  "bytes": 277964158,
-  "sha256": "0dc8fcaa883030840153348e7e3e059c212f1edfa51626333fb7a342dae5f3fc",
-  "githubDigest": "sha256:0dc8fcaa883030840153348e7e3e059c212f1edfa51626333fb7a342dae5f3fc",
-  "verified": true
-}
