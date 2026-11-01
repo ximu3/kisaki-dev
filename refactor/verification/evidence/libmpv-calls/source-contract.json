@@ -1,6 +1,5 @@
 {
   "purpose": "source review for confirmed principal call semantics; no native execution or complete public contract",
-  "designStatus": "call-semantics-confirmed",
   "mpvRef": "v0.41.0",
   "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
   "publicValueRepresentationComplete": false,

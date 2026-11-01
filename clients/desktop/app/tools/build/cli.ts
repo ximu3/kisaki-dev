@@ -1,7 +1,7 @@
 /** @fileoverview Parses target and program arguments for finite desktop builds. */
 
 import { parseArgs } from 'node:util'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { replaceOutput } from '@kisaki3/tooling/output'
@@ -13,8 +13,16 @@ import type { ProgramName } from './programs'
 
 await runCli(async (signal) => {
   const { values } = parseArgs({
-    options: { target: { type: 'string' }, program: { type: 'string' } },
+    options: {
+      source: { type: 'string' },
+      target: { type: 'string' },
+      program: { type: 'string' },
+    },
   })
+  if (!values.source) {
+    throw new Error('Build source directory is required')
+  }
+  const sourceRoot = resolve(appRoot, values.source)
   const target = values.target ? parseTarget(values.target) : hostTarget()
 
   if (values.program) {
@@ -29,11 +37,11 @@ await runCli(async (signal) => {
     await replaceOutput(
       appRoot,
       output,
-      (staging) => buildProgram(program, staging, buildId),
+      (staging) => buildProgram(sourceRoot, program, staging, buildId),
       signal,
     )
   } else {
-    const build = await buildDesktop(target, signal)
+    const build = await buildDesktop(sourceRoot, target, signal)
 
     console.info(`Desktop build ready: ${build.target} ${build.buildId}`)
   }

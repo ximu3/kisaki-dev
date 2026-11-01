@@ -3,7 +3,6 @@
   "date": "2026-10-17",
   "ordinal": 27,
   "extension": "Anx Reader Importer",
-  "status": "design-confirmed",
   "inputOrigin": "synthetic-at-user-request",
   "sourceRef": "v1.14.0",
   "commit": "356b7183e8463e7c60d84a72502d0055e55a19fd",
@@ -32,7 +31,10 @@
     "failed": 0,
     "allInputsUnchanged": true
   },
-  "results": ["synthetic-results.json", "cfi-results.json"],
+  "results": [
+    "synthetic-results.json",
+    "cfi-results.json"
+  ],
   "notClaimed": [
     "Real Anx export, Flutter runtime or WebDAV operation.",
     "Browser Range or Kana round trip.",
@@ -44,7 +46,10 @@
   "completionAdoption": {
     "status": "confirmed",
     "sourceThreshold": 0.98,
-    "validPercentageRange": [0, 1],
+    "validPercentageRange": [
+      0,
+      1
+    ],
     "work": "Initialize one unknown-date record only when completion history is empty.",
     "part": "Adopt only the actual Part completion flag.",
     "existingHistory": "Preserve; do not append a minimum snapshot."

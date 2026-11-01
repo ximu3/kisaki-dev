@@ -19,7 +19,7 @@ Steam 负责游戏平台身份、商店资料与图片，以及本人拥有库�
 | 平台累计时长         | 单独读取并明确核对采用，沿本体补记操作执行                     |
 | 远端写入与持续同步   | 不提供；没有评分、完成状态或愿望单写入入口                     |
 
-公开资料统一使用结构化商店接口：IStoreBrowseService/GetItems 读取详情和素材，IStoreQueryService/SearchSuggestions 取得名称建议，GetStoreCategories 与 IStoreService/GetLocalizedNameForTags 取得分类和标签名称。以上路径均已匿名读通，详见[补充核验](../../../verification/evidence/game-sources/steam-storebrowse.md)。旧 appdetails、storesearch 只保留为比较证据，不进入运行依赖或自动回退路径；本人资料、拥有库与愿望单沿各自账号接口读取。
+公开资料统一使用结构化商店接口：IStoreBrowseService/GetItems 读取详情和素材，IStoreQueryService/SearchSuggestions 取得名称建议，GetStoreCategories 与 IStoreService/GetLocalizedNameForTags 取得分类和标签名称。以上路径均已匿名读通，详见[补充核验](../../../verification/evidence/game-sources/steam-storebrowse.md)。本人资料、拥有库与愿望单沿各自账号接口读取。
 
 data_request 只请求本次字段需要的数据组，未采用的价格、购买方案和媒体信息不固定附带读取。核验时使用的完整字段请求不成为运行时每次都抓取全部内容的理由；一个返回数据组中的额外字段仍不扩大本次资料采用范围。
 

@@ -7,16 +7,14 @@
     "#native": "./native/node/index.ts"
   },
   "license": "AGPL-3.0-only",
-  "description": "A local library for games, anime, comics and novels.",
+  "description": "Desktop engineering tools, native file primitives, resources and verification.",
   "homepage": "https://github.com/ximu3/kisaki",
   "author": {
     "name": "ximu3",
     "email": "152481053+ximu3@users.noreply.github.com"
   },
   "scripts": {
-    "dev": "tsx tools/dev/cli.ts",
-    "build": "tsx tools/build/cli.ts",
-    "package": "tsx tools/package/cli.ts",
+    "build": "tsx tools/build/cli.ts --source tests/fixtures/runtime",
     "prepare:resources": "tsx tools/resources/cli.ts",
     "build:native": "tsx tools/native/cli.ts",
     "typecheck": "tsc -b",
@@ -24,19 +22,15 @@
     "check:native": "tsx tools/native/cli.ts --check",
     "test": "vitest run",
     "test:native": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
-    "test:browser": "vitest run --config config/vitest/vitest.config.browser.ts",
     "test:e2e": "playwright test",
     "test:dev": "vitest run --config config/vitest/vitest.config.dev.ts",
     "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
     "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
-    "clean": "tsx tools/clean.ts"
+    "clean": "tsx tools/clean.ts",
+    "test:package": "tsx tools/package/cli.ts --test-only"
   },
   "dependencies": {
-    "@kisaki3/appearance": "workspace:^",
-    "@kisaki3/desktop-contracts": "workspace:^",
-    "@kisaki3/ui": "workspace:^",
-    "better-sqlite3": "13.0.3",
-    "solid-js": "catalog:"
+    "better-sqlite3": "13.0.3"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",
@@ -44,15 +38,12 @@
     "@fontsource-variable/noto-sans-mono": "5.3.0",
     "@fontsource-variable/noto-sans-sc": "5.3.1",
     "@kisaki3/eslint-config": "workspace:*",
-    "@kisaki3/extension-cli": "workspace:^",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@napi-rs/cli": "3.10.9",
     "@playwright/test": "1.64.1",
-    "@tailwindcss/vite": "4.3.3",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "catalog:",
-    "@vitest/browser-playwright": "5.0.5",
     "chokidar": "6.0.0",
     "cross-env": "10.1.0",
     "electron": "45.0.0",
@@ -64,13 +55,13 @@
     "playwright": "1.64.1",
     "png-to-ico": "3.0.2",
     "sharp": "0.35.5",
-    "tailwindcss": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-solid": "catalog:",
     "vitest": "catalog:",
-    "yaml": "2.9.1"
+    "yaml": "2.9.1",
+    "solid-js": "catalog:"
   },
   "napi": {
     "binaryName": "kisaki-native",

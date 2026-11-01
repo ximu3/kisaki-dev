@@ -2,19 +2,19 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-所有主题遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
+简洁、干净与克制是本目录的首要设计标准。所有主题及其限制、验证要求遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
 
-旧项目位于 `F:/project/3/kisaki`。
+界面与资源的对照工程位于 `F:/project/3/kisaki`。
 
 <a id="rewrite"></a>
 
-按已确认目标完整重设计架构、重写代码并重建工程。新方案独立推导，不受现有实现及其目录、命名、分层、抽象和配套规范的任何影响；具体约束见[编码与实现质量](../CONVENTIONS.md#quality)。
+按已确认目标完整设计架构、实现代码并建立工程。目录、命名、分层和抽象从职责与实际约束独立推导，遵守[编码与实现质量](../CONVENTIONS.md#quality)。
 
-本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。各实施阶段共同完成这份合同，阶段划分、原型覆盖和验证进度只安排工作顺序。尚未解决的设计事项记录为未完成，在形成完整实施依据前继续闭合。
+本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。每个包与独立项目由一个工作包完整交付，本体能力连同对应业务界面验收；依赖与验证进度用于安排执行。尚未解决的设计事项记录为未完成，在形成完整实施依据前继续闭合。
 
 方案取舍遵守[产品判断原则](design/product.md#judgment)，设计是否足以实施按[设计充分性与实现自由](design/engineering/conventions.md#design-completion)核对。关键业务与公开语义在规格中确定，局部实现选择在明确约束内完成。
 
-当前交付包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
+当前交付包括 clients/desktop 下的桌面本体、七个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
 
 现有界面与交互体验整体沿用，按规格作局部调整并补充新增能力；组件与内部结构按新架构独立设计，见[现有 UI 保留原则](design/ui/components.md#existing-ui)。
 
@@ -43,7 +43,7 @@
 | `design/`                                    | 当前产品与技术规则，以及理解这些规则所需的取舍理由 |
 | `implementation/work-packages.md`            | 实施依赖、交付内容与完成门槛，通过链接引用设计     |
 | `implementation/status.md`                   | 当前设计、实施、验收和发布进度                     |
-| `implementation/delivery-checklist.md`       | 使用链路、逐项扩展与独立项目的实施阶段状态         |
+| `implementation/delivery-checklist.md`       | 逐项扩展与独立项目的完整交付及消费状态             |
 | `verification/acceptance.md` 与 `scenarios/` | 测试环境、具体场景、预期结果与证据要求             |
 | `verification/coverage.md`                   | R／W／A 对应及跨领域、逐来源覆盖                   |
 | `verification/evidence/`                     | 来源依据、方案比较、试件与实测结果                 |

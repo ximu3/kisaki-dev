@@ -1,30 +1,15 @@
 # 开发监听与隔离副本
 
-核对基于 Vite 8.3.3、Chokidar 6.0.0、Turbo 2.11.10 和 2026-10-27 的实际试件。现行行为由[桌面开发合同](../../../design/engineering/workspace.md#desktop-development)定义，正式六目标运行见[W00 验收](README.md)。
+工程使用 Vite 8.3.3、Chokidar 6.0.0 和 Turbo 2.11.10。开发会话合同见[工作区](../../../design/engineering/workspace.md#desktop-development)，运行结果见[工程验证](README.md)。
 
-## 输入监听
+## 监听与就绪
 
-Linux 试件中，公共包配置在 Vite watcher 扫描完成前被修改，后续扫描没有补发该次变更。Vite 的公开 `watcher.add()` 不提供追加路径完成扫描的等待结果，首次 `ready` 也不能代表之后添加的路径就绪。
+Vite 管理 renderer HMR，Chokidar 管理完整运行时和依赖输入。会话一次登记输入并等待 ready，再开始首次编译；监听的寿命覆盖 Vite 服务重启。初始化失败释放已建立资源，运行错误交给会话处理。
 
-| 方案 | 适用性与代价 |
-| --- | --- |
-| 复用 Vite watcher | 依赖较少，但公开接口缺少追加输入的就绪边界，且服务重启需要重新注册。 |
-| 独立 Chokidar 6 | 一次传入完整运行时及公共包输入，等待 `ready`；会话拥有监听寿命，增加直接开发依赖。 |
-| @parcel/watcher 2.6 | 提供异步订阅与取消，但引入原生二进制及目录监听适配；未完成本项目接入验证。 |
-| Node fs.watch | 无额外库，需要自行处理各平台事件、重建与恢复。 |
+[输入监听用例](../../../../clients/desktop/app/tests/tools/inputs.test.ts)在真实 Vite 重启后修改源码、配置和依赖输入，验证变更仍被观察，并核对文档、测试与生成文件的排除范围。[Vite 服务器 API](https://vite.dev/guide/api-javascript.html#vitedevserver)和 [Chokidar 6 源码](https://github.com/paulmillr/chokidar/blob/6.0.0/src/index.ts)提供对应接口依据。
 
-采用独立 Chokidar 后，Linux 原型五次回归通过，正式实现再通过六目标开发场景。Vite 负责 renderer HMR，开发会话负责运行时及公共包输入；初始化和运行失败沿会话寿命处理。
+## 隔离副本
 
-依据：[Vite 公共服务器 API](https://vite.dev/guide/api-javascript.html#vitedevserver)、[Chokidar 6.0.0 实现](https://github.com/paulmillr/chokidar/blob/6.0.0/src/index.ts)、[Parcel watcher API](https://github.com/parcel-bundler/watcher#watching)及 [Node fs.watch 平台说明](https://nodejs.org/docs/latest-v24.x/api/fs.html#fswatchfilename-options-listener)。
+开发回归在独立 workspace 中安装固定依赖并建立有效 Git HEAD，使 Turbo 按源码和配置形成稳定输入身份。安装优先复用已准备的包存储，由 pnpm 补齐合成依赖解析所需的元数据。副本拥有自己的源码、合成依赖、资料目录及构建输出，测试结束后统一释放。
 
-## 隔离开发副本
-
-Turbo 2.11.10 在没有有效 Git HEAD 的副本中把生成的 `.turbo/turbo-build.log` 纳入输入，使连续构建改变任务 hash。试件建立独立 Git 上下文与空提交后，源码仍按内容参与哈希，生成日志不再改变输入。
-
-| Windows x64 副本 | 第一次构建 | 第二次构建 | 第二次命中 |
-| --- | ---: | ---: | ---: |
-| 复制目录 | 5.429 秒 | 5.135 秒 | 0 / 4 |
-| 仅 git init | 5.092 秒 | 5.101 秒 | 0 / 4 |
-| git init 与有效 HEAD | 5.511 秒 | 0.762 秒 | 4 / 4 |
-
-这是单次顺序测量，用来解释输入与命中变化，不是全 CI 的稳定提速比例。试件的提交身份和 hook 设置只作用于其独立仓库。Electron 分发文件通过公开包入口准备后再复制，避免把首次下载时机当成固定前提。
+[开发回归](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)覆盖正常退出取消、编译失败后的可用实例、源码改名恢复、依赖恢复和 HMR；[启动取消用例](../../../../clients/desktop/app/tests/tools/dev/cancellation.test.ts)验证准备进程关闭与完整重试。Electron 分发文件通过已安装包的公开入口取得，复制时保留平台链接结构。

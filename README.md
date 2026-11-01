@@ -1,18 +1,16 @@
 # Kisaki
 
-Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。本仓库提供桌面工程及[完整产品规格](refactor/README.md)。桌面工程包含四类窗口、隔离开发和原生模块的运行与验证入口；可用功能和发行情况见[实施状态](refactor/implementation/status.md)。
+Kisaki 面向游戏、动画、漫画与小说的本地资料管理和使用。本仓库维护[完整产品规格](refactor/README.md)、工程工具、原生文件能力及其验证。产品实现与发行进度见[实施状态](refactor/implementation/status.md)。
 
-桌面工程位于 `clients/desktop/app`，八个公共包和 33 个官方扩展项目分别位于相邻的 `packages` 与 `extensions/projects`。根 `packages` 中的三个私有工程包提供共享 TypeScript、ESLint 配置和工具函数。
-
-安装 Node 24.11.1、pnpm 11.11.0、Rustup 与当前平台的 C/C++ 构建工具后，运行：
+安装 `.node-version` 与根 `packageManager` 指定的 Node、pnpm，以及 Rustup 和当前平台的 C/C++ 构建工具后，运行：
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm desktop:dev
+pnpm check
 ```
 
-构建所需的资源和平台工具见 [开发指南](CONTRIBUTING.md)。开发资料位于应用的 `.local/development`，普通重启与 `clean` 会保留它。
+桌面工程测试使用独立载体和合成资料。构建、Electron、开发监听和制品验证入口见 [CONTRIBUTING](CONTRIBUTING.md)，实际源码边界见 [ARCHITECTURE](ARCHITECTURE.md)，编码要求见 [CONVENTIONS](CONVENTIONS.md)。
 
 本项目由个人维护，接受受邀协作者的 PR。问题与建议通过 [Issues](https://github.com/ximu3/kisaki/issues) 或 [Telegram](https://t.me/kisaki3) 反馈。
 
-开发与验证见 [CONTRIBUTING](CONTRIBUTING.md)，源码边界见 [ARCHITECTURE](ARCHITECTURE.md)，编码要求见 [CONVENTIONS](CONVENTIONS.md)。桌面与官方扩展采用 AGPL-3.0-only，八个公共包采用 MIT；第三方材料保留各自许可。
+本仓库工程代码采用 AGPL-3.0-only，第三方资源保留各自许可。产品与公共包的交付许可见[项目身份与许可](refactor/design/engineering/repository.md)。

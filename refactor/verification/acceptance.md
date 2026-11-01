@@ -2,7 +2,7 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[终态实现与整体一致性](../../CONVENTIONS.md#final-state)是整体质量门槛。审查按完整职责与相关场景核对模型、接口、实现、测试和说明，确认共同规则在各入口成立；既有结构与检查方式同样接受复核。
+[简洁、干净与克制](../../CONVENTIONS.md#quality)具有首要地位，并与[终态实现与整体一致性](../../CONVENTIONS.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
 [可读性](../../CONVENTIONS.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
@@ -12,7 +12,7 @@
 
 ## 验证范围与投入
 
-遵守[简洁、原生与适度复杂度](../../CONVENTIONS.md#simplicity-native)，核对直接的用户流程、既有平台能力及定制部分的依据，再按本次修改影响的行为、合同或宿主条件选择检查。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据，不机械重跑全部场景。
+遵守[简洁、原生与克制](../../CONVENTIONS.md#simplicity-native)，核对直接的用户流程、既有平台能力及定制部分的依据，再按本次修改影响的行为、合同或宿主条件选择检查。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据，不机械重跑全部场景。
 
 文档、注释和等价组织调整通常核对内容、链接、解析与适用的静态检查；运行输入或宿主行为改变时再执行相关运行验证。构建身份或文件摘要变化本身不是全量回归的充分理由。已有结果可沿仍成立的实现、依赖和环境边界复用，并说明适用范围；旧运行记录不改写成新输入的实测。
 
@@ -32,15 +32,15 @@
 
 macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现和实际协议为依据，明确调用、资源归属、能力条件及失败边界。设计定稿以这些依据及已解决的技术选择为条件，本地实机验证按后续验收范围安排。仍未确定的接口和技术选择继续完成资料核对，不能据此假定所有候选都可行。
 
-设计依据与运行结果分别记录，未执行的 macOS／Linux 场景标为未执行。正式实现与发行使用[实施状态](../implementation/status.md#environments)中登记的环境，按目标矩阵执行检查，交付按[运行覆盖规则](#runtime-coverage)判定。历史试件保留原始执行范围。
+设计依据与运行结果分别记录，未执行的 macOS／Linux 场景标为未执行。正式实现与发行使用[实施状态](../implementation/status.md#environments)中登记的环境，按目标矩阵执行检查，交付按[运行覆盖规则](#runtime-coverage)判定。每份证据注明实际执行范围。
 
-具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W13 汇总同一发行的实际结果、兼容性依据及未实测范围；跳过结果不记为通过。
+具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W23 汇总同一发行的实际结果、兼容性依据及未实测范围；跳过结果不记为通过。
 
 本次需要核实的关键范围包括来源实际端点、授权、分页、字段与对象映射，导入格式版本及转换规则，数据库运行时与迁移组合，原生桌面观察、控制与采集后端，libmpv 与 Electron 的帧交接和释放，Kana 各格式的解析与源位置恢复，以及正式制品保留加固配置后的验证入口。
 
 每项结论关联采用的版本、样本或环境、验证方式、实际结果及适用范围。已有可靠证据可以复用；尚未确定的设计事项明确保留为未完成，不能把技术选择留给实施时临时决定。macOS／Linux 的设计按上述依据核对，运行结果由实施验收记录。验证规模以解决当前设计疑问为准，普通失败仍遵守[不过度防御](../../CONVENTIONS.md#validation)的规则。
 
-设计验证通过后，W00–W13 完成正式工程、业务集成、回归、性能和制品验收。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
+设计验证通过后，W00–W23 按完整交付对象完成正式工程、业务集成、回归、性能和制品验收。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
 
 <a id="runtime-coverage"></a>
 
@@ -62,16 +62,16 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 每条主要后端还须在至少一个符合支持条件的真实环境中贯通自己的正常链路。一次用例可以同时覆盖独立库与宿主接入，证据分别标明使用的制品、接口和断言；不能把同一套原型拆成多项正式通过。
 
-| 范围 | 不可由整条“未实测”代替的最低链路 |
-| --- | --- |
-| Vantage Windows | 原实例发现、观察接续、明确控制、WGC 单窗采集及释放，并由 Kisaki 完成一次受管理使用与采集 |
-| Vantage macOS | 签名宿主的实际授权身份、AX 与 ScreenCaptureKit 窗口对应、观察／控制／采集及释放 |
-| Vantage Linux X11 | XRes 归属、窗口观察／控制、XComposite 图像及本体消费 |
-| Vantage GNOME Wayland | 实际组件加载、窗口对应、Mutter／PipeWire 采集、断连与本体收尾；旧式与 ESM 入口各取得适用运行结果 |
-| Vantage KWin Wayland | 实际 KWin 5／6 接入、控制与单窗采集，覆盖需要桌面登记和已取消该登记检查的实现分支 |
-| libmpv-node 与 Electron | Windows D3D11、macOS CGL／IOSurface、Linux EGL／dma-buf 分别完成带音频与字幕的播放、定位／切换、画面消费、截图及最终回收；Linux 消费同时覆盖 X11 与原生 Wayland |
-| Kana | 在声明维护的浏览器与实际端口中，从打包资源打开代表性的重排、原始页与混合内容，完成定位、选择／复制及关闭；Safari、WebKitGTK 和 Electron 三条维护线使用各自实际运行时 |
-| oauth-relay | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；实际部署与客户端完成各来源已承诺的授权／刷新链路，远端账号操作不因架构数量重复执行 |
+| 范围                    | 不可由整条“未实测”代替的最低链路                                                                                                                                     |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vantage Windows         | 原实例发现、观察接续、明确控制、WGC 单窗采集及释放，并由 Kisaki 完成一次受管理使用与采集                                                                             |
+| Vantage macOS           | 签名宿主的实际授权身份、AX 与 ScreenCaptureKit 窗口对应、观察／控制／采集及释放                                                                                      |
+| Vantage Linux X11       | XRes 归属、窗口观察／控制、XComposite 图像及本体消费                                                                                                                 |
+| Vantage GNOME Wayland   | 实际组件加载、窗口对应、Mutter／PipeWire 采集、断连与本体收尾；旧式与 ESM 入口各取得适用运行结果                                                                     |
+| Vantage KWin Wayland    | 实际 KWin 5／6 接入、控制与单窗采集，覆盖需要桌面登记和已取消该登记检查的实现分支                                                                                    |
+| libmpv-node 与 Electron | Windows D3D11、macOS CGL／IOSurface、Linux EGL／dma-buf 分别完成带音频与字幕的播放、定位／切换、画面消费、截图及最终回收；Linux 消费同时覆盖 X11 与原生 Wayland      |
+| Kana                    | 在声明维护的浏览器与实际端口中，从打包资源打开代表性的重排、原始页与混合内容，完成定位、选择／复制及关闭；Safari、WebKitGTK 和 Electron 三条维护线使用各自实际运行时 |
+| oauth-relay             | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；实际部署与客户端完成各来源已承诺的授权／刷新链路，远端账号操作不因架构数量重复执行                      |
 
 这些是首次交付的运行下限，具体正确性仍由所属 A 场景判断。组件加载、授权、系统接口或资源交接存在实质不同的实现分支时，分别取得至少一份运行证据；同一分支的全部系统小版本、GPU 型号与设置不要求组成笛卡尔积矩阵。普通纯规则在拥有层验证，共同机制不因调用入口多就重跑整套测试。
 
@@ -103,7 +103,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Electron 集成与端到端 | Playwright 的 Electron 能力及真实开发应用      | preload、窗口、进程、协议、生命周期和完整工作流           |
 | 正式制品              | 实际打包应用，普通产品操作与合适的外部验证方式 | 打包路径、原生依赖、fuses、资源、初始化、更新、安装和启动 |
 
-开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W11 对最终文件执行并保存结果。
+开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W22 对最终文件执行并保存结果。
 
 公共包与三种作者接入的消费检查见[工程场景](scenarios/engineering.md#public-consumers)；原生库、Kana 和 relay 的专项断言见[独立项目联合交付](scenarios/projects.md)。
 
@@ -121,41 +121,41 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 ## A01–A33 验收场景
 
-| 编号                                               | 必须成立的断言                                                                                                                                                        |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [A01](scenarios/library.md)                        | 七类条目能够完整创建，错误类型关联被拒绝，事务失败不留下半份新资料。                                                                                                  |
-| [A02](scenarios/library.md)                        | 标签、合集成员和动态转为手动均完整提交，失败时回滚，各入口查询结果一致。                                                                                              |
-| [A03](scenarios/library.md#relations)              | 四类资料关系共用稳定身份和真实约束。配音保留作品、人物与角色事实，人物和组织可以独立存在。模型、API、查询、预设与 UI 只提供这四类关系，不保留机构背景关系或替代存储。 |
-| [A04](scenarios/library.md#completion)             | 评分、日期、JSON 和 null 等值写入后能够等价读回，筛选与排序符合各自语义。                                                                                             |
-| [A05](scenarios/sources.md#records)                | UI、扩展和功能自身的后台调用使用相同业务操作，值规则和错误一致。                                                                                                      |
-| [A06](scenarios/metadata.md)                       | 来源搜索的多选结果贯通批量添加。部分完成后取消时，已提交项目保留，结果准确说明实际范围。                                                                              |
-| [A07](scenarios/metadata.md#updates)               | 来源未知、明确完整的空集合和部分来源失败，分别产生合同规定的更新效果。                                                                                                |
-| [A08](scenarios/holdings.md#directories)           | 多目录和零散文件能够独立使用。移除目录或扫描配置，以及离线、部分枚举、探测失败和确认缺失，都不会误删文件、分部关联或历史。                                            |
-| [A09](scenarios/holdings.md#recognition)           | 目录重定位保留身份。扫描期间的手动重绑定或首选变化不会被旧观察覆盖，重复核对能够收敛。                                                                                |
-| [A10](scenarios/sessions.md#games)                 | 游戏启动、监测、关闭和中断按真实事实记录，并释放对应资源。                                                                                                            |
-| [A11](scenarios/sessions.md#playback)              | 视频选择、播放、续播和切换对应正确文件与内容；自动已看只修改相应分部标记，作品完成独立记录。                                                                          |
-| [A12](scenarios/reading.md)                        | 全部支持阅读格式的分页、重排、导航、标记和打开关闭行为正确。内容隔离、书内脚本与自动联网限制，以及用户主动打开外链都真实生效。                                        |
-| [A13](scenarios/sessions.md#backups)               | 备份、锁定保留、自动备份、恢复失败和中断都有准确结果，并能按合同恢复。                                                                                                |
-| [A14](scenarios/library.md#annotations)            | 资产准备、引用提交或清理中任一阶段失败，都不会丢失原引用和用户文件。                                                                                                  |
-| [A15](scenarios/engineering.md#history)            | 长任务在视图离开后继续，取消与终态竞态正确，重启后标记 interrupted。通用历史与业务历史可以独立清理和读取。                                                            |
-| [A16](scenarios/engineering.md#events)             | 扫描监听、退出备份、应用自动检查和来源自动同步分别由所属功能负责。配置只有一个权威，停止后续触发与取消在途工作分开，停用和退出正确收尾，不重放未知副作用。            |
-| [A17](scenarios/library.md#merge)                  | 使用中的对象不能合并或删除。没有占用时，合并与删除完整处理全部引用和记录。                                                                                            |
-| [A18](scenarios/ui.md)                             | 编辑期间的刷新、目标切换、迟到查询和保存冲突都不会覆盖草稿。                                                                                                          |
-| [A19](scenarios/ui.md#search)                      | 统计选择器和详情没有循环依赖，虚拟定位、选择、锚点、焦点和筛选正确。                                                                                                  |
-| [A20](scenarios/sessions.md#shutdown)              | 主界面、阅读器、播放器、游戏面板和 Webview 状态隔离，窗口接口与资源范围正确。更新 Dialog 使用主窗口宿主。                                                             |
+| 编号                                               | 必须成立的断言                                                                                                                                                                                                                      |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [A01](scenarios/library.md)                        | 七类条目能够完整创建，错误类型关联被拒绝，事务失败不留下半份新资料。                                                                                                                                                                |
+| [A02](scenarios/library.md)                        | 标签、合集成员和动态转为手动均完整提交，失败时回滚，各入口查询结果一致。                                                                                                                                                            |
+| [A03](scenarios/library.md#relations)              | 四类资料关系共用稳定身份和真实约束。配音保留作品、人物与角色事实，人物和组织可以独立存在。模型、API、查询、预设与 UI 只提供这四类关系，不保留机构背景关系或替代存储。                                                               |
+| [A04](scenarios/library.md#completion)             | 评分、日期、JSON 和 null 等值写入后能够等价读回，筛选与排序符合各自语义。                                                                                                                                                           |
+| [A05](scenarios/sources.md#records)                | UI、扩展和功能自身的后台调用使用相同业务操作，值规则和错误一致。                                                                                                                                                                    |
+| [A06](scenarios/metadata.md)                       | 来源搜索的多选结果贯通批量添加。部分完成后取消时，已提交项目保留，结果准确说明实际范围。                                                                                                                                            |
+| [A07](scenarios/metadata.md#updates)               | 来源未知、明确完整的空集合和部分来源失败，分别产生合同规定的更新效果。                                                                                                                                                              |
+| [A08](scenarios/holdings.md#directories)           | 多目录和零散文件能够独立使用。移除目录或扫描配置，以及离线、部分枚举、探测失败和确认缺失，都不会误删文件、分部关联或历史。                                                                                                          |
+| [A09](scenarios/holdings.md#recognition)           | 目录重定位保留身份。扫描期间的手动重绑定或首选变化不会被旧观察覆盖，重复核对能够收敛。                                                                                                                                              |
+| [A10](scenarios/sessions.md#games)                 | 游戏启动、监测、关闭和中断按真实事实记录，并释放对应资源。                                                                                                                                                                          |
+| [A11](scenarios/sessions.md#playback)              | 视频选择、播放、续播和切换对应正确文件与内容；自动已看只修改相应分部标记，作品完成独立记录。                                                                                                                                        |
+| [A12](scenarios/reading.md)                        | 全部支持阅读格式的分页、重排、导航、标记和打开关闭行为正确。内容隔离、书内脚本与自动联网限制，以及用户主动打开外链都真实生效。                                                                                                      |
+| [A13](scenarios/sessions.md#backups)               | 备份、锁定保留、自动备份、恢复失败和中断都有准确结果，并能按合同恢复。                                                                                                                                                              |
+| [A14](scenarios/library.md#annotations)            | 资产准备、引用提交或清理中任一阶段失败，都不会丢失原引用和用户文件。                                                                                                                                                                |
+| [A15](scenarios/engineering.md#history)            | 长任务在视图离开后继续，取消与终态竞态正确，重启后标记 interrupted。通用历史与业务历史可以独立清理和读取。                                                                                                                          |
+| [A16](scenarios/engineering.md#events)             | 扫描监听、退出备份、应用自动检查和来源自动同步分别由所属功能负责。配置只有一个权威，停止后续触发与取消在途工作分开，停用和退出正确收尾，不重放未知副作用。                                                                          |
+| [A17](scenarios/library.md#merge)                  | 使用中的对象不能合并或删除。没有占用时，合并与删除完整处理全部引用和记录。                                                                                                                                                          |
+| [A18](scenarios/ui.md)                             | 编辑期间的刷新、目标切换、迟到查询和保存冲突都不会覆盖草稿。                                                                                                                                                                        |
+| [A19](scenarios/ui.md#search)                      | 统计选择器和详情没有循环依赖，虚拟定位、选择、锚点、焦点和筛选正确。                                                                                                                                                                |
+| [A20](scenarios/sessions.md#shutdown)              | 主界面、阅读器、播放器、游戏面板和 Webview 状态隔离，窗口接口与资源范围正确。更新 Dialog 使用主窗口宿主。                                                                                                                           |
 | [A21](scenarios/engineering.md#startup)            | 扩展入口轻量，贡献能够撤销，共享宿主崩溃或重启后旧代回复失效。[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)按真实实例正确登记与交付。安装提交前后中断、激活失败、已准备更新跨重启、目录离线和包丢失都保留准确事实。 |
-| [A22](scenarios/sources.md)                        | 全部官方扩展及三个官方译本通过各自适用的认证、任务、设置、UI、语言和分发能力验收。                                                                                    |
-| [A23](scenarios/engineering.md#public-consumers)   | 所有公开包 tarball 与生成模板在仓库外可用，没有私有源码依赖。                                                                                                         |
-| [A24](#commands)                                   | 实际消费的资源按来源、版本与目标校验，准备失败保留旧结果。                                                                                                              |
-| [A25](scenarios/engineering.md#release-identities) | 应用更新只选择 desktop 发行，预发布、分页、说明身份和缺少资源等行为符合合同。                                                                                         |
-| [A26](scenarios/engineering.md#hooks)              | hooks 安装、重复安装、卸载、部分暂存失败恢复和 worktree 行为正确，全局配置保持不变。                                                                                  |
-| [A27](scenarios/engineering.md#database)           | 新基线初始化与版本迁移、关闭重开、持久化完整性和数据目录隔离均有效。                                                                                                  |
-| [A28](#integration-gates)                          | 实际安装与便携制品的资源、ABI、数据库打开、窗口和关闭均有效；[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)的协议关联、冷启动及运行中系统交付成立。 |
-| [A29](scenarios/ui.md)                             | 英语与三个译本、主题、缩放、字体、表格、键盘和焦点达到基线。首次离线或译本安装失败时仍可操作，深链不被引导抢占，重新打开引导时展示已保存状态。                        |
-| [A30](#performance)                                | 启动、导航、列表、编辑、阅读和长流程没有未经解释的性能退化。                                                                                                          |
-| [A31](#structure)                                  | 导入边界、包依赖、运行环境、生成文件和资源清理规则实际生效。                                                                                                          |
-| [A32](#completion)                                 | 文档、公共示例、skill 路由和真实命令一致，全部入口可用。                                                                                                              |
-| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展采用本次新发行，并通过仓库外消费、资源装配、真实调用和目标环境联合验证。                                     |
+| [A22](scenarios/sources.md)                        | 全部官方扩展及三个官方译本通过各自适用的认证、任务、设置、UI、语言和分发能力验收。                                                                                                                                                  |
+| [A23](scenarios/engineering.md#public-consumers)   | 所有公开包 tarball 与生成模板在仓库外可用，没有私有源码依赖。                                                                                                                                                                       |
+| [A24](#commands)                                   | 实际消费的资源按来源、版本与目标校验，准备失败保留旧结果。                                                                                                                                                                          |
+| [A25](scenarios/engineering.md#release-identities) | 应用更新只选择 desktop 发行，预发布、分页、说明身份和缺少资源等行为符合合同。                                                                                                                                                       |
+| [A26](scenarios/engineering.md#hooks)              | hooks 安装、重复安装、卸载、部分暂存失败恢复和 worktree 行为正确，全局配置保持不变。                                                                                                                                                |
+| [A27](scenarios/engineering.md#database)           | 新基线初始化与版本迁移、关闭重开、持久化完整性和数据目录隔离均有效。                                                                                                                                                                |
+| [A28](#integration-gates)                          | 实际安装与便携制品的资源、ABI、数据库打开、窗口和关闭均有效；[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)的协议关联、冷启动及运行中系统交付成立。                                                                  |
+| [A29](scenarios/ui.md)                             | 英语与三个译本、主题、缩放、字体、表格、键盘和焦点达到基线。首次离线或译本安装失败时仍可操作，深链不被引导抢占，重新打开引导时展示已保存状态。                                                                                      |
+| [A30](#performance)                                | 启动、导航、列表、编辑、阅读和长流程没有未经解释的性能退化。                                                                                                                                                                        |
+| [A31](#structure)                                  | 导入边界、包依赖、运行环境、生成文件和资源清理规则实际生效。                                                                                                                                                                        |
+| [A32](#completion)                                 | 文档、公共示例、skill 路由和真实命令一致，全部入口可用。                                                                                                                                                                            |
+| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展采用本次新发行，并通过仓库外消费、资源装配、真实调用和目标环境联合验证。                                                                                                   |
 
 具体场景按责任组织：
 
@@ -206,8 +206,8 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                            |
 | pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                      |
 | pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                           |
-| pnpm desktop:packages:test:consumers                                  | 调度各包及根跨包消费者任务，核对实际 tarball 的结构、声明、样式与作者接入 |
-| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵                    |
+| pnpm desktop:packages:test:consumers                 | 调度各包及根跨包消费者任务，核对实际 tarball 的结构、声明、样式与作者接入 |
+| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵            |
 | pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                          |
 | pnpm install:hooks / pnpm uninstall:hooks            | 当前仓库 hooks 的明确生命周期                                             |
 | pnpm run clean                                       | 仅清理项目声明的构建输出                                                  |
@@ -228,20 +228,21 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 ## 关键集成门槛
 
-下列接入是在完成[设计验证](#design-validation)后，对正式实现进行的集成检查。接口、依赖和运行环境先通过集成测试，性能与最终制品再按所属交付阶段核对。
+正式实现按所属对象取得直接证据，消费者验证新增的业务与装配关系。下列位置用于安排首次实际接入和完整验收。
 
-| 事项                                 | 验证位置                                                                                                                                         | 未满足时的处理                                                                              |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| Drizzle 1.x 的同步执行、编码与初始化 | [W02](../implementation/work-packages.md#w02)，A01/A04/A27                                                                                       | 定位真实问题，选择经验证的固定 1.x 版本或修订具体实现；不加双驱动兼容框架掩盖问题           |
-| 条目基础表与类型表的查询及写入成本   | [W02](../implementation/work-packages.md#w02)–[W04](../implementation/work-packages.md#w04)，A30                                                 | 调整索引、查询与操作粒度；查询快照仅由当前视图持有                                          |
-| 正式加固产物的可执行测试方式         | [W00](../implementation/work-packages.md#w00)、[W11](../implementation/work-packages.md#w11)，A28                                                | 完成外部可观察或真实操作验证，保留生产 fuses                                                |
-| 主进程同步查询与长流程响应           | [W02](../implementation/work-packages.md#w02)、[W06](../implementation/work-packages.md#w06)、[W07](../implementation/work-packages.md#w07)，A30 | 先优化无界工作；重 CPU 工作按真实需求移出，保持完整事务边界                                 |
-| Solid UI、CSS 与字体独立消费         | [W01](../implementation/work-packages.md#w01)、[W08](../implementation/work-packages.md#w08)，A23/A29                                            | 修正公开入口和宿主注入，不能依赖仓库源码扫描                                                |
-| 共享扩展进程的重启和上下文           | [W08](../implementation/work-packages.md#w08)，A21                                                                                               | 消除旧代注册/调用，准确报告影响全部扩展的故障范围                                           |
-| 官方来源扩展的远端行为变化           | [W09](../implementation/work-packages.md#w09)，A22                                                                                               | 使用稳定 fixture 测契约，必要时做经授权的真实连通验证；来源失效必须修复，并更新对应回归用例 |
-| 媒体运行依赖的完整交付             | [W06](../implementation/work-packages.md#w06)、[W07](../implementation/work-packages.md#w07)、[W11](../implementation/work-packages.md#w11)，A24                                                | 从 libmpv-node 制品取得固定运行库及许可材料，核对实际包与目标输入                                             |
-| Hooks 的共同 Git 配置与用户后改配置  | [W00](../implementation/work-packages.md#w00)、[W11](../implementation/work-packages.md#w11)，A26                                                | 保持现有配置，修正安装/卸载归属；不强制重置全局                                             |
-| 系统支持目标                         | [W11](../implementation/work-packages.md#w11)，A28                                                | 按工程设计的六个系统与架构目标、最低系统和分发形式逐项验证                                  |
+| 事项                      | 验证位置                                                                                                                                                                           | 核对内容                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Drizzle 1.x、编码与初始化 | [W06](../implementation/work-packages.md#w06)，A01、A04、A27                                                                                                                       | 正式驱动、迁移、事务、读回与重开                            |
+| 资料查询与写入成本        | [W06](../implementation/work-packages.md#w06)、[W08](../implementation/work-packages.md#w08)，A30                                                                                  | 实际结构、索引、查询、操作粒度和视图快照                    |
+| 统一调用机制              | [W04](../implementation/work-packages.md#w04) 内核；[W07](../implementation/work-packages.md#w07) 窗口；[W10](../implementation/work-packages.md#w10) 开发接入，A20、A23、A28、A31 | 有限内核的独立消费与真实通道试件；实际端点随消费者验收      |
+| Solid UI、CSS 与字体      | [W01](../implementation/work-packages.md#w01)、[W05](../implementation/work-packages.md#w05)、[W07](../implementation/work-packages.md#w07)，A23、A29                              | 包独立消费、原生交互、宿主资源与完整外观                    |
+| SDK、作者工具与共享宿主   | [W09](../implementation/work-packages.md#w09)、[W10](../implementation/work-packages.md#w10)，A21、A23                                                                             | 真实 Node、Webview、实例、重建、开发及安装流程              |
+| 主进程查询与长流程响应    | [W08](../implementation/work-packages.md#w08)、[W15](../implementation/work-packages.md#w15)–[W19](../implementation/work-packages.md#w19)，A30                                    | 业务规模、完整事务、取消及界面响应                          |
+| 官方来源与迁移输入        | [W21](../implementation/work-packages.md#w21)，A22                                                                                                                                 | 每项真实语义、适用连通、夹具与完整宿主消费                  |
+| 媒体库与目标资源          | [W13](../implementation/work-packages.md#w13)，A24、A33                                                                                                                            | 独立项目全部目标制品、固定运行库与许可                      |
+| 媒体业务接入              | [W16](../implementation/work-packages.md#w16)、[W18](../implementation/work-packages.md#w18)，A11、A24、A28                                                                        | 文件信息、播放、纹理交接与最终引用回收                      |
+| 加固载体、系统下限与更新  | [W00](../implementation/work-packages.md#w00) 工程入口；[W22](../implementation/work-packages.md#w22) 最终制品，A25、A28                                                           | 生产 fuses、六目标、安装升级与真实更新操作                  |
+| hooks 与 Git 配置         | [W00](../implementation/work-packages.md#w00)，A26                                                                                                                                 | 安装、卸载、暂存失败恢复与 worktree；后续改动按实际影响复核 |
 
 此外，按[构建合同](../design/engineering/build.md)验证 Windows 10 双架构、macOS 稳定代码身份下的更新，以及 Linux 原生桌面能力。按[独立项目合同](../design/projects/README.md)验证 Kana 源坐标与原生帧释放。
 
@@ -257,20 +258,20 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 源码质量与工具组织同时取得[可读性、注释覆盖和 tools 结构](scenarios/engineering.md#source-quality)的审查与验证记录，范围包括运行实现、原生接入、工具、配置和测试。
 
-| 检查范围与规则来源                                                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
-| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../../CONVENTIONS.md#source-layout)                                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
-| [公开能力拥有者](../design/domains/library-operations.md#ownership)、[条目／分部／关系组织](../design/domains/library-operations.md#catalog-regions)                                                                     | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
-| [整理与个人记录](../design/domains/library-operations.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                                                  | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
-| [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
-| [会话组织](../design/domains/sessions.md#organization)                                                                                                                                                                   | 并发打开、失败、旧身份控制、退出与占用释放的运行记录                            | 实例登记是运行事实的唯一来源，接纳、占用、记录与资源收尾保持同一真实寿命                    |
-| [获取与采用](../design/domains/metadata.md#organization)、[扫描拥有者](../design/domains/scanner.md#organization)                                                                                                        | 来源读取、采用、TaskRun、ScanRun 与报告的调用及状态对应                         | 临时来源资源、正式提交和运行历史各有归属，任务粒度与失败后的剩余事实符合合同                |
-| [扩展组织](../design/extensions/runtime.md#organization)、[消息协议](../design/engineering/protocols.md)                                                                                                                 | 包准备／采用／激活、实例重建、窗口与 SDK 调用、取消及资源释放记录               | 版本与运行结果分别报告，旧代调用失效，接入没有越过真实开放范围或复制业务状态                |
-| [虚拟化](../design/ui/virtualization.md)、[窗口与状态](../design/architecture.md#renderer)                                                                                                                               | TanStack 接入、业务行映射、查询快照、草稿及窗口销毁记录                         | 几何与业务数据边界成立，真实身份不依赖 DOM；局部数据和组件寿命满足实际交互                  |
-| [独立产品](../design/projects/README.md#purpose)、[Kisaki 接入](../design/engineering/integrations.md)                                                                                                                   | 项目自身的公开消费者与平台制品；本体联合消费记录                                | 独立合同可实际消费，库内保证与应用业务职责分别成立，接入不引用项目私有源码                  |
-| [本体私有原生能力](../design/engineering/native.md)                                                                                                                                                                      | Node 入口与声明、原生导出核对、导入图、目标制品及最终应用加载记录               | 类型与加载归原生工程，设施只保留应用接入；原生制品与本体构建对应，适用生命周期有运行验证    |
-| [工程工作流](../design/engineering/workspace.md)、[发行说明](../design/engineering/releases.md#notes)                                                                                                                    | 构建输入、输出拥有者、进程交接、版本及说明源到制品的对应                        | 工程命令和发行来源可复核，运行资源与版本对应；生成结果没有另一份手写事实来源                |
+| 检查范围与规则来源                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
+| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../../CONVENTIONS.md#source-layout)                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
+| [公开能力拥有者](../design/domains/library-operations.md#ownership)、[条目／分部／关系组织](../design/domains/library-operations.md#catalog-regions)                                     | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
+| [整理与个人记录](../design/domains/library-operations.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                  | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
+| [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
+| [会话组织](../design/domains/sessions.md#organization)                                                                                                                                   | 并发打开、失败、旧身份控制、退出与占用释放的运行记录                            | 实例登记是运行事实的唯一来源，接纳、占用、记录与资源收尾保持同一真实寿命                    |
+| [获取与采用](../design/domains/metadata.md#organization)、[扫描拥有者](../design/domains/scanner.md#organization)                                                                        | 来源读取、采用、TaskRun、ScanRun 与报告的调用及状态对应                         | 临时来源资源、正式提交和运行历史各有归属，任务粒度与失败后的剩余事实符合合同                |
+| [扩展组织](../design/extensions/runtime.md#organization)、[消息协议](../design/engineering/protocols.md)                                                                                 | 包准备／采用／激活、实例重建、窗口与 SDK 调用、取消及资源释放记录               | 版本与运行结果分别报告，旧代调用失效，接入没有越过真实开放范围或复制业务状态                |
+| [虚拟化](../design/ui/virtualization.md)、[窗口与状态](../design/architecture.md#renderer)                                                                                               | TanStack 接入、业务行映射、查询快照、草稿及窗口销毁记录                         | 几何与业务数据边界成立，真实身份不依赖 DOM；局部数据和组件寿命满足实际交互                  |
+| [独立产品](../design/projects/README.md#purpose)、[Kisaki 接入](../design/engineering/integrations.md)                                                                                   | 项目自身的公开消费者与平台制品；本体联合消费记录                                | 独立合同可实际消费，库内保证与应用业务职责分别成立，接入不引用项目私有源码                  |
+| [本体私有原生能力](../design/engineering/native.md)                                                                                                                                      | Node 入口与声明、原生导出核对、导入图、目标制品及最终应用加载记录               | 类型与加载归原生工程，设施只保留应用接入；原生制品与本体构建对应，适用生命周期有运行验证    |
+| [工程工作流](../design/engineering/workspace.md)、[发行说明](../design/engineering/releases.md#notes)                                                                                    | 构建输入、输出拥有者、进程交接、版本及说明源到制品的对应                        | 工程命令和发行来源可复核，运行资源与版本对应；生成结果没有另一份手写事实来源                |
 | [编码规范](../../CONVENTIONS.md)、[源码语言](../../CONVENTIONS.md#source-language)、[文案](../design/ui/components.md#copy)、[注释及文档](../design/engineering/documentation.md#owners) | 源码清单、类型与 lint 结果、代码审查、真实界面、公开示例和文档引用检查          | 自维护 Node 与浏览器源码使用 TypeScript；表达与职责相符，公开示例可运行，无用途内容完成清理 |
 
 检查同时使用静态依赖、正式制品与实际运行证据；单独的目录树或声明不能证明运行寿命正确。发现差异时回到唯一设计拥有者处理，再同步验收记录，不在本页追加平行例外。
@@ -283,7 +284,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 - R01–R32 和 A01–A33 都有适用实现与真实证据，必需工作没有遗留。四个独立项目完成自身工程，并且新制品已经由调用方真实消费。
 - 七种 Entry、五种 Part、四类关系、个人记录、持有内容和附件的语义一致。UI、扩展与后台共用本体操作，全部原生窗口、入口和失败路径可用。
-- 33 项扩展、三个译本、三种作者模板和八个公共包完成仓库外消费验收，新库持久化与隔离通过验证。
+- 33 项扩展、三个译本、三种作者模板和七个公共包完成仓库外消费验收，新库持久化与隔离通过验证。
 - 六个目标的正式包完整生成，资源、ABI、签名与兼容性依据均已核对；在可用环境完成更新、普通与便携运行及失败恢复测试，各系统与架构的实际覆盖分别记录。更新器不会误选工具或 SDK 发布，hooks 的安装卸载、部分暂存和 worktree 不改变全局配置。
 - 最终文件附有实际许可、NOTICE、额外许可所需权利、对应源码和构建材料。发行与说明更正使用已经验证的字节。
 - 现有界面与交互体验整体保留，主要布局、视觉风格、信息密度和常用操作通过基线对照。规格规定的局部调整、新增界面及局部修复与整体一致，没有全局视觉改版、导航重组或普遍更换交互方式，也没有未经解释的性能退化、资源泄漏或主线程无界工作。

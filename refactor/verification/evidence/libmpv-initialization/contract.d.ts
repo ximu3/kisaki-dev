@@ -1,4 +1,4 @@
-/** Creation proposal specimen, not the complete Mpv interface or option catalogue. */
+/** Declaration specimen for creation, defaults and initialization results. */
 import type { MpvNode, MpvValue } from '../libmpv-explicit-values/contract.js'
 import type { Mpv } from '../libmpv-control/contract.js'
 import type {

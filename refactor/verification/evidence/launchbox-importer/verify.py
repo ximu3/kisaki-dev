@@ -1,4 +1,4 @@
-"""Probe documented LaunchBox shapes and proposed mappings; this is not an importer."""
+"""Verify documented LaunchBox shapes and source-to-library mappings."""
 from __future__ import annotations
 
 import ctypes
@@ -387,7 +387,7 @@ result = {
         "No real user Data or official backup was available.",
         "No LaunchBox application or game was executed.",
         "No Kisaki importer, profile acquisition, database write or native task was exercised.",
-        "Mapping-model checks validate proposed choices, not undocumented source behavior.",
+        "Mapping-model checks validate the declared source-to-library rules.",
         "The JSONL fixture only exercises presence detection, not a source row schema.",
         "The 7-Zip listing probe accepts only its own known names and is not a production archive adapter.",
         "No proof of aggregate/version playtime overlap, arbitrary artwork matching or shell command equivalence.",

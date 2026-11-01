@@ -4,24 +4,23 @@
 
 ## 本体与公共边界
 
-| 范围 | 记录 |
-| --- | --- |
-| W00 工程与验收 | [六目标、本机专项与范围](w00/README.md) |
-| CI 与合并门禁 | [任务选择、反馈实测、标题事件与分支保护](w00/ci.md) |
-| 构建与开发 | [Node 构建比较](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md) |
-| 声明检查 | [分工依据与代表性测量](w00/declaration-checks.md) |
-| AppImage 启动 | [政策比较与实际沙箱状态](appimage-policy/2026-10-26/README.md) · [采用验证](appimage-policy/2026-10-26/adoption/README.md) |
-| 开发连接 | [加固设置下的比较](development-ipc/2026-10-26/README.md) · [合同与实现验证](development-ipc/2026-10-26/implementation/README.md) |
-| 官方来源、迁移格式与译本 | [逐项证据](extensions.md) |
-| 默认分集与辅助资料集 | [身份对应及上游资料](metadata-reachability/2026-10-24/README.md) |
-| 媒体信息 | [读取范围与实测](media-information/2026-10-24/README.md) |
-| 会话结果与存档格式 | [类型消费与 ZIP 编码](contract-closure/2026-10-24/README.md) |
-| 存档恢复、查询与事务 | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md) |
-| 公共值与 Drizzle RC | [声明和隔离运行检查](public-contracts/2026-10-22/README.md) |
-| 日期、界面隔离与开发工具 | [技术对照](technical-tradeoffs/2026-10-22/README.md) |
-| 时钟、分部匹配与截图 | [规则及原生探针](contract-closure/2026-10-22/README.md) |
-| 大集合与扫描报告 | [容量模型](capacity/README.md) |
-| 原生工程与平台接口 | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |
+| 范围                     | 记录                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| W00 工程与验收           | [当前工程与本机验证](w00/README.md)                                                                     |
+| 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
+| 构建与开发               | [Node 构建与解析](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md)                        |
+| 声明检查                 | [声明检查分工](w00/declaration-checks.md)                                                               |
+| AppImage 启动            | [采用配置与实际进程隔离](appimage-policy/2026-10-26/README.md)                                          |
+| 开发连接                 | [Node 传输与实际退出](development-ipc/2026-10-26/README.md)                                             |
+| 官方来源、迁移格式与译本 | [逐项证据](extensions.md)                                                                               |
+| 媒体信息                 | [读取范围与实测](media-information/2026-10-24/README.md)                                                |
+| 会话结果与存档格式       | [类型消费与 ZIP 编码](contract-closure/2026-10-24/README.md)                                            |
+| 存档恢复、查询与事务     | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                              |
+| Drizzle RC               | [编码、迁移和隔离运行](public-contracts/2026-10-22/README.md)                                           |
+| 日期、虚拟化与界面隔离   | [技术验证](technical-tradeoffs/2026-10-22/README.md)                                                    |
+| 时钟、分部匹配与截图     | [规则及原生探针](contract-closure/2026-10-22/README.md)                                                 |
+| 大集合与扫描报告         | [容量模型](capacity/README.md)                                                                          |
+| 原生工程与平台接口       | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |
 
 <a id="vantage"></a>
 
@@ -44,7 +43,7 @@
 | 格式与定位       | [阅读路线](kana/reading-route.md)、[源地址](kana-source/source-addresses.md)、[CFI](kana-cfi/cfi.md)、[源映射](kana-source-mapping/mapping.md)、[格式组合](kana-format-integration/integration.md) |
 | XML 与编码       | [XML 入口](kana-xml-entry/entry.md)、[编码与实体](kana-xml-codecs/codecs.md)                                                                                                                       |
 | KF8 与图片       | [固定 KF8](kana-kf8-fixed/fixed.md)、[图片顺序](kana-image-order/node-contract.json)                                                                                                               |
-| 布局与样式       | [分页比较](kana-pagination-review/review.md)、[断页机制](kana-breaks/breaks.md)、[布局边界](kana-layout-boundaries/boundaries.md)、[样式转换](kana-style-conversion/conversion.md)                 |
+| 布局与样式       | [原生分页](kana-browser-scope/browser-scope.md)、[布局边界](kana-layout-boundaries/boundaries.md)、[样式转换](kana-style-conversion/conversion.md)                                                 |
 | 原文、交互与焦点 | [原文及截图](kana-content/content-and-view.md)、[交互来源](kana-interaction/source-review.md)、[焦点](kana-focus/focus.md)                                                                         |
 | 资源与浏览器     | [资源运行](kana-resource-runtime/runtime.md)、[部署接入](kana-resource-transport/transport.md)、[浏览器范围](kana-browser-scope/browser-scope.md)                                                  |
 
@@ -54,7 +53,7 @@
 
 | 范围                 | 记录                                                                                                                                                                                                          |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 值与调用             | [值表示](libmpv-values/verification.md)、[方案比较](libmpv-values/alternatives.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md)                                              |
+| 值与调用             | [值表示](libmpv-explicit-values/verification.md)、[消息传递](libmpv-value-options/verification.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md)                              |
 | 订阅、事件与流       | [订阅](libmpv-subscriptions/verification.md)、[事件](libmpv-notifications/verification.md)、[流](libmpv-streams/verification.md)、[属性](libmpv-properties/verification.md)                                   |
 | 初始化与运行库       | [初始化](libmpv-initialization/verification.md)、[常驻运行库](libmpv-runtime/runtime.md)、[Node 桥接](libmpv-node-bridge/verification.md)                                                                     |
 | 输出、播放与资源寿命 | [输出合同](libmpv-video/verification.md)、[GPU](libmpv-gpu/verification.md)、[软件输出](libmpv-output/verification.md)、[播放](libmpv-playback/verification.md)、[跨进程交接](libmpv-handoff/verification.md) |
@@ -70,6 +69,6 @@
 | -------------- | ---------------------------------------------------------------------- |
 | 协议与配置     | [HTTP 和配置试件](oauth-relay-protocol/protocol.md)                    |
 | 上游授权绑定   | [Bangumi／AniList 实测](oauth-relay-provider/providers.md)             |
-| HTTPS 传输     | [重定向、重发、响应计限与取消](oauth-relay-integration/integration.md) |
+| HTTP 传输机制  | [重定向、重发、响应计限与取消](oauth-relay-integration/integration.md) |
 | 构建与停止     | [Compose、镜像清单及 Node 收尾](oauth-relay-delivery/delivery.md)      |
 | 协议与工程来源 | [官方接口核对](oauth-relay/organization-sources.md)                    |

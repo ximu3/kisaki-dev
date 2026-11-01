@@ -138,7 +138,7 @@ assert "SHARED_IMAGE_USAGE_GLES2_READ" in linux_usage
 assert "SHARED_IMAGE_USAGE_DISPLAY_READ" in linux_usage
 
 result = {
-    "status": "platform-and-output-proposal-source-review",
+    "status": "platform-and-output-source-review",
     "mpv": {"version": "0.41.0", "commit": MPV},
     "electron": {"version": "44.5.1", "commit": ELECTRON},
     "angle": {"commit": ANGLE, "selectedForRelease": False},

@@ -1,6 +1,6 @@
 # oauth-relay HTTP 与配置设计验证
 
-对应 [已确认的 HTTP 与运行配置](../../../design/projects/oauth-relay/protocol.md)。本轮运行隔离的 Hono 服务、受控上游和 loopback 接收器，核对已确认模型的关键执行条件，并为参数、错误和配置细化提供证据。没有创建正式 relay 项目、读取真实凭据、发起真实来源授权、撤销令牌或修改现有部署。
+对应 [已确认的 HTTP 与运行配置](../../../design/projects/oauth-relay/protocol.md)。运行隔离的 Hono 服务、受控上游和 loopback 接收器，核对已确认模型的关键执行条件，并为参数、错误和配置细化提供证据。没有创建正式 relay 项目、读取真实凭据、发起真实来源授权、撤销令牌或修改现有部署。
 
 ## 固定输入
 
@@ -45,7 +45,7 @@ Hono 路由通过 Node adapter 监听真实本机端口。调用方使用 HTTP �
 
 ## 来源结论与保留问题
 
-Google 的公开发现文档列出 S256，固定版官方 Node 客户端提供 tokeninfo 的实际请求方式；Bangumi 的固定说明列出短 code 窗口、刷新与 token_status；AniList 的官方示例使用 JSON token 请求。AniList 刷新继续采用[此前真实结果](../anime-platforms/live-api.md)，本轮没有重做授权或用文档否定实际能力。
+Google 的公开发现文档列出 S256，固定版官方 Node 客户端提供 tokeninfo 的实际请求方式；Bangumi 的固定说明列出短 code 窗口、刷新与 token_status；AniList 的官方示例使用 JSON token 请求。AniList 刷新继续采用[真实结果](../anime-platforms/live-api.md)。
 
 该实验结束时，Bangumi／AniList 的上游 PKCE 与授权请求绑定仍需真实核验，接收未知参数并不证明服务器会校验它。随后执行的[真实授权对照](../oauth-relay-provider/providers.md)确认了当前应用接受错误及缺失 verifier；本报告的模拟结果没有被改写成真实来源结果。relay 自身的会话检查仍不补齐上游绑定。[RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.5)
 

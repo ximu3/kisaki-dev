@@ -83,23 +83,8 @@ test('pnpm registers the maintained projects with unique identities and the inte
 
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
-    if (directory.startsWith('clients/desktop/packages/')) {
-      expect(manifest.license).toBe('MIT')
-      expect(manifest.publishConfig).toMatchObject({ access: 'public' })
-    } else if (
-      directory === 'clients/desktop/app' ||
-      directory.startsWith('clients/desktop/extensions/projects/') ||
-      ['packages/tooling', 'packages/typescript-config', 'packages/eslint-config'].includes(
-        directory,
-      )
-    ) {
-      expect(manifest.private).toBe(true)
-      expect(manifest.license).toBe('AGPL-3.0-only')
-    }
-
-    if (directory.startsWith('clients/desktop/extensions/projects/')) {
-      expect(manifest.name).toMatch(/^@kisaki3\/ext-/)
-    }
+    expect(manifest.private, directory).toBe(true)
+    expect(manifest.license, directory).toBe('AGPL-3.0-only')
   }
 })
 
@@ -123,9 +108,6 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
       configs.push(resolve(directory, 'tsconfig.json'))
     }
   }
-
-  // This standalone project is typechecked after installation by the desktop consumer suite.
-  configs.push(resolve('tests/desktop/fixtures/consumers/tsconfig.json'))
 
   const checked = new Set<string>()
   const checkedDeclarations = new Set<string>()

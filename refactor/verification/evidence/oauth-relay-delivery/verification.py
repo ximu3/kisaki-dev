@@ -11,7 +11,6 @@ read = lambda name: json.loads((HERE/name).read_text(encoding='utf-8'))
 inputs = read('source-input.json')
 compose = read('compose-contract.json')
 lifecycle = read('lifecycle-contract.json')
-initial = read('initial-observations.json')
 work = Path(inputs['work'])
 
 assert inputs['prepareSha256'] == h(HERE/'prepare.py')
@@ -62,19 +61,15 @@ for case in lifecycle['cases']:
         assert case['requestResult'].get('connectionClosed') or case['requestResult'].get('status') == 503
     else:
         assert case['requestResult'] == {'status':200, 'body':{'complete':True}}
-assert h(initial['lifecycle']['source']) == initial['lifecycle']['sha256']
-assert initial['lifecycle']['forcedObserved'] and not initial['lifecycle']['forcedExpected']
-assert initial['compose']['observedDollarEscaping']
 
 for receipt, keys in [
     (inputs, ['dockerEngineUsed', 'baseImageLayersDownloaded', 'systemInstallationChanged', 'realCredentialsUsed']),
     (compose, ['dockerEngineUsed', 'containerStarted', 'imageBuilt', 'realCredentialsUsed', 'composeConfigExpandedIntoPublicEvidence']),
-    (lifecycle, ['nativePosixSignalExecuted', 'dockerStopExecuted', 'actualProviderRequests', 'productionRelayImplemented']),
-    (initial, ['realCredentialsUsed'])
+    (lifecycle, ['nativePosixSignalExecuted', 'dockerStopExecuted', 'actualProviderRequests', 'productionRelayImplemented'])
 ]:
     assert all(receipt[key] is False for key in keys)
 
-# These files were read while diagnosing the recorded initial assertions.
+# Fixed sources define Compose escaping and Node connection cleanup.
 supporting_sources = []
 for filename, url in [
     ('compose-command.txt', 'https://raw.githubusercontent.com/docker/compose/v5.6.0/cmd/compose/config.go'),
@@ -89,11 +84,11 @@ result = {'checkedAt':datetime.now(timezone.utc).isoformat(),
           'nodeShutdownCases':2, 'baseImagePlatforms':['linux/amd64', 'linux/arm64'],
           'supportingSources':supporting_sources,
           'receipts':{name:h(HERE/name) for name in ['source-input.json', 'compose-contract.json',
-                      'lifecycle-contract.json', 'initial-observations.json']},
+                      'lifecycle-contract.json']},
           'blueprints':{name:h(HERE/name) for name in ['Dockerfile', '.dockerignore', 'compose.yaml', '.env.example']},
           'verificationSha256':h(__file__), 'networkRequestsExecuted':False,
           'nativeFixturesRerun':False, 'imageBuilt':False, 'containerStarted':False,
           'realCredentialsUsed':False}
-(HERE/'verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+(HERE/'verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
 print(json.dumps({'savedHashesMatch':True, 'composeLiteralValuesPreserved':True,
                   'nodeShutdownCases':2, 'imageBuilt':False, 'containerStarted':False}))

@@ -1,4 +1,4 @@
-"""Read actual synthetic bytes and check the proposed YACReader conversion boundaries."""
+"""Read synthetic bytes and check YACReader conversion boundaries."""
 
 import hashlib
 import io

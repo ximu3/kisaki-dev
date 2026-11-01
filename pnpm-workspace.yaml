@@ -1,8 +1,6 @@
 packages:
   - packages/*
   - clients/desktop/app
-  - clients/desktop/packages/*
-  - clients/desktop/extensions/projects/*
 autoInstallPeers: false
 
 catalog:
@@ -11,18 +9,14 @@ catalog:
   eslint: 10.13.0
   jiti: 2.7.0
   solid-js: 1.9.16
-  tailwindcss: 4.3.3
-  tsdown: 0.23.0
   tsx: 4.23.15
   typescript: 6.0.3
   typescript-eslint: 8.72.0
-  unplugin-solid: 2.0.0
   vite: 8.3.3
   vite-plugin-solid: 2.11.14
   vitest: 5.0.5
 
 allowBuilds:
-  '@parcel/watcher': false
   better-sqlite3: false
   electron: true
   electron-winstaller: false

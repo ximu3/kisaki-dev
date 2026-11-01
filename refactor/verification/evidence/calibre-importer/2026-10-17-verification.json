@@ -1,6 +1,5 @@
 {
   "checkedAt": "2026-10-17T08:14:25.420Z",
-  "status": "design-confirmed",
   "design": "../../../design/extensions/importers/calibre.md",
   "baseline": {
     "release": "v9.16.0",

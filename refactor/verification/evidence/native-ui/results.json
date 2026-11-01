@@ -1,0 +1,50 @@
+{
+  "versions": {
+    "electron": "45.0.0",
+    "chromium": "156.0.8078.48"
+  },
+  "results": {
+    "capabilities": {
+      "baseSelect": true,
+      "anchorPositioning": true,
+      "dialogClosedBy": true,
+      "requestClose": "function",
+      "popover": "function"
+    },
+    "requiredWithValue": true,
+    "requiredWithoutValue": false,
+    "reset": {
+      "choice": "alpha",
+      "enabled": "on",
+      "volume": "25"
+    },
+    "cancelledReset": "beta",
+    "disabled": {
+      "select": true,
+      "checkbox": true,
+      "formEntries": []
+    },
+    "modalFocusContained": true,
+    "cancelable": true,
+    "preventedClose": true,
+    "focusRestored": true,
+    "toggleEvents": [
+      {
+        "state": "open",
+        "cancelable": true
+      },
+      {
+        "state": "closed",
+        "cancelable": false
+      }
+    ],
+    "richSelectResult": {
+      "appearance": "base-select",
+      "selectedContent": "Alpha"
+    },
+    "multipleSelectResult": {
+      "appearance": "base-select",
+      "height": 97.5999984741211
+    }
+  }
+}

@@ -42,7 +42,7 @@ assert.equal(Object.getPrototypeOf(record), null)
 
 const receipt = {
   purpose:
-    'JavaScript encoding and data representation only; no proposed value classes or addon executed',
+    'JavaScript encoding and data representation checks',
   nodeVersion: process.version,
   checkedAt: new Date().toISOString(),
   validUtf8RoundTrips: validTexts.length,
@@ -51,7 +51,7 @@ const receipt = {
   duplicateKeyLossInObjectAndMapObserved: true,
   nullPrototypeSpecialKeysPreserved: true,
   nativeAddonExecuted: false,
-  proposedValueClassesExecuted: false,
+  nativeValueClassesExecuted: false,
   screenshotOrGpuExecuted: false
 }
 writeFileSync(

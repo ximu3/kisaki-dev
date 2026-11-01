@@ -43,4 +43,6 @@ python refactor/verification/evidence/libmpv-native/compare-sources.py
 
 本次只证明上述 C 调用在这一 Windows x64 构建和主机上的结果。未验证 Node Promise／线程安全回调、异步提供器资源交接、完整属性目录、原生图形、硬件解码、HDR、其他架构或其他操作系统。对应标记保持 false，固定版本、正式制品与六目标验收仍须分别完成。
 
-后续[Node 桥接原型](../libmpv-node-bridge/verification.md)复用相同 DLL，单独记录真实 addon 与异步提供器的运行证据；不改写本组 C API 探针的历史标记。
+[Node 桥接试件](../libmpv-node-bridge/verification.md)使用相同 DLL，验证真实 addon 与异步提供器。
+
+准备归档时，通过 KISAKI_PROBE_7ZIP 提供 7-Zip 的绝对可执行路径；归档身份继续按固定摘要核对。

@@ -1,13 +1,12 @@
-/** Exercise real ICU dependencies and a bounded model of the proposed translation contract. */
+/** Exercise real ICU dependencies and a bounded model of the translation contract. */
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = dirname(fileURLToPath(import.meta.url))
-const repo = resolve(root, '../../../..')
 const dependencyRoot = process.argv[2]
 if (!dependencyRoot) throw new Error('Provide the isolated proof dependency directory.')
 const dependencyRequire = createRequire(join(resolve(dependencyRoot), 'package.json'))
@@ -636,90 +635,6 @@ check('Generated ICU call types accept valid calls and reject seven invalid case
   )
 )
 
-const inventory = []
-for (const locale of ['en', 'zh-hans', 'zh-hant', 'ja']) {
-  const directory = join(repo, 'apps/desktop/src/shared/i18n/messages', locale)
-  const files = (await readdir(directory))
-    .filter((name) => name.endsWith('.ts') && name !== 'index.ts')
-    .sort()
-  const leaves = new Map()
-  const sourceFiles = []
-  for (const name of files) {
-    const bytes = await readFile(join(directory, name))
-    const source = ts.createSourceFile(name, bytes.toString('utf8'), ts.ScriptTarget.Latest, true)
-    sourceFiles.push({
-      path: `apps/desktop/src/shared/i18n/messages/${locale}/${name}`,
-      bytes: bytes.length,
-      sha256: hash(bytes)
-    })
-    function unwrap(node) {
-      while (
-        ts.isSatisfiesExpression(node) ||
-        ts.isAsExpression(node) ||
-        ts.isParenthesizedExpression(node)
-      )
-        node = node.expression
-      return node
-    }
-    function visit(node, prefix) {
-      node = unwrap(node)
-      if (ts.isObjectLiteralExpression(node)) {
-        for (const member of node.properties) {
-          if (!ts.isPropertyAssignment(member))
-            throw new Error('Unexpected current catalog property.')
-          const key = member.name.text
-          visit(member.initializer, `${prefix}.${key}`)
-        }
-      } else {
-        leaves.set(
-          prefix,
-          ts.isStringLiteralLike(node)
-            ? 'text'
-            : ts.isArrowFunction(node) || ts.isFunctionExpression(node)
-              ? 'function'
-              : 'expression'
-        )
-      }
-    }
-    for (const statement of source.statements) {
-      if (
-        !ts.isVariableStatement(statement) ||
-        !statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
-      )
-        continue
-      for (const declaration of statement.declarationList.declarations) {
-        if (
-          declaration.initializer &&
-          ts.isObjectLiteralExpression(unwrap(declaration.initializer))
-        )
-          visit(declaration.initializer, declaration.name.text)
-      }
-    }
-  }
-  inventory.push({
-    locale,
-    domainFiles: files.length,
-    leaves: leaves.size,
-    functionLeaves: [...leaves.values()].filter((type) => type === 'function').length,
-    expressionLeaves: [...leaves.values()].filter((type) => type === 'expression').length,
-    keys: [...leaves.keys()].sort(),
-    sourceFiles
-  })
-}
-check('Existing four catalogs were inspected without executing their code', () =>
-  assert.ok(inventory.every((item) => item.domainFiles > 0 && item.leaves > 0))
-)
-check('Existing function-valued messages require deliberate ICU conversion', () =>
-  assert.ok(inventory.every((item) => item.functionLeaves > 0))
-)
-check('Existing four catalogs have the same static leaf paths', () => {
-  for (const item of inventory.slice(1)) assert.deepEqual(item.keys, inventory[0].keys)
-})
-for (const item of inventory) delete item.keys
-await writeFile(
-  join(root, 'existing-catalog-inventory.json'),
-  `${JSON.stringify({ sourceApplicationExecuted: false, sourceCodeExecuted: false, catalogs: inventory }, null, 2)}\n`
-)
 for (const fixture of fixtureHashes)
   check(`Fixture unchanged: ${fixture.path}`, () =>
     assert.equal(hash(readFileSyncForCheck(fixture.path)), fixture.sha256)
@@ -779,13 +694,7 @@ console.log(
   JSON.stringify({
     passed: result.passed,
     failed: result.failed,
-    representativeKeys: english.size,
-    existingCatalogs: inventory.map(({ locale, domainFiles, leaves, functionLeaves }) => ({
-      locale,
-      domainFiles,
-      leaves,
-      functionLeaves
-    }))
+    representativeKeys: english.size
   })
 )
 for (const entry of checks)

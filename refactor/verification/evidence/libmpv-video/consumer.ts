@@ -184,17 +184,17 @@ softwareFrame.getSurface()
 const softwareTarget = softwareFrame.target
 void [linearOutput, hlgOutput, softwareTarget]
 
-// @ts-expect-error The former placeholder string is not a second configuration shape.
-await createMpv({ videoOutput: 'managed' })
+// @ts-expect-error Video output requires a complete configuration object.
+await createMpv({ videoOutput: 'gpu' })
 // @ts-expect-error The caller must provide both physical dimensions.
 await createMpv({ videoOutput: { width: 1280 } })
-// @ts-expect-error Binding dimensions are bounded numbers rather than mpv INT64 values.
+// @ts-expect-error Binding dimensions use bounded number values.
 await createMpv({ videoOutput: { width: 1280n, height: 720 } })
-// @ts-expect-error No implicit software fallback selector is introduced.
+// @ts-expect-error Video output configuration selects one explicit backend.
 await createMpv({ videoOutput: { width: 1280, height: 720, fallback: 'software' } })
 // @ts-expect-error HDR display targets are outside the managed output contract.
 const pqOutput: VideoTarget = { colorSpace: 'rec2100-pq', peakNits: 1000 }
-// @ts-expect-error Linear sRGB with explicit luminance units is no longer a managed target.
+// @ts-expect-error Managed SDR targets use sRGB or Display P3 transfer functions.
 const srgbLinearOutput: VideoTarget = { colorSpace: 'srgb-linear', peakNits: 418, nitsPerUnit: 240 }
 // @ts-expect-error SDR output does not invent a physical reference-white setting.
 const sdrPeak: VideoTarget = { colorSpace: 'srgb', peakNits: 100 }
@@ -207,12 +207,12 @@ const p3LinearOutput: VideoTarget = {
   nitsPerUnit: 240
 }
 const rec2020LinearOutput: VideoTarget = {
-  // @ts-expect-error Extended Rec.2020 linear output is no longer a managed target.
+  // @ts-expect-error Managed SDR targets use sRGB or Display P3 primaries.
   colorSpace: 'rec2020-linear',
   peakNits: 418,
   nitsPerUnit: 240
 }
-// @ts-expect-error Public GPU frames no longer promise floating-point HDR storage.
+// @ts-expect-error Public GPU frames use eight-bit normalized storage.
 const floatingOutput: NativeFrame['pixelFormat'] = 'rgba16float'
 // @ts-expect-error Configuration is a full update, not an implicit merge.
 await output.configure({ width: 1920, height: 1080 })

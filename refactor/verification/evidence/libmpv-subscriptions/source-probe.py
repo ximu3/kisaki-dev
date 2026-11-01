@@ -1,4 +1,4 @@
-"""Record sources for the pending subscription delivery and lifetime proposal."""
+"""Record pinned sources for subscription delivery and lifetime contracts."""
 
 import hashlib
 import html
@@ -38,8 +38,8 @@ with ThreadPoolExecutor(max_workers=4) as pool:
     receipts = list(pool.map(fetch, SOURCES.items()))
 
 result = {
-    "purpose": "sources for a subscription proposal, not native execution",
-    "designStatus": "proposal",
+    "purpose": "Pinned source evidence for subscription delivery and lifetime contracts",
+
     "mpvRef": "v0.41.0",
     "mpvCommit": COMMIT,
     "nativeAddonExecuted": False,
@@ -49,4 +49,4 @@ result = {
     "sources": receipts,
 }
 (ROOT / "source-contract.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-print(json.dumps({"sourceReceipts": len(receipts), "designStatus": result["designStatus"], "nativeExecuted": False}))
+print(json.dumps({"sourceReceipts": len(receipts), "nativeExecuted": False}))

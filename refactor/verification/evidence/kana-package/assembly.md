@@ -1,10 +1,10 @@
 # ZIP 执行范围与发行资产装配核对
 
-2026-10-21，对应[整包接入设计](../../../design/projects/kana/distribution.md#backends)。本轮只补充 zip.js 全局配置、不同资产根和关闭隔离的一个场景，复用既有读取、流、格式及浏览器证据。
+2026-10-21，对应[整包接入设计](../../../design/projects/kana/distribution.md#backends)。只补充 zip.js 全局配置、不同资产根和关闭隔离的一个场景，复用既有读取、流、格式及浏览器证据。
 
 ## 输入与执行
 
-[prepare.py](prepare.py) 读取此前固定且已核对 npm integrity 的 zip.js 2.24.0 tarball，再核对 SHA-256。按其公开 @zip.js/zip.js/external 入口保留实际模块结构，连同 Wasm、许可和自有 worker、两份短 ZIP 夹具生成资产归档，解包到独立消费目录并逐文件核对摘要。第三方文件未改动，只位于忽略的缓存目录；工作区依赖和锁文件保持。
+[prepare.py](prepare.py) 读取固定且已核对 npm integrity 的 zip.js 2.24.0 tarball，再核对 SHA-256。按其公开 @zip.js/zip.js/external 入口保留实际模块结构，连同 Wasm、许可和自有 worker、两份短 ZIP 夹具生成资产归档，解包到独立消费目录并逐文件核对摘要。第三方文件未改动，只位于忽略的缓存目录；工作区依赖和锁文件保持。
 
 两个自有夹具都包含一个 chapter.txt，分别存放本试件生成的短文本、中文与 CRLF，以 deflate 压缩。它们没有用户文件或远端内容，不用于声称大型归档性能或完整压缩方法符合性。
 

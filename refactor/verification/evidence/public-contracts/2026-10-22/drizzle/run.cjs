@@ -24,9 +24,11 @@ app.whenReady().then(async () => {
     result.checks.push({ name, passed: true })
   }
   try {
-    const appRequire = createRequire(
-      path.resolve(process.env.KISAKI_PROBE_APP_PACKAGE || 'apps/desktop/package.json')
-    )
+    const probePackage = process.env.KISAKI_PROBE_APP_PACKAGE
+    if (!probePackage || !path.isAbsolute(probePackage)) {
+      throw new Error('Provide the absolute KISAKI_PROBE_APP_PACKAGE input')
+    }
+    const appRequire = createRequire(probePackage)
     const Database = appRequire('better-sqlite3')
     const { drizzle } = await import('drizzle-orm/better-sqlite3')
     const { migrate } = await import('drizzle-orm/better-sqlite3/migrator')

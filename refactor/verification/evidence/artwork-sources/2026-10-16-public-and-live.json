@@ -1,13 +1,17 @@
 {
   "checkedOn": "2026-10-16",
-  "status": "design-confirmed-runtime-unverified",
-  "sources": ["SteamGridDB", "Fanart.tv"],
+  "sources": [
+    "SteamGridDB",
+    "Fanart.tv"
+  ],
   "startedAt": "2026-10-16T06:09:47.006Z",
   "finishedAt": "2026-10-16T06:44:49.940Z",
   "verification": {
     "authenticatedApiReads": true,
     "apiRequestCount": 31,
-    "apiMethods": ["GET"],
+    "apiMethods": [
+      "GET"
+    ],
     "remoteWritesPerformed": false,
     "credentialsPersisted": false,
     "personalCollectionAccessPerformed": false,
@@ -90,14 +94,18 @@
       "game": {
         "id": 5505,
         "name": "CLANNAD",
-        "types": ["steam"],
+        "types": [
+          "steam"
+        ],
         "releaseDateUnix": 1083135600,
         "verified": true
       },
       "steamBridge": {
         "requestedAppId": 324160,
         "returnedGameId": 5505,
-        "declaredSteamIds": ["324160"],
+        "declaredSteamIds": [
+          "324160"
+        ],
         "platformMetadataUsedAsNativeWorkFields": false
       },
       "search": {
@@ -125,7 +133,11 @@
           "total": 27,
           "limit": 3,
           "returned": 3,
-          "ids": [96355, 96354, 132608],
+          "ids": [
+            96355,
+            96354,
+            132608
+          ],
           "firstRecordFields": [
             "id",
             "score",
@@ -145,7 +157,11 @@
             "downvotes",
             "author"
           ],
-          "authorFields": ["name", "steam64", "avatar"]
+          "authorFields": [
+            "name",
+            "steam64",
+            "avatar"
+          ]
         },
         {
           "kind": "heroes",
@@ -153,7 +169,9 @@
           "total": 1,
           "limit": 3,
           "returned": 1,
-          "ids": [106078],
+          "ids": [
+            106078
+          ],
           "firstRecordFields": [
             "id",
             "score",
@@ -173,7 +191,11 @@
             "downvotes",
             "author"
           ],
-          "authorFields": ["name", "steam64", "avatar"]
+          "authorFields": [
+            "name",
+            "steam64",
+            "avatar"
+          ]
         },
         {
           "kind": "logos",
@@ -181,7 +203,11 @@
           "total": 3,
           "limit": 3,
           "returned": 3,
-          "ids": [4732, 164624, 85000],
+          "ids": [
+            4732,
+            164624,
+            85000
+          ],
           "firstRecordFields": [
             "id",
             "score",
@@ -201,7 +227,11 @@
             "downvotes",
             "author"
           ],
-          "authorFields": ["name", "steam64", "avatar"]
+          "authorFields": [
+            "name",
+            "steam64",
+            "avatar"
+          ]
         },
         {
           "kind": "icons",
@@ -209,7 +239,11 @@
           "total": 16,
           "limit": 3,
           "returned": 3,
-          "ids": [56300, 56305, 87993],
+          "ids": [
+            56300,
+            56305,
+            87993
+          ],
           "firstRecordFields": [
             "id",
             "score",
@@ -229,20 +263,40 @@
             "downvotes",
             "author"
           ],
-          "authorFields": ["name", "steam64", "avatar"]
+          "authorFields": [
+            "name",
+            "steam64",
+            "avatar"
+          ]
         }
       ],
       "gridPages": {
-        "page0Ids": [96355, 96354, 132608],
-        "page1Ids": [38248, 371195, 371194],
+        "page0Ids": [
+          96355,
+          96354,
+          132608
+        ],
+        "page1Ids": [
+          38248,
+          371195,
+          371194
+        ],
         "fullPageCount": 27,
         "reportedTotal": 27,
         "terminalPage": 9,
         "terminalCount": 0
       },
       "grids": {
-        "dimensions": ["600x900", "1024x1024", "920x430", "512x512"],
-        "languages": ["ja", "en"],
+        "dimensions": [
+          "600x900",
+          "1024x1024",
+          "920x430",
+          "512x512"
+        ],
+        "languages": [
+          "ja",
+          "en"
+        ],
         "mimes": {
           "image/png": 22,
           "image/webp": 1,
@@ -255,7 +309,18 @@
         "distinctFileCount": 5,
         "reportedTotal": 16,
         "pngOnlyCount": 3,
-        "pageIds": [[56300, 56305, 87993], [79974, 1497], []],
+        "pageIds": [
+          [
+            56300,
+            56305,
+            87993
+          ],
+          [
+            79974,
+            1497
+          ],
+          []
+        ],
         "mimes": {
           "image/png": 3,
           "image/vnd.microsoft.icon": 2
@@ -290,10 +355,22 @@
           "hdmovieclearart": {
             "count": 3,
             "reportedCount": 3,
-            "languages": ["ja", "en", "ru"],
+            "languages": [
+              "ja",
+              "en",
+              "ru"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 3,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "130711",
               "width": "1000",
@@ -306,10 +383,23 @@
           "hdmovielogo": {
             "count": 7,
             "reportedCount": 7,
-            "languages": ["en", "ja", "ru", "zh"],
+            "languages": [
+              "en",
+              "ja",
+              "ru",
+              "zh"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 7,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179358",
               "width": "800",
@@ -322,10 +412,20 @@
           "movie4kbackground": {
             "count": 2,
             "reportedCount": 2,
-            "languages": [""],
+            "languages": [
+              ""
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 2,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "453043",
               "width": "3840",
@@ -338,10 +438,20 @@
           "moviebackground": {
             "count": 12,
             "reportedCount": 12,
-            "languages": [""],
+            "languages": [
+              ""
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 12,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "173208",
               "width": "1920",
@@ -354,10 +464,22 @@
           "moviebanner": {
             "count": 3,
             "reportedCount": 3,
-            "languages": ["en", "ru", "ja"],
+            "languages": [
+              "en",
+              "ru",
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 3,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "173211",
               "width": "1000",
@@ -370,7 +492,11 @@
           "moviedisc": {
             "count": 8,
             "reportedCount": 8,
-            "languages": ["es", "ja", "en"],
+            "languages": [
+              "es",
+              "ja",
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 8,
             "fields": [
@@ -396,10 +522,23 @@
           "movieposter": {
             "count": 17,
             "reportedCount": 17,
-            "languages": ["00", "ja", "en", "ru"],
+            "languages": [
+              "00",
+              "ja",
+              "en",
+              "ru"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 17,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "173198",
               "width": "1000",
@@ -412,10 +551,21 @@
           "moviethumb": {
             "count": 5,
             "reportedCount": 5,
-            "languages": ["en", "ru"],
+            "languages": [
+              "en",
+              "ru"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 5,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "173796",
               "width": "1000",
@@ -440,10 +590,20 @@
           "characterart": {
             "count": 4,
             "reportedCount": 4,
-            "languages": ["00"],
+            "languages": [
+              "00"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 4,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179343",
               "width": "512",
@@ -456,10 +616,20 @@
           "hdclearart": {
             "count": 4,
             "reportedCount": 4,
-            "languages": ["en"],
+            "languages": [
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 4,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179329",
               "width": "1000",
@@ -472,10 +642,23 @@
           "hdtvlogo": {
             "count": 9,
             "reportedCount": 9,
-            "languages": ["en", "ja", "zh", "es"],
+            "languages": [
+              "en",
+              "ja",
+              "zh",
+              "es"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 9,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179151",
               "width": "800",
@@ -488,10 +671,23 @@
           "seasonposter": {
             "count": 2,
             "reportedCount": 2,
-            "languages": ["en"],
-            "seasonTags": ["all"],
+            "languages": [
+              "en"
+            ],
+            "seasonTags": [
+              "all"
+            ],
             "imagesWithoutSeason": 0,
-            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "season",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "182758",
               "width": "1000",
@@ -504,10 +700,20 @@
           "show4kbackground": {
             "count": 8,
             "reportedCount": 8,
-            "languages": [""],
+            "languages": [
+              ""
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 8,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "201041",
               "width": "3840",
@@ -520,10 +726,20 @@
           "showbackground": {
             "count": 13,
             "reportedCount": 13,
-            "languages": [""],
+            "languages": [
+              ""
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 13,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179754",
               "width": "1920",
@@ -536,10 +752,20 @@
           "tvbanner": {
             "count": 3,
             "reportedCount": 3,
-            "languages": ["en"],
+            "languages": [
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 3,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179342",
               "width": "1000",
@@ -552,10 +778,22 @@
           "tvposter": {
             "count": 13,
             "reportedCount": 13,
-            "languages": ["ja", "en", "00"],
+            "languages": [
+              "ja",
+              "en",
+              "00"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 13,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179755",
               "width": "1000",
@@ -568,10 +806,20 @@
           "tvsquare": {
             "count": 2,
             "reportedCount": 2,
-            "languages": ["en"],
+            "languages": [
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 2,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "201493",
               "width": "1000",
@@ -584,10 +832,22 @@
           "tvthumb": {
             "count": 5,
             "reportedCount": 5,
-            "languages": ["ja", "en", "es"],
+            "languages": [
+              "ja",
+              "en",
+              "es"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 5,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "179753",
               "width": "1000",
@@ -606,10 +866,20 @@
           "characterart": {
             "count": 1,
             "reportedCount": 1,
-            "languages": ["en"],
+            "languages": [
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "81971",
               "width": "512",
@@ -622,10 +892,20 @@
           "clearart": {
             "count": 1,
             "reportedCount": 1,
-            "languages": ["en"],
+            "languages": [
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "28645",
               "width": "1",
@@ -638,10 +918,20 @@
           "clearlogo": {
             "count": 1,
             "reportedCount": 1,
-            "languages": ["ja"],
+            "languages": [
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "27643",
               "width": "1",
@@ -654,10 +944,23 @@
           "hdclearart": {
             "count": 23,
             "reportedCount": 23,
-            "languages": ["en", "ja", "es", "fr"],
+            "languages": [
+              "en",
+              "ja",
+              "es",
+              "fr"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 23,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "29384",
               "width": "1000",
@@ -670,10 +973,23 @@
           "hdtvlogo": {
             "count": 13,
             "reportedCount": 13,
-            "languages": ["en", "es", "fr", "ja"],
+            "languages": [
+              "en",
+              "es",
+              "fr",
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 13,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "39467",
               "width": "800",
@@ -686,10 +1002,24 @@
           "seasonbanner": {
             "count": 2,
             "reportedCount": 2,
-            "languages": ["es"],
-            "seasonTags": ["1", "2"],
+            "languages": [
+              "es"
+            ],
+            "seasonTags": [
+              "1",
+              "2"
+            ],
             "imagesWithoutSeason": 0,
-            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "season",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "74855",
               "width": "1000",
@@ -702,10 +1032,31 @@
           "seasonposter": {
             "count": 37,
             "reportedCount": 37,
-            "languages": ["en", "es", "fr", "ja", "zh"],
-            "seasonTags": ["1", "2", "3", "4", "all"],
+            "languages": [
+              "en",
+              "es",
+              "fr",
+              "ja",
+              "zh"
+            ],
+            "seasonTags": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "all"
+            ],
             "imagesWithoutSeason": 6,
-            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "season",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "116655",
               "width": "1000",
@@ -718,10 +1069,25 @@
           "seasonthumb": {
             "count": 5,
             "reportedCount": 5,
-            "languages": ["es", "en"],
-            "seasonTags": ["1", "2"],
+            "languages": [
+              "es",
+              "en"
+            ],
+            "seasonTags": [
+              "1",
+              "2"
+            ],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "lang", "likes", "season", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "season",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "74852",
               "width": "1000",
@@ -734,10 +1100,20 @@
           "show4kbackground": {
             "count": 3,
             "reportedCount": 3,
-            "languages": [""],
+            "languages": [
+              ""
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 3,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "208921",
               "width": "3840",
@@ -750,10 +1126,21 @@
           "showbackground": {
             "count": 37,
             "reportedCount": 37,
-            "languages": ["", "en"],
+            "languages": [
+              "",
+              "en"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 37,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "50614",
               "width": "1920",
@@ -766,10 +1153,23 @@
           "tvbanner": {
             "count": 11,
             "reportedCount": 11,
-            "languages": ["en", "es", "fr", "ja"],
+            "languages": [
+              "en",
+              "es",
+              "fr",
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 11,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "29536",
               "width": "1000",
@@ -782,10 +1182,23 @@
           "tvposter": {
             "count": 23,
             "reportedCount": 23,
-            "languages": ["en", "00", "es", "ja"],
+            "languages": [
+              "en",
+              "00",
+              "es",
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 23,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "48174",
               "width": "1000",
@@ -798,10 +1211,23 @@
           "tvthumb": {
             "count": 18,
             "reportedCount": 18,
-            "languages": ["en", "es", "fr", "ja"],
+            "languages": [
+              "en",
+              "es",
+              "fr",
+              "ja"
+            ],
             "seasonTags": [],
             "imagesWithoutSeason": 18,
-            "fields": ["added", "height", "id", "lang", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "lang",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "68703",
               "width": "1000",
@@ -827,7 +1253,14 @@
             "languages": [],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "352927",
               "width": "1920",
@@ -843,7 +1276,14 @@
             "languages": [],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "438760",
               "width": "1000",
@@ -859,7 +1299,14 @@
             "languages": [],
             "seasonTags": [],
             "imagesWithoutSeason": 1,
-            "fields": ["added", "height", "id", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "height",
+              "id",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "352926",
               "width": "800",
@@ -907,7 +1354,15 @@
             "languages": [],
             "seasonTags": [],
             "imagesWithoutSeason": 2,
-            "fields": ["added", "colour", "height", "id", "likes", "url", "width"],
+            "fields": [
+              "added",
+              "colour",
+              "height",
+              "id",
+              "likes",
+              "url",
+              "width"
+            ],
             "firstImage": {
               "id": "120425",
               "width": "400",

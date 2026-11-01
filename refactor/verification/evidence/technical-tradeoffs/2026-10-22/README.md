@@ -1,6 +1,6 @@
-# 日期、界面隔离与工具维护范围复核
+# 日期、虚拟化与 Webview 验证
 
-本目录记录日期、虚拟化、Webview 隔离、RPC 与开发工具的隔离试件及源码比较。对应规则见[日期](../../../../design/domains/values.md#years)、[虚拟化](../../../../design/ui/virtualization.md)、[消息协议](../../../../design/engineering/protocols.md#frames)、[工作区](../../../../design/engineering/workspace.md#tasks)和[Webview](../../../../design/extensions/webview.md#isolation)。结果只覆盖所列候选版本与实验环境。
+本目录记录[日期](../../../../design/domains/values.md#years)、[虚拟化](../../../../design/ui/virtualization.md)和[Webview 隔离](../../../../design/extensions/webview.md#isolation)的技术验证，结果适用于所列版本、输入与环境。
 
 <a id="dates"></a>
 
@@ -21,13 +21,13 @@
 
 边界处确有一个需要明确的实现细节：内部 year = -9007199254740991 对应公元前 9007199254740992 年。这个显示年号不能先转换为不再安全的 number。编辑器先保留数字文字，纯模块临时用 BigInt 完成精确换算，再检查并形成正式 year；数据库和公共 API 不接收 BigInt。
 
-本轮结果支持保留现有合同，没有发现必须通过收窄字段来解决的核心运算问题。它不证明全部来源映射、实际四语表单、时区日界或完整日期 UI 已完成；这些仍按正式实现验收。158,400 个输入是一个公历周期的规则对照量，不是同等数量的产品场景。
+实际结果支持保留现有合同，没有发现必须通过收窄字段来解决的核心运算问题。它不证明全部来源映射、实际四语表单、时区日界或完整日期 UI 已完成；这些仍按正式实现验收。158,400 个输入是一个公历周期的规则对照量，不是同等数量的产品场景。
 
 <a id="virtualization"></a>
 
 ## 虚拟化：采用现有几何实现
 
-[TanStack Solid 适配](https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual)提供框架接入，[Virtualizer 公共 API](https://tanstack.com/virtual/latest/docs/api/virtualizer)提供数量、尺寸测量、稳定 key、范围提取和滚动能力。本轮使用 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6、Solid 1.9.16、Vite 8.3.3 和 vite-plugin-solid 2.11.14，实际构建后在 Electron 41.2.0／Chromium 146 中运行。
+[TanStack Solid 适配](https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual)提供框架接入，[Virtualizer 公共 API](https://tanstack.com/virtual/latest/docs/api/virtualizer)提供数量、尺寸测量、稳定 key、范围提取和滚动能力。使用 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6、Solid 1.9.16、Vite 8.3.3 和 vite-plugin-solid 2.11.14，实际构建后在 Electron 41.2.0／Chromium 146 中运行。
 
 试件没有构造全量 Entry 数组，按数量及算术行映射提供几何 key。库会计算完整几何索引，页面只呈现所需窗口。查询、分组和真实身份仍需由 Kisaki 提供；几何依赖没有替应用实现这些业务。
 
@@ -45,57 +45,15 @@
 - 当前可见锚点之前的一行增高 72 px 后，同一锚点及其行内偏移保持。
 - 含 50 组的合成网格从五列变为三列，逻辑行数分别为 10,050 与 16,750；按明确目标重新映射和滚动后，原目标仍实际可见。仅挂载 17 行，分别为 85 与 51 张合成卡片。
 
-测试用 [virtual-probe.jsx](candidates/virtual-probe.jsx) 和[运行器](virtual-electron.cjs)，结果见[原始 JSON](virtual-results.json)。原先普通隐藏窗口未在期限内结束，其[未完成结果](virtual-before-offscreen.json)保留；改为 Electron offscreen 页面后完成。运行时关闭硬件加速，没有测量真实显示器上的 FPS、输入延迟或 GPU 性能。
+测试用 [virtual-probe.jsx](virtualization/virtual-probe.jsx) 和[运行器](virtual-electron.cjs)，结果见[原始 JSON](virtual-results.json)。试件通过 Electron offscreen 页面运行。运行时关闭硬件加速，没有测量真实显示器上的 FPS、输入延迟或 GPU 性能。
 
-因此将规范改为采用这项依赖，并允许按行数增长的几何索引；普通业务数据仍只保留可见与预取区间。正式卡片、图片、字体、快速滚动、拖拽、读屏、跨窗口数据与查询并发仍需验证。几何通过不等于完整列表已通过验收。
-
-<a id="rpc"></a>
-
-## RPC：保留有限内核的责任
-
-比较对象是 [birpc](https://github.com/antfu-collective/birpc) 4.2.0。已安装版本提供双向请求、事件、关闭及关闭监听；可通过 timeout: -1 停用默认调用超时，通过 proxify: false 使用显式调用。它可以作为项目的调用基础，并非缺少基本能力。
-
-[MessageChannel 试件](candidates/rpc-probe.mjs)使用 Node 24.11.1，实际通过 7 组断言，见[结果](rpc-results.json)：双向嵌套、同时调用、事件、普通安全错误值的完整传递、原生 Error 自定义字段的丢失、断连后远端已开始工作仍可结束，以及监听释放。
-
-后两项尤其明确了本项目仍需拥有的边界：通信结束不代表业务回滚，code／partialResult 不能依赖原生 Error 的结构化克隆。候选没有直接交付当前规格要求的版本握手、严格帧校验、按调用取消、真实实例绑定与资源寿命；它们可以通过接入代码补充，但不能在采用候选后从责任清单中删除。
-
-用户确认继续维护当前有限 RPC 内核，使请求关联、取消与连接寿命按同一帧合同处理。通用包只承担通信机制，权限、业务校验、资源归属和运行流程留在实际端点；不发展任意远程对象、持久调用重放或通用事务系统。
-
-本轮只运行了候选库试件。自研内核仍待 W01 实现并完成同等基础行为及本项目新增边界的验证；不能将这里的 7 组通过结果记为自研内核已经通过。
-
-<a id="development"></a>
-
-## 开发会话：保留项目自己的流程
-
-本轮检查 [electron-vite](https://github.com/alex8088/electron-vite) 6.0.0 的实际发行代码和声明。其公开配置包含 main、preload、renderer，并导出对应配置工厂；默认 createServer 的返回类型为 Promise<void>，自行启动 Electron。main 成功重建时，它结束已有进程并启动新的进程；preload 重建时向 renderer 发送刷新通知。这些是其默认开发流程的具体行为，不是对所有组合方式的限制。
-
-| Kisaki 需要管理的事实          | 当前方案的责任                                     |
-| ------------------------------ | -------------------------------------------------- |
-| 第四个独立 extension-host 程序 | 明确的构建输入、输出与替换范围                     |
-| 多公共包与官方扩展的首次就绪   | 依赖构建及完整制品交接后才开放消费者               |
-| 开发应用与 kisx 会话           | 唯一启动器、明确会话身份和采用结果                 |
-| 重启、退出与失败               | 原生流程完成所需处理，按实际进程句柄与资源寿命收尾 |
-| 编译、解析与 HMR               | 使用 Vite 公开 API 和正式插件，不重新实现这些机制  |
-
-配置工厂可以复用部分 Electron 缺省，但无法替本项目持有上述应用流程。用户确认继续直接使用 Vite；自有代码的范围限于程序配置、依赖就绪、资源准备及进程交接，不扩大为通用构建框架。
-
-本轮没有运行 electron-vite 的完整开发会话，也没有修改其代码或验证跨平台重启。以上比较依据固定版本的发行源码；[源码摘要](source-observations.json)保存检查文件的 SHA-256，不能把源码阅读称作运行验收。
-
-<a id="projects"></a>
-
-## 独立项目与文档职责
-
-用户确认 Vantage、Kana、libmpv-node 和 oauth-relay 均作为长期独立技术产品。各自的公开范围继续以项目合同为准，不收窄成 Kisaki 当前几处调用的内部包装；独立版本、示例、兼容性和发行维护成本明确保留。[项目定位](../../../../design/projects/README.md#purpose)现已对应到每个项目的独立目的和 Kisaki 消费场景。
-
-这项确认是范围决定，不增加项目实现或平台运行证据。Kisaki 通过公开制品检验新增的业务接入，独立项目仍须自行验证其完整承诺；没有虚构其他真实用户或市场需求来证明范围。现有来源依据、支持限制、原生资源与上游安全边界继续保留。
-
-文档整理把验收页的“最终工程结构”改为规则来源、检查证据及通过条件的索引，原有 18 个唯一设计来源全部保留。领域与工程主题继续拥有完整规则；验收保持可观察的要求，避免再维护一套架构描述。查询语义、查询值形状、写入完整行为、条件基线、调用语义和消息帧各自的文档责任也已说明。
+实际视图使用这项几何依赖，普通业务数据保留可见与预取区间。正式卡片、图片、字体、快速滚动、拖拽、读屏、跨窗口数据与查询并发仍需验证。几何通过不等于完整列表已通过验收。
 
 <a id="webview"></a>
 
 ## Webview：实际来源与 Worker 的资源限制
 
-用户确认允许第三方页面按浏览器规则请求 HTTPS／WSS 数据；页面和脚本由扩展包提供，外部网站通过明确动作在系统浏览器打开。官方扩展的业务请求、账号和凭据继续在 Node。规范补充每视图独立来源、原生 preload 与 SDK 的边界、完整 CSP、导航和权限拒绝，以及开发环境的有限例外。
+第三方页面按浏览器规则请求 HTTPS／WSS 数据；页面和脚本由扩展包提供，外部网站通过明确动作在系统浏览器打开。官方扩展的业务请求、账号和凭据继续在 Node。接入合同包含每视图独立来源、原生 preload 与 SDK 的边界、完整 CSP、导航和权限拒绝，以及开发环境的有限例外。
 
 [Electron 运行器](webview-electron.cjs)、[原生 preload](webview-preload.cjs)、[宿主页](webview-parent.js)和[视图脚本](webview-child.js)在 Electron 41.2.0／Chromium 146 的隔离 offscreen 窗口实际执行。启用 sandbox、contextIsolation、webSecurity，关闭 Node 集成，使用独立非持久 Session；没有载入用户扩展、资料或账号。
 
@@ -121,10 +79,10 @@ HTTPS 数据由本次 Session 的协议处理器返回合成响应，证明 CSP 
 
 ## 复现与未覆盖范围
 
-将本目录复制到新的 `.local` 子目录，在 candidates 内用 `pnpm install --ignore-workspace --ignore-scripts --frozen-lockfile` 安装固定候选。所有运行从仓库根发起，避免把缓存、Electron profile 和新结果写回历史证据。
+将本目录复制到新的 `.local` 子目录，在 virtualization 内用 `pnpm install --ignore-workspace --ignore-scripts --frozen-lockfile` 安装固定依赖。所有运行从仓库根发起，避免把缓存、Electron profile 和新结果写入维护目录。
 
-日期脚本和虚拟化运行器使用仓库 apps/desktop 解析到的 Electron。通过 Node child_process 启动，设置 windowsHide: true。日期脚本从该应用解析已可用于 Electron 的 better-sqlite3；不在系统 Node 中加载它。先运行 candidates/build.mjs，再以 virtual-electron.cjs 启动已构建的隔离页面；rpc-probe.mjs 则直接使用系统 Node 与实际 MessageChannel。
+使用记录所指的 Electron 和匹配的 SQLite 绑定运行试件。KISAKI_PROBE_APP_PACKAGE 指向隔离依赖项目的绝对 package.json 路径，日期脚本据此加载 better-sqlite3。通过 child_process 启动所选 Electron，设置 windowsHide: true。虚拟化先执行 virtualization/build.mjs，再以 virtual-electron.cjs 运行已构建页面。
 
 Webview 的四个脚本放在同一隔离目录，以同一 Electron 启动 webview-electron.cjs。普通运行生成 webview-results.json；增加 --broad-resource-policy 重现 Worker 越权反例，生成独立结果且预期退出码为 1。两种运行只改变资源 CSP 的来源范围，不访问真实外部服务。
 
-本轮仅在当前 Windows 设备执行，没有新的正式应用、原生制品、其他平台或 CI 运行。根 package.json、pnpm-lock.yaml 与 pnpm-workspace.yaml 的前后 SHA-256 一致。完整数据库与恢复实现的交付检查仍由相应工作包承担，四个独立项目的范围不因本轮工具选择改变。
+本页运行环境为所列 Windows 设备。完整数据库、恢复实现及平台组合按相应工作包验收。

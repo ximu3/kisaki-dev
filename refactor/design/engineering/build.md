@@ -128,7 +128,7 @@ AppImage 沿用锁定 electron-builder 所提供 AppRun 的条件兼容行为：
 
 appImage.executableArgs 设为空数组，生成的 .desktop 入口为 AppRun %U，不无条件附加 --no-sandbox。直接启动与桌面入口都由同一 AppRun 判断，不另写启动器、命名空间探测或应用内降级逻辑，也不要求用户先登记路径权限或修改全局系统策略。
 
-承载窗口仍配置 sandbox、contextIsolation 和 webSecurity，关闭 Node 集成，并保留受控来源、CSP、最小 preload 桥接及现行 fuses；这些配置不能证明降级运行时仍有进程沙箱。该政策仅适用于 AppImage，不扩展到其他载体或源码运行。验收检查最终启动文件、允许与受限条件下的真实渲染进程状态，范围与依据见[采用验证](../../verification/evidence/appimage-policy/2026-10-26/adoption/README.md)。
+承载窗口仍配置 sandbox、contextIsolation 和 webSecurity，关闭 Node 集成，并保留受控来源、CSP、最小 preload 桥接及现行 fuses；这些配置不能证明降级运行时仍有进程沙箱。该政策仅适用于 AppImage，不扩展到其他载体或源码运行。验收检查最终启动文件、允许与受限条件下的真实渲染进程状态，范围与依据见[采用验证](../../verification/evidence/appimage-policy/2026-10-26/README.md)。
 
 <a id="portable-marker"></a>
 
@@ -319,4 +319,4 @@ X11 直接注册和 Wayland portal 分别验证，Electron 身份须对应实际
 
 存档恢复工作区可能位于媒体或存档所在卷，整个 dataRoot 的复制不包含这些外部材料。冷备份前查看恢复索引：先完成待处理恢复，或把仍需保留的工作区另行完整复制并记录原路径。恢复资料根后材料不可用时如实显示，不自动重放或清除索引。
 
-本流程不承诺合并两份资料库、恢复旧实现格式或逐项导出，也不生成新的备份文件格式。验收使用隔离的完整资料根，从已退出的源复制到干净目标，实际验证重开、附件与私有数据保留、外部路径失联、不支持版本拒绝，以及保留原副本后的恢复失败处理。
+本流程以完整 dataRoot 为备份和恢复单位，使用本体迁移链支持的存储格式。验收从已退出的隔离资料根复制到干净目标，核对重开、附件与私有数据、外部路径失联、不支持版本拒绝及恢复失败时的原副本保留。

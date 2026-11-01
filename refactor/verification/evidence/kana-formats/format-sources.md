@@ -20,7 +20,7 @@
 
 [source-input.json](source-input.json) 保存下载内容、版本与 SHA-256：Expat 2.9.0 提交 `e127b43ac1f514e0b320508893aa338ecd5e72be`；libmobi 样本及独立预期固定于 `906274205c11944b628da1c553b255acb1af7c55`；另保存 EPUB、CFI、XML API 与 RAR 格式资料。
 
-MOBI 底层算法试验继续使用此前核对的 Foliate 提交 `78914aef4466eb960965702401634c2cb348e9b1`。私有副本只增加显式打开原始分支的入口并导出原有索引函数，不经过自动优选 KF8、资源替换或阅读器初始化。原文件与适配后摘要及 MIT 许可见 [mobi-adapter-input.json](mobi-adapter-input.json)。libmobi 在本轮只提供样本与预期摘要，没有被作为运行依赖采用，也没有执行它的完整测试脚本或 DRM 工具。
+MOBI 底层算法试验继续使用核对的 Foliate 提交 `78914aef4466eb960965702401634c2cb348e9b1`。私有副本只增加显式打开原始分支的入口并导出原有索引函数，不经过自动优选 KF8、资源替换或阅读器初始化。原文件与适配后摘要及 MIT 许可见 [mobi-adapter-input.json](mobi-adapter-input.json)。libmobi 提供样本与预期摘要。
 
 HTML 试验固定 parse5 8.0.1 与 entities 8.0.0，按 registry integrity 核对归档；浏览器束由现有 esbuild 0.28.1 生成，见 [html-input.json](html-input.json)。额外编码数据来自 Unicode 的 12 份 OEM 映射及 WHATWG Windows-1252 索引，保留来源、摘要和 Unicode 数据许可，见 [encoding-input.json](encoding-input.json)。所有依赖、样本和二进制均在被忽略的缓存中准备，没有改工作区 manifest 或锁文件。
 
@@ -36,19 +36,19 @@ HTML 试验固定 parse5 8.0.1 与 entities 8.0.0，按 registry integrity 核�
 
 XML ISO-8859-1 的 `0x80` 被保留为 U+0080，Windows-1252 的同一字节则是欧元符号。当前本机 Node 24.11.1 的原生 Windows-1252 解码观察还与规范索引不同；试件记录了实际码点，并对需要一致解释的单字节路径使用固定映射，未以编码名称相同推定结果相同。该观察只针对本次 Node 输入，不概括其他 Node 构建或浏览器。
 
-本轮上限是试件参数，不是正式预算承诺。尚未验证所有声明编码、完整属性／树占用与大输入组合；也没有测量垃圾回收或整个浏览器进程内存。
+试件上限是试件参数，不是正式预算承诺。尚未验证所有声明编码、完整属性／树占用与大输入组合；也没有测量垃圾回收或整个浏览器进程内存。
 
 ## RAR：在原生解密之后、改名之前取得字节
 
-[raw-name-hook.patch](raw-name-hook.patch) 只修改私有副本中的元数据交付点；成熟解码、头部校验和文件系统适配仍按原生流程执行。旧基础对象、旧试件和原始源码保持不变。新 Wasm 为 571,177 字节，构建、原始／修改后摘要和 UnRAR 许可见 [names-build-contract.json](names-build-contract.json)。
+[raw-name-hook.patch](raw-name-hook.patch) 只修改私有副本中的元数据交付点；成熟解码、头部校验和文件系统适配仍按原生流程执行。Wasm 为 571,177 字节，构建、原始／修改后摘要和 UnRAR 许可见 [names-build-contract.json](names-build-contract.json)。
 
-14 个 RAR5 派生文件仅改成员名及相关头部字段、重新计算头部 CRC，保留同一个原始压缩载荷；每份只保留一个普通成员。用例包括 Unicode、组合形式、Unix 字面反斜杠、非法 Windows 反斜杠、NUL、非法 UTF-8、原始长度超过 wasm32 位宽、绝对路径、根外父目录、百分号、宿主保留名以及格式定义的 Unix 原始字节映射标记。来源与修改方式见 [names-fixture-input.json](names-fixture-input.json)。这些是派生边界样本，不是 14 份不同出版物。长度用例的原始值是 2^32 + 1，原生 size_t 转换后会成为 1；候选在转换前保留长度并明确拒绝，不能只比较转换后的短值。
+14 个 RAR5 派生文件仅改成员名及相关头部字段、重新计算头部 CRC，保留同一个原始压缩载荷；每份只保留一个普通成员。用例包括 Unicode、组合形式、Unix 字面反斜杠、非法 Windows 反斜杠、NUL、非法 UTF-8、原始长度超过 wasm32 位宽、绝对路径、根外父目录、百分号、宿主保留名以及格式定义的 Unix 原始字节映射标记。来源与修改方式见 [names-fixture-input.json](names-fixture-input.json)。这些输入覆盖原始名称的边界条件。长度用例的原始值是 2^32 + 1，原生 size_t 转换后会成为 1；候选在转换前保留长度并明确拒绝，不能只比较转换后的短值。
 
 两份真实 Unicode 归档和两份加密文件名归档验证钩子位置：可以取得已经解密的源名字，不必让 JavaScript 重新解释加密头。旧 Unicode 样本中仍有一个不带编码字段的 UTF-8 名称，候选必须区分“有 Unicode 依据”和“显式指定 UTF-8 后可解释”。
 
 另用 RAR3 派生名 `caf\x82.txt` 验证编码差异：固定 CP437 得到 `café.txt`，固定 Windows-1252 得到 `caf‚.txt`。格式自身不能替调用方确定意图。该派生文件只用于名称解释，未重写原有链接目标，不用于引用图验收。
 
-损坏的旧式压缩 Unicode 名也不能只相信解码后的字符串：本轮构造的残缺操作码仍被原生路径解释成 `A`。候选在使用解码结果前验证编码单元、复制范围和完整消费，因而明确拒绝，而非把这次修复当成真实源名。
+损坏的旧式压缩 Unicode 名也不能只相信解码后的字符串：构造的残缺操作码仍被原生路径解释成 `A`。候选在使用解码结果前验证编码单元、复制范围和完整消费，并拒绝不满足要求的输入。
 
 尚未穷尽极长名称、所有旧式 Unicode 损坏形状、混合档名编码、原始引用目标及整个引用图。窗口系统的提取限制也不能直接替代归档内部命名空间规则。
 
@@ -74,7 +74,7 @@ XML ISO-8859-1 的 `0x80` 被保留为 U+0080，Windows-1252 的同一字节则�
 
 ## 复现
 
-先准备此前的固定 UnRAR／Emscripten、zip.js、FB2 预期及 Electron 运行时，然后从仓库根目录执行：
+先准备固定 UnRAR／Emscripten、zip.js、FB2 预期及 Electron 运行时，然后从仓库根目录执行：
 
 ```powershell
 python -B refactor/verification/evidence/kana-formats/prepare-inputs.py
@@ -89,4 +89,4 @@ python -B refactor/verification/evidence/kana-formats/run-node.py
 python -B refactor/verification/evidence/kana-formats/run-browser.py
 ```
 
-固定输入、构建与运行分别保留摘要。上述结果回答本轮具体的设计疑问；未运行范围按各自问题继续记录，不用“还没有完整产品”替代设计结论，也不以几个成功样本宣称全部格式完成。
+固定输入、构建与运行分别保留摘要。上述结果适用于所列输入，完整格式实现按所属验收场景验证。

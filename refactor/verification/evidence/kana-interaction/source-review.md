@@ -1,10 +1,10 @@
 # 参考内容、选择与跳转的设计核对
 
-2026-10-19，本轮核对 Foliate 的实际注释交互源码与数字出版、焦点交互规范，用于[阅读行为](../../../design/projects/kana/api.md)。这次是源码与规范核对，没有运行 Foliate 应用、执行新的浏览器交互试件或采用上游代码。
+2026-10-19，核对 Foliate 的实际注释交互源码与数字出版、焦点交互规范，用于[阅读行为](../../../design/projects/kana/api.md)。这次是源码与规范核对，没有运行 Foliate 应用、执行新的浏览器交互试件或采用上游代码。
 
 ## 固定来源
 
-Foliate gtk4 分支的本次 HEAD 为 `67b6676d3f936c5edea91d4d903385ef39dd25c0`；它的 src/foliate-js 子模块固定于 `399248a67a8862ffb5e6463a33f9d52b317ca2eb`。这里跟随应用实际使用的子模块，不能混同此前用于其他格式对照的 foliate-js 提交。
+Foliate gtk4 分支的本次 HEAD 为 `67b6676d3f936c5edea91d4d903385ef39dd25c0`；它的 src/foliate-js 子模块固定于 `399248a67a8862ffb5e6463a33f9d52b317ca2eb`。这里跟随应用实际使用的子模块，不能混同用于其他格式对照的 foliate-js 提交。
 
 三份未修改源码的 URL、缓存位置与 SHA-256 见 [source-input.json](source-input.json)。主要读取 [Foliate reader.js](https://github.com/johnfactotum/foliate/blob/67b6676d3f936c5edea91d4d903385ef39dd25c0/src/reader/reader.js)和该子模块的 [footnotes.js](https://github.com/johnfactotum/foliate-js/blob/399248a67a8862ffb5e6463a33f9d52b317ca2eb/footnotes.js)。
 

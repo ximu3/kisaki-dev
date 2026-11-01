@@ -1,5 +1,5 @@
 {
-  "purpose": "JavaScript encoding and data representation only; no proposed value classes or addon executed",
+  "purpose": "JavaScript encoding and data representation checks",
   "nodeVersion": "v24.11.1",
   "checkedAt": "2026-10-18T03:45:25.339Z",
   "validUtf8RoundTrips": 6,
@@ -8,6 +8,6 @@
   "duplicateKeyLossInObjectAndMapObserved": true,
   "nullPrototypeSpecialKeysPreserved": true,
   "nativeAddonExecuted": false,
-  "proposedValueClassesExecuted": false,
+  "nativeValueClassesExecuted": false,
   "screenshotOrGpuExecuted": false
 }

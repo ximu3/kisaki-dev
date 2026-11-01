@@ -38,11 +38,10 @@ kisaki/
 │   │   │   ├── playwright.config.ts
 │   │   │   └── package.json
 │   │   ├── packages/
-│   │   │   ├── appearance/
-│   │   │   ├── ui/
-│   │   │   ├── rpc/
+│   │   │   ├── desktop-appearance/
+│   │   │   ├── desktop-ui/
+│   │   │   ├── desktop-rpc/
 │   │   │   ├── desktop-contracts/
-│   │   │   ├── extension-api/
 │   │   │   ├── extension-distribution/
 │   │   │   ├── extension-sdk/
 │   │   │   └── extension-cli/
@@ -86,7 +85,7 @@ kisaki/
 └── refactor/                     # Design, implementation and acceptance
 ```
 
-clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。工作区成员限定为实际桌面应用、八个公开包、33 个扩展项目和三个私有工程包：
+clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。完整交付的工作区由桌面应用、七个公开包、33 个扩展项目和三个私有工程包组成，成员模式如下。对应模式和 manifest 随所属对象的完整实现建立：
 
 ```yaml
 packages:
@@ -96,7 +95,7 @@ packages:
   - clients/desktop/extensions/projects/*
 ```
 
-Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入口，分工见[工作区配置](workspace.md#workspace)。当前登记桌面交付成员；后续工程建立时优先加入同一工作区，其他语言继续使用自己的工具链和锁文件。
+Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入口，分工见[工作区配置](workspace.md#workspace)。工作区只登记有实际实现的工程，未实施的能力由设计与工作包记录；其他语言继续使用自己的工具链和锁文件。工程测试载体归 tests/fixtures，构建工作流接收明确的输入，不把载体作为产品入口。
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
@@ -104,11 +103,11 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用根 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+七个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用根 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
-八个公共包均位于 clients/desktop/packages，appearance、ui 和 rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
+七个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
 
 根 packages 只承载当前真实共享的私有工程能力：typescript-config、eslint-config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
 
@@ -120,16 +119,16 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 tools 承载所属工程的独立维护能力，tests 拥有验证场景、断言和测试专用辅助。项目脚本、Turborepo 与 CI 负责命令入口、前置依赖、运行环境和执行阶段。工具按实际工作对象或完整工作流组织，不按测试套件或命令数量预设实现目录。工具的归属如下：
 
-| 位置                      | 负责的工作                                                           |
-| ------------------------- | -------------------------------------------------------------------- |
+| 位置                      | 负责的工作                                                                                                                        |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | 根 tools                  | desktop 管理桌面跨包制品输入，release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
-| packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。 |
-| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。 |
-| 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。           |
-| extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。            |
-| 独立项目自身的 tools      | 该项目已有规范确定的构建和交付流程，本体通过正式制品消费。           |
+| packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                                                         |
+| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                                              |
+| 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                                                        |
+| extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。                                                                         |
+| 独立项目自身的 tools      | 该项目已有规范确定的构建和交付流程，本体通过正式制品消费。                                                                        |
 
-单个文件可以完整表达的小工具直接放在 tools 下。需要多个文件协作的工作流使用 `tools/<工作流名>/`，内部按实际操作拆分；目录名称说明工作对象或目的，不按调用者、平台 CI 或脚本后缀另分一套流程。根工具按已有职责组织：
+单个文件可以完整表达的小工具直接放在 tools 下。需要多个文件协作的工作流使用 `tools/<工作流名>/`，内部按实际操作拆分；目录名称说明工作对象或目的，不按调用者、平台 CI 或脚本后缀另分一套流程。根工具按完整职责组织，文件随实际工作流建立：
 
 ```text
 tools/
@@ -146,7 +145,7 @@ host-environment.ts 输出验证进程的 Node 版本、系统、架构、CPU �
 
 桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归 tests/desktop/support，固定输入归 tests/desktop/fixtures；收据收集工具归 tools/desktop，输出归 artifacts/desktop/packages。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
-desktop/package-inputs.ts 汇集八个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
+desktop/package-inputs.ts 汇集七个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 
 cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与退出状态。工作流函数通过明确的参数和返回值提供复用，拥有执行次序、外部调用、文件写入及失败后的清理。其他工具与程序化入口复用这些函数，不通过运行 CLI 后解析终端文字取得结果，也不导入 cli.ts。测试按被测边界直接调用工作流，或实际执行 CLI 核对参数、输出与退出状态。工具模块导入不执行任务，可复用实现不调用 process.exit；CLI 在清理完成后设置退出状态。
 
@@ -154,7 +153,7 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-packages/tooling/src 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
+packages/tooling/src 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于七个公共包，也不被生产运行代码消费。
 
 候选失败、取消和文件替换的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
@@ -202,18 +201,18 @@ clients/desktop/app/tools/
     └── sha256.ts
 ```
 
-| 位置                             | 职责与调用关系                                                                                                                                                                     |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dev/session.ts                   | 拥有完整开发会话与构建交接，通过 extension-cli/extension 启动真实应用；inputs 管理 Chokidar 输入监听，renderer 管理 Vite，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
-| dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。 |
-| build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                 |
-| build/programs.ts                | 依据应用 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。 |
-| build/identity.ts                | 读取 Turbo 的桌面 build 任务摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。 |
-| resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                    |
-| native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                     |
-| package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                        |
-| clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                           |
-| lib                             | 提供跨工作流共用的工程路径、目标解析与字节摘要；生产输入监听归 dev，各工作流拥有自身操作与资源寿命。 |
+| 位置                             | 职责与调用关系                                                                                                                                                                                                                                                               |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| dev/session.ts                   | 拥有完整开发会话与构建交接，接收源码根和进程启动能力；产品入口提供 extension-cli/extension 的真实启动实现，inputs 管理 Chokidar 输入监听，renderer 管理 Vite，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
+| dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。                                                                                                                                                                                                 |
+| build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                                                                                                           |
+| build/programs.ts                | 依据调用方指定源码根下 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。                                                                                 |
+| build/identity.ts                | 读取 Turbo 的桌面 build 任务摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。                                                                                                                                                           |
+| resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                                                                                                            |
+| native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                                                                                                               |
+| package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |
+| clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                                                                                                                     |
+| lib                              | 提供跨工作流共用的工程路径、目标解析、构建与分发清单及字节摘要；生产输入监听归 dev，各工作流拥有自身操作与资源寿命。                                                                                                                                                         |
 
 桌面的 dev、build 和 package 命令分别进入对应 cli.ts，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
@@ -238,7 +237,7 @@ clients/desktop/app/tools/
 | tests/performance         | 按[性能合同](performance.md)验证指定负载、预算和测量口径，使用被测行为所需的实际环境。                                                                                  |
 | tests/tools               | 所属工程 tools 的 CLI、工作流和真实文件副作用测试，按工具名组织；不在 integration 中维护另一份相同用例。                                                                |
 | tests/fixtures            | 测试拥有的固定输入、来源样本及消费者样板，按实际使用范围组织，保存来源、许可、合成范围与预期。                                                                          |
-| tests/support             | 测试专用的环境准备、资料构造、观测与清理辅助，按具体职责命名；不同运行环境的辅助代码明确分开。                                                                                |
+| tests/support             | 测试专用的环境准备、资料构造、观测与清理辅助，按具体职责命名；不同运行环境的辅助代码明确分开。                                                                          |
 
 测试按主要验证目的归档：制品消费、最终制品、性能和工程工具分别归 consumers、artifacts、performance 和 tools；其余按所需接入边界归 integration、browser 或 e2e。运行环境在配置中明确，同一场景不因符合多个分类而复制；例如浏览器性能测量归 performance，普通组件交互归 browser。
 
@@ -347,7 +346,7 @@ preload 的四个入口分别选择所属窗口的最小能力，bridge.ts 负�
 | instance.ts  | 管理单个扩展实例的生命周期及清理             |
 | loader.ts    | 加载已经确定的扩展入口                       |
 | context.ts   | 将 SDK 的上下文实现绑定到本次真实扩展实例    |
-| rpc.ts       | 使用公共 rpc 内核装配宿主通信端点            |
+| rpc.ts       | 使用 desktop-rpc 装配宿主通信端点            |
 
 安装、更新、兼容性、启停政策和宿主进程管理仍由 main/features/extensions 负责。宿主的 context 与 rpc 只完成实际环境的装配，不另写一套 SDK 上下文或消息内核。宿主按自身职责组织文件，不复制主进程的 app/features/infrastructure 分层。
 
@@ -555,7 +554,7 @@ clients/desktop/app/src/renderer/
 
 ## 窗口样式
 
-renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 appearance 映射。四个窗口分别由 entry.tsx 导入自己的 styles.css，组合共同基础、UI 包的成品 CSS 和窗口专属样式。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
+renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 desktop-appearance 映射。四个窗口分别由 entry.tsx 导入自己的 styles.css，组合共同基础、UI 包的成品 CSS 和窗口专属样式。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
 
 常规布局和状态样式在组件中使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块。阅读窗口的外壳与内容容器归 reader/app；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
 

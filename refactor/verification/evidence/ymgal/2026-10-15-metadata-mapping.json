@@ -1,12 +1,16 @@
 {
   "checkedAt": "2026-10-15T06:34:20.717Z",
-  "scope": "Public online metadata and declared archive fields. No personal account or dataset implementation.",
+  "scope": "Public online metadata and declared archive fields.",
   "documentationCommit": "1284ac90454b1e68c15a0fc3e94f6003a927f49b",
   "archives": [
     {
       "sourceId": "31147",
       "kind": "game",
-      "envelopeFields": ["game", "cidMapping", "pidMapping"],
+      "envelopeFields": [
+        "game",
+        "cidMapping",
+        "pidMapping"
+      ],
       "fields": [
         "publishVersion",
         "publishTime",
@@ -42,12 +46,21 @@
       },
       "websiteCount": 5,
       "moreEntryCount": 0,
-      "staffRoles": ["原画", "脚本", "其他", "人物设计", "歌曲", "音乐"]
+      "staffRoles": [
+        "原画",
+        "脚本",
+        "其他",
+        "人物设计",
+        "歌曲",
+        "音乐"
+      ]
     },
     {
       "sourceId": "19366",
       "kind": "character",
-      "envelopeFields": ["character"],
+      "envelopeFields": [
+        "character"
+      ],
       "fields": [
         "publishVersion",
         "publishTime",
@@ -80,7 +93,9 @@
     {
       "sourceId": "11333",
       "kind": "person",
-      "envelopeFields": ["person"],
+      "envelopeFields": [
+        "person"
+      ],
       "fields": [
         "publishVersion",
         "publishTime",
@@ -116,7 +131,9 @@
     {
       "sourceId": "10041",
       "kind": "org",
-      "envelopeFields": ["org"],
+      "envelopeFields": [
+        "org"
+      ],
       "fields": [
         "publishVersion",
         "publishTime",

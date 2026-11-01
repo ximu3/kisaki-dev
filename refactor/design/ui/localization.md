@@ -25,7 +25,7 @@ await context.i18n.translations.register({
   id: 'simplified-chinese',
   locale: 'zh-Hans',
   name: '简体中文',
-  messages
+  messages,
 })
 ```
 
@@ -48,7 +48,7 @@ locale 使用 Intl 支持的规范标签 baseName，不混入数字、日期或�
 const messages = {
   actions: { save: '保存' },
   entry: { added: '已添加 {name}' },
-  selection: { count: '已选择 {count, number} 项' }
+  selection: { count: '已选择 {count, number} 项' },
 }
 
 t('actions.save')
@@ -62,7 +62,7 @@ key 可以来自有限状态映射或可确定的路径组合，但不能任意�
 
 构建从英语 ICU 文本解析叶子路径、参数名和格式，生成关联类型及登记校验合同。不手写平行的 key 与参数表，也不用庞大的递归 TypeScript 类型解析字符串。普通插值接受 string 或 number；number、plural 和 selectordinal 要求 number；date 和 time 接受 Date 或毫秒时间；select 接受 string，不从列出的分支推导封闭枚举。
 
-生成合同及作者校验所需的英语源文归 desktop-contracts/i18n，经 extension-api 与 SDK 的公开作者入口提供。官方译本项目在普通构建前检查中导入自己的纯目录，对该公共基准校验；通用制品工具不通过执行 activate 发现消息，也不要求作者读取应用私有源码。
+生成合同及作者校验所需的英语源文归 desktop-contracts/i18n，经 SDK 的纯作者入口提供。官方译本项目在普通构建前检查中导入自己的纯目录，对该公共基准校验；通用制品工具不通过执行 activate 发现消息，也不要求作者读取应用私有源码。
 
 同一参数的多种用法合并格式约束，英语消息中的约束不相容时构建报错。不能根据参数名猜测它是 ID 或非负整数。业务值与 PartialDate 先按自身语义格式化。
 

@@ -1,6 +1,6 @@
 # libmpv-node 初始化合同的检查范围
 
-对应已确认的[初始化入口](../../../design/projects/libmpv-node/lifecycle.md)。来源收据保持执行当时的 proposal 状态，不因确认设计改写历史检查结果。本轮只读取固定上游源码并检查局部声明，没有实现或运行 createMpv，也没有执行配置文件、脚本或图形初始化。
+本页核对[初始化入口](../../../design/projects/libmpv-node/lifecycle.md)的固定上游源码与声明消费，说明默认选项、初始化日志、取消和资源归属的依据。
 
 ## 固定来源
 

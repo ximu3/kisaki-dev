@@ -3,7 +3,6 @@
   "date": "2026-10-17",
   "ordinal": 29,
   "extension": "Kotatsu Importer",
-  "status": "design-confirmed",
   "inputOrigin": "synthetic-at-user-request",
   "sourceRef": "v9.4.1",
   "commit": "06a0b5829b8d5f214d60d5011d66ec1ccbd5630e",
@@ -53,7 +52,9 @@
     "failed": 0,
     "allInputsUnchanged": true
   },
-  "results": ["synthetic-results.json"],
+  "results": [
+    "synthetic-results.json"
+  ],
   "notClaimed": [
     "Real Kotatsu backup, Android or Kotlin execution.",
     "Live account access, source parser restoration or manga downloading.",

@@ -1,5 +1,5 @@
 {
-  "purpose": "Node scheduling and listener return behavior only; no native bridge or proposed observer implementation",
+  "purpose": "Node scheduling and listener return behavior only; no native bridge or native observer implementation",
   "nodeVersion": "v24.11.1",
   "checkedAt": "2026-10-18T05:36:56.809Z",
   "inlineOrder": ["notification", "await-resumed"],
@@ -10,7 +10,7 @@
   "capturedAsyncContextFacilityVerified": true,
   "capturedCallbackAndReceiverPreserved": true,
   "nativeAddonExecuted": false,
-  "proposedSubscriptionImplementationExecuted": false,
+  "subscriptionImplementationExecuted": false,
   "nativeCallbackExceptionRouteExecuted": false,
   "cancellationAndCloseVerified": false,
   "queueCapacityVerified": false

@@ -5,7 +5,6 @@
 
 import { createServer } from 'vite'
 import { isAbsolute, join, relative, sep } from 'node:path'
-import { appRoot } from '../lib/paths'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { DependencyResolver } from './dependencies'
@@ -27,13 +26,14 @@ function contains(parent: string, path: string): boolean {
 
 /** Start the renderer server and retain its current public-package resolution until close(). */
 export async function startRenderer(
+  sourceRoot: string,
   members: DesktopDependency[],
   snapshotDirectory: string,
 ): Promise<DevelopmentRenderer> {
   let snapshot: DependencySnapshot | undefined
 
   const server = await createServer({
-    configFile: join(appRoot, 'config', 'vite', 'vite.config.renderer.ts'),
+    configFile: join(sourceRoot, 'config', 'vite', 'vite.config.renderer.ts'),
     mode: 'development',
     optimizeDeps: { exclude: members.map((member) => member.name) },
     plugins: [
@@ -41,15 +41,38 @@ export async function startRenderer(
         name: 'desktop-public-dependency-snapshots',
         enforce: 'pre',
         async resolveId(source, importer, options) {
-          // Imports inside a snapshot keep that generation's package resolution.
-          if (importer && contains(snapshotDirectory, importer)) {
-            return null
-          }
-
           const specifier = source.replace(/[?#].*$/, '')
           const member = members.find(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
           )
+
+          if (importer && contains(snapshotDirectory, importer)) {
+            // Public and relative imports stay in their generation. Installed third-party
+            // dependencies retain the original package's pnpm resolution context.
+            if (
+              member ||
+              source.startsWith('.') ||
+              source.startsWith('#') ||
+              source.startsWith('\0') ||
+              isAbsolute(source) ||
+              source.includes(':')
+            ) {
+              return null
+            }
+
+            const generation = relative(snapshotDirectory, importer).split(sep)[0]!
+            const owner = members.find(({ name }) =>
+              contains(join(snapshotDirectory, generation, 'node_modules', name), importer),
+            )
+            if (owner) {
+              return this.resolve(source, join(owner.path, 'package.json'), {
+                ...options,
+                skipSelf: true,
+              })
+            }
+            return null
+          }
+
           if (!member) {
             return null
           }

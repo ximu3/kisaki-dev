@@ -1,6 +1,6 @@
 # Kana 呈现机制验证
 
-2026-10-20，本轮为[呈现与交互机制](../../../design/projects/kana/layout.md)运行原生分栏、文字比例与局部 caret 试件。此前已确认的格式与输入方案另行采用，本页不重新执行或扩大那些验证。
+2026-10-20，为[呈现与交互机制](../../../design/projects/kana/layout.md)运行原生分栏、文字比例与局部 caret 试件。
 
 ## 两个实际运行时
 
@@ -9,7 +9,7 @@
 | 运行时                                   | 来源                                                | 结果                                                           |
 | ---------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------- |
 | Electron 41.2.0／Chromium 146.0.7680.179 | 仓库当前已经安装的 Electron，记录包与可执行文件摘要 | [project-browser-contract.json](project-browser-contract.json) |
-| Electron 44.5.1／Chromium 152.0.7977.130 | 此前已固定的隔离运行时                              | [browser-contract.json](browser-contract.json)                 |
+| Electron 44.5.1／Chromium 152.0.7977.130 | 已固定的隔离运行时                                  | [browser-contract.json](browser-contract.json)                 |
 
 两者执行同一 [probe.cjs](probe.cjs)，不视为两个独立排版实现。主规范与兼容资料的实际下载、日期和摘要见 [references.json](references.json)。没有安装新的浏览器或调整浏览器实验 flag。
 
@@ -37,7 +37,7 @@
 
 在横排、vertical-rl 与 vertical-lr 中，从相同起点调用原生 Selection.modify 逐字符前进。7 次结果均为 UTF-16 offset 1、3、4、5、7、8、9，受控 emoji 代理对与 e 加组合重音没有被拆开；下一行移动也到达真实后续文字，源内容不变。
 
-这只验证局部原生移动可作为输入机制的组成部分，没有执行完整阅读器的物理按键映射、真实指针跨 iframe 拖选、触控或辅助技术测试。先前的真实跨文档鼠标机制仍见[阅读路线验证](../kana/reading-route.md)，不能把两组局部通过合并为完整选择实现通过。
+这只验证局部原生移动可作为输入机制的组成部分，没有执行完整阅读器的物理按键映射、真实指针跨 iframe 拖选、触控或辅助技术测试。真实跨文档鼠标机制仍见[阅读路线验证](../kana/reading-route.md)，不能把两组局部通过合并为完整选择实现通过。
 
 实际创建 Promise 型 ClipboardItem，再通过 getType 取得完整的 text/plain Blob；两个运行时均成功。没有调用 navigator.clipboard.write，因此权限、焦点、用户激活寿命和系统复制成功都未验证。API 存在及载荷构造成功不等于真实复制链路成功。
 

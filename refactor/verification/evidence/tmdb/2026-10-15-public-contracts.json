@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "checkedOn": "2026-10-15",
   "purpose": "Public contract and scope evidence for the initial TMDB design discussion.",
-  "designStatus": "design-confirmed-source-and-runtime-verification-pending",
   "currentOfficialExtensionCount": 34,
   "verificationBoundary": {
     "authenticatedApiReads": false,
@@ -1670,7 +1669,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -2370,7 +2371,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3069,7 +3072,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3570,7 +3575,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3601,7 +3608,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3768,7 +3777,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3785,7 +3796,9 @@
           "type": "string"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-spec"
     },
     {
@@ -3808,7 +3821,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -3834,7 +3849,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -3854,7 +3871,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -4187,7 +4206,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -4229,7 +4250,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -4271,7 +4294,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     },
     {
@@ -4305,7 +4330,9 @@
           "type": "integer"
         }
       },
-      "requestFields": ["RAW_BODY"],
+      "requestFields": [
+        "RAW_BODY"
+      ],
       "source": "tmdb-v4-spec"
     }
   ],
@@ -4325,7 +4352,9 @@
         "2023 • 38 Episodes",
         "Social"
       ],
-      "memberEpisodePaths": ["/tv/209867/season/1/episode/38"]
+      "memberEpisodePaths": [
+        "/tv/209867/season/1/episode/38"
+      ]
     },
     {
       "request": "tmdb-frieren-en-page",

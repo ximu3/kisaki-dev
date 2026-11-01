@@ -215,7 +215,11 @@ app.whenReady().then(() => {
       assert.equal(monthDayWithin({ month: 2, day: 29 }, [2, 1], [2, 29]), true)
       return 13
     })
-    const req = createRequire(path.resolve('apps/desktop/package.json'))
+    const probePackage = process.env.KISAKI_PROBE_APP_PACKAGE
+    if (!probePackage || !path.isAbsolute(probePackage)) {
+      throw new Error('Provide the absolute KISAKI_PROBE_APP_PACKAGE input')
+    }
+    const req = createRequire(probePackage)
     const Database = req('better-sqlite3')
     client = new Database(':memory:')
     result.versions.sqlite = client.prepare('select sqlite_version() as version').get().version

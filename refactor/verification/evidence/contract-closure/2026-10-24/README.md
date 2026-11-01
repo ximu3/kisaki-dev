@@ -16,7 +16,7 @@ FileSwitchResult 的 ready 分支携带就绪 Session，previousEnded 只用于�
 python verify-types.py --root <kisaki-root> --node <node-executable> --tsc <typescript-bin-tsc> --out <new-output-directory>
 ```
 
-脚本只读取规格并在指定的新目录生成检查材料，不安装依赖，不覆盖本目录历史结果。结果保存实际版本与被提取文档的 SHA-256；后续正文修订后须重新执行并另存结果。
+脚本读取规格，在指定的新目录生成检查材料。结果保存实际版本与被提取文档的 SHA-256；后续正文修订后须重新执行并另存结果。
 
 ## 存档格式与确定编码
 

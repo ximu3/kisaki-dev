@@ -21,7 +21,7 @@
   "unreferencedTimerAllowedExit": true,
   "asyncDisposalOrder": ["body", "dispose-start", "dispose-finish"],
   "nativeAddonExecuted": false,
-  "proposedMpvErrorsInstantiated": false,
-  "proposedMpvKeepaliveExecuted": false,
+  "mpvErrorsInstantiated": false,
+  "mpvKeepaliveExecuted": false,
   "nativeEnvironmentCleanupVerified": false
 }

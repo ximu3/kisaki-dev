@@ -1,6 +1,6 @@
 # oauth-relay 构建输入与运行交接验证
 
-对应[构建与部署细化](../../../design/projects/oauth-relay/deployment.md)。本轮没有访问账号或重复真实 OAuth 核验，只读取官方公开发行材料，在独立缓存中运行 Compose 解析器及固定 Node 子进程。
+对应[构建与部署细化](../../../design/projects/oauth-relay/deployment.md)。没有访问账号或重复真实 OAuth 核验，只读取官方公开发行材料，在独立缓存中运行 Compose 解析器及固定 Node 子进程。
 
 ## 输入
 
@@ -8,11 +8,11 @@
 | -------------- | --------------------------------------------------------------------------------------------------- |
 | Compose        | 官方 5.6.0 Windows x64 单文件程序，下载后按同一发行 checksums.txt 核对 SHA-256                      |
 | Node           | 官方 24.22.0 Windows x64 ZIP，按 SHASUMS256.txt 核对后只取 node.exe                                 |
-| Hono / adapter | 复用未经修改的 4.13.13 / 2.1.5 固定包，入口摘要与此前输入一致                                       |
+| Hono / adapter | 复用未经修改的 4.13.13 / 2.1.5 固定包，入口摘要与输入一致                                           |
 | 基础镜像       | node:24.22.0-trixie-slim 的 OCI index 与 linux/amd64、linux/arm64 子 manifest，按摘要读取；未下载层 |
 | 配置数据       | example.invalid 镜像地址、无秘密应用 JSON 与程序自有字面值；未读取真实部署环境或 Docker 登录配置    |
 
-[prepare.py](prepare.py)与 [source-input.json](source-input.json)保存版本、来源、实际路径、归档摘要和镜像清单。本轮基础 index 摘要为 a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c。匿名 registry 访问令牌只用于读取公开 Node 清单，没有保存进证据。
+[prepare.py](prepare.py)与 [source-input.json](source-input.json)保存版本、来源、实际路径、归档摘要和镜像清单。基础 index 摘要为 a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c。匿名 registry 访问令牌只用于读取公开 Node 清单，没有保存进证据。
 
 ## Compose 解析
 
@@ -31,7 +31,7 @@
 | 正常完成 | 请求返回 200；78ms 收尾，未触发强制期限；活动请求／任务为 0，监听关闭，进程退出码 0                       |
 | 超过期限 | 100ms 试件期限后取消真实上游 HTTP；117ms 收尾，客户端连接结束；活动请求／任务为 0，监听关闭，进程退出码 0 |
 
-最初正常完成场景到 1000ms 仍触发了退出期限。核对 Node 固定源码后，收尾增加了响应结束时的空闲连接回收，避免开始关闭时仍在响应的连接随后继续等待 keep-alive。最初脚本及断言观察保存在 [initial-observations.json](initial-observations.json)，最终记录见 [lifecycle-contract.json](lifecycle-contract.json)。没有更改 Node 或 Hono 源码，也没有用延长测试期限掩盖这个收尾条件。
+收尾在响应结束时回收空闲连接，使关闭开始时仍在响应的连接能够及时退出 keep-alive 等待。该行为依据固定 Node 源码，实际结果见 [lifecycle-contract.json](lifecycle-contract.json)。
 
 该试件在 Windows 通过 IPC 进入同一个 shutdown 函数。它没有执行 POSIX SIGTERM、Linux PID 1 或 docker stop；正式容器仍需验证这层交接。100ms 和 1000ms 是试件期限，不替代已确认的生产 25 秒应用期限与 30 秒容器宽限，也不作为性能承诺。
 
@@ -39,7 +39,7 @@
 
 [Dockerfile](Dockerfile)、[.dockerignore](.dockerignore)与 [.env.example](.env.example)说明未来独立仓库的构建和运行输入。Dockerfile 面向正式工程的 manifest、锁文件、源码及 tools；当前没有把本仓库或隔离试件包装为正式 relay 镜像，没有执行镜像构建。
 
-本轮结果只证明其记录的构建输入、配置语义和 Node 生命周期条件。实际镜像、发行平台、容器内权限、秘密注入、真实代理与运行服务切换没有执行。既有两来源授权结果继续引用[原始核验](../oauth-relay-provider/providers.md)，不属于本轮网络活动。
+实际结果只证明其记录的构建输入、配置语义和 Node 生命周期条件。实际镜像、发行平台、容器内权限、秘密注入、真实代理与运行服务切换没有执行。既有两来源授权结果继续引用[原始核验](../oauth-relay-provider/providers.md)，不属于网络活动。
 
 复核入口：
 

@@ -20,12 +20,15 @@ SIZE = 31595598
 CACHE = REPOSITORY / "node_modules/.cache/libmpv-design" / TAG
 ARCHIVE = CACHE / NAME
 EXTRACTED = CACHE / "extracted"
-SEVEN_ZIP = REPOSITORY / "apps/desktop/node_modules/7zip-bin/win/x64/7za.exe"
+seven_zip_input = os.environ.get("KISAKI_PROBE_7ZIP")
+if not seven_zip_input:
+    raise RuntimeError("Provide KISAKI_PROBE_7ZIP for archive extraction.")
+SEVEN_ZIP = Path(seven_zip_input)
 
 if os.name != "nt" or platform.machine().lower() not in ("amd64", "x86_64"):
     raise RuntimeError("This probe input is only for Windows x64.")
-if not SEVEN_ZIP.is_file():
-    raise RuntimeError("The workspace 7-Zip executable is unavailable.")
+if not SEVEN_ZIP.is_absolute() or not SEVEN_ZIP.is_file():
+    raise RuntimeError("The selected 7-Zip executable is unavailable.")
 CACHE.mkdir(parents=True, exist_ok=True)
 
 if not ARCHIVE.exists():

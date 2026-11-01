@@ -1,6 +1,6 @@
 # 三个官方译本：合同与代表性消息核验
 
-对应第 31–33 项[已确认完整方案](../../../design/extensions/languages.md)。繁体中文的台湾措辞基准已由用户明确选择；三项完整方案均已确认。本目录核验语言合同和代表性消息，不是三份完整译文或已经可安装的扩展。
+本目录验证[语言扩展合同](../../../design/extensions/languages.md)及代表性消息。繁体中文采用台湾措辞基准；完整译文与可安装扩展由 W21 交付。
 
 ## 依据与实际依赖
 
@@ -17,19 +17,15 @@
 
 [dependency-probe.mjs](dependency-probe.mjs) 记录三项 npm 固定版本和五个官方文档端点，八项读取均 HTTP 200；[dependency-contract.json](dependency-contract.json) 保存时间、字节、摘要、仓库引用及 npm 完整性资料。运行包安装在临时隔离目录，没有修改主项目 package.json 或锁文件。探针进程为 Node v24.11.1、ICU 77.1，不代表 Electron 或其他操作系统已经执行。
 
-## 代表性输入与原目录盘点
+## 代表性输入
 
 [fixtures](fixtures/projects.json) 包含三个扩展的独立包身份、译本身份、语言和六目标声明；另有 en、zh-Hans、zh-Hant、ja 四份纯 JSON 目录，每份 37 条嵌套消息。身份文件是设计样本，不是可安装 manifest。
 
 消息覆盖七类实体、合集和喜爱、资料方案、当前状态与运行状态、记录本次完成与补录、日期未知、计数、英文序数与 offset、动态标题、普通数值、日期、失败反馈、引号转义和字面标签。简体、台湾繁体和日文分别编写，没有运行简繁转换或在线翻译。
 
-[existing-catalog-inventory.json](existing-catalog-inventory.json) 使用 TypeScript AST 只读检查当前四份旧目录，各有 29 个领域文件、2605 个同路径叶子，其中 268 个为函数。记录包含 116 个领域文件的字节数与 SHA-256，没有执行它们的代码。相同键路径不证明旧译文已经适合新模型，也不证明全量质量通过。
-
-现有函数消息需要按新基准转换成 ICU。旧的 Company、completed 状态等词汇还需重新核对对象和动作含义；不能只完成函数替换就宣布迁移结束。新界面的最终消息数量由实现后的完整英语基准决定，不以 2605 作为冻结清单。
-
 ## 已执行核验
 
-[verify.mjs](verify.mjs) 通过 133 项检查，结果见 [probe-results.json](probe-results.json)。五个输入的摘要见 [fixture-manifest.json](fixture-manifest.json)。
+2026-11-01，[verify.mjs](verify.mjs) 在隔离依赖目录通过 130 项检查，结果见 [probe-results.json](probe-results.json)。五个输入的摘要见 [fixture-manifest.json](fixture-manifest.json)。
 
 实际 Node／依赖检查包括：
 
@@ -54,10 +50,10 @@ node refactor/verification/evidence/language-extensions/verify.mjs $proofDirecto
 node refactor/verification/evidence/language-extensions/dependency-probe.mjs
 ```
 
-探针另消费仓库现有 TypeScript。输入目录是本次手工制作的代表性样本，读取和格式化均不需要账户或实际书库。[汇总记录](2026-10-17-verification.json) 分别保存三项已确认状态，共享检查只计 133 项，不将同一次公共核验重复计成三份。
+探针另消费仓库锁定的 TypeScript。输入为手工制作的代表性消息，验证直接读取与格式化这些样本。执行时将试件复制到隔离目录，结果写入该副本；确认输入与环境后再更新证据。三项译本的实施状态由[交付清单](../../../implementation/delivery-checklist.md#extensions)维护，共享核验不重复计数。
 
 ## 尚须正式验收
 
 三份完整消息目录、真实英语基准的持续覆盖、逐项语义和用语审校、所有实际窗口与原生菜单、无障碍文字、浏览器／Webview、字体与换行、75%／200% 缩放、首屏等待、跨窗口状态保持、真实更新与卸载、公开 SDK／CLI 与六目标制品安装仍属于实施验收。
 
-本次没有修改运行代码、生成正式语言扩展、全量翻译旧目录或运行 Kisaki。代表性 ICU、类型和内存模型成功不代替完整译文质量，也不把技术库已提供泛型当作主应用类型生成已经交付。
+本页覆盖代表性 ICU、类型与内存模型；完整译文、正式语言扩展及 Kisaki 消费按所属工作包验收。

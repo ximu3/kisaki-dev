@@ -1,8 +1,18 @@
 {
   "checkedAt": "2026-10-16T11:34:19.277Z",
   "scope": {
-    "sources": ["mal", "anilist"],
-    "rootTypes": ["anime", "comic", "novel", "character", "person", "organization"],
+    "sources": [
+      "mal",
+      "anilist"
+    ],
+    "rootTypes": [
+      "anime",
+      "comic",
+      "novel",
+      "character",
+      "person",
+      "organization"
+    ],
     "runtimeImplementationVerified": false
   },
   "primarySources": [
@@ -15,12 +25,6 @@
     {
       "name": "MAL Authorization",
       "url": "https://myanimelist.net/apiconfig/references/authorization"
-    },
-    {
-      "name": "Jikan OpenAPI",
-      "url": "https://docs.api.jikan.moe/",
-      "specVersion": "4.0.0",
-      "canonicalJsonSha256": "e26e7317e2d5f33805e86dedd34aecc317bfd3803e9471c8f73a5327d95d4748"
     },
     {
       "name": "AniList live GraphQL schema",
@@ -129,21 +133,6 @@
       "documentedDateWriteFieldsAbsent": true,
       "actualLightNovelType": "light_novel"
     },
-    "jikan": {
-      "readOnly": true,
-      "documentedRequestsPerMinute": 60,
-      "documentedRequestsPerSecond": 3,
-      "documentedCacheHours": 24,
-      "emptyCollectionsMayMeanUndetermined": true,
-      "liveApiResponseObtained": false,
-      "checks": [
-        "Node fetch transport failure",
-        "curl connection timeout",
-        "Web fetch timeout",
-        "Chrome ERR_TIMED_OUT"
-      ],
-      "noMirrorUsed": true
-    },
     "anilist": {
       "liveGraphqlRequestsPerMinute": 30,
       "staffHasIndividualGroupDiscriminator": false,
@@ -151,7 +140,10 @@
         "id": 96877,
         "name": "CLAMP"
       },
-      "globalCreditPlaceholderCharacterIds": [36309, 36310],
+      "globalCreditPlaceholderCharacterIds": [
+        36309,
+        36310
+      ],
       "studioFields": [
         "id",
         "name",
@@ -181,8 +173,19 @@
       ],
       "completeCharacterPagination": {
         "mediaId": 154587,
-        "pageSizes": [25, 25, 25, 25, 0],
-        "firstFourReportedTotals": [500, 500, 500, 500],
+        "pageSizes": [
+          25,
+          25,
+          25,
+          25,
+          0
+        ],
+        "firstFourReportedTotals": [
+          500,
+          500,
+          500,
+          500
+        ],
         "lastPageInfo": {
           "currentPage": 5,
           "perPage": 25,
@@ -2131,14 +2134,6 @@
       "operationType": "read"
     },
     {
-      "label": "jikan-frieren",
-      "path": "/v4/anime/52991/full",
-      "method": "GET",
-      "checkedAt": "2026-10-16T10:01:52.038Z",
-      "transportFailed": true,
-      "operationType": "read"
-    },
-    {
       "label": "mal-frieren-official",
       "path": "/v2/anime/52991",
       "method": "GET",
@@ -4057,7 +4052,10 @@
       "rateLimit": null,
       "rateRemaining": null,
       "summary": {
-        "keys": ["data", "paging"],
+        "keys": [
+          "data",
+          "paging"
+        ],
         "items": [
           {
             "id": 21479,
@@ -4323,7 +4321,13 @@
             "media",
             "favouriteOrder"
           ],
-          "favourites": ["anime", "manga", "characters", "staff", "studios"],
+          "favourites": [
+            "anime",
+            "manga",
+            "characters",
+            "staff",
+            "studios"
+          ],
           "query": [
             "Page",
             "Media",
@@ -4383,7 +4387,10 @@
       "rateLimit": null,
       "rateRemaining": null,
       "summary": {
-        "keys": ["data", "paging"],
+        "keys": [
+          "data",
+          "paging"
+        ],
         "itemCount": 0,
         "hasNext": false,
         "statuses": [],
@@ -4404,7 +4411,10 @@
       "rateLimit": null,
       "rateRemaining": null,
       "summary": {
-        "keys": ["data", "paging"],
+        "keys": [
+          "data",
+          "paging"
+        ],
         "itemCount": 0,
         "hasNext": false,
         "statuses": [],
@@ -4427,7 +4437,13 @@
       "summary": {
         "hasNumericId": true,
         "hasName": true,
-        "keys": ["id", "name", "birthday", "location", "joined_at"]
+        "keys": [
+          "id",
+          "name",
+          "birthday",
+          "location",
+          "joined_at"
+        ]
       },
       "operationType": "read"
     },
@@ -5022,7 +5038,9 @@
                   "name": {
                     "full": "Heiter",
                     "native": "ハイター",
-                    "alternative": ["Corrupt Priest"],
+                    "alternative": [
+                      "Corrupt Priest"
+                    ],
                     "alternativeSpoiler": []
                   },
                   "gender": "Male",
@@ -5310,7 +5328,10 @@
             "english": "Sword Art Online",
             "native": "ソードアート・オンライン"
           },
-          "synonyms": ["S.A.O", "SAO"],
+          "synonyms": [
+            "S.A.O",
+            "SAO"
+          ],
           "status": "RELEASING",
           "chapters": null,
           "volumes": null,
@@ -5728,7 +5749,9 @@
                 "Apapa"
               ]
             },
-            "occupations": ["Mangaka"],
+            "occupations": [
+              "Mangaka"
+            ],
             "gender": null,
             "descriptionLength": 1190,
             "groupWordEvidence": true
@@ -5780,7 +5803,13 @@
       "rateRemaining": "29",
       "summary": {
         "errorCount": 0,
-        "types": ["pageInfo", "score", "dateInput", "list", "mutation"]
+        "types": [
+          "pageInfo",
+          "score",
+          "dateInput",
+          "list",
+          "mutation"
+        ]
       },
       "operationType": "read"
     },
@@ -5804,9 +5833,31 @@
         },
         "itemCount": 25,
         "ids": [
-          176754, 183965, 184310, 184311, 184312, 184313, 205177, 219110, 219732, 219733, 219734,
-          246054, 246055, 246056, 246057, 246058, 293727, 293728, 315278, 315628, 315629, 315630,
-          315631, 315632, 315634
+          176754,
+          183965,
+          184310,
+          184311,
+          184312,
+          184313,
+          205177,
+          219110,
+          219732,
+          219733,
+          219734,
+          246054,
+          246055,
+          246056,
+          246057,
+          246058,
+          293727,
+          293728,
+          315278,
+          315628,
+          315629,
+          315630,
+          315631,
+          315632,
+          315634
         ]
       },
       "operationType": "read"
@@ -5831,9 +5882,31 @@
         },
         "itemCount": 25,
         "ids": [
-          315636, 315637, 315638, 315639, 315640, 315641, 315642, 315643, 315644, 315929, 316456,
-          316457, 316458, 316459, 316985, 316986, 316987, 318147, 318148, 319165, 319598, 319599,
-          321716, 321717, 321718
+          315636,
+          315637,
+          315638,
+          315639,
+          315640,
+          315641,
+          315642,
+          315643,
+          315644,
+          315929,
+          316456,
+          316457,
+          316458,
+          316459,
+          316985,
+          316986,
+          316987,
+          318147,
+          318148,
+          319165,
+          319598,
+          319599,
+          321716,
+          321717,
+          321718
         ]
       },
       "operationType": "read"
@@ -5869,7 +5942,12 @@
           }
         ],
         "serialization": [],
-        "relatedTypes": ["side_story", "spin_off", "adaptation", "other"],
+        "relatedTypes": [
+          "side_story",
+          "spin_off",
+          "adaptation",
+          "other"
+        ],
         "synopsisLength": 946,
         "keys": [
           "id",
@@ -9388,9 +9466,31 @@
         },
         "itemCount": 25,
         "ids": [
-          321719, 321720, 325587, 325588, 325589, 326328, 326329, 326365, 326366, 326367, 326368,
-          326370, 326371, 326372, 326373, 326401, 326416, 326417, 326418, 326419, 326420, 326421,
-          326422, 326423, 326424
+          321719,
+          321720,
+          325587,
+          325588,
+          325589,
+          326328,
+          326329,
+          326365,
+          326366,
+          326367,
+          326368,
+          326370,
+          326371,
+          326372,
+          326373,
+          326401,
+          326416,
+          326417,
+          326418,
+          326419,
+          326420,
+          326421,
+          326422,
+          326423,
+          326424
         ]
       },
       "operationType": "read"
@@ -9565,9 +9665,31 @@
         },
         "itemCount": 25,
         "ids": [
-          326425, 326825, 326826, 326827, 326828, 326829, 326830, 326831, 326832, 326833, 327208,
-          327209, 327210, 327299, 327305, 327306, 327493, 327494, 327496, 327515, 327519, 327520,
-          327521, 327522, 327560
+          326425,
+          326825,
+          326826,
+          326827,
+          326828,
+          326829,
+          326830,
+          326831,
+          326832,
+          326833,
+          327208,
+          327209,
+          327210,
+          327299,
+          327305,
+          327306,
+          327493,
+          327494,
+          327496,
+          327515,
+          327519,
+          327520,
+          327521,
+          327522,
+          327560
         ]
       },
       "operationType": "read"
@@ -9757,7 +9879,11 @@
           "name": {
             "full": "Reki Kawahara",
             "native": "川原礫",
-            "alternative": ["Fumio Kunori (九里史生)", "WordGear", "攻打引"]
+            "alternative": [
+              "Fumio Kunori (九里史生)",
+              "WordGear",
+              "攻打引"
+            ]
           },
           "staffMedia": {
             "pageInfo": {
@@ -9914,7 +10040,6 @@
     }
   ],
   "limitations": [
-    "Jikan runtime responses remain unverified.",
     "No extension runtime, Webview, native ingestion, local synchronization, or image decoding implementation was tested.",
     "Nonempty custom lists, private source-list access failures, advanced scoring mode, and non-media favourite mutations were not tested.",
     "No user identifiers, credentials, full private lists, or raw response prose are retained."

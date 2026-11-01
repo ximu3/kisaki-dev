@@ -33,7 +33,7 @@ Apple 的 [AXUIElement](https://developer.apple.com/documentation/applicationser
 
 Apple [SCScreenshotManager](https://developer.apple.com/documentation/screencapturekit/scscreenshotmanager) 的官方 Markdown 标明从 macOS 14 提供，其按过滤器采集的入口接收 SCContentFilter 与配置。[SCWindow](https://developer.apple.com/documentation/screencapturekit/scwindow)则提供 CGWindowID。单帧采集入口的出现不等于已经提供 AXUIElement 到 SCWindow 的公开转换；本次仍未核实到可替代候选桥接的完整公开路线。
 
-这次补充只核对接口职责与项目实际采用情况，没有在 macOS 执行任何调用，也没有采用参考项目的安装、系统配置或签名策略。
+本页核对接口职责与参考项目用法；macOS 原生运行及宿主签署身份仍需验证。
 
 <a id="linux"></a>
 
@@ -45,12 +45,10 @@ Apple [SCScreenshotManager](https://developer.apple.com/documentation/screencapt
 | [KWin 5.24.7 截图 D-Bus 接口](https://github.com/KDE/kwin/blob/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp)                                                       | checkPermissions 从实际 D-Bus sender 查询 PID，再检查该进程获准的接口；随后才接纳窗口截图。                        | 不能以桌面组件存在或窗口枚举成功推断调用宿主可以截图。                                        |
 | [GNOME Shell 42.0 introspect.js](https://github.com/GNOME/gnome-shell/blob/42.0/js/misc/introspect.js)与[util.js](https://github.com/GNOME/gnome-shell/blob/42.0/js/misc/util.js) | 内建窗口查询使用 DBusSenderChecker；它核对实际 sender 对应的允许名称，拒绝未获允许的调用。                         | 桌面内部对象可读取不等于任意外部进程获准调用；不能让自己的组件仅相信请求自报身份。            |
 
-GNOME 的源码只说明该内建接口如何检查调用者，不是 Vantage 自有组件授权设计已经成立的证明。没有采用其中的 unsafe_mode，也没有调整任何 Shell 安全设置。KWin 源码属于明确旧版本，不能据此声称后续版本身份解析完全相同。
+GNOME 内建接口按调用者身份检查访问。Vantage 自有组件按[Linux 合同](../../../design/projects/vantage/linux.md)建立会话边界；KWin 的版本差异分别核对。
 
-当前 AppImage 在目标 KWin 上的实际可执行路径、桌面服务匹配、授权和截图尚未执行。本轮只识别出必须闭合的装配问题，没有选择额外辅助进程作为正式路线。
+当前 AppImage 在目标 KWin 上的实际可执行路径、桌面服务匹配、授权和截图尚未执行。
 
-## 本轮结果
+## 接入与验证归属
 
-已确认的原生单窗范围同步到设计，完整调用与公共形状保持原合同。观察中断、宿主流程和发行验证放在同一职责路径检查；发现的验收措辞须与已经规定的逻辑引用和平台并发边界一致。
-
-本次没有改写历史探针 JSON、重跑类型检查或生成新的原生通过记录。Linux 配套交付和整体接续方向已获原则认可，具体机制仍待闭合；macOS 窄范围非公开桥接按已确认方向继续验证。Linux 访问粒度与版本登记的后续修订另见[新的来源核对](linux-integration.md)。真实 addon、桌面会话、签名宿主和六平台制品均不能由本次来源核对替代。
+原生单窗、调用与资源寿命由[平台合同](../../../design/projects/vantage/backends.md)定义，Linux 的访问粒度与版本登记依据见[接口核对](linux-integration.md)。来源记录用于确定接口与条件；addon、实际桌面、签署宿主和目标制品由 W11 验收。

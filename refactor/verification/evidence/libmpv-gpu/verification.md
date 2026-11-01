@@ -2,7 +2,7 @@
 
 本组实际编译 Rust／Node-API addon，以 C++ 实验模块分别接入 ANGLE 和上游直接 D3D11 Render API，验证原生渲染、独立帧持有、部分颜色目标与 Electron 消费。它没有建立完整的公开 VideoOutput 或 NativeFrame 实现；[终态设计](../../../design/projects/libmpv-node/video.md)仍需完成。原型覆盖范围不决定最终功能范围。
 
-同一 helper 后续增加显式 opengl-next 选择与 ANGLE 半浮点目标，供[另一组固定产物对照](../libmpv-renderer/verification.md)使用。本页常规检查仍使用原固定 DLL、既有 opengl 和直接 D3D11 入口，并在 helper 变更后重跑；不能把候选结果归给本页原生构建。
+本页检查使用固定 DLL、opengl 和直接 D3D11 入口，helper 字节与收据保持对应。此 helper 继续作为字幕修复与 SDR 宿主检查的固定输入，不构成正式公共输出实现。
 
 ## 固定输入与执行路线
 
@@ -25,11 +25,11 @@ libmpv 使用[固定的探针 DLL](../libmpv-native/binary-input.json)，对应 
 
 每组从 63×47 改为 31×23，持有两份独立纹理；随后将原生 vo 切为 null，并查询 current-vo 确认。释放 Render API 上下文并销毁核心后，旧纹理仍可读取且内容一致。帧保留纹理、设备与必要系统库引用，不保留 libmpv 核心。顶端行方向以四象限图核对，不能照搬窗口默认 framebuffer 的翻转设置。
 
-SDR 设置明确使用 BT.709、sRGB、treat-srgb-as-power22=no 与 target-peak=auto，参考灰色维持 128。改为 linear 后变为 55，证明原生目标设置实际影响像素。先前 100 nit 试验中的 177→112 不再作为当前 sRGB 目标结果。交付的两帧在改动前已经固定，之后用于颜色比较的临时纹理不会替换它们。
+SDR 设置明确使用 BT.709、sRGB、treat-srgb-as-power22=no 与 target-peak=auto，参考灰色维持 128。改为 linear 后变为 55，证明原生目标设置实际影响像素。交付的两帧在改动前已经固定，之后用于颜色比较的临时纹理不会替换它们。
 
 screenshot-raw 实测为 bgr0，w=63、h=47、stride=256、data 长度 12032，包含行 padding；截图与共享纹理分别持有。原型在复制前检查布局和字节范围，尚未覆盖负 stride、所有截图格式或尺寸上限。
 
-[源码比对](source-comparison.json)保留两个提交的 12 项历史来源收据：创建与释放、screenshot-raw 与配置共同写入函数的局部文本相同，渲染函数、头文件与 GPU 接入有差异。它不是旧版整版验证；当前直接 D3D11 的依据是实际新增执行结果。
+[源码比对](source-comparison.json)记录两个固定提交的 12 项来源：创建与释放、screenshot-raw 与配置共同写入函数的局部文本相同，渲染函数、头文件与 GPU 接入有差异。直接 D3D11 的运行依据见本页结果。
 
 ## 容量占满时的播放推进
 
@@ -73,4 +73,6 @@ python refactor/verification/evidence/libmpv-gpu/run-electron.py
 
 [native-contract.json](native-contract.json)记录六组基础渲染、两组容量与时钟、五组格式结果；[electron-contract.json](electron-contract.json)记录六次导入。两者保存实际 addon 与输入摘要、源文件摘要和检查时间。运行在自有、有限时长的子进程中，原生制品与缓存位于仓库忽略目录。Node 为 24.11.1，Electron 44.5.1 使用自身 Node 24.21.0，二者不是同一运行时。
 
-本组未验证最终发行与许可装配、生产同步性能、公开配置竞争、Node 帧邮箱与池复用、实际硬件解码、HDR 片源与显示器、GPU 切换或丢失、macOS／Linux／ARM64。原型中释放后读取元数据的行为也不代表待确认的公开 NativeFrame 合同。受管配置采用已确认的[原生配置语义与使用约定](../libmpv-managed-output/design-choices.md)，本组没有原生选项保护补丁。
+本组未验证最终发行与许可装配、生产同步性能、公开配置竞争、Node 帧邮箱与池复用、实际硬件解码、HDR 片源与显示器、GPU 切换或丢失、macOS／Linux／ARM64。NativeFrame 的有效期遵守[公开合同](../../../design/projects/libmpv-node/video.md)。受管配置采用已确认的[原生配置语义与使用约定](../../../design/projects/libmpv-node/video.md#constraints)。
+
+准备图形输入时，通过 KISAKI_PROBE_ANGLE_ROOT 指定记录所用 Electron 41.2.0 分发目录的绝对路径，版本与文件摘要按准备脚本核对。

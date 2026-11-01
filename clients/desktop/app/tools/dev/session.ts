@@ -6,7 +6,6 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { runPnpm } from '@kisaki3/tooling/process'
-import type { DevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'
@@ -18,6 +17,25 @@ import { captureDependencies, desktopDependencies } from './dependencies'
 import { buildGeneration, programInputsChanged } from './generation'
 import type { GenerationOutput } from './generation'
 import type { DependencySnapshot } from './dependencies'
+
+/** Process lifecycle supplied by the launch owner; readiness has completed when launch resolves. */
+export interface DevelopmentApplication {
+  pid: number
+  exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
+  stop(): Promise<'cancelled' | 'exited'>
+  terminate(): Promise<void>
+}
+
+/** Inputs for one owned Electron process and its startup readiness deadline. */
+export interface DevelopmentLaunchOptions {
+  executable: string
+  args: string[]
+  cwd: string
+  profile: string
+  buildId: string
+  signal: AbortSignal
+  startupTimeoutMs: number
+}
 
 /** The built runtime and Electron process currently owned by a development session. */
 export interface DevelopmentBuild {
@@ -43,6 +61,10 @@ export interface DevelopmentSession {
 
 /** Caller-owned profiles survive stop; signal cancels startup only, before the first ready application. */
 export interface DevelopmentOptions {
+  /** Absolute root containing the program source and Vite configurations. */
+  sourceRoot: string
+  /** Launch a ready process whose lifetime remains owned by this session. */
+  launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   profile?: string
   signal?: AbortSignal
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
@@ -50,8 +72,11 @@ export interface DevelopmentOptions {
 
 /** Return a watching session before its first build completes; await ready for the first usable application. */
 export async function startDevelopmentSession(
-  options: DevelopmentOptions = {},
+  options: DevelopmentOptions,
 ): Promise<DevelopmentSession> {
+  if (!isAbsolute(options.sourceRoot)) {
+    throw new Error('Development source root must be an absolute path')
+  }
   const target = hostTarget()
   const profile = options.profile ?? join(appRoot, '.local', 'development')
   if (!isAbsolute(profile)) {
@@ -85,7 +110,7 @@ export async function startDevelopmentSession(
 
     const tasks = ['run', 'build', '--filter=@kisaki3/desktop^...']
     const snapshotDirectory = join(sessionDirectory, 'dependencies')
-    const renderer = await startRenderer(members, snapshotDirectory)
+    const renderer = await startRenderer(options.sourceRoot, members, snapshotDirectory)
     rendererToClose = renderer
     signal.throwIfAborted()
 
@@ -170,7 +195,7 @@ export async function startDevelopmentSession(
         forceRuntimeBuild = false
         let runtime: GenerationOutput | undefined
         if (!current || forced || (await programInputsChanged(programInputs))) {
-          runtime = await buildGeneration(target, candidate, signal)
+          runtime = await buildGeneration(options.sourceRoot, target, candidate, signal)
           if (runtime.buildId !== (await buildInputIdentity({ signal }))) {
             buildPending = !stopping && !resourceFailed
             await rm(candidate, { recursive: true, force: true })
@@ -206,7 +231,6 @@ export async function startDevelopmentSession(
         child = undefined
         current = undefined
 
-        const { launchDevelopmentApplication } = await import('@kisaki3/extension-cli/extension')
         signal.throwIfAborted()
         if (stopping || resourceFailed) {
           await rm(candidate, { recursive: true, force: true })
@@ -221,7 +245,7 @@ export async function startDevelopmentSession(
         }
 
         launching = true
-        child = await launchDevelopmentApplication({
+        child = await options.launch({
           executable: electronExecutable(),
           args: [join(candidate, 'main', 'entry.js'), `--renderer-url=${renderer.url}`],
           cwd: appRoot,
@@ -229,7 +253,6 @@ export async function startDevelopmentSession(
           buildId: runtime.buildId,
           signal,
           startupTimeoutMs: 30_000,
-          onFailure: failSession,
         })
         current = { buildId: runtime.buildId, directory: candidate, processId: child.pid }
 
@@ -404,7 +427,7 @@ export async function startDevelopmentSession(
       },
     }
 
-    const inputs = await startInputWatcher(members, {
+    const inputs = await startInputWatcher(options.sourceRoot, members, {
       signal,
       onChange: (change) => enqueue(change === 'runtime'),
       onError: failSession,

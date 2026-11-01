@@ -1,4 +1,4 @@
-/** Error specimen; video additions are proposed and runtime propagation remains unverified. */
+/** Declaration specimen for errors shared by control and video operations. */
 export type MpvOperation =
   | 'createMpv'
   | 'createClient'

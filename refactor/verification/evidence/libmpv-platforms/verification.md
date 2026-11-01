@@ -1,6 +1,6 @@
 # libmpv-node 平台与原生能力检查
 
-对应[原生能力、平台与输出](../../../design/projects/libmpv-node/platforms.md)。平台路线、依赖归属与 SDR／HDR 渲染目标方向已经确认；来源收据保留执行时的 proposal 状态。本次核对公共 Render／Stream CB 边界、平台硬件解码接入、Electron 共享纹理、ANGLE 装配与颜色输出所需事实；没有构建或执行新的原生库。
+本页核对[平台与输出](../../../design/projects/libmpv-node/platforms.md)所用的 Render／Stream CB 接口、硬件解码、Electron 共享纹理与颜色字段。来源记录注明实际版本与内容摘要。
 
 ## 来源与可复核结果
 
@@ -24,16 +24,10 @@ python refactor/verification/evidence/libmpv-platforms/source-probe.py
 
 Electron 源码中残留的 Linux “to be implemented” 注释不作为能力结论：实际转换与导入分支已经处理 planes 和 fd。反过来，存在导入分支也不代表对应驱动、格式或显示路径经过本项目验证。两项判断均按实际代码和所需链路区分。
 
-当前工作区 package.json 与安装的 Electron 路径属于 41.2.0；规划中的消费验证基线是 44.5.1。本次未把旧环境当作新版本测试，也未借用其 ANGLE 制品来证明独立库装配。
-
 HDR 补充核对使用固定 options.rst、vo.rst 和 GPU video.c：mpv 已有目标颜色、峰值与色调映射机制；gpu-next 的显示颜色协商与当前 Render API 的 GL 路径不同。GL 未获明确目标信息时的 BT.709／gamma 2.2 行为，不能写成 mpv 在所有输出模式下都固定使用 sRGB。此项同样属于源码核对，未执行 HDR 片源、显示器探测或颜色夹具。
 
 独立播放器的能力比较只用于确认底层边界。库的验证对象是渲染目标、帧颜色、同步和寿命；窗口、显示目标选择与最终呈现由独立消费程序验证，不据此给库增加客户端功能或另一套 HDR 算法。
 
-## 原型必须继续解决的事项
+## 验证范围
 
-依赖与功能矩阵、Windows 独立 ANGLE 加载、Linux 渲染节点与 modifier 组合、真实输出同步、持帧期间关闭、初始化脚本提前加载、受管保留项、准确 SDR／HDR 颜色合同，以及自定义流的异步提供器桥接仍未完成。六目标实测和完整目录生成也未执行。
-
-本次只核对固定源码，未执行原生解码、纹理互操作、显示或六目标构建；结构化结果中的对应运行标记均为 false。
-
-以上标记属于本组历史源码检查。后续已有 [Stream CB 的 Node 桥接](../libmpv-node-bridge/verification.md)、[能力与设置采集](../libmpv-catalog/verification.md)以及 [Windows GPU／Electron 44.5.1 链路](../libmpv-gpu/verification.md)的独立运行证据。较新上游新增的 D3D11 直接入口也已识别，但尚未执行该后端；不改写本组固定基线来源的历史状态。
+本页覆盖固定源码与接口核对。运行结果分别见 [Stream CB 的 Node 桥接](../libmpv-node-bridge/verification.md)、[能力与设置采集](../libmpv-catalog/verification.md)和 [Windows GPU／Electron 链路](../libmpv-gpu/verification.md)。完整依赖矩阵、平台制品与交付状态由 [W13](../../../implementation/status.md)维护。

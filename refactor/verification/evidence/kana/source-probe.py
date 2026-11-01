@@ -64,7 +64,6 @@ def main():
         receipts = list(executor.map(fetch, SOURCES.items()))
     result = {
         "purpose": "source evidence for organization, not format or browser execution",
-        "designStatus": "organization-confirmed",
         "dependencyVersionsLocked": False,
         "kanaProjectCreated": False,
         "formatsExecuted": False,

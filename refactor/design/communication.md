@@ -2,39 +2,41 @@
 
 所有入口使用相同的完成、失败、取消、事实通知与订阅规则。各功能定义自己的业务输入和结果；通信机制负责传递这些值，业务判断仍由对应功能完成。
 
-| 阅读目的 | 入口 |
-| --- | --- |
-| 接入一次完整操作 | [窗口客户端](#clients) · [执行上下文](#operations) · [接纳边界](#admission) |
-| 判断完成、失败与取消 | [失败和部分结果](#failure) |
-| 选择观察与通知机制 | [读取失效](#invalidation) · [事实事件](#events) · [通知交接](#event-delivery) |
-| 核对事件或公开能力 | [会话事件](#session-events) · [扩展事件](#extension-events) · [功能合同导航](#directory) |
+| 阅读目的             | 入口                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| 接入一次完整操作     | [窗口客户端](#clients) · [执行上下文](#operations) · [接纳边界](#admission)              |
+| 判断完成、失败与取消 | [失败和部分结果](#failure)                                                               |
+| 选择观察与通知机制   | [读取失效](#invalidation) · [事实事件](#events) · [通知交接](#event-delivery)            |
+| 核对事件或公开能力   | [会话事件](#session-events) · [扩展事件](#extension-events) · [功能合同导航](#directory) |
 
 <a id="clients"></a>
 
 ## 窗口客户端与传输接入
 
-desktop-contracts 定义桌面能力的正式合同。私有 shared/window-api 从中选择原生窗口可用的方法，extension-api 则独立选择向扩展开放的能力。两者直接引用共同值，互不作为对方的中间层。
+desktop-contracts 定义桌面能力。私有 shared/window-api 选择原生窗口可用的方法，extension-sdk 的纯合同模块选择扩展公开范围；两者直接引用共同值。
 
-四类窗口分别使用 MainWindowApi、ReaderWindowApi、PlayerWindowApi 和 GamePanelWindowApi。API 按 library、sessions 等实际模块组织，并在运行时逐项限定开放方法。本体新增方法不会自动扩大窗口权限。窗口与实例身份由接入层绑定，不能由普通业务参数自行声明。
+跨进程、跨文档的应用调用与通知统一使用 desktop-rpc。查询、修改、窗口控制、关闭请求、就绪通知、扩展调用和开发控制均通过所属端点的明确接口接入。
 
-窗口调用依次经过业务视图、窗口客户端、preload 和主进程 IPC 适配，最终进入原生能力的完整操作。各层承担以下职责：
+| 层次                         | 负责内容                                                           |
+| ---------------------------- | ------------------------------------------------------------------ |
+| 业务与视图                   | 完整操作、状态、交互、结果与反馈                                   |
+| 窗口客户端、SDK 与开发客户端 | 类型化接口、安全错误、回调与资源映射                               |
+| desktop-rpc                  | 请求回复关联、通知、取消、握手与连接结束                           |
+| 原生传输接入                 | Electron IPC、MessagePort 或 Node 进程消息，实际来源绑定和通道寿命 |
 
-- 业务视图管理交互、快照、选择、草稿和反馈。
-- 窗口客户端处理结果、错误、取消和监听寿命。
-- preload 桥接明确开放的方法。
-- 主进程接纳输入、绑定真实调用上下文，并调用对应业务。
+通道建立前所需的端口交接由原生接入完成，连接建立后的应用语义使用 RPC。窗口关闭、文档失效、进程退出等真实宿主事件由接入层观察，并据此结束连接。大资源字节使用所属资源和媒体通道；同进程业务使用显式函数调用。
 
-业务视图通过所属窗口的 infrastructure/api.ts 使用能力。纯展示组件只接收数据和回调。主进程内部通过显式依赖直接调用，不绕经窗口 API。
+四类窗口分别提供 MainWindowApi、ReaderWindowApi、PlayerWindowApi 和 GamePanelWindowApi，按 library、sessions 等模块逐项选择开放方法。真实窗口与实例身份由接入层绑定。业务视图通过所属窗口的 infrastructure/api.ts 使用能力，纯展示组件接收值与回调。
 
-preload 不暴露 ipcRenderer、任意 channel、SQL 或 Event 对象。订阅只交付业务数据，并返回释放句柄；窗口销毁时清理连接与订阅。扩展 Webview 通过所属扩展的私有 IPC 调用 Node 业务，不能使用原生窗口客户端。
+preload 桥接所属窗口的最小明确能力。窗口客户端与主进程接入共同通过 desktop-rpc 传递操作，订阅只交付业务数据并返回释放句柄。扩展 Webview 通过所属扩展的私有通信使用 Node 业务，沿自己的端点与实例范围接入。
 
-IPC 接入层校验传输消息与真实调用归属，核对资源读取、视图和任务控制所需的上下文，并适配参数与安全错误。业务输入由所属模块的入口使用共同纯规则校验，不在 IPC 中再定义一份字段 schema；可信内部调用不逐层重复解析。对象是否存在、引用范围是否有效、如何采用资料，以及事务约束是否满足，仍由业务保证。回调、AbortSignal 和主进程对象不能作为普通 JSON 传输；接入层通过连接内的调用关联、取消消息和资源映射传递对应能力，并在结束后释放。
+接入层核对传输、来源、资源及任务控制的实际归属，适配参数与安全错误。业务输入由所属入口使用共同纯规则校验，业务拥有者判断对象、引用范围、采用政策和事务条件。回调、AbortSignal 与本地对象通过连接内的调用、取消与资源映射表达。
 
-结构化失败必须显式经过 IPC 与 contextBridge，再由客户端恢复为可识别的错误。code、message 和 partialResult 不能依赖 Electron 保留 Error 的自定义属性。调用者直接 await 业务值或捕获业务失败，无需手工拆解传输包装。
+结构化失败显式通过 RPC 和 contextBridge，再由客户端恢复为可识别错误；code、message 和 partialResult 按共同合同传递。调用方直接等待业务值或捕获失败。
 
-rpc 包复用帧校验、请求回复关联、通知、取消和断连清理。具体帧、握手、版本与实例归属见[消息协议](engineering/protocols.md)。环境适配、开放范围与业务身份由各端负责。普通调用不设置统一的短超时，也不自动重试写入。断连会结束等待中的请求，但不能据此认定写入已回滚。机制测试须覆盖双向嵌套调用、取消与完成的竞态，以及断连清理；实际端点还须验证失效实例处理和资源通道释放。
+各端点使用同一内核并保留独立的方法表、身份与资源寿命，具体帧和版本见[协议合同](engineering/protocols.md)。普通调用的等待时间由操作语义决定，写入重试由业务拥有者判断。断连结束本地等待，远端提交与清理按实际事实核对。
 
-开发工具使用 desktop-contracts/development 的[有限父子消息](engineering/protocols.md#development)，由唯一启动器创建并拥有应用进程；Node 提供 JSON IPC，不复用业务 RPC 管理宿主，也不开放给 SDK。构建采用与退出由本体实际拥有者执行，消息发送成功不能替代操作结果。
+开发工具使用 desktop-contracts/development 的[独立控制合同](engineering/protocols.md#development)和同一 RPC 内核。唯一启动器创建并拥有应用进程，Node 父子 IPC 提供传输；构建采用与正常退出由本体执行，实际进程结束由启动器观察。
 
 <a id="operations"></a>
 
@@ -274,7 +276,7 @@ NativeViewTarget 定义在 desktop-contracts/ui，按具体原生目标区分分
 
 Entry 使用 EntryIdentifier，并核对从属类型。Annotation 使用 [AnnotationRef](domains/annotations.md#api)，按身份打开已保存内容；返回原文件仍由内容界面的明确操作发起。ui.navigate(target) 等待宿主就绪并接纳导航后返回 void，不隐含保存、启动或采用操作。
 
-desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。extension-api 选取所需纯合同并定义 Node 的 context.deeplink.register 接入，SDK 绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
+desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。extension-sdk 的纯合同选取所需定义并声明 Node 的 context.deeplink.register，运行实现绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
 
 notifications.show 接收 { title, body, open?: NativeViewTarget }，返回 accepted 或 unavailable；投递失败时拒绝调用。accepted 只表示操作系统已经接纳。Node SDK 使用这项能力，Webview 使用所属视图的 Toast。通知点击由 app 协调，只有已经定义的公开入口可以通过协议激活。内部目标不会因此获得应用退出后的恢复保证。接口不公开 Electron Notification、点击脚本或完整业务结果，不保存通知历史，也不在不可用时自动改投 Toast。
 
@@ -286,7 +288,7 @@ windows、processes、database 和 attachments 各自保留内部句柄与技术
 
 ## 功能合同导航
 
-输入、结果、报告和事件都由对应语义模块定义。desktop-contracts 发布完整本体合同，extension-api 明确选取开放能力，SDK 实现运行接入。数据库连接、原生窗口和引擎实例保留在本体内部。
+输入、结果、报告和事件都由对应语义模块定义。desktop-contracts 发布完整本体合同，extension-sdk 的纯模块选择公开能力，Node 与 Webview 模块实现运行接入。数据库连接、原生窗口和引擎实例保留在本体内部。
 
 | 能力                                 | 合同拥有者                                                                                                                       |
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |

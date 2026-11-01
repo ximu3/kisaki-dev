@@ -50,12 +50,12 @@
     },
     {
       "name": "mpv_create_client",
-      "category": "proposal",
+      "category": "public",
       "responsibility": "Mpv-owned named clients; raw strong/weak choice stays private"
     },
     {
       "name": "mpv_create_weak_client",
-      "category": "proposal",
+      "category": "public",
       "responsibility": "Mpv-owned named clients; raw strong/weak choice stays private"
     },
     {
@@ -146,7 +146,7 @@
     {
       "name": "mpv_get_property",
       "category": "public",
-      "responsibility": "getProperty; complete low-level format selection remains a separate audit"
+      "responsibility": "getProperty with explicit native format selection"
     },
     {
       "name": "mpv_get_property_string",
@@ -161,12 +161,12 @@
     {
       "name": "mpv_get_property_async",
       "category": "public",
-      "responsibility": "getProperty; complete low-level format selection remains a separate audit"
+      "responsibility": "getProperty with explicit native format selection"
     },
     {
       "name": "mpv_observe_property",
       "category": "public",
-      "responsibility": "observeProperty; value-less notification mode remains a separate audit"
+      "responsibility": "observeProperty with value or value-less notification modes"
     },
     {
       "name": "mpv_unobserve_property",
@@ -215,12 +215,12 @@
     },
     {
       "name": "mpv_hook_add",
-      "category": "proposal",
+      "category": "public",
       "responsibility": "addHook awaits task handlers; guarded native continuation stays private"
     },
     {
       "name": "mpv_hook_continue",
-      "category": "proposal",
+      "category": "public",
       "responsibility": "addHook awaits task handlers; guarded native continuation stays private"
     },
     {
@@ -228,12 +228,5 @@
       "category": "deprecated",
       "responsibility": "Node uses wakeup integration; no borrowed raw file descriptor"
     }
-  ],
-  "remaining": [
-    "low-level property formats",
-    "value-less property notifications",
-    "complete command/option/property catalogues",
-    "Stream CB interface",
-    "Render API and platform interoperability"
   ]
 }

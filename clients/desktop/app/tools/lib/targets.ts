@@ -3,7 +3,7 @@
  * explicit target selection.
  */
 
-import type { DesktopTarget } from '../../src/shared/runtime-manifest'
+import type { DesktopTarget } from './runtime-manifest'
 
 /** The six supported toolchain targets, shared by resource, native and package workflows. */
 export const targetTriples: Record<DesktopTarget, string> = {

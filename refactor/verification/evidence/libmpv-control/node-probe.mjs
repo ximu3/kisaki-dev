@@ -69,8 +69,8 @@ const result = {
   unreferencedTimerAllowedExit: unreferencedOutput === '',
   asyncDisposalOrder: disposal,
   nativeAddonExecuted: false,
-  proposedMpvErrorsInstantiated: false,
-  proposedMpvKeepaliveExecuted: false,
+  mpvErrorsInstantiated: false,
+  mpvKeepaliveExecuted: false,
   nativeEnvironmentCleanupVerified: false
 }
 await writeFile(

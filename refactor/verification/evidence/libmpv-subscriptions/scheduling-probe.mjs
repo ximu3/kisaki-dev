@@ -79,7 +79,7 @@ storage.disable()
 
 const receipt = {
   purpose:
-    'Node scheduling and listener return behavior only; no native bridge or proposed observer implementation',
+    'Node scheduling and listener return behavior only; no native bridge or native observer implementation',
   nodeVersion: process.version,
   checkedAt: new Date().toISOString(),
   inlineOrder,
@@ -90,7 +90,7 @@ const receipt = {
   capturedAsyncContextFacilityVerified: true,
   capturedCallbackAndReceiverPreserved: true,
   nativeAddonExecuted: false,
-  proposedSubscriptionImplementationExecuted: false,
+  subscriptionImplementationExecuted: false,
   nativeCallbackExceptionRouteExecuted: false,
   cancellationAndCloseVerified: false,
   queueCapacityVerified: false

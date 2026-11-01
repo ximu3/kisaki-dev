@@ -49,4 +49,4 @@ python refactor/verification/evidence/libmpv-node-bridge/run.py
 
 本组为这套提供器资源模型在当前 Windows x64／Node 环境中的可行性提供运行证据，支持已确认的接口合同。它没有实现所有命令、属性、事件、hook、输出与公开错误结构；原型内部的命令入口、事件轮询、数字关联编号及固定协议名也不属于公开 API。
 
-原型回调通道采用弱运行引用以验证退出，未验证完整 Mpv.ref／unref、GC 兜底或有限公开操作的运行引用合同。队列容量、压力、全部失效输入、动态协议登记、原始 URI 字节、Electron、其他平台及架构、正式构建与 GPU 链路仍需相应验证。当前结果不将独立项目整体标为已可实施，也不改写[较早 C API 探针](../libmpv-native/verification.md)自身的验证范围与标记。
+原型回调通道采用弱运行引用以验证退出，未验证完整 Mpv.ref／unref、GC 兜底或有限公开操作的运行引用合同。队列容量、压力、全部失效输入、动态协议登记、原始 URI 字节、Electron、其他平台及架构、正式构建与 GPU 链路仍需相应验证。流回调的 C API 观察见[原生接口验证](../libmpv-native/verification.md)，完整包与平台交付由 W13 验收。

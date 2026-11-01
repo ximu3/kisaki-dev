@@ -8,7 +8,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 主进程中的 features/appearance、features/fonts 和 preferences 保持独立。主题能力位于 appearance.themes，不另设顶层 themes 模块。原生主题编辑器提供完整创作能力，不依赖专用官方扩展。fonts 复用 attachments 存储字节。主题和字体库各有自己的管理界面，资源选择器可以直接打开这些界面；管理操作与偏好草稿仍按[偏好编辑规则](preferences.md#editor)独立保存。
 
-@kisaki3/appearance 提供纯视觉词表、值规则和 CSS。desktop-contracts/appearance 定义桌面主题、字体选择及外观交付，desktop-contracts/fonts 定义 FontRef 和字体读取合同。SDK 使用相同的本体定义。
+@kisaki3/desktop-appearance 提供纯视觉词表、值规则和 CSS。desktop-contracts/appearance 定义桌面主题、字体选择及外观交付，desktop-contracts/fonts 定义 FontRef 和字体读取合同。SDK 使用相同的本体定义。
 
 内置主题、用户主题和扩展主题共用目录与呈现方式，但生命周期不同。内置主题由应用维护，用户主题可以原生编辑和删除，扩展主题由所属实例登记，其他消费者只读。同一身份的主题更新会作用于选用者；Clone 则创建独立的用户主题。资源不可用时保留选择，并按实际影响范围回退，不复制一份扩展定义作为长期镜像。
 
@@ -121,7 +121,7 @@ metadata 是从不可变字体文件解析出的只读技术资料，由本体�
 ```ts
 await appearance.themes.update(themeId, {
   changes: { light: { '--primary': nextPrimary } },
-  expected: { light: { '--primary': originalPrimary } }
+  expected: { light: { '--primary': originalPrimary } },
 })
 ```
 
@@ -211,13 +211,13 @@ const registration = await context.appearance.themes.register({
   id: 'violet',
   name: 'Violet',
   light: violetLightTokens,
-  dark: violetDarkTokens
+  dark: violetDarkTokens,
 })
 
 await registration.update({
   name: 'Violet',
   light: nextLightTokens,
-  dark: nextDarkTokens
+  dark: nextDarkTokens,
 })
 
 await registration.dispose()

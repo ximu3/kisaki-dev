@@ -157,7 +157,7 @@ Provider 使用真实结构 ID 和可以确认的外链。跨站 ID 相连，也
 
 [MangaDex](../extensions/sources/mangadex.md) 的 author 资源不区分个人与团体，只为已经明确主体类别和来源身份的对象补充名称、图像、多语传记和网站，不自动产生创作者关系，也不补造生日或原文名。章节 pages 是发布图片数，publishAt 和 readableAt 是发布及可读时间，均不作原作声明页数或发表日。默认漫画方案以 MangaDex 补充真实卷清单；每卷重置编号时，只采用明确的卷内 numberLabel，不填入作品范围话号。卷没有独立来源身份，封面资源也没有卷的独立外链页，因此不以 MangaDex 填写卷 externalLinks。语言变化不删除原作话或重建身份。
 
-MangaUpdates 的默认采用范围见[来源合同](../extensions/sources/mangaupdates.md)，字段依据见[来源核验](../../verification/evidence/mangaupdates-anidb/live-api.md#metadata)。Author.actualname 用于原文发表用名；只有 status=Deceased 且 status_date 有效时采用死亡日期。混合 Author 保留为来源背景，已明确主体可补充其自身履历。latest_chapter、当前出版卷数及表示翻译完成的 completed 均保持来源含义，不作为原作最终总量或完结依据。
+MangaUpdates 的默认采用范围见[来源合同](../extensions/sources/mangaupdates.md)，字段依据见[来源核验](../../verification/evidence/mangaupdates/live-api.md#metadata)。Author.actualname 用于原文发表用名；只有 status=Deceased 且 status_date 有效时采用死亡日期。混合 Author 保留为来源背景，已明确主体可补充其自身履历。latest_chapter、当前出版卷数及表示翻译完成的 completed 均保持来源含义，不作为原作最终总量或完结依据。
 
 [RanobeDB 的来源合同](../extensions/sources/ranobedb.md)分别解释 Series、Book、署名和 Publisher。sort_order、书目数量和卷号不能混用，c_num_books 不映射为声明卷数。series.description、book_description 和卷的日文正文不能互相代用；Series 代表封面沿官网选定的首册图片。混合 Staff 不用于作品／角色上下文的人物工作发现，保留已明确主体自身的原作履历；没有适用图像或生平日期时保留缺项。
 

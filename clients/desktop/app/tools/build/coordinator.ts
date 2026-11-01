@@ -7,7 +7,7 @@ import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import type { DesktopBuild, DesktopTarget } from '../../src/shared/runtime-manifest'
+import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { buildNative } from '../native/build'
 import { prepareResources } from '../resources/prepare'
@@ -16,6 +16,7 @@ import { buildProgram, programNames } from './programs'
 
 /** Build a complete target from fixed inputs, publishing it only when all programs are ready. */
 export async function buildDesktop(
+  sourceRoot: string,
   target: DesktopTarget,
   signal?: AbortSignal,
 ): Promise<DesktopBuild> {
@@ -52,7 +53,9 @@ export async function buildDesktop(
 
       // Wait for every compiler to finish before candidate cleanup can begin.
       const results = await Promise.allSettled(
-        programNames.map((program) => buildProgram(program, join(staging, program), buildId)),
+        programNames.map((program) =>
+          buildProgram(sourceRoot, program, join(staging, program), buildId),
+        ),
       )
       const failures = results.filter((result) => result.status === 'rejected')
       if (failures.length) {

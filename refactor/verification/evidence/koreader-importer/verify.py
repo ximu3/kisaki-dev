@@ -1,4 +1,4 @@
-"""Verify synthetic source bytes and proposed mappings, not a production importer."""
+"""Verify synthetic source bytes and source-to-library mappings."""
 
 import copy
 import functools

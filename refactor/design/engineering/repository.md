@@ -19,15 +19,15 @@ Kisaki 和四个独立技术项目分别使用项目级临时开发仓库完成�
 
 F:/project/3/kisaki 和 F:/project/3/process-list 保留到存档验证完成。创建目标工程前检查目录是否已被占用，不覆盖或自动清理来源目录。Kana 和 libmpv-node 新建独立仓库；oauth-relay 使用独立工程，并在服务切换前核对域名、回调地址、应用配置和当前部署状态。
 
-| 包或范围                  | npm 发布名                                                                                              | 归属依据                                                                                       |
-| ------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Vantage 原生库            | @ximu3/vantage                                                                                          | 独立的进程与窗口观察、控制和窗口画面采集能力，Kisaki 通过公开包接入                            |
-| Kana 阅读内核             | @ximu3/kana                                                                                             | 独立的阅读内核，Kisaki 通过公开包接入                                                          |
-| libmpv-node 原生绑定      | @ximu3/libmpv-node                                                                                      | 独立的 libmpv Node 绑定与可选受管渲染，Kisaki 是消费方                                         |
-| Kisaki 桌面外观与 UI      | @kisaki3/appearance、@kisaki3/ui                                                                        | 表达桌面与扩展界面的视觉体系和组件合同                                                         |
-| Kisaki 桌面共同合同       | @kisaki3/desktop-contracts                                                                              | 桌面本体与扩展共同使用的能力合同                                                               |
-| Kisaki 扩展运行与作者生态 | @kisaki3/extension-api、@kisaki3/extension-distribution、@kisaki3/extension-sdk、@kisaki3/extension-cli | 运行规范、分发格式、运行接入和作者工作流；真实名称与迁移按 [npm 版本与退役](#npm-history) 核对 |
-| Kisaki 桌面通信机制       | @kisaki3/rpc                                                                                            | 桌面与 SDK 共用的环境无关消息式内核；不因通用机制另立项目，发布前核对实际控制权                |
+| 包或范围                  | npm 发布名                                                                      | 归属依据                                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Vantage 原生库            | @ximu3/vantage                                                                  | 独立的进程与窗口观察、控制和窗口画面采集能力，Kisaki 通过公开包接入                            |
+| Kana 阅读内核             | @ximu3/kana                                                                     | 独立的阅读内核，Kisaki 通过公开包接入                                                          |
+| libmpv-node 原生绑定      | @ximu3/libmpv-node                                                              | 独立的 libmpv Node 绑定与可选受管渲染，Kisaki 是消费方                                         |
+| Kisaki 桌面外观与 UI      | @kisaki3/desktop-appearance、@kisaki3/desktop-ui                                | 表达桌面与扩展界面的视觉体系和组件合同                                                         |
+| Kisaki 桌面共同合同       | @kisaki3/desktop-contracts                                                      | 桌面本体与扩展共同使用的能力合同                                                               |
+| Kisaki 扩展运行与作者生态 | @kisaki3/extension-distribution、@kisaki3/extension-sdk、@kisaki3/extension-cli | 运行规范、分发格式、运行接入和作者工作流；真实名称与迁移按 [npm 版本与退役](#npm-history) 核对 |
+| Kisaki 桌面通信机制       | @kisaki3/desktop-rpc                                                            | 桌面与 SDK 共用的环境无关消息式内核；不因通用机制另立项目，发布前核对实际控制权                |
 
 Kisaki monorepo 的 Node／TypeScript 应用、公共包和官方扩展项目统一使用 @kisaki3 作用域，包括不向 npm 发布的项目。作用域表达项目归属，使包名在依赖、构建日志和项目列表中能够独立辨认。桌面项目包名为 @kisaki3/desktop，官方扩展采用[ext- 命名前缀](../extensions/catalog.md#organization)；Vantage 及其平台包使用独立的 @ximu3 作用域。
 
@@ -41,7 +41,7 @@ npm 发布资格单独配置：桌面、官方扩展和根工程等不向 npm �
 
 临时开发仓库是一个项目从工程建立到正式接续前的持续开发远端，采用 public 可见性，承载正常提交、PR、CI、跨平台验证、候选制品和跨仓联调，不限于 W00 或任何单次验证。工作包完成只改变对应实施状态，不结束临时仓库的用途，也不为下一工作包另建一份仓库。
 
-Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 分别维护自己的临时仓库与新工程历史，不能把独立项目的实现放进 Kisaki 临时库。Kisaki 内的公共包、官方扩展和分发资料继续沿 monorepo 归属。仓库名称表达项目级持续开发用途，阶段与验证任务由分支、PR 和运行记录说明。实际名称、远端、可见性及接续进度由实施状态记录；改名时同步当前入口，历史证据保留当时的真实地址。
+Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 分别维护自己的临时仓库与新工程历史，不能把独立项目的实现放进 Kisaki 临时库。Kisaki 内的公共包、官方扩展和分发资料继续沿 monorepo 归属。仓库名称表达项目级持续开发用途，阶段与验证任务由分支、PR 和运行记录说明。实际名称、远端、可见性及接续进度由实施状态记录；改名时同步当前入口，验证记录注明实际来源地址和提交。
 
 临时远端不改变正式包名、appId、npm 作用域、最终仓库地址和许可。开发阶段按[联调与发布边界](#private-stage)运行，正式 npm、下载、更新索引和生产服务按各自交付条件与授权发布。跨仓消费固定提交生成的真实制品，来源、版本和摘要随结果记录。
 
@@ -113,14 +113,14 @@ registry 可以使用隔离测试源。桌面制品、.kisx 和更新资料作�
 
 应用自身的开发构建使用独立资料目录和协议 scheme。直接调用 Electron setName 不会完成全部操作系统身份切换，见 [应用名称接口](https://www.electronjs.org/docs/latest/api/app#appsetnamename)。第三方扩展开发通过指定的真实应用和隔离资料运行，不伪装另一份已安装应用；OAuth 回调仍使用 loopback。
 
-| 公开入口                                                        | 职责                                                                                           |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `https://kisaki.me`                                             | 项目主入口；桌面发行链接与静态分发资料使用下列固定地址                                         |
-| `https://dist.kisaki.me`                                        | 由 GitHub Pages 托管的静态分发资料，沿 [发行元数据部署](releases.md#metadata) 的生成与部署流程 |
-| `https://dist.kisaki.me/release-notes/<完整 tag>.json`          | 某一发行项目、某一版本的说明；语言按所属发行要求提供；身份规则见[发行规范](releases.md#release-identity)           |
-| `https://dist.kisaki.me/release-notes/desktop@0.1.0.json`       | 桌面 0.1.0 的发行说明                                                                          |
-| `https://dist.kisaki.me/release-notes/extension-sdk@0.1.0.json` | 扩展 SDK 0.1.0 的发行说明                                                                      |
-| `https://dist.kisaki.me/registry/index.json`                    | 官方已签名扩展注册表                                                                           |
+| 公开入口                                                        | 职责                                                                                                     |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `https://kisaki.me`                                             | 项目主入口；桌面发行链接与静态分发资料使用下列固定地址                                                   |
+| `https://dist.kisaki.me`                                        | 由 GitHub Pages 托管的静态分发资料，沿 [发行元数据部署](releases.md#metadata) 的生成与部署流程           |
+| `https://dist.kisaki.me/release-notes/<完整 tag>.json`          | 某一发行项目、某一版本的说明；语言按所属发行要求提供；身份规则见[发行规范](releases.md#release-identity) |
+| `https://dist.kisaki.me/release-notes/desktop@0.1.0.json`       | 桌面 0.1.0 的发行说明                                                                                    |
+| `https://dist.kisaki.me/release-notes/extension-sdk@0.1.0.json` | 扩展 SDK 0.1.0 的发行说明                                                                                |
+| `https://dist.kisaki.me/registry/index.json`                    | 官方已签名扩展注册表                                                                                     |
 
 dist.kisaki.me 由 GitHub Pages 托管 Kisaki monorepo 已发行项目的静态说明和官方扩展注册表，覆盖桌面、公共包和官方扩展。安装包、.kisx 及大型归档继续放在 Releases，公开库发布到 npm。静态分发可以独立发布，不为更新和 registry 各增设子域。
 
@@ -130,16 +130,16 @@ dist.kisaki.me 由 GitHub Pages 托管 Kisaki monorepo 已发行项目的静态�
 
 ## 包版本与退役
 
-| 包范围                                                                 | 交付与退役规则                                                                                                                                     |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| @kisaki3/extension-sdk、extension-cli                                  | 保留名称，以新的正式版本交付当前公开合同及实现；执行前重新核对实际状态                                                                             |
-| @kisaki3/extension-registry                                            | 分发格式与签名职责由新 extension-distribution 承接；新入口实际可取得后再明确退役旧包，不撤回旧版本或建立永久转发包装                               |
-| @kisaki3/extension-api                                                 | 保留发布名，以新版本交付完整扩展 API；本体共同定义与制品格式分别归 desktop-contracts、extension-distribution，新版可用后仅按实际范围标记旧版本退役 |
-| @kisaki3/extension-ui-vue                                              | 新 Solid UI 可用后标记旧版本退役，说明技术栈变化，不声称只换包名即可兼容                                                                           |
-| create-kisaki-extension                                                | 创建器职责并入 extension-cli，新入口可用后标记旧包退役，不交付永久包装                                                                             |
-| @ximu3/process-list 及其已发布 Windows x64 平台包                      | 由 @ximu3/vantage 及其对应平台包承接；新入口实际可取得后按替代范围退役旧入口，保留既有发布记录，不建立永久兼容包装                                 |
-| appearance、ui、desktop-contracts、Vantage、Kana、libmpv-node 等新增包 | 按作用域核对真实包身份与权限，查询无记录不等于取得名称                                                                                             |
-| @kisaki3/extension-distribution                                        | 执行前核对可用性、权限和制品；不将目标名称视为已经发布                                                                                             |
+| 包范围                                                                                              | 交付与退役规则                                                                                                       |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| @kisaki3/extension-sdk、extension-cli                                                               | 保留名称，以新的正式版本交付当前公开合同及实现；执行前重新核对实际状态                                               |
+| @kisaki3/extension-registry                                                                         | 分发格式与签名职责由新 extension-distribution 承接；新入口实际可取得后再明确退役旧包，不撤回旧版本或建立永久转发包装 |
+| @kisaki3/extension-api                                                                              | 扩展公开合同由 extension-sdk 的纯入口承接；新 SDK 实际可取得后，按已确认范围标记旧包退役并提供迁移说明               |
+| @kisaki3/extension-ui-vue                                                                           | 新 Solid UI 可用后标记旧版本退役，说明技术栈变化，不声称只换包名即可兼容                                             |
+| create-kisaki-extension                                                                             | 创建器职责并入 extension-cli，新入口可用后标记旧包退役，不交付永久包装                                               |
+| @ximu3/process-list 及其已发布 Windows x64 平台包                                                   | 由 @ximu3/vantage 及其对应平台包承接；新入口实际可取得后按替代范围退役旧入口，保留既有发布记录，不建立永久兼容包装   |
+| desktop-appearance、desktop-ui、desktop-rpc、desktop-contracts、Vantage、Kana、libmpv-node 等新增包 | 按作用域核对真实包身份与权限，查询无记录不等于取得名称                                                               |
+| @kisaki3/extension-distribution                                                                     | 执行前核对可用性、权限和制品；不将目标名称视为已经发布                                                               |
 
 已有 npm 名称和发布记录保留，不通过常规 unpublish 撤回版本，也不为私有测试收回旧访问权限。[已经使用的版本号不能再次使用](https://docs.npmjs.com/policies/unpublish/)，仓库中的版本字段也不能证明对应版本已经发布，执行前逐包核对。
 

@@ -45,7 +45,7 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 
 扩展负责 PKCE、来源响应解析、令牌交换、账号核验、凭据提交及后续刷新。直连与 relay 的差异体现在 URL 和交换流程中。S256 及明确的兼容例外按来源实现确定，不能在失败后自动降级。使用 API key、个人令牌或 client_credentials 的来源遵循实际凭据流程，不强制增加浏览器授权。
 
-未完成的授权只保存在实例内存中，不跨应用重启恢复；已保存的值正常保留。私有存储只读取本扩展声明的数据格式，旧项目的凭据及私有数据不在接入范围内。来源协议和 relay 的权威文档分别属于各自项目，Kisaki 文档只定义自身消费边界。
+未完成的授权只保存在实例内存中，不跨应用重启恢复；已保存的值正常保留。私有存储按本扩展声明的数据格式读取凭据与状态。来源协议和 relay 的权威文档分别属于各自项目，Kisaki 文档只定义自身消费边界。
 
 <a id="sources"></a>
 
@@ -61,8 +61,8 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 | IGDB                     | 使用用户自己的 Twitch Client ID 与 Client Secret 取得应用令牌；不内嵌维护者的保密客户端 secret，不增加私人账号登录，见[接入设计](sources/igdb.md#settings)                                        |
 | YMGal                    | 按来源的应用访问配置取得令牌，保留既有凭据配置能力；应用凭据与用户账号登录区分，来源公开默认值与需保护的自定义凭据分别处理                                                                        |
 | MangaDex                 | 使用用户自己的已获批个人客户端；client secret 与令牌保护保存，密码只用于主动登录的当次请求，后续刷新令牌；不共享客户端，不使用尚未开放的公共浏览器授权，见[专门方案](sources/mangadex.md#account) |
-| MangaUpdates             | 使用官方账号会话接口登录与续期；Cookie 保存在 secrets，密码仅用于当次登录，见[账号合同](sources/mangaupdates.md#account) |
-| itch.io                  | 使用已登记公共客户端的授权码流程、S256 和 loopback；读取权限、账号核验及共用令牌的断开含义见[账号合同](sources/itchio.md#account) |
+| MangaUpdates             | 使用官方账号会话接口登录与续期；Cookie 保存在 secrets，密码仅用于当次登录，见[账号合同](sources/mangaupdates.md#account)                                                                          |
+| itch.io                  | 使用已登记公共客户端的授权码流程、S256 和 loopback；读取权限、账号核验及共用令牌的断开含义见[账号合同](sources/itchio.md#account)                                                                 |
 
 MAL 的 plain PKCE 和 MangaDex 的个人客户端模式是明确的兼容范围。它们不构成运行失败后的降级路径，也不允许在后台保存密码并反复登录，不能宣称满足全部现代协议目标。匿名可读资料不强制要求连接账号。各来源实际支持的账号与记录能力见[平台目录](catalog.md)。
 

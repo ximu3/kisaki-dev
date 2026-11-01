@@ -21,7 +21,7 @@ c42 的 birthday 为月日数组，值为 [12, 28]，可以直接表示为本体
 
 同日公开读取源站 API 源码与 [update_vncache 的日期计算](https://code.blicky.net/yorhel/vndb/src/branch/master/sql/func.sql#L285)。API 的 released 读取 c_released；当前计算取官方、未隐藏、非试玩且有日期的发行中的最早值，包含 partial，未限定原作语种。
 
-因此 released 可作为来源对作品首次正式公开日期的声明，与本体字段含义相符；它不等于先前为开发和发行署名确定的“首个正式原语种完整版”。[相关规则](../../../design/extensions/sources/vndb.md#first-release)明确保留这种目的上的区别，没有把两个不同范围改成同一日期。
+released 表达来源对作品首次正式公开日期的声明。开发与发行署名采用“首个正式原语种完整版”的范围，两者按[发行规则](../../../design/extensions/sources/vndb.md#first-release)分别解释。
 
 ## 明确标记的剧透正文
 

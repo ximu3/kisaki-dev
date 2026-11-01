@@ -14,7 +14,7 @@
 | [Mutter 42.0 的窗口实现](https://github.com/GNOME/mutter/blob/42.0/src/compositor/meta-window-actor.c)与[窗口流实现](https://github.com/GNOME/mutter/blob/42.0/src/backends/meta-screen-cast-window-stream-src.c)    | 原生缓冲边界由窗口表面及 buffer scale 取得；流的 videocrop 与流范围相交，窗口内容与光标合成分别处理。                    | 不证明全部 GNOME 版本、客户端装饰、服务器装饰与缩放组合具有相同像素结果。                                |
 | [KWin 5.24.7 的截图实现](https://github.com/KDE/kwin/blob/v5.24.7/src/effects/screenshot/screenshot.cpp)与[调用适配](https://github.com/KDE/kwin/blob/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp)   | 窗口截图从 expandedGeometry 开始；有装饰且未选择包含装饰时改用 clientGeometry；光标与 native-resolution 分别由选项控制。 | include-decoration 不是一个独立、通用的去阴影开关；不能把 5.24.7 源码当作所有 KWin 版本实测结果。        |
 
-Apple 正文通过各页面的 .md 地址读取；网页只返回 JavaScript 占位内容时没有据此推断 API 行为。Mutter 与 KWin 使用明确版本，Windows、Apple 与 X.org 的网页是本次读取时的内容。本次新增读取没有写入或覆盖此前 source-contract.json 的历史回执。
+Apple 正文通过各页面的 .md 地址读取；网页只返回 JavaScript 占位内容时没有据此推断 API 行为。Mutter 与 KWin 使用明确版本，Windows、Apple 与 X.org 的网页是本次读取时的内容。各来源的版本、读取时间与内容摘要分别记录。
 
 ## 对设计的影响
 

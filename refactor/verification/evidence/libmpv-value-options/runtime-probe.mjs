@@ -107,7 +107,7 @@ assert.deepEqual(sendValue(failure.nativeValue), failure.nativeValue)
 
 const receipt = {
   purpose:
-    'Actual Node message serialization, realm and diagnostic behavior; no player or candidate API execution',
+    'Node message serialization, realm and diagnostic behavior',
   nodeVersion: process.version,
   checkedAt: new Date().toISOString(),
   classIdentityLostOnMessage: true,
@@ -122,7 +122,6 @@ const receipt = {
   extractedResultSurvivedMessage: true,
   nativeAddonExecuted: false,
   nativeCommandsExecuted: false,
-  candidateInterfacesImplemented: false,
   performanceBenchmarked: false,
   screenshotOrGpuExecuted: false
 }

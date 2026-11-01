@@ -54,7 +54,7 @@ source 使用来源实际采用的品牌名称或正式通用名称，转为小�
 
 #### 其他已有的外部身份键
 
-以下键由既有导入、跨站映射或出版物对应使用，不增加官方来源扩展。[来源排除规则](catalog.md#excluded)允许保留有依据的外部标识，同时排除对应网站的官方提供者与隐含读取。
+以下键供导入、跨站映射或出版物对应使用，保存有依据的外部标识。官方提供者及其读取渠道由[接入范围](catalog.md#selection)确定。
 
 | 标识来源                 | source        | 保留用途                                                                                                                         |
 | ------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -119,33 +119,33 @@ const registration = await context.metadata.providers.register({
         objects: {
           entry: {
             identitySources: ['example'],
-            fields: ['name', 'description', 'primaryImage']
+            fields: ['name', 'description', 'primaryImage'],
           },
           relatedEntries: {
             person: {
-              fields: ['name']
-            }
+              fields: ['name'],
+            },
           },
           parts: {
             episode: {
               identitySources: ['example'],
-              fields: ['numberLabel', 'name', 'description']
-            }
-          }
+              fields: ['numberLabel', 'name', 'description'],
+            },
+          },
         },
         relations: {
           personWorks: {
             fields: ['note'],
-            scope: [{ roles: ['characterDesign'], character: 'none' }]
+            scope: [{ roles: ['characterDesign'], character: 'none' }],
           },
-          workEpisodes: { fields: [] }
-        }
-      }
-    }
+          workEpisodes: { fields: [] },
+        },
+      },
+    },
   },
   search,
   resolve,
-  openSession
+  openSession,
 })
 ```
 
@@ -204,9 +204,9 @@ const session = await provider.openSession(
   {
     entryType: 'anime',
     identity: sourceEntry.identity,
-    preferredLanguages: ['zh-Hans', 'ja', 'en']
+    preferredLanguages: ['zh-Hans', 'ja', 'en'],
   },
-  { signal }
+  { signal },
 )
 
 try {
@@ -215,12 +215,12 @@ try {
       objects: {
         parts: {
           episode: {
-            fields: ['description']
-          }
-        }
-      }
+            fields: ['description'],
+          },
+        },
+      },
     },
-    { signal }
+    { signal },
   )
 } finally {
   await session.close()
@@ -240,15 +240,15 @@ await session.read(
       entry: { fields: ['name'] },
       parts: {
         episode: {
-          fields: ['numberLabel', 'name', 'description']
-        }
-      }
+          fields: ['numberLabel', 'name', 'description'],
+        },
+      },
     },
     relations: {
-      workEpisodes: { fields: [] }
-    }
+      workEpisodes: { fields: [] },
+    },
   },
-  { signal }
+  { signal },
 )
 ```
 
@@ -338,16 +338,16 @@ const result = await processor.process(
       {
         key: 'a',
         field: { object: 'entry', entryType: 'anime', field: 'description' },
-        value: 'Text A'
+        value: 'Text A',
       },
       {
         key: 'b',
         field: { object: 'entry', entryType: 'anime', field: 'description' },
-        value: 'Text B'
-      }
-    ]
+        value: 'Text B',
+      },
+    ],
   },
-  { signal }
+  { signal },
 )
 
 // result: { a: 'Processed A', b: 'Processed B' }
@@ -387,9 +387,9 @@ await recognizer.recognize(
     entryType: 'game',
     path: 'D:/Games/Example',
     kind: 'directory',
-    clues: { name: 'Example' }
+    clues: { name: 'Example' },
   },
-  { signal }
+  { signal },
 )
 ```
 
@@ -401,7 +401,7 @@ return { name: 'Example', originalName: 'Original Example' }
 
 // A complete source identity accepted by the recognizer.
 return {
-  externalIdentities: [{ source: 'example', sourceId: 'work/42' }]
+  externalIdentities: [{ source: 'example', sourceId: 'work/42' }],
 }
 
 // No usable information.

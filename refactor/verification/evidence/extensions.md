@@ -18,13 +18,13 @@
 | AniList      | [资料、本人记录、评分与完成联动](anime-platforms/live-api.md)                                                           |
 | Google Books | [书目、系列、身份授权及限定书架写入](book-sources/live-api.md)                                                          |
 | RanobeDB     | [作品、单册、发行与个人 API 边界](book-sources/live-api.md)                                                             |
-| MangaUpdates | [资料、同账号续期、状态与评分写入](mangaupdates-anidb/live-api.md)                                                      |
+| MangaUpdates | [资料、同账号续期、状态与评分写入](mangaupdates/live-api.md)                                                            |
 | NDL Search   | [出版记录、ISBN、查询与书影边界](reference-sources/live-api.md)                                                         |
 | itch.io      | [公开资料、只读授权、合集与撤销](reference-sources/live-api.md#itch)                                                    |
 | Wikidata     | [类型、粒度、rank、关系与内容目录](reference-sources/live-api.md)                                                       |
 | Fanart.tv    | [影片、剧集与季、人物组织及图片资源](artwork-sources/live-api.md)                                                       |
 
-来源取舍依据见[逐站比较](source-selection/comparison.md)。这些记录中的来源响应、样本计数和失败是接口事实，不能用来推定全部来源数据或正式扩展均已验收。
+各记录说明来源响应、输入样本、实际结果与适用范围，完整扩展验收按所属工作包执行。
 
 ## 迁移输入
 
@@ -44,7 +44,7 @@
 | Kotatsu          | [备份、分类、记录与下载索引](kotatsu-importer/source-and-fixtures.md)       |
 | YACReader        | [三种输入、共享文件与页位](yacreader-importer/source-and-fixtures.md)       |
 
-格式取舍见[逐项比较](importer-selection/comparison.md)。合成输入与真实导出分别标明，正式本体采用、目标环境和发行消费按[验收场景](../scenarios/sources.md)核对。
+合成输入与真实导出分别标明，正式本体采用、目标环境和发行消费按[验收场景](../scenarios/sources.md)核对。
 
 <a id="vndb"></a>
 

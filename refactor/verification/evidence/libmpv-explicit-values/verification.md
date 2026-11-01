@@ -4,9 +4,9 @@
 
 ## 来源依据
 
-原生八种值格式、读取时检查实际 format、节点及事件内存寿命，依据固定 mpv v0.41.0 的 [client.h](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h)。本轮重新读取了节点允许格式及参数说明，继续使用[已有固定来源回执](../libmpv-value-options/source-contract.json)，没有选定新的运行依赖版本。
+原生八种值格式、读取时检查实际 format、节点及事件内存寿命，依据固定 mpv v0.41.0 的 [client.h](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h)。重新读取了节点允许格式及参数说明，继续使用[已有固定来源回执](../libmpv-value-options/source-contract.json)，没有选定新的运行依赖版本。
 
-普通值编码、类与错误的消息克隆边界继续复用[此前实际 Node 检查](../libmpv-value-options/verification.md)。选择原生表示不改变普通 getProperty 的错误语义，也不能把绑定转换失败改写成上游 unavailable。
+普通值编码、类与错误的消息克隆边界继续复用[实际 Node 检查](../libmpv-value-options/verification.md)。选择原生表示不改变普通 getProperty 的错误语义，也不能把绑定转换失败改写成上游 unavailable。
 
 ## 声明消费
 
@@ -18,9 +18,9 @@ pnpm exec tsc --project refactor/verification/evidence/libmpv-explicit-values/ts
 
 这是 strict、exactOptionalPropertyTypes、noUncheckedIndexedAccess、noEmit 下的设计用声明。已知属性提示仅覆盖少量 getter 和 pause 写入；没有声称覆盖全部只读属性、所有命令参数或完整观察接口。静态检查也不能证明内嵌 NUL、UTF-16、int64 范围、循环数据或已分离缓冲的实际拒绝行为。
 
-实际使用 TypeScript 6.0.3，命令以退出码 0 完成；十九项 @ts-expect-error 反例均被拒绝。原生输出按完整 MpvNode 收窄，不沿用此前比较样例中按属性名称直接收窄为固定原生格式的写法。
+实际使用 TypeScript 6.0.3，命令以退出码 0 完成；十九项 @ts-expect-error 反例均被拒绝。原生输出依据实际 format 按完整 MpvNode 收窄。
 
-后续订阅设计检查补充了两个显式泛型反例，发现仅靠可选格式泛型会允许声明原生返回类型而不传入相应选项。现已改为由实际 input／output 参数约束重载；新反例及原有消费均重新通过。此修正落实既有类型合同，没有改变运行时值表示方向。
+返回类型由实际 input／output 参数约束，显式泛型和非法选项的反例验证了这一关联。
 
 ## 字节视图与错误快照
 
@@ -38,4 +38,4 @@ node refactor/verification/evidence/libmpv-explicit-values/snapshot-probe.mjs
 
 真实 addon 必须进一步证明：在事件数据失效前完成独立持有、精确处理视图边界、普通及原生输入严格校验、输出转换失败保留同一次完整结果、错误和 Mpv 的寿命解耦，以及声明与真实导出一致。
 
-观察转换失败结束订阅的具体交付时序、全部公共调用的拒绝时序、环境退出、截图布局与六目标图形链路仍未验证。错误目录、完整命令和属性类型提示、createMpv 配置及订阅接口也还没有由本轮声明完成。
+观察转换失败结束订阅的具体交付时序、全部公共调用的拒绝时序、环境退出、截图布局与六目标图形链路仍未验证。错误目录、完整命令和属性类型提示、createMpv 配置及订阅接口也还没有由声明完成。

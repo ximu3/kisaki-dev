@@ -1,6 +1,6 @@
 # 虚拟化与人工重排
 
-通用虚拟化负责显示几何，业务视图负责行映射和交互，查询拥有者提供完整数量、区间读取和稳定定位。人工重排使用共同交互表达明确移动意图，再由本体操作或编辑草稿完成保存。
+业务视图直接使用 TanStack Virtual 的公开几何能力，公共 desktop-ui 提供拖拽接入与交互呈现，职责见[公共 UI 包](package.md#families)。业务视图负责行映射、选择与真实目标，查询拥有者提供完整数量、区间读取和稳定定位。人工重排使用共同交互表达明确移动意图，再由本体操作或编辑草稿完成保存。
 
 <a id="geometry"></a>
 
@@ -8,11 +8,11 @@
 
 | 拥有者            | 职责                                                                                                                                    |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 通用虚拟化能力    | 视口与尺寸、可见及预留渲染范围、总高度、显示行位置、测量修正与滚动操作；归通用 UI 层                                                    |
+| 通用虚拟化能力    | 视口与尺寸、可见及预留渲染范围、总高度、显示行位置、测量修正与滚动操作；由 TanStack Virtual 提供                                        |
 | 列表/网格业务视图 | 条目与分组到显示行的映射、查询实例与局部数据、稳定锚点、选择与键盘语义、当前交互项的必要保留                                            |
 | 所属业务查询      | 当前总量、适用的分组摘要、任意区间读取及稳定目标定位；按 [区间读取与定位](../domains/library-queries.md#intervals) 的相同范围和排序执行 |
 
-项目使用 TanStack Virtual 的 Solid 适配处理通用几何，固定验证组合为 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6 与 Solid 1.9.16。UI 层接入其公开 createVirtualizer、测量、范围提取和滚动能力，不复制依赖实现或直接调用私有生命周期方法。以纵向显示行统一表格、列表、规则卡片网格和组标题；业务视图继续决定网格列数及内容到显示行的映射。表格横向使用普通滚动保留列，不扩展成二维数据网格。
+项目使用 TanStack Virtual 的 Solid 适配处理通用几何，固定验证组合为 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6 与 Solid 1.9.16。实际视图或控件直接接入其公开 createVirtualizer、测量、范围提取和滚动能力，不复制依赖实现或直接调用私有生命周期方法。以纵向显示行统一表格、列表、规则卡片网格和组标题；业务视图继续决定网格列数及内容到显示行的映射。表格横向使用普通滚动保留列，不扩展成二维数据网格。
 
 已知尺寸直接计算，其他尺寸通过实际测量修正。固定高度和动态高度共用一套合同，不能要求所有视图固定行高。完整 total 独立于已加载数量，尚未读取的区间仍能计算位置，再由视图加载，不能当作空区间。分组使用摘要与数量，不物化全部成员。同一 Entry 的重复显示实例分别定位。
 
@@ -46,12 +46,15 @@
 
 ## 拖拽依赖与验收
 
-| 包                                            | 版本  | 责任                     |
-| --------------------------------------------- | ----- | ------------------------ |
-| @atlaskit/pragmatic-drag-and-drop             | 3.1.0 | 基础拖拽、落点注册与事件 |
-| @atlaskit/pragmatic-drag-and-drop-hitbox      | 2.2.0 | 落点边缘判定             |
-| @atlaskit/pragmatic-drag-and-drop-auto-scroll | 3.2.0 | 拖动过程中的自动滚动     |
+| 包                                            | 版本  | 责任                       |
+| --------------------------------------------- | ----- | -------------------------- |
+| @atlaskit/pragmatic-drag-and-drop             | 3.1.0 | 基础拖拽、落点注册与事件   |
+| @atlaskit/pragmatic-drag-and-drop-hitbox      | 2.2.0 | 落点边缘判定               |
+| @atlaskit/pragmatic-drag-and-drop-auto-scroll | 3.2.0 | 拖动过程中的自动滚动       |
+| @atlaskit/pragmatic-drag-and-drop-live-region | 2.1.0 | 辅助技术播报及共享区域清理 |
 
 实现使用 Pragmatic Drag and Drop 框架无关核心及必要辅助包的公开入口，统一插入线、外观、菜单和可访问反馈。不引入 React 展示层，也不修改依赖库，Solid 按正常挂载与清理接入。依据见[核心](https://atlassian.design/components/pragmatic-drag-and-drop/core-package/)、[辅助包](https://atlassian.design/components/pragmatic-drag-and-drop/optional-packages)和[虚拟化](https://atlassian.design/components/pragmatic-drag-and-drop/core-package/recipes/virtualization)。
+
+公共 desktop-ui 提供登记、目标、稳定监视器和自动滚动的 Solid 接入；选项失效或拥有者结束时释放。手柄同时接入键盘可用的等价移动操作，插入线只呈现当前有效边缘。播报文字来自宿主，最后一个拥有者结束后释放共享 live region 及待播报消息。
 
 验收在 Solid 1.9 下覆盖普通列表与网格、动态尺寸、筛选子集、多选、自动滚动后源行离屏、尚未加载的目标、取消和并发失败，并同时验证[完整查询与定位](../domains/library-queries.md)。

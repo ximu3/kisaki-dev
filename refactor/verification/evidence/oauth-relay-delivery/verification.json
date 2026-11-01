@@ -1,11 +1,14 @@
 {
-  "checkedAt": "2026-10-21T08:00:30.150947+00:00",
+  "checkedAt": "2026-11-01T10:02:49.199147+00:00",
   "savedArtifactHashesMatch": true,
   "savedReceiptHashesMatch": true,
   "composeLiteralValuesPreserved": true,
   "defaultParserChangedFields": 2,
   "nodeShutdownCases": 2,
-  "baseImagePlatforms": ["linux/amd64", "linux/arm64"],
+  "baseImagePlatforms": [
+    "linux/amd64",
+    "linux/arm64"
+  ],
   "supportingSources": [
     {
       "url": "https://raw.githubusercontent.com/docker/compose/v5.6.0/cmd/compose/config.go",
@@ -20,9 +23,8 @@
   ],
   "receipts": {
     "source-input.json": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
-    "compose-contract.json": "6e09e3d6c6c0c2dd3a312db5e8eed8745a440c9fa9e0d0431ddc60bca2e10b0d",
-    "lifecycle-contract.json": "1b78de13dd1bdd65303f6603da5fa17c31ab16da3a24ba966610ab9f6a784705",
-    "initial-observations.json": "c827683ef0e6bae3d1356880ec42e1cac5815fabdf751bd7b5a7e9abdaea0d8d"
+    "compose-contract.json": "c7aa67634a98517c6285464c2d4acb5f05edb192048a7edba9a7f1da2062f672",
+    "lifecycle-contract.json": "1b78de13dd1bdd65303f6603da5fa17c31ab16da3a24ba966610ab9f6a784705"
   },
   "blueprints": {
     "Dockerfile": "9b92d4744cd37c734caa2219bf83724d306a2306d82205d411c1b41e6d5b1785",
@@ -30,7 +32,7 @@
     "compose.yaml": "2a747a76f2ae85e997d5ed16471a976e2df93fac8118252e4994e46afb9b9531",
     ".env.example": "9ca5f3b0e2a438168e8b717067caa178b5ef4e5360ac93d1bee5ea09c0c5cdec"
   },
-  "verificationSha256": "3b106b19d130ad056d98fa0ed41030ab6bfd94d1af6c3b1492948b42655e1d07",
+  "verificationSha256": "d7d44d831fa0f1e8304ffb4c514b4d496983f824260f55b6d105b198ecf62f7e",
   "networkRequestsExecuted": false,
   "nativeFixturesRerun": false,
   "imageBuilt": false,

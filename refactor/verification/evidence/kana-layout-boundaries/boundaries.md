@@ -1,6 +1,6 @@
 # 章节布局上下文与字体完成的浏览器对照
 
-2026-10-19，使用隐藏的 Electron 44.5.1／Chromium 152 文档核对两个会影响阅读路线的假设。输入全部为本试件生成的短 HTML 和两份故意无效的字体响应；没有读取用户文档。结果见 [browser-contract.json](browser-contract.json)，代码见 [probe.cjs](probe.cjs)。本轮讨论引用的八份规范页面、内容摘要与锚点检查见 [references.json](references.json)。
+2026-10-19，使用隐藏的 Electron 44.5.1／Chromium 152 文档核对两个会影响阅读路线的假设。输入全部为本试件生成的短 HTML 和两份故意无效的字体响应；没有读取用户文档。结果见 [browser-contract.json](browser-contract.json)，代码见 [probe.cjs](probe.cjs)。讨论引用的八份规范页面、内容摘要与锚点检查见 [references.json](references.json)。
 
 ## 源标记相同，不足以证明拆分后的呈现等价
 
@@ -15,7 +15,7 @@
 
 表格对照保留相同的目标行，只移除了另一行中的长文字。这表明当前单元格的宽度也可能取决于未显示的其他行。
 
-该结果反驳“只要源端点能恢复，章节就可以任意切为独立 DOM 片段”。它没有证明所有分片方案都不可行，也没有测量巨大章节的容量或性能。需要验证的是拆分后仍成立的选择器、继承、计数器和布局上下文；表格、ruby、浮动及纵横排混排各有额外条件。选择器和计数器的相关规则分别见 [Selectors](https://www.w3.org/TR/selectors/#structural-pseudos)与 [CSS Lists](https://www.w3.org/TR/css-lists-3/#inheriting-counters)；本轮没有单独运行计数器用例。
+该结果反驳“只要源端点能恢复，章节就可以任意切为独立 DOM 片段”。它没有证明所有分片方案都不可行，也没有测量巨大章节的容量或性能。需要验证的是拆分后仍成立的选择器、继承、计数器和布局上下文；表格、ruby、浮动及纵横排混排各有额外条件。选择器和计数器的相关规则分别见 [Selectors](https://www.w3.org/TR/selectors/#structural-pseudos)与 [CSS Lists](https://www.w3.org/TR/css-lists-3/#inheriting-counters)；没有单独运行计数器用例。
 
 ## fonts.ready 完成与字体成功是两件事
 
@@ -30,7 +30,7 @@
 
 ## 范围与复现
 
-本轮只验证上述浏览器机制，没有实现 Reader、拆分算法、原文投影或导航提交，也没有运行跨浏览器矩阵。没有访问系统剪贴板。外部请求为零，renderer 无 Node 接入；字体请求限于本地服务器的两份合成响应。
+只验证上述浏览器机制，没有实现 Reader、拆分算法、原文投影或导航提交，也没有运行跨浏览器矩阵。没有访问系统剪贴板。外部请求为零，renderer 无 Node 接入；字体请求限于本地服务器的两份合成响应。
 
 试件复用既有运行时记录，输出包含 probe、runner 与运行时记录的 SHA-256。以仓库根目录执行：
 

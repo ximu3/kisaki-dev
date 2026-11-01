@@ -1,6 +1,6 @@
 # Kana 跨引擎呈现机制对照
 
-2026-10-20，本轮在已确认的[内容文档职责](../../../design/projects/kana/layout.md#documents)下，对照正常事件、内容 CSP、原生分页和多份展示投影。结果用于[浏览器与投影取舍](../../../design/projects/kana/layout.md#projections)，不自动改变终态支持名单。
+2026-10-20，在已确认的[内容文档职责](../../../design/projects/kana/layout.md#documents)下，对照正常事件、内容 CSP、原生分页和多份展示投影。结果用于[浏览器与投影取舍](../../../design/projects/kana/layout.md#projections)，不自动改变终态支持名单。
 
 ## 实际运行环境
 
@@ -12,7 +12,7 @@
 | Firefox  | 153.0         | Playwright 固定修订 1538 的 Firefox 测试构建        |
 | WebKit   | 26.5          | Playwright 固定修订 2336 的 Windows WebKit 测试构建 |
 
-包元信息、修订、实际可执行文件与脚本摘要见 [source-input.json](source-input.json)，运行观察见 [browser-contract.json](browser-contract.json)。Playwright 的 Firefox 和 WebKit 是其测试构建；WebKit 的版本字符串不等于已验证同号 Safari。本轮没有运行真实 macOS Safari、WKWebView 或 Linux WebKitGTK。相关载体边界见 [Playwright 浏览器说明](https://playwright.dev/docs/browsers#webkit)。
+包元信息、修订、实际可执行文件与脚本摘要见 [source-input.json](source-input.json)，运行观察见 [browser-contract.json](browser-contract.json)。Playwright 的 Firefox 和 WebKit 是其测试构建；WebKit 的版本字符串不等于已验证同号 Safari。没有运行真实 macOS Safari、WKWebView 或 Linux WebKitGTK。相关载体边界见 [Playwright 浏览器说明](https://playwright.dev/docs/browsers#webkit)。
 
 ## 正常交互与内容执行限制
 
@@ -28,7 +28,7 @@
 
 三者在包含 allow-scripts 的路径都保留正常文字、点击、80px 图像与资源入口提供的 Blob 样式表，书籍样式没有改变宿主背景。被夹具引用的外部脚本与未授权图像没有到达本机服务器，测试页面的外部请求也为零。没有系统剪贴板写入。
 
-宿主 CSP 与内容 CSP 必须允许正常接入所需的资源形式：本次宿主允许 Blob 样式表，内容文档再限制自己的资源范围。只修改内容策略不能放宽继承的宿主限制；提供的样式表通过实际计算样式确认已经采用，而不是仅检查创建了 link 元素。
+宿主 CSP 与内容 CSP 必须允许正常接入所需的资源形式：本次宿主允许 Blob 样式表，内容文档再限制自己的资源范围。只修改内容策略不能放宽继承的宿主限制；样式表是否生效通过实际计算样式核对。
 
 这支持按各自职责组合 iframe、CSP 和资源入口。WebKit 的旧参数事件差异与[上游报告](https://bugs.webkit.org/show_bug.cgi?id=218086)相符；它没有证明整个 WebKit 平台已验收，也没有把 sandbox 重新算作禁脚本的独立保障。正式文档转换、宿主权限接入和所有资源语法仍按既有合同验证。
 
@@ -62,7 +62,7 @@ Firefox 的自然横排通过，与它没有执行显式分栏指令同时成立
 
 这支持多投影的几何与来源对应机制。测试中的源值是自有文字节点 offset，没有执行完整 EPUB CFI、FB2 或 MOBI 绑定；也没有执行跨投影的完整指针拖选、复制、辅助技术内容去重、焦点切换或真实长章节预算。两份完整 DOM 的额外成本存在，不能因源内容共享就称其零开销。
 
-多投影没有解决 Firefox 的显式分栏指令，也没有证明复杂 CSS、ruby、表格和跨类型页位的全部行为。后续已确认[分页支持边界](../../../design/projects/kana/layout.md)，作者 CSS 的该项缺口明确列为限制；其余已承诺阅读能力仍须完成验证，不以本次几何成功替代。
+多投影没有解决 Firefox 的显式分栏指令，也没有证明复杂 CSS、ruby、表格和跨类型页位的全部行为。[分页支持边界](../../../design/projects/kana/layout.md)列明作者 CSS 的该项限制；其余已承诺阅读能力仍须完成验证，不以本次几何成功替代。
 
 ## 复现
 

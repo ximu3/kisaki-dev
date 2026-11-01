@@ -28,17 +28,13 @@
 
 JSON 部分日期区间的 P95 为 34.319 ms。交替执行优化后的查询和 35 次真实写入时，10 ms 采样分辨率下事件循环延迟 P95 为 37.388 ms、最大值为 47.383 ms。这些是当前设备和样本的观测值，尚未设定完整产品的通过阈值，也没有测量真实 UI 帧率。
 
-[最终原始结果](query-results.json)包含各规模耗时、查询计划、活动写入数量和设备信息。[首次未加入集合查询的结果](query-before-set-query.json)保留探索过程，不能把两次运行的采样差异都归因于单个优化。上表使用最终同次运行中的两种 SQL。
+[最终原始结果](query-results.json)包含各规模耗时、查询计划、活动写入数量和设备信息。上表对照同一次运行中的两种 SQL。
 
 同一 Electron／SQLite 连接还验证了三个事务断言：业务写入后、handled 前故障会完整回滚；业务与 handled 可以一起提交；同组后续创建失败不会留下前一条。这只验证原生事务基础，不代替正式 onboarding 接入、资源准备或提交后通知的验收。
 
-## 版本与证据边界
+## 运行范围
 
-系统 Node 24.11.1 使用 ABI 137，直接加载当前 Electron ABI 145 的 SQLite 模块会失败；因此查询实际运行于 Electron，而非据系统 Node 错误推断驱动不可用。[版本观察](dependency-observation.json)保留这项区分。
-
-核对时官方最新可见 1.x 发布是 [v1.0.0-rc.5](https://github.com/drizzle-team/drizzle-orm/releases/tag/v1.0.0-rc.5)，仍标为预发布；另有正式 [0.45.4](https://github.com/drizzle-team/drizzle-orm/releases/tag/0.45.4)。本次 npm 元数据访问多次超时，未安装或验证 1.x 候选。现有 0.45.2 下的 SQL 观测不能代替目标 1.x、Kit generate／migrate、codec 和完整迁移资源组合的验证，也没有修改方案的目标版本。
-
-结论限于：恢复阶段必须结合实际字节判定；不覆盖移动需要真实系统语义；动态查询组织方式会显著影响主线程耗时。尚不据此冻结整库预算、所有目标平台或最终执行架构。
+文件恢复结果适用于所列 Windows／NTFS 条件；SQL 数据描述固定样本与版本下的查询成本。Drizzle 1.x 编码与迁移另见[数据库输入验证](../../public-contracts/2026-10-22/README.md)，正式 schema 与目标制品由 W06 验收。
 
 ## 重跑方式
 
@@ -48,4 +44,4 @@ JSON 部分日期区间的 P95 为 34.319 ms。交替执行优化后的查询和
 python -X utf8 refactor/verification/evidence/storage-contracts/2026-10-22/recovery-probe.py run .local/refactor-contracts-20261022/cases refactor/verification/evidence/storage-contracts/2026-10-22/recovery-results.json
 ```
 
-查询脚本需要当前桌面依赖中的 electron.exe 和匹配的 better-sqlite3，以实际 Electron 应用方式启动 query-probe.cjs；它自行设置隔离 userData／sessionData 并在结束时退出。脚本读取安装版本并记录环境，不要求改写根依赖或重编译现有 SQLite 模块。
+查询脚本通过 KISAKI_PROBE_APP_PACKAGE 取得隔离依赖项目的绝对 package.json 路径，并以其中匹配的 Electron、better-sqlite3 和 Drizzle 环境启动 query-probe.cjs；它自行设置隔离 userData／sessionData 并在结束时退出。脚本读取安装版本并记录环境，不要求改写根依赖或重编译现有 SQLite 模块。

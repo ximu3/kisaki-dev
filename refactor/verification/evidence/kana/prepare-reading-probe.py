@@ -1,4 +1,4 @@
-"""Fetch pinned primary inputs for the Kana reading-route proposal."""
+"""Fetch pinned primary inputs for Kana format verification."""
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -71,8 +71,7 @@ assert 'RARVER_MINOR    23' in version and 'RARVER_BETA      0' in version
 assert 'RAR solid archive support unavailable' in (SOURCES / 'archive-rar.c').read_text(encoding='utf-8')
 assert 'await file.arrayBuffer()' in (SOURCES / 'archive-reader.js').read_text(encoding='utf-8')
 assert 'archive_read_open_memory' in (SOURCES / 'archive-main.c').read_text(encoding='utf-8')
-result = {'checkedAt': datetime.now(timezone.utc).isoformat(), 'designStatus': 'proposal',
-          'sources': receipts, 'packages': packages, 'unrarSourceVersion': '7.23',
+result = {'checkedAt': datetime.now(timezone.utc).isoformat(), 'sources': receipts, 'packages': packages, 'unrarSourceVersion': '7.23',
           'unrarArchiveName': 'unrarsrc-7.2.7.tar.gz', 'wasmBuildExecuted': False,
           'rarDecoderExecuted': False, 'mobiDecoderExecuted': False,
           'kanaProjectCreated': False, 'completeDependencyTupleLocked': False}

@@ -1,8 +1,8 @@
 # libmpv-node 控制接口检查
 
-对应已确认的[控制接口与运行时](../../../design/projects/libmpv-node/api.md)。额外客户端对象、等待处理器完成后自动继续的 hook，以及整体接口模型均已确认。来源收据与覆盖清单保留检查时的 proposal 分类，不因设计确认改写历史执行结果；真实 addon 与完整原生能力仍未验证。
+本页核对[控制接口与运行时](../../../design/projects/libmpv-node/api.md)的固定源码、Client API 职责归属和声明消费。Node 检查覆盖取消错误、运行引用及异步释放的语言行为。
 
-统一声明现已补入[属性格式](../libmpv-properties/verification.md)，并包含已经确认的[流提供器扩展](../libmpv-streams/verification.md)。有限的真实 C 调用证据单独见[原生探针](../libmpv-native/verification.md)，不改写本页历史来源与标准 Node 探针的证明范围。
+统一声明涵盖[属性格式](../libmpv-properties/verification.md)和[流提供器](../libmpv-streams/verification.md)。真实 C 调用结果见[原生探针](../libmpv-native/verification.md)。
 
 ## 整体模型复核
 
@@ -10,7 +10,7 @@
 
 复核参照 [Node EventEmitter](https://nodejs.org/download/release/v24.11.1/docs/api/events.html#events)的监听器返回值规则与 [Web Streams](https://nodejs.org/download/release/v24.11.1/docs/api/webstreams.html#new-writablestreamunderlyingsink-strategy)的异步工作完成形式，并结合下表固定 mpv hook 合同。这是接口职责的设计依据，不证明本库采用了这些运行时对象或已经实现回调时序。
 
-文档对齐了两处范围：client-message 属于调用 observeEvents 的公开控制客户端；hook 登记的 closed 阻止新的 run，dispose 才是库拥有资源的清理边界。订阅示例补全已经规定的 asyncDispose。此次只修改设计说明与一条声明注释，没有改变类型签名或执行原生测试；下述既有检查结果的证明范围保持不变。
+client-message 属于调用 observeEvents 的公开控制客户端。hook 登记的 closed 阻止新的 run，dispose 释放库拥有的资源；异步释放通过 asyncDispose 等待清理完成。
 
 ## 来源与覆盖
 
@@ -36,11 +36,11 @@ pnpm exec tsc --project refactor/verification/evidence/libmpv-control/tsconfig.j
 node refactor/verification/evidence/libmpv-control/node-probe.mjs
 ```
 
-[声明](contract.d.ts)、[错误声明](errors.d.ts)和[消费样例](consumer.ts)复用已有值、订阅与通知合同。检查核心与客户端拥有关系、文本表示、异步 hook 处理器与普通 Observer 的区别、共同错误字段、创建阶段，以及 await using 的类型关系。原有两个转换错误声明复用公共错误基类；初始化声明复用统一 Mpv 类型，不再另写一个同名局部接口。
+[声明](contract.d.ts)、[错误声明](errors.d.ts)和[消费样例](consumer.ts)复用已有值、订阅与通知合同。检查核心与客户端拥有关系、文本表示、异步 hook 处理器与普通 Observer 的区别、共同错误字段、创建阶段，以及 await using 的类型关系。转换错误继承公共错误基类，初始化结果使用统一 Mpv 类型。
 
 [node-probe.mjs](node-probe.mjs)只运行标准 Node 定时器取消、独立子进程中的 ref／unref，以及 JavaScript 异步释放语法。结果写入 [node-contract.json](node-contract.json)。这些不是 Mpv 错误实例、原生线程安全函数或 addon 环境退出的测试。
 
-TypeScript 6.0.3 的五组关联声明消费均以退出码 0 完成：控制 13、初始化 10、通知 16、订阅 10、值表示 19 项反例，共 68 项 @ts-expect-error 均有效。标准 Node 探针也已通过：两项 AbortError 检查保留 ABORT_ERR 与 cause 身份，带／不带运行引用的定时器子进程按预期结束，await using 等待异步释放完成。公共基类、创建返回类型和释放符号变更已包含在这些关联检查中。源码清单核对了 45 个 client.h 函数、20 个负数错误码和 6 个已知 hook；10 份来源收据均为 HTTP 200。
+TypeScript 6.0.3 的五组关联声明消费均以退出码 0 完成：控制 13、初始化 10、通知 16、订阅 10、值表示 19 项反例，共 68 项 @ts-expect-error 均有效。标准 Node 探针也已通过：两项 AbortError 检查保留 ABORT_ERR 与 cause 身份，带／不带运行引用的定时器子进程按预期结束，await using 等待异步释放完成。公共基类、创建返回类型和释放符号均包含在关联检查中。源码清单核对了 45 个 client.h 函数、20 个负数错误码和 6 个已知 hook；10 份来源收据均为 HTTP 200。
 
 ## 未完成的原生证据
 

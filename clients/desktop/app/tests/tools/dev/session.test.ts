@@ -26,21 +26,21 @@ afterAll(async () => {
 })
 
 test('a refused quit retains utility processes and normal window close preserves the profile', async () => {
-  const entry = join(workspace.app, 'src/main/entry.ts')
+  const entry = join(workspace.app, 'tests/fixtures/runtime/src/main/entry.ts')
   const original = await readFile(entry, 'utf8')
   await writeFile(
     entry,
-    `${original}
-import { writeFileSync } from 'node:fs'
-import { join } from 'node:path'
-app.once('browser-window-created', (_event, window) => {
-  const pids = app.getAppMetrics().filter((metric) => metric.type === 'Utility').map((metric) => metric.pid)
+    "import { writeFileSync } from 'node:fs'\n" +
+      original.replace(
+        'const rendererUrl =',
+        `
   window.once('close', (event) => {
     event.preventDefault()
+    const pids = app.getAppMetrics().filter((metric) => metric.type === 'Utility').map((metric) => metric.pid)
     writeFileSync(join(app.getPath('userData'), 'cancelled-hosts.json'), JSON.stringify(pids))
   })
-})
-`,
+  const rendererUrl =`,
+      ),
   )
 
   const controller = startDevelopmentController(workspace.app)
@@ -92,14 +92,14 @@ app.once('browser-window-created', (_event, window) => {
 })
 
 test('a failed runtime build retains the old process and a renamed source hands off a complete generation', async () => {
-  const entry = join(workspace.app, 'src/main/entry.ts')
+  const entry = join(workspace.app, 'tests/fixtures/runtime/src/main/entry.ts')
   const original = await readFile(entry, 'utf8')
-  const helper = join(workspace.app, 'src/main/app/development-fixture.ts')
-  const renamed = join(workspace.app, 'src/main/app/renamed-fixture.ts')
+  const helper = join(workspace.app, 'tests/fixtures/runtime/src/main/development-fixture.ts')
+  const renamed = join(workspace.app, 'tests/fixtures/runtime/src/main/renamed-fixture.ts')
   await writeFile(helper, "export const value = 'synthetic first generation'\n")
   await writeFile(
     entry,
-    `${original}\nvoid import('./app/development-fixture').then((module) => console.info(module.value))\n`,
+    `${original}\nvoid import('./development-fixture').then((module) => console.info(module.value))\n`,
   )
 
   const controller = startDevelopmentController(workspace.app)
@@ -123,7 +123,7 @@ test('a failed runtime build retains the old process and a renamed source hands 
     await writeFile(renamed, "export const value = 'synthetic repaired generation'\n")
     await writeFile(
       entry,
-      `${original}\nvoid import('./app/renamed-fixture').then((module) => console.info(module.value))\n`,
+      `${original}\nvoid import('./renamed-fixture').then((module) => console.info(module.value))\n`,
     )
 
     await expect
@@ -142,17 +142,22 @@ test('a failed runtime build retains the old process and a renamed source hands 
   }
 })
 
-test('public-package recovery retains a usable session and renderer-only updates preserve its process', async () => {
-  const styles = join(workspace.app, 'src/renderer/windows/main/styles.css')
-  const configuration = join(
-    workspace.root,
-    'clients/desktop/packages/ui/config/typescript/tsconfig.lib.json',
-  )
-  const button = join(workspace.root, 'clients/desktop/packages/ui/src/components/button.tsx')
+test('dependency recovery and renderer updates preserve a usable process', async () => {
+  const styles = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/styles.css')
+  const renderer = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/entry.tsx')
+  const dependency = join(workspace.root, 'packages/development-fixture/src/value.json')
   const originals = await Promise.all(
-    [styles, configuration, button].map((path) => readFile(path, 'utf8')),
+    [styles, renderer, dependency].map((path) => readFile(path, 'utf8')),
   )
-
+  await writeFile(
+    renderer,
+    originals[1]!
+      .replace(
+        "import './styles.css'",
+        "import './styles.css'\nimport { label } from '@kisaki3/development-fixture'",
+      )
+      .replace('<main>', '<main data-dependency={label}>'),
+  )
   const controller = startDevelopmentController(workspace.app)
   let browser: Browser | undefined
   try {
@@ -162,45 +167,34 @@ test('public-package recovery retains a usable session and renderer-only updates
         timeout: developmentStartupTimeoutMs,
       })
       .toBe(true)
-
     const first = controller.states.find((state) => state.state === 'ready')!
     const page = await browser.newPage()
-    // Chromium observes HMR; the concurrent Electron process supplies the actual desktop lifecycle.
-    await page.addInitScript(() => {
-      Object.defineProperty(window, 'kisaki', {
-        value: { kind: 'main', close: async () => undefined },
-      })
-    })
     await page.goto(new URL('main/index.html', first.rendererUrl!).href)
-    await page.getByRole('button', { name: 'Close window' }).waitFor()
-
-    await writeFile(styles, `${originals[0]}\n.window-shell { padding: 73px; }\n`)
-
+    await page.getByRole('button', { name: 'Count: 0' }).waitFor()
+    await page.getByRole('button').click()
+    await writeFile(styles, `${originals[0]}\n#root { padding: 73px; }\n`)
     await expect
-      .poll(() => page.locator('main').evaluate((element) => getComputedStyle(element).paddingLeft))
+      .poll(() =>
+        page.locator('#root').evaluate((element) => getComputedStyle(element).paddingLeft),
+      )
       .toBe('73px')
-
-    await writeFile(configuration, '{')
-
+    expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
+    await writeFile(dependency, '{')
     await expect
       .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
       .toBe(true)
     expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
-    expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
-
-    const readyBeforeRepair = controller.states.filter((state) => state.state === 'ready').length
-    await writeFile(configuration, originals[1]!)
-
+    const readyBefore = controller.states.filter((state) => state.state === 'ready').length
+    await writeFile(dependency, originals[2]!)
     await expect
       .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
         timeout: 60_000,
       })
-      .toBeGreaterThan(readyBeforeRepair)
+      .toBeGreaterThan(readyBefore)
     const recovered = controller.states.filter((state) => state.state === 'ready').at(-1)!
-
+    // Recovery may rebuild the runtime; a subsequent dependency-only update must not restart it.
     const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
-    await writeFile(button, originals[2]!.replace('<button', '<button data-fixture="updated"'))
-
+    await writeFile(dependency, JSON.stringify({ label: 'updated' }))
     await expect
       .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
         timeout: 60_000,
@@ -210,14 +204,13 @@ test('public-package recovery retains a usable session and renderer-only updates
       controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
     ).toBe(recovered.current!.processId)
     await expect
-      .poll(() => page.getByRole('button').getAttribute('data-fixture'), { timeout: 15_000 })
+      .poll(() => page.locator('main').getAttribute('data-dependency'), { timeout: 15_000 })
       .toBe('updated')
-    expect(await page.locator('main').count()).toBe(1)
   } finally {
     await controller.close()
     await browser?.close()
     await Promise.all(
-      [styles, configuration, button].map((path, index) => writeFile(path, originals[index]!)),
+      [styles, renderer, dependency].map((path, index) => writeFile(path, originals[index]!)),
     )
   }
 })

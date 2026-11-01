@@ -1,6 +1,6 @@
 # 通信帧、版本与开发握手
 
-rpc 包、扩展接入与本地开发连接使用下述协议，分别管理消息传输和实例寿命。业务输入、完成条件、取消和安全失败沿用[通信合同](../communication.md)，业务重试由所属操作决定。
+desktop-rpc 为窗口、扩展和开发控制提供统一调用机制，各端点维护自己的协议版本、身份与资源寿命。业务输入、完成条件、取消和安全失败沿用[通信合同](../communication.md)，业务重试由所属操作决定。
 
 <a id="versions"></a>
 
@@ -8,12 +8,12 @@ rpc 包、扩展接入与本地开发连接使用下述协议，分别管理消�
 
 | 版本                             | 定义与核对方式                                                                                                      |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| rpc wireVersion                  | rpc 包拥有，值为 1；帧字段和请求关联规则变化时更新。双方只接纳自己实现的版本，不协商回退                            |
+| desktop-rpc wireVersion          | desktop-rpc 拥有，值为 1；帧字段和请求关联规则变化时更新。双方只接纳自己实现的版本，不协商回退                      |
 | 接入 protocolVersion             | 各端点协议拥有，首版为 1；表示该端点的握手、消息目录及资源适配。不能用 npm 包版本替代                               |
-| extension API version            | extension-api 拥有的 SemVer；核对 manifest.apiVersionRange，不等于桌面版本、SDK 版本或 wireVersion                  |
+| extension API version            | extension-sdk 纯合同拥有的 SemVer；核对 manifest.apiVersionRange，不等于桌面版本、SDK 版本或 wireVersion            |
 | manifest／registry schemaVersion | extension-distribution 拥有的文档格式；在读取对应文档时验证，不与 RPC 帧合并                                        |
 | desktop buildId                  | 同一制品主进程、preload、原生 renderer 和 extension-host 的构建标识；私有同版本端点必须一致，防止旧资源接入新主进程 |
-| development protocolVersion      | desktop-contracts/development 拥有，首版为 1；父子消息及构建交接使用独立版本，不以工具 npm 版本猜兼容         |
+| development protocolVersion      | desktop-contracts/development 拥有，首版为 1；父子消息及构建交接使用独立版本，不以工具 npm 版本猜兼容               |
 
 同一个 API 范围内，SDK 可以独立发布；符合范围并且接入协议受支持才可以建立能力。未知主版本、缺少必要声明或不满足范围时，在开放调用前明确拒绝。已经安装的扩展保留包、私有数据和用户启用意愿，只停止不兼容实例的加载。新增接口不自动向已有端点开放，接入方法表继续逐项选择。
 
@@ -21,7 +21,7 @@ rpc 包、扩展接入与本地开发连接使用下述协议，分别管理消�
 
 <a id="frames"></a>
 
-## rpc 的有限帧
+## desktop-rpc 的有限帧
 
 帧中的值只允许可传递的普通 JSON 值。对象可省略可选字段，不能显式携带 undefined；数组不含空槽、undefined、函数或非有限数。Date、Map、Error、AbortSignal、回调和本地资源句柄必须由拥有者转换。大资源字节使用已有资源／媒体通道，不作为任意 RPC 对象传递。
 
@@ -42,11 +42,11 @@ type RpcFrame =
   | { type: 'cancel'; id: number }
 ```
 
-JsonValue 由 rpc 的纯值模块定义。error 在通用帧层是待交付的值，各端点使用自己的安全失败解析器；本体与 SDK 对外调用必须解析为 ErrorSummary／ExecutionFailure，不能把任意对象当成可展示异常。rpc 不导入 desktop-contracts，不解析 partialResult 的业务结构。
+JsonValue 由 desktop-rpc 的纯值模块定义。error 在通用帧层是待交付的值，各端点使用自己的安全失败解析器；本体与 SDK 对外调用必须解析为 ErrorSummary／ExecutionFailure，不能把任意对象当成可展示异常。desktop-rpc 不导入 desktop-contracts，不解析 partialResult 的业务结构。
 
 创建连接时确定发起方与接纳方。发起方先发送 hello；接纳方核对版本、协议与实际绑定上下文后，只回复一次 accepted 或 rejected。成功前不允许 request、notify 或资源登记。未知 wireVersion 可以读取最小 hello 信封后以 ProtocolMismatch 拒绝，不先解释未知版本的业务部分。建立传输后十秒内未完成握手则关闭并报告连接失败；这项上限只用于握手，不限制激活、迁移或业务执行时间。
 
-protocol.id 区分 `kisaki.window`、`kisaki.extension-node`、`kisaki.extension-webview` 与 `kisaki.extension-host`。这些字符串与对应 protocolVersion 属于各端点合同，rpc 本身不硬编码本体名单。context 的值也由端点定义，纯机制不根据客户端自报身份授予权限。
+protocol.id 区分 `kisaki.window`、`kisaki.extension-node`、`kisaki.extension-webview`、`kisaki.extension-host` 与 `kisaki.development`。这些字符串与对应 protocolVersion 属于各端点合同，desktop-rpc 本身保持环境与产品无关。context 的值也由端点定义，纯机制不根据客户端自报身份授予权限。
 
 成功后的调用规则如下：
 
@@ -61,7 +61,7 @@ protocol.id 区分 `kisaki.window`、`kisaki.extension-node`、`kisaki.extension
 
 传输关闭时清理待回复、监听、回调与资源映射；仍等待结果的调用以 ConnectionClosed 结束。断连不能证明远端停止、提交失败或回滚，调用方不得重放写入。接纳方按业务寿命取消依赖该连接的工作、保留独立工作；既成结果与必要资源清理由实际拥有者负责。
 
-协议使用本节声明的有限帧，自研内核负责接入、版本、严格帧校验、按调用取消与断连清理。业务结果、身份权限和宿主流程由相应拥有者处理。协议不标称 JSON-RPC 2.0 兼容，也不支持 batch、通用事务、远程对象引用或自动写入重放。选型依据见[候选比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#rpc)；正式内核的完整行为按下方消息边界验证，候选库证据限于其自身覆盖范围。
+协议由本节的有限帧定义，内核统一负责接入、版本、严格帧校验、请求关联、按调用取消和断连清理。业务结果、身份权限、重试和宿主流程由相应拥有者处理。完整行为按下方消息边界验证。
 
 <a id="endpoints"></a>
 
@@ -73,6 +73,7 @@ protocol.id 区分 `kisaki.window`、`kisaki.extension-node`、`kisaki.extension
 | 私有 extension-host | `{ buildId, generation }` | 主进程本次实际启动的进程、专属端口及预期 generation；返回同一 `{ buildId, generation }`。generation 是运行代际，不是持久扩展身份                        |
 | SDK Node 接入       | `{ apiVersionRange }`     | 宿主创建 context 时绑定的扩展实例、经过验证的 manifest 范围与此 SDK 支持范围共同成立；返回 `{ apiVersion, instanceId }`。SDK 不选择另一个扩展实例       |
 | SDK Webview 接入    | `{ apiVersionRange }`     | 本次 document 的实际 MessagePort、宿主视图和所绑定 Node 实例；返回 `{ apiVersion, instanceId, viewId, documentId }`。URL 或消息中的名称不能替代端口绑定 |
+| 开发控制            | `{}`                      | 实际启动的 ChildProcess 与父子 IPC；应用返回 `{ appVersion, buildId }`，就绪通知再交付实际 API 版本                                                     |
 
 SDK 支持范围由发行时的公开协议常量声明，manifest 范围仍由应用独立验证；不能用 SDK 自报范围代替作者声明。私有端点 buildId 不符为 ProtocolMismatch，公开 API 范围不符为 ApiIncompatible，旧实例接入为 InstanceExpired，来源或开放范围不合法为 PermissionDenied。错误只包含可展示的安全原因，不回显凭据、端口对象或任意来信。
 
@@ -84,32 +85,32 @@ MessagePort 的引导交接由真实浏览器适配层核对 iframe/source/origi
 
 <a id="development"></a>
 
-## CLI 与开发应用的父子消息合同
+## CLI 与开发应用的控制合同
 
-开发协议由 desktop-contracts/development 独立拥有，仅用于[开发工作流](../extensions/development.md#connection)。唯一启动器通过 Node child_process.spawn 直接创建应用，stdio 配置一个 ipc 项并使用 JSON 序列化。源码桌面开发与作者开发使用同一接入；前者运行项目 Electron 与完成的 main 入口，后者运行所选应用的真实可执行文件。macOS 定位 bundle 内的可执行文件，Linux 直接启动所选应用或 AppImage，不经系统打开命令另起无法拥有的实例。
+desktop-contracts/development 拥有开发方法、通知、值与协议版本，desktop-rpc 提供共同调用机制，Node 父子 IPC 提供实际传输。该端点只服务[开发工作流](../extensions/development.md#connection)。
 
-启动器传入 `--development` 和 `--profile=<绝对路径>`。应用在数据库、日志与浏览器 Session 建立前选定资料，并要求本次父子 IPC 已存在。正式包也从正常包内主模块接入，保留现行 fuses。源码自动化可单独传入 profile 使用隔离资料；没有 development 参数就不建立开发控制连接。打包应用的资料覆盖仅在受控开发模式开放，普通启动仍遵守安装与便携规则。renderer-url 与窗口选择只适用于源码运行，不能据此改写正式应用的界面入口。
+唯一启动器通过 child_process.spawn 直接创建应用，stdio 配置一个 ipc 项并使用 JSON 序列化。源码开发运行项目 Electron 和完成的 main 入口，作者开发运行所选应用的真实可执行文件。macOS 使用 bundle 内的可执行文件，Linux 使用实际应用或 AppImage，启动器持续拥有该进程。
 
-消息关联到实际子进程对象及其 IPC 连接。Node 负责消息序列化与消息边界；本项目校验有限消息的类型、字段和当前操作条件，不维护字节帧、命名管道或 socket 端点、连接凭据和消息内会话身份。只支持启动自己拥有的应用，不提供附加到任意进程、任意方法调用、自动重连或旧消息重放。资源和构建内容通过目录交接，不嵌入消息。
+启动器传入 `--development` 和 `--profile=<绝对路径>`。应用在建立数据库、日志与浏览器 Session 前确定资料范围，并核对本次父子 IPC。正式包从正常入口接入并保留生产 fuses；普通启动遵守安装与便携规则。源码自动化可以单独指定隔离 profile，renderer-url 和窗口选择只用于源码运行。
 
-| type           | 方向            | 其余字段与含义 |
-| -------------- | --------------- | -------------- |
-| initialize     | 启动器 → 应用   | `protocolVersion: 1`；建立父子连接后发送一次，应用先核对版本 |
-| ready          | 应用 → 启动器   | `protocolVersion: 1, appVersion, apiVersion, buildId`；本体完成初始化，版本与构建身份来自实际运行输入，不代表扩展已激活 |
-| buildsReady    | 工具 → 应用     | `builds: DevelopmentBuild[]`；已经完成且不会继续改写的非空批次，扩展 ID 不重复 |
-| adoptionResult | 应用 → 工具     | 使用下方 DevelopmentAdoptionResult，报告本批构建的实际采用与激活结果 |
-| buildsReleased | 应用 → 工具     | `builds: { extensionId, buildId }[]`；所列构建已无宿主、页面或资源读取者，可以清理其临时目录 |
-| stop           | 启动器 → 应用   | 无其他字段；请求该实例的正常退出流程 |
-| stopResult     | 应用 → 启动器   | `outcome: 'exiting' \| 'cancelled' \| 'failed', error?`；只有 failed 带 error。普通界面退出也在正常收尾后报告 exiting |
-| failed         | 应用 → 启动器   | `error: ErrorSummary`；本体启动或连接已无法继续，不冒充编译失败或全部激活失败 |
+Node 消息承载完整 RpcFrame，实际 ChildProcess 与 IPC 连接绑定开发身份。启动器发起 `kisaki.development` 握手，应用接纳后返回自己的 appVersion 与 buildId；开发 protocolVersion 由 development 合同独立维护。共同握手、请求关联、错误与断连规则沿用本页 RPC 合同，资源和构建字节通过目录交接。
 
-initialize 只接受一次，未知版本不继续解释后续操作。应用在连接建立后十秒内未收到初始化时报告失败并收尾。ready 等待真实启动完成；启动器可为具体启动环境设置启动预算，不能拿它限制迁移或用户退出选择。apiVersion 表达本体实际提供的扩展运行 API；没有该能力时为 null，且不能接纳 buildsReady。作者工具在交付构建前核对实际能力及兼容范围，不能把公共包版本冒充运行能力。
+| 接口           | 方向与形式          | 输入和完成语义                                                                                  |
+| -------------- | ------------------- | ----------------------------------------------------------------------------------------------- |
+| ready          | 应用 → 工具，通知   | `{ appVersion, apiVersion, buildId }`；实际初始化完成                                           |
+| adoptBuilds    | 工具 → 应用，调用   | 接收完整的 `DevelopmentBuild[]`，返回本批真实采用与激活结果                                     |
+| buildsReleased | 应用 → 工具，通知   | `{ builds: { extensionId, buildId }[] }`；对应构建已无读取者                                    |
+| stop           | 启动器 → 应用，调用 | 请求正常退出，返回 `{ outcome: 'exiting' \| 'cancelled' \| 'failed', error? }`；failed 携带错误 |
+| exiting        | 应用 → 工具，通知   | 普通界面退出已完成必要决定与收尾，即将结束进程                                                  |
+| failed         | 应用 → 工具，通知   | `{ error: ErrorSummary }`；初始化或开发会话无法继续                                             |
 
-DevelopmentBuild 为 `{ extensionId, buildId, rootPath, webviews }`。buildId 是本连接内该扩展递增的正安全整数，只关联临时构建及其释放，不替代发布版本。rootPath 是已完成且不再改写的完整构建绝对路径。应用正常读取并校验实际 manifest、入口、身份、兼容和运行条件；正式安装包的签名与字节校验仍归安装流程。
+客户端在建立连接时登记通知处理。ready 等待实际启动完成；apiVersion 表达实际扩展运行能力，尚未提供时为 null。工具在提交构建前核对能力和兼容范围，应用只接纳自己具备运行条件的构建。启动预算由具体启动环境决定，业务与用户退出选择遵守自己的等待规则。
 
-webviews 为 `{ document, url }[]`，没有 Webview 时数组为空。映射只使用本会话拥有的 loopback 开发服务器和明确文档，并遵守[每视图开发内容来源](../extensions/webview.md#development)。不能把共享 loopback origin 当作页面隔离，也不能由消息开放任意网络代理或扩大 document.root。
+DevelopmentBuild 为 `{ extensionId, buildId, rootPath, webviews }`。buildId 是本连接内该扩展递增的正安全整数，关联临时构建及释放；rootPath 指向已经完成且保持不变的绝对目录。应用读取并核对 manifest、入口、身份、兼容与运行条件。安装包签名与字节校验由正式安装流程拥有。
 
-同一连接最多有一批构建正在采用。工具拥有尚未交付的最新集合，每个扩展只留最新完整结果；当前批次结束后才发送下一批。应用只执行固定的当前批次及共享宿主重建，不再维护第二份跨消息候选队列。尚未交付的旧候选由工具自己替换和清理，不在线上报告替代结果；已交付的候选等待自己的实际结果。
+webviews 为 `{ document, url }[]`，映射仅使用本会话拥有的 loopback 开发服务器和明确文档。来源与资源范围沿[每视图开发规则](../extensions/webview.md#development)建立。
+
+同一连接只接纳一批正在采用的构建。工具维护尚未提交的最新集合，每个扩展保留最新完整结果；当前调用结束后再提交下一批。应用执行已经固定的批次和共享宿主重建。尚未提交的候选由工具替换与清理，已提交的构建等待自己的实际结果。
 
 ```ts
 type DevelopmentBuildResult =
@@ -121,17 +122,16 @@ type DevelopmentActivationResult =
   | { extensionId: string; outcome: 'failed'; error: ErrorSummary }
 
 type DevelopmentAdoptionResult = {
-  type: 'adoptionResult'
   builds: readonly DevelopmentBuildResult[]
   activations: readonly DevelopmentActivationResult[]
 } & ({ outcome: 'completed' } | { outcome: 'interrupted'; error: ErrorSummary })
 ```
 
-连接有效且执行者能够交付时，每个接纳的 buildsReady 只返回一次 adoptionResult。completed 按输入逐项交付结果，不表示全部成功；interrupted 保留已确定的构建结果及实际尝试过的激活，缺项保持未知。共享宿主重建时重新激活的其他扩展也如实列出。已采用而激活失败的构建仍为 adopted，失败属于 activations。Node send 回调只确认传输结果，不能代替这些事实。
+adoptBuilds 返回一次实际结果。completed 按输入交付每项结果，interrupted 保留已确定的构建结果和已尝试的激活；缺项保持未知。共享宿主重建涉及的其他扩展也列出实际激活结果。采用与激活分别判断，Node send 回调只确认传输交接。
 
-stop 至多有一个在途请求，重复调用共享这次等待；取消后可再次明确请求。应用完成窗口关闭决定后才释放宿主等资源。退出取消保留正在使用的输出、编译监听与服务器，开发会话继续可用；不能先永久取消工具，再留下仍在运行的应用。启动准备的 AbortSignal 与运行期正常停止分别处理，不给一般有限命令增加可撤回取消。
+stop 的重复调用共享当前等待，取消后可以再次请求。应用先完成窗口关闭决定，再释放宿主和运行资源。退出被取消时，工具保留编译监听、服务器、进程与现用构建。启动准备取消与运行期正常停止分别处理。
 
-采用结果不代表旧构建已经无读取者。只有 buildsReleased，或已经确认应用与相关读取进程真实结束，才可以清理对应目录。启动器观察 ChildProcess 的 exit，并分别关闭自己取得的日志流；disconnect、stopResult.exiting 和超时不能代替退出。异常结束且读取者状态不明时保留目录并报告。连接丢失终止后续交接，应用请求正常退出；若退出被取消，应用和目录仍保留，连接已失效的事实不能改写成开发正常运行。强制结束必须由开发者明确请求，只作用于本会话拥有的进程。新启动创建新连接和临时构建身份，持久 profile 继续保留。
+目录清理依据 buildsReleased，或应用与相关读取进程已经实际结束。启动器观察 ChildProcess 的 exit，并收尾自身日志流；连接状态和退出通知分别保留其真实含义。读取者状态尚不明确时，保留目录并报告。连接丢失终止后续交接，应用请求正常退出；退出被取消时保留应用和目录，并报告会话连接已经失效。开发者明确请求的强制结束只处理本会话进程。新启动建立新连接与临时构建身份，持久 profile 继续保留。
 
 <a id="verification"></a>
 

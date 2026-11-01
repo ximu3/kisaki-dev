@@ -42,7 +42,14 @@ test('measures twenty fresh processes and confirms all observed child processes 
       try {
         const milliseconds = await test.step(`${sample}: window ready`, async () => {
           const window = await application.firstWindow()
-          await window.getByRole('button', { name: 'Close window' }).waitFor()
+          await window.locator('#root').waitFor({ state: 'attached' })
+          await expect
+            .poll(() =>
+              application.evaluate(({ BrowserWindow }) =>
+                BrowserWindow.getAllWindows().some((window) => window.isVisible()),
+              ),
+            )
+            .toBe(true)
 
           return performance.now() - start
         })
@@ -110,7 +117,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
       contentType: 'application/json',
     })
 
-    expect(p95).toBeLessThanOrEqual(budgets.engineeringShellStartupP95Ms)
+    expect(p95).toBeLessThanOrEqual(budgets.carrierStartupP95Ms)
   } finally {
     await rm(profile, { recursive: true, force: true })
   }

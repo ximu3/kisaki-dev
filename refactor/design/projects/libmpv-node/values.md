@@ -24,7 +24,7 @@
 
 结果交付后不再由库修改。普通数组及结构在声明中只读，字节由接收方持有和修改，不提供借用缓冲或另外的 release 方法。输入值在提交原生工作前形成自己的有效数据，不在异步执行时重新读取调用方可变对象。
 
-libmpv 允许非 UTF-8 字符串，NODE_MAP 也不保证键唯一。公开接口提供默认 JavaScript 值与显式原生表示，定义见[两种公开值](#values-values)；转换不静默替换非法编码、合并同名键或截断 C 字符串。选择依据见[方案比较](../../../verification/evidence/libmpv-values/alternatives.md)。
+libmpv 允许非 UTF-8 字符串，NODE_MAP 也不保证键唯一。默认 JavaScript 值便于日常消费，显式原生表示保留完整类型和内容；每次调用通过选项确定表示，使公开形状可预测。定义见[两种公开值](#values-values)，源码及语言行为依据见[值表示核对](../../../verification/evidence/libmpv-value-options/verification.md)。
 
 <a id="调用选项按输入与输出分别表达"></a>
 
@@ -45,11 +45,11 @@ libmpv 允许非 UTF-8 字符串，NODE_MAP 也不保证键唯一。公开接口
 const position = await mpv.getProperty('time-pos')
 
 const raw = await mpv.getProperty('user-data/example', {
-  output: 'native'
+  output: 'native',
 })
 
 await mpv.setProperty('user-data/copy', raw, {
-  input: 'native'
+  input: 'native',
 })
 ```
 
@@ -104,8 +104,8 @@ const node: MpvNode = {
   format: 'map',
   value: [
     [new Uint8Array([0x61]), { format: 'int64', value: 1n }],
-    [new Uint8Array([0x61]), { format: 'int64', value: 2n }]
-  ]
+    [new Uint8Array([0x61]), { format: 'int64', value: 2n }],
+  ],
 }
 ```
 

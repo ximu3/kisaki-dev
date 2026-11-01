@@ -1,320 +1,401 @@
 # 实施工作包与完成门槛
 
-W00–W13 将目标系统划分为可以审阅和验证的实施工作。产品与接口规则以[设计目录](../README.md)中的对应文档为准，验收编号见 [A01–A33](../verification/acceptance.md#scenarios)。本篇规定依赖、交付内容和完成条件，实际进度单独记录。
-
-目标平台的运行覆盖与完成条件统一按[运行覆盖与交付](../verification/acceptance.md#runtime-coverage)判定。
+工作包按完整交付对象组织，编号按推荐实施顺序排列，前置能力位于消费者之前。七个公共包、四个独立项目和桌面各项能力都有明确的实现、验证与交付责任，33 项官方扩展逐项验收。相互独立的工作可按已列依赖并行推进。产品规则见[设计目录](../design/README.md)，验收编号见 [A01–A33](../verification/acceptance.md#scenarios)，实际进度见[实施状态](status.md)。
 
 <a id="boundary"></a>
 
-## 实施范围与完整交付
+## 完整交付
 
-实施范围包括桌面系统、八个公共包、33 项官方扩展和四个独立技术项目。工作包用于安排依赖与验收，不缩减产品或接口要求。每项变更应形成完整、可以独立验收的交付，测试替身只用于测试环境。
+每个公共包、官方扩展和独立项目只有一个完整交付工作包。交付覆盖全部已确认职责：公开合同、实现、正常与失败行为、取消和清理、构建与资源、适用目标制品、独立消费、测试、使用文档和发行准备。完成条件全部成立后登记完成；开发与联调中的候选制品记录实际范围。
 
-工作包按[重写范围](../README.md#rewrite)建立目标实现，按产品合同验证界面与行为。
+本体工作包交付完整能力，包含事实与操作、窗口和扩展的服务端接入、对应业务界面、持久化及资源收尾。纯合同包定义语义，SDK 实现客户端接入，本体执行业务；各自的完成条件按这一边界核对。SDK 与正式宿主在同一工作包内联合实现和验收。
 
-所有工作包共同遵守[编码与实现质量](../../CONVENTIONS.md)、[界面文案](../design/ui/components.md#copy)和[项目文档](../design/engineering/documentation.md#owners)规范。
+后续消费者使用完整制品，验证新增的业务与装配关系。集成发现的缺陷由实际拥有者修复，并更新受影响证据。项目自身的必需实现、制品和使用说明始终归所属工作包。
 
-[终态实现与整体一致性](../../CONVENTIONS.md#final-state)是实施与审查的首要准则。每项交付按完整职责成立，调整贯通相关模型、接口、实现、调用方与文档；实现路径和架构选择依据整体目标确定。
+所有交付遵守[共同原则、终态实现与可读性](../../CONVENTIONS.md#quality)、[编码规则](../../CONVENTIONS.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。模型、类型、接口、调用方、配置和说明随同一调整闭合。验证按[实际影响](../verification/acceptance.md#verification-scope)选择，目标环境按[统一交付边界](../verification/acceptance.md#runtime-coverage)判定。
 
-[可读性](../../CONVENTIONS.md#readability-principle)是全部工作包的核心设计准则与完成门槛，覆盖编码、组织、目录、命名、配置和文档。交付须能从任务入口追踪职责、行为与结果，局部表达与整体阅读路径共同核对；源码逐段满足[编码风格](../../CONVENTIONS.md#coding-style)对间距、分组、控制流和副作用表达的要求。
-
-[简洁、原生与适度复杂度](../../CONVENTIONS.md#simplicity-native)优先约束设计、实现和验证投入。实施前核对用户操作是否直接、平台或工具已有能力是否足够，以及定制机制的实际职责；已有设计或测试不构成自动扩展范围的依据。验证按[变更影响](../verification/acceptance.md#verification-scope)选择，不因工作包列出了完整验收范围就每次全部重跑。
-
-整体方案、共同原则和影响范围明确后，模块组织、索引、具体 API 调用和同语义优化由实现者完成。模型、公开合同、主要行为、架构和交付范围按已确认规格执行，实现者不得擅自改变。实现须完成全部必需工作，并通过相应验收后才能标记为完成。不能通过擅自改写要求、减小范围或返回空值消除验收失败；对外仓库、npm 和部署操作按实际任务授权执行。
+实现、验收和对外发布分别记录。仓库接续、npm 发布、签署及服务部署按各自条件和实际授权执行；尚未取得的必需结果保持未完成。证据按[实际用途](../design/engineering/documentation.md#evidence)保留。
 
 <a id="unexpected-issues"></a>
 
-要求或方案的原则、正确性、质量及技术实践问题先按[整体判断](../../CONVENTIONS.md#judgment)复核，提出调整建议交用户决定。模型、主要行为、公开合同、架构边界或交付范围的变化同样说明依据、选项与影响，确定后同步设计、合同及验收。只有依赖该决定的工作等待讨论，其他工作继续推进；已确认的方向和已有授权直接落实。
+### 实施中的判断
 
-实施者负责定位、修复和验证任务范围内的编译错误、实现缺陷、测试失败及依赖接入问题，并在交付前完成必要修复。需要调整上述合同的方向与取舍时，再与用户讨论。
+遇到原则、正确性、质量或技术实践问题，先按[整体判断](../../CONVENTIONS.md#judgment)审视目标与相关设计，说明依据、选项和影响，由用户确定方向。模型、主要行为、公开合同、架构边界或交付范围的变化遵守同一规则。
 
-每项交付都应包含适用的模块职责与依赖、字段与约束、业务规则与默认值、接口与取消、必要的并发控制、失败与清理、界面与反馈、资源与许可，以及验证证据。[设计验证](../verification/acceptance.md#design-validation)在对应设计定稿前完成，解决会影响技术路线、公开合同、正常行为或支持范围的已知疑问。工作包负责按已确认方案实现、集成和验收；依赖制品仍须在调用方接入前验证。设计验证、实现、验收和发布分别记录状态。
+已确认合同内的实现选择、缺陷修复与验证由实施者完成。依赖新决定的工作等待讨论，其他工作继续推进；已确认方向与已有授权直接落实。
 
 <a id="sequence"></a>
-
-## 主线依赖与独立工作
-
-```mermaid
-flowchart LR
-  W00["W00 工程与验证入口"]
-  W00 --> W01["W01 纯包与契约"]
-  W01 --> W02["W02 数据库与原生操作"]
-  W02 --> W03["W03 完整链路验证"]
-  W03 --> W04["W04 完整资料库"]
-  W04 --> W05["W05 任务与后台生命周期"]
-  W05 --> W06["W06 获取与文件"]
-  W06 --> W07["W07 使用与阅读"]
-  W07 --> W08["W08 扩展机制与工具"]
-  W08 --> W09["W09 官方扩展"]
-  W09 --> W10["W10 完整界面"]
-  W10 --> W11["W11 制品与发行工程"]
-  W11 --> W12["W12 项目文档与工程一致性"]
-  W12 --> W13["W13 整体验收"]
-  ENGINES["Vantage / Kana / libmpv-node"]
-  ENGINES --> W07
-  ENGINES --> W11
-  RELAY["oauth-relay"]
-  RELAY --> W09
-  RELAY --> W11
-```
-
-W00–W13 共同交付完整规格，W03 用作内部架构验证关口。UI 原语、样本、资源及独立项目可以按真实依赖提前推进；每个工作包在依赖和自身交付条件满足后，登记完成状态、适用检查结果及剩余事项，验证材料按[实际用途](../design/engineering/documentation.md#evidence)保留。
-
-各独立项目形成候选制品后，先验证所用主要后端与宿主接续，再扩大相应业务实现；来源项目先贯通已选认证和一条完整资料采用。资料库的真实结构、IPC 成本与正常负载分别在 W02–W04 取得结果。W13 汇总已有证据及剩余组合，不作为首次发现平台路线或主要性能冲突的阶段。
-
-同一个 A 场景可以由多个工作包共同覆盖。阶段门槛验证本包交付及已就绪依赖对应的断言，证据必须注明具体范围；纯值、数据库或单条链路通过，不能提前把整项 A 场景标为完成。W13 汇总当前版本的完整证据，验证全部入口和最终制品。
-
 <a id="execution-order"></a>
 
-### 开始顺序与交付接续
+## 实施顺序与并行工作
 
-W 编号表达完整交付的依赖，后续工作可以按真实前置条件提前准备。基础机制由首次实际消费的工作包建立，其后沿同一正式合同扩充；进入生产路径的实现必须满足所属合同。
+| 顺序    | 交付范围                                       | 接续条件                                         |
+| ------- | ---------------------------------------------- | ------------------------------------------------ |
+| W00     | 已完成的工程与验证入口                         | 后续工作沿用并维护已有工程基础                   |
+| W01–W05 | 视觉、分发、桌面合同、RPC 和 UI 五个基础公共包 | 按包依赖完成完整实现与独立消费                   |
+| W06–W08 | 存储、应用运行与资料能力                       | 提供真实数据、资源、生命周期及操作               |
+| W09     | SDK 与扩展宿主                                 | 在同一工作包完成客户端、宿主和真实链路验收       |
+| W10     | CLI 与作者流程                                 | 使用 W09 的正式宿主完成开发与安装消费            |
+| W11–W14 | Vantage、Kana、libmpv-node 和 oauth-relay      | 各自完整交付，支持提前并行；在首次实际消费前就绪 |
+| W15–W20 | 资料获取、文件、游戏、视频、阅读与应用组合     | 消费已经交付的公共包和独立项目                   |
+| W21     | 33 项官方扩展                                  | 各项目按实际业务依赖逐项交付                     |
+| W22     | 桌面发行与应用更新                             | 装配已完成并锁定的输入，验证最终制品             |
+| W23     | 整体验收                                       | 核对所有交付对象和完整用户流程                   |
 
-| 工作范围     | 开始条件与接续方式                                                                                                                                                     |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| W00–W03      | 先形成可运行工程、公开纯包与通信，再建立真实数据库，最后贯通原生操作、窗口与一个真实扩展的完整链路；W08 继续完善该扩展机制。                                           |
-| 四个独立项目 | 各自依据已确认合同建立工程，与本体按实际依赖推进。libmpv-node 的控制、属性与 hook 候选在 W06 首次媒体信息读取前提供，视频输出在 W07 接续；Vantage 与 Kana 在 W07 接入前提供实际候选制品；relay 在 W09 的来源授权接入前提供可测试服务与协议实现。            |
-| W04–W10      | 沿已有合同完成资料、后台、文件、使用、扩展与界面。某项 UI、来源解析或测试样本不依赖尚未就绪能力时可以提前完成；整包完成仍须满足本包门槛。                              |
+```mermaid
+flowchart TD
+  W00["W00 工程基础"] --> BASE["W01–W05 基础公共包"]
+  BASE --> DATA["W06–W08 存储、运行与资料"]
+  DATA --> RUNTIME["W09 SDK 与扩展宿主"]
+  RUNTIME --> CLI["W10 作者工具"]
+  RUNTIME --> META["W15 资料获取与采用"]
+  META --> FILES["W16 扫描与本地文件"]
+  FILES --> USE["W17–W19 游戏、视频与阅读"]
+  MPV["W13 libmpv-node"] --> FILES
+  MPV --> USE
+  ENGINES["W11 Vantage / W12 Kana"] --> USE
+  CLI --> EXT["W21 逐项官方扩展"]
+  META --> EXT
+  RELAY["W14 oauth-relay"] --> EXT
+  USE --> APP["W20 应用搜索、引导与组合"]
+  APP --> RELEASE["W22 桌面发行与更新"]
+  EXT --> RELEASE
+  RELEASE --> FINAL["W23 整体验收"]
+```
 
-独立项目的自身验证与 Kisaki 联合验证各有拥有者，按[联合交接条件](#independent-projects)执行。平台、图形和系统下限的具体安排见[目标环境验证](../design/engineering/build.md#platform-testing)。
+W01–W05 按包依赖推进。W06–W08 完成数据、运行与资料操作后，W09 在真实 Node、Webview、实例和资源环境中一次交付 SDK 与宿主，W10 再完成完整作者流程。各业务工作包拥有自己的操作与服务端绑定，使用已经交付的调用和资源接入机制。
+
+W08 实施期间先以代表资料贯通原生读写、窗口、冲突与重开，再扩大至完整范围。W09 使用这些真实操作验证扩展对同一事实的读写、取消和实例失效；这项集成结果归 W09，资料业务仍由 W08 拥有。
+
+四个独立项目按自身合同建立工程、完成制品与验证，可以提前并行。W13 的完整制品在 W16 首次读取媒体信息前就绪，W11 与 W12 分别在游戏和阅读接入前就绪，W14 服务在相关来源授权验收前满足运行条件。
+
+各官方扩展在实际依赖就绪后推进。资料来源与 W15 接续，导入器使用已完成的资料操作，译本覆盖稳定的完整消息目录。应用组合、译本和发行可以交叠准备，最终制品采用各自完成并锁定的输入。
+
+同一 A 场景可以覆盖多个交付对象。各工作包记录自己负责的具体断言，W23 核对整项要求与最终版本的完整证据。
 
 <a id="w00"></a>
 
-## W00：建立可运行的工程与测试入口
+## W00：工程与测试入口
 
-依赖：已确认的设计及其必要可行性验证；无前置实施工作包。
+已完成的工程基础继续成立，实际范围及证据见[W00 状态](status.md#w00)。
 
-交付：独立程序构建、开发会话、CI 配置、测试运行配置与辅助，以及明确的消费者和最终制品测试任务。
+交付包括实际 workspace 边界、构建和资源交接、开发会话协调、测试运行环境、工程载体验证、CI、hooks 和合并门禁。工程验证使用独立测试输入；产品源码、公开包和官方扩展随各自工作包完整建立。后续工作同步维护其新增的配置、制品消费和验证入口。
 
-建立本体、八包、官方扩展与实际共享的私有工程包的 workspace、独立程序入口、纯共享合同和依赖检查。配置与工具通过各自拥有者的正式入口复用，项目任务和 CI 缓存遵守[工作区规则](../design/engineering/workspace.md#tasks)。落实输出唯一写入、开发交接、测试环境与 Electron SQLite ABI；保留正式 fuses。同时建立[本体私有原生工程](../design/engineering/native.md)的 Node 入口、绑定声明、目标构建与 Electron 消费验证。本包实际消费的字体、原生及归档输入固定，媒体运行输入由 libmpv-node 在接入工作包交付；Husky 生命周期先在隔离仓库验证。
+依据：[工作区](../design/engineering/workspace.md) · [构建](../design/engineering/build.md) · [原生工程](../design/engineering/native.md)。
 
-本包建立的新工程历史及远端验证沿[项目级临时仓库](../design/engineering/repository.md#temporary-repositories)持续接续，后续工作包继续使用同一开发历史。W00 完成不表示临时仓库阶段结束，也不要求立即切换正式远端。
-
-开发启动使用 desktop-contracts/development 的[父子消息合同](../design/engineering/protocols.md#development)和 extension-cli/extension 的公共启动入口，源码与打包应用共享接入、显式 profile 和可取消的正常退出。W00 的 ready 如实报告尚无扩展 API；该接入不代表扩展采用、激活或完整 kisx 工作流已经完成。
-
-按[桌面工具布局](../design/engineering/layout.md#desktop-tools)建立实际工作流，按[测试结构](../design/engineering/layout.md#tests)配置根工具、本体和各项目的测试发现、运行环境、样本与输出归属。依照[任务分工](../design/engineering/layout.md#test-tasks)设置薄命令入口、前置依赖和实际宿主，测试专用准备归所属 tests/support。
-
-实施依据：[运行架构与职责](../design/architecture.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [构建、桌面制品与便携模式](../design/engineering/build.md) · [验收环境](../verification/acceptance.md#environments)。
-
-完成门槛：A24、A26、A28 和 A31 在本包工程与测试入口范围内的断言通过。不使用真实个人资料，不混淆 Node、浏览器和 Electron ABI，正式制品没有未解决的启动障碍。
+验收：A24、A26、A28、A31 的工程入口范围。验证记录注明对应输入、环境与实际结果。
 
 <a id="w01"></a>
 
-## W01：实现桌面与扩展合同、视觉基础及通信内核
+## W01：desktop-appearance
 
-依赖：[W00](#w00)。
+依赖：W00 与已确认的视觉合同。
 
-本包按已经定稿的公开合同实现正式包、声明生成、运行校验与消费入口，遵守[设计与实施的边界](../design/engineering/conventions.md#design-completion)。
+交付：完整视觉词表、纯值规则、亮暗默认值、基础和派生 CSS、可选 Tailwind 映射，以及独立类型和样式入口。
 
-交付：八个公共包的独立消费边界、唯一纯值定义、完整业务合同和自研 rpc。
+验收：纯值、普通 CSS 和映射分别可消费，默认外观完整，包保持纯视觉职责；仓库外制品、声明、资源许可与说明通过 A23、A29、A31 的对应断言。
 
-完成纯值读写、桌面与扩展合同、rpc、appearance 和 ui 的真实职责；ui 的通用几何使用已选定的 TanStack Virtual，业务行映射与真实身份仍由各视图拥有；生成声明与公开 exports 一致。查询形状与投影采用[公共查询值](../design/domains/library-query-contracts.md)，逐项声明[编辑基线和错误](../design/domains/library-write-contracts.md)，按[帧与握手](../design/engineering/protocols.md)实现通信，不从任意对象或数据库行推导公共接口。通过仓库外包及无 Tailwind 构建链验证视觉消费，SDK 只通过公开 API 取得业务能力。
-
-deeplink 纯合同覆盖原生请求与[扩展入口](../design/ui/navigation.md#extension-deeplinks)，交付基于标准 URL 语义的共同解析、格式化、身份与路径校验及扩展处理器声明；真实系统接收和实例回调由 W08 接入，不以类型声明代替运行实现。
-
-开发消息沿用 W00 已消费的 desktop-contracts/development 唯一定义，补全实际业务所需的合同消费验证；Node 父子 IPC 不另建字节帧、端点、token 或第二套私有控制。
-
-实施依据：[领域值与边界规则](../design/domains/values.md) · [调用、事件与跨进程通信](../design/communication.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [扩展运行与实例生命周期](../design/extensions/runtime.md)。
-
-完成门槛：A03、A04 的纯值，A23 的基础 tarball 和 A31 通过。本体与外部消费者使用同一公开入口，视觉包不依赖桌面，SDK 不依赖尚未交付的机制，也不直接依赖桌面合同走捷径。
+依据：[视觉基础](../design/engineering/workspace.md#visual-packages) · [共同外观](../design/domains/appearance.md)。
 
 <a id="w02"></a>
 
-## W02：实现新数据库与原生操作基础
+## W02：extension-distribution
 
-依赖：[W01](#w01)。
+依赖：W00 与分发合同。
 
-交付：正式 schema、新基线及 SQL 迁移链、真实连接与编码、同步事务和代表查询。
+交付：扩展身份、manifest、registry、静态展示与本地化格式、兼容声明、规范化和纯校验，以及独立 Node 签名和验签入口。
 
-实现正式 schema、连接和同步事务、新基线与前向迁移。参考[RC 隔离结果](../verification/evidence/public-contracts/2026-10-22/README.md)，在正式结构与制品上固定 Drizzle 1.x、Kit、better-sqlite3 和 Electron 组合；使用 Kit generate 与原生 migrate()。以七类非空夹具验证读回、局部异常保留、失败回滚、迁移资源和重开，并测量真实查询。
+验收：格式、错误、不可变版本字节和签名行为完整；纯入口与 Node 入口分别通过仓库外消费，覆盖 A21、A23、A31 的制品协议断言。
 
-实施依据：[数据库约束、事务与迁移](../design/engineering/database.md) · [条目、分部与资料模型](../design/domains/catalog.md) · [领域值与边界规则](../design/domains/values.md) · [资料库完整操作与并发提交](../design/domains/library-operations.md) · [资料库查询、范围与定位](../design/domains/library-queries.md)。
-
-完成门槛：A01–A05 的数据库与原生操作范围、A27 的初始化、版本迁移与重开，以及 A30 的查询成立。完整操作由真实驱动验证，不能用 mock ORM 代替。
+依据：[扩展制品与信任](../design/extensions/distribution.md) · [作者仓库工作流](../design/extensions/development.md#registry)。
 
 <a id="w03"></a>
 
-## W03：贯通一个完整业务链路
+## W03：desktop-contracts
 
-依赖：[W02](#w02)、基础 UI 和窗口 bridge。
+依赖：W01、W02 的实际公共值。
 
-交付：从原生读写、preload、Solid 界面，到变化后重读的真实链路。
+交付：完整桌面值、查询、编辑基线、操作、结果、错误、参与接口和适用纯校验；包含资源、事件、会话、管理、deeplink、开发控制以及英语消息参数合同。
 
-以动画、分部及人物角色工作贯通创建、详情、标签和评分；同一 domain-ui 在页面与 Dialog 中复用，并从另一业务入口验证 Picker、Details 和焦点恢复。真实扩展沿正式 API 修改同一事实；覆盖两个窗口、冲突、事务失败与迟到响应。
+验收：同一值在各公开入口含义一致，查询与写入语义明确，声明和纯规则可独立消费；A03、A04、A23、A31 的合同断言成立。
 
-本包交付首次链路必需的正式运行机制：共享 extension-host 进程、显式开发项目加载、activate(context)、真实实例身份及代际、Node SDK 适配、调用归属校验、取消、实例释放和变更通知。开发加载遵守[开发实例](../design/extensions/development.md#dev-start)的隔离与就绪规则。扩展通过公开 API 执行一次带 expected 的修改，由原生窗口重读结果；实例失效后的迟到回复不能提交。W01 提供纯合同与 rpc，W03 负责把它们接到实际宿主和业务，W08 在同一机制上完成其余能力。
-
-本包把已有父子开发接入连接到真实构建采用和激活，ready 才能报告实际 API 版本；不能以包版本、空激活结果或始终成功的采用回复替代运行实现。
-
-实施依据：[资料库完整操作与并发提交](../design/domains/library-operations.md) · [视图状态、编辑草稿与加载](../design/ui/state.md) · [共同界面、表单与反馈](../design/ui/components.md) · [调用、事件与跨进程通信](../design/communication.md) · [扩展运行与实例生命周期](../design/extensions/runtime.md)。
-
-完成门槛：A01、A02、A05 和 A18–A20 在本链路的适用范围内成立后才扩大实施。该工作包是内部架构关口，一条链路通过不能作为完整新版交付。
+依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library-query-contracts.md) · [写入合同](../design/domains/library-write-contracts.md) · [接入协议](../design/engineering/protocols.md)。
 
 <a id="w04"></a>
 
-## W04：完成全部资料库能力
+## W04：desktop-rpc
 
-依赖：[W03](#w03)。
+依赖：W00 与已确认的通信合同。
 
-交付：七种 Entry、五种 Part、四类资料关系，以及整理、记录和查询的完整本体操作。
+交付：环境无关的有限帧、握手、双向调用、通知、取消、错误交付和断连清理。真实通道的测试适配核对消息边界与资源寿命；窗口接入归 W07，作者与源码开发接入归 W10。
 
-完成七类 Entry、五类 Part、四类关系、查询与整理，以及状态、完成记录、活动、附加时长、Note 和 Annotation。核对完整写入、合并删除、动画种类更正、统计口径、顺序及使用占用；原生与扩展调用共享事实。
+验收：独立消费者通过完整机制、声明与制品检查；Electron 窗口和 Node 父子通道试件验证序列化、取消、错误和断开。覆盖 A23、A31 的包合同断言；产品端点、就绪和退出分别由实际消费者验收。
 
-实施依据：[领域能力](../design/domains/README.md) · [资料库完整操作与并发提交](../design/domains/library-operations.md) · [资料库查询、范围与定位](../design/domains/library-queries.md) · [当前状态、附加时长与完成记录](../design/domains/records.md) · [作品关系、角色与参与者](../design/domains/relations.md) · [标注、摘录与内容定位](../design/domains/annotations.md)。
-
-完成门槛：A01–A05、A14、A17、A27，以及每个数据族的成功和失败场景通过。全部正式修改都有明确本体拥有者，不使用旧表捷径或公开表级写入。
+依据：[通信分层](../design/communication.md#clients) · [帧与开发控制](../design/engineering/protocols.md)。
 
 <a id="w05"></a>
 
-## W05：完成任务、后台生命周期与偏好
+## W05：desktop-ui
 
-依赖：[W04](#w04)。机制可以先用明确测试负载验证。
+依赖：W01 与 Solid 1.9 工程基线。
 
-交付：TaskRun、独立历史、事实事件、应用启动与退出，以及偏好。
+交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单、键盘与焦点、浮层、图表、Markdown、拖拽、样式及资源寿命。按组件家族提供子路径，默认样式组合视觉基础，普通 Solid 消费者可直接使用。
 
-完成任务、扫描历史、事实订阅、自动行为、应用生命周期和完整偏好；执行归属、取消与结果保存沿实际拥有者收尾。配置解析、字体、主题、网络、系统保护和引导采用按各自合同实现。
+验收：浏览器行为、完整视觉状态、声明、无 Tailwind 消费及独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的公共组件断言。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
 
-实施依据：[任务执行、结果与自动行为](../design/domains/tasks.md) · [应用偏好与配置提交](../design/domains/preferences.md) · [主题、字体与外观呈现](../design/domains/appearance.md) · [运行架构与职责](../design/architecture.md) · [调用、事件与跨进程通信](../design/communication.md) · [宿主 HTTP 与网络设置](../design/engineering/network.md) · [扩展私有存储与来源认证](../design/extensions/private-data.md)。
-
-完成门槛：A15、A16、A20 和 A29 的运行与偏好状态成立。观察者结束不会取消已托管业务，重启不重放结果未知的副作用。
+依据：[UI 包](../design/ui/package.md) · [交互与可访问性](../design/ui/components.md) · [拖拽与虚拟化](../design/ui/virtualization.md)。
 
 <a id="w06"></a>
 
-## W06：完成资料获取、采用、扫描和本地文件
+## W06：存储与原生基础
 
-依赖：[W04](#w04)、[W05](#w05)，以及用于文件技术信息读取的 libmpv-node 控制、属性与 hook 可消费候选。
+依赖：W03 与 W00 工程基础。
 
-交付：metadata、ingest、scanner、holdings 与附件的完整协作。
+交付：正式 schema、编码、连接、同步事务、新基线和前向迁移，以及文件存储、归档和本体私有原生操作所需的基础设施。
 
-完成 metadata／ingest、资料方案与预设、扫描、holdings、文件识别及附件准备。贯通明确来源身份、原子采用、目录发现与维护、识别上下文、默认文件和手动整理；核对取消、并发、文件占用与失败保留。
+固定经验证的 Drizzle 1.x、Kit、better-sqlite3 与 Electron 组合，使用正式生成和迁移入口。以七类非空资料验证读回、局部错误、回滚、重开、文件资源与代表查询；跨文件系统操作按真实环境记录。
 
-实施依据：[资料获取与本地采用](../design/domains/metadata.md) · [资料提供者、字段处理器与识别器](../design/extensions/providers.md) · [资料获取方案与规则目录](../design/domains/metadata-profiles.md) · [资料预设目录与采用规则](../design/domains/metadata-presets.md) · [扫描发现、线索规则与历史](../design/domains/scanner.md) · [本地持有与文件身份](../design/domains/holdings.md) · [文件识别方案的十项预设](../design/domains/file-recognition-presets.md) · [附件、图片与字节存储](../design/domains/attachments.md) · [文件输入与资源访问](../design/domains/resources.md)。
+验收：A01–A05 的存储断言、A14 的基础资源、A27 的初始化与迁移、A30 的查询成立。
 
-完成门槛：A06–A09、A14–A16 和 A27 通过。重复、取消或局部失败不会丢失已确认事实，UI 能完整说明尚未完成的范围。
+依据：[数据库](../design/engineering/database.md) · [原生工程](../design/engineering/native.md) · [资源访问](../design/domains/resources.md)。
 
 <a id="w07"></a>
 
-## W07：完成游戏、视频、阅读与存档
+## W07：应用运行与设置
 
-依赖：[W05](#w05)、[W06](#w06) 和三个技术库的可消费制品。
+依赖：W01、W03–W05、W06。
 
-交付：四种 Work 会话、引擎接入、独立使用界面、备份与恢复。
+交付：启动与退出、窗口接入、TaskRun、通用历史、事实事件、偏好、网络、主题与字体、英语运行文案及对应设置和任务界面。完整交付文件输入、附件与图片准备、受控读取及资源绑定，完成系统集成、运行保护、取消和收尾。
 
-按[W07 子交付](delivery-checklist.md#w07)分别接续游戏、视频、漫画／小说阅读和存档恢复。各项独立记录合同、实际制品、窗口行为及收尾；共同完成门槛全部成立后再关闭 W07。
+各业务通过已声明的执行、事实和退出接口接入。任务观察、业务执行和历史保存分别保持自身寿命；外观与字体从真实持久状态交付给窗口和后续 Webview。
 
-接入实际 Vantage、Kana 与 libmpv-node 制品，完成游戏、视频、阅读、位置、标注与存档。贯通目标选择、监测计时、控制与完整收尾，作品内容列表、阅读偏好与源位置、轨道／字幕／倍速，以及自动备份接纳；接入本体不覆盖移动原语，验证恢复中断、明确保留现状和运行内未保存记录。全部支持格式、平台与资源寿命继续按所属合同验收。
+窗口控制通过 desktop-rpc 接入，main、preload 与 renderer 按公开合同和最小能力边界协作；启动、资料路径和窗口寿命随本包完成。
 
-实施依据：[作品使用会话](../design/domains/sessions.md) · [游戏、启动与游玩记录](../design/domains/games.md) · [动画、分集与播放资料](../design/domains/anime.md) · [阅读内核、源位置与应用接入](../design/domains/reader.md) · [标注、摘录与内容定位](../design/domains/annotations.md) · [游戏存档备份与恢复](../design/domains/backups.md) · [独立技术项目](../design/projects/README.md) · [Kisaki 的独立项目接入](../design/engineering/integrations.md)。
+验收：A14–A16、A20、A27、A29 的运行基础、状态、资源与管理界面成立。
 
-完成门槛：A10–A14、A16、A17、A20、A27 及全部承诺格式的适用断言通过，目标环境覆盖按[统一交付边界](../verification/acceptance.md#runtime-coverage)完成。关闭后资源回收，独立库版本已经真实接入。
+依据：[任务](../design/domains/tasks.md) · [偏好](../design/domains/preferences.md) · [外观](../design/domains/appearance.md) · [网络](../design/engineering/network.md) · [附件与图片](../design/domains/attachments.md) · [受控资源](../design/domains/resources.md) · [应用生命周期](../design/architecture.md#lifecycle)。
 
 <a id="w08"></a>
 
-## W08：完成扩展运行机制与作者工具
+## W08：资料与记录
 
-依赖：[W01](#w01)，以及 [W04](#w04)–[W07](#w07) 中实际需要的本体能力。
+依赖：W03、W05、W06、W07。
 
-交付：正式扩展运行、API 与 SDK、私有通信、kisx 和制品分发合同。
+交付：七类 Entry、五类 Part、四类关系、资料查询与整理、状态、完成记录、活动、附加时长、Note 和 Annotation，以及列表、详情、编辑、合集、展示柜和统计界面。
 
-承接 W03 已验证的宿主、实例和 Node API 链路，完成安装更新、完整启停与激活、私有通信、其余公开适配与贡献生命周期，覆盖身份代际、取消及有限恢复。交付 storage／secrets、真实网络和 Webview 能力，以及 kisx、三种模板的源码与工程配置、签名分发；通过仓库外消费和真实 .kisx 验证。
+核对完整写入、合并删除、动画种类更正、顺序、统计口径、并发基线与使用占用。页面与 Dialog 复用同一 domain-ui，选择、草稿、定位、虚拟化及重排沿实际用户操作闭合。正式业务函数与窗口、扩展服务端接入使用同一事实。
 
-kisx 作者开发与源码桌面开发复用同一公共启动及连接入口。工具独自管理最新待交付构建、一次在途采用和目录释放；应用执行固定批次及共享宿主重建。验证连续保存、真实激活失败、退出取消后继续开发，以及正式 fuses 下的打包应用接入，不恢复历史 socket 协议或平行候选队列。
+验收：A01–A05、A14、A17–A20、A27、A29、A30 的资料与界面断言成立；代表链路先验证再扩大实现。
 
-完成[扩展 deeplink](../design/ui/navigation.md#extension-deeplinks)的系统接收、app 分发、Node SDK 登记和实例调用，贯通冷启动与已运行交付、业务参数、具体业务确认、取消及反馈。按[专项场景](../verification/scenarios/engineering.md#extension-deeplinks)验证实际宿主和仓库外消费者；各平台最终制品的协议关联与接收由 W11 继续验收。
-
-Webview 按[实际来源、CSP、Worker 与权限场景](../verification/scenarios/ui.md#webview-isolation)验收；浏览器数据请求、Node 业务网络与开发 HMR 各自覆盖。隔离试件的成功不能代替正式 SDK、资源撤销和真实代理连接。
-
-实施依据：[扩展运行与实例生命周期](../design/extensions/runtime.md) · [资料提供者、字段处理器与识别器](../design/extensions/providers.md) · [扩展页面、私有通信与菜单](../design/extensions/webview.md) · [扩展私有存储与来源认证](../design/extensions/private-data.md) · [扩展包、仓库信任与版本采用](../design/extensions/distribution.md) · [扩展作者工具与开发流程](../design/extensions/development.md) · [调用、事件与跨进程通信](../design/communication.md)。
-
-完成门槛：A05、A21、A23、A26 的模板运行，以及 A27 的扩展数据通过；仓库外生成、开发、构建、打包与安装的实际操作成立。
+依据：[资料操作](../design/domains/library-operations.md) · [查询](../design/domains/library-queries.md) · [领域目录](../design/domains/README.md) · [资料界面](../design/ui/explorer.md)。
 
 <a id="w09"></a>
 
-## W09：完成全体官方扩展
+## W09：extension-sdk 与扩展宿主
 
-依赖：[W08](#w08) 和每个项目实际需要的本体合同。
+依赖：W02–W08 的公共包、存储、运行基础和资料操作。
 
-交付：33 项扩展各自完整的实现、测试和独立 .kisx。
+本包联合完成 SDK 与正式宿主，交付边界如下：
 
-使用[逐项交付表](delivery-checklist.md#extensions)记录 33 项的实现、正式宿主验证及安装包消费，不以来源夹具通过或汇总百分比替代单项状态。共同工具的结果只记一次，各扩展仍须核对自己的语义与适用路径。
+| 对象           | 完整职责                                                                                                                                                                  |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| extension-sdk  | 扩展公开能力选择、作者类型与纯规则、激活和登记合同、公开接入协议、全部 Node 与框架无关 Webview 入口；调用、回调、订阅、取消、实例和视图资源映射、私有通信、外观及语言接入 |
+| 桌面宿主与管理 | 共享 extension-host、真实实例与代际、激活和贡献寿命、Webview、storage、secrets、宿主网络与资源；安装更新、仓库信任、兼容、启停、恢复、开发构建采用和完整管理界面          |
 
-按目录完整实现 17 个资料与平台扩展、13 个导入器和 3 个译本，每项都有自己的来源职责、页面、测试、资源与制品。验证适用认证、导入／同步、格式与语义、独立更新及卸载。
+完成系统 deeplink 接收与扩展分发，贯通 SDK 登记、冷启动和已运行交付、业务确认、取消及反馈。开发控制执行真实构建采用、共享宿主重建和目录释放，源码与打包应用使用同一接入。
 
-实施依据：[官方扩展目录](../design/extensions/catalog.md) · [平台个人记录导入与同步](../design/extensions/synchronization.md) · [管理软件迁移导入](../design/extensions/importers.md) · [三个官方界面译本接入方案](../design/extensions/languages.md) · [逐源验收](../verification/coverage.md#extensions)。
+SDK 的纯入口和运行入口分别通过仓库外制品消费。联合验证使用 W08 的真实资料操作和 W07 的运行资源，核对客户端与服务端的实例、回调、来源、取消和释放。后续业务通过明确的参与接口接入自己的操作，SDK 和宿主提供已经完成的共同机制。
 
-完成门槛：A05、A16、A18、A22、A23、A27 和[逐源专项](../verification/coverage.md#extensions)全部通过。只有 provider、编译成功或单个演示都不足以完成本包。
+验收：A05、A16、A20、A21、A23、A27、A31 的 SDK、宿主、管理与独立消费断言成立；SDK 全部公开接入与正式宿主共同达到交付条件。
+
+依据：[公共包边界](../design/engineering/workspace.md#packages) · [运行机制](../design/extensions/runtime.md) · [Webview](../design/extensions/webview.md) · [资源](../design/domains/resources.md) · [私有数据](../design/extensions/private-data.md) · [安装与信任](../design/extensions/distribution.md) · [开发](../design/extensions/development.md)。
 
 <a id="w10"></a>
 
-## W10：完成主界面与应用管理界面
+## W10：extension-cli
 
-依赖：[W03](#w03) 的 UI 分层，以及 [W04](#w04)–[W09](#w09) 的实际功能。
+依赖：W02–W05 的公开包，以及 W09 的 SDK 与正式宿主。
 
-交付：完整 Solid 主界面、domain-ui、管理 Dialog 和可访问体验。
+交付：kisx 的 workspace、extension、registry 全部命令和同义程序化入口，配置声明、构建与安装包装配、签名仓库工作流，以及 Node、框架无关 Webview、Solid 三种正式模板。
 
-完成四类窗口的 Solid UI、domain-ui、Explorer、详情、展示柜、搜索、任务、扩展和管理 Dialog，贯通真实功能与失败路径。落实引导、完整退出、语言／主题／字体、草稿、虚拟化、重排、键盘与焦点；结合现有界面核对实际交互并测量响应。
+源码开发会话与作者 CLI 共用本包的应用启动能力，使用 desktop-rpc 完成源码及打包应用的开发控制、就绪、正常退出取消和连接清理。
 
-实施依据：[界面与交互](../design/ui/README.md) · [应用搜索与导航结果](../design/domains/search.md) · [首次使用与更新引导](../design/domains/onboarding.md) · [应用更新](../design/domains/updates.md) · [应用偏好与配置提交](../design/domains/preferences.md)。
+验收：仓库外 tarball 创建独立项目和工作区成员，完成类型检查、开发、热更新、构建、打包与真实安装；覆盖激活失败修复、连续构建、资源释放、退出取消和再次退出。无源码仓库也可维护 registry。A23、A26、A31、A32 的作者工具断言成立。
 
-完成门槛：A18–A20、A29、A30，以及 R01–R25 的所有实际入口在正常和失败情况下均成立。
-
-<a id="w11"></a>
-
-## W11：完成制品与发行工程
-
-依赖：[W08](#w08)–[W10](#w10)，以及 [W00](#w00) 的验证与资源方法。
-
-交付：可核验的六目标候选制品、独立项目制品接入，以及可执行的发行与更新流程。
-
-装配六目标制品，在可用环境完成运行、安装、更新、便携与失败恢复，核对各目标的兼容性、签名策略和不可变资源。完成版本和发行说明流程、许可及源码材料、hooks 验证，以及四个独立项目制品与服务的联合消费。发行、部署和更新流程在受限环境中验证。
-
-按[临时仓库与正式接续规则](../design/engineering/repository.md#temporary-repositories)准备正式仓库所需的历史、归档、协作和发布配置。实际仓库切换、公开发行及部署仍依据各自条件与已有授权执行，不由本包构建成功自动触发。
-
-实施依据：[构建、桌面制品与便携模式](../design/engineering/build.md) · [版本、发行与说明更正](../design/engineering/releases.md) · [许可、第三方材料与分发](../design/engineering/licensing.md) · [仓库、公开身份与协作](../design/engineering/repository.md) · [公共包、工作区与开发工具](../design/engineering/workspace.md) · [独立技术项目](../design/projects/README.md)。
-
-完成门槛：A16、A23–A28、A31 和 A33 中适用于本包制品、发行流程与联合消费的断言通过。干净 checkout 可以生成正确目标，可用环境中的真实运行与更新通过，不依赖未记录的个人环境。字节可追溯，不能空称带签名产物能够逐字节重现。
-
-<a id="w12"></a>
-
-## W12：完成项目文档与工程一致性核对
-
-依赖：全部功能、数据与交付工程工作包完成。
-
-交付：完整项目文档、协作入口，以及与文档一致的代码、命令、示例和依赖结构。
-
-按[文档职责](../design/engineering/documentation.md#owners)完成 Kisaki monorepo 的 README、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、AGENTS、skill、模块与包说明、官方扩展使用说明及模板配套说明。内容依据实际实现，核对命令、公开示例、接口说明、适用规范和协作入口；四个独立项目的文档由各自维护，检查其消费说明与 Kisaki 接入一致。
-
-按[可读性](../../CONVENTIONS.md#readability)、[注释覆盖](../../CONVENTIONS.md#comments)和[工具结构](../design/engineering/layout.md#tools)审查实际实现，核对已有代码注释与文档，删除范围内未采用的实现、依赖、资源与入口。检查唯一拥有者、四类关系、exports、延迟加载、循环和生成资源，并保留必要的存储边界行为。
-
-实施依据：[项目文档与协作规范](../design/engineering/documentation.md) · [编码、命名与运行规范](../../CONVENTIONS.md) · [运行架构与职责](../design/architecture.md)。
-
-完成门槛：A31、A32 和[结构一致性](../verification/acceptance.md#structure)通过，日常运行与开发入口都符合本规格。
-
-<a id="w13"></a>
-
-## W13：整体验收与交付
-
-依赖：[W00](#w00)–[W12](#w12) 全部完成，且独立项目已经交接。
-
-交付：要求与实现证据矩阵、可运行制品和真实交付报告。
-
-从固定提交建立干净 checkout，安装后执行一次 check，再执行其中未覆盖的公共包消费者、浏览器、实际 Electron／原生宿主、开发会话、性能与最终制品验收；构建和打包输入按任务前置条件复用，不重复执行 check 已包含的常规 test。使用空库及代表性新库覆盖完整功能、失败／离线／取消和最终制品。汇总全部 R／A 的实际结果、兼容性依据和未实测范围；只在已有授权下发布符合交付边界的文件，并回读核对。
-
-实施依据：[要求、实施与专项验收覆盖](../verification/coverage.md) · [验收环境、场景与完成标准](../verification/acceptance.md)。
-
-完成门槛：R01–R32 和 A01–A33 按[最终完成条件](../verification/acceptance.md#completion)全部满足，交付文件与文档一致，必需功能和可执行检查没有遗留，运行覆盖与未实测范围符合统一交付条件，没有未解决的已知失败。
+依据：[作者工具与开发流程](../design/extensions/development.md) · [开发协议](../design/engineering/protocols.md#development)。
 
 <a id="independent-projects"></a>
 
-## 四个独立项目的交接
+## 独立项目交付
 
-候选制品可消费、完整实现、最终制品联合验收与公开发布分别登记在[独立项目交付表](delivery-checklist.md#projects)。历史设计探针不能推进正式实现状态。
+W11–W14 各自拥有完整工程、公共合同、实现、测试、工具链与锁文件、平台资源、制品、示例、文档和发行准备。项目按[独立产品定位](../design/projects/README.md#purpose)完成全部公开范围，按[仓库合同](../design/engineering/repository.md)持续开发并接续正式身份。
 
-| 项目        | 本项目必须完成的结果                                                                                                                                                                        | 与 Kisaki 工作包的交接                                                                                       |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Vantage     | 完整重写进程与窗口观察、控制、窗口采集；公开 API 遵守[引用、快照与订阅合同](../design/projects/vantage/api.md#operations)，完成 Rust 与 Node 实现、桌面接入、测试、工程设施、独立制品和仓库 | [W07](#w07) 接入真实实例、观察、窗口控制与采集；[W11](#w11) 核对发行与桌面组件装配，[W13](#w13) 验收实际消费 |
-| Kana        | 完整阅读内核与源定位规范、资源合同、格式回归、公开包、新仓库及工程                                                                                                                          | [W07](#w07) 贯通阅读、持久定位和标记；[W11](#w11) 核对资源与发行，[W13](#w13) 验收全部支持格式               |
-| libmpv-node | 完整 libmpv Node 原生绑定与可选受管渲染、平台依赖与资源寿命、目标制品、新仓库及工程                                                                                                         | [W07](#w07) 完成播放和纹理接入；[W11](#w11) 完成目标制品装配，[W13](#w13) 验收实际播放                       |
-| oauth-relay | 按合同直接新写的独立工程与仓库、协议实现／配置、服务测试和部署材料；切换前核对现有接入事实                                                                                                  | [W08](#w08)/[W09](#w09) 完成公开接入与来源扩展授权；[W11](#w11)/[W13](#w13) 核对实际部署和完整授权链路       |
+项目自身验收与 Kisaki 消费验收分别记录在[交付清单](delivery-checklist.md#projects)。本体从固定制品或已验证服务取得能力，记录版本、来源提交、资源摘要和兼容依据。公开发布及实际部署按授权登记。
 
-每个项目都在自己的公开开发仓库持续完成合同、实现、测试、工具与锁文件、制品和文档，再按[共同规则](../design/engineering/repository.md#temporary-repositories)接续正式仓库及建仓或重建工作，不能只修改 Kisaki 依赖。候选 tarball 和资源可以按依赖进行隔离验证，联合通过后分别明确发布新版。Kisaki 锁定最终版本并验证正式包，不依赖未交付的源码路径，也不要求全部项目锁步发版。源码完成、制品验证、仓库接续、包公开和服务部署分别记录。
+<a id="w11"></a>
+
+## W11：Vantage
+
+交付：进程、窗口与前台观察，真实实例引用，控制、窗口采集，Rust 与 Node 完整实现，以及支持平台和后端的资源与制品。
+
+验收：全部公开操作、观察结束、局部不可用、权限、并发、取消与清理按自身合同成立；独立 Node 消费和实际后端证据满足 A33。W17 负责游戏业务接入。
+
+依据：[Vantage](../design/projects/vantage/README.md) · [原生制品](../design/projects/native-runtime.md) · [项目验收](../verification/scenarios/projects.md)。
+
+<a id="w12"></a>
+
+## W12：Kana
+
+交付：全部支持格式的阅读内核、源定位、内容与资源合同、布局、选择和阅读交互，以及公开包、配套资源和完整消费说明。
+
+验收：格式回归、源位置与选择往返、排版、浏览器资源和释放满足 A33；独立制品在声明环境中可消费。W19 负责漫画和小说的业务接入。
+
+依据：[Kana](../design/projects/kana/README.md) · [项目验收](../verification/scenarios/projects.md)。
+
+<a id="w13"></a>
+
+## W13：libmpv-node
+
+交付：完整 libmpv Client API 的 Node 绑定、控制与属性、事件与 hook、流与资源寿命、可选受管视频输出和独立帧持有，以及全部目标依赖、许可和制品。
+
+验收：Node 与承诺的 Electron 环境、主要图形后端、颜色与截图、线程交接和环境退出满足 A33；制品与运行输入满足 A24 的项目范围。W16、W18 分别负责媒体信息和播放业务接入。
+
+依据：[libmpv-node](../design/projects/libmpv-node/README.md) · [原生制品](../design/projects/native-runtime.md) · [项目验收](../verification/scenarios/projects.md)。
+
+<a id="w14"></a>
+
+## W14：oauth-relay
+
+交付：独立服务工程、完整中转协议、上游适配、配置校验、服务测试、构建制品、部署与运维材料。核对现有接入事实后，在已授权环境完成部署和服务切换。
+
+验收：授权、取消、刷新、失败、HTTPS、秘密注入及服务停止满足 A33；源码、制品和实际部署分别记录。相关 W21 来源扩展验证账号核验与凭据采用。
+
+依据：[oauth-relay](../design/projects/oauth-relay/README.md) · [来源认证](../design/extensions/private-data.md) · [项目验收](../verification/scenarios/projects.md)。
+
+<a id="w15"></a>
+
+## W15：资料获取与采用
+
+依赖：W08 的资料操作与 W09 的 SDK、正式宿主。
+
+交付：provider 与字段处理器接入、独立搜索、方案与预设、来源定位、匹配、资料整合、标准新增和明确范围更新，以及全部操作界面。
+
+真实扩展通过正式登记参与完整采用。核对来源身份、无身份候选、共享关联、原子写入、有效部分结果、并发、取消及失败反馈；界面准确呈现选择、采用结果和剩余事项。
+
+验收：A05–A07、A14–A16、A18、A27 的获取、采用与业务界面成立。
+
+依据：[资料获取](../design/domains/metadata.md) · [参与接口](../design/extensions/providers.md) · [方案](../design/domains/metadata-profiles.md) · [预设](../design/domains/metadata-presets.md)。
+
+<a id="w16"></a>
+
+## W16：扫描与本地文件
+
+依赖：W06–W09、W15；媒体信息读取使用 W13 的完整制品。
+
+交付：扫描配置、发现、识别、持有与业务资源引用、目录监听、增量维护、文件关联、默认目标、重定位与失联状态，以及对应管理、选择和报告界面。
+
+完成全部识别预设、范围核对、文件占用、取消与失败保留。媒体读取使用固定 libmpv-node 输入，与活动播放器保持独立实例和资源寿命。
+
+验收：A08、A09、A14–A16、A18、A27、A29 的文件与扫描断言成立。
+
+依据：[扫描](../design/domains/scanner.md) · [持有](../design/domains/holdings.md) · [文件维护](../design/domains/file-maintenance.md) · [识别预设](../design/domains/file-recognition-presets.md) · [附件](../design/domains/attachments.md)。
+
+<a id="w17"></a>
+
+## W17：游戏与存档
+
+依赖：W07、W08、W11、W16。
+
+交付：启动配置与确认、真实进程和窗口监测、前台计时、控制与截图、游戏面板、最终记录，以及手动和自动备份、恢复、保留策略与管理界面。
+
+共同会话接纳、观察、计时和收尾在首次实际使用时完整实现，视频与阅读按相同合同接入。备份与恢复覆盖不覆盖移动、文件和索引、取消、中断、再次检查及明确保留现状。
+
+验收：A10、A13、A14、A16–A18、A20、A27–A30 的游戏与存档断言成立，Vantage 固定制品已真实消费。
+
+依据：[游戏](../design/domains/games.md) · [会话](../design/domains/sessions.md) · [备份恢复](../design/domains/backups.md) · [Vantage 接入](../design/engineering/integrations.md#vantage)。
+
+<a id="w18"></a>
+
+## W18：视频播放
+
+依赖：W07、W08、W13、W16，以及 W17 已交付的共同会话机制。
+
+交付：媒体就绪、切换、播放与续播、轨道字幕、速度与音量、sRGB 显示与真实截图、播放器界面、记录和完整资源收尾。
+
+验证 Node 输出、Electron 纹理交接和最终引用释放，覆盖快速切换、迟到帧、加载失败、设备或窗口失效及退出。
+
+验收：A11、A14、A16、A17、A20、A24、A27–A30 的播放与制品消费断言成立。
+
+依据：[动画与播放](../design/domains/anime.md) · [会话](../design/domains/sessions.md) · [媒体接入](../design/engineering/integrations.md#media)。
+
+<a id="w19"></a>
+
+## W19：漫画与小说阅读
+
+依赖：W07、W08、W12、W16，以及 W17 已交付的共同会话机制。
+
+交付：全部支持格式的漫画和小说入口、内容列表、阅读偏好、准确源定位、选择与标注、主阅读与临时查看、记录和阅读器界面。
+
+Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久值及会话。各入口核对实际参数、保存结果、资源与关闭，复用所属内核的共用格式证据。
+
+验收：A12、A14、A16、A17、A20、A27–A30 的全部阅读入口与格式断言成立。
+
+依据：[阅读](../design/domains/reader.md) · [标注](../design/domains/annotations.md) · [阅读接入](../design/engineering/integrations.md#reading)。
+
+<a id="w20"></a>
+
+## W20：应用搜索、引导与全局组合
+
+依赖：W07–W09、W15–W19 的本体能力与公开入口。
+
+交付：分类搜索与导航、首次使用和更新推荐、引导采用编排、全应用入口及跨功能操作的完整衔接。
+
+搜索拥有真实聚合查询，onboarding 拥有状态与采用操作，界面沿同一事实工作。核对主界面与独立窗口的导航、焦点、草稿、共同菜单、失败和退出体验。
+
+验收：A18–A20、A29、A30，以及各相关 R 要求的应用级入口成立。
+
+依据：[搜索](../design/domains/search.md) · [引导](../design/domains/onboarding.md) · [导航](../design/ui/navigation.md) · [视图状态](../design/ui/state.md)。
+
+<a id="w21"></a>
+
+## W21：逐项官方扩展
+
+依赖：W09、W10 和各项目实际使用的已交付业务能力；需要中转的授权使用 W14 服务。
+
+W21-01–W21-33 沿[官方目录](../design/extensions/catalog.md#catalog)分别完整交付。每项包含声明的全部能力、页面、适用认证、私有状态、测试、资源、文档、版本及独立 .kisx，分别核对正式宿主、仓库外公共包和安装消费。
+
+17 个资料与平台扩展、13 个导入器、3 个译本各自登记完成。来源解析、个人记录、导入同步、取消、卸载及独立更新按自身语义验证；共用机制引用拥有层证据。
+
+验收：A05、A16、A18、A22、A23、A27、A32 及[逐项专项](../verification/coverage.md#extensions)成立，进度由[交付清单](delivery-checklist.md#extensions)维护。
+
+依据：[来源目录](../design/extensions/catalog.md) · [同步](../design/extensions/synchronization.md) · [导入器](../design/extensions/importers.md) · [译本](../design/extensions/languages.md)。
+
+<a id="w22"></a>
+
+## W22：桌面发行与应用更新
+
+依赖：W01–W21 的完整交付；工程方法沿用 W00。
+
+交付：六目标桌面制品、资源装配、安装升级、便携模式、签署与许可材料、正式仓库接续和发行流程；同时完成应用更新的检查、说明、下载准备、退出协调、安装交接、状态与界面。
+
+独立项目提供已经完成的目标输入，本包核对锁定版本在桌面最终制品中的装配与消费。发行元信息与更新选择遵守实际应用身份；真实文件、系统下限、升级和恢复在适用环境中验证。对外仓库、发布和部署按已有授权执行并记录实际结果。
+
+验收：A16、A23–A28、A31、A33 的桌面制品、更新及联合消费断言成立，干净 checkout 可生成正确目标，字节来源与签署结果可追溯。
+
+依据：[构建](../design/engineering/build.md) · [应用更新](../design/domains/updates.md) · [发行](../design/engineering/releases.md) · [许可](../design/engineering/licensing.md) · [仓库](../design/engineering/repository.md)。
+
+<a id="w23"></a>
+
+## W23：整体验收与交付核对
+
+依赖：W00–W22 满足各自完成条件。
+
+交付：固定提交和制品的完整使用流程、R／A 证据矩阵、项目说明与实现一致性，以及真实交付报告。
+
+从干净 checkout 安装并执行 check，再执行未覆盖的消费者、浏览器、真实 Electron、原生宿主、开发会话和最终制品验收。任务前置产物按既有规则复用。性能按 A30 的实际场景和明确调用核对。使用空库与代表性新库验证正常、失败、离线、取消、重开和完整退出。
+
+核对所属工作包已经交付的 README、协作规范、包与模块说明、官方扩展说明、模板、示例、命令、许可和必要证据。沿实际路径审阅职责、命名、公开边界、注释、资源与清理，删除范围内已失去用途的内容。
+
+完成门槛：R01–R32、A01–A33 按[最终完成条件](../verification/acceptance.md#completion)满足，必需功能与检查齐备，已知失败闭合，运行覆盖和未实测范围准确，交付文件与说明一致。
+
+依据：[覆盖矩阵](../verification/coverage.md) · [验收](../verification/acceptance.md) · [文档归属](../design/engineering/documentation.md) · [编码规范](../../CONVENTIONS.md)。

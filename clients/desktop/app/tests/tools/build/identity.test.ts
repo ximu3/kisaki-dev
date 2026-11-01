@@ -13,7 +13,7 @@ import { repositoryRoot } from '../../../tools/lib/paths'
 
 let root: string
 const applicationPath = 'clients/desktop/app'
-const packagePath = 'clients/desktop/packages/fixture'
+const packagePath = 'packages/fixture'
 
 /** Write one fixture input without requiring its parent directory to exist already. */
 async function writeInput(path: string, contents: string): Promise<void> {
@@ -70,8 +70,14 @@ beforeEach(async () => {
     join(root, applicationPath, 'turbo.json'),
   )
 
-  await writeInput(`${applicationPath}/src/main/entry.ts`, 'export const value = 1\n')
-  await writeInput(`${applicationPath}/config/vite/vite.config.main.ts`, 'export default {}\n')
+  await writeInput(
+    `${applicationPath}/tests/fixtures/runtime/src/main/entry.ts`,
+    'export const value = 1\n',
+  )
+  await writeInput(
+    `${applicationPath}/tests/fixtures/runtime/config/vite/vite.config.main.ts`,
+    'export default {}\n',
+  )
   await writeInput(`${packagePath}/src/index.ts`, 'export const value = 1\n')
   await writeInput(
     `${packagePath}/config/typescript/tsconfig.lib.json`,
@@ -113,9 +119,9 @@ test('production source, compiler configuration and global inputs change the bui
   expect(baseline).toMatch(/\S/)
 
   const changes: readonly (readonly [string, string])[] = [
-    [`${applicationPath}/src/main/entry.ts`, 'export const value = 2\n'],
+    [`${applicationPath}/tests/fixtures/runtime/src/main/entry.ts`, 'export const value = 2\n'],
     [
-      `${applicationPath}/config/vite/vite.config.main.ts`,
+      `${applicationPath}/tests/fixtures/runtime/config/vite/vite.config.main.ts`,
       'export default { build: { minify: false } }\n',
     ],
     [`${packagePath}/src/index.ts`, 'export const value = 2\n'],

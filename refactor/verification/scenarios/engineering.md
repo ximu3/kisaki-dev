@@ -66,7 +66,7 @@ A24、A26 与 A28 按[AppImage 启动政策](../../design/engineering/build.md#a
 
 ## 数据库迁移
 
-A27 和 A28 验证[Drizzle 原生迁移流程](../../design/engineering/database.md#initialization)：空库应用新基线及全部迁移，已有新架构库只应用未执行部分；重开不重复修改数据。使用带有关联、活动、Note 和非默认偏好的样本验证升级后身份、引用与用户选择保留，新增偏好字段按对应迁移补齐。迁移执行失败按事务回滚并报告错误，不继续开放业务或改建空库。正式制品能够定位并读取迁移 SQL 及所需元数据；旧实现和其他格式不被纳入这条升级链。
+A27 和 A28 验证[Drizzle 原生迁移流程](../../design/engineering/database.md#initialization)：空库应用新基线及全部迁移，已有新架构库只应用未执行部分；重开不重复修改数据。使用带有关联、活动、Note 和非默认偏好的样本验证升级后身份、引用与用户选择保留，新增偏好字段按对应迁移补齐。迁移执行失败按事务回滚并报告错误，不继续开放业务或改建空库。正式制品能够定位并读取迁移 SQL 及所需元数据，输入按本体迁移链支持的格式识别，不支持的结构返回明确错误。
 
 A27 和 A28 另核对[资料根文件系统](../../design/engineering/database.md#integrity)：本地普通与便携根正常初始化；确认的 SMB／NFS 或映射网络位置在打开数据库前被拒绝，原资料保留，不改成其他日志模式或另一空库。路径判断使用实际卷／挂载信息；媒体目录的读取不因资料根规则被一并禁用。macOS 读写连接回读 fullfsync，正式事务与性能测量使用相同同步设置；Windows 结果不代替这项平台检查。
 
@@ -172,13 +172,13 @@ A27 和 A28 按[冷备份流程](../../design/engineering/build.md#library-backu
 
 ## 帧版本、实例与开发交接
 
-rpc 独立验证双向调用、完成与取消竞态、重复关闭，以及断开连接后清理等待。Electron 和 iframe 接入另行验证代际、回调会话和资源流；纯 Node 机制通过不能代替真实接入。
+desktop-rpc 独立验证双向调用、完成与取消竞态、重复关闭，以及断开连接后清理等待。Electron 和 iframe 接入另行验证代际、回调会话和资源流；纯 Node 机制通过不能代替真实接入。
 
 A20、A21、A23、A26 和 A31 按[协议合同](../../design/engineering/protocols.md)验证：握手前调用拒绝；wire／端点版本、API 范围与本体 buildId 分别失败；用户的扩展安装与启用意愿保持。双方相同数字的请求 ID 不串线，嵌套回调不阻塞消息泵，void 与 null 不混淆；取消晚于真实完成时不撤销已完成事实。
 
 旧宿主 generation、旧 Webview document 和已释放端口不能对新实例提交或推送。断连释放等待与资源，已发出写入的结果未知时不重放。实际 iframe/source/origin、端口交接与方法开放表必须在真实环境验证，不能只检查自报字符串。
 
-开发工具分别以源码 Electron 和打包应用验证真实父子 IPC、显式开发模式及隔离 profile、初始化版本、非法消息与就绪前操作。工具只交付一批采用，等待期间同扩展的新构建只更新工具侧候选；应用不维护第二份队列。采用成功而激活失败分别呈现；只有 buildsReleased 或确认全部读取进程结束后才清理构建目录。真实窗口取消关闭后，共享宿主、监听、服务器和后续构建仍可用；再次停止能正常结束。断连不能冒充退出，正常 stop 不因固定超时自动强杀。三平台及 AppImage 各记录实际运行和现行 fuses，历史字节帧试件不计入新连接验收。
+开发工具分别以源码 Electron 和打包应用验证真实父子 IPC、显式开发模式及隔离 profile、RPC 与端点握手、非法帧与就绪前操作。工具只交付一批采用，等待期间同扩展的新构建只更新工具侧候选；应用不维护第二份队列。采用成功而激活失败分别呈现；只有 buildsReleased 或确认全部读取进程结束后才清理构建目录。真实窗口取消关闭后，共享宿主、监听、服务器和后续构建仍可用；再次停止能正常结束。断连不能冒充退出，正常 stop 不因固定超时自动强杀。三平台及 AppImage 各记录实际运行、原生进程寿命和生产 fuses。
 
 <a id="date-range"></a>
 
@@ -192,8 +192,8 @@ A03、A04 和 A27 按[日期验证分工](../../design/domains/values.md#date-op
 
 ## 公开包、作者入口与样式消费
 
-全部公开包都在仓库外使用真实 tarball 检查 exports、声明文件、CSS 和运行环境。框架无关视图不能暗中依赖 Solid 或私有源码。公开包声明的兼容范围必须由实际消费者验证。
+七个公开包各自在所属工作包内通过仓库外真实 tarball 检查 exports、声明、适用样式与运行环境。SDK 的纯入口和运行入口分别验证，UI 从组件子路径消费，默认样式在普通 Solid 1.9 项目中完整可用。框架无关视图不能暗中依赖 Solid 或私有源码。公开包声明的兼容范围必须由实际消费者验证。
 
-A23 验证[公共包的组织与消费](../../design/engineering/workspace.md#package-organization)：纯 Node 扩展从 SDK 获得完整作者类型与实际上下文，框架无关 Webview 使用对应接入，Solid Webview 按需增加 ui 和 Solid。三种路径都不读取应用或其他包的私有源码；纯定义入口不初始化 Node、DOM 或框架运行环境。CLI 的程序化入口与命令复用同一工作流，生成模板实际随制品提供，分发仓库维护可以只消费已经构建的安装包。
+A23 验证[公共包的组织与消费](../../design/engineering/workspace.md#package-organization)：纯 Node 扩展从 SDK 获得完整作者类型与实际上下文，框架无关 Webview 使用对应接入，Solid Webview 按需增加 desktop-ui 和 Solid。三种路径都不读取应用或其他包的私有源码；纯定义入口不初始化 Node、DOM 或框架运行环境。CLI 的程序化入口与命令复用同一工作流，生成模板实际随制品提供，分发仓库维护可以只消费已经构建的安装包。
 
-A20、A23 和 A29 验证[样式交付](../../design/engineering/workspace.md#visual-packages)与[窗口入口](../../design/engineering/layout.md#renderer-styles)：无 Tailwind 的消费者可以使用 appearance 的普通能力与 UI 的成品 CSS，选择映射的项目可以编译自己的语义工具类；两者都不读取包内源码。四个窗口分别加载自身入口和共同基础，在不加载主窗口 CSS 时仍完整呈现。组件基础规则不无条件重置消费文档，阅读正文保持自身排版；主题与字体改变通过各文档的正常接入生效，不需要重新构建样式或维护四份主题值。
+A20、A23 和 A29 验证[样式交付](../../design/engineering/workspace.md#visual-packages)与[窗口入口](../../design/engineering/layout.md#renderer-styles)：无 Tailwind 的消费者可以使用 desktop-appearance 的普通能力与 desktop-ui 的成品 CSS，选择映射的项目可以编译自己的语义工具类；两者都不读取包内源码。四个窗口分别加载自身入口和共同基础，在不加载主窗口 CSS 时仍完整呈现。组件基础规则不无条件重置消费文档，阅读正文保持自身排版；主题与字体改变通过各文档的正常接入生效，不需要重新构建样式或维护四份主题值。

@@ -34,11 +34,8 @@ jobs:
     outputs:
       complete: ${{ steps.affected.outputs.complete }}
       native: ${{ steps.affected.outputs.native }}
-      browser: ${{ steps.affected.outputs.browser }}
-      consumers: ${{ steps.affected.outputs.consumers }}
       e2e: ${{ steps.affected.outputs.e2e }}
       dev: ${{ steps.affected.outputs.dev }}
-      performance: ${{ steps.affected.outputs.performance }}
       artifacts: ${{ steps.affected.outputs.artifacts }}
       tooling: ${{ steps.affected.outputs.tooling }}
       selected: ${{ steps.affected.outputs.selected }}
@@ -121,8 +118,7 @@ jobs:
           fi
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
           requiresAllTargets=false
-          browser=false
-          for task in native browser e2e dev performance artifacts; do
+          for task in native e2e dev artifacts; do
             selected="$complete"
             if [[ "$complete" == false ]]; then
               selected=$(jq -r --arg task "test:$task" '
@@ -130,27 +126,14 @@ jobs:
                   .command != null and
                   .package.name == "@kisaki3/desktop" and
                   (.name == $task or
-                    ($task == "test:artifacts" and .name == "package")))
+                    ($task == "test:artifacts" and .name == "test:package")))
               ' "$report")
             fi
             echo "$task=$selected" >> "$GITHUB_OUTPUT"
-            if [[ "$task" == browser ]]; then
-              browser="$selected"
-            elif [[ "$selected" == true ]]; then
+            if [[ "$selected" == true ]]; then
               requiresAllTargets=true
             fi
           done
-          consumers="$complete"
-          if [[ "$complete" == false ]]; then
-            consumers=$(jq -r '
-              any(.data.affectedTasks.items[];
-                .command != null and
-                (.fullName == "//#desktop:packages:test:consumers:prepared" or
-                  (.name == "check:package" and
-                    (.package.path | startswith("clients/desktop/packages/")))))
-            ' "$report")
-          fi
-          echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           tooling="$complete"
           if [[ "$complete" == false ]]; then
             tooling=$(jq -r '
@@ -162,9 +145,6 @@ jobs:
           if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
           if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
-            selected=true
-          elif [[ "$browser" == true || "$consumers" == true ]]; then
-            matrix=$(jq -c 'map(select(.target == "linux-x64"))' <<< "$TARGETS")
             selected=true
           else
             matrix='[]'
@@ -230,24 +210,21 @@ jobs:
           mkdir -p test-results/verification
           pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Install Linux desktop tools
-        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true')
+        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - name: Install Chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: needs.select.outputs.dev == 'true' || ((needs.select.outputs.browser == 'true' || needs.select.outputs.consumers == 'true') && matrix.target == 'linux-x64')
-      - name: Test desktop package consumers
-        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
-        run: pnpm desktop:packages:test:consumers
+        if: needs.select.outputs.dev == 'true'
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
       - name: Check native source
         if: needs.select.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop check:native
-      - name: Build desktop
-        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.performance == 'true' || needs.select.outputs.artifacts == 'true'
+      - name: Build engineering carrier
+        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true'
         shell: bash
-        run: pnpm desktop:build --target "$DESKTOP_TARGET"
+        run: pnpm desktop:test:build --target "$DESKTOP_TARGET"
         id: build-desktop
       - name: Prepare native build for development
         shell: bash
@@ -258,29 +235,18 @@ jobs:
         shell: bash
         run: |
           pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts record --target "$DESKTOP_TARGET"
-      - name: Test browser interactions
-        if: needs.select.outputs.browser == 'true' && matrix.target == 'linux-x64'
-        run: pnpm desktop:test:browser
       - name: Test native bindings and database
         if: needs.select.outputs.native == 'true'
         run: pnpm --filter @kisaki3/desktop test:native
-      - name: Test desktop workflows
+      - name: Test Electron isolation
+        if: needs.select.outputs.e2e == 'true'
         shell: bash
-        env:
-          CHECK_E2E: ${{ needs.select.outputs.e2e }}
-          CHECK_PERFORMANCE: ${{ needs.select.outputs.performance }}
         run: |
           prefix=()
           if [[ "$RUNNER_OS" == Linux ]]; then
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
-          for task in e2e performance; do
-            case "$task" in
-              e2e) selected="$CHECK_E2E" ;;
-              performance) selected="$CHECK_PERFORMANCE" ;;
-            esac
-            if [[ "$selected" == true ]]; then "${prefix[@]}" pnpm --filter @kisaki3/desktop "test:$task"; fi
-          done
+          "${prefix[@]}" pnpm --filter @kisaki3/desktop test:e2e
       - name: Test development workflows
         shell: bash
         run: |-
@@ -290,19 +256,19 @@ jobs:
           fi
           "${prefix[@]}" pnpm exec turbo run test:dev --filter=@kisaki3/desktop
         if: needs.select.outputs.dev == 'true'
-      - name: Package desktop
+      - name: Package engineering carrier
         if: needs.select.outputs.artifacts == 'true'
         shell: bash
-        run: pnpm --filter @kisaki3/desktop package --target "$DESKTOP_TARGET" --test-only
+        run: pnpm --filter @kisaki3/desktop test:package --target "$DESKTOP_TARGET"
       - name: Confirm tested build reuse
         if: needs.select.outputs.artifacts == 'true'
         shell: bash
         run: |
           pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts check --target "$DESKTOP_TARGET"
-      - name: Test packaged application
+      - name: Test packaged carrier
         if: needs.select.outputs.artifacts == 'true' && runner.os != 'Linux'
         run: pnpm desktop:test:artifacts
-      - name: Test packaged application (X11)
+      - name: Test packaged carrier (X11)
         if: needs.select.outputs.artifacts == 'true' && runner.os == 'Linux'
         env:
           XDG_SESSION_TYPE: x11
@@ -320,8 +286,6 @@ jobs:
           name: desktop-${{ matrix.target }}
           path: |-
             test-results/verification/
-            test-results/desktop/consumers/
-            artifacts/desktop/packages/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json

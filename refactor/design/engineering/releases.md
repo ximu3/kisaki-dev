@@ -6,7 +6,7 @@
 
 ## 发行单位与版本
 
-桌面、八个公共包和各官方扩展独立管理版本，desktop-contracts、extension-api 和 rpc 也分别发行。四个独立技术项目使用自己的版本和 Actions。公开 API 兼容范围与包版本分别表达，不通过 Nx、Changesets 或提交类型自动推导 SemVer。
+桌面、七个公共包和各官方扩展独立管理版本，desktop-contracts、desktop-rpc 与 extension-sdk 各按自身完整职责发行。四个独立技术项目使用自己的版本和 Actions。公开 API 兼容范围与包版本分别表达，不通过 Nx、Changesets 或提交类型自动推导 SemVer。
 
 package.json.version 是当前项目版本的唯一来源。扩展通过 package.json 中的 kisaki 元信息生成 manifest；桌面项目 @kisaki3/desktop 保持 private，扩展项目也不因存在 package.json 就发布到 npm。
 
@@ -23,7 +23,7 @@ Git 标签使用 `<发行名>@<完整 SemVer>`，保留预发布标识与 build 
 | 桌面应用  | @kisaki3/desktop       | desktop       | desktop@0.1.0       |
 | 扩展 SDK  | @kisaki3/extension-sdk | extension-sdk | extension-sdk@0.1.0 |
 | 扩展 CLI  | @kisaki3/extension-cli | extension-cli | extension-cli@0.1.0 |
-| UI 包     | @kisaki3/ui            | ui            | ui@0.2.0            |
+| UI 包     | @kisaki3/desktop-ui    | desktop-ui    | desktop-ui@0.2.0    |
 | VNDB 扩展 | @kisaki3/ext-vndb      | ext-vndb      | ext-vndb@0.1.0      |
 
 官方扩展的[ext- 前缀](../extensions/catalog.md#organization)属于项目包名，去掉作用域后原样保留为发行名；tag 生成不再次添加前缀。产品中的扩展 ID 继续由 manifest 独立定义。CI 检查全部发行项目的名称格式与唯一性，并核对官方扩展的命名前缀；不同项目去掉作用域后重名时拒绝发行，不自动拼接目录或后缀。目录移动不改变发行名，已经使用的发行名不得转交另一项目。
@@ -82,10 +82,10 @@ GitHub、npm 和 Pages 之间没有共同事务。部分发布成功时保留实
 
 说明语言按发行单位的消费者确定，稳定版、beta 与 rc 使用同一要求：
 
-| 发行单位 | 必需语言 | 可选译文 |
-| --- | --- | --- |
-| 桌面应用、全部官方扩展 | en、zh-Hans、zh-Hant、ja | 可增加其他语言 |
-| 八个公共技术包、四个独立技术项目 | en | 根据实际消费者提供其他语言，不要求每次发行均有三份额外翻译 |
+| 发行单位                         | 必需语言                 | 可选译文                                                   |
+| -------------------------------- | ------------------------ | ---------------------------------------------------------- |
+| 桌面应用、全部官方扩展           | en、zh-Hans、zh-Hant、ja | 可增加其他语言                                             |
+| 七个公共技术包、四个独立技术项目 | en                       | 根据实际消费者提供其他语言，不要求每次发行均有三份额外翻译 |
 
 必需语言缺失时不能发行。提供的译文都须与英语基准保持事实一致，允许自然的语序和表达差异；可选语言缺席时沿 LocalizedText 回退，不生成空文件或机器翻译占位。项目归属决定要求，不从当前存在的说明文件数反推；技术包的英语基准不改变桌面与扩展的 UI 本地化范围。
 
@@ -121,14 +121,14 @@ GitHub、npm 和 Pages 之间没有共同事务。部分发布成功时保留实
 
 ## 说明生成与静态部署
 
-| 消费位置       | 生成物与读取职责                                                                                                 |
-| -------------- | ---------------------------------------------------------------------------------------------------------------- |
-| GitHub Release | 从已提供的 Markdown 生成 body；多语时提供语言入口和分区，只有英语时直接呈现正文，供人浏览；程序不解析标题或 HTML 折叠标记恢复语言            |
-| dist 静态说明  | 为 Kisaki monorepo 的各发行项目生成独立 JSON，包含 project、version、defaultLocale 和 LocalizedText releaseNotes |
-| 桌面发行说明   | updates 读取 desktop 对应的静态 JSON，界面按有效 UI 语言选择正文                                                 |
-| 官方扩展注册表 | 同一来源直接写入对应 release 的内联 LocalizedText，再由 kisx 校验和签名；客户端读取索引即取得正文                |
+| 消费位置       | 生成物与读取职责                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub Release | 从已提供的 Markdown 生成 body；多语时提供语言入口和分区，只有英语时直接呈现正文，供人浏览；程序不解析标题或 HTML 折叠标记恢复语言 |
+| dist 静态说明  | 为 Kisaki monorepo 的各发行项目生成独立 JSON，包含 project、version、defaultLocale 和 LocalizedText releaseNotes                  |
+| 桌面发行说明   | updates 读取 desktop 对应的静态 JSON，界面按有效 UI 语言选择正文                                                                  |
+| 官方扩展注册表 | 同一来源直接写入对应 release 的内联 LocalizedText，再由 kisx 校验和签名；客户端读取索引即取得正文                                 |
 
-dist 的说明覆盖桌面应用、八个公共包和官方扩展，公共包包含 SDK、CLI 等作者工具。它们分别使用自己的发行名和版本。四个独立技术项目由各自仓库交付说明，不因被 Kisaki 消费而并入该部署；未来同仓工程在建立实际发行单位后沿用同一规则。
+dist 的说明覆盖桌面应用、七个公共包和官方扩展，公共包包含 SDK、CLI 等作者工具。它们分别使用自己的发行名和版本。四个独立技术项目由各自仓库交付说明，不因被 Kisaki 消费而并入该部署；未来同仓工程在建立实际发行单位后沿用同一规则。
 
 官网启用更新日志页面后，读取已经发表的正式说明数据进行呈现，不另外维护桌面、公共包或扩展的手写副本。源文件存在不代表该版本已经发布。根目录可以提供导航或生成汇总，说明更正始终从实际发行项目的源文件开始。
 

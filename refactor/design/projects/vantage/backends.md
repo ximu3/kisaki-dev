@@ -18,7 +18,7 @@ Windows x64 与 arm64 的最低版本统一为 Windows 10 2004（build 19041）�
 
 Linux 进程查询和生命周期观察独立于 X11、Wayland、桌面组件和图形初始化。桌面组件仍归 Vantage 的 integrations/linux/gnome-shell 与 integrations/linux/kwin；它们只提供明确的查询、观察和控制协议，不开放任意脚本求值入口。组件缺失或失联按已确认错误合同报告，普通查询不安装组件或弹出授权界面。
 
-统一的是对象含义、调用语义、图像结果、资源所有权与失败边界。平台内部遵循各自正式接口和线程规则；稳定的 Win32、AppKit 或 X11 接口不会仅因年代较早而被替换。GNOME／KDE 的宿主组件属于桌面专用接入，不能将它们写成通用 Wayland 标准能力。原生来源有依据与实际实现成熟分别判断。
+统一的是对象含义、调用语义、图像结果、资源所有权与失败边界。平台内部遵循正式接口和线程规则，按适用版本、成熟度与运行条件选择 Win32、AppKit 或 X11 能力。GNOME／KDE 的宿主组件属于桌面专用接入，不能将它们写成通用 Wayland 标准能力。原生来源有依据与实际实现成熟分别判断。
 
 <a id="identity"></a>
 
@@ -77,7 +77,7 @@ Windows 最低版本为 2004，22H2 可作为常规验证环境。正式制品�
 
 尺寸变化按实际帧信息处理，不能用旧缓冲区尺寸解释新帧，也不能在帧归还池后继续引用原表面。目标关闭、超时、取消、图形设备变化与 Node 环境退出的验证覆盖回调隔离、会话停止和资源释放。
 
-库在声明的系统范围内使用同一 WGC 路线完成采集，接口选型依据见[平台调查](../../../verification/evidence/vantage-platforms/platform-routes.md#windows-probe)。
+库在声明的系统范围内使用同一 WGC 路线完成采集，接口选型依据见[平台接口](../../../verification/evidence/vantage-platforms/platform-routes.md)与[WGC 验证](../../../verification/evidence/vantage-wgc/capture.md)。
 
 WGC 仍须验证 GPU 内容、最小化与隐藏状态、受保护内容、有效帧、权限及资源收尾。系统版本达标不等于每个窗口都可采集；失败沿既定合同报告，不切换为桌面裁切或其他未声明的后端。
 

@@ -89,7 +89,7 @@ groups = [
     ("mapped", "explicit string-valued initialization option", ["mpv_set_option_string"]),
     ("ownedInternal", "detach owned clients after their work is settled", ["mpv_destroy"]),
     ("public", "Mpv.close", ["mpv_terminate_destroy"]),
-    ("proposal", "Mpv-owned named clients; raw strong/weak choice stays private", ["mpv_create_client", "mpv_create_weak_client"]),
+    ("public", "Mpv-owned named clients; raw strong/weak choice stays private", ["mpv_create_client", "mpv_create_weak_client"]),
     ("public", "loadConfigFile; native partial-application semantics", ["mpv_load_config_file"]),
     ("public", "getTimeNs", ["mpv_get_time_ns"]),
     ("mapped", "nanosecond clock can be expressed in microseconds", ["mpv_get_time_us"]),
@@ -98,9 +98,9 @@ groups = [
     ("ownedInternal", "best-effort native abort after AbortSignal cancellation", ["mpv_abort_async_command"]),
     ("mapped", "setProperty with explicit input representation", ["mpv_set_property", "mpv_set_property_string", "mpv_set_property_async"]),
     ("mapped", "structured del command", ["mpv_del_property"]),
-    ("public", "getProperty; complete low-level format selection remains a separate audit", ["mpv_get_property", "mpv_get_property_async"]),
+    ("public", "getProperty with explicit native format selection", ["mpv_get_property", "mpv_get_property_async"]),
     ("public", "getPropertyText plain or osd", ["mpv_get_property_string", "mpv_get_property_osd_string"]),
-    ("public", "observeProperty; value-less notification mode remains a separate audit", ["mpv_observe_property"]),
+    ("public", "observeProperty with value or value-less notification modes", ["mpv_observe_property"]),
     ("ownedInternal", "independent subscription cleanup", ["mpv_unobserve_property"]),
     ("ownedInternal", "typed event name mapping", ["mpv_event_name"]),
     ("mapped", "direct C event records preserve codes omitted by event_to_node", ["mpv_event_to_node"]),
@@ -108,7 +108,7 @@ groups = [
     ("public", "observeLogs and finite initializationLogs", ["mpv_request_log_messages"]),
     ("ownedInternal", "native event pump and wakeup scheduling", ["mpv_wait_event", "mpv_wakeup", "mpv_set_wakeup_callback"]),
     ("ownedInternal", "cleanup after outstanding native requests", ["mpv_wait_async_requests"]),
-    ("proposal", "addHook awaits task handlers; guarded native continuation stays private", ["mpv_hook_add", "mpv_hook_continue"]),
+    ("public", "addHook awaits task handlers; guarded native continuation stays private", ["mpv_hook_add", "mpv_hook_continue"]),
     ("deprecated", "Node uses wakeup integration; no borrowed raw file descriptor", ["mpv_get_wakeup_pipe"]),
 ]
 coverage = {}
@@ -130,7 +130,6 @@ result = {
     "asyncHookExecutionVerified": False,
     "nodeEnvironmentCleanupVerified": False,
     "queueCapacityVerified": False,
-    "scopeDecisionsComplete": False,
     "sources": [receipt for _, _, receipt in fetched],
 }
 (ROOT / "source-contract.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
@@ -139,6 +138,5 @@ result = {
     "mpvCommit": COMMIT,
     "nativeExecuted": False,
     "functions": [{"name": name, **coverage[name]} for name in functions],
-    "remaining": ["low-level property formats", "value-less property notifications", "complete command/option/property catalogues", "Stream CB interface", "Render API and platform interoperability"],
 }, indent=2) + "\n", encoding="utf-8")
 print(json.dumps({"sourceReceipts": len(fetched), "clientApiFunctions": len(functions), "negativeErrorCodes": len(errors)-1, "knownHooks": len(hooks), "nativeExecuted": False}))

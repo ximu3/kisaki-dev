@@ -15,7 +15,7 @@
 | [UAC 工作方式](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/how-it-works)                                                                                                  | 管理员账户的普通程序仍可使用标准令牌；提升与实际进程令牌有关，默认授权界面还会切换到安全桌面                                         |
 | [SetWindowDisplayAffinity](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity)                                                                                                                    | 窗口可声明捕获限制；采集结果需要独立验证，不能单凭目标是否管理员判定 WGC 成功或失败                                                  |
 
-以上依据为本轮直接读取的官方文档补充，没有计入此前二十项采集路线下载回执。它们支持按具体访问与操作分类，不证明 Vantage 后端已经完成混合权限验证。
+以上官方文档支持按具体访问与操作分类；Vantage 后端的混合权限运行仍需验证。
 
 ## 实际执行范围
 
@@ -32,4 +32,4 @@
 
 还须覆盖不同账户、受限 DACL／受保护对象、UAC 安全桌面切换与返回。这些场景验证可靠事实与受限结果，不要求跨越系统访问限制。每项记录系统、架构、账户是否相同、实际进程完整性、请求的访问权与真实返回；不保存用户令牌、凭据或其他程序的完整内容。
 
-本轮未运行上述组合，也未触发任何授权界面或建立管理员辅助进程。实际提权与受控测试环境须按后续验证工作明确安排。
+未运行上述组合，也未触发任何授权界面或建立管理员辅助进程。实际提权与受控测试环境须按后续验证工作明确安排。

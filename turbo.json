@@ -42,16 +42,9 @@
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "outputs": [],
-      "cache": false
+      "outputs": []
     },
-    "pack": {
-      "dependsOn": ["build"],
-      "inputs": ["package.json", "README.md", "LICENSE", "LICENSE.*", ".npmignore"],
-      "outputs": ["out/*.tgz"]
-    },
-    "dev": {
-      "persistent": true,
+    "@kisaki3/tooling#test": {
       "cache": false
     },
     "clean": {
@@ -80,7 +73,7 @@
       "outputs": []
     },
     "//#root:test": {
-      "dependsOn": ["^build", "@kisaki3/extension-cli#build"],
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     },
@@ -94,31 +87,8 @@
         "!refactor/**",
         "!.github/**"
       ],
-      "dependsOn": [
-        "@kisaki3/appearance#build",
-        "@kisaki3/desktop-contracts#build",
-        "@kisaki3/extension-api#build",
-        "@kisaki3/extension-cli#build",
-        "@kisaki3/extension-distribution#build",
-        "@kisaki3/extension-sdk#build",
-        "@kisaki3/rpc#build",
-        "@kisaki3/ui#build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": []
-    },
-    "check:package": {
-      "dependsOn": ["pack"],
-      "inputs": ["package.json"],
-      "cache": false
-    },
-    "//#desktop:packages:test:consumers:prepared": {
-      "inputs": [
-        "tests/desktop/**",
-        "config/vitest/vitest.config.desktop-consumers.ts",
-        "tools/desktop/**",
-        "!**/*.md"
-      ],
-      "cache": false
     }
   }
 }

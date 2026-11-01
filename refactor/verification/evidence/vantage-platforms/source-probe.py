@@ -14,7 +14,6 @@ SOURCES = {
     "windows-free-threaded-pool": ("https://learn.microsoft.com/en-us/uwp/api/windows.graphics.capture.direct3d11captureframepool.createfreethreaded?view=winrt-26100", ("CreateFreeThreaded", "1809", "17763")),
     "windows-cursor-control": ("https://learn.microsoft.com/en-us/uwp/api/windows.graphics.capture.graphicscapturesession.iscursorcaptureenabled?view=winrt-26100", ("IsCursorCaptureEnabled", "2004", "19041")),
     "windows-capture-hdr": ("https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture", ("DXGI_FORMAT_R16G16B16A16_FLOAT", "ContentSize")),
-    "windows-print": ("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-printwindow", ("PrintWindow", "blocking")),
     "macos-stream": ("https://developer.apple.com/documentation/screencapturekit/scstream.md", ("SCStream", "stopCapture")),
     "macos-filter": ("https://developer.apple.com/documentation/screencapturekit/sccontentfilter.md", ("desktopIndependentWindow", "SCWindow")),
     "macos-pixel-format": ("https://developer.apple.com/documentation/screencapturekit/scstreamconfiguration/pixelformat.md", ("BGRA", "420v")),
@@ -50,11 +49,9 @@ def main():
         receipts = list(executor.map(fetch, SOURCES.items()))
     result = {
         "purpose": "platform route evidence, not complete capture validation",
-        "designStatus": "platform-direction-confirmed",
         "windowsMinimumBuild": 19041,
         "nativeBackendBuilt": False,
         "windowsGraphicsCaptureExecuted": False,
-        "olderWindowsCaptureValidated": False,
         "macosWindowMappingValidated": False,
         "linuxDesktopBackendExecuted": False,
         "colorConversionValidated": False,

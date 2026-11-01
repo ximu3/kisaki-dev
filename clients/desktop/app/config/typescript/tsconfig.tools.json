@@ -5,6 +5,11 @@
     "tsBuildInfoFile": "../../.cache/typescript/tools.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["../../tools/**/*.ts", "../../*.config.ts", "../**/*.ts"],
-  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+  "include": [
+    "../../tools/**/*.ts",
+    "../../*.config.ts",
+    "../**/*.ts",
+    "../../tests/fixtures/runtime/config/**/*.ts"
+  ],
+  "exclude": []
 }

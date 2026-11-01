@@ -1,4 +1,4 @@
-"""Pin deterministic OEM tables and a legacy-name fixture for the explicit-encoding proposal."""
+"""Pin deterministic OEM tables and a filename fixture for explicit archive encoding."""
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import binascii
@@ -78,6 +78,5 @@ write_receipt(HERE / 'encoding-input.json', {'tables': [{k: v for k, v in item.i
     'fixture': {'name': file.name, 'base': base.name, 'baseSha256': hashlib.sha256(base.read_bytes()).hexdigest(),
                 'sha256': hashlib.sha256(data).hexdigest(), 'mutation': 'Rename first RAR3 member to CP437 bytes for café.txt; update only header CRC'},
     'invalidUnicodeFixture': {'name': 'invalid-legacy-unicode.rar', 'sha256': hashlib.sha256(malformed).hexdigest(),
-                              'mutation': 'Supply an incomplete mode-2 Unicode name with a valid header checksum; preserve the original payload'},
-    'publicInputChangeProposed': True, 'acceptedContractChanged': False})
+                              'mutation': 'Supply an incomplete mode-2 Unicode name with a valid header checksum; preserve the original payload'}})
 print(json.dumps({'tables': len(records), 'legacyFixture': file.name}))
