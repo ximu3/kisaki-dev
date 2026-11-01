@@ -5,7 +5,6 @@
 
 import { createServer } from 'vite'
 import { isAbsolute, join, relative, sep } from 'node:path'
-import { appRoot } from '../lib/paths'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { DependencyResolver } from './dependencies'
@@ -27,13 +26,14 @@ function contains(parent: string, path: string): boolean {
 
 /** Start the renderer server and retain its current public-package resolution until close(). */
 export async function startRenderer(
+  sourceRoot: string,
   members: DesktopDependency[],
   snapshotDirectory: string,
 ): Promise<DevelopmentRenderer> {
   let snapshot: DependencySnapshot | undefined
 
   const server = await createServer({
-    configFile: join(appRoot, 'config', 'vite', 'vite.config.renderer.ts'),
+    configFile: join(sourceRoot, 'config', 'vite', 'vite.config.renderer.ts'),
     mode: 'development',
     optimizeDeps: { exclude: members.map((member) => member.name) },
     plugins: [

@@ -82,7 +82,5 @@
     "name": "invalid-legacy-unicode.rar",
     "sha256": "660113f5d0e449074cfcb6b10b758d5a11207030a9f678b8f69dbb760ef33396",
     "mutation": "Supply an incomplete mode-2 Unicode name with a valid header checksum; preserve the original payload"
-  },
-  "publicInputChangeProposed": true,
-  "acceptedContractChanged": false
+  }
 }

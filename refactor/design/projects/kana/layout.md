@@ -139,8 +139,6 @@ ReadingView 按[公开状态](api.md#state)交付已采用布局的方向、组�
 
 Kana 的目标是完整阅读原书、调整样式、保留源位置与标记，并支持选择和访问内容。由浏览器排版完整章节，可以保留作者样式上下文与原生交互。Kana 据此承担阅读面的组织与源映射，将完整 CSS 片段化留给浏览器，并明确各环境支持的作者分页能力。
 
-[路线比较](../../../verification/evidence/kana-pagination-review/review.md)说明更完整的分页后端可以在 Firefox 执行列表与表格断页。这里选择保留原生排版与明确的 CSS 能力差异，以限定库的作者样式解释和分页责任。
-
 | 内容                         | 保留的责任                                                |
 | ---------------------------- | --------------------------------------------------------- |
 | 格式内容、章节与原始页面     | 完整读取、正确源顺序、按已确认规则切换与呈现              |
@@ -253,6 +251,6 @@ reader 关闭时停止接受新工作，取消或结束未完成操作，停止�
 
 ## 设计依据与布局验收
 
-多投影、原生分栏与浏览器边界的依据见[跨引擎机制记录](../../../verification/evidence/kana-browser-scope/browser-scope.md)，分页职责的取舍见[路线比较](../../../verification/evidence/kana-pagination-review/review.md)。实际运行范围与原始结果保留在各自记录中。
+多投影、原生分栏与浏览器边界的依据见[跨引擎机制记录](../../../verification/evidence/kana-browser-scope/browser-scope.md)，各记录注明实际输入、环境与结果。
 
 布局验收见[呈现与分页场景](../../../verification/scenarios/reading.md#presentation)，与真实输入、焦点和辅助技术一同验证。显式面数、作者页位、空间不足、混合边界和源定位分别满足本页合同。

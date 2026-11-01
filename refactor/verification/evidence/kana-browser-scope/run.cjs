@@ -81,7 +81,7 @@ async function checkEngine(name, origin) {
       await frame.getByRole('button', { name: 'Probe action' }).click()
       await frame.getByRole('link', { name: 'Follow reference' }).click()
       const observed = await page.evaluate(() => window.scopeProof.eventResult())
-      const proposedPassed =
+      const boundaryPassed =
         observed.bookExecutionCount === 0 &&
         content.providedImageWidth === 80 &&
         content.sourceText === 'Readable book text' &&
@@ -89,9 +89,9 @@ async function checkEngine(name, origin) {
         observed.events.length === 4 &&
         observed.events.every((event) => event.trusted) &&
         !observed.nodeAvailableInContent
-      if (allowScripts && !proposedPassed)
-        throw new Error('The proposed document boundary did not preserve ordinary interaction.')
-      events.push({ allowScripts, ...content, ...observed, proposedPassed })
+      if (allowScripts && !boundaryPassed)
+        throw new Error('The document boundary did not preserve ordinary interaction.')
+      events.push({ allowScripts, ...content, ...observed, boundaryPassed })
     }
     const layouts = await page.evaluate(() => window.scopeProof.layoutResults())
     const projections = await page.evaluate(() => window.scopeProof.projectionResults())

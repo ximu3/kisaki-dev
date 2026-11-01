@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import struct
@@ -12,6 +13,10 @@ import zipfile
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
+angle_input = os.environ.get("KISAKI_PROBE_ANGLE_ROOT")
+if not angle_input or not Path(angle_input).is_absolute():
+    raise RuntimeError("Provide the absolute KISAKI_PROBE_ANGLE_ROOT input.")
+producer_source = Path(angle_input)
 CACHE = ROOT / "node_modules/.cache/libmpv-design/graphics"
 VERSION = "44.5.1"
 ARCHIVE_SHA = "9b382492dcfee91f8f9e92c91f7972550a1b95d2299cac72279dab33a600d7db"
@@ -62,7 +67,6 @@ for name in ["client.h", "render.h", "render_d3d11.h"]:
         download(source, path)
     native_headers.append({"path": name, "source": source, "sha256": digest(path)})
 
-producer_source = ROOT / "apps/desktop/node_modules/electron/dist"
 producer_version = (producer_source / "version").read_text(encoding="utf-8").strip()
 assert producer_version == "41.2.0"
 producer_angle = CACHE / "producer-angle-electron-41.2.0"

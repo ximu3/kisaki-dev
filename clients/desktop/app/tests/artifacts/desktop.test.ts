@@ -15,10 +15,9 @@ import type { ArtifactReceipt } from '../../tools/package/packager'
 import { sha256 } from '../../tools/lib/sha256'
 import { hasNativeWindow, closeNativeWindow } from '../support/window-observation'
 import { electronExecutable } from '../../tools/dev/electron-executable'
-import { launchDevelopmentApplication } from '@kisaki3/extension-cli/extension'
 import { prepareArtifactWorkspace } from '../support/artifact-workspace'
-import type { DesktopBuild } from '../../src/shared/runtime-manifest'
-import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
+import type { DesktopBuild } from '../../tools/lib/runtime-manifest'
+import type { DistributionKind, DistributionManifest } from '../../tools/lib/distribution'
 
 /** Wait for process closure, rejecting when the supplied deadline expires. */
 async function waitForExit(
@@ -61,7 +60,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   }
 
   const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path))
-  const { directory, executablePath, resourceDirectory, fusePath, dataDirectory } = workspace
+  const { directory, executablePath, resourceDirectory, fusePath } = workspace
 
   try {
     const asar = join(resourceDirectory, 'app.asar')
@@ -125,7 +124,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       FuseState.ENABLE,
     )
 
-    const child = spawn(executablePath, [], {
+    const child = spawn(executablePath, [`--profile=${join(directory, 'profile')}`], {
       cwd: directory,
       windowsHide: false,
       env: {
@@ -168,7 +167,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
       await closeNativeWindow(child.pid)
       expect(await waitForExit(closed, 15_000), diagnostic).toBe(0)
-      expect((await readdir(join(dataDirectory, 'browser'))).length).toBeGreaterThan(0)
+      expect((await readdir(join(directory, 'profile', 'browser'))).length).toBeGreaterThan(0)
     } catch (cause) {
       throw new Error(`Packaged application verification failed:\n${diagnostic}`, { cause })
     } finally {
@@ -176,57 +175,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
         child.kill()
       }
       await waitForExit(closed, 10_000)
-    }
-
-    const developmentProfile = join(directory, 'development-profile')
-    const application = await launchDevelopmentApplication({
-      executable: executablePath,
-      cwd: directory,
-      profile: developmentProfile,
-      buildId: build.buildId,
-      startupTimeoutMs: 30_000,
-    })
-    try {
-      expect(application.ready).toMatchObject({ appVersion: build.version, apiVersion: null })
-
-      // The system window list can lag behind the application's completed show request.
-      await expect
-        .poll(({ signal }) => hasNativeWindow(application.pid, signal), {
-          timeout: 30_000,
-          interval: 250,
-        })
-        .toBe(true)
-
-      expect(await application.stop()).toBe('exited')
-      expect(await application.exited).toEqual({ code: 0, signal: null })
-      expect((await readdir(join(developmentProfile, 'browser'))).length).toBeGreaterThan(0)
-    } finally {
-      await application.terminate()
-    }
-
-    const missingChannelProfile = join(directory, 'missing-channel-profile')
-    const rejected = spawn(
-      executablePath,
-      ['--development', `--profile=${missingChannelProfile}`],
-      {
-        cwd: directory,
-        stdio: 'ignore',
-        windowsHide: false,
-      },
-    )
-
-    const rejectedExit = new Promise<number | null>((resolve, reject) => {
-      rejected.once('error', reject)
-      rejected.once('exit', resolve)
-    })
-    try {
-      expect(await waitForExit(rejectedExit, 15_000)).not.toBe(0)
-      await expect(readdir(missingChannelProfile)).rejects.toMatchObject({ code: 'ENOENT' })
-    } finally {
-      if (rejected.exitCode === null) {
-        rejected.kill()
-      }
-      await waitForExit(rejectedExit, 10_000)
     }
   } finally {
     await workspace.close()

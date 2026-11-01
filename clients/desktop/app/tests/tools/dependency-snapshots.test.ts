@@ -49,7 +49,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
 
     const members = [{ name, path: packageRoot }]
     const snapshots = new Map<string, DependencySnapshot>()
-    renderer = await startRenderer(members, snapshotsRoot)
+    renderer = await startRenderer(join(appRoot, 'tests/fixtures/runtime'), members, snapshotsRoot)
 
     const first = await captureDependencies(
       members,

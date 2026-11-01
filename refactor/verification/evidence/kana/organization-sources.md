@@ -1,6 +1,6 @@
 # Kana 工程组织的规范与接口依据
 
-对应已确认的 [Kana 工程组织](../../../design/projects/kana/README.md)。工程组织轮只读取规范与库接口，未创建 Kana 独立仓库，未执行格式解析、浏览器排版或位置往返测试。后续已经执行的部分浏览器与 PDF／ZIP 试验单独记录在[阅读路线验证](reading-route.md)，不改写本页历史来源结果。
+本页记录 [Kana 工程组织](../../../design/projects/kana/README.md)所用的规范与库接口依据。浏览器机制及 PDF／ZIP 运行结果见[阅读路线验证](reading-route.md)。
 
 ## 来源与设计影响
 
@@ -15,7 +15,7 @@
 | [HTML iframe sandbox](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox) | 脚本、同源、表单和导航等能力分别受限制；同时恢复同源与脚本具有明确风险                                          | 隔离由 view 中的受限呈现拥有，资源过滤及真实浏览器行为仍须验证，不能只添加一个 sandbox 属性就宣布完成 |
 | [DOM Range 边界](https://dom.spec.whatwg.org/#concept-range-bp-set)                                        | 当边界节点属于不同根时，设置一端会调整另一端；单个 Range 不跨独立文档树                                         | 多文档呈现需要 Kana 自己协调跨章节逻辑选区，不能假定原生选择自动覆盖所有 iframe                       |
 
-这里只将相关原生接口作为组织依据。PDF.js 和 zip.js 的文档并未锁定正式依赖版本；本轮也没有据此选定 RAR 后端、隔离文档的最终组合方式或全部格式解析器。
+本页提供原生接口与工程组织依据。格式后端、依赖版本和内容文档组合由[格式设计](../../../design/projects/kana/formats.md)及[布局设计](../../../design/projects/kana/layout.md)定义。
 
 ## 实际执行范围
 

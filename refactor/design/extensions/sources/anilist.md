@@ -218,12 +218,12 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 
 状态以本地当前安排与完成历史形成：
 
-| 本地投影                         | AniList 目标                                   |
-| -------------------------------- | ---------------------------------------------- |
-| planned、active、onHold          | PLANNING、CURRENT、PAUSED                      |
-| active，当前来源已经为 REPEATING | 保留 REPEATING                                 |
-| 当前状态空且已有完成历史         | COMPLETED，接受来源正常的进度、日期和次数联动  |
-| 当前状态空且没有完成历史         | 不提供状态清除；status:null 会写成 CURRENT |
+| 本地投影                         | AniList 目标                                  |
+| -------------------------------- | --------------------------------------------- |
+| planned、active、onHold          | PLANNING、CURRENT、PAUSED                     |
+| active，当前来源已经为 REPEATING | 保留 REPEATING                                |
+| 当前状态空且已有完成历史         | COMPLETED，接受来源正常的进度、日期和次数联动 |
+| 当前状态空且没有完成历史         | 不提供状态清除；status:null 会写成 CURRENT    |
 
 相同状态无需重写，不能为“规范化”而重复提交 COMPLETED。独立评分和日期更新保持原状态、数量和 repeat，CURRENT 与 COMPLETED 均按此处理。
 
@@ -320,6 +320,6 @@ GraphQL 文档与响应由 client 管理，metadata 解释图谱范围，writes 
 
 来源事实见[接口报告](../../../verification/evidence/anime-platforms/live-api.md)与[结构化记录](../../../verification/evidence/anime-platforms/2026-10-16-api.json)。默认预设遵守本页的主体、原配、上下文与时长范围，用户保存的资料方案不自动重写。
 
-AniList 用途条款的适用性是发行条件之一，依据见[来源筛选](../../../verification/evidence/source-selection/comparison.md)。官方字段、实际来源调用、用途条件和扩展运行分别核验；API 可读或其他客户端获列出不能证明项目已获认可。
+发行准备须核对本项目对 [AniList 官方用途条款](https://docs.anilist.co/guide/terms-of-use)的适用性。官方字段、实际来源调用、用途条件和扩展运行分别取得对应证据。
 
 验收覆盖非空自定义列表、隐藏成员、真实私密访问失败、高级多维评分模式、其他喜爱对象的实际切换、大规模分页与并发变化。完整页面、自动触发、本地采用、同步确认、取消以及图片解码分别验收。

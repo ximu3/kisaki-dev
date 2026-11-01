@@ -80,7 +80,6 @@ def main():
         receipts = list(executor.map(fetch, SOURCES.items()))
     result = {
         "purpose": "source evidence for public values and operation semantics",
-        "designStatus": "public-values-confirmed",
         "nativeAddonBuilt": False,
         "vantageApiExecuted": False,
         "windowBackendExecuted": False,

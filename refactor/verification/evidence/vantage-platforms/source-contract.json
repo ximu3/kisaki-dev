@@ -1,9 +1,7 @@
 {
   "purpose": "platform route evidence, not complete capture validation",
-  "designStatus": "platform-direction-confirmed",
   "nativeBackendBuilt": false,
   "windowsGraphicsCaptureExecuted": false,
-  "olderWindowsCaptureValidated": false,
   "macosWindowMappingValidated": false,
   "linuxDesktopBackendExecuted": false,
   "colorConversionValidated": false,
@@ -17,7 +15,10 @@
       "checkedAt": "2026-10-17T14:42:48.248799+00:00",
       "bytes": 51532,
       "sha256": "7ad5a5db03fddfa6eef5d219879ba667076aabf85e2b846c39aebf6320e1d9b7",
-      "presentMarkers": ["IsWindow", "recycled"]
+      "presentMarkers": [
+        "IsWindow",
+        "recycled"
+      ]
     },
     {
       "name": "windows-capture-item",
@@ -27,7 +28,10 @@
       "checkedAt": "2026-10-17T14:42:48.296230+00:00",
       "bytes": 50389,
       "sha256": "432595bbd7afdd62ad242af9cad6fc90f51b4ff36cb336597cc77cb1a41eb49d",
-      "presentMarkers": ["CreateForWindow", "1903"]
+      "presentMarkers": [
+        "CreateForWindow",
+        "1903"
+      ]
     },
     {
       "name": "windows-free-threaded-pool",
@@ -37,7 +41,11 @@
       "checkedAt": "2026-10-17T14:42:48.259188+00:00",
       "bytes": 54554,
       "sha256": "2971cf89bbce19ebc84319f43d2392181e1edc5225d227855428d484fc36d5a0",
-      "presentMarkers": ["CreateFreeThreaded", "1809", "17763"]
+      "presentMarkers": [
+        "CreateFreeThreaded",
+        "1809",
+        "17763"
+      ]
     },
     {
       "name": "windows-cursor-control",
@@ -47,7 +55,11 @@
       "checkedAt": "2026-10-17T14:42:48.278236+00:00",
       "bytes": 51011,
       "sha256": "4d12955463006334ff8b9919b5406ca9bd5f1f7141ac5e5a0f579c8f41d9e2c1",
-      "presentMarkers": ["IsCursorCaptureEnabled", "2004", "19041"]
+      "presentMarkers": [
+        "IsCursorCaptureEnabled",
+        "2004",
+        "19041"
+      ]
     },
     {
       "name": "windows-capture-hdr",
@@ -57,17 +69,10 @@
       "checkedAt": "2026-10-17T14:42:48.634698+00:00",
       "bytes": 64079,
       "sha256": "896f7c302733209dc25073ad09b76dd1c644f7efd52b98e27e25c03606bffe91",
-      "presentMarkers": ["DXGI_FORMAT_R16G16B16A16_FLOAT", "ContentSize"]
-    },
-    {
-      "name": "windows-print",
-      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-printwindow",
-      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-printwindow",
-      "status": 200,
-      "checkedAt": "2026-10-17T14:42:48.656139+00:00",
-      "bytes": 52397,
-      "sha256": "c6df3c03f86ec388e37f9412576fa79fe9b14057cfbf9d6bdf567651fa638b74",
-      "presentMarkers": ["PrintWindow", "blocking"]
+      "presentMarkers": [
+        "DXGI_FORMAT_R16G16B16A16_FLOAT",
+        "ContentSize"
+      ]
     },
     {
       "name": "macos-stream",
@@ -77,7 +82,10 @@
       "checkedAt": "2026-10-17T14:42:48.918786+00:00",
       "bytes": 4639,
       "sha256": "91f42e3755549b365b944bd0c2ae34c0cf1e4cd92277a418a727862a6f39906a",
-      "presentMarkers": ["SCStream", "stopCapture"]
+      "presentMarkers": [
+        "SCStream",
+        "stopCapture"
+      ]
     },
     {
       "name": "macos-filter",
@@ -87,7 +95,10 @@
       "checkedAt": "2026-10-17T14:42:48.944476+00:00",
       "bytes": 4631,
       "sha256": "655c517ae0d7bb0559996479aa26cf9a6d94734af14642b98aff5a3e22db6941",
-      "presentMarkers": ["desktopIndependentWindow", "SCWindow"]
+      "presentMarkers": [
+        "desktopIndependentWindow",
+        "SCWindow"
+      ]
     },
     {
       "name": "macos-pixel-format",
@@ -97,7 +108,10 @@
       "checkedAt": "2026-10-17T14:42:48.980959+00:00",
       "bytes": 1126,
       "sha256": "18b09cd06cf535a0be925a16fe7d0426dcd8401f6bae3ebb51c328e61224c6ec",
-      "presentMarkers": ["BGRA", "420v"]
+      "presentMarkers": [
+        "BGRA",
+        "420v"
+      ]
     },
     {
       "name": "macos-color-space",
@@ -107,7 +121,10 @@
       "checkedAt": "2026-10-17T14:42:49.152448+00:00",
       "bytes": 1144,
       "sha256": "6f96111a9f091f4a23ece8a5afdee8d09b28ea970c5d3230eaad70c521748687",
-      "presentMarkers": ["colorSpaceName", "display"]
+      "presentMarkers": [
+        "colorSpaceName",
+        "display"
+      ]
     },
     {
       "name": "macos-window-id",
@@ -117,7 +134,10 @@
       "checkedAt": "2026-10-17T14:42:49.413038+00:00",
       "bytes": 801,
       "sha256": "624485dc5902861eefe78931196c2a349bc99167c172e2084ebe3ac8cd58129d",
-      "presentMarkers": ["windowID", "CGWindowID"]
+      "presentMarkers": [
+        "windowID",
+        "CGWindowID"
+      ]
     },
     {
       "name": "macos-terminate",
@@ -127,7 +147,10 @@
       "checkedAt": "2026-10-17T14:42:49.428511+00:00",
       "bytes": 1457,
       "sha256": "e421c9aa1c3e7817037ea6cbda494a48cf1eb807dbd2c6156395e7d5e8df8275",
-      "presentMarkers": ["terminate", "before"]
+      "presentMarkers": [
+        "terminate",
+        "before"
+      ]
     },
     {
       "name": "macos-capture-access",
@@ -137,7 +160,10 @@
       "checkedAt": "2026-10-17T14:42:49.342985+00:00",
       "bytes": 785,
       "sha256": "0dbbf050924aecb2d3be1cc3ddc59e30181b73dc4366f0ba05481a42e8cacd56",
-      "presentMarkers": ["CGPreflightScreenCaptureAccess", "Bool"]
+      "presentMarkers": [
+        "CGPreflightScreenCaptureAccess",
+        "Bool"
+      ]
     },
     {
       "name": "x11-composite",
@@ -147,7 +173,10 @@
       "checkedAt": "2026-10-17T14:42:51.151100+00:00",
       "bytes": 13379,
       "sha256": "02ce2bc35aa47442bd82019a1a2d79ceb5f4a3366b129a695f32f13ddc308385",
-      "presentMarkers": ["NameWindowPixmap", "resized"]
+      "presentMarkers": [
+        "NameWindowPixmap",
+        "resized"
+      ]
     },
     {
       "name": "x11-process-hint",
@@ -157,7 +186,10 @@
       "checkedAt": "2026-10-17T14:42:50.672304+00:00",
       "bytes": 46759,
       "sha256": "566eb714ca312acfc25302b6e413a11c4ea3d550095cdb6de52bda7711c54277",
-      "presentMarkers": ["_NET_WM_PID", "WM_CLIENT_MACHINE"]
+      "presentMarkers": [
+        "_NET_WM_PID",
+        "WM_CLIENT_MACHINE"
+      ]
     },
     {
       "name": "xdg-screencast-portal",
@@ -167,7 +199,11 @@
       "checkedAt": "2026-10-17T14:42:49.993258+00:00",
       "bytes": 55559,
       "sha256": "b02ae540cbf82c9d76ebcdfb6cea1255ff87fca3c5055dd19f009ef37d81349b",
-      "presentMarkers": ["SelectSources", "restore_token", "Start"]
+      "presentMarkers": [
+        "SelectSources",
+        "restore_token",
+        "Start"
+      ]
     },
     {
       "name": "mutter-42",
@@ -177,7 +213,10 @@
       "checkedAt": "2026-10-17T14:42:49.812866+00:00",
       "bytes": 7882,
       "sha256": "c719cf12374dccdb78b8a50cdfde3738fddf297965c1606ca79471849558d156",
-      "presentMarkers": ["RecordWindow", "window-id"]
+      "presentMarkers": [
+        "RecordWindow",
+        "window-id"
+      ]
     },
     {
       "name": "mutter-current",
@@ -187,7 +226,10 @@
       "checkedAt": "2026-10-17T14:42:50.191720+00:00",
       "bytes": 8830,
       "sha256": "702fa0d525b20d83b3f50f6069cba184ccdf2b912758f715192916b415551b9a",
-      "presentMarkers": ["RecordWindow", "window-id"]
+      "presentMarkers": [
+        "RecordWindow",
+        "window-id"
+      ]
     },
     {
       "name": "kwin-5.24.7",
@@ -197,7 +239,11 @@
       "checkedAt": "2026-10-17T14:42:50.590022+00:00",
       "bytes": 17940,
       "sha256": "f66faf4c728873573778e084ab78defa3a7a6e06e1ff63510f6e223f4711f90f",
-      "presentMarkers": ["CaptureWindow", "checkPermissions", "bytesPerLine"]
+      "presentMarkers": [
+        "CaptureWindow",
+        "checkPermissions",
+        "bytesPerLine"
+      ]
     },
     {
       "name": "kwin-current",
@@ -207,7 +253,10 @@
       "checkedAt": "2026-10-17T14:42:50.778218+00:00",
       "bytes": 17351,
       "sha256": "879e13774906cde1b94a68ceb94f0ac27b0858b1c1b71548c1b2723e58ec4998",
-      "presentMarkers": ["CaptureWindow", "QUuid"]
+      "presentMarkers": [
+        "CaptureWindow",
+        "QUuid"
+      ]
     }
   ],
   "windowsMinimumBuild": 19041

@@ -222,6 +222,6 @@ client 负责来源传输、节流、分页与响应边界；account 管理身�
 
 ## 预设与验证
 
-来源依据见[接口核验](../../../verification/evidence/mangaupdates-anidb/live-api.md)。验收覆盖真实非空自定义列表、完整分页、账号切换、取消、冲突、本体采用与 UI 运行。
+来源依据见[接口核验](../../../verification/evidence/mangaupdates/live-api.md)。验收覆盖真实非空自定义列表、完整分页、账号切换、取消、冲突、本体采用与 UI 运行。
 
-默认漫画预设的 personWorks 成员不采用 MangaUpdates，note 保持不配置，保留实际出版方参与；已明确人物自身的履历继续可用。人物 originalName 与有条件的 deathDate 按真实字段参加默认取值链，各预设沿同一原文名规则采用。作品 aliases、总量、敏感标记与分部缺项按本页约束读取，不增加无法分类的组织作者发现。字段与对象范围见[来源核验](../../../verification/evidence/mangaupdates-anidb/live-api.md)。
+默认漫画预设的 personWorks 成员不采用 MangaUpdates，note 保持不配置，保留实际出版方参与；已明确人物自身的履历继续可用。人物 originalName 与有条件的 deathDate 按真实字段参加默认取值链，各预设沿同一原文名规则采用。作品 aliases、总量、敏感标记与分部缺项按本页约束读取，不增加无法分类的组织作者发现。字段与对象范围见[来源核验](../../../verification/evidence/mangaupdates/live-api.md)。

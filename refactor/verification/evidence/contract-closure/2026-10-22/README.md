@@ -32,7 +32,7 @@
 
 强制回退试件只在私有测试源码中释放 VO 已返回的图像，再让原有回退分支继续执行。它证明“选项为 false 但仍回退”时来源标记准确；没有制造物理设备故障，也没有执行正式 Kisaki 拒绝逻辑。宿主接纳只由纯规则模型核对。注入后的 DLL 单独保存，正常 DLL 保持不变；测试源码恢复为正常补丁版。发行补丁不包含故障注入。
 
-本轮未新验收无图整体失败、负 stride、持续采集、macOS／Linux 或完整正式绑定。它们继续属于[libmpv 场景](../../../scenarios/libmpv.md)及[本体采集](../../../../design/engineering/integrations.md#screenshot)，不由这五项结果代替。
+尚未验收无图整体失败、负 stride、持续采集、macOS／Linux 或完整正式绑定。它们继续属于[libmpv 场景](../../../scenarios/libmpv.md)及[本体采集](../../../../design/engineering/integrations.md#screenshot)，不由这五项结果代替。
 
 <a id="types-models"></a>
 
@@ -46,7 +46,7 @@
 
 ## 复现
 
-从仓库根目录运行。只重算声明和规则时，使用已记录的原生像素收据；输出默认写入 node_modules/.cache/libmpv-design/contract-closure-replay/receipts，不改写本目录历史结果：
+从仓库根目录运行。只重算声明和规则时，使用已记录的原生像素收据；输出默认写入 node_modules/.cache/libmpv-design/contract-closure-replay/receipts，运行收据写入该输出目录：
 
 ```powershell
 python -B -X utf8 refactor/verification/evidence/contract-closure/2026-10-22/check_types.py

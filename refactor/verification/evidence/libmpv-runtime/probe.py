@@ -123,7 +123,7 @@ def execute():
         'runtimeDllCount': len(dependencies['runtimeDlls']), 'clientHeaderSha256': digest(source),
         'apiVersion': {'major': version >> 16, 'minor': version & 65535},
         'nodeAddonExecuted': False, 'nodeWorkerExitExecuted': False, 'graphicsExecuted': False,
-        'historicalReloadFailureDiagnosed': False, 'releaseBuildVerified': False,
+        'releaseBuildVerified': False,
     }
 
 

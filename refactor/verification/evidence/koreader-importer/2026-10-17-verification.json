@@ -3,7 +3,6 @@
   "date": "2026-10-17",
   "ordinal": 28,
   "extension": "KOReader Importer",
-  "status": "design-confirmed",
   "inputOrigin": "synthetic-at-user-request",
   "sourceRef": "v2026.07.1",
   "commit": "9192014d8bd82a91dc1012473be0f238dedfdb54",
@@ -38,7 +37,10 @@
     "failed": 0,
     "allInputsUnchanged": true
   },
-  "results": ["lua-results.json", "synthetic-results.json"],
+  "results": [
+    "lua-results.json",
+    "synthetic-results.json"
+  ],
   "notClaimed": [
     "Real KOReader user data or application execution.",
     "Exact pinned MuPDF binary, PDF.js or Kana round trip.",

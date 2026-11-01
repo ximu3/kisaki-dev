@@ -1,10 +1,10 @@
 # Steam 与 IGDB 真实接口核验
 
-本页保留首轮接口比较证据。后续[结构化商店核验](steam-storebrowse.md)已验证完整正文、标签及名称建议，当前 Steam 草案改用相应组合；下文的 appdetails、storesearch 样本不再表示运行依赖。
+本页记录 Steam 本人读取、结构化商店素材及 IGDB 接口事实。Steam 的正文、分类、标签和名称查询见[结构化商店核验](steam-storebrowse.md)。
 
 核验日期：2026-10-16。测试使用用户明确提供的 Steam 及 Twitch 应用凭据，只在核验进程内处理。结果覆盖以下来源读取、认证和资源样本。
 
-共 59 次 API／认证调用，其中 Steam 21 次、IGDB 36 次、Twitch 2 次；58 次 HTTP 200，一次 401 来自对未标明种类的 Twitch 输入进行令牌验证。后续将其作为 Client Secret 换取应用令牌成功，实际 IGDB 查询全部读通。另有 8 次公开图片 HEAD，均为 200；没有下载完整图片或验证本体解码。
+保留记录包括 44 次来源读取、2 次 Twitch 认证调用及 8 次公开图片 HEAD。一次凭据种类核验返回 401，应用令牌签发和 IGDB 查询成功；各请求保留实际状态与有限结果投影。
 
 ## Steam 本人读取
 
@@ -21,22 +21,11 @@
 
 GetSupportedAPIList 实际提供了 IPlayerService、IWishlistService 的读取方法与参数。愿望单的普通完整读取没有 page 参数；另有带复杂上下文的 SortedFiltered 方法，本方案没有借它伪造现有端点的分页。
 
-## Steam 商店对象与语言
+## Steam 商店资料
 
-CLANNAD 名称建议返回 7 个 App，其中包含主游戏、Side Stories、两张音乐作品、漫画、画集和相关音乐商品。宽泛查询返回 10 项且 total=10，额外 start／count／page 参数没有改变 ID 序列。无结果查询返回 total=0、items=[]；缺失应用的 appdetails 返回 HTTP 200 与 success=false。
+公开 IStoreBrowseService/GetItems 匿名读取返回 basic_info、assets 和 release。CLANNAD 样本的 original_release_date 与 steam_release_date 分别对应 2004-04-28 和 2015-11-23。创作者的 creator_clan_account_id 表示社区账号，主体身份按[Steam 合同](../../../design/extensions/sources/steam.md)解释。
 
-| 公开样本                   | 真实结果                         |
-| -------------------------- | -------------------------------- |
-| CLANNAD 324160             | type=game；商店日期 2015-11-23   |
-| Original Soundtrack 416930 | type=music；fullgame 指向 324160 |
-| Anthology Manga 519110     | type=dlc；fullgame 也指向 324160 |
-| Danganronpa V3 Demo 589120 | type=demo；fullgame 指向 567640  |
-
-因此 DLC 不等于游戏扩展作品，fullgame 不证明两个 App 身份等价。商品目录中可见音乐或漫画，也不扩大 Steam provider 的本体条目类型。
-
-同一 CLANNAD 的英文、简体、繁体、日文请求均成功。简体正文与英文不同；日文与繁体正文和英文完全相同，已用文本哈希核对，没有把正文保存在报告中。支持语言字段是商店呈现的游戏语言能力，不表示原作语言。
-
-公开 IStoreBrowseService/GetItems 无 key 读取成功，返回 basic_info、assets、release 等实际字段。其 release 分别给出 original_release_date 与 steam_release_date，本样本对应 2004-04-28 与 2015-11-23。basic_info 中的开发／发行方还有 creator_clan_account_id，这是创作者社区账号引用，不能直接声明为现实主体资料库身份。
+对象类型、语言、正文和名称查询的具体结果见[商店接口验证](steam-storebrowse.md)。
 
 ## Steam 素材
 

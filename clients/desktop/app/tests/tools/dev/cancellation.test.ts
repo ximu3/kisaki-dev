@@ -18,10 +18,11 @@ test('cancelling initial dependency preparation closes its command and permits a
   let first: ReturnType<typeof startDevelopmentController> | undefined
   let retry: ReturnType<typeof startDevelopmentController> | undefined
   try {
-    const manifestPath = join(workspace.root, 'clients/desktop/packages/ui/package.json')
+    const manifestPath = join(workspace.root, 'packages/development-fixture/package.json')
     const original = await readFile(manifestPath, 'utf8')
     const manifest = JSON.parse(original) as { scripts: Record<string, string> }
-    manifest.scripts.build = 'tsx ../../app/tests/support/preparation-worker.ts'
+    manifest.scripts.build =
+      'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
 
     first = startDevelopmentController(workspace.app)

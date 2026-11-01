@@ -2,7 +2,7 @@
 
 2026-10-16，针对“StoreBrowse 能否取代旧 Store 接口”补充核验。依据是 Steam 商店页面实际引用的官方前端 JavaScript 中的协议定义，以及直接访问 Steam API 的结果；没有执行下载的 JavaScript，也没有使用个人 key、账号令牌或 cookie。
 
-本轮完成 16 次匿名 GET，全部 HTTP 200；另读取一个 Steam 商店页面及其两个官方 JavaScript 文件。请求与必要结果投影见[结构化证据](2026-10-16-steam-storebrowse.json)。接口可访问与本体运行验收仍是不同阶段。
+完成 16 次匿名 GET，全部 HTTP 200；另读取一个 Steam 商店页面及其两个官方 JavaScript 文件。请求与必要结果投影见[结构化证据](2026-10-16-steam-storebrowse.json)。接口可访问与本体运行验收仍是不同阶段。
 
 ## GetItems 的实际覆盖
 
@@ -12,7 +12,7 @@
 | ---------- | -------------------------------------------------- | -------------------------------------------------------------- |
 | 基本资料   | name、type、basic_info                             | 名称、应用类别、短简介与开发／发行署名均可读取                 |
 | 完整介绍   | include_full_description → full_description_bbcode | 英文样本 1,175 字符，简体 189 字符；返回 BBCode，不只是短简介  |
-| 发行信息   | release                                            | 与前轮相同，原始发行与 Steam 发行分别表达                      |
+| 发行信息   | release                                            | 原始发行与 Steam 发行分别表达                                  |
 | 图片与媒体 | assets、screenshots、trailers                      | 包含素材与可选截图／预告数据；Kisaki 仍只采用既定图片用途      |
 | 语言与平台 | supported_languages、platforms                     | 结构化语言支持与系统平台；不表示原作语言                       |
 | 标签与分类 | tagids、tags、categories                           | 实际应用标签与功能分类，名称通过对应接口读取                   |
@@ -38,7 +38,7 @@ StoreBrowse.GetItems 按明确编号读取；名字搜索由 IStoreQueryService/
 | a，max_results=50 | 50       | 31,015                          |
 | 明确无匹配词      | 0        | 0                               |
 
-这些是本次样本，不是全站永久数量。相比旧 storesearch 的最多 10 项和模糊 total，新接口能明确表明当前建议未覆盖全部匹配；不能据此宣称名称建议可以任意分页。
+这些数量对应所列输入。名称建议响应分别表达已返回数量和匹配总量，分页能力以实际请求合同为准。
 
 官方前端的 SearchSuggestions 请求没有 start、offset 或 cursor，只有 max_results 等选项。名称搜索保持有界建议，当前方案最多请求 50 项；总匹配数大于完整返回候选时，名称 resolve 返回 insufficientInput，独立搜索不伪造下一页。
 
@@ -46,7 +46,7 @@ StoreBrowse.GetItems 按明确编号读取；名字搜索由 IStoreQueryService/
 
 IStoreQueryService/Query 支持 start／count 和类型、标签、发行条件等筛选。仅游戏条件下，本次 start=0 与 start=3 分别返回不同的三个 App，元数据中的 start 与 count 对应正确。
 
-其查询结构没有名称搜索字段。不能把 Query 的分页能力移植到 SearchSuggestions，也不能为了补齐名字搜索而抓取全站目录。本轮只核验该能力，不给 Kisaki 增加全站浏览或镜像模块。
+其查询结构没有名称搜索字段。不能把 Query 的分页能力移植到 SearchSuggestions，也不能为了补齐名字搜索而抓取全站目录。只核验该能力，不给 Kisaki 增加全站浏览或镜像模块。
 
 ## 标签与功能分类
 
@@ -65,7 +65,7 @@ IStoreBrowseService/GetStoreCategories 返回 72 条实际功能分类及名称�
 - GetLocalizedNameForTags、GetStoreCategories 负责所需标签和功能分类名称。
 - 本人资料、拥有库与愿望单仍分别使用相应的账号读取接口。
 
-旧 appdetails、storesearch 留作本轮比较证据，不再是运行依赖或自动回退路径。正文适配从清理 HTML 改为将 BBCode 转为共同 Markdown；来源输入仍须经过正常的内容、图片与字节边界。
+结构化商店接口交付 BBCode 正文，适配将其转换为共同 Markdown；内容、图片与字节按所属边界验证。
 
 这套组合覆盖当前 Kisaki 已计划的 Steam 元数据能力。它不表示两个接口的每个字段都一一同名，也不代表 Steam 对这些前端接口提供了与正式第三方文档相同的稳定性承诺。完整实现仍需覆盖批量上限、逐项失败、丰富正文、取消和真实界面采用。
 

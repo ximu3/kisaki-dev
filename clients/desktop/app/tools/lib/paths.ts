@@ -5,7 +5,7 @@
 
 import { resolve, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { DesktopTarget } from '../../src/shared/runtime-manifest'
+import type { DesktopTarget } from './runtime-manifest'
 
 export const appRoot = fileURLToPath(new URL('../..', import.meta.url))
 export const repositoryRoot = resolve(appRoot, '../../..')

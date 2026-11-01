@@ -1,9 +1,8 @@
 {
   "checkedAt": "2026-10-15T05:39:29.921Z",
-  "scope": "Public application authentication, bounded public metadata reads, and official dataset structure. No user authorization or personal-record writes.",
+  "scope": "Public application authentication and bounded public metadata reads.",
   "sources": {
     "documentationCommit": "1284ac90454b1e68c15a0fc3e94f6003a927f49b",
-    "datasetRepositoryCommit": "5f7408852fad840ea3d3399bc62146bb64ff34f6",
     "documentation": [
       {
         "file": "ymgal-developer.html",
@@ -12,177 +11,7 @@
         "bytes": 69450,
         "sha256": "039072895f9c96c511a0ecd0e981acdddef646d3945ada3ba680eb5ddc560fc1"
       }
-    ],
-    "dataRelease": {
-      "tag": "release-2026-10-09",
-      "url": "https://github.com/ymgal/data-export/releases/tag/release-2026-10-09",
-      "publishedAt": "2026-10-08T20:00:41Z",
-      "assets": [
-        {
-          "name": "exported_data.zip",
-          "bytes": 32617686,
-          "url": "https://github.com/ymgal/data-export/releases/download/release-2026-10-09/exported_data.zip"
-        }
-      ]
-    },
-    "dataset": {
-      "archiveSha256": "4aa2285a5d7fc9c63f7388a330504032a7a0f8daae71f5c7878793f2e5d35613",
-      "files": [
-        {
-          "file": "game.jsonl",
-          "bytes": 33050717,
-          "compressedBytes": 10228059,
-          "keys": [
-            "gid",
-            "developer_id",
-            "name",
-            "chinese_name",
-            "extension_name",
-            "website",
-            "have_chinese",
-            "type_desc",
-            "introduction",
-            "main_img",
-            "release_date",
-            "restricted",
-            "country",
-            "state",
-            "weights",
-            "more_entry",
-            "publish_version",
-            "publish_time",
-            "create_time",
-            "update_time"
-          ],
-          "scalar": {
-            "name": "加奈～いもうと～",
-            "gid": 10007
-          }
-        },
-        {
-          "file": "game_releases.jsonl",
-          "bytes": 28036822,
-          "compressedBytes": 3933934,
-          "keys": [
-            "id",
-            "gid",
-            "release_name",
-            "related_link",
-            "platform",
-            "release_date",
-            "release_language",
-            "restriction_level"
-          ],
-          "scalar": {
-            "id": 10961,
-            "gid": 10144
-          }
-        },
-        {
-          "file": "person.jsonl",
-          "bytes": 11255177,
-          "compressedBytes": 1514148,
-          "keys": [
-            "pid",
-            "name",
-            "chinese_name",
-            "extension_name",
-            "website",
-            "country",
-            "introduction",
-            "state",
-            "weights",
-            "main_img",
-            "birthday",
-            "gender",
-            "more_entry",
-            "publish_version",
-            "publish_time",
-            "create_time",
-            "update_time"
-          ],
-          "scalar": {
-            "pid": 10000,
-            "name": "いとう のいぢ",
-            "birthday": "1977-08-09"
-          }
-        },
-        {
-          "file": "organization.jsonl",
-          "bytes": 5895426,
-          "compressedBytes": 781774,
-          "keys": [
-            "org_id",
-            "name",
-            "extension_name",
-            "website",
-            "country",
-            "introduction",
-            "state",
-            "weights",
-            "main_img",
-            "birthday",
-            "more_entry",
-            "publish_version",
-            "publish_time",
-            "create_time",
-            "update_time",
-            "chinese_name"
-          ],
-          "scalar": {
-            "birthday": null,
-            "name": "默认机构"
-          }
-        },
-        {
-          "file": "character.jsonl",
-          "bytes": 56653186,
-          "compressedBytes": 12878192,
-          "keys": [
-            "cid",
-            "name",
-            "chinese_name",
-            "extension_name",
-            "main_img",
-            "gender",
-            "birthday",
-            "introduction",
-            "state",
-            "weights",
-            "more_entry",
-            "publish_version",
-            "publish_time",
-            "create_time",
-            "update_time"
-          ],
-          "scalar": {
-            "name": "茜ヶ崎 空",
-            "birthday": "3000-04-02",
-            "cid": 10000
-          }
-        },
-        {
-          "file": "game_character_relation.jsonl",
-          "bytes": 8452195,
-          "compressedBytes": 793563,
-          "keys": ["gid", "cid", "cv_id", "character_position"],
-          "scalar": {
-            "cid": 41165,
-            "gid": 10144
-          }
-        },
-        {
-          "file": "game_staff.jsonl",
-          "bytes": 14143329,
-          "compressedBytes": 2487224,
-          "keys": ["sid", "gid", "pid", "emp_name", "emp_desc", "job_name"],
-          "scalar": {
-            "pid": 22985,
-            "gid": 10144
-          }
-        }
-      ]
-    }
+    ]
   },
   "checks": [
     {
@@ -195,7 +24,13 @@
       "status": 200,
       "success": true,
       "code": 0,
-      "pageKeys": ["result", "total", "hasNext", "pageNum", "pageSize"],
+      "pageKeys": [
+        "result",
+        "total",
+        "hasNext",
+        "pageNum",
+        "pageSize"
+      ],
       "total": 4,
       "hasNext": true,
       "items": [
@@ -220,7 +55,11 @@
       "status": 200,
       "success": true,
       "code": 0,
-      "envelopeKeys": ["game", "cidMapping", "pidMapping"],
+      "envelopeKeys": [
+        "game",
+        "cidMapping",
+        "pidMapping"
+      ],
       "keys": [
         "publishVersion",
         "publishTime",

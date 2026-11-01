@@ -22,7 +22,7 @@ python refactor/verification/evidence/kana-api/check-contracts.py
 | 浏览器   | Bundler；ES2023、DOM、DOM.Iterable；不安装 Node 环境声明                         |
 | 共同约束 | strict、exactOptionalPropertyTypes、noUncheckedIndexedAccess；skipLibCheck=false |
 
-三份正向消费分别在纯值和浏览器两种环境中通过。随后移除 @ts-expect-error，确认所有无效用法确实产生诊断，避免仅靠注释声称被拒绝。共 58 项拒绝覆盖不同寻址系统混用、空页面／四边形、编码与错误原因、环境隔离、资源输入和持有、异步操作、历史与参考查看、独立呈现设置、配色分支、布局反馈及空间不足错误。最新两项分别拒绝异步按键回调和要求 KeyboardEvent 的处理器；原有检查继续通过。
+三份正向消费分别在纯值和浏览器两种环境中通过。随后移除 @ts-expect-error，确认所有无效用法确实产生诊断，避免仅靠注释声称被拒绝。共 58 项拒绝覆盖不同寻址系统混用、空页面／四边形、编码与错误原因、环境隔离、资源输入和持有、异步操作、历史与参考查看、独立呈现设置、配色分支、布局反馈及空间不足错误。按键回调用例拒绝 async 函数和要求 KeyboardEvent 的处理器。
 
 结果见 [declaration-contract.json](declaration-contract.json)，包含编译器版本、检查选项、诊断数量、tarball 指纹及六份源文件指纹。源码修改后需要重跑才能继续采用该结果。
 
@@ -32,6 +32,6 @@ python refactor/verification/evidence/kana-api/check-contracts.py
 
 此外读取了 [WHATWG 编码名称](https://encoding.spec.whatwg.org/encodings.json)、[CSS 字体加载](https://drafts.csswg.org/css-font-loading/)和 [HTTP 范围条件](https://www.rfc-editor.org/rfc/rfc9110.html#name-if-range)。六项来源的 URL、时间与指纹保存于 [source-contract.json](source-contract.json)；TextEncoding 的 39 个规范名称与编码表去除 replacement 后的集合一致。这只是名称核对，未运行 39 种文本解码。
 
-本轮验证的 tarball 只有声明入口，没有运行脚本、worker、Wasm 或样式。它不能证明 Node 运行时导入、浏览器加载、字体释放、取消接续、顺序调度、位置恢复或正式包资产正确。此前部分浏览器机制和 PDF／ZIP 读取的实测仍见[阅读路线验证](../kana/reading-route.md)，已保留格式的未通过项保持原状态。
+验证的 tarball 只有声明入口，没有运行脚本、worker、Wasm 或样式。它不能证明 Node 运行时导入、浏览器加载、字体释放、取消接续、顺序调度、位置恢复或正式包资产正确。浏览器机制及 PDF／ZIP 读取结果见[阅读路线验证](../kana/reading-route.md)。
 
 回调参数与纯值的静态约束也不能替代运行行为：observe 的初始交付、重入、回调抛错和关闭最终通知还须在实际 Reader 中验证。void 返回类型不会排除 async 函数，Reader 仍按通知合同处理，不等待调用方返回的 Promise；纯函数声明存在不代表解析器或数值校验已经运行。

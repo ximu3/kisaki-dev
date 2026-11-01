@@ -39,7 +39,7 @@ test('preload entry changes take effect in a later build within the same process
     await writeFile(configuration, `export default ${JSON.stringify(config)}\n`)
 
     const first = join(paths.appRoot, 'out/first')
-    await buildProgram('preload', first, 'first')
+    await buildProgram(paths.appRoot, 'preload', first, 'first')
 
     const require = createRequire(join(paths.appRoot, 'package.json'))
     expect(require(join(first, 'main.cjs'))).toHaveProperty('value', 'main')
@@ -48,7 +48,7 @@ test('preload entry changes take effect in a later build within the same process
     await writeFile(configuration, `export default ${JSON.stringify(config)}\n`)
 
     const second = join(paths.appRoot, 'out/second')
-    await buildProgram('preload', second, 'second')
+    await buildProgram(paths.appRoot, 'preload', second, 'second')
 
     expect(require(join(second, 'main.cjs'))).toHaveProperty('value', 'changed')
     for (const name of ['reader', 'player', 'game-panel']) {

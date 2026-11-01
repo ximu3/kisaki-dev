@@ -1,6 +1,5 @@
 {
   "checkedOn": "2026-10-16",
-  "status": "design-confirmed-runtime-unverified",
   "verification": {
     "anonymousApiReads": 16,
     "httpMethod": "GET",
@@ -1346,11 +1345,17 @@
       },
       "status": 200,
       "bytes": 33576,
-      "keys": ["response"],
-      "responseKeys": ["store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "store_items"
+      ],
       "sha256": "f652596e5402620d732d658f19bb370d925c21a7f068eddba5e21f95e614998b",
       "result": {
-        "keys": ["store_items"],
+        "keys": [
+          "store_items"
+        ],
         "items": [
           {
             "id": 324160,
@@ -1413,9 +1418,27 @@
             "tagCount": 20,
             "tagIdCount": 20,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           }
         ]
@@ -1467,11 +1490,17 @@
       },
       "status": 200,
       "bytes": 52586,
-      "keys": ["response"],
-      "responseKeys": ["store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "store_items"
+      ],
       "sha256": "fa78d2cb4a8510ab9fe9ea16fd7fa2e9c381acc2b68dfcc874b894eb4accd134",
       "result": {
-        "keys": ["store_items"],
+        "keys": [
+          "store_items"
+        ],
         "items": [
           {
             "id": 324160,
@@ -1543,9 +1572,27 @@
             "tagCount": 20,
             "tagIdCount": 20,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           },
           {
@@ -1607,8 +1654,20 @@
             "tagCount": 2,
             "tagIdCount": 2,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           },
           {
@@ -1667,7 +1726,13 @@
             "tagCount": 2,
             "tagIdCount": 2,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           },
           {
@@ -1732,11 +1797,41 @@
             "tagCount": 11,
             "tagIdCount": 11,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           },
           {
@@ -1787,11 +1882,21 @@
       },
       "status": 200,
       "bytes": 8072,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "ef347c15acf255cd1517c6d092c49aeaa3670ee78495ff7dcf901d1c2abff601",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 7,
           "start": 0,
@@ -2023,11 +2128,21 @@
       },
       "status": 200,
       "bytes": 1256,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "2a28b34b665e9b7209d5a87b743255eb67bc2b98d6842eb9154386e5c4889933",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 312724,
           "start": 0,
@@ -2125,11 +2240,17 @@
       },
       "status": 200,
       "bytes": 16246,
-      "keys": ["response"],
-      "responseKeys": ["categories"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "categories"
+      ],
       "sha256": "72ed5119a91f6c17fa1d15cf11b2ada46b62b76dea44ae6443e1a9b0657315cc",
       "result": {
-        "keys": ["categories"],
+        "keys": [
+          "categories"
+        ],
         "categories": [
           {
             "id": 10,
@@ -2592,11 +2713,21 @@
       },
       "status": 200,
       "bytes": 7544,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "2cbfeb1a6418e2e4d074f3671c773fbe2db913440fcb0fbe245c9c184e322a6d",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 31015,
           "start": 0,
@@ -3109,11 +3240,21 @@
       },
       "status": 200,
       "bytes": 1049,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "9cd63b20f374efa3bd306b18fb8dd1f2606be0e3bb3e5213c845b31744ae5fb2",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 193478,
           "start": 0,
@@ -3203,17 +3344,41 @@
       "request": {
         "language": "english",
         "tagids": [
-          3799, 4085, 1742, 4947, 1756, 6971, 9551, 4182, 1693, 6426, 4726, 5608, 4166, 597, 1719,
-          21, 5350, 3871, 1721, 6650
+          3799,
+          4085,
+          1742,
+          4947,
+          1756,
+          6971,
+          9551,
+          4182,
+          1693,
+          6426,
+          4726,
+          5608,
+          4166,
+          597,
+          1719,
+          21,
+          5350,
+          3871,
+          1721,
+          6650
         ]
       },
       "status": 200,
       "bytes": 1883,
-      "keys": ["response"],
-      "responseKeys": ["tags"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "tags"
+      ],
       "sha256": "367c5f1995318ac3083399b4adf6c71dcae855413a47fcfeca2b4d3742088d47",
       "result": {
-        "keys": ["tags"],
+        "keys": [
+          "tags"
+        ],
         "tags": [
           {
             "tagid": 3799,
@@ -3363,11 +3528,21 @@
       },
       "status": 200,
       "bytes": 995,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "6eea3c1ba79fc7e409b75946d745c6f47282a2d7e54b1ddf4e699f5ac89231fe",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 193478,
           "start": 3,
@@ -3475,11 +3650,21 @@
       },
       "status": 200,
       "bytes": 18707,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "323aec7e772865bc3a7a49dc439a1153bf7552e8b2e9f415c0cb965e9f2bfe92",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 31015,
           "start": 0,
@@ -4705,11 +4890,17 @@
       },
       "status": 200,
       "bytes": 74,
-      "keys": ["response"],
-      "responseKeys": ["metadata"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata"
+      ],
       "sha256": "71bf80ae2781d9db364526035c38baaa34549df31658046646cc7fd444467d5c",
       "result": {
-        "keys": ["metadata"],
+        "keys": [
+          "metadata"
+        ],
         "metadata": {
           "total_matching_records": 0,
           "start": 0,
@@ -4743,11 +4934,21 @@
       },
       "status": 200,
       "bytes": 656,
-      "keys": ["response"],
-      "responseKeys": ["metadata", "ids", "store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "metadata",
+        "ids",
+        "store_items"
+      ],
       "sha256": "ea222b9c740eb2bb362976593bc916e64871d121a5135fcaf349f08bac0217f2",
       "result": {
-        "keys": ["metadata", "ids", "store_items"],
+        "keys": [
+          "metadata",
+          "ids",
+          "store_items"
+        ],
         "metadata": {
           "total_matching_records": 2,
           "start": 0,
@@ -4826,11 +5027,17 @@
       },
       "status": 200,
       "bytes": 1909,
-      "keys": ["response"],
-      "responseKeys": ["store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "store_items"
+      ],
       "sha256": "52a4026394fb3c387c759e722674f79024a002389b86d1a8a573d6a45fec5677",
       "result": {
-        "keys": ["store_items"],
+        "keys": [
+          "store_items"
+        ],
         "items": [
           {
             "id": 324160,
@@ -4884,11 +5091,17 @@
       },
       "status": 200,
       "bytes": 2857,
-      "keys": ["response"],
-      "responseKeys": ["store_items"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "store_items"
+      ],
       "sha256": "d7a28760531784d2b5ddbc0273928b022499686525a72a7cbdee9287072bf5a2",
       "result": {
-        "keys": ["store_items"],
+        "keys": [
+          "store_items"
+        ],
         "items": [
           {
             "id": 324160,
@@ -4929,9 +5142,27 @@
             "tagCount": 20,
             "tagIdCount": 20,
             "supportedLanguageShape": [
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"],
-              ["elanguage", "eadditionallanguage", "supported", "full_audio", "subtitles"]
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ],
+              [
+                "elanguage",
+                "eadditionallanguage",
+                "supported",
+                "full_audio",
+                "subtitles"
+              ]
             ]
           }
         ]
@@ -4943,17 +5174,41 @@
       "request": {
         "language": "schinese",
         "tagids": [
-          3799, 4085, 1742, 4947, 1756, 6971, 9551, 4182, 1693, 6426, 4726, 5608, 4166, 597, 1719,
-          21, 5350, 3871, 1721, 6650
+          3799,
+          4085,
+          1742,
+          4947,
+          1756,
+          6971,
+          9551,
+          4182,
+          1693,
+          6426,
+          4726,
+          5608,
+          4166,
+          597,
+          1719,
+          21,
+          5350,
+          3871,
+          1721,
+          6650
         ]
       },
       "status": 200,
       "bytes": 1847,
-      "keys": ["response"],
-      "responseKeys": ["tags"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "tags"
+      ],
       "sha256": "7b32463dc2a30879bd1cfb5785e60d0bafea80e380345cacc643b61ad7fb88d4",
       "result": {
-        "keys": ["tags"],
+        "keys": [
+          "tags"
+        ],
         "tags": [
           {
             "tagid": 3799,
@@ -5086,11 +5341,17 @@
       },
       "status": 200,
       "bytes": 16195,
-      "keys": ["response"],
-      "responseKeys": ["categories"],
+      "keys": [
+        "response"
+      ],
+      "responseKeys": [
+        "categories"
+      ],
       "sha256": "d0107d267d90e15bb9e8716b8af673bd870880519521fa6b17c7317e2a2b0e0d",
       "result": {
-        "keys": ["categories"],
+        "keys": [
+          "categories"
+        ],
         "categories": [
           {
             "id": 10,
@@ -5531,7 +5792,13 @@
   "findings": {
     "storeBrowseFullDescriptionAvailable": true,
     "descriptionFormat": "BBCode",
-    "batchInputKinds": ["game", "music", "dlc", "demo", "unavailable"],
+    "batchInputKinds": [
+      "game",
+      "music",
+      "dlc",
+      "demo",
+      "unavailable"
+    ],
     "perItemResultCodes": {
       "available": 1,
       "unavailableSample": 15
@@ -5543,8 +5810,14 @@
       },
       "includeAppsBroadensScope": true,
       "clannadGames": 2,
-      "broadQueryRequestedCounts": [20, 50],
-      "broadQueryActualCounts": [20, 50],
+      "broadQueryRequestedCounts": [
+        20,
+        50
+      ],
+      "broadQueryActualCounts": [
+        20,
+        50
+      ],
       "broadQueryMatchingTotal": 31015,
       "noPagingFieldInPrimarySchema": true
     },
@@ -5558,13 +5831,6 @@
       "storeCategories": true,
       "englishAndSimplifiedChineseVerified": true
     },
-    "japaneseFullDescriptionEqualsEnglish": true,
-    "legacyStoreRoutesNeededForCurrentPlannedMetadata": false
-  },
-  "designBoundary": {
-    "wholeSteamProposalConfirmed": true,
-    "personalLibraryEndpointsReplaced": false,
-    "newNativeContractRequired": false,
-    "legacyRoutesAreHistoricalComparisonOnly": true
+    "japaneseFullDescriptionEqualsEnglish": true
   }
 }

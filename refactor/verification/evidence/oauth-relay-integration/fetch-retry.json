@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-21T08:18:02.674Z",
+  "node": "v24.22.0",
+  "undici": "7.29.1",
+  "sourceReceiptSha256": "fb0eead3dbf8c9519749f0c3544a6644c74d5959cb4dea9829b10e95fa019f9c",
+  "nodeExeSha256": "ba93f9a70bd86fce3ebbb39ec758501458453467aa92a34a0a3602d1e3fc2b9c",
+  "scope": "Fetch POST with redirect:manual to an owned HTTP endpoint returning 421",
+  "fetchRequests": 2,
+  "inputs": "Synthetic form body and loopback HTTP endpoint"
+}

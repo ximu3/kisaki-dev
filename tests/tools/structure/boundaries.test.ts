@@ -6,7 +6,7 @@
 import { afterAll, beforeAll, expect, test } from 'vitest'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { copyFile, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 
@@ -21,65 +21,15 @@ const cases: {
 }[] = [
   {
     name: 'runtime-does-not-import-engineering',
-    from: 'site/src/engineering.ts',
+    from: 'clients/desktop/app/native/node/engineering.ts',
+    to: 'packages/tooling/src/process.ts',
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
   {
-    name: 'runtime may use a shared product library',
-    allowed: true,
-    from: 'site/src/library.ts',
-    to: 'packages/shared/src/value.ts',
-    source: "export type { Value } from '../../packages/shared/src/value'\n",
-  },
-  {
-    name: 'runtime-does-not-import-engineering',
-    from: 'clients/desktop/app/src/main/engineering.ts',
-    to: 'packages/tooling/src/process.ts',
-    source: "import type { Value } from '@kisaki3/tooling/process'\nexport type Alias = Value\n",
-  },
-  {
-    name: 'main-and-extension-host-are-independent',
-    from: 'clients/desktop/app/src/main/host.ts',
-    to: 'clients/desktop/app/src/extension-host/entry.ts',
-    source: "import type { Value } from '../extension-host/entry'\nexport type Alias = Value\n",
-  },
-  {
-    name: 'renderer-has-no-node',
-    from: 'clients/desktop/app/src/renderer/node.ts',
-    source: "import { readFile } from 'node:fs/promises'\nexport { readFile }\n",
-  },
-  {
-    name: 'renderer-has-no-node',
-    from: 'clients/desktop/app/src/renderer/contest.ts',
-    source: "export { readFile } from 'node:fs/promises'\n",
-  },
-  {
-    name: 'renderer-cannot-load-electron-or-native',
-    from: 'clients/desktop/app/src/renderer/electron.ts',
-    source: "export { app } from 'electron'\n",
-  },
-  {
-    name: 'runtime-does-not-import-engineering',
-    from: 'clients/desktop/app/src/main/fixture.ts',
-    to: 'clients/desktop/app/tests/fixture.test.ts',
-    source: "export type { Value } from '../../tests/fixture.test'\n",
-  },
-  {
-    name: 'appearance-dependency-direction',
-    from: 'clients/desktop/packages/appearance/src/entry.ts',
-    source: "export type { Value } from '@kisaki3/ui'\n",
-  },
-  {
-    name: 'desktop-contracts may contain its own UI contracts',
-    allowed: true,
-    from: 'clients/desktop/packages/desktop-contracts/src/ui/contract.ts',
-    to: 'clients/desktop/packages/desktop-contracts/src/ui/value.ts',
-    source: "export type { Value } from './value'\n",
-  },
-  {
-    name: 'desktop-contracts-dependency-direction',
-    from: 'clients/desktop/packages/desktop-contracts/src/component.ts',
-    source: "export type { Value } from '@kisaki3/ui'\n",
+    name: 'engineering-does-not-import-tests',
+    from: 'clients/desktop/app/tools/runtime.ts',
+    to: 'clients/desktop/app/tests/support/value.ts',
+    source: "export type { Value } from '../tests/support/value'\n",
   },
   {
     name: 'no-undeclared-packages',
@@ -87,23 +37,11 @@ const cases: {
     source: "export { value } from 'undeclared-tool'\n",
   },
   {
-    name: 'native-is-main-only',
-    from: 'clients/desktop/app/src/preload/main.ts',
-    to: 'clients/desktop/app/native/node/index.ts',
-    source: "import type { Value } from '#native'\nexport type Alias = Value\n",
-  },
-  {
-    name: 'package-private-source',
-    from: 'clients/desktop/packages/rpc/src/index.ts',
-    to: 'clients/desktop/packages/appearance/src/value.ts',
-    source: "export type { Value } from '../../appearance/src/value'\n",
-  },
-  {
     name: 'engineering tools use private package exports',
     allowed: true,
     from: 'clients/desktop/app/tools/process.ts',
     to: 'packages/tooling/src/process.ts',
-    source: "import type { Value } from '@kisaki3/tooling/process'\nexport type Alias = Value\n",
+    source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
 ]
 
@@ -128,11 +66,6 @@ beforeAll(async () => {
     await copyFile(resolve(file), target)
   }
 
-  const manifest = JSON.parse(
-    await readFile(join(directory, 'clients/desktop/app/package.json'), 'utf8'),
-  ) as { devDependencies: { electron: string } }
-  const electronVersion = manifest.devDependencies.electron
-
   // Ancestor availability must not substitute for the importing project's declaration.
   await writeFile(
     join(directory, 'package.json'),
@@ -140,39 +73,6 @@ beforeAll(async () => {
   )
 
   const fixturePackages = [
-    {
-      path: 'clients/desktop/packages/desktop-contracts',
-      manifest: {
-        name: '@kisaki3/desktop-contracts',
-        dependencies: { '@kisaki3/ui': '1.0.0' },
-      },
-      files: {},
-    },
-    {
-      path: 'clients/desktop/packages/appearance',
-      manifest: {
-        name: '@kisaki3/appearance',
-        dependencies: { '@kisaki3/ui': '1.0.0' },
-      },
-      files: {},
-    },
-    {
-      path: 'clients/desktop/packages/ui',
-      manifest: {
-        name: '@kisaki3/ui',
-        type: 'module',
-        exports: { '.': { types: './dist/index.d.ts', import: './dist/index.js' } },
-      },
-      files: {
-        'dist/index.d.ts': 'export interface Value { name: string }\n',
-        'dist/index.js': 'export const value = 1\n',
-      },
-    },
-    {
-      path: `node_modules/.pnpm/electron@${electronVersion}/node_modules/electron`,
-      manifest: { name: 'electron', version: electronVersion, main: './index.js' },
-      files: { 'index.js': 'exports.app = {}\n' },
-    },
     {
       path: 'node_modules/undeclared-tool',
       manifest: { name: 'undeclared-tool', version: '1.0.0', main: './index.js' },
@@ -192,13 +92,6 @@ beforeAll(async () => {
 
   const scope = join(directory, 'node_modules', '@kisaki3')
   await mkdir(scope, { recursive: true })
-  await symlink(join(directory, 'clients/desktop/packages/ui'), join(scope, 'ui'), 'junction')
-  await symlink(
-    join(directory, `node_modules/.pnpm/electron@${electronVersion}/node_modules/electron`),
-    join(directory, 'node_modules/electron'),
-    'junction',
-  )
-
   await mkdir(join(directory, 'packages', 'tooling'), { recursive: true })
   await writeFile(
     join(directory, 'packages', 'tooling', 'package.json'),

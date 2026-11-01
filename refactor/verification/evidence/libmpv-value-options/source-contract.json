@@ -1,6 +1,5 @@
 {
   "purpose": "source evidence for comparing alternatives; not proof of a chosen public API",
-  "designStatus": "exploration",
   "mpvRef": "v0.41.0",
   "mpvCommit": "41f6a645068483470267271e1d09966ca3b9f413",
   "nativeAddonExecuted": false,

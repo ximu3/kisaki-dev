@@ -41,13 +41,11 @@ def main():
         receipts = list(executor.map(fetch, SOURCES.items()))
     result = {
         "purpose": "call-contract source evidence, not native execution",
-        "designStatus": "proposal",
         "vantageAddonExecuted": False,
         "permissionPromptExecuted": False,
         "nativeObservationSchedulingVerified": False,
         "windowGeometryVerified": False,
         "macos13ShadowExclusionVerified": False,
-        "captureTimeoutCalibrated": False,
         "sources": receipts,
     }
     (ROOT / "source-contract.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

@@ -8,9 +8,9 @@
 
 涉及模型、主要行为、公开合同、架构边界或交付范围的取舍，按[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)说明依据、选项与代价，讨论确定后实施。既定合同内的问题由实施者修复与验证。重要判断查阅相关社区、维护者与成熟项目实践，并核对实际工具能力。
 
-本仓库承载 `clients/desktop/app`、八个公共包、33 个官方扩展项目与三个私有工程包。Vantage、Kana、libmpv-node 和 oauth-relay 在各自独立仓库实现、验证与交付，并按合同接入。Web 客户端、官网和候选服务端不在当前交付范围，不预建源码。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
+本仓库维护完整产品设计和已交付工程能力；正式项目随所属工作包建立，不预建未完成实现或工程空壳。桌面、七个公共包与 33 项官方扩展的目标归属见工作包，当前源码范围见 ARCHITECTURE.md。Vantage、Kana、libmpv-node 和 oauth-relay 在各自独立仓库实现、验证与交付，并按合同接入。Web 客户端、官网和候选服务端不在当前交付范围，不预建源码。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
 
-main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最小能力，extension-host 是独立共享 Node 进程。shared 只含纯合同。公共包使用构建后的 exports，SDK 通过 extension-api 消费桌面能力，官方扩展不导入应用私有代码。
+main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最小能力，extension-host 是独立共享 Node 进程。shared 只含纯合同。公共包使用构建后的 exports，SDK 的纯模块选择桌面公开能力，Node 与 Webview 入口实现接入，官方扩展不导入应用私有代码。
 
 数据、错误、并发、取消与资源寿命遵循所属设计。失败不通过缩减范围、返回空值或关闭检查消除。测试不用真实个人资料，Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。
 

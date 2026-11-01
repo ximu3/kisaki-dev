@@ -2,26 +2,26 @@
 
 桌面应用、所属公共包、官方扩展和分发资料在同一仓库的 clients/desktop 下维护。仓库还按[工程分组](layout.md#workspace)区分后续 Web 客户端、官网和候选服务端；本篇的具体工具链与交付检查覆盖当前桌面范围。各项目通过声明的依赖和公开入口协作，构建顺序由实际依赖决定。公开能力需要同时通过类型检查、运行验证和仓库外制品消费验证。
 
-| 阅读目的 | 入口 |
-| --- | --- |
+| 阅读目的             | 入口                                                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | 选择公共包与作者入口 | [包与依赖方向](#packages) · [源码组织](#package-organization) · [类型定义](#contracts) · [视觉交付](#visual-packages) |
-| 配置工程和检查环境 | [工作区配置](#workspace) · [工具职责](#tooling) · [声明检查](#declaration-checks) |
-| 选择任务与 CI 范围 | [任务入口](#tasks) · [CI 编排](#ci-selection) · [缓存](#task-cache) · [反馈预算](#ci-feedback) |
-| 运行开发会话 | [桌面开发](#desktop-development) · [输出访问与收尾](#output-access) |
-| 维护依赖与协作流程 | [依赖更新](#dependencies) · [PR 与提交](#collaboration) · [本地 hooks](#hooks) |
+| 配置工程和检查环境   | [工作区配置](#workspace) · [工具职责](#tooling) · [声明检查](#declaration-checks)                                     |
+| 选择任务与 CI 范围   | [任务入口](#tasks) · [CI 编排](#ci-selection) · [缓存](#task-cache) · [反馈预算](#ci-feedback)                        |
+| 运行开发会话         | [桌面开发](#desktop-development) · [输出访问与收尾](#output-access)                                                   |
+| 维护依赖与协作流程   | [依赖更新](#dependencies) · [PR 与提交](#collaboration) · [本地 hooks](#hooks)                                        |
 
 <a id="solid"></a>
 
 ## Solid 与控件版本
 
-| 能力           | 版本线                      | 固定兼容基线                                                                      |
-| -------------- | --------------------------- | --------------------------------------------------------------------------------- |
-| Solid          | 1.9.x                       | solid-js 1.9.16                                                                   |
-| 官方路由       | 与 Solid 1.9 相容的 1.x     | @solidjs/router 1.0.0                                                             |
-| 编译集成       | 支持 Solid 1 的插件 2.x     | vite-plugin-solid 2.11.14                                                         |
-| 基础控件       | 与 Solid 1.9 相容的成熟版本 | @kobalte/core 0.13.14                                                             |
-| 虚拟列表与网格 | TanStack Virtual 3.x        | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
-| 拖拽排序       | Pragmatic Drag and Drop     | 核心 3.1.0 与辅助包组合见 [拖拽实现](../ui/virtualization.md#dependency)          |
+| 能力           | 版本线                     | 固定兼容基线                                                                      |
+| -------------- | -------------------------- | --------------------------------------------------------------------------------- |
+| Solid          | 1.9.x                      | solid-js 1.9.16                                                                   |
+| 官方路由       | 与 Solid 1.9 相容的 1.x    | @solidjs/router 1.0.0                                                             |
+| 编译集成       | 支持 Solid 1 的插件 2.x    | vite-plugin-solid 2.11.14                                                         |
+| 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证                                           |
+| 虚拟列表与网格 | TanStack Virtual 3.x       | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
+| 拖拽排序       | Pragmatic Drag and Drop    | 核心 3.1.0 与辅助包组合见 [拖拽实现](../ui/virtualization.md#dependency)          |
 
 原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 2.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
 
@@ -31,67 +31,62 @@
 
 ## 公共包与依赖方向
 
-| 包                     | 责任与环境                                                                                     | 真实消费范围                                       | 许可 |
-| ---------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------- | ---- |
-| appearance             | 纯视觉 token 词表、基础值规则、默认视觉值、CSS 与可选 Tailwind 映射                            | 桌面原生界面与各框架扩展 Webview                   | MIT  |
-| ui                     | Solid 基础组件及可直接消费的样式；Solid 作为 peer                                              | 使用 Solid 的原生界面和扩展 Webview                | MIT  |
-| extension-distribution | manifest、仓库索引、静态展示元数据、身份和兼容声明格式、纯校验与规范化；Node 入口实现索引签名  | 本体、合同、SDK、CLI 及处理扩展制品的消费者        | MIT  |
-| desktop-contracts      | 完整桌面公共值、操作、错误与参与接口；development 入口提供作者开发控制合同                     | 本体、窗口、extension-api 及实际使用这些定义的工具 | MIT  |
-| extension-api          | 完整扩展公开接口，选用桌面能力并显式提供相关类型，定义扩展上下文、激活、登记差异与公开接入消息 | 宿主、SDK、扩展作者及实际需要运行合同的工具        | MIT  |
-| rpc                    | 自研、环境无关的消息式 RPC 内核，只提供通用连接与调用机制                                      | 桌面通信接入和 SDK 的实际客户端实现                | MIT  |
-| extension-sdk          | 实现扩展 API，提供集中作者类型入口及 Node、框架无关 Webview 接入                               | 具体扩展；不作为应用业务总入口                     | MIT  |
-| extension-cli          | kisx、程序化工作流与模板，面向源码工作区、扩展和分发仓库                                       | 外部作者与同仓官方扩展开发                         | MIT  |
+| 包                     | 完整职责                                                  | 真实消费范围                             | 许可 |
+| ---------------------- | --------------------------------------------------------- | ---------------------------------------- | ---- |
+| desktop-appearance     | 视觉词表、纯值规则、默认值、基础 CSS 与可选 Tailwind 映射 | 桌面、各框架 Webview 与独立视觉消费者    | MIT  |
+| desktop-ui             | Solid 组件、通用交互与可直接消费的样式；Solid 作为 peer   | 原生界面、扩展与独立 Solid 项目          | MIT  |
+| desktop-contracts      | 桌面公共值、操作、错误、参与接口与开发控制合同            | 本体、窗口、SDK 与实际使用这些定义的工具 | MIT  |
+| desktop-rpc            | 环境无关的消息式调用、通知、取消、错误和连接寿命          | 窗口、扩展与开发控制的通信接入           | MIT  |
+| extension-distribution | 制品与仓库格式、静态元数据、兼容声明、纯校验与 Node 签名  | 本体、SDK、CLI 与制品工具                | MIT  |
+| extension-sdk          | 扩展公开合同、作者入口、Node 与框架无关 Webview 运行接入  | 扩展作者，以及消费纯合同与协议的宿主     | MIT  |
+| extension-cli          | kisx、程序化工作流、三种作者模板与分发仓库工具            | 外部作者与同仓官方扩展                   | MIT  |
 
-八个包统一放在 clients/desktop/packages，围绕桌面与扩展的实际需求设计。appearance 提供视觉词表，ui 提供 Solid 组件，rpc 提供环境无关的通信能力。Web 与官网可自行选择界面体系；外部消费者通过各包声明的公开入口采用适用能力。
+七个包位于 clients/desktop/packages，目录与包的短名称一致。每个包按[所属工作包](../../implementation/work-packages.md)一次完整交付全部职责，独立管理版本、构建制品、文档和消费验证。
 
-产品接口的依赖方向为 extension-sdk → extension-api → desktop-contracts。SDK 通过 extension-api 使用业务合同，不直接依赖 desktop-contracts。本体和扩展宿主按职责直接使用桌面定义或扩展接入合同。
+产品合同的依赖方向为 extension-sdk → desktop-contracts。SDK 的纯模块明确选择扩展可用能力，定义上下文、激活、登记和接入协议；Node 与 Webview 实现消费这些模块。宿主依赖 SDK 包的纯入口，导入链保持纯粹。包级安装依赖与模块运行依赖分别核对。
 
-desktop-contracts 可以引用 appearance 的视觉词表和 extension-distribution 的制品格式，不反向依赖扩展上下文。extension-distribution 不依赖应用业务或扩展 API，rpc 不依赖任何产品合同。其他依赖按下表选择：
+| 消费者                 | 可消费的内容                                              | 职责边界                                          |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------------------- |
+| desktop-appearance     | 视觉定义及必要的通用纯库                                  | 只拥有视觉值与样式协议                            |
+| desktop-ui             | desktop-appearance、Solid peer 与呈现依赖                 | 通过 props 和回调接入数据，拥有组件交互和资源寿命 |
+| extension-distribution | 制品格式及必要的通用库                                    | 纯格式与 Node 签名分别提供入口                    |
+| desktop-contracts      | desktop-appearance 的词表、extension-distribution 的格式  | 只拥有业务定义与纯规则                            |
+| desktop-rpc            | 标准语言能力及必要的通用依赖                              | 产品合同、实际传输和身份绑定由消费者提供          |
+| extension-sdk          | desktop-contracts、desktop-rpc 及实际使用的分发与视觉定义 | 纯合同、Node 和 Webview 实现按模块与入口隔离      |
+| extension-cli          | 分发能力、开发合同、RPC 及工作流实际所需工具              | 工具运行依赖与模板生成的依赖分别声明              |
+| 应用与具体扩展         | 与自身职责和环境相符的公共入口                            | 私有业务留在各自项目，官方扩展使用同一作者合同    |
 
-| 消费者                 | 可依据职责消费的内容                                           | 必须保持的边界                                                                                                      |
-| ---------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| appearance             | 纯视觉定义与适用通用纯库                                       | 不导入桌面合同、分发业务、应用、SDK 或框架运行状态                                                                  |
-| ui                     | appearance、Solid peer 及适用呈现依赖                          | 不调用业务、宿主或云服务，不把桌面域对象藏进基础组件                                                                |
-| extension-distribution | 扩展制品与静态元数据规则、适用的通用格式库                     | 不依赖 desktop-contracts、extension-api、SDK、rpc、CLI 或应用；Node 签名与纯格式入口分开                            |
-| desktop-contracts      | appearance 的视觉词表与 extension-distribution 的实际制品格式  | 管理接口直接引用 manifest/索引等定义；不依赖 extension-api、SDK、rpc、CLI 或程序实现                                |
-| extension-api          | desktop-contracts 的明确能力，以及实际使用的分发或视觉基础定义 | 只含运行与公开接入规范；不依赖 SDK、rpc 或桌面私有程序                                                              |
-| rpc                    | 标准语言能力与确有必要的通用基础依赖                           | 不依赖本体或扩展合同、SDK、UI、Electron 或任一应用，实际传输由调用方适配                                            |
-| extension-sdk          | extension-api、rpc 与实际使用的分发或视觉基础                  | 业务接口仅经 extension-api 消费，不直接依赖 desktop-contracts 或私有源码；区分 Node/Webview，不要求作者管理底层连接 |
-| extension-cli          | 作者工作流实际使用的分发能力、开发合同、工具与接入实现         | 模板依赖与工具自己的运行依赖分别声明，不因模板使用 UI 就作为 CLI 运行依赖                                           |
-| 应用和具体扩展         | 与自身环境和职责相符的公开入口                                 | 不导入另一应用或另一扩展的私有源码；官方扩展同样遵守作者合同                                                        |
+desktop-contracts 与 extension-distribution 保持纯定义的单向关系。SDK 的公开范围由扩展合同明确选择，同义业务值直接引用 desktop-contracts。desktop-rpc 负责共同机制，接入层绑定窗口、文档、实例与方法表。
 
-项目声明实际使用的依赖，工作区据此生成依赖图。拆包需要稳定的公共用途、独立的依赖边界和真实消费者；模块内共享的实现保留在所属项目。
+各包的 npm 版本、扩展 API 版本、接入协议版本和 schemaVersion 分别表达自身含义。兼容变更按实际公开语义判断，宿主与扩展依据声明范围协作。
 
-各包独立管理版本。桌面合同变化可能要求扩展相关包更新，但不必然意味着公开 API 不兼容，也不要求桌面与 SDK 锁步发行。API 版本、schemaVersion 和 npm 包版本分别表达自己的含义。
+Vantage、Kana、libmpv-node 和 oauth-relay 按[独立项目规范](../projects/README.md)通过正式制品或服务合同接入，各自维护实现源码与发行。应用与云服务通过公开合同协作，客户端只依赖自己可以取得的公共输入。
 
-Vantage、Kana、libmpv-node 和 oauth-relay 按 [独立项目规范](../projects/README.md) 通过公开发行或服务合同接入，其实现源码不进入 Kisaki monorepo。未来产品服务端同仓与这些独立项目的仓库边界分别判断。云合同由服务提供者维护，客户端不导入服务端内部实现；公开构建不能读取私有服务端源码。
+公共包通过 workspace 依赖、exports 和构建结果消费，同仓与仓库外使用同一公开路径。发布的声明包含可取得的类型依赖。包内源码与私有工程入口的规则见[共同规范](../../../CONVENTIONS.md#module-imports)。
 
-公共包之间的导入使用 workspace 依赖、exports 和构建结果。同仓消费者与仓库外消费者使用相同的公开路径，不能通过 TypeScript paths 指向另一包的 src。发布的 d.ts 不得包含私有源码路径或尚未发布的依赖。私有工程包的直接源码入口按[工作区配置](#workspace)限定宿主与消费范围。相关行为依据 [TypeScript paths](https://www.typescriptlang.org/docs/handbook/modules/reference.html#paths) 和 [Node exports](https://nodejs.org/api/packages.html#package-entry-points) 验证。
+按稳定职责和运行环境设计公开入口。可独立消费的能力优先使用子路径；承担单一内聚机制的包可以使用根入口。公开路径表达消费能力，源码文件按维护关系组织。desktop-ui 按组件家族提供子路径，desktop-contracts 按领域提供入口，desktop-rpc 使用内聚根入口，SDK 根入口提供纯作者合同。
 
-exports 不提供安全隔离。静态检查还要覆盖相对路径、绝对路径、别名、类型导入、转导出、循环依赖和运行环境。main 与 extension-host 不互相导入私有实现，只共同使用 shared 中的私有协议和独立 rpc；连接身份、开放方法及运行资源由各自接入负责。
+exports 定义公开入口，静态检查继续覆盖实际导入链、循环与运行环境。main 与 extension-host 共同消费纯协议和 desktop-rpc，各自拥有连接与运行资源。
 
 <a id="package-organization"></a>
 
 ## 公共包的源码组织
 
-八个包各自在 clients/desktop/packages 下组织源码。以下位置表达主要职责，公开 exports 按消费方式明确列出，不随内部文件自动扩展。小模块保持单文件，只有实际需要多份逻辑协作时才拆成同名目录。
+| 包                     | 主要源码职责                                                                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| desktop-appearance     | tokens、values、defaults 分别维护词表、规则与默认值；CSS 和映射按[视觉交付](#visual-packages)组织                                   |
+| desktop-ui             | 组件家族与配套实现按[能力与协作关系](../ui/package.md#organization)组织；公开构建入口就近放置，共用交互按实际复用提取               |
+| desktop-contracts      | library、metadata、ingest、scanner、sessions、tasks 等模块拥有各自值与操作；基础值使用明确叶模块，development 拥有开发控制合同      |
+| desktop-rpc            | connection 管理调用与连接，frames 定义有限帧，transport 定义传输接入；内部按真实状态与资源寿命组织                                  |
+| extension-distribution | manifest、registry、metadata、compatibility 分别拥有格式与规则；node/signing 提供签名和验签                                         |
+| extension-sdk          | contracts 组织纯作者合同，protocol 组织公开接入消息，node 与 webview 实现各自环境的调用和资源接入；根入口集中提供作者类型与必要纯值 |
+| extension-cli          | cli 处理命令与反馈；workspace、extension、registry 拥有实际工作流；config 提供轻量配置声明；templates 保存正式生成模板              |
 
-| 包                     | 主要源码位置与责任                                                                                                                                               |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| appearance             | tokens.ts 维护词表与类型，values.ts 维护纯值规则，defaults.ts 维护默认视觉值；CSS 与可选映射遵守[视觉交付边界](#visual-packages)                                 |
-| ui                     | components 按[实际职责](../ui/package.md#organization)组织，单文件优先；根入口明确选择公开能力，virtual.ts 提供通用几何；组件不取得桌面业务依赖                 |
-| extension-distribution | manifest 与 registry 分别组织声明和索引格式；metadata.ts 维护静态展示值，compatibility.ts 维护兼容规则，node/signing.ts 实现签名与验证                           |
-| desktop-contracts      | library、metadata、ingest、scanner、sessions、tasks 等语义模块拥有各自的值、操作和参与合同；错误、日期、几何等基础值使用明确叶模块，development 提供工具开发接入 |
-| extension-api          | node 组织 ExtensionContext、生命周期及领域能力的选用和登记差异，webview 组织视图能力与私有通信合同，protocol 组织宿主与 SDK 的公开接入消息；全部保持纯粹         |
-| rpc                    | connection.ts 拥有连接、调用关联、取消与关闭；frames.ts 定义和校验消息帧，transport.ts 定义传输适配接口；按真实职责与寿命组织内部协作                           |
-| extension-sdk          | node 实现扩展上下文、登记、回调和实例资源映射；webview 实现实际视图连接、私有通信及宿主环境接入；根 index.ts 明确集中导出作者类型与必要纯定义                    |
-| extension-cli          | cli 负责命令参数、交互和终端反馈；workspace、extension、registry 分别拥有实际工作流，config.ts 提供轻量配置声明；templates 保存正式生成模板                      |
+SDK 的纯模块只依赖纯定义，运行实现依赖纯模块。根入口与 protocol 入口可供宿主独立导入；node 与 webview 分别初始化对应环境。公开接入协议与本体 shared/extension-host.ts 的私有控制合同各有版本和真实身份绑定，见[协议规则](protocols.md)。来源账号、请求策略、重试与业务状态由具体扩展拥有。
 
-extension-api 的公开接入消息与本体 shared/extension-host.ts 的私有进程控制协议分别维护，版本、有限帧及真实实例绑定遵守[协议合同](protocols.md)。SDK 的 Node 与 Webview 入口使用各自环境，纯入口不初始化其中任一端；同义的资源或回调适配按实际责任复用，通用通信机制直接使用 rpc。来源账号、请求策略和业务状态继续由具体扩展拥有。
+CLI 的 create、dev、validate、build、pack 等工作流同时服务命令行和程序化入口。三种模板分别生成 node、node-webview、node-solid 作者结构，作为正式工具资源交付。
 
-CLI 的 extension 工作流按 create、dev、validate、build 和 pack 的实际责任组织；程序化入口直接复用这些工作流，不调用命令后解析终端文字。templates 分为 node、node-webview 和 node-solid，分别生成已规定的三种作者结构，并作为 CLI 的正式资源交付，不放入测试 fixture。
-
-各包维护自己的 README、release-notes、manifest、TypeScript 与构建配置，dist 保存生成制品。纯逻辑单测贴近源码，集成、浏览器、制品消费和工具测试按[共同测试结构](layout.md#tests)归所属工程的 tests，真实样本归 tests/fixtures。跨包制品消费由根 tests/desktop/consumers 拥有，通过 desktop:packages:test:consumers 任务使用实际 tarball 验证纯 Node、框架无关 Webview 和 Solid Webview 三种作者路径；测试专用准备与清理归 tests/desktop/support，试件归 tests/desktop/fixtures。作者按实际需要使用 SDK、appearance 和 ui，不要求安装全部八包或读取应用源码。
+各包维护自己的 README、发行说明、manifest、类型与构建配置，dist 保存生成制品。测试按[共同结构](layout.md#tests)归所属工程，跨包 tarball 消费归根 tests/desktop/consumers，覆盖 Node、框架无关 Webview 和 Solid 三条作者路径。测试准备、样本与清理保留在对应测试范围。作者只声明实际使用的公开包。
 
 <a id="contracts"></a>
 
@@ -99,14 +94,14 @@ CLI 的 extension 工作流按 create、dev、validate、build 和 pack 的实�
 
 | 定义                                                  | 定义拥有者                                                     | 保持的含义与边界                                                                          |
 | ----------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| EntryRef、WorkRef、PartRef、ExternalIdentity 与资料值 | desktop-contracts/library 的相应模块                           | 正式身份与来源身份分别表达；本体直接引用，SDK 经 extension-api 消费，同义定义不复制       |
+| EntryRef、WorkRef、PartRef、ExternalIdentity 与资料值 | desktop-contracts/library 的相应模块                           | 正式身份与来源身份分别表达；本体直接引用，SDK 的纯合同直接引用，同义定义保持唯一          |
 | 评分、状态、完成与记录值                              | desktop-contracts/library 的记录合同                           | 值与查询、修改共同组织，内部持久实现归本体；不从 ORM 行推导公共数据                       |
 | 阅读位置、文字选区与页面区域                          | desktop-contracts/library 的记录合同；共有几何由明确叶模块提供 | 定义形状、编码、合法性与 Kana 接入边界，不将解析算法移入合同                              |
 | PartialDate 等实际跨合同的基础值                      | desktop-contracts 内有明确语义的日期等叶模块                   | 保持唯一类型和纯规则，不为每种小值增加 npm 包                                             |
 | FontRef、字体读取与管理合同                           | desktop-contracts/fonts                                        | 表达桌面系统字体和用户字体库身份，供主题与阅读直接使用，不进入共同视觉包                  |
-| Theme、AppearanceTokens、ThemeRef 与桌面外观接入      | desktop-contracts/appearance                                   | 保留双套主题、字体选择及资源合同；主进程承担持久化与解析，视觉词表来自 appearance         |
+| Theme、AppearanceTokens、ThemeRef 与桌面外观接入      | desktop-contracts/appearance                                   | 保留双套主题、字体选择及资源合同；主进程承担持久化与解析，视觉词表来自 desktop-appearance |
 | LocalizedText 与静态文案匹配规则                      | extension-distribution/metadata                                | manifest、索引、贡献文案和发行说明直接采用同一格式；本体 i18n 接口引用它，不重新声明      |
-| UiTranslationRef、消息目录与英语基准生成合同          | desktop-contracts/i18n                                         | 纯登记值、键与参数约束及作者基准；SDK 经 extension-api 提供，本体 i18n 拥有实际登记与解析 |
+| UiTranslationRef、消息目录与英语基准生成合同          | desktop-contracts/i18n                                         | 纯登记值、键与参数约束及作者基准；SDK 从纯作者入口提供，本体 i18n 拥有实际登记与解析      |
 | ErrorSummary 等真正同义的基础结果值                   | desktop-contracts/errors 等明确语义入口                        | 不建立同形别名；每个操作仍表达自身完成、失败和取消语义                                    |
 
 desktop-contracts 按公共能力提供 library、metadata、ingest、scanner、sessions、tasks、onboarding、search、events、images、i18n 等入口，development 入口用于工具开发会话。合同目录按这些语义组织，应用内部目录由各实现自行管理。
@@ -119,7 +114,7 @@ desktop-contracts 按公共能力提供 library、metadata、ingest、scanner、
 
 本体登记 provider 时使用完整 ID，扩展登记使用实例内的局部 id。登记差异不改变回调和资料值的共同合同。
 
-extension-api 只包含公开定义及必要纯规则，显式导出公开签名需要的全部类型和值。扩展上下文与激活合同由它定义，业务合同仍由 desktop-contracts 维护。SDK 从 extension-api 集中导出 ExtensionContext、EntryRef、MetadataProvider 等作者需要的类型，不要求作者逐包寻找，也不使用 export * 汇出整个仓库。
+extension-sdk 的纯合同模块定义扩展上下文、激活与公开能力选择，直接引用 desktop-contracts 中的业务合同。根入口集中提供 ExtensionContext、EntryRef、MetadataProvider 等作者类型和值；protocol 入口提供宿主接入合同。公开导出按真实作者需要选择。
 
 SDK 的 Node 和 Webview 运行入口分别适配对应环境，公共纯入口不能加载 Node I/O、DOM、Electron 或 Solid。各包独立演进时，仍须验证双方实际语义相容。
 
@@ -131,19 +126,19 @@ SDK 的 Node 和 Webview 运行入口分别适配对应环境，公共纯入口�
 
 ## 视觉基础与桌面资源
 
-appearance 维护视觉 token 词表、类型与值规则、默认值、CSS 和可选映射。它不识别 FontRef、ThemeRef、字体 ID 与路径、偏好、数据库或登记句柄。
+desktop-appearance 维护视觉 token 词表、类型与值规则、默认值、CSS 和可选映射。它不识别 FontRef、ThemeRef、字体 ID 与路径、偏好、数据库或登记句柄。
 
-appearance/src/styles.css 提供普通基础与派生 CSS，类型、默认值和普通 CSS 可独立消费。src/tailwind.css 提供 Tailwind 4 映射，通过 [CSS 主题变量](https://tailwindcss.com/docs/theme#referencing-other-variables)引用正式视觉变量。采用映射入口的项目自行提供 Tailwind 构建工具。
+desktop-appearance/src/styles.css 提供普通基础与派生 CSS，类型、默认值和普通 CSS 可独立消费。src/tailwind.css 提供 Tailwind 4 映射，通过 [CSS 主题变量](https://tailwindcss.com/docs/theme#referencing-other-variables)引用正式视觉变量。采用映射入口的项目自行提供 Tailwind 构建工具。
 
-desktop-contracts/appearance 在字体槽中组合桌面字体选择，直接引用 appearance 的颜色和尺寸词表。主进程 appearance 解析资源，宿主绑定资源 URL，SDK 在扩展文档中加载资源，具体分工见 [外观规则](../domains/appearance.md)。
+desktop-contracts/appearance 在字体槽中组合桌面字体选择，直接引用 desktop-appearance 的颜色和尺寸词表。主进程 appearance 解析资源，宿主绑定资源 URL，SDK 在扩展文档中加载资源，具体分工见 [外观规则](../domains/appearance.md)。
 
-ui 通过 props、事件、回调和普通呈现值接入行为，不导入桌面合同、SDK、数据库或客户端查询层。应用内的 domain-ui 提供桌面业务界面。非 Solid 扩展可以只使用 appearance 和框架无关 SDK。
+desktop-ui 通过 props、事件、回调和普通呈现值接入行为，不导入桌面合同、SDK、数据库或客户端查询层。应用内的 domain-ui 提供桌面业务界面。非 Solid 扩展可以使用 desktop-appearance 和框架无关 SDK。
 
-公共组件的 Kobalte 选型、组合、Field 与文本输入职责、目录及公开入口由[UI 包规范](../ui/package.md)统一定义。appearance 自身维护共同默认视觉值，ui 自身维护组件样式；应用通过公开入口消费。旧应用用于[视觉对照](../ui/components.md#existing-ui)，不成为公共包的依赖。类型、样式消费与实际视觉分别验证。
+公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式；应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
 
-ui 使用 Tailwind 4 编写和构建组件的常规样式，TSX 中的工具类与变体组织遵守[UI 包规范](../ui/package.md#organization)。src/styles.css 是包内编译入口，接入 Tailwind、appearance 的映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。
+desktop-ui 使用 Tailwind 4 编写和构建组件的常规样式，TSX 中的工具类与变体组织遵守[UI 包规范](../ui/package.md#organization)。src/styles.css 是包内编译入口，接入 Tailwind、desktop-appearance 的基础样式、映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。
 
-UI 成品包含组件自身必要的基础规则，不无条件注入影响整个文档的 [Preflight](https://tailwindcss.com/docs/preflight#disabling-preflight)。文档级重置由实际宿主统一安排。应用或扩展自己的 Tailwind 构建只处理自身代码及实际共享组件，并通过 appearance 采用同一映射；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
+UI 成品包含组件自身必要的基础规则，不无条件注入影响整个文档的 [Preflight](https://tailwindcss.com/docs/preflight#disabling-preflight)。文档级重置由实际宿主统一安排。应用或扩展自己的 Tailwind 构建只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一映射；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
 
 CSS 提供明确的消费入口，并通过副作用配置确保构建保留；消费者不扫描包的 src 生成样式。Solid 作为 peer 依赖，不重复打包。字体字节和加载由宿主管理，纯视觉包不承担桌面资源职责，也不预先承诺所有 UI 框架或 SSR 模式。
 
@@ -153,9 +148,9 @@ CSS 提供明确的消费入口，并通过副作用配置确保构建保留；�
 
 ## 工作区与项目配置
 
-Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。当前成员为桌面应用、八个公共包、33 个官方扩展和三个私有工程包，共 45 个；clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
+Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。交付布局包含桌面应用、七个公共包、33 个官方扩展和三个私有工程包，共 44 个工程身份；实际登记随所属工作包维护；clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
 
-通用检查通过 pnpm 读取已登记成员，同时独立枚举维护目录中的 package.json 核对漏登记；历史证据、生成输出和测试试件不作为 workspace 成员。源码覆盖与依赖扫描从整个维护树发现输入，不维护桌面、官网或服务端的平行目录清单。TypeScript 工程以默认 tsconfig.json 及其 references 表达 typecheck 的检查范围，结构检查不解析脚本中的编译器命令文本。桌面八包的数量、许可和发布约束留在桌面范围，私有工程规则只指向实际工程包，不替尚未建立的产品库决定许可或私有身份。
+通用检查通过 pnpm 读取已登记成员，同时独立枚举维护目录中的 package.json 核对漏登记；workspace 只登记实际工程，证据、生成输出和测试试件按各自用途组织。源码覆盖与依赖扫描从整个维护树发现输入，不维护桌面、官网或服务端的平行目录清单。TypeScript 工程以默认 tsconfig.json 及其 references 表达 typecheck 的检查范围，结构检查不解析脚本中的编译器命令文本。桌面公共包的数量、许可和发布约束留在桌面范围，私有工程规则只指向实际工程包，不替尚未建立的产品库决定许可或私有身份。
 
 | 位置                   | 负责内容                                                             |
 | ---------------------- | -------------------------------------------------------------------- |
@@ -183,7 +178,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
+七个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -191,17 +186,17 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 ## 工具职责与检查环境
 
-| 拥有者                       | 唯一负责的事实或行为                                                   |
-| ---------------------------- | ---------------------------------------------------------------------- |
-| pnpm                         | workspace 成员、各包实际依赖、统一锁文件、catalog、安装与 tarball 打包 |
-| Turborepo                    | 从真实依赖形成任务顺序、受影响范围、并发与合格任务的缓存               |
-| TypeScript、ESLint、Prettier | 类型与环境检查、代码规范和导入规则、统一排版                           |
-| tsdown                       | 公开 TypeScript/Solid 包的代码、类型声明与声明过的样式输出             |
-| Vite 与桌面 tools            | 各 Electron 程序和 renderer 的编译、开发服务器、桌面生命周期与资源装配 |
-| electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                     |
-| kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                     |
-| GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                       |
-| 根 tools 与私有工程包         | 根工具拥有 Git hooks、验证环境信息、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
+| 拥有者                       | 唯一负责的事实或行为                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| pnpm                         | workspace 成员、各包实际依赖、统一锁文件、catalog、安装与 tarball 打包                               |
+| Turborepo                    | 从真实依赖形成任务顺序、受影响范围、并发与合格任务的缓存                                             |
+| TypeScript、ESLint、Prettier | 类型与环境检查、代码规范和导入规则、统一排版                                                         |
+| tsdown                       | 公开 TypeScript/Solid 包的代码、类型声明与声明过的样式输出                                           |
+| Vite 与桌面 tools            | 各 Electron 程序和 renderer 的编译、开发服务器、桌面生命周期与资源装配                               |
+| electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                                                   |
+| kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                                                   |
+| GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                                                     |
+| 根 tools 与私有工程包        | 根工具拥有 Git hooks、验证环境信息、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -239,7 +234,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。包级 check:package 表示 publint／Are the Types Wrong 产物检查，test:consumers 表示实际安装和使用公开制品。使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack。
 
-各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。当前非类型 ESLint 检查不依赖上游产品构建或源码，输入只补充实际共用的 ESLint 配置。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
+各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。格式检查无需先构建整个仓库。七个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
 
 测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
 
@@ -265,7 +260,7 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 桌面[构建输入身份](build.md#pipeline)直接使用正式 build 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
 
-仓库工作流调度各 workspace 自己的常规检查与测试。桌面八包的打包、产物检查和跨包消费者归桌面工作流的 Linux x64 参考目标，输入收据和制品归 artifacts/desktop/packages。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
+仓库工作流调度各 workspace 自己的常规检查与测试。桌面公共包的打包、产物检查和跨包消费者归桌面工作流的 Linux x64 参考目标，输入收据和制品归 artifacts/desktop/packages。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
 
 桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。开发测试仍在隔离副本内验证真实构建与会话生命周期。打包核对既有 build.json 的目标、当前输入身份、完整文件集合和摘要，缺失、过时或改写均失败。根 desktop:package 通过 Turbo 的本包 build 依赖保持独立可运行；已有准备的流程直接调用应用 package 任务，不再重建。
 
@@ -283,7 +278,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 ### 工程反馈预算
 
-标准托管 runner 上的工程反馈目标按[既定验证负载](../../verification/evidence/w00/ci.md#feedback)确定：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，并按[整体判断](../../../CONVENTIONS.md#judgment)复核验证范围与机制成本；必要的验收不能因预算压力被跳过，范围调整说明依据后由用户确定。失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+标准托管 runner 上的工程反馈预算为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，并按[整体判断](../../../CONVENTIONS.md#judgment)复核验证范围与机制成本；必要的验收不能因预算压力被跳过，范围调整说明依据后由用户确定。失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 <a id="desktop-development"></a>
 
@@ -293,11 +288,11 @@ persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障�
 
 桌面工具直接使用 Vite 的公开 API，由项目开发会话拥有进程和就绪交接。[桌面工具布局](layout.md#desktop-tools)中的 dev/session.ts 负责一个完整开发会话，依次完成有限依赖构建、当前目标资源准备、服务与程序监听、首次编译和 renderer 就绪，然后启动 Electron。就绪由回调或明确信号确认，不解析日志或依靠固定延时。
 
-项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。方案依据见[开发工具比较](../../verification/evidence/technical-tradeoffs/2026-10-22/README.md#development)与[监听就绪验证](../../verification/evidence/w00/development.md)。
+项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。接口与行为依据见[开发监听验证](../../verification/evidence/w00/development.md)。
 
 main 与 extension-host 使用 Vite 的 SSR 构建选择 Node 解析和插件语义；target 只负责生成语法，不能替代宿主配置。普通 JavaScript 依赖按制品布局打包，Electron、Node 内建模块和实际原生资源按所属部署合同处理。preload 保持沙箱可消费的独立 CommonJS 输出，renderer 使用浏览器环境，不套用完整 Node 宿主的缺省配置。
 
-开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。renderer 服务只拥有页面热更新与快照解析，运行时和公共包输入监听由开发会话独立拥有。对应快照取舍与验证见[工具链修正](../../verification/evidence/w00/build-tools.md)。
+开发依赖快照保留各包的 package.json 与 dist，由当前 Vite client 环境解析全部显式入口并核对构建文件后才能采用；不另行解释条件 exports。来自旧快照的内部导入继续使用其所属代际。renderer 服务只拥有页面热更新与快照解析，运行时和公共包输入监听由开发会话独立拥有。对应快照取舍与验证见[编译与包解析](../../verification/evidence/w00/build-tools.md)。
 
 renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
 
@@ -313,7 +308,7 @@ renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同
 
 开发会话拥有程序代际与依赖快照的写入和清理，现用程序与 renderer 使用已交接的完整结果。启动准备沿工作流传递取消信号；运行中的停止先取得本体正常退出结果。取消退出保留可用会话，确认退出后再取消编译、关闭监听和服务，并清理已无读取者的目录。不能中断的调用等待实际完成，采用结果前检查取消状态。
 
-源码开发与作者开发共用 extension-cli/extension 的父子 IPC 启动入口及 desktop-contracts/development 消息。源码会话选择本次 main、renderer 地址和隔离 profile，直接观察实际进程退出；不维护第二套私有控制消息。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
+源码开发与作者开发共用 extension-cli/extension 的启动入口、desktop-contracts/development 的控制合同和 desktop-rpc；Node 父子 IPC 承载实际传输。源码会话选择本次 main、renderer 地址和隔离 profile，直接观察实际进程退出；不维护第二套私有控制消息。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
 
 Turbo 只负责选择和调度任务。桌面与 kisx 通过 [公开开发接入](../extensions/development.md#connection) 协作，官方扩展不使用私有热加载路径。集成验证包括公共合同、UI 样式和 SDK 变化，故意构建失败后的恢复，多程序输出交接，停止与重启，以及真实资源使用；打开 watch 开关本身不代表开发流程可用。
 

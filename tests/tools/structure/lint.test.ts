@@ -6,13 +6,11 @@
 import { expect, test } from 'vitest'
 import { ESLint } from 'eslint'
 
-test('one staged-file lint run can load root, application, package and extension configurations', async () => {
+test('one staged-file lint run can load root, desktop engineering and private package configurations', async () => {
   const files = [
     'tools/hooks.ts',
     'packages/tooling/src/process.ts',
-    'clients/desktop/app/src/shared/runtime-manifest.ts',
-    'clients/desktop/packages/rpc/src/index.ts',
-    'clients/desktop/extensions/projects/bangumi/kisx.config.ts',
+    'clients/desktop/app/tools/lib/runtime-manifest.ts',
   ]
 
   const results = await new ESLint().lintFiles(files)

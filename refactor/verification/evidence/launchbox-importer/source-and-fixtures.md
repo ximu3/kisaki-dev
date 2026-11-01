@@ -1,6 +1,6 @@
 # LaunchBox 来源与合成核验
 
-2026-10-17，第 25 项。用户明确没有实际 LaunchBox Data 或备份，使用合成样本。[完整方案](../../../design/extensions/importers/launchbox.md)已确认。本记录区分官方合同、公开输入片段、方案推导和技术探针；没有运行 LaunchBox、游戏或正式 Kisaki 导入器。
+2026-10-17，依据固定来源与合成 LaunchBox 样本验证[导入合同](../../../design/extensions/importers/launchbox.md)。本页区分官方格式、公开输入片段和映射试件；真实 Data、备份及完整运行按实施验收补齐。
 
 <a id="sources"></a>
 

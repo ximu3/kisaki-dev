@@ -1,4 +1,4 @@
-"""Read actual synthetic bytes and check bounded proposal models, not a production importer."""
+"""Read synthetic source bytes and check bounded mapping models."""
 
 import csv
 import hashlib
@@ -277,7 +277,7 @@ check("PDF UserUnit exists and affects physical size", float(pdf.pages[2]["/User
 check("all input bytes unchanged after read probes", all(hash_file(ROOT / name) == digest for name, digest in before.items()))
 
 result = {
-    "evidenceClass": "synthetic-byte-probes-and-explicit-proposal-models",
+    "evidenceClass": "synthetic-byte-probes-and-mapping-models",
     "sourceApplicationExecuted": False, "productionImporterExecuted": False,
     "versions": {"python": platform.python_version(), "sqlite": sqlite3.sqlite_version, "pypdf": pypdf.__version__, "pillow": PIL.__version__, "reportlab": reportlab.Version, "lxml": ".".join(map(str, etree.LXML_VERSION))},
     "inputFiles": len(manifest["files"]), "passed": sum(item["passed"] for item in checks), "failed": sum(not item["passed"] for item in checks),

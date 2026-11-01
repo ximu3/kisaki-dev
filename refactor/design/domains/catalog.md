@@ -26,7 +26,7 @@ type PartRef<T extends PartType = PartType> = {
 
 PartRef 不重复携带所属作品。读取或修改所需的作品范围由请求给出，详情和删除快照则保留解释对象所需的归属。
 
-EntryRef、WorkRef、PartRef 和 ExternalIdentity 定义在 desktop-contracts/library。事件、链接、extension-api 和 SDK 直接复用这些定义。跨作品引用使用 novelVolume、comicVolume 等完整类别；已经具备根类型上下文的 Profile 使用 volume 等单数键。本地引用、来源身份、注册能力和运行实例各有含义，不合并成通用 Reference。
+EntryRef、WorkRef、PartRef 和 ExternalIdentity 定义在 desktop-contracts/library。事件、链接和 SDK 直接复用这些定义。跨作品引用使用 novelVolume、comicVolume 等完整类别；已经具备根类型上下文的 Profile 使用 volume 等单数键。本地引用、来源身份、注册能力和运行实例各有含义，不合并成通用 Reference。
 
 <a id="identity"></a>
 

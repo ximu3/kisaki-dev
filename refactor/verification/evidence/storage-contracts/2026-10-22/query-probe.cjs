@@ -20,7 +20,11 @@ fs.mkdirSync(profile, { recursive: true })
 app.setPath('userData', profile)
 app.setPath('sessionData', profile)
 app.disableHardwareAcceleration()
-const req = createRequire(path.join(repo, 'apps/desktop/package.json'))
+const probePackage = process.env.KISAKI_PROBE_APP_PACKAGE
+if (!probePackage || !path.isAbsolute(probePackage)) {
+  throw new Error('Provide the absolute KISAKI_PROBE_APP_PACKAGE input')
+}
+const req = createRequire(probePackage)
 const Database = req('better-sqlite3')
 const { drizzle } = req('drizzle-orm/better-sqlite3')
 

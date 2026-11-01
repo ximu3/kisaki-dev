@@ -88,7 +88,6 @@ def main():
         receipts = list(executor.map(fetch, SOURCES.items()))
     result = {
         "purpose": "source evidence for organization, not OAuth flow execution",
-        "designStatus": "organization-confirmed",
         "relayProjectCreated": False,
         "containerImageBuilt": False,
         "composeExecuted": False,

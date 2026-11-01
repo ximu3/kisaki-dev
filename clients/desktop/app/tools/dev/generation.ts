@@ -5,7 +5,7 @@
 
 import { copyFile, cp, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { DesktopTarget, RuntimeManifest } from '../../src/shared/runtime-manifest'
+import type { DesktopTarget, RuntimeManifest } from '../lib/runtime-manifest'
 import { runtimeFiles, buildInputIdentity } from '../build/identity'
 import { buildProgram } from '../build/programs'
 import { prepareResources } from '../resources/prepare'
@@ -24,6 +24,7 @@ export interface GenerationOutput {
  * The session owns the directory, including cleanup after a failed or superseded build.
  */
 export async function buildGeneration(
+  sourceRoot: string,
   target: DesktopTarget,
   directory: string,
   signal?: AbortSignal,
@@ -42,7 +43,7 @@ export async function buildGeneration(
   const programs = ['main', 'preload', 'extension-host'] as const
   const results = await Promise.allSettled(
     programs.map((program) =>
-      buildProgram(program, join(directory, program), buildId, 'development'),
+      buildProgram(sourceRoot, program, join(directory, program), buildId, 'development'),
     ),
   )
   const failures = results.filter((result) => result.status === 'rejected')

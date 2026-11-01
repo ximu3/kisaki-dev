@@ -77,7 +77,7 @@ showcase_sections 通过以下十一列保存区块查询、显示和排列。
 | library.showcase.listPresets()       | 返回固定目录的身份、显示信息及完整配置初值                                                               | 只读取得同一份正式预设；名称与初始标题的本地化沿 [文案本地化](../domains/appearance.md#localization)，选用仍只填草稿 |
 | library.showcase.applyChanges(input) | 明确的 create、update、delete 与可选 order 变更；返回实际提交后的区块配置和新建草稿 key 到正式 ID 的对应 | 在一个短事务内完成本次区块编辑，任一必要校验或基线失败则整次不提交                                                   |
 
-DTO 属于 desktop-contracts/library，由主窗口客户端明确提供。SDK 的公开范围由 extension-api 选择。applyChanges 只处理本展示柜的 create、update、delete 和 order，不接受 method/args 或跨领域事务。
+DTO 属于 desktop-contracts/library，由主窗口客户端明确提供。SDK 的纯合同模块选择扩展公开范围。applyChanges 只处理本展示柜的 create、update、delete 和 order，不接受 method/args 或跨领域事务。
 
 create 使用唯一草稿 key 和完整配置，由本体生成正式 ID。update 使用 ID、changes 和 expected，query 按整体比较，标题和显示值分别核对。表单 delete 携带它所依赖的原配置，同一目标不能重复出现或同时修改与删除。
 

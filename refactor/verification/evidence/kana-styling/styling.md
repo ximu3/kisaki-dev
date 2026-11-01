@@ -43,7 +43,7 @@ CSS 对 SVG 与外部颜色关系也有专门处理，见 [CSS Color Adjustment]
 
 ## 行高与逻辑段距
 
-三个引擎对试件中的 line-height:normal 均返回 normal；不能仅靠该字符串得出一个固定的原始倍率。对普通段落明确采用 24px 字号与无单位 1.8 行高后，计算行高为约 43.2px；标题自己的行高、ruby 的局部规则和斜体仍保留。该观察没有同时执行此前完整的字号比例算法。
+三个引擎对试件中的 line-height:normal 均返回 normal；不能仅靠该字符串得出一个固定的原始倍率。对普通段落明确采用 24px 字号与无单位 1.8 行高后，计算行高为约 43.2px；标题自己的行高、ruby 的局部规则和斜体仍保留。该观察没有同时执行完整的字号比例算法。
 
 另在 horizontal-tb、vertical-rl 和 vertical-lr 中，对两段自建内容采用 margin-block-end:18px、margin-block-start:0，实际沿各自块方向的段间距离均为 18px。没有将其推定为任意嵌套块、分页边界或 margin 折叠场景已经通过。
 
@@ -58,10 +58,10 @@ python -B refactor/verification/evidence/kana-styling/prepare.py
 node refactor/verification/evidence/kana-styling/run.cjs
 ```
 
-字体生成使用已安装的 fontTools 4.60.1；字体、生成记录和浏览器配置保存在 node_modules/.cache/kana-styling。未安装字体、改写工作区依赖或浏览器设置。三个测试进程均在 finally 中关闭，内容文档移除后撤销本轮字体 Blob URL。
+字体生成使用已安装的 fontTools 4.60.1；字体、生成记录和浏览器配置保存在 node_modules/.cache/kana-styling。未安装字体、改写工作区依赖或浏览器设置。三个测试进程均在 finally 中关闭，内容文档移除后撤销字体 Blob URL。
 
-内容脚本被 CSP 禁止，测试控制代码由宿主页运行；字体先由宿主从本次本地夹具入口取得，再以受控 Blob 交付内容文档。最初直接使用 srcdoc 的 font-src 'self' 在 Firefox 中受到策略阻止，最终记录采用上述受控 Blob 路径，并同时满足宿主与内容策略；没有放开任意网络来源。
+内容脚本被 CSP 禁止，测试控制代码由宿主页运行；字体先由宿主从本次本地夹具入口取得，再以受控 Blob 交付内容文档。受控 Blob 路径同时满足宿主与内容 CSP。
 
 所有观察保留相同的正文文字和元素结构，外部页面请求为零，没有系统剪贴板写入。源文字与结构一致不代表 CFI、MOBI 字节地址或 FB2 节点往返已实现；试件明确记录 sourceMappingImplemented:false 和 fullPublicationTested:false。
 
-本轮没有运行私用区嵌入真实复杂字体、伪元素字形、完整读者样式、跨面选区或辅助技术。后续已确认样式范围并更新公开合同；设计确认不改变本轮试件实际覆盖的范围。
+没有运行私用区嵌入真实复杂字体、伪元素字形、完整读者样式、跨面选区或辅助技术。完整样式范围由[布局合同](../../../design/projects/kana/layout.md)定义。

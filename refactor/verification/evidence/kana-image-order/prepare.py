@@ -1,4 +1,4 @@
-"""Pin Unicode data for the proposed locale-independent image-member ordering."""
+"""Pin Unicode data for locale-independent image-member ordering."""
 from pathlib import Path
 from urllib.request import urlopen
 from datetime import datetime, timezone

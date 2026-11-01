@@ -1,4 +1,4 @@
-"""Verify actual synthetic ZIP bytes and proposed Kotatsu adoption models."""
+"""Verify synthetic ZIP bytes and Kotatsu adoption models."""
 
 import copy
 import functools

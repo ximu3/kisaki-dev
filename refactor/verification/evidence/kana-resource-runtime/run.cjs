@@ -13,7 +13,8 @@ const baseline = JSON.parse(fs.readFileSync(baselineFile, 'utf8'))
 const sha = (file) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
 process.env.PLAYWRIGHT_BROWSERS_PATH = baseline.browserCachePath
 const playwright = require(baseline.playwrightPath)
-const electronPath = path.join(root, 'apps/desktop/node_modules/electron/dist/electron.exe')
+const electronPath = process.env.KISAKI_PROBE_ELECTRON
+assert(electronPath && path.isAbsolute(electronPath), 'Provide the absolute KISAKI_PROBE_ELECTRON input')
 for (const item of Object.values(baseline.executables)) assert.equal(sha(item.path), item.sha256)
 
 async function main() {

@@ -8,11 +8,8 @@
   "include": [
     "../../tests/**/*.ts",
     "../../tests/**/*.tsx",
-    "../../src/shared/**/*.ts",
-    "../../src/renderer/environment.d.ts",
-    "../../src/**/*.test.ts",
-    "../../src/**/*.test.tsx",
     "../../native/node/**/*.test.ts",
     "../../tools/**/*.test.ts"
-  ]
+  ],
+  "exclude": ["../../tests/fixtures/runtime/src/**"]
 }

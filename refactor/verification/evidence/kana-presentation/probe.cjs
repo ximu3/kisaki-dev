@@ -273,7 +273,7 @@ async function observe() {
     wrapped.second.y === wrapped.first.y &&
     ordinary.second.y > ordinary.first.y
   ))
-    throw new Error('The observed vertical column directions differed from the proposal.')
+    throw new Error('The observed vertical column directions differed from the expected layout.')
   return {
     samples,
     typography,

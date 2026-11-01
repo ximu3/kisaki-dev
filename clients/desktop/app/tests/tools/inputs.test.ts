@@ -39,7 +39,7 @@ beforeAll(async () => {
   }
 
   await copyFile(
-    join(originalApp, 'config/vite/vite.config.renderer.ts'),
+    join(originalApp, 'tests/fixtures/runtime/config/vite/vite.config.renderer.ts'),
     join(paths.appRoot, 'config/vite/vite.config.renderer.ts'),
   )
 
@@ -62,8 +62,8 @@ beforeAll(async () => {
   await writeFile(join(member, 'config/typescript/tsconfig.lib.json'), '{}\n')
 
   const members = [{ name: '@kisaki3/watch-fixture', path: member }]
-  renderer = await startRenderer(members, join(paths.repositoryRoot, 'snapshots'))
-  inputs = await startInputWatcher(members, {
+  renderer = await startRenderer(paths.appRoot, members, join(paths.repositoryRoot, 'snapshots'))
+  inputs = await startInputWatcher(paths.appRoot, members, {
     onChange: (change) => changes.push(change),
     onError: (cause) => errors.push(cause),
   })

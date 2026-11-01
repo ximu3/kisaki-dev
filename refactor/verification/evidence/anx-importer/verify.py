@@ -249,7 +249,7 @@ with zipfile.ZipFile(source_path(books[3]["file_path"])) as archive:
     check("Comic member bytes remain actual image data", archive.read(files[1]).startswith(b"\x89PNG\r\n\x1a\n"))
 check("Copied PDF bytes are identical to the inspected earlier synthetic fixture", source_path(books[2]["file_path"]).read_bytes() == (ROOT.parent / "koodo-importer/fixtures/library/book/pdf-book.pdf").read_bytes())
 check("Every synthetic input matches its original manifest digest", all(hashlib.sha256((ROOT / item["path"]).read_bytes()).hexdigest() == item["sha256"] for item in manifest["files"]))
-result = {"evidenceClass": "synthetic-source-bytes-and-proposal-models", "sourceApplicationExecuted": False, "productionImporterExecuted": False,
+result = {"evidenceClass": "synthetic-source-bytes-and-mapping-models", "sourceApplicationExecuted": False, "productionImporterExecuted": False,
     "versions": {"python": platform.python_version(), "sqlite": sqlite3.sqlite_version, "pypdf": pypdf.__version__}, "inputFiles": len(manifest["files"]),
     "passed": sum(item["passed"] for item in checks), "failed": sum(not item["passed"] for item in checks), "checks": checks,
     "allInputsUnchanged": checks[-1]["passed"], "limits": ["No actual Anx app export, Flutter runtime, WebDAV sync or native Kisaki write.", "Date totals are tested only as cumulative values, not activity intervals.", "CFI module checks are separate from these database and fixed-page models.", "Path checks are bounded examples, not a complete hostile-filesystem implementation."]}

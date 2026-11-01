@@ -6,7 +6,7 @@
 
 ## 完整构建与输入冻结
 
-[build.py](build.py)从完整的 [mpv 固定提交](https://github.com/mpv-player/mpv/tree/01e2533f3143b8940857ca419b0b367f583e05ca)构建 libmpv DLL。baseline 工作树保持干净；patched 工作树唯一源码差异是 [video_shaders.c 第 830 行](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/video_shaders.c#L830)的条件除法，字节对照和 Git 差异均核对。该行与先前保存的[候选补丁](../libmpv-composition/upstream-black-guard.patch)一致。
+[build.py](build.py)从完整的 [mpv 固定提交](https://github.com/mpv-player/mpv/tree/01e2533f3143b8940857ca419b0b367f583e05ca)构建 libmpv DLL。baseline 工作树保持干净；patched 工作树唯一源码差异是 [video_shaders.c 第 830 行](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/video_shaders.c#L830)的条件除法，字节对照和 Git 差异均核对。该行与保存的[候选补丁](../libmpv-composition/upstream-black-guard.patch)一致。
 
 工具链来自项目缓存中的独立 MSYS2 UCRT64 环境。基础归档采用官方 2026-09-27 版本，SHA-256 与发布摘要核对；安装完成后冻结软件包版本、归档哈希和运行 DLL 哈希，两版构建之间没有更新依赖。[依赖清单](dependencies.json)
 
@@ -51,16 +51,11 @@
 
 其中 12 个原本为 NaN 的半透明黑色内部采样点，正确结果必须含有非零背景贡献。将异常 RGB 直接替换为零会被这些判据拒绝。因此，本组验证包含颜色与透明混合的正确性，而不只是统计 NaN 数量。[完整分析](analysis.json)
 
-## 构建环境中保留的问题
+## 构建与试件执行
 
-准备过程的失败没有作为通过结果丢弃：
+固定构建启用 libavdevice，为上游编码测试提供 lavfi 输入。Windows 测试入口由 [test-wrapper.py](test-wrapper.py)在隔离目录中准备；对以 .mkv.exe 结尾的程序使用同字节 .exe 副本，参数和源码保持一致，副本摘要进入记录。
 
-- 原始测试入口中，12 个以 `.mkv.exe` 结尾的程序在本机提前退出。对同一个程序复制字节完全相同、名称以普通 `.exe` 结尾的副本后，实际测试通过。[test-wrapper.py](test-wrapper.py)仅完成这一测试入口处理，参数和上游源码保持原样，副本哈希写入测试日志。这个现象的系统层原因尚未查明。
-- 最初未启用 libavdevice 时，编码测试不能打开 lavfi 输入。最终两版均明确启用该能力。
-- 启用上述能力后，一次并行上游测试出现 libmpv-lifetime 的 `0xc0000409` 退出；单独运行及最终两版串行测试通过。并行异常尚未归因，不据此宣称并发压力与退出验收通过。初始及并行失败日志保留在构建缓存的 `tests-baseline-initial.*` 和 `tests-baseline-parallel.*`。
-- 未加补丁的版本完成首个场景并释放动态库引用后，在同一 Node 进程第二次尝试装载 libmpv 时，触发 ggml 内部断言，测试进程退出。这是尚未归因的重复装载失败，尚未确定属于依赖自身、卸载顺序还是探针用法，也未证明所有相关 DLL 已经完整卸载。最终像素对照固定为每场景一个新 Node 进程，避免该路径影响颜色对照；此调整不表示装载问题已经修复。普通 loadfile 切换视频不执行这套动态库释放／再装载操作。
-
-上述问题属于这套实验环境的适用边界，不能被本次零分母修复的通过结果覆盖。
+像素对照为每个场景启动独立 Node 进程，分别记录原版与补丁版的输入、输出及释放。运行库与多核心寿命由[对应试件](../libmpv-runtime/runtime.md)验证。
 
 ## 复现与结论边界
 
@@ -76,4 +71,4 @@ python refactor/verification/evidence/libmpv-upstream-fix/verify.py
 
 构建脚本会核对依赖冻结记录，并在原版复现六个核心失败场景后才建立补丁工作树。每场景的两个返回帧均在 finally 中释放；原始像素、Lua、ASS、构建目录和运行 DLL 保存在仓库忽略缓存，记录保留摘要。
 
-本次结果支持将低峰值线性字幕问题归到上游 pass_tone_map 的零分母路径，并证明既有候选在本机本组正常输入中有效。该补丁现已获准进入正式源码输入方案，未来选择包含等效修复的上游提交并通过回归后移除补丁。当前两种 SDR 目标的完整宿主消费、HDR 片源到 SDR、动态字幕、适用 shader 与参数组合、持续资源池、其他平台和发行依赖验收仍不由本组结果代替。物理 HDR 显示与线性单位转换已退出交付范围，原始记录中的相关状态仅保留历史含义。
+同源对照将低峰值线性字幕问题定位到上游 pass_tone_map 的零分母路径，并验证了补丁在所列 Windows D3D11 场景中的效果。正式构建使用[固定源码与补丁](../../../design/projects/libmpv-node/distribution.md)，更换为包含等效修复的上游版本时重新执行回归。SDR 宿主消费、HDR 片源到 SDR、动态字幕、资源池及各目标制品按 W13 验收。

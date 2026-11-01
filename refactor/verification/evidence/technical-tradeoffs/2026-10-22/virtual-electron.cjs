@@ -21,7 +21,7 @@ app.whenReady().then(async () => {
     }
   })
   try {
-    await window.loadFile(path.join(__dirname, 'candidates/out/index.html'))
+    await window.loadFile(path.join(__dirname, 'virtualization/out/index.html'))
     const deadline = Date.now() + 30000
     let value
     do {

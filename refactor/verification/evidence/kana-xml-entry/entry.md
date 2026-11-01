@@ -1,6 +1,6 @@
 # XML 编码入口与按需转换
 
-2026-10-20，在用户分别确认 Expat 与 libiconv 后，本轮把[已验证的转换器](../kana-xml-codecs/codecs.md)接到实际文件编码识别入口。BOM、声明语法、编码别名、格式准入、原生／转换路径及失败收尾共同验证；不再由夹具直接告知入口“应该使用哪个编码”。
+2026-10-20，验证 Expat 与 [libiconv 转换器](../kana-xml-codecs/codecs.md)组成的文件编码识别入口，覆盖 BOM、声明语法、编码别名、格式准入、原生和转换路径，以及失败收尾。
 
 这是格式层输入机制证据，未覆盖正式 Reader、大书索引、完整编码符合性及发行包；完整验收见[阅读场景](../../scenarios/reading.md)。
 
@@ -23,11 +23,11 @@
 - 不符合 XML EncName 的名称，例如包含冒号的别名。
 - CHAR、WCHAR_T、内部／交换端序表示等依赖宿主语义的名字。
 - C99、JAVA 这类编程语言转义表示。
-- 不能按本入口的 XML 自识别方式承载声明的裸字符集。这里实际用其解码器核对声明所需的 ASCII 字节，而非根据名称猜测。
+- 不能按本入口的 XML 自识别方式承载声明的裸字符集。准入检查使用实际解码器核对声明所需的 ASCII 字节。
 
 当前保留 **97 个规范解码名称、292 个有效名字**，排除记录和生成摘要见 [registry-contract.json](registry-contract.json)。Unicode 宽编码单独按已识别的宽度和端序处理。匹配只做 XML 所需的 ASCII 大小写折叠，不去掉标点、不修整声明内空格、不映射宿主 locale，也不接受 IGNORE／TRANSLIT 开关。
 
-97 是本次固定构建可接入的名称集合，不是本轮逐字符验证了 97 个编码的声明。真实字符转换继续由固定上游与 CP932 校正承担；[前序编码对照](../kana-xml-codecs/codecs.md)覆盖 26 种编码，以及 CP932 表的全部 7,915 个已定义映射。升级时须审阅登记数据和语义差异。
+97 是本次固定构建可接入的名称集合，不是逐字符验证了 97 个编码的声明。真实字符转换继续由固定上游与 CP932 校正承担；[前序编码对照](../kana-xml-codecs/codecs.md)覆盖 26 种编码，以及 CP932 表的全部 7,915 个已定义映射。升级时须审阅登记数据和语义差异。
 
 ## 覆盖与结果
 
@@ -67,7 +67,7 @@
 
 ## 构建与复现
 
-[build.py](build.py) 复用此前固定且核对过的 Expat 2.9.0、libiconv 1.19、六项 CP932 校正及 Emscripten 6.0.12。原来的源码、试件和运行记录均未改写；本轮 C 接入只增加声明读取、明确编码配置和构建期名称枚举。
+[build.py](build.py) 使用 Expat 2.9.0、libiconv 1.19、六项 CP932 校正及 Emscripten 6.0.12。C 接入负责声明读取、编码配置和构建期名称枚举。
 
 [build-contract.json](build-contract.json)、[source-input.json](source-input.json) 和 [node-contract.json](node-contract.json) 分别保存构建、输入与运行摘要。额外导出的名称枚举和活动实例计数用于本试件，不是新的公开 Reader API。
 

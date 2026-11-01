@@ -1,25 +1,25 @@
 # 工程边界
 
-桌面应用是 `@kisaki3/desktop`，同一 workspace 管理四类 renderer、四个 sandbox preload、主进程、一个共享 utility-process 扩展宿主和私有 Rust/Node-API 工程。产品交付范围与完成情况见[实施状态](refactor/implementation/status.md)。
+根 `packages` 中的三个私有包分别提供 TypeScript 配置、ESLint 配置和工程函数。`clients/desktop/app` 拥有桌面构建、资源、原生操作、打包和验证；根工具维护 Git hooks 与验证环境记录。workspace 只登记有实际职责和实现的项目。
 
-`src/main/app` 选择路径并装配生命周期；`infrastructure/windows` 负责原生窗口与资源协议，`infrastructure/log.ts` 负责日志。主进程在 Electron ready 之前确定隔离或发行形态要求的资料位置。窗口只取得所属 preload 的最小接口，主进程核对真实 sender 与 frame。
+## 桌面工程
 
-`src/shared` 只保存私有纯合同和必要的确定性规则，包括窗口能力、进程消息、运行清单与载体身份。main 与 extension-host 不互相导入实现；renderer 不取得 Node 或 Electron。扩展宿主使用 Electron utilityProcess，以便在正式关闭 RunAsNode fuse 后仍可启动。
+`tools/build` 编译调用方明确提供的程序输入，组织资源和原生输出，完成后交接整个候选。`build/identity` 读取 Turbo 任务的输入身份，并为完成的运行字节生成摘要。`tools/resources` 准备锁定字体、图标与 SQLite 绑定；`tools/native` 拥有 Rust 编译与声明核对；`tools/package` 消费同一份已验证构建，检查身份和字节后生成目标载体。
 
-原生源码、声明和加载入口分别位于 `native/src`、`native/node/binding.d.ts` 与 `native/node/index.ts`。应用通过 `#native` 显式加载当前构建的绝对制品路径，不搜索其他输出、现场编译或降级为不同语义。文件移动和同步在工作线程执行，Node 边界提供稳定错误。
+`tools/dev/session` 拥有一次开发会话的服务、监听、候选和进程寿命。调用方提供源码根目录和进程启动能力；`renderer` 管理 Vite，`inputs` 管理 Chokidar，`generation` 编译 Node 程序，`dependencies` 通过构建后的 exports 取得完整依赖快照。失败保留既有可用结果，正常退出可以取消，资源释放完成后才结束会话。
 
-八个公共包通过自己的 `exports` 和构建结果消费。业务合同方向为 `extension-sdk → extension-api → desktop-contracts`；appearance、ui、rpc 和 extension-distribution 保持各自独立职责。官方扩展与第三方使用相同的公开合同，各项目维护自己的工程身份与配置，不随应用预装。
+跨工作流的路径、目标、运行清单和摘要归 `tools/lib`。跨工程的候选交接、命令取消与 CLI 信号处理由 `@kisaki3/tooling` 提供。工程实现不导入测试代码。
 
-四个窗口保留各自的 HTML、程序和样式入口，共用 `renderer/components/window-root` 提供的窗口结构与关闭反馈；窗口入口注入所属能力，视图不操作传输。
+## 原生能力
 
-构建由项目自己的工具拥有，根 Turbo 从真实 manifests 安排依赖。每个输出只有一个写入者，完整候选成功后才交接。开发会话的协调归 `dev/session`，Vite renderer 服务归 `dev/renderer`，运行时与公共包输入监听归 `dev/inputs`，应用经 `extension-cli/extension` 的公共父子 IPC 入口启动；候选和公共包快照分别归 `generation` 与 `dependencies`。消息唯一归属 `desktop-contracts/development`，源码与打包应用采用同一接入和可取消退出。公共依赖快照根据真实公开制品生成，Node 重启依据 Vite 报告的实际模块输入，而非手写依赖表。
+`native/src` 提供异步文件同步和不覆盖目标的文件移动，`native/node` 提供加载入口、声明和错误转换。调用方通过 `#native` 加载明确的绝对制品路径；加载失败保留原始原因。构建由固定 Rust 工具链、Cargo 锁文件和 Node-API 配置约束。
 
-工程工具顶层按完整任务组织，应用内部共用的路径、目标与摘要归 `tools/lib`；跨工程的输出交接、命令执行和 CLI 收尾归私有包 `@kisaki3/tooling`，共享类型与 lint 配置由另外两个私有工程包提供。开发 Electron 定位归 `tools/dev/electron-executable.ts`。`packaging` 是打包专用静态输入边界，执行逻辑在 `tools/package`，产物在 `dist`。
+## 验证
 
-媒体信息与播放经 libmpv-node 接入，FFmpeg 是该库的运行依赖。本体没有独立 ffprobe 工具链。
+`tests/fixtures/runtime` 是工程测试输入，覆盖四个 renderer/preload 构建入口、主进程和 utility process。它要求显式隔离资料目录，只提供测试所需的身份、计数器和进程控制。窗口名称对应编译入口；产品窗口、公开通信和扩展宿主分别由所属工作包实现。
 
-测试按目的归所属项目：纯逻辑就近，工程工作流归 `tests/tools`，真实驱动归 `tests/integration`，浏览器、Electron、性能和最终制品分别配置。根测试只拥有仓库工具与跨包消费。正式程序不导入测试、fixture 或工具代码。
+`tests/tools` 检查构建、依赖、监听与会话，`tests/integration` 验证原生与 SQLite，`tests/e2e` 运行真实 Electron，`tests/artifacts` 保留制品 fuses 并从外部观察运行。性能采样使用同一载体，结果只反映工程启动负载。
 
-CI 工作流负责选择与执行顺序，共同环境信息由根 `tools/host-environment.ts` 提供。桌面 `tests/support/build-reuse.ts` 记录测试前的构建并核对打包后的复用结果；构建、打包和验证观测各有对应入口。
+根测试验证 hooks、workspace、类型覆盖、依赖边界和任务选择。CI 根据真实任务输入选择验证，桌面与原生检查覆盖六个目标；各次实际结果由[状态页](refactor/implementation/status.md)记录。
 
-完整产品职责与目标布局以 [运行架构](refactor/design/architecture.md)、[源码布局](refactor/design/engineering/layout.md) 和 [工作包](refactor/implementation/work-packages.md) 为准。
+产品的完整进程职责、公共包和源码布局见[运行架构](refactor/design/architecture.md)、[源码布局](refactor/design/engineering/layout.md)和[工作包](refactor/implementation/work-packages.md)。

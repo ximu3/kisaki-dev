@@ -1,5 +1,5 @@
 {
-  "status": "platform-and-output-proposal-source-review",
+  "status": "platform-and-output-source-review",
   "mpv": {
     "version": "0.41.0",
     "commit": "41f6a645068483470267271e1d09966ca3b9f413"

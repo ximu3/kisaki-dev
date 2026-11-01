@@ -4,7 +4,7 @@
 
 ## 输入与运行方式
 
-[fixture.cjs](fixture.cjs)复用上一轮自建 [CSS 试件](../kana-css-input/fixtures.mjs)，保留作者 CSS、正文属性和目录关系。[host.js](host.js)拥有本次资源及取消；[worker.js](worker.js)把请求转给存活页面，不保存成员表或书籍字节。[run.cjs](run.cjs)驱动隔离浏览器，[electron.cjs](electron.cjs)启动无 preload、无 Node 集成且不显示窗口的独立 Electron。
+[fixture.cjs](fixture.cjs)复用自建 [CSS 试件](../kana-css-input/fixtures.mjs)，保留作者 CSS、正文属性和目录关系。[host.js](host.js)拥有本次资源及取消；[worker.js](worker.js)把请求转给存活页面，不保存成员表或书籍字节。[run.cjs](run.cjs)驱动隔离浏览器，[electron.cjs](electron.cjs)启动无 preload、无 Node 集成且不显示窗口的独立 Electron。
 
 浏览器使用仅监听 127.0.0.1 的临时静态试验服务器。它只提供控制页面、测试脚本、worker 与直接对照资源，不提供经过 worker 的书籍内容。Electron 使用 kana-probe 受控协议、专用测试 profile 和相同静态试件，不启动 HTTP 服务，也不加载 Kisaki 应用。没有读取真实出版物、上传用户文件、安装依赖或修改系统配置。
 
@@ -17,7 +17,7 @@
 | Windows WebKit 构建 | 26.5                            | 6      |
 | 本机 Electron       | 41.2.0，Chromium 146.0.7680.179 | 6      |
 
-每组比较直接地址与 Service Worker 地址两份文档，共 24 组、48 份样式对照文档，另有生命周期用文档。三种书写模式分别覆盖 HTML 与 XHTML；HTML 使用 340px，XHTML 使用 640px。这里没有将宽度与文档类型做完整交叉；上一轮 [CSS 输入矩阵](../kana-css-input/css.md)另有交叉覆盖。
+每组比较直接地址与 Service Worker 地址两份文档，共 24 组、48 份样式对照文档，另有生命周期用文档。三种书写模式分别覆盖 HTML 与 XHTML；HTML 使用 340px，XHTML 使用 640px。这里没有将宽度与文档类型做完整交叉；[CSS 输入矩阵](../kana-css-input/css.md)另有交叉覆盖。
 
 ## 相对引用与原样式
 
@@ -31,13 +31,13 @@
 
 ## CSP 的实际边界
 
-最初仅允许每个实例 book 目录的 CSP 在 Firefox 拦下了子资源。该次 [csp-path-observation.json](csp-path-observation.json)保存脚本摘要、受查值差异、已到达资源拥有者的请求及浏览器错误：其中 img-src 的检查目标还包含 worker.js 地址。
+[Firefox 的 CSP 观察](csp-path-observation.json)显示，img-src 检查还包含 worker.js 地址，因此内容 CSP 需要覆盖专用传输目录。该记录保存脚本摘要、资源请求及浏览器错误。
 
-最终四个环境共用同一规则：内容 CSP 允许专用传输目录，worker 根据非导航请求的实际 client 与本次实例路径核对范围，资源拥有者只返回本次成员。它没有向普通宿主目录或其他网络地址放行，也没有增加浏览器名称判断。
+四个环境共用同一规则：内容 CSP 允许专用传输目录，worker 根据非导航请求的实际 client 与本次实例路径核对范围，资源拥有者只返回本次成员。它没有向普通宿主目录或其他网络地址放行，也没有增加浏览器名称判断。
 
 在每个环境中，第一份文档尝试加载第二个仍存活实例的真实图片，被拒绝；尝试加载传输目录以外的图片也被拒绝，服务器或 Electron 静态处理器未收到该目录外请求。这里覆盖的是这些具体路径，完整路径编码、导航、XML base、嵌套资源和格式转换仍需联合验收。
 
-中间生命周期试验曾用错误状态的 iframe 导航等待 load，Firefox 没有在试件期限内完成。最终改用实际图片／样式元素的 load 与 error 检查资源结束，不把浏览器错误页面的加载事件作为读取收尾依据。
+资源结束由实际图片和样式元素的 load、error 判定，读取收尾依据对应资源的完成状态。
 
 ## 实例关闭与 worker 重启
 
@@ -51,8 +51,8 @@ Chromium 另通过测试 CDP 接口实际停止运行中的 Service Worker。重
 
 ## 证据边界
 
-本轮未验证大资源分块传输、背压、实际 ByteSource 接入、正式 PDF／归档读取、既有 PWA 并存、版本升级、异常退出与私密浏览策略，也没有证明所有维护版本均通过。Windows WebKit 构建不代表真实 Safari 或 WebKitGTK，Electron 41.2.0 不代表已确认的三条稳定主版本维护线。
+未验证大资源分块传输、背压、实际 ByteSource 接入、正式 PDF／归档读取、既有 PWA 并存、版本升级、异常退出与私密浏览策略，也没有证明所有维护版本均通过。Windows WebKit 构建不代表真实 Safari 或 WebKitGTK，Electron 41.2.0 不代表已确认的三条稳定主版本维护线。
 
-公开声明的形状和消费试件保持不变。统一传输路线、发行资产部署和生命周期要求已经确认；剩余执行机制、正式实现与完整功能验收分别按所属阶段继续完成。
+原生可转移流、取消与清理、PWA 和版本并存，以及存储边界见[资源执行验证](../kana-resource-runtime/runtime.md)。完整实现与发行资产按所属合同验收。
 
-后续[资源执行验证](../kana-resource-runtime/runtime.md)已通过原生可转移流、取消与清理、PWA／版本并存及存储边界检查，闭合这组通用机制的设计门槛。本页早先未覆盖的项目仍按各自记录理解，不把最初的小资源试件改写为已经验证大资源与完整接入。
+运行时通过 KISAKI_PROBE_ELECTRON 指定所选 Electron 的绝对可执行路径，并按输入记录准备浏览器与隔离目录。

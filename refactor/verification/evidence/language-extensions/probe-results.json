@@ -32,7 +32,7 @@
     }
   ],
   "representativeKeys": 37,
-  "passed": 133,
+  "passed": 130,
   "failed": 0,
   "checks": [
     {
@@ -533,18 +533,6 @@
     },
     {
       "name": "Generated ICU call types accept valid calls and reject seven invalid cases",
-      "passed": true
-    },
-    {
-      "name": "Existing four catalogs were inspected without executing their code",
-      "passed": true
-    },
-    {
-      "name": "Existing function-valued messages require deliberate ICU conversion",
-      "passed": true
-    },
-    {
-      "name": "Existing four catalogs have the same static leaf paths",
       "passed": true
     },
     {

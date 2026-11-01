@@ -52,7 +52,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": true
+          "boundaryPassed": true
         },
         {
           "allowScripts": true,
@@ -84,7 +84,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": true
+          "boundaryPassed": true
         }
       ],
       "layouts": [
@@ -719,7 +719,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": true
+          "boundaryPassed": true
         },
         {
           "allowScripts": true,
@@ -751,7 +751,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": true
+          "boundaryPassed": true
         }
       ],
       "layouts": [
@@ -1365,7 +1365,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": false
+          "boundaryPassed": false
         },
         {
           "allowScripts": true,
@@ -1397,7 +1397,7 @@
           "bookExecutionCount": 0,
           "hostBackground": "rgb(250, 250, 250)",
           "nodeAvailableInContent": false,
-          "proposedPassed": true
+          "boundaryPassed": true
         }
       ],
       "layouts": [

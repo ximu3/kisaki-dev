@@ -295,4 +295,4 @@ TXT 的完整分母在顺序解码到末尾后取得，与首个可读目标的�
 
 来源版本、解析器比较和试件结果见[格式来源](../../../verification/evidence/kana-formats/format-sources.md)、[输入机制](../../../verification/evidence/kana-formats/format-inputs.md)、[编码映射](../../../verification/evidence/kana-xml-codecs/codecs.md)和[XML 输入](../../../verification/evidence/kana-xml-entry/entry.md)。源定位的补充依据见[CFI](../../../verification/evidence/kana-cfi/cfi.md)、[MOBI 映射](../../../verification/evidence/kana-source-mapping/mapping.md)与[固定 KF8](../../../verification/evidence/kana-kf8-fixed/fixed.md)。
 
-完整编码与格式符合性、真实出版物、大输入索引和整包消费按[阅读验收](../../../verification/scenarios/reading.md#formats)分别取得证据。历史试件中的容量和通过次数不定义正式资源预算或支持范围。
+完整编码与格式符合性、真实出版物、大输入索引和整包消费按[阅读验收](../../../verification/scenarios/reading.md#formats)分别取得证据。资源预算与支持范围按各项合同和对应输入验证。

@@ -1,6 +1,6 @@
 # Vantage 调用、授权与画面范围的设计依据
 
-对应[调用、权限与采集边界](../../../design/projects/vantage/api.md)。公开调用、取消、回调、Node 存活、系统光标排除及原生单窗画面边界均已确认，真实平台行为仍须验证。本轮只检查声明消费、读取官方资料与固定版本源码；没有构建 Vantage addon、请求系统授权、读取其他程序窗口或执行原生采集。
+对应[调用、权限与采集边界](../../../design/projects/vantage/api.md)。公开调用、取消、回调、Node 存活、系统光标排除及原生单窗画面边界均已确认，真实平台行为仍须验证。只检查声明消费、读取官方资料与固定版本源码；没有构建 Vantage addon、请求系统授权、读取其他程序窗口或执行原生采集。
 
 ## 声明消费
 
@@ -31,7 +31,7 @@ pnpm exec tsc --project refactor/verification/evidence/vantage-calls/tsconfig.js
 | [Mutter 42.0](https://github.com/GNOME/mutter/blob/42.0/data/dbus-interfaces/org.gnome.Mutter.ScreenCast.xml)                                                                                                                                                                                                   | RecordWindow 声明单窗口及 cursor-mode，默认 hidden；这不代替真实桌面上的帧验证                                          |
 | [KWin 5.24.7](https://github.com/KDE/kwin/blob/v5.24.7/src/effects/screenshot/screenshotdbusinterface2.cpp)                                                                                                                                                                                                     | CaptureWindow 先检查权限；选项转换含 include-decoration、include-cursor、native-resolution，仍须验证实际窗口和输出      |
 
-Windows 光标接口与版本依据复用[已记录的平台来源](../vantage-platforms/platform-routes.md)。Accessibility 提示语义复用 Apple 的[官方索引正文](https://developer.apple.com/documentation/applicationservices/1459186-axisprocesstrustedwithoptions)：提示异步，不改变函数的即时布尔结果。该页面的 Markdown 下载此前返回 404，本轮仍未把它列入十一项下载回执。
+Windows 光标接口与版本依据复用[已记录的平台来源](../vantage-platforms/platform-routes.md)。Accessibility 提示语义复用 Apple 的[官方索引正文](https://developer.apple.com/documentation/applicationservices/1459186-axisprocesstrustedwithoptions)：提示异步，不改变函数的即时布尔结果。
 
 ## 请求身份补充
 
@@ -39,7 +39,7 @@ Apple 的 Accessibility 接口说明与 [Electron 对应接口](https://www.elec
 
 Apple DTS 对[负责应用的归属](https://developer.apple.com/forums/thread/125438)和[稳定代码签名](https://developer.apple.com/forums/thread/663889)的说明，支持将调用进程、其归属应用与授权记录分别核验。两篇说明的具体问题是文件权限，不能据此直接宣称所有 Accessibility、ScreenCaptureKit 或辅助进程组合具有相同结果。本次只采用其中关于系统归属与签名稳定性的边界说明；实际屏幕采集和辅助功能请求仍需用正式签名消费程序验证。
 
-本轮没有在 macOS 执行请求、检查设置页中的应用条目、改变签名或运行任何辅助程序。新增说明是已读取的来源补充，没有计入此前十一项下载回执。声明消费通过不证明开发 Electron、Node 命令行与 Kisaki 成品获得了同一授权身份。
+没有在 macOS 执行请求、检查设置页中的应用条目、改变签名或运行任何辅助程序。声明消费通过不证明开发 Electron、Node 命令行与 Kisaki 成品获得了同一授权身份。
 
 ## 结论边界
 
@@ -47,12 +47,10 @@ Apple DTS 对[负责应用的归属](https://developer.apple.com/forums/thread/1
 
 平台归属的判断基于授权对象、流程与生命周期的差异，不将查询和申请权限概括为 macOS 独有机制。公共操作核验、平台授权辅助和宿主交互分别拥有职责。Windows 的相应依据另见[访问权与监测记录](../vantage-platforms/windows-access.md)，Linux portal 与桌面专用接入的区别沿用[平台来源](../vantage-platforms/platform-routes.md)；授权预检通过不保证后续操作成功。
 
-macOS 13 的阴影边界、Accessibility 与采集窗口映射、各平台实际权限行为和窗口实例安全，以及六目标真实消费都没有通过本轮验证。正式声明还必须与实际 addon 导出及 napi-rs 的回调、拒绝和清理行为相符。
+macOS 13 的阴影边界、Accessibility 与采集窗口映射、各平台实际权限行为和窗口实例安全，以及六目标真实消费都没有通过验证。正式声明还必须与实际 addon 导出及 napi-rs 的回调、拒绝和清理行为相符。
 
-## 2026-10-19 调用余项复核
+## 取消、引用与采集依据
 
-复核读取了固定 [Node v24.11.1 的 AbortSignal 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/globals.md#class-abortsignal)与 [Node-API 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/n-api.md#asynchronous-thread-safe-function-calls)：期限信号与组合信号可以由调用方创建；原生回调有事件循环引用与异常交付机制。Node-API 不保证消费方已经拿到观察句柄后才会调用监听器，这仍是绑定必须主动安排并验证的交付规则。环境退出时可能已经不能调用 JavaScript，清理不能依赖最后一条 JavaScript 通知。
+固定 [Node v24.11.1 AbortSignal 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/globals.md#class-abortsignal)定义期限和组合信号；[Node-API 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/n-api.md#asynchronous-thread-safe-function-calls)定义原生回调的事件循环引用、异常与环境清理。绑定负责按公开合同安排首次交付和释放，在 JavaScript 环境结束时完成原生收尾。
 
-[Windows 采集文档](https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture)说明通过帧到达通知或取帧接口取得结果，并明确帧资源与实际内容尺寸的关系。这些依据支持按真实结果和资源寿命组织采集，不能证明所有平台都适合统一 5 秒上限。本次撤回该上限是对库与宿主职责的设计调整，不是新的延迟测量结论。
-
-本次没有修改声明表面，没有运行 Vantage addon、请求系统权限或采集真实窗口。此前 source-contract.json 是原调查的历史回执，其 captureTimeoutCalibrated 为 false；没有覆盖该回执，也没有把新增资料算作原十一项下载的结果。库的取消响应、底层清理、回调顺序与存活行为仍须原生消费验证，标题栏、阴影和圆角的完整边界仍待各后端的真实帧证据。
+[Windows 采集文档](https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture)定义帧到达、取帧和实际内容尺寸。Vantage 的取消与资源寿命按平台接口实现，宿主拥有整次业务的等待预算。原生调用、权限与帧边界的验收见[W11](../../../implementation/work-packages.md#w11)。

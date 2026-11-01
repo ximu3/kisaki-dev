@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-17T08:13:34.305Z",
-  "scope": "Synthetic SQLite/OPF/EPUB and proposal conversion probes; no source application or Kisaki runtime execution.",
+  "scope": "Synthetic SQLite, OPF and EPUB conversion checks.",
   "runtime": {
     "node": "v24.11.1"
   },

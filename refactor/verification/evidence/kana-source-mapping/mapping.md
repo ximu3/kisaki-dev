@@ -1,6 +1,6 @@
 # HTML 词法来源与修复映射补证
 
-2026-10-20，本轮补充[既有 MOBI／KF8 源映射](../kana-formats/format-sources.md)，验证 HTML 的文字回放、元素复制、合并与省略如何保留源地址。沿用已固定的 parse5 8.0.1、entities 8.0.0 及 UTF-8／Windows-1252 源解释；没有改动旧试件、其结果或正式项目代码。
+2026-10-20，验证 [MOBI／KF8 源映射](../kana-formats/format-sources.md)中的 HTML 文字回放、元素复制、合并与省略。运行使用 parse5 8.0.1、entities 8.0.0，以及 UTF-8／Windows-1252 源解释。
 
 这是一组源映射机制验证，不代表固定 KF8、完整 CFI、全部 HTML 符合性、正文可见性或整个 Reader 已完成。
 
@@ -47,6 +47,6 @@ node refactor/verification/evidence/kana-source-mapping/run-node.mjs
 node refactor/verification/evidence/kana-source-mapping/run-browser.cjs
 ```
 
-浏览器脚本同时运行[XML 编码对照](../kana-xml-codecs/codecs.md)，需先准备和构建该试件。原始第三方输入仍由此前的 [html-input.json](../kana-formats/html-input.json) 固定，没有新增生产依赖或改写锁文件。
+浏览器脚本同时运行[XML 编码对照](../kana-xml-codecs/codecs.md)，需先准备和构建该试件。原始第三方输入仍由 [html-input.json](../kana-formats/html-input.json) 固定，没有新增生产依赖或改写锁文件。
 
 本试件未覆盖完整 publication、真实格式与展示绑定、阅读路径中的原文和搜索、样式可见性、大书索引及连续选择；完整接入见[格式与输入](../../../design/projects/kana/formats.md)及[阅读验收](../../scenarios/reading.md)。

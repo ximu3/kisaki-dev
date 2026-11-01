@@ -2,7 +2,6 @@
   "checkedAt": "2026-10-21T05:02:42.467512+00:00",
   "sourceCommit": "01e2533f3143b8940857ca419b0b367f583e05ca",
   "clientHeaderSha256": "3da9b8c61c3fb4e2d76bd248cebf72f3ee830331411b71a76adbd5e05660cc50",
-  "previousFunctionMapSha256": "720dafb315c8c42a57789f648c860231ad0de75facbe78e7d26473f22e235c24",
   "apiVersion": {
     "major": 2,
     "minor": 6
@@ -76,10 +75,8 @@
     "MPV_ERROR_NOT_IMPLEMENTED": -19,
     "MPV_ERROR_GENERIC": -20
   },
-  "functionNameCoverageMatches": true,
-  "fullBehaviorEquivalenceClaimed": false,
   "upstreamLifetimeTestSha256": "4eba99ed346b1ea987eacb2b683a1ffa8045678e9198f029b3e6b0dffca2d30a",
   "upstreamLifetimeLoadIterations": 2,
   "upstreamLifetimeExplicitUnload": true,
-  "upstreamLifetimeExecutedThisRound": false
+  "upstreamLifetimeExecuted": false
 }

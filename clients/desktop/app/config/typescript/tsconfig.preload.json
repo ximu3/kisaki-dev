@@ -5,6 +5,9 @@
     "tsBuildInfoFile": "../../.cache/typescript/preload.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["../../src/preload/**/*.ts", "../../src/shared/**/*.ts"],
-  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+  "include": [
+    "../../tests/fixtures/runtime/src/preload/**/*.ts",
+    "../../tests/fixtures/runtime/src/shared/**/*.ts"
+  ],
+  "exclude": []
 }

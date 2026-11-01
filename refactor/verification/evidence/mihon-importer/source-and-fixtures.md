@@ -1,6 +1,6 @@
 # Mihon / Tachiyomi 备份源码与合成核验
 
-2026-10-17，第 23 项导入器。用户明确没有可供核验的实际备份，采用固定公开源码与合成样本。[完整方案](../../../design/extensions/importers/mihon.md)已确认；本记录不表示正式扩展、Android 导出或本体迁入已经验收。
+2026-10-17，使用固定公开源码与合成备份验证 [Mihon 导入合同](../../../design/extensions/importers/mihon.md)。正式扩展、Android 导出及本体迁入按实施验收验证。
 
 <a id="baseline"></a>
 
@@ -48,7 +48,7 @@
 
 脚本的 8 MiB 体积限制仅用于这组小夹具，不代替正式扩展对实际规模、层级、条目数和解压资源的完整预算。自然比较探针只覆盖简单 ASCII 数字文件名，不是来源比较器的完整替代品。设计中的整套文件命名变体、符号链接检查、真实图片探测、身份匹配和本体采用仍须实现。
 
-累计时长采用随四类作品的[共同附加时长合同](../../../design/domains/records.md#duration)统一修订：有效 readDuration 按选定来源范围归集到 Work，采用附加绝对值；不再将其写入阅读概况 Note，也不构造活动。既有 97 项源格式检查不变，另见跨 Koodo／Mihon 的[33 项累计采用模型检查](../koodo-importer/duration-results.json)，它不替代正式记录写入与统计验收。
+有效 readDuration 按选定来源范围归集到 Work，依据[附加时长合同](../../../design/domains/records.md#duration)采用绝对值。格式验证包含 97 项检查，累计采用另有[33 项模型检查](../koodo-importer/duration-results.json)；正式写入与统计由实际本体接入验收。
 
 <a id="reproduce"></a>
 

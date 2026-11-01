@@ -22,7 +22,7 @@
 
 [build-fixture.py](build-fixture.py) 生成 33 个合成输入，清单和每项字节摘要见 [fixture-manifest.json](fixture-manifest.json)。包含三种真实媒体、四份当前书目随书数据、custom_metadata、实际封面、收藏／手动／自动规则集合、schema 20221111 数据库、两类 JSON 包络、Markdown／TXT、正常和恶意 Lua 数据，以及四个边界 CBZ。
 
-三页 PDF、CBZ、EPUB 和封面复用此前已检查的 Koodo 合成文件，字节不变。PDF 包含 CropBox、0／90／270 度旋转及 UserUnit=2；CBZ 包含 pages/1.png、2.png、3.PNG、10.png，验证本来源自然序和大写扩展名。另有排序等值、32 位数字溢出、不确定 Unicode 比较和源支持但本体可能不支持的图片成员。
+三页 PDF、CBZ、EPUB 和封面复用已检查的 Koodo 合成文件，字节不变。PDF 包含 CropBox、0／90／270 度旋转及 UserUnit=2；CBZ 包含 pages/1.png、2.png、3.PNG、10.png，验证本来源自然序和大写扩展名。另有排序等值、32 位数字溢出、不确定 Unicode 比较和源支持但本体可能不支持的图片成员。
 
 Lua 语法使用 [luaparse 0.3.1](https://github.com/fstirlitz/luaparse) 的固定包。探针核对 npm tarball 的 SHA-512 完整性和解析模块 SHA-256，只读取确切模块，不安装全局依赖；依赖收据见 [dependency-contract.json](dependency-contract.json)。运行的是 AST 解析库，输入 Lua 从未执行。
 

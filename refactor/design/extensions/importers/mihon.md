@@ -100,7 +100,7 @@ read=true 不提供分部完成日期、次数或活动；全部章节已读也�
 
 Tachiyomi 基线不包含服务 10–12。放弃、unfinished、considering 和未知状态没有本体同义状态，报告该状态未采用，保留已有当前状态和历史；其他所选字段独立处理。重读只设置 active，不凭该标记生成过去完成次数。
 
-Kitsu 的两代量尺来自[当前实现](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)与[旧实现](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)。数值 8 可能是 40 或 80 分，不能按数值大小自动判断。来源系列负责版本默认；已知跨版本恢复而量尺不明时，只要求明确该项实际量尺或跳过该评分，不更改其他记录。float 编码误差按源量尺容差还原，非法值不裁剪。
+Kitsu 的两代量尺来自[固定版本 9612d95](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)与[固定版本 49991d3](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)。数值 8 可能是 40 或 80 分，不能按数值大小自动判断。来源系列负责版本默认；已知跨版本恢复而量尺不明时，只要求明确该项实际量尺或跳过该评分，不更改其他记录。float 编码误差按源量尺容差还原，非法值不裁剪。
 
 Komga（6）、Kavita（8）、Suwayomi（9）的记录属于自建服务或阅读服务上的系列进度，本项不将其“目前章节全读完”变成整部作品完成，也没有评分可采用；可用链接只作普通来源线索。追踪 private 不转换为不存在的 Work 私密字段，lastChapterRead／totalChapters 不转换成前 N 话的标记、目录或完成次数。
 

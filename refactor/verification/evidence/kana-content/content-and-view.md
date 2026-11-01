@@ -1,6 +1,6 @@
 # Kana 原文、搜索与视图读取验证
 
-对应已确认的[原文、搜索与视图读取合同](../../../design/projects/kana/content.md)。本轮运行浏览器和 Electron 的实际机制，未创建正式 Kana 仓库，未执行正式 Reader 或 Kisaki 采集接入。
+本页验证[原文、搜索与视图读取合同](../../../design/projects/kana/content.md)所用的浏览器与 Electron 机制，覆盖文字映射、视图几何及区域采集。
 
 ## 运行输入
 
@@ -9,7 +9,6 @@
 ```powershell
 python refactor/verification/evidence/kana-content/prepare-probe.py
 python refactor/verification/evidence/kana-content/run-probe.py
-python refactor/verification/evidence/kana-content/check-view-contract.py
 ```
 
 [run-probe.py](run-probe.py) 复用[已有记录](../libmpv-gpu/binary-input.json)中的 Electron 44.5.1 Windows x64，分别以设备缩放 1 和 1.5 启动隐藏窗口。页面启用 sandbox 和 contextIsolation，关闭 Node 集成，没有书内 preload 桥接。短期服务器仅服务本试验自有页面、脚本和规范数据，退出时关闭；它不属于生产资源方案。
@@ -23,7 +22,7 @@ python refactor/verification/evidence/kana-content/check-view-contract.py
 | 检查             | 实际结果                                                                                                         |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
 | 源区域投影       | 数学投影与浏览器真实目标元素的 getBoundingClientRect 一致，允许小于 0.01 CSS 像素的比较误差                      |
-| 正反变换         | 最大观察误差约 0.00000184 个源单位；初次使用 1e-8 阈值失败后记录误差，采用 1e-4 的亚像素阈值                     |
+| 正反变换         | 最大观察误差约 0.00000184 个源单位，低于 1e-4 的亚像素比较阈值                                                   |
 | 区域截图         | 共 16 次，每次 25 个内部采样点均来自目标红色区域；检查实际 PNG／bitmap 尺寸，并核对 CSS 尺寸到实际像素的外扩边界 |
 | 原始内容排除控件 | 共 2 次完整阅读视口截图，洋红像素为 0                                                                            |
 | 导航接续         | 读取期间请求的下一页面暂未采用；当前画面成功取得并结束读取后才切到第二页面                                       |
@@ -54,10 +53,6 @@ python refactor/verification/evidence/kana-content/check-view-contract.py
 
 ## 公开形状与限制
 
-[view-contract.d.ts](view-contract.d.ts) 在既有声明上提出 readView 的目标与回调结果关联；[view-consumer.ts](view-consumer.ts) 验证视口、源页面区域和 CSS 矩形不会在这些用法中混淆。[check-view-contract.py](check-view-contract.py) 的结果为 [view-declaration-contract.json](view-declaration-contract.json)：正向消费通过，五项无效用法被拒绝。该检查不是正式包 exports 验证，原有双入口声明消费记录保持独立。
+ViewportRect、ViewRead 和 readView 的声明及消费由 [kana-api](../kana-api/public-contracts.md)统一验证，覆盖视口、源页面区域、CSS 矩形和回调结果的关联。
 
-以上独立试件保留当时验证输入。合同确认后，ViewportRect、ViewRead 和 readView 已统一进入 [kana-api 的纯值与 Reader 声明](../kana-api/public-contracts.md)，并在同一声明 tarball 中增加视图消费样例；当前检查为两种环境、三份消费及 29 项拒绝。ReaderWithView 只存在于上述历史试件，不是第二个公开 Reader。
-
-本轮没有证明完整字体／图片加载期间的读取稳定性、所有滚动输入和动画暂停、复杂宿主 CSS 变换、跨显示器移动、任意 PDF／EPUB／KF8 页面、像素边界最终裁切，以及 macOS／Linux。PNG 尺寸核对允许外扩取像素的舍入，不等于已经完成最终分数像素裁切。控制协议中的关闭失效也不能代替真实 IPC 取消与资源释放链路。
-
-实际结果按这些范围使用，不把源码哈希、类型检查或颜色夹具升级成完整格式和产品验收。
+没有证明完整字体／图片加载期间的读取稳定性、所有滚动输入和动画暂停、复杂宿主 CSS 变换、跨显示器移动、任意 PDF／EPUB／KF8 页面、像素边界最终裁切，以及 macOS／Linux。PNG 尺寸核对允许外扩取像素的舍入，不等于已经完成最终分数像素裁切。控制协议中的关闭失效也不能代替真实 IPC 取消与资源释放链路。

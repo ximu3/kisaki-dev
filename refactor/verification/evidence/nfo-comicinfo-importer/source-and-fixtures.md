@@ -1,6 +1,6 @@
 # NFO / ComicInfo 格式与合成核验
 
-2026-10-17，第 24 项。用户明确没有实际 NFO 或 ComicInfo 文件，使用合成样本。[完整方案](../../../design/extensions/importers/nfo-comicinfo.md)已确认。本记录验证格式与有界样本，不代表正式扩展、源软件或本体运行验收。
+2026-10-17，使用合成 NFO 与 ComicInfo 样本验证[导入合同](../../../design/extensions/importers/nfo-comicinfo.md)。本页覆盖格式与映射，正式扩展、源软件及本体运行按实施验收验证。
 
 <a id="sources"></a>
 

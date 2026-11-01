@@ -22,7 +22,7 @@
 
 Books Discovery revision 为 20261013，仅列出统一 books 管理范围，没有专用只读范围。官方旧说明建议从 Bookshelf.selfLink 取得 Books user ID；本次本人列表与单个书架均缺少该字段。正式 OAuth2 tokeninfo 请求返回应用、scope 和有效期，也没有用户标识，因此不能把此时的图书授权报告为已核验稳定身份。
 
-已按用户同意取得 openid 与 email，验证 ID token 签名、issuer、audience、有效期与本次 nonce；刷新后 sub 保持一致，邮箱存在且已验证，实际书架读取返回 200。Google ID token.sub 标识 Google 账号，不冒充 Books user ID；没有请求 profile。一次过期回调被拒绝后已重新完成交互授权。
+授权范围为 openid 与 email，验证 ID token 签名、issuer、audience、有效期与本次 nonce；刷新后 sub 保持一致，邮箱存在且已验证，实际书架读取返回 200。Google ID token.sub 标识 Google 账号，不冒充 Books user ID；没有请求 profile。过期回调按验证规则拒绝。
 
 ## Google Books 的对象范围
 
@@ -96,9 +96,9 @@ Book 5151 的实际图片地址从官网 HTML 核对为 images.ranobedb.org 下�
 - Book、Series、Staff、Publisher、Release 的 PUT 与 DELETE。
 - /api/v0/user 路径内的 Bearer PAT 认证。
 
-本轮匿名请求 /api/v0/user/me 返回 401，与源码中的认证边界一致；这不能证明认证后的读取或各写入路由已经实际可用。未取得本人 PAT，也没有进行任何远端写入。
+匿名请求 /api/v0/user/me 返回 401，与源码中的认证边界一致；这不能证明认证后的读取或各写入路由已经实际可用。未取得本人 PAT，也没有进行任何远端写入。
 
-当前公开 v0 路由没有列出本人书目／系列列表的 GET，也没有 /user/book/<id> 或 /user/series/<id> 的记录 GET。/user/me 返回账号摘要而非清单；认证 hook 只在 /api/v0/user 下解释 Bearer。公共 Book／Series 详情路由没有传入个人列表查询所需的 userId，也没有返回网站详情页的完整个人表单，不能用公开详情代替个人记录读取。
+当前公开 v0 路由没有列出本人书目／系列列表的 GET，也没有 /user/book/<id> 或 /user/series/<id> 的记录 GET。/user/me 返回账号摘要；认证 hook 只在 /api/v0/user 下解释 Bearer。公共 Book／Series 详情路由没有传入个人列表查询所需的 userId，也没有返回网站详情页的完整个人表单，不能用公开详情代替个人记录读取。
 
 Book／Series PUT 复用完整表单 schema。Series 需要阅读状态、自定义标签、发行语言／格式、通知偏好等；评分、日期、备注缺席时也可能按默认值替换。公开 API 缺少对应完整读取能力，不能单靠这些端点构造准确投影或核对未知写入结果，更不能用默认值覆盖未知字段来交付“同步”。
 
@@ -108,7 +108,7 @@ Book／Series PUT 复用完整表单 schema。Series 需要阅读状态、自定
 - 网站 Book／Series 详情页返回 userListForm／userListSeriesForm。匿名响应已核对字段结构，但它们是未登录表单，不是本人非空记录样本。已登录分支从数据库读取状态、评分、日期、备注、自定义标签及 Series 通知／发行偏好，见 [Book 页面服务](https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/book/%5Bid%3Dinteger%5D/%2Bpage.server.ts)和 [Series 页面服务](https://github.com/Blastose/ranobedb/blob/c86288de2343c49425204a4a0c3bc75b9160a176/src/routes/series/%5Bid%3Dinteger%5D/%2Bpage.server.ts)。
 - 上述实测使用网站原生的 SvelteKit __data.json 页面数据响应，共 9 次匿名读取；它们不属于公开 v0 API。本人访问依赖网站 auth_session 会话。登录源码要求 Turnstile 校验，会话有效期为 30 天，进入最后 15 天后正常访问可续期；没有尝试登录、读取浏览器 Cookie 或绕过校验。
 
-用户已确认不提供个人导入／同步。终态据此明确只提供 RanobeDB 资料能力，不采用网站登录会话与内部页面协议，也不将个人能力列为分期任务。此处分别记录 API 缺口、网站实际能力和方案取舍，不以实现排期代替来源边界。
+RanobeDB 扩展通过公开 API 提供资料读取，能力范围见[来源合同](../../../design/extensions/sources/ranobedb.md)。
 
 ## 仍待核验
 
@@ -116,4 +116,4 @@ Google Books 还需覆盖非空本人评价、自定义书架等样本。RanobeD
 
 网站页面数据仅用于上述匿名只读核验，未加入扩展运行方案；没有导出浏览器会话或改动已有私人记录。后续结果追加到同组材料，不以请求合同、源码存在或方案草案代替实际通过。
 
-本轮两个本机授权接收器已关闭，临时令牌及凭据引用已释放，凭据传递文件已移除；不将本地清理表述为撤销 Google 服务端授权。项目客户端与 Books 专用 key 保留供后续使用。
+两个本机授权接收器已关闭，临时令牌及凭据引用已释放，凭据传递文件已移除；不将本地清理表述为撤销 Google 服务端授权。项目客户端与 Books 专用 key 保留供后续使用。

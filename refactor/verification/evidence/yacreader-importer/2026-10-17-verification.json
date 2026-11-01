@@ -3,7 +3,6 @@
   "date": "2026-10-17",
   "ordinal": 30,
   "extension": "YACReader Importer",
-  "status": "design-confirmed",
   "inputOrigin": "synthetic-at-user-request",
   "sourceRef": "10.4.0",
   "commit": "28f92f4d8bdbb7170f6002e00bed7503356eea03",
@@ -55,7 +54,9 @@
     "failed": 0,
     "allInputsUnchanged": true
   },
-  "results": ["synthetic-results.json"],
+  "results": [
+    "synthetic-results.json"
+  ],
   "notClaimed": [
     "Real YACReader library, official user export, Qt or C++ execution.",
     "A live SQLite WAL snapshot or source database upgrade or restore.",

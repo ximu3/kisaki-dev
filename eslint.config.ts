@@ -1,5 +1,5 @@
 import { defineConfig } from 'eslint/config'
-import base, { syntaxOnly } from '@kisaki3/eslint-config/base'
+import base from '@kisaki3/eslint-config/base'
 import tests from '@kisaki3/eslint-config/tests'
 
 export default defineConfig(
@@ -7,9 +7,4 @@ export default defineConfig(
   { ignores: ['refactor/**', 'artifacts/**'] },
   base,
   tests,
-  {
-    // Full typed lint runs in the isolated consumer after its tarballs are installed.
-    ...syntaxOnly,
-    files: ['tests/desktop/fixtures/consumers/**'],
-  },
 )

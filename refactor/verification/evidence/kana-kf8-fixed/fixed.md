@@ -1,12 +1,12 @@
 # 固定 KF8 二进制、页面重建与缩放定位
 
-2026-10-20。本轮验证 [MOBI／KF8 的既有路线](../../../design/projects/kana/formats.md#mobi)：先取得原始记录和 skeleton 文档，再解释固定页面、资源与源地址。正式 Reader、公共类型、manifest 和锁文件均未改动。
+2026-10-20。验证 [MOBI／KF8 的既有路线](../../../design/projects/kana/formats.md#mobi)：先取得原始记录和 skeleton 文档，再解释固定页面、资源与源地址。正式 Reader、公共类型、manifest 和锁文件均未改动。
 
 ## 输入与独立性
 
 使用固定提交的 [behringer24/mobi 写入器](https://github.com/behringer24/mobi/tree/7a6319c07ad8f3ae828a533b6bfcea367e49a0cf)生成五份实际 AZW3 二进制。写入器代码未修改，MIT 许可；它仅用于制作试件，不成为 Kana 的生产依赖。[fixture.go](fixture.go) 提供自有三页内容、确定日期与 ID、480×640 固有视口、CSS 和自行生成的 240×320 图片。
 
-读取使用已核对的 Foliate 底层代码及原始分支试件适配，固定来源、许可和改动见 [mobi-adapter-input.json](../kana-formats/mobi-adapter-input.json)。本轮调用记录、解压和索引能力，没有运行 Foliate 的显示转换或默认分支选择。
+读取使用已核对的 Foliate 底层代码及原始分支试件适配，固定来源、许可和改动见 [mobi-adapter-input.json](../kana-formats/mobi-adapter-input.json)。调用记录、解压和索引能力，没有运行 Foliate 的显示转换或默认分支选择。
 
 | 二进制试件                  | 目的                                 |
 | --------------------------- | ------------------------------------ |
@@ -63,4 +63,4 @@ node refactor/verification/evidence/kana-cfi/run-browser.cjs
 
 这是自有内容通过独立写入器生成的受控二进制，尚未使用发行出版物或 Kindle 设备验证。RTL 目前核对元数据与源顺序，未核对双页编排或方向交互；当前 CSS、图片和固定页面也不代替复杂作者样式转换。
 
-浏览器资源通过有限 HTTP 试件路由交付，本轮不重新验证或替换已确认的 Service Worker 后端。没有执行完整 Reader、固定 KF8 全部方言、大书按需索引、真实字体和复制交互。
+浏览器资源通过有限 HTTP 试件路由交付，不重新验证或替换已确认的 Service Worker 后端。没有执行完整 Reader、固定 KF8 全部方言、大书按需索引、真实字体和复制交互。

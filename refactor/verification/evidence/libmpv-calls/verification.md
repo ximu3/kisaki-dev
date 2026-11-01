@@ -6,7 +6,7 @@
 
 沿用[原生项目组织核对](../native-projects/organization-sources.md)记录的 mpv v0.41.0，提交为 41f6a645068483470267271e1d09966ca3b9f413，Client API 2.5。[source-probe.py](source-probe.py)实际读取五项源码，均返回 HTTP 200，URL、HTTP 状态、时间、摘要和关键标记行号已记录到[source-contract.json](source-contract.json)。标记存在只辅助定位，语义判断来自正文核对。
 
-| 来源                                                                                                                | 本轮采用的事实                                                                                                                                |
+| 来源                                                                                                                | 采用的事实                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | [client.h](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h)    | 原生值含 INT64、DOUBLE、字节和非 UTF-8 字符串；异步操作通过事件回复，可重排；属性通知可能合并且不可用时不携带精确错误原因；取消命令是尽力请求 |
 | [input.rst](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/DOCS/man/input.rst)     | 命令各有完成语义；screenshot-raw 含 w、h、stride、format、data，文档允许 padding 及负 stride                                                  |

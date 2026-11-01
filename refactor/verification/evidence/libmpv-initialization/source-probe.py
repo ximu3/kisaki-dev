@@ -69,8 +69,8 @@ assert defaults["terminal"] == "no"
 assert defaults["idle"] == "yes"
 
 result = {
-    "purpose": "initialization proposal source receipts, not native verification",
-    "designStatus": "proposal", "mpvRef": "v0.41.0", "mpvCommit": COMMIT,
+    "purpose": "Pinned source evidence for initialization contracts",
+    "mpvRef": "v0.41.0", "mpvCommit": COMMIT,
     "embeddedDefaults": defaults,
     "nativeAddonExecuted": False,
     "optionApplicationVerified": False,

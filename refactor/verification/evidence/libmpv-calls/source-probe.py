@@ -38,7 +38,6 @@ with ThreadPoolExecutor(max_workers=4) as pool:
 
 result = {
     "purpose": "source review for confirmed principal call semantics; no native execution or complete public contract",
-    "designStatus": "call-semantics-confirmed",
     "mpvRef": "v0.41.0",
     "mpvCommit": COMMIT,
     "publicValueRepresentationComplete": False,
@@ -49,4 +48,4 @@ result = {
     "sources": receipts,
 }
 (ROOT / "source-contract.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-print(json.dumps({"sourceReceipts": len(receipts), "mpvRef": result["mpvRef"], "designStatus": result["designStatus"], "nativeExecuted": False}))
+print(json.dumps({"sourceReceipts": len(receipts), "mpvRef": result["mpvRef"], "nativeExecuted": False}))

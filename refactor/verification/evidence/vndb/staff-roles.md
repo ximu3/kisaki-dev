@@ -38,7 +38,7 @@
 
 ## 已确认的采用判断
 
-已确认[职员职责映射](../../../design/extensions/sources/vndb.md#staff-roles)：采用来源备注中明确表达、且本体已有的职责。Programming 对应 programmer，Executive producer 对应 producer 并保留原始称谓；这两例不再同时生成笼统的 other。模糊文字仍按已有类别采用，无法进一步归类的实际参与保留 other 与原始说明，不能仅凭任意关键词建立职责。
+已确认[职员职责映射](../../../design/extensions/sources/vndb.md#staff-roles)：采用来源备注中明确表达、且本体已有的职责。Programming 对应 programmer，Executive producer 对应 producer 并保留原始称谓；每条已解释署名采用其明确职责。模糊文字仍按已有类别采用，无法进一步归类的实际参与保留 other 与原始说明，不能仅凭任意关键词建立职责。
 
 十个类别在来源设计中分别列出人物与 Group／Company 的默认映射，Repository 仍先采用素材提供规则。已知细项保留在原职责下，例如 music＋OP arrangement 仍为 music；未说明含义的 Scripting 和 Debug 都不能自动认作 programmer。并列的明确独立工作可以分别采用，但不因拆分而复制笼统父类别。
 

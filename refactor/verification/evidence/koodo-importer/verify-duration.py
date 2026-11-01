@@ -121,7 +121,7 @@ check("Absent history supplies no inferred zero total", aggregate([]) == {})
 check("All synthetic source inputs remain unchanged", all(hashlib.sha256(Path(path).read_bytes()).hexdigest() == digest for path, digest in before.items()))
 
 result = {
-    "evidenceClass": "cumulative-duration-proposal-model",
+    "evidenceClass": "cumulative-duration-adoption-model",
     "scope": "Shared Work additional duration, Koodo book totals and Mihon chapter totals",
     "productionApiExecuted": False,
     "passed": sum(item["passed"] for item in checks),

@@ -1,8 +1,8 @@
 # 样式转换与共享状态的组合核对
 
-2026-10-20。本轮沿用已有字体、配色、CSS 输入、源地址和焦点证据，只新增一个组合场景，回答覆盖优先级、反复更新、图形继承、多投影状态和原生空白求值的衔接问题。没有扩展三引擎矩阵，也没有运行正式 Reader。
+2026-10-20。沿用已有字体、配色、CSS 输入、源地址和焦点证据，只新增一个组合场景，回答覆盖优先级、反复更新、图形继承、多投影状态和原生空白求值的衔接问题。没有扩展三引擎矩阵，也没有运行正式 Reader。
 
-[probe.mjs](probe.mjs) 包含自有短内容、显式指定的试件角色和两个显示文档。[run.cjs](run.cjs) 使用已固定的 Chromium 149.0.7827.55 与 Playwright 1.62.1，复用 css-tree 3.2.1 和此前生成的 AuthorFixture／ReaderFixture 微型字体。输入校验和实际结果见 [browser-contract.json](browser-contract.json)。
+[probe.mjs](probe.mjs) 包含自有短内容、显式指定的试件角色和两个显示文档。[run.cjs](run.cjs) 使用已固定的 Chromium 149.0.7827.55 与 Playwright 1.62.1，复用 css-tree 3.2.1 和生成的 AuthorFixture／ReaderFixture 微型字体。输入校验和实际结果见 [browser-contract.json](browser-contract.json)。
 
 ## 观察结果
 
@@ -31,9 +31,9 @@
 
 ## 设计采用与证据范围
 
-本轮将以上机制与已有反例统一到[样式转换](../../../design/projects/kana/styles.md#conversion)、[覆盖写入](../../../design/projects/kana/styles.md#overrides)和[共享交互样式状态](../../../design/projects/kana/interaction.md#style-state)。输入角色在试件中明确指定，没有实现自动角色分类、所有伪类投影、一般复合背景分析、完整空白来源映射或动画同步。
+将以上机制与已有反例统一到[样式转换](../../../design/projects/kana/styles.md#conversion)、[覆盖写入](../../../design/projects/kana/styles.md#overrides)和[共享交互样式状态](../../../design/projects/kana/interaction.md#style-state)。输入角色在试件中明确指定，没有实现自动角色分类、所有伪类投影、一般复合背景分析、完整空白来源映射或动画同步。
 
-字体与私用区、颜色成对覆盖、SVG 继承和逻辑段距继续复用[此前三引擎证据](../kana-styling/styling.md)；层叠、属性、命名空间与变量 URL 继续复用 [CSS 输入对照](../kana-css-input/css.md)；真实焦点与多面节点寿命沿用[焦点机制](../kana-focus/focus.md)。这轮保留的是实际 DOM 文字身份，没有重新执行 EPUB CFI 或 MOBI 字节地址试件。
+字体与私用区、颜色成对覆盖、SVG 继承和逻辑段距继续复用[三引擎证据](../kana-styling/styling.md)；层叠、属性、命名空间与变量 URL 继续复用 [CSS 输入对照](../kana-css-input/css.md)；真实焦点与多面节点寿命沿用[焦点机制](../kana-focus/focus.md)。文字身份检查使用实际 DOM，EPUB CFI 和 MOBI 字节地址各由所属试件验证。
 
 本场景未覆盖完整样式适配、全部支持浏览器、自动范围识别、复杂出版物、辅助技术或性能；这些范围按[阅读验收](../../scenarios/reading.md)核对。
 

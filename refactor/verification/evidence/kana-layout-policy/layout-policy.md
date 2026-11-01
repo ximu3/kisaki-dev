@@ -29,7 +29,7 @@
 | 根字号改为 24px     | 14px | 48px | 12px      |
 | 每个元素都设为 24px | 24px | 24px | 24px      |
 
-正文有自己的明确字号，所以只改父级字号没有替换它；逐元素同值又抹平了结构层次。相关值取得规则见 [CSS Cascading and Inheritance](https://www.w3.org/TR/css-cascade-5/#inheriting)。本轮只验证反例，没有实现或证明新的字体比例转换、全部作者样式覆盖和自动可访问性修正。
+正文有自己的明确字号，所以只改父级字号没有替换它；逐元素同值又抹平了结构层次。相关值取得规则见 [CSS Cascading and Inheritance](https://www.w3.org/TR/css-cascade-5/#inheriting)。只验证反例，没有实现或证明新的字体比例转换、全部作者样式覆盖和自动可访问性修正。
 
 ## 范围与复现
 

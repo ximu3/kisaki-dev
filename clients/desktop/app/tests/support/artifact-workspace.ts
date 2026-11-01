@@ -1,22 +1,21 @@
 /**
- * @fileoverview Prepares isolated carrier and portable-profile locations for tests of
+ * @fileoverview Prepares isolated extraction locations for tests of
  * existing packaged applications.
  */
 
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { copyFile, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import extractZip from 'extract-zip'
 
-/** An extracted candidate and its isolated portable profile, owned by one artifact test. */
+/** An extracted candidate owned by one artifact test. */
 export interface ArtifactWorkspace {
   directory: string
   executablePath: string
   resourceDirectory: string
   fusePath: string
-  dataDirectory: string
   close(): Promise<void>
 }
 
@@ -28,11 +27,6 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
     let executablePath: string
     let resourceDirectory: string
     let fusePath: string
-    const dataDirectory = join(
-      directory,
-      process.platform === 'win32' ? 'data' : 'kisaki-portable-data',
-    )
-
     if (process.platform === 'win32') {
       await extractZip(archivePath, { dir: directory })
 
@@ -56,15 +50,11 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       fusePath = join(directory, 'squashfs-root', 'kisaki')
     }
 
-    await mkdir(dataDirectory)
-    await writeFile(join(directory, 'kisaki-portable.txt'), '')
-
     return {
       directory,
       executablePath,
       resourceDirectory,
       fusePath,
-      dataDirectory,
       close: () => rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {

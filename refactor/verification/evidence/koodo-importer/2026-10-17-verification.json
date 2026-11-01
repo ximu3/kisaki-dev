@@ -3,7 +3,6 @@
   "date": "2026-10-17",
   "ordinal": 26,
   "extension": "Koodo Reader Importer",
-  "status": "design-confirmed",
   "inputOrigin": "synthetic-at-user-request",
   "sourceRef": "v2.4.6",
   "commit": "1fd0cc7f151916447d396e0c8a2c036180992cab",
@@ -32,7 +31,11 @@
     "allInputsUnchanged": true,
     "durationAdoptionModels": 33
   },
-  "results": ["synthetic-results.json", "render-results.json", "duration-results.json"],
+  "results": [
+    "synthetic-results.json",
+    "render-results.json",
+    "duration-results.json"
+  ],
   "pdfVisualReview": {
     "pageCount": 3,
     "reviewer": "Codex",
@@ -51,7 +54,12 @@
   "durationRevision": {
     "date": "2026-10-17",
     "reason": "User requested cumulative reading time as additional duration instead of overview notes.",
-    "workTypes": ["game", "anime", "comic", "novel"],
+    "workTypes": [
+      "game",
+      "anime",
+      "comic",
+      "novel"
+    ],
     "field": "additional_duration_ms",
     "koodoSource": "readingTime",
     "dailySummaryImported": false,

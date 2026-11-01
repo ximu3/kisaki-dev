@@ -58,7 +58,6 @@ def main():
 
     result = {
         "purpose": "Versioned source evidence for Linux integration design",
-        "designStatus": "proposal",
         "nativeCaptureExecuted": False,
         "desktopRegistrationExecuted": False,
         "appImageIdentityVerified": False,

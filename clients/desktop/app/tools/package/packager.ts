@@ -9,8 +9,8 @@ import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { runtimeFiles, buildInputIdentity } from '../build/identity'
-import type { DesktopBuild, DesktopTarget } from '../../src/shared/runtime-manifest'
-import type { DistributionKind, DistributionManifest } from '../../src/shared/distribution'
+import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
+import type { DistributionKind, DistributionManifest } from '../lib/distribution'
 import { sha256 } from '../lib/sha256'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
@@ -109,7 +109,6 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   config.set('directories', {
     app: staging,
     output,
-    buildResources: join(appRoot, 'packaging'),
   })
 
   config.set('extraResources', [{ from: join(staging, 'resources'), to: 'resources' }])

@@ -1,5 +1,5 @@
 {
-  "evidenceClass": "cumulative-duration-proposal-model",
+  "evidenceClass": "cumulative-duration-adoption-model",
   "scope": "Shared Work additional duration, Koodo book totals and Mihon chapter totals",
   "productionApiExecuted": false,
   "passed": 33,

@@ -3,6 +3,8 @@
  * state to the parent test.
  */
 
+import { fileURLToPath } from 'node:url'
+import { launchFixtureApplication } from './fixture-application'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
 
@@ -42,6 +44,8 @@ process.once('disconnect', stop)
 
 try {
   session = await startDevelopmentSession({
+    sourceRoot: fileURLToPath(new URL('../fixtures/runtime', import.meta.url)),
+    launch: launchFixtureApplication,
     signal: controller.signal,
     onState(state, error) {
       if (process.connected) {

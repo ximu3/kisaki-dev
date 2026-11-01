@@ -8,6 +8,7 @@ import { build, normalizePath } from 'vite'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { appRoot } from '../../../tools/lib/paths'
 import { programConfig } from '../../../tools/build/programs'
 
 test.each(['main', 'extension-host'] as const)(
@@ -52,7 +53,13 @@ test.each(['main', 'extension-host'] as const)(
         ].join('\n'),
       )
 
-      const config = programConfig(program, join(directory, 'output'), 'fixture', 'production')
+      const config = programConfig(
+        join(appRoot, 'tests/fixtures/runtime'),
+        program,
+        join(directory, 'output'),
+        'fixture',
+        'production',
+      )
       const result = await build({
         ...config,
         logLevel: 'silent',

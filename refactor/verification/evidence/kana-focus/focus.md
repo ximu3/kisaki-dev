@@ -2,7 +2,7 @@
 
 现行顺序焦点导航遵循平台与用户键盘设置，只补必要接续，见[交互规则](../../../design/projects/kana/interaction.md)。下文统一 Tab 协调的结果用于说明 2026-10-20 试件的能力范围，不作为现行规则的运行验收。
 
-2026-10-20，使用[已准备并记录的浏览器构建](../kana-browser-scope/source-input.json)运行 [probe.mjs](probe.mjs) 与 [run.cjs](run.cjs)。运行时为 Chromium 149.0.7827.55、Firefox 153.0、Windows WebKit 测试构建 26.5；每个引擎执行横排、vertical-rl、vertical-lr，共九组受控场景。详细数据、代码指纹及未覆盖项见 [browser-contract.json](browser-contract.json)。这些构建说明本轮机制验证的环境，不充当当前稳定版本名单或维护窗口的完整验收记录。
+2026-10-20，使用[已准备并记录的浏览器构建](../kana-browser-scope/source-input.json)运行 [probe.mjs](probe.mjs) 与 [run.cjs](run.cjs)。运行时为 Chromium 149.0.7827.55、Firefox 153.0、Windows WebKit 测试构建 26.5；每个引擎执行横排、vertical-rl、vertical-lr，共九组受控场景。详细数据、代码指纹及未覆盖项见 [browser-contract.json](browser-contract.json)。这些构建说明机制验证的环境，不充当当前稳定版本名单或维护窗口的完整验收记录。
 
 试件每次建立两个完整、同源的短章节展示文档。第一份保留语义入口，第二份 iframe 使用 aria-hidden 与负 tabindex；正文内容未为去重而切碎或替换。宿主代码管理输入，内容 CSP 禁止书内代码执行。源位置使用自建文本索引，未实现 EPUB CFI、MOBI 字节地址或 FB2 格式映射。
 
@@ -67,4 +67,4 @@ node refactor/verification/evidence/kana-focus/run.cjs
 
 运行器复用既有测试浏览器并核对可执行文件摘要，配置目录仅位于 node_modules/.cache/kana-focus。页面只访问本次本地夹具入口，外部请求为零，没有系统剪贴板写入或安装辅助技术。每个浏览器上下文均在 finally 中关闭，本次修改不涉及用户浏览器配置或系统键盘设置。
 
-记录明确标明真实屏幕阅读器、Safari、WebKitGTK 和格式源映射均未执行。后续已经确认[语义文档与焦点机制](../../../design/projects/kana/interaction.md)，这里的证据仍限于本轮局部场景；完整生命周期与实际辅助技术接入仍须完成。
+记录明确标明真实屏幕阅读器、Safari、WebKitGTK 和格式源映射均未执行。[语义文档与焦点机制](../../../design/projects/kana/interaction.md)的完整生命周期及辅助技术接入仍须验证。

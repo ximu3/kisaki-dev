@@ -1,6 +1,5 @@
 {
   "checkedAt": "2026-10-17T08:43:44.145Z",
-  "status": "design-confirmed",
   "ordinal": 24,
   "realUserInput": false,
   "baselines": {
@@ -17,7 +16,10 @@
     "comicinfo": {
       "commit": "99e1453a163c777b4b5320a68732f6f133ac7918",
       "commitDate": "2026-06-23T01:59:38Z",
-      "stableSchemas": ["1.0", "2.0"],
+      "stableSchemas": [
+        "1.0",
+        "2.0"
+      ],
       "draftSchema": "2.1"
     },
     "comicrackPageContract": {
@@ -450,8 +452,17 @@
     "checks": 101,
     "fixtureFiles": 20,
     "runtime": {
-      "lxml": [6, 1, 0, 0],
-      "libxml": [2, 11, 9],
+      "lxml": [
+        6,
+        1,
+        0,
+        0
+      ],
+      "libxml": [
+        2,
+        11,
+        9
+      ],
       "videoDurationSeconds": 2,
       "ffprobe": "6.1.1-essentials_build-www.gyan.dev"
     },

@@ -6,6 +6,10 @@
     "tsBuildInfoFile": "../../.cache/typescript/main.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["../../src/main/**/*.ts", "../../src/shared/**/*.ts", "../../native/node/**/*.ts"],
-  "exclude": ["../../src/**/*.test.ts", "../../src/**/*.test.tsx"]
+  "include": [
+    "../../tests/fixtures/runtime/src/main/**/*.ts",
+    "../../tests/fixtures/runtime/src/shared/**/*.ts",
+    "../../native/node/**/*.ts"
+  ],
+  "exclude": []
 }

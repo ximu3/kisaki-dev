@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-// These probes validate the proposal against synthetic source-shaped data.
+// These probes validate conversion rules against synthetic source-shaped data.
 const root = path.dirname(fileURLToPath(import.meta.url))
 const input = path.join(root, 'fixture')
 const library = path.join(input, 'library')
@@ -493,7 +493,7 @@ check('every synthetic input byte remains unchanged after reads', () =>
 const result = {
   checkedAt: new Date().toISOString(),
   scope:
-    'Synthetic SQLite/OPF/EPUB and proposal conversion probes; no source application or Kisaki runtime execution.',
+    'Synthetic SQLite, OPF and EPUB conversion checks.',
   runtime: { node: process.version },
   counts: {
     checks: checks.length,

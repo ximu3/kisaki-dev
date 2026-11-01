@@ -1,6 +1,6 @@
 # libmpv-node 订阅合同的检查范围
 
-对应已确认的[订阅接口与生命周期](../../../design/projects/libmpv-node/notifications.md)。来源收据保留当时 proposal 状态，不因设计确认改写历史验证结果。本轮完成来源核对、局部声明消费和标准 Node 调度检查，没有实现或运行原生订阅分发器。
+本页通过固定源码、声明消费和标准 Node 调度检查[订阅接口与生命周期](../../../design/projects/libmpv-node/notifications.md)。
 
 ## 固定来源
 
@@ -46,6 +46,6 @@ node refactor/verification/evidence/libmpv-subscriptions/scheduling-probe.mjs
 
 ## 未完成的验证
 
-原生登记与释放、首次通知、主动停止抑制待交付回调、Mpv 关闭前后的终止顺序、回调异常转交、独立异步上下文以及数量／字节上限均未通过本轮原生验证。Node 保持规则、日志过滤与 terminal-default、具体事件字段、hook 接入和真实队列压力也仍待完成；字段方案现已确认，见[事件与日志合同](../../../design/projects/libmpv-node/notifications.md)。
+原生登记与释放、首次通知、主动停止抑制待交付回调、Mpv 关闭前后的终止顺序、回调异常转交、独立异步上下文以及数量／字节上限均未通过原生验证。Node 保持规则、日志过滤与 terminal-default、具体事件字段、hook 接入和真实队列压力也仍待完成；字段合同见[事件与日志合同](../../../design/projects/libmpv-node/notifications.md)。
 
-回执中的 nativeAddonExecuted、proposedSubscriptionImplementationExecuted、nativeCallbackExceptionRouteExecuted、cancellationAndCloseVerified、queueCapacityVerified 等标记均为 false，不以声明或标准运行时行为代替这些证据。
+回执中的 nativeAddonExecuted、subscriptionImplementationExecuted、nativeCallbackExceptionRouteExecuted、cancellationAndCloseVerified、queueCapacityVerified 等标记均为 false，不以声明或标准运行时行为代替这些证据。

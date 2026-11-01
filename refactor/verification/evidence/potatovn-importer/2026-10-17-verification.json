@@ -1,6 +1,5 @@
 {
   "checkedOn": "2026-10-17",
-  "status": "design-confirmed",
   "source": {
     "project": "PotatoVN",
     "version": "v1.10.2.0",
@@ -33,7 +32,7 @@
   "implementationBoundaries": [
     "No PotatoVN application was run.",
     "No real user backup or running database was read.",
-    "ZIP and JSON checks include proposed pure normalization; they are not the product importer.",
+    "ZIP and JSON checks cover the declared normalization rules.",
     "No game launch, elevated process, locale tool, save relocation, native Kisaki write, or complete image decode was exercised.",
     "Real exports and full application integration remain implementation acceptance work."
   ],

@@ -93,8 +93,8 @@ if not all(name in events.values() for name in ordinary):
     raise ValueError("An ordinary notification name is absent from the native table.")
 
 result = {
-    "purpose": "pinned source declarations and locators for the notification proposal",
-    "designStatus": "proposal", "mpvRef": "v0.41.0", "mpvCommit": COMMIT,
+    "purpose": "Pinned source declarations and locators for event and log contracts",
+    "mpvRef": "v0.41.0", "mpvCommit": COMMIT,
     "declarations": {
         "endFileFields": end_fields,
         "startFileFields": struct_fields("mpv_event_start_file"),

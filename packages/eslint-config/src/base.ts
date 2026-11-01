@@ -7,9 +7,6 @@ import eslint from '@eslint/js'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
-/** Check consumer templates before their declaration dependencies are installed. */
-export const syntaxOnly = tseslint.configs.disableTypeChecked
-
 export default defineConfig(
   {
     ignores: [

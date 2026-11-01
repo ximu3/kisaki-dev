@@ -66,6 +66,7 @@ async function publicPackageInputs(directory: string): Promise<string[]> {
 
 /** Initialize all build inputs, closing on failure or cancellation; the session owns close() afterward. */
 export async function startInputWatcher(
+  sourceRoot: string,
   members: DesktopDependency[],
   options: InputWatchOptions,
 ): Promise<FSWatcher> {
@@ -75,11 +76,11 @@ export async function startInputWatcher(
     await Promise.all(members.map((member) => publicPackageInputs(member.path)))
   ).flat()
   const runtimeInputs = [
-    ...['main', 'preload', 'extension-host', 'shared'].map((name) => join(appRoot, 'src', name)),
+    ...['main', 'preload', 'extension-host', 'shared'].map((name) => join(sourceRoot, 'src', name)),
     join(appRoot, 'native'),
     join(appRoot, 'assets'),
     ...['main', 'preload', 'extension-host', 'renderer'].map((name) =>
-      join(appRoot, 'config', 'vite', `vite.config.${name}.ts`),
+      join(sourceRoot, 'config', 'vite', `vite.config.${name}.ts`),
     ),
     join(appRoot, 'config', 'typescript'),
     join(appRoot, 'tsconfig.json'),

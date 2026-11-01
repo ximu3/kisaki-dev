@@ -1,6 +1,6 @@
 # libmpv 能力目录与设置写入检查
 
-[probe.py](probe.py)在隔离子进程中加载此前固定摘要的 Windows x64 libmpv 构建，关闭用户配置、自动脚本和实际音频输出。它读取能力定义，并用自有脚本及 profile 验证设置入口；未加载用户媒体或用户配置。
+[probe.py](probe.py)在隔离子进程中加载固定摘要的 Windows x64 libmpv 构建，关闭用户配置、自动脚本和实际音频输出。它读取能力定义，并用自有脚本及 profile 验证设置入口；未加载用户媒体或用户配置。
 
 ```sh
 python refactor/verification/evidence/libmpv-catalog/probe.py
@@ -25,6 +25,6 @@ python refactor/verification/evidence/libmpv-catalog/probe.py
 
 初始 vo 为仅含 libmpv 的对象设置列表，target-trc 为 srgb。直接 mpv_set_property_string、显式 Lua 脚本，以及配置文件中的 profile 经 apply-profile 应用后，均成功把 vo 改为 null、target-trc 改为 linear。
 
-这证明上游不会自动保护绑定的受管设置。本组核心没有加载视频，因而这里仅核对设置被接受；后续[GPU 原型](../libmpv-gpu/verification.md)另验证实际驱动切换与颜色像素变化。[固定源码](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/player/command.c)也表明 UPDATE_VO 会触发输出重建。完整取舍见[受管输出边界比较](../libmpv-managed-output/design-choices.md)。
+这证明上游不会自动保护绑定的受管设置。本组核心没有加载视频，因而这里仅核对设置被接受；后续[GPU 原型](../libmpv-gpu/verification.md)另验证实际驱动切换与颜色像素变化。[固定源码](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/player/command.c)也表明 UPDATE_VO 会触发输出重建。受管设置与调用方责任见[输出约定](../../../design/projects/libmpv-node/video.md#constraints)。
 
 探针没有实现原生设置保护，nativeSettingsGuardImplemented 保持 false。尚未验证配置恢复、并发目标变更、真实保护补丁与其他平台。

@@ -1,6 +1,6 @@
 {
   "observedOn": "2026-10-16",
-  "scope": "Source verification for the Google Books and RanobeDB proposal; Google account identity, refresh, public access, and limited shelf writes verified",
+  "scope": "Source verification for Google Books and RanobeDB; Google account identity, refresh, public access, and limited shelf writes verified",
   "containsCredentials": false,
   "containsPrivateLibraryContents": false,
   "publicRequests": [

@@ -117,7 +117,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
       contentType: 'application/json',
     })
 
-    expect(p95).toBeLessThanOrEqual(budgets.engineeringShellStartupP95Ms)
+    expect(p95).toBeLessThanOrEqual(budgets.carrierStartupP95Ms)
   } finally {
     await rm(profile, { recursive: true, force: true })
   }
