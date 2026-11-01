@@ -83,8 +83,15 @@ test('pnpm registers the maintained projects with unique identities and the inte
 
   for (const { directory, manifest } of projects) {
     expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
-    expect(manifest.private, directory).toBe(true)
-    expect(manifest.license, directory).toBe('AGPL-3.0-only')
+    const publicPackage = directory.startsWith('clients/desktop/packages/')
+    if (publicPackage) {
+      expect(manifest.private, directory).not.toBe(true)
+      expect(manifest.license, directory).toBe('MIT')
+      expect(manifest.exports, directory).toBeDefined()
+    } else {
+      expect(manifest.private, directory).toBe(true)
+      expect(manifest.license, directory).toBe('AGPL-3.0-only')
+    }
   }
 })
 

@@ -5,6 +5,21 @@
   },
   "globalDependencies": [".node-version", ".npmrc", "pnpm-workspace.yaml"],
   "tasks": {
+    "check:package": {
+      "dependsOn": ["build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "outputs": []
+    },
+    "//#desktop:test:consumers": {
+      "dependsOn": ["@kisaki3/desktop-appearance#check:package"],
+      "inputs": [
+        "package.json",
+        "tests/desktop/consumers/**",
+        "config/vitest/consumers.ts",
+        "tools/desktop/packages.ts"
+      ],
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": [

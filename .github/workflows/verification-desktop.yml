@@ -38,6 +38,7 @@ jobs:
       dev: ${{ steps.affected.outputs.dev }}
       artifacts: ${{ steps.affected.outputs.artifacts }}
       tooling: ${{ steps.affected.outputs.tooling }}
+      consumers: ${{ steps.affected.outputs.consumers }}
       selected: ${{ steps.affected.outputs.selected }}
       matrix: ${{ steps.affected.outputs.matrix }}
     env:
@@ -143,8 +144,19 @@ jobs:
           fi
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
           if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
+          consumers="$complete"
+          if [[ "$complete" == false ]]; then
+            consumers=$(jq -r '
+              any(.data.affectedTasks.items[];
+                .fullName == "//#desktop:test:consumers" and .command != null)
+            ' "$report")
+          fi
+          echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
+            selected=true
+          elif [[ "$consumers" == true ]]; then
+            matrix=$(jq -c '[.[] | select(.target == "linux-x64")]' <<< "$TARGETS")
             selected=true
           else
             matrix='[]'
@@ -214,7 +226,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - name: Install Chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: needs.select.outputs.dev == 'true'
+        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64')
+      - name: Build and pack public packages
+        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
+        run: pnpm desktop:packages:pack
+      - name: Test public package consumers
+        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
+        run: pnpm desktop:test:consumers
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
@@ -286,6 +304,8 @@ jobs:
           name: desktop-${{ matrix.target }}
           path: |-
             test-results/verification/
+            test-results/consumers/
+            artifacts/desktop/packages/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json

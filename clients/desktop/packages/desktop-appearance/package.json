@@ -1,0 +1,61 @@
+{
+  "name": "@kisaki3/desktop-appearance",
+  "version": "0.1.0-dev.0",
+  "description": "Framework-independent visual tokens, values and styles for Kisaki.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki-dev.git",
+    "directory": "clients/desktop/packages/desktop-appearance"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "release-notes"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./values": {
+      "types": "./dist/values.d.ts",
+      "import": "./dist/values.js"
+    },
+    "./defaults": {
+      "types": "./dist/defaults.d.ts",
+      "import": "./dist/defaults.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tailwind.css": "./dist/tailwind.css"
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "check:package": "publint --strict && attw --pack",
+    "clean": "tsx tools/clean.ts"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@types/css-tree": "3.2.0",
+    "@types/node": "catalog:",
+    "css-tree": "3.2.1",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "publint": "0.3.25",
+    "tsdown": "0.23.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

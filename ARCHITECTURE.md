@@ -2,6 +2,12 @@
 
 根 `packages` 中的三个私有包分别提供 TypeScript 配置、ESLint 配置和工程函数。`clients/desktop/app` 拥有桌面构建、资源、原生操作、打包和验证；根工具维护 Git hooks 与验证环境记录。workspace 只登记有实际职责和实现的项目。
 
+## 桌面公共包
+
+`clients/desktop/packages/desktop-appearance` 提供 45 项纯视觉 token、完整值解析、亮暗默认值、普通 CSS 和可选 Tailwind 映射。主题保存可直接编辑的视觉值，共同样式拥有派生计算。解析入口在 Node 与浏览器中使用同一实现，词表和默认值可独立消费。默认值由同一份 TypeScript 数据生成 CSS，映射只引用共同变量。字体字节、资源读取与主题持久化由实际宿主负责。
+
+包通过构建后的子路径交付 ESM、声明与样式。根 `tools/desktop/packages` 打包当前公共项目并记录摘要，`tests/desktop/consumers` 从仓库外安装 tarball，核对类型、Node 与浏览器消费。
+
 ## 桌面工程
 
 `tools/build` 编译调用方明确提供的程序输入，组织资源和原生输出，完成后交接整个候选。`build/identity` 读取 Turbo 任务的输入身份，并为完成的运行字节生成摘要。`tools/resources` 准备锁定字体、图标与 SQLite 绑定；`tools/native` 拥有 Rust 编译与声明核对；`tools/package` 消费同一份已验证构建，检查身份和字节后生成目标载体。
