@@ -119,6 +119,7 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
       { cwd: root },
     )
 
+    // Reuse archives; resolving the synthetic workspace can require registry metadata.
     const store = await readPnpm(['store', 'path'], repositoryRoot)
     try {
       await readPnpm(
@@ -126,7 +127,7 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
           'install',
           '--store-dir',
           dirname(store.trim()),
-          '--offline',
+          '--prefer-offline',
           '--ignore-scripts',
           '--no-frozen-lockfile',
         ],
