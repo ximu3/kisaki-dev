@@ -3,22 +3,20 @@
   "futureFlags": {
     "affectedUsingTaskInputs": true
   },
-  "globalDependencies": [".node-version", ".npmrc", "pnpm-workspace.yaml"],
+  "globalDependencies": [
+    ".node-version",
+    ".npmrc",
+    "pnpm-workspace.yaml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/verification.yml",
+    ".github/workflows/verification-repository.yml",
+    ".github/workflows/verification-desktop.yml"
+  ],
   "tasks": {
     "check:package": {
       "dependsOn": ["build"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": []
-    },
-    "//#desktop:test:consumers": {
-      "dependsOn": ["@kisaki3/desktop-appearance#check:package"],
-      "inputs": [
-        "package.json",
-        "tests/desktop/consumers/**",
-        "config/vitest/consumers.ts",
-        "tools/desktop/packages.ts"
-      ],
-      "cache": false
     },
     "build": {
       "dependsOn": ["^build"],
@@ -59,9 +57,6 @@
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "outputs": []
     },
-    "@kisaki3/tooling#test": {
-      "cache": false
-    },
     "clean": {
       "cache": false
     },
@@ -89,8 +84,7 @@
     },
     "//#root:test": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
-      "cache": false
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"]
     },
     "//#check:boundaries": {
       "inputs": [
@@ -104,6 +98,23 @@
       ],
       "dependsOn": ["^build"],
       "outputs": []
+    },
+    "//#root:pack:desktop": {
+      "dependsOn": ["@kisaki3/desktop-appearance#check:package"],
+      "inputs": [
+        "package.json",
+        "tools/desktop/packages.ts",
+        "clients/desktop/packages/*/README.md",
+        "clients/desktop/packages/*/LICENSE",
+        "clients/desktop/packages/*/release-notes/**"
+      ],
+      "outputs": ["artifacts/desktop/packages/**"]
+    },
+    "//#root:test:consumers": {
+      "dependsOn": ["root:pack:desktop"],
+      "inputs": ["package.json", "tests/desktop/consumers/**", "config/vitest/consumers.ts"],
+      "outputs": ["test-results/consumers/**"]
     }
-  }
+  },
+  "globalEnv": ["CI", "ImageOS", "ImageVersion", "DESKTOP_TARGET"]
 }

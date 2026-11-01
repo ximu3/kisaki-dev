@@ -14,20 +14,18 @@
     "email": "152481053+ximu3@users.noreply.github.com"
   },
   "scripts": {
-    "build": "tsx tools/build/cli.ts --source tests/fixtures/runtime",
     "prepare:resources": "tsx tools/resources/cli.ts",
     "build:native": "tsx tools/native/cli.ts",
+    "prepare:test-runtime": "tsx tests/support/build-runtime.ts",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
     "check:native": "tsx tools/native/cli.ts --check",
     "test": "vitest run",
     "test:native": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/vitest.config.native.ts",
-    "test:e2e": "playwright test",
+    "test:electron": "playwright test --project runtime",
     "test:dev": "vitest run --config config/vitest/vitest.config.dev.ts",
-    "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
-    "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
-    "clean": "tsx tools/clean.ts",
-    "test:package": "tsx tools/package/cli.ts --test-only"
+    "test:package": "playwright test --project package",
+    "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3"
@@ -55,13 +53,13 @@
     "playwright": "1.64.1",
     "png-to-ico": "3.0.2",
     "sharp": "0.35.5",
+    "solid-js": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-solid": "catalog:",
     "vitest": "catalog:",
-    "yaml": "2.9.1",
-    "solid-js": "catalog:"
+    "yaml": "2.9.1"
   },
   "napi": {
     "binaryName": "kisaki-native",

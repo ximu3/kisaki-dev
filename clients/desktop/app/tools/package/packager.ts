@@ -30,6 +30,13 @@ interface PackagingContext {
   staging: string
   output: string
   testOnly: boolean
+  macSigningIdentity: string | null
+}
+
+/** Artifact purpose and macOS signing are independent choices; null explicitly selects unsigned output. */
+export interface PackagingOptions {
+  testOnly?: boolean
+  macSigningIdentity?: string | null
 }
 
 /**
@@ -38,11 +45,19 @@ interface PackagingContext {
  */
 export async function packageDesktop(
   target: DesktopTarget,
-  testOnly = false,
+  options: PackagingOptions = {},
   signal?: AbortSignal,
 ): Promise<string> {
   if (target !== hostTarget()) {
     throw new Error('Package on the corresponding native target runner')
+  }
+
+  const macSigningIdentity =
+    options.macSigningIdentity === undefined
+      ? process.env.KISAKI_MAC_SIGNING_IDENTITY
+      : options.macSigningIdentity
+  if (target.startsWith('macos-') && macSigningIdentity !== null && !macSigningIdentity) {
+    throw new Error('The project macOS signing identity is required')
   }
 
   const runtime = buildDirectory(target)
@@ -75,7 +90,13 @@ export async function packageDesktop(
       appRoot,
       output,
       async (candidate) => {
-        const context = { build: desktop, staging, output: candidate, testOnly }
+        const context: PackagingContext = {
+          build: desktop,
+          staging,
+          output: candidate,
+          testOnly: options.testOnly ?? false,
+          macSigningIdentity: macSigningIdentity ?? null,
+        }
         const configPath = await writeBuilderConfig(context)
 
         if (target.startsWith('windows-')) {
@@ -102,7 +123,7 @@ export async function packageDesktop(
 
 /** Write the target's builder configuration, including resources and signing requirements. */
 async function writeBuilderConfig(context: PackagingContext): Promise<string> {
-  const { build, staging, output, testOnly } = context
+  const { build, staging, output, macSigningIdentity } = context
   const config = parseDocument(await readFile(join(appRoot, 'electron-builder.yml'), 'utf8'))
 
   config.set('electronVersion', build.electronVersion)
@@ -118,16 +139,9 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
 
   config.set('artifactName', `Kisaki-${build.version}-${build.target}.\${ext}`)
 
-  if (testOnly) {
-    config.setIn(['mac', 'identity'], null)
-    config.setIn(['mac', 'forceCodeSigning'], false)
-  } else if (build.target.startsWith('macos-')) {
-    const identity = process.env.KISAKI_MAC_SIGNING_IDENTITY
-    if (!identity) {
-      throw new Error('The project macOS signing identity is required')
-    }
-
-    config.setIn(['mac', 'identity'], identity)
+  if (build.target.startsWith('macos-')) {
+    config.setIn(['mac', 'identity'], macSigningIdentity)
+    config.setIn(['mac', 'forceCodeSigning'], macSigningIdentity !== null)
   }
 
   const configPath = join(staging, 'electron-builder.yml')

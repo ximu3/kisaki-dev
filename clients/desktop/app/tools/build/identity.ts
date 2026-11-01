@@ -9,7 +9,7 @@ import { readPnpm } from '@kisaki3/tooling/process'
 import { repositoryRoot } from '../lib/paths'
 import { sha256 } from '../lib/sha256'
 
-/** Read the locked Turbo build task's input identity, waiting for its query to close on cancellation. */
+/** Read the runtime input node's identity without building or maintaining a second dependency graph. */
 export async function buildInputIdentity(
   options: { root?: string; signal?: AbortSignal | undefined } = {},
 ): Promise<string> {
@@ -19,7 +19,7 @@ export async function buildInputIdentity(
         'exec',
         'turbo',
         'run',
-        'build',
+        'runtime-inputs',
         '--filter=@kisaki3/desktop',
         '--dry=json',
         '--cwd',
@@ -30,7 +30,7 @@ export async function buildInputIdentity(
     ),
   )
   if (!plan || typeof plan !== 'object' || !('tasks' in plan) || !Array.isArray(plan.tasks)) {
-    throw new Error('Turbo did not report desktop build tasks')
+    throw new Error('Turbo did not report runtime input tasks')
   }
 
   const tasks: unknown[] = plan.tasks
@@ -39,7 +39,7 @@ export async function buildInputIdentity(
       task &&
       typeof task === 'object' &&
       'taskId' in task &&
-      task.taskId === '@kisaki3/desktop#build'
+      task.taskId === '@kisaki3/desktop#runtime-inputs'
     ) {
       if (!('hash' in task) || typeof task.hash !== 'string' || !task.hash) {
         throw new Error('Turbo reported an invalid desktop build input hash')
@@ -49,7 +49,7 @@ export async function buildInputIdentity(
     }
   }
 
-  throw new Error('Turbo did not report the desktop build task')
+  throw new Error('Turbo did not report the runtime input task')
 }
 
 /** Record every runtime byte after all owners have completed their outputs. */

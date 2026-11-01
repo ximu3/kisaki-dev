@@ -36,6 +36,7 @@ jobs:
     env:
       TURBO_TELEMETRY_DISABLED: '1'
       TURBO_CONCURRENCY: '2'
+      TURBO_FORCE: ${{ inputs.complete && 'true' || 'false' }}
       TURBO_SCM_BASE: ${{ inputs.base }}
       TURBO_SCM_HEAD: ${{ inputs.head }}
     steps:
@@ -106,9 +107,9 @@ jobs:
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .turbo/cache
-          key: turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
+          key: turbo-v4-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
           restore-keys: |
-            turbo-v3-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
+            turbo-v4-repository-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
       - name: Check repository
         shell: bash
         env:

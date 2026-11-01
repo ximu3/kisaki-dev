@@ -1,12 +1,9 @@
 {
   "extends": ["//"],
   "tasks": {
-    "test": {
-      "cache": false
-    },
-    "build": {
+    "runtime-inputs": {
       "dependsOn": ["^build"],
-      "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
+      "env": ["MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
         "tests/fixtures/runtime/src/**",
         "native/**",
@@ -24,122 +21,54 @@
         "!tests/fixtures/runtime/src/**/*.test.tsx",
         "!tools/**/*.test.ts",
         "!native/**/*.test.ts",
-        "!config/typescript/tsconfig.tests.json"
+        "!config/typescript/tsconfig.tests.json",
+        "tests/support/build-runtime.ts"
+      ]
+    },
+    "build:native": {
+      "inputs": ["native/**", "!native/target/**", "tools/native/**", "tools/lib/**"],
+      "outputs": ["out/native/**", ".cache/native/**"],
+      "env": ["MACOSX_DEPLOYMENT_TARGET"]
+    },
+    "prepare:resources": {
+      "inputs": ["assets/**", "tools/resources/**", "tools/lib/**"],
+      "outputs": ["out/resources/**"]
+    },
+    "prepare:test-runtime": {
+      "dependsOn": ["runtime-inputs", "build:native", "prepare:resources"],
+      "inputs": ["tests/support/build-runtime.ts"],
+      "outputs": [
+        "out/*/build.json",
+        "out/*/package.json",
+        "out/*/main/**",
+        "out/*/preload/**",
+        "out/*/renderer/**",
+        "out/*/extension-host/**",
+        "out/*/resources/**"
       ],
-      "outputs": ["out/**"],
-      "cache": false
+      "env": ["MACOSX_DEPLOYMENT_TARGET"]
     },
     "test:native": {
-      "dependsOn": [],
+      "dependsOn": ["build:native", "prepare:resources"],
       "inputs": [
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "tests/fixtures/runtime/src/main/**",
-        "tests/fixtures/runtime/src/shared/**",
-        "assets/**",
-        "tools/native/**",
-        "tools/resources/**",
-        "tools/lib/**",
-        "config/vitest/vitest.config.native.ts",
         "tests/integration/native/**",
         "tests/integration/database/**",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "config/vitest/vitest.config.native.ts"
       ],
-      "cache": false
+      "outputs": ["test-results/native/**"]
     },
-    "test:e2e": {
-      "dependsOn": ["^build"],
+    "test:electron": {
+      "dependsOn": ["prepare:test-runtime"],
       "inputs": [
-        "tests/fixtures/runtime/src/**",
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "assets/**",
-        "tools/build/**",
-        "tools/resources/**",
-        "tools/native/**",
-        "tools/lib/**",
-        "tests/fixtures/runtime/config/vite/**",
-        "config/typescript/**",
-        "tsconfig.json",
         "playwright.config.ts",
-        "tests/e2e/**",
+        "tests/tools/electron.test.ts",
         "tests/support/electron.ts",
-        "tools/dev/electron-executable.ts",
-        "tests/support/window-observation.ts",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts",
-        "!config/typescript/tsconfig.tests.json"
+        "tools/dev/electron-executable.ts"
       ],
-      "cache": false
-    },
-    "test:artifacts": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "electron-builder.yml",
-        "$TURBO_ROOT$/LICENSE",
-        "tests/fixtures/runtime/src/**",
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "assets/**",
-        "tools/build/**",
-        "tools/package/**",
-        "tools/resources/**",
-        "tools/native/**",
-        "tools/lib/**",
-        "tests/fixtures/runtime/config/vite/**",
-        "config/typescript/**",
-        "tsconfig.json",
-        "config/vitest/vitest.config.artifacts.ts",
-        "tests/artifacts/**",
-        "tests/support/artifact*.ts",
-        "tools/dev/electron-executable.ts",
-        "tests/support/window-observation.ts",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts",
-        "!config/typescript/tsconfig.tests.json"
-      ],
-      "cache": false
-    },
-    "test:performance": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "tests/fixtures/runtime/src/**",
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "assets/**",
-        "tools/build/**",
-        "tools/resources/**",
-        "tools/native/**",
-        "tools/lib/**",
-        "tests/fixtures/runtime/config/vite/**",
-        "config/typescript/**",
-        "tsconfig.json",
-        "config/playwright/playwright.config.performance.ts",
-        "tests/performance/**",
-        "tests/support/electron.ts",
-        "tools/dev/electron-executable.ts",
-        "tests/support/window-observation.ts",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts",
-        "!config/typescript/tsconfig.tests.json"
-      ],
-      "cache": false
+      "outputs": ["test-results/runtime/**"]
     },
     "test:dev": {
-      "dependsOn": [],
+      "dependsOn": ["build:native"],
       "env": ["TSDOWN_*", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
         "tools/dev/**",
@@ -164,36 +93,30 @@
         "!tools/**/*.test.ts",
         "!native/**/*.test.ts",
         "!config/typescript/tsconfig.tests.json",
-        "tests/fixtures/runtime/src/**"
+        "tests/fixtures/runtime/src/**",
+        "tests/support/fixture-application.ts"
       ],
-      "cache": false
+      "outputs": ["test-results/dev/**"]
     },
     "test:package": {
-      "dependsOn": ["build"],
-      "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
+      "dependsOn": ["prepare:test-runtime"],
       "inputs": [
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
-        "tests/fixtures/runtime/src/**",
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "assets/**",
-        "tools/build/**",
-        "tools/resources/**",
-        "tools/native/**",
-        "tools/lib/**",
-        "tests/fixtures/runtime/config/vite/**",
-        "config/typescript/**",
-        "tsconfig.json",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts",
         "tools/package/**",
-        "!config/typescript/tsconfig.tests.json"
+        "playwright.config.ts",
+        "tests/tools/package.test.ts",
+        "tests/support/artifact*.ts",
+        "tests/support/window-observation.ts",
+        "tools/dev/electron-executable.ts"
       ],
-      "cache": false
+      "env": ["MACOSX_DEPLOYMENT_TARGET"],
+      "outputs": ["test-results/package/**", "dist/**"]
+    },
+    "check:native": {
+      "dependsOn": ["build:native"],
+      "inputs": ["native/**", "!native/target/**", "tools/native/**", "tools/lib/**"],
+      "outputs": []
     }
   }
 }
