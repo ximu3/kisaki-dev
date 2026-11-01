@@ -143,9 +143,9 @@ hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于
 
 host-environment.ts 输出验证进程的 Node 版本、系统、架构、CPU 与内存事实。仓库和桌面工作流调用同一入口，将结果保存到各自验证报告；输出字段由该文件统一维护。
 
-桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理辅助归 tests/desktop/support，固定输入归 tests/desktop/fixtures；收据收集工具归 tools/desktop，输出归 artifacts/desktop/packages。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
+桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理归 tests/desktop/consumers，固定样例归其 fixtures。各公共包的 tarball 输出归自身 out/package，公共打包与检查机制由私有 tooling 命令提供。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
-desktop/package-inputs.ts 汇集七个公共包已完成的 tarball，记录包身份、版本和文件摘要，供跨包消费与交付接续。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
+公共包通过自己的 pack 任务交付 tarball，跨包消费者依赖实际使用的包任务，不维护另一份包收据清单。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 
 cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与退出状态。工作流函数通过明确的参数和返回值提供复用，拥有执行次序、外部调用、文件写入及失败后的清理。其他工具与程序化入口复用这些函数，不通过运行 CLI 后解析终端文字取得结果，也不导入 cli.ts。测试按被测边界直接调用工作流，或实际执行 CLI 核对参数、输出与退出状态。工具模块导入不执行任务，可复用实现不调用 process.exit；CLI 在清理完成后设置退出状态。
 
@@ -214,7 +214,7 @@ clients/desktop/app/tools/
 | clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                                                                                                                     |
 | lib                              | 提供跨工作流共用的工程路径、目标解析、构建与分发清单及字节摘要；生产输入监听归 dev，各工作流拥有自身操作与资源寿命。                                                                                                                                                         |
 
-桌面的 dev、build 和 package 命令分别进入对应 cli.ts，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 上述文件确定主要职责，私有辅助文件按实际协作需要拆分。共享的目标与路径解析归 lib/targets.ts 和 lib/paths.ts，不复制程序配置、项目依赖图或支持范围。工程命令与输出位置由工具解析，部署后的运行资源路径仍由 main/app/paths 负责。
 
@@ -303,7 +303,7 @@ clients/desktop/app/tests/
 
 原生业务与数据库套件在运行器启动前选定开发 Electron 的 Node 宿主及匹配 ABI；环境变量和启动参数由该任务的脚本与配置提供。测试中的环境变量配置、fixture 或 setup 不能把已经启动的普通 Node 进程变为另一 ABI。构建和原生依赖准备复用已有工程任务；应用实例、临时资料、订阅及清理由运行器 fixture 和 tests/support 管理，确需的测试专用启动辅助也归 tests/support。
 
-桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。build-reuse.ts 在测试前记录已准备的构建，在打包后核对清单字节、修改时间及制品引用，结果归该次工作流的 test-results/verification；它只观察验证输入，构建与打包仍由工程工具执行。
+桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。验证任务的准备关系由 Turbo 定义；构建和打包仍由工程工具执行，字节核对在实际打包与制品消费处完成。
 
 根统一检查包含根工具及实际 workspace 的常规测试，各套件的执行范围与未执行部分分别报告。最终制品保留正式安全配置，通过适用的外部或现场方式验证；测试入口和用例不改变[运行覆盖与交付要求](../../verification/acceptance.md#runtime-coverage)。
 

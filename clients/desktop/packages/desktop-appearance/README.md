@@ -86,12 +86,11 @@ From the repository root:
 pnpm --filter @kisaki3/desktop-appearance build
 pnpm --filter @kisaki3/desktop-appearance typecheck
 pnpm --filter @kisaki3/desktop-appearance test
-pnpm desktop:packages:pack
 pnpm desktop:test:consumers
 ```
 
 The build generates CSS defaults from `src/defaults.ts` and combines them with `src/styles.css`. All outputs are prepared before replacing `dist`; failure or cancellation before adoption preserves the previous output. Public imports resolve to built files.
 
-Publint checks the package; Are the Types Wrong checks its ESM JavaScript entrypoints. CSS subpaths are validated by actual stylesheet consumers, following the tool's [non-JavaScript asset guidance](https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md). External consumers also check declarations with the workspace TypeScript version and `skipLibCheck: false`.
+The consumer command prepares build → pack → check:package through Turbo, then installs the same `out/package/package.tgz` outside the repository. Publint and Are the Types Wrong both inspect this tarball; no checker repacks it. Are the Types Wrong checks its ESM JavaScript entrypoints. CSS subpaths are validated by actual stylesheet consumers, following the tool's [non-JavaScript asset guidance](https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md). External consumers also check declarations with the workspace TypeScript version and `skipLibCheck: false`.
 
 MIT. No fonts, icons or third-party images are distributed. The value parser bundles CSS Tree and its supporting code/data; `dist/THIRD-PARTY-NOTICES.txt` includes their MIT, CC0 and BSD notices. Package declarations expose no parser-library types.

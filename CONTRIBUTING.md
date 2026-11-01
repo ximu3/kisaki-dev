@@ -22,19 +22,19 @@ pre-commit 通过 lint-staged 执行 Prettier check 与 ESLint，不修复或重
 当前可执行入口验证桌面工程能力。程序输入位于 `clients/desktop/app/tests/fixtures/runtime`，每次运行使用测试拥有的隔离资料；完整产品合同和实施进度分别见 [refactor](refactor/README.md) 与[状态页](refactor/implementation/status.md)。
 
 ```sh
-pnpm desktop:test:build --target windows-x64
-pnpm desktop:test:package --target windows-x64
+pnpm desktop:build:fixture --target windows-x64
+pnpm desktop:package:fixture --target windows-x64
 ```
 
 目标必须匹配实际 runner。构建先准备资源和原生绑定，再通过 Vite 编译各程序；完整候选成功后才替换输出，失败或采用前取消保留旧结果。资源准备可独立执行 `pnpm --filter @kisaki3/desktop prepare:resources --target windows-x64`。
 
-资源工作流从锁定依赖准备字体与 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，记录逐文件摘要。字体输入由 `assets/fonts/inputs.json` 和 pnpm 锁文件共同约束。
+资源工作流从锁定依赖准备字体与 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，记录最终资源摘要。`assets/fonts/inputs.json` 选择字体文件和许可，包版本与来源完整性由 pnpm 锁文件约束。
 
-`buildId` 来自 Turbo 的桌面 build 任务，覆盖实际输入、依赖、工具链和声明的环境变量；SHA-256 核对完成的运行字节。打包检查既有 `build.json` 的目标、输入身份、完整文件集合和摘要。根 `desktop:test:package` 通过 Turbo 的 build 前置依赖准备一次构建；已有构建时直接执行 `pnpm --filter @kisaki3/desktop test:package --target <host-target>`，复用同一输出。
+`buildId` 来自 Turbo 的桌面 build:fixture 任务，覆盖实际输入、依赖、工具链和声明的环境变量；SHA-256 核对完成的运行字节。打包检查既有 `build.json` 的目标、输入身份、完整文件集合和摘要。根 `desktop:package:fixture` 通过 Turbo 准备资源、原生绑定和工程载体。包内脚本执行各自的叶操作；需要准备依赖时使用根入口或 Turbo。
 
 工程载体打包固定标记 `testOnly`，构建和打包均不发布。正式签署、安装升级及发行接入由 W22 验收。
 
-`pnpm --filter @kisaki3/desktop build --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
+`pnpm --filter @kisaki3/desktop build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
 开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败、完整快照交接、HMR、正常退出取消和清理；测试载体的消息不定义产品开发协议。
 
@@ -42,18 +42,18 @@ pnpm desktop:test:package --target windows-x64
 
 ## 检查与运行环境
 
-桌面公共包各自提供 build、typecheck、lint、test 与 check:package。`pnpm desktop:packages:pack` 构建、检查并打包到 `artifacts/desktop/packages`，收据保存每份 tarball 的 SHA-256；`pnpm desktop:test:consumers` 安装这些制品到仓库外临时项目，执行完整声明检查和 Chromium 样式消费。首次运行前准备 Chromium。消费者验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
+桌面公共包各自提供 build、pack、check:package 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 由 Turbo 自动接续构建、一次打包、制品检查和仓库外消费，固定样例位于 `tests/desktop/consumers/fixtures`。首次运行前准备 Chromium。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
 
 按[共同原则](CONVENTIONS.md#quality)、[可读性](CONVENTIONS.md#readability-principle)和[实际影响](refactor/verification/acceptance.md#verification-scope)选择验证。普通检查不包含真实桌面、制品或性能采样。
 
-| 命令                            | 输入与运行环境                                                 |
-| ------------------------------- | -------------------------------------------------------------- |
-| `pnpm check`                    | 全仓类型、lint、格式及常规 Node 测试                           |
-| `pnpm desktop:test:native`      | 先构建，由开发 Electron 的 Node 模式执行 SQLite 与原生文件测试 |
-| `pnpm desktop:test:e2e`         | 先构建，在隔离资料中验证四个 Electron 编译入口与进程隔离       |
-| `pnpm desktop:test:dev`         | 准备原生输出，在隔离源码副本中验证开发工作流与浏览器 HMR       |
-| `pnpm desktop:test:artifacts`   | 消费已打包的载体，保留 fuses，从外部观察启动与关闭             |
-| `pnpm desktop:test:performance` | 先构建，执行 20 次工程载体启动、内存和退出采样                 |
+| 命令                            | 输入与运行环境                                                               |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `pnpm check`                    | 全仓类型、lint、格式及常规 Node 测试                                         |
+| `pnpm desktop:test:native`      | 先准备原生与资源输出，由开发 Electron 的 Node 模式执行 SQLite 与原生文件测试 |
+| `pnpm desktop:test:e2e`         | 先构建，在隔离资料中验证四个 Electron 编译入口与进程隔离                     |
+| `pnpm desktop:test:dev`         | 准备原生输出，在隔离源码副本中验证开发工作流与浏览器 HMR                     |
+| `pnpm desktop:test:artifacts`   | 消费已打包的载体，保留 fuses，从外部观察启动与关闭                           |
+| `pnpm desktop:test:performance` | 先构建，执行 20 次工程载体启动、内存和退出采样                               |
 
 浏览器首次准备使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
@@ -71,7 +71,7 @@ Vitest 转换缓存归各项目的 `node_modules/.vitest-cache`。TypeScript 增
 
 `ci.yml` 接收 PR 与手动入口，`verification.yml` 协调仓库和桌面工作流，`pr-title.yml` 单独检查标题。任务 inputs 与真实依赖图决定验证范围；文档和单个测试变化不自动扩大到全部桌面验收。选中的原生、桌面与工程进程检查覆盖 Windows、macOS、Linux 的 x64 和 arm64。
 
-每个桌面目标在同一 runner 中准备环境，有限构建只运行一次，运行检查和打包复用其输出。开发检查复用原生编译输出，并在隔离副本中验证。性能采样只在明确要求时运行，不进入普通 CI。
+每个桌面目标在同一 runner 中准备环境，在一次 Turbo 调度中执行所选任务及其前置依赖；CI 串行执行这些任务，同一生产任务只运行一次。开发检查复用原生编译输出，并在隔离副本中验证。性能采样只在明确要求时运行，不进入普通 CI。
 
 所有工程用 selected／verified 表达选择与完成；Required checks 区分有依据的未选择与应执行但未完成。基线缺失、全局工具链变化或手动完整入口执行全部适用检查；选择失败使检查失败。普通 PR 只有读取权限。
 

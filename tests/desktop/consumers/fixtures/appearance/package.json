@@ -1,0 +1,17 @@
+{
+  "name": "appearance-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -b",
+    "build:node": "tsc -p config/typescript/tsconfig.node.json --noEmit false --outDir .cache/node --incremental false"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-appearance": "0.1.0-dev.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vite": "8.3.3"
+  }
+}

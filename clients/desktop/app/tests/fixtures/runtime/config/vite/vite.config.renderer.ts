@@ -17,10 +17,13 @@ export default defineConfig(({ mode }) => ({
           return html
         }
 
-        // Vite injects startup scripts and uses a WebSocket connection for HMR.
+        // Vite uses inline startup scripts, HMR sockets and a blob SharedWorker for reconnects.
         return html
           .replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")
-          .replace("connect-src 'self'", "connect-src 'self' ws://127.0.0.1:*")
+          .replace(
+            "connect-src 'self'",
+            "connect-src 'self' ws://127.0.0.1:*; worker-src 'self' blob:",
+          )
       },
     },
   ],

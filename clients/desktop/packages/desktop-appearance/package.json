@@ -36,14 +36,14 @@
   },
   "scripts": {
     "build": "tsx tools/build.ts",
+    "pack": "kisaki-package pack",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
-    "check:package": "publint --strict && attw --pack",
+    "check:package": "kisaki-package check",
     "clean": "tsx tools/clean.ts"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "0.18.5",
     "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
@@ -52,7 +52,6 @@
     "css-tree": "3.2.1",
     "eslint": "catalog:",
     "jiti": "catalog:",
-    "publint": "0.3.25",
     "tsdown": "0.23.0",
     "tsx": "catalog:",
     "typescript": "catalog:",

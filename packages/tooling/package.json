@@ -5,6 +5,9 @@
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
+  "bin": {
+    "kisaki-package": "./src/package.ts"
+  },
   "exports": {
     "./cli": "./src/cli.ts",
     "./output": "./src/output.ts",
@@ -15,13 +18,17 @@
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run"
   },
+  "dependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "publint": "0.3.25",
+    "tsx": "catalog:"
+  },
   "devDependencies": {
     "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "jiti": "catalog:",
-    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

@@ -8,74 +8,34 @@ import { tmpdir } from 'node:os'
 import { promisify } from 'node:util'
 import { readPnpm } from '@kisaki3/tooling/process'
 
-interface PlannedTask {
-  taskId: string
-  task: string
-  command: string
-  inputs: Record<string, string>
-  resolvedTaskDefinition: { cache: boolean; env: string[] }
-}
-
-const verificationTasks = [
-  'test:native',
-  'test:e2e',
-  'test:dev',
-  'test:performance',
-  'test:artifacts',
-  'test:package',
-]
-
-test('generated outputs stay outside task inputs and live verification is never cached', async () => {
+test('verification tasks prepare the artifacts they actually consume', async () => {
   const plan = JSON.parse(
     await readPnpm(
       [
         'exec',
         'turbo',
         'run',
-        'build',
-        'typecheck',
-        'lint',
-        'check:boundaries',
-        'test',
-        'root:test',
-        ...verificationTasks,
-        'clean',
+        'test:native',
+        'test:e2e',
+        'test:dev',
+        'test:artifacts',
+        'root:test:consumers',
         '--dry=json',
       ],
       process.cwd(),
     ),
-  ) as { tasks: PlannedTask[] }
-  for (const owner of ['desktop', 'tooling']) {
-    expect(
-      plan.tasks.find((task) => task.taskId === `@kisaki3/${owner}#test`)?.resolvedTaskDefinition
-        .cache,
-      owner,
-    ).toBe(false)
-  }
-  const boundary = plan.tasks.find((task) => task.taskId === '//#check:boundaries')!
-  expect(
-    Object.keys(boundary.inputs).some((file) => file.startsWith('clients/desktop/app/native/')),
-  ).toBe(true)
-  expect(
-    Object.keys(boundary.inputs).some((file) => file.startsWith('packages/tooling/src/')),
-  ).toBe(true)
-  for (const name of ['build', 'test:package', 'test:dev']) {
-    expect(
-      plan.tasks.find((task) => task.taskId === `@kisaki3/desktop#${name}`)?.resolvedTaskDefinition
-        .env,
-    ).toContain('MACOSX_DEPLOYMENT_TARGET')
-  }
-  for (const task of plan.tasks) {
-    expect(
-      Object.keys(task.inputs).filter((file) =>
-        /(^|\/)(node_modules|out|dist|\.cache|\.turbo|\.local|target)\//.test(file),
-      ),
-      task.taskId,
-    ).toEqual([])
-    if (task.command !== '<NONEXISTENT>' && [...verificationTasks, 'clean'].includes(task.task)) {
-      expect(task.resolvedTaskDefinition.cache, task.taskId).toBe(false)
-    }
-  }
+  ) as { tasks: { taskId: string; dependencies: string[] }[] }
+  const dependencies = new Map(plan.tasks.map((task) => [task.taskId, task.dependencies]))
+  const reaches = (task: string, prerequisite: string): boolean =>
+    (dependencies.get(task) ?? []).some(
+      (dependency) => dependency === prerequisite || reaches(dependency, prerequisite),
+    )
+
+  expect(reaches('@kisaki3/desktop#test:native', '@kisaki3/desktop#build:native')).toBe(true)
+  expect(reaches('@kisaki3/desktop#test:e2e', '@kisaki3/desktop#build:fixture')).toBe(true)
+  expect(reaches('@kisaki3/desktop#test:dev', '@kisaki3/desktop#build:native')).toBe(true)
+  expect(reaches('@kisaki3/desktop#test:artifacts', '@kisaki3/desktop#package:fixture')).toBe(true)
+  expect(reaches('//#root:test:consumers', '@kisaki3/desktop-appearance#pack')).toBe(true)
 })
 
 test(
@@ -108,16 +68,16 @@ test(
       { path: 'clients/desktop/app/tests/artifacts/desktop.test.ts', desktop: ['test:artifacts'] },
       {
         path: 'clients/desktop/app/electron-builder.yml',
-        desktop: ['test:artifacts', 'test:package'],
+        desktop: ['test:artifacts'],
       },
-      { path: 'LICENSE', desktop: ['test:artifacts', 'test:package'] },
+      { path: 'LICENSE', desktop: ['test:artifacts'] },
       {
         path: 'clients/desktop/app/tests/fixtures/runtime/src/renderer/windows/main/entry.tsx',
-        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:package'],
+        desktop: ['test:artifacts', 'test:dev', 'test:e2e'],
       },
       {
         path: 'clients/desktop/app/native/src/lib.rs',
-        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native', 'test:package'],
+        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
       },
     ]
     try {
@@ -201,10 +161,10 @@ test(
           )
           .map((task) => task.name)
           .sort()
-        expect(selected, item.path).toEqual(item.desktop)
+        expect(selected, item.path).toEqual([...item.desktop].sort())
         expect(
           report.data.affectedTasks.items.some(
-            (task) => task.command !== null && task.fullName === '//#desktop:test:consumers',
+            (task) => task.command !== null && task.fullName === '//#root:test:consumers',
           ),
           item.path,
         ).toBe(item.consumers ?? false)

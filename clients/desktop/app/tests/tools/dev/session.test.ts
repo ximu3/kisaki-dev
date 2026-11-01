@@ -3,11 +3,12 @@
  * generation handoff and renderer updates.
  */
 
-import { afterAll, beforeAll, expect, test } from 'vitest'
+import { afterAll, beforeAll, expect, onTestFinished, test } from 'vitest'
 import { chromium } from '@playwright/test'
 import type { Browser } from '@playwright/test'
-import { readFile, rename, rm, writeFile } from 'node:fs/promises'
+import { readFile, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { hostTarget } from '../../../tools/lib/targets'
 import { closeNativeWindow, hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
 import {
@@ -213,4 +214,86 @@ test('dependency recovery and renderer updates preserve a usable process', async
       [styles, renderer, dependency].map((path, index) => writeFile(path, originals[index]!)),
     )
   }
+})
+
+test('cancelling initial dependency preparation closes its command and permits a complete retry', async () => {
+  const manifestPath = join(workspace.root, 'packages/development-fixture/package.json')
+  const original = await readFile(manifestPath, 'utf8')
+  const controllers: ReturnType<typeof startDevelopmentController>[] = []
+  onTestFinished(async () => {
+    const results = await Promise.allSettled(controllers.map((controller) => controller.close()))
+    await writeFile(manifestPath, original)
+    const failures: unknown[] = []
+    for (const result of results) {
+      if (result.status === 'rejected') {
+        failures.push(result.reason)
+      }
+    }
+    if (failures.length) {
+      throw new AggregateError(failures, 'Development test cleanup failed')
+    }
+  })
+
+  const manifest = JSON.parse(original) as { scripts: Record<string, string> }
+  manifest.scripts.build =
+    'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
+  await writeFile(manifestPath, JSON.stringify(manifest))
+
+  const first = startDevelopmentController(workspace.app)
+  controllers.push(first)
+  const sessions = join(workspace.app, 'out', 'development', hostTarget())
+  let preparation: { pid: number } | undefined
+  await expect
+    .poll(
+      async () => {
+        try {
+          preparation = JSON.parse(
+            await readFile(join(workspace.root, '.cache', 'dependency-preparation.json'), 'utf8'),
+          ) as typeof preparation
+          return true
+        } catch (cause) {
+          if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+            throw cause
+          }
+
+          return false
+        }
+      },
+      { timeout: 60_000 },
+    )
+    .toBe(true)
+
+  first.process.send({ type: 'stop' })
+  expect(await first.closed, first.diagnostics()).toBe(0)
+  expect(first.states.some((state) => state.state === 'ready')).toBe(false)
+  expect(await readdir(sessions)).toEqual([])
+  expect(preparation).toBeDefined()
+
+  await expect
+    .poll(() => {
+      try {
+        process.kill(preparation!.pid, 0)
+        return true
+      } catch (cause) {
+        if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
+          throw cause
+        }
+
+        return false
+      }
+    })
+    .toBe(false)
+
+  await writeFile(manifestPath, original)
+  const retry = startDevelopmentController(workspace.app)
+  controllers.push(retry)
+  await expect
+    .poll(() => retry!.states.some((state) => state.state === 'ready'), {
+      timeout: developmentStartupTimeoutMs,
+    })
+    .toBe(true)
+
+  retry.process.send({ type: 'stop' })
+  expect(await retry.closed, retry.diagnostics()).toBe(0)
+  expect(await readdir(sessions)).toEqual([])
 })

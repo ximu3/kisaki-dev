@@ -6,13 +6,13 @@
 
 `clients/desktop/packages/desktop-appearance` 提供 45 项纯视觉 token、完整值解析、亮暗默认值、普通 CSS 和可选 Tailwind 映射。主题保存可直接编辑的视觉值，共同样式拥有派生计算。解析入口在 Node 与浏览器中使用同一实现，词表和默认值可独立消费。默认值由同一份 TypeScript 数据生成 CSS，映射只引用共同变量。字体字节、资源读取与主题持久化由实际宿主负责。
 
-包通过构建后的子路径交付 ESM、声明与样式。根 `tools/desktop/packages` 打包当前公共项目并记录摘要，`tests/desktop/consumers` 从仓库外安装 tarball，核对类型、Node 与浏览器消费。
+包通过构建后的子路径交付 ESM、声明与样式。私有工程命令 `kisaki-package` 将各包打包一次并检查同一份 tarball，`tests/desktop/consumers` 从仓库外安装 tarball，核对类型、Node 与浏览器消费。
 
 ## 桌面工程
 
 `tools/build` 编译调用方明确提供的程序输入，组织资源和原生输出，完成后交接整个候选。`build/identity` 读取 Turbo 任务的输入身份，并为完成的运行字节生成摘要。`tools/resources` 准备锁定字体、图标与 SQLite 绑定；`tools/native` 拥有 Rust 编译与声明核对；`tools/package` 消费同一份已验证构建，检查身份和字节后生成目标载体。
 
-`tools/dev/session` 拥有一次开发会话的服务、监听、候选和进程寿命。调用方提供源码根目录和进程启动能力；`renderer` 管理 Vite，`inputs` 管理 Chokidar，`generation` 编译 Node 程序，`dependencies` 通过构建后的 exports 取得完整依赖快照。失败保留既有可用结果，正常退出可以取消，资源释放完成后才结束会话。
+`tools/dev/session` 拥有一次开发会话的服务、监听、候选和进程寿命。调用方提供源码根目录和进程启动能力；`renderer` 管理 Vite，`inputs` 管理 Chokidar，`generation` 编译 Node 程序，`dependencies` 准备完整依赖候选，`renderer` 只保留当前已采用副本；成功更新后刷新文档并释放旧副本。失败保留既有可用结果，正常退出可以取消，资源释放完成后才结束会话。
 
 跨工作流的路径、目标、运行清单和摘要归 `tools/lib`。跨工程的候选交接、命令取消与 CLI 信号处理由 `@kisaki3/tooling` 提供。工程实现不导入测试代码。
 

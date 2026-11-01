@@ -3,7 +3,7 @@
  * an isolated workspace with real package, lockfile and Git inputs.
  */
 
-import { afterEach, beforeEach, expect, test } from 'vitest'
+import { afterAll, beforeAll, expect, test } from 'vitest'
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -22,7 +22,7 @@ async function writeInput(path: string, contents: string): Promise<void> {
   await writeFile(target, contents)
 }
 
-beforeEach(async () => {
+beforeAll(async () => {
   root = await mkdtemp(join(tmpdir(), 'kisaki-build-inputs-'))
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8')) as {
     packageManager: string
@@ -42,7 +42,7 @@ beforeEach(async () => {
     JSON.stringify({
       name: '@kisaki3/desktop',
       private: true,
-      scripts: { build: 'node build.js' },
+      scripts: { 'build:fixture': 'node build.js' },
       dependencies: { '@kisaki3/identity-fixture': 'workspace:*' },
     }),
   )
@@ -110,7 +110,7 @@ beforeEach(async () => {
   )
 })
 
-afterEach(async () => {
+afterAll(async () => {
   await rm(root, { recursive: true, force: true })
 })
 
@@ -208,14 +208,19 @@ test('declared build environment values contribute to the input identity', async
 })
 
 test('rejects when the desktop build task is unavailable', async () => {
-  await writeInput(
-    `${applicationPath}/package.json`,
-    JSON.stringify({
-      name: 'another-application',
-      private: true,
-      scripts: { build: 'node build.js' },
-    }),
-  )
+  const original = await readFile(join(root, applicationPath, 'package.json'), 'utf8')
+  try {
+    await writeInput(
+      `${applicationPath}/package.json`,
+      JSON.stringify({
+        name: 'another-application',
+        private: true,
+        scripts: { 'build:fixture': 'node build.js' },
+      }),
+    )
 
-  await expect(buildInputIdentity({ root })).rejects.toThrow()
+    await expect(buildInputIdentity({ root })).rejects.toThrow()
+  } finally {
+    await writeInput(`${applicationPath}/package.json`, original)
+  }
 })

@@ -8,6 +8,7 @@ import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { startRenderer } from '../../tools/dev/renderer'
+import { captureDependencies } from '../../tools/dev/dependencies'
 import { startInputWatcher } from '../../tools/dev/inputs'
 
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
@@ -69,7 +70,7 @@ beforeAll(async () => {
   })
 
   // Initial adoption restarts Vite. Watch subscriptions must survive that real restart.
-  await renderer.adopt({ id: 'empty-fixture', sizeBytes: 0, packages: new Map() })
+  await renderer.adopt(await captureDependencies([], join(paths.repositoryRoot, 'snapshots')))
 })
 
 afterAll(async () => {

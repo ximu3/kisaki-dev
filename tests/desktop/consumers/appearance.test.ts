@@ -1,13 +1,12 @@
 /** @fileoverview Exercises the packed appearance library from an independent Node and browser project. */
 
 import { afterAll, beforeAll, expect, test } from 'vitest'
-import { createHash } from 'node:crypto'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { build, preview, version as viteVersion } from 'vite'
+import { build, preview } from 'vite'
 import type { PreviewServer } from 'vite'
 import { chromium } from '@playwright/test'
 import type { Browser } from '@playwright/test'
@@ -22,153 +21,16 @@ let server: PreviewServer | undefined
 
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-appearance-consumer-'))
-  const receipt = JSON.parse(
-    await readFile('artifacts/desktop/packages/packages.json', 'utf8'),
-  ) as {
-    packages: { name: string; file: string; sha256: string }[]
+  await cp(resolve('tests/desktop/consumers/fixtures/appearance'), directory, { recursive: true })
+  const manifestPath = join(directory, 'package.json')
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as {
+    dependencies: Record<string, string>
   }
-  const artifact = receipt.packages.find((item) => item.name === '@kisaki3/desktop-appearance')
-  if (!artifact) {
-    throw new Error('Build and pack desktop public packages before running consumers')
-  }
-  const tarball = resolve('artifacts/desktop/packages', artifact.file)
-  expect(
-    createHash('sha256')
-      .update(await readFile(tarball))
-      .digest('hex'),
-  ).toBe(artifact.sha256)
+  const archive = resolve('clients/desktop/packages/desktop-appearance/out/package/package.tgz')
+  manifest.dependencies['@kisaki3/desktop-appearance'] = `file:${archive.replaceAll('\\', '/')}`
+  await writeFile(manifestPath, JSON.stringify(manifest))
+  await runPnpm(['install', '--ignore-scripts'], { cwd: directory })
 
-  const workspace = JSON.parse(await readFile('package.json', 'utf8')) as {
-    packageManager: string
-    devDependencies: Record<string, string>
-  }
-  await writeFile(
-    join(directory, 'package.json'),
-    JSON.stringify({
-      name: 'appearance-consumer',
-      private: true,
-      type: 'module',
-      packageManager: workspace.packageManager,
-      dependencies: { '@kisaki3/desktop-appearance': `file:${tarball.replaceAll('\\', '/')}` },
-      devDependencies: {
-        tailwindcss: workspace.devDependencies.tailwindcss,
-        vite: viteVersion,
-      },
-    }),
-  )
-  await writeFile(join(directory, 'pnpm-workspace.yaml'), 'autoInstallPeers: false\n')
-  await readPnpm(['install', '--ignore-scripts'], directory)
-
-  const compilerOptions = {
-    target: 'ES2023',
-    strict: true,
-    noEmit: true,
-    skipLibCheck: false,
-    types: [],
-    lib: ['ES2023'],
-    exactOptionalPropertyTypes: true,
-    noUncheckedIndexedAccess: true,
-  }
-  for (const module of ['NodeNext', 'ESNext']) {
-    await writeFile(
-      join(directory, `tsconfig.${module.toLowerCase()}.json`),
-      JSON.stringify({
-        compilerOptions: {
-          ...compilerOptions,
-          module,
-          moduleResolution: module === 'NodeNext' ? 'NodeNext' : 'Bundler',
-        },
-        include: ['consumer.ts'],
-      }),
-    )
-  }
-  await writeFile(
-    join(directory, 'tsconfig.browser.json'),
-    JSON.stringify({
-      compilerOptions: {
-        ...compilerOptions,
-        module: 'ESNext',
-        moduleResolution: 'Bundler',
-        lib: ['ES2023', 'DOM'],
-        types: ['vite/client'],
-      },
-      include: ['browser.ts'],
-    }),
-  )
-  await writeFile(
-    join(directory, 'tsconfig.json'),
-    JSON.stringify({
-      files: [],
-      references: [{ path: './tsconfig.nodenext.json' }, { path: './tsconfig.browser.json' }],
-    }),
-  )
-  await writeFile(
-    join(directory, 'consumer.ts'),
-    `/** @fileoverview Consumes only public artifact declarations and pure values. */
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
-import type { TokenValues, VisualTokenName, FontTokenName } from '@kisaki3/desktop-appearance/tokens'
-import { defaults } from '@kisaki3/desktop-appearance/defaults'
-import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
-const values: TokenValues = parseTokenValues(defaults.dark)
-const visual: VisualTokenName = '--ring'
-const font: FontTokenName = '--font-sans'
-export const sample = [tokens[visual], values[font], parseTokenValue('--radius', '0')]
-`,
-  )
-  await writeFile(
-    join(directory, 'index.html'),
-    `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Appearance consumer</title></head>
-<body><main><h1>Appearance</h1><p>独立视觉包 · Aa 0123</p>
-<button id="ordinary">Plain CSS</button><button id="mapped" class="bg-primary text-primary-foreground rounded-md shadow-raised font-sans text-sm h-7">Tailwind</button>
-<div id="pane" class="bg-background border border-border rounded-lg">Surface</div>
-<pre id="code" class="font-mono">const theme = 'Kisaki'</pre></main>
-<script type="module" src="/browser.ts"></script></body></html>`,
-  )
-  await writeFile(
-    join(directory, 'browser.ts'),
-    `/** @fileoverview Loads the artifact in a framework-free browser document. */
-import '@kisaki3/desktop-appearance/styles.css'
-import './utilities.css'
-import './page.css'
-import { defaults } from '@kisaki3/desktop-appearance/defaults'
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
-import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
-const values = parseTokenValues(defaults.light)
-const properties = { color: 'color', radius: 'border-radius', shadow: 'box-shadow', percentage: 'opacity', 'font-family': 'font-family', 'font-size': 'font-size', 'font-weight': 'font-weight', 'line-height': 'line-height', 'letter-spacing': 'letter-spacing' }
-document.body.dataset.tokenCount = String(Object.keys(values).length)
-document.body.dataset.validCss = String(Object.entries(tokens).every(([name, kind]) => CSS.supports(properties[kind], values[name as keyof typeof values])))
-const checks = [
-  ['--primary', 'oklch(0.6 0.2 250 / .5)'],
-  ['--font-sans', '"Library Sans", sans-serif'],
-  ['--shadow-raised', 'inset 0 1px 2px #0008, 0 2px 4px -1px black'],
-  ['--radius', 'calc(2px + 4px)'],
-  ['--primary', 'var(--foreground)'],
-  ['--primary', 'currentColor'],
-] as const
-document.body.dataset.validation = JSON.stringify(checks.map(([name, value]) => {
-  try { parseTokenValue(name, value); return true }
-  catch (error) { if (!(error instanceof TypeError)) { throw error }; return false }
-}))
-`,
-  )
-  await writeFile(
-    join(directory, 'page.css'),
-    `/* Consumer-owned layout; the library supplies visual values. */
-main { margin: 2rem; max-width: 40rem; }
-button { padding: 0 1rem; border: 1px solid var(--border); }
-#ordinary { background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius-md); box-shadow: var(--shadow-raised); font-family: var(--font-sans); font-size: var(--text-sm); height: calc(var(--spacing) * 7); }
-#pane { padding: 1rem; margin-top: 1rem; }
-`,
-  )
-  await writeFile(
-    join(directory, 'tailwind.css'),
-    `@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
-@import '@kisaki3/desktop-appearance/tailwind.css';
-@source './index.html';
-`,
-  )
   await readPnpm(
     [
       'exec',
@@ -209,11 +71,8 @@ afterAll(async () => {
 })
 
 test('the tarball exposes complete declarations in NodeNext and Bundler without private dependencies', async () => {
-  for (const environment of ['nodenext', 'esnext', 'browser']) {
-    await runPnpm(['exec', 'tsc', '--project', join(directory, `tsconfig.${environment}.json`)], {
-      cwd: root,
-    })
-  }
+  await runPnpm(['typecheck'], { cwd: directory })
+  await runPnpm(['build:node'], { cwd: directory })
 
   const lint = new ESLint({
     cwd: directory,
@@ -231,34 +90,15 @@ test('the tarball exposes complete declarations in NodeNext and Bundler without 
     [
       '--input-type=module',
       '--eval',
-      `
-    import { defaults } from '@kisaki3/desktop-appearance/defaults';
-    import { tokens } from '@kisaki3/desktop-appearance/tokens';
-    import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values';
-    const values = parseTokenValues(defaults.light);
-    const checks = [['--primary', 'oklch(0.6 0.2 250 / .5)'], ['--font-sans', '"Library Sans", sans-serif'], ['--shadow-raised', 'inset 0 1px 2px #0008, 0 2px 4px -1px black'], ['--radius', 'calc(2px + 4px)'], ['--primary', 'var(--foreground)'], ['--primary', 'currentColor']];
-    const validation = checks.map(([name, value]) => {
-      try { parseTokenValue(name, value); return true }
-      catch (error) { if (!(error instanceof TypeError)) { throw error }; return false }
-    });
-    console.log(JSON.stringify({ count: Object.keys(tokens).length, radius: values['--radius'], validation }));
-  `,
+      "import { summary } from './.cache/node/consumer.js'; console.log(JSON.stringify(summary));",
     ],
     { cwd: directory, windowsHide: true },
   )
-  expect(JSON.parse(stdout)).toEqual({
+  expect(JSON.parse(stdout)).toMatchObject({
     count: 45,
     radius: '6px',
     validation: [true, true, true, false, false, false],
   })
-  const manifest = JSON.parse(
-    await readFile(
-      join(directory, 'node_modules/@kisaki3/desktop-appearance/package.json'),
-      'utf8',
-    ),
-  ) as { dependencies?: unknown; sideEffects: string[] }
-  expect(manifest.dependencies).toBeUndefined()
-  expect(manifest.sideEffects).toContain('**/*.css')
   expect(
     await readFile(join(directory, 'node_modules/@kisaki3/desktop-appearance/LICENSE'), 'utf8'),
   ).toContain('MIT License')

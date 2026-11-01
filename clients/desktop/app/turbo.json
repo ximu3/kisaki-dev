@@ -4,39 +4,12 @@
     "test": {
       "cache": false
     },
-    "build": {
-      "dependsOn": ["^build"],
-      "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
-      "inputs": [
-        "tests/fixtures/runtime/src/**",
-        "native/**",
-        "!native/target/**",
-        "!**/*.md",
-        "assets/**",
-        "tools/build/**",
-        "tools/resources/**",
-        "tools/native/**",
-        "tools/lib/**",
-        "tests/fixtures/runtime/config/vite/**",
-        "config/typescript/**",
-        "tsconfig.json",
-        "!tests/fixtures/runtime/src/**/*.test.ts",
-        "!tests/fixtures/runtime/src/**/*.test.tsx",
-        "!tools/**/*.test.ts",
-        "!native/**/*.test.ts",
-        "!config/typescript/tsconfig.tests.json"
-      ],
-      "outputs": ["out/**"],
-      "cache": false
-    },
     "test:native": {
-      "dependsOn": [],
+      "dependsOn": ["build:native", "prepare:resources"],
       "inputs": [
         "native/**",
         "!native/target/**",
         "!**/*.md",
-        "tests/fixtures/runtime/src/main/**",
-        "tests/fixtures/runtime/src/shared/**",
         "assets/**",
         "tools/native/**",
         "tools/resources/**",
@@ -52,7 +25,7 @@
       "cache": false
     },
     "test:e2e": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build:fixture"],
       "inputs": [
         "tests/fixtures/runtime/src/**",
         "native/**",
@@ -80,7 +53,7 @@
       "cache": false
     },
     "test:artifacts": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["package:fixture"],
       "inputs": [
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
@@ -111,7 +84,7 @@
       "cache": false
     },
     "test:performance": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build:fixture"],
       "inputs": [
         "tests/fixtures/runtime/src/**",
         "native/**",
@@ -139,7 +112,7 @@
       "cache": false
     },
     "test:dev": {
-      "dependsOn": [],
+      "dependsOn": ["build:native"],
       "env": ["TSDOWN_*", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
         "tools/dev/**",
@@ -168,8 +141,33 @@
       ],
       "cache": false
     },
-    "test:package": {
-      "dependsOn": ["build"],
+    "build:fixture": {
+      "dependsOn": ["^build", "build:native", "prepare:resources"],
+      "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
+      "inputs": [
+        "tests/fixtures/runtime/src/**",
+        "native/**",
+        "!native/target/**",
+        "!**/*.md",
+        "assets/**",
+        "tools/build/**",
+        "tools/resources/**",
+        "tools/native/**",
+        "tools/lib/**",
+        "tests/fixtures/runtime/config/vite/**",
+        "config/typescript/**",
+        "tsconfig.json",
+        "!tests/fixtures/runtime/src/**/*.test.ts",
+        "!tests/fixtures/runtime/src/**/*.test.tsx",
+        "!tools/**/*.test.ts",
+        "!native/**/*.test.ts",
+        "!config/typescript/tsconfig.tests.json"
+      ],
+      "outputs": ["out/**"],
+      "cache": false
+    },
+    "package:fixture": {
+      "dependsOn": ["build:fixture"],
       "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
       "inputs": [
         "electron-builder.yml",
@@ -193,6 +191,28 @@
         "tools/package/**",
         "!config/typescript/tsconfig.tests.json"
       ],
+      "cache": false
+    },
+    "build:native": {
+      "inputs": [
+        "native/**",
+        "!native/target/**",
+        "!**/*.md",
+        "tools/native/**",
+        "tools/lib/**",
+        "package.json"
+      ],
+      "outputs": ["out/native/**"],
+      "env": ["MACOSX_DEPLOYMENT_TARGET"],
+      "cache": false
+    },
+    "prepare:resources": {
+      "inputs": ["assets/**", "!**/*.md", "tools/resources/**", "tools/lib/**", "package.json"],
+      "outputs": ["out/resources/**"],
+      "cache": false
+    },
+    "check:native": {
+      "inputs": ["native/**", "!native/target/**", "!**/*.md", "tools/native/**"],
       "cache": false
     }
   }

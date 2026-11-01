@@ -19,7 +19,7 @@ export async function buildInputIdentity(
         'exec',
         'turbo',
         'run',
-        'build',
+        'build:fixture',
         '--filter=@kisaki3/desktop',
         '--dry=json',
         '--cwd',
@@ -39,7 +39,7 @@ export async function buildInputIdentity(
       task &&
       typeof task === 'object' &&
       'taskId' in task &&
-      task.taskId === '@kisaki3/desktop#build'
+      task.taskId === '@kisaki3/desktop#build:fixture'
     ) {
       if (!('hash' in task) || typeof task.hash !== 'string' || !task.hash) {
         throw new Error('Turbo reported an invalid desktop build input hash')

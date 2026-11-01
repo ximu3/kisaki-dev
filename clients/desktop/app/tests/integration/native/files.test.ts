@@ -8,10 +8,10 @@ import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/pr
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
-import { appRoot, buildDirectory } from '../../../tools/lib/paths'
+import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
-const binding = join(buildDirectory(hostTarget()), 'resources', 'native', 'kisaki-native.node')
+const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 let directory: string
 
 beforeEach(async () => {
@@ -38,7 +38,7 @@ test('preserves the native loading cause at the supplied module path', async () 
 
 test('moves files and directories without replacing existing targets', async () => {
   const { files } = loadNative(binding)
-  const source = join(directory, '资料 🎮 source')
+  const source = join(directory, '璧勬枡 馃幃 source')
   const target = join(directory, 'target')
   await writeFile(source, 'new content')
   await writeFile(target, 'keep content')
