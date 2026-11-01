@@ -34,9 +34,9 @@ jobs:
     outputs:
       complete: ${{ steps.affected.outputs.complete }}
       native: ${{ steps.affected.outputs.native }}
-      electron: ${{ steps.affected.outputs.electron }}
+      e2e: ${{ steps.affected.outputs.e2e }}
       dev: ${{ steps.affected.outputs.dev }}
-      package: ${{ steps.affected.outputs.package }}
+      artifacts: ${{ steps.affected.outputs.artifacts }}
       tooling: ${{ steps.affected.outputs.tooling }}
       consumers: ${{ steps.affected.outputs.consumers }}
       selected: ${{ steps.affected.outputs.selected }}
@@ -76,11 +76,11 @@ jobs:
           REQUEST_COMPLETE: ${{ inputs.complete }}
           TARGETS: |-
             [
-              {"target":"windows-x64","reference":true,"runner":"windows-2025","arch":"x64"},
+              {"target":"windows-x64","runner":"windows-2025","arch":"x64"},
               {"target":"windows-arm64","runner":"windows-11-arm","arch":"arm64"},
               {"target":"macos-x64","runner":"macos-15-intel","arch":"x64"},
-              {"target":"macos-arm64","reference":true,"runner":"macos-15","arch":"arm64"},
-              {"target":"linux-x64","reference":true,"runner":"ubuntu-22.04","arch":"x64"},
+              {"target":"macos-arm64","runner":"macos-15","arch":"arm64"},
+              {"target":"linux-x64","runner":"ubuntu-22.04","arch":"x64"},
               {"target":"linux-arm64","runner":"ubuntu-22.04-arm","arch":"arm64"}
             ]
         run: |
@@ -96,7 +96,7 @@ jobs:
                 .github/workflows/verification-desktop.yml \
                 config/turbo/verification.graphql \
                 tools/host-environment.ts \
-                clients/desktop/app/playwright.config.ts
+                clients/desktop/app/tests/support/build-reuse.ts
             )
             if [[ -n "$orchestration" ]]; then complete=true; fi
           fi
@@ -119,20 +119,20 @@ jobs:
           fi
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
           requiresAllTargets=false
-          requiresPlatforms=false
-          for task in native electron dev package; do
+          for task in native e2e dev artifacts; do
             selected="$complete"
             if [[ "$complete" == false ]]; then
               selected=$(jq -r --arg task "test:$task" '
                 any(.data.affectedTasks.items[];
                   .command != null and
                   .package.name == "@kisaki3/desktop" and
-                  .name == $task)
+                  (.name == $task or
+                    ($task == "test:artifacts" and .name == "test:package")))
               ' "$report")
             fi
             echo "$task=$selected" >> "$GITHUB_OUTPUT"
             if [[ "$selected" == true ]]; then
-              if [[ "$task" == native ]]; then requiresAllTargets=true; else requiresPlatforms=true; fi
+              requiresAllTargets=true
             fi
           done
           tooling="$complete"
@@ -143,20 +143,17 @@ jobs:
             ' "$report")
           fi
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
-          if [[ "$tooling" == true ]]; then requiresPlatforms=true; fi
+          if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
           consumers="$complete"
           if [[ "$complete" == false ]]; then
             consumers=$(jq -r '
               any(.data.affectedTasks.items[];
-                .fullName == "//#root:test:consumers" and .command != null)
+                .fullName == "//#desktop:test:consumers" and .command != null)
             ' "$report")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
           if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
-            selected=true
-          elif [[ "$requiresPlatforms" == true ]]; then
-            matrix=$(jq -c '[.[] | select(.reference)]' <<< "$TARGETS")
             selected=true
           elif [[ "$consumers" == true ]]; then
             matrix=$(jq -c '[.[] | select(.target == "linux-x64")]' <<< "$TARGETS")
@@ -190,7 +187,6 @@ jobs:
     env:
       TURBO_TELEMETRY_DISABLED: '1'
       DESKTOP_TARGET: ${{ matrix.target }}
-      TURBO_FORCE: ${{ inputs.complete && 'true' || 'false' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
@@ -217,46 +213,84 @@ jobs:
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .turbo/cache
-          key: turbo-v4-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
+          key: turbo-v3-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-${{ github.sha }}
           restore-keys: |
-            turbo-v4-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
+            turbo-v3-desktop-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version') }}-
       - name: Record runner environment
         shell: bash
         run: |-
           mkdir -p test-results/verification
           pnpm exec tsx tools/host-environment.ts > test-results/verification/host.json
       - name: Install Linux desktop tools
-        if: matrix.reference == true && runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.electron == 'true' || needs.select.outputs.package == 'true')
+        if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
       - name: Install Chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: (matrix.reference == true && needs.select.outputs.dev == 'true') || (needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64')
+        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64')
+      - name: Build and pack public packages
+        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
+        run: pnpm desktop:packages:pack
       - name: Test public package consumers
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
         run: pnpm desktop:test:consumers
       - name: Test tooling
-        if: matrix.reference == true && needs.select.outputs.tooling == 'true'
-        run: pnpm exec turbo run test --filter=@kisaki3/tooling
-      - name: Check and test native capabilities
+        if: needs.select.outputs.tooling == 'true'
+        run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
+      - name: Check native source
         if: needs.select.outputs.native == 'true'
-        run: pnpm exec turbo run check:native test:native --filter=@kisaki3/desktop
-      - name: Test desktop engineering
-        if: matrix.reference == true && (needs.select.outputs.electron == 'true' || needs.select.outputs.dev == 'true' || needs.select.outputs.package == 'true')
+        run: pnpm --filter @kisaki3/desktop check:native
+      - name: Build engineering carrier
+        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true'
         shell: bash
-        env:
-          ELECTRON_SELECTED: ${{ needs.select.outputs.electron }}
-          DEVELOPMENT_SELECTED: ${{ needs.select.outputs.dev }}
-          PACKAGE_SELECTED: ${{ needs.select.outputs.package }}
+        run: pnpm desktop:test:build --target "$DESKTOP_TARGET"
+        id: build-desktop
+      - name: Prepare native build for development
+        shell: bash
+        run: pnpm --filter @kisaki3/desktop build:native --target "$DESKTOP_TARGET"
+        if: needs.select.outputs.dev == 'true' && steps.build-desktop.outcome == 'skipped'
+      - name: Record tested build
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
         run: |
-          tasks=()
-          if [[ "$ELECTRON_SELECTED" == true ]]; then tasks+=(test:electron); fi
-          if [[ "$DEVELOPMENT_SELECTED" == true ]]; then tasks+=(test:dev); fi
-          if [[ "$PACKAGE_SELECTED" == true ]]; then tasks+=(test:package); fi
+          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts record --target "$DESKTOP_TARGET"
+      - name: Test native bindings and database
+        if: needs.select.outputs.native == 'true'
+        run: pnpm --filter @kisaki3/desktop test:native
+      - name: Test Electron isolation
+        if: needs.select.outputs.e2e == 'true'
+        shell: bash
+        run: |
           prefix=()
           if [[ "$RUNNER_OS" == Linux ]]; then
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
-          "${prefix[@]}" pnpm exec turbo run "${tasks[@]}" --filter=@kisaki3/desktop --concurrency=1
+          "${prefix[@]}" pnpm --filter @kisaki3/desktop test:e2e
+      - name: Test development workflows
+        shell: bash
+        run: |-
+          prefix=()
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          "${prefix[@]}" pnpm exec turbo run test:dev --filter=@kisaki3/desktop
+        if: needs.select.outputs.dev == 'true'
+      - name: Package engineering carrier
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: pnpm --filter @kisaki3/desktop test:package --target "$DESKTOP_TARGET"
+      - name: Confirm tested build reuse
+        if: needs.select.outputs.artifacts == 'true'
+        shell: bash
+        run: |
+          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts check --target "$DESKTOP_TARGET"
+      - name: Test packaged carrier
+        if: needs.select.outputs.artifacts == 'true' && runner.os != 'Linux'
+        run: pnpm desktop:test:artifacts
+      - name: Test packaged carrier (X11)
+        if: needs.select.outputs.artifacts == 'true' && runner.os == 'Linux'
+        env:
+          XDG_SESSION_TYPE: x11
+        run: xvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'
       - name: Save Turbo cache
         if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25

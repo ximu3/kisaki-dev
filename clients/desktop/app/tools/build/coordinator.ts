@@ -9,10 +9,12 @@ import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
 import { replaceOutput } from '@kisaki3/tooling/output'
+import { buildNative } from '../native/build'
+import { prepareResources } from '../resources/prepare'
 import { runtimeFiles, buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 
-/** Compile programs with prepared native/resources outputs, adopting the complete runtime after success. */
+/** Build a complete target from fixed inputs, publishing it only when all programs are ready. */
 export async function buildDesktop(
   sourceRoot: string,
   target: DesktopTarget,
@@ -40,8 +42,8 @@ export async function buildDesktop(
         devDependencies: { electron: string }
       }
 
-      const resources = join(appRoot, 'out/resources', target)
-      const native = join(appRoot, 'out/native', target)
+      const resources = await prepareResources(target, signal)
+      const native = await buildNative(target, false, signal)
 
       await cp(resources, join(staging, 'resources'), { recursive: true })
       await mkdir(join(staging, 'resources', 'native'), { recursive: true })

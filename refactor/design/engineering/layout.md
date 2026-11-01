@@ -178,6 +178,7 @@ clients/desktop/app/tools/
 │   ├── generation.ts
 │   └── dependencies.ts
 ├── build/
+│   ├── cli.ts
 │   ├── coordinator.ts
 │   ├── identity.ts
 │   └── programs.ts
@@ -191,6 +192,7 @@ clients/desktop/app/tools/
 │   ├── check.ts
 │   └── declarations.ts
 ├── package/
+│   ├── cli.ts
 │   └── packager.ts
 ├── clean.ts
 └── lib/
@@ -205,14 +207,14 @@ clients/desktop/app/tools/
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。                                                                                                                                                                                                 |
 | build/coordinator.ts             | 组织一次有限桌面构建，调用所属资源与原生准备工作，再编译应用程序并核对完整运行布局；只协调各拥有者，不另写一份资源或原生构建实现。                                                                                                                                           |
 | build/programs.ts                | 依据调用方指定源码根下 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。                                                                                 |
-| build/identity.ts                | 读取 Turbo 的 runtime-inputs 节点摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。                                                                                                                                                           |
+| build/identity.ts                | 读取 Turbo 的桌面 build 任务摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。                                                                                                                                                           |
 | resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                                                                                                            |
 | native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                                                                                                               |
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |
 | clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                                                                                                                     |
 | lib                              | 提供跨工作流共用的工程路径、目标解析、构建与分发清单及字节摘要；生产输入监听归 dev，各工作流拥有自身操作与资源寿命。                                                                                                                                                         |
 
-命令随实际职责建立。当前构建和打包能力由函数提供，工具测试直接调用；产品启动与默认构建入口由所属工作包建立。类型与测试任务调用所属运行器，根 desktop:* 命令通过 Turbo 调度实际前置。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的 dev、build 和 package 命令分别进入对应 cli.ts，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 上述文件确定主要职责，私有辅助文件按实际协作需要拆分。共享的目标与路径解析归 lib/targets.ts 和 lib/paths.ts，不复制程序配置、项目依赖图或支持范围。工程命令与输出位置由工具解析，部署后的运行资源路径仍由 main/app/paths 负责。
 
@@ -293,7 +295,7 @@ clients/desktop/app/tests/
 
 ### 测试任务与执行
 
-测试命令由所属工程的 package scripts 定义，直接启动现成运行器和选定配置。普通 test 的默认范围明确记录；现有 test:native、test:electron、test:dev、test:package 与跨包消费者按必要环境分开，产品端到端与正式制品测试随实际产品建立，具体仓库命令见[任务入口](../../verification/acceptance.md#commands)。命令可以是薄脚本，不因此新增同名工具或跨运行器的统一调度程序。
+测试命令由所属工程的 package scripts 定义，直接启动现成运行器和选定配置。普通 test 的默认范围明确记录；test:consumers、test:e2e、test:artifacts 等任务按不同输入、环境和执行阶段分别配置，具体仓库命令见[任务入口](../../verification/acceptance.md#commands)。命令可以是薄脚本，不因此新增同名工具或跨运行器的统一调度程序。
 
 消费者测试接收已经打包的公共包，最终制品测试接收已经完成打包与适用签名的目标文件。任务系统声明相应构建依赖、制品输入、运行环境、缓存条件与 CI 门槛；测试核对本次输入的路径、版本、构建身份及适用目标，缺失或不匹配时失败，不在用例中重建或替换待验证的产品制品。消费者自身的临时工程仍可按用例需要构建。
 
@@ -301,7 +303,7 @@ clients/desktop/app/tests/
 
 原生业务与数据库套件在运行器启动前选定开发 Electron 的 Node 宿主及匹配 ABI；环境变量和启动参数由该任务的脚本与配置提供。测试中的环境变量配置、fixture 或 setup 不能把已经启动的普通 Node 进程变为另一 ABI。构建和原生依赖准备复用已有工程任务；应用实例、临时资料、订阅及清理由运行器 fixture 和 tests/support 管理，确需的测试专用启动辅助也归 tests/support。
 
-桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。build-runtime.ts 只为工具集成测试选择最小源码输入；资源、原生和运行准备由同一任务图串联，打包用例调用正常打包器并检查实际输出。
+桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。build-reuse.ts 在测试前记录已准备的构建，在打包后核对清单字节、修改时间及制品引用，结果归该次工作流的 test-results/verification；它只观察验证输入，构建与打包仍由工程工具执行。
 
 根统一检查包含根工具及实际 workspace 的常规测试，各套件的执行范围与未执行部分分别报告。最终制品保留正式安全配置，通过适用的外部或现场方式验证；测试入口和用例不改变[运行覆盖与交付要求](../../verification/acceptance.md#runtime-coverage)。
 

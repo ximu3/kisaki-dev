@@ -14,7 +14,6 @@ vi.mock('../../../tools/lib/paths', () => paths)
 test('preload entry changes take effect in a later build within the same process', async () => {
   paths.appRoot = await mkdtemp(join(tmpdir(), 'kisaki-preload-config-'))
   try {
-    await writeFile(join(paths.appRoot, 'package.json'), '{"type":"module"}')
     await mkdir(join(paths.appRoot, 'src/preload'), { recursive: true })
     await mkdir(join(paths.appRoot, 'config/vite'), { recursive: true })
 

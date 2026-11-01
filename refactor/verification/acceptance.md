@@ -2,7 +2,7 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[简洁](../../CONVENTIONS.md#quality)具有首要地位，干净与克制落实这一原则，并与[终态实现与整体一致性](../../CONVENTIONS.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再核对完整职责与实际场景；既有规范和检查同样接受必要性复核。
+[简洁、干净与克制](../../CONVENTIONS.md#quality)具有首要地位，并与[终态实现与整体一致性](../../CONVENTIONS.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
 [可读性](../../CONVENTIONS.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
@@ -178,7 +178,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 ## 固定场景与性能预算
 
-代表规模、资源不足的结果和比较方法按[数据规模与性能边界](../design/engineering/performance.md)执行。测量入口和预算由实际行为的拥有者在真实负载上确定。场景的工作量、预算和允许波动在新实现测量前固定，测量至少覆盖：
+代表规模、资源不足的结果和比较方法按[数据规模与性能边界](../design/engineering/performance.md)执行。W00 建立测量入口并将预算写入测试配置。场景的工作量、预算和允许波动在新实现测量前固定，测量至少覆盖：
 
 - 主界面显示、资料可用和扩展贡献可用三个时点。
 - 详情、编辑器、统计和阅读首次打开及再次打开的响应。
@@ -192,15 +192,37 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 <a id="commands"></a>
 
-## 工程入口与验证输入
+## 目标工程命令
 
-当前可执行命令与运行环境由 [CONTRIBUTING](../../CONTRIBUTING.md) 统一维护，命名与任务关系见[工作区合同](../design/engineering/workspace.md#tasks)。本页不另维护一份容易失效的命令表，也不提前登记尚无实现的产品或发行入口。
+| 命令                                                 | 责任                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------------- |
+| pnpm desktop:dev                                     | 启动隔离资料目录中的桌面会话，完成依赖首轮构建和实际就绪协调              |
+| pnpm desktop:build                                   | 编译桌面各程序与依赖，不签名、发布或生成安装包                            |
+| pnpm desktop:package --target windows-x64            | 为明确目标准备完整资源并打包，CI 另提供适用的签名环境                     |
+| pnpm desktop:test:artifacts                          | 对明确提供的最终桌面制品执行结构与实际运行测试                            |
+| pnpm desktop:test:e2e                                | 在真实开发应用中运行桌面完整工作流测试                                    |
+| pnpm typecheck / pnpm lint / pnpm test               | 调度根工程及实际 workspace 的对应检查；test 为明确配置的常规测试          |
+| pnpm format:check                                    | 全仓格式检查，不先构建依赖                                                |
+| pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                            |
+| pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                      |
+| pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                           |
+| pnpm desktop:packages:test:consumers                 | 调度各包及根跨包消费者任务，核对实际 tarball 的结构、声明、样式与作者接入 |
+| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵            |
+| pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                          |
+| pnpm install:hooks / pnpm uninstall:hooks            | 当前仓库 hooks 的明确生命周期                                             |
+| pnpm run clean                                       | 仅清理项目声明的构建输出                                                  |
 
-普通 check 汇总类型、lint、格式与常规测试。消费者任务取得正式打包前置交付的 tarball，核对公开入口、声明、样式和实际使用；最终产品验收消费本次真实构建与制品，不在用例中重建替代品。构建、打包、开发工具本身的测试可以使用最小样本，并在测试范围内准备它。工程样本的通过不代替产品窗口、业务、安装升级、签署或性能证据。
+根命令区分全仓任务与 clients/desktop/app 目标。desktop:* 不隐式构建或发布全部 .kisx，build 和 check 根据真实 workspace 依赖图执行，桌面开发入口固定为 desktop:dev。根 tools 处理机械交付工作，clients/desktop/app/tools 处理桌面会话与制品。项目级操作使用 pnpm filter，扩展作者使用 kisx。
 
-同一保证由拥有者验证，接入只补充新增风险。相同输入及可控环境的成功结果允许原生任务缓存；报告区分实际运行与复用。现场设备、授权、外部状态或发行验收按要求重新执行。必需但尚未取得的检查保持未完成，不以扩大无关测试数量填补缺项。
+工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。公共包的 check:package 检查自身 tarball 的结构与声明，根 desktop:packages:test:consumers 同时调度这些检查和 tests/desktop/consumers 的真实跨包消费。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
 
-参数交给实际工具和运行器，不向它们转发不支持的项目选项。build、pack、check 和 prepare 均不隐含发布；缓存清理和用户资料重置也不混入 clean。
+消费者和最终制品任务明确接收待验证文件、版本和构建身份，并核对适用目标，缺失或不匹配时失败。CI 先完成对应构建、打包与适用签名，再执行消费和制品任务，并保存检查与用例的实际结果；测试不重建或替换待发行制品。普通 test 的默认范围与这些任务分别配置，必需但未执行的检查不能计为通过。
+
+按[工作区合同](../design/engineering/workspace.md#workspace)核对唯一根 pnpm workspace、锁文件与实际项目身份。每项依赖由使用它的项目声明，根工具依赖不替代应用声明，catalog 不抹平真实环境差异。各项目配置隔离运行与测试 globals；共享配置或锁文件变化时按真实影响扩大检查，不能仅以顶层目录未变为由跳过必要消费者。按目标启动和构建不强制运行无依赖关系的其他工程，各发行单位仍保持自己的版本与说明。
+
+构建与打包入口的 --target 由所属工程工具解析，不要求底层工具使用同名选项。测试任务采用运行器支持的项目、配置和参数，制品位置与目标由测试配置接收明确输入，不向运行器转发其不支持的自定义选项。版本 PR 直接编辑明确的版本和说明，不增加自动推版常驻命令。release.yml 调用只读 release:check 和项目任务后，再显式执行 npm、Release 或 Pages 发布；metadata.yml 只更正已发布说明。build、pack、check 和 prepare 都不暗中对外发布。
+
+纯 typecheck 或库 build 不反复下载媒体，完整运行与包装前才准备当前目标资源。cache 清理和开发数据重置不混入 clean。当前可用状态见[实施状态](../implementation/status.md)。
 
 <a id="integration-gates"></a>
 

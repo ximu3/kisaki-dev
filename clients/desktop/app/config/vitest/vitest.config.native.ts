@@ -20,7 +20,5 @@ export default defineConfig({
     pool: 'forks',
     globals: false,
     testTimeout: 30_000,
-    reporters: ['default', 'json'],
-    outputFile: 'test-results/native/results.json',
   },
 })

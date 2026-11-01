@@ -1,33 +1,23 @@
 /**
- * @fileoverview Exercises the real packager with a small engineering input and checks its exact output.
+ * @fileoverview Verifies the supplied desktop carrier, production fuses and external
+ * startup and shutdown behavior.
  */
 
-import { expect, test as base } from '@playwright/test'
+import { expect, test } from 'vitest'
 import { spawn } from 'node:child_process'
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'
 import { extractFile, listPackage } from '@electron/asar'
 import { readFile, readdir } from 'node:fs/promises'
 import { dirname, isAbsolute, join, sep } from 'node:path'
+import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import type { ArtifactReceipt } from '../../tools/package/packager'
-import { packageDesktop } from '../../tools/package/packager'
 import { sha256 } from '../../tools/lib/sha256'
 import { hasNativeWindow, closeNativeWindow } from '../support/window-observation'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 import { prepareArtifactWorkspace } from '../support/artifact-workspace'
 import type { DesktopBuild } from '../../tools/lib/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../tools/lib/distribution'
-
-const test = base.extend<{ operationSignal: AbortSignal }>({
-  operationSignal: async ({}, use) => {
-    const controller = new AbortController()
-    try {
-      await use(controller.signal)
-    } finally {
-      controller.abort(new Error('Packaging test finished'))
-    }
-  },
-})
 
 /** Wait for process closure, rejecting when the supplied deadline expires. */
 async function waitForExit(
@@ -47,17 +37,9 @@ async function waitForExit(
   }
 }
 
-test('the exact packaged carrier retains production fuses and starts and closes externally', async ({
-  operationSignal,
-}) => {
-  const receiptPath = await packageDesktop(
-    hostTarget(),
-    {
-      testOnly: true,
-      macSigningIdentity: null,
-    },
-    operationSignal,
-  )
+test('the exact packaged carrier retains production fuses and starts and closes externally', async () => {
+  const receiptPath =
+    process.env.KISAKI_ARTIFACT_RECEIPT ?? join(appRoot, 'dist', hostTarget(), 'artifacts.json')
   const receipt = JSON.parse(await readFile(receiptPath, 'utf8')) as ArtifactReceipt
   expect(receipt.target).toBe(hostTarget())
   expect(receipt.buildId).toMatch(/\S/)
@@ -172,14 +154,14 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
       await expect
         .poll(
-          async () => {
+          async ({ signal }) => {
             if (child.exitCode !== null) {
               throw new Error(`Packaged process exited: ${diagnostic}`)
             }
 
-            return hasNativeWindow(child.pid!, operationSignal)
+            return hasNativeWindow(child.pid!, signal)
           },
-          { timeout: 30_000, intervals: [250] },
+          { timeout: 30_000, interval: 250 },
         )
         .toBe(true)
 

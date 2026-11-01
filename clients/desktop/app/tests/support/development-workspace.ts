@@ -56,14 +56,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       'test-results',
       'playwright-report',
     ])
-    const members = JSON.parse(
-      await readPnpm(
-        ['--filter', '@kisaki3/desktop...', 'list', '--depth', '-1', '--json'],
-        repositoryRoot,
-      ),
-    ) as { path: string }[]
-    for (const member of members) {
-      const directory = relative(repositoryRoot, member.path)
+    for (const directory of ['clients', 'packages']) {
       await cp(join(repositoryRoot, directory), join(root, directory), {
         recursive: true,
         filter(path) {

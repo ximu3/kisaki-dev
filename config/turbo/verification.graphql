@@ -8,10 +8,11 @@ query Verification($base: String!, $head: String!) {
     tasks: [
       "test"
       "test:native"
-      "test:electron"
+      "test:e2e"
       "test:dev"
+      "test:artifacts"
       "test:package"
-      "root:test:consumers"
+      "desktop:test:consumers"
     ]
   ) {
     items {
