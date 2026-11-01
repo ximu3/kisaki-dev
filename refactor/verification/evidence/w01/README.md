@@ -15,6 +15,12 @@
 
 当前未发布版本为 0.1.0-dev.0。制品包含 tokens、values、defaults、普通样式和 Tailwind 映射，以及 README、发行说明和许可材料。打包收据及逐份 SHA-256 位于 artifacts/desktop/packages/packages.json，消费者报告及浏览器截图位于 test-results/consumers。制品没有私有工程入口、字体或图片；声明不依赖解析库的内部类型。
 
+## CI 结果
+
+2026-11-01，[CI 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41306580585)验证 [0e99deb](https://github.com/ximu3/kisaki-dev/commit/0e99deb7662f97228d32743bb5bb9cf8e7db16ba) 的 PR 合并结果。仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程检查，以及 Required checks 全部通过。
+
+Linux x64 执行公共包构建、publint、Are the Types Wrong 和 3 项仓库外消费测试，均通过。该目标的 CI 制品包含打包收据、tarball、消费者报告和截图；其他目标验证既有工程的运行、开发会话、打包与制品消费。当前运行代码与这次验证的实现一致，完成状态及证据链接的更新不改变这些输入。
+
 ## 实现依据与审阅
 
 主题保存可独立编辑的视觉值，公式和派生关系归作者代码与共同样式，正式边界见[外观合同](../../../design/domains/appearance.md#tokens)。这一边界由主题编辑、复制与统一应用的职责确定。CSS 变量具有上下文依赖和循环语义，支持它们需要单独承担相应关系模型，见 [CSS 变量规范](https://www.w3.org/TR/css-variables-1/#cycles)。
