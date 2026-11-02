@@ -69,6 +69,7 @@ test('malformed references and empty or ambiguous releases fail with field locat
     { size: 1.2 },
     { size: Number.MAX_SAFE_INTEGER + 1 },
     { sha256: 'A'.repeat(64) },
+    { sha256: `${'a'.repeat(64)}\n` },
     { url: 'https://[broken' },
     { targets: [] },
   ]) {

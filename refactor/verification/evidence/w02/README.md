@@ -6,7 +6,7 @@
 
 | 范围 | 实际结果 |
 | --- | --- |
-| manifest 与静态文案 | 完整必需及可选字段、单段与多段 ID、包内相对路径、六目标、SemVer 和可定位错误通过。读取保留未知分类，新增分类使用明确词表；规范化 locale、默认语言、别名冲突、同语言文字体系匹配与稳定候选顺序通过。 |
+| manifest 与静态文案 | 完整必需及可选字段、单段与多段 ID、包内相对路径、六目标、SemVer 和可定位错误通过。ID、SHA-256 与 Base64 签名要求整串合法，末尾行终止符拒绝。读取保留未知分类，新增分类使用明确词表；规范化 locale、默认语言、别名冲突、同语言文字体系匹配与稳定候选顺序通过。 |
 | 平铺索引与选版 | release、artifact、资源引用、首次发表时间及发行说明分别验证；最高稳定展示与最高兼容安装互相独立。重复身份、同优先级版本、目标重叠拒绝；预发布偏好、更高版本限制和多目标同一制品成立。 |
 | 不可变制品 | 保留版本的包摘要、大小、目标、兼容条件、许可与首次发布事实不能改写；同版本新增目标拒绝。删除发布项、资源 URL 迁移和发行说明更正可进行。包内事实核对不错误比较当前目录文案。 |
 | 签名与信任 | Node Ed25519 对独立构造的预期 JCS 字节验签通过。原相对 URL、未知字段、嵌套 signature 和未规范化 locale 均参与签名；重排 JSON 不改变签名。重复解码属性、无效 Unicode、非有限数、错钥、换身份、篡改与无效 Base64 均拒绝。首次 inspect 不建立信任。 |
@@ -21,9 +21,9 @@
 
 ## CI 结果
 
-2026-11-02，[CI 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41453543186)验证 [d59baa1](https://github.com/ximu3/kisaki-dev/commit/d59baa188ec920b2122e3c5d46e747aab4ba1dd6) 的 PR 合并结果。仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程回归、Required checks 和独立 PR title 均通过。
+2026-11-02，[PR #20 的完整检查](https://github.com/ximu3/kisaki-dev/pull/20/checks)记录当前交付的输入 SHA、仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程回归、Required checks 和独立 PR title。各运行及其制品由该 PR 关联，最终门禁针对当前提交核对。
 
-Linux x64 的 `Test public package consumers` 实际执行成功，覆盖两个公共包的构建、打包、制品检查与仓库外消费。W02 的纯声明、浏览器运行和 Node 签名分别在本机 Windows x64 与该 CI 目标取得结果；六目标桌面工程回归不替代后续实际扩展安装与宿主接入验收。CI 制品由该次运行保存，后续仅更新状态与证据的提交沿用这里注明的实现和运行范围。
+Linux x64 的 `Test public package consumers` 覆盖两个公共包的构建、打包、制品检查与仓库外消费。W02 的纯声明、浏览器运行和 Node 签名分别在本机 Windows x64 与该 CI 目标取得结果；六目标桌面工程回归不替代后续实际扩展安装与宿主接入验收。
 
 ## 实现依据与审阅
 

@@ -13,7 +13,7 @@ test('IDs allow single and dotted segments without deriving author identity', ()
   for (const id of ['a', 'author-name', 'author.package-2', 'x3.language.zh-hans']) {
     expect(parseId(id)).toBe(id)
   }
-  for (const id of ['', 'A', '1a', '-a', 'a-', 'a..b', 'a._b', ' a']) {
+  for (const id of ['', 'A', '1a', '-a', 'a-', 'a..b', 'a._b', ' a', 'a\n', 'a\r\n', 'a\u2028']) {
     expect(() => parseId(id)).toThrowError(expect.objectContaining({ code: 'invalid-format' }))
   }
 })

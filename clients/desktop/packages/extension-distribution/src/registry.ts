@@ -129,7 +129,7 @@ export function parsePublicKey(input: unknown, path: FieldPath = []): string {
 /** Require the canonical Base64 representation of a 64-byte Ed25519 signature. */
 export function parseSignature(input: unknown, path: FieldPath = []): string {
   const value = string(input, path)
-  if (!/^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value)) {
+  if (/^[A-Za-z0-9+/]{85}[AQgw]==$/.exec(value)?.[0] !== value) {
     invalid(path, 'Expected an Ed25519 Base64 signature')
   }
   return value

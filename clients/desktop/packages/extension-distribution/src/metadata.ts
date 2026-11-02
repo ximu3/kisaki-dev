@@ -52,7 +52,10 @@ export interface ExtensionMetadata {
 /** Validate a complete opaque ID; dots delimit syntax only, never ownership or permissions. */
 export function parseId(input: unknown, path: FieldPath = []): string {
   const value = string(input, path)
-  if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z](?:[a-z0-9-]*[a-z0-9])?)*$/.test(value)) {
+  // Compare the whole match: JavaScript's $ can also match before a final line terminator.
+  if (
+    /^[a-z](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z](?:[a-z0-9-]*[a-z0-9])?)*$/.exec(value)?.[0] !== value
+  ) {
     invalid(path, 'Invalid extension or registry ID')
   }
   return value

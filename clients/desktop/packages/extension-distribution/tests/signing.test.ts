@@ -129,7 +129,13 @@ test('non-Ed25519 keys and malformed Base64 are rejected without key material in
   ).toThrowError(expect.objectContaining({ code: 'invalid-key' }))
   const signed = signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), keys.privateKey)
   const document = JSON.parse(signed) as Record<string, unknown>
-  for (const signature of ['', '%%%%', `${'A'.repeat(85)}B==`, 'A'.repeat(88)]) {
+  for (const signature of [
+    '',
+    '%%%%',
+    `${'A'.repeat(85)}B==`,
+    'A'.repeat(88),
+    `${'A'.repeat(86)}==\n`,
+  ]) {
     expect(() => verifyRegistry(JSON.stringify({ ...document, signature }), trust)).toThrowError(
       expect.objectContaining({ code: 'invalid-format', path: ['signature'] }),
     )
