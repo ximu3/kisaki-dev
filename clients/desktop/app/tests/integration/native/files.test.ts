@@ -10,6 +10,7 @@ import { join } from 'node:path'
 import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 let directory: string
@@ -118,9 +119,15 @@ test('a cross-volume move fails without copying or deleting the source', async (
     })
     expect(await readFile(source, 'utf8')).toBe('retained')
     await expect(stat(join(other, 'target'))).rejects.toMatchObject({ code: 'ENOENT' })
-  } finally {
-    await rm(other, { recursive: true, force: true })
+  } catch (cause) {
+    // Dynamic skip also throws; release its temporary directory before propagating the outcome.
+    return rethrowAfterCleanup(
+      cause,
+      () => rm(other, { recursive: true, force: true }),
+      'Cross-volume verification and cleanup failed',
+    )
   }
+  await rm(other, { recursive: true, force: true })
 })
 
 test('synchronizes existing regular files and reports missing or wrong-type paths', async () => {
@@ -133,9 +140,14 @@ test('synchronizes existing regular files and reports missing or wrong-type path
   await chmod(path, 0)
   try {
     await expect(files.syncFile(path)).rejects.toMatchObject({ reason: 'permissionDenied' })
-  } finally {
-    await chmod(path, 0o600)
+  } catch (cause) {
+    return rethrowAfterCleanup(
+      cause,
+      () => chmod(path, 0o600),
+      'Permission verification and restoration failed',
+    )
   }
+  await chmod(path, 0o600)
 
   await writeFile(path, 'content')
 

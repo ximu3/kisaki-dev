@@ -3,11 +3,12 @@
  * an isolated workspace with real package, lockfile and Git inputs.
  */
 
-import { afterAll, beforeAll, expect, test } from 'vitest'
+import { afterAll, beforeAll, expect, onTestFinished, test } from 'vitest'
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { readPnpm, run } from '@kisaki3/tooling/process'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { buildInputIdentity, runtimeFiles } from '../../../tools/build/identity'
 import { repositoryRoot } from '../../../tools/lib/paths'
 
@@ -140,9 +141,14 @@ test('production source, compiler configuration and global inputs change the bui
       await writeFile(path, contents)
 
       expect(await buildInputIdentity({ root }), file).not.toBe(baseline)
-    } finally {
-      await writeFile(path, original)
+    } catch (cause) {
+      return rethrowAfterCleanup(
+        cause,
+        () => writeFile(path, original),
+        'Build input check and restoration failed',
+      )
     }
+    await writeFile(path, original)
   }
 })
 
@@ -209,18 +215,15 @@ test('declared build environment values contribute to the input identity', async
 
 test('rejects when the desktop build task is unavailable', async () => {
   const original = await readFile(join(root, applicationPath, 'package.json'), 'utf8')
-  try {
-    await writeInput(
-      `${applicationPath}/package.json`,
-      JSON.stringify({
-        name: 'another-application',
-        private: true,
-        scripts: { 'build:fixture': 'node build.js' },
-      }),
-    )
+  onTestFinished(() => writeInput(`${applicationPath}/package.json`, original))
+  await writeInput(
+    `${applicationPath}/package.json`,
+    JSON.stringify({
+      name: 'another-application',
+      private: true,
+      scripts: { 'build:fixture': 'node build.js' },
+    }),
+  )
 
-    await expect(buildInputIdentity({ root })).rejects.toThrow()
-  } finally {
-    await writeInput(`${applicationPath}/package.json`, original)
-  }
+  await expect(buildInputIdentity({ root })).rejects.toThrow()
 })

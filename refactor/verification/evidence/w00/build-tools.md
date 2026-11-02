@@ -8,6 +8,8 @@ main 与 extension-host 采用 Vite SSR 的 Node 解析语义，选择依赖的 
 
 [真实编译用例](../../../../clients/desktop/app/tests/tools/build/programs.test.ts)使用同时提供 browser／node 条件及 main／browser 字段的隔离依赖，核对实际模块和输出引用。preload 按各自配置独立生成 CommonJS，[入口变更用例](../../../../clients/desktop/app/tests/tools/build/preload.test.ts)验证后续编译读取当前配置。
 
+有限编译在 Vite 的 [configResolved](https://vite.dev/guide/api-plugin.html#configresolved) 阶段检查最终 build.watch，启动编译前拒绝监听模式。监听与后续重建由开发会话拥有；同组用例确认无效模式不会创建编译输出或遗留 watcher。
+
 ## 开发快照
 
 renderer 通过当前 Vite 环境的公开 this.resolve 解析当前依赖副本，package.json 与完整构建结果一起交接。准备失败保留当前副本，成功采用后重启 Vite、刷新文档并释放旧副本；不继续保留旧文档的历史代际。重启同时释放 Vite 的旧模块图和监听资源。

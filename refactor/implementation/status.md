@@ -10,7 +10,9 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
-工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。appearance 的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 44 项常规测试，覆盖实际 Node 入口的环境限制与任务影响范围；两套消费者的完整链路与独立运行，以及原生／SQLite 测试均已有本机结果，跨文件系统用例因临时根同盘跳过。消费者结果见[W01 验证](../verification/evidence/w01/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
+工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。appearance 的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 48 项常规测试，覆盖实际 Node 入口的环境限制与任务影响范围；两套消费者的完整链路与独立运行，以及原生／SQLite 测试均已有本机结果，跨文件系统用例因临时根同盘跳过。消费者结果见[W01 验证](../verification/evidence/w01/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
+
+错误传递维护已补齐启动与停止失败、取消期间的独立命令错误、操作与清理错误的保留，以及测试清理的结果交付。本机 7 项开发回归、4 项 Electron 入口、制品运行和 20 次启动采样通过；两轮 Linux arm64 重复验证共 100 次场景执行通过。原始关闭超时的根因仍待确认，范围和证据见[关闭复核](../verification/evidence/w00/development.md#shutdown)。
 
 完整产品、签署、公证、安装升级、系统支持下限和主要后端验收仍待完成。npm、正式下载、更新索引及生产服务尚未发布。各对象按[验收标准](../verification/acceptance.md)登记自己的结果。
 
@@ -20,7 +22,7 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 
 | 工作包                                               | 当前结果与待完成范围                                               |
 | ---------------------------------------------------- | ------------------------------------------------------------------ |
-| [W00 工程与测试入口](work-packages.md#w00)           | 已完成，见[实际交付](#w00)。                                       |
+| [W00 工程与测试入口](work-packages.md#w00)           | 已交付；关闭异常仍在复核，见[实际交付](#w00)与[复核证据](../verification/evidence/w00/development.md#shutdown)。 |
 | [W01 desktop-appearance](work-packages.md#w01)       | 已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。尚未公开发布。 |
 | [W02 extension-distribution](work-packages.md#w02)   | 未开始。                                                           |
 | [W03 desktop-contracts](work-packages.md#w03)        | 未开始。                                                           |
@@ -49,6 +51,7 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 
 ## 待取得的运行与外部输入
 
+- W00 首次 Linux arm64 关闭超时的具体触发原因未确认；已修复的错误传递缺陷已有对照与回归结果，两轮重复验证未复现原始超时，见[关闭复核](../verification/evidence/w00/development.md#shutdown)。
 - W06 尚需在正式 schema 与制品上验证 Drizzle 1.x、Kit、codec、迁移和查询。现有查询与合同试件保留各自适用范围。
 - W11–W14 尚需取得完整实现、目标制品及主要后端结果。固定 libmpv 源码补丁已有依据，正式媒体、颜色、截图和 GPU 接入待验收。
 - W21 尚需真实宿主、资源、安装与来源消费。Google OAuth 应用审核、AniList 高级评分和部分导入器真实样本的缺项见[交付清单](delivery-checklist.md#extensions)与[来源证据](../verification/evidence/extensions.md)。
