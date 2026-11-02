@@ -41,7 +41,7 @@ clients/desktop/app/out/<target>/
 
 kana 按[发行资产清单](../projects/kana/distribution.md#integration-assets)保留版本身份及完整相对目录，复制真实包中的 worker、Wasm、样式、字体和数据，并核对摘要。app/paths 与窗口所属 session 的受控协议共同提供同源 assetsBaseUrl；JS／Wasm 的缺失请求不能回退成 HTML。正式包与应用使用同一份已验收资产，不从另一份全局缓存补齐文件。
 
-build 生成程序，package 生成交付制品，publish 才写入外部平台。打包使用明确的 allowlist，确保 fixture、工具源码、开发地址、.local 和秘密不会进入制品。必需资源缺失时构建失败，不能补用旧输出。
+build 生成程序，package 生成交付制品，publish 才写入外部平台。正式产品打包使用明确的 allowlist，排除 fixture、工具源码、开发地址、.local 和秘密。工程载体由独立的 build:fixture 与 package:fixture 入口构建，并以 testOnly 标记测试制品。必需资源缺失时构建失败，不能补用旧输出。
 
 clean 清理任务声明的输出；缓存清理、开发资料重置和发行制品留存各有独立入口。用户内容、全局 Git 配置和个人工具保持原样。发行文件另行保存稳定副本，签名与时间戳等处理按实际机制记录可复现范围。
 
@@ -71,7 +71,7 @@ libmpv、FFmpeg 及其匹配运行依赖由 libmpv-node 按固定版本、目标
 
 构建依次使用固定源码和锁文件，准备目标依赖与资源，编译程序，装配并检查完整性，完成打包与签名，再验证最终文件并留存供发行。本地与 CI 调用同一组任务，CI 负责范围、runner、目标、依赖关系和权限。普通 build 不产生发布副作用。
 
-有限构建通过 build.json 交接目标、输入身份与完整运行文件摘要。buildId 直接采用锁定 Turbo 通过公开 `--dry=json` 交付的 `@kisaki3/desktop#build` 任务摘要，其文件、依赖与环境输入由正式任务定义拥有；任务摘要不可取得时构建失败。取得首次摘要后读取本次清单并准备候选，完成时再次核对输入身份。preload 的命名入口在每次构建中由 Vite 读取，分别生成独立 CommonJS 输出。该身份表示工程输入，运行文件的完整性由逐文件 SHA-256 与文件集合单独证明；输入身份不一致时不采用候选。
+有限构建通过 build.json 交接目标、输入身份与完整运行文件摘要。buildId 直接采用锁定 Turbo 通过公开 `--dry=json` 交付的 `@kisaki3/desktop#build:fixture` 任务摘要，其文件、依赖与环境输入由正式任务定义拥有；任务摘要不可取得时构建失败。取得首次摘要后读取本次清单并准备候选，完成时再次核对输入身份。preload 的命名入口在每次构建中由 Vite 读取，分别生成独立 CommonJS 输出。该身份表示工程输入，运行文件的完整性由逐文件 SHA-256 与文件集合单独证明；输入身份不一致时不采用候选。
 
 打包消费准备好的构建，先核对当前任务输入身份、文件集合与摘要，再在自己的候选目录内装配各载体；校验失败不重建或采用旧输出。根打包命令的构建准备及 CI 内复用遵循[任务调度合同](workspace.md#task-orchestration)。所选运行检查与打包使用同一份完成输出，最终载体仍按所属阶段单独验收。
 

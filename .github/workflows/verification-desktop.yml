@@ -95,8 +95,7 @@ jobs:
                 .github/workflows/verification.yml \
                 .github/workflows/verification-desktop.yml \
                 config/turbo/verification.graphql \
-                tools/host-environment.ts \
-                clients/desktop/app/tests/support/build-reuse.ts
+                tools/host-environment.ts
             )
             if [[ -n "$orchestration" ]]; then complete=true; fi
           fi
@@ -126,8 +125,7 @@ jobs:
                 any(.data.affectedTasks.items[];
                   .command != null and
                   .package.name == "@kisaki3/desktop" and
-                  (.name == $task or
-                    ($task == "test:artifacts" and .name == "test:package")))
+                  .name == $task)
               ' "$report")
             fi
             echo "$task=$selected" >> "$GITHUB_OUTPUT"
@@ -148,7 +146,9 @@ jobs:
           if [[ "$complete" == false ]]; then
             consumers=$(jq -r '
               any(.data.affectedTasks.items[];
-                .fullName == "//#desktop:test:consumers" and .command != null)
+                .command != null and
+                .name == "test:consumers" and
+                (.package.path | startswith("clients/desktop/packages/")))
             ' "$report")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
@@ -224,73 +224,38 @@ jobs:
       - name: Install Linux desktop tools
         if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
-      - name: Install Chromium
+      - name: Install Chromium for development
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64')
-      - name: Build and pack public packages
+        if: needs.select.outputs.dev == 'true'
+      - name: Install Chromium for package consumers
+        run: pnpm --filter @kisaki3/desktop-appearance exec playwright install --with-deps chromium
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
-        run: pnpm desktop:packages:pack
       - name: Test public package consumers
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
         run: pnpm desktop:test:consumers
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json
-      - name: Check native source
-        if: needs.select.outputs.native == 'true'
-        run: pnpm --filter @kisaki3/desktop check:native
-      - name: Build engineering carrier
-        if: needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true'
+      - name: Verify selected desktop tasks
         shell: bash
-        run: pnpm desktop:test:build --target "$DESKTOP_TARGET"
-        id: build-desktop
-      - name: Prepare native build for development
-        shell: bash
-        run: pnpm --filter @kisaki3/desktop build:native --target "$DESKTOP_TARGET"
-        if: needs.select.outputs.dev == 'true' && steps.build-desktop.outcome == 'skipped'
-      - name: Record tested build
-        if: needs.select.outputs.artifacts == 'true'
-        shell: bash
-        run: |
-          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts record --target "$DESKTOP_TARGET"
-      - name: Test native bindings and database
-        if: needs.select.outputs.native == 'true'
-        run: pnpm --filter @kisaki3/desktop test:native
-      - name: Test Electron isolation
-        if: needs.select.outputs.e2e == 'true'
-        shell: bash
-        run: |
-          prefix=()
-          if [[ "$RUNNER_OS" == Linux ]]; then
-            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
-          fi
-          "${prefix[@]}" pnpm --filter @kisaki3/desktop test:e2e
-      - name: Test development workflows
-        shell: bash
-        run: |-
-          prefix=()
-          if [[ "$RUNNER_OS" == Linux ]]; then
-            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
-          fi
-          "${prefix[@]}" pnpm exec turbo run test:dev --filter=@kisaki3/desktop
-        if: needs.select.outputs.dev == 'true'
-      - name: Package engineering carrier
-        if: needs.select.outputs.artifacts == 'true'
-        shell: bash
-        run: pnpm --filter @kisaki3/desktop test:package --target "$DESKTOP_TARGET"
-      - name: Confirm tested build reuse
-        if: needs.select.outputs.artifacts == 'true'
-        shell: bash
-        run: |
-          pnpm --filter @kisaki3/desktop exec tsx tests/support/build-reuse.ts check --target "$DESKTOP_TARGET"
-      - name: Test packaged carrier
-        if: needs.select.outputs.artifacts == 'true' && runner.os != 'Linux'
-        run: pnpm desktop:test:artifacts
-      - name: Test packaged carrier (X11)
-        if: needs.select.outputs.artifacts == 'true' && runner.os == 'Linux'
         env:
-          XDG_SESSION_TYPE: x11
-        run: xvfb-run --auto-servernum sh -c 'openbox & pnpm desktop:test:artifacts'
+          TEST_NATIVE: ${{ needs.select.outputs.native }}
+          TEST_E2E: ${{ needs.select.outputs.e2e }}
+          TEST_DEV: ${{ needs.select.outputs.dev }}
+          TEST_ARTIFACTS: ${{ needs.select.outputs.artifacts }}
+        run: |
+          tasks=()
+          if [[ "$TEST_NATIVE" == true ]]; then tasks+=(check:native test:native); fi
+          if [[ "$TEST_E2E" == true ]]; then tasks+=(test:e2e); fi
+          if [[ "$TEST_DEV" == true ]]; then tasks+=(test:dev); fi
+          if [[ "$TEST_ARTIFACTS" == true ]]; then tasks+=(test:artifacts); fi
+          if [[ ${#tasks[@]} == 0 ]]; then exit 0; fi
+          prefix=()
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            export XDG_SESSION_TYPE=x11
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          "${prefix[@]}" pnpm exec turbo run "${tasks[@]}" --filter=@kisaki3/desktop --concurrency=1
       - name: Save Turbo cache
         if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
@@ -304,8 +269,8 @@ jobs:
           name: desktop-${{ matrix.target }}
           path: |-
             test-results/verification/
-            test-results/consumers/
-            artifacts/desktop/packages/
+            clients/desktop/packages/*/test-results/
+            clients/desktop/packages/*/out/package/
             packages/tooling/test-results/
             clients/desktop/app/test-results/
             clients/desktop/app/dist/${{ matrix.target }}/artifacts.json

@@ -1,20 +1,21 @@
 /**
- * @fileoverview Serves renderer development pages through Vite and adopts public-package
- * snapshots for module resolution.
+ * @fileoverview Serves renderer pages through Vite and owns the current complete dependency copy.
  */
 
 import { createServer } from 'vite'
+import { rm } from 'node:fs/promises'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
-import type { DependencyResolver } from './dependencies'
+import type { ViteDevServer } from 'vite'
+type DependencyResolver = ViteDevServer['environments']['client']['pluginContainer']['resolveId']
 
-/** Vite and the public-package snapshot serving this development session. */
+/** Vite and the dependency copy currently serving this development session. */
 export interface DevelopmentRenderer {
   readonly url: string
-  /** Resolve candidate exports through Vite's current client environment, including after restart. */
+  /** Query the active client resolver for engineering checks, including after restart. */
   resolveDependency: DependencyResolver
-  /** Change public imports after a successful package build and refresh loaded documents. */
+  /** Take ownership of a complete candidate, refresh documents, then release the previous copy. */
   adopt(snapshot: DependencySnapshot): Promise<void>
   close(): Promise<void>
 }
@@ -24,7 +25,7 @@ function contains(parent: string, path: string): boolean {
   return child !== '..' && !child.startsWith(`..${sep}`) && !isAbsolute(child)
 }
 
-/** Start the renderer server and retain its current public-package resolution until close(). */
+/** Start the renderer server; adopted copies are replaced on refresh and released on close(). */
 export async function startRenderer(
   sourceRoot: string,
   members: DesktopDependency[],
@@ -47,7 +48,7 @@ export async function startRenderer(
           )
 
           if (importer && contains(snapshotDirectory, importer)) {
-            // Public and relative imports stay in their generation. Installed third-party
+            // Imports within the current copy use its package context. Installed third-party
             // dependencies retain the original package's pnpm resolution context.
             if (
               member ||
@@ -60,9 +61,12 @@ export async function startRenderer(
               return null
             }
 
-            const generation = relative(snapshotDirectory, importer).split(sep)[0]!
+            const copyDirectory = join(
+              snapshotDirectory,
+              relative(snapshotDirectory, importer).split(sep)[0]!,
+            )
             const owner = members.find(({ name }) =>
-              contains(join(snapshotDirectory, generation, 'node_modules', name), importer),
+              contains(join(copyDirectory, 'node_modules', name), importer),
             )
             if (owner) {
               return this.resolve(source, join(owner.path, 'package.json'), {
@@ -109,29 +113,45 @@ export async function startRenderer(
 
       async adopt(nextSnapshot) {
         if (snapshot?.id === nextSnapshot.id) {
+          await rm(nextSnapshot.directory, { recursive: true, force: true })
           return
         }
 
-        const initialBuild = snapshot === undefined
+        const previous = snapshot
         snapshot = nextSnapshot
 
-        if (initialBuild) {
-          // Dependencies were unavailable at startup; discard unresolved optimizer entries.
+        // A restart releases Vite's old module graph and watchers as well as reloading documents.
+        try {
           await server.restart()
           const address = server.resolvedUrls?.local[0]
           if (!address) {
             throw new Error('Renderer restart did not publish a listening address')
           }
-
           url = address
-        } else {
-          server.moduleGraph.invalidateAll()
-          server.ws.send({ type: 'full-reload' })
+          // Vite can retain its last valid server after a configuration error.
+          server.environments.client.moduleGraph.invalidateAll()
+          server.environments.client.hot.send({ type: 'full-reload' })
+        } catch (cause) {
+          snapshot = previous
+          try {
+            await rm(nextSnapshot.directory, { recursive: true, force: true })
+          } catch (cleanup) {
+            throw new AggregateError(
+              [cause, cleanup],
+              'Renderer refresh and candidate cleanup failed',
+              { cause: cleanup },
+            )
+          }
+          throw cause
+        }
+        if (previous) {
+          await rm(previous.directory, { recursive: true, force: true })
         }
       },
 
-      close() {
-        return server.close()
+      async close() {
+        await server.close()
+        await rm(snapshotDirectory, { recursive: true, force: true })
       },
     }
   } catch (cause) {

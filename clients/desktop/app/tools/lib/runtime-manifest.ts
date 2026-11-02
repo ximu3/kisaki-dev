@@ -1,6 +1,6 @@
 /**
- * @fileoverview Defines desktop targets and build manifests shared by runtime loading,
- * tooling and artifact consumers.
+ * @fileoverview Defines desktop targets and build manifests used by engineering workflows
+ * and artifact verification.
  */
 
 /** An operating-system and native-architecture pair supported by the desktop application. */

@@ -33,3 +33,23 @@ test('typed lint follows imported promise contracts and accepts handled work', a
   const [handled] = await eslint.lintText(source + "await readPnpm(['--version'], '.')\n", options)
   expect(handled?.messages).toEqual([])
 })
+
+test('runtime Node entries reject browser globals while renderer entries accept them', async () => {
+  const eslint = new ESLint()
+  const source = 'void document.title\n'
+  for (const filePath of [
+    'clients/desktop/app/tests/fixtures/runtime/src/main/entry.ts',
+    'clients/desktop/app/tests/fixtures/runtime/src/extension-host/entry.ts',
+  ]) {
+    const [result] = await eslint.lintText(source, { filePath })
+    expect(
+      result?.messages.some((message) => message.ruleId === 'no-restricted-globals'),
+      filePath,
+    ).toBe(true)
+  }
+
+  const [renderer] = await eslint.lintText(source, {
+    filePath: 'clients/desktop/app/tests/fixtures/runtime/src/renderer/windows/main/entry.tsx',
+  })
+  expect(renderer?.messages).toEqual([])
+})

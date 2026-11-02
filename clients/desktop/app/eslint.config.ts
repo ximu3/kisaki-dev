@@ -9,6 +9,10 @@ export default defineConfig(
   tests,
   {
     ...node,
-    files: ['src/main/**/*.ts', 'src/extension-host/**/*.ts', 'native/node/**/*.ts'],
+    files: [
+      'tests/fixtures/runtime/src/main/**/*.ts',
+      'tests/fixtures/runtime/src/extension-host/**/*.ts',
+      'native/node/**/*.ts',
+    ],
   },
 )

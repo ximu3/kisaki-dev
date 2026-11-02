@@ -2,7 +2,7 @@
 
 本工程维护编译、开发监听、资源准备、私有原生能力、打包及验证。使用方式见根[开发指南](../../../CONTRIBUTING.md)，各模块关系见[工程边界](../../../ARCHITECTURE.md)。
 
-`tools/build` 接收明确的程序输入，默认 build 脚本使用 [runtime 测试载体](tests/fixtures/runtime/README.md)。载体的四个 renderer/preload 入口和 utility process 用于工程验证，产品行为按[工作包](../../../refactor/implementation/work-packages.md)交付。
+`tools/build` 接收明确的程序输入，`build:fixture` 脚本使用 [runtime 测试载体](tests/fixtures/runtime/README.md)。载体的四个 renderer/preload 入口和 utility process 用于工程验证，产品行为按[工作包](../../../refactor/implementation/work-packages.md)交付。
 
 `native` 拥有固定 Rust 工具链下的文件同步和不覆盖移动。Node 入口 `#native` 显式接收二进制路径，加载和操作失败保留所属错误合同。`assets` 保存固定字体输入、图标源稿与许可。
 

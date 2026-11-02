@@ -22,7 +22,9 @@ import type { DependencySnapshot } from './dependencies'
 export interface DevelopmentApplication {
   pid: number
   exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
+  /** Request normal exit; cancelled means the application declined the close request. */
   stop(): Promise<'cancelled' | 'exited'>
+  /** Force the owned process to end and wait for its exit. */
   terminate(): Promise<void>
 }
 
@@ -67,6 +69,7 @@ export interface DevelopmentOptions {
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   profile?: string
   signal?: AbortSignal
+  /** Report rebuild and session state; a failed rebuild can leave the current application usable. */
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
@@ -94,7 +97,6 @@ export async function startDevelopmentSession(
   let rendererToClose: Awaited<ReturnType<typeof startRenderer>> | undefined
   let inputsToClose: Awaited<ReturnType<typeof startInputWatcher>> | undefined
   let child: DevelopmentApplication | undefined
-  const snapshots = new Map<string, DependencySnapshot>()
 
   try {
     const parent = join(appRoot, 'out', 'development', target)
@@ -112,26 +114,6 @@ export async function startDevelopmentSession(
     const snapshotDirectory = join(sessionDirectory, 'dependencies')
     const renderer = await startRenderer(options.sourceRoot, members, snapshotDirectory)
     rendererToClose = renderer
-    signal.throwIfAborted()
-
-    try {
-      await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot, signal })
-
-      const initialDependencies = await captureDependencies(
-        members,
-        snapshotDirectory,
-        snapshots,
-        renderer.resolveDependency,
-      )
-      await renderer.adopt(initialDependencies)
-    } catch (cause) {
-      if (signal.aborted) {
-        throw cause
-      }
-
-      options.onState?.('failed', cause)
-    }
-
     signal.throwIfAborted()
 
     let current: DevelopmentBuild | undefined
@@ -180,16 +162,20 @@ export async function startDevelopmentSession(
       generation += 1
       const candidate = join(sessionDirectory, `generation-${generation}`)
       let launching = false
+      let dependencies: DependencySnapshot | undefined
+      let failure: unknown
+
+      /** The renderer takes ownership even if refresh or prior-copy cleanup fails. */
+      async function adoptDependencies(): Promise<void> {
+        const next = dependencies!
+        dependencies = undefined
+        await renderer.adopt(next)
+      }
 
       try {
         await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot, signal })
 
-        const dependencies = await captureDependencies(
-          members,
-          snapshotDirectory,
-          snapshots,
-          renderer.resolveDependency,
-        )
+        dependencies = await captureDependencies(members, snapshotDirectory)
 
         const forced = forceRuntimeBuild
         forceRuntimeBuild = false
@@ -198,18 +184,16 @@ export async function startDevelopmentSession(
           runtime = await buildGeneration(options.sourceRoot, target, candidate, signal)
           if (runtime.buildId !== (await buildInputIdentity({ signal }))) {
             buildPending = !stopping && !resourceFailed
-            await rm(candidate, { recursive: true, force: true })
             return
           }
         }
 
         if (stopping || resourceFailed) {
-          await rm(candidate, { recursive: true, force: true })
           return
         }
 
         if (!runtime) {
-          await renderer.adopt(dependencies)
+          await adoptDependencies()
           if (!resourceFailed) {
             options.onState?.('ready')
           }
@@ -233,14 +217,12 @@ export async function startDevelopmentSession(
 
         signal.throwIfAborted()
         if (stopping || resourceFailed) {
-          await rm(candidate, { recursive: true, force: true })
           return
         }
 
-        await renderer.adopt(dependencies)
+        await adoptDependencies()
         signal.throwIfAborted()
         if (stopping || resourceFailed) {
-          await rm(candidate, { recursive: true, force: true })
           return
         }
 
@@ -287,14 +269,37 @@ export async function startDevelopmentSession(
         resolveReady()
       } catch (cause) {
         forceRuntimeBuild = true
+        failure = cause
         if (launching) {
           retainOutputs = true
-        } else if (current?.directory !== candidate) {
-          await rm(candidate, { recursive: true, force: true })
         }
-
-        if (!signal.aborted) {
-          options.onState?.('failed', cause)
+      } finally {
+        const unused = []
+        if (!launching && current?.directory !== candidate) {
+          unused.push(candidate)
+        }
+        if (dependencies) {
+          unused.push(dependencies.directory)
+        }
+        const cleaned = await Promise.allSettled(
+          unused.map((path) => rm(path, { recursive: true, force: true })),
+        )
+        const errors: unknown[] = []
+        for (const result of cleaned) {
+          if (result.status === 'rejected') {
+            errors.push(result.reason)
+          }
+        }
+        if (failure && !signal.aborted) {
+          errors.unshift(failure)
+        }
+        if (errors.length) {
+          options.onState?.(
+            'failed',
+            errors.length === 1
+              ? errors[0]
+              : new AggregateError(errors, 'Development build and cleanup failed'),
+          )
         }
       }
     }

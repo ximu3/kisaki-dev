@@ -1,56 +1,27 @@
-/**
- * @fileoverview Verifies font copying against pinned package versions, file digests and
- * retained license inputs.
- */
+/** @fileoverview Checks that selected font files and notices reach the prepared resource set. */
 
-import { afterEach, beforeEach, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
+import { createRequire } from 'node:module'
 import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { copyFonts } from '../../../tools/resources/fonts'
-import type { FontInput } from '../../../tools/resources/fonts'
 import { appRoot } from '../../../tools/lib/paths'
-import { sha256 } from '../../../tools/lib/sha256'
 
-let directory: string
-let input: FontInput
-
-beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'kisaki-fonts-'))
-  const inputs = JSON.parse(
-    await readFile(join(appRoot, 'assets/fonts/inputs.json'), 'utf8'),
-  ) as FontInput[]
-  const font = inputs[0]!
-  input = {
-    ...font,
-    files: { 'index.css': font.files['index.css']!, LICENSE: font.files.LICENSE! },
-  }
-})
-
-afterEach(async () => {
-  await rm(directory, { recursive: true, force: true })
-})
-
-test('copies the locked stylesheet and license from the installed font package', async () => {
-  await copyFonts([input], directory)
-
-  const output = join(directory, input.package.split('/').at(-1)!)
-  expect((await readdir(output)).sort()).toEqual(['LICENSE', 'index.css'])
-  for (const [name, digest] of Object.entries(input.files)) {
-    expect(sha256(await readFile(join(output, name)))).toBe(digest)
-  }
-})
-
-test('rejects a different font package version before writing files', async () => {
-  await expect(copyFonts([{ ...input, version: '0.0.0' }], directory)).rejects.toThrow(
-    'version mismatch',
+test('copies the selected stylesheet and license without changing their bytes', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'kisaki-fonts-'))
+  const name = '@fontsource-variable/noto-sans-sc'
+  const source = dirname(
+    createRequire(join(appRoot, 'package.json')).resolve(`${name}/package.json`),
   )
-  expect(await readdir(directory)).toEqual([])
-})
-
-test('rejects content that does not match the pinned digest', async () => {
-  const corrupted = { ...input, files: { 'index.css': '0'.repeat(64) } }
-
-  await expect(copyFonts([corrupted], directory)).rejects.toThrow('checksum mismatch')
-  expect(await readdir(directory)).toEqual([])
+  try {
+    await copyFonts([{ package: name, files: ['index.css', 'LICENSE'] }], directory)
+    const output = join(directory, 'noto-sans-sc')
+    expect((await readdir(output)).sort()).toEqual(['LICENSE', 'index.css'])
+    for (const file of ['index.css', 'LICENSE']) {
+      expect(await readFile(join(output, file))).toEqual(await readFile(join(source, file)))
+    }
+  } finally {
+    await rm(directory, { recursive: true, force: true })
+  }
 })

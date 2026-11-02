@@ -1,17 +1,17 @@
 /**
  * @fileoverview Exercises Vite resolution and adoption of complete public-package
- * snapshots, including failed exports.
+ * snapshots, including failed preparation and obsolete-copy cleanup.
  */
 
 import { expect, test } from 'vitest'
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { mkdir, mkdtemp, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises'
+import { basename, join, resolve } from 'node:path'
 import { appRoot } from '../../tools/lib/paths'
 import { captureDependencies } from '../../tools/dev/dependencies'
-import type { DependencySnapshot } from '../../tools/dev/dependencies'
+import { createRequire } from 'node:module'
 import { startRenderer } from '../../tools/dev/renderer'
 
-test('Vite resolves complete snapshots and preserves the active generation after a failed export', async () => {
+test('Vite resolves complete snapshots and accepts environment-specific exports and releases obsolete copies', async () => {
   const parent = join(appRoot, '.local')
   await mkdir(parent, { recursive: true })
   const directory = await mkdtemp(join(parent, 'dependency-snapshot-test-'))
@@ -31,6 +31,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
           node: './dist/node.js',
         },
         './styles.css': './dist/styles.css',
+        './node-only': { node: './dist/node.js' },
       },
     }
     await writeFile(join(packageRoot, 'package.json'), JSON.stringify(manifest))
@@ -48,15 +49,9 @@ test('Vite resolves complete snapshots and preserves the active generation after
     await writeFile(join(dependency, 'index.js'), "export const value = 'installed dependency'\n")
 
     const members = [{ name, path: packageRoot }]
-    const snapshots = new Map<string, DependencySnapshot>()
     renderer = await startRenderer(join(appRoot, 'tests/fixtures/runtime'), members, snapshotsRoot)
 
-    const first = await captureDependencies(
-      members,
-      snapshotsRoot,
-      snapshots,
-      renderer.resolveDependency,
-    )
+    const first = await captureDependencies(members, snapshotsRoot)
     await renderer.adopt(first)
 
     const firstPackage = first.packages.get(name)!
@@ -81,16 +76,13 @@ test('Vite resolves complete snapshots and preserves the active generation after
     )
     expect(new URLSearchParams(stylesheet!.id.split('?')[1]).has('inline')).toBe(true)
 
-    await writeFile(
-      join(packageRoot, 'package.json'),
-      JSON.stringify({ ...manifest, exports: { '.': './dist/missing.js' } }),
+    expect(createRequire(join(packageRoot, 'package.json')).resolve(`${name}/node-only`)).toBe(
+      join(packageRoot, 'dist/node.js'),
     )
-
-    await expect(
-      captureDependencies(members, snapshotsRoot, snapshots, renderer.resolveDependency),
-    ).rejects.toThrow()
-    expect([...snapshots.keys()]).toEqual([first.id])
-    expect(await readdir(snapshotsRoot)).toEqual([first.id])
+    await rename(join(packageRoot, 'dist'), join(packageRoot, 'held-dist'))
+    await expect(captureDependencies(members, snapshotsRoot)).rejects.toThrow()
+    expect(await readdir(snapshotsRoot)).toEqual([basename(first.directory)])
+    await rename(join(packageRoot, 'held-dist'), join(packageRoot, 'dist'))
 
     const retained = await renderer.resolveDependency(name, join(appRoot, 'package.json'))
     expect(resolve(retained!.id.replace(/[?#].*$/, ''))).toBe(
@@ -100,12 +92,7 @@ test('Vite resolves complete snapshots and preserves the active generation after
     await writeFile(join(packageRoot, 'package.json'), JSON.stringify(manifest))
     await writeFile(join(packageRoot, 'dist/development.js'), "export const value = 'second'\n")
 
-    const second = await captureDependencies(
-      members,
-      snapshotsRoot,
-      snapshots,
-      renderer.resolveDependency,
-    )
+    const second = await captureDependencies(members, snapshotsRoot)
     await renderer.adopt(second)
 
     const adopted = await renderer.resolveDependency(name, join(appRoot, 'package.json'))
@@ -113,14 +100,13 @@ test('Vite resolves complete snapshots and preserves the active generation after
       join(second.packages.get(name)!, 'dist/development.js'),
     )
 
-    const previousImport = await renderer.resolveDependency(
-      name,
-      join(firstPackage, 'dist/development.js'),
-    )
-    expect(resolve(previousImport!.id.replace(/[?#].*$/, ''))).toBe(
-      join(firstPackage, 'dist/development.js'),
-    )
-    expect(await readFile(join(firstPackage, 'dist/development.js'), 'utf8')).toContain('first')
+    await expect(stat(first.directory)).rejects.toMatchObject({ code: 'ENOENT' })
+    expect(
+      await readFile(join(second.packages.get(name)!, 'dist/development.js'), 'utf8'),
+    ).toContain('second')
+    const unchanged = await captureDependencies(members, snapshotsRoot)
+    await renderer.adopt(unchanged)
+    expect(await readdir(snapshotsRoot)).toEqual([basename(second.directory)])
   } finally {
     await renderer?.close()
     await rm(directory, { recursive: true, force: true })

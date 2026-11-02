@@ -12,4 +12,4 @@ Vite 管理 renderer HMR，Chokidar 管理完整运行时和依赖输入。会�
 
 开发回归在独立 workspace 中安装固定依赖并建立有效 Git HEAD，使 Turbo 按源码和配置形成稳定输入身份。安装优先复用已准备的包存储，由 pnpm 补齐合成依赖解析所需的元数据。副本拥有自己的源码、合成依赖、资料目录及构建输出，测试结束后统一释放。
 
-[开发回归](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)覆盖正常退出取消、编译失败后的可用实例、源码改名恢复、依赖恢复和 HMR；[启动取消用例](../../../../clients/desktop/app/tests/tools/dev/cancellation.test.ts)验证准备进程关闭与完整重试。Electron 分发文件通过已安装包的公开入口取得，复制时保留平台链接结构。
+[开发回归](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)在同一个隔离副本中覆盖正常退出取消、编译失败后的可用实例、源码改名恢复、依赖恢复和 HMR，以及启动准备取消后的进程关闭与完整重试。每项用例拥有自己的进程并恢复修改的输入。Electron 分发文件通过已安装包的公开入口取得，复制时保留平台链接结构。

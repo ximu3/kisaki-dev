@@ -13,13 +13,21 @@
 | 工程         | pnpm check 通过；新增依赖边界与任务选择断言随后通过针对性复核。纯视觉源码不能直接导入 Node 或应用实现，样式与消费测试变化触发对应回归，Markdown 修改不触发运行回归。                                     |
 | 制品与许可   | pnpm desktop:packages:pack 的构建、publint、Are the Types Wrong 通过；pnpm desktop:test:consumers 的 3 项实际消费测试通过。MIT 许可和 CSS Tree、MDN data、source-map-js 的原文通知随包交付。             |
 
-当前未发布版本为 0.1.0-dev.0。制品包含 tokens、values、defaults、普通样式和 Tailwind 映射，以及 README、发行说明和许可材料。打包收据及逐份 SHA-256 位于 artifacts/desktop/packages/packages.json，消费者报告及浏览器截图位于 test-results/consumers。制品没有私有工程入口、字体或图片；声明不依赖解析库的内部类型。
+该次验证使用未发布版本 0.1.0-dev.0。制品包含 tokens、values、defaults、普通样式和 Tailwind 映射，以及 README、发行说明和许可材料。当时的打包收据及逐份 SHA-256 保存于 artifacts/desktop/packages/packages.json，消费者报告及浏览器截图保存于根 test-results/consumers；这些是该次验收产物的位置，现行入口与输出见[开发验证](../../../../CONTRIBUTING.md)。制品没有私有工程入口、字体或图片；声明不依赖解析库的内部类型。
 
 ## CI 结果
 
 2026-11-01，[CI 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41306580585)验证 [0e99deb](https://github.com/ximu3/kisaki-dev/commit/0e99deb7662f97228d32743bb5bb9cf8e7db16ba) 的 PR 合并结果。仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程检查，以及 Required checks 全部通过。
 
-Linux x64 执行公共包构建、publint、Are the Types Wrong 和 3 项仓库外消费测试，均通过。该目标的 CI 制品包含打包收据、tarball、消费者报告和截图；其他目标验证既有工程的运行、开发会话、打包与制品消费。当前运行代码与这次验证的实现一致，完成状态及证据链接的更新不改变这些输入。
+Linux x64 执行公共包构建、publint、Are the Types Wrong 和 3 项仓库外消费测试，均通过。该目标的 CI 制品包含打包收据、tarball、消费者报告和截图；其他目标验证既有工程的运行、开发会话、打包与制品消费。该次结果对应上述提交，后续工程变更的验证按实际版本记录。
+
+## 包内消费者验证
+
+2026-11-02，在 Windows x64、Node 24.11.1 和 pnpm 11.11.0 下验证包内消费者入口。`pnpm check` 通过，共 43 项常规测试；其中 appearance 普通套件执行 4 项单元测试。任务图与影响选择测试覆盖消费者用例、Node／浏览器样板和配置变化，均能选择相应消费验证。
+
+`pnpm desktop:test:consumers` 完成 build → pack → check:package → test:consumers，Node 的 1 项与浏览器的 3 项消费测试全部通过。两个工程在仓库外分别安装同一 tarball：Node 仅安装被测包和 TypeScript，完成 NodeNext 声明检查与纯入口执行；浏览器完成 Bundler 的无 DOM／有 DOM 声明检查、普通 CSS 与 Tailwind 映射消费。两者均使用 skipLibCheck: false 并执行类型感知 lint。
+
+单独运行 Node 套件时，将 PLAYWRIGHT_BROWSERS_PATH 指向不存在的目录，1 项测试仍通过；浏览器套件单独运行也通过 3 项测试。安装副本、页面、浏览器与预览服务由 Vitest 的作用域 fixture 管理，普通 CSS 用例不启动 Tailwind／Vite 构建。完整与独立运行报告分别为该包 test-results/consumers 下的 results.json、node.json 和 browser.json，浏览器截图为 appearance.png。该结果为本机验证，跨平台 CI 结果按对应提交另行记录。
 
 ## 实现依据与审阅
 

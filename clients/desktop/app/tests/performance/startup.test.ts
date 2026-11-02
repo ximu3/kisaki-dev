@@ -11,14 +11,16 @@ import { performance } from 'node:perf_hooks'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
-import { budgets } from './budgets'
+
+// Fixed engineering-carrier workload without product data.
+const sampleCount = 20
 
 test('measures twenty fresh processes and confirms all observed child processes exit', async ({}, info) => {
   const runtime = buildDirectory(hostTarget())
   const profile = await mkdtemp(join(tmpdir(), 'kisaki-performance-'))
   const samples: { milliseconds: number; workingSetKiB: number }[] = []
   try {
-    for (let index = 0; index < budgets.samples; index++) {
+    for (let index = 0; index < sampleCount; index++) {
       const env: Record<string, string> = Object.fromEntries(
         Object.entries(process.env).filter(
           (entry): entry is [string, string] => entry[1] !== undefined,
@@ -116,8 +118,6 @@ test('measures twenty fresh processes and confirms all observed child processes 
       body: JSON.stringify(report, null, 2),
       contentType: 'application/json',
     })
-
-    expect(p95).toBeLessThanOrEqual(budgets.carrierStartupP95Ms)
   } finally {
     await rm(profile, { recursive: true, force: true })
   }

@@ -59,12 +59,6 @@ importers:
       '@kisaki3/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
-      '@playwright/test':
-        specifier: 1.64.1
-        version: 1.64.1
-      '@tailwindcss/cli':
-        specifier: 4.3.3
-        version: 4.3.3
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
@@ -86,9 +80,6 @@ importers:
       prettier:
         specifier: 3.9.10
         version: 3.9.10
-      tailwindcss:
-        specifier: 4.3.3
-        version: 4.3.3
       tsx:
         specifier: 'catalog:'
         version: 4.23.15
@@ -98,9 +89,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
-      vite:
-        specifier: 'catalog:'
-        version: 8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
         version: 5.0.5(@types/node@24.19.2)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -204,9 +192,6 @@ importers:
 
   clients/desktop/packages/desktop-appearance:
     devDependencies:
-      '@arethetypeswrong/cli':
-        specifier: 0.18.5
-        version: 0.18.5
       '@kisaki3/eslint-config':
         specifier: workspace:*
         version: link:../../../../packages/eslint-config
@@ -216,6 +201,12 @@ importers:
       '@kisaki3/typescript-config':
         specifier: workspace:*
         version: link:../../../../packages/typescript-config
+      '@playwright/test':
+        specifier: 1.64.1
+        version: 1.64.1
+      '@tailwindcss/cli':
+        specifier: 4.3.3
+        version: 4.3.3
       '@types/css-tree':
         specifier: 3.2.0
         version: 3.2.0
@@ -231,9 +222,9 @@ importers:
       jiti:
         specifier: 'catalog:'
         version: 2.7.0
-      publint:
-        specifier: 0.3.25
-        version: 0.3.25
+      tailwindcss:
+        specifier: 4.3.3
+        version: 4.3.3
       tsdown:
         specifier: 0.23.0
         version: 0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.25)(tsx@4.23.15)(typescript@6.0.3)
@@ -243,6 +234,12 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+      typescript-eslint:
+        specifier: 'catalog:'
+        version: 8.72.0(eslint@10.13.0(jiti@2.7.0))(typescript@6.0.3)
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
         version: 5.0.5(@types/node@24.19.2)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -273,6 +270,16 @@ importers:
         version: 6.0.3
 
   packages/tooling:
+    dependencies:
+      '@arethetypeswrong/cli':
+        specifier: 0.18.5
+        version: 0.18.5
+      publint:
+        specifier: 0.3.25
+        version: 0.3.25
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
     devDependencies:
       '@kisaki3/eslint-config':
         specifier: workspace:*
@@ -289,9 +296,6 @@ importers:
       jiti:
         specifier: 'catalog:'
         version: 2.7.0
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

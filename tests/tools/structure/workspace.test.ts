@@ -114,6 +114,15 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
     if (command) {
       configs.push(resolve(directory, 'tsconfig.json'))
     }
+    // Consumer tasks check their own fixture projects after installing the actual tarballs.
+    if (scripts['test:consumers']) {
+      configs.push(
+        ...files.filter((file) => {
+          const name = relative(resolve(directory), file).replaceAll('\\', '/')
+          return name.startsWith('tests/fixtures/consumers/') && name.endsWith('/tsconfig.json')
+        }),
+      )
+    }
   }
 
   const checked = new Set<string>()

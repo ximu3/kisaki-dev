@@ -26,7 +26,13 @@ export async function runCli(action: (signal: AbortSignal) => Promise<void>): Pr
       process.exitCode = cancelledCode
     }
   } catch (cause) {
-    if (controller.signal.aborted) {
+    if (
+      controller.signal.aborted &&
+      (cause === controller.signal.reason ||
+        (cause instanceof Error &&
+          cause.name === 'AbortError' &&
+          cause.cause === controller.signal.reason))
+    ) {
       process.exitCode = cancelledCode
     } else if (cause instanceof CommandFailed) {
       if (cause.stdout) {

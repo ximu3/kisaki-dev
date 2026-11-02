@@ -8,10 +8,10 @@ import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/pr
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
-import { appRoot, buildDirectory } from '../../../tools/lib/paths'
+import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
-const binding = join(buildDirectory(hostTarget()), 'resources', 'native', 'kisaki-native.node')
+const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 let directory: string
 
 beforeEach(async () => {

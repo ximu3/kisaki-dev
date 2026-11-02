@@ -10,6 +10,8 @@ main 与 extension-host 采用 Vite SSR 的 Node 解析语义，选择依赖的 
 
 ## 开发快照
 
-renderer 通过当前 Vite 环境的公开 this.resolve 解析依赖快照，package.json 与完整构建结果一起交接。成功采用后更新文档，既有快照内部的导入继续使用所属代际。
+renderer 通过当前 Vite 环境的公开 this.resolve 解析当前依赖副本，package.json 与完整构建结果一起交接。准备失败保留当前副本，成功采用后重启 Vite、刷新文档并释放旧副本；不继续保留旧文档的历史代际。重启同时释放 Vite 的旧模块图和监听资源。
 
-[快照用例](../../../../clients/desktop/app/tests/tools/dependency-snapshots.test.ts)核对开发条件、CSS 查询参数、第三方依赖解析、缺失入口失败与恢复采用。编译、解析和 HMR 由 Vite 提供，项目会话拥有资源准备、候选采用与进程寿命。[Vite 公共 API](https://vite.dev/guide/api-javascript.html)
+[副本用例](../../../../clients/desktop/app/tests/tools/dependency-snapshots.test.ts)核对开发条件、CSS 查询参数、第三方依赖解析、Node 专用条件导出、准备失败与旧副本释放。浏览器解析只针对真实浏览器消费，不能预先拒绝包内合法的 Node 入口。编译、解析和 HMR 由 Vite 提供，项目会话拥有资源准备、候选采用与进程寿命。[Vite 公共 API](https://vite.dev/guide/api-javascript.html)
+
+已核对 Vite 8.3.3 客户端的重连实现：它使用 blob SharedWorker 等待服务器重新就绪。工程载体仅在 development 模式允许对应 worker-src，生产 CSP 保持原值；实际依赖更新的浏览器回归验证重连与新值采用。
