@@ -6,7 +6,7 @@
 
 截至 2026-11-01，工作包按完整交付对象组织，七个公共包、四个独立项目和桌面能力分别拥有完整责任。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
-W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源和三个私有工程包，workspace 共 5 个项目（含根工程）。产品能力按下表工作包实施。
+W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包和 desktop-appearance，workspace 共 6 个项目（含根工程）。产品能力按下表工作包实施。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -19,7 +19,7 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 | 工作包                                               | 当前结果与待完成范围                                               |
 | ---------------------------------------------------- | ------------------------------------------------------------------ |
 | [W00 工程与测试入口](work-packages.md#w00)           | 已完成，见[实际交付](#w00)。                                       |
-| [W01 desktop-appearance](work-packages.md#w01)       | 未开始。                                                           |
+| [W01 desktop-appearance](work-packages.md#w01)       | 已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。尚未公开发布。 |
 | [W02 extension-distribution](work-packages.md#w02)   | 未开始。                                                           |
 | [W03 desktop-contracts](work-packages.md#w03)        | 未开始。                                                           |
 | [W04 desktop-rpc](work-packages.md#w04)              | 未开始。                                                           |

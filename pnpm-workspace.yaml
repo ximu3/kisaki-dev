@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - clients/desktop/app
+  - clients/desktop/packages/*
 autoInstallPeers: false
 
 catalog:
@@ -17,6 +18,7 @@ catalog:
   vitest: 5.0.5
 
 allowBuilds:
+  '@parcel/watcher': false
   better-sqlite3: false
   electron: true
   electron-winstaller: false

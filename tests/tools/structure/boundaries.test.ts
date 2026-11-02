@@ -20,6 +20,17 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'appearance-has-no-node-runtime',
+    from: 'clients/desktop/packages/desktop-appearance/src/node.ts',
+    source: "export { readFile } from 'node:fs/promises'\n",
+  },
+  {
+    name: 'appearance-has-no-application-runtime',
+    from: 'clients/desktop/packages/desktop-appearance/src/application.ts',
+    to: 'clients/desktop/app/src/main/appearance.ts',
+    source: "export type { Value } from '../../../app/src/main/appearance'\n",
+  },
+  {
     name: 'runtime-does-not-import-engineering',
     from: 'clients/desktop/app/native/node/engineering.ts',
     to: 'packages/tooling/src/process.ts',

@@ -42,6 +42,8 @@ pnpm desktop:test:package --target windows-x64
 
 ## 检查与运行环境
 
+桌面公共包各自提供 build、typecheck、lint、test 与 check:package。`pnpm desktop:packages:pack` 构建、检查并打包到 `artifacts/desktop/packages`，收据保存每份 tarball 的 SHA-256；`pnpm desktop:test:consumers` 安装这些制品到仓库外临时项目，执行完整声明检查和 Chromium 样式消费。首次运行前准备 Chromium。消费者验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
+
 按[共同原则](CONVENTIONS.md#quality)、[可读性](CONVENTIONS.md#readability-principle)和[实际影响](refactor/verification/acceptance.md#verification-scope)选择验证。普通检查不包含真实桌面、制品或性能采样。
 
 | 命令                            | 输入与运行环境                                                 |

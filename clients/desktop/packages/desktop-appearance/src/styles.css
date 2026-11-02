@@ -1,0 +1,74 @@
+/* Shared visual derivations and document typography. Defaults are prepended at build time. */
+@layer theme {
+  :root,
+  [data-color-scheme] {
+    --color-background: color-mix(in oklch, var(--background) var(--pane-alpha), transparent);
+    --color-foreground: var(--foreground);
+    --color-surface: color-mix(in oklch, var(--surface) var(--pane-alpha), transparent);
+    --color-surface-foreground: var(--surface-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-dialog: var(--dialog);
+    --color-dialog-foreground: var(--dialog-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-input: var(--input);
+    --color-input-foreground: var(--input-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-chart: var(--chart);
+    --color-light-1: var(--light-1);
+    --color-light-2: var(--light-2);
+    --color-light-3: var(--light-3);
+
+    /* Keep the existing radius ladder valid at a zero base radius. */
+    --radius-sm: max(0px, calc(var(--radius) - 4px));
+    --radius-md: max(0px, calc(var(--radius) - 2px));
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    /* rem sizes follow the document's base text size and host scale. */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+    --text-7xl: 4.5rem;
+    --text-8xl: 6rem;
+    --text-9xl: 8rem;
+    --spacing: 0.25rem;
+  }
+}
+
+@layer base {
+  :root {
+    font-family: var(--font-sans);
+    font-size: calc(var(--text-base-size) * var(--interface-scale, 100) / 100);
+    font-weight: var(--text-base-weight);
+    line-height: var(--text-base-line-height);
+    letter-spacing: var(--text-base-letter-spacing);
+    color: var(--foreground);
+    background-color: var(--background);
+  }
+}

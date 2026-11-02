@@ -92,9 +92,16 @@ test(
       windowsHide: true,
       maxBuffer: 16 * 1024 * 1024,
     }
-    const cases: { path: string; desktop: string[] }[] = [
+    const cases: { path: string; desktop: string[]; consumers?: boolean }[] = [
       { path: 'refactor/README.md', desktop: [] },
       { path: '.github/workflows/pr-title.yml', desktop: [] },
+      { path: 'clients/desktop/packages/desktop-appearance/README.md', desktop: [] },
+      {
+        path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
+        desktop: [],
+        consumers: true,
+      },
+      { path: 'tests/desktop/consumers/appearance.test.ts', desktop: [], consumers: true },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },
@@ -175,7 +182,12 @@ test(
           errors?: unknown[]
           data: {
             affectedTasks: {
-              items: { name: string; command: string | null; package: { name: string } }[]
+              items: {
+                name: string
+                fullName: string
+                command: string | null
+                package: { name: string }
+              }[]
             }
           }
         }
@@ -190,6 +202,12 @@ test(
           .map((task) => task.name)
           .sort()
         expect(selected, item.path).toEqual(item.desktop)
+        expect(
+          report.data.affectedTasks.items.some(
+            (task) => task.command !== null && task.fullName === '//#desktop:test:consumers',
+          ),
+          item.path,
+        ).toBe(item.consumers ?? false)
       }
     } finally {
       await rm(directory, { recursive: true, force: true })

@@ -1,6 +1,18 @@
 {
   "forbidden": [
     {
+      "name": "appearance-has-no-node-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-appearance/src/" },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
+      "name": "appearance-has-no-application-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-appearance/src/" },
+      "to": { "path": "^clients/desktop/app/|^clients/desktop/extensions/" }
+    },
+    {
       "name": "no-cycles",
       "severity": "error",
       "from": {},
