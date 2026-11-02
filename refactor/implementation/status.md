@@ -10,7 +10,7 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
-工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。appearance 的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 37 项常规测试；4 项仓库外消费者检查、原生／SQLite、4 项 Electron 入口和制品运行均通过，跨文件系统用例因临时根同盘跳过。消费者结果见[W01 验证](../verification/evidence/w01/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
+工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。各包的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 65 项常规测试；7 项仓库外消费者检查通过。原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。消费者结果见[W01 验证](../verification/evidence/w01/README.md)与[W02 验证](../verification/evidence/w02/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
 
 错误传递维护已补齐启动与停止失败、取消期间的独立命令错误、操作与清理错误的保留，以及测试清理的结果交付。故障通过测试边界注入，完整诊断由失败钩子统一输出。本机 6 项开发回归、4 项 Electron 入口和制品运行通过；两轮 Linux arm64 重复验证共 100 次场景执行通过。原始关闭超时的根因仍待确认，范围和证据见[关闭复核](../verification/evidence/w00/development.md#shutdown)。
 
@@ -24,7 +24,7 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 | ---------------------------------------------------- | ------------------------------------------------------------------ |
 | [W00 工程与测试入口](work-packages.md#w00)           | 已交付；关闭异常仍在复核，见[实际交付](#w00)与[复核证据](../verification/evidence/w00/development.md#shutdown)。 |
 | [W01 desktop-appearance](work-packages.md#w01)       | 已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。尚未公开发布。 |
-| [W02 extension-distribution](work-packages.md#w02)   | 实现与本机验证完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试及仓库外 Node／浏览器消费通过，[验证证据](../verification/evidence/w02/README.md)。CI 待核对，尚未公开发布。 |
+| [W02 extension-distribution](work-packages.md#w02)   | 已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。尚未公开发布。 |
 | [W03 desktop-contracts](work-packages.md#w03)        | 未开始。                                                           |
 | [W04 desktop-rpc](work-packages.md#w04)              | 未开始。                                                           |
 | [W05 desktop-ui](work-packages.md#w05)               | 未开始。                                                           |

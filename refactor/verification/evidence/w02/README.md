@@ -19,6 +19,12 @@
 
 本次没有 npm 发布、仓库索引部署或应用安装操作。ZIP 解包、路径冲突与符号链接、真实入口加载、信任持久化、安装和更新事务继续由 W09／W10 的实际操作验收；这里验证它们共同消费的格式、纯规则与 Node 签名能力。
 
+## CI 结果
+
+2026-11-02，[CI 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41453543186)验证 [d59baa1](https://github.com/ximu3/kisaki-dev/commit/d59baa188ec920b2122e3c5d46e747aab4ba1dd6) 的 PR 合并结果。仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程回归、Required checks 和独立 PR title 均通过。
+
+Linux x64 的 `Test public package consumers` 实际执行成功，覆盖两个公共包的构建、打包、制品检查与仓库外消费。W02 的纯声明、浏览器运行和 Node 签名分别在本机 Windows x64 与该 CI 目标取得结果；六目标桌面工程回归不替代后续实际扩展安装与宿主接入验收。CI 制品由该次运行保存，后续仅更新状态与证据的提交沿用这里注明的实现和运行范围。
+
 ## 实现依据与审阅
 
 - 签名按 [RFC8785](https://www.rfc-editor.org/rfc/rfc8785.html) 和既定用途前缀执行，使用 [canonicalize](https://github.com/erdtman/canonicalize) 5.1.0；没有自行实现排序或数值序列化。签名输入保留原 JSON 数据，只移除顶层 signature，格式规范化在验签后交付。
