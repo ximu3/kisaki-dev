@@ -36,7 +36,7 @@ jobs:
       - run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
       - run: pnpm exec turbo run build:native prepare:resources --filter=@kisaki3/desktop --concurrency=1
       - name: Exercise development shutdown repeatedly
-        run: xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh pnpm --filter @kisaki3/desktop test:dev --repeats=9
+        run: xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh pnpm --filter @kisaki3/desktop test:dev --testNamePattern='during initial preparation' --repeats=24
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:

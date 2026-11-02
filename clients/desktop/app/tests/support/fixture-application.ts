@@ -2,6 +2,7 @@
 
 import { spawn } from 'node:child_process'
 import { debuglog } from 'node:util'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../tools/dev/session'
 
 const debug = debuglog('kisaki:fixture-launch')
@@ -81,8 +82,7 @@ export async function launchFixtureApplication(
       }
     })
   } catch (cause) {
-    await terminate()
-    throw cause
+    return rethrowAfterCleanup(cause, terminate, 'Fixture startup and termination failed')
   } finally {
     clearTimeout(timer)
     if (abort) {

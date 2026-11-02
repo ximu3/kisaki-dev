@@ -61,7 +61,7 @@ pnpm desktop:package:fixture --target windows-x64
 
 根 TypeScript 项目检查工具、配置和测试；桌面项目按 main、preload、renderer、utility process、shared、tools 和 tests 分环境检查。测试载体也遵守自己的实际运行环境。自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。
 
-三个私有工程包直接通过 exports 加载，不预构建。工程函数用 `@kisaki3/tooling/cli`、`/output`、`/process`，类型与 lint 使用各自共享包。项目声明自己的依赖、配置与检查任务，类型感知 lint 沿 TypeScript Project Service 使用所属项目。`pnpm lint:fix` 完成后须审阅修改。
+三个私有工程包直接通过 exports 加载，不预构建。工程函数用 `@kisaki3/tooling/cli`、`/errors`、`/output`、`/process`，类型与 lint 使用各自共享包。项目声明自己的依赖、配置与检查任务，类型感知 lint 沿 TypeScript Project Service 使用所属项目。`pnpm lint:fix` 完成后须审阅修改。
 
 依赖检查核对循环、无法解析或未声明的包，以及原生运行代码、工程工具和测试之间的边界。祖先目录能解析一个包不代表导入者已经声明它。`#native` 由桌面 package.json 的 imports 定义，不复制到根 paths。
 

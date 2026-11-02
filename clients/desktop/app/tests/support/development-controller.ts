@@ -6,11 +6,11 @@
 import { spawn } from 'node:child_process'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { onTestFinished } from 'vitest'
+import { onTestFailed, onTestFinished } from 'vitest'
 import type { DevelopmentBuild } from '../../tools/dev/session'
 
 /** Three minutes cover cold package/native preparation and readiness; the application handshake has its own deadline. */
-export const developmentStartupTimeoutMs = 180_000
+const developmentStartupTimeoutMs = 180_000
 
 /** Observations from the isolated development worker, separate from the application protocol. */
 export interface DevelopmentObservation {
@@ -20,7 +20,7 @@ export interface DevelopmentObservation {
   error?: string
 }
 
-/** Start and observe a real development worker; close it before restoring the workspace. */
+/** Start a test-owned worker; register input restoration before calling this function. */
 export function startDevelopmentController(app: string) {
   const startedAt = new Date().toISOString()
   const start = performance.now()
@@ -41,11 +41,15 @@ export function startDevelopmentController(app: string) {
   const states: DevelopmentObservation[] = []
   const observations: { elapsedMs: number; observation: DevelopmentObservation }[] = []
   let output = ''
+  let resolveReady!: () => void
   child.on('message', (message: DevelopmentObservation) => {
     states.push(message)
     observations.push({ elapsedMs: performance.now() - start, observation: message })
     if (observations.length > 32) {
       observations.shift()
+    }
+    if (message.state === 'ready') {
+      resolveReady()
     }
   })
 
@@ -58,6 +62,31 @@ export function startDevelopmentController(app: string) {
   const closed = new Promise<number | null>((resolve, reject) => {
     child.once('error', reject)
     child.once('close', resolve)
+  })
+  const diagnostics = () => `${JSON.stringify(observations)}\n${output}`
+  let startupTimeout: ReturnType<typeof setTimeout>
+  const ready = new Promise<void>((resolve, reject) => {
+    resolveReady = resolve
+    startupTimeout = setTimeout(
+      () => reject(new Error(`Development worker startup timed out:\n${diagnostics()}`)),
+      developmentStartupTimeoutMs,
+    )
+    void closed.then(
+      (code) =>
+        reject(
+          new Error(`Development worker exited before readiness (${code}):\n${diagnostics()}`),
+        ),
+      reject,
+    )
+  })
+  // Startup cancellation need not await ready; keep its rejection available without an unhandled promise.
+  void ready.then(
+    () => clearTimeout(startupTimeout),
+    () => clearTimeout(startupTimeout),
+  )
+
+  onTestFailed(() => {
+    console.error(`Development worker ${child.pid}:\n${diagnostics()}`)
   })
 
   onTestFinished(async () => {
@@ -80,23 +109,32 @@ export function startDevelopmentController(app: string) {
       ),
     )
   })
+  // Vitest preserves the test failure and every cleanup error, and writes the report after closure.
+  onTestFinished(async () => {
+    if (child.connected) {
+      child.send({ type: 'stop' })
+    }
+
+    let forced = false
+    const timeout = setTimeout(() => {
+      forced = true
+      child.kill('SIGKILL')
+    }, 15_000)
+    try {
+      await closed
+      if (forced) {
+        throw new Error(`Development worker required forced termination:\n${diagnostics()}`)
+      }
+    } finally {
+      clearTimeout(timeout)
+    }
+  })
 
   return {
     process: child,
     states,
+    ready,
     closed,
-    diagnostics: () => `${JSON.stringify(observations)}\n${output}`,
-    async close() {
-      if (child.connected) {
-        child.send({ type: 'stop' })
-      }
-
-      const timeout = setTimeout(() => child.kill('SIGKILL'), 15_000)
-      try {
-        await closed
-      } finally {
-        clearTimeout(timeout)
-      }
-    },
+    diagnostics,
   }
 }

@@ -11,6 +11,7 @@ import { appRoot, repositoryRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 import { readPnpm, run } from '@kisaki3/tooling/process'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
 export async function prepareDevelopmentWorkspace(): Promise<{
@@ -170,8 +171,10 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
       close: () => rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {
-    await rm(temporary, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
-
-    throw cause
+    return rethrowAfterCleanup(
+      cause,
+      () => rm(temporary, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
+      'Development workspace preparation and cleanup failed',
+    )
   }
 }

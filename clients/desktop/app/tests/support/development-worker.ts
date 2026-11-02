@@ -4,6 +4,7 @@
  */
 
 import { fileURLToPath } from 'node:url'
+import { isCancellation } from '@kisaki3/tooling/errors'
 import { launchFixtureApplication } from './fixture-application'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
@@ -68,13 +69,7 @@ try {
   // A failed stop leaves the session owned, so closed alone cannot report that failure.
   await Promise.race([session.closed, stopFailure])
 } catch (cause) {
-  const cancelled =
-    controller.signal.aborted &&
-    (cause === controller.signal.reason ||
-      (cause instanceof Error &&
-        cause.name === 'AbortError' &&
-        cause.cause === controller.signal.reason))
-  if (!cancelled) {
+  if (!isCancellation(cause, controller.signal)) {
     failed = true
     console.error(cause)
     process.exitCode = 1

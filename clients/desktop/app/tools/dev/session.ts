@@ -7,6 +7,7 @@ import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { debuglog } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
+import { isCancellation, rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { startRenderer } from './renderer'
@@ -53,7 +54,7 @@ export interface DevelopmentBuild {
 export interface DevelopmentSession {
   /** First ready application; compilation failures can recover, while stopped startup or resource failure rejects. */
   readonly ready: Promise<void>
-  /** Settles after teardown; cleanup errors reject, and outputs with unconfirmed readers remain on disk. */
+  /** Settles after teardown; shutdown failures reject, and outputs with unconfirmed readers remain on disk. */
   readonly closed: Promise<void>
   readonly rendererUrl: string
   /** Current running generation; absent before launch, during replacement and after process exit. */
@@ -130,6 +131,7 @@ export async function startDevelopmentSession(
 
     let buildPending = false
     let buildLoop: Promise<void> | undefined
+    let shutdownFailures: unknown[] = []
     let generation = 0
     let forceRuntimeBuild = true
     let programInputs = new Map<string, string>()
@@ -257,7 +259,7 @@ export async function startDevelopmentSession(
           }
 
           void session.stop().catch((cause: unknown) => options.onState?.('failed', cause))
-        })
+        }, failSession)
 
         programInputs = runtime.inputs
         if (previous && !retainOutputs) {
@@ -293,10 +295,13 @@ export async function startDevelopmentSession(
             errors.push(result.reason)
           }
         }
-        if (failure && !signal.aborted) {
+        if (failure && !isCancellation(failure, signal)) {
           errors.unshift(failure)
         }
         if (errors.length) {
+          if (stopping || signal.aborted) {
+            shutdownFailures.push(...errors)
+          }
           options.onState?.(
             'failed',
             errors.length === 1
@@ -372,7 +377,8 @@ export async function startDevelopmentSession(
           signal.removeEventListener('abort', cancel)
           options.signal?.removeEventListener('abort', cancelPreparation)
           controller.abort(new Error('Development session stopping'))
-          const failures: unknown[] = []
+          const failures = shutdownFailures
+          shutdownFailures = []
           child = undefined
           current = undefined
           let rendererClosed = false
@@ -412,7 +418,7 @@ export async function startDevelopmentSession(
 
           rejectReady(new Error('Development session stopped before readiness'))
           if (failures.length) {
-            const cause = new AggregateError(failures, 'Development session cleanup failed')
+            const cause = new AggregateError(failures, 'Development session shutdown failed')
             rejectClosed(cause)
             throw cause
           }
@@ -479,7 +485,12 @@ export async function startDevelopmentSession(
     }
 
     if (directory) {
-      await rm(directory, { recursive: true, force: true })
+      const remainingDirectory = directory
+      return rethrowAfterCleanup(
+        cause,
+        () => rm(remainingDirectory, { recursive: true, force: true }),
+        'Development startup and directory cleanup failed',
+      )
     }
 
     throw cause

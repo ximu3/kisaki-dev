@@ -118,6 +118,11 @@ async function execute(
   const cancel = () => {
     stopping ??= stopCommand(child).catch((cause: unknown) => {
       failure = cause
+      // Keep output ownership until closure, but report a failed termination request immediately.
+      console.error(
+        `Could not terminate ${basename(command)} (${child.pid}); waiting for closure`,
+        cause,
+      )
     })
   }
 

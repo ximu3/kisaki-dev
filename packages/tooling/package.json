@@ -10,6 +10,7 @@
   },
   "exports": {
     "./cli": "./src/cli.ts",
+    "./errors": "./src/errors.ts",
     "./output": "./src/output.ts",
     "./process": "./src/process.ts"
   },
