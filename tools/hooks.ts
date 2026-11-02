@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process'
 import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url))
 
@@ -118,13 +119,30 @@ export async function configureHooks(
     windowsHide: true,
   })
   if (installed.error || installed.status !== 0 || installed.stdout.trim()) {
-    if (localHookPath.status !== 0) {
-      git(root, ['config', '--local', '--unset-all', 'core.hooksPath'])
+    const failure = new Error('Husky installation failed', {
+      cause: installed.error ?? {
+        status: installed.status,
+        signal: installed.signal,
+        stdout: installed.stdout,
+        stderr: installed.stderr,
+      },
+    })
+    if (localHookPath.status === 0) {
+      // A failed reinstall must not remove the hook directory already configured by the user.
+      throw failure
     }
 
-    await rm(ownedDirectory, { recursive: true, force: true })
-
-    throw new Error('Husky installation failed', { cause: installed.error ?? installed.stdout })
+    return rethrowAfterCleanup(
+      failure,
+      async () => {
+        const removed = git(root, ['config', '--local', '--unset-all', 'core.hooksPath'])
+        if (removed.status !== 0 && removed.status !== 5) {
+          throw new Error('Could not roll back the repository hook path')
+        }
+        await rm(ownedDirectory, { recursive: true, force: true })
+      },
+      'Hook installation and rollback failed',
+    )
   }
 
   await writeFile(
@@ -149,7 +167,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
 
       console.info(result.message)
     } catch (cause) {
-      console.error(cause instanceof Error ? cause.message : 'Hook operation failed')
+      console.error(cause)
       process.exitCode = 1
     }
   }

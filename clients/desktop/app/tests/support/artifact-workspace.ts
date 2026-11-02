@@ -9,6 +9,7 @@ import { copyFile, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import extractZip from 'extract-zip'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** An extracted candidate owned by one artifact test. */
 export interface ArtifactWorkspace {
@@ -58,8 +59,10 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       close: () => rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {
-    await rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
-
-    throw cause
+    return rethrowAfterCleanup(
+      cause,
+      () => rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
+      'Artifact extraction and cleanup failed',
+    )
   }
 }

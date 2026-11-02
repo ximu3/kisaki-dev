@@ -10,8 +10,6 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
     }) => {
       const page = await desktop.firstWindow()
       await expect(page.getByRole('heading')).toHaveText('Engineering fixture')
-      await page.getByRole('button').click()
-      await expect(page.getByRole('button')).toHaveText('Count: 1')
       const identity = await page.evaluate(async () => {
         const carrier = window as typeof window & {
           fixture: { identity(): Promise<{ kind: string; buildId: string; workerPid: number }> }

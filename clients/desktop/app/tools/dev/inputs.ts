@@ -7,6 +7,7 @@ import { once } from 'node:events'
 import { readdir } from 'node:fs/promises'
 import { basename, isAbsolute, join, relative, sep } from 'node:path'
 import { watch } from 'chokidar'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { FSWatcher } from 'chokidar'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import type { DesktopDependency } from './dependencies'
@@ -113,7 +114,10 @@ export async function startInputWatcher(
 
     return watcher
   } catch (cause) {
-    await watcher.close()
-    throw cause
+    return rethrowAfterCleanup(
+      cause,
+      () => watcher.close(),
+      'Input watcher startup and cleanup failed',
+    )
   }
 }

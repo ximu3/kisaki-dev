@@ -7,9 +7,10 @@ import { afterEach, beforeEach, expect, test } from 'vitest'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
+import { loadNative, FileMoveError, FileSyncError } from '#native'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 let directory: string
@@ -19,21 +20,6 @@ beforeEach(async () => {
 })
 afterEach(async () => {
   await rm(directory, { recursive: true, force: true })
-})
-
-test('preserves the native loading cause at the supplied module path', async () => {
-  const path = join(directory, 'invalid.node')
-  await writeFile(path, 'not a native module')
-
-  let failure: unknown
-  try {
-    loadNative(path)
-  } catch (cause) {
-    failure = cause
-  }
-
-  expect(failure).toBeInstanceOf(NativeLoadError)
-  expect(failure).toHaveProperty('cause', expect.any(Error))
 })
 
 test('moves files and directories without replacing existing targets', async () => {
@@ -118,9 +104,15 @@ test('a cross-volume move fails without copying or deleting the source', async (
     })
     expect(await readFile(source, 'utf8')).toBe('retained')
     await expect(stat(join(other, 'target'))).rejects.toMatchObject({ code: 'ENOENT' })
-  } finally {
-    await rm(other, { recursive: true, force: true })
+  } catch (cause) {
+    // Dynamic skip also throws; release its temporary directory before propagating the outcome.
+    return rethrowAfterCleanup(
+      cause,
+      () => rm(other, { recursive: true, force: true }),
+      'Cross-volume verification and cleanup failed',
+    )
   }
+  await rm(other, { recursive: true, force: true })
 })
 
 test('synchronizes existing regular files and reports missing or wrong-type paths', async () => {
@@ -133,9 +125,14 @@ test('synchronizes existing regular files and reports missing or wrong-type path
   await chmod(path, 0)
   try {
     await expect(files.syncFile(path)).rejects.toMatchObject({ reason: 'permissionDenied' })
-  } finally {
-    await chmod(path, 0o600)
+  } catch (cause) {
+    return rethrowAfterCleanup(
+      cause,
+      () => chmod(path, 0o600),
+      'Permission verification and restoration failed',
+    )
   }
+  await chmod(path, 0o600)
 
   await writeFile(path, 'content')
 

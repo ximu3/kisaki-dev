@@ -4,30 +4,31 @@
  */
 
 import { fileURLToPath } from 'node:url'
+import { isCancellation } from '@kisaki3/tooling/errors'
 import { launchFixtureApplication } from './fixture-application'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
 
 const controller = new AbortController()
+const scenario = process.argv[2]
+let rejectStop!: (cause: unknown) => void
+const stopFailure = new Promise<never>((_resolve, reject) => {
+  rejectStop = reject
+})
 let session: DevelopmentSession | undefined
-let failure: unknown
+let failed = false
 
 const stop = () => {
   if (session) {
-    void session.stop().then(
-      (result) => {
-        if (result === 'cancelled' && process.connected) {
-          process.send?.({
-            state: 'cancelled',
-            current: session?.current,
-            rendererUrl: session?.rendererUrl,
-          })
-        }
-      },
-      (cause: unknown) => {
-        failure = cause
-      },
-    )
+    void session.stop().then((result) => {
+      if (result === 'cancelled' && process.connected) {
+        process.send?.({
+          state: 'cancelled',
+          current: session?.current,
+          rendererUrl: session?.rendererUrl,
+        })
+      }
+    }, rejectStop)
   } else {
     controller.abort(new Error('Fixture development session stopped'))
   }
@@ -45,7 +46,31 @@ process.once('disconnect', stop)
 try {
   session = await startDevelopmentSession({
     sourceRoot: fileURLToPath(new URL('../fixtures/runtime', import.meta.url)),
-    launch: launchFixtureApplication,
+    async launch(options) {
+      const application = await launchFixtureApplication({
+        ...options,
+        args:
+          scenario === 'cancel-first-close'
+            ? [...options.args, '--cancel-first-close']
+            : options.args,
+      })
+      if (scenario !== 'stop-failure') {
+        return application
+      }
+
+      // Fail the first stop at the supplied application boundary; termination keeps its real owner.
+      let rejectStop = true
+      return {
+        ...application,
+        stop() {
+          if (rejectStop) {
+            rejectStop = false
+            return Promise.reject(new Error('Synthetic application stop failure'))
+          }
+          return application.stop()
+        },
+      }
+    },
     signal: controller.signal,
     onState(state, error) {
       if (process.connected) {
@@ -66,16 +91,24 @@ try {
     },
   })
 
-  await session.closed
+  // A failed stop leaves the session owned, so closed alone cannot report that failure.
+  await Promise.race([session.closed, stopFailure])
 } catch (cause) {
-  if (!controller.signal.aborted || cause instanceof AggregateError) {
-    failure = cause
+  if (!isCancellation(cause, controller.signal)) {
+    failed = true
+    console.error(cause)
+    process.exitCode = 1
   }
 } finally {
   try {
-    await session?.stop()
+    if (failed) {
+      await session?.terminate()
+    } else {
+      await session?.stop()
+    }
   } catch (cause) {
-    failure ??= cause
+    console.error(cause)
+    process.exitCode = 1
   }
 
   process.off('message', message)
@@ -83,9 +116,4 @@ try {
   if (process.connected) {
     process.disconnect()
   }
-}
-
-if (failure) {
-  console.error(failure)
-  process.exitCode = 1
 }

@@ -14,6 +14,7 @@ import type { DistributionKind, DistributionManifest } from '../lib/distribution
 import { sha256 } from '../lib/sha256'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** Identifies the candidate files by their desktop build and SHA-256 digests. */
 export interface ArtifactReceipt {
@@ -67,6 +68,7 @@ export async function packageDesktop(
 
   const output = join(appRoot, 'dist', target)
   const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
+  const cleanup = () => rm(staging, { recursive: true, force: true })
   try {
     await cp(runtime, staging, { recursive: true })
     await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
@@ -93,11 +95,12 @@ export async function packageDesktop(
       },
       signal,
     )
-
-    return join(output, 'artifacts.json')
-  } finally {
-    await rm(staging, { recursive: true, force: true })
+  } catch (cause) {
+    return rethrowAfterCleanup(cause, cleanup, 'Desktop packaging and cleanup failed')
   }
+
+  await cleanup()
+  return join(output, 'artifacts.json')
 }
 
 /** Write the target's builder configuration, including resources and signing requirements. */

@@ -1,7 +1,11 @@
 /** @fileoverview Owns the test carrier's local IPC handshake and process lifetime. */
 
 import { spawn } from 'node:child_process'
+import { debuglog } from 'node:util'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../tools/dev/session'
+
+const debug = debuglog('kisaki:fixture-launch')
 
 /** Launch only the engineering carrier; terminate failed startup before returning its error. */
 export async function launchFixtureApplication(
@@ -18,16 +22,16 @@ export async function launchFixtureApplication(
   })
   child.stdout!.pipe(process.stdout, { end: false })
   child.stderr!.pipe(process.stderr, { end: false })
-  let output = ''
-  for (const stream of [child.stdout!, child.stderr!]) {
-    stream.setEncoding('utf8').on('data', (value: string) => {
-      output = (output + value).slice(-8192)
-    })
-  }
   const exited = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(
     (resolve, reject) => {
       child.once('error', reject)
-      child.once('close', (code, signal) => resolve({ code, signal }))
+      child.once('exit', (code, signal) =>
+        debug('Application %d exited: %s', child.pid, signal ?? code),
+      )
+      child.once('close', (code, signal) => {
+        debug('Application %d streams closed', child.pid)
+        resolve({ code, signal })
+      })
     },
   )
   void exited.catch(() => undefined)
@@ -60,11 +64,12 @@ export async function launchFixtureApplication(
       abort = () => reject(options.signal.reason)
       options.signal.addEventListener('abort', abort, { once: true })
       timer = setTimeout(
-        () => reject(new Error(`Fixture startup timed out: ${output}`)),
+        () => reject(new Error(`Fixture application ${child.pid} startup timed out`)),
         options.startupTimeoutMs,
       )
       void exited.then(
-        () => reject(new Error(`Fixture exited before readiness: ${output}`)),
+        ({ code, signal }) =>
+          reject(new Error(`Fixture application exited before readiness (${signal ?? code})`)),
         reject,
       )
       if (options.signal.aborted) {
@@ -72,8 +77,7 @@ export async function launchFixtureApplication(
       }
     })
   } catch (cause) {
-    await terminate()
-    throw cause
+    return rethrowAfterCleanup(cause, terminate, 'Fixture startup and termination failed')
   } finally {
     clearTimeout(timer)
     if (abort) {
@@ -112,7 +116,16 @@ export async function launchFixtureApplication(
                 }
               }
               child.on('message', cancelled)
-              deadline = setTimeout(() => reject(new Error('Fixture shutdown timed out')), 10_000)
+              deadline = setTimeout(
+                () =>
+                  reject(
+                    new Error(
+                      `Fixture shutdown timed out: pid=${child.pid}, exitCode=${child.exitCode}, signal=${child.signalCode}, connected=${child.connected}`,
+                    ),
+                  ),
+                10_000,
+              )
+              debug('Requesting application %d to stop', child.pid)
               child.send({ type: 'fixture-stop' }, (cause) => {
                 if (cause) {
                   reject(cause)

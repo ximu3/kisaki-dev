@@ -23,7 +23,7 @@ interface DesktopFixtures {
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
   profile: async ({}, use) => {
-    const directory = await mkdtemp(join(tmpdir(), 'kisaki-e2e-'))
+    const directory = await mkdtemp(join(tmpdir(), 'kisaki-desktop-test-'))
     try {
       await use(directory)
     } finally {

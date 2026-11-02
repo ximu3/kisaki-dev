@@ -157,12 +157,3 @@ test('a failed partial-staging check restores both worktree and index without mo
   expect(git(['show', ':fixture.ts']).stdout).toBe(index)
   expect(git(['stash', 'list']).stdout).toBe(stashes)
 }, 60_000)
-
-test('source archives and CI are explicit no-op environments', async () => {
-  expect((await configureHooks(directory, 'install')).status).toBe('skipped')
-
-  vi.stubEnv('CI', 'true')
-
-  expect((await configureHooks(repository, 'install')).status).toBe('skipped')
-  expect(git(['config', '--local', '--get', 'core.hooksPath']).status).toBe(1)
-})

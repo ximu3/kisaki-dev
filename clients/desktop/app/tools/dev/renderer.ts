@@ -5,6 +5,7 @@
 import { createServer } from 'vite'
 import { rm } from 'node:fs/promises'
 import { isAbsolute, join, relative, sep } from 'node:path'
+import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { ViteDevServer } from 'vite'
@@ -133,16 +134,11 @@ export async function startRenderer(
           server.environments.client.hot.send({ type: 'full-reload' })
         } catch (cause) {
           snapshot = previous
-          try {
-            await rm(nextSnapshot.directory, { recursive: true, force: true })
-          } catch (cleanup) {
-            throw new AggregateError(
-              [cause, cleanup],
-              'Renderer refresh and candidate cleanup failed',
-              { cause: cleanup },
-            )
-          }
-          throw cause
+          return rethrowAfterCleanup(
+            cause,
+            () => rm(nextSnapshot.directory, { recursive: true, force: true }),
+            'Renderer refresh and candidate cleanup failed',
+          )
         }
         if (previous) {
           await rm(previous.directory, { recursive: true, force: true })
@@ -155,7 +151,6 @@ export async function startRenderer(
       },
     }
   } catch (cause) {
-    await server.close()
-    throw cause
+    return rethrowAfterCleanup(cause, () => server.close(), 'Renderer startup and cleanup failed')
   }
 }

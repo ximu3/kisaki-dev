@@ -74,8 +74,14 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await inputs?.close()
-  await renderer?.close()
+  const closed = await Promise.allSettled([inputs?.close(), renderer?.close()])
+  const failures = closed.filter((result) => result.status === 'rejected')
+  if (failures.length) {
+    throw new AggregateError(
+      failures.map((result): unknown => result.reason),
+      'Input verification cleanup failed',
+    )
+  }
 
   if (paths.repositoryRoot) {
     // Vite may still finish a cache write as its server closes; retry transient directory removal.

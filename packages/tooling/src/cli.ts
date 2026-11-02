@@ -4,6 +4,7 @@
  */
 
 import { CommandFailed } from './process'
+import { isCancellation } from './errors'
 
 /** Install cancellation before preparation, and report failure only after the action has closed. */
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
@@ -26,13 +27,7 @@ export async function runCli(action: (signal: AbortSignal) => Promise<void>): Pr
       process.exitCode = cancelledCode
     }
   } catch (cause) {
-    if (
-      controller.signal.aborted &&
-      (cause === controller.signal.reason ||
-        (cause instanceof Error &&
-          cause.name === 'AbortError' &&
-          cause.cause === controller.signal.reason))
-    ) {
+    if (isCancellation(cause, controller.signal)) {
       process.exitCode = cancelledCode
     } else if (cause instanceof CommandFailed) {
       if (cause.stdout) {
