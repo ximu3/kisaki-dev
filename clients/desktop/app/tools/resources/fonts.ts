@@ -1,4 +1,4 @@
-/** @fileoverview Verifies and copies pinned font inputs for desktop resources. */
+/** @fileoverview Copies selected font files and notices from the workspace's locked dependencies. */
 
 import { createRequire } from 'node:module'
 import { copyFile, mkdir } from 'node:fs/promises'

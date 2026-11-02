@@ -1,5 +1,5 @@
 /**
- * @fileoverview Publishes complete candidate directories to project-owned outputs while
+ * @fileoverview Replaces project-owned outputs with complete candidate directories while
  * preserving the previous output on preparation failure.
  */
 
@@ -9,7 +9,8 @@ import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'nod
 /**
  * Prepare a private candidate and replace one project-owned output after success.
  * Preparation failure or cancellation observed before handoff keeps the previous output in place.
- * Failed adoption restores the previous output; cleanup or rollback failures retain both errors.
+ * Failed adoption attempts to restore the previous output. If rollback fails, its temporary
+ * directory is retained and both failures are reported; cleanup failures are also reported.
  */
 export async function replaceOutput<T>(
   project: string,

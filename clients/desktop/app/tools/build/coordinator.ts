@@ -1,6 +1,6 @@
 /**
  * @fileoverview Assembles a finite desktop runtime from complete program, resource and
- * native outputs and publishes its build manifest.
+ * native outputs and records its build manifest before replacing the previous output.
  */
 
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
@@ -12,7 +12,7 @@ import { replaceOutput } from '@kisaki3/tooling/output'
 import { runtimeFiles, buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 
-/** Assemble a complete target from prepared resources and bindings; publish after all programs are ready. */
+/** Assemble a complete target from prepared resources and bindings; replace output after all programs are ready. */
 export async function buildDesktop(
   sourceRoot: string,
   target: DesktopTarget,

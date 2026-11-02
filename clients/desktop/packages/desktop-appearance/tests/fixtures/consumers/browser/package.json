@@ -1,10 +1,9 @@
 {
-  "name": "appearance-consumer",
+  "name": "appearance-browser-consumer",
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc -b",
-    "build:node": "tsc -p config/typescript/tsconfig.node.json --noEmit false --outDir .cache/node --incremental false"
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@kisaki3/desktop-appearance": "0.1.0-dev.0"

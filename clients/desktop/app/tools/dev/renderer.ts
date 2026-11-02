@@ -13,7 +13,7 @@ type DependencyResolver = ViteDevServer['environments']['client']['pluginContain
 /** Vite and the dependency copy currently serving this development session. */
 export interface DevelopmentRenderer {
   readonly url: string
-  /** Resolve candidate exports through Vite's current client environment, including after restart. */
+  /** Query the active client resolver for engineering checks, including after restart. */
   resolveDependency: DependencyResolver
   /** Take ownership of a complete candidate, refresh documents, then release the previous copy. */
   adopt(snapshot: DependencySnapshot): Promise<void>
@@ -61,9 +61,12 @@ export async function startRenderer(
               return null
             }
 
-            const generation = relative(snapshotDirectory, importer).split(sep)[0]!
+            const copyDirectory = join(
+              snapshotDirectory,
+              relative(snapshotDirectory, importer).split(sep)[0]!,
+            )
             const owner = members.find(({ name }) =>
-              contains(join(snapshotDirectory, generation, 'node_modules', name), importer),
+              contains(join(copyDirectory, 'node_modules', name), importer),
             )
             if (owner) {
               return this.resolve(source, join(owner.path, 'package.json'), {

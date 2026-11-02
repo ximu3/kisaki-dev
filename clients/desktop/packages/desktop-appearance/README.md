@@ -12,7 +12,7 @@ import { defaults } from '@kisaki3/desktop-appearance/defaults'
 const custom: TokenValues = { ...defaults.dark, '--radius': '0px' }
 ```
 
-`tokens` maps each fixed CSS property name to its value kind. `TokenValues` is a complete readonly branch; `FontTokenName` identifies the two font stacks and `VisualTokenName` covers the remaining slots. Defaults are frozen; copy a branch before editing. Desktop theme identities, font selections, persistence and system scheme resolution belong to their hosts.
+`tokens` maps each fixed CSS property name to its value kind. `TokenValues` is a complete readonly branch; `FontTokenName` identifies the two font stacks, while `VisualTokenName` covers the other 43 tokens, including the four typography settings. Defaults are frozen; copy a branch before editing. Desktop theme identities, font selections, persistence and system scheme resolution belong to their hosts.
 
 Parse external values through the independent `values` entry:
 
@@ -86,11 +86,21 @@ From the repository root:
 pnpm --filter @kisaki3/desktop-appearance build
 pnpm --filter @kisaki3/desktop-appearance typecheck
 pnpm --filter @kisaki3/desktop-appearance test
+pnpm --filter @kisaki3/desktop-appearance exec playwright install chromium
 pnpm desktop:test:consumers
 ```
 
 The build generates CSS defaults from `src/defaults.ts` and combines them with `src/styles.css`. All outputs are prepared before replacing `dist`; failure or cancellation before adoption preserves the previous output. Public imports resolve to built files.
 
-The consumer command prepares build → pack → check:package through Turbo, then installs the same `out/package/package.tgz` outside the repository. Publint and Are the Types Wrong both inspect this tarball; no checker repacks it. Are the Types Wrong checks its ESM JavaScript entrypoints. CSS subpaths are validated by actual stylesheet consumers, following the tool's [non-JavaScript asset guidance](https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md). External consumers also check declarations with the workspace TypeScript version and `skipLibCheck: false`.
+The consumer command schedules this package's `test:consumers` task after build → pack → check:package through Turbo. Both consumers install the same `out/package/package.tgz` in separate directories outside the repository.
+
+- The Node project installs only this package and TypeScript; it checks NodeNext declarations and executes the pure entrypoints.
+- The browser project checks Bundler declarations with and without DOM types, then exercises ordinary CSS and Tailwind mapping in Chromium. Browser tools start only for the cases that use them.
+
+The cases live in `tests/consumers`, the independent projects in `tests/fixtures/consumers/node` and `tests/fixtures/consumers/browser`, and reports in `test-results/consumers`. Ordinary `test` runs the unit suite.
+
+After preparing the tarball, run either scenario directly with `pnpm --filter @kisaki3/desktop-appearance test:consumers node` or `pnpm --filter @kisaki3/desktop-appearance test:consumers browser`.
+
+Publint and Are the Types Wrong both inspect the tarball; no checker repacks it. Are the Types Wrong checks its ESM JavaScript entrypoints. CSS subpaths are validated by actual stylesheet consumers, following the tool's [non-JavaScript asset guidance](https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md). Both consumer projects check declarations with the workspace TypeScript version and `skipLibCheck: false` and run typed lint against their installed dependencies.
 
 MIT. No fonts, icons or third-party images are distributed. The value parser bundles CSS Tree and its supporting code/data; `dist/THIRD-PARTY-NOTICES.txt` includes their MIT, CC0 and BSD notices. Package declarations expose no parser-library types.

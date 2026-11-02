@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     fsModuleCachePath: 'node_modules/.vitest-cache',
-    include: ['tests/desktop/consumers/**/*.test.ts'],
+    include: ['tests/consumers/**/*.test.ts'],
     environment: 'node',
     globals: false,
     testTimeout: 60_000,

@@ -86,7 +86,7 @@ SDK 的纯模块只依赖纯定义，运行实现依赖纯模块。根入口与 
 
 CLI 的 create、dev、validate、build、pack 等工作流同时服务命令行和程序化入口。三种模板分别生成 node、node-webview、node-solid 作者结构，作为正式工具资源交付。
 
-各包维护自己的 README、发行说明、manifest、类型与构建配置，dist 保存生成制品。测试按[共同结构](layout.md#tests)归所属工程，跨包 tarball 消费归根 tests/desktop/consumers，覆盖 Node、框架无关 Webview 和 Solid 三条作者路径。测试准备、样本与清理保留在对应测试范围。作者只声明实际使用的公开包。
+各包维护自己的 README、发行说明、manifest、类型与构建配置，dist 保存生成制品。各包通过自身 test:consumers 验证 tarball，覆盖所承诺的 Node、框架无关 Webview 或 Solid 作者路径。测试准备、样本与清理保留在对应测试范围；组合验证按[共同结构](layout.md#tests)归负责组合行为的工程。作者只声明实际使用的公开包。
 
 <a id="contracts"></a>
 
@@ -148,7 +148,7 @@ CSS 提供明确的消费入口，并通过副作用配置确保构建保留；�
 
 ## 工作区与项目配置
 
-Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。交付布局包含桌面应用、七个公共包、33 个官方扩展和三个私有工程包，共 44 个工程身份；实际登记随所属工作包维护；clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
+Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。完整交付布局包含桌面应用、七个公共包、33 个官方扩展和三个私有工程包，共 44 个成员工程，另有仓库根工程。实际登记随所属工作包维护，clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
 
 通用检查通过 pnpm 读取已登记成员，同时独立枚举维护目录中的 package.json 核对漏登记；workspace 只登记实际工程，证据、生成输出和测试试件按各自用途组织。源码覆盖与依赖扫描从整个维护树发现输入，不维护桌面、官网或服务端的平行目录清单。TypeScript 工程以默认 tsconfig.json 及其 references 表达 typecheck 的检查范围，结构检查不解析脚本中的编译器命令文本。桌面公共包的数量、许可和发布约束留在桌面范围，私有工程规则只指向实际工程包，不替尚未建立的产品库决定许可或私有身份。
 
@@ -174,11 +174,11 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 官方扩展的 kisx.config.ts 与 eslint.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
 
-仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json。根工具使用 Node 类型与 ES2023 库；工具配置与测试按实际声明和浏览器回调需要包含 DOM，测试样板由各自配置检查。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
+仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-七个公共包也以根 tsconfig.json 的空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；UI 的 tsdown 配置同样归 Node 工具项目。根 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入各包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
+七个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -196,7 +196,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                                                   |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                                                   |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                                                     |
-| 根 tools 与私有工程包        | 根工具拥有 Git hooks、验证环境信息、桌面跨包制品输入与跨项目发行；私有包提供实际共用的配置和工程函数 |
+| 根 tools 与私有工程包        | 根工具拥有 Git hooks、验证环境信息与跨项目发行；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -232,7 +232,11 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ### 任务名称与项目入口
 
-根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。包级 pack 生成一次实际 tarball，check:package 对该文件执行 publint／Are the Types Wrong；根消费者任务依赖制品检查并安装同一文件。test:* 用于执行测试断言，工程载体的生成分别命名为 build:fixture 和 package:fixture。使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack。
+根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。
+
+包级 pack 生成一次实际 tarball，check:package 对该文件执行 publint／Are the Types Wrong；同包 test:consumers 依赖制品检查并安装同一文件，根 desktop:test:consumers 通过 Turbo 聚合调度。test:* 用于执行测试断言，工程载体的生成分别命名为 build:fixture 和 package:fixture。
+
+使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack 和 pnpm run clean。
 
 各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。格式检查无需先构建整个仓库。七个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
 
@@ -260,7 +264,7 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 桌面[构建输入身份](build.md#pipeline)直接使用 build:fixture 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
 
-仓库工作流调度各 workspace 自己的常规检查与测试。桌面公共包的打包、产物检查和跨包消费者归桌面工作流的 Linux x64 参考目标，各公共包拥有自己的 out/package/package.tgz，检查与消费者使用同一文件。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
+仓库工作流调度各 workspace 自己的常规检查与测试。桌面公共包的打包、产物检查和包内消费者由桌面工作流的 Linux x64 参考目标调度，各公共包拥有自己的 out/package/package.tgz 和 test-results/consumers，检查与消费者使用同一 tarball。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
 
 桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。开发测试仍在隔离副本内验证真实构建与会话生命周期。打包核对既有 build.json 的目标、当前输入身份、完整文件集合和摘要，缺失、过时或改写均失败。根 desktop:package:fixture 通过同一任务图保持独立可运行；外部实际制品可以通过显式收据交给包内 test:artifacts 叶操作验证。
 

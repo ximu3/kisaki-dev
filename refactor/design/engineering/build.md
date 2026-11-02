@@ -41,7 +41,7 @@ clients/desktop/app/out/<target>/
 
 kana 按[发行资产清单](../projects/kana/distribution.md#integration-assets)保留版本身份及完整相对目录，复制真实包中的 worker、Wasm、样式、字体和数据，并核对摘要。app/paths 与窗口所属 session 的受控协议共同提供同源 assetsBaseUrl；JS／Wasm 的缺失请求不能回退成 HTML。正式包与应用使用同一份已验收资产，不从另一份全局缓存补齐文件。
 
-build 生成程序，package 生成交付制品，publish 才写入外部平台。打包使用明确的 allowlist，确保 fixture、工具源码、开发地址、.local 和秘密不会进入制品。必需资源缺失时构建失败，不能补用旧输出。
+build 生成程序，package 生成交付制品，publish 才写入外部平台。正式产品打包使用明确的 allowlist，排除 fixture、工具源码、开发地址、.local 和秘密。工程载体由独立的 build:fixture 与 package:fixture 入口构建，并以 testOnly 标记测试制品。必需资源缺失时构建失败，不能补用旧输出。
 
 clean 清理任务声明的输出；缓存清理、开发资料重置和发行制品留存各有独立入口。用户内容、全局 Git 配置和个人工具保持原样。发行文件另行保存稳定副本，签名与时间戳等处理按实际机制记录可复现范围。
 

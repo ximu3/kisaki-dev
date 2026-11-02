@@ -6,7 +6,7 @@
 
 `clients/desktop/packages/desktop-appearance` 提供 45 项纯视觉 token、完整值解析、亮暗默认值、普通 CSS 和可选 Tailwind 映射。主题保存可直接编辑的视觉值，共同样式拥有派生计算。解析入口在 Node 与浏览器中使用同一实现，词表和默认值可独立消费。默认值由同一份 TypeScript 数据生成 CSS，映射只引用共同变量。字体字节、资源读取与主题持久化由实际宿主负责。
 
-包通过构建后的子路径交付 ESM、声明与样式。私有工程命令 `kisaki-package` 将各包打包一次并检查同一份 tarball，`tests/desktop/consumers` 从仓库外安装 tarball，核对类型、Node 与浏览器消费。
+包通过构建后的子路径交付 ESM、声明与样式。私有工程命令 `kisaki-package` 将各包打包一次并检查同一份 tarball，包内 `tests/consumers` 使用独立的 Node 和浏览器工程从仓库外安装该文件，分别核对声明与运行消费。两个工程各自声明依赖与类型环境；测试配置、样板和报告均由该包维护。
 
 ## 桌面工程
 

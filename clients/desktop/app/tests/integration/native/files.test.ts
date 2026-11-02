@@ -38,7 +38,7 @@ test('preserves the native loading cause at the supplied module path', async () 
 
 test('moves files and directories without replacing existing targets', async () => {
   const { files } = loadNative(binding)
-  const source = join(directory, '璧勬枡 馃幃 source')
+  const source = join(directory, '资料 🎮 source')
   const target = join(directory, 'target')
   await writeFile(source, 'new content')
   await writeFile(target, 'keep content')

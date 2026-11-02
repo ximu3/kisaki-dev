@@ -146,7 +146,9 @@ jobs:
           if [[ "$complete" == false ]]; then
             consumers=$(jq -r '
               any(.data.affectedTasks.items[];
-                .fullName == "//#root:test:consumers" and .command != null)
+                .command != null and
+                .name == "test:consumers" and
+                (.package.path | startswith("clients/desktop/packages/")))
             ' "$report")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
@@ -222,9 +224,12 @@ jobs:
       - name: Install Linux desktop tools
         if: runner.os == 'Linux' && (needs.select.outputs.dev == 'true' || needs.select.outputs.native == 'true' || needs.select.outputs.e2e == 'true' || needs.select.outputs.artifacts == 'true')
         run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
-      - name: Install Chromium
+      - name: Install Chromium for development
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-        if: needs.select.outputs.dev == 'true' || (needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64')
+        if: needs.select.outputs.dev == 'true'
+      - name: Install Chromium for package consumers
+        run: pnpm --filter @kisaki3/desktop-appearance exec playwright install --with-deps chromium
+        if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
       - name: Test public package consumers
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
         run: pnpm desktop:test:consumers
@@ -264,7 +269,7 @@ jobs:
           name: desktop-${{ matrix.target }}
           path: |-
             test-results/verification/
-            test-results/consumers/
+            clients/desktop/packages/*/test-results/
             clients/desktop/packages/*/out/package/
             packages/tooling/test-results/
             clients/desktop/app/test-results/

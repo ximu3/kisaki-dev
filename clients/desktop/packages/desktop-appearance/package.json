@@ -40,6 +40,7 @@
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
+    "test:consumers": "vitest run --config config/vitest/consumers.ts",
     "check:package": "kisaki-package check",
     "clean": "tsx tools/clean.ts"
   },
@@ -47,14 +48,19 @@
     "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/cli": "4.3.3",
     "@types/css-tree": "3.2.0",
     "@types/node": "catalog:",
     "css-tree": "3.2.1",
     "eslint": "catalog:",
     "jiti": "catalog:",
+    "tailwindcss": "4.3.3",
     "tsdown": "0.23.0",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   }
 }

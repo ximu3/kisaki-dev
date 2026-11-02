@@ -4,6 +4,8 @@
 
 消费者声明 workspace devDependency，通过 exports 直接使用 TypeScript 源码，由锁定的 tsx、Vitest 或 Playwright 宿主编译，无需预构建。库源码按 Node 环境独立检查；真实文件系统与命令树测试归本包 tests，普通检查及六目标 CI 都实际执行这些测试。
 
+`runPnpm` 与 `readPnpm` 从 `npm_execpath` 取得启动当前项目任务的 pnpm，因此调用它们的工具或测试通过 pnpm 项目脚本运行。普通命令使用 `run`，由调用方明确提供可执行文件和参数。
+
 该包不发布，不进入产品运行依赖、公共包声明或仓库外作者模板。
 
 `kisaki-package pack` 通过 pnpm 生成当前工程的 `out/package/package.tgz`，成功后才替换旧制品；`kisaki-package check` 对同一文件运行 publint 和 ATTW，读取所属工程的 ATTW 配置。Turbo 拥有 build → pack → check:package 的关系，包脚本只执行对应动作。CLI 取消不会隐藏实际清理失败。

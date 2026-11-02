@@ -42,7 +42,7 @@ pnpm desktop:package:fixture --target windows-x64
 
 ## 检查与运行环境
 
-桌面公共包各自提供 build、pack、check:package 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 由 Turbo 自动接续构建、一次打包、制品检查和仓库外消费，固定样例位于 `tests/desktop/consumers/fixtures`。首次运行前准备 Chromium。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
+桌面公共包各自提供 build、pack、check:package、test:consumers 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 通过 Turbo 调度各包的消费者任务，自动接续构建、一次打包、制品检查和仓库外消费。用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
 
 按[共同原则](CONVENTIONS.md#quality)、[可读性](CONVENTIONS.md#readability-principle)和[实际影响](refactor/verification/acceptance.md#verification-scope)选择验证。普通检查不包含真实桌面、制品或性能采样。
 
@@ -52,10 +52,10 @@ pnpm desktop:package:fixture --target windows-x64
 | `pnpm desktop:test:native`      | 先准备原生与资源输出，由开发 Electron 的 Node 模式执行 SQLite 与原生文件测试 |
 | `pnpm desktop:test:e2e`         | 先构建，在隔离资料中验证四个 Electron 编译入口与进程隔离                     |
 | `pnpm desktop:test:dev`         | 准备原生输出，在隔离源码副本中验证开发工作流与浏览器 HMR                     |
-| `pnpm desktop:test:artifacts`   | 消费已打包的载体，保留 fuses，从外部观察启动与关闭                           |
-| `pnpm desktop:test:performance` | 先构建，执行 20 次工程载体启动、内存和退出采样                               |
+| `pnpm desktop:test:artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
+| `pnpm desktop:test:performance` | 先构建，记录 20 次工程载体启动耗时与内存，验证进程退出                       |
 
-浏览器首次准备使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，视觉包消费者使用 `pnpm --filter @kisaki3/desktop-appearance exec playwright install chromium`。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
 制品输入用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认 `dist/<target>/artifacts.json`。Windows 使用窗口句柄，macOS 使用已获准的系统辅助功能，Linux X11 使用窗口管理器观察。X11 结果不代表 Wayland 验收。
 

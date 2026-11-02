@@ -108,19 +108,20 @@ test('all maintained JavaScript-environment sources are TypeScript and have an e
   ]
   const configs: string[] = []
 
-  // These projects are checked by the consumer task after installing their actual tarballs.
-  for (const file of files) {
-    const name = file.replaceAll('\\', '/')
-    if (name.includes('/tests/desktop/consumers/fixtures/') && name.endsWith('/tsconfig.json')) {
-      configs.push(resolve(file))
-    }
-  }
-
   for (const { directory, manifest } of projects) {
     const scripts = (manifest.scripts ?? {}) as Record<string, string>
     const command = directory === '.' ? scripts['root:typecheck'] : scripts.typecheck
     if (command) {
       configs.push(resolve(directory, 'tsconfig.json'))
+    }
+    // Consumer tasks check their own fixture projects after installing the actual tarballs.
+    if (scripts['test:consumers']) {
+      configs.push(
+        ...files.filter((file) => {
+          const name = relative(resolve(directory), file).replaceAll('\\', '/')
+          return name.startsWith('tests/fixtures/consumers/') && name.endsWith('/tsconfig.json')
+        }),
+      )
     }
   }
 

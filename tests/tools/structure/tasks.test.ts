@@ -19,7 +19,7 @@ test('verification tasks prepare the artifacts they actually consume', async () 
         'test:e2e',
         'test:dev',
         'test:artifacts',
-        'root:test:consumers',
+        'test:consumers',
         '--dry=json',
       ],
       process.cwd(),
@@ -35,7 +35,9 @@ test('verification tasks prepare the artifacts they actually consume', async () 
   expect(reaches('@kisaki3/desktop#test:e2e', '@kisaki3/desktop#build:fixture')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:dev', '@kisaki3/desktop#build:native')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:artifacts', '@kisaki3/desktop#package:fixture')).toBe(true)
-  expect(reaches('//#root:test:consumers', '@kisaki3/desktop-appearance#pack')).toBe(true)
+  expect(
+    reaches('@kisaki3/desktop-appearance#test:consumers', '@kisaki3/desktop-appearance#pack'),
+  ).toBe(true)
 })
 
 test(
@@ -61,10 +63,33 @@ test(
         desktop: [],
         consumers: true,
       },
-      { path: 'tests/desktop/consumers/appearance.test.ts', desktop: [], consumers: true },
+      {
+        path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
+        desktop: [],
+        consumers: true,
+      },
+      {
+        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/browser/browser.ts',
+        desktop: [],
+        consumers: true,
+      },
+      {
+        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/node/consumer.ts',
+        desktop: [],
+        consumers: true,
+      },
+      {
+        path: 'clients/desktop/packages/desktop-appearance/config/vitest/consumers.ts',
+        desktop: [],
+        consumers: true,
+      },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },
+      {
+        path: 'clients/desktop/app/tests/support/window-observation.ts',
+        desktop: ['test:artifacts', 'test:dev'],
+      },
       { path: 'clients/desktop/app/tests/artifacts/desktop.test.ts', desktop: ['test:artifacts'] },
       {
         path: 'clients/desktop/app/electron-builder.yml',
@@ -164,7 +189,9 @@ test(
         expect(selected, item.path).toEqual([...item.desktop].sort())
         expect(
           report.data.affectedTasks.items.some(
-            (task) => task.command !== null && task.fullName === '//#root:test:consumers',
+            (task) =>
+              task.command !== null &&
+              task.fullName === '@kisaki3/desktop-appearance#test:consumers',
           ),
           item.path,
         ).toBe(item.consumers ?? false)

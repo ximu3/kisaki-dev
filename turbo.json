@@ -102,9 +102,9 @@
       "outputs": ["out/package/**"],
       "cache": false
     },
-    "//#root:test:consumers": {
-      "dependsOn": ["@kisaki3/desktop-appearance#check:package"],
-      "inputs": ["package.json", "tests/desktop/consumers/**", "config/vitest/consumers.ts"],
+    "test:consumers": {
+      "dependsOn": ["check:package"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     }
   }

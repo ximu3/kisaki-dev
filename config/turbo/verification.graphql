@@ -5,7 +5,7 @@ query Verification($base: String!, $head: String!) {
   affectedTasks(
     base: $base
     head: $head
-    tasks: ["test", "test:native", "test:e2e", "test:dev", "test:artifacts", "root:test:consumers"]
+    tasks: ["test", "test:native", "test:e2e", "test:dev", "test:artifacts", "test:consumers"]
   ) {
     items {
       name

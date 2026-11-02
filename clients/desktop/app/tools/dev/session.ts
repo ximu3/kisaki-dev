@@ -22,7 +22,9 @@ import type { DependencySnapshot } from './dependencies'
 export interface DevelopmentApplication {
   pid: number
   exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
+  /** Request normal exit; cancelled means the application declined the close request. */
   stop(): Promise<'cancelled' | 'exited'>
+  /** Force the owned process to end and wait for its exit. */
   terminate(): Promise<void>
 }
 
@@ -67,6 +69,7 @@ export interface DevelopmentOptions {
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   profile?: string
   signal?: AbortSignal
+  /** Report rebuild and session state; a failed rebuild can leave the current application usable. */
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 

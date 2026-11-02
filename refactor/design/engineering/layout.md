@@ -1,6 +1,6 @@
 # 仓库与源码布局
 
-本文说明代码、资源和工具放在哪里，以及同一程序内各文件的分工。进程关系、依赖与运行寿命见[运行架构](../architecture.md)；工作区配置、公开包消费与任务入口见[工作区与工具链](workspace.md)。
+本文定义完整交付时的代码、资源和工具归属，以及同一程序内各文件的分工。目录随所属工作包建立；当前已经存在的源码见根目录 [ARCHITECTURE.md](../../../ARCHITECTURE.md)，完成度见[实施状态](../../implementation/status.md)。进程关系、依赖与运行寿命见[运行架构](../architecture.md)；工作区配置、公开包消费与任务入口见[工作区与工具链](workspace.md)。
 
 <a id="workspace"></a>
 
@@ -57,15 +57,12 @@ kisaki/
 │   ├── eslint-config/
 │   └── tooling/
 ├── tools/
-│   ├── desktop/
-│   │   └── package-inputs.ts
 │   ├── release/
 │   ├── host-environment.ts
 │   └── hooks.ts
 ├── tests/
 ├── config/
-│   ├── typescript/
-│   └── vitest/
+│   └── typescript/
 ├── .github/workflows/
 ├── .husky/
 ├── artifacts/                       # Ignored verified delivery outputs
@@ -74,8 +71,8 @@ kisaki/
 ├── pnpm-lock.yaml
 ├── turbo.json
 ├── tsconfig.json
-├── eslint.config.*
-├── .prettierrc.*
+├── eslint.config.ts
+├── .prettierrc.json
 ├── LICENSE
 ├── README.md
 ├── CONTRIBUTING.md
@@ -99,11 +96,11 @@ Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
-各工程遵守[通用配置归属](../../../CONVENTIONS.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。工具、配置、测试三个类型项目归根 config/typescript；仓库外消费者测试配置归根 config/vitest，由所属命令显式指定。
+各工程遵守[通用配置归属](../../../CONVENTIONS.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。根工具、配置、测试的三个类型项目归根 config/typescript；消费者等测试变体配置归实际执行它的工程，由所属命令显式指定。
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-七个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由根 tsconfig.json 组织，tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用根 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+七个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
@@ -121,7 +118,7 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 
 | 位置                      | 负责的工作                                                                                                                        |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| 根 tools                  | desktop 管理桌面跨包制品输入，release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
+| 根 tools                  | release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
 | packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                                                         |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                                              |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                                                        |
@@ -134,8 +131,6 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 tools/
 ├── hooks.ts
 ├── host-environment.ts
-├── desktop/
-│   └── package-inputs.ts
 └── release/
 ```
 
@@ -143,7 +138,7 @@ hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于
 
 host-environment.ts 输出验证进程的 Node 版本、系统、架构、CPU 与内存事实。仓库和桌面工作流调用同一入口，将结果保存到各自验证报告；输出字段由该文件统一维护。
 
-桌面跨包制品消费归根 tests/desktop/consumers，测试任务使用已经打包的 tarball，在隔离消费者工程中核对公开入口、声明、CSS 以及 Node、框架无关 Webview 和 Solid Webview 作者路径。消费者工程的准备、安装和清理归 tests/desktop/consumers，固定样例归其 fixtures。各公共包的 tarball 输出归自身 out/package，公共打包与检查机制由私有 tooling 命令提供。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
+各公共包通过自身 tests/consumers 验证公开制品，在仓库外的隔离工程中核对所属入口的声明、样式与 Node、Webview 或 Solid 消费。固定样板归同包 tests/fixtures/consumers，测试配置、依赖、准备与清理、报告也由该包维护。各公共包的 tarball 输出归自身 out/package，公共打包与检查机制由私有 tooling 命令提供。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
 公共包通过自己的 pack 任务交付 tarball，跨包消费者依赖实际使用的包任务，不维护另一份包收据清单。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 
@@ -232,7 +227,7 @@ clients/desktop/app/tools/
 | tests/integration         | 产品或库的真实技术接入，包括数据库、文件、通信和原生绑定；按实际依赖选择普通 Node 或开发 Electron 的 Node 模式。依赖 Electron app、BrowserWindow 等接口的用例进入 e2e。 |
 | tests/browser             | 需要真实 DOM 的组件、响应式逻辑、焦点、样式和交互，使用规定的浏览器测试环境。                                                                                           |
 | tests/e2e                 | 在真实开发应用或宿主中验证窗口、preload、进程、扩展接入和完整产品操作，桌面使用 Playwright 的 Electron 能力。                                                           |
-| tests/consumers           | 从实际公开制品建立仓库外消费者，验证入口、类型、样式与运行接入。各包拥有自身合同用例，根工程只组织跨包组合。                                                            |
+| tests/consumers           | 从实际公开制品建立仓库外消费者，验证所属工程承诺的入口、类型、样式与运行接入。                                                                                            |
 | tests/artifacts           | 最终打包应用的安装、启动、资源、fuses、更新和平台接入；保持正式制品原样，运行条件按实际目标记录。                                                                       |
 | tests/performance         | 按[性能合同](performance.md)验证指定负载、预算和测量口径，使用被测行为所需的实际环境。                                                                                  |
 | tests/tools               | 所属工程 tools 的 CLI、工作流和真实文件副作用测试，按工具名组织；不在 integration 中维护另一份相同用例。                                                                |
@@ -241,20 +236,12 @@ clients/desktop/app/tools/
 
 测试按主要验证目的归档：制品消费、最终制品、性能和工程工具分别归 consumers、artifacts、performance 和 tools；其余按所需接入边界归 integration、browser 或 e2e。运行环境在配置中明确，同一场景不因符合多个分类而复制；例如浏览器性能测量归 performance，普通组件交互归 browser。
 
-只建立工程实际需要的目录。测试目录内部按能力、场景或工具组织，少量内聚用例保持单文件，多文件协作时再形成子目录；不要求与 src 的每一级路径机械镜像。根 tests 只负责根工具与跨项目消费，不集中收纳各工程自己的业务测试。
+只建立工程实际需要的目录。测试目录内部按能力、场景或工具组织，少量内聚用例保持单文件，多文件协作时再形成子目录；不要求与 src 的每一级路径机械镜像。组合验证归负责组合行为的工程：组件样式归 UI 包，作者生成与打包流程归 CLI，应用操作归本体。使用多个包本身不改变测试归属。根 tests 负责根工具和仓库共同约束。
 
 根工程的测试结构如下。根工具的集成与 CLI 测试统一归 tests/tools，按工具名组织，不在各工具内部另建 tests。
 
 ```text
 tests/
-├── desktop/
-│   ├── consumers/
-│   ├── fixtures/
-│   │   └── consumers/
-│   │       ├── node/
-│   │       ├── webview/
-│   │       └── solid/
-│   └── support/
 ├── tools/
 │   ├── hooks/
 │   ├── structure/
@@ -288,6 +275,8 @@ clients/desktop/app/tests/
 公共包采用 tests/integration、tests/browser、tests/consumers、tests/tools、tests/fixtures 和 tests/support 中适用的部分。官方扩展的来源响应、输入格式和映射样本归自身 tests/fixtures，真实组件测试归 tests/browser；正式 .kisx 的宿主接入由本体 tests/e2e 的既有入口验证。CLI 的正式生成模板仍归其 src/templates，测试用的消费者样板与正式模板分别维护。
 
 测试输入保持可复用，写入测试先在独立临时目录创建副本。数据库、profile、Git 仓库、构建输出、trace 和报告属于运行状态，不能写回 fixture 或使用个人资料。support 只提供测试机制，生产代码不导入它；业务断言保留在用例中，已有不变量由其拥有层验证，接入只补充自身新增的风险。
+
+消费者样板按需要独立成立的消费条件划分工程。tests/fixtures/consumers 是集合，每个工程以场景子目录保存自己的 package.json、tsconfig.json 和源码，例如 node、browser 或 solid。名称表达实际宿主、框架或使用场景；目录层级不随当前工程数量变化。分别承诺独立消费的环境使用各自的依赖集合，真实联合工程场景可以共用一个样板。用例与样板不要求一一对应，多个用例可以复用同一工程；安装、运行与清理仍由测试拥有者管理。
 
 各工程的测试配置显式选择目录、globals 和运行环境，测试类型不泄漏到运行源码。运行构建与声明生成排除测试源码，样本中的项目 manifest 不登记为 workspace 成员。目录命名不代替正确的运行环境，也不改变[验证覆盖要求](../../verification/acceptance.md#runtime-coverage)。
 

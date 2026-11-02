@@ -1,4 +1,4 @@
-/** @fileoverview Consumes public declarations and values in both Node and browser projects. */
+/** @fileoverview Consumes the packed pure entrypoints in a Node project without browser tools. */
 
 import { tokens } from '@kisaki3/desktop-appearance/tokens'
 import type {
