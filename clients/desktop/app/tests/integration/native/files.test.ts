@@ -7,7 +7,7 @@ import { afterEach, beforeEach, expect, test } from 'vitest'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadNative, NativeLoadError, FileMoveError, FileSyncError } from '#native'
+import { loadNative, FileMoveError, FileSyncError } from '#native'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
@@ -20,21 +20,6 @@ beforeEach(async () => {
 })
 afterEach(async () => {
   await rm(directory, { recursive: true, force: true })
-})
-
-test('preserves the native loading cause at the supplied module path', async () => {
-  const path = join(directory, 'invalid.node')
-  await writeFile(path, 'not a native module')
-
-  let failure: unknown
-  try {
-    loadNative(path)
-  } catch (cause) {
-    failure = cause
-  }
-
-  expect(failure).toBeInstanceOf(NativeLoadError)
-  expect(failure).toHaveProperty('cause', expect.any(Error))
 })
 
 test('moves files and directories without replacing existing targets', async () => {

@@ -22,7 +22,6 @@ const properties = {
 }
 
 document.body.dataset.tokenCount = String(summary.count)
-document.body.dataset.validation = JSON.stringify(summary.validation)
 document.body.dataset.validCss = String(
   Object.entries(tokens).every(([name, kind]) =>
     CSS.supports(properties[kind], values[name as keyof typeof values]),

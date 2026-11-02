@@ -3,7 +3,7 @@
  * startup and shutdown behavior.
  */
 
-import { expect, onTestFinished, test } from 'vitest'
+import { expect, onTestFailed, onTestFinished, test } from 'vitest'
 import { spawn } from 'node:child_process'
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'
 import { extractFile, listPackage } from '@electron/asar'
@@ -143,6 +143,9 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   child.stderr.setEncoding('utf8').on('data', (chunk: string) => {
     diagnostic = (diagnostic + chunk).slice(-8_192)
   })
+  onTestFailed(() => {
+    console.error(`Packaged application ${child.pid}:\n${diagnostic}`)
+  })
 
   const closed = new Promise<number | null>((resolveClose, reject) => {
     child.once('error', reject)
@@ -155,28 +158,24 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     await waitForExit(closed, 10_000)
   }
 
-  try {
-    if (!child.pid) {
-      throw new Error('Packaged process could not start')
-    }
-
-    await expect
-      .poll(
-        async ({ signal }) => {
-          if (child.exitCode !== null) {
-            throw new Error(`Packaged process exited: ${diagnostic}`)
-          }
-
-          return hasNativeWindow(child.pid!, signal)
-        },
-        { timeout: 30_000, interval: 250 },
-      )
-      .toBe(true)
-
-    await closeNativeWindow(child.pid)
-    expect(await waitForExit(closed, 15_000), diagnostic).toBe(0)
-    expect((await readdir(join(directory, 'profile', 'browser'))).length).toBeGreaterThan(0)
-  } catch (cause) {
-    throw new Error(`Packaged application verification failed:\n${diagnostic}`, { cause })
+  if (!child.pid) {
+    throw new Error('Packaged process could not start')
   }
+
+  await expect
+    .poll(
+      async ({ signal }) => {
+        if (child.exitCode !== null) {
+          throw new Error(`Packaged process exited (${child.exitCode})`)
+        }
+
+        return hasNativeWindow(child.pid!, signal)
+      },
+      { timeout: 30_000, interval: 250 },
+    )
+    .toBe(true)
+
+  await closeNativeWindow(child.pid)
+  expect(await waitForExit(closed, 15_000)).toBe(0)
+  expect((await readdir(join(directory, 'profile', 'browser'))).length).toBeGreaterThan(0)
 })

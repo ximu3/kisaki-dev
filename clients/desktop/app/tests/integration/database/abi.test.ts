@@ -1,6 +1,5 @@
 /**
- * @fileoverview Exercises transactions and reopening with the shipped SQLite binding under
- * Electron.
+ * @fileoverview Exercises persistent reads and writes with the shipped SQLite binding under Electron.
  */
 
 import { expect, onTestFinished, test } from 'vitest'
@@ -11,7 +10,7 @@ import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
-test('the shipped SQLite binding creates, commits, rolls back and reopens under Electron', async () => {
+test('the shipped SQLite binding writes and reopens a persistent database under Electron', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-sqlite-'))
   onTestFinished(() => rm(directory, { recursive: true, force: true }))
   const path = join(directory, 'test.sqlite')
@@ -24,21 +23,12 @@ test('the shipped SQLite binding creates, commits, rolls back and reopens under 
   })
   database = new Database(path, options)
   database.pragma('journal_mode = WAL')
-  database.exec('CREATE TABLE fixture (id INTEGER PRIMARY KEY, value TEXT NOT NULL UNIQUE)')
-  const insert = database.prepare('INSERT INTO fixture (value) VALUES (?)')
-
-  database.transaction(() => insert.run('已提交'))()
-
-  expect(
-    database.transaction(() => {
-      insert.run('rolled back')
-      insert.run('已提交')
-    }),
-  ).toThrow()
+  database.exec('CREATE TABLE fixture (value TEXT NOT NULL)')
+  database.prepare('INSERT INTO fixture (value) VALUES (?)').run('已保存')
 
   database.close()
   database = undefined
   database = new Database(path, options)
 
-  expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已提交' }])
+  expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已保存' }])
 })

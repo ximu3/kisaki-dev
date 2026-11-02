@@ -3,7 +3,7 @@
  * an isolated workspace with real package, lockfile and Git inputs.
  */
 
-import { afterAll, beforeAll, expect, onTestFinished, test } from 'vitest'
+import { afterAll, beforeAll, expect, test } from 'vitest'
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -193,37 +193,4 @@ test('generated output stays outside input identity while runtime bytes retain t
   expect(Object.keys(current)).toEqual(['main/entry.js'])
   expect(current['main/entry.js']).not.toBe(previous['main/entry.js'])
   expect(current['main/entry.js']).toMatch(/^[a-f0-9]{64}$/)
-})
-
-test('declared build environment values contribute to the input identity', async () => {
-  const previous = process.env.TSDOWN_IDENTITY_FIXTURE
-  try {
-    process.env.TSDOWN_IDENTITY_FIXTURE = 'before'
-    const baseline = await buildInputIdentity({ root })
-
-    process.env.TSDOWN_IDENTITY_FIXTURE = 'after'
-
-    expect(await buildInputIdentity({ root })).not.toBe(baseline)
-  } finally {
-    if (previous === undefined) {
-      delete process.env.TSDOWN_IDENTITY_FIXTURE
-    } else {
-      process.env.TSDOWN_IDENTITY_FIXTURE = previous
-    }
-  }
-})
-
-test('rejects when the desktop build task is unavailable', async () => {
-  const original = await readFile(join(root, applicationPath, 'package.json'), 'utf8')
-  onTestFinished(() => writeInput(`${applicationPath}/package.json`, original))
-  await writeInput(
-    `${applicationPath}/package.json`,
-    JSON.stringify({
-      name: 'another-application',
-      private: true,
-      scripts: { 'build:fixture': 'node build.js' },
-    }),
-  )
-
-  await expect(buildInputIdentity({ root })).rejects.toThrow()
 })

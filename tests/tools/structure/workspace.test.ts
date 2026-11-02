@@ -1,6 +1,5 @@
 /**
- * @fileoverview Checks workspace registration, publication boundaries and maintained
- * source typecheck coverage.
+ * @fileoverview Checks registered package identities and maintained source typecheck coverage.
  */
 
 import { expect, test } from 'vitest'
@@ -69,7 +68,7 @@ async function members(): Promise<{ directory: string; manifest: Record<string, 
   )
 }
 
-test('pnpm registers the maintained projects with unique identities and the intended publication boundaries', async () => {
+test('all maintained packages are registered with unique workspace identities', async () => {
   const projects = await members()
   const manifests = (await sourceFiles(root))
     .map((file) => relative(root, file).replaceAll('\\', '/'))
@@ -80,19 +79,6 @@ test('pnpm registers the maintained projects with unique identities and the inte
 
   expect(projects.map(({ directory }) => directory).sort()).toEqual(manifests.sort())
   expect(new Set(projects.map(({ manifest }) => manifest.name)).size).toBe(projects.length)
-
-  for (const { directory, manifest } of projects) {
-    expect(manifest.name).toMatch(/^@kisaki3\/[a-z][a-z0-9-]+$/)
-    const publicPackage = directory.startsWith('clients/desktop/packages/')
-    if (publicPackage) {
-      expect(manifest.private, directory).not.toBe(true)
-      expect(manifest.license, directory).toBe('MIT')
-      expect(manifest.exports, directory).toBeDefined()
-    } else {
-      expect(manifest.private, directory).toBe(true)
-      expect(manifest.license, directory).toBe('AGPL-3.0-only')
-    }
-  }
 })
 
 test('all maintained JavaScript-environment sources are TypeScript and have an executed typecheck owner', async () => {

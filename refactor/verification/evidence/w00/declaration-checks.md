@@ -6,4 +6,4 @@ TypeScript 的 skipLibCheck 跳过声明内部检查，包括自有声明；明�
 
 [源码覆盖用例](../../../../tests/tools/structure/workspace.test.ts)沿真实类型任务和 references 核对维护范围，并确认每份自有声明具有完整检查拥有者。原生声明同时与实际 Rust 生成结果核对。
 
-类型感知 ESLint 通过 [Project Service](https://typescript-eslint.io/getting-started/typed-linting/)读取实际项目。规则覆盖异步工作、判别联合和动态值使用；[跨项目 lint 用例](../../../../tests/tools/structure/lint.test.ts)验证配置归属与 Promise 检查。运行结果见[工程验证](README.md)。
+类型感知 ESLint 通过 [Project Service](https://typescript-eslint.io/getting-started/typed-linting/)读取实际项目，直接检查所属源码中的异步工作、判别联合和动态值使用。仓库外消费者在安装实际依赖后执行自己的类型与 lint 检查。运行结果见[工程验证](README.md)。

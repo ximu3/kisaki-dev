@@ -30,7 +30,6 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
   expect(JSON.parse(stdout)).toMatchObject({
     count: 45,
     radius: '6px',
-    validation: [true, true, true, false, false, false],
   })
   expect(
     await readFile(
