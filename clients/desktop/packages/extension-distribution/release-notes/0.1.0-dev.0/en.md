@@ -1,0 +1,6 @@
+# Extension distribution 0.1.0-dev.0
+
+- Add complete manifest and flat registry formats, opaque IDs, static localized text and locatable validation errors.
+- Add target and runtime compatibility checks, deterministic release selection and immutable artifact comparisons.
+- Add a separate Node entry for Ed25519 registry signing, explicit trust verification, key inspection and resource byte checks.
+- Deliver ESM and TypeScript declarations with independent Node and browser tarball consumers.

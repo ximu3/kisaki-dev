@@ -1,6 +1,32 @@
 {
   "forbidden": [
     {
+      "name": "distribution-pure-has-no-node-runtime",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-distribution/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
+      "name": "distribution-pure-does-not-import-signing",
+      "severity": "error",
+      "from": {
+        "path": "^clients/desktop/packages/extension-distribution/src/",
+        "pathNot": "/src/node/"
+      },
+      "to": { "path": "^clients/desktop/packages/extension-distribution/src/node/" }
+    },
+    {
+      "name": "distribution-has-no-application-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/extension-distribution/src/" },
+      "to": {
+        "path": "^clients/desktop/app/|^clients/desktop/extensions/|^clients/desktop/packages/(desktop-|extension-sdk|extension-cli)"
+      }
+    },
+    {
       "name": "appearance-has-no-node-runtime",
       "severity": "error",
       "from": { "path": "^clients/desktop/packages/desktop-appearance/src/" },

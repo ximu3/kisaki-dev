@@ -35,9 +35,12 @@ test('verification tasks prepare the artifacts they actually consume', async () 
   expect(reaches('@kisaki3/desktop#test:e2e', '@kisaki3/desktop#build:fixture')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:dev', '@kisaki3/desktop#build:native')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:artifacts', '@kisaki3/desktop#package:fixture')).toBe(true)
-  expect(
-    reaches('@kisaki3/desktop-appearance#test:consumers', '@kisaki3/desktop-appearance#pack'),
-  ).toBe(true)
+  for (const task of plan.tasks.filter((item) => item.taskId.endsWith('#test:consumers'))) {
+    const project = task.taskId.split('#')[0]!
+    expect(reaches(task.taskId, `${project}#check:package`), task.taskId).toBe(true)
+    expect(reaches(task.taskId, `${project}#pack`), task.taskId).toBe(true)
+    expect(reaches(task.taskId, `${project}#build`), task.taskId).toBe(true)
+  }
 })
 
 test(
@@ -55,34 +58,50 @@ test(
       windowsHide: true,
       maxBuffer: 16 * 1024 * 1024,
     }
-    const cases: { path: string; desktop: string[]; consumers?: boolean }[] = [
+    const cases: { path: string; desktop: string[]; consumers?: string[] }[] = [
       { path: 'refactor/README.md', desktop: [] },
       { path: '.github/workflows/pr-title.yml', desktop: [] },
       { path: 'clients/desktop/packages/desktop-appearance/README.md', desktop: [] },
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: true,
+        consumers: ['desktop-appearance'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
         desktop: [],
-        consumers: true,
+        consumers: ['desktop-appearance'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/browser/browser.ts',
         desktop: [],
-        consumers: true,
+        consumers: ['desktop-appearance'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/node/consumer.ts',
         desktop: [],
-        consumers: true,
+        consumers: ['desktop-appearance'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/config/vitest/consumers.ts',
         desktop: [],
-        consumers: true,
+        consumers: ['desktop-appearance'],
+      },
+      { path: 'clients/desktop/packages/extension-distribution/README.md', desktop: [] },
+      {
+        path: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
+        desktop: [],
+        consumers: ['extension-distribution'],
+      },
+      {
+        path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
+        desktop: [],
+        consumers: ['extension-distribution'],
+      },
+      {
+        path: 'clients/desktop/packages/extension-distribution/tests/fixtures/consumers/node/consumer.ts',
+        desktop: [],
+        consumers: ['extension-distribution'],
       },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
@@ -188,12 +207,12 @@ test(
         .sort()
       expect(selected, item.path).toEqual([...item.desktop].sort())
       expect(
-        report.data.affectedTasks.items.some(
-          (task) =>
-            task.command !== null && task.fullName === '@kisaki3/desktop-appearance#test:consumers',
-        ),
+        report.data.affectedTasks.items
+          .filter((task) => task.command !== null && task.name === 'test:consumers')
+          .map((task) => task.fullName)
+          .sort(),
         item.path,
-      ).toBe(item.consumers ?? false)
+      ).toEqual((item.consumers ?? []).map((name) => `@kisaki3/${name}#test:consumers`).sort())
     }
   },
 )

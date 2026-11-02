@@ -20,6 +20,23 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'distribution-pure-has-no-node-runtime',
+    from: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
+    source: "export { readFile } from 'node:fs/promises'\n",
+  },
+  {
+    name: 'distribution-pure-does-not-import-signing',
+    from: 'clients/desktop/packages/extension-distribution/src/registry.ts',
+    to: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
+    source: "export type { Value } from './node/signing'\n",
+  },
+  {
+    name: 'distribution-has-no-application-runtime',
+    from: 'clients/desktop/packages/extension-distribution/src/compatibility.ts',
+    to: 'clients/desktop/app/src/main/extensions.ts',
+    source: "export type { Value } from '../../../app/src/main/extensions'\n",
+  },
+  {
     name: 'appearance-has-no-node-runtime',
     from: 'clients/desktop/packages/desktop-appearance/src/node.ts',
     source: "export { readFile } from 'node:fs/promises'\n",

@@ -8,6 +8,8 @@
 
 包通过构建后的子路径交付 ESM、声明与样式。私有工程命令 `kisaki-package` 将各包打包一次并检查同一份 tarball，包内 `tests/consumers` 使用独立的 Node 和浏览器工程从仓库外安装该文件，分别核对声明与运行消费。两个工程各自声明依赖与类型环境；测试配置、样板和报告均由该包维护。
 
+`clients/desktop/packages/extension-distribution` 拥有扩展身份、manifest、平铺 registry、静态文案、本地化、六目标兼容和版本选择。纯入口保持环境无关，格式解析集中拒绝重复 JSON 属性与无效 JCS 值；规范化、原始签名内容和资源 URL 解析各有明确输入。`node/signing` 使用 Node Ed25519 和现成 JCS 实现，按调用方已信任的身份与公钥验签，另行提供首次检查、指纹和资源字节校验。包不持有仓库信任、安装状态或网络资源；作者流程与应用操作通过公开入口消费。
+
 ## 桌面工程
 
 `tools/build` 编译调用方明确提供的程序输入，组织资源和原生输出，完成后交接整个候选。`build/identity` 读取 Turbo 任务的输入身份，并为完成的运行字节生成摘要。`tools/resources` 准备锁定字体、图标与 SQLite 绑定；`tools/native` 拥有 Rust 编译与声明核对；`tools/package` 消费同一份已验证构建，检查身份和字节后生成目标载体。
