@@ -218,11 +218,13 @@ test('dependency recovery and renderer updates preserve a usable process', async
 
 test('cancelling initial dependency preparation closes its command and permits a complete retry', async () => {
   const manifestPath = join(workspace.root, 'packages/development-fixture/package.json')
+  const preparationPath = join(workspace.root, '.cache', 'dependency-preparation.json')
   const original = await readFile(manifestPath, 'utf8')
   const controllers: ReturnType<typeof startDevelopmentController>[] = []
   onTestFinished(async () => {
     const results = await Promise.allSettled(controllers.map((controller) => controller.close()))
     await writeFile(manifestPath, original)
+    await rm(preparationPath, { force: true })
     const failures: unknown[] = []
     for (const result of results) {
       if (result.status === 'rejected') {
@@ -247,9 +249,7 @@ test('cancelling initial dependency preparation closes its command and permits a
     .poll(
       async () => {
         try {
-          preparation = JSON.parse(
-            await readFile(join(workspace.root, '.cache', 'dependency-preparation.json'), 'utf8'),
-          ) as typeof preparation
+          preparation = JSON.parse(await readFile(preparationPath, 'utf8')) as typeof preparation
           return true
         } catch (cause) {
           if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -296,4 +296,42 @@ test('cancelling initial dependency preparation closes its command and permits a
   retry.process.send({ type: 'stop' })
   expect(await retry.closed, retry.diagnostics()).toBe(0)
   expect(await readdir(sessions)).toEqual([])
+})
+
+test('a failed application stop is reported and the worker releases its owned process', async () => {
+  const launcher = join(workspace.app, 'tests/support/fixture-application.ts')
+  const original = await readFile(launcher, 'utf8')
+  // Reject one real session stop at its supplied application boundary, then allow cleanup.
+  await writeFile(
+    launcher,
+    original
+      .replace('  let stopping: Promise', '  let rejectStop = true\n  let stopping: Promise')
+      .replace(
+        '    stop() {',
+        `    stop() {
+      if (rejectStop) {
+        rejectStop = false
+        return Promise.reject(new Error('Synthetic application stop failure'))
+      }`,
+      ),
+  )
+
+  const controller = startDevelopmentController(workspace.app)
+  try {
+    await expect
+      .poll(() => controller.states.some((state) => state.state === 'ready'), {
+        timeout: developmentStartupTimeoutMs,
+      })
+      .toBe(true)
+    const application = controller.states.find((state) => state.state === 'ready')!.current!
+
+    controller.process.send({ type: 'stop' })
+    await expect.poll(() => controller.process.exitCode, { timeout: 15_000 }).toBe(1)
+    expect(await controller.closed, controller.diagnostics()).toBe(1)
+    expect(controller.diagnostics()).toContain('Synthetic application stop failure')
+    expect(() => process.kill(application.processId, 0)).toThrow()
+  } finally {
+    await controller.close()
+    await writeFile(launcher, original)
+  }
 })

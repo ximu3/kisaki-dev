@@ -30,7 +30,10 @@ export function startDevelopmentController(app: string) {
     {
       cwd: app,
       windowsHide: true,
-      env: process.env,
+      env: {
+        ...process.env,
+        NODE_DEBUG: [process.env.NODE_DEBUG, 'kisaki:*'].filter(Boolean).join(','),
+      },
       stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
     },
   )

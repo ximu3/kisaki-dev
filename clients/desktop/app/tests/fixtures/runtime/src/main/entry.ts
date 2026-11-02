@@ -5,7 +5,10 @@ import { mkdirSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { debuglog } from 'node:util'
 import { loadNative } from '#native'
+
+const debug = debuglog('kisaki:fixture')
 
 const argument = (name: string) =>
   process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3)
@@ -61,7 +64,10 @@ async function runFixture(): Promise<void> {
     serviceName: 'Engineering fixture worker',
   })
   const workerClosed = new Promise<void>((resolveClosed) =>
-    worker.once('exit', () => resolveClosed()),
+    worker.once('exit', (code) => {
+      debug('Utility process exited: %d', code)
+      resolveClosed()
+    }),
   )
   await new Promise<void>((resolveReady, reject) => {
     const timeout = setTimeout(
@@ -97,26 +103,31 @@ async function runFixture(): Promise<void> {
   let canQuit = false
   /** Exercise normal cancellable window close without defining a product shutdown contract. */
   function closeWindow(): void {
+    debug('Closing window: destroyed=%s', window.isDestroyed())
     if (!window.isDestroyed()) {
       window.close()
     }
   }
   window.on('close', (event) => {
     queueMicrotask(() => {
+      debug('Window close requested: prevented=%s', event.defaultPrevented)
       if (event.defaultPrevented) {
         process.send?.({ type: 'fixture-cancelled' })
       }
     })
   })
   app.on('before-quit', (event) => {
+    debug('Application before-quit: canQuit=%s', canQuit)
     if (!canQuit) {
       event.preventDefault()
       closeWindow()
     }
   })
   window.once('closed', () => {
-    worker.kill()
+    const terminated = worker.kill()
+    debug('Window closed; utility termination requested: %s', terminated)
     void workerClosed.then(() => {
+      debug('Utility process closed; quitting application')
       canQuit = true
       app.quit()
     })

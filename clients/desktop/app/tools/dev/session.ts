@@ -5,6 +5,7 @@
 
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
+import { debuglog } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
@@ -17,6 +18,8 @@ import { captureDependencies, desktopDependencies } from './dependencies'
 import { buildGeneration, programInputsChanged } from './generation'
 import type { GenerationOutput } from './generation'
 import type { DependencySnapshot } from './dependencies'
+
+const debug = debuglog('kisaki:development')
 
 /** Process lifecycle supplied by the launch owner; readiness has completed when launch resolves. */
 export interface DevelopmentApplication {
@@ -358,8 +361,11 @@ export async function startDevelopmentSession(
         }
 
         stopPromise = (async () => {
+          debug('Waiting for the active build before stopping')
           await buildLoop
+          debug('Stopping application %s', child?.pid ?? 'not started')
           if (child && (await child.stop()) === 'cancelled') {
+            debug('Application declined the stop request')
             return 'cancelled'
           }
 
@@ -372,12 +378,14 @@ export async function startDevelopmentSession(
           let rendererClosed = false
 
           try {
+            debug('Closing input watchers')
             await inputs.close()
           } catch (cause) {
             failures.push(cause)
           }
 
           try {
+            debug('Closing the renderer server')
             await renderer.close()
             rendererClosed = true
           } catch (cause) {
@@ -386,6 +394,7 @@ export async function startDevelopmentSession(
 
           if (rendererClosed && !retainOutputs) {
             try {
+              debug('Removing session directory %s', sessionDirectory)
               await rm(sessionDirectory, { recursive: true, force: true })
             } catch (cause) {
               failures.push(cause)
@@ -409,6 +418,7 @@ export async function startDevelopmentSession(
           }
 
           stopped = true
+          debug('Development session stopped')
           resolveClosed()
           options.onState?.('stopped')
           return 'stopped'
@@ -427,6 +437,7 @@ export async function startDevelopmentSession(
 
       async terminate() {
         stopping = true
+        debug('Terminating application %s', child?.pid ?? 'not started')
         await child?.terminate()
         await session.stop()
       },

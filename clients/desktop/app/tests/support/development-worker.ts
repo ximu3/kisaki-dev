@@ -9,25 +9,24 @@ import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
 
 const controller = new AbortController()
+let rejectStop!: (cause: unknown) => void
+const stopFailure = new Promise<never>((_resolve, reject) => {
+  rejectStop = reject
+})
 let session: DevelopmentSession | undefined
-let failure: unknown
+let failed = false
 
 const stop = () => {
   if (session) {
-    void session.stop().then(
-      (result) => {
-        if (result === 'cancelled' && process.connected) {
-          process.send?.({
-            state: 'cancelled',
-            current: session?.current,
-            rendererUrl: session?.rendererUrl,
-          })
-        }
-      },
-      (cause: unknown) => {
-        failure = cause
-      },
-    )
+    void session.stop().then((result) => {
+      if (result === 'cancelled' && process.connected) {
+        process.send?.({
+          state: 'cancelled',
+          current: session?.current,
+          rendererUrl: session?.rendererUrl,
+        })
+      }
+    }, rejectStop)
   } else {
     controller.abort(new Error('Fixture development session stopped'))
   }
@@ -66,16 +65,30 @@ try {
     },
   })
 
-  await session.closed
+  // A failed stop leaves the session owned, so closed alone cannot report that failure.
+  await Promise.race([session.closed, stopFailure])
 } catch (cause) {
-  if (!controller.signal.aborted || cause instanceof AggregateError) {
-    failure = cause
+  const cancelled =
+    controller.signal.aborted &&
+    (cause === controller.signal.reason ||
+      (cause instanceof Error &&
+        cause.name === 'AbortError' &&
+        cause.cause === controller.signal.reason))
+  if (!cancelled) {
+    failed = true
+    console.error(cause)
+    process.exitCode = 1
   }
 } finally {
   try {
-    await session?.stop()
+    if (failed) {
+      await session?.terminate()
+    } else {
+      await session?.stop()
+    }
   } catch (cause) {
-    failure ??= cause
+    console.error(cause)
+    process.exitCode = 1
   }
 
   process.off('message', message)
@@ -83,9 +96,4 @@ try {
   if (process.connected) {
     process.disconnect()
   }
-}
-
-if (failure) {
-  console.error(failure)
-  process.exitCode = 1
 }
