@@ -10,6 +10,7 @@ import { startDevelopmentSession } from '../../tools/dev/session'
 import type { DevelopmentSession } from '../../tools/dev/session'
 
 const controller = new AbortController()
+const scenario = process.argv[2]
 let rejectStop!: (cause: unknown) => void
 const stopFailure = new Promise<never>((_resolve, reject) => {
   rejectStop = reject
@@ -45,7 +46,31 @@ process.once('disconnect', stop)
 try {
   session = await startDevelopmentSession({
     sourceRoot: fileURLToPath(new URL('../fixtures/runtime', import.meta.url)),
-    launch: launchFixtureApplication,
+    async launch(options) {
+      const application = await launchFixtureApplication({
+        ...options,
+        args:
+          scenario === 'cancel-first-close'
+            ? [...options.args, '--cancel-first-close']
+            : options.args,
+      })
+      if (scenario !== 'stop-failure') {
+        return application
+      }
+
+      // Fail the first stop at the supplied application boundary; termination keeps its real owner.
+      let rejectStop = true
+      return {
+        ...application,
+        stop() {
+          if (rejectStop) {
+            rejectStop = false
+            return Promise.reject(new Error('Synthetic application stop failure'))
+          }
+          return application.stop()
+        },
+      }
+    },
     signal: controller.signal,
     onState(state, error) {
       if (process.connected) {

@@ -14,6 +14,8 @@ Vite 管理 renderer HMR，Chokidar 管理完整运行时和依赖输入。会�
 
 [开发回归](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)在同一个隔离副本中覆盖正常退出取消、编译失败后的可用实例、源码改名恢复、依赖恢复和 HMR，以及启动准备取消后的进程关闭与完整重试。每项用例拥有自己的进程并恢复修改的输入。Electron 分发文件通过已安装包的公开入口取得，复制时保留平台链接结构。
 
+关闭取消由载体启动参数选择，停止失败通过已有 launch 回调返回的应用边界注入；命令取消错误通过隔离副本的包 exports 选择专用测试入口。源码、配置与依赖输入的修改用于验证重建、恢复和 HMR 行为。命令错误回归核对失败结果及资源释放，完整重试由普通取消场景覆盖。
+
 <a id="shutdown"></a>
 
 ## 错误交付与关闭复核
@@ -29,4 +31,4 @@ Vite 管理 renderer HMR，Chokidar 管理完整运行时和依赖输入。会�
 
 原始 [Linux arm64 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41406851531/job/125150900039)已完成准备取消和重试启动，随后在等待关闭时触发 240 秒用例超时。原记录没有关闭阶段及停止失败的及时诊断，不能据此确认具体触发原因，也不能证明它与上述已修复缺陷同源。两轮复核未再次触发该超时；其根因仍列为待确认。
 
-当前测试在失败时输出工作进程的有界诊断，并在清理后保存观察记录。`NODE_DEBUG=kisaki:*` 可显示开发会话、应用及 utility process 的关闭阶段；Node 的进程 exit 与输出流 close 分别记录，依据 [child process 生命周期](https://nodejs.org/api/child_process.html#event-close)。重复运行使用 [Vitest repeats](https://vitest.dev/api/test#repeats)，正常与清理失败分别保留，依据 [onTestFinished](https://vitest.dev/api/hooks.html#ontestfinished)。
+工作进程的完整有界诊断由测试失败钩子在清理后输出一次，观察记录保存在测试制品中。异常消息说明阶段和退出状态，断言读取捕获的输出。`NODE_DEBUG=kisaki:*` 可显示开发会话、应用及 utility process 的关闭阶段；Node 的进程 exit 与输出流 close 分别记录，依据 [child process 生命周期](https://nodejs.org/api/child_process.html#event-close)。两轮临时重复运行使用 [Vitest repeats](https://vitest.dev/api/test#repeats)，正常与清理失败分别保留，依据 [onTestFinished](https://vitest.dev/api/hooks.html#ontestfinished)。

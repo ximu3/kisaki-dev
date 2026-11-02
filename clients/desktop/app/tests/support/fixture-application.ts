@@ -22,12 +22,6 @@ export async function launchFixtureApplication(
   })
   child.stdout!.pipe(process.stdout, { end: false })
   child.stderr!.pipe(process.stderr, { end: false })
-  let output = ''
-  for (const stream of [child.stdout!, child.stderr!]) {
-    stream.setEncoding('utf8').on('data', (value: string) => {
-      output = (output + value).slice(-8192)
-    })
-  }
   const exited = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(
     (resolve, reject) => {
       child.once('error', reject)
@@ -70,11 +64,12 @@ export async function launchFixtureApplication(
       abort = () => reject(options.signal.reason)
       options.signal.addEventListener('abort', abort, { once: true })
       timer = setTimeout(
-        () => reject(new Error(`Fixture startup timed out: ${output}`)),
+        () => reject(new Error(`Fixture application ${child.pid} startup timed out`)),
         options.startupTimeoutMs,
       )
       void exited.then(
-        () => reject(new Error(`Fixture exited before readiness: ${output}`)),
+        ({ code, signal }) =>
+          reject(new Error(`Fixture application exited before readiness (${signal ?? code})`)),
         reject,
       )
       if (options.signal.aborted) {

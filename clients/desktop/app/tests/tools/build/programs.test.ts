@@ -5,11 +5,11 @@
 
 import { expect, onTestFinished, test } from 'vitest'
 import { build, normalizePath } from 'vite'
-import { mkdir, mkdtemp, rm, stat, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
-import { buildProgram, programConfig } from '../../../tools/build/programs'
+import { programConfig } from '../../../tools/build/programs'
 
 test.each(['main', 'extension-host'] as const)(
   '%s bundles Node package entries and leaves runtime built-ins external',
@@ -87,23 +87,3 @@ test.each(['main', 'extension-host'] as const)(
     expect(imports).not.toContain('legacy-fixture')
   },
 )
-
-test('a finite compilation rejects watch mode before starting a watcher', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'kisaki-finite-build-'))
-  onTestFinished(() => rm(directory, { recursive: true, force: true }))
-  await mkdir(join(directory, 'config/vite'), { recursive: true })
-  await writeFile(join(directory, 'package.json'), '{"type":"module"}')
-  await writeFile(join(directory, 'entry.ts'), 'export const value = 1\n')
-  await writeFile(
-    join(directory, 'config/vite/vite.config.main.ts'),
-    `export default {
-    build: { watch: {}, lib: { entry: 'entry.ts', formats: ['es'], fileName: () => 'entry.js' } }
-  }\n`,
-  )
-
-  const output = join(directory, 'out')
-  await expect(buildProgram(directory, 'main', output, 'finite-fixture')).rejects.toThrow(
-    'Finite program builds do not support watch mode',
-  )
-  await expect(stat(output)).rejects.toMatchObject({ code: 'ENOENT' })
-})

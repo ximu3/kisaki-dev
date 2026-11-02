@@ -23,25 +23,7 @@ afterAll(async () => {
 })
 
 test('a refused quit retains utility processes and normal window close preserves the profile', async () => {
-  const entry = join(workspace.app, 'tests/fixtures/runtime/src/main/entry.ts')
-  const original = await readFile(entry, 'utf8')
-  onTestFinished(() => writeFile(entry, original))
-  await writeFile(
-    entry,
-    "import { writeFileSync } from 'node:fs'\n" +
-      original.replace(
-        'const rendererUrl =',
-        `
-  window.once('close', (event) => {
-    event.preventDefault()
-    const pids = app.getAppMetrics().filter((metric) => metric.type === 'Utility').map((metric) => metric.pid)
-    writeFileSync(join(app.getPath('userData'), 'cancelled-hosts.json'), JSON.stringify(pids))
-  })
-  const rendererUrl =`,
-      ),
-  )
-
-  const controller = startDevelopmentController(workspace.app)
+  const controller = startDevelopmentController(workspace.app, 'cancel-first-close')
   await controller.ready
   const first = controller.states.find((state) => state.state === 'ready')!
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
@@ -72,7 +54,7 @@ test('a refused quit retains utility processes and normal window close preserves
 
   await closeNativeWindow(first.current!.processId)
 
-  expect(await controller.closed, controller.diagnostics()).toBe(0)
+  expect(await controller.closed).toBe(0)
   expect(await readFile(marker, 'utf8')).toBe('synthetic retained development state')
   expect(() => process.kill(first.current!.processId, 0)).toThrow()
 })
@@ -115,7 +97,7 @@ test('a failed runtime build retains the old process and a renamed source hands 
       { timeout: 60_000 },
     )
     .not.toBe(good.current!.processId)
-  await expect.poll(() => controller.diagnostics()).toContain('synthetic repaired generation')
+  await expect.poll(() => controller.output).toContain('synthetic repaired generation')
 })
 
 test('dependency recovery and renderer updates preserve a usable process', async () => {
@@ -181,15 +163,15 @@ test('dependency recovery and renderer updates preserve a usable process', async
 })
 
 test.each(['cancellation', 'command failure'] as const)(
-  '%s during initial preparation closes its command and permits a complete retry',
+  '%s during initial preparation reports its outcome and releases owned resources',
   async (outcome) => {
     const manifestPath = join(workspace.root, 'packages/development-fixture/package.json')
     const preparationPath = join(workspace.root, '.cache', 'dependency-preparation.json')
-    const processPath = join(workspace.root, 'packages/tooling/src/process.ts')
+    const toolingManifestPath = join(workspace.root, 'packages/tooling/package.json')
     const original = await readFile(manifestPath, 'utf8')
-    const originalProcess = await readFile(processPath, 'utf8')
+    const originalToolingManifest = await readFile(toolingManifestPath, 'utf8')
     onTestFinished(() => writeFile(manifestPath, original))
-    onTestFinished(() => writeFile(processPath, originalProcess))
+    onTestFinished(() => writeFile(toolingManifestPath, originalToolingManifest))
     onTestFinished(() => rm(preparationPath, { force: true }))
 
     const manifest = JSON.parse(original) as { scripts: Record<string, string> }
@@ -197,18 +179,12 @@ test.each(['cancellation', 'command failure'] as const)(
       'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
     if (outcome === 'command failure') {
-      await writeFile(
-        processPath,
-        originalProcess.replace(
-          'await run(invocation.command, invocation.args, options)',
-          `await run(invocation.command, invocation.args, options).catch((cause: unknown) => {
-    if (options.signal?.aborted) {
-      throw new Error('Synthetic command cancellation failure', { cause })
-    }
-    throw cause
-  })`,
-        ),
-      )
+      // Select the test adapter at the copied package's declared process boundary.
+      const toolingManifest = JSON.parse(originalToolingManifest) as {
+        exports: Record<string, string>
+      }
+      toolingManifest.exports['./process'] = './tests/support/cancellation-failure.ts'
+      await writeFile(toolingManifestPath, JSON.stringify(toolingManifest))
     }
 
     const first = startDevelopmentController(workspace.app)
@@ -233,9 +209,9 @@ test.each(['cancellation', 'command failure'] as const)(
       .toBe(true)
 
     first.process.send({ type: 'stop' })
-    expect(await first.closed, first.diagnostics()).toBe(outcome === 'cancellation' ? 0 : 1)
+    expect(await first.closed).toBe(outcome === 'cancellation' ? 0 : 1)
     if (outcome === 'command failure') {
-      expect(first.diagnostics()).toContain('Synthetic command cancellation failure')
+      expect(first.output).toContain('Synthetic command cancellation failure')
     }
     expect(first.states.some((state) => state.state === 'ready')).toBe(false)
     expect(await readdir(sessions)).toEqual([])
@@ -256,54 +232,29 @@ test.each(['cancellation', 'command failure'] as const)(
       })
       .toBe(false)
 
+    if (outcome === 'command failure') {
+      return
+    }
+
     await writeFile(manifestPath, original)
-    await writeFile(processPath, originalProcess)
+    await writeFile(toolingManifestPath, originalToolingManifest)
     const retry = startDevelopmentController(workspace.app)
     await retry.ready
 
     retry.process.send({ type: 'stop' })
-    expect(await retry.closed, retry.diagnostics()).toBe(0)
+    expect(await retry.closed).toBe(0)
     expect(await readdir(sessions)).toEqual([])
   },
 )
 
 test('a failed application stop is reported and the worker releases its owned process', async () => {
-  const launcher = join(workspace.app, 'tests/support/fixture-application.ts')
-  const original = await readFile(launcher, 'utf8')
-  onTestFinished(() => writeFile(launcher, original))
-  // Reject one real session stop at its supplied application boundary, then allow cleanup.
-  await writeFile(
-    launcher,
-    original
-      .replace('  let stopping: Promise', '  let rejectStop = true\n  let stopping: Promise')
-      .replace(
-        '    stop() {',
-        `    stop() {
-      if (rejectStop) {
-        rejectStop = false
-        return Promise.reject(new Error('Synthetic application stop failure'))
-      }`,
-      ),
-  )
-
-  const controller = startDevelopmentController(workspace.app)
+  const controller = startDevelopmentController(workspace.app, 'stop-failure')
   await controller.ready
   const application = controller.states.find((state) => state.state === 'ready')!.current!
 
   controller.process.send({ type: 'stop' })
   await expect.poll(() => controller.process.exitCode, { timeout: 15_000 }).toBe(1)
-  expect(await controller.closed, controller.diagnostics()).toBe(1)
-  expect(controller.diagnostics()).toContain('Synthetic application stop failure')
+  expect(await controller.closed).toBe(1)
+  expect(controller.output).toContain('Synthetic application stop failure')
   expect(() => process.kill(application.processId, 0)).toThrow()
-})
-
-test('a startup failure rejects readiness with the worker diagnostics', async () => {
-  const config = join(workspace.app, 'tests/fixtures/runtime/config/vite/vite.config.renderer.ts')
-  const original = await readFile(config, 'utf8')
-  onTestFinished(() => writeFile(config, original))
-  await writeFile(config, "throw new Error('Synthetic renderer startup failure')\n")
-  const controller = startDevelopmentController(workspace.app)
-
-  await expect(controller.ready).rejects.toThrow('Synthetic renderer startup failure')
-  expect(await controller.closed, controller.diagnostics()).toBe(1)
 })

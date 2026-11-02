@@ -20,13 +20,16 @@ export interface DevelopmentObservation {
   error?: string
 }
 
-/** Start a test-owned worker; register input restoration before calling this function. */
-export function startDevelopmentController(app: string) {
+/** Start a test-owned worker with optional application behavior; register input restoration first. */
+export function startDevelopmentController(
+  app: string,
+  scenario: 'normal' | 'stop-failure' | 'cancel-first-close' = 'normal',
+) {
   const startedAt = new Date().toISOString()
   const start = performance.now()
   const child = spawn(
     process.execPath,
-    ['--import', 'tsx', 'tests/support/development-worker.ts'],
+    ['--import', 'tsx', 'tests/support/development-worker.ts', scenario],
     {
       cwd: app,
       windowsHide: true,
@@ -63,19 +66,15 @@ export function startDevelopmentController(app: string) {
     child.once('error', reject)
     child.once('close', resolve)
   })
-  const diagnostics = () => `${JSON.stringify(observations)}\n${output}`
   let startupTimeout: ReturnType<typeof setTimeout>
   const ready = new Promise<void>((resolve, reject) => {
     resolveReady = resolve
     startupTimeout = setTimeout(
-      () => reject(new Error(`Development worker startup timed out:\n${diagnostics()}`)),
+      () => reject(new Error(`Development worker ${child.pid} startup timed out`)),
       developmentStartupTimeoutMs,
     )
     void closed.then(
-      (code) =>
-        reject(
-          new Error(`Development worker exited before readiness (${code}):\n${diagnostics()}`),
-        ),
+      (code) => reject(new Error(`Development worker exited before readiness (${code})`)),
       reject,
     )
   })
@@ -85,8 +84,9 @@ export function startDevelopmentController(app: string) {
     () => clearTimeout(startupTimeout),
   )
 
+  // Vitest runs this after cleanup, including when a cleanup hook caused the failure.
   onTestFailed(() => {
-    console.error(`Development worker ${child.pid}:\n${diagnostics()}`)
+    console.error(`Development worker ${child.pid}:\n${JSON.stringify(observations)}\n${output}`)
   })
 
   onTestFinished(async () => {
@@ -123,7 +123,7 @@ export function startDevelopmentController(app: string) {
     try {
       await closed
       if (forced) {
-        throw new Error(`Development worker required forced termination:\n${diagnostics()}`)
+        throw new Error(`Development worker ${child.pid} required forced termination`)
       }
     } finally {
       clearTimeout(timeout)
@@ -135,6 +135,8 @@ export function startDevelopmentController(app: string) {
     states,
     ready,
     closed,
-    diagnostics,
+    get output() {
+      return output
+    },
   }
 }

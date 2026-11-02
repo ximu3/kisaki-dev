@@ -1,7 +1,7 @@
 /** @fileoverview Test-only Electron carrier for compiler, resource, process and packaging checks. */
 
 import { app, BrowserWindow, ipcMain, protocol, utilityProcess } from 'electron'
-import { mkdirSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -95,6 +95,16 @@ async function runFixture(): Promise<void> {
       nodeIntegration: false,
     },
   })
+  if (process.argv.includes('--cancel-first-close')) {
+    window.once('close', (event) => {
+      event.preventDefault()
+      const pids = app
+        .getAppMetrics()
+        .filter((metric) => metric.type === 'Utility')
+        .map((metric) => metric.pid)
+      writeFileSync(join(app.getPath('userData'), 'cancelled-hosts.json'), JSON.stringify(pids))
+    })
+  }
   ipcMain.handle('fixture:identity', () => ({
     kind,
     buildId: __KISAKI_BUILD_ID__,

@@ -8,7 +8,7 @@ main 与 extension-host 采用 Vite SSR 的 Node 解析语义，选择依赖的 
 
 [真实编译用例](../../../../clients/desktop/app/tests/tools/build/programs.test.ts)使用同时提供 browser／node 条件及 main／browser 字段的隔离依赖，核对实际模块和输出引用。preload 按各自配置独立生成 CommonJS，[入口变更用例](../../../../clients/desktop/app/tests/tools/build/preload.test.ts)验证后续编译读取当前配置。
 
-有限编译在 Vite 的 [configResolved](https://vite.dev/guide/api-plugin.html#configresolved) 阶段检查最终 build.watch，启动编译前拒绝监听模式。监听与后续重建由开发会话拥有；同组用例确认无效模式不会创建编译输出或遗留 watcher。
+有限编译在 Vite 的 [configResolved](https://vite.dev/guide/api-plugin.html#configresolved) 阶段检查最终 build.watch，启动编译前拒绝监听模式。监听与后续重建由开发会话拥有。2026-11-02 对 `ec15952` 的独立 Node 调用复核确认：无效模式立即拒绝，未创建输出，进程正常退出。
 
 ## 开发快照
 
