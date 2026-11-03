@@ -90,10 +90,13 @@ export interface NovelSession extends SessionBase {
 export type FileSession = AnimeSession | ComicSession | NovelSession
 export type WorkSession = GameSession | FileSession
 
-/** Policy for one operation's necessary target selection or explicit OS authorization, independent of caller identity. */
+/** Controls whether a call may ask the user to choose a target; OS permission requests use a separate flow. */
 export type SessionInteraction = 'fail' | 'prompt'
 export interface SessionInteractionOptions extends CallOptions {
-  /** Defaults to fail. Prompt permits necessary interaction; it neither forces a dialog nor confirms another business operation. */
+  /**
+   * Defaults to fail: required user selection rejects with InteractionRequired.
+   * Prompt asks only when needed; cancelling the selection rejects with Cancelled.
+   */
   readonly interaction?: SessionInteraction
 }
 
@@ -255,7 +258,7 @@ export interface SessionControls {
 export interface GameSessionsApi extends SessionControls {
   /** Resolve only after actual launch, target confirmation and observation; reuse preserves the existing session. */
   open(input: GameOpenInput, call?: SessionInteractionOptions): Promise<GameSession>
-  /** Choose from this session's actual windows; unresolved selection/authorization uses this call's explicit policy. */
+  /** Choose from this session's actual windows; required user selection follows this call's interaction option. */
   focus(sessionId: string, call?: SessionInteractionOptions): Promise<void>
   /** Explicit force termination; normal close never escalates automatically. */
   terminate(sessionId: string, call?: CallOptions): Promise<void>

@@ -11,7 +11,7 @@
 | 资料获取与采用 | 来源回答和合成候选分别校验；缺席、完整空值、零和 false 保持区别。方案、提供者、处理器和识别器复用有限字段目录；请求不能悄悄缩小到支持子集，关系替换范围保留未回答的旧事实。 |
 | 文件、资源与备份 | 完整匹配、命名捕获、模板缺席、精确编号及扫描预设通过。资源输入保留头与重定向策略，准备句柄保持实际释放方法。几何与字体值拒绝不成立的组合；备份树编码与独立 Node SHA-256 结果一致，损坏格式与不支持版本分别分类。 |
 | 会话、任务与管理 | 文件切换、播放设置和引导的合法部分结果保持完整。开始／结束事件只保留实际上下文；未保存记录、任务终态、扩展安装／采用／激活、仓库信任、应用版本选择分别表达。引导的同库原子结果与跨安装已成立成果不混淆。 |
-| 局部交互策略 | 取消上下文统一为 ExecutionContext；仅四类 open 与游戏 focus／captureImage 接受 interaction，缺省为 fail。原生打开入口明确使用 prompt，深链输入不接纳该选项；类型与解析验证范围见[通信合同](../../../design/communication.md#operations)。实际目标选择和系统授权由所属会话工作包验证。 |
+| 调用交互选项 | 取消上下文使用 ExecutionContext；仅四类 open 与游戏 focus／captureImage 接受 interaction，缺省为 fail；深链输入不接纳该选项。选项仅决定必要选择时是否询问用户，系统授权独立处理，见[通信合同](../../../design/communication.md#operations)。本包验证类型与解析，实际目标选择、原生入口选项及授权流程由所属本体工作包验证。 |
 | Unicode 与消息 | Unicode 18 NFC／NFKC 通过完整官方 NormalizationTest 向量；名称顺序覆盖兼容规范化、完整 case folding、长数字与前导零。英语 ICU 源文生成关联 key／参数类型，译文可缺词或省参，不能增加参数或收窄合法调用；标签按字面文本处理。 |
 | 仓库外消费 | 三项消费者检查通过。独立 NodeNext 工程只使用 Node 类型，独立 Bundler 工程只使用浏览器类型；两者开启 skipLibCheck: false，并检查合法与非法类型组合、类型感知 lint。Node、Chromium 主文档及独立 iframe 实际消费纯规则和 ICU 格式化。 |
 | 制品 | build、pack、publint 与 ATTW 的 ESM 检查通过。32 个公共子路径交付 ESM 与显式声明，附 MIT 许可、Unicode NOTICE 和英语发行说明。W01、W02 依赖使用各自真实 tarball；声明不暴露校验库内部类型，运行源码不导入 Node、Electron、Solid 或应用私有实现。 |

@@ -35,7 +35,7 @@ sessions 只采用实际观察到的事实。保存检查点更新对应活动�
 
 ## 打开目标与复用
 
-open 接收已经确定的本地作品 ID。来源身份解析和新增入库由相应入口及 ingest 完成。独立调用选项接受 signal 和 `interaction: 'fail' | 'prompt'`；interaction 默认 fail，具体规则见[局部交互策略](../communication.md#operations)。
+open 接收已经确定的本地作品 ID。来源身份解析和新增入库由相应入口及 ingest 完成。独立调用选项接受 signal 和 `interaction: 'fail' | 'prompt'`；interaction 默认 fail，具体规则见[调用交互约定](../communication.md#operations)。
 
 | 方法                | 必填    | 可选选择                               |
 | ------------------- | ------- | -------------------------------------- |

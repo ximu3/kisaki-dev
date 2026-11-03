@@ -50,23 +50,25 @@ preload 桥接所属窗口的最小明确能力。窗口客户端与主进程接
 
 业务输入与调用选项分开传递。调用方使用可选 signal 请求取消，实际执行者取得只读 ExecutionContext.signal；受托任务另有 ref、checkpoint、reportProgress 和 reportResult。扩展、视图及调用身份由实际接入绑定，业务参数不能选择或冒充另一实例。内部 helper 只接收自己真正需要的能力。
 
-四类 sessions.open，以及 sessions.game.focus／captureImage，在调用选项中接受 `interaction: 'fail' | 'prompt'`，默认 fail。它只决定这一次操作遇到必要的目标选择或系统授权时，是否可以发起相应交互；不保存在配置或会话中，不随调用来源、事件或异步链隐式继承。嵌套调用需要交互时，调用方在该次调用中明确传入。其他业务操作不接受通用交互开关。
+支持在调用内完成必要选择的操作，采用 `interaction: 'fail' | 'prompt'` 这一共用交互约定，默认 fail。当前由四类 sessions.open，以及 sessions.game.focus／captureImage 在调用选项中提供。它只决定本次操作需要用户选择目标时是否发起选择，不改变目标优先级与显式约束；不保存在配置或会话中，不随调用来源、事件或异步链隐式继承。嵌套调用需要选择时，调用方在该次调用中明确传入。其他业务操作不接受这一选项。
 
-目标先按[会话选择规则](domains/sessions.md#open)确定，再应用本次策略：
+打开目标与游戏窗口分别按[会话选择规则](domains/sessions.md#open)和[窗口选择规则](domains/games.md#windows)确定，再应用本次选项：
 
 | 实际条件 | interaction: prompt | interaction: fail 或省略 |
 | --- | --- | --- |
-| 已按规则确定目标且具备执行条件 | 复用或打开该目标 | 复用或打开该目标 |
-| 必须选择目标或进行系统授权 | 完成交互后继续本次操作 | 不发起交互，以 InteractionRequired 拒绝 |
+| 已按规则确定目标且具备执行条件 | 按所属操作执行 | 按所属操作执行 |
+| 需要用户选择目标 | 完成选择后继续本次操作 | 不发起选择，以 InteractionRequired 拒绝 |
 | 显式条件无效或目标不可用 | 返回具体问题 | 返回具体问题 |
 
-原生点击与原生 open 深链明确使用 prompt；SDK 调用者按本次业务意图选择，后台自动操作使用 fail。该选项控制所属操作的选择和授权流程，正常交付内容窗口仍遵守操作本身的完成合同。prompt 不表示用户已经确认某个覆盖、恢复或安装行为，不能免除其他操作规定的确认。
+原生点击与原生 open 深链明确使用 prompt；SDK 调用者按本次业务意图选择，后台自动操作使用 fail。正常交付内容窗口仍遵守操作本身的完成合同。prompt 不表示用户已经确认某个覆盖、恢复或安装行为，不能免除其他操作规定的确认。
+
+系统授权由本体按[平台职责](projects/vantage/api.md#calls-surface)组织独立的检查与申请流程，不受 interaction 控制。会话操作不主动申请系统权限；权限不足按所属操作合同报告 PermissionDenied 或适用的领域错误，不改报 InteractionRequired。申请按原生结果反馈，涉及系统设置或重启时告知后续步骤，不保持原会话调用等待。权限生效后继续操作仍须核对原目标与当前权限，不能将请求已发出视为已经获准。
 
 必填值缺失时直接返回校验失败。可以省略的配置选择由完整流程处理；用户取消必要选择时，整次操作按 Cancelled 结束。prompt 不允许忽略显式输入、猜测目标，或临时改为搜索与登录流程。普通添加无法确定匹配时返回问题结果，扫描候选的问题进入扫描报告，授权失效的同步则报告执行条件不满足。
 
 必要选择通过原生 UI 能力或当前调用范围内的回调完成。操作拥有者决定等待预算和取消方式，等待限于当前运行。事实事件用于交付已经发生的结果，人工选择在原调用流程中处理。
 
-交互策略限定在真正需要选择的操作中，使行为能从调用本身读出，也避免跨进程维护隐式交互权限。按具体 API 表达交互选择的实践见 [VS Code AuthenticationGetSessionOptions](https://code.visualstudio.com/api/references/vscode-api#AuthenticationGetSessionOptions)；原生 Dialog 的实际完成和取消继续遵循 [Electron Dialog](https://www.electronjs.org/docs/latest/api/dialog)。
+共用交互约定由具体操作声明适用，使行为能从调用本身读出。按具体 API 表达交互选择的实践见 [VS Code AuthenticationGetSessionOptions](https://code.visualstudio.com/api/references/vscode-api#AuthenticationGetSessionOptions)；原生 Dialog 的实际完成和取消继续遵循 [Electron Dialog](https://www.electronjs.org/docs/latest/api/dialog)。
 
 完整更新必须明确目标、字段、关系和采用方式。批量调用接收实际目标集合，不能读取页面中隐含的当前选择。存档恢复无论从哪个入口发起，都须核对覆盖范围并完成原生确认。
 
