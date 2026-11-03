@@ -16,6 +16,7 @@
 | CONVENTIONS.md                      | 正式项目的仓库级工程与编写规范，结合共用要求、语言生态和实际职责形成                  |
 | ARCHITECTURE.md                     | 模块职责、状态归属、运行边界和包之间的依赖关系                                          |
 | AGENTS.md                           | 每次任务都需要了解的产品范围、架构边界、数据与错误规则，以及具体规范的入口              |
+| GitHub Issue Forms 与配置          | Bug report、Feature request 的反馈字段、语言、提示、标签及联系入口，见[反馈规则](repository.md#issues) |
 | `.agents/skills/<project>/SKILL.md` | 适用任务、资料选择与可复用的工作指引                                                    |
 | 模块或包的 README                   | 该模块或包的使用方式、协议、资源要求和限制                                              |
 | 公共 JSDoc                          | 调用者可观察的行为，包括单位、空值、生命周期、取消、失败和副作用                        |
@@ -118,10 +119,10 @@ SKILL.md 统一提供任务到参考文档的导航，references 直接按实际
 
 实施期间以 AGENTS.md 为任务入口，refactor 承载设计、共用规范、实施说明与验证依据。环境准备、当前源码职责和可运行命令见[当前工程与开发](../../implementation/development.md)。接口声明、schema、JSDoc、Rustdoc、代码注释、界面与 CLI 文案、测试及验证记录随所属实现维护。
 
-[W22 项目文档](../../implementation/work-packages.md#w22)集中形成 README 及其语言版本、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、模块与包说明、官方扩展说明、模板使用指南和项目 skill。范围包括 Kisaki monorepo 与四个独立项目，按各对象的实现与验收进度分批完成，并在该对象正式发行前就绪。文档落在所属项目，职责遵守[归属定义](#owners)。
+[W23 项目文档与协作入口](../../implementation/work-packages.md#w23)集中形成 README 及其语言版本、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、模块与包说明、官方扩展说明、模板使用指南、项目 skill 和 GitHub Issue Forms。范围包括 Kisaki monorepo 与四个独立项目，按各对象的实现与验收进度分批完成，在 W24 整体验收前就绪。文档落在所属项目，职责遵守[归属定义](#owners)。
 
 各仓库的 CONVENTIONS.md 在这一环节结合共用要求、实际语言、运行环境和公开职责形成完整规范。正式文档依据已验证的实现组织阅读入口、公开合同、使用方法、可运行示例和维护命令；成篇说明采用后，refactor 中的对应实施说明完成归并，产品与技术规格继续由设计正文维护。
 
-文档交付核对内容完整性、规则归属、实际命令、可运行示例、语言版本、skill 路由及引用，并同步 AGENTS 的入口。CLAUDE.md 和 skill 别名引用同一份规范。[W24 整体验收](../../implementation/work-packages.md#w24)核对最终版本的文档、实现与制品是否一致。
+文档交付核对内容完整性、规则归属、实际命令、可运行示例、语言版本、skill 路由及引用，并同步 AGENTS 的入口。Issue Forms 及 config.yml 核对字段、语法、标签与反馈链接；CLAUDE.md 和 skill 别名引用同一份规范。[W24 整体验收](../../implementation/work-packages.md#w24)核对候选版本的文档、实现与制品，W25 核对正式仓库和公开渠道中的实际取得与使用。
 
-实现与适用验收、项目文档、对外发布分别记录；实现和文档都满足所属条件后，项目达到完整交付要求。交付后的项目文档随相关实现同步维护。发行说明、许可及对应源码材料随所属版本和制品准备，分别遵守[发行](releases.md)与[许可](licensing.md)规则。
+实现与适用验收、项目文档、对外发布分别记录；本轮按[发布前与最终完成条件](../../verification/acceptance.md#pre-release-completion)接续整体验收和首次发行。交付后的项目文档随相关实现同步维护。发行说明、许可及对应源码材料随所属版本和制品准备，分别遵守[发行](releases.md)与[许可](licensing.md)规则。

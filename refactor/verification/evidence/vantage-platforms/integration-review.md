@@ -51,4 +51,4 @@ GNOME 内建接口按调用者身份检查访问。Vantage 自有组件按[Linux
 
 ## 接入与验证归属
 
-原生单窗、调用与资源寿命由[平台合同](../../../design/projects/vantage/backends.md)定义，Linux 的访问粒度与版本登记依据见[接口核对](linux-integration.md)。来源记录用于确定接口与条件；addon、实际桌面、签署宿主和目标制品由 W11 验收。
+原生单窗、调用与资源寿命由[平台合同](../../../design/projects/vantage/backends.md)定义，Linux 的访问粒度与版本登记依据见[接口核对](linux-integration.md)。来源记录用于确定接口与条件；addon、实际桌面、签署宿主和目标制品由 W09 验收。

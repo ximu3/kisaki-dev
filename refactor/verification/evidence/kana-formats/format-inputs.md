@@ -39,4 +39,4 @@ python -B refactor/verification/evidence/kana-image-order/prepare.py
 node refactor/verification/evidence/kana-image-order/run-node.mjs
 ```
 
-网络来源、构建输入和执行脚本分别保留摘要。WHATWG 活规范与数据重新下载时须核对保存的来源摘要，不能假设日后的同一 URL 永远返回所记录的字节。运行结果按实际输入与环境解释，完整格式交付见 W12。
+网络来源、构建输入和执行脚本分别保留摘要。WHATWG 活规范与数据重新下载时须核对保存的来源摘要，不能假设日后的同一 URL 永远返回所记录的字节。运行结果按实际输入与环境解释，完整格式交付见 W10。

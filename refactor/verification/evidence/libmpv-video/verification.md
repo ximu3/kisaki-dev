@@ -12,4 +12,4 @@ pnpm exec tsc --project refactor/verification/evidence/libmpv-video/tsconfig.jso
 
 createMpv 的声明由[初始化模块](../libmpv-initialization/contract.d.ts)拥有，返回值根据实际 videoOutput 推导 GPU、软件或 null，动态可选输入保留可空性。已知原生选项按名称关联值，初始化日志保持独立输出选择。
 
-[GPU 运行试件](../libmpv-gpu/verification.md)提供所列链路的运行证据。完整 VideoOutput、NativeFrame、设备枚举、帧交付及六目标验收按 W13 完成；HDR 片源到 SDR 的映射按正常播放与画质要求验证。
+[GPU 运行试件](../libmpv-gpu/verification.md)提供所列链路的运行证据。完整 VideoOutput、NativeFrame、设备枚举、帧交付及六目标验收按 W11 完成；HDR 片源到 SDR 的映射按正常播放与画质要求验证。

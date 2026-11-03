@@ -30,4 +30,4 @@ HDR 补充核对使用固定 options.rst、vo.rst 和 GPU video.c：mpv 已有�
 
 ## 验证范围
 
-本页覆盖固定源码与接口核对。运行结果分别见 [Stream CB 的 Node 桥接](../libmpv-node-bridge/verification.md)、[能力与设置采集](../libmpv-catalog/verification.md)和 [Windows GPU／Electron 链路](../libmpv-gpu/verification.md)。完整依赖矩阵、平台制品与交付状态由 [W13](../../../implementation/status.md)维护。
+本页覆盖固定源码与接口核对。运行结果分别见 [Stream CB 的 Node 桥接](../libmpv-node-bridge/verification.md)、[能力与设置采集](../libmpv-catalog/verification.md)和 [Windows GPU／Electron 链路](../libmpv-gpu/verification.md)。完整依赖矩阵、平台制品与交付状态由 [W11](../../../implementation/status.md)维护。

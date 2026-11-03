@@ -8,4 +8,4 @@
 node refactor/verification/evidence/libmpv-values/runtime-probe.mjs
 ```
 
-该结果只证明实际 JavaScript 编码与容器行为。当前公开表示的声明和快照另由[显式值检查](../libmpv-explicit-values/verification.md)维护，原生转换、内存寿命与完整制品由 W13 验收。
+该结果只证明实际 JavaScript 编码与容器行为。当前公开表示的声明和快照另由[显式值检查](../libmpv-explicit-values/verification.md)维护，原生转换、内存寿命与完整制品由 W11 验收。

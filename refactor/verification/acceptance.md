@@ -34,13 +34,13 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 设计依据与运行结果分别记录，未执行的 macOS／Linux 场景标为未执行。正式实现与发行使用[实施状态](../implementation/status.md#environments)中登记的环境，按目标矩阵执行检查，交付按[运行覆盖规则](#runtime-coverage)判定。每份证据注明实际执行范围。
 
-具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W24 汇总同一发行的实际结果、兼容性依据及未实测范围；跳过结果不记为通过。
+具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W24 汇总候选版本的运行结果、兼容性依据及未实测范围，W25 记录公开渠道与生产接入结果；跳过结果不记为通过。
 
 本次需要核实的关键范围包括来源实际端点、授权、分页、字段与对象映射，导入格式版本及转换规则，数据库运行时与迁移组合，原生桌面观察、控制与采集后端，libmpv 与 Electron 的帧交接和释放，Kana 各格式的解析与源位置恢复，以及正式制品保留加固配置后的验证入口。
 
 每项结论关联采用的版本、样本或环境、验证方式、实际结果及适用范围。已有可靠证据可以复用；尚未确定的设计事项明确保留为未完成，不能把技术选择留给实施时临时决定。macOS／Linux 的设计按上述依据核对，运行结果由实施验收记录。验证规模以解决当前设计疑问为准，普通失败仍遵守[不过度防御](../design/engineering/conventions.md#validation)的规则。
 
-设计验证通过后，W00–W24 按所属职责完成正式工程、业务集成、回归、性能、制品及项目文档验收。实现与适用验收、项目文档、对外发布按[交付边界](../implementation/work-packages.md#boundary)分别记录。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
+设计验证通过后，W00–W25 按所属职责完成正式工程、业务集成、回归、性能、制品、项目文档与公开发行核验。实现与适用验收、项目文档、对外发布按[交付边界](../implementation/work-packages.md#boundary)分别记录。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
 
 <a id="runtime-coverage"></a>
 
@@ -71,7 +71,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Vantage KWin Wayland    | 实际 KWin 5／6 接入、控制与单窗采集，覆盖需要桌面登记和已取消该登记检查的实现分支                                                                                    |
 | libmpv-node 与 Electron | Windows D3D11、macOS CGL／IOSurface、Linux EGL／dma-buf 分别完成带音频与字幕的播放、定位／切换、画面消费、截图及最终回收；Linux 消费同时覆盖 X11 与原生 Wayland      |
 | Kana                    | 在声明维护的浏览器与实际端口中，从打包资源打开代表性的重排、原始页与混合内容，完成定位、选择／复制及关闭；Safari、WebKitGTK 和 Electron 三条维护线使用各自实际运行时 |
-| oauth-relay             | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；实际部署与客户端完成各来源已承诺的授权／刷新链路，远端账号操作不因架构数量重复执行                      |
+| oauth-relay             | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；隔离部署与客户端完成各来源已承诺的授权／刷新链路，W25 核验生产接入，远端账号操作不因架构数量重复执行 |
 
 这些是首次交付的运行下限，具体正确性仍由所属 A 场景判断。组件加载、授权、系统接口或资源交接存在实质不同的实现分支时，分别取得至少一份运行证据；同一分支的全部系统小版本、GPU 型号与设置不要求组成笛卡尔积矩阵。普通纯规则在拥有层验证，共同机制不因调用入口多就重跑整套测试。
 
@@ -103,7 +103,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Electron 集成与端到端 | Playwright 的 Electron 能力及真实开发应用      | preload、窗口、进程、协议、生命周期和完整工作流           |
 | 正式制品              | 实际打包应用，普通产品操作与合适的外部验证方式 | 打包路径、原生依赖、fuses、资源、初始化、更新、安装和启动 |
 
-开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W23 对最终文件执行并保存结果。
+开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W20 对最终文件执行并保存结果。
 
 公共包与三种作者接入的消费检查见[工程场景](scenarios/engineering.md#public-consumers)；原生库、Kana 和 relay 的专项断言见[独立项目联合交付](scenarios/projects.md)。
 
@@ -155,7 +155,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [A30](#performance)                                | 启动、导航、列表、编辑、阅读和长流程没有未经解释的性能退化。                                                                                                                                                                        |
 | [A31](#structure)                                  | 导入边界、包依赖、运行环境、生成文件和资源清理规则实际生效。                                                                                                                                                                        |
 | [A32](#completion)                                 | 文档、公共示例、skill 路由和真实命令一致，全部入口可用。                                                                                                                                                                            |
-| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展采用本次新发行，并通过仓库外消费、资源装配、真实调用和目标环境联合验证。                                                                                                   |
+| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展消费本次锁定的新制品，通过仓库外消费、资源装配、真实调用和目标环境联合验证，并在 W25 完成正式取得与生产接入核验。 |
 
 具体场景按责任组织：
 
@@ -236,14 +236,14 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | Drizzle 1.x、编码与初始化 | [W06](../implementation/work-packages.md#w06)，A01、A04、A27                                                                                                                       | 正式驱动、迁移、事务、读回与重开                            |
 | 资料查询与写入成本        | [W06](../implementation/work-packages.md#w06)、[W08](../implementation/work-packages.md#w08)，A30                                                                                  | 实际结构、索引、查询、操作粒度和视图快照                    |
-| 统一调用机制              | [W04](../implementation/work-packages.md#w04) 内核；[W07](../implementation/work-packages.md#w07) 窗口；[W10](../implementation/work-packages.md#w10) 开发接入，A20、A23、A28、A31 | 有限内核的独立消费与真实通道试件；实际端点随消费者验收      |
+| 统一调用机制              | [W04](../implementation/work-packages.md#w04) 内核；[W07](../implementation/work-packages.md#w07) 窗口；[W19](../implementation/work-packages.md#w19) 开发接入，A20、A23、A28、A31 | 有限内核的独立消费与真实通道试件；实际端点随消费者验收      |
 | Solid UI、CSS 与字体      | [W01](../implementation/work-packages.md#w01)、[W05](../implementation/work-packages.md#w05)、[W07](../implementation/work-packages.md#w07)，A23、A29                              | 包独立消费、原生交互、宿主资源与完整外观                    |
-| SDK、作者工具与共享宿主   | [W09](../implementation/work-packages.md#w09)、[W10](../implementation/work-packages.md#w10)，A21、A23                                                                             | 真实 Node、Webview、实例、重建、开发及安装流程              |
-| 主进程查询与长流程响应    | [W08](../implementation/work-packages.md#w08)、[W15](../implementation/work-packages.md#w15)–[W19](../implementation/work-packages.md#w19)，A30                                    | 业务规模、完整事务、取消及界面响应                          |
+| SDK、作者工具与共享宿主   | [W18](../implementation/work-packages.md#w18)、[W19](../implementation/work-packages.md#w19)，A21、A23                                                                             | 真实 Node、Webview、实例、重建、开发及安装流程              |
+| 主进程查询与长流程响应    | [W08](../implementation/work-packages.md#w08)、[W13](../implementation/work-packages.md#w13)–[W18](../implementation/work-packages.md#w18)，A30                                    | 业务规模、完整事务、取消及界面响应                          |
 | 官方来源与迁移输入        | [W21](../implementation/work-packages.md#w21)，A22                                                                                                                                 | 每项真实语义、适用连通、夹具与完整宿主消费                  |
-| 媒体库与目标资源          | [W13](../implementation/work-packages.md#w13)，A24、A33                                                                                                                            | 独立项目全部目标制品、固定运行库与许可                      |
-| 媒体业务接入              | [W16](../implementation/work-packages.md#w16)、[W18](../implementation/work-packages.md#w18)，A11、A24、A28                                                                        | 文件信息、播放、纹理交接与最终引用回收                      |
-| 加固载体、系统下限与更新  | [W00](../implementation/work-packages.md#w00) 工程入口；[W23](../implementation/work-packages.md#w23) 最终制品，A25、A28                                                           | 生产 fuses、六目标、安装升级与真实更新操作                  |
+| 媒体库与目标资源          | [W11](../implementation/work-packages.md#w11)，A24、A33                                                                                                                            | 独立项目全部目标制品、固定运行库与许可                      |
+| 媒体业务接入              | [W13](../implementation/work-packages.md#w13)、[W16](../implementation/work-packages.md#w16)，A11、A24、A28                                                                        | 文件信息、播放、纹理交接与最终引用回收                      |
+| 加固载体、系统下限与更新  | [W00](../implementation/work-packages.md#w00) 工程入口；[W20](../implementation/work-packages.md#w20) 最终制品，A25、A28                                                           | 生产 fuses、六目标、安装升级与真实更新操作                  |
 | hooks 与 Git 配置         | [W00](../implementation/work-packages.md#w00)，A26                                                                                                                                 | 安装、卸载、暂存失败恢复与 worktree；后续改动按实际影响复核 |
 
 此外，按[构建合同](../design/engineering/build.md)验证 Windows 10 双架构、macOS 稳定代码身份下的更新，以及 Linux 原生桌面能力。按[独立项目合同](../design/projects/README.md)验证 Kana 源坐标与原生帧释放。
@@ -278,18 +278,32 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 检查同时使用静态依赖、正式制品与实际运行证据；单独的目录树或声明不能证明运行寿命正确。发现差异时回到唯一设计拥有者处理，再同步验收记录，不在本页追加平行例外。
 
-<a id="completion"></a>
+<a id="pre-release-completion"></a>
 
-## 最终完成条件
+## 发布前完成条件
 
-完整交付同时满足下列条件。目标平台的运行覆盖与实际结果按[运行覆盖与交付](#runtime-coverage)统一判定和记录。
+W24 对固定候选版本核对下列条件。目标平台的运行覆盖与实际结果按[运行覆盖与交付](#runtime-coverage)统一判定和记录，公开渠道和生产环境的结果按下节由 W25 取得。
 
-- R01–R32 和 A01–A33 都有适用实现与真实证据，必需工作没有遗留。四个独立项目完成自身工程，并且新制品已经由调用方真实消费。
+- R01–R32 和 A01–A33 的发布前实现与验证均有真实证据，必需实现、制品和运行检查没有遗留。四个独立项目完成自身工程，新候选制品已经由调用方真实消费，relay 在隔离部署中完成上游与客户端联调。
 - 七种 Entry、五种 Part、四类关系、个人记录、持有内容和附件的语义一致。UI、扩展与后台共用本体操作，全部原生窗口、入口和失败路径可用。
 - 33 项扩展、三个译本、三种作者模板和七个公共包完成仓库外消费验收，新库持久化与隔离通过验证。
 - 六个目标的正式包完整生成，资源、ABI、签名与兼容性依据均已核对；在可用环境完成更新、普通与便携运行及失败恢复测试，各系统与架构的实际覆盖分别记录。更新器不会误选工具或 SDK 发布，hooks 的安装卸载、部分暂存和 worktree 不改变全局配置。
 - 最终文件附有实际许可、NOTICE、额外许可所需权利、对应源码和构建材料。发行与说明更正使用已经验证的字节。
 - 现有界面与交互体验整体保留，主要布局、视觉风格、信息密度和常用操作通过基线对照。规格规定的局部调整、新增界面及局部修复与整体一致，没有全局视觉改版、导航重组或普遍更换交互方式，也没有未经解释的性能退化、资源泄漏或主线程无界工作。
-- 正式实现符合编码与实现质量规范，没有占位操作或虚假成功。文案、注释、说明、命令、示例、skill 和公共合同准确一致。交付报告分别说明实现、验证、生成和公开发布，尚未发布的内容不能称为已上线。
+- 正式实现符合编码与实现质量规范，没有占位操作或虚假成功。文案、注释、说明、命令、示例、skill 和公共合同准确一致。验收结论对应候选提交、依赖、目标制品与实际验证范围，发行流程及所需外部输入明确。
+
+<a id="completion"></a>
+
+## 最终完成条件
+
+W25 在发布前条件成立的基础上，按[本轮首发](../design/engineering/releases.md#first-release)完成公开发行和[发布核验](scenarios/engineering.md#public-release)：
+
+- 正式仓库接续、来源存档、提交历史、协作规则和发行绑定核对完成，源码与必要的验证材料有有效取得路径。
+- 桌面、七个公共包、33 项官方扩展和四个独立项目的适用制品已公开可得，来源、版本、依赖、摘要与交付记录一致；仓库外从正式渠道取得并完成安装与消费验证。
+- 正式发行说明、扩展索引及所引用资源可取得，签名、身份、版本与已发布制品对应；桌面实际更新来源和安装交接可用。
+- oauth-relay 已完成生产服务切换，正式域名、TLS、应用配置、健康状态及客户端授权和刷新按合同验证。
+- 本次实际使用的发布认证、适用 provenance、渠道更新和部署结果有真实证据。首次建包与后续 OIDC 验证按[所属规则](../design/engineering/repository.md#npm-publishing)分别记录；保留已验证的发布字节，部分成功与尚未执行的操作按实际结果报告。
+
+发布来源或制品变化按[验证范围](#verification-scope)补齐相应证据，仍适用的结果继续复用。R01–R32、A01–A33 的发布前与发布后断言共同满足，整体交付才登记完成。
 
 执行结果和证据统一登记在[实施状态](../implementation/status.md)。

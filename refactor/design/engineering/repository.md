@@ -43,13 +43,13 @@ npm 发布资格单独配置：桌面、官方扩展和根工程等不向 npm �
 
 Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 分别维护自己的临时仓库与新工程历史，不能把独立项目的实现放进 Kisaki 临时库。Kisaki 内的公共包、官方扩展和分发资料继续沿 monorepo 归属。仓库名称表达项目级持续开发用途，阶段与验证任务由分支、PR 和运行记录说明。实际名称、远端、可见性及接续进度由实施状态记录；改名时同步当前入口，验证记录注明实际来源地址和提交。
 
-临时远端不改变正式包名、appId、npm 作用域、最终仓库地址和许可。开发阶段按[联调与发布边界](#private-stage)运行，正式 npm、下载、更新索引和生产服务按各自交付条件与授权发布。跨仓消费固定提交生成的真实制品，来源、版本和摘要随结果记录。
+临时远端不改变正式包名、appId、npm 作用域、最终仓库地址和许可。开发阶段按[联调与发布边界](#private-stage)运行，本轮正式仓库接续、npm、下载、更新索引和生产服务按[统一首发节点](releases.md#first-release)及已有授权执行。跨仓消费固定提交生成的真实制品，来源、版本和摘要随结果记录。
 
 CI 使用项目已授权的 Actions、runner 与权限。新增付费资源、扩大访问权限或改变仓库可见性时，按对应操作取得授权；已有条件下的运行直接执行，遇到限制时处理实际原因。
 
 验证结果注明对应提交、输入与目标环境。Actions 附件、候选制品及报告按[验证材料的用途](documentation.md#evidence)保留；确需继续消费的文件在平台到期清理前转存，注明来源与摘要。
 
-项目达到正式接续条件后，按实际授权处理以下工作：
+本轮正式接续在 W25 按实际授权执行，准备与核对覆盖以下工作：
 
 1. 核对新工程的交付状态、历史、候选制品和证据，完成来源仓库所需的[存档与重建](#archive)。已有旧公开仓库保留到相应操作条件满足，新工程开发不要求提前撤下旧入口。
 2. 将临时库中的完整新工程历史接续到正式仓库，保留初始提交及正常开发提交的身份。按实际仓库情况完成已确定的建仓、重建或名称切换，不重新制作一条无法追溯的新历史。
@@ -92,11 +92,11 @@ Kisaki 的重建包括删除旧远端后建立同名仓库，不只创建 orphan
 
 跨仓联调使用固定提交构建的实际 .tgz、原生平台包和资源归档，记录来源与哈希。在仓库外检查安装、导入、类型、CSS、真实调用和完整依赖，不使用源码 link，也不把临时凭据写进正式合同。
 
-registry 可以使用隔离测试源。桌面制品、.kisx 和更新资料作为测试候选保留在 CI 或隔离测试环境，不嵌入长期 GitHub 或 npm 凭据。公开仓库的 CI 日志及可取得附件按公开内容处理。正式 dist 与下载索引按部署合同和授权启用，不能以仓库公开代替部署决定，见 [Pages 访问规则](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)。
+registry 和应用更新使用隔离测试源，relay 在获授权的隔离环境完成上游与客户端联调。桌面制品、.kisx 和更新资料作为测试候选保留在 CI 或隔离测试环境，不嵌入长期 GitHub 或 npm 凭据。公开仓库的 CI 日志及可取得附件按公开内容处理。正式 dist、下载索引与生产服务在 W25 按部署合同和授权启用；Pages 的访问范围见[平台规则](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)。
 
 开发阶段执行 PR、CI 和 Squash 流程。缺少必需条件时，停止依赖该条件的合并或发布并记录缺项；独立的本地实现与核验可以继续，但不能代替尚未通过的平台检查。不得减少检查或自行付费，分支规则按 [GitHub 分支保护](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)配置。
 
-每个项目完成适用功能、制品、仓库外消费验证及[项目文档交付](documentation.md#lifecycle)后，核对源码历史中的私密内容、许可来源和发布身份，再接续正式仓库并执行获授权的发行。桌面须覆盖六个目标。发行过程保留已验证的制品字节，并验证实际 npm、下载、更新、OIDC 和 provenance。源码公开不能代替真实发布的 provenance 证据，规则见 [trusted publishing](https://docs.npmjs.com/trusted-publishers/)。relay 源码公开和运行服务切换分别核对、分别执行。
+本轮各项目完成适用功能、制品、仓库外消费、运行验证及[项目文档交付](documentation.md#lifecycle)，并通过 W24 整体验收后，由 W25 接续正式仓库并执行获授权的首次发行。核对源码历史中的私密内容、许可来源和发布身份，桌面须覆盖六个目标。发行过程保留通过适用检查的制品字节，并验证实际 npm、下载、更新、发布认证和 provenance；首次建包与后续 OIDC 发行按[所属规则](#npm-publishing)分别取得证据。relay 源码接续与生产服务切换分别记录。
 
 <a id="application"></a>
 
@@ -145,7 +145,7 @@ dist.kisaki.me 由 GitHub Pages 托管 Kisaki monorepo 已发行项目的静态�
 
 替代入口可取得后，deprecate 只针对明确的旧包或旧版本。仍在使用的新包保持正常发行，旧 tarball 留在原记录中。新实现按新合同交付，无需永久转发包装或旧格式兼容。
 
-桌面、公共包、官方扩展和独立项目的首个正式版本分别从 0.1.0 开始。预发布使用 0.1.0-beta.N 或 0.1.0-rc.N，未公开基线使用 0.1.0-dev.0。各项目独立安排版本与发行时间，并管理自己的平台包和 Cargo 版本。
+桌面、公共包、官方扩展和独立项目的首个正式版本分别从 0.1.0 开始。预发布使用 0.1.0-beta.N 或 0.1.0-rc.N，未公开基线使用 0.1.0-dev.0。本轮首次公开发行按[统一节点](releases.md#first-release)安排，后续各项目独立安排版本与发行时间，并管理自己的平台包和 Cargo 版本。
 
 采用版本前检查真实占用情况和依赖关系。发行由明确的版本 PR 决定，仓库重建不能重置发布平台已经记录的版本。
 
@@ -155,7 +155,7 @@ dist.kisaki.me 由 GitHub Pages 托管 Kisaki monorepo 已发行项目的静态�
 
 已有包按新的 owner、repo 和 release.yml 配置 trusted publisher。每个新增包，包括原生平台包，都要分别建立 npm 身份；同一仓库发布过其他包不代表新包已具备身份。
 
-适用验收完成、源码公开且首个版本 PR 合并后，CI 从同一固定发行提交构建并校验实际 .tgz，再执行首次公开发布。首次发布使用短期 granular token，只授权所需 scope 的发布，不授予组织管理权限，并仅供首次 job 使用。有效期覆盖交付时间，按 [token 规则](https://docs.npmjs.com/creating-and-viewing-access-tokens/) 和 [scoped public 发布规则](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/) 配置所需 Bypass 2FA。
+进入 W25、正式仓库接续完成且首个版本 PR 合并后，CI 从同一固定发行提交构建并校验实际 .tgz，再执行首次公开发布。首次发布使用短期 granular token，只授权所需 scope 的发布，不授予组织管理权限，并仅供首次 job 使用。有效期覆盖交付时间，按 [token 规则](https://docs.npmjs.com/creating-and-viewing-access-tokens/) 和 [scoped public 发布规则](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/) 配置所需 Bypass 2FA。
 
 缺少凭据时停止建包，不发布占位内容，不改发另一文件，也不在本机平行发布。public 访问、临时 tag、依赖发布顺序和最后的 dist-tag 更新遵守 [发行流程](releases.md)。GitHub-hosted 首次发布显式生成 provenance 并核对结果；[来源证明](https://docs.npmjs.com/generating-provenance-statements/) 不代表代码安全已经通过验证。
 
@@ -186,6 +186,8 @@ PR 使用自由正文，不设置预填模板或强制勾选项。作者按改�
 <a id="issues"></a>
 
 ## Issue Forms
+
+表单与 config.yml 由[项目文档与协作入口工作包](../../implementation/work-packages.md#w23)编写和验证，W25 正式仓库接续时核对标签、联系入口及表单的实际使用。
 
 仓库只提供 Bug report 和 Feature request 两份英文表单。Feature request 同时接纳新功能和已有功能改进，入口说明为“Suggest a new feature or an improvement to an existing one.”。
 
