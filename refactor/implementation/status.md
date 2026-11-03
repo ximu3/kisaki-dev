@@ -4,9 +4,11 @@
 
 ## 当前交付
 
-截至 2026-11-02，工作包按完整交付对象组织，七个公共包、四个独立项目和桌面能力分别拥有完整责任。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-03，工作包按实施对象与交付职责组织。七个公共包、四个独立项目和桌面能力各有实现与适用验收责任，项目文档由 W22 按对象交付，W23 负责桌面发行，W24 负责整体验收。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
-W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包、desktop-appearance 和 extension-distribution，workspace 共 7 个项目（含根工程）。产品能力按下表工作包实施。
+W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包、desktop-appearance 和 extension-distribution，workspace 共 7 个项目（含根工程）。产品能力按下表工作包实施。
+
+当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W22 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -20,34 +22,35 @@ W00 工程能力已交付并合入主线，当前职责见[工程能力](#w00)�
 
 ## 工作包进度
 
-| 工作包                                               | 当前结果与待完成范围                                               |
-| ---------------------------------------------------- | ------------------------------------------------------------------ |
-| [W00 工程与测试入口](work-packages.md#w00)           | 已交付；关闭异常仍在复核，见[实际交付](#w00)与[复核证据](../verification/evidence/w00/development.md#shutdown)。 |
-| [W01 desktop-appearance](work-packages.md#w01)       | 已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。尚未公开发布。 |
-| [W02 extension-distribution](work-packages.md#w02)   | 已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。尚未公开发布。 |
-| [W03 desktop-contracts](work-packages.md#w03)        | 未开始。                                                           |
-| [W04 desktop-rpc](work-packages.md#w04)              | 未开始。                                                           |
-| [W05 desktop-ui](work-packages.md#w05)               | 未开始。                                                           |
-| [W06 存储与原生基础](work-packages.md#w06)           | 未开始。                                                           |
-| [W07 应用运行与设置](work-packages.md#w07)           | 未开始。                                                           |
-| [W08 资料与记录](work-packages.md#w08)               | 未开始。                                                           |
-| [W09 extension-sdk 与扩展宿主](work-packages.md#w09) | 未开始。                                                           |
-| [W10 extension-cli](work-packages.md#w10)            | 未开始。                                                           |
-| [W11 Vantage](work-packages.md#w11)                  | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。     |
-| [W12 Kana](work-packages.md#w12)                     | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。     |
-| [W13 libmpv-node](work-packages.md#w13)              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。     |
-| [W14 oauth-relay](work-packages.md#w14)              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。     |
-| [W15 资料获取与采用](work-packages.md#w15)           | 未开始。                                                           |
-| [W16 扫描与本地文件](work-packages.md#w16)           | 未开始。                                                           |
-| [W17 游戏与存档](work-packages.md#w17)               | 未开始。                                                           |
-| [W18 视频播放](work-packages.md#w18)                 | 未开始。                                                           |
-| [W19 漫画与小说阅读](work-packages.md#w19)           | 未开始。                                                           |
-| [W20 应用搜索、引导与全局组合](work-packages.md#w20) | 未开始。                                                           |
-| [W21 官方扩展](work-packages.md#w21)                 | 未开始；逐项交付与消费见[清单](delivery-checklist.md#extensions)。 |
-| [W22 桌面发行与应用更新](work-packages.md#w22)       | 未开始。                                                           |
-| [W23 整体验收与交付核对](work-packages.md#w23)       | 未开始。                                                           |
+| 工作包                                               | 当前结果与待完成范围                                                                                                                                                                                                                         |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [W00 工程与测试入口](work-packages.md#w00)           | 实现与适用验收已完成；关闭异常仍在复核，见[实际交付](#w00)与[复核证据](../verification/evidence/w00/development.md#shutdown)。                                                                                                               |
+| [W01 desktop-appearance](work-packages.md#w01)       | 实现与适用验收已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。项目文档待 W22，尚未公开发布。                                                           |
+| [W02 extension-distribution](work-packages.md#w02)   | 实现与适用验收已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。项目文档待 W22，尚未公开发布。 |
+| [W03 desktop-contracts](work-packages.md#w03)        | 未开始。                                                                                                                                                                                                                                     |
+| [W04 desktop-rpc](work-packages.md#w04)              | 未开始。                                                                                                                                                                                                                                     |
+| [W05 desktop-ui](work-packages.md#w05)               | 未开始。                                                                                                                                                                                                                                     |
+| [W06 存储与原生基础](work-packages.md#w06)           | 未开始。                                                                                                                                                                                                                                     |
+| [W07 应用运行与设置](work-packages.md#w07)           | 未开始。                                                                                                                                                                                                                                     |
+| [W08 资料与记录](work-packages.md#w08)               | 未开始。                                                                                                                                                                                                                                     |
+| [W09 extension-sdk 与扩展宿主](work-packages.md#w09) | 未开始。                                                                                                                                                                                                                                     |
+| [W10 extension-cli](work-packages.md#w10)            | 未开始。                                                                                                                                                                                                                                     |
+| [W11 Vantage](work-packages.md#w11)                  | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
+| [W12 Kana](work-packages.md#w12)                     | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
+| [W13 libmpv-node](work-packages.md#w13)              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
+| [W14 oauth-relay](work-packages.md#w14)              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
+| [W15 资料获取与采用](work-packages.md#w15)           | 未开始。                                                                                                                                                                                                                                     |
+| [W16 扫描与本地文件](work-packages.md#w16)           | 未开始。                                                                                                                                                                                                                                     |
+| [W17 游戏与存档](work-packages.md#w17)               | 未开始。                                                                                                                                                                                                                                     |
+| [W18 视频播放](work-packages.md#w18)                 | 未开始。                                                                                                                                                                                                                                     |
+| [W19 漫画与小说阅读](work-packages.md#w19)           | 未开始。                                                                                                                                                                                                                                     |
+| [W20 应用搜索、引导与全局组合](work-packages.md#w20) | 未开始。                                                                                                                                                                                                                                     |
+| [W21 官方扩展](work-packages.md#w21)                 | 未开始；逐项交付与消费见[清单](delivery-checklist.md#extensions)。                                                                                                                                                                           |
+| [W22 项目文档](work-packages.md#w22)                 | 未开始。Kisaki 根文档与七个公共包文档均待完成；官方扩展与独立项目的分项文档状态见[交付清单](delivery-checklist.md)。                                                                                                                         |
+| [W23 桌面发行与应用更新](work-packages.md#w23)       | 未开始。                                                                                                                                                                                                                                     |
+| [W24 整体验收与交付核对](work-packages.md#w24)       | 未开始。                                                                                                                                                                                                                                     |
 
-各工作包按现行完整合同交付，实现、制品和适用验证共同满足完成条件。
+各实施工作包按自身合同核对实现、制品与适用验证；W22 按对象记录文档结果。两者齐备后达到项目完整交付要求，对外发布另行记录。
 
 ## 待取得的运行与外部输入
 

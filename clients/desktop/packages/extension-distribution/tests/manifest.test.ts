@@ -22,7 +22,9 @@ test('complete manifests normalize locales and targets while preserving free dis
     electronVersionRange: '>=40',
   })
   const before = structuredClone(input)
+
   const parsed = parseManifest(JSON.stringify(input))
+
   expect(parsed).toMatchObject({
     defaultLocale: 'en',
     name: { en: 'Sample' },
@@ -30,6 +32,7 @@ test('complete manifests normalize locales and targets while preserving free dis
     categories: ['metadata', 'future-category'],
   })
   expect(input).toEqual(before)
+
   expect(normalizeManifest(manifest({ categories: [] })).categories).toEqual([])
 })
 
@@ -48,12 +51,14 @@ test('required identity, entry, schema and runtime fields reject invalid values 
     ['homepage', 'relative/page'],
     ['homepage', 'https://[invalid'],
   ] as const
+
   for (const [field, value] of changes) {
     const path: unknown = expect.arrayContaining([field])
     expect(() => normalizeManifest({ ...manifest(), [field]: value })).toThrowError(
       expect.objectContaining({ path }),
     )
   }
+
   for (const field of [
     'schemaVersion',
     'id',
@@ -66,8 +71,10 @@ test('required identity, entry, schema and runtime fields reject invalid values 
   ]) {
     const input: Record<string, unknown> = { ...manifest() }
     delete input[field]
+
     expect(() => normalizeManifest(input)).toThrow()
   }
+
   expect(normalizeManifest(manifest({ version: '1.2.3-rc.1+linux' })).version).toBe(
     '1.2.3-rc.1+linux',
   )
@@ -77,6 +84,7 @@ test('paths remain package-relative without pretending to validate a physical ar
   for (const path of ['node/entry.js', '资料/icon.png', 'assets/100%.png']) {
     expect(parsePackagePath(path)).toBe(path)
   }
+
   for (const path of [
     '/entry.js',
     '//server/entry.js',
@@ -98,6 +106,7 @@ test('strict JSON rejects comments, trailing commas, duplicate decoded names and
       expect.objectContaining({ code: 'duplicate-property' }),
     )
   }
+
   for (const json of [
     '{} garbage',
     '{/* comment */}',
@@ -108,10 +117,12 @@ test('strict JSON rejects comments, trailing commas, duplicate decoded names and
   ]) {
     expect(() => parseManifest(json)).toThrow()
   }
+
   expect(() => normalizeManifest({ ...manifest(), entry: NaN })).toThrowError(
     expect.objectContaining({ path: ['entry'] }),
   )
   expect(() => normalizeManifest({ ...manifest(), description: undefined })).toThrow()
+
   expect(parseManifest(JSON.stringify({ ...manifest(), unknown: { '😀': '🌸' } })).id).toBe(
     'sample',
   )

@@ -56,6 +56,7 @@ function publicKey(value: string): KeyObject {
       cause,
     })
   }
+
   if (key.asymmetricKeyType !== 'ed25519') {
     throw new DistributionError('invalid-key', 'Registry public key must use Ed25519', [
       'publicKey',
@@ -71,6 +72,7 @@ function privateKey(value: string | KeyObject): KeyObject {
   } catch (cause) {
     throw new DistributionError('invalid-key', 'Invalid registry private key', [], { cause })
   }
+
   if (key.type !== 'private' || key.asymmetricKeyType !== 'ed25519') {
     throw new DistributionError('invalid-key', 'Registry private key must use Ed25519')
   }
@@ -93,6 +95,7 @@ function signingBytes(body: Record<string, unknown>): Buffer {
 export function registrySigningPayload(text: string): Uint8Array {
   const body = unsignedBody(record(parseJson(text), []))
   normalizeRegistry(body)
+
   return signingBytes(body)
 }
 
@@ -103,6 +106,7 @@ export function registrySigningPayload(text: string): Uint8Array {
 export function signRegistry(text: string, inputKey: string | KeyObject): string {
   const body = unsignedBody(record(parseJson(text), []))
   const registry = normalizeRegistry(body)
+
   const key = privateKey(inputKey)
   if (!createPublicKey(key).equals(publicKey(registry.publicKey))) {
     throw new DistributionError(
@@ -111,6 +115,7 @@ export function signRegistry(text: string, inputKey: string | KeyObject): string
       ['publicKey'],
     )
   }
+
   const signature = sign(null, signingBytes(body), key).toString('base64')
   return `${JSON.stringify({ ...body, signature }, null, 2)}\n`
 }
@@ -129,6 +134,7 @@ export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegist
       ['id'],
     )
   }
+
   const trusted = publicKey(trust.publicKey)
   const declared = publicKey(parsePublicKey(document.publicKey, ['publicKey']))
   if (!declared.equals(trusted)) {
@@ -136,6 +142,7 @@ export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegist
       'publicKey',
     ])
   }
+
   const signature = parseSignature(document.signature, ['signature'])
   const body = unsignedBody(document)
   if (!verify(null, signingBytes(body), trusted, Buffer.from(signature, 'base64'))) {
@@ -143,6 +150,7 @@ export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegist
       'signature',
     ])
   }
+
   return { ...normalizeRegistry(body), signature }
 }
 
@@ -156,6 +164,7 @@ export function inspectRegistry(text: string): RegistryInspection {
     id: parseId(document.id, ['id']),
     publicKey: parsePublicKey(document.publicKey, ['publicKey']),
   }
+
   return {
     registry: verifyRegistry(text, trust),
     fingerprint: publicKeyFingerprint(trust.publicKey),
@@ -181,6 +190,7 @@ export function verifyFileBytes(bytes: Uint8Array, reference: FileReference): vo
       ['size'],
     )
   }
+
   if (createHash('sha256').update(bytes).digest('hex') !== reference.sha256) {
     throw new DistributionError(
       'integrity-mismatch',

@@ -69,6 +69,7 @@ export async function packageDesktop(
   const output = join(appRoot, 'dist', target)
   const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
   const cleanup = () => rm(staging, { recursive: true, force: true })
+
   try {
     await cp(runtime, staging, { recursive: true })
     await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
@@ -100,6 +101,7 @@ export async function packageDesktop(
   }
 
   await cleanup()
+
   return join(output, 'artifacts.json')
 }
 

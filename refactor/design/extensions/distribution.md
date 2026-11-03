@@ -8,7 +8,11 @@ manifest 描述一个扩展版本的包内事实，registry 发布可获取制�
 
 package.json.version 是唯一版本来源，package.json.kisaki 保存扩展专属元信息，kisx.config.ts 描述构建。工具据此生成 manifest.json 和包内入口、资源。产品中的扩展 ID 不必等于 npm 包名。安装包不绑定仓库、下载地址或签名，可以直接安装，也可以被多个仓库收录。
 
-manifest 必须包含 schemaVersion、id、version、apiVersionRange、targets、entry、defaultLocale 和 name。可选字段包括 description、categories、keywords、icon、readme、author、license、homepage、repository、issues，以及 nodeVersionRange 和 electronVersionRange。schemaVersion 表示格式版本，version 表示扩展发布版本，apiVersionRange 表示所需扩展 API 的 SemVer 范围，不能用桌面应用或 SDK 版本代替。author 包含名称和可选地址，网页字段使用 URL，entry、icon 和 readme 使用包内相对路径。
+manifest 必须包含 schemaVersion、id、version、apiVersionRange、targets、entry、defaultLocale 和 name。可选字段包括 description、categories、keywords、icon、readme、author、license、homepage、repository、issues，以及 nodeVersionRange 和 electronVersionRange。
+
+schemaVersion 表示格式版本，version 表示扩展发布版本，apiVersionRange 表示所需扩展 API 的 SemVer 范围，不能用桌面应用或 SDK 版本代替。
+
+author 包含名称和可选地址，网页字段使用 URL，entry、icon 和 readme 使用包内相对路径。
 
 扩展与仓库声明的 id 可以是单段，也可以是点分多段。每段只含小写字母、数字和连字符，以字母开头，以字母或数字结尾，不能有空段，也不强制至少两段。前缀可以推荐使用作者或项目名，但程序必须将完整 ID 视为不透明值，不能据此推断权限、作者或域名。修改展示资料或仓库不会改变 ID。
 

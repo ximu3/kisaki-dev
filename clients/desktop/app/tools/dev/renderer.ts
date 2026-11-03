@@ -9,6 +9,7 @@ import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { ViteDevServer } from 'vite'
+
 type DependencyResolver = ViteDevServer['environments']['client']['pluginContainer']['resolveId']
 
 /** Vite and the dependency copy currently serving this development session. */
@@ -129,6 +130,7 @@ export async function startRenderer(
             throw new Error('Renderer restart did not publish a listening address')
           }
           url = address
+
           // Vite can retain its last valid server after a configuration error.
           server.environments.client.moduleGraph.invalidateAll()
           server.environments.client.hot.send({ type: 'full-reload' })
@@ -140,6 +142,7 @@ export async function startRenderer(
             'Renderer refresh and candidate cleanup failed',
           )
         }
+
         if (previous) {
           await rm(previous.directory, { recursive: true, force: true })
         }

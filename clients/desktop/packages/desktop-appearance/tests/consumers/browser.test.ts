@@ -34,6 +34,7 @@ const test = consumerTest('browser')
       packageRoot,
     )
     await build({ root: consumerDirectory, configFile: false, logLevel: 'warn' })
+
     const server = await preview({
       root: consumerDirectory,
       configFile: false,
@@ -70,14 +71,17 @@ test('ordinary CSS works by itself, preserves document controls and has complete
     '<!doctype html><html><body><button>Focus</button><p>Text</p></body></html>',
   )
   await page.addStyleTag({ content: css })
+
   expect(await page.locator('html').evaluate((node) => getComputedStyle(node).fontSize)).toBe(
     '14px',
   )
   expect(await page.locator('body').evaluate((node) => getComputedStyle(node).margin)).toBe('8px')
+
   await page.keyboard.press('Tab')
   expect(
     await page.locator('button').evaluate((node) => getComputedStyle(node).outlineStyle),
   ).not.toBe('none')
+
   for (const scheme of ['light', 'dark']) {
     await page
       .locator('html')
@@ -90,6 +94,7 @@ test('ordinary CSS works by itself, preserves document controls and has complete
         shadow: style.getPropertyValue('--shadow-modal'),
       }
     })
+
     expect(actual.scheme).toBe(scheme)
     expect(actual.background).toContain('oklch(')
     expect(actual.shadow).toContain('inset')
@@ -103,6 +108,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   await page.goto(siteUrl)
   expect(await page.locator('body').getAttribute('data-token-count')).toBe('45')
   expect(await page.locator('body').getAttribute('data-valid-css')).toBe('true')
+
   for (const scheme of ['light', 'dark']) {
     await page
       .locator('html')
@@ -127,6 +133,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
       await page.locator('#mapped').evaluate((node) => getComputedStyle(node).boxShadow),
     ).not.toBe('none')
   }
+
   await page.locator('html').evaluate((node) => {
     node.style.setProperty('--primary', 'rgb(80 120 160)')
     node.style.setProperty('--font-sans', 'monospace')
@@ -134,6 +141,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
     node.style.setProperty('--interface-scale', '150')
     node.style.setProperty('--shadow-raised', '1px 2px 3px rgb(10 20 30)')
   })
+
   const changed = await page.locator('#mapped').evaluate((node) => {
     const style = getComputedStyle(node)
     return {
@@ -143,6 +151,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
       height: style.height,
     }
   })
+
   expect(changed).toEqual({
     color: 'rgb(80, 120, 160)',
     font: 'monospace',
@@ -152,5 +161,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   expect(
     await page.locator('#mapped').evaluate((node) => getComputedStyle(node).boxShadow),
   ).toContain('rgb(10, 20, 30) 1px 2px 3px')
+
   await page.screenshot({ path: join(packageRoot, 'test-results/consumers/appearance.png') })
 })

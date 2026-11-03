@@ -67,6 +67,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     await closeApplication?.()
     await workspace.close()
   })
+
   const asar = join(resourceDirectory, 'app.asar')
   const build = JSON.parse(extractFile(asar, 'build.json').toString()) as DesktopBuild
   const distribution = JSON.parse(

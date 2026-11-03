@@ -30,10 +30,12 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
     ['--pane-alpha', '0%'],
     ['--grain-opacity', '100%'],
   ]
+
   for (const [token, value] of examples) {
     const parsed = parseTokenValue(token, value)
     expect(parseTokenValue(token, parsed), value).toBe(parsed)
   }
+
   expect(parseTokenValue('--radius', '  6px /* base */ ')).toBe('6px')
 })
 
@@ -77,6 +79,7 @@ test('rejects formulas, context references, invalid kinds and malformed CSS', ()
     ['--font-sans', null],
     ['--font-sans', ''],
   ]
+
   for (const [token, value] of examples) {
     expect(() => parseTokenValue(token, value), String(value)).toThrow(TypeError)
   }
@@ -90,6 +93,7 @@ test('creates independent immutable complete branches without defaulting or modi
     expect(Object.isFrozen(parsed)).toBe(true)
     expect(parseTokenValues(parsed)).toEqual(parsed)
   }
+
   const input = { ...defaults.light, '--radius': ' 0px ' }
   expect(parseTokenValues(input)['--radius']).toBe('0px')
   expect(input['--radius']).toBe(' 0px ')

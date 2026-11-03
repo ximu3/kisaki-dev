@@ -248,6 +248,7 @@ export async function startDevelopmentSession(
           if (result.code !== 0) {
             retainOutputs = true
           }
+
           if (child !== launched || replacing || stopping) {
             return
           }
@@ -286,9 +287,11 @@ export async function startDevelopmentSession(
         if (dependencies) {
           unused.push(dependencies.directory)
         }
+
         const cleaned = await Promise.allSettled(
           unused.map((path) => rm(path, { recursive: true, force: true })),
         )
+
         const errors: unknown[] = []
         for (const result of cleaned) {
           if (result.status === 'rejected') {
@@ -298,6 +301,7 @@ export async function startDevelopmentSession(
         if (failure && !isCancellation(failure, signal)) {
           errors.unshift(failure)
         }
+
         if (errors.length) {
           if (stopping || signal.aborted) {
             shutdownFailures.push(...errors)
@@ -368,6 +372,7 @@ export async function startDevelopmentSession(
         stopPromise = (async () => {
           debug('Waiting for the active build before stopping')
           await buildLoop
+
           debug('Stopping application %s', child?.pid ?? 'not started')
           if (child && (await child.stop()) === 'cancelled') {
             debug('Application declined the stop request')

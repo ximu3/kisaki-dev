@@ -20,7 +20,9 @@ electron-updater 等下载组件通过 netSession 等公开入口采用应用网
 
 第三方 Webview 的 fetch、XHR、WebSocket 和媒体读取由浏览器执行，按照[页面 CSP](../extensions/webview.md#csp)允许 HTTPS／WSS 数据来源。它们不经过 context.network.fetch，不取得其自定义请求头、正文流或账号接口。官方扩展的业务请求、账号与凭据继续归 Node 业务所有。
 
-iframe 共用承载窗口的实际 Electron Session；独立 origin 隔离浏览器来源，Cookie 仓库和代理环境仍由 Session 决定。窗口拥有者将实际使用的 renderer Session 接入 network 的应用代理采用流程。宿主 HTTP 按本页的无自动 Cookie 规则运行，浏览器请求遵守标准 CORS、credentials、第三方 Cookie 与存储策略；两者分别管理账号状态。Webview 浏览器存储只用于该浏览器上下文，官方账号与凭据使用各自的正式存储入口。webSecurity 保持启用。
+iframe 共用承载窗口的实际 Electron Session；独立 origin 隔离浏览器来源，Cookie 仓库和代理环境仍由 Session 决定。窗口拥有者将实际使用的 renderer Session 接入 network 的应用代理采用流程。
+
+宿主 HTTP 按本页的无自动 Cookie 规则运行，浏览器请求遵守标准 CORS、credentials、第三方 Cookie 与存储策略；两者分别管理账号状态。Webview 浏览器存储只用于该浏览器上下文，官方账号与凭据使用各自的正式存储入口。webSecurity 保持启用。
 
 网络偏好变化须覆盖这些实际 Session，并通过真实 HTTP／WSS 连接验证旧连接退出、新配置采用和采用失败时拒绝继续联网。验证同时覆盖宿主 HTTP 与浏览器请求；采用失败时保持未就绪状态。用户通过外部链接打开的系统浏览器自行管理网络与账号。
 

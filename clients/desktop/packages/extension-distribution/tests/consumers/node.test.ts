@@ -17,6 +17,7 @@ test('NodeNext declarations and signing execute from the installed tarball', asy
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+
   const { stdout } = await promisify(execFile)(
     process.execPath,
     [
@@ -26,12 +27,14 @@ test('NodeNext declarations and signing execute from the installed tarball', asy
     ],
     { cwd: consumerDirectory, windowsHide: true, signal },
   )
+
   expect(JSON.parse(stdout)).toEqual({
     id: 'example',
     fingerprintLength: 64,
     entry: 'entry.js',
     tamperCode: 'invalid-signature',
   })
+
   expect(
     await readFile(
       join(consumerDirectory, 'node_modules/@kisaki3/extension-distribution/LICENSE'),

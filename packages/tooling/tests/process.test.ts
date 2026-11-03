@@ -47,6 +47,7 @@ test('cancelling a command waits for the command and its descendant to exit', as
     controller.abort()
     await operation.catch(() => undefined)
   })
+
   let processes: { parent: number; leaf: number } | undefined
   await expect
     .poll(

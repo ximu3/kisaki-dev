@@ -20,9 +20,11 @@ const body: RegistryDocument = {
   name: 'Example',
   extensions: [],
 }
+
 const signed = signRegistry(JSON.stringify(body), createPrivateKey(keys.privateKey))
 const inspection = inspectRegistry(signed)
 const authenticated = verifyRegistry(signed, { id: body.id, publicKey: keys.publicKey })
+
 const manifest = parseManifest(
   JSON.stringify({
     schemaVersion: 1,

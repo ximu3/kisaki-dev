@@ -41,8 +41,10 @@ export interface ExtensionMetadata {
   readonly defaultLocale: string
   readonly name: LocalizedText
   readonly description?: LocalizedText
+
   readonly categories?: readonly string[]
   readonly keywords?: readonly string[]
+
   readonly author?: ExtensionAuthor
   readonly homepage?: string
   readonly repository?: string
@@ -81,6 +83,7 @@ export function normalizeLocalizedText(
   if (typeof input === 'string') {
     return string(input, path, false)
   }
+
   const source = record(input, path)
   const entries = new Map<string, string>()
   for (const [key, value] of Object.entries(source)) {
@@ -90,6 +93,7 @@ export function normalizeLocalizedText(
     }
     entries.set(locale, string(value, [...path, key], false))
   }
+
   if (!entries.has(fallback)) {
     invalid(path, 'Localized text must contain its default locale')
   }
@@ -109,11 +113,13 @@ export function resolveLocalizedText(
   if (typeof text === 'string') {
     return text
   }
+
   const requested = normalizeLocale(locale)
   const fallback = normalizeLocale(defaultLocale)
   if (Object.hasOwn(text, requested)) {
     return text[requested]!
   }
+
   const desired = new Intl.Locale(requested).maximize()
   const candidates = Object.keys(text)
     .filter((key) => {
@@ -149,12 +155,15 @@ export function parseMetadata(value: Record<string, unknown>, path: FieldPath): 
   const localized = (input: unknown, location: FieldPath) =>
     normalizeLocalizedText(input, defaultLocale, location)
   const strings = (input: unknown, location: FieldPath) => array(input, location, string)
+
   return {
     defaultLocale,
     name: localized(value.name, [...path, 'name']),
     ...optional(value, 'description', path, localized),
+
     ...optional(value, 'categories', path, strings),
     ...optional(value, 'keywords', path, strings),
+
     ...optional(value, 'author', path, (input, location): ExtensionAuthor => {
       const author = record(input, location)
       return {

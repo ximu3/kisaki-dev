@@ -23,6 +23,7 @@ const manifest = normalizeManifest({
   name: { en: 'Example', 'zh-Hans': '示例', 'zh-Hant': '範例' },
   entry: 'entry.js',
 })
+
 const registry = parseRegistry(
   JSON.stringify({
     schemaVersion: 1,
@@ -56,8 +57,10 @@ const registry = parseRegistry(
     ],
   }),
 )
+
 const environment = { target: targetForPlatform('linux', 'x64')!, apiVersion: '1.1.0' }
 const selected = selectRelease(registry.extensions[0]!, environment)!
+
 let errorCode: string | undefined
 try {
   parseRegistry('{"id":"a","id":"b"}')

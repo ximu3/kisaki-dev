@@ -148,6 +148,7 @@ test('production source, compiler configuration and global inputs change the bui
         'Build input check and restoration failed',
       )
     }
+
     await writeFile(path, original)
   }
 })

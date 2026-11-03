@@ -18,7 +18,6 @@
   "files": [
     "dist",
     "LICENSE",
-    "README.md",
     "release-notes"
   ],
   "sideEffects": false,

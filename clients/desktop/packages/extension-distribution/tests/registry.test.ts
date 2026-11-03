@@ -39,20 +39,25 @@ test('flat indexes parse all display, release and artifact fields without resolv
       ],
     }),
   ])
+
   const result = parseRegistry(JSON.stringify(input))
+
   expect(result.extensions[0]?.releases[0]).toMatchObject({
     defaultLocale: 'en',
     releaseNotes: { en: '# Changes' },
     readme: { url: '../readme.md' },
     artifacts: [{ targets: ['linux-x64', 'windows-x64'], license: 'MIT' }],
   })
+
   expect(
     parseSignedRegistry(JSON.stringify({ ...input, signature: `${'A'.repeat(86)}==` })).signature,
   ).toHaveLength(88)
   expect(() => parseSignedRegistry(JSON.stringify(input))).toThrowError(
     expect.objectContaining({ path: ['signature'] }),
   )
+
   expect(normalizeRegistry({ ...registry(), extensions: [] }).extensions).toEqual([])
+
   expect(
     normalizeRegistry(registry([release('1.0.0', { publishedAt: -1 })])).extensions[0]?.releases[0]
       ?.publishedAt,
@@ -77,6 +82,7 @@ test('malformed references and empty or ambiguous releases fail with field locat
       normalizeRegistry(registry([release('1.0.0', { artifacts: [artifact(change)] })])),
     ).toThrowError(expect.objectContaining({ path }))
   }
+
   expect(() => normalizeRegistry(registry([release('1.0.0', { artifacts: [] })]))).toThrow(
     'at least one artifact',
   )
@@ -84,6 +90,7 @@ test('malformed references and empty or ambiguous releases fail with field locat
   expect(() =>
     normalizeRegistry(registry([release('1.0.0', { artifacts: [artifact(), artifact()] })])),
   ).toThrowError(expect.objectContaining({ code: 'target-conflict' }))
+
   for (const releases of [
     [release(), release()],
     [release('1.0.0+one'), release('1.0.0+two')],
@@ -92,6 +99,7 @@ test('malformed references and empty or ambiguous releases fail with field locat
       expect.objectContaining({ code: 'version-conflict' }),
     )
   }
+
   const source = registry()
   expect(() =>
     normalizeRegistry({ ...source, extensions: [...source.extensions, ...source.extensions] }),
@@ -103,24 +111,28 @@ test('host matching uses process architecture and reports all actual runtime fai
   expect(targetForPlatform('darwin', 'x64')).toBe('macos-x64')
   expect(targetForPlatform('linux', 'x64')).toBe('linux-x64')
   expect(targetForPlatform('win32', 'ia32')).toBeUndefined()
+
   const conditions = artifact({
     targets: ['linux-x64'],
     apiVersionRange: '^2',
     nodeVersionRange: '>=26',
     electronVersionRange: '>=50',
   })
+
   expect(getCompatibilityIssues(conditions, host).map((issue) => issue.condition)).toEqual([
     'target',
     'apiVersion',
     'nodeVersion',
     'electronVersion',
   ])
+
   expect(
     getCompatibilityIssues(artifact({ nodeVersionRange: '*' }), {
       target: 'windows-x64',
       apiVersion: '1.0.0',
     }),
   ).toEqual([{ condition: 'nodeVersion', required: '*', actual: undefined }])
+
   expect(getCompatibilityIssues(artifact(), { ...host, apiVersion: '1.2.0-beta.1' })).toHaveLength(
     1,
   )
@@ -140,18 +152,21 @@ test('selection ignores upload time and ordering while keeping display provenanc
     release('1.5.0'),
   ]
   const extension = normalizeRegistry(registry(releases)).extensions[0]!
+
   expect(getCurrentRelease(extension.releases)?.version).toBe('2.0.0')
   expect(selectRelease(extension, host)?.release.version).toBe('1.5.0')
   expect(
     selectRelease({ ...extension, releases: [...extension.releases].reverse() }, host)?.release
       .version,
   ).toBe('1.5.0')
+
   expect(selectRelease(extension, host, { allowPrerelease: true })?.release.version).toBe(
     '3.0.0-beta.1',
   )
   expect(selectRelease(extension, host, { newerThan: '1.5.0' })).toBeUndefined()
   expect(selectRelease(extension, host, { newerThan: '3.0.0' })).toBeUndefined()
   expect(selectRelease(extension, { ...host, target: 'macos-x64' })).toBeUndefined()
+
   expect(getCurrentRelease([release('2.0.0-beta.1'), release('1.0.0-rc.1')])?.version).toBe(
     '2.0.0-beta.1',
   )
@@ -166,9 +181,12 @@ test('all targets of a multi-target artifact identify the same exact selection',
       }),
     ]),
   ).extensions[0]!
+
   const windows = selectRelease(extension, host)!
   const linux = selectRelease(extension, { ...host, target: 'linux-x64' })!
+
   expect(linux.artifact).toBe(windows.artifact)
+
   const ambiguous = { ...extension, releases: [release('1.0.0+one'), release('1.0.0+two')] }
   expect(() => selectRelease(ambiguous, host)).toThrowError(
     expect.objectContaining({ code: 'version-conflict' }),
@@ -179,6 +197,7 @@ test('artifact verification compares package facts, not current listing text', (
   expect(() =>
     assertManifestMatchesArtifact(manifest(), 'sample', release(), artifact()),
   ).not.toThrow()
+
   for (const changed of [
     manifest({ id: 'other' }),
     manifest({ version: '1.0.0+changed' }),
@@ -190,6 +209,7 @@ test('artifact verification compares package facts, not current listing text', (
       assertManifestMatchesArtifact(changed, 'sample', release(), artifact()),
     ).toThrowError(expect.objectContaining({ code: 'artifact-mismatch' }))
   }
+
   expect(() =>
     assertCommonMetadata([
       manifest(),
@@ -214,6 +234,7 @@ test('retained releases keep bytes, target coverage and original publication fac
       assertRegistryUpdate(original, registry([release('1.0.0', { artifacts: [changed] })])),
     ).toThrowError(expect.objectContaining({ code: 'immutable-release' }))
   }
+
   for (const changed of [
     release('1.0.0+new'),
     release('1.0.0', { publishedAt: 1 }),
@@ -223,6 +244,7 @@ test('retained releases keep bytes, target coverage and original publication fac
       expect.objectContaining({ code: 'immutable-release' }),
     )
   }
+
   const corrected = registry([
     release('1.0.0', {
       releaseNotes: 'Corrected notes',
@@ -230,6 +252,7 @@ test('retained releases keep bytes, target coverage and original publication fac
     }),
     release('2.0.0', { artifacts: [artifact({ targets: ['linux-arm64'] })] }),
   ])
+
   expect(() => assertRegistryUpdate(original, corrected)).not.toThrow()
   expect(() => assertRegistryUpdate(original, { ...original, extensions: [] })).not.toThrow()
   expect(() => assertRegistryUpdate(original, registry([release('2.0.0')]))).not.toThrow()
@@ -241,15 +264,18 @@ test('every nested reference uses the final index response URL and retains its d
     resolveFileReference(reference, 'https://cdn.example.org/registry/nested/index.json'),
   ).toEqual({ ...reference, url: 'https://cdn.example.org/registry/assets/icon.png' })
   expect(reference.url).toBe('../assets/icon.png')
+
   const spaced = parseRegistry(
     JSON.stringify(
       registry([release('1.0.0', { artifacts: [artifact({ url: './my package.kisx' })] })]),
     ),
   ).extensions[0]!.releases[0]!.artifacts[0]!
+
   expect(spaced.url).toBe('./my package.kisx')
   expect(resolveFileReference(spaced, 'https://example.org/index.json').url).toBe(
     'https://example.org/my%20package.kisx',
   )
+
   expect(
     resolveFileReference(
       { ...reference, url: 'https://files.example.org/readme.md' },

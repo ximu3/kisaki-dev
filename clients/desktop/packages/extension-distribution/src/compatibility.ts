@@ -47,6 +47,7 @@ export function parseVersion(input: unknown, path: FieldPath = []): string {
   if (version === null) {
     invalid(path, 'Expected a SemVer version')
   }
+
   const build = version.build.length ? `+${version.build.join('.')}` : ''
   if (`${version.version}${build}` !== value) {
     invalid(path, 'Expected a canonical SemVer version')
@@ -120,6 +121,7 @@ export function getCompatibilityIssues(
   if (!declaration.targets.includes(environment.target)) {
     issues.push({ condition: 'target', required: declaration.targets, actual: environment.target })
   }
+
   const conditions = [
     ['apiVersion', declaration.apiVersionRange, environment.apiVersion],
     ['nodeVersion', declaration.nodeVersionRange, environment.nodeVersion],
@@ -130,6 +132,7 @@ export function getCompatibilityIssues(
       issues.push({ condition, required, actual })
     }
   }
+
   return issues
 }
 

@@ -1,8 +1,8 @@
 # 独立技术项目
 
-四个项目分别维护仓库、公共合同、版本与发行，并各有一个[完整交付工作包](../../implementation/work-packages.md#independent-projects)。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
+四个项目分别维护仓库、公共合同、版本与发行，由[所属工作包](../../implementation/work-packages.md#independent-projects)完成实现与验收，[W22](../../implementation/work-packages.md#w22)按项目完成正式文档。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目以[简洁、清晰、干净与克制](../../../CONVENTIONS.md#quality)为首要原则，落实[终态实现与整体一致性](../../../CONVENTIONS.md#final-state)，遵守[可读性](../../../CONVENTIONS.md#readability-principle)和[原生原则](../../../CONVENTIONS.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目以[简洁、清晰、干净与克制](../engineering/conventions.md#quality)为首要原则，落实[终态实现与整体一致性](../engineering/conventions.md#final-state)，遵守[可读性](../engineering/conventions.md#readability-principle)和[原生原则](../engineering/conventions.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |
@@ -30,7 +30,7 @@ Vantage、Kana、libmpv-node 和 oauth-relay 均按可独立消费、独立版�
 
 完整项目交付包括全部公开能力、工程、测试、示例、类型与制品消费、兼容性、发行说明、文档及必要平台资源。测试样例证明实际消费方式，不据此宣称已经存在其他真实产品用户。库内验证各自承诺，Kisaki 验证新增的业务接入风险，不在每层重复整套用例。
 
-各项目独立构建、消费和维护，编码规范遵守[归属规则](../../../CONVENTIONS.md#ownership)。
+各项目独立构建、消费和维护，当前实施遵守[共用规范](../engineering/conventions.md)。正式交付时，项目的 CONVENTIONS.md 结合共同要求、语言生态与实际工程形成完整规范，文档职责与形成时机见[项目文档交付](../engineering/documentation.md#lifecycle)。
 
 本体的私有能力仍由本体拥有，例如恢复所需的不覆盖移动不扩入 Vantage。独立边界同样不替本体承担 Work、Part、Session、数据库与用户流程。各项目按自身公开范围完成独立验收，本体验证实际消费及业务关系。
 

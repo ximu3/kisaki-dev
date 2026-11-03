@@ -21,6 +21,7 @@ test('the shipped SQLite binding writes and reopens a persistent database under 
   onTestFinished(() => {
     database?.close()
   })
+
   database = new Database(path, options)
   database.pragma('journal_mode = WAL')
   database.exec('CREATE TABLE fixture (value TEXT NOT NULL)')
@@ -28,6 +29,7 @@ test('the shipped SQLite binding writes and reopens a persistent database under 
 
   database.close()
   database = undefined
+
   database = new Database(path, options)
 
   expect(database.prepare('SELECT value FROM fixture').all()).toEqual([{ value: '已保存' }])

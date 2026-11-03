@@ -5,8 +5,8 @@
 | 接入        | 直接消费的合同                                                                       | Kisaki 拥有的工作                                                       |
 | ----------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
 | [Vantage](#vantage) | [公共 API](../projects/vantage/api.md)                                               | 监测集合、计时、窗口选择、完整采集及退出后的业务处理                    |
-| [Kana](#reading) | [阅读 API](../projects/kana/api.md)                                                  | 文件与窗口、偏好解析、持久值映射、记录与标注                            |
 | [libmpv-node](#media) | [调用](../projects/libmpv-node/api.md)及[视频输出](../projects/libmpv-node/video.md) | 媒体就绪、操作排序、Electron 显示引用与产品会话                         |
+| [Kana](#reading) | [阅读 API](../projects/kana/api.md)                                                  | 文件与窗口、偏好解析、持久值映射、记录与标注                            |
 | oauth-relay | [HTTP 协议](../projects/oauth-relay/protocol.md)                                     | [授权、账号核验和凭据采用](../extensions/private-data.md#authorization) |
 
 独立项目不导入 Work、Part、Session、数据库或 desktop-contracts；接入不复制解析、原生身份和播放内核。
@@ -27,7 +27,7 @@ Vantage 通过原生后端提供进程、窗口与采集能力，Kisaki 组织�
 
 <a id="实例保证与实际操作边界"></a>
 
-## 实例保证与实际操作边界
+### 实例保证与实际操作边界
 
 Kisaki 使用 Vantage 提供的原实例引用执行观察和控制，并按[引用与平台并发合同](../projects/vantage/backends.md#identity)处理失效。平台句柄、pidfd、窗口对象及其核验机制由 Vantage 拥有；接入不根据 PID、窗口编号或旧快照重建替代引用。
 
@@ -35,7 +35,7 @@ Kisaki 使用 Vantage 提供的原实例引用执行观察和控制，并按[引
 
 <a id="观察中断与游戏会话分别收尾"></a>
 
-## 观察中断与游戏会话分别收尾
+### 观察中断与游戏会话分别收尾
 
 Vantage 的 interrupted 结束一项无法可靠继续的观察，GameSession 的 interrupted 表示本次受管理运行已经无法继续记录。两者不直接一一映射。以下规则承接[游戏观察与计时](../domains/games.md#observation)，统一库与本体的处理边界。
 
@@ -70,7 +70,7 @@ infrastructure/media 负责加载、初始定位和内容就绪，协调截图�
 
 <a id="integration"></a>
 
-## 播放核心与文件会话的接续
+### 播放核心与文件会话的接续
 
 每个播放器执行者独立创建、持有和关闭 Mpv 与 VideoOutput，正常切换文件时复用这份资源。并行播放、明确的独立环境或设备／核心失效可以要求创建新实例；更换核心按这些实际条件决定。
 
@@ -110,7 +110,7 @@ Electron sharedTexture 是官方标记为 Experimental 的接口。Kisaki 固定
 
 <a id="host-lifecycle"></a>
 
-## 播放宿主的显示变化与故障
+### 播放宿主的显示变化与故障
 
 Kisaki 使用以下接入策略，库本身不因一个消费界面的行为自动关闭播放核心：
 
@@ -131,7 +131,7 @@ Kisaki 的输出目标固定为 sRGB，HDR 片源和系统设置按这条显示�
 
 <a id="adapter"></a>
 
-## 视频帧的 Electron 字段映射
+### 视频帧的 Electron 字段映射
 
 Kisaki 的 infrastructure/media 负责将 NativeFrameSurface 映射到当前 Electron 的输入形状；libmpv-node 不导入 Electron，也不返回 Electron 对象。
 
@@ -157,7 +157,7 @@ Linux 的 WebGPU usage 按当前平台导入能力解释，supportsZeroCopyWebGp
 
 <a id="screenshot"></a>
 
-## 视频截图的布局与颜色
+### 视频截图的布局与颜色
 
 Kisaki 沿同一 command 入口请求 screenshot-raw subtitles rgba，使用已就绪的受管 sRGB GPU 输出，并明确设置 screenshot-sw=no。subtitles 取得视频内容和字幕；rgba 指定通道排列，不表达颜色空间。screenshot-sw=yes 不属于本体这条 SDR 采集路径的使用条件，可检测的配置冲突沿既有约定处理，不增加原生配置锁。
 
@@ -166,18 +166,6 @@ Kisaki 沿同一 command 入口请求 screenshot-raw subtitles rgba，使用已�
 固定上游在 GPU 后端未返回图像时仍可能转入软件截图，screenshot-sw=no 不禁止回退。本项目采用[截图来源补丁](../projects/libmpv-node/distribution.md#screenshot-source)：同一次 screenshot-raw 结果附带 source: vo 或 software，直接来自实际取图分支，绑定原样交付，不从选项、日志或稍后的状态推断。
 
 media 只接纳 source 为 vo、属于本次有效受管 GPU 输出且仍满足 sRGB 使用约定的结果。source 为 software、缺失或未知时，以 CaptureUnavailable 结束本次采集，不创建 PreparedImage、不编码或保存图片，也不自动重试、暂停或改变播放设置。尺寸、stride 和独立字节仍分别核对；source 只证明取图路径，不单独证明颜色、文件归属或精确帧时间。正常 GPU 路径的颜色由既定输出条件与对应像素回归保证。[原始回退路径](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/player/screenshot.c#L345)
-
-<a id="host"></a>
-
-## 阅读画面采集与 Electron 像素尺度
-
-Kisaki 阅读接入在 readView 回调中调用受控窗口采集。主进程核对真实来源与当前绑定，使用对应 webContents.capturePage 取得像素；回调不接收任意 windowId，也不允许调用方截取其他窗口。
-
-Kana 交付 CSS 像素矩形；Electron 接入负责将其转换为当前 webContents 页面缩放下的采集矩形，并依据实际返回位图尺寸处理像素边界。外扩的整数边界只用于取得完整像素，最终采用时收敛到请求区域，不反向修改源 region。操作同时核对当前缩放及视图有效性。
-
-devicePixelRatio、Electron zoomFactor、NativeImage 的表示 scaleFactor 和实际位图尺寸分别描述不同的缩放与尺寸事实。采集尺寸依据真实位图，不能从表示 scaleFactor 推断设备缩放或实际像素尺寸。
-
-主进程取得原始内容后，像素转换、图片编码、PreparedImage 与 Annotation 保存由已有拥有者接续。存入的源位置、原文或区域来自同次绑定的阅读操作，图片不用于反推源坐标。
 
 <a id="reading"></a>
 
@@ -199,7 +187,7 @@ Kisaki 构建把清单中的资源复制到程序资源目录的 kana／资产�
 
 <a id="values"></a>
 
-## Kisaki 与 Kana 的值映射
+### Kisaki 与 Kana 的值映射
 
 | Kisaki 拥有的事实               | Kana 的对应能力                             | 接入时保留的含义                                                                   |
 | ------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -215,9 +203,37 @@ Kisaki 构建把清单中的资源复制到程序资源目录的 kana／资产�
 
 TXT 按已存 encoding 解释 offset；XML 路径、完整 CFI、MOBI/KF8 原始字节规则、图片成员名称及规范页面几何均沿[源位置合同](../projects/kana/positions.md#addresses)。库升级不自动改写数据库值；失败保留位置、原文和批注，不能以首页或相邻目标充当恢复成功。
 
+<a id="reading-values"></a>
+
+#### 阅读持久值的映射与兼容
+
+Kisaki 的 desktop-contracts 定义 [ReadingPosition、ReadingTextSelection 和 ReadingPageRegion](../domains/reader.md#values)，负责它们的字段、持久编码、合法性和兼容规则。持久类型不导入或别名引用 Kana 类型，存储也不把 Kana 返回对象的全部字段当作格式。Kana 的公开合同不依赖 Kisaki，技术句柄不进入正式记录。
+
+Kisaki 的持久值采用本页明确规定的源寻址、计数和几何语义。阅读接入同时理解双方合同：结构、单位和含义一致时直接对应字段，有差异时在接入处转换。源解析和恢复仍由 Kana 执行。
+
+既有地址按保存时的编码、单位与规则解释。Kana 出现不兼容变化时，定义新编码及旧值处理方式，再由 Kisaki 按自身持久合同决定接入。库升级本身保留正式记录，具体规则见[定位兼容](../domains/reader.md#stability)。
+
+格式非法、编码未知、目标缺失或地址越界时，定位返回对应失败并保留原值与已保存内容。源文件改写可能使位置失效或改变它指向的内容；恢复以实际源地址为依据，用户通过原有编辑操作处理失效位置。
+
+Kisaki 保存 fileId、原文、批注、图片和个人记录，Kana 负责源内容、位置及标记呈现。接入沿用两者各自的身份和资源合同。
+
+Kana 格式测试覆盖合法与损坏边界、固定 KF8、不同编码、跨节点和章节的完整选区、页面成员歧义，以及资源释放；不同内部文本分片须能恢复同一合法源字节地址。Kisaki 另行验证业务值映射、保存后重开、Annotation 留存和实际会话生命周期。
+
+<a id="host"></a>
+
+### 阅读画面采集与 Electron 像素尺度
+
+Kisaki 阅读接入在 readView 回调中调用受控窗口采集。主进程核对真实来源与当前绑定，使用对应 webContents.capturePage 取得像素；回调不接收任意 windowId，也不允许调用方截取其他窗口。
+
+Kana 交付 CSS 像素矩形；Electron 接入负责将其转换为当前 webContents 页面缩放下的采集矩形，并依据实际返回位图尺寸处理像素边界。外扩的整数边界只用于取得完整像素，最终采用时收敛到请求区域，不反向修改源 region。操作同时核对当前缩放及视图有效性。
+
+devicePixelRatio、Electron zoomFactor、NativeImage 的表示 scaleFactor 和实际位图尺寸分别描述不同的缩放与尺寸事实。采集尺寸依据真实位图，不能从表示 scaleFactor 推断设备缩放或实际像素尺寸。
+
+主进程取得原始内容后，像素转换、图片编码、PreparedImage 与 Annotation 保存由已有拥有者接续。存入的源位置、原文或区域来自同次绑定的阅读操作，图片不用于反推源坐标。
+
 <a id="scenarios"></a>
 
-## 连贯阅读中的共同约束
+### 连贯阅读中的共同约束
 
 | 场景                                 | 各项机制如何衔接                                                                                       |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
@@ -250,19 +266,3 @@ Kisaki 负责作品与文件选择、窗口、使用会话、偏好和正式记�
 Kisaki 的完整打开操作成功表示目标已经可用。阅读接入采用 Kana 的内容合同，视频 media 接入组合 libmpv 的命令、属性与事件判断实际就绪；创建 Mpv 或命令完成不单独表示媒体可用。关闭完成表示对应句柄拥有的工作与资源已按本库合同收尾。Mpv 关闭与已交付帧的释放分别遵守[播放资源寿命](../projects/libmpv-node/lifecycle.md#ownership)；Kisaki 会话还要回收自身持有的显示引用并完成记录收尾，旧内容的回调不得修改新目标。稳定源位置和播放秒数可以进入持久记录，DOM、GPU 资源及临时 URL 只用于运行期间。
 
 技术库按自己的合同报告错误，Kisaki 接入将其映射为安全的业务失败。纯类型、校验能力和浏览器运行入口按各自环境导出，消费方不复制阅读或播放内核。
-
-<a id="reading-values"></a>
-
-## 阅读持久值的映射与兼容
-
-Kisaki 的 desktop-contracts 定义 [ReadingPosition、ReadingTextSelection 和 ReadingPageRegion](../domains/reader.md#values)，负责它们的字段、持久编码、合法性和兼容规则。持久类型不导入或别名引用 Kana 类型，存储也不把 Kana 返回对象的全部字段当作格式。Kana 的公开合同不依赖 Kisaki，技术句柄不进入正式记录。
-
-Kisaki 的持久值采用本页明确规定的源寻址、计数和几何语义。阅读接入同时理解双方合同：结构、单位和含义一致时直接对应字段，有差异时在接入处转换。源解析和恢复仍由 Kana 执行。
-
-既有地址按保存时的编码、单位与规则解释。Kana 出现不兼容变化时，定义新编码及旧值处理方式，再由 Kisaki 按自身持久合同决定接入。库升级本身保留正式记录，具体规则见[定位兼容](../domains/reader.md#stability)。
-
-格式非法、编码未知、目标缺失或地址越界时，定位返回对应失败并保留原值与已保存内容。源文件改写可能使位置失效或改变它指向的内容；恢复以实际源地址为依据，用户通过原有编辑操作处理失效位置。
-
-Kisaki 保存 fileId、原文、批注、图片和个人记录，Kana 负责源内容、位置及标记呈现。接入沿用两者各自的身份和资源合同。
-
-Kana 格式测试覆盖合法与损坏边界、固定 KF8、不同编码、跨节点和章节的完整选区、页面成员歧义，以及资源释放；不同内部文本分片须能恢复同一合法源字节地址。Kisaki 另行验证业务值映射、保存后重开、Annotation 留存和实际会话生命周期。

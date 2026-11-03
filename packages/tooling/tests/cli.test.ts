@@ -24,6 +24,7 @@ test.each([
     child.once('error', reject)
     child.once('close', resolveClose)
   })
+
   expect(result).toBe(code)
   if (diagnostic) {
     expect(stderr).toContain(diagnostic)

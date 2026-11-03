@@ -23,8 +23,10 @@ test('Node Ed25519 independently verifies the exact purpose-prefixed JCS payload
     extra: { z: -0, a: 1e-7, nested: { signature: 'retained' }, unicode: '🌸' },
   }
   const text = JSON.stringify(body)
+
   const signed = signRegistry(text, keys.privateKey)
   const document = JSON.parse(signed) as { signature: string }
+
   // This expected order is intentionally independent of the package's canonicalizer.
   const expected = `kisaki-extension-registry:v1\n{"defaultLocale":"en","extensions":[],"extra":{"a":1e-7,"nested":{"signature":"retained"},"unicode":"🌸","z":0},"id":"sample.registry","name":"Sample registry","publicKey":${JSON.stringify(keys.publicKey)},"schemaVersion":1}`
   expect(Buffer.from(registrySigningPayload(text)).toString('utf8')).toBe(expected)
@@ -45,6 +47,7 @@ test('Node Ed25519 independently verifies the exact purpose-prefixed JCS payload
     ),
   ).toBe(false)
   expect(verifyRegistry(signed, trust).id).toBe(trust.id)
+
   expect(signRegistry(signed, keys.privateKey)).toBe(signed)
 })
 
@@ -55,13 +58,16 @@ test('signature verification precedes locale normalization and covers unknown an
     name: { 'EN-us': 'Registry' },
     extra: { signature: 'nested-signature', text: 'kept' },
   }
+
   const signed = signRegistry(JSON.stringify(input), keys.privateKey)
+
   expect(verifyRegistry(signed, trust)).toMatchObject({
     defaultLocale: 'en-US',
     name: { 'en-US': 'Registry' },
   })
   expect(signed).toContain('EN-us')
   expect(signed).toContain('nested-signature')
+
   for (const edited of [
     signed.replaceAll('EN-us', 'en-US'),
     signed.replace('nested-signature', 'changed'),
@@ -72,6 +78,7 @@ test('signature verification precedes locale normalization and covers unknown an
       expect.objectContaining({ code: 'invalid-signature' }),
     )
   }
+
   // JSON formatting and member order are not signed; the exact JSON data is.
   const reordered = Object.fromEntries(
     Object.entries(JSON.parse(signed) as Record<string, unknown>).reverse(),
@@ -82,13 +89,16 @@ test('signature verification precedes locale normalization and covers unknown an
 test('inspection checks internal consistency but refreshes require the caller-saved identity and key', () => {
   const signed = signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), keys.privateKey)
   const inspection = inspectRegistry(signed)
+
   expect(inspection.registry.publicKey).toBe(keys.publicKey)
   expect(inspection.fingerprint).toBe(publicKeyFingerprint(keys.publicKey))
+
   const replacement = generateRegistryKeyPair()
   const replaced = signRegistry(
     JSON.stringify(registry(undefined, replacement.publicKey)),
     replacement.privateKey,
   )
+
   expect(() => verifyRegistry(replaced, trust)).toThrowError(
     expect.objectContaining({ code: 'key-mismatch' }),
   )
@@ -106,10 +116,13 @@ test('inspection checks internal consistency but refreshes require the caller-sa
 test('equivalent PEM encodings identify the same key but signed declarations keep their original bytes', () => {
   const signed = signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), keys.privateKey)
   const windowsPem = keys.publicKey.replaceAll('\n', '\r\n')
+
   expect(publicKeyFingerprint(windowsPem)).toBe(publicKeyFingerprint(keys.publicKey))
   expect(verifyRegistry(signed, { ...trust, publicKey: windowsPem }).id).toBe(trust.id)
+
   const changed = JSON.parse(signed) as Record<string, unknown>
   changed.publicKey = windowsPem
+
   expect(() => verifyRegistry(JSON.stringify(changed), trust)).toThrowError(
     expect.objectContaining({ code: 'invalid-signature' }),
   )
@@ -121,12 +134,14 @@ test('non-Ed25519 keys and malformed Base64 are rejected without key material in
     publicKeyEncoding: { type: 'spki', format: 'pem' },
     privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
   })
+
   expect(() => publicKeyFingerprint(rsa.publicKey)).toThrowError(
     expect.objectContaining({ code: 'invalid-key' }),
   )
   expect(() =>
     signRegistry(JSON.stringify(registry(undefined, rsa.publicKey)), rsa.privateKey),
   ).toThrowError(expect.objectContaining({ code: 'invalid-key' }))
+
   const signed = signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), keys.privateKey)
   const document = JSON.parse(signed) as Record<string, unknown>
   for (const signature of [
@@ -147,9 +162,11 @@ test('JSON duplicates and non-JCS values cannot be hidden inside otherwise valid
   for (const inserted of ['"extra":{"a":1,"\\u0061":2},', '"id":"sample.registry",']) {
     const duplicate = signed.replace('{', `{${inserted}`)
     const expected: unknown = expect.objectContaining({ code: 'duplicate-property' })
+
     expect(() => verifyRegistry(duplicate, trust)).toThrowError(expected)
     expect(() => signRegistry(duplicate, keys.privateKey)).toThrowError(expected)
   }
+
   for (const inserted of ['"extra":1e400,', '"extra":"\\udfff",', '"\\udfff":1,']) {
     expect(() => signRegistry(signed.replace('{', `{${inserted}`), keys.privateKey)).toThrow()
   }
@@ -161,6 +178,7 @@ test('unknown prototype-named JSON fields remain signed data without modifying o
     '{"__proto__":{"signature":"data"},"constructor":"data",',
   )
   const signed = signRegistry(text, keys.privateKey)
+
   expect(signed).toContain('"__proto__"')
   expect(verifyRegistry(signed, trust).id).toBe(trust.id)
   expect(() =>
@@ -176,12 +194,15 @@ test('resource checks use original bytes and report size before digest mismatche
     size: bytes.length,
     sha256: createHash('sha256').update(bytes).digest('hex'),
   }
+
   expect(() => verifyFileBytes(bytes, reference)).not.toThrow()
   expect(() => verifyFileBytes(bytes.subarray(1), reference)).toThrowError(
     expect.objectContaining({ code: 'integrity-mismatch', path: ['size'] }),
   )
+
   const corrupted = Buffer.from(bytes)
   corrupted[0] = 0
+
   expect(() => verifyFileBytes(corrupted, reference)).toThrowError(
     expect.objectContaining({ code: 'integrity-mismatch', path: ['sha256'] }),
   )

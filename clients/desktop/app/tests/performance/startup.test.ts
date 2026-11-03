@@ -77,6 +77,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
         'Startup measurement and application shutdown failed',
       )
     }
+
     await test.step(`${sample}: close`, () => application.close())
 
     await test.step(`${sample}: observed processes exit`, () =>

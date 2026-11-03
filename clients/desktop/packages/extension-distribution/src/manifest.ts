@@ -15,10 +15,12 @@ export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDecla
   readonly schemaVersion: typeof manifestSchemaVersion
   readonly id: string
   readonly version: string
+
   /** Built ESM entry relative to the package root. Existence and module loading belong to the consumer. */
   readonly entry: string
   readonly icon?: string
   readonly readme?: string
+
   readonly license?: string
 }
 
@@ -44,12 +46,15 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
 /** Validate defined manifest fields and return normalized locales and target order; unknown fields are omitted. */
 export function normalizeManifest(input: unknown): ExtensionManifest {
   const value = record(input, [])
+
   return {
     schemaVersion: schemaVersion(value.schemaVersion, ['schemaVersion']),
     id: parseId(value.id, ['id']),
     version: parseVersion(value.version, ['version']),
+
     ...parseCompatibility(value),
     ...parseMetadata(value, []),
+
     entry: parsePackagePath(value.entry, ['entry']),
     ...optional(value, 'icon', [], parsePackagePath),
     ...optional(value, 'readme', [], parsePackagePath),

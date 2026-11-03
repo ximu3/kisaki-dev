@@ -12,8 +12,10 @@ export async function launchFixtureApplication(
   options: DevelopmentLaunchOptions,
 ): Promise<DevelopmentApplication> {
   options.signal.throwIfAborted()
+
   const env = { ...process.env }
   delete env.ELECTRON_RUN_AS_NODE
+
   const child = spawn(options.executable, [...options.args, `--profile=${options.profile}`], {
     cwd: options.cwd,
     env,
@@ -22,6 +24,7 @@ export async function launchFixtureApplication(
   })
   child.stdout!.pipe(process.stdout, { end: false })
   child.stderr!.pipe(process.stderr, { end: false })
+
   const exited = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(
     (resolve, reject) => {
       child.once('error', reject)
@@ -35,12 +38,14 @@ export async function launchFixtureApplication(
     },
   )
   void exited.catch(() => undefined)
+
   const terminate = async () => {
     if (child.exitCode === null && child.signalCode === null) {
       child.kill('SIGKILL')
     }
     await exited
   }
+
   let timer: ReturnType<typeof setTimeout> | undefined
   let abort: (() => void) | undefined
   let message: ((value: unknown) => void) | undefined
@@ -60,6 +65,7 @@ export async function launchFixtureApplication(
           }
         }
       }
+
       child.on('message', message)
       abort = () => reject(options.signal.reason)
       options.signal.addEventListener('abort', abort, { once: true })
@@ -89,6 +95,7 @@ export async function launchFixtureApplication(
   }
 
   let stopping: Promise<'cancelled' | 'exited'> | undefined
+
   return {
     pid: child.pid!,
     exited,
@@ -99,6 +106,7 @@ export async function launchFixtureApplication(
           await exited
           return 'exited' as const
         }
+
         let cancelled: ((value: unknown) => void) | undefined
         let deadline: ReturnType<typeof setTimeout> | undefined
         try {

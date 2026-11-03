@@ -9,6 +9,7 @@ import { replaceOutput } from '@kisaki3/tooling/output'
 /** Preserve the existing dist on preparation failure or cancellation before adoption. */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
+
   await replaceOutput(
     project,
     'dist',

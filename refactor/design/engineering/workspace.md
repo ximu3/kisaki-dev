@@ -25,6 +25,8 @@
 
 原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 2.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
 
+Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
+
 运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。工程不混用 Solid 2 的运行时或编译入口，也不建立双主版本兼容层。路由负责导航，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
 
 <a id="packages"></a>
@@ -41,7 +43,7 @@
 | extension-sdk          | 扩展公开合同、作者入口、Node 与框架无关 Webview 运行接入  | 扩展作者，以及消费纯合同与协议的宿主     | MIT  |
 | extension-cli          | kisx、程序化工作流、三种作者模板与分发仓库工具            | 外部作者与同仓官方扩展                   | MIT  |
 
-七个包位于 clients/desktop/packages，目录与包的短名称一致。每个包按[所属工作包](../../implementation/work-packages.md)一次完整交付全部职责，独立管理版本、构建制品、文档和消费验证。
+七个包位于 clients/desktop/packages，目录与包的短名称一致。每个包按[所属工作包](../../implementation/work-packages.md)完成全部实现职责与消费验证，独立管理版本和构建制品；[项目文档](documentation.md#lifecycle)按对象在正式发行前完成。
 
 产品合同的依赖方向为 extension-sdk → desktop-contracts。SDK 的纯模块明确选择扩展可用能力，定义上下文、激活、登记和接入协议；Node 与 Webview 实现消费这些模块。宿主依赖 SDK 包的纯入口，导入链保持纯粹。包级安装依赖与模块运行依赖分别核对。
 
@@ -62,7 +64,7 @@ desktop-contracts 与 extension-distribution 保持纯定义的单向关系。SD
 
 Vantage、Kana、libmpv-node 和 oauth-relay 按[独立项目规范](../projects/README.md)通过正式制品或服务合同接入，各自维护实现源码与发行。应用与云服务通过公开合同协作，客户端只依赖自己可以取得的公共输入。
 
-公共包通过 workspace 依赖、exports 和构建结果消费，同仓与仓库外使用同一公开路径。发布的声明包含可取得的类型依赖。包内源码与私有工程入口的规则见[共同规范](../../../CONVENTIONS.md#module-imports)。
+公共包通过 workspace 依赖、exports 和构建结果消费，同仓与仓库外使用同一公开路径。发布的声明包含可取得的类型依赖。包内源码与私有工程入口的规则见[共同规范](conventions.md#module-imports)。
 
 按稳定职责和运行环境设计公开入口。可独立消费的能力优先使用子路径；承担单一内聚机制的包可以使用根入口。公开路径表达消费能力，源码文件按维护关系组织。desktop-ui 按组件家族提供子路径，desktop-contracts 按领域提供入口，desktop-rpc 使用内聚根入口，SDK 根入口提供纯作者合同。
 
@@ -166,9 +168,9 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 各依赖声明块按包名排序，脚本按开发、构建与打包、验证、维护组织，同类任务相邻。工具默认入口可直接发现，需要选择其他宿主或输入范围时显式指定配置。条件 exports 的顺序具有匹配语义，不能机械排序；不为固定字段顺序增加结构快照测试。已经进入共同 catalog 的版本由消费者引用 catalog，不另写一份等价版本。
 
-packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接、错误传递和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码与公开声明不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
+packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接、错误传递和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码、公开声明和仓库外作者模板不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
 
-类型感知 lint 使用 TypeScript Project Service 读取实际类型项目与 references，跨项目暂存文件也按各自环境检查。lint 与 root:lint 通过 ^build 准备依赖包声明，缓存输入包含所用 TypeScript 配置和共享规则；构建前置不扩大其他运行验收范围。仓库外消费者样板在安装实际 tarball 后执行完整规则，仓库内采用语法检查。具体配置与入口见[共享 ESLint 规则](../../../packages/eslint-config/README.md)。
+类型感知 lint 使用 TypeScript Project Service 读取实际类型项目与 references，跨项目暂存文件也按各自环境检查。lint 与 root:lint 通过 ^build 准备依赖包声明，缓存输入包含所用 TypeScript 配置和共享规则；构建前置不扩大其他运行验收范围。仓库外消费者样板在安装实际 tarball 后执行完整规则，仓库内采用语法检查。具体配置与入口见[共用工程包](../../implementation/development.md#shared-tooling)。
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
@@ -178,7 +180,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-七个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](../../../CONVENTIONS.md#configuration-layout)。
+七个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -206,7 +208,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定共同严格性，各项目限制实际可用的 globals、模块和测试类型，手写 d.ts 也作为源码检查。ESLint 检查局部导入规则，dependency-cruiser 检查进程边界、私有依赖、循环及绕过路径。格式和 lint 共享配置只保留必要的环境差异。
 
-自维护源码按[TypeScript 要求](../../../CONVENTIONS.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
+自维护源码按[TypeScript 要求](conventions.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
 
 项目 manifest 和版本 PR 提供版本事实，Turbo 安排依赖任务，CI 调用项目自身的构建入口。根 tools 校验发行输入、生成元数据并执行交付，不另行推导版本或依赖图。所有工具采用经过兼容验证的锁定版本，TypeScript 和声明检查使用同一编译器。
 
@@ -282,7 +284,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 ### 工程反馈预算
 
-标准托管 runner 上的工程反馈预算为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，并按[整体判断](../../../CONVENTIONS.md#judgment)复核验证范围与机制成本；必要的验收不能因预算压力被跳过，范围调整说明依据后由用户确定。失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
+标准托管 runner 上的工程反馈预算为：仓库检查及适用消费者／浏览器反馈在 4 分钟内，renderer／公共 UI 修改的全部代码门禁在 10 分钟内，开发工具、原生路径与完整验证在 25 分钟内。从 workflow 触发计至对应检查完成，包含排队、环境准备和上传；同时记录各任务实际起止与累计 runner 时间，后者不等于计费分钟。这些是工程预算，不是 P95 或服务承诺。超过目标时定位具体阶段，并按[整体判断](conventions.md#judgment)复核验证范围与机制成本；必要的验收不能因预算压力被跳过，范围调整说明依据后由用户确定。失败、未执行和超出时间目标分别记录。作业级中止上限与单项测试超时由各自配置拥有，不随反馈目标一起放宽。
 
 <a id="desktop-development"></a>
 

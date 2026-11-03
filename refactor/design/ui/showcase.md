@@ -6,7 +6,11 @@ library.showcase 保存具名区块的查询、显示配置和排列。区块内
 
 ## 区块范围与共同查询
 
-query.kind 为 entry、collection 或 tag，直接组合对应对象的查询合同，不另存 entity_type、顶层 types 或平行条件。Entry 使用 scope、search、规则组和整体 sort；query 的 Entry 分支另带[referenceLabels](../domains/library-query-contracts.md#saved-references) 名称快照。执行时提取纯 EntryQuery，kind 与名称快照不传给列表方法。Collection 与 Tag 不进入 EntryType，也不增加 listSectionItems 转发或 Showcase 查询引擎。
+query.kind 为 entry、collection 或 tag，直接组合对应对象的查询合同，不另存 entity_type、顶层 types 或平行条件。
+
+Entry 使用 scope、search、规则组和整体 sort；query 的 Entry 分支另带[referenceLabels](../domains/library-query-contracts.md#saved-references) 名称快照。执行时提取纯 EntryQuery，kind 与名称快照不传给列表方法。
+
+Collection 与 Tag 不进入 EntryType，也不增加 listSectionItems 转发或 Showcase 查询引擎。
 
 每个组可以选择多个类型，并使用 all 或 any 条件。组间取并集并去重，再与固定范围和可见范围相交。组内字段必须对所有类型具有相同含义，整体字段排序必须适用于全部启用类型。一个 Section 只有一份 sort、一种布局和一个总上限，不给每组增加独立 sort、前 N 项、配额或模板，也不支持任意嵌套。默认使用一组，自定义可以多组，原生界面提供完整编辑，不设置隐藏的简单或高级模式。
 

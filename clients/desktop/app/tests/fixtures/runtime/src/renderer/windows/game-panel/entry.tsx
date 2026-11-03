@@ -6,6 +6,7 @@ import './styles.css'
 
 function Counter() {
   const [count, setCount] = createSignal(0)
+
   return (
     <main>
       <h1>Engineering fixture</h1>
@@ -13,4 +14,5 @@ function Counter() {
     </main>
   )
 }
+
 render(() => <Counter />, document.getElementById('root')!)

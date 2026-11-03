@@ -2,17 +2,17 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[简洁、清晰、干净与克制](../../CONVENTIONS.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../../CONVENTIONS.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
+[简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
-[可读性](../../CONVENTIONS.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
+[可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
-源码审查逐段核对[编码风格](../../CONVENTIONS.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
+源码审查逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
 
 <a id="verification-scope"></a>
 
 ## 验证范围与投入
 
-遵守[简洁、原生与克制](../../CONVENTIONS.md#simplicity-native)，核对直接的用户流程、既有平台能力及定制部分的依据，再按本次修改影响的行为、合同或宿主条件选择检查。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据，不机械重跑全部场景。
+遵守[简洁、原生与克制](../design/engineering/conventions.md#simplicity-native)，核对直接的用户流程、既有平台能力及定制部分的依据，再按本次修改影响的行为、合同或宿主条件选择检查。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据，不机械重跑全部场景。
 
 文档、注释和等价组织调整通常核对内容、链接、解析与适用的静态检查；运行输入或宿主行为改变时再执行相关运行验证。构建身份或文件摘要变化本身不是全量回归的充分理由。已有结果可沿仍成立的实现、依赖和环境边界复用，并说明适用范围；旧运行记录不改写成新输入的实测。
 
@@ -34,13 +34,13 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 设计依据与运行结果分别记录，未执行的 macOS／Linux 场景标为未执行。正式实现与发行使用[实施状态](../implementation/status.md#environments)中登记的环境，按目标矩阵执行检查，交付按[运行覆盖规则](#runtime-coverage)判定。每份证据注明实际执行范围。
 
-具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W23 汇总同一发行的实际结果、兼容性依据及未实测范围；跳过结果不记为通过。
+具体环境及责任遵守[目标环境安排](../design/engineering/build.md#platform-testing)。普通构建、真实桌面会话、GPU 共享和系统下限各按自身条件取得证据。独立项目验证原生能力，本体与扩展验证真实消费，W24 汇总同一发行的实际结果、兼容性依据及未实测范围；跳过结果不记为通过。
 
 本次需要核实的关键范围包括来源实际端点、授权、分页、字段与对象映射，导入格式版本及转换规则，数据库运行时与迁移组合，原生桌面观察、控制与采集后端，libmpv 与 Electron 的帧交接和释放，Kana 各格式的解析与源位置恢复，以及正式制品保留加固配置后的验证入口。
 
-每项结论关联采用的版本、样本或环境、验证方式、实际结果及适用范围。已有可靠证据可以复用；尚未确定的设计事项明确保留为未完成，不能把技术选择留给实施时临时决定。macOS／Linux 的设计按上述依据核对，运行结果由实施验收记录。验证规模以解决当前设计疑问为准，普通失败仍遵守[不过度防御](../../CONVENTIONS.md#validation)的规则。
+每项结论关联采用的版本、样本或环境、验证方式、实际结果及适用范围。已有可靠证据可以复用；尚未确定的设计事项明确保留为未完成，不能把技术选择留给实施时临时决定。macOS／Linux 的设计按上述依据核对，运行结果由实施验收记录。验证规模以解决当前设计疑问为准，普通失败仍遵守[不过度防御](../design/engineering/conventions.md#validation)的规则。
 
-设计验证通过后，W00–W23 按完整交付对象完成正式工程、业务集成、回归、性能和制品验收。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
+设计验证通过后，W00–W24 按所属职责完成正式工程、业务集成、回归、性能、制品及项目文档验收。实现与适用验收、项目文档、对外发布按[交付边界](../implementation/work-packages.md#boundary)分别记录。设计阶段的可行性证据与正式实现的正确性证据分别成立；前者不能代替后者，后者也不用于推迟已知的设计验证。
 
 <a id="runtime-coverage"></a>
 
@@ -103,7 +103,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Electron 集成与端到端 | Playwright 的 Electron 能力及真实开发应用      | preload、窗口、进程、协议、生命周期和完整工作流           |
 | 正式制品              | 实际打包应用，普通产品操作与合适的外部验证方式 | 打包路径、原生依赖、fuses、资源、初始化、更新、安装和启动 |
 
-开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W22 对最终文件执行并保存结果。
+开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W23 对最终文件执行并保存结果。
 
 公共包与三种作者接入的消费检查见[工程场景](scenarios/engineering.md#public-consumers)；原生库、Kana 和 relay 的专项断言见[独立项目联合交付](scenarios/projects.md)。
 
@@ -194,7 +194,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 ## 目标工程命令
 
-下表定义完整交付时的任务合同，命令随所属工作包建立。当前可运行的工程入口以 [CONTRIBUTING.md](../../CONTRIBUTING.md) 为准，实际交付范围见[实施状态](../implementation/status.md)；工程测试载体通过带 fixture 限定的命令执行。
+下表定义完整交付时的任务合同，命令随所属工作包建立。当前可运行的工程入口见[当前工程与开发](../implementation/development.md)，实际交付范围见[实施状态](../implementation/status.md)；工程测试载体通过带 fixture 限定的命令执行。
 
 | 命令                                                 | 责任                                                                      |
 | ---------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -243,7 +243,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | 官方来源与迁移输入        | [W21](../implementation/work-packages.md#w21)，A22                                                                                                                                 | 每项真实语义、适用连通、夹具与完整宿主消费                  |
 | 媒体库与目标资源          | [W13](../implementation/work-packages.md#w13)，A24、A33                                                                                                                            | 独立项目全部目标制品、固定运行库与许可                      |
 | 媒体业务接入              | [W16](../implementation/work-packages.md#w16)、[W18](../implementation/work-packages.md#w18)，A11、A24、A28                                                                        | 文件信息、播放、纹理交接与最终引用回收                      |
-| 加固载体、系统下限与更新  | [W00](../implementation/work-packages.md#w00) 工程入口；[W22](../implementation/work-packages.md#w22) 最终制品，A25、A28                                                           | 生产 fuses、六目标、安装升级与真实更新操作                  |
+| 加固载体、系统下限与更新  | [W00](../implementation/work-packages.md#w00) 工程入口；[W23](../implementation/work-packages.md#w23) 最终制品，A25、A28                                                           | 生产 fuses、六目标、安装升级与真实更新操作                  |
 | hooks 与 Git 配置         | [W00](../implementation/work-packages.md#w00)，A26                                                                                                                                 | 安装、卸载、暂存失败恢复与 worktree；后续改动按实际影响复核 |
 
 此外，按[构建合同](../design/engineering/build.md)验证 Windows 10 双架构、macOS 稳定代码身份下的更新，以及 Linux 原生桌面能力。按[独立项目合同](../design/projects/README.md)验证 Kana 源坐标与原生帧释放。
@@ -263,7 +263,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | 检查范围与规则来源                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
-| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../../CONVENTIONS.md#source-layout)                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
+| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../design/engineering/conventions.md#source-layout)                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
 | [公开能力拥有者](../design/domains/library-operations.md#ownership)、[条目／分部／关系组织](../design/domains/library-operations.md#catalog-regions)                                     | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
 | [整理与个人记录](../design/domains/library-operations.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                  | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
 | [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
@@ -274,7 +274,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [独立产品](../design/projects/README.md#purpose)、[Kisaki 接入](../design/engineering/integrations.md)                                                                                   | 项目自身的公开消费者与平台制品；本体联合消费记录                                | 独立合同可实际消费，库内保证与应用业务职责分别成立，接入不引用项目私有源码                  |
 | [本体私有原生能力](../design/engineering/native.md)                                                                                                                                      | Node 入口与声明、原生导出核对、导入图、目标制品及最终应用加载记录               | 类型与加载归原生工程，设施只保留应用接入；原生制品与本体构建对应，适用生命周期有运行验证    |
 | [工程工作流](../design/engineering/workspace.md)、[发行说明](../design/engineering/releases.md#notes)                                                                                    | 构建输入、输出拥有者、进程交接、版本及说明源到制品的对应                        | 工程命令和发行来源可复核，运行资源与版本对应；生成结果没有另一份手写事实来源                |
-| [编码规范](../../CONVENTIONS.md)、[源码语言](../../CONVENTIONS.md#source-language)、[文案](../design/ui/components.md#copy)、[注释及文档](../design/engineering/documentation.md#owners) | 源码清单、类型与 lint 结果、代码审查、真实界面、公开示例和文档引用检查          | 自维护 Node 与浏览器源码使用 TypeScript；表达与职责相符，公开示例可运行，无用途内容完成清理 |
+| [编码规范](../design/engineering/conventions.md)、[源码语言](../design/engineering/conventions.md#source-language)、[文案](../design/ui/components.md#copy)、[注释及文档](../design/engineering/documentation.md#owners) | 源码清单、类型与 lint 结果、代码审查、真实界面、公开示例和文档引用检查          | 自维护 Node 与浏览器源码使用 TypeScript；表达与职责相符，公开示例可运行，无用途内容完成清理 |
 
 检查同时使用静态依赖、正式制品与实际运行证据；单独的目录树或声明不能证明运行寿命正确。发现差异时回到唯一设计拥有者处理，再同步验收记录，不在本页追加平行例外。
 
