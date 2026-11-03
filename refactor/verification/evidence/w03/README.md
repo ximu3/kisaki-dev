@@ -16,9 +16,15 @@
 | 仓库外消费 | 三项消费者检查通过。独立 NodeNext 工程只使用 Node 类型，独立 Bundler 工程只使用浏览器类型；两者开启 skipLibCheck: false，并检查合法与非法类型组合、类型感知 lint。Node、Chromium 主文档及独立 iframe 实际消费纯规则和 ICU 格式化。 |
 | 制品 | build、pack、publint 与 ATTW 的 ESM 检查通过。32 个公共子路径交付 ESM 与显式声明，附 MIT 许可、Unicode NOTICE 和英语发行说明。W01、W02 依赖使用各自真实 tarball；声明不暴露校验库内部类型，运行源码不导入 Node、Electron、Solid 或应用私有实现。 |
 
-本包 63 项常规行为测试通过。全仓 `pnpm check` 通过类型、lint、格式、导入边界及 130 项常规测试，三个公共包的 10 项仓库外消费者检查通过。远端 CI 结果仍待核对；这里的 Node／浏览器和 iframe 消费验证纯合同，不代表 W07／W18 的真实窗口或扩展 Webview 接入已经完成。A03、A04、A23、A31 按 W03 的合同责任取得证据，实际存储读回、进程、资源、运行端点及安装行为继续由对应工作包验证。
+本包 63 项常规行为测试通过。全仓 `pnpm check` 通过类型、lint、格式、导入边界及 130 项常规测试，三个公共包的 10 项仓库外消费者检查通过。远端结果见下节；这里的 Node／浏览器和 iframe 消费验证纯合同，不代表 W07／W18 的真实窗口或扩展 Webview 接入已经完成。A03、A04、A23、A31 按 W03 的合同责任取得证据，实际存储读回、进程、资源、运行端点及安装行为继续由对应工作包验证。
 
 制品位于 `clients/desktop/packages/desktop-contracts/out/package/package.tgz`，消费者报告位于该包 `test-results/consumers/results.json`。消费者各自安装并清理临时工程、浏览器与服务；不提交重复制品或临时副本。构建先检查生成一致性，准备失败保留既有输出。当前没有 npm 发布或实际应用发行。
+
+## CI 结果
+
+[PR #21 的首轮 CI](https://github.com/ximu3/kisaki-dev/actions/runs/41638829659)针对实现提交 `23c372ae84b58d0bbe21dc2b3beb6a22e5d96cc1` 完成仓库检查、Windows／macOS／Linux 的 x64 与 arm64 六目标工程验证，以及 Required checks。独立 PR title 检查同时通过。
+
+Linux x64 的公共包消费步骤验证三个包的实际 tarball，其中 W03 的 NodeNext 声明与运行、浏览器声明及 Chromium／iframe 消费共三项检查通过。六目标结果覆盖本次选中的桌面工程构建、原生、Electron、开发与制品回归；它们不替代后续本体业务和 SDK 的实际接入验收。各次输入与最终门禁由 [PR 检查页](https://github.com/ximu3/kisaki-dev/pull/21/checks)记录。
 
 ## 实现依据与审阅
 
