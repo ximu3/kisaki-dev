@@ -38,6 +38,7 @@ test('rejects unknown and incompatible clauses even in disabled groups', () => {
   ]) {
     expect(() => parseEntryCondition(condition)).toThrow()
   }
+
   expect(() =>
     parseEntryQuery({
       ...query,
@@ -50,9 +51,11 @@ test('rejects unknown and incompatible clauses even in disabled groups', () => {
       ],
     }),
   ).toThrow()
+
   expect(() =>
     parseEntryQuery({ ...query, sort: { type: 'field', field: 'releaseDate', direction: 'asc' } }),
   ).toThrow()
+
   expect(() =>
     parseEntryQuery({ ...query, scope: { type: 'library', showHidden: true } }),
   ).toThrow()
@@ -62,9 +65,11 @@ test('keeps zero, explicit null, precise dates and deduplicated selections meani
   expect(
     parseEntryCondition({ field: 'status', op: 'notIn', values: ['active', null, 'active'] }),
   ).toEqual({ field: 'status', op: 'notIn', values: ['active', null] })
+
   expect(
     parseEntryCondition({ field: 'rating', op: 'range', bounds: { min: 0, max: 0 } }),
   ).toMatchObject({ bounds: { min: 0, max: 0 } })
+
   expect(
     parseEntryCondition({
       field: 'birthDate',
@@ -72,6 +77,7 @@ test('keeps zero, explicit null, precise dates and deduplicated selections meani
       bounds: { min: { year: 0 }, max: { year: 0 } },
     }),
   ).toMatchObject({ bounds: { min: { year: 0 } } })
+
   expect(
     parseEntryCondition({
       field: 'parts',
@@ -81,6 +87,7 @@ test('keeps zero, explicit null, precise dates and deduplicated selections meani
       bounds: { max: 0 },
     }),
   ).toMatchObject({ measure: 'accessible' })
+
   expect(() =>
     parseEntryCondition({
       field: 'parts',
@@ -98,10 +105,13 @@ test('retains same-fact relation qualifiers and rejects impossible or extra qual
     targets: { op: 'any', values: [{ type: 'person', id: 'p' }] },
     where: { personRoles: ['voiceActor'], characterRoles: ['main'] },
   }
+
   expect(parseEntryCondition(relation)).toEqual(relation)
+
   expect(() =>
     parseEntryCondition({ ...relation, where: { ...relation.where, character: { type: 'none' } } }),
   ).toThrow()
+
   expect(() =>
     parseEntryCondition({
       ...relation,
@@ -109,6 +119,7 @@ test('retains same-fact relation qualifiers and rejects impossible or extra qual
       where: { characterRoles: ['main'] },
     }),
   ).toThrow()
+
   expect(() =>
     parseEntryCondition({
       ...relation,
@@ -121,19 +132,25 @@ test('mixed projections omit inapplicable and unrequested fields instead of forg
   expect(parseEntryListOptions({ offset: 0, limit: 80, fields: ['status'] }, query)).toMatchObject({
     fields: ['status'],
   })
+
   expect(parseEntryListItem({ id: 'p', type: 'person', name: 'Person' }, ['status'])).toEqual({
     id: 'p',
     type: 'person',
     name: 'Person',
   })
+
   expect(() =>
     parseEntryListItem({ id: 'p', type: 'person', name: 'Person', status: null }, ['status']),
   ).toThrow()
+
   expect(() => parseEntryListItem({ id: 'g', type: 'game', name: 'Game' }, ['status'])).toThrow()
+
   expect(() =>
     parseEntryListItem({ id: 'g', type: 'game', name: 'Game', favorite: false }),
   ).toThrow()
+
   expect(() => parseEntryListOptions({ offset: 0, limit: 201 }, query)).toThrow()
+
   expect(() =>
     parseEntryListOptions({ offset: 0, limit: 80, fields: ['declaredPageCount'] }, query),
   ).toThrow()
@@ -141,20 +158,26 @@ test('mixed projections omit inapplicable and unrequested fields instead of forg
 
 test('empty rules stay empty, while real intervals and location replies remain internally consistent', () => {
   const empty = parseEntryQuery({ ...query, rules: [] })
+
   expect(empty.rules).toEqual([])
+
   expect(() =>
     parseEntryListResult({ total: 1, items: [] }, empty, { offset: 0, limit: 80 }),
   ).toThrow()
   expect(entryLocateOffset(99, 100, 20)).toBe(80)
   expect(entryLocateOffset(3, 10, 20)).toBe(0)
+
   expect(parseEntryListResult({ total: 12, items: [] }, query, { offset: 50, limit: 10 })).toEqual({
     total: 12,
     items: [],
   })
+
   const result = { total: 1, index: 0, offset: 0, items: [{ id: 'g', type: 'game', name: 'Game' }] }
+
   expect(parseEntryLocateResult(result, query, { type: 'game', id: 'g' }, { limit: 10 })).toEqual(
     result,
   )
+
   expect(() =>
     parseEntryLocateResult(result, query, { type: 'game', id: 'other' }, { limit: 10 }),
   ).toThrow()
@@ -163,6 +186,7 @@ test('empty rules stay empty, while real intervals and location replies remain i
 test('fixed group ranges require real expanded endpoints and preserve failed groups', () => {
   const group = { type: 'collection', id: 'c' } as const
   const endpoint = { group, ref: { type: 'game', id: 'g' } } as const
+
   expect(() =>
     parseEntrySelection({
       type: 'groupRange',
@@ -171,6 +195,7 @@ test('fixed group ranges require real expanded endpoints and preserve failed gro
       expandedGroups: [],
     }),
   ).toThrow()
+
   expect(
     parseEntrySelection({
       type: 'groupRange',
@@ -179,6 +204,7 @@ test('fixed group ranges require real expanded endpoints and preserve failed gro
       expandedGroups: [group],
     }),
   ).toMatchObject({ expandedGroups: [group] })
+
   const groups = {
     total: 2,
     groups: [
@@ -194,7 +220,9 @@ test('fixed group ranges require real expanded endpoints and preserve failed gro
       },
     ],
   }
+
   expect(parseEntryGroupsResult(groups)).toEqual(groups)
+
   expect(() =>
     parseDynamicRules({ search: '', rules: [], sort: { type: 'scope' }, referenceLabels: [] }),
   ).toThrow()

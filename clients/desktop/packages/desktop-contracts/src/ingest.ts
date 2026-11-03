@@ -69,6 +69,7 @@ export interface IngestApi {
     inputs: readonly IngestAddInput[],
     call?: CallOptions,
   ): Promise<IngestBatchResult<AddResult>>
+
   update(
     ...args: {
       [K in IngestUpdateType]: [
@@ -83,6 +84,7 @@ export interface IngestApi {
     call?: CallOptions,
   ): Promise<IngestBatchResult<UpdateResult>>
 }
+
 /** Native scanner/batch collaboration reuses the same complete business work inside an already admitted execution, without nested tasks. */
 export interface IngestExecutor {
   add(input: IngestAddInput, context: ExecutionContext): Promise<AddResult>
@@ -93,6 +95,7 @@ export interface IngestExecutor {
 export function parseMetadataInput<T extends EntryType>(root: T, input: unknown): MetadataInput<T> {
   return parseMetadataSource(root, input, false) as MetadataInput<T>
 }
+
 /** Update can derive omitted profile clues from the fixed local target; prepared data still has a complete candidate root. */
 export function parseMetadataUpdateInput<T extends EntryType>(
   root: T,
@@ -100,6 +103,7 @@ export function parseMetadataUpdateInput<T extends EntryType>(
 ): MetadataUpdateInput<T> {
   return parseMetadataSource(root, input, true) as MetadataUpdateInput<T>
 }
+
 function parseMetadataSource(
   root: EntryType,
   input: unknown,
@@ -149,12 +153,14 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
       isWorkType(entryType) ? v.array(completionFieldsSchema) : v.never(),
     ),
   })
+
   const local = v.pipe(
     v.unknown(),
     v.transform((value) => {
       if (!isWorkType(entryType)) {
         throw new DesktopError('InvalidInput', 'Only works can register local content')
       }
+
       const { type: typeInput, ...fields } = readRecord(value)
       const type = parseValue(v.picklist(['directory', 'file']), typeInput)
       return type === 'directory'
@@ -187,6 +193,7 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
   if (input === 'all') {
     return 'all'
   }
+
   const conditions = parseValue(v.tupleWithRest([v.unknown()], v.unknown()), input)
   const result = conditions.map((condition) => {
     const original = readRecord(condition)
@@ -204,6 +211,7 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
           characters,
         )
       : undefined
+
     const scope = parseMetadataRelationScope(
       root,
       'personWorks' as ScopedMetadataRelationKey<typeof root>,
@@ -220,6 +228,7 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
         'Character scope contradicts the selected relationship context',
       )
     }
+
     const fields = scope === 'all' ? {} : scope[0]
     return { ...fields, ...(selected ? { characters: selected } : {}) }
   })
@@ -233,6 +242,7 @@ function relationSelection(root: EntryType, keys: readonly string[]) {
       rules[key] = v.exactOptional(v.strictObject({ mode: v.literal('append') }))
       continue
     }
+
     const relation = key as keyof MetadataRelationScopeValues
     const attrs = Object.fromEntries(
       metadataRelationFields[relation].map((field) => [
@@ -261,6 +271,7 @@ function relationSelection(root: EntryType, keys: readonly string[]) {
       }),
     )
   }
+
   return v.strictObject(rules)
 }
 
@@ -273,6 +284,7 @@ export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
   const target = header.target
   const part = (partTypes as readonly string[]).includes(target.type)
   const root = part ? partWorkType(target.type as PartType) : (target.type as EntryType)
+
   const fieldNames = part
     ? getMetadataPartFields(target.type as PartType)
     : getMetadataEntryFields(root)
@@ -281,6 +293,7 @@ export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
       fieldNames.map((field) => [field, v.exactOptional(v.picklist(['fill', 'overwrite']))]),
     ),
   )
+
   let relations: v.GenericSchema = v.never()
   if (!part) {
     relations = relationSelection(root, getMetadataRelations(root))
@@ -314,6 +327,7 @@ export function hasIngestUpdateWork(
   if (!('relations' in input)) {
     return false
   }
+
   return Object.values(input.relations ?? {}).some(
     (rule) =>
       rule !== undefined &&
@@ -341,6 +355,7 @@ export function parseAddResult(input: unknown): AddResult {
     'Invalid add result',
   )
 }
+
 /** updated may describe relationship-only or part-list changes; unchanged does not claim complete source data. */
 export function parseUpdateResult(input: unknown): UpdateResult {
   return parseValue(
@@ -385,6 +400,7 @@ export function parseIngestBatchResult<Result>(
   ) {
     throw new DesktopError('InvalidInput', 'Adoption batch report has inconsistent input indices')
   }
+
   return value
 }
 

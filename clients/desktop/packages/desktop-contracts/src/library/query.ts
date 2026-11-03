@@ -70,6 +70,7 @@ export const entryFieldTypes: Readonly<
   description: entryTypes,
   externalLinks: entryTypes,
   primaryImageId: entryTypes,
+
   favorite: entryTypes,
   rating: entryTypes,
   isNsfw: entryTypes,
@@ -78,16 +79,19 @@ export const entryFieldTypes: Readonly<
   tags: entryTypes,
   manualCollections: entryTypes,
   sources: entryTypes,
+
   addedDate: entryTypes,
   effectiveAddedDate: entryTypes,
   createdAt: entryTypes,
   updatedAt: entryTypes,
+
   status: workTypes,
   releaseDate: workTypes,
   originalLanguages: workTypes,
   hasBackdrop: workTypes,
   hasTitleLogo: workTypes,
   hasIcon: ['game'],
+
   additionalDurationMs: workTypes,
   totalDurationMs: workTypes,
   lastActiveAt: workTypes,
@@ -95,6 +99,7 @@ export const entryFieldTypes: Readonly<
   firstCompletedDate: workTypes,
   lastCompletedDate: workTypes,
   completions: workTypes,
+
   releaseStatus: mediaTypes,
   releaseEndDate: mediaTypes,
   declaredDurationMs: ['anime'],
@@ -103,11 +108,13 @@ export const entryFieldTypes: Readonly<
   declaredPageCount: bookTypes,
   declaredVolumeCount: bookTypes,
   declaredChapterCount: ['comic'],
+
   registeredFileCount: mediaTypes,
   accessibleFileCount: mediaTypes,
   uncheckedFileCount: mediaTypes,
   parts: mediaTypes,
   partCounts: mediaTypes,
+
   birthDate: peopleTypes,
   birthMonthDay: peopleTypes,
   gender: peopleTypes,
@@ -120,17 +127,22 @@ export const entryFieldTypes: Readonly<
   waist: ['character'],
   hips: ['character'],
   cupSize: ['character'],
+
   foundedDate: ['organization'],
   dissolvedDate: ['organization'],
+
   workCharacters: workTypes,
   workPersons: workTypes,
   workCharacterPersons: workTypes,
   workOrganizations: workTypes,
   relatedWorks: workTypes,
+
   characterWorks: ['character'],
   characterPersons: ['character'],
+
   personWorks: ['person'],
   personCharacters: ['person'],
+
   organizationWorks: ['organization'],
 }
 
@@ -172,6 +184,7 @@ export const entrySortFields: readonly EntrySortField[] = Object.freeze([
   'accessibleFileCount',
   'uncheckedFileCount',
 ])
+
 /** Requested list columns are bounded scalar facts and summaries, never arbitrary relation expansions or full bodies. */
 export const entryProjectionFields: readonly EntryProjectionField[] = Object.freeze([
   'originalName',
@@ -234,6 +247,7 @@ function selections<T extends v.GenericSchema>(schema: T) {
           result.push(item)
         }
       }
+
       return result
     }),
   )
@@ -245,9 +259,11 @@ function setTest<T extends v.GenericSchema>(schema: T) {
     v.strictObject({ op: v.picklist(['empty', 'notEmpty']) }),
   ])
 }
+
 function enumTest<T extends v.GenericSchema>(schema: T) {
   return v.strictObject({ op: v.picklist(['in', 'notIn']), values: selections(schema) })
 }
+
 function numericBounds<T extends v.GenericSchema<unknown, number>>(schema: T) {
   return v.pipe(
     v.strictObject({ min: v.exactOptional(schema), max: v.exactOptional(schema) }),
@@ -258,18 +274,22 @@ function numericBounds<T extends v.GenericSchema<unknown, number>>(schema: T) {
     ),
   )
 }
+
 function numberTest<T extends v.GenericSchema<unknown, number>>(schema: T) {
   return v.strictObject({ op: v.literal('range'), bounds: numericBounds(schema) })
 }
 
 export const presenceSchema = v.strictObject({ op: v.picklist(['present', 'absent']) })
+
 export const textTestSchema = v.strictObject({
   op: v.picklist(['equals', 'contains']),
   value: nonemptyText,
 })
+
 const textOrPresence = v.union([textTestSchema, presenceSchema])
 const dateBoundsSchema = v.pipe(v.unknown(), v.transform(parseDateBounds))
 const dateRangeSchema = v.strictObject({ op: v.literal('absoluteRange'), bounds: dateBoundsSchema })
+
 const componentRangeSchema = v.union([
   v.strictObject({
     op: v.literal('componentRange'),
@@ -287,16 +307,20 @@ const componentRangeSchema = v.union([
     bounds: numericBounds(v.pipe(integer, v.minValue(1), v.maxValue(31))),
   }),
 ])
+
 const componentPresenceSchema = v.strictObject({
   op: v.picklist(['componentPresent', 'componentAbsent']),
   component: v.picklist(['year', 'month', 'day']),
 })
+
 const knownDateTestSchema = v.union([
   dateRangeSchema,
   componentRangeSchema,
   componentPresenceSchema,
 ])
+
 export const dateTestSchema = v.union([knownDateTestSchema, presenceSchema])
+
 const birthdayTestSchema = v.union([
   dateTestSchema,
   v.strictObject({
@@ -305,6 +329,7 @@ const birthdayTestSchema = v.union([
     to: v.pipe(v.unknown(), v.transform(parseMonthDate)),
   }),
 ])
+
 const instantRangeSchema = v.pipe(
   v.strictObject({
     op: v.literal('instantRange'),
@@ -317,11 +342,14 @@ const instantRangeSchema = v.pipe(
       (value.from === undefined || value.to === undefined || value.from < value.to),
   ),
 )
+
 const knownInstantTestSchema = v.union([
   instantRangeSchema,
   v.strictObject({ op: v.literal('calendarRange'), bounds: dateBoundsSchema }),
 ])
+
 const instantTestSchema = v.union([knownInstantTestSchema, presenceSchema])
+
 const partCountScopeSchema = v.variant('partType', [
   v.strictObject({
     partType: v.literal('animeEpisode'),
@@ -333,9 +361,11 @@ const partCountScopeSchema = v.variant('partType', [
   }),
   v.strictObject({ partType: v.picklist(['comicVolume', 'comicChapter', 'novelVolume']) }),
 ])
+
 const partMeasure = v.picklist(['registered', 'completed', 'withFiles', 'accessible'])
 const booleanTest = v.strictObject({ op: v.literal('is'), value: v.boolean() })
 const nullableCountTest = v.union([numberTest(nonnegativeInteger), presenceSchema])
+
 const measureTest = v.union([
   numberTest(nonnegativeNumber),
   textTestSchema,
@@ -347,22 +377,28 @@ const characterQualifier = v.union([
   v.strictObject({ type: v.picklist(['none', 'any']) }),
   v.strictObject({ type: v.literal('oneOf'), refs: selections(characterRefSchema) }),
 ])
+
 const characterOnlyQualifier = v.union([
   v.strictObject({ type: v.literal('any') }),
   v.strictObject({ type: v.literal('oneOf'), refs: selections(characterRefSchema) }),
 ])
+
 const noteWhere = { note: v.exactOptional(textOrPresence) }
+
 const characterRolesWhere = {
   characterRoles: v.exactOptional(selections(v.nullable(v.picklist(characterRoles)))),
 }
+
 const personRolesWhere = { personRoles: v.exactOptional(selections(v.picklist(personRoles))) }
 const workTypesWhere = { workTypes: v.exactOptional(selections(v.picklist(workTypes))) }
 const worksWhere = { ...workTypesWhere, works: v.exactOptional(selections(workRefSchema)) }
+
 const personCharacterWhere = {
   ...personRolesWhere,
   ...characterRolesWhere,
   character: v.exactOptional(characterQualifier),
 }
+
 const organizationWhere = {
   organizationRoles: v.exactOptional(selections(v.picklist(organizationRoles))),
 }
@@ -381,21 +417,26 @@ const conditionSchemas: Readonly<
   hasBackdrop: booleanTest,
   hasTitleLogo: booleanTest,
   hasIcon: booleanTest,
+
   originalName: presenceSchema,
   sortName: presenceSchema,
   description: presenceSchema,
   aliases: presenceSchema,
   externalLinks: presenceSchema,
   addedDate: presenceSchema,
+
   rating: v.union([numberTest(rating), presenceSchema]),
+
   tags: setTest(id),
   manualCollections: setTest(id),
   sources: setTest(id),
   originalLanguages: setTest(languageSchema),
+
   status: enumTest(v.nullable(statusSchema)),
   releaseStatus: enumTest(v.nullable(releaseStatusSchema)),
   gender: enumTest(v.nullable(genderSchema)),
   bloodType: enumTest(v.nullable(v.picklist(['a', 'b', 'ab', 'o']))),
+
   additionalDurationMs: numberTest(nonnegativeInteger),
   totalDurationMs: numberTest(nonnegativeInteger),
   completionCount: numberTest(nonnegativeInteger),
@@ -408,6 +449,7 @@ const conditionSchemas: Readonly<
   registeredFileCount: numberTest(nonnegativeInteger),
   accessibleFileCount: numberTest(nonnegativeInteger),
   uncheckedFileCount: numberTest(nonnegativeInteger),
+
   age: measureTest,
   height: measureTest,
   weight: measureTest,
@@ -415,6 +457,7 @@ const conditionSchemas: Readonly<
   waist: measureTest,
   hips: measureTest,
   cupSize: textOrPresence,
+
   effectiveAddedDate: v.union([knownDateTestSchema, v.strictObject({ op: v.literal('present') })]),
   releaseDate: dateTestSchema,
   releaseEndDate: dateTestSchema,
@@ -424,15 +467,18 @@ const conditionSchemas: Readonly<
   dissolvedDate: dateTestSchema,
   firstCompletedDate: dateTestSchema,
   lastCompletedDate: dateTestSchema,
+
   createdAt: knownInstantTestSchema,
   updatedAt: knownInstantTestSchema,
   lastActiveAt: instantTestSchema,
+
   parts: v.strictObject({
     scope: partCountScopeSchema,
     measure: partMeasure,
     op: v.literal('range'),
     bounds: numericBounds(nonnegativeInteger),
   }),
+
   completions: v.strictObject({
     match: v.picklist(['exists', 'notExists']),
     where: v.strictObject({
@@ -440,6 +486,7 @@ const conditionSchemas: Readonly<
       note: v.exactOptional(textOrPresence),
     }),
   }),
+
   workCharacters: relationTest(characterRefSchema, { ...characterRolesWhere, ...noteWhere }),
   workPersons: relationTest(personRefSchema, { ...personCharacterWhere, ...noteWhere }),
   workCharacterPersons: relationTest(personRefSchema, {
@@ -454,6 +501,7 @@ const conditionSchemas: Readonly<
     relationTypes: v.exactOptional(selections(v.picklist(workRelationTypes))),
     ...noteWhere,
   }),
+
   characterWorks: relationTest(workRefSchema, {
     ...workTypesWhere,
     ...characterRolesWhere,
@@ -464,6 +512,7 @@ const conditionSchemas: Readonly<
     ...personRolesWhere,
     ...noteWhere,
   }),
+
   personWorks: relationTest(workRefSchema, {
     ...workTypesWhere,
     ...personCharacterWhere,
@@ -475,6 +524,7 @@ const conditionSchemas: Readonly<
     ...characterRolesWhere,
     ...noteWhere,
   }),
+
   organizationWorks: relationTest(workRefSchema, {
     ...workTypesWhere,
     ...organizationWhere,
@@ -489,6 +539,7 @@ export function parseEntryCondition(input: unknown): EntryCondition {
   if (!Object.hasOwn(conditionSchemas, field)) {
     throw new DesktopError('InvalidInput', 'Unknown entry condition field')
   }
+
   const condition = {
     field,
     ...parseValue(
@@ -507,6 +558,7 @@ export function parseEntryCondition(input: unknown): EntryCondition {
       'A character role cannot qualify work without a character',
     )
   }
+
   return condition
 }
 
@@ -545,6 +597,7 @@ export function parseEntryRule(input: unknown): EntryRule {
       throw new DesktopError('InvalidInput', 'Condition is not applicable to every rule type')
     }
   }
+
   return rule
 }
 
@@ -568,6 +621,7 @@ export function parseEntrySort(input: unknown, types: readonly EntryType[] = [])
     input,
     'Invalid entry sort',
   )
+
   let applicable: readonly EntryType[] = entryTypes
   if (sort.type === 'parts') {
     applicable = [partWorkType(sort.scope.partType)]
@@ -577,6 +631,7 @@ export function parseEntrySort(input: unknown, types: readonly EntryType[] = [])
   if (!types.every((type) => applicable.includes(type))) {
     throw new DesktopError('InvalidInput', 'Sort is not applicable to every enabled type')
   }
+
   return sort
 }
 
@@ -584,7 +639,9 @@ const entryScopeSchema = v.union([
   v.strictObject({ type: v.picklist(['library', 'favorites', 'unclassified']) }),
   v.strictObject({ type: v.picklist(['collection', 'tag', 'note']), id }),
 ])
+
 const queryRulesSchema = v.array(v.pipe(v.unknown(), v.transform(parseEntryRule)))
+
 const groupSchema = v.union([
   v.strictObject({ type: v.literal('collection'), id }),
   v.strictObject({ type: v.literal('unclassified') }),
@@ -602,6 +659,7 @@ export function parseEntryQuery(input: unknown): EntryQuery {
     input,
     'Invalid entry query',
   )
+
   const types = value.rules.filter((rule) => rule.enabled).flatMap((rule) => rule.types)
   return { ...value, sort: parseEntrySort(value.sort, types) }
 }
@@ -621,6 +679,7 @@ function checkProjection(
     )
   }
 }
+
 const projectionSchema = v.pipe(
   v.array(v.picklist(entryProjectionFields)),
   v.transform((fields) => [...new Set(fields)]),
@@ -669,6 +728,7 @@ export function entryLocateOffset(index: number, total: number, limit: number): 
   if (value.index >= value.total) {
     throw new DesktopError('InvalidInput', 'The located index must belong to the result')
   }
+
   return Math.max(0, Math.min(index - Math.floor(limit / 2), total - limit))
 }
 
@@ -741,6 +801,7 @@ export function parseDynamicRules(input: unknown): DynamicRules {
     input,
     'Invalid dynamic rules',
   )
+
   const sort = parseEntrySort(
     value.sort,
     value.rules.filter((rule) => rule.enabled).flatMap((rule) => rule.types),
@@ -748,5 +809,6 @@ export function parseDynamicRules(input: unknown): DynamicRules {
   if (sort.type === 'scope') {
     throw new DesktopError('InvalidInput', 'Dynamic rules require an explicit sort')
   }
+
   return { ...value, sort }
 }

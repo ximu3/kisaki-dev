@@ -20,12 +20,15 @@ import type {
 export type FileNumberCondition =
   | { readonly kind: 'single'; readonly value: string }
   | { readonly kind: 'range'; readonly start: string; readonly end: string }
+
 export type NumberedPartCondition =
   | { readonly number: FileNumberCondition; readonly name?: string }
   | { readonly number?: FileNumberCondition; readonly name: string }
+
 export type ComicVolumeScopeCondition =
   | { readonly number: string; readonly name?: string }
   | { readonly number?: string; readonly name: string }
+
 export interface FileConditionByType {
   readonly anime:
     | (NumberedPartCondition & {
@@ -33,6 +36,7 @@ export interface FileConditionByType {
         readonly episodeType?: AnimeEpisodeType | null
       })
     | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
+
   readonly comic:
     | (NumberedPartCondition & { readonly kind: 'volume' })
     | (NumberedPartCondition & {
@@ -40,8 +44,10 @@ export interface FileConditionByType {
         readonly numberBasis?: 'work' | 'volume'
         readonly volume?: ComicVolumeScopeCondition
       })
+
   readonly novel: NumberedPartCondition & { readonly kind: 'volume' }
 }
+
 /** A complete match stops interpretation even if later catalog lookup fails; unmatched alone permits builtin recognition. */
 export type FileRuleInterpretation<T extends FileWorkType> =
   | { readonly status: 'unmatched' }
@@ -58,14 +64,17 @@ function outputName(
   if (template === undefined) {
     return undefined
   }
+
   const expanded = expandTextTemplate(template, captures)
   if (expanded === undefined) {
     return undefined
   }
+
   const value = expanded.trim()
   if (!value) {
     throw new DesktopError('InvalidInput', 'A matched file rule produced a blank name')
   }
+
   return value
 }
 
@@ -82,11 +91,13 @@ function outputNumber(
       ? undefined
       : { kind: 'single', value: applyFileNumberOffset(value, number.offset) }
   }
+
   const first = expandTextTemplate(number.start, captures)
   const last = expandTextTemplate(number.end, captures)
   if (first === undefined || last === undefined) {
     throw new DesktopError('InvalidInput', 'A matched range must have both endpoints')
   }
+
   const start = applyFileNumberOffset(first, number.offset)
   const end = applyFileNumberOffset(last, number.offset)
   if (
@@ -96,6 +107,7 @@ function outputNumber(
   ) {
     throw new DesktopError('InvalidInput', 'A matched range must be a forward integer interval')
   }
+
   return { kind: 'range', start, end }
 }
 
@@ -111,6 +123,7 @@ function numbered(
   if (name !== undefined) {
     return { name }
   }
+
   throw new DesktopError('InvalidInput', 'A matched file target needs a number or complete name')
 }
 
@@ -128,6 +141,7 @@ function volumeScope(
   if (name !== undefined) {
     return { name }
   }
+
   throw new DesktopError('InvalidInput', 'A declared volume scope cannot disappear after expansion')
 }
 
@@ -142,12 +156,14 @@ export function expandFileTarget<T extends FileWorkType>(
     if (name === undefined) {
       throw new DesktopError('InvalidInput', 'An extra requires its complete name')
     }
+
     return {
       kind: 'extra',
       name,
       ...(source.extraType === undefined ? {} : { extraType: source.extraType }),
     } as FileConditionByType[T]
   }
+
   const fields = numbered(source, captures)
   if (source.kind === 'episode') {
     return {
@@ -165,6 +181,7 @@ export function expandFileTarget<T extends FileWorkType>(
       ...(volume ? { volume } : {}),
     } as FileConditionByType[T]
   }
+
   return { kind: 'volume', ...fields } as FileConditionByType[T]
 }
 
@@ -180,6 +197,7 @@ export function interpretFileRules<T extends FileWorkType>(
     if (!rule.enabled) {
       continue
     }
+
     const captures = matchTextPattern(
       inspectTextPattern(rule.pattern, rule.ignoreCase),
       input[rule.input],
@@ -187,6 +205,7 @@ export function interpretFileRules<T extends FileWorkType>(
     if (captures === null) {
       continue
     }
+
     const [first, ...rest] = rule.output.targets
     return {
       status: 'matched',
@@ -197,5 +216,6 @@ export function interpretFileRules<T extends FileWorkType>(
       ],
     }
   }
+
   return { status: 'unmatched' }
 }

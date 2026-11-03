@@ -61,14 +61,17 @@ import type {
 } from './graph-values'
 
 const keySchema = v.strictObject({ key: id })
+
 const present = v.pipe(
   v.unknown(),
   v.check((value) => value !== undefined),
 )
+
 const rawActions = v.strictObject({
   create: v.exactOptional(v.array(v.unknown())),
   update: v.exactOptional(v.array(v.unknown())),
 })
+
 const rawGraphSchema = v.strictObject({
   entries: v.exactOptional(rawActions),
   parts: v.exactOptional(rawActions),
@@ -81,14 +84,17 @@ const rawGraphSchema = v.strictObject({
 function invalid(message: string): never {
   throw new DesktopError('InvalidInput', message)
 }
+
 function entryKey(ref: GraphEntryRef): string {
   return 'key' in ref ? JSON.stringify(['key', ref.key]) : JSON.stringify(['entry', ref.id])
 }
+
 function partKey(ref: GraphPartRef): string {
   return 'key' in ref
     ? JSON.stringify(['key', ref.key])
     : JSON.stringify(['part', ref.type, ref.id])
 }
+
 function tagKey(ref: GraphTagRef): string {
   return 'key' in ref ? JSON.stringify(['key', ref.key]) : JSON.stringify(['tag', ref.id])
 }
@@ -103,17 +109,21 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const entries = new Map<string, EntryType>()
   const parts = new Map<string, { readonly type: PartType; readonly work: GraphEntryRef }>()
   const tags = new Set<string>()
+
   function addKey(key: string): void {
     if (keys.has(key)) {
       invalid('Create keys must be unique across the complete graph')
     }
     keys.add(key)
   }
+
+  // Index every created identity before resolving references across graph regions.
   for (const item of raw.entries?.create ?? []) {
     const node = parseValue(v.looseObject({ key: id, type: v.picklist(entryTypes) }), item)
     addKey(node.key)
     entries.set(node.key, node.type)
   }
+
   for (const item of raw.parts?.create ?? []) {
     const node = parseValue(
       v.looseObject({
@@ -126,6 +136,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     addKey(node.key)
     parts.set(node.key, { type: node.type, work: node.work })
   }
+
   for (const item of raw.tags?.create ?? []) {
     const node = parseValue(v.looseObject({ key: id }), item)
     addKey(node.key)
@@ -136,12 +147,14 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     if ('type' in ref) {
       return ref.type
     }
+
     const type = entries.get(ref.key)
     if (!type) {
       invalid('Graph reference does not identify an entry created in this request')
     }
     return type
   }
+
   function workType(ref: GraphEntryRef<WorkType>): WorkType {
     const type = entryType(ref)
     if (!isWorkType(type)) {
@@ -149,6 +162,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
     return type
   }
+
   function entryReference<T extends EntryType>(
     types: readonly T[],
   ): v.GenericSchema<unknown, GraphEntryRef<T>> {
@@ -157,6 +171,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       v.check((ref) => types.some((type) => type === entryType(ref))),
     )
   }
+
   function partReference<T extends PartType>(
     types: readonly T[],
   ): v.GenericSchema<unknown, GraphPartRef<T>> {
@@ -166,11 +181,13 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
         if ('type' in ref) {
           return true
         }
+
         const target = parts.get(ref.key)
         return target !== undefined && types.some((type) => type === target.type)
       }),
     )
   }
+
   const tagReference = v.pipe(
     v.union([v.strictObject({ id }), keySchema]),
     v.check((ref) => !('key' in ref) || tags.has(ref.key)),
@@ -195,6 +212,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       : {}
     return { ...value, key, ...members } as GraphEntryCreate
   }
+
   function parsePart(item: unknown): GraphPartCreate {
     const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), item)
     return parseValue(
@@ -210,6 +228,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       item,
     ) as GraphPartCreate
   }
+
   function parseTag(item: unknown): {
     readonly key: string
     readonly name: string
@@ -227,6 +246,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     )
     return { key, ...parseTagCreate(fields) }
   }
+
   function parseTagEdit(item: unknown) {
     const { id: tagIdInput, ...fields } = readRecord(item)
     const tagId = parseValue(id, tagIdInput)
@@ -278,6 +298,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   }
   const organizationFields = { work, organization, role: v.picklist(organizationRoles) }
   const relationFields = { from: work, to: work, type: v.picklist(workRelationTypes) }
+
   function checkPerson(value: Partial<GraphPersonWorkAdd>): void {
     if (
       value.work &&
@@ -288,11 +309,13 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       invalid('Person responsibility is not applicable to its graph work or character')
     }
   }
+
   function checkOrganization(value: Partial<GraphOrganizationWorkAdd>): void {
     if (value.work && value.role && !canUseOrganizationRole(value.role, workType(value.work))) {
       invalid('Organization responsibility is not applicable to its graph work')
     }
   }
+
   function relationKey(value: GraphWorkRelationAdd): string {
     const normalized = normalizeWorkRelation({
       from: { type: workType(value.from), id: entryKey(value.from) },
@@ -301,14 +324,17 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     })
     return JSON.stringify([normalized.from.id, normalized.to.id, normalized.type])
   }
+
   function checkRelation(value: Partial<GraphWorkRelationAdd>): void {
     if (value.from && value.to && value.type) {
       relationKey({ from: value.from, to: value.to, type: value.type })
     }
   }
+
   function characterKey(value: GraphWorkCharacterAdd): string {
     return JSON.stringify([entryKey(value.work), entryKey(value.character)])
   }
+
   function personKey(value: GraphPersonWorkAdd): string {
     return JSON.stringify([
       entryKey(value.work),
@@ -317,6 +343,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       value.character === null ? null : entryKey(value.character),
     ])
   }
+
   function organizationKey(value: GraphOrganizationWorkAdd): string {
     return JSON.stringify([entryKey(value.work), entryKey(value.organization), value.role])
   }
@@ -341,10 +368,12 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       }),
     )
   }
+
   const characterBinding = v.pipe(v.unknown(), v.transform(parseWorkCharacterBinding))
   const personBinding = v.pipe(v.unknown(), v.transform(parsePersonWorkBinding))
   const organizationBinding = v.pipe(v.unknown(), v.transform(parseOrganizationWorkBinding))
   const relationBinding = v.pipe(v.unknown(), v.transform(parseStoredWorkRelationBinding))
+
   const characterAdd = v.strictObject({ ...characterFields, ...optionalFields(properties) })
   const personAdd = v.pipe(
     v.strictObject({ ...personFields, ...optionalFields(properties) }),
@@ -451,6 +480,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       ),
     ),
   ])
+
   const volume = partReference(['comicVolume'] as const)
   const chapter = partReference(['comicChapter'] as const)
   const chapterMember = v.strictObject({ chapter, numberLabel: v.nullable(text) })
@@ -489,6 +519,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     ),
     v.check((items) => unique(items, (item) => item.chapter.id)),
   )
+
   const relations: GraphRelations | undefined =
     raw.relations === undefined
       ? undefined
@@ -583,6 +614,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       invalid('Graph parts and local files must share the same real work')
     }
   }
+
   for (const item of relations?.volumeChapters ?? []) {
     const chapters =
       item.change.type === 'replace'
@@ -592,12 +624,14 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       requireSameKnownOwner(chapter, item.volume, false)
     }
   }
+
   const tagOwners = new Set<string>()
   for (const entry of parsedEntries?.create ?? []) {
     if (entry.tags !== undefined) {
       tagOwners.add(entryKey({ key: entry.key }))
     }
   }
+
   for (const entry of parsedEntries?.update ?? []) {
     if (entry.changes.tags !== undefined) {
       tagOwners.add(entryKey(entry.ref))
@@ -606,6 +640,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   if (relations?.entryTags?.some((item) => tagOwners.has(entryKey(item.entry)))) {
     invalid('An entry tag set cannot be written through two graph regions')
   }
+
   const removedCharacterBindings = new Set(
     (relations?.workCharacters?.expected ?? []).map((item) => characterKey(item.binding)),
   )
@@ -638,6 +673,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       : {}
     return { ...value, ...members } as GraphFileCreate<T>
   }
+
   function mediaLocal<T extends FileWorkType>(type: T) {
     return v.array(
       v.strictObject({
@@ -661,6 +697,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       }),
     )
   }
+
   const localContent: GraphLocalContent | undefined =
     raw.localContent === undefined
       ? undefined
@@ -691,6 +728,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
           raw.localContent,
           'Invalid initial local content',
         )
+
   const localPaths = new Set<string>()
   for (const type of workTypes) {
     const groups = localContent?.[type] ?? []
@@ -705,12 +743,14 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       if (type === 'game' || !('files' in group)) {
         continue
       }
+
       for (const file of group.files ?? []) {
         const key = JSON.stringify([entryKey(group.work), 'file', file.path])
         if (localPaths.has(key)) {
           invalid('Initial file paths must not be duplicated')
         }
         localPaths.add(key)
+
         for (const association of file.associations ?? []) {
           requireSameKnownOwner(association.part, group.work, true)
         }
@@ -752,6 +792,7 @@ export function parseLibraryWriteResult(
     input,
     'Invalid graph write result',
   )
+
   function exactKeys(actual: object, expected: readonly { readonly key: string }[]): void {
     if (
       Object.keys(actual).length !== expected.length ||
@@ -760,15 +801,18 @@ export function parseLibraryWriteResult(
       invalid('Graph result must map exactly the successfully created keys')
     }
   }
+
   exactKeys(value.entries, request.entries?.create ?? [])
   exactKeys(value.parts, request.parts?.create ?? [])
   exactKeys(value.tags, request.tags?.create ?? [])
+
   if (
     request.entries?.create?.some((item) => value.entries[item.key]?.type !== item.type) ||
     request.parts?.create?.some((item) => value.parts[item.key]?.type !== item.type)
   ) {
     invalid('Graph result identity kinds must match the requested creates')
   }
+
   const entries = Object.values(value.entries)
   const parts = Object.values(value.parts)
   const tags = Object.values(value.tags)

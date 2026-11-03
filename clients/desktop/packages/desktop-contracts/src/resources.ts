@@ -29,18 +29,21 @@ export type FileInput =
 export interface PreparedAttachment {
   readonly attachmentId: string
   readonly resource: ReadResourceRef
+
   dispose(): Promise<void>
 }
 
 /** A hold on fixed readable content; closing it stops new reads through this handle after in-flight cleanup. */
 export interface ReadResource {
   readonly resource: ReadResourceRef
+
   dispose(): Promise<void>
 }
 
 /** A view owns these transient URLs independently of the original holder and other view bindings. */
 export interface ViewResourceBinding {
   readonly urls: Readonly<Record<string, string>>
+
   dispose(): Promise<void>
 }
 
@@ -51,10 +54,12 @@ export interface ViewResourcesApi {
 
 const resourceSchema = v.strictObject({ id })
 const headerName = v.pipe(text, v.regex(/^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/))
+
 const headerValue = v.pipe(
   text,
   v.check((value) => !/[\r\n\0]/.test(value)),
 )
+
 const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('path'), path: nonemptyText }),
   v.strictObject({
@@ -82,12 +87,14 @@ export function parsePreparedAttachment(input: unknown): PreparedAttachment {
   if (typeof input !== 'object' || input === null) {
     throw new DesktopError('InvalidInput', 'Invalid prepared attachment')
   }
+
   const value = input as Partial<PreparedAttachment>
   parseValue(id, value.attachmentId)
   parseReadResourceRef(value.resource)
   if (typeof value.dispose !== 'function') {
     throw new DesktopError('InvalidInput', 'Prepared attachment must own a release operation')
   }
+
   return value as PreparedAttachment
 }
 

@@ -17,6 +17,7 @@ function fields(names: readonly string[]) {
     v.check((values) => unique(values, (value) => value)),
   )
 }
+
 function objectRequest(names: readonly string[], withRefs: boolean) {
   return v.strictObject({
     fields: fields(names),
@@ -36,12 +37,14 @@ export function parseMetadataReadRequest(root: EntryType, input: unknown): Metad
       v.exactOptional(objectRequest(getMetadataEntryFields(type), true)),
     ]),
   )
+
   const parts = Object.fromEntries(
     Object.entries(metadataPartKinds[root]).map(([slot, type]) => [
       slot,
       v.exactOptional(objectRequest(getMetadataPartFields(type), true)),
     ]),
   )
+
   const relations = Object.fromEntries(
     getMetadataRelations(root).map((relation) => [
       relation,
@@ -83,9 +86,11 @@ export function requireMetadataRequestSupport<T extends EntryType>(
 ): void {
   const request = parseMetadataReadRequest(root, requested)
   const available = parseMetadataReadRequest(root, supported)
+
   interface RequestedFields {
     readonly fields: readonly PropertyKey[]
   }
+
   function objectFields(
     request: RequestedFields | undefined,
     support: RequestedFields | undefined,
@@ -100,11 +105,13 @@ export function requireMetadataRequestSupport<T extends EntryType>(
       )
     }
   }
+
   objectFields(request.objects?.entry, available.objects?.entry)
   objectFields(request.objects?.tags, available.objects?.tags)
   for (const type of entryTypes) {
     objectFields(request.objects?.relatedEntries?.[type], available.objects?.relatedEntries?.[type])
   }
+
   const wantedParts:
     Partial<Record<'episode' | 'extra' | 'volume' | 'chapter', RequestedFields>> | undefined =
     request.objects && 'parts' in request.objects ? request.objects.parts : undefined
@@ -113,6 +120,7 @@ export function requireMetadataRequestSupport<T extends EntryType>(
   for (const slot of ['episode', 'extra', 'volume', 'chapter'] as const) {
     objectFields(wantedParts?.[slot], offeredParts?.[slot])
   }
+
   const wantedRelations: Partial<Record<MetadataRelationKey, RequestedFields>> | undefined =
     request.relations
   const offeredRelations: typeof wantedRelations = available.relations

@@ -41,12 +41,14 @@ const counts = v.strictObject({
   withFiles: nonnegativeInteger,
   accessible: nonnegativeInteger,
 })
+
 function classifiedCounts(keys: readonly string[]) {
   return v.strictObject({
     ...counts.entries,
     byType: v.strictObject(Object.fromEntries(keys.map((key) => [key, counts]))),
   })
 }
+
 const partCountSchemas = {
   anime: v.strictObject({
     animeEpisode: classifiedCounts(['regular', 'special', 'unknown']),
@@ -62,24 +64,30 @@ const partCountSchemas = {
   comic: v.strictObject({ comicVolume: counts, comicChapter: counts }),
   novel: v.strictObject({ novelVolume: counts }),
 }
+
 const date = v.nullable(partialDateSchema)
 const count = v.nullable(nonnegativeInteger)
+
 const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>, v.GenericSchema>> =
   {
     originalName: v.nullable(text),
     sortName: v.nullable(text),
     primaryImageId: v.nullable(id),
+
     isNsfw: v.boolean(),
     favorite: v.boolean(),
     rating: v.nullable(rating),
+
     addedDate: date,
     effectiveAddedDate: partialDateSchema,
     createdAt: timestamp,
     updatedAt: timestamp,
+
     releaseDate: date,
     originalLanguages: v.array(languageSchema),
     status: v.nullable(statusSchema),
     additionalDurationMs: nonnegativeInteger,
+
     releaseStatus: v.nullable(releaseStatusSchema),
     releaseEndDate: date,
     declaredDurationMs: count,
@@ -88,6 +96,7 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     declaredPageCount: count,
     declaredVolumeCount: count,
     declaredChapterCount: count,
+
     birthDate: date,
     gender: v.nullable(genderSchema),
     deathDate: date,
@@ -99,13 +108,16 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     waist: v.nullable(measureSchema),
     hips: v.nullable(measureSchema),
     cupSize: v.nullable(text),
+
     foundedDate: date,
     dissolvedDate: date,
+
     totalDurationMs: nonnegativeInteger,
     lastActiveAt: v.nullable(timestamp),
     completionCount: nonnegativeInteger,
     firstCompletedDate: v.nullable(calendarDateSchema),
     lastCompletedDate: v.nullable(calendarDateSchema),
+
     registeredFileCount: nonnegativeInteger,
     accessibleFileCount: nonnegativeInteger,
     uncheckedFileCount: nonnegativeInteger,
@@ -121,6 +133,7 @@ export function parseEntryListItem(
     input,
     'Invalid entry projection',
   )
+
   const selected: Record<string, v.GenericSchema> = {}
   for (const field of fields) {
     if (!entryFieldTypes[field].includes(type)) {
@@ -134,6 +147,7 @@ export function parseEntryListItem(
       selected[field] = fieldSchemas[field]
     }
   }
+
   return parseValue(
     v.strictObject({ ...selected, id, type: v.literal(type), name: nonemptyText }),
     input,
@@ -160,6 +174,7 @@ export function parseEntryListResult(
     input,
     'Invalid entry list result',
   )
+
   const types = new Set(query.rules.filter((rule) => rule.enabled).flatMap((rule) => rule.types))
   if (
     value.items.some((item) => !types.has(item.type)) ||
@@ -172,6 +187,7 @@ export function parseEntryListResult(
       'Entry interval does not match its complete result count or type range',
     )
   }
+
   return value
 }
 
@@ -185,6 +201,7 @@ export function parseEntryLocateResult(
   if (input === null) {
     return null
   }
+
   const value = parseValue(
     v.strictObject({
       index: nonnegativeInteger,
@@ -199,6 +216,7 @@ export function parseEntryLocateResult(
   if (value.offset !== offset) {
     throw new DesktopError('InvalidInput', 'Located interval has an inconsistent offset')
   }
+
   const interval = parseEntryListResult({ total: value.total, items: value.items }, query, {
     ...options,
     offset,
@@ -210,6 +228,7 @@ export function parseEntryLocateResult(
       'Located interval does not contain its target at the reported index',
     )
   }
+
   return { ...interval, index: value.index, offset }
 }
 
@@ -247,5 +266,6 @@ export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
   if (value.groups.at(-1)?.key.type !== 'unclassified') {
     throw new DesktopError('InvalidInput', 'Entry groups must end with the unclassified group')
   }
+
   return value
 }

@@ -22,6 +22,7 @@ export function parseAbsolutePath(input: unknown): string {
   ) {
     throw new DesktopError('InvalidInput', 'An explicit absolute filesystem path is required')
   }
+
   return value
 }
 
@@ -38,6 +39,7 @@ export function parseRelativePath(input: unknown): string {
   ) {
     throw new DesktopError('InvalidInput', 'Expected a root-relative slash-separated path')
   }
+
   return value
 }
 
@@ -67,6 +69,7 @@ export function parsePathFilter(input: unknown): PathFilter {
       'A recursive glob wildcard must occupy a complete path segment',
     )
   }
+
   return value
 }
 
@@ -74,14 +77,17 @@ function segmentMatches(pattern: string, value: string, ignoreCase: boolean): bo
   const characters = Array.from(value)
   let previous = new Array<boolean>(characters.length + 1).fill(false)
   previous[0] = true
+
   for (const token of pattern) {
     const current = new Array<boolean>(characters.length + 1).fill(false)
     current[0] = token === '*' && previous[0]!
+
     // Native case folding only compares one escaped literal point; user regex structure is never evaluated.
     const literal =
       ignoreCase && token !== '*' && token !== '?'
         ? new RegExp(`^(?:${token.replace(/[\\^$.*+?()[\]{}|/]/g, '\\$&')})$`, 'iu')
         : null
+
     for (let index = 1; index <= characters.length; index += 1) {
       current[index] =
         token === '*'
@@ -92,6 +98,7 @@ function segmentMatches(pattern: string, value: string, ignoreCase: boolean): bo
     }
     previous = current
   }
+
   return previous[characters.length]!
 }
 
@@ -109,10 +116,12 @@ export function matchesPathFilter(
   if (parsed.kind === 'path') {
     return pathEquals(parsed.path, path)
   }
+
   const patterns = parsed.pattern === '.' ? [] : parsed.pattern.split('/')
   const parts = path === '.' ? [] : path.split('/')
   let previous = new Array<boolean>(parts.length + 1).fill(false)
   previous[0] = true
+
   for (const segment of patterns) {
     const current = new Array<boolean>(parts.length + 1).fill(false)
     current[0] = segment === '**' && previous[0]!
@@ -124,6 +133,7 @@ export function matchesPathFilter(
     }
     previous = current
   }
+
   return previous[parts.length]!
 }
 
@@ -132,6 +142,7 @@ export function fileRuleBaseName(name: string, kind: 'file' | 'directory'): stri
   if (kind === 'directory') {
     return name
   }
+
   const extension = name.lastIndexOf('.')
   return extension > 0 ? name.slice(0, extension) : name
 }

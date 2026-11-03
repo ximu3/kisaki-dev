@@ -32,7 +32,9 @@ export const entryTypes = Object.freeze([
   'person',
   'organization',
 ] as const)
+
 export const workTypes = Object.freeze(['game', 'anime', 'comic', 'novel'] as const)
+
 export const partTypes = Object.freeze([
   'novelVolume',
   'comicVolume',
@@ -51,6 +53,7 @@ export interface EntryRef<T extends EntryType = EntryType> {
   readonly type: T
   readonly id: string
 }
+
 export type WorkRef<T extends WorkType = WorkType> = EntryRef<T>
 
 /** Part identities are scoped by kind, with actual ownership supplied or read separately. */
@@ -100,10 +103,13 @@ export interface EntryCommonFields {
   readonly originalName: string | null
   readonly sortName: string | null
   readonly aliases: readonly string[]
+
   readonly description: string | null
   readonly primaryImageId: string | null
+
   readonly externalLinks: readonly ExternalLink[]
   readonly externalIdentities: readonly ExternalIdentity[]
+
   readonly isNsfw: boolean
   readonly addedDate: PartialDate | null
 }
@@ -112,6 +118,7 @@ export interface EntryCommonFields {
 export interface WorkFields {
   readonly releaseDate: PartialDate | null
   readonly originalLanguages: readonly LanguageTag[]
+
   readonly backdropImageId: string | null
   readonly titleLogoId: string | null
 }
@@ -127,6 +134,7 @@ export interface CharacterFields {
   readonly birthDate: PartialDate | null
   readonly gender: Gender | null
   readonly bloodType: BloodType | null
+
   readonly age: CharacterMeasure | null
   readonly height: CharacterMeasure | null
   readonly weight: CharacterMeasure | null
@@ -139,29 +147,34 @@ export interface CharacterFields {
 /** Explicit per-kind field ownership. Declared counts and duration are nullable nonnegative safe integers. */
 export interface EntrySpecificFields {
   readonly game: WorkFields & { readonly iconImageId: string | null }
+
   readonly anime: WorkFields &
     SerialWorkFields & {
       readonly declaredDurationMs: number | null
       readonly declaredRegularEpisodeCount: number | null
       readonly declaredSpecialEpisodeCount: number | null
     }
+
   readonly comic: WorkFields &
     SerialWorkFields & {
       readonly declaredPageCount: number | null
       readonly declaredVolumeCount: number | null
       readonly declaredChapterCount: number | null
     }
+
   readonly novel: WorkFields &
     SerialWorkFields & {
       readonly declaredPageCount: number | null
       readonly declaredVolumeCount: number | null
     }
+
   readonly character: CharacterFields
   readonly person: {
     readonly birthDate: PartialDate | null
     readonly deathDate: PartialDate | null
     readonly gender: Gender | null
   }
+
   readonly organization: {
     readonly foundedDate: PartialDate | null
     readonly dissolvedDate: PartialDate | null
@@ -208,6 +221,7 @@ export interface EntryTagInput {
   readonly note?: string | null
   readonly isSpoiler?: boolean
 }
+
 export interface EntryCollectionInput {
   readonly collectionId: string
   readonly note?: string | null
@@ -221,6 +235,7 @@ export type EntryTagChange =
       readonly add?: readonly EntryTagInput[]
       readonly remove?: readonly string[]
     }
+
 export type EntryCollectionChange =
   | { readonly type: 'replace'; readonly items: readonly EntryCollectionInput[] }
   | {
@@ -293,21 +308,26 @@ export const workRefSchema = v.strictObject({ type: v.picklist(workTypes), id })
 export const partRefSchema = v.strictObject({ type: v.picklist(partTypes), id })
 export const partialDateSchema = v.pipe(v.unknown(), v.transform(parsePartialDate))
 export const calendarDateSchema = v.pipe(v.unknown(), v.transform(parseCalendarDate))
+
 export const languageSchema = v.pipe(
   nonemptyText,
   v.transform((value) => parseExternalValue(normalizeLocale, value, 'Invalid language tag')),
 )
+
 export const identitySchema = v.strictObject({
   source: v.pipe(nonemptyText, v.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   sourceId: nonemptyText,
 })
+
 export const identitiesSchema = v.pipe(
   v.array(identitySchema),
   v.check((items) => unique(items, identityKey)),
 )
+
 export const externalLinkSchema = v.strictObject({ name: nonemptyText, url: nonemptyText })
 export const genderSchema = v.picklist(['male', 'female', 'nonBinary', 'genderless', 'other'])
 export const statusSchema = v.picklist(['planned', 'active', 'onHold'])
+
 export const releaseStatusSchema = v.picklist([
   'planned',
   'ongoing',
@@ -315,15 +335,19 @@ export const releaseStatusSchema = v.picklist([
   'paused',
   'cancelled',
 ])
+
 export const measureSchema = v.variant('kind', [
   v.strictObject({ kind: v.literal('number'), value: nonnegativeNumber }),
   v.strictObject({ kind: v.literal('text'), value: nonemptyText }),
 ])
+
 export const evaluationEntries = { rating: v.nullable(rating), favorite: v.boolean() }
+
 export const recordEntries = {
   status: v.nullable(statusSchema),
   additionalDurationMs: nonnegativeInteger,
 }
+
 export const completionFieldsSchema = v.strictObject({
   completedDate: v.nullable(calendarDateSchema),
   note: v.pipe(
@@ -331,20 +355,25 @@ export const completionFieldsSchema = v.strictObject({
     v.transform((value) => (value === null || value.trim().length === 0 ? null : value)),
   ),
 })
+
 export const entryTagEntries = { tagId: id, note: v.nullable(text), isSpoiler: v.boolean() }
 export const entryCollectionEntries = { collectionId: id, note: v.nullable(text) }
+
 export const entryTagInputSchema = v.strictObject({
   tagId: id,
   ...optionalFields({ note: v.nullable(text), isSpoiler: v.boolean() }),
 })
+
 export const entryCollectionInputSchema = v.strictObject({
   collectionId: id,
   note: v.exactOptional(v.nullable(text)),
 })
+
 export const entryTagsSchema = v.pipe(
   v.array(v.strictObject(entryTagEntries)),
   v.check((items) => unique(items, (item) => item.tagId)),
 )
+
 export const entryCollectionsSchema = v.pipe(
   v.array(v.strictObject(entryCollectionEntries)),
   v.check((items) => unique(items, (item) => item.collectionId)),
@@ -352,33 +381,42 @@ export const entryCollectionsSchema = v.pipe(
 
 const nullableDate = v.nullable(partialDateSchema)
 const nullableCount = v.nullable(nonnegativeInteger)
+
 export const entryCommonEntries = {
   name: nonemptyText,
   originalName: v.nullable(text),
   sortName: v.nullable(text),
   aliases: v.array(nonemptyText),
+
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
+
   externalLinks: v.array(externalLinkSchema),
   externalIdentities: identitiesSchema,
+
   isNsfw: v.boolean(),
   addedDate: nullableDate,
 }
+
 const workEntries = {
   releaseDate: nullableDate,
   originalLanguages: v.pipe(
     v.array(languageSchema),
     v.check((items) => unique(items, (item) => item)),
   ),
+
   backdropImageId: v.nullable(id),
   titleLogoId: v.nullable(id),
 }
+
 const serialEntries = {
   releaseStatus: v.nullable(releaseStatusSchema),
   releaseEndDate: nullableDate,
 }
+
 export const entrySpecificEntries = {
   game: { ...workEntries, iconImageId: v.nullable(id) },
+
   anime: {
     ...workEntries,
     ...serialEntries,
@@ -386,6 +424,7 @@ export const entrySpecificEntries = {
     declaredRegularEpisodeCount: nullableCount,
     declaredSpecialEpisodeCount: nullableCount,
   },
+
   comic: {
     ...workEntries,
     ...serialEntries,
@@ -393,16 +432,19 @@ export const entrySpecificEntries = {
     declaredVolumeCount: nullableCount,
     declaredChapterCount: nullableCount,
   },
+
   novel: {
     ...workEntries,
     ...serialEntries,
     declaredPageCount: nullableCount,
     declaredVolumeCount: nullableCount,
   },
+
   character: {
     birthDate: nullableDate,
     gender: v.nullable(genderSchema),
     bloodType: v.nullable(v.picklist(['a', 'b', 'ab', 'o'])),
+
     age: v.nullable(measureSchema),
     height: v.nullable(measureSchema),
     weight: v.nullable(measureSchema),
@@ -411,7 +453,9 @@ export const entrySpecificEntries = {
     hips: v.nullable(measureSchema),
     cupSize: v.nullable(text),
   },
+
   person: { birthDate: nullableDate, deathDate: nullableDate, gender: v.nullable(genderSchema) },
+
   organization: { foundedDate: nullableDate, dissolvedDate: nullableDate },
 } as const
 
@@ -429,22 +473,27 @@ export function identityKey(value: ExternalIdentity): string {
 export function parseEntryRef(input: unknown): EntryRef {
   return parseValue(entryRefSchema, input, 'Invalid entry reference')
 }
+
 /** Validate that a reference uses one of the four work types. */
 export function parseWorkRef(input: unknown): WorkRef {
   return parseValue(workRefSchema, input, 'Invalid work reference')
 }
+
 /** Validate a real part reference; ownership is a separate business check. */
 export function parsePartRef(input: unknown): PartRef {
   return parseValue(partRefSchema, input, 'Invalid part reference')
 }
+
 /** Validate a complete source identity while preserving sourceId bytes as text. */
 export function parseExternalIdentity(input: unknown): ExternalIdentity {
   return parseValue(identitySchema, input, 'Invalid external identity')
 }
+
 /** Require the same exact identity only once; multiple different IDs from the same source are legal. */
 export function parseExternalIdentities(input: unknown): readonly ExternalIdentity[] {
   return parseValue(identitiesSchema, input, 'Invalid external identities')
 }
+
 /** Normalize the language tag through the distribution package's shared canonicalization rule. */
 export function parseLanguageTag(input: unknown): LanguageTag {
   return parseValue(languageSchema, input, 'Invalid language tag')
@@ -484,6 +533,7 @@ export function membershipSchema<T extends v.GenericSchema>(
 }
 
 export const entryTagChangeSchema = membershipSchema(entryTagInputSchema, (item) => item.tagId)
+
 export const entryCollectionChangeSchema = membershipSchema(
   entryCollectionInputSchema,
   (item) => item.collectionId,
@@ -493,6 +543,7 @@ export const entryCollectionChangeSchema = membershipSchema(
 export function parseEntryTagChange(input: unknown): EntryTagChange {
   return parseValue(entryTagChangeSchema, input, 'Invalid entry tag change')
 }
+
 /** Parse collection intent; its item order never creates an entry-side collection order. */
 export function parseEntryCollectionChange(input: unknown): EntryCollectionChange {
   return parseValue(entryCollectionChangeSchema, input, 'Invalid entry collection change')
@@ -538,6 +589,7 @@ export function parseEntryCreate(input: unknown): EntryCreateInput {
     input,
     'Invalid entry creation',
   )
+
   // The selected schema and its work-only fields were chosen by the validated discriminator.
   return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreateInput
 }
@@ -576,6 +628,7 @@ export function parseEntryUpdate(input: unknown): EntryUpdate {
     input,
     'Invalid entry edit',
   )
+
   validateExpectedKeys(value.changes, value.expected)
   validateExpectedKeys(value.changes.evaluation ?? {}, value.expected?.evaluation)
   if (isWorkType(ref.type)) {
@@ -583,6 +636,7 @@ export function parseEntryUpdate(input: unknown): EntryUpdate {
     const expected = value.expected as EntryExpected<WorkType> | undefined
     validateExpectedKeys(changes.record ?? {}, expected?.record)
   }
+
   for (const key of ['tags', 'collections'] as const) {
     if (
       value.expected &&
@@ -595,6 +649,7 @@ export function parseEntryUpdate(input: unknown): EntryUpdate {
       )
     }
   }
+
   return value as EntryUpdate
 }
 

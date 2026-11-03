@@ -26,10 +26,12 @@ export type NormalizedQuad = readonly [
 const unit = v.pipe(v.number(), v.finite(), v.minValue(0), v.maxValue(1))
 const extent = v.pipe(unit, v.gtValue(0))
 const pointSchema = v.strictObject({ x: unit, y: unit })
+
 const rectSchema = v.pipe(
   v.strictObject({ x: unit, y: unit, width: extent, height: extent }),
   v.check((rect) => rect.x + rect.width <= 1 && rect.y + rect.height <= 1),
 )
+
 const quadSchema = v.pipe(
   v.strictTuple([pointSchema, pointSchema, pointSchema, pointSchema]),
   v.check((points) => {
@@ -37,6 +39,7 @@ const quadSchema = v.pipe(
     if (points.some((point) => point.y < first.y || (point.y === first.y && point.x < first.x))) {
       return false
     }
+
     return points.every((a, index) => {
       const b = points[(index + 1) % 4]!
       const c = points[(index + 2) % 4]!

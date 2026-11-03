@@ -27,6 +27,7 @@ const test = consumerTest('browser')
         },
       },
     })
+
     const server = await preview({
       root: consumerDirectory,
       configFile: false,
@@ -39,6 +40,7 @@ const test = consumerTest('browser')
           server.httpServer.close((error) => (error ? reject(error) : resolve())),
         ),
     )
+
     return server.resolvedUrls!.local[0]!
   })
   .extend('page', async ({ browser }, { onCleanup }) => {
@@ -52,16 +54,20 @@ test('browser-only globals compile the public contract and generated call associ
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
+
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 })
+
 test('pure values and literal-tag ICU messages run in the main document and an iframe', async ({
   page,
   siteUrl,
 }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
+
   await page.goto(siteUrl)
   await page.locator('body[data-ready="true"]').waitFor()
+
   expect(JSON.parse((await page.locator('#summary').textContent())!)).toEqual({
     date: { year: 2004 },
     entryType: 'game',
@@ -72,7 +78,9 @@ test('pure values and literal-tag ICU messages run in the main document and an i
     themeFont: 'default',
     protocol: 1,
   })
+
   await page.frameLocator('#view').locator('body[data-ready="true"]').waitFor()
+
   expect(await page.frameLocator('#view').locator('body').textContent()).toBe(
     '<b>{literal}</b> · 2',
   )

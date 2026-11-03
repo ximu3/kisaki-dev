@@ -611,20 +611,28 @@ export interface LibraryApi {
   readonly entries: EntriesApi
   readonly parts: PartsApi
   readonly relations: RelationsApi
+
   readonly collections: CollectionsApi
   readonly tags: TagsApi
+
   readonly notes: NotesApi
   readonly annotations: AnnotationsApi
+
   readonly activities: ActivitiesApi
   readonly completions: CompletionsApi
+
   readonly holdings: HoldingsApi
   readonly showcase: ShowcaseApi
+
   /** Prepare resources, recheck actual references/baselines and commit the complete graph atomically. */
   writeGraph(input: LibraryWriteGraph, call?: CallOptions): Promise<LibraryWriteResult>
+
   /** Apply fixed same-kind merge rules and preserve the explicitly selected survivor; no fuzzy matching or field-choice preview. */
   merge<I extends EntryMergeInput>(input: I, call?: CallOptions): Promise<I['target']>
+
   /** Delete each selected entry's complete owned scope atomically, preserving independent notes and user media bytes. */
   delete(refs: NonEmptyArray<EntryRef>, call?: CallOptions): Promise<void>
+
   /** Subscribe before the first read. An invalidation during a read requires another read; it never replaces an editing draft. */
   onInvalidated(listener: (value: LibraryInvalidation) => void): Disposable
 }

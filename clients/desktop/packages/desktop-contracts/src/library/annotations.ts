@@ -19,20 +19,24 @@ export interface AnnotationRef<T extends WorkType = WorkType> {
   readonly workType: T
   readonly id: string
 }
+
 /** Saved targets may lose a file reference through explicit file-record deletion while retaining historical content. */
 export interface AnnotationTargetByType {
   readonly game: { readonly imageId: string }
+
   readonly anime: {
     readonly fileId: string | null
     readonly location: PlaybackAnnotationLocation
     readonly imageId: string | null
   }
+
   readonly comic: {
     readonly fileId: string | null
     readonly location: ReadingAnnotationLocation
     readonly quote: string | null
     readonly imageId: string | null
   }
+
   readonly novel: {
     readonly fileId: string | null
     readonly location: ReadingAnnotationLocation
@@ -40,7 +44,9 @@ export interface AnnotationTargetByType {
     readonly imageId: string | null
   }
 }
+
 type WorkId<K extends WorkType> = { readonly [P in `${K}Id`]: string }
+
 type NewTarget<K extends WorkType> = K extends 'game'
   ? AnnotationTargetByType[K]
   : Omit<AnnotationTargetByType[K], 'fileId'> & { readonly fileId: string }
@@ -92,6 +98,7 @@ export type AnnotationScope =
       readonly work: EntryRef<'anime' | 'comic' | 'novel'>
       readonly fileId: string
     }
+
 /** Optional arrays distinguish omission from an explicit empty result. All constraints intersect ordinary visibility. */
 export interface AnnotationQuery {
   readonly scope: AnnotationScope
@@ -99,6 +106,7 @@ export interface AnnotationQuery {
   readonly workTypes?: readonly WorkType[]
   readonly refs?: readonly AnnotationRef[]
 }
+
 export type AnnotationPositionHint =
   | { readonly type: 'video'; readonly startSeconds: number; readonly endSeconds: number | null }
   | { readonly type: 'page'; readonly page: ReadingPageRef }
@@ -108,15 +116,19 @@ export interface AnnotationSummary {
   readonly ref: AnnotationRef
   readonly work: WorkRef
   readonly fileId: string | null
+
   readonly title: string | null
   readonly quoteExcerpt: string | null
   readonly contentExcerpt: string | null
   readonly imageId: string | null
+
   readonly locationKind: 'image' | 'position' | 'range' | 'text' | 'region'
   readonly positionHint: AnnotationPositionHint | null
+
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 /** Lightweight original locations for a live file's content-order index, without saved text or images. */
 export type AnnotationLocationItem =
   | {
@@ -129,6 +141,7 @@ export type AnnotationLocationItem =
       readonly location: ReadingAnnotationLocation
       readonly createdAt: number
     }
+
 export interface AnnotationLocationResult {
   readonly items: readonly AnnotationLocationItem[]
   readonly total: number
@@ -147,6 +160,7 @@ export interface AnnotationsApi {
     options: ListOptions,
     call?: CallOptions,
   ): Promise<AnnotationLocationResult>
+
   create(input: AnnotationCreate, call?: CallOptions): Promise<string>
   update(
     ...args: {
@@ -157,21 +171,26 @@ export interface AnnotationsApi {
 }
 
 export const annotationRefSchema = v.strictObject({ workType: v.picklist(workTypes), id })
+
 export const nullableTitleSchema = v.pipe(
   v.nullable(text),
   v.transform((value) => value?.trim() || null),
 )
+
 const readingLocation = v.pipe(v.unknown(), v.transform(parseReadingAnnotationLocation))
 const playbackLocation = v.pipe(v.unknown(), v.transform(parsePlaybackAnnotationLocation))
+
 const targetEntries = {
   game: { imageId: id },
   anime: { fileId: v.nullable(id), location: playbackLocation, imageId: v.nullable(id) },
+
   comic: {
     fileId: v.nullable(id),
     location: readingLocation,
     quote: v.nullable(text),
     imageId: v.nullable(id),
   },
+
   novel: {
     fileId: v.nullable(id),
     location: readingLocation,
@@ -179,6 +198,7 @@ const targetEntries = {
     imageId: v.nullable(id),
   },
 }
+
 const targetSchemas = {
   game: v.strictObject(targetEntries.game),
   anime: v.strictObject(targetEntries.anime),
@@ -190,6 +210,7 @@ const targetSchemas = {
 export function parseAnnotationRef(input: unknown): AnnotationRef {
   return parseValue(annotationRefSchema, input, 'Invalid annotation reference')
 }
+
 /** Validate a precise query; duplicate identities are invalid and empty arrays stay empty. */
 export function parseAnnotationQuery(input: unknown): AnnotationQuery {
   return parseValue(
@@ -290,5 +311,6 @@ export function parseAnnotationUpdate(ref: AnnotationRef, input: unknown): Annot
       'An annotation edit cannot detach an existing file reference',
     )
   }
+
   return value
 }

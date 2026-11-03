@@ -7,7 +7,9 @@ import { nonemptyText, parseValue } from '../validation'
 export const shortcutKeys = Object.freeze([
   'main.search',
   'main.preferences',
+
   'editor.save',
+
   'reader.find',
   'reader.left',
   'reader.right',
@@ -20,6 +22,7 @@ export const shortcutKeys = Object.freeze([
   'reader.toggleAnnotations',
   'reader.toggleTiming',
   'reader.viewWork',
+
   'player.playPause',
   'player.seekBackward',
   'player.seekForward',
@@ -32,18 +35,22 @@ export const shortcutKeys = Object.freeze([
   'player.toggleAnnotations',
   'player.toggleTiming',
   'player.viewWork',
+
   'game.addAnnotation',
   'game.toggleAnnotations',
   'game.togglePanel',
   'game.toggleTiming',
   'game.viewWork',
 ] as const)
+
 export type ShortcutKey = (typeof shortcutKeys)[number]
+
 /** Empty accelerators means unbound. Enabled intent survives an operating-system registration failure. */
 export interface ShortcutPreferences {
   readonly enabled: boolean
   readonly accelerators: readonly string[]
 }
+
 export type ShortcutsPreferences = Readonly<Record<ShortcutKey, ShortcutPreferences>>
 export type DesktopPlatform = 'win32' | 'darwin' | 'linux'
 
@@ -63,6 +70,7 @@ const modifiers = new Map(
     meta: 'Super',
   }),
 )
+
 const modifierOrder = [
   'CommandOrControl',
   'Command',
@@ -73,6 +81,7 @@ const modifierOrder = [
   'Shift',
   'Super',
 ]
+
 const keyNames = [
   'Plus',
   'Space',
@@ -84,6 +93,7 @@ const keyNames = [
   'Delete',
   'Insert',
   'Return',
+
   'Up',
   'Down',
   'Left',
@@ -93,6 +103,7 @@ const keyNames = [
   'PageUp',
   'PageDown',
   'Escape',
+
   'VolumeUp',
   'VolumeDown',
   'VolumeMute',
@@ -100,7 +111,9 @@ const keyNames = [
   'MediaPreviousTrack',
   'MediaStop',
   'MediaPlayPause',
+
   'PrintScreen',
+
   ...Array.from({ length: 10 }, (_, index) => `num${index}`),
   'numdec',
   'numadd',
@@ -108,6 +121,7 @@ const keyNames = [
   'nummult',
   'numdiv',
 ]
+
 const keys = new Map(keyNames.map((key) => [key.toLowerCase(), key]))
 keys.set('enter', 'Return')
 keys.set('esc', 'Escape')
@@ -123,6 +137,7 @@ export function parseAccelerator(input: unknown): string {
   } else if (source.endsWith('++')) {
     normalized = `${source.slice(0, -1)}Plus`
   }
+
   const parts = normalized.split('+')
   const rawKey = parts.pop()!
   let key = keys.get(rawKey.toLowerCase())
@@ -133,10 +148,12 @@ export function parseAccelerator(input: unknown): string {
       key = rawKey
     }
   }
+
   const parsed = parts.map((part) => modifiers.get(part.toLowerCase()))
   if (!key || parsed.some((part) => part === undefined) || new Set(parsed).size !== parsed.length) {
     throw new DesktopError('InvalidInput', 'Invalid accelerator')
   }
+
   return [...modifierOrder.filter((part) => parsed.includes(part)), key].join('+')
 }
 
@@ -154,13 +171,16 @@ export function parseShortcutPreferences(input: unknown): ShortcutPreferences {
     'Invalid shortcut preferences',
   )
 }
+
 /** Defaults are product choices, never inferred from operating-system registration success. */
 export function getShortcutDefaults(platform: DesktopPlatform): ShortcutsPreferences {
   const fullScreen = platform === 'darwin' ? 'Command+Control+F' : 'F11'
   const bindings: Partial<Record<ShortcutKey, readonly string[]>> = {
     'main.search': ['CommandOrControl+Shift+F'],
     'main.preferences': ['CommandOrControl+,'],
+
     'editor.save': ['CommandOrControl+S'],
+
     'reader.find': ['CommandOrControl+F'],
     'reader.left': ['Left'],
     'reader.right': ['Right'],
@@ -171,6 +191,7 @@ export function getShortcutDefaults(platform: DesktopPlatform): ShortcutsPrefere
     'reader.fullscreen': [fullScreen],
     'reader.addAnnotation': ['CommandOrControl+Shift+A'],
     'reader.toggleAnnotations': ['CommandOrControl+Shift+L'],
+
     'player.playPause': ['Space'],
     'player.seekBackward': ['Left'],
     'player.seekForward': ['Right'],
@@ -181,6 +202,7 @@ export function getShortcutDefaults(platform: DesktopPlatform): ShortcutsPrefere
     'player.fullscreen': [fullScreen],
     'player.addAnnotation': ['CommandOrControl+Shift+A'],
     'player.toggleAnnotations': ['CommandOrControl+Shift+L'],
+
     'game.addAnnotation': ['Shift+F9'],
     'game.togglePanel': ['Shift+F8'],
   }
@@ -191,6 +213,7 @@ export function getShortcutDefaults(platform: DesktopPlatform): ShortcutsPrefere
     ]),
   ) as ShortcutsPreferences
 }
+
 export interface ShortcutConflict {
   readonly first: ShortcutKey
   readonly second: ShortcutKey
@@ -207,6 +230,7 @@ export function findShortcutConflicts(
     if (!preferences[key].enabled) {
       continue
     }
+
     for (const accelerator of preferences[key].accelerators) {
       const parts = parseAccelerator(accelerator).split('+')
       const code = parts.pop()!
@@ -224,6 +248,7 @@ export function findShortcutConflicts(
           if (part === 'Command' && platform !== 'darwin') {
             return []
           }
+
           return [part]
         }),
       )
@@ -235,6 +260,7 @@ export function findShortcutConflicts(
       })
     }
   }
+
   const conflicts: ShortcutConflict[] = []
   for (let index = 0; index < active.length; index++) {
     const first = active[index]!
@@ -250,5 +276,6 @@ export function findShortcutConflicts(
       }
     }
   }
+
   return conflicts
 }

@@ -33,49 +33,60 @@ import {
 } from './validation'
 
 export type { ColorScheme } from '@kisaki3/desktop-appearance/tokens'
+
 /** A selected definition keeps its origin and stable ID even while unavailable. */
 export type ThemeRef =
   | { readonly type: 'builtin'; readonly id: 'default' }
   | { readonly type: 'user'; readonly id: string }
   | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
+
 /** Private font files are relative to the theme's actual owning extension, never an arbitrary extension ID or URL. */
 export interface ExtensionFontFile {
   readonly scope: 'package' | 'data'
   readonly path: string
 }
+
 export type ThemeFont =
   | { readonly type: 'default' }
   | FontRef
   | { readonly type: 'extension'; readonly files: NonEmptyArray<ExtensionFontFile> }
+
 export type UserThemeFont = Exclude<ThemeFont, { readonly type: 'extension' }>
+
 /** All 45 vocabulary keys are present; only font slots replace CSS strings with stable desktop selections. */
 export type AppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, ThemeFont>
 >
+
 export type UserAppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, UserThemeFont>
 >
+
 export interface AppearancePreferences {
   readonly mode: 'system' | ColorScheme
   readonly interfaceScale: number
   readonly theme: ThemeRef
 }
+
 export interface Theme {
   readonly ref: ThemeRef
   readonly name: LocalizedText
   readonly light: AppearanceTokens
   readonly dark: AppearanceTokens
 }
+
 export interface ThemeDefinition {
   readonly name: LocalizedText
   readonly light: AppearanceTokens
   readonly dark: AppearanceTokens
 }
+
 export interface UserThemeCreate {
   readonly name: string
   readonly light: UserAppearanceTokens
   readonly dark: UserAppearanceTokens
 }
+
 /** Branch tokens compare individually. A font slot always replaces and compares its complete selection. */
 export interface UserThemeUpdate {
   readonly changes: {
@@ -89,35 +100,47 @@ export interface UserThemeUpdate {
     readonly dark?: Partial<UserAppearanceTokens>
   }
 }
+
 /** Fixed acquired bytes and parsed metadata; a system family has no file mapping in its slot. */
 export interface ThemeFontResourceFile {
   readonly resource: ReadResourceRef
   readonly metadata: FontFileMetadata
 }
+
 export type ThemeFontResources = Readonly<
   Record<ColorScheme, Readonly<Partial<Record<FontTokenName, readonly ThemeFontResourceFile[]>>>>
 >
+
 export interface ThemeRead {
   readonly theme: Theme
   readonly fontResources: ThemeFontResources
+
   dispose(): Promise<void>
 }
+
 /** Definition replacement is complete and atomic; registration removal does not revoke already held reads. */
 export interface ThemeRegistration {
   readonly ref: Extract<ThemeRef, { readonly type: 'extension' }>
+
   update(input: ThemeDefinition, call?: CallOptions): Promise<void>
+
   dispose(): Promise<void>
 }
+
 export interface AppearancePreviewInput {
   readonly colorScheme: ColorScheme
   readonly tokens: AppearanceTokens
 }
+
 /** One actual view owns a preview; takeover ends the previous handle, and late updates cannot affect the new owner. */
 export interface AppearancePreview {
   update(input: AppearancePreviewInput): Promise<void>
+
   dispose(): Promise<void>
+
   onDispose(listener: () => void): Disposable
 }
+
 /** Document-specific, loadable font resources. Native FontFace instances and release duties stay with the document. */
 export interface ViewFontFace {
   readonly family: string
@@ -131,12 +154,14 @@ export interface ViewFontFace {
     readonly featureSettings?: string
   }
 }
+
 export interface ViewAppearance {
   readonly colorScheme: ColorScheme
   readonly interfaceScale: number
   readonly cssVariables: TokenValues
   readonly fontFaces: readonly ViewFontFace[]
 }
+
 export type AppearanceIssue =
   | { readonly code: 'themeUnavailable'; readonly ref: ThemeRef; readonly error: ErrorSummary }
   | {
@@ -145,6 +170,7 @@ export type AppearanceIssue =
       readonly font: ThemeFont
       readonly error: ErrorSummary
     }
+
 /** Effective app appearance, with no view URLs. Null theme denotes a live unsaved preview rather than a saved identity. */
 export interface AppearanceState {
   readonly theme: ThemeRef | null
@@ -153,10 +179,12 @@ export interface AppearanceState {
   readonly tokens: AppearanceTokens
   readonly issues: readonly AppearanceIssue[]
 }
+
 /** The complete desktop theme surface; the SDK binds register's complete ref to the real extension before forwarding. */
 export interface ThemesApi {
   list(call?: CallOptions): Promise<readonly Pick<Theme, 'ref' | 'name'>[]>
   get(ref: ThemeRef, call?: CallOptions): Promise<Theme | null>
+
   create(
     input: UserThemeCreate,
     call?: CallOptions,
@@ -168,19 +196,25 @@ export interface ThemesApi {
   ): Promise<Extract<ThemeRef, { readonly type: 'user' }>>
   update(id: string, input: UserThemeUpdate, call?: CallOptions): Promise<void>
   delete(id: string, call?: CallOptions): Promise<void>
+
   open(ref: ThemeRef, call?: CallOptions): Promise<ThemeRead>
+
   register(
     ref: Extract<ThemeRef, { readonly type: 'extension' }>,
     input: ThemeDefinition,
     call?: CallOptions,
   ): Promise<ThemeRegistration>
+
   onInvalidated(listener: () => void): Disposable
 }
+
 /** Saving the selected theme/mode/scale belongs solely to preferences; preview never writes that selection. */
 export interface AppearanceApi {
   readonly themes: ThemesApi
+
   getState(call?: CallOptions): Promise<AppearanceState>
   observe(listener: Listener<AppearanceState>, call?: CallOptions): Promise<Disposable>
+
   preview(input: AppearancePreviewInput, call?: CallOptions): Promise<AppearancePreview>
 }
 
@@ -196,8 +230,10 @@ const themeRef = v.variant('type', [
     id,
   }),
 ])
+
 const colorScheme = v.picklist(['light', 'dark'])
 const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
+
 const extensionFile = v.strictObject({
   scope: v.picklist(['package', 'data']),
   path: v.pipe(
@@ -212,6 +248,7 @@ const extensionFile = v.strictObject({
 export function parseThemeRef(input: unknown): ThemeRef {
   return parseValue(themeRef, input, 'Invalid theme reference')
 }
+
 /** Validate resource selections; only an owning extension theme can adopt its private file branch. */
 export function parseThemeFont(input: unknown): ThemeFont {
   const { type } = parseValue(
@@ -224,6 +261,7 @@ export function parseThemeFont(input: unknown): ThemeFont {
   if (type === 'system' || type === 'user') {
     return parseFontRef(input)
   }
+
   return parseValue(
     v.strictObject({
       type: v.literal('extension'),
@@ -247,6 +285,7 @@ function parseTokens(
   ) {
     throw new DesktopError('InvalidInput', 'Appearance tokens must use the exact shared vocabulary')
   }
+
   const entries = keys.map((key) => {
     const name = key as TokenName
     if (name === '--font-sans' || name === '--font-mono') {
@@ -257,8 +296,10 @@ function parseTokens(
           'A user theme cannot retain extension-private font paths',
         )
       }
+
       return [name, font] as const
     }
+
     return [
       name,
       parseExternalValue(
@@ -275,6 +316,7 @@ function parseTokens(
 export function parseAppearanceTokens(input: unknown): AppearanceTokens {
   return parseTokens(input, false, false) as AppearanceTokens
 }
+
 /** Validate complete saved selection and scale while preserving unavailable stable references. */
 export function parseAppearancePreferences(input: unknown): AppearancePreferences {
   return parseValue(
@@ -287,6 +329,7 @@ export function parseAppearancePreferences(input: unknown): AppearancePreference
     'Invalid appearance preferences',
   )
 }
+
 /** New user themes own two complete branches and cannot retain an extension's private lifetime. */
 export function parseUserThemeCreate(input: unknown): UserThemeCreate {
   const branch = v.pipe(
@@ -299,6 +342,7 @@ export function parseUserThemeCreate(input: unknown): UserThemeCreate {
     'Invalid user theme creation',
   )
 }
+
 /** Compare only changed tokens and complete font selections; independent changes in the other branch remain valid. */
 export function parseUserThemeUpdate(input: unknown): UserThemeUpdate {
   const branch = v.pipe(
@@ -314,8 +358,10 @@ export function parseUserThemeUpdate(input: unknown): UserThemeUpdate {
   for (const name of ['light', 'dark'] as const) {
     validateExpectedKeys(value.changes[name] ?? {}, value.expected?.[name])
   }
+
   return value
 }
+
 /** Normalize static names using the owning manifest's declared default locale, never the current UI language. */
 export function parseThemeDefinition(input: unknown, defaultLocale: string): ThemeDefinition {
   return parseValue(
@@ -337,6 +383,7 @@ export function parseThemeDefinition(input: unknown, defaultLocale: string): The
     'Invalid theme definition',
   )
 }
+
 /** Validate a preview's selected branch without asking for a saved identity or touching preference values. */
 export function parseAppearancePreviewInput(input: unknown): AppearancePreviewInput {
   return parseValue(
@@ -348,6 +395,7 @@ export function parseAppearancePreviewInput(input: unknown): AppearancePreviewIn
     'Invalid appearance preview',
   )
 }
+
 /** Validate the final per-document projection; resource binding and actual font loading remain separate host duties. */
 export function parseViewAppearance(input: unknown): ViewAppearance {
   return parseValue(
@@ -374,6 +422,7 @@ export function parseViewAppearance(input: unknown): ViewAppearance {
     'Invalid view appearance',
   )
 }
+
 /** Desktop defaults reuse the delivered visual values, replacing only the two font stacks with their default selections. */
 export function getDefaultTheme(): Theme {
   return {

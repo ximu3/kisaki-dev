@@ -34,11 +34,13 @@ export interface EntryIdentitySnapshot {
   readonly name: string
   readonly externalIdentities: readonly ExternalIdentity[]
 }
+
 export interface PartIdentitySnapshot {
   readonly ref: PartRef
   readonly name: string | null
   readonly externalIdentities: readonly ExternalIdentity[]
 }
+
 export type RelationIdentitySnapshot =
   | ({ readonly type: 'workCharacter'; readonly id: string } & WorkCharacterBinding)
   | ({ readonly type: 'personWork'; readonly id: string } & PersonWorkBinding)
@@ -48,14 +50,17 @@ export type RelationIdentitySnapshot =
       readonly id: string
       readonly binding: StoredWorkRelationBinding
     }
+
 type PartChangeContext = {
   [K in PartType]: { readonly part: PartRef<K>; readonly work: WorkRef<PartWorkType<K>> }
 }[PartType]
+
 type AnnotationChangeContext = {
   [K in WorkType]: { readonly annotationId: string; readonly work: WorkRef<K> } & (K extends 'game'
     ? object
     : { readonly fileId: string | null })
 }[WorkType]
+
 /** Only actual changed identities are included; a file merge retains both the removed and surviving identity. */
 export type HoldingsChangeContext = {
   [K in WorkType]: {
@@ -68,6 +73,7 @@ export type HoldingsChangeContext = {
         readonly fileMerged?: { readonly sourceFileId: string; readonly targetFileId: string }
       })
 }[WorkType]
+
 export type LibraryChange =
   | {
       readonly type: 'entryCreated' | 'entryUpdated' | 'evaluationChanged'
@@ -144,11 +150,13 @@ export type LibraryChange =
     }
   | ({ readonly type: 'holdingsChanged' } & HoldingsChangeContext)
   | { readonly type: 'showcaseChanged'; readonly sectionIds: readonly string[] }
+
 /** One successful complete operation emits its own fact boundary; no-change success emits nothing. */
 export interface LibraryChanged {
   readonly committedAt: number
   readonly changes: NonEmptyArray<LibraryChange>
 }
+
 export const libraryInvalidationAreas = Object.freeze([
   'entries',
   'parts',
@@ -161,7 +169,9 @@ export const libraryInvalidationAreas = Object.freeze([
   'holdings',
   'showcase',
 ] as const)
+
 export type LibraryInvalidationArea = (typeof libraryInvalidationAreas)[number]
+
 /** Areas may coalesce across operations; they never carry write commands, query snapshots or replacement drafts. */
 export interface LibraryInvalidation {
   readonly areas: NonEmptyArray<LibraryInvalidationArea>
@@ -172,29 +182,35 @@ const entrySnapshot = v.strictObject({
   name: nonemptyText,
   externalIdentities: identitiesSchema,
 })
+
 const partSnapshot = v.strictObject({
   ref: partRefSchema,
   name: v.nullable(text),
   externalIdentities: identitiesSchema,
 })
+
 const ids = v.pipe(
   v.array(id),
   v.check((values) => unique(values, (value) => value)),
 )
+
 const nonemptyIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((values) => unique(values, (value) => value)),
 )
+
 const entries = v.pipe(
   v.array(entryRefSchema),
   v.check((values) => unique(values, (value) => value.id)),
 )
+
 function assertPartWork(part: PartRef, work: WorkRef): void {
   const type = partWorkType(part.type)
   if (work.type !== type) {
     throw new DesktopError('InvalidInput', 'Part fact has the wrong work type')
   }
 }
+
 /** A relation fact keeps its real endpoints and role, without exposing arbitrary related objects. */
 export function parseRelationIdentitySnapshot(input: unknown): RelationIdentitySnapshot {
   const { type: typeInput, id: identityInput, ...originalBody } = readRecord(input)
@@ -212,6 +228,7 @@ export function parseRelationIdentitySnapshot(input: unknown): RelationIdentityS
   if (type === 'organizationWork') {
     return { type, id: identity, ...parseOrganizationWorkBinding(originalBody) }
   }
+
   return {
     type,
     id: identity,
@@ -221,6 +238,7 @@ export function parseRelationIdentitySnapshot(input: unknown): RelationIdentityS
     ),
   }
 }
+
 /** Validate actual-operation payloads, including media applicability and preserved kind-change/merge identities. */
 export function parseLibraryChange(input: unknown): LibraryChange {
   const value = parseValue(
@@ -323,14 +341,17 @@ export function parseLibraryChange(input: unknown): LibraryChange {
   ) {
     throw new DesktopError('InvalidInput', 'Merged entry identities must be distinct and same-kind')
   }
+
   if (value.type === 'collectionsMerged' || value.type === 'tagsMerged') {
     if (value.sourceIds.includes(value.targetId)) {
       throw new DesktopError('InvalidInput', 'A merge survivor cannot also be removed')
     }
   }
+
   if ('part' in value && 'work' in value) {
     assertPartWork(value.part, value.work)
   }
+
   if (value.type === 'partMoved') {
     assertPartWork(value.part, value.fromWork)
     assertPartWork(value.part, value.toWork)
@@ -338,6 +359,7 @@ export function parseLibraryChange(input: unknown): LibraryChange {
       throw new DesktopError('InvalidInput', 'A part move must change its owner')
     }
   }
+
   if (value.type === 'partKindChanged') {
     assertPartWork(value.fromPart, value.work)
     assertPartWork(value.toPart, value.work)
@@ -352,6 +374,7 @@ export function parseLibraryChange(input: unknown): LibraryChange {
       )
     }
   }
+
   if (value.type === 'partMerged') {
     assertPartWork(value.source.ref, value.work)
     assertPartWork(value.target, value.work)
@@ -359,9 +382,11 @@ export function parseLibraryChange(input: unknown): LibraryChange {
       throw new DesktopError('InvalidInput', 'Part merge requires distinct same-kind identities')
     }
   }
+
   if ('annotationId' in value && (value.work.type === 'game') === Object.hasOwn(value, 'fileId')) {
     throw new DesktopError('InvalidInput', 'Annotation change has inapplicable file context')
   }
+
   if (value.type === 'holdingsChanged') {
     if (
       (value.work.type === 'game' &&
@@ -373,8 +398,10 @@ export function parseLibraryChange(input: unknown): LibraryChange {
       throw new DesktopError('InvalidInput', 'Holdings change has inapplicable target identities')
     }
   }
+
   return value as LibraryChange
 }
+
 /** Require a real changed fact boundary. Delivery failures cannot alter already committed business data. */
 export function parseLibraryChanged(input: unknown): LibraryChanged {
   const change = v.pipe(v.unknown(), v.transform(parseLibraryChange))
@@ -384,6 +411,7 @@ export function parseLibraryChanged(input: unknown): LibraryChanged {
     'Invalid library change event',
   )
 }
+
 export function parseLibraryInvalidation(input: unknown): LibraryInvalidation {
   const area = v.picklist(libraryInvalidationAreas)
   return parseValue(

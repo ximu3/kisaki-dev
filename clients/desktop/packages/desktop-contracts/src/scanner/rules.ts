@@ -30,7 +30,9 @@ const dateOutput = v.pipe(
   }),
   v.check((value) => Object.keys(value).length > 0),
 )
+
 const identityOutput = v.strictObject({ source: nonemptyText, sourceId: nonemptyText })
+
 const outputSchema = v.pipe(
   v.strictObject({
     name: v.exactOptional(nonemptyText),
@@ -76,6 +78,7 @@ export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
       parseTextTemplate(template, pattern.captureNames)
     }
   }
+
   return rule
 }
 
@@ -84,12 +87,15 @@ function dateNumber(value: string, signed: boolean): number {
   if (!(signed ? /^[+-]?[0-9]+$/ : /^[0-9]+$/).test(text)) {
     throw new DesktopError('InvalidInput', 'A date output must be a complete decimal integer')
   }
+
   const integer = BigInt(text)
   if (integer < BigInt(Number.MIN_SAFE_INTEGER) || integer > BigInt(Number.MAX_SAFE_INTEGER)) {
     throw new DesktopError('InvalidInput', 'Date output is outside the safe integer range')
   }
+
   return Number(integer)
 }
+
 function nameOutput(
   template: string | undefined,
   captures: Readonly<Record<string, string>>,
@@ -97,6 +103,7 @@ function nameOutput(
   if (template === undefined) {
     return undefined
   }
+
   const value = expandTextTemplate(template, captures)
   if (value === undefined) {
     return undefined
@@ -104,6 +111,7 @@ function nameOutput(
   if (!value.trim()) {
     throw new DesktopError('InvalidInput', 'A matched name output must not be blank')
   }
+
   return value.trim()
 }
 
@@ -114,18 +122,22 @@ export function expandClueExtractionOutput(
 ): WorkClues {
   const name = nameOutput(output.name, captures)
   const originalName = nameOutput(output.originalName, captures)
+
   const date: { year?: number; month?: number; day?: number } = {}
   for (const component of ['year', 'month', 'day'] as const) {
     const template = output.releaseDate?.[component]
     if (template === undefined) {
       continue
     }
+
     const value = expandTextTemplate(template, captures)
     if (value !== undefined) {
       date[component] = dateNumber(value, component === 'year')
     }
   }
+
   const releaseDate = Object.keys(date).length > 0 ? parsePartialDate(date) : undefined
+
   const identities: ExternalIdentity[] = []
   const seen = new Set<string>()
   for (const mapping of output.externalIdentities ?? []) {
@@ -140,6 +152,7 @@ export function expandClueExtractionOutput(
         'A matched external identity needs both source and sourceId',
       )
     }
+
     const identity = parseExternalIdentity({ source, sourceId })
     const key = JSON.stringify([identity.source, identity.sourceId])
     if (!seen.has(key)) {
@@ -147,6 +160,7 @@ export function expandClueExtractionOutput(
       identities.push(identity)
     }
   }
+
   const clues = {
     ...(name === undefined ? {} : { name }),
     ...(originalName === undefined ? {} : { originalName }),
@@ -156,6 +170,7 @@ export function expandClueExtractionOutput(
   if (Object.keys(clues).length === 0) {
     throw new DesktopError('InvalidInput', 'The matched rule produced no usable work clues')
   }
+
   return parseIdentificationClues('game', clues)
 }
 
@@ -171,6 +186,7 @@ export function extractWorkClues(
     if (!rule.enabled) {
       continue
     }
+
     const captures = matchTextPattern(
       inspectTextPattern(rule.pattern, rule.ignoreCase),
       input[rule.input],
@@ -178,8 +194,10 @@ export function extractWorkClues(
     if (captures === null) {
       continue
     }
+
     return { clues: expandClueExtractionOutput(rule.output, captures), ruleId: rule.id, captures }
   }
+
   return {
     clues: parseIdentificationClues('game', { name: input.baseName }),
     ruleId: null,
@@ -236,6 +254,7 @@ export function getClueExtractionPresets(): readonly ClueExtractionPreset[] {
       String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)[\t\p{Zs}]*(?:\([^()（）\r\n\u2028\u2029]+\)|（[^()（）\r\n\u2028\u2029]+）)$`,
     ],
   ] as const
+
   return patterns.map(([id, label, pattern]) => ({
     id,
     ...englishMessages.scanner.presets[label],

@@ -30,16 +30,20 @@ export type ShowcaseQuery =
     } & EntryQuery)
   | ({ readonly kind: 'collection' } & CollectionQuery)
   | ({ readonly kind: 'tag' } & TagQuery)
+
 /** Section limit bounds logical display, not request size; null keeps the complete result available through intervals. */
 export interface ShowcaseFields {
   readonly name: string
   readonly query: ShowcaseQuery
+
   readonly layout: 'horizontal' | 'grid'
   readonly itemSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   readonly limit: number | null
+
   readonly openMode: 'page' | 'dialog'
   readonly isVisible: boolean
 }
+
 /** A damaged saved query remains local to its section and cannot silently become an unrestricted query. */
 export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly id: string
@@ -48,26 +52,33 @@ export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 export type ShowcaseSectionRef = { readonly id: string } | { readonly key: string }
+
 /** Each form change is one atomic configuration operation. Full order includes hidden sections. */
 export interface ShowcaseChanges {
   readonly create?: readonly { readonly key: string; readonly data: ShowcaseFields }[]
+
   readonly update?: readonly {
     readonly id: string
     readonly changes: Partial<ShowcaseFields>
     readonly expected?: Partial<ShowcaseFields>
   }[]
+
   /** Form deletion compares the complete original configuration. An explicit immediate delete may omit it. */
   readonly delete?: readonly { readonly id: string; readonly expected?: ShowcaseFields }[]
+
   readonly order?: {
     readonly items: readonly ShowcaseSectionRef[]
     readonly expected: readonly string[]
   }
 }
+
 export interface ShowcaseChangeResult {
   readonly sections: readonly ShowcaseSection[]
   readonly created: Readonly<Record<string, string>>
 }
+
 export interface ShowcasePreset {
   readonly id: string
   readonly defaultLocale: string
@@ -75,10 +86,12 @@ export interface ShowcasePreset {
   readonly description: LocalizedText
   readonly initial: ShowcaseFields
 }
+
 /** Lists return all saved configurations. Presets fill drafts and are never automatically materialized. */
 export interface ShowcaseApi {
   list(call?: CallOptions): Promise<readonly ShowcaseSection[]>
   listPresets(call?: CallOptions): Promise<readonly ShowcasePreset[]>
+
   applyChanges(input: ShowcaseChanges, call?: CallOptions): Promise<ShowcaseChangeResult>
 }
 
@@ -92,6 +105,7 @@ export function parseShowcaseQuery(input: unknown): ShowcaseQuery {
   if (kind === 'tag') {
     return { kind, ...parseTagQuery(body) }
   }
+
   const { referenceLabels, ...queryInput } = body
   const query = parseEntryQuery(queryInput)
   const labels = parseQueryReferenceLabels(referenceLabels)
@@ -104,9 +118,11 @@ const fields = {
     v.transform((value) => value.trim()),
   ),
   query: v.pipe(v.unknown(), v.transform(parseShowcaseQuery)),
+
   layout: v.picklist(['horizontal', 'grid']),
   itemSize: v.picklist(['xs', 'sm', 'md', 'lg', 'xl']),
   limit: v.nullable(positiveInteger),
+
   openMode: v.picklist(['page', 'dialog']),
   isVisible: v.boolean(),
 }
@@ -155,6 +171,7 @@ export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
     input,
     'Invalid showcase changes',
   )
+
   const removed = new Set(value.delete?.map((item) => item.id))
   const created = new Set(value.create?.map((item) => item.key))
   for (const update of value.update ?? []) {
@@ -163,6 +180,7 @@ export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
     }
     validateExpectedKeys(update.changes, update.expected)
   }
+
   if (
     value.order?.items.some((ref) => ('key' in ref ? !created.has(ref.key) : removed.has(ref.id)))
   ) {
@@ -171,12 +189,14 @@ export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
       'Final showcase order contains a missing create key or a removed section',
     )
   }
+
   return value
 }
 
 /** Return fresh, complete preset values. Applying one to an existing draft preserves its identity, visibility and position. */
 export function getShowcasePresets(): readonly ShowcasePreset[] {
   const labels = englishMessages.showcase.presets
+
   function entry(
     types: readonly [EntryType, ...EntryType[]],
     conditions: readonly EntryCondition[],
@@ -191,6 +211,7 @@ export function getShowcasePresets(): readonly ShowcasePreset[] {
       referenceLabels: [],
     }
   }
+
   function preset(
     key: string,
     label: { readonly name: string; readonly description: string },
@@ -213,6 +234,7 @@ export function getShowcasePresets(): readonly ShowcasePreset[] {
       },
     }
   }
+
   const scope = { type: 'scope' } as const
   const lastActive = { type: 'field', field: 'lastActiveAt', direction: 'desc' } as const
   const added = { type: 'field', field: 'effectiveAddedDate', direction: 'desc' } as const

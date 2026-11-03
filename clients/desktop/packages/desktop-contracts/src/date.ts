@@ -67,9 +67,11 @@ export function daysInMonth(month: number, year?: number): number {
   if (year !== undefined) {
     requireYear(year)
   }
+
   if (month === 2) {
     return year === undefined || isLeapYear(year) ? 29 : 28
   }
+
   return [4, 6, 9, 11].includes(month) ? 30 : 31
 }
 
@@ -78,6 +80,7 @@ export function parsePartialDate(input: unknown): PartialDate {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     invalidDate()
   }
+
   const value = input as Record<string, unknown>
   const keys = Object.keys(value)
   if (keys.length === 0 || keys.some((key) => !['year', 'month', 'day'].includes(key))) {
@@ -125,9 +128,11 @@ export function parseYearDate(input: unknown): YearDate {
   if (value.year === undefined || (value.month === undefined && value.day !== undefined)) {
     invalidDate()
   }
+
   if (value.month === undefined) {
     return { year: value.year }
   }
+
   return {
     year: value.year,
     month: value.month,
@@ -154,10 +159,12 @@ export function parseEraYear(input: string, era: 'ce' | 'bce'): number {
   if (eraYear < 1n) {
     invalidDate()
   }
+
   const year = era === 'bce' ? 1n - eraYear : eraYear
   if (year < minYear || year > maxYear) {
     invalidDate()
   }
+
   return Number(year)
 }
 
@@ -176,6 +183,7 @@ export function compareCalendarDates(left: CalendarDate, right: CalendarDate): n
       return left[component] < right[component] ? -1 : 1
     }
   }
+
   return 0
 }
 
@@ -210,8 +218,10 @@ function compareDateComponents(
     if (left === right) {
       return 0
     }
+
     return left === null ? 1 : -1
   }
+
   for (const component of components) {
     const a = left[component]
     const b = right[component]
@@ -221,8 +231,10 @@ function compareDateComponents(
     if (a === undefined || b === undefined) {
       return a === undefined ? 1 : -1
     }
+
     return (a < b ? -1 : 1) * (direction === 'asc' ? 1 : -1)
   }
+
   return 0
 }
 
@@ -231,6 +243,7 @@ export function expandYearDate(input: YearDate): CalendarDateRange {
   const value = parseYearDate(input)
   const firstMonth = value.month ?? 1
   const lastMonth = value.month ?? 12
+
   return {
     from: { year: value.year, month: firstMonth, day: value.day ?? 1 },
     to: {
@@ -246,16 +259,19 @@ export function parseDateBounds(input: unknown): Bounds<YearDate> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     invalidDate()
   }
+
   const source = input as Record<string, unknown>
   const keys = Object.keys(source)
   if (keys.length === 0 || keys.some((key) => key !== 'min' && key !== 'max')) {
     invalidDate()
   }
+
   const min = Object.hasOwn(source, 'min') ? parseYearDate(source.min) : undefined
   const max = Object.hasOwn(source, 'max') ? parseYearDate(source.max) : undefined
   if (min && max && compareCalendarDates(expandYearDate(min).from, expandYearDate(max).to) > 0) {
     invalidDate()
   }
+
   return min ? { min, ...(max ? { max } : {}) } : { max: max! }
 }
 
@@ -268,6 +284,7 @@ export function matchesAbsoluteDateRange(
   if (value === null || value.year === undefined) {
     return false
   }
+
   const date = parsePartialDate(value)
   const from = { year: value.year, month: date.month ?? 1, day: date.day ?? 1 }
   const to = {
@@ -275,6 +292,7 @@ export function matchesAbsoluteDateRange(
     month: date.month ?? 12,
     day: date.day ?? daysInMonth(date.month ?? 12, value.year),
   }
+
   return (
     (!range.min || compareCalendarDates(from, expandYearDate(range.min).from) >= 0) &&
     (!range.max || compareCalendarDates(to, expandYearDate(range.max).to) <= 0)
@@ -292,11 +310,13 @@ export function matchesMonthDayRange(
   if (value === null || value.month === undefined) {
     return false
   }
+
   const date = parsePartialDate(value)
   const first = value.month * 32 + (date.day ?? 1)
   const last = value.month * 32 + (date.day ?? daysInMonth(value.month, date.year))
   const minimum = start.month * 32 + (start.day ?? 1)
   const maximum = end.month * 32 + (end.day ?? daysInMonth(end.month))
+
   return minimum <= maximum
     ? first >= minimum && last <= maximum
     : first >= minimum || last <= maximum

@@ -23,6 +23,7 @@ test('passes the official Unicode 18 NFKC conformance vectors', async () => {
     if (!content || content.startsWith('@')) {
       continue
     }
+
     const columns = content
       .split(';')
       .slice(0, 5)
@@ -39,6 +40,7 @@ test('passes the official Unicode 18 NFKC conformance vectors', async () => {
     }
     checked += 1
   }
+
   expect(checked).toBeGreaterThan(20_000)
 })
 
@@ -46,6 +48,7 @@ test('uses full default folding and stable natural number semantics', () => {
   expect(normalizeNameForSort('Straße')).toBe(normalizeNameForSort('STRASSE'))
   expect(compareNaturalNames('A2', 'ａ２')).toBe(0)
   expect(compareNaturalNames('é', 'e\u0301')).toBe(0)
+
   for (const [left, right] of [
     ['作品2', '作品10'],
     ['作品2', '作品02'],
@@ -62,6 +65,7 @@ test('uses full default folding and stable natural number semantics', () => {
     expect(compareNaturalNames(left, right)).toBe(-1)
     expect(compareNaturalNames(right, left)).toBe(1)
   }
+
   expect(compareNaturalNames('a2b002', 'a02b2')).toBe(-1)
   expect(compareIdentityText('\uE000', '\u{10000}')).toBe(-1)
 })

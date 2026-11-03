@@ -8,6 +8,7 @@ export default defineConfig({
       return [name, `src/${name}.ts`]
     }),
   ),
+
   tsconfig: 'config/typescript/tsconfig.lib.json',
   target: 'es2023',
   format: 'esm',

@@ -30,6 +30,7 @@ function appendDecomposition(point: number, output: number[], compatibility: boo
     }
     return
   }
+
   const mapping = compatibility ? decompositions[point] : canonicalDecompositions[point]
   if (mapping) {
     for (const child of mapping) {
@@ -46,11 +47,13 @@ function compose(starter: number, point: number): number | undefined {
   if (leading >= 0 && leading < 19 && vowel >= 0 && vowel < 21) {
     return 0xac00 + (leading * 21 + vowel) * 28
   }
+
   const syllable = starter - 0xac00
   const trailing = point - 0x11a7
   if (syllable >= 0 && syllable < 11_172 && syllable % 28 === 0 && trailing > 0 && trailing < 28) {
     return starter + trailing
   }
+
   return compositions[`${starter},${point}`]
 }
 
@@ -74,6 +77,7 @@ function normalize(value: string, compatibility: boolean): string {
   // Stable ordering applies only inside non-starter runs, including a leading run without a starter.
   const ordered: number[] = []
   let marks: number[] = []
+
   function flushMarks(): void {
     marks.sort((a, b) => (combiningClasses[a] ?? 0) - (combiningClasses[b] ?? 0))
     for (const point of marks) {
@@ -81,6 +85,7 @@ function normalize(value: string, compatibility: boolean): string {
     }
     marks = []
   }
+
   for (const point of decomposed) {
     if ((combiningClasses[point] ?? 0) === 0) {
       flushMarks()
@@ -101,12 +106,14 @@ function normalize(value: string, compatibility: boolean): string {
       result[starterIndex] = composite
       continue
     }
+
     if (currentClass === 0) {
       starterIndex = result.length
     }
     result.push(point)
     lastClass = currentClass
   }
+
   return result.map((point) => String.fromCodePoint(point)).join('')
 }
 
@@ -117,6 +124,7 @@ export function normalizeNameForSort(value: string): string {
     const mapping = caseFolding[character.codePointAt(0)!]
     folded.push(mapping ? mapping.map((point) => String.fromCodePoint(point)).join('') : character)
   }
+
   return normalizeNfkc(folded.join(''))
 }
 
@@ -126,6 +134,7 @@ export function createTagNameKey(name: string): string {
   if (!key) {
     throw new DesktopError('InvalidInput', 'A tag name must not be empty')
   }
+
   return key
 }
 
@@ -142,6 +151,7 @@ function appendSize(output: number[], value: number): void {
     bytes[index] = Number(remaining & 255n)
     remaining >>= 8n
   }
+
   output.push(...bytes)
 }
 
@@ -162,6 +172,7 @@ export function createNameSortKey(name: string): Uint8Array {
       index += 1
       continue
     }
+
     const run: number[] = []
     while (index < characters.length) {
       const next = decimalDigits[characters[index]!.codePointAt(0)!]
@@ -171,20 +182,24 @@ export function createNameSortKey(name: string): Uint8Array {
       run.push(next)
       index += 1
     }
+
     widths.push(run.length)
     let first = 0
     while (first < run.length - 1 && run[first] === 0) {
       first += 1
     }
+
     appendSize(output, run.length - first)
     for (let offset = first; offset < run.length; offset += 1) {
       output.push(run[offset]! + 1)
     }
   }
+
   output.push(0, 0, 0)
   for (const width of widths) {
     appendSize(output, width)
   }
+
   return Uint8Array.from(output)
 }
 
@@ -195,9 +210,11 @@ export function compareNameSortKeys(left: Uint8Array, right: Uint8Array): number
       return left[index]! < right[index]! ? -1 : 1
     }
   }
+
   if (left.length === right.length) {
     return 0
   }
+
   return left.length < right.length ? -1 : 1
 }
 
@@ -210,6 +227,7 @@ export function compareNaturalNames(left: string, right: string): number {
 export function compareIdentityText(left: string, right: string): number {
   requireText(left)
   requireText(right)
+
   const a = Array.from(left)
   const b = Array.from(right)
   for (let index = 0; index < Math.min(a.length, b.length); index += 1) {
@@ -219,8 +237,10 @@ export function compareIdentityText(left: string, right: string): number {
       return first < second ? -1 : 1
     }
   }
+
   if (a.length === b.length) {
     return 0
   }
+
   return a.length < b.length ? -1 : 1
 }

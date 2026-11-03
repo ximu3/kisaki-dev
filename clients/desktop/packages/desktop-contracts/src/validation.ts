@@ -8,21 +8,27 @@ export const text = v.pipe(
   v.string(),
   v.check((value) => !/[\uD800-\uDFFF]/u.test(value), 'Invalid Unicode'),
 )
+
 export const nonemptyText = v.pipe(
   text,
   v.check((value) => value.trim().length > 0, 'Empty text'),
 )
+
 export const id = nonemptyText
+
 export const integer = v.pipe(v.number(), v.safeInteger())
 export const nonnegativeInteger = v.pipe(integer, v.minValue(0))
 export const positiveInteger = v.pipe(integer, v.minValue(1))
 export const nonnegativeNumber = v.pipe(v.number(), v.finite(), v.minValue(0))
+
 export const timestamp = v.pipe(
   integer,
   v.minValue(-8_640_000_000_000_000),
   v.maxValue(8_640_000_000_000_000),
 )
+
 export const rating = v.pipe(integer, v.minValue(0), v.maxValue(100))
+
 export const intervalEntries = {
   offset: nonnegativeInteger,
   limit: v.pipe(positiveInteger, v.maxValue(200)),
@@ -38,6 +44,7 @@ export function parseValue<T extends v.GenericSchema>(
   if (!result.success) {
     throw new DesktopError('InvalidInput', message, { cause: new v.ValiError(result.issues) })
   }
+
   return result.output
 }
 
@@ -53,6 +60,7 @@ export function parseExternalValue<T>(
     if (cause instanceof DistributionError || cause instanceof TypeError) {
       throw new DesktopError('InvalidInput', message, { cause })
     }
+
     throw cause
   }
 }
@@ -82,10 +90,12 @@ export function readRecord(input: unknown): Record<string, unknown> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     throw new DesktopError('InvalidInput', 'Expected an ordinary data object')
   }
+
   const prototype: unknown = Object.getPrototypeOf(input)
   if (prototype !== null && Object.getPrototypeOf(prototype) !== null) {
     throw new DesktopError('InvalidInput', 'Expected an ordinary data object')
   }
+
   return input as Record<string, unknown>
 }
 
@@ -101,6 +111,7 @@ export function parseDictionary<T extends v.GenericSchema>(
   if (new Set(entries.map(([key]) => key)).size !== entries.length) {
     throw new DesktopError('InvalidInput', 'Dictionary keys collide after normalization')
   }
+
   return Object.fromEntries(entries)
 }
 

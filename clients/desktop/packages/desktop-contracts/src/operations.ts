@@ -19,6 +19,7 @@ export interface CallOptions {
 /** Registration removal completes before resolve; already acquired work follows its own lifetime. */
 export interface Registration<Ref> {
   readonly ref: Ref
+
   dispose(): Promise<void>
 }
 

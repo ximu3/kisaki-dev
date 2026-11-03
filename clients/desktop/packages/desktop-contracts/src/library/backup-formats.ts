@@ -27,10 +27,12 @@ const digest = v.pipe(text, v.regex(/^[0-9a-f]{64}$/))
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 const kind = v.picklist(['file', 'directory'])
 const resolution = v.picklist(['restored', 'rolledBack', 'keptCurrent'])
+
 const backupSource = v.variant('type', [
   v.strictObject({ type: v.literal('config'), launchConfigId: id }),
   v.strictObject({ type: v.literal('snapshot'), launchConfigId: id, launchConfigName: text, path }),
 ])
+
 const archivePath = v.pipe(
   text,
   v.check(
@@ -42,6 +44,7 @@ const archivePath = v.pipe(
         value.split('/').every((part) => part !== '' && part !== '.' && part !== '..')),
   ),
 )
+
 const archiveEntry = v.variant('type', [
   v.strictObject({ path: archivePath, type: v.literal('directory') }),
   v.strictObject({
@@ -61,10 +64,12 @@ function validateTree(entries: readonly GameBackupArchiveEntry[]): void {
       'Backup tree must have exactly one root and unique paths',
     )
   }
+
   for (const entry of entries) {
     if (entry.path === '') {
       continue
     }
+
     const separator = entry.path.lastIndexOf('/')
     const parent = separator < 0 ? '' : entry.path.slice(0, separator)
     if (byPath.get(parent)?.type !== 'directory') {
@@ -81,6 +86,7 @@ export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): 
     'Invalid backup tree',
   )
   validateTree(entries)
+
   const rows: GameBackupTreeRow[] = [...entries]
     .sort((a, b) => compareIdentityText(a.path, b.path))
     .map((entry) =>
@@ -88,6 +94,7 @@ export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): 
         ? [entry.path, 'directory']
         : [entry.path, 'file', entry.sizeBytes, entry.sha256],
     )
+
   return new TextEncoder().encode(JSON.stringify(rows))
 }
 
@@ -108,6 +115,7 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
   ) {
     throw new DesktopError('UnsupportedBackupFormat', 'Unsupported game backup archive format')
   }
+
   try {
     const value = parseValue(
       v.strictObject({
@@ -128,6 +136,7 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
     ) {
       throw new DesktopError('InvalidInput', 'Backup tree order or content digest does not match')
     }
+
     return value
   } catch (cause) {
     throw new DesktopError('DataIntegrityError', 'Invalid version 1 game backup manifest', {
@@ -139,11 +148,13 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
 /** Read strict manifest JSON, including duplicate-key and Unicode checks, before validating the logical content. */
 export function parseGameBackupArchiveJson(source: string): GameBackupArchiveManifest {
   let value: unknown
+
   try {
     value = parseStrictJson(source)
   } catch (cause) {
     throw new DesktopError('DataIntegrityError', 'Invalid game backup manifest JSON', { cause })
   }
+
   return parseGameBackupArchiveManifest(value)
 }
 
@@ -164,6 +175,7 @@ export function parseGameBackupCreateInput(input: unknown): GameBackupCreateInpu
     'Invalid game backup creation',
   )
 }
+
 /** Fix a current configuration or explicit path, never the archive's historical absolute source path. */
 export function parseGameBackupRestoreInput(input: unknown): GameBackupRestoreInput {
   return parseValue(
@@ -179,6 +191,7 @@ export function parseGameBackupRestoreInput(input: unknown): GameBackupRestoreIn
     'Invalid game backup restore',
   )
 }
+
 /** Parse the immutable receipt's pure values; the recovery owner verifies the index, bytes and target relationship. */
 export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecoveryManifest {
   return parseValue(
@@ -200,6 +213,7 @@ export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecov
     'Invalid recovery manifest',
   )
 }
+
 /** Validate a progress hint. Monotonicity against earlier progress and actual disk truth are host responsibilities. */
 export function parseGameBackupRecoveryProgress(input: unknown): GameBackupRecoveryProgress {
   return parseValue(
@@ -228,8 +242,10 @@ export function gameBackupRecoveryBasis(
     if (value.status === 'unavailable') {
       return [location, 'unavailable', value.error.code]
     }
+
     return [location, 'readable', value.kind, value.treeDigest]
   })
+
   const identity = [
     index.id,
     index.gameId,
@@ -242,6 +258,7 @@ export function gameBackupRecoveryBasis(
     index.resolution,
     index.resolvedAt,
   ]
+
   return bytesToHex(
     sha256(
       new TextEncoder().encode(JSON.stringify([identity, actualManifestSha256, observations])),
@@ -280,5 +297,6 @@ export function parseGameBackupRestoreResult(input: unknown): GameBackupRestoreR
   ) {
     throw new DesktopError('InvalidInput', 'Inconsistent game backup recovery result')
   }
+
   return value
 }

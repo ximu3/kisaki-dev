@@ -16,13 +16,16 @@ export interface WorkCompletion extends CompletionFields {
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 /** The only allowed creation precondition is the work's count before any item in this batch is inserted. */
 export interface CompletionCreate extends CompletionFields {
   readonly expected?: { readonly completionCount: number }
 }
+
 export interface CompletionCreateItem extends CompletionCreate {
   readonly work: WorkRef
 }
+
 export interface CompletionUpdate {
   readonly changes: Partial<CompletionFields>
   readonly expected?: Partial<CompletionFields>
@@ -40,6 +43,7 @@ export interface CompletionStatistics {
   readonly unknownDateCount: number
   readonly firstCompletedDate: CalendarDate | null
   readonly lastCompletedDate: CalendarDate | null
+
   readonly groups: readonly {
     readonly date:
       CalendarDate | { readonly year: number; readonly month: number } | { readonly year: number }
@@ -60,19 +64,24 @@ export interface CompletionsApi {
     },
     call?: CallOptions,
   ): Promise<CompletionStatistics>
+
   create(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
+
   /** Every input is a separate fact, including identical facts for the same work; IDs correspond one-to-one. */
   createMany(
     items: NonEmptyArray<CompletionCreateItem>,
     call?: CallOptions,
   ): Promise<readonly string[]>
+
   /** Add the supplied fact and clear this work's current status in one transaction. */
   recordCurrent(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
+
   /** Equivalent duplicate work intents coalesce; contradictory duplicates reject the entire short batch. */
   recordCurrentMany(
     items: NonEmptyArray<CompletionCreateItem>,
     call?: CallOptions,
   ): Promise<readonly { readonly work: WorkRef; readonly completionId: string }[]>
+
   update(
     work: WorkRef,
     completionId: string,
@@ -86,12 +95,14 @@ const createEntries = {
   ...completionFieldsSchema.entries,
   expected: v.exactOptional(v.strictObject({ completionCount: nonnegativeInteger })),
 }
+
 const itemSchema = v.strictObject({ work: workRefSchema, ...createEntries })
 
 /** Normalize blank notes to null and preserve all other note text; never fill an unknown date with today. */
 export function parseCompletionCreate(input: unknown): CompletionCreate {
   return parseValue(v.strictObject(createEntries), input, 'Invalid completion creation')
 }
+
 /** Validate only the date/note fields actually being saved, using their original values as independent baselines. */
 export function parseCompletionUpdate(input: unknown): CompletionUpdate {
   const fields = v.strictObject(optionalFields(completionFieldsSchema.entries))
@@ -111,6 +122,7 @@ export function parseCompletionCreateMany(input: unknown): NonEmptyArray<Complet
     input,
     'Invalid completion batch',
   )
+
   const baselines = new Map<string, number>()
   for (const item of items) {
     const key = JSON.stringify([item.work.type, item.work.id])
@@ -125,6 +137,7 @@ export function parseCompletionCreateMany(input: unknown): NonEmptyArray<Complet
       baselines.set(key, item.expected.completionCount)
     }
   }
+
   return items
 }
 
@@ -146,6 +159,7 @@ export function parseRecordCurrentMany(input: unknown): NonEmptyArray<Completion
       result.set(key, item)
     }
   }
+
   const values = [...result.values()]
   return [values[0]!, ...values.slice(1)]
 }

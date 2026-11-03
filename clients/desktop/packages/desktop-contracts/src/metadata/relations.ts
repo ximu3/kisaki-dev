@@ -29,6 +29,7 @@ export interface MetadataRelationMembers {
     readonly note?: string | null
     readonly isSpoiler?: boolean
   }
+
   readonly personWorks: {
     readonly work: string
     readonly person: string
@@ -37,6 +38,7 @@ export interface MetadataRelationMembers {
     readonly note?: string | null
     readonly isSpoiler?: boolean
   }
+
   readonly organizationWorks: {
     readonly work: string
     readonly organization: string
@@ -44,21 +46,25 @@ export interface MetadataRelationMembers {
     readonly note?: string | null
     readonly isSpoiler?: boolean
   }
+
   readonly workRelations: {
     readonly from: string
     readonly to: string
     readonly type: WorkRelationType
     readonly note?: string | null
   }
+
   readonly workVolumes: { readonly work: string; readonly volume: string }
   readonly workChapters: { readonly work: string; readonly chapter: string }
   readonly workEpisodes: { readonly work: string; readonly episode: string }
   readonly workExtras: { readonly work: string; readonly extra: string }
+
   readonly volumeChapters: {
     readonly volume: string
     readonly chapter: string
     readonly numberLabel?: string | null
   }
+
   readonly entryTags: {
     readonly entry: string
     readonly tag: string
@@ -66,6 +72,7 @@ export interface MetadataRelationMembers {
     readonly isSpoiler?: boolean
   }
 }
+
 /** Only non-identity attributes are selectable or processed. Empty maps mean membership-only relations. */
 export interface MetadataRelationAttributeValues {
   readonly workCharacters: {
@@ -78,11 +85,13 @@ export interface MetadataRelationAttributeValues {
   readonly workRelations: { readonly note: string | null }
   readonly entryTags: { readonly note: string | null; readonly isSpoiler: boolean }
   readonly volumeChapters: { readonly numberLabel: string | null }
+
   readonly workVolumes: Readonly<Record<never, never>>
   readonly workChapters: Readonly<Record<never, never>>
   readonly workEpisodes: Readonly<Record<never, never>>
   readonly workExtras: Readonly<Record<never, never>>
 }
+
 export type MetadataRelationKey<T extends EntryType = EntryType> =
   | 'entryTags'
   | (T extends WorkType
@@ -99,21 +108,27 @@ export type MetadataRelationKey<T extends EntryType = EntryType> =
         : T extends 'novel'
           ? 'workVolumes'
           : never)
+
 export type MetadataRelations<T extends EntryType> = {
   readonly [K in MetadataRelationKey<T>]?: readonly MetadataRelationMembers[K][]
 }
+
 /** Candidate keys refer to the composed graph; the member semantics are identical to provider response members. */
 export type CandidateRelations<T extends EntryType> = MetadataRelations<T>
 
 type AtLeastOne<T> = { [K in keyof T]: Required<Pick<T, K>> & Partial<Omit<T, K>> }[keyof T]
+
 export type WorkCharacterMetadataScope =
   'all' | NonEmptyArray<{ readonly workTypes: NonEmptyArray<WorkType> }>
+
 export type PersonWorkScopeCondition = AtLeastOne<{
   readonly workTypes: NonEmptyArray<WorkType>
   readonly roles: NonEmptyArray<PersonRole>
   readonly character: 'none' | 'present'
 }>
+
 export type PersonWorkMetadataScope = 'all' | NonEmptyArray<PersonWorkScopeCondition>
+
 export type OrganizationWorkMetadataScope =
   | 'all'
   | NonEmptyArray<
@@ -122,6 +137,7 @@ export type OrganizationWorkMetadataScope =
         readonly roles: NonEmptyArray<OrganizationRole>
       }>
     >
+
 export type WorkRelationMetadataScope =
   | 'all'
   | NonEmptyArray<
@@ -130,6 +146,7 @@ export type WorkRelationMetadataScope =
         readonly targetTypes: NonEmptyArray<WorkType>
       }>
     >
+
 export interface MetadataRelationScopeValues {
   readonly workCharacters: WorkCharacterMetadataScope
   readonly personWorks: PersonWorkMetadataScope
@@ -138,19 +155,23 @@ export interface MetadataRelationScopeValues {
   readonly entryTags: 'all'
   readonly volumeChapters: 'all'
 }
+
 export type ScopedMetadataRelationKey<T extends EntryType = EntryType> = Extract<
   MetadataRelationKey<T>,
   keyof MetadataRelationScopeValues
 >
+
 /** Omission means there is no replacement evidence; part-ownership lists have an implicit root-work scope instead. */
 export type MetadataRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?: MetadataRelationScopeValues[K]
 }
+
 /** A provider may explicitly declare a non-expressible completeness scope as null; it still owes a complete read. */
 export type MetadataSessionRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?:
     MetadataRelationScopeValues[K] | (K extends 'entryTags' | 'volumeChapters' ? never : null)
 }
+
 /** A source with unknown actual scope, such as a failed session opening, protects the entire root relation context. */
 export type MetadataScopeAnswer<K extends keyof MetadataRelationScopeValues> =
   | {
@@ -174,6 +195,7 @@ export function getMetadataRelations<T extends EntryType>(
   } else {
     result.push('organizationWorks')
   }
+
   if (root === 'anime') {
     result.push('workEpisodes', 'workExtras')
   }
@@ -183,6 +205,7 @@ export function getMetadataRelations<T extends EntryType>(
   if (root === 'novel') {
     result.push('workVolumes')
   }
+
   return result as MetadataRelationKey<T>[]
 }
 
@@ -211,10 +234,12 @@ function choices<T extends string>(values: readonly T[]) {
     v.check((items) => unique(items, (item) => item)),
   )
 }
+
 const workChoices = choices(workTypes)
 const personChoices = choices(personRoles)
 const organizationChoices = choices(organizationRoles)
 const relationChoices = choices(workRelationTypes)
+
 const personCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -223,6 +248,7 @@ const personCondition = v.pipe(
   }),
   v.check((value) => Object.keys(value).length > 0),
 )
+
 const organizationCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -230,6 +256,7 @@ const organizationCondition = v.pipe(
   }),
   v.check((value) => Object.keys(value).length > 0),
 )
+
 const workRelationCondition = v.pipe(
   v.strictObject({
     types: v.exactOptional(relationChoices),
@@ -237,7 +264,9 @@ const workRelationCondition = v.pipe(
   }),
   v.check((value) => Object.keys(value).length > 0),
 )
+
 const characterCondition = v.strictObject({ workTypes: workChoices })
+
 const scopeSchemas = {
   workCharacters: v.union([
     v.literal('all'),
@@ -263,6 +292,7 @@ interface ScopeAtom {
   readonly relationType?: WorkRelationType
   readonly targetType?: WorkType
 }
+
 function atomKey(atom: ScopeAtom): string {
   return JSON.stringify([
     atom.workType,
@@ -272,6 +302,7 @@ function atomKey(atom: ScopeAtom): string {
     atom.targetType,
   ])
 }
+
 function universe(
   root: EntryType,
   relation: keyof MetadataRelationScopeValues,
@@ -315,6 +346,7 @@ function universe(
       result.push({ workType })
     }
   }
+
   return result
 }
 
@@ -327,6 +359,7 @@ function scopeAtoms(
   if (scope === 'all') {
     return all
   }
+
   const selected = new Map<string, ScopeAtom>()
   for (const condition of scope) {
     const atoms = all.filter(
@@ -353,10 +386,12 @@ function scopeAtoms(
         'Metadata relation scope contradicts its root, medium or responsibility',
       )
     }
+
     for (const atom of atoms) {
       selected.set(atomKey(atom), atom)
     }
   }
+
   return [...selected.values()]
 }
 
@@ -368,6 +403,7 @@ export function parseMetadataRelationScope<
   if (!getMetadataRelations(root).includes(relation)) {
     throw new DesktopError('InvalidInput', 'Relation is not applicable to this metadata root')
   }
+
   const value = parseValue(
     scopeSchemas[relation],
     input,
@@ -376,6 +412,7 @@ export function parseMetadataRelationScope<
   scopeAtoms(root, relation, value)
   return value
 }
+
 /** Parse only explicitly supported replacement evidence; no scope for unrequested part-ownership lists is invented. */
 export function parseMetadataRelationScopes<T extends EntryType>(
   root: T,
@@ -466,6 +503,7 @@ export function combineMetadataRelationScope<
     }
     firstEmpty ??= answer
   }
+
   if (chosen.length === 0 && firstEmpty) {
     chosen.push(firstEmpty)
   }
@@ -475,6 +513,7 @@ export function combineMetadataRelationScope<
   ) {
     return undefined
   }
+
   const allowed = new Map<string, ScopeAtom>()
   for (const answer of chosen) {
     const scope = parseMetadataRelationScope(root, relation, answer.scope)
@@ -482,18 +521,21 @@ export function combineMetadataRelationScope<
       allowed.set(atomKey(atom), atom)
     }
   }
+
   for (const answer of missing) {
     const scope = parseMetadataRelationScope(root, relation, answer.scope)
     for (const atom of scopeAtoms(root, relation, scope)) {
       allowed.delete(atomKey(atom))
     }
   }
+
   if (allowed.size === 0) {
     return undefined
   }
   if (allowed.size === universe(root, relation).length) {
     return 'all' as MetadataRelationScopeValues[K]
   }
+
   const atoms = [...allowed.values()]
   let result: MetadataRelationScopeValues[keyof MetadataRelationScopeValues]
   if (relation === 'workCharacters') {
@@ -521,5 +563,6 @@ export function combineMetadataRelationScope<
   } else {
     result = 'all'
   }
+
   return result as MetadataRelationScopeValues[K]
 }

@@ -34,6 +34,7 @@ export type MetadataInput<T extends EntryType> =
       readonly data: MetadataCandidate<T>
       readonly relationScopes?: MetadataRelationScopes<T>
     }
+
 export type MetadataUpdateInput<T extends EntryType> =
   | {
       readonly type: 'profile'
@@ -45,6 +46,7 @@ export type MetadataUpdateInput<T extends EntryType> =
       readonly data: MetadataCandidate<T>
       readonly relationScopes?: MetadataRelationScopes<T>
     }
+
 /** A local candidate is one declared input. Only file-bearing directory inputs can explicitly select a recognition profile. */
 export type IngestLocalContent<T extends WorkType> =
   | { readonly type: 'file'; readonly path: string }
@@ -54,6 +56,7 @@ export type IngestLocalContent<T extends WorkType> =
           readonly definition?: DirectoryDiscoveryDefinition
           readonly recognitionProfileId?: string | null
         }))
+
 export type IngestAddInput<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly entryType: K
@@ -81,9 +84,12 @@ export type PersonAdoptionScope =
           readonly character?: 'none' | 'present'
         }
     >
+
 export type IngestRelationScope<K extends keyof MetadataRelationScopeValues> =
   K extends 'personWorks' ? PersonAdoptionScope : MetadataRelationScopeValues[K]
+
 export type FieldAdoption = 'fill' | 'overwrite'
+
 /** update only touches already corresponding members. Ownership lists can only append real missing parts. */
 export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues> = K extends
   'workVolumes' | 'workChapters' | 'workEpisodes' | 'workExtras'
@@ -95,28 +101,34 @@ export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues
       readonly fields?: { readonly [F in keyof MetadataRelationAttributeValues[K]]?: FieldAdoption }
       readonly scope?: K extends keyof MetadataRelationScopeValues ? IngestRelationScope<K> : never
     }
+
 export type IngestEntryUpdate<T extends EntryType> = {
   readonly metadata: MetadataUpdateInput<T>
   readonly fields?: Readonly<Partial<Record<MetadataEntryField<T>, FieldAdoption>>>
   readonly relations?: { readonly [K in MetadataRelationKey<T>]?: IngestRelationUpdate<K> }
 }
+
 export type IngestPartUpdate<T extends PartType> = {
   readonly metadata: MetadataUpdateInput<PartWorkType<T>>
   readonly fields?: Readonly<Partial<Record<MetadataPartField<T>, FieldAdoption>>>
 } & (T extends 'comicVolume'
   ? { readonly relations?: { readonly volumeChapters?: IngestRelationUpdate<'volumeChapters'> } }
   : object)
+
 export type IngestUpdateType = EntryType | PartType
+
 export type IngestUpdateRef<T extends IngestUpdateType> = T extends EntryType
   ? EntryRef<T>
   : T extends PartType
     ? PartRef<T>
     : never
+
 export type IngestUpdateInput<T extends IngestUpdateType> = T extends EntryType
   ? IngestEntryUpdate<T>
   : T extends PartType
     ? IngestPartUpdate<T>
     : never
+
 /** A batch fixes each real target before any fetch, and cannot adopt extra source objects as additional update targets. */
 export type IngestUpdateItem = {
   [K in IngestUpdateType]: {
@@ -137,11 +149,13 @@ export type AddResult<T extends EntryType = EntryType> =
       readonly matchedIdentities: NonEmptyArray<ExternalIdentity>
       readonly issues: readonly IngestIssue[]
     }
+
 export interface UpdateResult {
   readonly outcome: 'updated' | 'unchanged'
   readonly target: EntryRef | PartRef
   readonly issues: readonly IngestIssue[]
 }
+
 /** total stays the original input count; cancellation retains only actually completed item reports and their legal partial results. */
 export interface IngestBatchResult<Result> {
   readonly total: number

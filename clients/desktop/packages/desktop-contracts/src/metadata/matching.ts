@@ -33,6 +33,7 @@ function rules(fields: readonly string[]) {
     }),
   )
 }
+
 /** Part rule fields have one owner; volumeNumberLabel is only a scoped comic-chapter matching input, never metadata. */
 export function getPartMatchingFields<T extends PartType>(
   type: T,
@@ -42,6 +43,7 @@ export function getPartMatchingFields<T extends PartType>(
     ...(type === 'comicChapter' ? ['volumeNumberLabel'] : []),
   ] as PartMatchingField<T>[]
 }
+
 /** Validate root-compatible part slots; missing or empty rule arrays explicitly mean no fallback. */
 export function parsePartMatchingRules<T extends EntryType>(
   root: T,
@@ -59,6 +61,7 @@ export function parsePartMatchingRules<T extends EntryType>(
     'Invalid part matching rules',
   ) as PartMatchingRules<T>
 }
+
 /** Validate the profile's entry and root-compatible part fallback lists; there are no processors or inline policies here. */
 export function parseMetadataMatchingRules<T extends EntryType>(
   root: T,
@@ -97,6 +100,7 @@ function comparisonValue(field: string, value: unknown): string | undefined {
     if (!Array.isArray(value) || value.length === 0) {
       return undefined
     }
+
     // Aliases are compared as complete normalized sets; a shared fragment does not become an identity claim.
     return JSON.stringify([...new Set((value as string[]).map(metadataNameKey))].sort())
   }
@@ -107,8 +111,10 @@ function comparisonValue(field: string, value: unknown): string | undefined {
     const date = value as { year?: number; month?: number; day?: number }
     return JSON.stringify([date.year ?? null, date.month ?? null, date.day ?? null])
   }
+
   return JSON.stringify(value)
 }
+
 function compareFields(fields: readonly string[], left: object, right: object): MatchingComparison {
   let equal = true
   const a = left as Record<string, unknown>
@@ -123,6 +129,7 @@ function compareFields(fields: readonly string[], left: object, right: object): 
       equal = false
     }
   }
+
   return equal ? 'equal' : 'different'
 }
 
@@ -140,6 +147,7 @@ export function compareEntryIdentification<T extends EntryType>(
     parseIdentificationFields(type, right),
   )
 }
+
 /**
  * Compare one same-work, same-kind part rule. Supply volumeNumberLabels only after its volume was uniquely
  * corresponded on both sides; absence leaves that rule unavailable rather than falling back to a work number.

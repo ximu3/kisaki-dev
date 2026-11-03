@@ -48,13 +48,16 @@ export interface ImageIdentity {
   readonly source: string
   readonly id: string
 }
+
 /** Original and optional preview retain their own redirect policy. Claimed dimensions are display hints until decoding. */
 export interface ImageCandidate {
   readonly image: FileInput
   readonly thumbnail?: FileInput
   readonly identity?: ImageIdentity
+
   readonly width?: number
   readonly height?: number
+
   readonly label?: string
   readonly sourceCategory?: string
   /** Omission is unknown; [] means the source explicitly identifies the image as language-neutral. */
@@ -64,6 +67,7 @@ export interface ImageCandidate {
 }
 
 type CatalogImageFields = 'primaryImageId' | 'backdropImageId' | 'titleLogoId' | 'iconImageId'
+
 /** Field values reuse their actual catalog semantics, replacing saved image IDs with unadopted image candidates. */
 export type MetadataEntryFieldValues = {
   [K in EntryType]: Omit<
@@ -79,25 +83,32 @@ export type MetadataEntryFieldValues = {
       : object) &
     (K extends 'game' ? { readonly iconImage: readonly ImageCandidate[] } : object)
 }
+
 export type MetadataEntryFields<T extends EntryType> = Partial<MetadataEntryFieldValues[T]>
+
 export type MetadataEntryField<T extends EntryType> = Extract<
   keyof MetadataEntryFieldValues[T],
   string
 >
+
 export type MetadataPartFieldValues = {
   [K in PartType]: Omit<PartFields<K>, 'externalIdentities' | 'primaryImageId'> & {
     readonly primaryImage: readonly ImageCandidate[]
   }
 }
+
 export type MetadataPartFields<T extends PartType> = Partial<MetadataPartFieldValues[T]>
+
 export type MetadataPartField<T extends PartType> = Extract<
   keyof MetadataPartFieldValues[T],
   string
 >
+
 export interface MetadataTagFields {
   readonly description?: string | null
   readonly isNsfw?: boolean
 }
+
 export type MetadataImageField<T extends EntryType> = Extract<
   MetadataEntryField<T>,
   'primaryImage' | 'backdropImage' | 'titleLogo' | 'iconImage'
@@ -133,6 +144,7 @@ export type MetadataFieldRef =
         }
       }[keyof MetadataRelationAttributeValues[R]]
     }[keyof MetadataRelationAttributeValues]
+
 export type MetadataImageFieldRef = Extract<
   MetadataFieldRef,
   {
@@ -140,6 +152,7 @@ export type MetadataImageFieldRef = Extract<
     readonly field: 'primaryImage' | 'backdropImage' | 'titleLogo' | 'iconImage'
   }
 >
+
 /** The concrete selected field determines the allowed processor/input value, rather than a parallel unconstrained union. */
 export type MetadataFieldValue<F extends MetadataFieldRef> = F extends {
   object: 'entry'
@@ -173,6 +186,7 @@ interface NameIdentification {
   readonly originalName?: string
   readonly aliases?: readonly string[]
 }
+
 export type IdentificationFields<T extends EntryType> = NameIdentification &
   (T extends WorkType
     ? {
@@ -195,6 +209,7 @@ export type IdentificationFields<T extends EntryType> = NameIdentification &
             readonly foundedDate?: PartialDate
             readonly dissolvedDate?: PartialDate
           })
+
 export type PartIdentificationFields<T extends PartType> = NameIdentification & {
   readonly releaseDate?: PartialDate
 } & (T extends 'animeExtra'
@@ -209,6 +224,7 @@ export interface WorkClues {
   readonly releaseDate?: PartialDate
   readonly externalIdentities?: readonly ExternalIdentity[]
 }
+
 export type IdentificationClues<T extends EntryType> = T extends WorkType
   ? WorkClues
   : {
@@ -218,6 +234,7 @@ export type IdentificationClues<T extends EntryType> = T extends WorkType
     } & (T extends 'character' | 'person'
       ? { readonly birthDate?: PartialDate }
       : { readonly foundedDate?: PartialDate })
+
 /** An actual source root with its complete opaque identity, not a local reference or a search display decoration. */
 export type SourceEntry<T extends EntryType = EntryType> = {
   [K in EntryType]: {
@@ -232,8 +249,10 @@ const imageCandidateSchema = v.strictObject({
   image: v.pipe(v.unknown(), v.transform(parseFileInput)),
   thumbnail: v.exactOptional(v.pipe(v.unknown(), v.transform(parseFileInput))),
   identity: v.exactOptional(v.strictObject({ source: identitySchema.entries.source, id })),
+
   width: v.exactOptional(positiveInteger),
   height: v.exactOptional(positiveInteger),
+
   label: v.exactOptional(text),
   sourceCategory: v.exactOptional(nonemptyText),
   languages: v.exactOptional(
@@ -246,7 +265,9 @@ const imageCandidateSchema = v.strictObject({
     v.array(v.strictObject({ name: nonemptyText, url: v.exactOptional(nonemptyText) })),
   ),
 })
+
 const images = v.array(imageCandidateSchema)
+
 export const metadataRelationAttributeEntries = {
   workCharacters: {
     role: v.nullable(v.picklist(characterRoles)),
@@ -263,6 +284,7 @@ export const metadataRelationAttributeEntries = {
   workEpisodes: {},
   workExtras: {},
 } satisfies Record<keyof MetadataRelationMembers, v.ObjectEntries>
+
 const commonFields = {
   name: entryCommonEntries.name,
   originalName: entryCommonEntries.originalName,
@@ -289,10 +311,12 @@ export function metadataEntryEntries(type: EntryType): v.ObjectEntries {
     ...(type === 'game' ? { iconImage: images } : {}),
   }
 }
+
 export function metadataPartEntries(type: PartType): v.ObjectEntries {
   const common = omitFields(partCommonEntries, ['primaryImageId', 'externalIdentities'])
   return { ...common, ...partSpecificEntries[type], primaryImage: images }
 }
+
 export function identificationEntries(type: EntryType): v.ObjectEntries {
   const common = { name: nonemptyText, originalName: nonemptyText, aliases: v.array(nonemptyText) }
   if (type === 'game') {
@@ -312,8 +336,10 @@ export function identificationEntries(type: EntryType): v.ObjectEntries {
       gender: genderSchema,
     }
   }
+
   return { ...common, foundedDate: partialDateSchema, dissolvedDate: partialDateSchema }
 }
+
 export function partIdentificationEntries(type: PartType): v.ObjectEntries {
   return {
     name: nonemptyText,
@@ -331,6 +357,7 @@ export function partIdentificationEntries(type: PartType): v.ObjectEntries {
 export function parseImageCandidate(input: unknown): ImageCandidate {
   return parseValue(imageCandidateSchema, input, 'Invalid metadata image candidate')
 }
+
 /** Reject local/private fields and inapplicable fields, while retaining omission and every legal explicit empty value. */
 export function parseMetadataEntryFields<T extends EntryType>(
   type: T,
@@ -342,6 +369,7 @@ export function parseMetadataEntryFields<T extends EntryType>(
     'Invalid metadata entry fields',
   ) as MetadataEntryFields<T>
 }
+
 /** A part's source classification is ordinary metadata; kind identity and ownership are outside its fields. */
 export function parseMetadataPartFields<T extends PartType>(
   type: T,
@@ -353,6 +381,7 @@ export function parseMetadataPartFields<T extends PartType>(
     'Invalid metadata part fields',
   ) as MetadataPartFields<T>
 }
+
 /** Original identification is bounded to fields that can meaningfully participate in the declared matching rules. */
 export function parseIdentificationFields<T extends EntryType>(
   type: T,
@@ -364,6 +393,7 @@ export function parseIdentificationFields<T extends EntryType>(
     'Invalid original identification fields',
   ) as IdentificationFields<T>
 }
+
 export function parsePartIdentificationFields<T extends PartType>(
   type: T,
   input: unknown,
@@ -430,6 +460,7 @@ export function parseSourceEntry(input: unknown): SourceEntry {
       'Additional identities must exclude the primary identity',
     )
   }
+
   return value as SourceEntry
 }
 
@@ -456,6 +487,7 @@ export function mergeIdentificationClues<T extends EntryType>(
         result[field] = value
       }
     }
+
     for (const identity of clues.externalIdentities ?? []) {
       const key = identityKey(identity)
       if (!seen.has(key)) {
@@ -485,6 +517,7 @@ export function hasNewWorkClues(base: WorkClues, result: WorkClues): boolean {
   ) {
     return true
   }
+
   const dateKey = (date: PartialDate | undefined): string =>
     JSON.stringify([date?.year ?? null, date?.month ?? null, date?.day ?? null])
   if (
@@ -493,6 +526,7 @@ export function hasNewWorkClues(base: WorkClues, result: WorkClues): boolean {
   ) {
     return true
   }
+
   const known = new Set((base.externalIdentities ?? []).map(identityKey))
   return (result.externalIdentities ?? []).some((identity) => !known.has(identityKey(identity)))
 }
@@ -515,8 +549,10 @@ export function selectMetadataValue<T>(
       return value
     }
   }
+
   return first
 }
+
 /** Union complete members by their domain's exact key, preserving provider order and the whole first member. */
 export function unionMetadataMembers<T>(
   answers: readonly (readonly T[] | undefined)[],
@@ -538,6 +574,7 @@ export function unionMetadataMembers<T>(
       }
     }
   }
+
   return answered ? result : undefined
 }
 
@@ -583,6 +620,7 @@ export function selectMetadataFieldValue<F extends MetadataFieldRef>(
   if (!isMetadataCollectionField(field)) {
     throw new DesktopError('InvalidInput', 'Scalar metadata fields do not support union')
   }
+
   let ordinal = 0
   const arrays: (readonly unknown[] | undefined)[] = values.map((value) => {
     if (value === undefined) {
@@ -591,8 +629,10 @@ export function selectMetadataFieldValue<F extends MetadataFieldRef>(
     if (!Array.isArray(value)) {
       throw new DesktopError('InvalidInput', 'Metadata union requires complete collection answers')
     }
+
     return value
   })
+
   const result = unionMetadataMembers(arrays, (member) => {
     if (field.field === 'aliases') {
       return metadataNameKey(member as string)
@@ -603,6 +643,7 @@ export function selectMetadataFieldValue<F extends MetadataFieldRef>(
     if (field.field === 'externalLinks') {
       return (member as { url: string }).url
     }
+
     const image = member as ImageCandidate
     if (image.identity) {
       return JSON.stringify(['source', image.identity.source, image.identity.id])
@@ -613,9 +654,11 @@ export function selectMetadataFieldValue<F extends MetadataFieldRef>(
     if (image.image.type === 'resource') {
       return JSON.stringify(['resource', image.image.resource.id])
     }
+
     // Without reliable resource identity, retaining two candidates is preferable to erasing one by guessed equality.
     return JSON.stringify(['unidentified', ordinal++])
   })
+
   return result === undefined ? undefined : parseMetadataFieldValue(field, result)
 }
 
@@ -625,6 +668,7 @@ export function getMetadataEntryFields<T extends EntryType>(
 ): readonly MetadataEntryField<T>[] {
   return Object.keys(metadataEntryEntries(type)) as MetadataEntryField<T>[]
 }
+
 export function getMetadataPartFields<T extends PartType>(
   type: T,
 ): readonly MetadataPartField<T>[] {
@@ -650,6 +694,7 @@ export function parseMetadataFieldRef(input: unknown): MetadataFieldRef {
     if (!Object.hasOwn(metadataEntryEntries(value.entryType), value.field)) {
       throw new DesktopError('InvalidInput', 'Metadata field is not applicable to this entry type')
     }
+
     return value as MetadataFieldRef
   }
   if (header.object === 'part') {
@@ -670,6 +715,7 @@ export function parseMetadataFieldRef(input: unknown): MetadataFieldRef {
     if (!Object.hasOwn(metadataPartEntries(value.partType), value.field)) {
       throw new DesktopError('InvalidInput', 'Metadata field is not applicable to this part type')
     }
+
     return value as MetadataFieldRef
   }
   if (header.object === 'tag') {
@@ -678,6 +724,7 @@ export function parseMetadataFieldRef(input: unknown): MetadataFieldRef {
       input,
     )
   }
+
   const value = parseValue(
     v.strictObject({
       object: v.literal('relation'),
@@ -694,8 +741,10 @@ export function parseMetadataFieldRef(input: unknown): MetadataFieldRef {
       'A relation identity or membership is not a processable field',
     )
   }
+
   return value as MetadataFieldRef
 }
+
 /** Parse a value according to its concrete public field, preserving null, false, zero and complete empty collections. */
 export function parseMetadataFieldValue<F extends MetadataFieldRef>(
   field: F,
@@ -717,6 +766,7 @@ export function parseMetadataFieldValue<F extends MetadataFieldRef>(
       entries = metadataRelationAttributeEntries[ref.relation]
       break
   }
+
   const schema = entries[ref.field]!
   return parseValue(schema, input, 'Invalid metadata field value') as MetadataFieldValue<F>
 }

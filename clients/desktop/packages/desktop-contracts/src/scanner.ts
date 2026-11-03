@@ -72,13 +72,18 @@ export interface ScanConfigsApi {
     call?: CallOptions,
   ): Promise<readonly Omit<ScanConfig, 'definition'>[]>
   get(id: string, call?: CallOptions): Promise<ScanConfig | null>
+
   create(input: ScanConfigCreate, call?: CallOptions): Promise<ScanConfig>
   update(id: string, input: ScanConfigUpdate, call?: CallOptions): Promise<ScanConfig>
   delete(id: string, call?: CallOptions): Promise<void>
+
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
+
   listRulePresets(call?: CallOptions): Promise<readonly ClueExtractionPreset[]>
+
   onInvalidated(listener: () => void): Disposable
 }
+
 /** Report cleanup removes finished scan history only and never cascades to tasks, configurations, entries or local files. */
 export interface ScanRunsApi {
   list(
@@ -87,28 +92,35 @@ export interface ScanRunsApi {
     call?: CallOptions,
   ): Promise<ListResult<ScanRunSummary>>
   get(runId: string, call?: CallOptions): Promise<ScanRun | null>
+
   clear(
     filter?: { readonly scanConfigId?: string; readonly createdBefore?: number },
     call?: CallOptions,
   ): Promise<number>
+
   onInvalidated(listener: () => void): Disposable
 }
+
 export interface WorkRecognizersApi {
   list(call?: CallOptions): Promise<readonly WorkRecognizerDescriptor[]>
   get(id: string, call?: CallOptions): Promise<WorkRecognizerDescriptor | null>
+
   register(
     recognizerId: string,
     implementation: WorkRecognizer,
     call?: CallOptions,
   ): Promise<Registration<string>>
 }
+
 /** Public scan is always full-config execution. Progress/control use the one actual taskRef exposed in currentRun. */
 export interface ScannerApi {
   readonly configs: ScanConfigsApi
   readonly runs: ScanRunsApi
   readonly recognizers: WorkRecognizersApi
+
   preview(input: ScanPreviewInput, call?: CallOptions): Promise<ScanPreviewResult>
   scan(configId: string, call?: CallOptions): Promise<ScanResult>
+
   getState(configId: string, call?: CallOptions): Promise<ScannerState | null>
   observe(
     configId: string,
@@ -119,11 +131,14 @@ export interface ScannerApi {
 
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
+
 const clues = v.pipe(
   v.unknown(),
   v.transform((value) => parseIdentificationClues('game', value)),
 )
+
 const statuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
+
 function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
   const kind = v.picklist(['directory', 'file'])
   return v.strictObject({
@@ -134,6 +149,7 @@ function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
     ),
     include: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
     exclude: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
+
     identification: v.strictObject({
       rules: v.pipe(
         v.array(v.pipe(v.unknown(), v.transform(parseRule))),
@@ -146,6 +162,7 @@ function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
     }),
   })
 }
+
 /** Default depth/filter/rule values require the caller's explicit input-kind choice; presets are never auto-enabled. */
 export function getScanDefinitionDefaults(
   inputKinds: NonEmptyArray<'directory' | 'file'>,
@@ -158,6 +175,7 @@ export function getScanDefinitionDefaults(
     identification: { rules: [], recognizerIds: [] },
   })
 }
+
 /** Decode closed definition values without compiling user regexes; appropriate for stored snapshots and synchronous codecs. */
 export function parseScanDefinitionShape(input: unknown): ScanDefinition {
   return parseValue(
@@ -166,10 +184,12 @@ export function parseScanDefinitionShape(input: unknown): ScanDefinition {
     'Invalid scanner definition shape',
   )
 }
+
 /** Full save/execution validation, including disabled patterns and capture references, must run in a terminable bounded unit. */
 export function parseScanDefinition(input: unknown): ScanDefinition {
   return parseValue(definitionSchema(parseClueExtractionRule), input, 'Invalid scanner definition')
 }
+
 /** Validate a new configuration; actual same-type profile existence and path accessibility are checked by its owner. */
 export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
   return parseValue(
@@ -186,6 +206,7 @@ export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
     'Invalid scan configuration creation',
   )
 }
+
 /** Ordinary editing cannot change workType or technical ordering/timestamps; a submitted definition is one save unit. */
 export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   const fields = v.strictObject(
@@ -206,6 +227,7 @@ export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   validateExpectedKeys(value.changes, value.expected)
   return value
 }
+
 /** Every participant receives the same original work/type/boundary; it cannot alter them in its result. */
 export function parseRecognitionInput(input: unknown): RecognitionInput {
   return parseValue(
@@ -219,11 +241,13 @@ export function parseRecognitionInput(input: unknown): RecognitionInput {
     'Invalid work recognition input',
   )
 }
+
 /** Null alone means no new information; empty results and copied/format-only variants of original clues are rejected. */
 export function parseRecognitionResult(input: RecognitionInput, result: unknown): WorkClues | null {
   if (result === null) {
     return null
   }
+
   const value = parseIdentificationClues(input.entryType, result)
   if (!hasNewWorkClues(input.clues, value)) {
     throw new DesktopError(
@@ -231,6 +255,7 @@ export function parseRecognitionResult(input: RecognitionInput, result: unknown)
       'Recognizer result must provide new usable work clues or null',
     )
   }
+
   return value
 }
 
@@ -239,13 +264,16 @@ function workAddResult(input: unknown): AddResult<WorkType> {
   if (!isWorkType(value.entry.type)) {
     throw new DesktopError('InvalidInput', 'Scanner candidates must resolve to a work')
   }
+
   return value as AddResult<WorkType>
 }
+
 const discovery = v.strictObject({
   finished: v.boolean(),
   candidateCount: nonnegativeInteger,
   issues: v.array(v.strictObject({ path, error })),
 })
+
 const localContent = v.variant('status', [
   v.strictObject({ status: v.literal('included') }),
   v.strictObject({ status: v.literal('skipped') }),
@@ -262,6 +290,7 @@ const localContent = v.variant('status', [
     ),
   }),
 ])
+
 function candidate(input: unknown): ScanCandidateResult {
   const value = parseValue(
     v.union([
@@ -287,6 +316,7 @@ function candidate(input: unknown): ScanCandidateResult {
     if ((value.result.outcome === 'added') !== (value.localContent.status === 'included')) {
       throw new DesktopError('InvalidInput', 'Scan local-content outcome contradicts root adoption')
     }
+
     let registration
     if (value.localContent.status === 'registered') {
       registration = value.localContent.result
@@ -326,8 +356,10 @@ export function parseScanResult(input: unknown): ScanResult {
       'A scan report cannot handle more candidates than it discovered',
     )
   }
+
   return value
 }
+
 /** Require completed discovery and a report for every discovered candidate before declaring the scan complete. */
 export function requireCompleteScanResult(result: ScanResult | null): ScanResult {
   if (
@@ -338,8 +370,10 @@ export function requireCompleteScanResult(result: ScanResult | null): ScanResult
   ) {
     throw new DesktopError('InvalidInput', 'Completed scan contains uncompleted work')
   }
+
   return result
 }
+
 /** Watch failures and scan failures are independent; observation release never controls the current task. */
 export function parseScannerState(input: unknown): ScannerState | null {
   return parseValue(
@@ -390,6 +424,7 @@ export function parseScanConfigSnapshot(input: unknown): ScanConfigSnapshot {
     'Invalid scan configuration snapshot',
   ) as ScanConfigSnapshot
 }
+
 /** Validate independent persisted scan history; completed reports must finish discovery and report every discovered candidate. */
 export function parseScanRun(input: unknown): ScanRun {
   const relative = v.pipe(v.unknown(), v.transform(parseRelativePath))
@@ -425,6 +460,7 @@ export function parseScanRun(input: unknown): ScanRun {
   }
   return value
 }
+
 /** Historical list filters do not load full reports; creation bounds use [from, before). */
 export function parseScanRunQuery(input: unknown): ScanRunQuery {
   return parseValue(

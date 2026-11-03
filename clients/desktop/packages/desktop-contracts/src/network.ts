@@ -8,24 +8,29 @@ import { id, parseValue, text } from './validation'
 
 /** A single HTTP/HTTPS/SOCKS5 endpoint; credentials are separate protected values, never URL user information. */
 export type ProxyEndpoint = string
+
 export interface ProxyCredentials {
   readonly username: string
   readonly password: string
 }
+
 export interface ProxyCredentialState {
   readonly revision: string
 }
+
 export interface NetworkPreferences {
   readonly mode: 'system' | 'direct' | 'manual'
   readonly endpoint: ProxyEndpoint | null
   readonly bypassRules: string
   readonly credentials: ProxyCredentialState | null
 }
+
 /** Saved choice and readiness differ; a failed apply prevents networking instead of silently using an old/direct route. */
 export type NetworkState =
   | { readonly status: 'ready' }
   | { readonly status: 'applying' }
   | { readonly status: 'failed'; readonly error: ErrorSummary }
+
 export interface NetworkFetchOptions {
   readonly method?: string
   readonly headers?: NonNullable<RequestInit['headers']>
@@ -33,6 +38,7 @@ export interface NetworkFetchOptions {
   readonly signal?: AbortSignal
   readonly redirect?: 'follow' | 'error'
 }
+
 /** A single-consumption body. Cancel unused streams to release; no clone and no promise of a native Response instance. */
 export interface NetworkResponse {
   readonly url: string
@@ -41,8 +47,10 @@ export interface NetworkResponse {
   readonly statusText: string
   readonly ok: boolean
   readonly headers: Headers
+
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean
+
   text(): Promise<string>
   json(): Promise<unknown>
   arrayBuffer(): Promise<ArrayBuffer>
@@ -50,9 +58,11 @@ export interface NetworkResponse {
   blob(): Promise<Blob>
   formData(): Promise<FormData>
 }
+
 export interface NetworkApi {
   /** Resolve at response headers. Later cancellation fails outstanding body reads; HTTP error statuses remain normal responses. */
   fetch(url: string | URL, options?: NetworkFetchOptions): Promise<NetworkResponse>
+
   getState(): Promise<NetworkState>
   observe(listener: Listener<NetworkState>): Disposable
 }
@@ -74,11 +84,13 @@ export function parseHttpUrl(input: unknown): string {
     ) {
       throw new TypeError('Invalid HTTP address')
     }
+
     return url.href
   } catch (cause) {
     throw new DesktopError('InvalidInput', 'Invalid HTTP URL', { cause })
   }
 }
+
 /** Reject PAC expressions, URL credentials, paths and multiple endpoints before any proxy execution. */
 export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   const value = parseValue(text, input, 'Invalid proxy endpoint')
@@ -99,6 +111,7 @@ export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
     ) {
       throw new TypeError('Invalid proxy endpoint')
     }
+
     const defaultPorts: Readonly<Record<string, number>> = {
       'http:': 80,
       'https:': 443,
@@ -108,11 +121,13 @@ export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
     if (!Number.isInteger(port) || port < 1 || port > 65535) {
       throw new TypeError('Invalid proxy port')
     }
+
     return `${url.protocol}//${url.hostname}:${port}`
   } catch (cause) {
     throw new DesktopError('InvalidInput', 'Invalid proxy endpoint', { cause })
   }
 }
+
 /** Credential content is accepted only by protected native writes and is never part of an ordinary read projection. */
 export function parseProxyCredentials(input: unknown): ProxyCredentials {
   return parseValue(
@@ -121,6 +136,7 @@ export function parseProxyCredentials(input: unknown): ProxyCredentials {
     'Invalid proxy credentials',
   )
 }
+
 export function parseProxyCredentialState(input: unknown): ProxyCredentialState | null {
   return parseValue(
     v.nullable(v.strictObject({ revision: id })),
@@ -128,6 +144,7 @@ export function parseProxyCredentialState(input: unknown): ProxyCredentialState 
     'Invalid proxy credential state',
   )
 }
+
 /** Strict complete configuration; manual without an endpoint and unsupported SOCKS5 authentication cannot execute. */
 export function parseNetworkPreferences(input: unknown): NetworkPreferences {
   const value = parseValue(
@@ -150,5 +167,6 @@ export function parseNetworkPreferences(input: unknown): NetworkPreferences {
       'Manual proxy configuration is incomplete or authentication is unsupported',
     )
   }
+
   return value
 }

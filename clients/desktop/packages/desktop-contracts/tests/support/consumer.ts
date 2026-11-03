@@ -15,6 +15,7 @@ export function consumerTest(scenario: 'node' | 'browser') {
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-contracts-${scenario}-`))
     onCleanup(() => rm(consumerDirectory, { recursive: true, force: true }))
+
     await cp(join(packageRoot, 'tests/fixtures/consumers', scenario), consumerDirectory, {
       recursive: true,
     })
@@ -35,7 +36,9 @@ export function consumerTest(scenario: 'node' | 'browser') {
     }
     await writeFile(manifestPath, JSON.stringify(manifest))
     await writeFile(join(consumerDirectory, 'pnpm-workspace.yaml'), JSON.stringify(configuration))
+
     await runPnpm(['install', '--ignore-scripts'], { cwd: consumerDirectory })
+
     return consumerDirectory
   })
 }

@@ -26,27 +26,33 @@ export interface SessionTiming {
   readonly elapsedMs: number
   readonly graceEndsAt: number | null
 }
+
 /** Unknown foreground is independent of reliable process survival observation. No PID or running duplicate is exposed. */
 export interface GameMonitoringState {
   readonly available: boolean
   readonly foreground: boolean | null
 }
+
 /** Actual adopted playback values, independent of the user's timing pause and persistent configuration. */
 export interface PlaybackState {
   readonly positionSeconds: number
   readonly durationSeconds: number | null
+
   readonly paused: boolean
   readonly buffering: boolean
   readonly seeking: boolean
   readonly atEnd: boolean
+
   readonly speed: number
   readonly volumePercent: number
   readonly muted: boolean
+
   readonly subtitlesVisible: boolean
   readonly subtitleScale: number
   readonly audioDelaySeconds: number
   readonly subtitleDelaySeconds: number
 }
+
 /** Last confirmed source position survives reflow; progress is nullable display information in [0, 1]. */
 export interface ReadingState {
   readonly position: ReadingPosition
@@ -54,44 +60,57 @@ export interface ReadingState {
   readonly layout: 'reflowable' | 'fixedLayout'
   readonly reflowing: boolean
 }
+
 /** Fixed launch-time save source; changing the current configuration never changes this snapshot. */
 export type SessionSaveSource = Extract<GameBackupSource, { readonly type: 'snapshot' }>
+
 export interface SessionBase {
   readonly sessionId: string
   readonly startedAt: number
+
   readonly timing: SessionTiming
 }
+
 export interface GameSession extends SessionBase {
   readonly type: 'game'
   readonly gameId: string
   readonly launchConfigId: string
   readonly saveSource?: SessionSaveSource
+
   readonly monitoring: GameMonitoringState
 }
+
 export interface AnimeSession extends SessionBase {
   readonly type: 'anime'
   readonly animeId: string
   readonly fileId: string
   readonly settingsSource: 'global' | 'work' | 'file'
+
   readonly playback: PlaybackState
 }
+
 export interface ComicSession extends SessionBase {
   readonly type: 'comic'
   readonly comicId: string
   readonly fileId: string
+
   readonly reading: ReadingState
 }
+
 export interface NovelSession extends SessionBase {
   readonly type: 'novel'
   readonly novelId: string
   readonly fileId: string
+
   readonly reading: ReadingState
 }
+
 export type FileSession = AnimeSession | ComicSession | NovelSession
 export type WorkSession = GameSession | FileSession
 
 /** Controls whether a call may ask the user to choose a target; OS permission requests use a separate flow. */
 export type SessionInteraction = 'fail' | 'prompt'
+
 export interface SessionInteractionOptions extends CallOptions {
   /**
    * Defaults to fail: required user selection rejects with InteractionRequired.
@@ -110,12 +129,14 @@ export interface SessionStartedMap {
   readonly comic: Pick<ComicSession, 'sessionId' | 'comicId' | 'fileId' | 'startedAt'>
   readonly novel: Pick<NovelSession, 'sessionId' | 'novelId' | 'fileId' | 'startedAt'>
 }
+
 export interface SessionEndReasonMap {
   readonly game: 'exited' | 'interrupted' | 'detached'
   readonly anime: 'stopped' | 'replaced' | 'interrupted'
   readonly comic: 'stopped' | 'replaced' | 'interrupted'
   readonly novel: 'stopped' | 'replaced' | 'interrupted'
 }
+
 /** Recording failure is independent of the actual end reason. A detached game has already saved its final recording. */
 export type SessionEndedMap = {
   readonly [K in keyof SessionStartedMap]: SessionStartedMap[K] & {
@@ -129,28 +150,34 @@ export type SessionEndedMap = {
 export type FilePositionChoice<P> =
   | { readonly fileId?: string; readonly position?: never }
   | { readonly fileId: string; readonly position: P }
+
 export interface GameOpenInput {
   readonly gameId: string
   readonly launchConfigId?: string
 }
+
 export type AnimeOpenInput = { readonly animeId: string } & (
   | { readonly episodeId?: string; readonly extraId?: never }
   | { readonly episodeId?: never; readonly extraId: string }
 ) &
   FilePositionChoice<PlaybackPositionInput>
+
 export type ComicOpenInput = {
   readonly comicId: string
   readonly volumeId?: string
   readonly chapterId?: string
 } & FilePositionChoice<ReadingPositionInput>
+
 export type NovelOpenInput = {
   readonly novelId: string
   readonly volumeId?: string
 } & FilePositionChoice<ReadingPositionInput>
+
 export interface FileSwitchInput<P> {
   readonly fileId: string
   readonly position?: P
 }
+
 /** Only ready is a normal return. previousEnded is a legal failure result and does not claim successful recording/cleanup. */
 export type FileSwitchResult<S extends FileSession = FileSession> =
   | { readonly outcome: 'ready'; readonly session: S }
@@ -165,6 +192,7 @@ export interface PlaybackTrackRef {
   readonly type: 'video' | 'audio' | 'subtitle'
   readonly id: string
 }
+
 export type PlaybackTrack = {
   readonly ref: PlaybackTrackRef
   readonly title: string | null
@@ -178,6 +206,7 @@ export type PlaybackTrack = {
       readonly selection: FileTrackSelection | null
     }
 )
+
 /** Saved describes one committed field, not a configuration snapshot or an inferred current scope. */
 export type SavedPlaybackSetting =
   | { readonly field: 'volumePercent'; readonly scope: 'application'; readonly value: number }
@@ -197,6 +226,7 @@ export type SavedPlaybackSetting =
       readonly scope: 'file'
       readonly value: FileTrackSelection
     }
+
 export type PlaybackSettingResult = {
   readonly sessionId: string
   readonly animeId: string
@@ -205,10 +235,12 @@ export type PlaybackSettingResult = {
   | { readonly outcome: 'applied'; readonly saved: null }
   | { readonly outcome: 'applied' | 'saved'; readonly saved: SavedPlaybackSetting }
 )
+
 export interface GameImageCapture {
   readonly gameId: string
   readonly image: PreparedImage
 }
+
 export interface AnimeImageCapture {
   readonly animeId: string
   readonly fileId: string
@@ -220,6 +252,7 @@ export interface AnimeImageCapture {
 export type RecordingIssue =
   | { readonly kind: 'activity'; readonly activityId: string; readonly error: ErrorSummary }
   | { readonly kind: 'position'; readonly error: ErrorSummary }
+
 export type PendingRecording = {
   readonly sessionId: string
   readonly endedAt: number
@@ -237,11 +270,14 @@ export type PendingRecording = {
       readonly target: { readonly fileId: string }
     }
 )
+
 /** A complete retry receipt; failed/cancelled execution retains the committed and remaining units in this same shape. */
 export interface RecordingRetryResult {
   readonly sessionId: string
+
   readonly savedActivityIds: readonly string[]
   readonly positionSaved: boolean
+
   readonly remainingActivityIds: readonly string[]
   readonly positionPending: boolean
   readonly issues: readonly RecordingIssue[]
@@ -251,22 +287,30 @@ export interface RecordingRetryResult {
 export interface SessionControls {
   pauseTiming(sessionId: string, call?: CallOptions): Promise<void>
   resumeTiming(sessionId: string, call?: CallOptions): Promise<void>
+
   focus(sessionId: string, call?: CallOptions): Promise<void>
+
   /** Repeated active closes share completion; an ended ID succeeds without retrying previously failed recording. */
   close(sessionId: string, call?: CallOptions): Promise<void>
 }
+
 export interface GameSessionsApi extends SessionControls {
   /** Resolve only after actual launch, target confirmation and observation; reuse preserves the existing session. */
   open(input: GameOpenInput, call?: SessionInteractionOptions): Promise<GameSession>
+
   /** Choose from this session's actual windows; required user selection follows this call's interaction option. */
   focus(sessionId: string, call?: SessionInteractionOptions): Promise<void>
+
   /** Explicit force termination; normal close never escalates automatically. */
   terminate(sessionId: string, call?: CallOptions): Promise<void>
+
   /** Native exit coordination only: save before detaching, never send a process termination request. */
   detach(sessionId: string, call?: CallOptions): Promise<void>
+
   /** Capture actual game content into an independently held image; no implicit pause or annotation. */
   captureImage(sessionId: string, call?: SessionInteractionOptions): Promise<GameImageCapture>
 }
+
 export interface AnimeSessionsApi extends SessionControls {
   open(input: AnimeOpenInput, call?: SessionInteractionOptions): Promise<AnimeSession>
   switchFile(
@@ -274,19 +318,23 @@ export interface AnimeSessionsApi extends SessionControls {
     input: FileSwitchInput<PlaybackPositionInput>,
     call?: CallOptions,
   ): Promise<FileSwitchResult<AnimeSession>>
+
   /** Return confirmed actual seconds, not the requested start instruction. Seeking never implicitly resumes playback. */
   seek(sessionId: string, position: PlaybackPositionInput, call?: CallOptions): Promise<number>
   play(sessionId: string, call?: CallOptions): Promise<void>
   pause(sessionId: string, call?: CallOptions): Promise<void>
+
   /** Temporary speed lasts only for this actual file; persistent defaults are separate. */
   setSpeed(sessionId: string, speed: number, call?: CallOptions): Promise<void>
   setSubtitlesVisible(sessionId: string, visible: boolean, call?: CallOptions): Promise<void>
+
   setVolume(
     sessionId: string,
     volumePercent: number,
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
   setMuted(sessionId: string, muted: boolean, call?: CallOptions): Promise<PlaybackSettingResult>
+
   setSubtitleScale(
     sessionId: string,
     scale: number,
@@ -302,6 +350,7 @@ export interface AnimeSessionsApi extends SessionControls {
     seconds: number,
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
+
   /** remember defaults false; video tracks cannot be remembered. Save precedes actual adoption. */
   selectTrack(
     sessionId: string,
@@ -311,9 +360,11 @@ export interface AnimeSessionsApi extends SessionControls {
   ): Promise<PlaybackSettingResult>
   getTracks(sessionId: string, call?: CallOptions): Promise<readonly PlaybackTrack[]>
   observeTracks(sessionId: string, listener: Listener<readonly PlaybackTrack[]>): Disposable
+
   /** Image and seconds come from the same actual file capture before independent encoding/preparation. */
   captureImage(sessionId: string, call?: CallOptions): Promise<AnimeImageCapture>
 }
+
 export interface ComicSessionsApi extends SessionControls {
   open(input: ComicOpenInput, call?: SessionInteractionOptions): Promise<ComicSession>
   switchFile(
@@ -321,12 +372,14 @@ export interface ComicSessionsApi extends SessionControls {
     input: FileSwitchInput<ReadingPositionInput>,
     call?: CallOptions,
   ): Promise<FileSwitchResult<ComicSession>>
+
   seek(
     sessionId: string,
     position: ReadingPositionInput,
     call?: CallOptions,
   ): Promise<ReadingPosition>
 }
+
 export interface NovelSessionsApi extends SessionControls {
   open(input: NovelOpenInput, call?: SessionInteractionOptions): Promise<NovelSession>
   switchFile(
@@ -334,45 +387,54 @@ export interface NovelSessionsApi extends SessionControls {
     input: FileSwitchInput<ReadingPositionInput>,
     call?: CallOptions,
   ): Promise<FileSwitchResult<NovelSession>>
+
   seek(
     sessionId: string,
     position: ReadingPositionInput,
     call?: CallOptions,
   ): Promise<ReadingPosition>
 }
+
 /** Native-only collection, retained for the current process. Discard requires the user's explicit choice. */
 export interface SessionRecordingsApi {
   list(call?: CallOptions): Promise<readonly PendingRecording[]>
+
   retry(sessionId: string, call?: CallOptions): Promise<RecordingRetryResult>
   discard(sessionId: string, call?: CallOptions): Promise<void>
+
   onInvalidated(listener: () => void): Disposable
 }
+
 export interface SessionsApi {
   readonly game: GameSessionsApi
   readonly anime: AnimeSessionsApi
   readonly comic: ComicSessionsApi
   readonly novel: NovelSessionsApi
   readonly recordings: SessionRecordingsApi
+
   list(call?: CallOptions): Promise<readonly WorkSession[]>
   get(sessionId: string, call?: CallOptions): Promise<WorkSession | null>
+
   /** Deliver current then changed complete snapshots without a read/subscribe gap; disposal never closes content. */
   observeAll(listener: Listener<readonly WorkSession[]>): Disposable
+
   /** Null is delivered for a missing/ended target and ends this observation. */
   observe(sessionId: string, listener: Listener<WorkSession | null>): Disposable
 }
-
-const finite = v.pipe(v.number(), v.finite())
 
 /** Missing policy means fail without prompting. Invalid explicit values remain InvalidInput; target resolution is the owner's work. */
 export function parseSessionInteraction(input: unknown = 'fail'): SessionInteraction {
   return parseValue(v.picklist(['fail', 'prompt']), input, 'Invalid session interaction policy')
 }
+
+const finite = v.pipe(v.number(), v.finite())
 const speed = v.pipe(finite, v.minValue(0.01), v.maxValue(100))
 const scale = v.pipe(finite, v.gtValue(0), v.maxValue(100))
 const volume = v.pipe(finite, v.minValue(0), v.maxValue(100))
 const readingPosition = v.pipe(v.unknown(), v.transform(parseReadingPosition))
 const playbackInput = v.union([v.literal('start'), nonnegativeNumber])
 const readingInput = v.union([v.literal('start'), readingPosition])
+
 const sourceSnapshot = v.pipe(
   v.unknown(),
   v.transform((input) => {
@@ -383,10 +445,13 @@ const sourceSnapshot = v.pipe(
         'Session save sources must be actual launch-time snapshots',
       )
     }
+
     return value
   }),
 )
+
 const startedBase = { sessionId: id, startedAt: timestamp }
+
 const startedEntries = {
   game: {
     ...startedBase,
@@ -398,6 +463,7 @@ const startedEntries = {
   comic: { ...startedBase, comicId: id, fileId: id },
   novel: { ...startedBase, novelId: id, fileId: id },
 }
+
 const timing = v.pipe(
   v.strictObject({
     paused: v.boolean(),
@@ -411,20 +477,24 @@ const timing = v.pipe(
       !(value.paused && value.graceEndsAt !== null),
   ),
 )
+
 const base = { sessionId: id, startedAt: timestamp, timing }
 const fileBase = { ...base, fileId: id }
+
 const reading = v.strictObject({
   position: readingPosition,
   progress: v.nullable(v.pipe(finite, v.minValue(0), v.maxValue(1))),
   layout: v.picklist(['reflowable', 'fixedLayout']),
   reflowing: v.boolean(),
 })
+
 const game = v.strictObject({
   ...startedEntries.game,
   timing,
   type: v.literal('game'),
   monitoring: v.strictObject({ available: v.boolean(), foreground: v.nullable(v.boolean()) }),
 })
+
 const anime = v.strictObject({
   ...fileBase,
   type: v.literal('anime'),
@@ -433,19 +503,23 @@ const anime = v.strictObject({
   playback: v.strictObject({
     positionSeconds: nonnegativeNumber,
     durationSeconds: v.nullable(nonnegativeNumber),
+
     paused: v.boolean(),
     buffering: v.boolean(),
     seeking: v.boolean(),
     atEnd: v.boolean(),
+
     speed,
     volumePercent: volume,
     muted: v.boolean(),
+
     subtitlesVisible: v.boolean(),
     subtitleScale: scale,
     audioDelaySeconds: finite,
     subtitleDelaySeconds: finite,
   }),
 })
+
 const comic = v.strictObject({ ...fileBase, type: v.literal('comic'), comicId: id, reading })
 const novel = v.strictObject({ ...fileBase, type: v.literal('novel'), novelId: id, reading })
 
@@ -466,8 +540,10 @@ export function parseWorkSession(input: unknown): WorkSession {
       'Session save source belongs to another launch configuration',
     )
   }
+
   return value
 }
+
 /** Start facts require confirmed targets and reuse the same launch-time save source as the actual game session. */
 export function parseSessionStarted<T extends keyof SessionStartedMap>(
   type: T,
@@ -486,6 +562,7 @@ export function parseSessionStarted<T extends keyof SessionStartedMap>(
   }
   return value as SessionStartedMap[T]
 }
+
 /** A game never emits stopped/replaced; file sessions never emit exited/detached. Failed detach cannot emit an end fact. */
 export function parseSessionEnded<T extends keyof SessionEndedMap>(
   type: T,
@@ -505,15 +582,19 @@ export function parseSessionEnded<T extends keyof SessionEndedMap>(
   if (value.reason === 'detached' && value.recordingError !== undefined) {
     throw new DesktopError('InvalidInput', 'A detached game cannot have an unsaved final recording')
   }
+
   return value as SessionEndedMap[T]
 }
+
 /** Validate current-file location input; start remains an instruction until the executor returns actual coordinates. */
 export function parsePlaybackPositionInput(input: unknown): PlaybackPositionInput {
   return parseValue(playbackInput, input, 'Invalid playback position')
 }
+
 export function parseReadingPositionInput(input: unknown): ReadingPositionInput {
   return parseValue(readingInput, input, 'Invalid reading position input')
 }
+
 /** Validate both structural selectors and combinations; actual ownership/availability is resolved by sessions. */
 export function parseGameOpenInput(input: unknown): GameOpenInput {
   return parseValue(
@@ -522,6 +603,7 @@ export function parseGameOpenInput(input: unknown): GameOpenInput {
     'Invalid game open input',
   )
 }
+
 export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -540,8 +622,10 @@ export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   ) {
     throw new DesktopError('InvalidInput', 'Conflicting or incomplete anime target constraints')
   }
+
   return value as AnimeOpenInput
 }
+
 export function parseComicOpenInput(input: unknown): ComicOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -557,8 +641,10 @@ export function parseComicOpenInput(input: unknown): ComicOpenInput {
   if (value.position !== undefined && value.fileId === undefined) {
     throw new DesktopError('InvalidInput', 'An explicit position requires a file')
   }
+
   return value as ComicOpenInput
 }
+
 export function parseNovelOpenInput(input: unknown): NovelOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -573,8 +659,10 @@ export function parseNovelOpenInput(input: unknown): NovelOpenInput {
   if (value.position !== undefined && value.fileId === undefined) {
     throw new DesktopError('InvalidInput', 'An explicit position requires a file')
   }
+
   return value as NovelOpenInput
 }
+
 /** A switch fixes the requested file; reading and playback coordinate families cannot cross. */
 export function parseFileSwitchInput(
   type: 'anime',
@@ -597,6 +685,7 @@ export function parseFileSwitchInput(
     'Invalid file switch',
   )
 }
+
 /** Parse the complete result family; a caller handling success additionally requires outcome ready. */
 export function parseFileSwitchResult<T extends FileSession['type']>(
   type: T,
@@ -620,8 +709,10 @@ export function parseFileSwitchResult<T extends FileSession['type']>(
   if (value.outcome === 'ready' && value.session.type !== type) {
     throw new DesktopError('InvalidInput', 'File switch result has the wrong medium')
   }
+
   return value as FileSwitchResult<Extract<FileSession, { type: T }>>
 }
+
 /** A runtime track ID never conveys its persistent source/index. Video memory is rejected before any side effect. */
 export function parsePlaybackTrackRef(input: unknown, remember = false): PlaybackTrackRef {
   const value = parseValue(
@@ -632,8 +723,10 @@ export function parsePlaybackTrackRef(input: unknown, remember = false): Playbac
   if (remember && value.type === 'video') {
     throw new DesktopError('InvalidInput', 'Video tracks do not support file memory')
   }
+
   return value
 }
+
 /** Validate each control using exactly the same ranges as persisted preferences; no silent clamping. */
 export function parsePlaybackControlValue(
   field: 'speed' | 'volumePercent' | 'subtitleScale' | 'audioDelaySeconds' | 'subtitleDelaySeconds',
@@ -648,6 +741,7 @@ export function parsePlaybackControlValue(
   }
   return parseValue(schemas[field], input, 'Invalid playback control value')
 }
+
 const saved = v.variant('field', [
   v.strictObject({
     field: v.literal('volumePercent'),
@@ -675,6 +769,7 @@ const saved = v.variant('field', [
     value: v.pipe(v.unknown(), v.transform(parseFileTrackSelection)),
   }),
 ])
+
 /** saved/null cannot claim a durable partial result; normal completion requires applied at the operation boundary. */
 export function parsePlaybackSettingResult(input: unknown): PlaybackSettingResult {
   const value = parseValue(
@@ -691,12 +786,15 @@ export function parsePlaybackSettingResult(input: unknown): PlaybackSettingResul
   if (value.outcome === 'saved' && value.saved === null) {
     throw new DesktopError('InvalidInput', 'A saved result requires a committed setting')
   }
+
   return value as PlaybackSettingResult
 }
+
 const ids = v.pipe(
   v.array(id),
   v.check((values) => unique(values, (value) => value)),
 )
+
 const issue = v.variant('kind', [
   v.strictObject({
     kind: v.literal('activity'),
@@ -708,6 +806,7 @@ const issue = v.variant('kind', [
     error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
   }),
 ])
+
 function validateRecordingIssues(
   activityIds: readonly string[],
   positionPending: boolean,
@@ -727,6 +826,7 @@ function validateRecordingIssues(
     )
   }
 }
+
 /** Validate native pending summaries, exposing no internal baselines or engine objects. */
 export function parsePendingRecording(input: unknown): PendingRecording {
   const value = parseValue(
@@ -755,6 +855,7 @@ export function parsePendingRecording(input: unknown): PendingRecording {
   validateRecordingIssues(value.activityIds, value.positionPending, value.issues)
   return value as PendingRecording
 }
+
 /** Already saved units cannot remain pending; an empty receipt is valid for an idempotent retry of an ended ID. */
 export function parseRecordingRetryResult(input: unknown): RecordingRetryResult {
   const value = parseValue(

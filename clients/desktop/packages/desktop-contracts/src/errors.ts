@@ -19,24 +19,34 @@ export const desktopErrorCodes = Object.freeze([
   'ReadFailed',
   'WriteFailed',
   'OperationFailed',
+
   'InvalidQuery',
   'SelectionChanged',
+
   'UnsupportedMembershipMode',
+
   'FileUnavailable',
   'PathUnresolved',
   'PathConflict',
+
   'GameLaunchUnconfirmed',
+
   'RecordingSaveFailed',
   'PendingRecording',
   'PositionSuperseded',
+
   'PlaybackApplyFailed',
   'CaptureUnavailable',
+
   'UnsupportedBackupFormat',
   'RecoveryUnverifiable',
   'RecoveryCommitFailed',
+
   'AlreadyResolved',
+
   'CredentialProtectionUnavailable',
   'CredentialUnreadable',
+
   'ProtocolMismatch',
   'ApiIncompatible',
   'ProtocolViolation',
@@ -101,6 +111,7 @@ export function parseExecutionFailure<Result>(
       partialResult: parseResult(value.partialResult),
     }
   }
+
   return { code: value.code, message: value.message }
 }
 
@@ -111,6 +122,7 @@ function errorRecord(
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     throw new DesktopError('InvalidInput', 'Expected a safe error object')
   }
+
   const value = input as Record<string, unknown>
   if (
     Object.keys(value).some((key) => !keys.includes(key)) ||
@@ -121,5 +133,6 @@ function errorRecord(
   ) {
     throw new DesktopError('InvalidInput', 'Invalid safe error fields')
   }
+
   return { ...value, code: value.code, message: value.message }
 }
