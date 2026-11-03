@@ -77,7 +77,7 @@ export function string(value: unknown, path: FieldPath, nonempty = true): string
   return value
 }
 
-/** Require an array and parse each element with its original field location. */
+/** Require an array and validate every position, including empty slots, at its original field location. */
 export function array<T>(
   value: unknown,
   path: FieldPath,
@@ -86,7 +86,7 @@ export function array<T>(
   if (!Array.isArray(value)) {
     invalid(path, 'Expected an array')
   }
-  return value.map((item: unknown, index) => parse(item, [...path, index]))
+  return Array.from(value, (item: unknown, index) => parse(item, [...path, index]))
 }
 
 /** Parse a present optional property; explicit null and undefined are not omissions. */

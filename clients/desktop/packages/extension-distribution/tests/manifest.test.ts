@@ -43,6 +43,7 @@ test('required identity, entry, schema and runtime fields reject invalid values 
     ['version', '1.01.0'],
     ['id', 'Bad'],
     ['targets', []],
+    ['targets', new Array<unknown>(1)],
     ['targets', ['windows-x64', 'windows-x64']],
     ['targets', ['android-arm64']],
     ['apiVersionRange', 'tomorrow'],
