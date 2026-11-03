@@ -24,7 +24,7 @@ main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最�
 
 ## 验证与交付
 
-测试不用真实个人资料，Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。普通 check 不包含真实桌面、制品和性能验收；按实际影响选择验证。
+测试按[数据隔离规则](refactor/verification/acceptance.md#isolation)使用专用样本和独立的数据目录。Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。普通 check 不包含真实桌面、制品和性能验收；按实际影响选择验证。
 
 交付状态变化时更新[实施状态](refactor/implementation/status.md)，验证材料按[实际用途](refactor/design/engineering/documentation.md#evidence)维护。通用文档维护现行规则与必要依据，Git 与 PR 承载修改经过，见[文档归属](refactor/design/engineering/documentation.md#owners)。
 
