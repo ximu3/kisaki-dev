@@ -29,6 +29,7 @@ export async function generateUnicodeTables(): Promise<string> {
     if (fields[1] !== 'Full_Composition_Exclusion') {
       continue
     }
+
     const [start, end = start] = fields[0]!.split('..').map((point) => Number.parseInt(point, 16))
     for (let point = start!; point <= end!; point += 1) {
       exclusions.add(point)
@@ -45,6 +46,7 @@ export async function generateUnicodeTables(): Promise<string> {
     if (!line) {
       continue
     }
+
     const fields = line.split(';')
     const point = Number.parseInt(fields[0]!, 16)
     if (fields[3] !== '0') {
@@ -53,6 +55,7 @@ export async function generateUnicodeTables(): Promise<string> {
     if (fields[2] === 'Nd') {
       digits[point] = Number(fields[6])
     }
+
     if (fields[5]) {
       const mapping = fields[5]
         .replace(/^<[^>]+> /, '')
@@ -67,6 +70,7 @@ export async function generateUnicodeTables(): Promise<string> {
       }
     }
   }
+
   for (const line of files.get('CaseFolding.txt')!.split(/\r?\n/)) {
     const fields = line
       .split('#')[0]!
@@ -87,6 +91,7 @@ export async function generateUnicodeTables(): Promise<string> {
     ['decimalDigits', 'number', 'number', digits],
     ['caseFolding', 'number', 'readonly number[]', folding],
   ] as const
+
   return (
     `/** @fileoverview Generated Unicode ${inputs.version} data; run generate:unicode. See NOTICE for the Unicode license. */\n\n` +
     tables
@@ -111,6 +116,7 @@ export async function checkUnicodeTables(): Promise<void> {
 export async function writeUnicodeTables(signal?: AbortSignal): Promise<void> {
   const source = await generateUnicodeTables()
   signal?.throwIfAborted()
+
   await mkdir(join(project, 'src/text'), { recursive: true })
   await writeFile(join(project, 'src/text/unicode.generated.ts'), source)
 }

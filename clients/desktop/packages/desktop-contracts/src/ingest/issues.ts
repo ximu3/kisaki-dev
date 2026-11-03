@@ -21,6 +21,7 @@ import type { MetadataRelationKey } from '../metadata/relations'
 export type IngestRelationRef = {
   [K in EntryType]: { readonly entryType: K; readonly relation: MetadataRelationKey<K> }
 }[EntryType]
+
 /** Issues explain excluded branches or post-commit ancillary failures; they never authorize a partially valid graph write. */
 export type IngestIssue = { readonly message: string } & (
   | {
@@ -78,6 +79,7 @@ export function parseIngestRelationRef(input: unknown): IngestRelationRef {
     'Invalid adoption relation reference',
   ) as IngestRelationRef
 }
+
 /** Parse one issue with its code-specific required context and a safe explanation, rejecting unknown detail bags. */
 export function parseIngestIssue(input: unknown): IngestIssue {
   const message = nonemptyText

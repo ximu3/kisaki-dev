@@ -27,9 +27,11 @@ export type EntryScope =
 export type Presence = { readonly op: 'present' } | { readonly op: 'absent' }
 export type NumberTest = { readonly op: 'range'; readonly bounds: Bounds<number> }
 export type TextTest = { readonly op: 'equals' | 'contains'; readonly value: string }
+
 export type SetTest<T> =
   | { readonly op: 'any' | 'all' | 'none'; readonly values: NonEmptyArray<T> }
   | { readonly op: 'empty' | 'notEmpty' }
+
 export type EnumTest<T> = { readonly op: 'in' | 'notIn'; readonly values: NonEmptyArray<T> }
 
 /** Civil ranges contain every possible day of the saved fact; component conditions require known components. */
@@ -45,6 +47,7 @@ export type DateTest =
       readonly component: 'year' | 'month' | 'day'
     }
   | Presence
+
 export type BirthdayTest =
   DateTest | { readonly op: 'monthDayRange'; readonly from: MonthDate; readonly to: MonthDate }
 
@@ -59,6 +62,7 @@ export type InstantTest =
 
 /** Counts remain distinct: registered rows, completion marks, file associations and saved accessible observations. */
 export type PartCountMeasure = 'registered' | 'completed' | 'withFiles' | 'accessible'
+
 export type PartCountScope =
   | {
       readonly partType: 'animeEpisode'
@@ -71,21 +75,27 @@ export type PartCountScope =
 export type CharacterQualifier =
   | { readonly type: 'none' | 'any' }
   | { readonly type: 'oneOf'; readonly refs: NonEmptyArray<EntryRef<'character'>> }
+
 interface NoteQualifier {
   readonly note?: TextTest | Presence
 }
+
 interface CharacterRolesQualifier {
   readonly characterRoles?: NonEmptyArray<CharacterRole | null>
 }
+
 interface PersonRolesQualifier {
   readonly personRoles?: NonEmptyArray<PersonRole>
 }
+
 interface WorkTypesQualifier {
   readonly workTypes?: NonEmptyArray<WorkRef['type']>
 }
+
 interface WorksQualifier extends WorkTypesQualifier {
   readonly works?: NonEmptyArray<WorkRef>
 }
+
 interface PersonCharacterQualifier extends CharacterRolesQualifier, PersonRolesQualifier {
   readonly character?: CharacterQualifier
 }
@@ -272,6 +282,7 @@ export type EntrySortField =
   | 'registeredFileCount'
   | 'accessibleFileCount'
   | 'uncheckedFileCount'
+
 export type EntrySort =
   | { readonly type: 'scope' }
   | { readonly type: 'field'; readonly field: EntrySortField; readonly direction: 'asc' | 'desc' }
@@ -297,22 +308,27 @@ export interface PartCounts {
   readonly withFiles: number
   readonly accessible: number
 }
+
 interface CommonProjection {
   readonly originalName: string | null
   readonly sortName: string | null
   readonly primaryImageId: string | null
+
   readonly isNsfw: boolean
   readonly favorite: boolean
   readonly rating: number | null
+
   readonly addedDate: PartialDate | null
   readonly effectiveAddedDate: PartialDate
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 interface WorkProjection {
   readonly releaseDate: PartialDate | null
   readonly originalLanguages: readonly LanguageTag[]
   readonly status: WorkStatus | null
+
   readonly additionalDurationMs: number
   readonly totalDurationMs: number
   readonly lastActiveAt: number | null
@@ -320,16 +336,20 @@ interface WorkProjection {
   readonly firstCompletedDate: CalendarDate | null
   readonly lastCompletedDate: CalendarDate | null
 }
+
 interface MediaProjection {
   readonly releaseStatus: ReleaseStatus | null
   readonly releaseEndDate: PartialDate | null
+
   readonly registeredFileCount: number
   readonly accessibleFileCount: number
   readonly uncheckedFileCount: number
 }
+
 /** Only applicable branches contain requested fields. Unrequested fields are absent rather than filled with null. */
 export interface EntryProjectionByType {
   readonly game: CommonProjection & WorkProjection
+
   readonly anime: CommonProjection &
     WorkProjection &
     MediaProjection & {
@@ -345,6 +365,7 @@ export interface EntryProjectionByType {
         }
       }
     }
+
   readonly comic: CommonProjection &
     WorkProjection &
     MediaProjection & {
@@ -353,6 +374,7 @@ export interface EntryProjectionByType {
       readonly declaredChapterCount: number | null
       readonly partCounts: { readonly comicVolume: PartCounts; readonly comicChapter: PartCounts }
     }
+
   readonly novel: CommonProjection &
     WorkProjection &
     MediaProjection & {
@@ -360,6 +382,7 @@ export interface EntryProjectionByType {
       readonly declaredVolumeCount: number | null
       readonly partCounts: { readonly novelVolume: PartCounts }
     }
+
   readonly character: CommonProjection & {
     readonly birthDate: PartialDate | null
     readonly gender: Gender | null
@@ -372,17 +395,21 @@ export interface EntryProjectionByType {
     readonly hips: CharacterMeasure | null
     readonly cupSize: string | null
   }
+
   readonly person: CommonProjection & {
     readonly birthDate: PartialDate | null
     readonly deathDate: PartialDate | null
     readonly gender: Gender | null
   }
+
   readonly organization: CommonProjection & {
     readonly foundedDate: PartialDate | null
     readonly dissolvedDate: PartialDate | null
   }
 }
+
 export type EntryProjectionField = { [K in EntryType]: keyof EntryProjectionByType[K] }[EntryType]
+
 export type EntryListItem = {
   [K in EntryType]: { readonly id: string; readonly type: K; readonly name: string } & Partial<
     EntryProjectionByType[K]
@@ -392,28 +419,34 @@ export type EntryListItem = {
 /** Group identity is independent of hidden names and per-view expanded state. */
 export type EntryGroupKey =
   { readonly type: 'collection'; readonly id: string } | { readonly type: 'unclassified' }
+
 export interface EntryListOptions {
   readonly offset: number
   readonly limit: number
   readonly fields?: readonly EntryProjectionField[]
   readonly group?: EntryGroupKey
 }
+
 export interface EntryLocateOptions {
   readonly limit: number
   readonly fields?: readonly EntryProjectionField[]
   readonly group?: EntryGroupKey
 }
+
 export interface EntryListResult {
   readonly items: readonly EntryListItem[]
   readonly total: number
 }
+
 export interface EntryLocateResult extends EntryListResult {
   readonly index: number
   readonly offset: number
 }
+
 export type EntryGroupResult =
   | { readonly key: EntryGroupKey; readonly status: 'ready'; readonly count: number }
   | { readonly key: EntryGroupKey; readonly status: 'failed'; readonly error: ErrorSummary }
+
 export interface EntryGroupsResult {
   readonly total: number
   readonly groups: readonly EntryGroupResult[]

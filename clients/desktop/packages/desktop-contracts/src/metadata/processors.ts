@@ -24,14 +24,17 @@ import type {
 export type ProcessingEntryContext = {
   [K in EntryType]: { readonly type: K; readonly identification: IdentificationFields<K> }
 }[EntryType]
+
 export type ProcessingPartContext = {
   [K in PartType]: { readonly type: K; readonly identification: PartIdentificationFields<K> }
 }[PartType]
+
 export interface FieldProcessingContext {
   readonly entry?: ProcessingEntryContext
   readonly part?: ProcessingPartContext
   readonly relatedEntries?: readonly ProcessingEntryContext[]
 }
+
 type ProcessingItem<F extends MetadataFieldRef> = F extends MetadataFieldRef
   ? {
       readonly key: string
@@ -40,29 +43,37 @@ type ProcessingItem<F extends MetadataFieldRef> = F extends MetadataFieldRef
       readonly context?: FieldProcessingContext
     }
   : never
+
 /** The selected field and its value stay correlated; processor output cannot mutate identities, endpoints or matching evidence. */
 export type FieldProcessingItem = ProcessingItem<MetadataFieldRef>
+
 export interface FieldProcessingInput {
   readonly items: readonly FieldProcessingItem[]
 }
+
 /** Normal completion covers all input keys. A failure may carry only successfully processed keys of this same result type. */
 export type FieldProcessingResult = Readonly<Record<string, MetadataFieldValue<MetadataFieldRef>>>
+
 export interface MetadataFieldProcessor {
   readonly name: LocalizedText
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
+
   process(input: FieldProcessingInput, context: ExecutionContext): Promise<FieldProcessingResult>
 }
+
 export interface MetadataFieldProcessorDescriptor {
   readonly id: string
   readonly name: LocalizedText
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
 }
+
 /** Registration only publishes an implementation; profiles explicitly select its ID and order for each allowed field. */
 export interface MetadataFieldProcessorsApi {
   list(call?: CallOptions): Promise<readonly MetadataFieldProcessorDescriptor[]>
   get(processorId: string, call?: CallOptions): Promise<MetadataFieldProcessorDescriptor | null>
+
   register(
     processorId: string,
     processor: MetadataFieldProcessor,
@@ -83,6 +94,7 @@ function entryContext(input: unknown): ProcessingEntryContext {
     input,
   ) as ProcessingEntryContext
 }
+
 function partContext(input: unknown): ProcessingPartContext {
   const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), input)
   return parseValue(
@@ -96,6 +108,7 @@ function partContext(input: unknown): ProcessingPartContext {
     input,
   ) as ProcessingPartContext
 }
+
 const contextSchema = v.strictObject({
   entry: v.exactOptional(v.pipe(v.unknown(), v.transform(entryContext))),
   part: v.exactOptional(v.pipe(v.unknown(), v.transform(partContext))),
@@ -148,6 +161,7 @@ export function parseFieldProcessingResult(
   ) {
     throw new DesktopError('InvalidInput', 'Processor result does not cover its exact input keys')
   }
+
   return Object.fromEntries(
     Object.entries(source).map(([key, value]) => [
       key,

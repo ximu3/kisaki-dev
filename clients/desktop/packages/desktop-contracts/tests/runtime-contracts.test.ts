@@ -35,25 +35,31 @@ describe('actual session targets and partial outcomes', () => {
     expect(parseSessionInteraction()).toBe('fail')
     expect(parseSessionInteraction('prompt')).toBe('prompt')
     expect(() => parseSessionInteraction(true)).toThrow(DesktopError)
+
     expect(() => parseAnimeOpenInput({ animeId: 'a', interaction: 'prompt' })).toThrow(DesktopError)
     expect(() => parseLink('kisaki://open/game/local/g?interaction=prompt')).toThrow(DesktopError)
   })
+
   it('requires a concrete file for start and applies all medium selectors together', () => {
     expect(() => parseAnimeOpenInput({ animeId: 'a', position: 'start' })).toThrow(DesktopError)
+
     expect(() =>
       parseAnimeOpenInput({ animeId: 'a', fileId: 'f', episodeId: 'e', extraId: 'x' }),
     ).toThrow(DesktopError)
+
     expect(parseAnimeOpenInput({ animeId: 'a', fileId: 'f', position: 'start' })).toEqual({
       animeId: 'a',
       fileId: 'f',
       position: 'start',
     })
+
     expect(parseComicOpenInput({ comicId: 'c', volumeId: 'v', chapterId: 'h' })).toEqual({
       comicId: 'c',
       volumeId: 'v',
       chapterId: 'h',
     })
   })
+
   it('preserves an ended previous file and only reports a saved setting with the actual committed value', () => {
     expect(
       parseFileSwitchResult('anime', {
@@ -62,6 +68,7 @@ describe('actual session targets and partial outcomes', () => {
         targetFileId: 'new',
       }),
     ).toEqual({ outcome: 'previousEnded', previousSessionId: 'old', targetFileId: 'new' })
+
     expect(
       parsePlaybackSettingResult({
         sessionId: 's',
@@ -71,6 +78,7 @@ describe('actual session targets and partial outcomes', () => {
         saved: { field: 'subtitleScale', scope: 'work', value: 1.25 },
       }).outcome,
     ).toBe('saved')
+
     expect(() =>
       parsePlaybackSettingResult({
         sessionId: 's',
@@ -80,6 +88,7 @@ describe('actual session targets and partial outcomes', () => {
         saved: null,
       }),
     ).toThrow(DesktopError)
+
     expect(() =>
       parseRecordingRetryResult({
         sessionId: 's',
@@ -97,24 +106,29 @@ describe('preference field boundaries', () => {
   it('round trips complete defaults and compares only changed fields, including credential state', () => {
     for (const platform of ['win32', 'darwin', 'linux'] as const) {
       const defaults = getPreferencesDefaults(platform, [{ type: 'native', id: 'library' }])
+
       expect(parsePreferences(defaults, platform)).toEqual(defaults)
       expect(findShortcutConflicts(defaults.shortcuts, platform)).toEqual([])
     }
+
     expect(
       parsePreferencesUpdate({
         changes: { navigation: { visibleLimit: 3 } },
         expected: { navigation: { visibleLimit: 7 } },
       }).changes.navigation,
     ).toEqual({ visibleLimit: 3 })
+
     expect(() =>
       parsePreferencesUpdate({
         changes: { usage: { comic: { text: { fontSize: 22 } } } },
         expected: { usage: { comic: { text: { lineHeight: 2 } } } },
       }),
     ).toThrow(DesktopError)
+
     expect(() => parsePreferencesUpdate({ changes: { network: { credentials: null } } })).toThrow(
       DesktopError,
     )
+
     expect(
       parsePreferencesUpdate({
         changes: { network: { credentials: { username: 'name', password: 'secret' } } },
@@ -122,8 +136,10 @@ describe('preference field boundaries', () => {
       }).expected?.network?.credentials,
     ).toBeNull()
   })
+
   it('defaults only an invalid ordinary field and keeps malformed identities and proxy definitions unavailable', () => {
     const defaults = getPreferencesDefaults('win32', [])
+
     const value = readPreferences(
       {
         ...defaults,
@@ -140,6 +156,7 @@ describe('preference field boundaries', () => {
       },
       defaults,
     )
+
     expect(value.library).toEqual({ showNsfw: true, autoRefreshHoldings: false })
     expect(value.usage.anime.playbackSpeed).toBe(1)
     expect(value.usage.anime.subtitleScale).toBe(2)
@@ -149,6 +166,7 @@ describe('preference field boundaries', () => {
       value: { type: 'extension', extensionId: 'missing.translation', id: 'zh' },
     })
   })
+
   it('canonicalizes supported accelerators/endpoints without accepting arbitrary scripts or unsupported proxy auth', () => {
     expect(parseAccelerator('shift+ctrl+s')).toBe('Control+Shift+S')
     expect(parseAccelerator('Control++')).toBe('Control+Plus')
@@ -171,8 +189,10 @@ describe('application link losslessness and closed routes', () => {
     ]
     for (const url of examples) {
       const parsed = parseLink(url)
+
       expect(parseLink(formatLink(parsed))).toEqual(parsed)
     }
+
     expect(parseLink(examples[3]!)).toMatchObject({
       path: ['a/b', '', ''],
       query: [
@@ -184,6 +204,7 @@ describe('application link losslessness and closed routes', () => {
       fragment: '+%',
     })
   })
+
   it('rejects malformed encoding, dot normalization, routing parameter injection and native aliases', () => {
     for (const url of [
       'kisaki://extension/example.ext/%2e%2e/install',
@@ -212,26 +233,34 @@ describe('ICU author contract', () => {
     expect(() => getMessageParameterContract('{value, number} {value, select, other {x}}')).toThrow(
       DesktopError,
     )
+
     const source = {
       count: '{count, plural, one {# item} other {# items}}',
       greeting: 'Hello {name}',
     }
+
     expect(
       validateMessageCatalog({ count: '', greeting: '你好', unknown: '{not parsed' }, source),
     ).toEqual({ count: '', greeting: '你好', unknown: '{not parsed' })
+
     expect(() => validateMessageCatalog({ greeting: '{name, number}' }, source)).toThrow(
       DesktopError,
     )
+
     expect(() => validateMessageCatalog({ count: '{extra}' }, source)).toThrow(DesktopError)
+
     expect(() => validateMessageCatalog({ count: '' }, source, { complete: true })).toThrow(
       DesktopError,
     )
+
     expect(() => validateMessageCatalog({ 'bad.key': 'value' }, source)).toThrow(DesktopError)
+
     expect(() => validateMessageArguments(getMessageParameterContract(source.count), {})).toThrow(
       DesktopError,
     )
     expect(parseUiLocale('zh-hans-CN-u-nu-hanidec')).toBe('zh-Hans-CN')
   })
+
   it('formats actual ICU messages with literal tags and without reparsing interpolated text', () => {
     const message = new IntlMessageFormat(
       '<b>{name}</b>: {count, plural, one {# item} other {# items}}',
@@ -239,6 +268,7 @@ describe('ICU author contract', () => {
       undefined,
       { ignoreTag: true },
     )
+
     expect(message.format({ name: '{count}', count: 2 })).toBe('<b>{count}</b>: 2 items')
   })
 })
@@ -252,7 +282,9 @@ it('keeps search categories and grapheme-safe excerpt boundaries', () => {
     imageId: null,
     icon: null,
   }
+
   expect(parseSearchResult('catalog', { items: [item], total: 1 }).items).toHaveLength(1)
+
   expect(() => parseSearchResult('notes', { items: [item], total: 1 })).toThrow(DesktopError)
   expect(truncateSearchExcerpt('a'.repeat(159) + 'e\u0301' + 'x')).toBe('a'.repeat(159))
   expect(truncateSearchExcerpt('a'.repeat(158) + '👨‍👩‍👧‍👦')).toBe('a'.repeat(158))
@@ -263,7 +295,9 @@ it('keeps private JSON null distinct from deletion and compares only explicitly 
     values: [{ type: 'set', key: 'state', value: null, expectedRevision: null }],
     secrets: [{ type: 'delete', key: 'state', expectedRevision: 'revision' }],
   }
+
   expect(parsePrivateCommit(input)).toEqual(input)
+
   expect(() =>
     parsePrivateCommit({
       values: [

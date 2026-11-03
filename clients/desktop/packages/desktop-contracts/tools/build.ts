@@ -12,6 +12,7 @@ import { checkUnicodeTables } from './generate-unicode'
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
   await Promise.all([checkMessageTypes(), checkUnicodeTables()])
+
   await replaceOutput(
     project,
     'dist',

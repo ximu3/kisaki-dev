@@ -25,12 +25,16 @@ export interface AttachmentCleanupResult {
 /** Saved identity reads do not imply byte availability. Cleanup never edits business references. */
 export interface AttachmentsApi {
   get(id: string, call?: CallOptions): Promise<Attachment | null>
+
   /** Acquire the fixed content or fail while retaining the saved attachment and all references. */
   read(id: string, call?: CallOptions): Promise<ReadResource>
+
   /** Repair only when the complete bytes match the registered digest; different content requires a new attachment. */
   repair(id: string, input: FileInput, call?: CallOptions): Promise<void>
+
   /** Remove provably orphaned managed content after all applicable references and holds have been rechecked. */
   cleanup(call?: CallOptions): Promise<AttachmentCleanupResult>
+
   /** Inspect missing or unreadable saved bytes without removing references or substituting cached previews. */
   inspect(
     options: ListOptions,

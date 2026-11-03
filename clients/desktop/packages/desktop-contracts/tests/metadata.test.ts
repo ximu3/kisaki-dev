@@ -20,6 +20,7 @@ test('field answers preserve unanswered, explicit empty, false and zero meanings
       'first',
     ),
   ).toBeNull()
+
   expect(
     selectMetadataFieldValue(
       { object: 'entry', entryType: 'anime', field: 'declaredDurationMs' },
@@ -27,6 +28,7 @@ test('field answers preserve unanswered, explicit empty, false and zero meanings
       'firstNonEmpty',
     ),
   ).toBe(0)
+
   expect(
     selectMetadataFieldValue(
       { object: 'entry', entryType: 'anime', field: 'isNsfw' },
@@ -34,6 +36,7 @@ test('field answers preserve unanswered, explicit empty, false and zero meanings
       'firstNonEmpty',
     ),
   ).toBe(false)
+
   expect(
     selectMetadataFieldValue(
       { object: 'entry', entryType: 'game', field: 'aliases' },
@@ -41,6 +44,7 @@ test('field answers preserve unanswered, explicit empty, false and zero meanings
       'union',
     ),
   ).toEqual([])
+
   expect(
     selectMetadataFieldValue(
       { object: 'entry', entryType: 'game', field: 'aliases' },
@@ -48,6 +52,7 @@ test('field answers preserve unanswered, explicit empty, false and zero meanings
       'union',
     ),
   ).toBeUndefined()
+
   expect(
     selectMetadataFieldValue(
       { object: 'entry', entryType: 'game', field: 'aliases' },
@@ -95,21 +100,26 @@ test('profiles permit partial capability but reject local fields, scalar union a
     },
     relations: {},
   }
+
   expect(parseMetadataProfileDefinition('anime', definition)).toEqual(definition)
   expect(() => parseMetadataProfileDefinition('game', definition)).toThrow()
+
   expect(() =>
     parseMetadataProfileDefinition('anime', {
       ...definition,
       fields: { entry: { name: { providers: ['example:metadata'], selection: 'union' } } },
     }),
   ).toThrow()
+
   expect(() =>
     parseMetadataProfileDefinition('anime', {
       ...definition,
       fields: { entry: { rating: { providers: ['example:metadata'], selection: 'first' } } },
     }),
   ).toThrow()
+
   expect(() => parseMetadataProfileDefinition('anime', { ...definition, providers: [] })).toThrow()
+
   expect(() => parseMetadataProfileDefinition('anime', { ...definition, fields: {} })).toThrow()
 })
 
@@ -121,7 +131,9 @@ test('source reads and composed candidates have distinct closed node shapes', ()
     },
     relations: { workEpisodes: [{ work: 'work', episode: 'ep' }] },
   }
+
   expect(parseMetadataReadResult('anime', source)).toEqual(source)
+
   const candidate = {
     entryType: 'anime',
     objects: {
@@ -130,16 +142,20 @@ test('source reads and composed candidates have distinct closed node shapes', ()
     },
     relations: { workEpisodes: [{ work: 'work', episode: 'ep' }] },
   }
+
   expect(parseMetadataCandidate(candidate)).toEqual(candidate)
+
   expect(() =>
     parseMetadataReadResult('anime', { objects: { entry: candidate.objects.entry } }),
   ).toThrow()
+
   expect(() =>
     parseMetadataCandidate({
       ...candidate,
       objects: { entry: { ...candidate.objects.entry, fields: { record: { status: 'active' } } } },
     }),
   ).toThrow()
+
   expect(() =>
     parseMetadataCandidate({
       ...candidate,
@@ -156,6 +172,7 @@ test('read requests never silently lose unsupported fields or expand relation me
       },
     },
   })
+
   expect(
     parseMetadataReadResult(
       'anime',
@@ -175,6 +192,7 @@ test('read requests never silently lose unsupported fields or expand relation me
       request,
     ),
   ).toBeDefined()
+
   expect(() =>
     parseMetadataReadResult(
       'anime',
@@ -194,6 +212,7 @@ test('read requests never silently lose unsupported fields or expand relation me
       request,
     ),
   ).toThrow()
+
   expect(() =>
     requireMetadataRequestSupport(
       'anime',
@@ -201,6 +220,7 @@ test('read requests never silently lose unsupported fields or expand relation me
       { objects: { entry: { fields: ['name'] } } },
     ),
   ).toThrow()
+
   expect(() =>
     parseMetadataReadResult('anime', { relations: { workEpisodes: [] } }, request),
   ).toThrow()
@@ -209,6 +229,7 @@ test('read requests never silently lose unsupported fields or expand relation me
 test('replacement coverage subtracts only affected failed ranges and respects member selection', () => {
   const studio = [{ roles: ['studio'] }] as const
   const publisher = [{ roles: ['publisher'] }] as const
+
   expect(
     combineMetadataRelationScope(
       'anime',
@@ -220,6 +241,7 @@ test('replacement coverage subtracts only affected failed ranges and respects me
       'union',
     ),
   ).toEqual([{ workTypes: ['anime'], roles: ['studio'] }])
+
   expect(
     combineMetadataRelationScope(
       'anime',
@@ -231,6 +253,7 @@ test('replacement coverage subtracts only affected failed ranges and respects me
       'union',
     ),
   ).toBeUndefined()
+
   expect(
     combineMetadataRelationScope(
       'anime',
@@ -239,6 +262,7 @@ test('replacement coverage subtracts only affected failed ranges and respects me
       'first',
     ),
   ).toBe('all')
+
   expect(
     combineMetadataRelationScope(
       'anime',
@@ -250,9 +274,11 @@ test('replacement coverage subtracts only affected failed ranges and respects me
       'firstNonEmpty',
     ),
   ).toBeUndefined()
+
   expect(() =>
     parseMetadataRelationScope('novel', 'personWorks', [{ roles: ['voiceActor'] }]),
   ).toThrow()
+
   expect(() =>
     parseMetadataRelationScope('character', 'personWorks', [{ character: 'none' }]),
   ).toThrow()
@@ -269,15 +295,20 @@ test('processor results cannot smuggle fields, omit complete items or replace fa
       { key: 'b', field: { object: 'entry', entryType: 'anime', field: 'isNsfw' }, value: false },
     ],
   })
+
   expect(parseFieldProcessingResult(input, { a: 'Processed', b: false })).toEqual({
     a: 'Processed',
     b: false,
   })
+
   expect(parseFieldProcessingResult(input, { a: 'Processed' }, 'partial')).toEqual({
     a: 'Processed',
   })
+
   expect(() => parseFieldProcessingResult(input, { a: 'Processed' })).toThrow()
+
   expect(() => parseFieldProcessingResult(input, { a: 'Processed', b: 'false' })).toThrow()
+
   expect(() => parseFieldProcessingResult(input, { a: 'Processed', b: false, extra: 0 })).toThrow()
 })
 
@@ -293,8 +324,11 @@ test('provider promises and per-context field capability are checked without exe
       },
     },
   } as const
+
   expect(parseMetadataProviderCapabilities(capabilities, 'en')).toEqual(capabilities)
+
   expect(() => validateMetadataProvider({ name: 'Example', capabilities }, 'en')).toThrow()
+
   expect(() =>
     parseMetadataProviderCapabilities(
       {

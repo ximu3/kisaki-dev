@@ -5,9 +5,11 @@ import { DesktopError } from '../errors'
 /** Validate the point subset of EPUB CFI 1.1; ranges are represented by two complete ReadingAnchor values. */
 export function parseCfiPoint(value: string): string {
   let offset = 8
+
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Invalid EPUB CFI point')
   }
+
   if (!value.startsWith('epubcfi(') || !value.endsWith(')')) {
     invalid()
   }
@@ -21,6 +23,7 @@ export function parseCfiPoint(value: string): string {
     if (offset === start || (value[start] === '0' && offset > start + 1)) {
       invalid()
     }
+
     if (!integer && value[offset] === '.') {
       offset += 1
       const decimals = offset
@@ -31,10 +34,12 @@ export function parseCfiPoint(value: string): string {
         invalid()
       }
     }
+
     const result = Number(value.slice(start, offset))
     if (!Number.isFinite(result) || (integer && !Number.isSafeInteger(result))) {
       invalid()
     }
+
     return result
   }
 
@@ -56,6 +61,7 @@ export function parseCfiPoint(value: string): string {
       }
       offset += 1
     }
+
     if (offset === start) {
       invalid()
     }
@@ -65,6 +71,7 @@ export function parseCfiPoint(value: string): string {
     if (value[offset] !== '[') {
       return
     }
+
     offset += 1
     if (value[offset] !== ';') {
       if (value[offset] !== ',') {
@@ -75,6 +82,7 @@ export function parseCfiPoint(value: string): string {
         assertionValue()
       }
     }
+
     while (value[offset] === ';') {
       offset += 1
       assertionValue(true)
@@ -88,6 +96,7 @@ export function parseCfiPoint(value: string): string {
         assertionValue()
       }
     }
+
     if (value[offset] !== ']') {
       invalid()
     }
@@ -114,6 +123,7 @@ export function parseCfiPoint(value: string): string {
         }
       }
     }
+
     assertion()
   }
 
@@ -142,8 +152,10 @@ export function parseCfiPoint(value: string): string {
       invalid()
     }
   }
+
   if (requireStep || offset !== end) {
     invalid()
   }
+
   return value
 }

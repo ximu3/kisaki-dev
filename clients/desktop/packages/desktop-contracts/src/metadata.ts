@@ -212,15 +212,18 @@ export type MetadataFetchInput<T extends EntryType = EntryType> = {
     readonly request?: MetadataReadRequest<K>
   }
 }[T]
+
 /** Successful data has one legal root; creation sufficiency and existing local-object decisions belong to ingest. */
 export interface MetadataFetchResult<T extends EntryType = EntryType> {
   readonly data: MetadataCandidate<T>
   readonly relationScopes: MetadataRelationScopes<T>
   readonly issues: readonly IngestIssue[]
 }
+
 export type MetadataSearchRequest<T extends EntryType = EntryType> = MetadataSearchInput<T> & {
   readonly providerId: string
 }
+
 export type MetadataImageSearchRequest<T extends EntryType = EntryType> =
   MetadataImageSearchInput<T> & { readonly providerId: string }
 
@@ -229,6 +232,7 @@ export interface MetadataApi {
   readonly providers: MetadataProvidersApi
   readonly fieldProcessors: MetadataFieldProcessorsApi
   readonly profiles: MetadataProfilesApi
+
   search<T extends EntryType>(
     input: MetadataSearchRequest<T>,
     call?: CallOptions,
@@ -237,6 +241,7 @@ export interface MetadataApi {
     input: MetadataImageSearchRequest<T>,
     call?: CallOptions,
   ): Promise<MetadataImageSearchResult>
+
   fetch<T extends EntryType>(
     input: MetadataFetchInput<T>,
     call?: CallOptions,
@@ -265,6 +270,7 @@ export function parseMetadataFetchInput(input: unknown): MetadataFetchInput {
     'Invalid metadata fetch',
   ) as MetadataFetchInput
 }
+
 /** Validate candidate, independent replacement evidence and local issues as one complete fetch result. */
 export function parseMetadataFetchResult(input: unknown): MetadataFetchResult {
   const value = parseValue(
@@ -281,11 +287,13 @@ export function parseMetadataFetchResult(input: unknown): MetadataFetchResult {
     relationScopes: parseMetadataRelationScopes(value.data.entryType, value.relationScopes),
   }
 }
+
 /** A provider ID selects the implementation, not an ExternalIdentity.source or a candidate's rank. */
 export function parseMetadataSearchRequest(input: unknown): MetadataSearchRequest {
   const { providerId, ...fields } = readRecord(input)
   return { providerId: parseValue(id, providerId), ...parseMetadataSearchInput(fields) }
 }
+
 /** Image lookup uses the same explicit provider and source-defined query contract as the provider callback. */
 export function parseMetadataImageSearchRequest(input: unknown): MetadataImageSearchRequest {
   const { providerId, ...fields } = readRecord(input)

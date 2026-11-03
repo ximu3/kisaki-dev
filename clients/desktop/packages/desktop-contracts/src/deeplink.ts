@@ -21,6 +21,7 @@ import type { EntryIdentifier, NativeViewTarget } from './ui/navigation'
 import { id, omitFields, parseExternalValue, parseValue, readRecord, text } from './validation'
 
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
+
 export type PublicViewTarget =
   | Extract<
       NativeViewTarget,
@@ -39,13 +40,16 @@ export type PublicViewTarget =
       }
     >
   | { readonly type: 'preferences' }
+
 type WithoutRoot<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
+
 export interface DeeplinkOpenInputMap {
   readonly game: WithoutRoot<GameOpenInput, 'gameId'>
   readonly anime: WithoutRoot<AnimeOpenInput, 'animeId'>
   readonly comic: WithoutRoot<ComicOpenInput, 'comicId'>
   readonly novel: WithoutRoot<NovelOpenInput, 'novelId'>
 }
+
 /** All selectors apply together; external identity resolves the root only, never a local child/file identity. */
 export type DeeplinkOpenTarget = {
   [K in WorkType]: {
@@ -53,6 +57,7 @@ export type DeeplinkOpenTarget = {
     readonly identifier: EntryIdentifier
   } & DeeplinkOpenInputMap[K]
 }[WorkType]
+
 export type DeeplinkAddInput = {
   [K in EntryType]: {
     readonly entryType: K
@@ -62,18 +67,21 @@ export type DeeplinkAddInput = {
     readonly profileId?: string
   }
 }[EntryType]
+
 /** Path excludes extensionId; empty components, ordered repeated query keys and an explicitly empty fragment are meaningful. */
 export interface ExtensionDeeplinkRequest {
   readonly path: readonly string[]
   readonly query: readonly (readonly [name: string, value: string])[]
   readonly fragment?: string
 }
+
 export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
   | { readonly type: 'view'; readonly target: PublicViewTarget }
   | { readonly type: 'open'; readonly target: DeeplinkOpenTarget }
   | { readonly type: 'add'; readonly input: DeeplinkAddInput }
   | ({ readonly type: 'extension'; readonly extensionId: string } & ExtensionDeeplinkRequest)
 )
+
 export interface DeeplinkApi {
   /** One live handler per instance. Resolve only after the requested business operation and its necessary cleanup finish. */
   register(
@@ -94,20 +102,25 @@ const publicTypes = [
   'preferences',
   'extensions',
 ]
+
 const schemeSchema = v.picklist(['kisaki', 'kisaki-dev'])
+
 const extensionIdentity = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
+
 const openSelectors = {
   game: ['launchConfigId'],
   anime: ['episodeId', 'extraId', 'fileId', 'position'],
   comic: ['volumeId', 'chapterId', 'fileId', 'position'],
   novel: ['volumeId', 'fileId', 'position'],
 } as const
+
 function invalid(message = 'Invalid application link'): never {
   throw new DesktopError('InvalidInput', message)
 }
+
 function decode(value: string, query = false): string {
   try {
     return decodeURIComponent(query ? value.replaceAll('+', ' ') : value)
@@ -115,6 +128,7 @@ function decode(value: string, query = false): string {
     throw new DesktopError('InvalidInput', 'Invalid link component encoding', { cause })
   }
 }
+
 function parsePublicView(input: unknown): PublicViewTarget {
   const target = parseNativeViewTarget(input)
   if (
@@ -125,6 +139,7 @@ function parsePublicView(input: unknown): PublicViewTarget {
   }
   return target as PublicViewTarget
 }
+
 function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   const record = readRecord(input)
   const workType = parseValue(v.picklist(workTypes), record.workType)
@@ -141,6 +156,7 @@ function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   )
   const { identifier } = target
   const selection = omitFields(target, ['identifier', 'workType'])
+
   // Reuse actual session selector checks; the placeholder identity is never returned or used for a lookup.
   switch (workType) {
     case 'game':
@@ -169,6 +185,7 @@ function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
       }
   }
 }
+
 function parseAddInput(input: unknown): DeeplinkAddInput {
   const record = readRecord(input)
   const entryType = parseValue(v.picklist(entryTypes), record.entryType)
@@ -192,7 +209,8 @@ function parseAddInput(input: unknown): DeeplinkAddInput {
   }
   return result as DeeplinkAddInput
 }
-/** Validate the structured request before formatting; host interaction permission is never accepted as link data. */
+
+/** Validate the structured request before formatting; call interaction options are never accepted as link data. */
 export function parseRequest(input: unknown): DeeplinkRequest {
   const value = parseValue(
     v.variant('type', [
@@ -236,8 +254,10 @@ function readIdentifier(parts: readonly string[]): EntryIdentifier {
   if (parts[0] === 'external' && parts.length === 3) {
     return parseEntryIdentifier({ type: 'external', source: parts[1], sourceId: parts[2] })
   }
+
   return invalid('Invalid entry link address')
 }
+
 function singleQuery(query: readonly (readonly [string, string])[]): Record<string, string> {
   const entries = new Map<string, string>()
   for (const [key, value] of query) {
@@ -246,8 +266,10 @@ function singleQuery(query: readonly (readonly [string, string])[]): Record<stri
     }
     entries.set(key, value)
   }
+
   return Object.fromEntries(entries)
 }
+
 function requireKeys(values: object, allowed: readonly string[]): void {
   if (Object.keys(values).some((key) => !allowed.includes(key))) {
     invalid('Unknown native link parameter')
@@ -266,12 +288,14 @@ export function parse(input: string): DeeplinkRequest {
   ) {
     invalid()
   }
+
   const raw = /^([a-z][a-z0-9+.-]*):\/\/([^/?#]*)([^?#]*)(?:\?([^#]*))?(?:#([\s\S]*))?$/i.exec(
     source,
   )
   if (!raw || raw[0] !== source) {
     invalid()
   }
+
   const scheme = parseValue(schemeSchema, raw[1]!.toLowerCase())
   let url: URL
   try {
@@ -288,6 +312,7 @@ export function parse(input: string): DeeplinkRequest {
   ) {
     invalid('Invalid application link authority')
   }
+
   const rawPath = raw[3]!
   const path =
     rawPath === ''
@@ -299,6 +324,7 @@ export function parse(input: string): DeeplinkRequest {
   if (path.some((part) => part === '.' || part === '..')) {
     invalid('Dot path components are not allowed')
   }
+
   if (raw[4] !== undefined) {
     for (const pair of raw[4].split('&')) {
       for (const component of pair.split('=')) {
@@ -306,8 +332,10 @@ export function parse(input: string): DeeplinkRequest {
       }
     }
   }
+
   const query = [...url.searchParams] as [string, string][]
   const fragment = raw[5] === undefined ? undefined : decode(raw[5])
+
   if (url.hostname === 'extension') {
     const extensionId = parseExternalValue(parseId, path[0], 'Invalid extension link identity')
     return parseRequest({
@@ -319,14 +347,17 @@ export function parse(input: string): DeeplinkRequest {
       ...(fragment === undefined ? {} : { fragment }),
     })
   }
+
   if (fragment !== undefined) {
     invalid('Native links do not accept a fragment')
   }
+
   const parameters = singleQuery(query)
   if (url.hostname === 'add') {
     if (path.length > 0) {
       invalid('Add links do not have a path')
     }
+
     const entryType = parseValue(v.picklist(entryTypes), parameters.entryType)
     let dateField: 'birthDate' | 'releaseDate' | 'foundedDate' = 'birthDate'
     if (isWorkType(entryType)) {
@@ -334,6 +365,7 @@ export function parse(input: string): DeeplinkRequest {
     } else if (entryType === 'organization') {
       dateField = 'foundedDate'
     }
+
     requireKeys(parameters, [
       'entryType',
       'source',
@@ -346,6 +378,7 @@ export function parse(input: string): DeeplinkRequest {
     if (Object.hasOwn(parameters, 'source') !== Object.hasOwn(parameters, 'sourceId')) {
       invalid('External identity parameters must occur together')
     }
+
     const date = parameters[dateField]
     const clues = {
       ...(parameters.name === undefined ? {} : { name: parameters.name }),
@@ -359,6 +392,7 @@ export function parse(input: string): DeeplinkRequest {
             ],
           }),
     }
+
     return parseRequest({
       scheme,
       type: 'add',
@@ -369,6 +403,7 @@ export function parse(input: string): DeeplinkRequest {
       },
     })
   }
+
   if (url.hostname === 'open') {
     const workType = parseValue(v.picklist(workTypes), path[0])
     requireKeys(parameters, openSelectors[workType])
@@ -385,6 +420,7 @@ export function parse(input: string): DeeplinkRequest {
       },
     })
   }
+
   const kind = path[0]
   if (entryTypes.some((type) => type === kind)) {
     const entryType = kind as EntryType
@@ -392,6 +428,7 @@ export function parse(input: string): DeeplinkRequest {
       requireKeys(parameters, [])
       return { scheme, type: 'view', target: { type: 'entries', entryType } }
     }
+
     requireKeys(parameters, Object.keys(entrySelectionEntries[entryType]))
     return parseRequest({
       scheme,
@@ -404,6 +441,7 @@ export function parse(input: string): DeeplinkRequest {
       },
     })
   }
+
   if (kind === 'collection' || kind === 'tag' || kind === 'note') {
     requireKeys(parameters, [])
     if (path.length > 2) {
@@ -415,6 +453,7 @@ export function parse(input: string): DeeplinkRequest {
       target: { type: kind, ...(path.length === 2 ? { id: path[1] } : {}) },
     })
   }
+
   if (path.length !== 1) {
     invalid()
   }
@@ -422,6 +461,7 @@ export function parse(input: string): DeeplinkRequest {
     requireKeys(parameters, [])
     return { scheme, type: 'view', target: { type: kind } }
   }
+
   const aliases = {
     tasks: 'tasks',
     scanner: 'scanner',
@@ -442,6 +482,7 @@ export function parse(input: string): DeeplinkRequest {
       target: { type: aliases[kind as keyof typeof aliases], ...parameters },
     })
   }
+
   return invalid('Unknown native view link')
 }
 
@@ -450,12 +491,14 @@ function address(identifier: EntryIdentifier): string[] {
     ? ['local', identifier.id]
     : ['external', identifier.source, identifier.sourceId]
 }
+
 /** Encode each path/value once. Formatting performs no lookup, defaults selection, installation or implicit profile choice. */
 export function format(input: DeeplinkRequest): string {
   const request = parseRequest(input)
   let path: readonly string[]
   let query: readonly (readonly [string, string])[] = []
   let fragment: string | undefined
+
   if (request.type === 'extension') {
     path = [request.extensionId, ...request.path]
     query = request.query
@@ -500,9 +543,11 @@ export function format(input: DeeplinkRequest): string {
       query = Object.entries(selection).map(([key, value]) => [key, String(value)])
     }
   }
+
   if (path.some((part) => part === '.' || part === '..')) {
     invalid('Dot path components are not allowed')
   }
+
   const parameters = new URLSearchParams(query.map(([key, value]) => [key, value])).toString()
   return `${request.scheme}://${request.type}${path.length ? `/${path.map(encodeURIComponent).join('/')}` : ''}${parameters ? `?${parameters}` : ''}${fragment === undefined ? '' : `#${encodeURIComponent(fragment)}`}`
 }

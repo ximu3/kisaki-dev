@@ -11,6 +11,7 @@ const values = validateMessageArguments(getMessageParameterContract(message), {
   text: '{literal}',
   count: 2,
 })
+
 document.body.textContent = String(
   new IntlMessageFormat(message, 'en', undefined, { ignoreTag: true }).format(values),
 )

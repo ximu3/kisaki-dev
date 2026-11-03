@@ -39,7 +39,9 @@ export const personRoles = Object.freeze([
   'voiceActor',
   'other',
 ] as const)
+
 export type PersonRole = (typeof personRoles)[number]
+
 export const organizationRoles = Object.freeze([
   'creator',
   'originalCreator',
@@ -54,11 +56,13 @@ export const organizationRoles = Object.freeze([
   'localization',
   'other',
 ] as const)
+
 export type OrganizationRole = (typeof organizationRoles)[number]
 
 /** Only these work responsibilities can be qualified by a specific character. */
 export type CharacterPersonRole =
   'characterCreator' | 'characterDesign' | 'drawing' | 'illustration' | 'voiceActor' | 'other'
+
 type CommonPersonRole =
   | 'creator'
   | 'characterCreator'
@@ -70,6 +74,7 @@ type CommonPersonRole =
   | 'translator'
   | 'editor'
   | 'other'
+
 type AudiovisualPersonRole =
   | 'director'
   | 'scenario'
@@ -82,6 +87,7 @@ type AudiovisualPersonRole =
   | 'music'
   | 'producer'
   | 'voiceActor'
+
 /** Compile-time medium constraints match the runtime role predicates. */
 export type PersonRoleFor<T extends WorkType> =
   | CommonPersonRole
@@ -92,6 +98,7 @@ export type PersonRoleFor<T extends WorkType> =
         : T extends 'comic'
           ? 'scenario' | 'storyboard' | 'drawing'
           : never)
+
 export type OrganizationRoleFor<T extends WorkType> =
   | 'creator'
   | 'originalCreator'
@@ -127,6 +134,7 @@ export type PersonWorkBinding = {
     | { readonly role: Exclude<PersonRoleFor<K>, CharacterPersonRole>; readonly character: null }
   )
 }[WorkType]
+
 export type OrganizationWorkBinding = {
   [K in WorkType]: {
     readonly work: EntryRef<K>
@@ -160,7 +168,9 @@ export const workRelationTypes = Object.freeze([
   'alternativeVersion',
   'related',
 ] as const)
+
 export type WorkRelationType = (typeof workRelationTypes)[number]
+
 export type StoredWorkRelationType =
   | 'sequel'
   | 'sideStory'
@@ -174,11 +184,13 @@ export type StoredWorkRelationType =
   | 'compilation'
   | 'alternativeVersion'
   | 'related'
+
 export interface WorkRelationBinding {
   readonly from: WorkRef
   readonly to: WorkRef
   readonly type: WorkRelationType
 }
+
 /** Canonical storage direction; endpoint ordering does not determine either side's display order. */
 export interface StoredWorkRelationBinding extends WorkRelationBinding {
   readonly type: StoredWorkRelationType
@@ -188,9 +200,12 @@ export interface StoredWorkRelationBinding extends WorkRelationBinding {
 export interface WorkCharacter extends WorkCharacterBinding, RelationProperties {
   readonly id: string
 }
+
 export type PersonWork = PersonWorkBinding & RelationProperties & { readonly id: string }
+
 export type OrganizationWork = OrganizationWorkBinding &
   RelationProperties & { readonly id: string }
+
 export interface WorkRelation extends StoredWorkRelationBinding {
   readonly id: string
   readonly note: string | null
@@ -207,6 +222,7 @@ export interface WorkCharacterUpdate {
   readonly changes: Partial<WorkCharacterBinding & RelationProperties>
   readonly expected?: Partial<RelationProperties> & { readonly binding?: WorkCharacterBinding }
 }
+
 export interface PersonWorkUpdate {
   readonly changes: Partial<
     {
@@ -218,6 +234,7 @@ export interface PersonWorkUpdate {
   >
   readonly expected?: Partial<RelationProperties> & { readonly binding?: PersonWorkBinding }
 }
+
 export interface OrganizationWorkUpdate {
   readonly changes: Partial<
     {
@@ -228,6 +245,7 @@ export interface OrganizationWorkUpdate {
   >
   readonly expected?: Partial<RelationProperties> & { readonly binding?: OrganizationWorkBinding }
 }
+
 export interface WorkRelationUpdate {
   readonly changes: Partial<WorkRelationBinding & { readonly note: string | null }>
   readonly expected?: {
@@ -240,23 +258,28 @@ export interface WorkRelationUpdate {
 export type WorkCharacterScope =
   | { readonly side: 'work'; readonly work: WorkRef }
   | { readonly side: 'character'; readonly characterId: string }
+
 export type PersonWorkScope =
   | { readonly side: 'work'; readonly work: WorkRef }
   | { readonly side: 'person'; readonly personId: string }
   | { readonly side: 'character'; readonly characterId: string }
+
 export type OrganizationWorkScope =
   | { readonly side: 'work'; readonly work: WorkRef }
   | { readonly side: 'organization'; readonly organizationId: string }
+
 export type WorkRelationScope = { readonly side: 'from' | 'to'; readonly work: WorkRef }
 
 /** Each concrete relation API uses its own closed scope and binding; the helper is internal to declarations. */
 interface RelationApi<Scope, Fact, Create, Update> {
   list(scope: Scope, options: ListOptions, call?: CallOptions): Promise<ListResult<Fact>>
   get(id: string, call?: CallOptions): Promise<Fact | null>
+
   /** Ordinary duplicate creation is Conflict; writeGraph's explicit add has its own idempotent semantics. */
   create(input: Create, call?: CallOptions): Promise<string>
   update(id: string, input: Update, call?: CallOptions): Promise<void>
   delete(id: string, call?: CallOptions): Promise<void>
+
   reorder(scope: Scope, input: ReorderInput, call?: CallOptions): Promise<void>
   move(scope: Scope, input: MoveInput, call?: CallOptions): Promise<void>
 }
@@ -269,13 +292,16 @@ export interface RelationsApi {
     WorkCharacterCreate,
     WorkCharacterUpdate
   >
+
   readonly personWorks: RelationApi<PersonWorkScope, PersonWork, PersonWorkCreate, PersonWorkUpdate>
+
   readonly organizationWorks: RelationApi<
     OrganizationWorkScope,
     OrganizationWork,
     OrganizationWorkCreate,
     OrganizationWorkUpdate
   >
+
   readonly workRelations: RelationApi<
     WorkRelationScope,
     WorkRelation,
@@ -288,22 +314,26 @@ export const characterRefSchema = v.strictObject({ type: v.literal('character'),
 export const personRefSchema = v.strictObject({ type: v.literal('person'), id })
 export const organizationRefSchema = v.strictObject({ type: v.literal('organization'), id })
 export const relationPropertyEntries = { note: v.nullable(text), isSpoiler: v.boolean() }
+
 export const workCharacterBindingEntries = {
   work: workRefSchema,
   character: characterRefSchema,
   role: v.nullable(v.picklist(characterRoles)),
 }
+
 export const personWorkBindingEntries = {
   work: workRefSchema,
   person: personRefSchema,
   character: v.nullable(characterRefSchema),
   role: v.picklist(personRoles),
 }
+
 export const organizationWorkBindingEntries = {
   work: workRefSchema,
   organization: organizationRefSchema,
   role: v.picklist(organizationRoles),
 }
+
 export const workRelationBindingEntries = {
   from: workRefSchema,
   to: workRefSchema,
@@ -325,6 +355,7 @@ const personRoleWorkTypes: Readonly<Partial<Record<PersonRole, readonly WorkType
   producer: ['game', 'anime'],
   voiceActor: ['game', 'anime'],
 }
+
 const organizationRoleWorkTypes: Readonly<Partial<Record<OrganizationRole, readonly WorkType[]>>> =
   {
     developer: ['game'],
@@ -334,6 +365,7 @@ const organizationRoleWorkTypes: Readonly<Partial<Record<OrganizationRole, reado
     sound: ['game', 'anime'],
     imprint: ['comic', 'novel'],
   }
+
 const characterPersonRoles: readonly PersonRole[] = [
   'characterCreator',
   'characterDesign',
@@ -354,6 +386,7 @@ export function canUsePersonRole(
     (!hasCharacter || characterPersonRoles.includes(role))
   )
 }
+
 /** Check the declared organization responsibility against its real work medium. */
 export function canUseOrganizationRole(role: OrganizationRole, workType: WorkType): boolean {
   return organizationRoleWorkTypes[role]?.includes(workType) ?? true
@@ -362,27 +395,38 @@ export function canUseOrganizationRole(role: OrganizationRole, workType: WorkTyp
 const inverse: Readonly<Record<WorkRelationType, WorkRelationType>> = {
   sequel: 'prequel',
   prequel: 'sequel',
+
   sideStory: 'mainStory',
   mainStory: 'sideStory',
+
   spinOff: 'spinOffOrigin',
   spinOffOrigin: 'spinOff',
+
   summary: 'fullStory',
   fullStory: 'summary',
+
   adaptation: 'sourceMaterial',
   sourceMaterial: 'adaptation',
+
   remake: 'remakeSource',
   remakeSource: 'remake',
+
   remaster: 'remasterSource',
   remasterSource: 'remaster',
+
   port: 'portSource',
   portSource: 'port',
+
   expansion: 'baseGame',
   baseGame: 'expansion',
+
   compilation: 'includedWork',
   includedWork: 'compilation',
+
   alternativeVersion: 'alternativeVersion',
   related: 'related',
 }
+
 const reverseTypes: readonly WorkRelationType[] = [
   'prequel',
   'mainStory',
@@ -423,6 +467,7 @@ export function normalizeWorkRelation(input: WorkRelationBinding): StoredWorkRel
   ) {
     throw new DesktopError('InvalidInput', 'This relation requires two games')
   }
+
   const symmetric = value.type === 'related' || value.type === 'alternativeVersion'
   const swap =
     reverseTypes.includes(value.type) ||
@@ -442,6 +487,7 @@ export function parseWorkCharacterCreate(input: unknown): WorkCharacterCreate {
     'Invalid work character relation',
   )
 }
+
 /** Parse the complete original work-character fact, excluding mutable note/spoiler attributes. */
 export function parseWorkCharacterBinding(input: unknown): WorkCharacterBinding {
   return parseValue(
@@ -450,6 +496,7 @@ export function parseWorkCharacterBinding(input: unknown): WorkCharacterBinding 
     'Invalid work character binding',
   )
 }
+
 /** Parse a complete original credited responsibility with its real medium and nullable character. */
 export function parsePersonWorkBinding(input: unknown): PersonWorkBinding {
   const value = parseValue(
@@ -460,8 +507,10 @@ export function parsePersonWorkBinding(input: unknown): PersonWorkBinding {
   if (!canUsePersonRole(value.role, value.work.type, value.character !== null)) {
     throw new DesktopError('InvalidInput', 'Person role is not applicable to this binding')
   }
+
   return value as PersonWorkBinding
 }
+
 /** Parse a complete original organization responsibility without accepting attributes as binding fields. */
 export function parseOrganizationWorkBinding(input: unknown): OrganizationWorkBinding {
   const value = parseValue(
@@ -472,8 +521,10 @@ export function parseOrganizationWorkBinding(input: unknown): OrganizationWorkBi
   if (!canUseOrganizationRole(value.role, value.work.type)) {
     throw new DesktopError('InvalidInput', 'Organization role is not applicable to this binding')
   }
+
   return value as OrganizationWorkBinding
 }
+
 /** Baselines use canonical stored direction even when a form reads the fact from its opposite endpoint. */
 export function parseStoredWorkRelationBinding(input: unknown): StoredWorkRelationBinding {
   const value = parseValue(
@@ -485,8 +536,10 @@ export function parseStoredWorkRelationBinding(input: unknown): StoredWorkRelati
   if (normalized.type !== value.type || normalized.from.id !== value.from.id) {
     throw new DesktopError('InvalidInput', 'Expected work relation binding must be canonical')
   }
+
   return normalized
 }
+
 /** Validate medium and character restrictions for one actual credited responsibility. */
 export function parsePersonWorkCreate(input: unknown): PersonWorkCreate {
   const value = parseValue(
@@ -500,8 +553,10 @@ export function parsePersonWorkCreate(input: unknown): PersonWorkCreate {
       'Person role is not applicable to this work or character scope',
     )
   }
+
   return value as PersonWorkCreate
 }
+
 /** Validate an organization responsibility without inferring it from the organization's usual business. */
 export function parseOrganizationWorkCreate(input: unknown): OrganizationWorkCreate {
   const value = parseValue(
@@ -515,8 +570,10 @@ export function parseOrganizationWorkCreate(input: unknown): OrganizationWorkCre
   if (!canUseOrganizationRole(value.role, value.work.type)) {
     throw new DesktopError('InvalidInput', 'Organization role is not applicable to this work type')
   }
+
   return value as OrganizationWorkCreate
 }
+
 /** Parse a directed creation intent and validate canonicalizability while retaining the caller's stated direction. */
 export function parseWorkRelationCreate(input: unknown): WorkRelationCreate {
   const value = parseValue(
@@ -551,6 +608,7 @@ export function parseWorkCharacterUpdate(input: unknown): WorkCharacterUpdate {
   validateExpectedKeys(value.changes, value.expected, ['binding'])
   return value
 }
+
 /** Parse field edits and check any complete post-edit binding available from the supplied original baseline. */
 export function parsePersonWorkUpdate(input: unknown): PersonWorkUpdate {
   const binding = v.pipe(v.unknown(), v.transform(parsePersonWorkBinding))
@@ -565,8 +623,10 @@ export function parsePersonWorkUpdate(input: unknown): PersonWorkUpdate {
   ) {
     throw new DesktopError('InvalidInput', 'Person role is not applicable to the edited binding')
   }
+
   return value
 }
+
 /** Parse organization edits; applicability of any incomplete binding remains a commit-time check. */
 export function parseOrganizationWorkUpdate(input: unknown): OrganizationWorkUpdate {
   const binding = v.pipe(v.unknown(), v.transform(parseOrganizationWorkBinding))
@@ -579,8 +639,10 @@ export function parseOrganizationWorkUpdate(input: unknown): OrganizationWorkUpd
       'Organization role is not applicable to the edited binding',
     )
   }
+
   return value
 }
+
 /** A work-relation baseline uses canonical storage direction, including when an opposite-side form initiated the edit. */
 export function parseWorkRelationUpdate(input: unknown): WorkRelationUpdate {
   const binding = v.pipe(v.unknown(), v.transform(parseStoredWorkRelationBinding))

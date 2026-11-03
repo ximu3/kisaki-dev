@@ -9,7 +9,9 @@ import { readRecord } from '../validation'
 export interface MessageCatalog {
   readonly [key: string]: string | MessageCatalog
 }
+
 export type MessageArgumentKind = 'string' | 'number' | 'date'
+
 /** Allowed domains are intersected over every use, including nested select/plural branches. */
 export type MessageParameterContract = Readonly<Record<string, readonly MessageArgumentKind[]>>
 export type MessageContracts = Readonly<Record<string, MessageParameterContract>>
@@ -18,6 +20,7 @@ export type MessageContracts = Readonly<Record<string, MessageParameterContract>
 export function flattenMessages(input: unknown): Readonly<Record<string, string>> {
   const result = new Map<string, string>()
   const ancestors = new Set<object>()
+
   function visit(value: unknown, prefix: string): void {
     const group = readRecord(value)
     if (ancestors.has(group)) {
@@ -28,6 +31,7 @@ export function flattenMessages(input: unknown): Readonly<Record<string, string>
       if (key.length === 0 || key.includes('.')) {
         throw new DesktopError('InvalidInput', 'Message keys must be nonempty path segments')
       }
+
       const path = prefix ? `${prefix}.${key}` : key
       if (typeof child === 'string') {
         result.set(path, child)
@@ -37,6 +41,7 @@ export function flattenMessages(input: unknown): Readonly<Record<string, string>
     }
     ancestors.delete(group)
   }
+
   visit(input, '')
   return Object.fromEntries(result)
 }
@@ -49,7 +54,9 @@ export function getMessageParameterContract(message: string): MessageParameterCo
   } catch (cause) {
     throw new DesktopError('InvalidInput', 'Invalid ICU message', { cause })
   }
+
   const parameters = new Map<string, readonly MessageArgumentKind[]>()
+
   function visit(elements: readonly MessageFormatElement[]): void {
     for (const element of elements) {
       if (element.type === TYPE.literal || element.type === TYPE.pound) {
@@ -58,6 +65,7 @@ export function getMessageParameterContract(message: string): MessageParameterCo
       if (element.type === TYPE.tag) {
         throw new DesktopError('InvalidInput', 'Rich message tags are not supported')
       }
+
       let kinds: readonly MessageArgumentKind[]
       switch (element.type) {
         case TYPE.argument:
@@ -75,12 +83,14 @@ export function getMessageParameterContract(message: string): MessageParameterCo
           kinds = ['number']
           break
       }
+
       const previous = parameters.get(element.value)
       const intersection = previous ? previous.filter((kind) => kinds.includes(kind)) : kinds
       if (intersection.length === 0) {
         throw new DesktopError('InvalidInput', 'ICU parameter formats are incompatible')
       }
       parameters.set(element.value, intersection)
+
       if (element.type === TYPE.select || element.type === TYPE.plural) {
         for (const option of Object.values(element.options)) {
           visit(option.value)
@@ -88,12 +98,14 @@ export function getMessageParameterContract(message: string): MessageParameterCo
       }
     }
   }
+
   visit(ast)
   return Object.fromEntries(
     [...parameters].sort(([left], [right]) => {
       if (left === right) {
         return 0
       }
+
       return left < right ? -1 : 1
     }),
   )
@@ -124,6 +136,7 @@ export function validateMessageCatalog(
       }
       continue
     }
+
     const translatedContract = getMessageParameterContract(translated[key]!)
     for (const [parameter, kinds] of Object.entries(translatedContract)) {
       const required = contract[parameter]
@@ -136,6 +149,7 @@ export function validateMessageCatalog(
       }
     }
   }
+
   return input as MessageCatalog
 }
 
@@ -148,6 +162,7 @@ export function validateMessageArguments(
   if (Object.keys(values).some((key) => !Object.hasOwn(contract, key))) {
     throw new DesktopError('InvalidInput', 'Unknown message parameter')
   }
+
   for (const [key, kinds] of Object.entries(contract)) {
     const value = values[key]
     let kind: MessageArgumentKind | null = null
@@ -162,5 +177,6 @@ export function validateMessageArguments(
       throw new DesktopError('InvalidInput', 'Missing or invalid message parameter')
     }
   }
+
   return values as Readonly<Record<string, string | number | Date>>
 }

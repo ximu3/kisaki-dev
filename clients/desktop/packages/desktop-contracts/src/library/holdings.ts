@@ -72,6 +72,7 @@ export interface ContentDirectoriesApi {
     directoryId: string,
     call?: CallOptions,
   ): Promise<ContentDirectory<T> | null>
+
   create(
     ...args: {
       [K in WorkType]: [work: EntryRef<K>, input: DirectoryCreateFields<K>, call?: CallOptions]
@@ -91,8 +92,10 @@ export interface ContentDirectoriesApi {
     call?: CallOptions,
   ): Promise<HoldingsRelocationResult>
 }
+
 export type UsagePreferenceTarget =
   { readonly type: 'work' } | { readonly type: 'file'; readonly fileId: string }
+
 /** Complete custom settings stay independent of parent changes and do not reconfigure already-open content by themselves. */
 export interface HoldingsPreferencesApi {
   get<T extends FileWorkType>(
@@ -110,6 +113,7 @@ export interface HoldingsPreferencesApi {
       ]
     }[FileWorkType]
   ): Promise<UsageOverride<FilePreferencesByType[FileWorkType]>>
+
   getEffective<T extends FileWorkType>(
     work: EntryRef<T>,
     fileId: string,
@@ -119,6 +123,7 @@ export interface HoldingsPreferencesApi {
     readonly settings: FilePreferencesByType[T]
   }>
 }
+
 /** File-specific saved choices are independent of whole playback overrides and runtime track IDs. */
 export interface FilePlaybackChoicesApi {
   get(
@@ -136,6 +141,7 @@ export interface FilePlaybackChoicesApi {
     call?: CallOptions,
   ): Promise<void>
 }
+
 /** Actual files belong directly to a work. Explicit association/path changes must respect active-file occupancy. */
 export interface HeldFilesApi {
   list<T extends FileWorkType>(
@@ -149,6 +155,7 @@ export interface HeldFilesApi {
     fileId: string,
     call?: CallOptions,
   ): Promise<HeldFile<T> | null>
+
   /** Return the actual new or reused same-position identity, preserving existing state unless explicit association intent was supplied. */
   add(
     ...args: {
@@ -169,6 +176,7 @@ export interface HeldFilesApi {
     fileIds: NonEmptyArray<string>,
     call?: CallOptions,
   ): Promise<void>
+
   editAssociations(
     ...args: {
       [K in FileWorkType]: [
@@ -179,6 +187,7 @@ export interface HeldFilesApi {
       ]
     }[FileWorkType]
   ): Promise<void>
+
   /** Saving a manual association edit also sets manual. Mode-only changes preserve associations and allow current use. */
   setAssociationMode(
     work: EntryRef<FileWorkType>,
@@ -189,6 +198,7 @@ export interface HeldFilesApi {
     },
     call?: CallOptions,
   ): Promise<void>
+
   setPreferred(
     ...args: {
       [K in FileWorkType]: [work: EntryRef<K>, input: PreferredFileInput<K>, call?: CallOptions]
@@ -214,12 +224,14 @@ export interface HeldFilesApi {
     input: FileMergeInput,
     call?: CallOptions,
   ): Promise<FileMergeResult>
+
   /** Compute all selected files first; the valid association changes commit in one short transaction and retain each mode. */
   reidentify<T extends FileWorkType>(
     work: EntryRef<T>,
     fileIds: NonEmptyArray<string>,
     call?: CallOptions,
   ): Promise<FileReidentificationResult<T>>
+
   /** Test a draft against an actual file without changing its associations, mode, preference or position. */
   testRecognition<T extends FileWorkType>(
     work: EntryRef<T>,
@@ -227,8 +239,10 @@ export interface HeldFilesApi {
     input?: { readonly definition?: FileRecognitionDefinition<T> },
     call?: CallOptions,
   ): Promise<FileRecognitionResult<T>>
+
   readonly playbackChoices: FilePlaybackChoicesApi
 }
+
 /** Four-work registration, media maintenance and game backup are separate capabilities, sharing stable local identities. */
 export interface HoldingsApi {
   readonly directories: ContentDirectoriesApi
@@ -241,6 +255,7 @@ export interface HoldingsApi {
     readonly comic: FileRecognitionProfilesApi<'comic'>
     readonly novel: FileRecognitionProfilesApi<'novel'>
   }
+
   registerLocalContent(
     work: WorkRef,
     input: LocalContentInput,
@@ -255,25 +270,30 @@ export interface HoldingsApi {
 
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 const mode = v.picklist(['automatic', 'manual'])
+
 const discoverySchema = v.strictObject({
   maxDepth: v.nullable(positiveInteger),
   include: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
   exclude: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
 })
+
 export const filePartTypes: { readonly [K in FileWorkType]: readonly FilePartType<K>[] } = {
   anime: ['animeEpisode', 'animeExtra'],
   comic: ['comicVolume', 'comicChapter'],
   novel: ['novelVolume'],
 }
+
 function partSchema<T extends FileWorkType>(
   type: T,
 ): v.GenericSchema<unknown, PartRef<FilePartType<T>>> {
   const types: readonly FilePartType<T>[] = filePartTypes[type]
   return v.strictObject({ type: v.picklist(types), id })
 }
+
 function partKey(part: PartRef): string {
   return JSON.stringify([part.type, part.id])
 }
+
 function associationSchema<T extends FileWorkType>(type: T) {
   return v.strictObject({ part: partSchema(type), isPreferred: v.exactOptional(v.boolean()) })
 }
@@ -282,10 +302,12 @@ function associationSchema<T extends FileWorkType>(type: T) {
 export function getDirectoryDiscoveryDefaults(): DirectoryDiscoveryDefinition {
   return { maxDepth: null, include: [], exclude: [] }
 }
+
 /** Validate discovery only; it does not choose an identification profile or change existing file maintenance. */
 export function parseDirectoryDiscoveryDefinition(input: unknown): DirectoryDiscoveryDefinition {
   return parseValue(discoverySchema, input, 'Invalid directory discovery definition')
 }
+
 /** Game directories reject media-discovery and naming-profile fields instead of preserving inapplicable data. */
 export function parseDirectoryCreateFields<T extends WorkType>(
   workType: T,
@@ -301,6 +323,7 @@ export function parseDirectoryCreateFields<T extends WorkType>(
         })
   return parseValue(schema, input, 'Invalid directory creation') as DirectoryCreateFields<T>
 }
+
 /** Discovery and naming-profile changes compare only their corresponding complete original values. */
 export function parseDirectoryUpdate(input: unknown): DirectoryUpdate {
   const fields = v.strictObject(
@@ -336,6 +359,7 @@ export function parseFileCreateFields<T extends FileWorkType>(
     'Invalid file registration',
   ) as FileCreateFields<T>
 }
+
 /** Explicit empty association input is a manual decision, not a failed automatic match. */
 export function initialFileAssociationMode(
   associations: readonly FileAssociationInput[] | undefined,
@@ -380,6 +404,7 @@ export function parseFileAssociationChange<T extends FileWorkType>(
     'Invalid file associations',
   ) as FileAssociationChange<T>
 }
+
 /** A supplied edit baseline contains both the complete direct associations and the original matching permission. */
 export function parseFileAssociationEdit<T extends FileWorkType>(
   workType: T,
@@ -406,6 +431,7 @@ export function parseFileAssociationEdit<T extends FileWorkType>(
     'Invalid association adoption',
   ) as FileAssociationEdit<T>
 }
+
 /** Mode-only intent never changes the complete association set. */
 export function parseFileAssociationModeChange(input: unknown): {
   readonly mode: FileAssociationMode
@@ -417,6 +443,7 @@ export function parseFileAssociationModeChange(input: unknown): {
     'Invalid file association mode change',
   )
 }
+
 /** Validate query facts without probing files; a part filter is an exact direct association scope. */
 export function parseFileQuery<T extends FileWorkType>(workType: T, input: unknown): FileQuery<T> {
   return parseValue(
@@ -432,6 +459,7 @@ export function parseFileQuery<T extends FileWorkType>(workType: T, input: unkno
     'Invalid file query',
   ) as FileQuery<T>
 }
+
 /** Validate a current input for one already known work; expected identities, when present, must be complete and nonempty. */
 export function parseLocalContentInput(input: unknown): LocalContentInput {
   return parseValue(
@@ -440,6 +468,7 @@ export function parseLocalContentInput(input: unknown): LocalContentInput {
     'Invalid local content input',
   )
 }
+
 export function parseLocalContentRegistrationOptions(
   input: unknown,
 ): LocalContentRegistrationOptions {
@@ -456,6 +485,7 @@ export function parseLocalContentRegistrationOptions(
     'Invalid local content identity precondition',
   )
 }
+
 /** Preserve actual registered/reused identities and post-commit issues without pretending the content is already usable. */
 export function parseLocalContentRegistrationResult(
   input: unknown,
@@ -491,8 +521,10 @@ export function parseLocalContentRegistrationResult(
   ) {
     throw new DesktopError('InvalidInput', 'Local registration result does not match its work type')
   }
+
   return value
 }
+
 /** Reject merging a file identity into itself. The host additionally checks both owners and the chosen current path. */
 export function parseFileMergeInput(input: unknown): FileMergeInput {
   return parseValue(
@@ -509,10 +541,12 @@ const track = v.variant('type', [
   v.strictObject({ type: v.literal('embedded'), index: nonnegativeInteger }),
   v.strictObject({ type: v.literal('external'), path, index: nonnegativeInteger }),
 ])
+
 /** A source-local same-kind track ordinal is not a session's opaque runtime track ID. */
 export function parseFileTrackSelection(input: unknown): FileTrackSelection {
   return parseValue(track, input, 'Invalid saved track selection')
 }
+
 /** Saved audio/subtitle choices replace complete references and signed finite-second offsets. */
 export function parseFilePlaybackChoicesUpdate(input: unknown): {
   readonly changes: Partial<FilePlaybackChoices>
@@ -534,6 +568,7 @@ export function parseFilePlaybackChoicesUpdate(input: unknown): {
   validateExpectedKeys(value.changes, value.expected)
   return value
 }
+
 /** Validate an explicit preferred-file scope. Availability and a direct same-work association are checked at commit. */
 export function parsePreferredFileInput<T extends FileWorkType>(
   workType: T,
@@ -552,6 +587,7 @@ export function parsePreferredFileInput<T extends FileWorkType>(
     'Invalid preferred file',
   ) as PreferredFileInput<T>
 }
+
 /** Each part appears once; a chosen file may legitimately be preferred for more than one directly associated part. */
 export function parsePreferredPartFiles<T extends FileWorkType>(
   workType: T,
@@ -571,6 +607,7 @@ export function parsePreferredPartFiles<T extends FileWorkType>(
     'Invalid preferred part files',
   ) as NonEmptyArray<PreferredPartFile<T>>
 }
+
 /** Validate explicit path mapping scope without changing paths, checking disk state or applying prefix replacements to text. */
 export function parseDirectoryRelocationInput(
   workType: WorkType,
@@ -613,5 +650,6 @@ export function parseDirectoryRelocationInput(
   ) {
     throw new DesktopError('InvalidInput', 'Relocation fields are not applicable to this work type')
   }
+
   return value
 }

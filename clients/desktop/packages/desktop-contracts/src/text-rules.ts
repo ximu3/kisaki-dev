@@ -9,6 +9,7 @@ export interface TextPattern {
   readonly flags: 'u' | 'iu'
   readonly captureNames: readonly string[]
 }
+
 /** Templates contain literal text or named captures, never executable expressions. */
 export type TextTemplatePart =
   | { readonly type: 'text'; readonly value: string }
@@ -22,6 +23,7 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
   try {
     const parser = new RegExpParser({ ecmaVersion: 2025 })
     const ast = parser.parsePattern(pattern, 0, pattern.length, { unicode: true })
+
     const names = new Set<string>()
     visitRegExpAST(ast, {
       onCapturingGroupEnter(group) {
@@ -30,9 +32,11 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
         }
       },
     })
+
     const source = `^(?:${pattern})(?![\\s\\S])`
     const flags = ignoreCase ? 'iu' : 'u'
     new RegExp(source, flags)
+
     return { source, flags, captureNames: [...names] }
   } catch (cause) {
     throw new DesktopError('InvalidInput', 'Invalid full-string regular expression', { cause })
@@ -46,12 +50,14 @@ export function parseTextTemplate(
 ): readonly TextTemplatePart[] {
   const parts: TextTemplatePart[] = []
   let literal = ''
+
   function flush(): void {
     if (literal) {
       parts.push({ type: 'text', value: literal })
       literal = ''
     }
   }
+
   for (let index = 0; index < template.length;) {
     const character = template[index]!
     if (character !== '$') {
@@ -59,23 +65,28 @@ export function parseTextTemplate(
       index += 1
       continue
     }
+
     if (template[index + 1] === '$') {
       literal += '$'
       index += 2
       continue
     }
+
     const end = template.indexOf('>', index + 2)
     if (template[index + 1] !== '<' || end < 0) {
       throw new DesktopError('InvalidInput', 'Invalid replacement template')
     }
+
     const name = template.slice(index + 2, end)
     if (!name || (captureNames && !captureNames.includes(name))) {
       throw new DesktopError('InvalidInput', 'Unknown named capture in replacement template')
     }
+
     flush()
     parts.push({ type: 'capture', name })
     index = end + 1
   }
+
   flush()
   return parts
 }
@@ -91,11 +102,13 @@ export function expandTextTemplate(
       result += part.value
       continue
     }
+
     if (!Object.hasOwn(captures, part.name)) {
       return undefined
     }
     result += captures[part.name]!
   }
+
   return result
 }
 
@@ -111,6 +124,7 @@ export function matchTextPattern(
   if (!match) {
     return null
   }
+
   return Object.fromEntries(
     Object.entries(match.groups ?? {}).filter(
       (entry): entry is [string, string] => entry[1] !== undefined,

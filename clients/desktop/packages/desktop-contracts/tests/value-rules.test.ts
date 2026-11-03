@@ -32,8 +32,10 @@ function failureCode(operation: () => unknown): string {
     if (error instanceof DesktopError) {
       return error.code
     }
+
     throw error
   }
+
   throw new Error('Expected the operation to fail')
 }
 
@@ -44,11 +46,15 @@ test('history insertion preserves separate facts while current-completion intent
     note: '  ',
   }
   const second = { ...first, expected: { completionCount: 2 } }
+
   expect(parseCompletionCreateMany([first, second])).toHaveLength(2)
+
   expect(parseRecordCurrentMany([first, second])).toEqual([{ ...second, note: null }])
+
   expect(() =>
     parseCompletionCreateMany([{ ...first, expected: { completionCount: 1 } }, second]),
   ).toThrow(DesktopError)
+
   expect(() => parseRecordCurrentMany([first, { ...first, note: 'Different fact' }])).toThrow(
     DesktopError,
   )
@@ -56,14 +62,19 @@ test('history insertion preserves separate facts while current-completion intent
 
 test('activity ranges allocate the recorded duration and do not apply manual future checks to historical reads', () => {
   const activity = { startedAt: 1000, endedAt: 5000, durationMs: 2000 }
+
   expect(activityDurationInRange(activity, { from: 1000, to: 3000 })).toBe(1000)
+
   expect(activityDurationInRange(activity, { from: 5000, to: 6000 })).toBe(0)
+
   expect(() =>
     parseActivityCreate({ work: { type: 'novel', id: 'n' }, ...activity }, 4000),
   ).toThrow(DesktopError)
+
   expect(
     parseActivityCreate({ work: { type: 'novel', id: 'n' }, ...activity }, 5000),
   ).not.toHaveProperty('context')
+
   expect(() =>
     parseActivityCreate(
       {
@@ -78,6 +89,7 @@ test('activity ranges allocate the recorded duration and do not apply manual fut
 
 test('subset reorder preserves other slots while current-position moves fail on a stale anchor', () => {
   const current = ['a', 'b', 'c', 'd', 'e']
+
   expect(reorderSubset(current, { order: ['e', 'b'], expected: { order: current } })).toEqual([
     'a',
     'e',
@@ -85,6 +97,7 @@ test('subset reorder preserves other slots while current-position moves fail on 
     'd',
     'b',
   ])
+
   expect(moveWithinOrder(current, { ids: ['d', 'b'], before: 'a' })).toEqual([
     'd',
     'b',
@@ -92,11 +105,13 @@ test('subset reorder preserves other slots while current-position moves fail on 
     'c',
     'e',
   ])
+
   expect(
     failureCode(() =>
       reorderSubset(current, { order: ['e', 'b'], expected: { order: ['a', 'b', 'c', 'e', 'd'] } }),
     ),
   ).toBe('Conflict')
+
   expect(failureCode(() => moveWithinOrder(current, { ids: ['b'], before: 'missing' }))).toBe(
     'InvalidReference',
   )
@@ -114,14 +129,21 @@ test('backup tree bytes and digest match an independently constructed ordered UT
     ['a', 'file', 2, hash],
     ['z', 'directory'],
   ])
+
   expect(new TextDecoder().decode(encodeGameBackupTree([...entries].reverse()))).toBe(expected)
+
   const treeDigest = createHash('sha256').update(expected, 'utf8').digest('hex')
+
   expect(gameBackupTreeDigest(entries)).toBe(treeDigest)
+
   const manifest = { format: 'kisaki-game-save', formatVersion: 1, entries, treeDigest }
+
   expect(parseGameBackupArchiveManifest(manifest)).toEqual(manifest)
+
   expect(failureCode(() => parseGameBackupArchiveManifest({ ...manifest, formatVersion: 2 }))).toBe(
     'UnsupportedBackupFormat',
   )
+
   expect(
     failureCode(() =>
       parseGameBackupArchiveManifest({ ...manifest, entries: [root, { ...file, path: '../a' }] }),
@@ -134,6 +156,7 @@ test('backup tree bytes and digest match an independently constructed ordered UT
       ),
     ),
   ).toBe('DataIntegrityError')
+
   expect(() =>
     parseGameBackupCreateInput({ source: { type: 'config', launchConfigId: 'config' } }),
   ).toThrow(DesktopError)
@@ -144,11 +167,13 @@ test('resource inputs preserve legal headers and real holds while rejecting cred
     ['constructor', 'value'],
     ['__proto__', 'retained'],
   ])
+
   expect(parseFileInput({ type: 'url', url: 'https://example.test/file', headers })).toEqual({
     type: 'url',
     url: 'https://example.test/file',
     headers,
   })
+
   expect(() =>
     parseFileInput({
       type: 'url',
@@ -156,6 +181,7 @@ test('resource inputs preserve legal headers and real holds while rejecting cred
       headers: { aUtHoRiZaTiOn: 'Bearer synthetic' },
     }),
   ).toThrow(DesktopError)
+
   expect(
     parseFileInput({
       type: 'url',
@@ -164,9 +190,11 @@ test('resource inputs preserve legal headers and real holds while rejecting cred
       redirect: 'error',
     }),
   ).toMatchObject({ redirect: 'error' })
+
   expect(() =>
     parseFileInput({ type: 'url', url: 'https://user:password@example.test/file' }),
   ).toThrow(DesktopError)
+
   let released = false
   const prepared = {
     attachmentId: 'prepared',
@@ -175,9 +203,12 @@ test('resource inputs preserve legal headers and real holds while rejecting cred
       released = true
     },
   }
+
   expect(parsePreparedAttachment(prepared)).toBe(prepared)
   expect(released).toBe(false)
+
   await prepared.dispose()
+
   expect(released).toBe(true)
 })
 
@@ -188,9 +219,13 @@ test('source geometry and font metadata reject degenerate or contradictory value
     { x: 1, y: 1 },
     { x: 0, y: 1 },
   ]
+
   expect(parseNormalizedQuad(quad)).toEqual(quad)
+
   expect(() => parseNormalizedQuad([...quad].reverse())).toThrow(DesktopError)
+
   expect(() => parseNormalizedRect({ x: 0.9, y: 0, width: 0.2, height: 1 })).toThrow(DesktopError)
+
   const metric = { min: 100, default: 400, max: 900 }
   const metadata = {
     faces: [
@@ -207,7 +242,9 @@ test('source geometry and font metadata reject degenerate or contradictory value
       },
     ],
   }
+
   expect(parseFontFileMetadata(metadata)).toEqual(metadata)
+
   expect(() =>
     parseFontFileMetadata({
       faces: [{ ...metadata.faces[0], weight: { min: 900, default: 400, max: 100 } }],
@@ -234,24 +271,31 @@ test('scanner presets are opt-in single-pass rules and recognizers must contribu
       id: preset.id,
       name: String(preset.name),
     })
+
     const result = extractWorkClues([rule], {
       baseName: examples[index]!,
       relativePath: examples[index]!,
     })
+
     expect(result.clues.name).toBe('Name')
     expect(result.ruleId).toBe(preset.id)
   }
+
   expect(
     extractWorkClues([], { baseName: 'Original_name', relativePath: 'dir/Original_name' }).clues,
   ).toEqual({ name: 'Original_name' })
+
   const input = {
     entryType: 'game' as const,
     path: '/fixture/game',
     kind: 'directory' as const,
     clues: { name: 'Name' },
   }
+
   expect(parseRecognitionResult(input, null)).toBeNull()
+
   expect(() => parseRecognitionResult(input, { name: '  NAME  ' })).toThrow(DesktopError)
+
   expect(
     parseRecognitionResult(input, { externalIdentities: [{ source: 'vndb', sourceId: 'v17' }] }),
   ).toEqual({ externalIdentities: [{ source: 'vndb', sourceId: 'v17' }] })

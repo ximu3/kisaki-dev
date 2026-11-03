@@ -16,6 +16,7 @@ import { id, parseExternalValue, parseValue, positiveInteger, unique } from './v
 
 export const developmentProtocolId = 'kisaki.development'
 export const developmentProtocolVersion = 1
+
 /** Build numbers increase per extension on this connection. Directories stay immutable until their real readers release them. */
 export interface DevelopmentBuild {
   readonly extensionId: string
@@ -23,16 +24,20 @@ export interface DevelopmentBuild {
   readonly rootPath: string
   readonly webviews: readonly { readonly document: ViewDocument; readonly url: string }[]
 }
+
 export interface DevelopmentBuildRef {
   readonly extensionId: string
   readonly buildId: number
 }
+
 export type DevelopmentBuildResult = DevelopmentBuildRef &
   (
     | { readonly outcome: 'adopted' }
     | { readonly outcome: 'notAdopted'; readonly error: ErrorSummary }
   )
+
 export type DevelopmentActivationResult = ExtensionActivationResult
+
 /** Interrupted reports contain only known results. Other affected installed extensions can appear among activation attempts. */
 export type DevelopmentAdoptionResult = {
   readonly builds: readonly DevelopmentBuildResult[]
@@ -41,28 +46,34 @@ export type DevelopmentAdoptionResult = {
   | { readonly outcome: 'completed' }
   | { readonly outcome: 'interrupted'; readonly error: ErrorSummary }
 )
+
 export interface DevelopmentAccepted {
   readonly appVersion: string
   readonly buildId: string
 }
+
 export interface DevelopmentReady extends DevelopmentAccepted {
   readonly apiVersion: string | null
 }
+
 export type DevelopmentStopResult =
   | { readonly outcome: 'exiting' | 'cancelled' }
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
+
 export interface DevelopmentNotifications {
   readonly ready: DevelopmentReady
   readonly buildsReleased: { readonly builds: readonly DevelopmentBuildRef[] }
   readonly exiting: Readonly<Record<string, never>>
   readonly failed: { readonly error: ErrorSummary }
 }
+
 export interface DevelopmentApi {
   /** Accept one complete batch at a time, preserving each actual adoption and shared-host activation result. */
   adoptBuilds(
     builds: readonly DevelopmentBuild[],
     call?: CallOptions,
   ): Promise<DevelopmentAdoptionResult>
+
   /** Normal user-aware shutdown; cancellation keeps the current application and development resources in use. */
   stop(call?: CallOptions): Promise<DevelopmentStopResult>
 }
@@ -71,12 +82,15 @@ const extensionId = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
+
 const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid development version')),
 )
+
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 const ref = v.strictObject({ extensionId, buildId: positiveInteger })
+
 const buildResult = v.variant('outcome', [
   v.strictObject({ extensionId, buildId: positiveInteger, outcome: v.literal('adopted') }),
   v.strictObject({
@@ -86,6 +100,7 @@ const buildResult = v.variant('outcome', [
     error,
   }),
 ])
+
 const activation = v.pipe(v.unknown(), v.transform(parseExtensionActivationResult))
 
 /** A loopback name is necessary, not sufficient: the receiving host also verifies this actual session owns the server. */
@@ -102,8 +117,10 @@ export function parseDevelopmentUrl(input: unknown): string {
   ) {
     throw new DesktopError('InvalidInput', 'Development documents require an owned loopback server')
   }
+
   return value
 }
+
 /** Reject duplicate document mappings and incomplete directory values before any application-side read. */
 export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
   return parseValue(
@@ -125,6 +142,7 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
     'Invalid development build',
   )
 }
+
 /** A batch has one fixed candidate per extension; monotonicity across batches is checked by the live endpoint. */
 export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuild[] {
   return parseValue(
@@ -136,6 +154,7 @@ export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuil
     'Invalid development build batch',
   )
 }
+
 /** Accepted is handshake identity only; ready separately states whether the actual extension API exists. */
 export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
   return parseValue(
@@ -144,6 +163,7 @@ export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
     'Invalid development acceptance',
   )
 }
+
 export function parseDevelopmentReady(input: unknown): DevelopmentReady {
   return parseValue(
     v.strictObject({ appVersion: version, buildId: id, apiVersion: v.nullable(version) }),
@@ -151,6 +171,7 @@ export function parseDevelopmentReady(input: unknown): DevelopmentReady {
     'Invalid development ready notification',
   )
 }
+
 /** When the batch is supplied, ensure every completed receipt matches its actual candidate and input order. */
 export function parseDevelopmentAdoptionResult(
   input: unknown,
@@ -188,6 +209,7 @@ export function parseDevelopmentAdoptionResult(
       }
       previous = index
     }
+
     if (value.outcome === 'completed' && value.builds.length !== requested.length) {
       throw new DesktopError(
         'InvalidInput',
@@ -195,8 +217,10 @@ export function parseDevelopmentAdoptionResult(
       )
     }
   }
+
   return value
 }
+
 /** A release notification means no reader remains, not merely that a newer build was sent or adopted. */
 export function parseBuildsReleased(input: unknown): DevelopmentNotifications['buildsReleased'] {
   return parseValue(
@@ -210,6 +234,7 @@ export function parseBuildsReleased(input: unknown): DevelopmentNotifications['b
     'Invalid build release notification',
   )
 }
+
 /** Failed stop requires a safe error; exiting and user cancellation do not pretend the child process has already exited. */
 export function parseDevelopmentStopResult(input: unknown): DevelopmentStopResult {
   return parseValue(

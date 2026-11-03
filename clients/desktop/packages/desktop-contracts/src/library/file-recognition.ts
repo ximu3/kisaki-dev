@@ -21,11 +21,13 @@ import type { AnimeEpisodeType, AnimeExtraType } from './catalog'
 
 /** Only actual file-bearing work types own recognition profiles. */
 export type FileWorkType = 'anime' | 'comic' | 'novel'
+
 /** Offset is a signed safe integer subtracted from the integer portion after template expansion. */
 export interface FileNumberValue {
   readonly value: string
   readonly offset: number
 }
+
 export type FileNumberOutput =
   | ({ readonly kind: 'single' } & FileNumberValue)
   | {
@@ -34,18 +36,22 @@ export type FileNumberOutput =
       readonly end: string
       readonly offset: number
     }
+
 export type NumberedPartOutput =
   | { readonly number: FileNumberOutput; readonly name?: string }
   | { readonly number?: FileNumberOutput; readonly name: string }
+
 export type ComicVolumeScopeOutput =
   | { readonly number: FileNumberValue; readonly name?: string }
   | { readonly number?: FileNumberValue; readonly name: string }
+
 export type AnimeFileTarget =
   | (NumberedPartOutput & {
       readonly kind: 'episode'
       readonly episodeType?: AnimeEpisodeType | null
     })
   | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
+
 export type ComicFileTarget =
   | (NumberedPartOutput & { readonly kind: 'volume' })
   | ({ readonly kind: 'chapter'; readonly name?: string } & (
@@ -66,7 +72,9 @@ export type ComicFileTarget =
           readonly volume?: ComicVolumeScopeOutput
         }
     ))
+
 export type NovelFileTarget = NumberedPartOutput & { readonly kind: 'volume' }
+
 export interface FileTargetByType {
   readonly anime: AnimeFileTarget
   readonly comic: ComicFileTarget
@@ -78,14 +86,18 @@ export interface FileRecognitionRule<TTarget> {
   readonly id: string
   readonly name: string
   readonly enabled: boolean
+
   readonly input: 'baseName' | 'path'
   readonly pattern: string
   readonly ignoreCase: boolean
+
   readonly output: { readonly targets: NonEmptyArray<TTarget> }
 }
+
 export interface FileRecognitionDefinition<T extends FileWorkType = FileWorkType> {
   readonly rules: readonly FileRecognitionRule<FileTargetByType[T]>[]
 }
+
 /** Definition changes affect later interpretation; a broken selected profile never means fallback to builtin recognition. */
 export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly id: string
@@ -97,23 +109,27 @@ export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 export interface FileRecognitionProfileFields<T extends FileWorkType> {
   readonly name: string
   readonly description: string | null
   readonly definition: FileRecognitionDefinition<T>
 }
+
 export interface FileRecognitionPreset<T extends FileWorkType> {
   readonly id: string
   readonly name: string
   readonly description: string
   readonly definition: FileRecognitionDefinition<T>
 }
+
 /** Shared profiles are independently managed. Referenced profiles cannot be deleted or silently replaced. */
 export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   list(
     call?: CallOptions,
   ): Promise<readonly Pick<FileRecognitionProfile<T>, 'id' | 'workType' | 'name' | 'description'>[]>
   get(id: string, call?: CallOptions): Promise<FileRecognitionProfile<T> | null>
+
   create(
     input: FileRecognitionProfileFields<T>,
     call?: CallOptions,
@@ -127,30 +143,38 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
   delete(id: string, call?: CallOptions): Promise<void>
+
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
+
   references(
     id: string,
     call?: CallOptions,
   ): Promise<
     readonly { readonly work: EntryRef<T>; readonly directoryId: string; readonly path: string }[]
   >
+
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 
 const numberValue = v.strictObject({ value: text, offset: integer })
+
 const numberOutput = v.variant('kind', [
   v.strictObject({ kind: v.literal('single'), ...numberValue.entries }),
   v.strictObject({ kind: v.literal('range'), start: text, end: text, offset: integer }),
 ])
+
 const numbered = { number: v.exactOptional(numberOutput), name: v.exactOptional(text) }
+
 const volumeScope = v.pipe(
   v.strictObject({ number: v.exactOptional(numberValue), name: v.exactOptional(text) }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
+
 const volume = v.pipe(
   v.strictObject({ kind: v.literal('volume'), ...numbered }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
+
 const targetSchemas = {
   anime: v.union([
     v.pipe(
@@ -167,6 +191,7 @@ const targetSchemas = {
       extraType: v.exactOptional(v.nullable(extraTypeSchema)),
     }),
   ]),
+
   comic: v.union([
     volume,
     v.pipe(
@@ -186,6 +211,7 @@ const targetSchemas = {
       ),
     ),
   ]),
+
   novel: volume,
 }
 
@@ -223,6 +249,7 @@ function targetTemplates(
       templates.push(target.volume.number.value)
     }
   }
+
   return templates
 }
 
@@ -243,6 +270,7 @@ export function parseFileRecognitionDefinition<T extends FileWorkType>(
       }
     }
   }
+
   return value
 }
 
@@ -308,6 +336,7 @@ export function fileNumberKey(value: string): string {
   const trimmed = value.trim()
   return /^[0-9]+$/.test(trimmed) ? trimmed.replace(/^0+(?=[0-9])/, '') : trimmed
 }
+
 /** Only the integer portion is shifted. Offset zero preserves original text, including decimal zeros and whitespace. */
 export function applyFileNumberOffset(value: string, offset: number): string {
   parseValue(integer, offset, 'Invalid file number offset')
@@ -317,6 +346,7 @@ export function applyFileNumberOffset(value: string, offset: number): string {
   if (offset === 0) {
     return value
   }
+
   const match = /^([0-9]+)(\.[0-9]+)?$/.exec(value.trim())
   if (!match) {
     throw new DesktopError(
@@ -324,12 +354,15 @@ export function applyFileNumberOffset(value: string, offset: number): string {
       'Nonzero offsets require an integer or dotted numeric label',
     )
   }
+
   const shifted = BigInt(match[1]!) - BigInt(offset)
   if (shifted < 0n) {
     throw new DesktopError('InvalidInput', 'File number offset produced a negative value')
   }
+
   return `${shifted}${match[2] ?? ''}`
 }
+
 /** Expand an explicit integer interval only after its exact size fits the caller's actual remaining work budget. */
 export function expandFileNumberRange(
   start: string,
@@ -340,6 +373,7 @@ export function expandFileNumberRange(
   if (!/^[0-9]+$/.test(start.trim()) || !/^[0-9]+$/.test(end.trim())) {
     throw new DesktopError('InvalidInput', 'File number ranges require integer endpoints')
   }
+
   const first = BigInt(start.trim())
   const last = BigInt(end.trim())
   if (last < first) {
@@ -348,9 +382,11 @@ export function expandFileNumberRange(
   if (last - first + 1n > BigInt(capacity)) {
     throw new DesktopError('ResourceLimit', 'File number range exceeds the available work budget')
   }
+
   const values: string[] = []
   for (let value = first; value <= last; value += 1n) {
     values.push(String(value))
   }
+
   return values
 }

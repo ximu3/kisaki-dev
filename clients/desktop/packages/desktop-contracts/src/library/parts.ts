@@ -41,8 +41,10 @@ export interface PartCommonFields {
   readonly name: string | null
   readonly originalName: string | null
   readonly aliases: readonly string[]
+
   readonly description: string | null
   readonly primaryImageId: string | null
+
   readonly externalLinks: readonly ExternalLink[]
   readonly externalIdentities: readonly ExternalIdentity[]
   readonly releaseDate: PartialDate | null
@@ -54,25 +56,30 @@ export interface PartSpecificFields {
     readonly numberLabel: string | null
     readonly declaredPageCount: number | null
   }
+
   readonly comicVolume: {
     readonly numberLabel: string | null
     readonly declaredPageCount: number | null
     readonly declaredChapterCount: number | null
   }
+
   readonly comicChapter: {
     readonly numberLabel: string | null
     readonly declaredPageCount: number | null
   }
+
   readonly animeEpisode: {
     readonly numberLabel: string | null
     readonly type: AnimeEpisodeType | null
     readonly declaredDurationMs: number | null
   }
+
   readonly animeExtra: {
     readonly type: AnimeExtraType | null
     readonly declaredDurationMs: number | null
   }
 }
+
 export type PartFields<T extends PartType> = PartCommonFields & PartSpecificFields[T]
 export type PartCreateFields<T extends PartType> = Partial<PartFields<T>>
 
@@ -152,6 +159,7 @@ export interface VolumeChapter {
   readonly chapter: PartRef<'comicChapter'>
   readonly numberLabel: string | null
 }
+
 export type VolumeChapterChange =
   | { readonly type: 'replace'; readonly items: readonly VolumeChapter[] }
   | {
@@ -164,6 +172,7 @@ export type VolumeChapterChange =
 export interface PartsApi {
   list(query: PartQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<PartDetails>>
   get(ref: PartRef, call?: CallOptions): Promise<PartDetails | null>
+
   create(input: PartCreate, call?: CallOptions): Promise<PartRef>
   update(
     ...args: {
@@ -171,6 +180,7 @@ export interface PartsApi {
     }[PartType]
   ): Promise<void>
   delete(refs: PartRef | NonEmptyArray<PartRef>, call?: CallOptions): Promise<void>
+
   /** Merge only the same kind within one work; completed is the union, target preference and filled facts win. */
   merge(
     input: {
@@ -183,8 +193,10 @@ export interface PartsApi {
     input: PartKindChange,
     call?: CallOptions,
   ): Promise<PartRef<'animeEpisode' | 'animeExtra'>>
+
   reorder(scope: PartOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
   move(scope: PartOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
+
   /** Set the part mark only; this never creates or clears a work completion record. */
   setCompleted(ref: PartRef, completed: boolean, call?: CallOptions): Promise<void>
   setCompletedMany(
@@ -192,6 +204,7 @@ export interface PartsApi {
     completed: boolean,
     call?: CallOptions,
   ): Promise<void>
+
   readonly volumeChapters: VolumeChaptersApi
 }
 
@@ -207,6 +220,7 @@ export interface VolumeChaptersApi {
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<VolumeChapter>>
+
   applyChanges(
     volumeId: string,
     input: { readonly change: VolumeChapterChange; readonly expected?: readonly VolumeChapter[] },
@@ -221,6 +235,7 @@ export interface VolumeChaptersApi {
     },
     call?: CallOptions,
   ): Promise<void>
+
   reorder(volumeId: string, input: ReorderInput, call?: CallOptions): Promise<void>
   move(volumeId: string, input: MoveInput, call?: CallOptions): Promise<void>
 }
@@ -229,28 +244,36 @@ export const partCommonEntries = {
   name: v.nullable(text),
   originalName: v.nullable(text),
   aliases: v.array(text),
+
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
+
   externalLinks: v.array(externalLinkSchema),
   externalIdentities: identitiesSchema,
   releaseDate: v.nullable(partialDateSchema),
 }
+
 export const episodeTypeSchema = v.picklist(['regular', 'special'])
 export const extraTypeSchema = v.picklist(['opening', 'ending', 'promotion', 'interview', 'other'])
 const nullableCount = v.nullable(nonnegativeInteger)
+
 export const partSpecificEntries = {
   novelVolume: { numberLabel: v.nullable(text), declaredPageCount: nullableCount },
+
   comicVolume: {
     numberLabel: v.nullable(text),
     declaredPageCount: nullableCount,
     declaredChapterCount: nullableCount,
   },
+
   comicChapter: { numberLabel: v.nullable(text), declaredPageCount: nullableCount },
+
   animeEpisode: {
     numberLabel: v.nullable(text),
     type: v.nullable(episodeTypeSchema),
     declaredDurationMs: nullableCount,
   },
+
   animeExtra: { type: v.nullable(extraTypeSchema), declaredDurationMs: nullableCount },
 } as const
 
@@ -315,6 +338,7 @@ export function parsePartKindChange(
   if (ref.type !== 'animeEpisode' && ref.type !== 'animeExtra') {
     throw new DesktopError('InvalidInput', 'Only anime parts can change kind')
   }
+
   const target =
     ref.type === 'animeEpisode'
       ? v.strictObject({ kind: v.literal('animeExtra'), type: v.nullable(extraTypeSchema) })
@@ -377,6 +401,7 @@ export function parsePartQuery(input: unknown): PartQuery {
   if (value.work.type !== partWorkType(partType)) {
     throw new DesktopError('InvalidInput', 'Part kind does not belong to this work type')
   }
+
   return value as PartQuery
 }
 

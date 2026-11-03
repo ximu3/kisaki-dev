@@ -32,11 +32,13 @@ export interface MetadataFieldRule<Value> {
     : 'first' | 'firstNonEmpty'
   readonly processors?: readonly string[]
 }
+
 export type MetadataEntryFieldRules<T extends EntryType> = {
   readonly [F in keyof MetadataEntryFieldValues[T]]?: MetadataFieldRule<
     MetadataEntryFieldValues[T][F]
   >
 }
+
 export type MetadataPartFieldRules<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: {
     readonly [F in keyof MetadataPartFieldValues[MetadataPartType<T, K>]]?: MetadataFieldRule<
@@ -44,6 +46,7 @@ export type MetadataPartFieldRules<T extends EntryType> = {
     >
   }
 }
+
 /** Member selection and non-identity attribute selection are independent; attribute providers cannot add members. */
 export interface MetadataRelationRule<K extends keyof MetadataRelationAttributeValues> {
   readonly providers: NonEmptyArray<string>
@@ -54,10 +57,13 @@ export interface MetadataRelationRule<K extends keyof MetadataRelationAttributeV
     >
   }
 }
+
 /** All four groups are explicit. At least one actual field or membership capability is required for a saved profile. */
 export interface MetadataProfileDefinition<T extends EntryType = EntryType> {
   readonly providers: readonly string[]
+
   readonly matching: MetadataMatchingRules<T>
+
   readonly fields: {
     readonly entry?: MetadataEntryFieldRules<T>
     readonly relatedEntries?: { readonly [K in EntryType]?: MetadataEntryFieldRules<K> }
@@ -67,8 +73,10 @@ export interface MetadataProfileDefinition<T extends EntryType = EntryType> {
       readonly isNsfw?: MetadataFieldRule<boolean>
     }
   }
+
   readonly relations: { readonly [K in MetadataRelationKey<T>]?: MetadataRelationRule<K> }
 }
+
 /** Actual execution fixes a valid definition and language order before asynchronous work; later edits do not alter this snapshot. */
 export type MetadataProfileSnapshot<T extends EntryType = EntryType> = {
   [K in EntryType]: {
@@ -79,6 +87,7 @@ export type MetadataProfileSnapshot<T extends EntryType = EntryType> = {
     readonly definition: MetadataProfileDefinition<K>
   }
 }[T]
+
 export type MetadataProfile<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly id: string
@@ -93,6 +102,7 @@ export type MetadataProfile<T extends EntryType = EntryType> = {
     readonly updatedAt: number
   }
 }[T]
+
 export type MetadataProfileCreate = {
   [K in EntryType]: {
     readonly name: string
@@ -104,6 +114,7 @@ export type MetadataProfileCreate = {
     readonly expected?: { readonly defaultProfileId: string | null }
   }
 }[EntryType]
+
 export interface MetadataProfileEditableFields<T extends EntryType> {
   readonly name: string
   readonly description: string | null
@@ -111,6 +122,7 @@ export interface MetadataProfileEditableFields<T extends EntryType> {
   readonly definition: MetadataProfileDefinition<T>
   readonly isDefault: boolean
 }
+
 export type MetadataProfileUpdate<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly changes: Partial<MetadataProfileEditableFields<K>>
@@ -119,6 +131,7 @@ export type MetadataProfileUpdate<T extends EntryType = EntryType> = {
     }
   }
 }[T]
+
 /** Applicable language is a catalog filter, separate from actual preferredLanguages copied into an independent user profile. */
 export type MetadataProfilePreset<T extends EntryType = EntryType> = {
   [K in EntryType]: {
@@ -132,6 +145,7 @@ export type MetadataProfilePreset<T extends EntryType = EntryType> = {
     readonly definition: MetadataProfileDefinition<K>
   }
 }[T]
+
 /** Deletion rechecks formal references. Copying uses a fresh ordinary create and does not copy default status. */
 export interface MetadataProfilesApi {
   list(
@@ -144,14 +158,18 @@ export interface MetadataProfilesApi {
     >[]
   >
   get(id: string, call?: CallOptions): Promise<MetadataProfile | null>
+
   create(input: MetadataProfileCreate, call?: CallOptions): Promise<MetadataProfile>
   update(id: string, input: MetadataProfileUpdate, call?: CallOptions): Promise<MetadataProfile>
   delete(id: string, call?: CallOptions): Promise<void>
+
   reorder(entryType: EntryType, input: ReorderInput, call?: CallOptions): Promise<void>
+
   listPresets(
     filter?: { readonly entryType?: EntryType; readonly language?: string },
     call?: CallOptions,
   ): Promise<readonly MetadataProfilePreset[]>
+
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -159,6 +177,7 @@ const providerIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((ids) => unique(ids, (value) => value)),
 )
+
 const collectionFields = new Set([
   'aliases',
   'externalLinks',
@@ -168,6 +187,7 @@ const collectionFields = new Set([
   'titleLogo',
   'iconImage',
 ])
+
 function fieldRule(name: string) {
   return v.strictObject({
     providers: providerIds,
@@ -177,6 +197,7 @@ function fieldRule(name: string) {
     processors: v.exactOptional(v.array(id)),
   })
 }
+
 function fields(names: readonly string[]) {
   return v.strictObject(
     Object.fromEntries(names.map((name) => [name, v.exactOptional(fieldRule(name))])),
@@ -195,12 +216,14 @@ export function parseMetadataProfileDefinition(
   const related = Object.fromEntries(
     entryTypes.map((type) => [type, v.exactOptional(fields(getMetadataEntryFields(type)))]),
   )
+
   const parts = Object.fromEntries(
     Object.entries(metadataPartKinds[root]).map(([slot, type]) => [
       slot,
       v.exactOptional(fields(getMetadataPartFields(type))),
     ]),
   )
+
   const relationRules = Object.fromEntries(
     getMetadataRelations(root).map((relation) => [
       relation,
@@ -238,8 +261,10 @@ export function parseMetadataProfileDefinition(
     input,
     'Invalid metadata profile definition',
   )
+
   const selected = new Set(value.providers)
   let capabilities = 0
+
   function checkFields(input: object | undefined): void {
     for (const rule of Object.values(input ?? {}) as { providers: readonly string[] }[]) {
       if (rule.providers.some((provider) => !selected.has(provider))) {
@@ -251,14 +276,17 @@ export function parseMetadataProfileDefinition(
       capabilities += 1
     }
   }
+
   checkFields(value.fields.entry)
   checkFields(value.fields.tags)
   for (const node of Object.values(value.fields.relatedEntries ?? {})) {
     checkFields(node)
   }
+
   for (const node of Object.values(value.fields.parts ?? {})) {
     checkFields(node)
   }
+
   for (const rule of Object.values(value.relations)) {
     if (!rule) {
       continue
@@ -272,12 +300,14 @@ export function parseMetadataProfileDefinition(
     capabilities += 1
     checkFields(rule.fields)
   }
+
   if (capabilities === 0) {
     throw new DesktopError(
       'InvalidInput',
       'A saved metadata profile must provide a requestable field or relation',
     )
   }
+
   return value as MetadataProfileDefinition
 }
 
@@ -285,6 +315,7 @@ const languages = v.pipe(
   v.array(languageSchema),
   v.transform((values) => [...new Set(values)]),
 )
+
 /** Entry type is fixed at creation, and a default precondition is accepted only when explicitly choosing this default. */
 export function parseMetadataProfileCreate(input: unknown): MetadataProfileCreate {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
@@ -307,8 +338,10 @@ export function parseMetadataProfileCreate(input: unknown): MetadataProfileCreat
   if (value.expected && value.isDefault !== true) {
     throw new DesktopError('InvalidInput', 'Default profile baseline requires isDefault: true')
   }
+
   return value as MetadataProfileCreate
 }
+
 /** Changes are closed independent fields; definition is one whole value and defaultProfileId is the sole contextual precondition. */
 export function parseMetadataProfileUpdate<T extends EntryType>(
   entryType: T,
@@ -345,5 +378,6 @@ export function parseMetadataProfileUpdate<T extends EntryType>(
       'Default profile baseline requires selecting this profile',
     )
   }
+
   return value as MetadataProfileUpdate<T>
 }

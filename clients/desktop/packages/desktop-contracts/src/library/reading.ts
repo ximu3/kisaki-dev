@@ -56,26 +56,31 @@ export const textEncodings = Object.freeze([
   'utf-16le',
   'x-user-defined',
 ] as const)
+
 export type TextEncoding = (typeof textEncodings)[number]
 
 /** Source coordinate systems. Text offsets count UTF-16 units; byte offsets address original reconstructed content. */
 export interface ReadingAnchorByType {
   readonly epubCfi: { readonly type: 'epubCfi'; readonly value: string }
+
   readonly textOffset: {
     readonly type: 'textOffset'
     readonly encoding: TextEncoding
     readonly offset: number
   }
+
   readonly xmlNode: {
     readonly type: 'xmlNode'
     readonly nodePath: readonly number[]
     readonly textOffset?: number
   }
+
   readonly mobi: {
     readonly type: 'mobi'
     readonly byteOffset: number
     readonly textOffset?: number
   }
+
   readonly kf8: {
     readonly type: 'kf8'
     readonly documentIndex: number
@@ -83,6 +88,7 @@ export interface ReadingAnchorByType {
     readonly textOffset?: number
   }
 }
+
 export type ReadingAnchor = ReadingAnchorByType[keyof ReadingAnchorByType]
 
 /** Original page identity, never the currently rendered page number. Member paths preserve source case and Unicode. */
@@ -91,6 +97,7 @@ export type ReadingPageRef =
   | { readonly type: 'memberPath'; readonly path: string }
   | { readonly type: 'epubSpineItem'; readonly index: number }
   | { readonly type: 'kf8Document'; readonly index: number }
+
 export type ReadingPosition =
   | { readonly type: 'anchor'; readonly anchor: ReadingAnchor }
   | { readonly type: 'page'; readonly page: ReadingPageRef; readonly point: NormalizedPoint }
@@ -117,6 +124,7 @@ export interface ReadingPageRegion {
   readonly page: ReadingPageRef
   readonly rect: NormalizedRect
 }
+
 export type ReadingAnnotationLocation =
   | { readonly type: 'position'; readonly position: ReadingPosition }
   | { readonly type: 'text'; readonly selection: ReadingTextSelection }
@@ -158,6 +166,7 @@ const anchorSchema = v.variant('type', [
     textOffset: v.exactOptional(nonnegativeInteger),
   }),
 ])
+
 const memberPath = v.pipe(
   nonemptyText,
   v.check(
@@ -167,12 +176,14 @@ const memberPath = v.pipe(
       path.split('/').every((part) => part !== '' && part !== '.' && part !== '..'),
   ),
 )
+
 const pageSchema = v.variant('type', [
   v.strictObject({ type: v.literal('memberPath'), path: memberPath }),
   v.strictObject({ type: v.literal('pageIndex'), index: nonnegativeInteger }),
   v.strictObject({ type: v.literal('epubSpineItem'), index: nonnegativeInteger }),
   v.strictObject({ type: v.literal('kf8Document'), index: nonnegativeInteger }),
 ])
+
 const positionSchema = v.variant('type', [
   v.strictObject({ type: v.literal('anchor'), anchor: anchorSchema }),
   v.strictObject({
@@ -186,14 +197,17 @@ const positionSchema = v.variant('type', [
 export function parseTextEncoding(input: unknown): TextEncoding {
   return parseValue(v.picklist(textEncodings), input, 'Invalid text encoding')
 }
+
 /** Validate source address syntax and integer bounds; file-dependent target resolution belongs to the executor. */
 export function parseReadingAnchor(input: unknown): ReadingAnchor {
   return parseValue(anchorSchema, input, 'Invalid reading anchor')
 }
+
 /** Validate an original page reference, preserving exact source member names. */
 export function parseReadingPageRef(input: unknown): ReadingPageRef {
   return parseValue(pageSchema, input, 'Invalid reading page reference')
 }
+
 /** Validate the persistent coordinate without accepting the transient start instruction. */
 export function parseReadingPosition(input: unknown): ReadingPosition {
   return parseValue(positionSchema, input, 'Invalid reading position')
@@ -232,6 +246,7 @@ export function parseReadingTextSelection(input: unknown): ReadingTextSelection 
       'Reading selection endpoints must use the same addressing and define a nonempty range',
     )
   }
+
   return value as ReadingTextSelection
 }
 
@@ -246,6 +261,7 @@ export function parseReadingPageRegion(input: unknown): ReadingPageRegion {
     'Invalid reading page region',
   )
 }
+
 /** Validate complete reading annotation location, leaving file ownership and current availability to their owners. */
 export function parseReadingAnnotationLocation(input: unknown): ReadingAnnotationLocation {
   return parseValue(
@@ -264,6 +280,7 @@ export function parseReadingAnnotationLocation(input: unknown): ReadingAnnotatio
     'Invalid reading annotation location',
   )
 }
+
 /** Validate file-local seconds and a strictly increasing range without opening media or clipping to its duration. */
 export function parsePlaybackAnnotationLocation(input: unknown): PlaybackAnnotationLocation {
   return parseValue(

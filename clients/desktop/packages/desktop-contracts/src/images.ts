@@ -33,6 +33,7 @@ export interface ImageTransform {
 /** Preparation and transformation return independently held results; rejected work preserves the old image. */
 export interface ImagesApi {
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedImage>
+
   /** Animated inputs require an explicit frameIndex; the host verifies frame and final crop bounds. */
   transform(
     resource: ReadResourceRef,

@@ -16,6 +16,7 @@ test('Node globals alone support the complete public type graph and actual ICU/v
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
+
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 
   const { stdout } = await promisify(execFile)(
@@ -27,6 +28,7 @@ test('Node globals alone support the complete public type graph and actual ICU/v
     ],
     { cwd: consumerDirectory, windowsHide: true, signal },
   )
+
   expect(JSON.parse(stdout)).toEqual({
     date: { year: 2004 },
     entryType: 'game',

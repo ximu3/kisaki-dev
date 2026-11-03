@@ -55,21 +55,25 @@ interface ParsedNode {
   readonly identity?: ExternalIdentity
   readonly externalIdentities?: readonly ExternalIdentity[]
 }
+
 interface ParsedCandidateNode extends ParsedNode {
   readonly identification: IdentificationFields<EntryType> | PartIdentificationFields<PartType>
   readonly fields: MetadataEntryFields<EntryType> | MetadataPartFields<PartType>
 }
+
 interface ParsedObjects {
   readonly entry?: ParsedNode
   readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedNode[]>>
   readonly parts?: Readonly<Partial<Record<string, readonly ParsedNode[]>>>
   readonly tags?: readonly CandidateTag[]
 }
+
 interface ParsedCandidateObjects extends ParsedObjects {
   readonly entry: ParsedCandidateNode
   readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedCandidateNode[]>>
   readonly parts?: Readonly<Partial<Record<string, readonly ParsedCandidateNode[]>>>
 }
+
 interface NodeKind {
   readonly object: 'entry' | 'part' | 'tag'
   readonly type: EntryType | PartType | 'tag'
@@ -80,6 +84,7 @@ const identityEntries = {
   identity: v.exactOptional(identitySchema),
   externalIdentities: v.exactOptional(identitiesSchema),
 }
+
 function checkIdentities<T extends ParsedNode>(node: T): T {
   if (
     node.identity &&
@@ -92,20 +97,24 @@ function checkIdentities<T extends ParsedNode>(node: T): T {
       'Additional metadata identities must exclude the primary identity',
     )
   }
+
   return node
 }
+
 function sourceEntry(type: EntryType): v.GenericSchema<unknown, ParsedNode> {
   return v.pipe(
     v.strictObject({ ...identityEntries, ...optionalFields(metadataEntryEntries(type)) }),
     v.transform(checkIdentities),
   )
 }
+
 function sourcePart(type: PartType): v.GenericSchema<unknown, ParsedNode> {
   return v.pipe(
     v.strictObject({ ...identityEntries, ...optionalFields(metadataPartEntries(type)) }),
     v.transform(checkIdentities),
   )
 }
+
 function candidateEntry(type: EntryType): v.GenericSchema<unknown, ParsedCandidateNode> {
   return v.pipe(
     v.strictObject({
@@ -122,6 +131,7 @@ function candidateEntry(type: EntryType): v.GenericSchema<unknown, ParsedCandida
     v.transform(checkIdentities),
   )
 }
+
 function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidateNode> {
   return v.pipe(
     v.strictObject({
@@ -138,6 +148,7 @@ function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidate
     v.transform(checkIdentities),
   )
 }
+
 function objectsSchema(
   root: EntryType,
   composed: true,
@@ -152,12 +163,14 @@ function objectsSchema(
   const related = Object.fromEntries(
     entryTypes.map((type) => [type, v.exactOptional(v.array(entry(type)))]),
   )
+
   const parts = Object.fromEntries(
     Object.entries(metadataPartKinds[root]).map(([slot, type]) => [
       slot,
       v.exactOptional(v.array(part(type))),
     ]),
   )
+
   const tag = v.strictObject({
     key: id,
     name: v.pipe(
@@ -182,6 +195,7 @@ function relationSchemas(root: EntryType) {
       character: id,
       ...optionalFields(metadataRelationAttributeEntries.workCharacters),
     }),
+
     personWorks: v.strictObject({
       work: id,
       person: id,
@@ -189,27 +203,32 @@ function relationSchemas(root: EntryType) {
       character: v.nullable(id),
       ...optionalFields(metadataRelationAttributeEntries.personWorks),
     }),
+
     organizationWorks: v.strictObject({
       work: id,
       organization: id,
       role: v.picklist(organizationRoles),
       ...optionalFields(metadataRelationAttributeEntries.organizationWorks),
     }),
+
     workRelations: v.strictObject({
       from: id,
       to: id,
       type: v.picklist(workRelationTypes),
       ...optionalFields(metadataRelationAttributeEntries.workRelations),
     }),
+
     workVolumes: v.strictObject({ work: id, volume: id }),
     workChapters: v.strictObject({ work: id, chapter: id }),
     workEpisodes: v.strictObject({ work: id, episode: id }),
     workExtras: v.strictObject({ work: id, extra: id }),
+
     volumeChapters: v.strictObject({
       volume: id,
       chapter: id,
       ...optionalFields(metadataRelationAttributeEntries.volumeChapters),
     }),
+
     entryTags: v.strictObject({
       entry: id,
       tag: id,
@@ -230,6 +249,7 @@ function validateGraph(
 ): Set<string> {
   const nodes = new Map<string, NodeKind>()
   const referenced = new Set<string>()
+
   function add(node: ParsedNode, kind: NodeKind): void {
     if (nodes.has(node.key)) {
       throw new DesktopError(
@@ -239,6 +259,7 @@ function validateGraph(
     }
     nodes.set(node.key, kind)
   }
+
   if (objects?.entry) {
     add(objects.entry, { object: 'entry', type: root })
   }
@@ -247,11 +268,13 @@ function validateGraph(
       add(node, { object: 'entry', type })
     }
   }
+
   for (const [slot, type] of Object.entries(metadataPartKinds[root])) {
     for (const node of objects?.parts?.[slot] ?? []) {
       add(node, { object: 'part', type })
     }
   }
+
   for (const node of objects?.tags ?? []) {
     add(node, { object: 'tag', type: 'tag' })
   }
@@ -271,13 +294,16 @@ function validateGraph(
     referenced.add(key)
     return node
   }
+
   function requireWork(key: string): WorkType {
     const type = requireNode(key, 'entry').type
     if (!(entryTypes as readonly string[]).includes(type) || !isWorkType(type as EntryType)) {
       throw new DesktopError('InvalidInput', 'Metadata relation requires a work endpoint')
     }
+
     return type as WorkType
   }
+
   function requireRoot(key: string): void {
     if (key !== objects?.entry?.key) {
       throw new DesktopError(
@@ -286,6 +312,7 @@ function validateGraph(
       )
     }
   }
+
   for (const [relation, members] of Object.entries(relations ?? {})) {
     const businessKeys: string[] = []
     for (const raw of members) {
@@ -298,6 +325,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.character]))
           break
         }
+
         case 'personWorks': {
           const member = raw as MetadataRelationMembers['personWorks']
           const type = requireWork(member.work)
@@ -311,6 +339,7 @@ function validateGraph(
               'Metadata person responsibility is incompatible with its work or character',
             )
           }
+
           let rootMember = member.character ?? ''
           if (isWorkType(root)) {
             rootMember = member.work
@@ -323,6 +352,7 @@ function validateGraph(
           )
           break
         }
+
         case 'organizationWorks': {
           const member = raw as MetadataRelationMembers['organizationWorks']
           const type = requireWork(member.work)
@@ -337,6 +367,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.organization, member.role]))
           break
         }
+
         case 'workRelations': {
           const member = raw as MetadataRelationMembers['workRelations']
           const fromType = requireWork(member.from)
@@ -347,6 +378,7 @@ function validateGraph(
               'Related works must connect to the metadata root',
             )
           }
+
           const normalized = normalizeWorkRelation({
             from: { type: fromType, id: member.from },
             to: { type: toType, id: member.to },
@@ -355,6 +387,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([normalized.from.id, normalized.to.id, normalized.type]))
           break
         }
+
         case 'workVolumes': {
           const member = raw as MetadataRelationMembers['workVolumes']
           const type = requireWork(member.work)
@@ -363,6 +396,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.volume]))
           break
         }
+
         case 'workChapters': {
           const member = raw as MetadataRelationMembers['workChapters']
           requireNode(member.work, 'entry', ['comic'])
@@ -371,6 +405,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.chapter]))
           break
         }
+
         case 'workEpisodes': {
           const member = raw as MetadataRelationMembers['workEpisodes']
           requireNode(member.work, 'entry', ['anime'])
@@ -379,6 +414,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.episode]))
           break
         }
+
         case 'workExtras': {
           const member = raw as MetadataRelationMembers['workExtras']
           requireNode(member.work, 'entry', ['anime'])
@@ -387,6 +423,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.work, member.extra]))
           break
         }
+
         case 'volumeChapters': {
           const member = raw as MetadataRelationMembers['volumeChapters']
           requireNode(member.volume, 'part', ['comicVolume'])
@@ -394,6 +431,7 @@ function validateGraph(
           businessKeys.push(JSON.stringify([member.volume, member.chapter]))
           break
         }
+
         case 'entryTags': {
           const member = raw as MetadataRelationMembers['entryTags']
           requireNode(member.entry, 'entry')
@@ -404,6 +442,7 @@ function validateGraph(
         }
       }
     }
+
     if (!unique(businessKeys, (value) => value)) {
       throw new DesktopError(
         'InvalidInput',
@@ -411,6 +450,7 @@ function validateGraph(
       )
     }
   }
+
   return referenced
 }
 
@@ -440,6 +480,7 @@ export function parseMetadataCandidate(input: unknown): MetadataCandidate {
     'Invalid composed metadata candidate',
   )
   validateGraph(entryType, value.objects, value.relations)
+
   return value as MetadataCandidate
 }
 
@@ -472,6 +513,7 @@ export function parseMetadataReadResult(
       referenced,
     )
   }
+
   return value as MetadataReadResult
 }
 
@@ -493,6 +535,7 @@ function validateRequestedFields(
     if (!root && !wanted && !referenced.has(node.key)) {
       throw new DesktopError('InvalidInput', 'Provider returned an unrequested metadata object')
     }
+
     const identities = [
       ...(node.identity ? [node.identity] : []),
       ...(node.externalIdentities ?? []),
@@ -512,6 +555,7 @@ function validateRequestedFields(
       )
     }
   }
+
   if (objects?.entry) {
     fields(objects.entry, request.objects?.entry, Object.keys(identificationEntries(root)), true)
   }
@@ -524,6 +568,7 @@ function validateRequestedFields(
       )
     }
   }
+
   const partRequests =
     request.objects && 'parts' in request.objects ? request.objects.parts : undefined
   for (const [slot, type] of Object.entries(metadataPartKinds[root])) {
@@ -535,9 +580,11 @@ function validateRequestedFields(
       )
     }
   }
+
   for (const node of objects?.tags ?? []) {
     fields(node, request.objects?.tags, ['name'])
   }
+
   for (const [relation, members] of Object.entries(relations ?? {})) {
     const wanted = request.relations?.[relation as keyof typeof request.relations] as
       { readonly fields: readonly string[] } | undefined
@@ -547,6 +594,7 @@ function validateRequestedFields(
         'Provider returned unrequested relationship membership',
       )
     }
+
     const attributes = Object.keys(
       metadataRelationAttributeEntries[relation as keyof MetadataRelationMembers],
     )
@@ -576,5 +624,6 @@ export function metadataRelationTypeFromRoot(
   if (relation.to === rootKey) {
     return reverseWorkRelationType(relation.type)
   }
+
   throw new DesktopError('InvalidInput', 'Work relation does not contain the metadata root')
 }

@@ -41,23 +41,30 @@ import type { PageRef } from './pages'
 export type EntryIdentifier =
   | { readonly type: 'local'; readonly id: string }
   | ({ readonly type: 'external' } & ExternalIdentity)
+
 export interface EntryViewSelectionByType {
   readonly game: { readonly launchConfigId?: string }
+
   readonly anime: { readonly fileId?: string } & (
     | { readonly episodeId?: string; readonly extraId?: never }
     | { readonly episodeId?: never; readonly extraId: string }
   )
+
   readonly comic: {
     readonly volumeId?: string
     readonly chapterId?: string
     readonly fileId?: string
   }
+
   readonly novel: { readonly volumeId?: string; readonly fileId?: string }
+
   readonly character: object
   readonly person: object
   readonly organization: object
 }
+
 export type EntryViewSelection<T extends EntryType> = EntryViewSelectionByType[T]
+
 export type EntryViewTarget = {
   [K in EntryType]: {
     readonly type: 'entry'
@@ -87,6 +94,7 @@ export type SearchTarget =
   | { readonly type: 'extension'; readonly id: string }
   | { readonly type: 'page'; readonly ref: PageRef }
   | { readonly type: 'preference'; readonly key: PreferenceKey }
+
 /** Internal management targets do not automatically receive a public URL or cross-restart notification restoration. */
 export type NativeViewTarget =
   | { readonly type: 'library' }
@@ -114,6 +122,7 @@ export const entrySelectionEntries = {
   person: {},
   organization: {},
 }
+
 /** Validate explicit root identity without inferring local/external status from the string's appearance. */
 export function parseEntryIdentifier(input: unknown): EntryIdentifier {
   const value = parseValue(
@@ -130,8 +139,10 @@ export function parseEntryIdentifier(input: unknown): EntryIdentifier {
       ...parseExternalIdentity({ source: value.source, sourceId: value.sourceId }),
     }
   }
+
   return value
 }
+
 /** Shared entry-selector rules for internal navigation and public URLs. Real membership is checked by the receiving owner. */
 export function parseEntryViewSelection<T extends EntryType>(
   type: T,
@@ -142,8 +153,10 @@ export function parseEntryViewSelection<T extends EntryType>(
   if (type === 'anime' && 'episodeId' in value && 'extraId' in value) {
     throw new DesktopError('InvalidInput', 'Episode and extra selectors are mutually exclusive')
   }
+
   return value as EntryViewSelection<T>
 }
+
 /** Validate native targets without creating a window, resolving IDs or changing visibility. */
 export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   const record = readRecord(input)
@@ -163,6 +176,7 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
     parseEntryViewSelection(entryType, selection)
     return value as EntryViewTarget
   }
+
   const value = parseValue(
     v.variant('type', [
       v.strictObject({ type: v.literal('library') }),
@@ -217,8 +231,10 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   ) {
     throw new DesktopError('InvalidInput', 'An extension page requires its owner')
   }
+
   return value
 }
+
 /** Validate the closed target family and the medium implied by a formal part. Actual ownership still requires the library. */
 export function parseSearchTarget(input: unknown): SearchTarget {
   const value = parseValue(
@@ -270,5 +286,6 @@ export function parseSearchTarget(input: unknown): SearchTarget {
       throw new DesktopError('InvalidInput', 'Part navigation uses the wrong work type')
     }
   }
+
   return value as SearchTarget
 }

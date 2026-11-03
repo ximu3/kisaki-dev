@@ -49,6 +49,7 @@ const graph = {
 
 test('preserves a complete graph with new people, parts, tags and an initial file association', () => {
   expect(parseLibraryWriteGraph(graph)).toEqual(graph)
+
   expect(parseLibraryWriteGraph({})).toEqual({})
 })
 
@@ -59,7 +60,9 @@ test('rejects duplicate cross-region keys, missing keys and wrong-kind endpoints
       tags: { create: [{ key: 'work', name: 'Duplicate key' }] },
     }),
   ).toThrow()
+
   expect(() => parseLibraryWriteGraph({ parts: graph.parts })).toThrow()
+
   expect(() =>
     parseLibraryWriteGraph({
       ...graph,
@@ -77,6 +80,7 @@ test('rejects duplicate cross-region keys, missing keys and wrong-kind endpoints
       },
     }),
   ).toThrow()
+
   expect(() =>
     parseLibraryWriteGraph({
       ...graph,
@@ -85,6 +89,7 @@ test('rejects duplicate cross-region keys, missing keys and wrong-kind endpoints
       },
     }),
   ).toThrow()
+
   expect(() =>
     parseLibraryWriteGraph({
       ...graph,
@@ -109,6 +114,7 @@ test('distinguishes a part kind from anime data.type and requires matching known
       },
     }),
   ).toThrow()
+
   const wrongOwner = {
     entries: {
       create: [
@@ -131,12 +137,14 @@ test('distinguishes a part kind from anime data.type and requires matching known
       ],
     },
   }
+
   expect(() => parseLibraryWriteGraph(wrongOwner)).toThrow()
 })
 
 test('rejects reverse-direction duplicate work facts and contradictory relation edits', () => {
   const a = { type: 'game', id: 'a' }
   const b = { type: 'game', id: 'b' }
+
   expect(() =>
     parseLibraryWriteGraph({
       relations: {
@@ -149,6 +157,7 @@ test('rejects reverse-direction duplicate work facts and contradictory relation 
       },
     }),
   ).toThrow()
+
   expect(() =>
     parseLibraryWriteGraph({
       relations: {
@@ -156,6 +165,7 @@ test('rejects reverse-direction duplicate work facts and contradictory relation 
       },
     }),
   ).toThrow()
+
   expect(() =>
     parseLibraryWriteGraph({
       relations: {
@@ -171,6 +181,7 @@ test('rejects reverse-direction duplicate work facts and contradictory relation 
 test('does not delete a character binding while adding work that depends on it', () => {
   const work = { type: 'anime', id: 'a' }
   const character = { type: 'character', id: 'c' }
+
   expect(() =>
     parseLibraryWriteGraph({
       relations: {
@@ -192,15 +203,18 @@ test('result maps contain only all actual creates with their requested kinds', (
   const request = parseLibraryWriteGraph({
     entries: { create: [{ key: 'a', type: 'anime', name: 'A' }] },
   })
+
   expect(
     parseLibraryWriteResult(
       { entries: { a: { type: 'anime', id: 'actual' } }, parts: {}, tags: {}, changed: true },
       request,
     ),
   ).toMatchObject({ changed: true })
+
   expect(() =>
     parseLibraryWriteResult({ entries: {}, parts: {}, tags: {}, changed: false }, request),
   ).toThrow()
+
   expect(() =>
     parseLibraryWriteResult(
       { entries: { a: { type: 'game', id: 'actual' } }, parts: {}, tags: {}, changed: true },

@@ -29,9 +29,11 @@ export interface ApplicationUpdateFile {
   readonly size: number | null
   readonly sha512: string
 }
+
 export type ApplicationDelivery =
   | { readonly type: 'inApp'; readonly files: readonly ApplicationUpdateFile[] }
   | { readonly type: 'manual'; readonly downloadUrl: string }
+
 export interface ApplicationRelease {
   readonly version: string
   readonly tagName: string
@@ -39,18 +41,21 @@ export interface ApplicationRelease {
   readonly publishedAt: number
   readonly delivery: ApplicationDelivery
 }
+
 /** A receipt for verified selected bytes; no preparation directory, Task ID or inferred latest release appears here. */
 export interface PreparedApplicationUpdate {
   readonly version: string
   readonly tagName: string
   readonly files: readonly ApplicationUpdateFile[]
 }
+
 export interface ApplicationReleaseNotes {
   readonly project: 'desktop'
   readonly version: string
   readonly defaultLocale: string
   readonly releaseNotes: LocalizedText
 }
+
 export type ApplicationUpdateCheck =
   | { readonly status: 'notChecked' }
   | { readonly status: 'upToDate'; readonly checkedAt: number }
@@ -60,6 +65,7 @@ export type ApplicationUpdateCheck =
       readonly release: ApplicationRelease
     }
   | { readonly status: 'failed'; readonly checkedAt: number; readonly error: ErrorSummary }
+
 export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
   | { readonly type: 'checking' }
   | {
@@ -70,20 +76,25 @@ export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
     }
   | { readonly type: 'installing'; readonly prepared: PreparedApplicationUpdate }
 )
+
 export interface ApplicationUpdateState {
   readonly currentVersion: string
   readonly check: ApplicationUpdateCheck
   readonly prepared: PreparedApplicationUpdate | null
   readonly operation: ApplicationUpdateOperation | null
 }
+
 export interface UpdatesApi {
   getState(call?: CallOptions): Promise<ApplicationUpdateState>
   observe(listener: Listener<ApplicationUpdateState>): Disposable
+
   /** Null means a successful check found no newer allowed release; a failed check rejects. */
   check(call?: CallOptions): Promise<ApplicationRelease | null>
   getReleaseNotes(release: ApplicationRelease, call?: CallOptions): Promise<ApplicationReleaseNotes>
+
   /** Manual carriers reject preparation. A successful receipt means all selected bytes have actually been verified. */
   prepare(release: ApplicationRelease, call?: CallOptions): Promise<PreparedApplicationUpdate>
+
   /** Resolve only for a completed handoff if the environment survives; successful restart normally ends the old process. */
   installAndRestart(call?: CallOptions): Promise<void>
 }
@@ -94,17 +105,22 @@ const version = v.pipe(
     parseExternalValue(parseVersion, value, 'Invalid desktop release version'),
   ),
 )
+
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
+
 const sha512 = v.pipe(
   text,
   v.check((value) => /^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value), 'Invalid SHA-512 digest'),
 )
+
 const file = v.strictObject({ url, size: v.nullable(nonnegativeInteger), sha512 })
+
 const files = v.pipe(
   v.array(file),
   v.minLength(1),
   v.check((values) => unique(values, (value) => value.url)),
 )
+
 const prepared = v.pipe(v.unknown(), v.transform(parsePreparedApplicationUpdate))
 const release = v.pipe(v.unknown(), v.transform(parseApplicationRelease))
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
@@ -115,6 +131,7 @@ export function getDesktopReleaseVersion(tag: string): string | null {
   if (!tag.startsWith('desktop@')) {
     return null
   }
+
   try {
     return parseExternalValue(
       parseVersion,
@@ -125,9 +142,11 @@ export function getDesktopReleaseVersion(tag: string): string | null {
     if (error instanceof DesktopError && error.code === 'InvalidInput') {
       return null
     }
+
     throw error
   }
 }
+
 /** Validate a release's declared version/tag identity and carrier-specific artifact fields. Origin/target support is checked by updates. */
 export function parseApplicationRelease(input: unknown): ApplicationRelease {
   const value = parseValue(
@@ -147,8 +166,10 @@ export function parseApplicationRelease(input: unknown): ApplicationRelease {
   if (value.tagName !== `desktop@${value.version}`) {
     throw new DesktopError('InvalidInput', 'Application release tag does not match its version')
   }
+
   return value
 }
+
 /** A prepared result cannot represent manual delivery or an incomplete file list. */
 export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicationUpdate {
   const value = parseValue(
@@ -159,8 +180,10 @@ export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicat
   if (value.tagName !== `desktop@${value.version}`) {
     throw new DesktopError('InvalidInput', 'Prepared application tag does not match its version')
   }
+
   return value
 }
+
 /** Select only from verified, target-compatible, non-draft candidates; discovery must supply all pages before selection. */
 export function selectApplicationRelease(
   candidates: readonly ApplicationRelease[],
@@ -190,8 +213,10 @@ export function selectApplicationRelease(
       throw new DesktopError('Conflict', 'Application release priorities collide')
     }
   }
+
   return selected
 }
+
 /** Release notes retain the verified desktop/version identity; missing/read failures are not represented by nullable text. */
 export function parseApplicationReleaseNotes(
   input: unknown,
@@ -215,6 +240,7 @@ export function parseApplicationReleaseNotes(
   if (expectedVersion !== undefined && value.version !== expectedVersion) {
     throw new DesktopError('InvalidInput', 'Release notes belong to another version')
   }
+
   return {
     ...value,
     releaseNotes: parseExternalValue(
@@ -224,6 +250,7 @@ export function parseApplicationReleaseNotes(
     ),
   }
 }
+
 /** Checking/preparing does not erase prior check/prepared results; these independent facts remain explicit in each snapshot. */
 export function parseApplicationUpdateState(input: unknown): ApplicationUpdateState {
   return parseValue(

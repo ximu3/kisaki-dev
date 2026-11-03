@@ -12,6 +12,7 @@ export const englishMessages = {
     edit: 'Edit',
     open: 'Open',
   },
+
   library: {
     types: {
       game: 'Game',
@@ -35,6 +36,7 @@ export const englishMessages = {
     conflict: 'The saved values have changed. Review your changes before saving again.',
     completion: { recorded: 'Completion recorded for {name}.', unknownDate: 'Date not recorded' },
   },
+
   tasks: {
     running: 'Running',
     pausing: 'Pausing',
@@ -45,10 +47,12 @@ export const englishMessages = {
     cancelled: 'Cancelled',
     interrupted: 'Interrupted',
   },
+
   resources: {
     unavailable: 'The saved content is unavailable.',
     captureUnavailable: 'The requested image could not be captured.',
   },
+
   scanner: {
     presets: {
       bracketBoth: {
@@ -90,6 +94,7 @@ export const englishMessages = {
       },
     },
   },
+
   showcase: {
     presets: {
       recentlyUsed: {

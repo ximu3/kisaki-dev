@@ -34,13 +34,16 @@ export const onboardingGroups = Object.freeze([
   'scanner',
   'showcase',
 ] as const)
+
 export type OnboardingGroup = (typeof onboardingGroups)[number]
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
+
 export type OnboardingResourceRef =
   | { readonly type: 'extension'; readonly extensionId: string }
   | { readonly type: 'metadataProfile'; readonly profileId: string }
   | { readonly type: 'scanConfig'; readonly configId: string }
   | { readonly type: 'showcaseSection'; readonly sectionId: string }
+
 export type OnboardingHandled =
   | { readonly outcome: 'skipped'; readonly handledAt: number }
   | {
@@ -48,6 +51,7 @@ export type OnboardingHandled =
       readonly handledAt: number
       readonly resources: readonly OnboardingResourceRef[]
     }
+
 /** handled keys are stable native catalog identities; deleted/unavailable resources do not erase these historical outcomes. */
 export interface OnboardingState {
   readonly firstPresentedAt: number | null
@@ -55,6 +59,7 @@ export interface OnboardingState {
   readonly lastPresentedVersion: string | null
   readonly handled: Readonly<Record<string, OnboardingHandled>>
 }
+
 export type OnboardingItem = {
   readonly itemId: string
   readonly title: string
@@ -65,6 +70,7 @@ export type OnboardingItem = {
   | { readonly group: 'extensions'; readonly extensionId: string }
   | { readonly group: 'metadataProfiles' | 'showcase'; readonly presetId: string }
 )
+
 /** Explicit confirmation can add a repository before installing its fixed artifact. Existing repositories use their real local ID. */
 export type OnboardingExtensionSource =
   | ExtensionPackageSource
@@ -75,6 +81,7 @@ export type OnboardingExtensionSource =
       readonly version: string
       readonly sha256: string
     }
+
 export interface OnboardingInputMap {
   readonly preferences: {
     readonly changes: Pick<PreferencesChanges, 'general' | 'appearance'>
@@ -85,11 +92,13 @@ export interface OnboardingInputMap {
   readonly scanner: ScanConfigCreate
   readonly showcase: { readonly key: string; readonly data: ShowcaseFields }
 }
+
 export interface OnboardingItemInput<G extends OnboardingGroup> {
   readonly itemId: string
   readonly expectedHandled: OnboardingHandled | null
   readonly input: OnboardingInputMap[G]
 }
+
 /** One preferences item; other groups can apply a nonempty ordered selection. No input accepts a script or generic transaction. */
 export type OnboardingApplyInput = {
   [G in OnboardingGroup]: {
@@ -99,48 +108,58 @@ export type OnboardingApplyInput = {
       : NonEmptyArray<OnboardingItemInput<G>>
   }
 }[OnboardingGroup]
+
 export interface OnboardingIssue {
   readonly stage: 'installation' | 'commit' | 'runtime'
   readonly error: ErrorSummary
 }
+
 export interface OnboardingItemResult {
   readonly itemId: string
   readonly outcome: 'applied' | 'notApplied' | 'notStarted'
   readonly resources: readonly OnboardingResourceRef[]
   readonly issues: readonly OnboardingIssue[]
 }
+
 /** A same-database failure rolls back all new resources. An extension failure can retain a committed install even without handled. */
 export interface OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> {
   readonly group: G
   readonly items: readonly OnboardingItemResult[]
 }
+
 export interface OnboardingSkipInput {
   readonly items: NonEmptyArray<{
     readonly itemId: string
     readonly expectedHandled: OnboardingHandled | null
   }>
 }
+
 export interface OnboardingApi {
   getState(call?: CallOptions): Promise<OnboardingState>
   listItems(
     input: { readonly mode: OnboardingMode },
     call?: CallOptions,
   ): Promise<readonly OnboardingItem[]>
+
   /** Record only after actual presentation; reading state never marks it as shown. */
   markPresented(
     input: { readonly mode: OnboardingMode; readonly version: string },
     call?: CallOptions,
   ): Promise<OnboardingState>
+
   apply<I extends OnboardingApplyInput>(
     input: I,
     call?: CallOptions,
   ): Promise<OnboardingApplyResult<I['group']>>
+
   /** Preserve already handled outcomes/times when their explicit baseline still matches; never cancel accepted work. */
   skip(
     input: OnboardingSkipInput,
     call?: CallOptions,
   ): Promise<readonly { readonly itemId: string; readonly handled: OnboardingHandled }[]>
+
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
+
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -148,25 +167,31 @@ const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid onboarding version')),
 )
+
 const extensionId = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
+
 const resource = v.variant('type', [
   v.strictObject({ type: v.literal('extension'), extensionId }),
   v.strictObject({ type: v.literal('metadataProfile'), profileId: id }),
   v.strictObject({ type: v.literal('scanConfig'), configId: id }),
   v.strictObject({ type: v.literal('showcaseSection'), sectionId: id }),
 ])
+
 const resources = v.pipe(
   v.array(resource),
   v.check((values) => unique(values, (value) => JSON.stringify(value))),
 )
+
 const handled = v.variant('outcome', [
   v.strictObject({ outcome: v.literal('skipped'), handledAt: timestamp }),
   v.strictObject({ outcome: v.literal('applied'), handledAt: timestamp, resources }),
 ])
+
 const expectedHandled = v.nullable(handled)
+
 const issue = v.strictObject({
   stage: v.picklist(['installation', 'commit', 'runtime']),
   error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
@@ -176,9 +201,11 @@ const issue = v.strictObject({
 export function getOnboardingDefaults(): OnboardingState {
   return { firstPresentedAt: null, firstCompletedAt: null, lastPresentedVersion: null, handled: {} }
 }
+
 export function parseOnboardingHandled(input: unknown): OnboardingHandled {
   return parseValue(handled, input, 'Invalid onboarding handled result')
 }
+
 /** Keep every valid item key, including names normally inherited from Object.prototype. */
 export function parseOnboardingState(input: unknown): OnboardingState {
   return parseValue(
@@ -195,6 +222,7 @@ export function parseOnboardingState(input: unknown): OnboardingState {
     'Invalid onboarding state',
   )
 }
+
 function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences'] {
   const groups = v.strictObject({
     general: v.exactOptional(v.unknown()),
@@ -216,8 +244,10 @@ function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences']
       )
     }
   }
+
   return { changes: value.changes, expected: baseline }
 }
+
 function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
   const prepared = v.pipe(
     v.unknown(),
@@ -226,6 +256,7 @@ function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
       if (value.type !== 'newRepository') {
         return parseExtensionPackageSource(raw)
       }
+
       return parseValue(
         v.strictObject({
           type: v.literal('newRepository'),
@@ -245,6 +276,7 @@ function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
     'Invalid onboarding extension input',
   )
 }
+
 function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles'] {
   const value = parseMetadataProfileCreate(input)
   if (value.isDefault === undefined || (value.isDefault && !value.expected)) {
@@ -253,8 +285,10 @@ function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles
       'Onboarding profiles require an explicit default choice and its applicable baseline',
     )
   }
+
   return { ...value, isDefault: value.isDefault }
 }
+
 const inputParsers = {
   preferences: parsePreferenceInput,
   extensions: parseExtensionInput,
@@ -309,6 +343,7 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
   }
   return value
 }
+
 /** The real native catalog determines group membership; missing or cross-group item IDs cannot expand the operation. */
 export function validateOnboardingItemGroups(
   input: OnboardingApplyInput,
@@ -322,6 +357,7 @@ export function validateOnboardingItemGroups(
     )
   }
 }
+
 export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   const item = v.strictObject({ itemId: id, expectedHandled })
   return parseValue(
@@ -335,6 +371,7 @@ export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
     'Invalid onboarding skip input',
   )
 }
+
 /** Reject invented resources and partial same-database commits; installation reports alone may retain an unmarked durable package. */
 export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResult {
   const value = parseValue(
@@ -355,6 +392,7 @@ export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResul
     input,
     'Invalid onboarding apply report',
   )
+
   const allowed = {
     preferences: null,
     extensions: 'extension',
@@ -391,5 +429,6 @@ export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResul
   ) {
     throw new DesktopError('InvalidInput', 'Same-database onboarding apply is atomic')
   }
+
   return value
 }

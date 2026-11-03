@@ -23,49 +23,60 @@ export type GameLaunchTarget =
       readonly command: string | null
       readonly workingDirectory: string | null
     }
+
 /** The monitor is independently selected and never inferred from the launcher, command or working directory. */
 export type GameMonitor =
   | { readonly type: 'directory' | 'file'; readonly path: string | null }
   | { readonly type: 'process'; readonly name: string | null }
+
 export interface GameLaunchDefinition {
   readonly launch: GameLaunchTarget
   readonly monitor: GameMonitor
   readonly timing: 'foreground' | 'running'
+
   readonly savePath: string | null
   readonly autoBackupEnabled: boolean
   readonly backupRetentionCount: number | null
 }
+
 /** The configuration keeps identity and user preference independently of whether launch is currently possible. */
 export interface GameLaunchConfig {
   readonly id: string
   readonly gameId: string
   readonly name: string
   readonly note: string | null
+
   readonly definition: StoredDefinition<GameLaunchDefinition>
   readonly isPreferred: boolean
   readonly sortOrder: number
+
   readonly createdAt: number
   readonly updatedAt: number
 }
+
 export interface GameLaunchConfigFields {
   readonly name: string
   readonly note: string | null
   readonly definition: GameLaunchDefinition
 }
+
 export interface GameLaunchConfigCreate {
   readonly name: string
   readonly note?: string | null
   readonly definition: GameLaunchDefinition
   readonly isPreferred?: boolean
 }
+
 export interface GameLaunchConfigUpdate {
   readonly changes: Partial<GameLaunchConfigFields>
   readonly expected?: Partial<GameLaunchConfigFields>
 }
+
 /** Editing influences future sessions only. Removal retains historical snapshots and never deletes installation/save bytes. */
 export interface GameLaunchConfigsApi {
   list(gameId: string, call?: CallOptions): Promise<readonly GameLaunchConfig[]>
   get(gameId: string, id: string, call?: CallOptions): Promise<GameLaunchConfig | null>
+
   create(gameId: string, input: GameLaunchConfigCreate, call?: CallOptions): Promise<string>
   update(
     gameId: string,
@@ -74,8 +85,10 @@ export interface GameLaunchConfigsApi {
     call?: CallOptions,
   ): Promise<void>
   delete(gameId: string, id: string, call?: CallOptions): Promise<void>
+
   reorder(gameId: string, input: ReorderInput, call?: CallOptions): Promise<void>
   move(gameId: string, input: MoveInput, call?: CallOptions): Promise<void>
+
   setPreferred(
     gameId: string,
     launchConfigId: string | null,
@@ -85,6 +98,7 @@ export interface GameLaunchConfigsApi {
 }
 
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+
 const launch = v.variant('type', [
   v.strictObject({ type: v.literal('file'), path: v.nullable(path) }),
   v.strictObject({
@@ -108,6 +122,7 @@ const launch = v.variant('type', [
     workingDirectory: v.nullable(path),
   }),
 ])
+
 const monitor = v.union([
   v.strictObject({ type: v.picklist(['directory', 'file']), path: v.nullable(path) }),
   v.strictObject({
@@ -120,10 +135,12 @@ const monitor = v.union([
     ),
   }),
 ])
+
 export const gameDefinitionSchema = v.strictObject({
   launch,
   monitor,
   timing: v.picklist(['foreground', 'running']),
+
   savePath: v.nullable(path),
   autoBackupEnabled: v.boolean(),
   backupRetentionCount: v.nullable(positiveInteger),
@@ -133,6 +150,7 @@ export const gameDefinitionSchema = v.strictObject({
 export function parseGameLaunchDefinition(input: unknown): GameLaunchDefinition {
   return parseValue(gameDefinitionSchema, input, 'Invalid game launch definition')
 }
+
 /** Determine only whether required launch/monitor inputs are filled, not whether files, permissions or processes are usable. */
 export function hasGameLaunchInputs(definition: GameLaunchDefinition): boolean {
   const target = definition.launch
@@ -148,23 +166,27 @@ export function hasGameLaunchInputs(definition: GameLaunchDefinition): boolean {
       hasLaunch = target.command !== null
       break
   }
+
   const hasMonitor =
     definition.monitor.type === 'process'
       ? definition.monitor.name !== null
       : definition.monitor.path !== null
   return hasLaunch && hasMonitor
 }
+
 /** Provide a blank user-created file configuration; directory registration does not invoke this factory or create a row. */
 export function getGameLaunchDefaults(): GameLaunchDefinition {
   return {
     launch: { type: 'file', path: null },
     monitor: { type: 'directory', path: null },
     timing: 'foreground',
+
     savePath: null,
     autoBackupEnabled: false,
     backupRetentionCount: 5,
   }
 }
+
 /** Validate a creation without choosing a launch file from a registered directory. */
 export function parseGameLaunchConfigCreate(input: unknown): GameLaunchConfigCreate {
   return parseValue(
@@ -178,6 +200,7 @@ export function parseGameLaunchConfigCreate(input: unknown): GameLaunchConfigCre
     'Invalid game launch configuration',
   )
 }
+
 /** Only name, note and the whole definition are editable; isPreferred uses its explicit unique-scope operation. */
 export function parseGameLaunchConfigUpdate(input: unknown): GameLaunchConfigUpdate {
   const fields = v.strictObject(
@@ -195,11 +218,13 @@ export function parseGameLaunchConfigUpdate(input: unknown): GameLaunchConfigUpd
   validateExpectedKeys(value.changes, value.expected)
   return value
 }
+
 /** Reject a known incomplete configuration before actual launch preparation; runtime usability still needs host checks. */
 export function requireGameLaunchInputs(input: unknown): GameLaunchDefinition {
   const definition = parseGameLaunchDefinition(input)
   if (!hasGameLaunchInputs(definition)) {
     throw new DesktopError('InvalidInput', 'Game launch and monitoring targets must be configured')
   }
+
   return definition
 }

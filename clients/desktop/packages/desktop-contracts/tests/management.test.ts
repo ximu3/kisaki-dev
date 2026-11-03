@@ -51,23 +51,28 @@ test('development receipts identify actual requested builds and preserve interru
     builds: [{ ...builds[0], outcome: 'adopted' }],
     activations: [],
   }
+
   expect(parseDevelopmentAdoptionResult(partial, builds)).toEqual(partial)
+
   expect(() =>
     parseDevelopmentAdoptionResult(
       { outcome: 'completed', builds: partial.builds, activations: [] },
       builds,
     ),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseDevelopmentAdoptionResult(
       { ...partial, builds: [{ extensionId: 'example.ext', buildId: 2, outcome: 'adopted' }] },
       builds,
     ),
   ).toThrow(DesktopError)
+
   expect(
     parseDevelopmentReady({ appVersion: '0.1.0-dev.0', apiVersion: null, buildId: 'app-build' })
       .apiVersion,
   ).toBeNull()
+
   expect(() =>
     parseDevelopmentBuild({
       extensionId: 'example.ext',
@@ -78,6 +83,7 @@ test('development receipts identify actual requested builds and preserve interru
       ],
     }),
   ).toThrow(DesktopError)
+
   expect(
     parseDevelopmentBuild({
       extensionId: 'example.ext',
@@ -111,16 +117,20 @@ test('prepared extension identities retain explicit trust and cannot substitute 
     targets: ['windows-x64'],
     source,
   }
+
   expect(parsePreparedExtensionUpdate(update).source).toEqual(source)
+
   expect(() => parsePreparedExtensionUpdate({ ...update, sha256: 'b'.repeat(64) })).toThrow(
     DesktopError,
   )
+
   expect(() =>
     parseExtensionRepositoryUpdate({
       changes: { url: 'https://example.test/index.json' },
       expected: { declaredId: 'unrelated' },
     }),
   ).toThrow(DesktopError)
+
   const report = {
     adopted: [
       { extensionId: 'example.ext', version: '1.0.0', sha256: 'a'.repeat(64), outcome: 'adopted' },
@@ -133,6 +143,7 @@ test('prepared extension identities retain explicit trust and cannot substitute 
       },
     ],
   }
+
   expect(parseExtensionApplyUpdatesResult(report)).toEqual(report)
 })
 
@@ -146,21 +157,26 @@ test('desktop release selection uses the exact family and SemVer rather than ord
       delivery: { type: 'manual', downloadUrl: 'https://example.test/download.zip' },
     })
   const candidates = [release('1.2.0', 100), release('1.1.0', 300), release('2.0.0-beta.1', 200)]
+
   expect(selectApplicationRelease(candidates, '1.0.0')?.version).toBe('1.2.0')
   expect(selectApplicationRelease(candidates, '1.0.0', true)?.version).toBe('2.0.0-beta.1')
   expect(selectApplicationRelease(candidates, '3.0.0', true)).toBeNull()
+
   expect(() =>
     parseApplicationRelease({ ...candidates[0], tagName: 'extension-sdk@1.2.0' }),
   ).toThrow(DesktopError)
+
   const file = {
     url: 'https://example.test/update.zip',
     size: 10,
     sha512: Buffer.alloc(64).toString('base64'),
   }
+
   expect(
     parsePreparedApplicationUpdate({ version: '1.2.0', tagName: 'desktop@1.2.0', files: [file] })
       .files,
   ).toEqual([file])
+
   expect(() =>
     parsePreparedApplicationUpdate({
       version: '1.2.0',
@@ -172,6 +188,7 @@ test('desktop release selection uses the exact family and SemVer rather than ord
 
 test('onboarding keeps explicit baselines and distinguishes atomic data groups from durable installation before marking', () => {
   expect(parseOnboardingState(getOnboardingDefaults())).toEqual(getOnboardingDefaults())
+
   const preference = {
     group: 'preferences',
     items: [
@@ -185,7 +202,9 @@ test('onboarding keeps explicit baselines and distinguishes atomic data groups f
       },
     ],
   }
+
   expect(parseOnboardingApplyInput(preference)).toEqual(preference)
+
   expect(() =>
     parseOnboardingApplyInput({
       ...preference,
@@ -197,6 +216,7 @@ test('onboarding keeps explicit baselines and distinguishes atomic data groups f
       ],
     }),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseOnboardingApplyInput({
       ...preference,
@@ -208,6 +228,7 @@ test('onboarding keeps explicit baselines and distinguishes atomic data groups f
       ],
     }),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseOnboardingApplyResult({
       group: 'scanner',
@@ -222,6 +243,7 @@ test('onboarding keeps explicit baselines and distinguishes atomic data groups f
       ],
     }),
   ).toThrow(DesktopError)
+
   const installed = {
     group: 'extensions',
     items: [
@@ -234,10 +256,13 @@ test('onboarding keeps explicit baselines and distinguishes atomic data groups f
       { itemId: 'two', outcome: 'notStarted', resources: [], issues: [] },
     ],
   }
+
   expect(parseOnboardingApplyResult(installed)).toEqual(installed)
+
   const dictionary = parseStrictJson(
     '{"firstPresentedAt":null,"firstCompletedAt":null,"lastPresentedVersion":null,"handled":{"__proto__":{"outcome":"skipped","handledAt":1}}}',
   )
+
   expect(Object.hasOwn(parseOnboardingState(dictionary).handled, '__proto__')).toBe(true)
 })
 
@@ -254,10 +279,13 @@ test('session lifecycle facts retain actual launch snapshots and distinguish det
       path: '/fixture/save',
     },
   }
+
   expect(parseNativeEventPayload('sessions.game.sessionStarted', context)).toEqual(context)
+
   expect(parseSessionEnded('game', { ...context, endedAt: 2, reason: 'detached' }).reason).toBe(
     'detached',
   )
+
   expect(() =>
     parseSessionEnded('game', {
       ...context,
@@ -266,9 +294,11 @@ test('session lifecycle facts retain actual launch snapshots and distinguish det
       recordingError: { code: 'WriteFailed', message: 'Not saved' },
     }),
   ).toThrow(DesktopError)
+
   expect(() => parseSessionEnded('game', { ...context, endedAt: 2, reason: 'replaced' })).toThrow(
     DesktopError,
   )
+
   expect(() =>
     parseWorkSession({
       ...context,
@@ -277,6 +307,7 @@ test('session lifecycle facts retain actual launch snapshots and distinguish det
       monitoring: { available: true, foreground: true },
     }),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseNativeEventPayload('sessions.game.sessionStarted', {
       ...context,
@@ -294,6 +325,7 @@ test('library facts carry only applicable identity context and preserve kind-cor
       work: { type: 'anime', id: 'a' },
     }).type,
   ).toBe('partKindChanged')
+
   expect(() =>
     parseLibraryChange({
       type: 'partKindChanged',
@@ -302,6 +334,7 @@ test('library facts carry only applicable identity context and preserve kind-cor
       work: { type: 'anime', id: 'a' },
     }),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseLibraryChange({
       type: 'annotationDeleted',
@@ -310,6 +343,7 @@ test('library facts carry only applicable identity context and preserve kind-cor
       fileId: null,
     }),
   ).toThrow(DesktopError)
+
   expect(() =>
     parseLibraryChange({
       type: 'entryDeleted',
@@ -326,14 +360,17 @@ test('library facts carry only applicable identity context and preserve kind-cor
 test('extension events bind their finite reference and parser, while safe failures retain legal partial results', () => {
   expect(() => parseExtensionEventRef('app.ready')).toThrow(DesktopError)
   expect(() => parseExtensionEventRef('example:local:extra')).toThrow(DesktopError)
+
   const contract = extensionEvent('example.ext:changed', (value) => {
     if (typeof value !== 'number' || !Number.isSafeInteger(value)) {
       throw new TypeError('Expected an integer')
     }
     return value
   })
+
   expect(parseExtensionEventPayload(contract, 3)).toBe(3)
   expect(() => parseExtensionEventPayload(contract, '3')).toThrow(TypeError)
+
   const partialResult = {
     sessionId: 's',
     animeId: 'a',
@@ -341,12 +378,14 @@ test('extension events bind their finite reference and parser, while safe failur
     outcome: 'saved',
     saved: { field: 'muted', scope: 'application', value: false },
   }
+
   expect(
     parseExecutionFailure(
       { code: 'UnrecognizedRemoteCode', message: 'Saved but not applied', partialResult },
       parsePlaybackSettingResult,
     ).partialResult,
   ).toEqual(partialResult)
+
   expect(() =>
     parseExecutionFailure(
       { code: 'Cancelled', message: 'Cancelled', partialResult: {} },
@@ -366,6 +405,7 @@ test('terminal task affordances and historical interruption never manufacture re
       canCancel: true,
     }),
   ).toThrow(DesktopError)
+
   const run = {
     id: 't',
     type: 'example',
@@ -379,8 +419,10 @@ test('terminal task affordances and historical interruption never manufacture re
     startedAt: 2,
     finishedAt: null,
   }
+
   expect(projectTaskHistory(run, false)).toEqual({ ...run, status: 'interrupted' })
   expect(projectTaskHistory(run, true)).toBe(run)
+
   expect(() =>
     parseNativeEventPayload('tasks.finished', {
       taskRunId: 't',
@@ -399,10 +441,13 @@ test('safe environment and data-mode projections report actual scope without pat
     operatingSystem: { name: 'Example OS', version: '1' },
     architecture: 'arm64' as const,
   }
+
   expect(formatApplicationEnvironment(environment)).toBe('Kisaki 1.0.0\nExample OS 1\narm64')
+
   expect(() => parseApplicationEnvironment({ ...environment, dataRoot: '/private' })).toThrow(
     DesktopError,
   )
+
   expect(
     dataModeRequiresRestart({
       current: { mode: 'normal', path: '/normal' },
@@ -410,6 +455,7 @@ test('safe environment and data-mode projections report actual scope without pat
       portable: { status: 'available', path: '/portable', nextMode: 'portable' },
     }),
   ).toBe(true)
+
   expect(
     dataModeRequiresRestart({
       current: { mode: 'normal', path: '/normal' },
@@ -421,8 +467,10 @@ test('safe environment and data-mode projections report actual scope without pat
     }),
   ).toBeNull()
   expect(() => parseStrictJson('{"a":1,"\\u0061":2}')).toThrow(DesktopError)
+
   const sparse: number[] = []
   sparse.length = 2
   sparse[1] = 1
+
   expect(() => parseJsonValue(sparse)).toThrow(DesktopError)
 })

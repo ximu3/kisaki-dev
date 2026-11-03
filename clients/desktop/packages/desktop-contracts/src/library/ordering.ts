@@ -60,10 +60,12 @@ export function reorderSubset(current: readonly string[], input: ReorderInput): 
   ) {
     throw new DesktopError('Conflict', 'The complete order has changed')
   }
+
   const selected = new Set(value.order)
   if (value.order.some((item) => !current.includes(item))) {
     throw new DesktopError('Conflict', 'A reordered member is no longer in this scope')
   }
+
   let position = 0
   return current.map((item) => (selected.has(item) ? value.order[position++]! : item))
 }
@@ -77,6 +79,7 @@ export function moveWithinOrder(current: readonly string[], input: MoveInput): r
   ) {
     throw new DesktopError('InvalidReference', 'A move member or anchor is no longer in this scope')
   }
+
   const selected = new Set(value.ids)
   const result = current.filter((item) => !selected.has(item))
   const index = value.before === null ? result.length : result.indexOf(value.before)

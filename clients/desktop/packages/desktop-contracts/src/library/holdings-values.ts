@@ -21,6 +21,7 @@ export interface DirectoryDiscoveryDefinition {
   readonly include: readonly PathFilter[]
   readonly exclude: readonly PathFilter[]
 }
+
 export type ContentDirectory<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly id: string
@@ -35,6 +36,7 @@ export type ContentDirectory<T extends WorkType = WorkType> = {
       }
     : object)
 }[T]
+
 export type DirectoryCreateFields<T extends WorkType = WorkType> = {
   [K in T]: { readonly path: string } & (K extends FileWorkType
     ? {
@@ -43,6 +45,7 @@ export type DirectoryCreateFields<T extends WorkType = WorkType> = {
       }
     : object)
 }[T]
+
 /** Discovery/profile edits do not relocate paths. A path change with related mappings uses the explicit relocation operation. */
 export interface DirectoryUpdate {
   readonly changes: {
@@ -57,19 +60,23 @@ export interface DirectoryUpdate {
 
 /** Persistent permission for later automatic association, independent of current association contents. */
 export type FileAssociationMode = 'automatic' | 'manual'
+
 export type FilePartType<T extends FileWorkType> = {
   readonly anime: 'animeEpisode' | 'animeExtra'
   readonly comic: 'comicVolume' | 'comicChapter'
   readonly novel: 'novelVolume'
 }[T]
+
 export interface FileAssociation<T extends FileWorkType = FileWorkType> {
   readonly part: PartRef<FilePartType<T>>
   readonly isPreferred: boolean
 }
+
 export interface FileAssociationInput<T extends FileWorkType = FileWorkType> {
   readonly part: PartRef<FilePartType<T>>
   readonly isPreferred?: boolean
 }
+
 /** Associations form one complete direct set; comic volume membership does not imply direct chapter associations. */
 export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
   | { readonly type: 'replace'; readonly items: readonly FileAssociationInput<T>[] }
@@ -78,6 +85,7 @@ export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
       readonly add?: readonly FileAssociationInput<T>[]
       readonly remove?: readonly PartRef<FilePartType<T>>[]
     }
+
 export interface FileAssociationEdit<T extends FileWorkType = FileWorkType> {
   readonly change: FileAssociationChange<T>
   readonly expected?: {
@@ -85,6 +93,7 @@ export interface FileAssociationEdit<T extends FileWorkType = FileWorkType> {
     readonly associationMode: FileAssociationMode
   }
 }
+
 /** Unknown, positively accessible and known unavailable observations never collapse into the same state. */
 export type FileAvailability =
   | { readonly status: 'unchecked' }
@@ -95,19 +104,23 @@ export type FileAvailability =
       readonly reason: 'missing' | 'unreadable'
       readonly error: ErrorSummary
     }
+
 export interface AnimeFileMetadata {
   readonly container: string
   readonly durationSeconds: number | null
   readonly width: number | null
   readonly height: number | null
 }
+
 export interface ReadingFileMetadata {
   readonly format: 'epub' | 'mobi' | 'fb2' | 'txt' | 'pdf' | 'images'
   readonly pageCount: number | null
 }
+
 export type FileTrackSelection =
   | { readonly type: 'embedded'; readonly index: number }
   | { readonly type: 'external'; readonly path: string; readonly index: number }
+
 /** Persistent source-track choices and signed second offsets are separate from runtime opaque track IDs. */
 export interface FilePlaybackChoices {
   readonly audioTrack: FileTrackSelection | null
@@ -115,28 +128,34 @@ export interface FilePlaybackChoices {
   readonly audioDelaySeconds: number
   readonly subtitleDelaySeconds: number
 }
+
 export interface FilePreferencesByType {
   readonly anime: AnimePlaybackPreferences
   readonly comic: ReadingPreferences
   readonly novel: ReadingPreferences
 }
+
 export interface FilePreferenceChangeByType {
   readonly anime: PlaybackOverrideChange
   readonly comic: ReadingOverrideChange
   readonly novel: ReadingOverrideChange
 }
+
 /** A corrupt association-mode field disables adoption while the file and other readable facts remain visible. */
 type FileAssociationState =
   | { readonly associationMode: FileAssociationMode; readonly associationError: null }
   | { readonly associationMode: null; readonly associationError: ErrorSummary }
+
 export type HeldFile<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly id: string
     readonly work: EntryRef<K>
     readonly path: string
+
     readonly note: string | null
     readonly isPreferred: boolean
     readonly associations: readonly FileAssociation<K>[]
+
     readonly availability: FileAvailability
     readonly preferences: StoredDefinition<UsageOverride<FilePreferencesByType[K]>> | null
     readonly createdAt: number
@@ -165,6 +184,7 @@ export interface FileCreateFields<T extends FileWorkType = FileWorkType> {
   readonly associations?: readonly FileAssociationInput<T>[]
   readonly isPreferred?: boolean
 }
+
 /** List predicates use saved observations; list never probes a disk or starts content. */
 export interface FileQuery<T extends FileWorkType = FileWorkType> {
   readonly search: string
@@ -174,13 +194,16 @@ export interface FileQuery<T extends FileWorkType = FileWorkType> {
   readonly associationMode?: FileAssociationMode
   readonly availability?: FileAvailability['status']
 }
+
 export type PreferredFileScope<T extends FileWorkType = FileWorkType> =
   { readonly type: 'work' } | { readonly type: 'part'; readonly part: PartRef<FilePartType<T>> }
+
 export interface PreferredFileInput<T extends FileWorkType = FileWorkType> {
   readonly scope: PreferredFileScope<T>
   readonly fileId: string | null
   readonly expected?: { readonly preferredFileId: string | null }
 }
+
 export interface PreferredPartFile<T extends FileWorkType = FileWorkType> {
   readonly part: PartRef<FilePartType<T>>
   readonly fileId: string | null
@@ -192,9 +215,11 @@ export interface LocalContentInput {
   readonly type: 'directory' | 'file'
   readonly path: string
 }
+
 export interface LocalContentRegistrationOptions {
   readonly expectedIdentities?: NonEmptyArray<ExternalIdentity>
 }
+
 export interface LocalContentRegistrationResult {
   readonly work: WorkRef
   readonly registrations: NonEmptyArray<{
@@ -212,6 +237,7 @@ export interface LocalContentRegistrationResult {
 export type FileRecognitionSource =
   | { readonly type: 'builtin' }
   | { readonly type: 'profile'; readonly profileId: string; readonly ruleId: string }
+
 export type FileRecognitionResult<T extends FileWorkType = FileWorkType> =
   | {
       readonly outcome: 'matched'
@@ -232,14 +258,17 @@ export type FileRecognitionResult<T extends FileWorkType = FileWorkType> =
         | 'unreadable'
       readonly error: ErrorSummary
     }
+
 /** Results report actual per-file outcomes; unavailable files and invalid matching do not erase already held data. */
 export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
   readonly work: EntryRef<T>
+
   readonly discovery: {
     readonly finished: boolean
     readonly registeredFileIds: readonly string[]
     readonly issues: readonly { readonly path: string; readonly error: ErrorSummary }[]
   }
+
   readonly files: readonly {
     readonly fileId: string
     readonly availability: FileAvailability
@@ -247,6 +276,7 @@ export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
     readonly associationOutcome: 'updated' | 'unchanged' | 'notAttempted' | 'waitingForUse'
   }[]
 }
+
 export interface FileReidentificationResult<T extends FileWorkType = FileWorkType> {
   readonly work: EntryRef<T>
   readonly files: readonly {
@@ -260,15 +290,18 @@ export interface FileReidentificationResult<T extends FileWorkType = FileWorkTyp
 export interface DirectoryRelocationInput {
   readonly path: string
   readonly expected?: { readonly path: string }
+
   readonly gameConfigFields?: readonly {
     readonly launchConfigId: string
     readonly fields: NonEmptyArray<'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'>
   }[]
+
   readonly subtitlePaths?: readonly {
     readonly fileId: string
     readonly paths: NonEmptyArray<string>
   }[]
 }
+
 export type RelocatedPathTarget =
   | { readonly type: 'directory' | 'file'; readonly id: string }
   | {
@@ -277,13 +310,16 @@ export type RelocatedPathTarget =
       readonly field: 'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'
     }
   | { readonly type: 'subtitle'; readonly fileId: string; readonly path: string }
+
 export interface HoldingsRelocationResult {
   readonly work: WorkRef
+
   readonly updated: readonly {
     readonly target: RelocatedPathTarget
     readonly from: string
     readonly to: string
   }[]
+
   readonly issues: readonly {
     readonly target: RelocatedPathTarget
     readonly path: string
@@ -291,11 +327,13 @@ export interface HoldingsRelocationResult {
     readonly error: ErrorSummary
   }[]
 }
+
 export interface FileMergeInput {
   readonly sourceFileId: string
   readonly targetFileId: string
   readonly path: string
 }
+
 export interface FileMergeResult {
   readonly fileId: string
   readonly removedFileId: string

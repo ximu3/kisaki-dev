@@ -18,9 +18,20 @@ export function renderMessageTypes(source: MessageCatalog): string {
           `readonly ${JSON.stringify(name)}: ${kinds.map((kind) => (kind === 'date' ? 'Date' : kind)).join(' | ')}`,
       )
       .join('; ')
+
     return `  readonly ${JSON.stringify(key)}: ${fields ? `{ ${fields} }` : 'never'}`
   })
-  return `/** @fileoverview Generated from i18n/en.ts by generate:messages. Do not edit the call contract independently. */\n\nexport interface MessageArguments {\n${lines.join('\n')}\n}\nexport type MessageKey = keyof MessageArguments\nexport type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]\n/** Format synchronously against the currently effective translation; tags are literal text. */\nexport type Translate = (...args: TranslationCall) => string\n`
+
+  return `/** @fileoverview Generated from i18n/en.ts by generate:messages. Do not edit the call contract independently. */
+
+export interface MessageArguments {
+${lines.join('\n')}
+}
+export type MessageKey = keyof MessageArguments
+export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
+/** Format synchronously against the currently effective translation; tags are literal text. */
+export type Translate = (...args: TranslationCall) => string
+`
 }
 
 /** Reject stale generated declarations without modifying the checked-in source during a normal build. */
@@ -36,6 +47,7 @@ export async function checkMessageTypes(): Promise<void> {
 export async function writeMessageTypes(signal?: AbortSignal): Promise<void> {
   const output = renderMessageTypes(englishMessages)
   signal?.throwIfAborted()
+
   await writeFile(join(import.meta.dirname, '../src/i18n/contracts.generated.ts'), output)
 }
 
