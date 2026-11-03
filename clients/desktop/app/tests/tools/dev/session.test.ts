@@ -23,7 +23,7 @@ afterAll(async () => {
 })
 
 test('a refused quit retains utility processes and normal window close preserves the profile', async () => {
-  const controller = startDevelopmentController(workspace.app, 'cancel-first-close')
+  const controller = startDevelopmentController(workspace.app, { scenario: 'cancel-first-close' })
   await controller.ready
   const first = controller.states.find((state) => state.state === 'ready')!
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
@@ -38,7 +38,9 @@ test('a refused quit retains utility processes and normal window close preserves
   }
 
   controller.process.send({ type: 'stop' })
-  await expect.poll(() => controller.states.some((state) => state.state === 'cancelled')).toBe(true)
+  await expect
+    .poll(() => controller.states.some((state) => state.state === 'cancelled'), { timeout: 15_000 })
+    .toBe(true)
   expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
 
   const hostPids = JSON.parse(
@@ -187,7 +189,9 @@ test.each(['cancellation', 'command failure'] as const)(
       await writeFile(toolingManifestPath, JSON.stringify(toolingManifest))
     }
 
-    const first = startDevelopmentController(workspace.app)
+    const first = startDevelopmentController(workspace.app, {
+      expectedExitCode: outcome === 'cancellation' ? 0 : 1,
+    })
     const sessions = join(workspace.app, 'out', 'development', hostTarget())
     let preparation: { pid: number } | undefined
     await expect
@@ -248,7 +252,10 @@ test.each(['cancellation', 'command failure'] as const)(
 )
 
 test('a failed application stop is reported and the worker releases its owned process', async () => {
-  const controller = startDevelopmentController(workspace.app, 'stop-failure')
+  const controller = startDevelopmentController(workspace.app, {
+    scenario: 'stop-failure',
+    expectedExitCode: 1,
+  })
   await controller.ready
   const application = controller.states.find((state) => state.state === 'ready')!.current!
 

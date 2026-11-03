@@ -20,16 +20,22 @@ export interface DevelopmentObservation {
   error?: string
 }
 
+/** Fixture behavior and the worker result that the owning test expects. */
+interface DevelopmentControllerOptions {
+  scenario?: 'normal' | 'stop-failure' | 'cancel-first-close'
+  expectedExitCode?: number
+}
+
 /** Start a test-owned worker with optional application behavior; register input restoration first. */
 export function startDevelopmentController(
   app: string,
-  scenario: 'normal' | 'stop-failure' | 'cancel-first-close' = 'normal',
+  options: DevelopmentControllerOptions = {},
 ) {
   const startedAt = new Date().toISOString()
   const start = performance.now()
   const child = spawn(
     process.execPath,
-    ['--import', 'tsx', 'tests/support/development-worker.ts', scenario],
+    ['--import', 'tsx', 'tests/support/development-worker.ts', options.scenario ?? 'normal'],
     {
       cwd: app,
       windowsHide: true,
@@ -112,7 +118,7 @@ export function startDevelopmentController(
   // Vitest preserves the test failure and every cleanup error, and writes the report after closure.
   onTestFinished(async () => {
     if (child.connected) {
-      child.send({ type: 'stop' })
+      child.send({ type: 'cleanup' })
     }
 
     let forced = false
@@ -121,9 +127,15 @@ export function startDevelopmentController(
       child.kill('SIGKILL')
     }, 15_000)
     try {
-      await closed
+      const code = await closed
       if (forced) {
         throw new Error(`Development worker ${child.pid} required forced termination`)
+      }
+      const expectedExitCode = options.expectedExitCode ?? 0
+      if (code !== expectedExitCode) {
+        throw new Error(
+          `Development worker ${child.pid} exited with ${child.signalCode ?? code}; expected ${expectedExitCode}`,
+        )
       }
     } finally {
       clearTimeout(timeout)
