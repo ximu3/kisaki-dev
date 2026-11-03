@@ -2,6 +2,7 @@
 
 import { expect, onTestFinished, test } from 'vitest'
 import { execFile } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -41,6 +42,11 @@ test('verification tasks prepare the artifacts they actually consume', async () 
     expect(reaches(task.taskId, `${project}#pack`), task.taskId).toBe(true)
     expect(reaches(task.taskId, `${project}#build`), task.taskId).toBe(true)
   }
+  for (const dependency of ['desktop-appearance', 'extension-distribution']) {
+    expect(
+      reaches('@kisaki3/desktop-contracts#test:consumers', `@kisaki3/${dependency}#pack`),
+    ).toBe(true)
+  }
 })
 
 test(
@@ -65,7 +71,7 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance'],
+        consumers: ['desktop-appearance', 'desktop-contracts'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
@@ -91,17 +97,33 @@ test(
       {
         path: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
         desktop: [],
-        consumers: ['extension-distribution'],
+        consumers: ['extension-distribution', 'desktop-contracts'],
       },
       {
         path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
         desktop: [],
-        consumers: ['extension-distribution'],
+        consumers: ['extension-distribution', 'desktop-contracts'],
       },
       {
         path: 'clients/desktop/packages/extension-distribution/tests/fixtures/consumers/node/consumer.ts',
         desktop: [],
         consumers: ['extension-distribution'],
+      },
+      { path: 'clients/desktop/packages/desktop-contracts/README.md', desktop: [] },
+      {
+        path: 'clients/desktop/packages/desktop-contracts/src/library/catalog.ts',
+        desktop: [],
+        consumers: ['desktop-contracts'],
+      },
+      {
+        path: 'clients/desktop/packages/desktop-contracts/assets/unicode/18.0.0/UnicodeData.txt',
+        desktop: [],
+        consumers: ['desktop-contracts'],
+      },
+      {
+        path: 'clients/desktop/packages/desktop-contracts/tests/fixtures/consumers/node/consumer.ts',
+        desktop: [],
+        consumers: ['desktop-contracts'],
       },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
@@ -136,9 +158,11 @@ test(
       '.gitignore',
       '.node-version',
       '.npmrc',
-      'clients/desktop/app/turbo.json',
       'config/turbo/verification.graphql',
       ...members.map((member) => join(relative(root, member.path), 'package.json')),
+      ...members
+        .filter((member) => existsSync(join(member.path, 'turbo.json')))
+        .map((member) => join(relative(root, member.path), 'turbo.json')),
     ])
     for (const file of files) {
       await mkdir(dirname(join(directory, file)), { recursive: true })

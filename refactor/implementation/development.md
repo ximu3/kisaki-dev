@@ -19,8 +19,11 @@
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证           |
 | `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射   |
 | `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名 |
+| `clients/desktop/packages/desktop-contracts` | 桌面业务值、查询与写入合同、参与接口、会话和管理、深链、开发控制及英语消息类型与纯校验 |
 
-桌面公共包通过构建后的子路径交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 验证入口查阅。
+桌面公共包通过构建后的子路径交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md) 验证入口查阅。
+
+desktop-contracts 按业务子路径导出显式类型和纯规则，实际数据库、资源、窗口与宿主操作由所属工作包实现。名称排序采用保留在包内 assets 的 Unicode 18 原始数据，生成表由 `generate:unicode` 维护；英语 ICU 源文及其生成声明分别位于 src/i18n/en.ts 与 contracts.generated.ts，使用 `generate:messages` 更新。两个命令都由该包通过 pnpm 执行。普通 build 校验原始数据摘要及生成一致性，再交接完整构建结果；生成源由各自生成器负责排版。
 
 桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
@@ -80,6 +83,8 @@ pnpm desktop:package:fixture --target windows-x64
 
 桌面公共包各自提供 build、pack、check:package、test:consumers 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 通过 Turbo 调度各包的消费者任务，自动接续构建、一次打包、制品检查和仓库外消费。用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
 
+pack 的输入由已声明的 build 依赖，以及包元数据、许可和发行说明组成。公共依赖的产品变化会接续下游消费者验证；测试样板和测试配置仍只影响其所属消费者，不成为下游制品输入。
+
 按[共同原则](../design/engineering/conventions.md#quality)、[可读性](../design/engineering/conventions.md#readability-principle)和[实际影响](../verification/acceptance.md#verification-scope)选择验证。普通检查不包含真实桌面、制品或性能采样。
 
 | 命令                            | 输入与运行环境                                                               |
@@ -91,7 +96,7 @@ pnpm desktop:package:fixture --target windows-x64
 | `pnpm desktop:test:artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
 | `pnpm desktop:test:performance` | 先构建，记录 20 次工程载体启动耗时与内存，验证进程退出                       |
 
-浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。desktop-appearance 与 extension-distribution 使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。三个已建立公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。desktop-contracts 的独立消费者还安装 W01、W02 的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
 制品输入用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认 `dist/<target>/artifacts.json`。Windows 使用窗口句柄，macOS 使用已获准的系统辅助功能，Linux X11 使用窗口管理器观察。X11 结果不代表 Wayland 验收。
 

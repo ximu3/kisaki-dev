@@ -98,7 +98,7 @@
     },
     "pack": {
       "dependsOn": ["build"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["package.json", "LICENSE", "NOTICE", "release-notes/**"],
       "outputs": ["out/package/**"],
       "cache": false
     },

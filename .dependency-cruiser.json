@@ -1,6 +1,20 @@
 {
   "forbidden": [
     {
+      "name": "contracts-have-no-node-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-contracts/src/" },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
+      "name": "contracts-have-no-application-or-ui-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-contracts/src/" },
+      "to": {
+        "path": "^clients/desktop/app/|^clients/desktop/extensions/|(^|/)node_modules/(electron|solid-js)/"
+      }
+    },
+    {
       "name": "distribution-pure-has-no-node-runtime",
       "severity": "error",
       "from": {
