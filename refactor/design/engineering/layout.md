@@ -231,21 +231,22 @@ clients/desktop/app/tools/
 | tests/artifacts           | 最终打包应用的安装、启动、资源、fuses、更新和平台接入；保持正式制品原样，运行条件按实际目标记录。                                                                       |
 | tests/performance         | 按[性能合同](performance.md)验证指定负载、预算和测量口径，使用被测行为所需的实际环境。                                                                                  |
 | tests/tools               | 所属工程 tools 的 CLI、工作流和真实文件副作用测试，按工具名组织；不在 integration 中维护另一份相同用例。                                                                |
+| 根 tests/workspace        | 仓库共同约束，包括工程登记、源码与声明的检查覆盖、任务依赖与验证范围，以及跨工程导入边界。                                                                              |
 | tests/fixtures            | 测试拥有的固定输入、来源样本及消费者样板，按实际使用范围组织，保存来源、许可、合成范围与预期。                                                                          |
 | tests/support             | 测试专用的环境准备、资料构造、观测与清理辅助，按具体职责命名；不同运行环境的辅助代码明确分开。                                                                          |
 
-测试按主要验证目的归档：制品消费、最终制品、性能和工程工具分别归 consumers、artifacts、performance 和 tools；其余按所需接入边界归 integration、browser 或 e2e。运行环境在配置中明确，同一场景不因符合多个分类而复制；例如浏览器性能测量归 performance，普通组件交互归 browser。
+测试按主要验证目的归档：制品消费、最终制品、性能和工程工具分别归 consumers、artifacts、performance 和 tools，仓库共同约束归根 tests/workspace；其余按所需接入边界归 integration、browser 或 e2e。运行环境在配置中明确，同一场景不因符合多个分类而复制；例如浏览器性能测量归 performance，普通组件交互归 browser。
 
 只建立工程实际需要的目录。测试目录内部按能力、场景或工具组织，少量内聚用例保持单文件，多文件协作时再形成子目录；不要求与 src 的每一级路径机械镜像。组合验证归负责组合行为的工程：组件样式归 UI 包，作者生成与打包流程归 CLI，应用操作归本体。使用多个包本身不改变测试归属。根 tests 负责根工具和仓库共同约束。
 
-根工程的测试结构如下。根工具的集成与 CLI 测试统一归 tests/tools，按工具名组织，不在各工具内部另建 tests。
+根工程的测试结构如下。tests/tools 按具体工具组织集成与 CLI 测试；tests/workspace 按项目登记、类型检查覆盖、任务和依赖边界组织仓库共同约束。共享的文件枚举与成员读取归 tests/support/workspace.ts，各项断言由所属用例维护。
 
 ```text
 tests/
 ├── tools/
 │   ├── hooks/
-│   ├── structure/
 │   └── release/
+├── workspace/
 ├── fixtures/
 └── support/
 ```

@@ -8,16 +8,17 @@
 
 ## 当前源码职责
 
-| 位置                                                     | 当前职责                                                                 |
-| -------------------------------------------------------- | ------------------------------------------------------------------------ |
-| 根 `tools` 与 `tests`                                    | Git hooks、环境记录、CI 任务选择，以及 workspace、类型覆盖与依赖边界验证 |
-| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、候选输出、命令执行、错误交付和 CLI 收尾            |
-| `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理               |
-| `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                     |
-| `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                             |
-| `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证             |
-| `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射     |
-| `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名   |
+| 位置                                                     | 当前职责                                                               |
+| -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| 根 `tools` 与 `tests/tools`                              | Git hooks、验证环境记录及所属工具的回归验证                            |
+| 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界         |
+| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、候选输出、命令执行、错误交付和 CLI 收尾          |
+| `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理             |
+| `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                   |
+| `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                           |
+| `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证           |
+| `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射   |
+| `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名 |
 
 桌面公共包通过构建后的子路径交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 验证入口查阅。
 
