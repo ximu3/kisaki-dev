@@ -110,7 +110,7 @@ metadata 操作负责关闭它取得的会话。close 不会把已经读取的�
 
 多个独立操作可以使用同一个 provider，同一个会话也可以并发 read。每次调用都有独立的输入、signal 和结果，不使用全局“当前输入”。provider 根据来源政策安排缓存和并发。close 开始后拒绝新读取，但已接纳的读取仍须完成收尾。
 
-接收进程为每次调用创建本地取消控制器，SDK 通过消息桥接 signal，不把它当作 JSON 传输。调用预先取消时不再分发，调用结束后移除监听。context 只显式传递必要值。allowInteraction 只适用于完整操作合同规定的条件，不赋予 provider、processor 或 recognizer 临时要求人工补救的权限。
+接收进程为每次调用创建本地取消控制器，SDK 通过消息桥接 signal，不把它当作 JSON 传输。调用预先取消时不再分发，调用结束后移除监听。执行上下文只传递取消，交互选择由少数操作的[局部调用选项](../communication.md#operations)明确表达，不通过异步上下文或实例来源推断。provider、processor 或 recognizer 不能临时要求人工补救；其必要输入和缺失结果沿所属参与合同处理。
 
 通信或实例中断时，系统依据已知事实结束调用，不自动重放。ExecutionFailure 及合法的 partialResult 保持原有语义，由业务决定能否安全重试。失去连接并不能证明本体已接管的工作被取消，也不能证明提交已回滚。
 

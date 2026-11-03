@@ -1,0 +1,17 @@
+{
+  "name": "contracts-node-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json --noEmit false --outDir .cache/node"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-contracts": "0.1.0-dev.0",
+    "intl-messageformat": "12.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "6.0.3"
+  }
+}

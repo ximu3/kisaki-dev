@@ -1,0 +1,54 @@
+/** @fileoverview Installs separate Node/browser consumers from the actual contract and public dependency tarballs. */
+
+import { test } from 'vitest'
+import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { join, resolve } from 'node:path'
+import { tmpdir } from 'node:os'
+import { ESLint } from 'eslint'
+import base from '@kisaki3/eslint-config/base'
+import { runPnpm } from '@kisaki3/tooling/process'
+
+const packageRoot = resolve(import.meta.dirname, '../..')
+
+/** Install only packed outputs. Overrides supply the still-unpublished public dependency versions without workspace/source aliases. */
+export function consumerTest(scenario: 'node' | 'browser') {
+  return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
+    const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-contracts-${scenario}-`))
+    onCleanup(() => rm(consumerDirectory, { recursive: true, force: true }))
+    await cp(join(packageRoot, 'tests/fixtures/consumers', scenario), consumerDirectory, {
+      recursive: true,
+    })
+
+    const manifestPath = join(consumerDirectory, 'package.json')
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as {
+      dependencies: Record<string, string>
+    }
+    manifest.dependencies['@kisaki3/desktop-contracts'] =
+      `file:${join(packageRoot, 'out/package/package.tgz').replaceAll('\\', '/')}`
+    const configuration = {
+      overrides: Object.fromEntries(
+        ['desktop-appearance', 'extension-distribution'].map((name) => [
+          `@kisaki3/${name}`,
+          `file:${join(packageRoot, '..', name, 'out/package/package.tgz').replaceAll('\\', '/')}`,
+        ]),
+      ),
+    }
+    await writeFile(manifestPath, JSON.stringify(manifest))
+    await writeFile(join(consumerDirectory, 'pnpm-workspace.yaml'), JSON.stringify(configuration))
+    await runPnpm(['install', '--ignore-scripts'], { cwd: consumerDirectory })
+    return consumerDirectory
+  })
+}
+
+/** Check the consumers' own source with its installed types, not workspace path aliases or disabled declaration checks. */
+export async function lintConsumer(directory: string): Promise<ESLint.LintResult[]> {
+  const lint = new ESLint({
+    cwd: directory,
+    overrideConfigFile: true,
+    overrideConfig: [
+      ...base,
+      { languageOptions: { parserOptions: { tsconfigRootDir: directory } } },
+    ],
+  })
+  return lint.lintFiles(['*.ts'])
+}

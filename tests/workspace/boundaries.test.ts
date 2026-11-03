@@ -20,6 +20,17 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'contracts-have-no-node-runtime',
+    from: 'clients/desktop/packages/desktop-contracts/src/resources.ts',
+    source: "export { readFile } from 'node:fs/promises'\n",
+  },
+  {
+    name: 'contracts-have-no-application-or-ui-runtime',
+    from: 'clients/desktop/packages/desktop-contracts/src/sessions.ts',
+    to: 'clients/desktop/app/src/main/sessions.ts',
+    source: "export type { Value } from '../../../app/src/main/sessions'\n",
+  },
+  {
     name: 'distribution-pure-has-no-node-runtime',
     from: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
     source: "export { readFile } from 'node:fs/promises'\n",

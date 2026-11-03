@@ -220,7 +220,7 @@ action、checkbox、radio 和 submenu 共用 label: LocalizedText，以及可选
 
 radio.group 只在同一贡献的同级 items 中有效，不跨子菜单或扩展。同组最多一项 checked，也可以没有选中项；再次选择已选项不触发回调。checkbox 按本次快照传入 nextChecked，由业务核对并保存。失败时不能显示成已保存新状态，下次 getItems 重新读取实际值。
 
-getItems(menuContext, { signal }) 与叶子回调的 execution 分开。execution 包含适用的 signal 和 allowInteraction，关闭菜单不取消已经选中的操作。
+getItems(menuContext, { signal }) 与叶子回调的 execution 分开，各有自己的 signal；关闭菜单不取消已经选中的操作。菜单动作调用会话打开或游戏窗口操作时，按本次意图显式传入 interaction，不从菜单来源隐式继承策略。
 
 叶子回调可以同步或异步返回 void，或至多一条 ToastMessage。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
 

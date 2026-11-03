@@ -6,13 +6,13 @@
 
 截至 2026-11-03，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
-W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包、desktop-appearance 和 extension-distribution，workspace 共 7 个项目（含根工程）。产品能力按下表工作包实施。
+W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution 和 desktop-contracts，workspace 共 8 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
-工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。各包的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 65 项常规测试；7 项仓库外消费者检查通过。原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。消费者结果见[W01 验证](../verification/evidence/w01/README.md)与[W02 验证](../verification/evidence/w02/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
+工程维护已统一有限任务依赖、单份公共包制品检查和当前依赖副本的采用／释放。公共包消费者的用例、样板、配置、依赖和报告由所属包维护，根入口通过 Turbo 调度。各包的 Node 与浏览器消费者分别安装同一 tarball，独立管理依赖、类型环境和运行资源。当前 Windows x64 复核通过类型、lint、格式及 130 项常规测试；三个公共包的 10 项仓库外消费者检查通过。原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。消费者结果见[W01 验证](../verification/evidence/w01/README.md)、[W02 验证](../verification/evidence/w02/README.md)与[W03 验证](../verification/evidence/w03/README.md)，最新跨平台检查由对应 PR 记录。资源与原生能力的已确认范围保持不变。
 
 错误传递维护已补齐启动与停止失败、取消期间的独立命令错误、操作与清理错误的保留，以及测试清理的结果交付。故障通过测试边界注入，完整诊断由失败钩子统一输出。本机 6 项开发回归、4 项 Electron 入口和制品运行通过；两轮 Linux arm64 重复验证共 100 次场景执行通过。原始关闭超时的根因仍待确认，范围和证据见[关闭复核](../verification/evidence/w00/development.md#shutdown)。
 
@@ -27,7 +27,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | [W00 工程与测试入口](work-packages.md#w00)                    | 实现与适用验收已完成；关闭异常仍在复核，见[实际交付](#w00)与[复核证据](../verification/evidence/w00/development.md#shutdown)。                                                                                                               |
 | [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。项目文档待 W23，尚未公开发布。                                                           |
 | [W02 extension-distribution](work-packages.md#w02)            | 实现与适用验收已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。项目文档待 W23，尚未公开发布。 |
-| [W03 desktop-contracts](work-packages.md#w03)                 | 未开始。                                                                                                                                                                                                                                     |
+| [W03 desktop-contracts](work-packages.md#w03) | 实现与适用验收已完成：完整桌面值、查询与编辑基线、参与接口、会话与管理、深链、开发控制及消息生成；63 项行为测试、仓库外 Node／浏览器消费与 CI 通过，[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 未开始。                                                                                                                                                                                                                                     |
 | [W05 desktop-ui](work-packages.md#w05)                        | 未开始。                                                                                                                                                                                                                                     |
 | [W06 存储与原生基础](work-packages.md#w06)                    | 未开始。                                                                                                                                                                                                                                     |
