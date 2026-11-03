@@ -6,7 +6,9 @@
 
 ## 数据约束与查询
 
-每张表明确声明主键、外键、可空字段的含义、唯一性和值域约束，以及删除和合并时的处理规则。业务读写连接启用外键检查，迁移须保留既有引用完整性。正式本地库使用 WAL，写入连接设置 synchronous=FULL；macOS 同时设置 fullfsync=ON，使 SQLite 在支持的系统上请求 F_FULLFSYNC。fullfsync 开启后覆盖 checkpoint 的同步，无需另外维护一份 checkpoint 开关。连接初始化回读实际配置，性能验证使用相同设置，不以降低耐久性取得通过结果。依据见[SQLite 同步选项](https://www.sqlite.org/pragma.html#pragma_fullfsync)。
+每张表明确声明主键、外键、可空字段的含义、唯一性和值域约束，以及删除和合并时的处理规则。业务读写连接启用外键检查，迁移须保留既有引用完整性。
+
+正式本地库使用 WAL，写入连接设置 synchronous=FULL；macOS 同时设置 fullfsync=ON，使 SQLite 在支持的系统上请求 F_FULLFSYNC。fullfsync 开启后覆盖 checkpoint 的同步，无需另外维护一份 checkpoint 开关。连接初始化回读实际配置，性能验证使用相同设置，不以降低耐久性取得通过结果。依据见[SQLite 同步选项](https://www.sqlite.org/pragma.html#pragma_fullfsync)。
 
 资料根必须位于能够提供 SQLite 文件锁、WAL 共享内存和同步写入语义的本地文件系统。SMB、NFS 等网络文件系统及映射到这些位置的驱动器不属于资料根支持范围；这不限制媒体文件按自己的读取合同位于其他位置。[WAL 的文件系统条件](https://www.sqlite.org/wal.html)由 app/paths 在打开资料库前核对，不能因某次连接能打开就推定支持，也不自动切换日志模式或另建空库。
 

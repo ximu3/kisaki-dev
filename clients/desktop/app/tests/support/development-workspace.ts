@@ -91,6 +91,7 @@ await mkdir(new URL('./dist/', import.meta.url), { recursive: true })
 await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label = ' + JSON.stringify(value.label))
 `,
     )
+
     const appManifestPath = join(app, 'package.json')
     const appManifest = JSON.parse(await readFile(appManifestPath, 'utf8')) as {
       dependencies: Record<string, string>

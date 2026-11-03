@@ -19,6 +19,7 @@ export function consumerTest(scenario: 'node' | 'browser') {
     await cp(join(packageRoot, 'tests/fixtures/consumers', scenario), consumerDirectory, {
       recursive: true,
     })
+
     const manifestPath = join(consumerDirectory, 'package.json')
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as {
       dependencies: Record<string, string>
@@ -27,6 +28,7 @@ export function consumerTest(scenario: 'node' | 'browser') {
     manifest.dependencies['@kisaki3/desktop-appearance'] =
       `file:${tarballPath.replaceAll('\\', '/')}`
     await writeFile(manifestPath, JSON.stringify(manifest))
+
     await runPnpm(['install', '--ignore-scripts'], { cwd: consumerDirectory })
 
     return consumerDirectory

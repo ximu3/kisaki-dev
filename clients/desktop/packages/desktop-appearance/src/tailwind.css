@@ -8,6 +8,7 @@
   --color-popover-foreground: var(--color-popover-foreground);
   --color-dialog: var(--color-dialog);
   --color-dialog-foreground: var(--color-dialog-foreground);
+
   --color-primary: var(--color-primary);
   --color-primary-foreground: var(--color-primary-foreground);
   --color-secondary: var(--color-secondary);
@@ -18,6 +19,7 @@
   --color-accent-foreground: var(--color-accent-foreground);
   --color-input: var(--color-input);
   --color-input-foreground: var(--color-input-foreground);
+
   --color-destructive: var(--color-destructive);
   --color-destructive-foreground: var(--color-destructive-foreground);
   --color-info: var(--color-info);
@@ -29,13 +31,16 @@
   --color-border: var(--color-border);
   --color-ring: var(--color-ring);
   --color-chart: var(--color-chart);
+
   --color-light-1: var(--color-light-1);
   --color-light-2: var(--color-light-2);
   --color-light-3: var(--color-light-3);
+
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+
   --text-xs: var(--text-xs);
   --text-sm: var(--text-sm);
   --text-base: var(--text-base);
@@ -50,8 +55,10 @@
   --text-8xl: var(--text-8xl);
   --text-9xl: var(--text-9xl);
   --spacing: var(--spacing);
+
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+
   --shadow-raised: var(--shadow-raised);
   --shadow-overlay: var(--shadow-overlay);
   --shadow-modal: var(--shadow-modal);

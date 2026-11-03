@@ -27,16 +27,19 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
     ],
     { cwd: consumerDirectory, windowsHide: true, signal },
   )
+
   expect(JSON.parse(stdout)).toMatchObject({
     count: 45,
     radius: '6px',
   })
+
   expect(
     await readFile(
       join(consumerDirectory, 'node_modules/@kisaki3/desktop-appearance/LICENSE'),
       'utf8',
     ),
   ).toContain('MIT License')
+
   const notices = await readFile(
     join(
       consumerDirectory,

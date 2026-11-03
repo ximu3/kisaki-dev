@@ -3,10 +3,12 @@ main {
   margin: 2rem;
   max-width: 40rem;
 }
+
 button {
   padding: 0 1rem;
   border: 1px solid var(--border);
 }
+
 #ordinary {
   background: var(--primary);
   color: var(--primary-foreground);
@@ -16,6 +18,7 @@ button {
   font-size: var(--text-sm);
   height: calc(var(--spacing) * 7);
 }
+
 #pane {
   padding: 1rem;
   margin-top: 1rem;

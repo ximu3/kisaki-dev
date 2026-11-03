@@ -54,6 +54,7 @@ await runCli(async (signal) => {
   if (positionals.length !== 1) {
     throw new Error('Usage: kisaki-package <pack|check>')
   }
+
   const operation = positionals[0]
   if (operation === 'pack') {
     await packPackage(process.cwd(), signal)

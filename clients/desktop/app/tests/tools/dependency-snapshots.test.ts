@@ -63,6 +63,7 @@ test('Vite resolves complete snapshots and accepts environment-specific exports 
   expect(resolve(initial!.id.replace(/[?#].*$/, ''))).toBe(
     join(firstPackage, 'dist/development.js'),
   )
+
   const installed = await renderer.resolveDependency(
     'snapshot-dependency',
     join(firstPackage, 'dist/development.js'),
@@ -83,6 +84,7 @@ test('Vite resolves complete snapshots and accepts environment-specific exports 
   expect(createRequire(join(packageRoot, 'package.json')).resolve(`${name}/node-only`)).toBe(
     join(packageRoot, 'dist/node.js'),
   )
+
   await rename(join(packageRoot, 'dist'), join(packageRoot, 'held-dist'))
   await expect(captureDependencies(members, snapshotsRoot)).rejects.toThrow()
   expect(await readdir(snapshotsRoot)).toEqual([basename(first.directory)])
@@ -108,6 +110,7 @@ test('Vite resolves complete snapshots and accepts environment-specific exports 
   expect(await readFile(join(second.packages.get(name)!, 'dist/development.js'), 'utf8')).toContain(
     'second',
   )
+
   const unchanged = await captureDependencies(members, snapshotsRoot)
   await renderer.adopt(unchanged)
   expect(await readdir(snapshotsRoot)).toEqual([basename(second.directory)])

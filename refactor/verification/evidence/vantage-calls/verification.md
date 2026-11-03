@@ -53,4 +53,4 @@ macOS 13 的阴影边界、Accessibility 与采集窗口映射、各平台实际
 
 固定 [Node v24.11.1 AbortSignal 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/globals.md#class-abortsignal)定义期限和组合信号；[Node-API 文档](https://github.com/nodejs/node/blob/v24.11.1/doc/api/n-api.md#asynchronous-thread-safe-function-calls)定义原生回调的事件循环引用、异常与环境清理。绑定负责按公开合同安排首次交付和释放，在 JavaScript 环境结束时完成原生收尾。
 
-[Windows 采集文档](https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture)定义帧到达、取帧和实际内容尺寸。Vantage 的取消与资源寿命按平台接口实现，宿主拥有整次业务的等待预算。原生调用、权限与帧边界的验收见[W11](../../../implementation/work-packages.md#w11)。
+[Windows 采集文档](https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture)定义帧到达、取帧和实际内容尺寸。Vantage 的取消与资源寿命按平台接口实现，宿主拥有整次业务的等待预算。原生调用、权限与帧边界的验收见[W09](../../../implementation/work-packages.md#w09)。

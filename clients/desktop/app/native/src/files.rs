@@ -230,6 +230,7 @@ impl Task for SyncTask {
         let result = file.sync_all();
 
         drop(file);
+
         Ok(match result {
             Ok(()) => success(),
             Err(error) => sync_failure(error),

@@ -48,10 +48,12 @@ function hasLiteralComponents(value: Value): boolean {
     if (node.type === 'Dimension' && !/^[a-z]+$/i.test(ident.decode(node.unit))) {
       valid = false
     }
+
     if (!valid) {
       return walk.break
     }
   })
+
   return valid
 }
 
@@ -68,6 +70,7 @@ function hasValidShadowBlur(value: Value): boolean {
       }
     }
   }
+
   return true
 }
 
@@ -99,6 +102,7 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
     }
     throw new TypeError(`Invalid value for appearance token ${name}`, { cause })
   }
+
   if (
     ast.type !== 'Value' ||
     !hasLiteralComponents(ast) ||
@@ -106,6 +110,7 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
   ) {
     throw new TypeError(`Invalid value for appearance token ${name}`)
   }
+
   return generate(ast)
 }
 

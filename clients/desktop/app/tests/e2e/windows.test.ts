@@ -10,15 +10,18 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
     }) => {
       const page = await desktop.firstWindow()
       await expect(page.getByRole('heading')).toHaveText('Engineering fixture')
+
       const identity = await page.evaluate(async () => {
         const carrier = window as typeof window & {
           fixture: { identity(): Promise<{ kind: string; buildId: string; workerPid: number }> }
         }
         return carrier.fixture.identity()
       })
+
       expect(identity.kind).toBe(kind)
       expect(identity.buildId).toMatch(/\S/)
       expect(identity.workerPid).toBeGreaterThan(0)
+
       expect(await page.evaluate(() => typeof (globalThis as { process?: unknown }).process)).toBe(
         'undefined',
       )

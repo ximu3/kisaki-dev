@@ -24,6 +24,7 @@ export async function buildNative(
   }
 
   const output = join(appRoot, 'out', 'native', target)
+
   await replaceOutput(
     appRoot,
     output,

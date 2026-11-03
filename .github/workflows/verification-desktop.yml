@@ -1,4 +1,5 @@
 name: Desktop verification
+
 on:
   workflow_call:
     inputs:
@@ -23,6 +24,7 @@ on:
         value: ${{ jobs.desktop.outputs.verified }}
 permissions:
   contents: read
+
 env:
   # Optional cache restoration should fall back before consuming the feedback budget.
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
@@ -88,6 +90,7 @@ jobs:
           if [[ -z "$TURBO_SCM_BASE" || "$TURBO_SCM_BASE" == 0000000000000000000000000000000000000000 ]] || ! git cat-file -e "$TURBO_SCM_BASE^{commit}"; then
             complete=true
           fi
+
           if [[ "$complete" == false ]]; then
             orchestration=$(
               git diff --name-only "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- \
@@ -99,12 +102,14 @@ jobs:
             )
             if [[ -n "$orchestration" ]]; then complete=true; fi
           fi
+
           mkdir -p test-results/verification
           report=test-results/verification/affected.json
           if [[ "$complete" == false ]]; then
             jq -n --arg base "$TURBO_SCM_BASE" --arg head "$TURBO_SCM_HEAD" '{base: $base, head: $head}' > "$RUNNER_TEMP/verification-refs.json"
             pnpm exec turbo query config/turbo/verification.graphql --variables "$RUNNER_TEMP/verification-refs.json" > "$report"
             jq -e '.errors == null and (.data.affectedTasks.items | type == "array")' "$report" > /dev/null
+
             # Required build prerequisites also use TaskAllChanged; they do not expand verification.
             if jq -e '
               any(.data.affectedTasks.items[];
@@ -116,7 +121,9 @@ jobs:
           else
             jq -n '{complete: true}' > "$report"
           fi
+
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
+
           requiresAllTargets=false
           for task in native e2e dev artifacts; do
             selected="$complete"
@@ -133,6 +140,7 @@ jobs:
               requiresAllTargets=true
             fi
           done
+
           tooling="$complete"
           if [[ "$complete" == false ]]; then
             tooling=$(jq -r '
@@ -142,6 +150,7 @@ jobs:
           fi
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
           if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
+
           consumers="$complete"
           if [[ "$complete" == false ]]; then
             consumers=$(jq -r '
@@ -152,6 +161,7 @@ jobs:
             ' "$report")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
+
           if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
             selected=true
@@ -250,11 +260,13 @@ jobs:
           if [[ "$TEST_DEV" == true ]]; then tasks+=(test:dev); fi
           if [[ "$TEST_ARTIFACTS" == true ]]; then tasks+=(test:artifacts); fi
           if [[ ${#tasks[@]} == 0 ]]; then exit 0; fi
+
           prefix=()
           if [[ "$RUNNER_OS" == Linux ]]; then
             export XDG_SESSION_TYPE=x11
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
+
           "${prefix[@]}" pnpm exec turbo run "${tasks[@]}" --filter=@kisaki3/desktop --concurrency=1
       - name: Save Turbo cache
         if: steps.turbo-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)

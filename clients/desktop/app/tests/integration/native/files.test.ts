@@ -112,6 +112,7 @@ test('a cross-volume move fails without copying or deleting the source', async (
       'Cross-volume verification and cleanup failed',
     )
   }
+
   await rm(other, { recursive: true, force: true })
 })
 
@@ -132,6 +133,7 @@ test('synchronizes existing regular files and reports missing or wrong-type path
       'Permission verification and restoration failed',
     )
   }
+
   await chmod(path, 0o600)
 
   await writeFile(path, 'content')

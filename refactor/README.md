@@ -2,15 +2,15 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-简洁、清晰、干净与克制是本目录同等首要的设计标准。所有主题及其限制、验证要求遵守根目录 [CONVENTIONS.md](../CONVENTIONS.md#quality) 的共同原则，具体产品与技术语义由本目录所属主题定义。
+简洁、清晰、干净与克制是本目录同等首要的设计标准。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
 界面与资源的对照工程位于 `F:/project/3/kisaki`。
 
 <a id="rewrite"></a>
 
-按已确认目标完整设计架构、实现代码并建立工程。目录、命名、分层和抽象从职责与实际约束独立推导，遵守[编码与实现质量](../CONVENTIONS.md#quality)。
+按已确认目标完整设计架构、实现代码并建立工程。目录、命名、分层和抽象从职责与实际约束独立推导，遵守[编码与实现质量](design/engineering/conventions.md#quality)。
 
-本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。每个包与独立项目由一个工作包完整交付，本体能力连同对应业务界面验收；依赖与验证进度用于安排执行。尚未解决的设计事项记录为未完成，在形成完整实施依据前继续闭合。
+本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。每个包与独立项目由所属工作包完成实现与适用验收，本体能力连同对应业务界面验收；[项目文档](implementation/work-packages.md#w23)按对象在整体验收前完成。W24 通过后，W25 统一执行[本轮首次公开发行](design/engineering/releases.md#first-release)。实现、文档、验收和发布分别记录，依赖与验证进度用于安排执行。尚未解决的设计事项记录为未完成，在形成完整实施依据前继续闭合。
 
 方案取舍遵守[产品判断原则](design/product.md#judgment)，设计是否足以实施按[设计充分性与实现自由](design/engineering/conventions.md#design-completion)核对。关键业务与公开语义在规格中确定，局部实现选择在明确约束内完成。
 
@@ -31,6 +31,7 @@
 | 构建、发布或维护工程 | [工程与发行](design/engineering/README.md)                                                                                              |
 | 核对要求与交付       | [R01–R32 覆盖矩阵](verification/coverage.md) → [A01–A33 验收](verification/acceptance.md) → [验证证据](verification/evidence/README.md) |
 | 了解当前进度         | [实施状态](implementation/status.md)                                                                                                    |
+| 运行或维护当前工程   | [源码职责、环境准备与可运行命令](implementation/development.md)                                                                        |
 
 完整主题导航见[设计目录](design/README.md)。
 
@@ -42,6 +43,7 @@
 | -------------------------------------------- | -------------------------------------------------- |
 | `design/`                                    | 当前产品与技术规则，以及理解这些规则所需的取舍理由 |
 | `implementation/work-packages.md`            | 实施依赖、交付内容与完成门槛，通过链接引用设计     |
+| `implementation/development.md`              | 当前源码职责、环境准备与开发验证入口               |
 | `implementation/status.md`                   | 当前设计、实施、验收和发布进度                     |
 | `implementation/delivery-checklist.md`       | 逐项扩展与独立项目的完整交付及消费状态             |
 | `verification/acceptance.md` 与 `scenarios/` | 测试环境、具体场景、预期结果与证据要求             |

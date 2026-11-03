@@ -71,4 +71,4 @@ python refactor/verification/evidence/libmpv-upstream-fix/verify.py
 
 构建脚本会核对依赖冻结记录，并在原版复现六个核心失败场景后才建立补丁工作树。每场景的两个返回帧均在 finally 中释放；原始像素、Lua、ASS、构建目录和运行 DLL 保存在仓库忽略缓存，记录保留摘要。
 
-同源对照将低峰值线性字幕问题定位到上游 pass_tone_map 的零分母路径，并验证了补丁在所列 Windows D3D11 场景中的效果。正式构建使用[固定源码与补丁](../../../design/projects/libmpv-node/distribution.md)，更换为包含等效修复的上游版本时重新执行回归。SDR 宿主消费、HDR 片源到 SDR、动态字幕、资源池及各目标制品按 W13 验收。
+同源对照将低峰值线性字幕问题定位到上游 pass_tone_map 的零分母路径，并验证了补丁在所列 Windows D3D11 场景中的效果。正式构建使用[固定源码与补丁](../../../design/projects/libmpv-node/distribution.md)，更换为包含等效修复的上游版本时重新执行回归。SDR 宿主消费、HDR 片源到 SDR、动态字幕、资源池及各目标制品按 W11 验收。

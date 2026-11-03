@@ -1,0 +1,82 @@
+{
+  "name": "@kisaki3/extension-distribution",
+  "version": "0.1.0-dev.0",
+  "description": "Extension manifests, registry formats, compatibility rules and Ed25519 signing for Kisaki.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=24.11.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki-dev.git",
+    "directory": "clients/desktop/packages/extension-distribution"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "release-notes"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.js"
+    },
+    "./registry": {
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js"
+    },
+    "./metadata": {
+      "types": "./dist/metadata.d.ts",
+      "import": "./dist/metadata.js"
+    },
+    "./compatibility": {
+      "types": "./dist/compatibility.d.ts",
+      "import": "./dist/compatibility.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.js"
+    },
+    "./node/signing": {
+      "types": "./dist/node/signing.d.ts",
+      "import": "./dist/node/signing.js"
+    }
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "pack": "kisaki-package pack",
+    "check:package": "kisaki-package check",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:consumers": "vitest run --config config/vitest/consumers.ts",
+    "clean": "tsx tools/clean.ts"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "0.10.1",
+    "canonicalize": "5.1.0",
+    "jsonc-parser": "3.3.1",
+    "semver": "7.8.5"
+  },
+  "devDependencies": {
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@playwright/test": "1.64.1",
+    "@types/node": "catalog:",
+    "@types/semver": "7.8.0",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "tsdown": "0.23.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

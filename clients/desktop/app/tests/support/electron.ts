@@ -11,6 +11,7 @@ import { join } from 'node:path'
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { electronExecutable } from '../../tools/dev/electron-executable'
+
 type WindowKind = 'main' | 'reader' | 'player' | 'game-panel'
 
 /** A completed desktop build launched with a profile owned by this test. */

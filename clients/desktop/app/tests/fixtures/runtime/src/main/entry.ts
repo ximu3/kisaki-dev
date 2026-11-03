@@ -20,6 +20,7 @@ const kind = argument('window') ?? 'main'
 if (!['main', 'reader', 'player', 'game-panel'].includes(kind)) {
   throw new Error('Unknown fixture entry')
 }
+
 const runtime = app.isPackaged
   ? app.getAppPath()
   : resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -49,6 +50,7 @@ async function runFixture(): Promise<void> {
     if (name.startsWith('..') || isAbsolute(name)) {
       return new Response(null, { status: 403 })
     }
+
     const types: Record<string, string> = {
       '.html': 'text/html',
       '.js': 'text/javascript',
@@ -69,6 +71,7 @@ async function runFixture(): Promise<void> {
       resolveClosed()
     }),
   )
+
   await new Promise<void>((resolveReady, reject) => {
     const timeout = setTimeout(
       () => reject(new Error('Fixture worker readiness timed out')),
@@ -105,11 +108,13 @@ async function runFixture(): Promise<void> {
       writeFileSync(join(app.getPath('userData'), 'cancelled-hosts.json'), JSON.stringify(pids))
     })
   }
+
   ipcMain.handle('fixture:identity', () => ({
     kind,
     buildId: __KISAKI_BUILD_ID__,
     workerPid: worker.pid,
   }))
+
   let canQuit = false
   /** Exercise normal cancellable window close without defining a product shutdown contract. */
   function closeWindow(): void {
@@ -118,6 +123,7 @@ async function runFixture(): Promise<void> {
       window.close()
     }
   }
+
   window.on('close', (event) => {
     queueMicrotask(() => {
       debug('Window close requested: prevented=%s', event.defaultPrevented)
@@ -126,6 +132,7 @@ async function runFixture(): Promise<void> {
       }
     })
   })
+
   app.on('before-quit', (event) => {
     debug('Application before-quit: canQuit=%s', canQuit)
     if (!canQuit) {
@@ -133,6 +140,7 @@ async function runFixture(): Promise<void> {
       closeWindow()
     }
   })
+
   window.once('closed', () => {
     const terminated = worker.kill()
     debug('Window closed; utility termination requested: %s', terminated)
@@ -142,6 +150,7 @@ async function runFixture(): Promise<void> {
       app.quit()
     })
   })
+
   process.on('message', (message) => {
     if (
       message &&
@@ -153,6 +162,7 @@ async function runFixture(): Promise<void> {
     }
   })
   process.once('disconnect', closeWindow)
+
   const rendererUrl = argument('renderer-url')
   await window.loadURL(
     rendererUrl

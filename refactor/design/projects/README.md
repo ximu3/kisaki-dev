@@ -1,8 +1,8 @@
 # 独立技术项目
 
-四个项目分别维护仓库、公共合同、版本与发行，并各有一个[完整交付工作包](../../implementation/work-packages.md#independent-projects)。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
+四个项目分别维护仓库、公共合同、版本与发行，由[所属工作包](../../implementation/work-packages.md#independent-projects)完成实现与验收，[W23](../../implementation/work-packages.md#w23)按项目完成正式文档。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目以[简洁、清晰、干净与克制](../../../CONVENTIONS.md#quality)为首要原则，落实[终态实现与整体一致性](../../../CONVENTIONS.md#final-state)，遵守[可读性](../../../CONVENTIONS.md#readability-principle)和[原生原则](../../../CONVENTIONS.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目以[简洁、清晰、干净与克制](../engineering/conventions.md#quality)为首要原则，落实[终态实现与整体一致性](../engineering/conventions.md#final-state)，遵守[可读性](../engineering/conventions.md#readability-principle)和[原生原则](../engineering/conventions.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |
@@ -30,7 +30,7 @@ Vantage、Kana、libmpv-node 和 oauth-relay 均按可独立消费、独立版�
 
 完整项目交付包括全部公开能力、工程、测试、示例、类型与制品消费、兼容性、发行说明、文档及必要平台资源。测试样例证明实际消费方式，不据此宣称已经存在其他真实产品用户。库内验证各自承诺，Kisaki 验证新增的业务接入风险，不在每层重复整套用例。
 
-各项目独立构建、消费和维护，编码规范遵守[归属规则](../../../CONVENTIONS.md#ownership)。
+各项目独立构建、消费和维护，当前实施遵守[共用规范](../engineering/conventions.md)。正式交付时，项目的 CONVENTIONS.md 结合共同要求、语言生态与实际工程形成完整规范，文档职责与形成时机见[项目文档交付](../engineering/documentation.md#lifecycle)。
 
 本体的私有能力仍由本体拥有，例如恢复所需的不覆盖移动不扩入 Vantage。独立边界同样不替本体承担 Work、Part、Session、数据库与用户流程。各项目按自身公开范围完成独立验收，本体验证实际消费及业务关系。
 
@@ -47,6 +47,6 @@ Vantage、Kana、libmpv-node 和 oauth-relay 均按可独立消费、独立版�
 
 Kisaki 与四个独立项目分别位于 F:/project 下的同名目录，仓库建立、开发交付和来源存档按[仓库规范](../engineering/repository.md)执行。独立项目在各自仓库维护完整源码、工具链、锁文件、测试、发行说明、CI 和使用文档，并按自身环境提供 TypeScript 或 Rust 配置及所需原生制品。
 
-项目自身交付完成后，由 Kisaki 业务工作包接入，桌面发行再核对最终制品消费。各项目与消费方分别记录实际结果，项目自身的必需工作由其唯一工作包收尾。
+项目自身实现与候选制品通过适用验证后，由 Kisaki 业务工作包接入；桌面制品工作包核对装配与消费，项目文档由文档工作包完成。各项目与消费方分别记录实际结果，本轮首次公开发行与生产接入遵守[统一首发节点](../engineering/releases.md#first-release)。
 
 正式 manifest 和锁文件引用可实际取得的版本及配套资源。开发联调使用固定提交生成的 tarball 和原生资源，不通过跨仓源码路径或 link 接入。联合验收记录所用版本、制品摘要和服务合同，并检查真实客户端调用；各项目保留独立版本。

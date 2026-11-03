@@ -76,6 +76,7 @@ export async function captureDependencies(
       await collect(join(member.path, 'dist'), `${member.name}/dist`)
       packages.set(member.name, join(candidate, 'node_modules', member.name))
     }
+
     return { id: digest.digest('hex'), directory: candidate, packages }
   } catch (cause) {
     try {
@@ -85,6 +86,7 @@ export async function captureDependencies(
         cause: cleanup,
       })
     }
+
     throw cause
   }
 }

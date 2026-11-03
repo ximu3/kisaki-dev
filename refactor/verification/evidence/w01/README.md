@@ -13,7 +13,7 @@
 | 工程         | pnpm check 通过；新增依赖边界与任务选择断言随后通过针对性复核。纯视觉源码不能直接导入 Node 或应用实现，样式与消费测试变化触发对应回归，Markdown 修改不触发运行回归。                                     |
 | 制品与许可   | pnpm desktop:packages:pack 的构建、publint、Are the Types Wrong 通过；pnpm desktop:test:consumers 的 3 项实际消费测试通过。MIT 许可和 CSS Tree、MDN data、source-map-js 的原文通知随包交付。             |
 
-该次验证使用未发布版本 0.1.0-dev.0。制品包含 tokens、values、defaults、普通样式和 Tailwind 映射，以及 README、发行说明和许可材料。当时的打包收据及逐份 SHA-256 保存于 artifacts/desktop/packages/packages.json，消费者报告及浏览器截图保存于根 test-results/consumers；这些是该次验收产物的位置，现行入口与输出见[开发验证](../../../../CONTRIBUTING.md)。制品没有私有工程入口、字体或图片；声明不依赖解析库的内部类型。
+该次验证使用未发布版本 0.1.0-dev.0。制品包含 tokens、values、defaults、普通样式和 Tailwind 映射，以及 README、发行说明和许可材料。当时的打包收据及逐份 SHA-256 保存于 artifacts/desktop/packages/packages.json，消费者报告及浏览器截图保存于根 test-results/consumers；这些是该次验收产物的位置，现行入口与输出见[开发验证](../../../implementation/development.md#verification)。制品没有私有工程入口、字体或图片；声明不依赖解析库的内部类型。
 
 ## CI 结果
 

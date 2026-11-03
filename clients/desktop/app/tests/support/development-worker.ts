@@ -18,7 +18,8 @@ const stopFailure = new Promise<never>((_resolve, reject) => {
 let session: DevelopmentSession | undefined
 let failed = false
 
-const stop = () => {
+/** Request normal shutdown and report a refused quit to the parent test. */
+function stop(): void {
   if (session) {
     void session.stop().then((result) => {
       if (result === 'cancelled' && process.connected) {
@@ -34,14 +35,41 @@ const stop = () => {
   }
 }
 
-const message = (value: unknown) => {
-  if (value && typeof value === 'object' && 'type' in value && value.type === 'stop') {
-    stop()
+/** Finish an in-flight quit before closing a fixture that can refuse its first close once. */
+async function cleanup(): Promise<void> {
+  const current = session
+  if (!current) {
+    controller.abort(new Error('Fixture development session stopped'))
+    return
+  }
+
+  const outcome = await current.stop()
+  if (outcome === 'cancelled') {
+    const final = await current.stop()
+    if (final === 'cancelled') {
+      throw new Error('Fixture refused test-scope cleanup')
+    }
   }
 }
 
+const message = (value: unknown) => {
+  if (!value || typeof value !== 'object' || !('type' in value)) {
+    return
+  }
+
+  if (value.type === 'stop') {
+    stop()
+  } else if (value.type === 'cleanup') {
+    void cleanup().catch(rejectStop)
+  }
+}
+
+const disconnected = () => {
+  void cleanup().catch(rejectStop)
+}
+
 process.on('message', message)
-process.once('disconnect', stop)
+process.once('disconnect', disconnected)
 
 try {
   session = await startDevelopmentSession({
@@ -112,7 +140,7 @@ try {
   }
 
   process.off('message', message)
-  process.off('disconnect', stop)
+  process.off('disconnect', disconnected)
   if (process.connected) {
     process.disconnect()
   }
