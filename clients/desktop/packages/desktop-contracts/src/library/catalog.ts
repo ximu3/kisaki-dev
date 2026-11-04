@@ -1,26 +1,26 @@
 /** @fileoverview Owns the seven entry identities, five real part identities and their editable catalog values. */
 
-import * as v from 'valibot'
-import { normalizeLocale } from '@kisaki3/extension-distribution/metadata'
-import { parseCalendarDate, parsePartialDate } from '../date'
-import type { CalendarDate, PartialDate } from '../date'
-import { DesktopError } from '../errors'
-import type { NonEmptyArray } from '../operations'
+import type { PartialDate, CalendarDate } from '../date'
 import type { PreparedAttachment } from '../resources'
-import { parsePreparedAttachment } from '../resources'
+import * as v from 'valibot'
 import {
   id,
   nonemptyText,
-  nonnegativeInteger,
-  nonnegativeNumber,
-  optionalFields,
   parseExternalValue,
-  parseValue,
-  rating,
-  text,
   unique,
+  nonnegativeNumber,
+  rating,
+  nonnegativeInteger,
+  text,
+  optionalFields,
+  parseValue,
   validateExpectedKeys,
 } from '../validation'
+import { parsePartialDate, parseCalendarDate } from '../date'
+import { normalizeLocale } from '@kisaki3/extension-distribution/metadata'
+import { parsePreparedAttachment } from '../resources'
+import { DesktopError } from '../errors'
+import type { NonEmptyArray } from '../operations'
 
 /** Actual independently cataloged kinds. Work is a subset, not another identity layer. */
 export const entryTypes = Object.freeze([
@@ -45,7 +45,9 @@ export const partTypes = Object.freeze([
 
 /** Entry kinds share stable IDs; implementation still verifies the real type for every supplied reference. */
 export type EntryType = (typeof entryTypes)[number]
+
 export type WorkType = (typeof workTypes)[number]
+
 export type PartType = (typeof partTypes)[number]
 
 /** A type-qualified catalog identity. The type never grants access to an otherwise hidden object. */
@@ -86,10 +88,15 @@ export type LanguageTag = string
 
 /** Adopted explicit classifications; null in the owning field means unknown. */
 export type Gender = 'male' | 'female' | 'nonBinary' | 'genderless' | 'other'
+
 export type BloodType = 'a' | 'b' | 'ab' | 'o'
+
 export type WorkStatus = 'planned' | 'active' | 'onHold'
+
 export type ReleaseStatus = 'planned' | 'ongoing' | 'finished' | 'paused' | 'cancelled'
+
 export type AnimeEpisodeType = 'regular' | 'special'
+
 export type AnimeExtraType = 'opening' | 'ending' | 'promotion' | 'interview' | 'other'
 
 /** A definite nonnegative quantity or the full nonempty source wording; no inferred units or range truncation. */
@@ -304,9 +311,13 @@ export type EntryDetails<T extends EntryType = EntryType> = {
 }[T]
 
 export const entryRefSchema = v.strictObject({ type: v.picklist(entryTypes), id })
+
 export const workRefSchema = v.strictObject({ type: v.picklist(workTypes), id })
+
 export const partRefSchema = v.strictObject({ type: v.picklist(partTypes), id })
+
 export const partialDateSchema = v.pipe(v.unknown(), v.transform(parsePartialDate))
+
 export const calendarDateSchema = v.pipe(v.unknown(), v.transform(parseCalendarDate))
 
 export const languageSchema = v.pipe(
@@ -325,7 +336,9 @@ export const identitiesSchema = v.pipe(
 )
 
 export const externalLinkSchema = v.strictObject({ name: nonemptyText, url: nonemptyText })
+
 export const genderSchema = v.picklist(['male', 'female', 'nonBinary', 'genderless', 'other'])
+
 export const statusSchema = v.picklist(['planned', 'active', 'onHold'])
 
 export const releaseStatusSchema = v.picklist([
@@ -357,6 +370,7 @@ export const completionFieldsSchema = v.strictObject({
 })
 
 export const entryTagEntries = { tagId: id, note: v.nullable(text), isSpoiler: v.boolean() }
+
 export const entryCollectionEntries = { collectionId: id, note: v.nullable(text) }
 
 export const entryTagInputSchema = v.strictObject({
@@ -380,6 +394,7 @@ export const entryCollectionsSchema = v.pipe(
 )
 
 const nullableDate = v.nullable(partialDateSchema)
+
 const nullableCount = v.nullable(nonnegativeInteger)
 
 export const entryCommonEntries = {
@@ -664,3 +679,6 @@ export function parseEntryRefs(input: unknown): NonEmptyArray<EntryRef> {
     'Invalid entry selection',
   )
 }
+
+/** Only actual file-bearing work types own recognition profiles. */
+export type FileWorkType = 'anime' | 'comic' | 'novel'

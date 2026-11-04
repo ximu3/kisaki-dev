@@ -1,11 +1,11 @@
 /** @fileoverview Defines instance-owned private JSON and protected secret storage with per-key atomic comparisons. */
 
-import * as v from 'valibot'
-import { DesktopError } from './errors'
-import { parseJsonValue } from './json'
 import type { JsonValue } from './json'
 import type { CallOptions } from './operations'
-import { id, nonemptyText, parseValue, text, unique } from './validation'
+import * as v from 'valibot'
+import { nonemptyText, id, unique, text, parseValue } from './validation'
+import { parseJsonValue } from './json'
+import { DesktopError } from './errors'
 
 /** Value and revision are from one read. Null outside the snapshot means absent; a JSON null value remains present. */
 export interface PrivateValue<T> {

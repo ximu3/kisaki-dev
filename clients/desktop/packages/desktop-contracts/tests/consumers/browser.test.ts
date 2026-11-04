@@ -49,7 +49,7 @@ const test = consumerTest('browser')
     return page
   })
 
-test('browser-only globals compile the public contract and generated call associations', async ({
+test('browser-only globals compile the public contract and public declarations', async ({
   consumerDirectory,
   signal,
 }) => {
@@ -58,10 +58,7 @@ test('browser-only globals compile the public contract and generated call associ
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 })
 
-test('pure values and literal-tag ICU messages run in the main document and an iframe', async ({
-  page,
-  siteUrl,
-}) => {
+test('pure catalog values run in the main document and an iframe', async ({ page, siteUrl }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
 
@@ -71,18 +68,18 @@ test('pure values and literal-tag ICU messages run in the main document and an i
   expect(JSON.parse((await page.locator('#summary').textContent())!)).toEqual({
     date: { year: 2004 },
     entryType: 'game',
-    order: -1,
     metadataType: 'anime',
-    message: '2 items selected',
+    locale: 'zh-Hans-CN',
     link: 'kisaki://view/anime/external/bangumi/subject%2F123',
-    themeFont: 'default',
+    theme: 'builtin',
     protocol: 1,
   })
 
   await page.frameLocator('#view').locator('body[data-ready="true"]').waitFor()
 
   expect(await page.frameLocator('#view').locator('body').textContent()).toBe(
-    '<b>{literal}</b> · 2',
+    '{"literal":"<b>{literal}</b>"}',
   )
+
   expect(errors).toEqual([])
 })

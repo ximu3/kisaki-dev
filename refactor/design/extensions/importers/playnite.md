@@ -156,8 +156,8 @@ Node 负责 ZIP、目录范围、字节限制、任务取消及来源语义；�
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

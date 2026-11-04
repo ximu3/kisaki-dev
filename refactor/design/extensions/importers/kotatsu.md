@@ -160,8 +160,8 @@ history 保存每部漫画最近的阅读位置与进度，其时间、chapter �
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

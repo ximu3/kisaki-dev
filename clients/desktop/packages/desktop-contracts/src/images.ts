@@ -1,9 +1,9 @@
 /** @fileoverview Defines verified image preparation and deterministic transforms on retained source content. */
 
-import * as v from 'valibot'
+import type { PreparedAttachment, FileInput, ReadResourceRef } from './resources'
 import type { CallOptions } from './operations'
-import type { FileInput, PreparedAttachment, ReadResourceRef } from './resources'
-import { nonnegativeInteger, parseValue, positiveInteger } from './validation'
+import { parseValue, nonnegativeInteger, positiveInteger } from './validation'
+import * as v from 'valibot'
 
 /** Formats of verified prepared bytes; SVG and ICO are converted to PNG before this result is exposed. */
 export type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif' | 'gif'

@@ -1,40 +1,40 @@
 /** @fileoverview Defines real part catalog operations, anime kind corrections and comic volume membership. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { PartialDate } from '../date'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import type { PreparedAttachment } from '../resources'
-import {
-  id,
-  nonnegativeInteger,
-  optionalFields,
-  parseValue,
-  text,
-  unique,
-  validateExpectedKeys,
-} from '../validation'
-import {
-  entryRefSchema,
-  externalLinkSchema,
-  identitiesSchema,
-  parsePartRef,
-  partRefSchema,
-  partTypes,
-  partialDateSchema,
-  preparedSchema,
-} from './catalog'
 import type {
+  ExternalLink,
+  ExternalIdentity,
   AnimeEpisodeType,
   AnimeExtraType,
-  EntryRef,
-  ExternalIdentity,
-  ExternalLink,
-  PartRef,
   PartType,
+  EntryRef,
   PartWorkType,
+  PartRef,
 } from './catalog'
-import type { MoveInput, ReorderInput } from './ordering'
+import type { PartialDate } from '../date'
+import type { PreparedAttachment } from '../resources'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import type { ReorderInput, MoveInput } from './ordering'
+import * as v from 'valibot'
+import {
+  text,
+  id,
+  nonnegativeInteger,
+  parseValue,
+  optionalFields,
+  validateExpectedKeys,
+  unique,
+} from '../validation'
+import {
+  externalLinkSchema,
+  identitiesSchema,
+  partialDateSchema,
+  partTypes,
+  preparedSchema,
+  partRefSchema,
+  parsePartRef,
+  entryRefSchema,
+} from './catalog'
+import { DesktopError } from '../errors'
 
 /** Shared part facts, with nullable real titles; UI placeholders are never stored as names. */
 export interface PartCommonFields {
@@ -81,6 +81,7 @@ export interface PartSpecificFields {
 }
 
 export type PartFields<T extends PartType> = PartCommonFields & PartSpecificFields[T]
+
 export type PartCreateFields<T extends PartType> = Partial<PartFields<T>>
 
 /** Type-qualified creation; omitted fields use their domain defaults and completed defaults to false. */
@@ -254,7 +255,9 @@ export const partCommonEntries = {
 }
 
 export const episodeTypeSchema = v.picklist(['regular', 'special'])
+
 export const extraTypeSchema = v.picklist(['opening', 'ending', 'promotion', 'interview', 'other'])
+
 const nullableCount = v.nullable(nonnegativeInteger)
 
 export const partSpecificEntries = {

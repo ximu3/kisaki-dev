@@ -1,10 +1,10 @@
 /** @fileoverview Defines host HTTP consumption and explicit proxy values without exposing Electron networking objects. */
 
-import * as v from 'valibot'
-import { DesktopError } from './errors'
 import type { ErrorSummary } from './errors'
-import type { Disposable, Listener } from './operations'
-import { id, parseValue, text } from './validation'
+import type { Listener, Disposable } from './operations'
+import { parseValue, text, id } from './validation'
+import { DesktopError } from './errors'
+import * as v from 'valibot'
 
 /** A single HTTP/HTTPS/SOCKS5 endpoint; credentials are separate protected values, never URL user information. */
 export type ProxyEndpoint = string

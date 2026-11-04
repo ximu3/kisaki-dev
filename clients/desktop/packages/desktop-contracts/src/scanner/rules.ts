@@ -1,26 +1,11 @@
 /** @fileoverview Validates and expands native scanner clue rules inside a caller-owned bounded execution unit. */
 
 import * as v from 'valibot'
-import { parsePartialDate } from '../date'
-import { DesktopError } from '../errors'
-import { scannerMessages } from '../i18n/en/scanner'
-import { id, nonemptyText, parseValue, text } from '../validation'
-import { parseExternalIdentity } from '../library/catalog'
-import type { ExternalIdentity } from '../library/catalog'
-import {
-  expandTextTemplate,
-  inspectTextPattern,
-  matchTextPattern,
-  parseTextTemplate,
-} from '../text-rules'
-import { parseIdentificationClues } from '../metadata/fields'
+import { nonemptyText, parseValue, id, text } from '../validation'
+import { inspectTextPattern, parseTextTemplate } from '../text-rules'
+import type { NonEmptyArray } from '../operations'
 import type { WorkClues } from '../metadata/fields'
-import type {
-  ClueExtractionOutput,
-  ClueExtractionPreset,
-  ClueExtractionResult,
-  ClueExtractionRule,
-} from './values'
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 
 const dateOutput = v.pipe(
   v.strictObject({
@@ -82,191 +67,38 @@ export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
   return rule
 }
 
-function dateNumber(value: string, signed: boolean): number {
-  const text = value.trim()
-  if (!(signed ? /^[+-]?[0-9]+$/ : /^[0-9]+$/).test(text)) {
-    throw new DesktopError('InvalidInput', 'A date output must be a complete decimal integer')
-  }
-
-  const integer = BigInt(text)
-  if (integer < BigInt(Number.MIN_SAFE_INTEGER) || integer > BigInt(Number.MAX_SAFE_INTEGER)) {
-    throw new DesktopError('InvalidInput', 'Date output is outside the safe integer range')
-  }
-
-  return Number(integer)
+/** Templates only target root-work clues; no file rename, local ID, private provider setting or arbitrary object path is permitted. */
+export interface ClueExtractionOutput {
+  readonly name?: string
+  readonly originalName?: string
+  readonly releaseDate?: { readonly year?: string; readonly month?: string; readonly day?: string }
+  readonly externalIdentities?: NonEmptyArray<{
+    readonly source: string
+    readonly sourceId: string
+  }>
 }
 
-function nameOutput(
-  template: string | undefined,
-  captures: Readonly<Record<string, string>>,
-): string | undefined {
-  if (template === undefined) {
-    return undefined
-  }
+export interface ClueExtractionRule {
+  readonly id: string
+  readonly name: string
+  readonly enabled: boolean
 
-  const value = expandTextTemplate(template, captures)
-  if (value === undefined) {
-    return undefined
-  }
-  if (!value.trim()) {
-    throw new DesktopError('InvalidInput', 'A matched name output must not be blank')
-  }
+  readonly input: 'baseName' | 'relativePath'
+  readonly pattern: string
+  readonly ignoreCase: boolean
 
-  return value.trim()
+  readonly output: ClueExtractionOutput
 }
 
-/** Expand whole fields, preserving missing-capture semantics and full identity pairs, then apply the common clue/date rules. */
-export function expandClueExtractionOutput(
-  output: ClueExtractionOutput,
-  captures: Readonly<Record<string, string>>,
-): WorkClues {
-  const name = nameOutput(output.name, captures)
-  const originalName = nameOutput(output.originalName, captures)
-
-  const date: { year?: number; month?: number; day?: number } = {}
-  for (const component of ['year', 'month', 'day'] as const) {
-    const template = output.releaseDate?.[component]
-    if (template === undefined) {
-      continue
-    }
-
-    const value = expandTextTemplate(template, captures)
-    if (value !== undefined) {
-      date[component] = dateNumber(value, component === 'year')
-    }
-  }
-
-  const releaseDate = Object.keys(date).length > 0 ? parsePartialDate(date) : undefined
-
-  const identities: ExternalIdentity[] = []
-  const seen = new Set<string>()
-  for (const mapping of output.externalIdentities ?? []) {
-    const source = expandTextTemplate(mapping.source, captures)
-    const sourceId = expandTextTemplate(mapping.sourceId, captures)
-    if (source === undefined && sourceId === undefined) {
-      continue
-    }
-    if (source === undefined || sourceId === undefined) {
-      throw new DesktopError(
-        'InvalidInput',
-        'A matched external identity needs both source and sourceId',
-      )
-    }
-
-    const identity = parseExternalIdentity({ source, sourceId })
-    const key = JSON.stringify([identity.source, identity.sourceId])
-    if (!seen.has(key)) {
-      seen.add(key)
-      identities.push(identity)
-    }
-  }
-
-  const clues = {
-    ...(name === undefined ? {} : { name }),
-    ...(originalName === undefined ? {} : { originalName }),
-    ...(releaseDate === undefined ? {} : { releaseDate }),
-    ...(identities.length > 0 ? { externalIdentities: identities } : {}),
-  }
-  if (Object.keys(clues).length === 0) {
-    throw new DesktopError('InvalidInput', 'The matched rule produced no usable work clues')
-  }
-
-  return parseIdentificationClues('game', clues)
+export interface ClueExtractionResult {
+  readonly clues: WorkClues
+  readonly ruleId: string | null
+  readonly captures: Readonly<Record<string, string>>
 }
 
-/**
- * Interpret a validated rule list only in a bounded terminable unit. A matched invalid output throws;
- * only a wholly unmatched list falls back to the original baseName, without chaining rules or recognizers.
- */
-export function extractWorkClues(
-  rules: readonly ClueExtractionRule[],
-  input: { readonly baseName: string; readonly relativePath: string },
-): ClueExtractionResult {
-  for (const rule of rules) {
-    if (!rule.enabled) {
-      continue
-    }
-
-    const captures = matchTextPattern(
-      inspectTextPattern(rule.pattern, rule.ignoreCase),
-      input[rule.input],
-    )
-    if (captures === null) {
-      continue
-    }
-
-    return { clues: expandClueExtractionOutput(rule.output, captures), ruleId: rule.id, captures }
-  }
-
-  return {
-    clues: parseIdentificationClues('game', { name: input.baseName }),
-    ruleId: null,
-    captures: {},
-  }
-}
-
-/** Return the nine opt-in native templates in catalog order. Consumers assign fresh rule IDs and localized editable names. */
-export function getClueExtractionPresets(): readonly ClueExtractionPreset[] {
-  const patterns = [
-    [
-      'bracket-both',
-      'bracketBoth',
-      String.raw`^(?:(?:\[[^\[\]【】\r\n\u2028\u2029]+\]|【[^\[\]【】\r\n\u2028\u2029]+】)[\t\p{Zs}]*)+(?<name>(?![\[【])\S[^\r\n\u2028\u2029]*?)[\t\p{Zs}]*(?:\[[^\[\]【】\r\n\u2028\u2029]+\]|【[^\[\]【】\r\n\u2028\u2029]+】)$`,
-    ],
-    [
-      'multi-bracket-prefix',
-      'multiBracketPrefix',
-      String.raw`^(?:(?:\[[^\[\]【】\r\n\u2028\u2029]+\]|【[^\[\]【】\r\n\u2028\u2029]+】)[\t\p{Zs}]*){2,}(?<name>(?![\[【])\S[^\r\n\u2028\u2029]*)$`,
-    ],
-    [
-      'release-year-suffix',
-      'releaseYearSuffix',
-      String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)[\t\p{Zs}]*(?=\([0-9]{4}\)$|（[0-9]{4}）$)[(（](?<year>[0-9]{4})[)）]$`,
-    ],
-    [
-      'version-suffix',
-      'versionSuffix',
-      String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)_v[0-9]+(?:\.[0-9]+)*$`,
-    ],
-    [
-      'lang-suffix',
-      'languageSuffix',
-      String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)[-_](?:CHS|CHT|JP|EN|KR|SC|TC)$`,
-    ],
-    [
-      'bracket-prefix',
-      'bracketPrefix',
-      String.raw`^(?:\[[^\[\]【】\r\n\u2028\u2029]+\]|【[^\[\]【】\r\n\u2028\u2029]+】)[\t\p{Zs}]*(?<name>\S[^\r\n\u2028\u2029]*)$`,
-    ],
-    [
-      'paren-prefix',
-      'parenPrefix',
-      String.raw`^(?:\([^()（）\r\n\u2028\u2029]+\)|（[^()（）\r\n\u2028\u2029]+）)[\t\p{Zs}]*(?<name>\S[^\r\n\u2028\u2029]*)$`,
-    ],
-    [
-      'bracket-suffix',
-      'bracketSuffix',
-      String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)[\t\p{Zs}]*(?:\[[^\[\]【】\r\n\u2028\u2029]+\]|【[^\[\]【】\r\n\u2028\u2029]+】)$`,
-    ],
-    [
-      'paren-suffix',
-      'parenSuffix',
-      String.raw`^(?<name>\S[^\r\n\u2028\u2029]*?)[\t\p{Zs}]*(?:\([^()（）\r\n\u2028\u2029]+\)|（[^()（）\r\n\u2028\u2029]+）)$`,
-    ],
-  ] as const
-
-  return patterns.map(([id, label, pattern]) => ({
-    id,
-    ...scannerMessages.presets[label],
-    rule: {
-      enabled: true,
-      input: 'baseName',
-      pattern,
-      ignoreCase: id === 'version-suffix' || id === 'lang-suffix',
-      output:
-        id === 'release-year-suffix'
-          ? { name: '$<name>', releaseDate: { year: '$<year>' } }
-          : { name: '$<name>' },
-    },
-  }))
+export interface ClueExtractionPreset {
+  readonly id: string
+  readonly name: LocalizedText
+  readonly description: LocalizedText
+  readonly rule: Omit<ClueExtractionRule, 'id' | 'name'>
 }

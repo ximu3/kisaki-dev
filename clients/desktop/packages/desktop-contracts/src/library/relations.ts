@@ -1,16 +1,17 @@
 /** @fileoverview Defines the four catalog relations, exact participation constraints and one canonical work-relation direction. */
 
+import type { WorkType, WorkRef, EntryRef } from './catalog'
+import type { ListOptions, CallOptions, ListResult } from '../operations'
+import type { ReorderInput, MoveInput } from './ordering'
 import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { ListOptions, ListResult, CallOptions } from '../operations'
-import { compareIdentityText } from '../text'
-import { id, optionalFields, parseValue, text, validateExpectedKeys } from '../validation'
+import { id, text, parseValue, optionalFields, validateExpectedKeys } from '../validation'
 import { workRefSchema } from './catalog'
-import type { EntryRef, WorkRef, WorkType } from './catalog'
-import type { MoveInput, ReorderInput } from './ordering'
+import { DesktopError } from '../errors'
+import { compareIdentityText } from '../text'
 
 /** Role in this work; null means an existing association whose importance is not classified. */
 export const characterRoles = Object.freeze(['main', 'supporting', 'cameo', 'other'] as const)
+
 export type CharacterRole = (typeof characterRoles)[number]
 
 /** Common work responsibilities, not professions or relationships without a work. */
@@ -213,8 +214,11 @@ export interface WorkRelation extends StoredWorkRelationBinding {
 
 /** New attributes default to null/false; nullable binding fields must still be supplied explicitly. */
 export type WorkCharacterCreate = WorkCharacterBinding & Partial<RelationProperties>
+
 export type PersonWorkCreate = PersonWorkBinding & Partial<RelationProperties>
+
 export type OrganizationWorkCreate = OrganizationWorkBinding & Partial<RelationProperties>
+
 export type WorkRelationCreate = WorkRelationBinding & { readonly note?: string | null }
 
 /** A binding baseline compares the whole original fact even when only its note is edited. */
@@ -311,8 +315,11 @@ export interface RelationsApi {
 }
 
 export const characterRefSchema = v.strictObject({ type: v.literal('character'), id })
+
 export const personRefSchema = v.strictObject({ type: v.literal('person'), id })
+
 export const organizationRefSchema = v.strictObject({ type: v.literal('organization'), id })
+
 export const relationPropertyEntries = { note: v.nullable(text), isSpoiler: v.boolean() }
 
 export const workCharacterBindingEntries = {
@@ -392,6 +399,17 @@ export function canUseOrganizationRole(role: OrganizationRole, workType: WorkTyp
   return organizationRoleWorkTypes[role]?.includes(workType) ?? true
 }
 
+/** Check the allowed medium combination of a trusted work relation, independently of endpoint identity. */
+export function canUseWorkRelation(type: WorkRelationType, from: WorkType, to: WorkType): boolean {
+  if (['remake', 'remakeSource', 'remaster', 'remasterSource'].includes(type)) {
+    return from === to
+  }
+  if (['port', 'portSource', 'expansion', 'baseGame'].includes(type)) {
+    return from === 'game' && to === 'game'
+  }
+  return true
+}
+
 const inverse: Readonly<Record<WorkRelationType, WorkRelationType>> = {
   sequel: 'prequel',
   prequel: 'sequel',
@@ -455,17 +473,8 @@ export function normalizeWorkRelation(input: WorkRelationBinding): StoredWorkRel
   if (value.from.id === value.to.id) {
     throw new DesktopError('InvalidInput', 'A work cannot relate to itself')
   }
-  if (
-    ['remake', 'remakeSource', 'remaster', 'remasterSource'].includes(value.type) &&
-    value.from.type !== value.to.type
-  ) {
-    throw new DesktopError('InvalidInput', 'This relation requires the same work type')
-  }
-  if (
-    ['port', 'portSource', 'expansion', 'baseGame'].includes(value.type) &&
-    (value.from.type !== 'game' || value.to.type !== 'game')
-  ) {
-    throw new DesktopError('InvalidInput', 'This relation requires two games')
+  if (!canUseWorkRelation(value.type, value.from.type, value.to.type)) {
+    throw new DesktopError('InvalidInput', 'Work relation does not support these media')
   }
 
   const symmetric = value.type === 'related' || value.type === 'alternativeVersion'

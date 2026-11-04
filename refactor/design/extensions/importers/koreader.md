@@ -165,8 +165,8 @@ XPointer 依赖来源生成的 DOM、DOM 版本和重排选项。不能把 DocFr
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

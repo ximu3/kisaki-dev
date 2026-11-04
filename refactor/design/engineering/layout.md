@@ -42,6 +42,7 @@ kisaki/
 │   │   │   ├── desktop-ui/
 │   │   │   ├── desktop-rpc/
 │   │   │   ├── desktop-contracts/
+│   │   │   ├── desktop-localization/
 │   │   │   ├── extension-distribution/
 │   │   │   ├── extension-sdk/
 │   │   │   └── extension-cli/
@@ -82,7 +83,7 @@ kisaki/
 └── refactor/                     # Design, implementation and acceptance
 ```
 
-clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。完整交付的工作区由桌面应用、七个公开包、33 个扩展项目和三个私有工程包组成，成员模式如下。对应模式和 manifest 随所属对象的完整实现建立：
+clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。完整交付的工作区由桌面应用、八个公开包、33 个扩展项目和三个私有工程包组成，成员模式如下。对应模式和 manifest 随所属对象的完整实现建立：
 
 ```yaml
 packages:
@@ -100,11 +101,11 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-七个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
 根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
 
-七个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
+八个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
 
 根 packages 只承载当前真实共享的私有工程能力：typescript-config、eslint-config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
 
@@ -116,14 +117,14 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 tools 承载所属工程的独立维护能力，tests 拥有验证场景、断言和测试专用辅助。项目脚本、Turborepo 与 CI 负责命令入口、前置依赖、运行环境和执行阶段。工具按实际工作对象或完整工作流组织，不按测试套件或命令数量预设实现目录。工具的归属如下：
 
-| 位置                      | 负责的工作                                                                                                                        |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 位置                      | 负责的工作                                                                                          |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
 | 根 tools                  | release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
-| packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                                                         |
-| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                                              |
-| 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                                                        |
-| extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。                                                                         |
-| 独立项目自身的 tools      | 该项目已有规范确定的构建和交付流程，本体通过正式制品消费。                                                                        |
+| packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                           |
+| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                |
+| 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                          |
+| extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。                                           |
+| 独立项目自身的 tools      | 该项目已有规范确定的构建和交付流程，本体通过正式制品消费。                                          |
 
 单个文件可以完整表达的小工具直接放在 tools 下。需要多个文件协作的工作流使用 `tools/<工作流名>/`，内部按实际操作拆分；目录名称说明工作对象或目的，不按调用者、平台 CI 或脚本后缀另分一套流程。根工具按完整职责组织，文件随实际工作流建立：
 
@@ -148,7 +149,7 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-packages/tooling/src 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于七个公共包，也不被生产运行代码消费。
+packages/tooling/src 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
 
 候选失败、取消和文件替换的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
@@ -227,7 +228,7 @@ clients/desktop/app/tools/
 | tests/integration         | 产品或库的真实技术接入，包括数据库、文件、通信和原生绑定；按实际依赖选择普通 Node 或开发 Electron 的 Node 模式。依赖 Electron app、BrowserWindow 等接口的用例进入 e2e。 |
 | tests/browser             | 需要真实 DOM 的组件、响应式逻辑、焦点、样式和交互，使用规定的浏览器测试环境。                                                                                           |
 | tests/e2e                 | 在真实开发应用或宿主中验证窗口、preload、进程、扩展接入和完整产品操作，桌面使用 Playwright 的 Electron 能力。                                                           |
-| tests/consumers           | 从实际公开制品建立仓库外消费者，验证所属工程承诺的入口、类型、样式与运行接入。                                                                                            |
+| tests/consumers           | 从实际公开制品建立仓库外消费者，验证所属工程承诺的入口、类型、样式与运行接入。                                                                                          |
 | tests/artifacts           | 最终打包应用的安装、启动、资源、fuses、更新和平台接入；保持正式制品原样，运行条件按实际目标记录。                                                                       |
 | tests/performance         | 按[性能合同](performance.md)验证指定负载、预算和测量口径，使用被测行为所需的实际环境。                                                                                  |
 | tests/tools               | 所属工程 tools 的 CLI、工作流和真实文件副作用测试，按工具名组织；不在 integration 中维护另一份相同用例。                                                                |
@@ -340,7 +341,7 @@ preload 的四个入口分别选择所属窗口的最小能力，bridge.ts 负�
 
 安装、更新、兼容性、启停政策和宿主进程管理仍由 main/features/extensions 负责。宿主的 context 与 rpc 只完成实际环境的装配，不另写一套 SDK 上下文或消息内核。宿主按自身职责组织文件，不复制主进程的 app/features/infrastructure 分层。
 
-shared/window-api 中的四个文件从 desktop-contracts 选择对应窗口合同，并维护纯静态开放清单；业务值直接引用原定义。shared/extension-host.ts 保存主进程与扩展宿主之间的私有控制协议。连接、订阅、缓存、日志与运行状态留在实际运行端；其他共享纯规则按明确含义放置，不以“被两处使用”作为进入 shared 的唯一理由。
+shared/window-api 中的四个文件从 desktop-contracts 选择对应窗口合同，并维护纯静态开放清单；业务值直接引用原定义。shared/extension-host.ts 保存主进程与扩展宿主之间的私有控制协议。必要的协议值校验与编码随对应合同维护；业务计算、产品资源及连接、订阅、缓存、日志与运行状态归各自实际拥有者。
 
 <a id="main"></a>
 

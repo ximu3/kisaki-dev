@@ -1,15 +1,16 @@
 /** @fileoverview Parses finite metadata read requests without silently intersecting away unsupported requested fields. */
 
 import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import { nonemptyText, parseValue, unique } from '../validation'
-import { entryTypes, identitiesSchema } from '../library/catalog'
+import { unique, parseValue, nonemptyText } from '../validation'
+import { identitiesSchema, entryTypes } from '../library/catalog'
 import type { EntryType } from '../library/catalog'
 import { getMetadataEntryFields, getMetadataPartFields } from './fields'
+import { metadataPartKinds } from './objects'
 import { getMetadataRelations, metadataRelationFields } from './relations'
-import type { MetadataRelationKey } from './relations'
-import { metadataPartKinds } from './values'
-import type { MetadataReadRequest } from './values'
+import { DesktopError } from '../errors'
+import type { MetadataRelationKey, MetadataRelationAttributeValues } from './relations'
+import type { ObjectFieldRequest, MetadataPartKey, MetadataPartType } from './objects'
+import type { MetadataEntryField, MetadataPartField } from './fields'
 
 function fields(names: readonly string[]) {
   return v.pipe(
@@ -30,6 +31,7 @@ export function parseMetadataReadRequest<T extends EntryType>(
   root: T,
   input: unknown,
 ): MetadataReadRequest<T>
+
 export function parseMetadataReadRequest(root: EntryType, input: unknown): MetadataReadRequest {
   const related = Object.fromEntries(
     entryTypes.map((type) => [
@@ -128,3 +130,32 @@ export function requireMetadataRequestSupport<T extends EntryType>(
     objectFields(wantedRelations?.[relation], offeredRelations?.[relation])
   }
 }
+
+export type MetadataRelatedEntryRequests = {
+  readonly [K in EntryType]?: ObjectFieldRequest<MetadataEntryField<K>>
+}
+
+export type MetadataPartRequests<T extends EntryType> = {
+  readonly [K in MetadataPartKey<T>]?: ObjectFieldRequest<MetadataPartField<MetadataPartType<T, K>>>
+}
+
+/** An empty fields array requests no ordinary properties, while refs:[] explicitly selects no object fields. */
+export type MetadataReadRequest<T extends EntryType = EntryType> = {
+  [K in T]: {
+    readonly objects?: {
+      readonly entry?: { readonly fields: readonly MetadataEntryField<K>[] }
+      readonly relatedEntries?: MetadataRelatedEntryRequests
+      readonly tags?: {
+        readonly fields: readonly ('description' | 'isNsfw')[]
+        readonly names?: readonly string[]
+      }
+    } & (K extends 'anime' | 'comic' | 'novel'
+      ? { readonly parts?: MetadataPartRequests<K> }
+      : object)
+    readonly relations?: {
+      readonly [R in MetadataRelationKey<K>]?: {
+        readonly fields: readonly (keyof MetadataRelationAttributeValues[R])[]
+      }
+    }
+  }
+}[T]

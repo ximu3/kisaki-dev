@@ -71,7 +71,7 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance', 'desktop-contracts'],
+        consumers: ['desktop-appearance', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
@@ -97,12 +97,12 @@ test(
       {
         path: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
         desktop: [],
-        consumers: ['extension-distribution', 'desktop-contracts'],
+        consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
         desktop: [],
-        consumers: ['extension-distribution', 'desktop-contracts'],
+        consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/extension-distribution/tests/fixtures/consumers/node/consumer.ts',
@@ -113,18 +113,27 @@ test(
       {
         path: 'clients/desktop/packages/desktop-contracts/src/library/catalog.ts',
         desktop: [],
-        consumers: ['desktop-contracts'],
+        consumers: ['desktop-contracts', 'desktop-localization'],
       },
       {
-        path: 'clients/desktop/packages/desktop-contracts/assets/unicode/18.0.0/UnicodeData.txt',
+        path: 'clients/desktop/app/assets/unicode/18.0.0/UnicodeData.txt',
         desktop: [],
-        consumers: ['desktop-contracts'],
       },
       {
         path: 'clients/desktop/packages/desktop-contracts/tests/fixtures/consumers/node/consumer.ts',
         desktop: [],
         consumers: ['desktop-contracts'],
       },
+      {
+        path: 'clients/desktop/packages/desktop-localization/src/en/library.ts',
+        desktop: [],
+        consumers: ['desktop-localization'],
+      },
+      {
+        path: 'clients/desktop/packages/desktop-localization/src/translate.test.ts',
+        desktop: [],
+      },
+      { path: 'clients/desktop/app/src/main/features/scanner/extract.ts', desktop: [] },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },

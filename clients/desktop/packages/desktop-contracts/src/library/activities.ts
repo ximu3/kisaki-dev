@@ -1,13 +1,13 @@
 /** @fileoverview Describes actual activity intervals and preserves their occurrence context during ordinary edits. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { CalendarDate } from '../date'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import { id, nonnegativeNumber, parseValue, text, timestamp } from '../validation'
-import { workRefSchema } from './catalog'
-import type { EntryRef, PartRef, WorkRef, WorkType } from './catalog'
+import type { PartRef, WorkType, EntryRef, WorkRef } from './catalog'
 import type { WorkStatisticsScope } from './completions'
+import type { CalendarDate } from '../date'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import { timestamp, nonnegativeNumber, id, parseValue, text } from '../validation'
+import * as v from 'valibot'
+import { workRefSchema } from './catalog'
+import { DesktopError } from '../errors'
 
 /** UTC millisecond interval with a separately recorded effective duration; overlapping records are not unioned. */
 export interface ActivityTiming {
@@ -217,25 +217,6 @@ export function parseActivityUpdate(
   }
 
   return value
-}
-
-/** Allocate one saved effective duration proportionally to an intersecting [from, to) range without rounding. */
-export function activityDurationInRange(activity: ActivityTiming, range: InstantRange): number {
-  const value = parseActivityTiming(activity)
-  const bounds = parseValue(
-    v.pipe(
-      v.strictObject({ from: timestamp, to: timestamp }),
-      v.check((input) => input.from < input.to),
-    ),
-    range,
-    'Invalid activity range',
-  )
-
-  const overlap = Math.max(
-    0,
-    Math.min(value.endedAt, bounds.to) - Math.max(value.startedAt, bounds.from),
-  )
-  return value.durationMs * (overlap / (value.endedAt - value.startedAt))
 }
 
 /** Validate bounded historical labels independently from the current referenced names. */

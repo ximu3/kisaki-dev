@@ -1,33 +1,15 @@
-/** @fileoverview Publishes the English author baseline, generated calls and owner-bound translation registration values. */
+/** @fileoverview Defines generic message catalogs, translation registration and effective-language observation. */
 
+import type { CallOptions, Registration, Disposable, Listener } from './operations'
+import { readRecord, parseExternalValue, parseValue, id, nonemptyText } from './validation'
+import { DesktopError } from './errors'
+import { normalizeLocale, parseId } from '@kisaki3/extension-distribution/metadata'
 import * as v from 'valibot'
-import { parseId, normalizeLocale } from '@kisaki3/extension-distribution/metadata'
-import type { CallOptions, Disposable, Listener, Registration } from './operations'
-import { id, nonemptyText, parseExternalValue, parseValue } from './validation'
-import { englishMessages } from './i18n/en/index'
-import { validateMessageCatalog } from './i18n/messages'
-import type { MessageCatalog } from './i18n/messages'
 
-export { englishMessages } from './i18n/en/index'
-export {
-  flattenMessages,
-  getMessageContracts,
-  getMessageParameterContract,
-  validateMessageArguments,
-  validateMessageCatalog,
-} from './i18n/messages'
-export type {
-  MessageCatalog,
-  MessageArgumentKind,
-  MessageContracts,
-  MessageParameterContract,
-} from './i18n/messages'
-export type {
-  MessageArguments,
-  MessageKey,
-  TranslationCall,
-  Translate,
-} from './i18n/contracts.generated'
+/** Groups contain ordinary data objects, leaves are ICU source strings, and individual keys never contain dots. */
+export interface MessageCatalog {
+  readonly [key: string]: string | MessageCatalog
+}
 
 /** Canonical Intl-supported baseName; language availability and selection are separate concerns. */
 export type UiLocale = string
@@ -72,6 +54,33 @@ export interface I18nApi {
   readonly locale: UiLocaleApi
 }
 
+/** Parse the complete catalog shape without interpreting ICU, selecting a language or applying a product baseline. */
+export function parseMessageCatalog(input: unknown): MessageCatalog {
+  const ancestors = new Set<object>()
+
+  function group(value: unknown): MessageCatalog {
+    const record = readRecord(value)
+    if (ancestors.has(record)) {
+      throw new DesktopError('InvalidInput', 'Message catalogs cannot contain cycles')
+    }
+    ancestors.add(record)
+
+    const entries = Object.entries(record).map(
+      ([key, child]): [string, string | MessageCatalog] => {
+        if (key.length === 0 || key.includes('.')) {
+          throw new DesktopError('InvalidInput', 'Message keys must be nonempty path segments')
+        }
+        return [key, typeof child === 'string' ? child : group(child)]
+      },
+    )
+
+    ancestors.delete(record)
+    return Object.fromEntries(entries)
+  }
+
+  return group(input)
+}
+
 /** Parse the shared canonical locale syntax and strip Unicode extension options through the same distribution rule. */
 export function parseUiLocale(input: unknown): UiLocale {
   return new Intl.Locale(parseExternalValue(normalizeLocale, input, 'Invalid UI locale')).baseName
@@ -96,20 +105,14 @@ export function parseUiTranslationRef(input: unknown): UiTranslationRef {
   )
 }
 
-/** Reject a whole invalid translation. Third parties may omit keys; official builds explicitly request complete coverage. */
-export function validateUiTranslation(
-  input: unknown,
-  options: { readonly complete?: boolean } = {},
-): UiTranslationRegistration {
+/** Parse registration values; the host additionally checks message compatibility against its localization baseline. */
+export function parseUiTranslationRegistration(input: unknown): UiTranslationRegistration {
   return parseValue(
     v.strictObject({
       id,
       locale: v.pipe(v.unknown(), v.transform(parseUiLocale)),
       name: nonemptyText,
-      messages: v.pipe(
-        v.unknown(),
-        v.transform((messages) => validateMessageCatalog(messages, englishMessages, options)),
-      ),
+      messages: v.pipe(v.unknown(), v.transform(parseMessageCatalog)),
     }),
     input,
     'Invalid UI translation',

@@ -1,27 +1,23 @@
 /** @fileoverview Defines desktop release discovery, selected artifact preparation and the separate install handoff. */
 
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
+import type { ErrorSummary } from './errors'
+import type { TaskRunRef } from './tasks'
+import type { CallOptions, Listener, Disposable } from './operations'
 import * as v from 'valibot'
 import {
-  compareVersions,
-  isPrereleaseVersion,
-  parseVersion,
-} from '@kisaki3/extension-distribution/compatibility'
-import { normalizeLocale, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseHttpUrl } from './network'
-import type { CallOptions, Disposable, Listener } from './operations'
-import { parseTaskRunRef } from './tasks'
-import type { TaskRunRef } from './tasks'
-import {
-  nonnegativeInteger,
   parseExternalValue,
-  parseValue,
   text,
-  timestamp,
+  nonnegativeInteger,
   unique,
+  parseValue,
+  timestamp,
 } from './validation'
+import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseHttpUrl } from './network'
+import { parseErrorSummary, DesktopError } from './errors'
+import { parseTaskRunRef } from './tasks'
+import { normalizeLocale, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
 
 /** sha512 uses the updater's canonical Base64 format, never extension-distribution's hexadecimal SHA-256. */
 export interface ApplicationUpdateFile {
@@ -122,8 +118,11 @@ const files = v.pipe(
 )
 
 const prepared = v.pipe(v.unknown(), v.transform(parsePreparedApplicationUpdate))
+
 const release = v.pipe(v.unknown(), v.transform(parseApplicationRelease))
+
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
+
 const taskRef = v.exactOptional(v.pipe(v.unknown(), v.transform(parseTaskRunRef)))
 
 /** Accept exactly the desktop release family; unrelated or malformed tags are not desktop candidates. */
@@ -182,39 +181,6 @@ export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicat
   }
 
   return value
-}
-
-/** Select only from verified, target-compatible, non-draft candidates; discovery must supply all pages before selection. */
-export function selectApplicationRelease(
-  candidates: readonly ApplicationRelease[],
-  currentVersion: string,
-  allowPrerelease = false,
-): ApplicationRelease | null {
-  const current = parseExternalValue(
-    parseVersion,
-    currentVersion,
-    'Invalid current application version',
-  )
-  let selected: ApplicationRelease | null = null
-  for (const candidate of candidates) {
-    const value = parseApplicationRelease(candidate)
-    if (
-      (!allowPrerelease && isPrereleaseVersion(value.version)) ||
-      compareVersions(value.version, current) <= 0
-    ) {
-      continue
-    }
-    if (!selected || compareVersions(value.version, selected.version) > 0) {
-      selected = value
-    } else if (
-      compareVersions(value.version, selected.version) === 0 &&
-      value.tagName !== selected.tagName
-    ) {
-      throw new DesktopError('Conflict', 'Application release priorities collide')
-    }
-  }
-
-  return selected
 }
 
 /** Release notes retain the verified desktop/version identity; missing/read failures are not represented by nullable text. */

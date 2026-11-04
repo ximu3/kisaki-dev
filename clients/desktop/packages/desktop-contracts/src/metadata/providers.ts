@@ -1,47 +1,44 @@
 /** @fileoverview Defines explicitly selected metadata providers, their pure capabilities and independently releasable read sessions. */
 
-import * as v from 'valibot'
-import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import type { CallOptions, NonEmptyArray, ExecutionContext, Registration } from '../operations'
-import { nonemptyText, parseExternalValue, parseValue, text, unique } from '../validation'
-import { entryTypes, identitySchema, languageSchema } from '../library/catalog'
 import type { EntryType, ExternalIdentity } from '../library/catalog'
-import {
-  getMetadataEntryFields,
-  getMetadataPartFields,
-  parseIdentificationClues,
-  parseImageCandidate,
-  parseSourceEntry,
-} from './fields'
 import type {
+  SourceEntry,
   IdentificationClues,
+  MetadataImageField,
   ImageCandidate,
   MetadataEntryField,
-  MetadataImageField,
   MetadataPartField,
-  SourceEntry,
 } from './fields'
-import {
-  getMetadataRelations,
-  metadataRelationFields,
-  parseMetadataRelationScope,
-} from './relations'
+import type { NonEmptyArray, ExecutionContext, CallOptions, Registration } from '../operations'
+import type { MetadataPartKey, MetadataPartType } from './objects'
 import type {
-  MetadataRelationAttributeValues,
   MetadataRelationKey,
+  MetadataRelationAttributeValues,
   MetadataRelationScopeValues,
   MetadataSessionRelationScopes,
   ScopedMetadataRelationKey,
 } from './relations'
-import { metadataPartKinds } from './values'
-import type {
-  MetadataPartKey,
-  MetadataPartType,
-  MetadataReadRequest,
-  MetadataReadResult,
-} from './values'
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
+import type { MetadataReadRequest } from './requests'
+import type { MetadataReadResult } from './responses'
+import * as v from 'valibot'
+import { languageSchema, identitySchema, entryTypes } from '../library/catalog'
+import { text, unique, parseExternalValue, parseValue, nonemptyText } from '../validation'
+import {
+  getMetadataEntryFields,
+  getMetadataPartFields,
+  parseIdentificationClues,
+  parseSourceEntry,
+  parseImageCandidate,
+} from './fields'
+import { metadataPartKinds } from './objects'
+import {
+  getMetadataRelations,
+  parseMetadataRelationScope,
+  metadataRelationFields,
+} from './relations'
+import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
+import { DesktopError } from '../errors'
 
 /** Search cursors are opaque and belong only to this provider/type/query/language tuple; an empty page is not the end. */
 export interface MetadataSearchInput<T extends EntryType = EntryType> {

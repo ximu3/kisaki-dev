@@ -1,38 +1,35 @@
 /** @fileoverview Combines the shared visual vocabulary with desktop theme identity, font resources and preview lifetimes. */
 
-import * as v from 'valibot'
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
+import type { FontRef, FontFileMetadata } from './fonts'
+import type { NonEmptyArray, CallOptions, Disposable, Listener } from './operations'
 import type {
-  ColorScheme,
-  FontTokenName,
-  TokenName,
-  TokenValues,
   VisualTokenName,
+  FontTokenName,
+  ColorScheme,
+  TokenValues,
+  TokenName,
 } from '@kisaki3/desktop-appearance/tokens'
-import { light, dark } from '@kisaki3/desktop-appearance/defaults'
-import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { normalizeLocalizedText, parseId } from '@kisaki3/extension-distribution/metadata'
-import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
-import { DesktopError } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseFontRef } from './fonts'
-import type { FontFileMetadata, FontRef } from './fonts'
-import type { CallOptions, Disposable, Listener, NonEmptyArray } from './operations'
 import type { ReadResourceRef } from './resources'
+import type { ErrorSummary } from './errors'
+import * as v from 'valibot'
 import {
   id,
-  integer,
-  nonemptyText,
-  optionalFields,
   parseExternalValue,
+  integer,
   parseValue,
   readRecord,
-  text,
+  nonemptyText,
+  optionalFields,
   validateExpectedKeys,
+  text,
 } from './validation'
-
-export type { ColorScheme } from '@kisaki3/desktop-appearance/tokens'
+import { parseId, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
+import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
+import { parseFontRef } from './fonts'
+import { tokens } from '@kisaki3/desktop-appearance/tokens'
+import { DesktopError } from './errors'
+import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 
 /** A selected definition keeps its origin and stable ID even while unavailable. */
 export type ThemeRef =
@@ -232,6 +229,7 @@ const themeRef = v.variant('type', [
 ])
 
 const colorScheme = v.picklist(['light', 'dark'])
+
 const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
 
 const extensionFile = v.strictObject({
@@ -423,12 +421,4 @@ export function parseViewAppearance(input: unknown): ViewAppearance {
   )
 }
 
-/** Desktop defaults reuse the delivered visual values, replacing only the two font stacks with their default selections. */
-export function getDefaultTheme(): Theme {
-  return {
-    ref: { type: 'builtin', id: 'default' },
-    name: 'Default',
-    light: { ...light, '--font-sans': { type: 'default' }, '--font-mono': { type: 'default' } },
-    dark: { ...dark, '--font-sans': { type: 'default' }, '--font-mono': { type: 'default' } },
-  }
-}
+export type { ColorScheme } from '@kisaki3/desktop-appearance/tokens'

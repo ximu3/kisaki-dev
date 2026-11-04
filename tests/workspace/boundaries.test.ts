@@ -20,6 +20,23 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'contracts-do-not-import-localization',
+    from: 'clients/desktop/packages/desktop-contracts/src/i18n.ts',
+    to: 'clients/desktop/packages/desktop-localization/src/index.ts',
+    source: "export type { Value } from '../../desktop-localization/src/index'\n",
+  },
+  {
+    name: 'localization-has-no-node-runtime',
+    from: 'clients/desktop/packages/desktop-localization/src/translate.ts',
+    source: "export { readFile } from 'node:fs/promises'\n",
+  },
+  {
+    name: 'localization-has-no-application-or-ui-runtime',
+    from: 'clients/desktop/packages/desktop-localization/src/context.ts',
+    to: 'clients/desktop/app/src/main/i18n.ts',
+    source: "export type { Value } from '../../../app/src/main/i18n'\n",
+  },
+  {
     name: 'contracts-have-no-node-runtime',
     from: 'clients/desktop/packages/desktop-contracts/src/resources.ts',
     source: "export { readFile } from 'node:fs/promises'\n",

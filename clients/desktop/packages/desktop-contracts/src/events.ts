@@ -1,20 +1,20 @@
 /** @fileoverview Defines typed native facts and explicit extension payload contracts, separately from observations and invalidation. */
 
-import * as v from 'valibot'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseJsonValue } from './json'
-import type { JsonValue } from './json'
-import { parseLibraryChanged } from './library/changes'
-import type { LibraryChanged } from './library/changes'
-import type { Disposable } from './operations'
-import { parseScanResult, requireCompleteScanResult } from './scanner'
-import type { ScanResult } from './scanner/values'
-import { parseSessionEnded, parseSessionStarted } from './sessions'
-import type { SessionEndedMap, SessionStartedMap } from './sessions'
 import type { TaskTerminalStatus } from './tasks'
-import { id, nonemptyText, parseExternalValue, parseValue, timestamp } from './validation'
+import type { ScanResult } from './scanner/runs'
+import type { ErrorSummary } from './errors'
+import type { JsonValue } from './json'
+import type { LibraryChanged } from './library/changes'
+import type { SessionStartedMap, SessionEndedMap } from './sessions'
+import type { Disposable } from './operations'
+import * as v from 'valibot'
+import { parseErrorSummary, DesktopError } from './errors'
+import { parseValue, id, timestamp, nonemptyText, parseExternalValue } from './validation'
+import { parseScanResult, requireCompleteScanResult } from './scanner/runs'
+import { parseJsonValue } from './json'
+import { parseLibraryChanged } from './library/changes'
+import { parseSessionStarted, parseSessionEnded } from './sessions'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
 
 /** The business report and managed task can finish separately. This fact does not claim a TaskRun or failed history was saved. */
 export interface ScannerFinished {
@@ -95,6 +95,7 @@ export interface NativeEventPublisher<K extends NativeEventName> {
 }
 
 const terminal = v.picklist(['completed', 'failed', 'cancelled', 'interrupted'])
+
 const error = v.nullable(v.pipe(v.unknown(), v.transform(parseErrorSummary)))
 
 /** Completed scanning requires a complete report; a terminal failure retains any already formed legal result independently. */

@@ -1,30 +1,29 @@
 /** @fileoverview Defines collections and tags as independent organizers with explicit member-side edits. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
 import type {
-  ListOptions,
-  ListResult,
-  NonEmptyArray,
-  CallOptions,
   StoredDefinition,
+  NonEmptyArray,
+  ListOptions,
+  CallOptions,
+  ListResult,
 } from '../operations'
+import type { DynamicRules } from './query/definition'
+import type { EntryRef } from './catalog'
 import type { PreparedAttachment } from '../resources'
-import { createTagNameKey } from '../text'
+import type { ReorderInput, MoveInput } from './ordering'
+import * as v from 'valibot'
 import {
-  id,
   nonemptyText,
-  optionalFields,
-  parseValue,
   text,
+  id,
+  parseValue,
+  optionalFields,
   unique,
   validateExpectedKeys,
 } from '../validation'
+import { parseDynamicRules } from './query/definition'
 import { entryRefSchema, preparedSchema } from './catalog'
-import type { EntryRef } from './catalog'
-import type { MoveInput, ReorderInput } from './ordering'
-import { parseDynamicRules } from './query'
-import type { DynamicRules } from './query-values'
+import { DesktopError } from '../errors'
 
 /** Organizer fields do not propagate sensitivity to their members. Markdown is preserved except wholly blank values. */
 export interface CollectionFields {
@@ -277,7 +276,9 @@ const description = v.pipe(
 )
 
 export const tagEntries = { name, description, isNsfw: v.boolean() }
+
 const collectionEntries = { ...tagEntries, primaryImageId: v.nullable(id) }
+
 const dynamicRules = v.pipe(v.unknown(), v.transform(parseDynamicRules))
 
 const sort = v.union([
@@ -375,7 +376,6 @@ export function parseTagCreate(input: unknown): TagCreate {
     input,
     'Invalid tag creation',
   )
-  createTagNameKey(value.name)
   return value
 }
 

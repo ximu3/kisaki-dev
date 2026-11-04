@@ -1,41 +1,41 @@
 /** @fileoverview Defines native and search navigation targets, retaining exact entry selectors and stable field identities. */
 
-import * as v from 'valibot'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { parseThemeRef } from '../appearance'
+import type {
+  ExternalIdentity,
+  EntryType,
+  EntryRef,
+  PartType,
+  WorkRef,
+  PartWorkType,
+  PartRef,
+} from '../library/catalog'
+import type { AnnotationRef } from '../library/annotations'
 import type { ThemeRef } from '../appearance'
-import { DesktopError } from '../errors'
-import { parsePreferenceKey } from '../preferences'
-import type { PreferenceKey } from '../preferences'
+import type { PageRef } from './pages'
+import type { PreferenceKey } from '../preferences/api'
 import {
+  optionalFields,
+  id,
+  parseValue,
+  readRecord,
+  omitFields,
+  parseExternalValue,
+} from '../validation'
+import * as v from 'valibot'
+import {
+  parseExternalIdentity,
   entryTypes,
   parseEntryRef,
-  parseExternalIdentity,
   parsePartRef,
   parseWorkRef,
 } from '../library/catalog'
-import type {
-  EntryRef,
-  EntryType,
-  ExternalIdentity,
-  PartRef,
-  PartType,
-  PartWorkType,
-  WorkRef,
-} from '../library/catalog'
+import { DesktopError } from '../errors'
 import { parseAnnotationRef } from '../library/annotations'
-import { partWorkType } from '../library/parts'
-import type { AnnotationRef } from '../library/annotations'
-import {
-  id,
-  omitFields,
-  optionalFields,
-  parseExternalValue,
-  parseValue,
-  readRecord,
-} from '../validation'
+import { parsePreferenceKey } from '../preferences/api'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
+import { parseThemeRef } from '../appearance'
 import { parsePageRef } from './pages'
-import type { PageRef } from './pages'
+import { partWorkType } from '../library/parts'
 
 /** External addresses resolve only an existing root Entry in the receiving library; parts always use explicit local IDs. */
 export type EntryIdentifier =

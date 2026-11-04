@@ -1,26 +1,23 @@
 /** @fileoverview Defines saved showcase sections, atomic form changes and the ten independent preset configurations. */
 
-import * as v from 'valibot'
+import type { QueryReferenceLabel, EntryQuery } from './query/definition'
+import type { CollectionQuery, TagQuery } from './organizers'
+import type { StoredDefinition, CallOptions } from '../operations'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import { showcaseMessages } from '../i18n/en/showcase'
-import type { CallOptions, StoredDefinition } from '../operations'
 import {
-  id,
-  nonemptyText,
-  optionalFields,
-  parseValue,
-  positiveInteger,
   readRecord,
+  parseValue,
+  nonemptyText,
+  positiveInteger,
+  optionalFields,
+  id,
   unique,
   validateExpectedKeys,
 } from '../validation'
-import type { EntryType } from './catalog'
-import { workTypes } from './catalog'
-import type { CollectionQuery, TagQuery } from './organizers'
+import * as v from 'valibot'
 import { parseCollectionQuery, parseTagQuery } from './organizers'
-import { parseEntryQuery, parseQueryReferenceLabels } from './query'
-import type { EntryCondition, EntryQuery, EntrySort, QueryReferenceLabel } from './query-values'
+import { parseEntryQuery, parseQueryReferenceLabels } from './query/definition'
+import { DesktopError } from '../errors'
 
 /** Query kind selects an existing public reader. Showcase never owns a second query engine or membership set. */
 export type ShowcaseQuery =
@@ -191,102 +188,4 @@ export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
   }
 
   return value
-}
-
-/** Return fresh, complete preset values. Applying one to an existing draft preserves its identity, visibility and position. */
-export function getShowcasePresets(): readonly ShowcasePreset[] {
-  const labels = showcaseMessages.presets
-
-  function entry(
-    types: readonly [EntryType, ...EntryType[]],
-    conditions: readonly EntryCondition[],
-    sort: EntrySort,
-  ): ShowcaseQuery {
-    return {
-      kind: 'entry',
-      scope: { type: 'library' },
-      search: '',
-      rules: [{ enabled: true, types, filter: { match: 'all', conditions } }],
-      sort,
-      referenceLabels: [],
-    }
-  }
-
-  function preset(
-    key: string,
-    label: { readonly name: string; readonly description: string },
-    query: ShowcaseQuery,
-    layout: ShowcaseFields['layout'] = 'horizontal',
-    limit: number | null = 12,
-  ): ShowcasePreset {
-    return {
-      id: key,
-      defaultLocale: 'en',
-      ...label,
-      initial: {
-        name: label.name,
-        query,
-        layout,
-        itemSize: 'md',
-        limit,
-        openMode: 'page',
-        isVisible: true,
-      },
-    }
-  }
-
-  const scope = { type: 'scope' } as const
-  const lastActive = { type: 'field', field: 'lastActiveAt', direction: 'desc' } as const
-  const added = { type: 'field', field: 'effectiveAddedDate', direction: 'desc' } as const
-  const favorite = [{ field: 'favorite', op: 'is', value: true }] as const
-  return [
-    preset(
-      'recently-used-works',
-      labels.recentlyUsed,
-      entry(workTypes, [{ field: 'lastActiveAt', op: 'present' }], lastActive),
-    ),
-    preset(
-      'active-works',
-      labels.active,
-      entry(workTypes, [{ field: 'status', op: 'in', values: ['active'] }], lastActive),
-    ),
-    preset(
-      'planned-works',
-      labels.planned,
-      entry(workTypes, [{ field: 'status', op: 'in', values: ['planned'] }], added),
-    ),
-    preset('recently-added-works', labels.recentlyAdded, entry(workTypes, [], added), 'grid', null),
-    preset('favorite-works', labels.favoriteWorks, entry(workTypes, favorite, scope), 'grid', 24),
-    preset(
-      'personal-rating-ranking',
-      labels.rating,
-      entry(workTypes, [{ field: 'rating', op: 'present' }], {
-        type: 'field',
-        field: 'rating',
-        direction: 'desc',
-      }),
-    ),
-    preset(
-      'favorite-characters',
-      labels.favoriteCharacters,
-      entry(['character'], favorite, scope),
-      'grid',
-      24,
-    ),
-    preset(
-      'favorite-persons',
-      labels.favoritePersons,
-      entry(['person'], favorite, scope),
-      'grid',
-      24,
-    ),
-    preset(
-      'favorite-organizations',
-      labels.favoriteOrganizations,
-      entry(['organization'], favorite, scope),
-      'grid',
-      24,
-    ),
-    preset('collections', labels.collections, { kind: 'collection', search: '', sort: scope }),
-  ]
 }

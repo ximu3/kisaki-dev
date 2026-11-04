@@ -14,7 +14,7 @@ import { repositoryRoot } from '../../../tools/lib/paths'
 
 let root: string
 const applicationPath = 'clients/desktop/app'
-const packagePath = 'packages/fixture'
+const packagePath = 'packages/tooling'
 
 /** Write one fixture input without requiring its parent directory to exist already. */
 async function writeInput(path: string, contents: string): Promise<void> {
@@ -44,14 +44,14 @@ beforeAll(async () => {
       name: '@kisaki3/desktop',
       private: true,
       scripts: { 'build:fixture': 'node build.js' },
-      dependencies: { '@kisaki3/identity-fixture': 'workspace:*' },
+      dependencies: { '@kisaki3/tooling': 'workspace:*' },
     }),
   )
 
   await writeInput(
     `${packagePath}/package.json`,
     JSON.stringify({
-      name: '@kisaki3/identity-fixture',
+      name: '@kisaki3/tooling',
       version: '1.0.0',
       scripts: { build: 'node build.js' },
     }),

@@ -1,21 +1,21 @@
 /** @fileoverview Defines finite local adoption issues without arbitrary diagnostic payloads or field paths. */
 
-import * as v from 'valibot'
-import { parseErrorSummary } from '../errors'
+import type { EntryType, ExternalIdentity, EntryRef, PartRef, WorkRef } from '../library/catalog'
+import type { MetadataRelationKey } from '../metadata/relations'
 import type { ErrorSummary } from '../errors'
-import { id, nonemptyText, parseValue } from '../validation'
+import type { MetadataFieldRef, MetadataImageFieldRef } from '../metadata/fields'
+import { parseValue, nonemptyText, id } from '../validation'
+import * as v from 'valibot'
 import {
-  entryRefSchema,
   entryTypes,
-  identitySchema,
+  entryRefSchema,
   partRefSchema,
+  identitySchema,
   workRefSchema,
 } from '../library/catalog'
-import type { EntryRef, EntryType, ExternalIdentity, PartRef, WorkRef } from '../library/catalog'
-import { parseMetadataFieldRef } from '../metadata/fields'
-import type { MetadataFieldRef, MetadataImageFieldRef } from '../metadata/fields'
 import { getMetadataRelations } from '../metadata/relations'
-import type { MetadataRelationKey } from '../metadata/relations'
+import { parseErrorSummary } from '../errors'
+import { parseMetadataFieldRef } from '../metadata/fields'
 
 /** Relation identity retains its root context rather than accepting an arbitrary dotted path. */
 export type IngestRelationRef = {

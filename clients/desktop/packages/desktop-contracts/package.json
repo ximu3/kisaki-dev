@@ -1,7 +1,7 @@
 {
   "name": "@kisaki3/desktop-contracts",
   "version": "0.1.0-dev.0",
-  "description": "Desktop business values, operations, participation contracts and pure rules for Kisaki.",
+  "description": "Desktop APIs, participation contracts and interface value validation for Kisaki.",
   "type": "module",
   "license": "MIT",
   "publishConfig": {
@@ -18,7 +18,6 @@
   "files": [
     "dist",
     "LICENSE",
-    "NOTICE",
     "release-notes"
   ],
   "sideEffects": false,
@@ -42,10 +41,6 @@
     "./geometry": {
       "types": "./dist/geometry.d.ts",
       "import": "./dist/geometry.js"
-    },
-    "./text": {
-      "types": "./dist/text.d.ts",
-      "import": "./dist/text.js"
     },
     "./paths": {
       "types": "./dist/paths.d.ts",
@@ -160,13 +155,10 @@
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "generate:unicode": "tsx tools/generate-unicode.ts",
-    "generate:messages": "tsx tools/generate-messages.ts",
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
     "@eslint-community/regexpp": "4.12.2",
-    "@formatjs/icu-messageformat-parser": "3.5.22",
     "@kisaki3/desktop-appearance": "workspace:^",
     "@kisaki3/extension-distribution": "workspace:^",
     "@noble/hashes": "2.4.0",
@@ -180,7 +172,6 @@
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
     "eslint": "catalog:",
-    "intl-messageformat": "12.1.4",
     "jiti": "catalog:",
     "tsdown": "0.23.0",
     "tsx": "catalog:",

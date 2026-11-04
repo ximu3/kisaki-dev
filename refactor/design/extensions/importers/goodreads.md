@@ -121,8 +121,8 @@ Bookshelves 按已验证的逗号分隔表示读取，不沿用旧导入示例�
     │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

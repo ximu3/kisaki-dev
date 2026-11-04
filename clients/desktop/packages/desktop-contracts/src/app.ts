@@ -1,21 +1,21 @@
 /** @fileoverview Defines native application information, actual system integration and coordinated exit without process/window handles. */
 
-import * as v from 'valibot'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { DesktopError, parseErrorSummary } from './errors'
 import type { ErrorSummary } from './errors'
-import { parseWorkRef } from './library/catalog'
-import type { WorkRef, WorkType } from './library/catalog'
-import type { CallOptions, Disposable, Listener } from './operations'
+import type { CallOptions, Listener, Disposable } from './operations'
+import type { WorkType, WorkRef } from './library/catalog'
+import * as v from 'valibot'
 import { parseAbsolutePath } from './paths'
+import { parseErrorSummary, DesktopError } from './errors'
 import {
-  id,
-  nonemptyText,
-  nonnegativeInteger,
-  parseExternalValue,
   parseValue,
+  parseExternalValue,
+  nonemptyText,
+  id,
   unique,
+  nonnegativeInteger,
 } from './validation'
+import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseWorkRef } from './library/catalog'
 
 export const applicationIdentities = Object.freeze({
   production: { appId: 'me.kisaki', scheme: 'kisaki' },
@@ -153,7 +153,9 @@ export interface AppApi {
 }
 
 const mode = v.picklist(['normal', 'portable'])
+
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
 /** Parse only the intentionally shareable environment fields, rejecting accidental private diagnostics. */
@@ -174,12 +176,6 @@ export function parseApplicationEnvironment(input: unknown): ApplicationEnvironm
   )
 }
 
-/** Stable plain-text clipboard content; formatting neither reads the machine nor copies anything. */
-export function formatApplicationEnvironment(input: ApplicationEnvironment): string {
-  const value = parseApplicationEnvironment(input)
-  return `Kisaki ${value.version}\n${value.operatingSystem.name} ${value.operatingSystem.version}\n${value.architecture}`
-}
-
 /** Failed portable-marker reads remain unavailable rather than silently selecting another profile. */
 export function parseDataLocationState(input: unknown): DataLocationState {
   return parseValue(
@@ -195,13 +191,6 @@ export function parseDataLocationState(input: unknown): DataLocationState {
     input,
     'Invalid data location state',
   )
-}
-
-/** Pending restart is derived from actual current and selected modes; null means the next selection could not be read. */
-export function dataModeRequiresRestart(state: DataLocationState): boolean | null {
-  return state.portable.status === 'unavailable'
-    ? null
-    : state.portable.status === 'available' && state.current.mode !== state.portable.nextMode
 }
 
 export function parseDataModeChange(input: unknown): DataModeChange {

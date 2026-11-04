@@ -1,8 +1,8 @@
 /** @fileoverview Defines call context, bounded reads and the lifetimes shared by desktop capabilities. */
 
-import * as v from 'valibot'
-import { intervalEntries, parseValue } from './validation'
 import type { ErrorSummary } from './errors'
+import { parseValue, intervalEntries } from './validation'
+import * as v from 'valibot'
 
 /** At least one submitted value; uniqueness and domain constraints are checked at the input boundary. */
 export type NonEmptyArray<T> = readonly [T, ...T[]]

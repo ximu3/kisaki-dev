@@ -9,7 +9,9 @@
     "../../tests/**/*.ts",
     "../../tests/**/*.tsx",
     "../../native/node/**/*.test.ts",
-    "../../tools/**/*.test.ts"
+    "../../tools/**/*.test.ts",
+    "../../src/**/*.test.ts",
+    "../../src/**/*.test.tsx"
   ],
   "exclude": ["../../tests/fixtures/runtime/src/**"]
 }

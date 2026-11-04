@@ -1,13 +1,13 @@
 /** @fileoverview Defines independently saved notes and their explicit, separately ordered entry associations. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import type { PreparedAttachment } from '../resources'
-import { id, optionalFields, parseValue, text, unique, validateExpectedKeys } from '../validation'
-import { entryRefSchema, preparedSchema } from './catalog'
 import type { EntryRef } from './catalog'
-import type { MoveInput, ReorderInput } from './ordering'
+import type { PreparedAttachment } from '../resources'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import type { ReorderInput, MoveInput } from './ordering'
+import * as v from 'valibot'
+import { text, id, unique, parseValue, optionalFields, validateExpectedKeys } from '../validation'
+import { entryRefSchema, preparedSchema } from './catalog'
+import { DesktopError } from '../errors'
 
 /** The saved article is independent of its associations; body whitespace and empty existing notes are preserved. */
 export interface NoteFields {

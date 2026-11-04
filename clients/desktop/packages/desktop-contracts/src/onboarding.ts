@@ -1,31 +1,31 @@
 /** @fileoverview Defines native recommendation handling as explicit business inputs and durable per-item outcomes, never persistent drafts. */
 
-import * as v from 'valibot'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
 import type { ExtensionPackageSource, ExtensionRepositoryInput } from './extensions'
-import { parseShowcaseChanges, parseShowcaseFields } from './library/showcase'
-import type { ShowcaseFields } from './library/showcase'
-import { parseMetadataProfileCreate } from './metadata/profiles'
+import type { PreferencesChanges, PreferencesExpected } from './preferences/api'
 import type { MetadataProfileCreate } from './metadata/profiles'
-import type { CallOptions, Disposable, NonEmptyArray } from './operations'
-import { parsePreferencesUpdate } from './preferences'
-import type { PreferencesChanges, PreferencesExpected } from './preferences'
-import { parseScanConfigCreate } from './scanner'
-import type { ScanConfigCreate } from './scanner/values'
+import type { ScanConfigCreate } from './scanner/configs'
+import type { ShowcaseFields } from './library/showcase'
+import type { NonEmptyArray, CallOptions, Disposable } from './operations'
+import type { ErrorSummary } from './errors'
+import * as v from 'valibot'
 import {
-  id,
-  parseDictionary,
   parseExternalValue,
+  id,
+  unique,
+  timestamp,
   parseValue,
+  parseDictionary,
   readRecord,
   text,
-  timestamp,
-  unique,
 } from './validation'
+import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
+import { parseErrorSummary, DesktopError } from './errors'
+import { parsePreferencesUpdate } from './preferences/api'
+import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
+import { parseMetadataProfileCreate } from './metadata/profiles'
+import { parseScanConfigCreate } from './scanner/configs'
+import { parseShowcaseFields, parseShowcaseChanges } from './library/showcase'
 
 export const onboardingGroups = Object.freeze([
   'preferences',
@@ -36,6 +36,7 @@ export const onboardingGroups = Object.freeze([
 ] as const)
 
 export type OnboardingGroup = (typeof onboardingGroups)[number]
+
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
 export type OnboardingResourceRef =
@@ -196,11 +197,6 @@ const issue = v.strictObject({
   stage: v.picklist(['installation', 'commit', 'runtime']),
   error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
 })
-
-/** Initial singleton state says nothing has been presented or adopted; it does not itself open onboarding. */
-export function getOnboardingDefaults(): OnboardingState {
-  return { firstPresentedAt: null, firstCompletedAt: null, lastPresentedVersion: null, handled: {} }
-}
 
 export function parseOnboardingHandled(input: unknown): OnboardingHandled {
   return parseValue(handled, input, 'Invalid onboarding handled result')

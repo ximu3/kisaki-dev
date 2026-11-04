@@ -1,9 +1,9 @@
 /** @fileoverview Separates transient file inputs, acquired content and view-bound resource addresses. */
 
 import * as v from 'valibot'
-import { DesktopError } from './errors'
+import { id, text, nonemptyText, parseDictionary, parseValue } from './validation'
 import { parseHttpUrl } from './network'
-import { id, nonemptyText, parseDictionary, parseValue, text } from './validation'
+import { DesktopError } from './errors'
 
 /** An opaque reference to already acquired, fixed content; the actual caller determines its authority. */
 export interface ReadResourceRef {
@@ -53,6 +53,7 @@ export interface ViewResourcesApi {
 }
 
 const resourceSchema = v.strictObject({ id })
+
 const headerName = v.pipe(text, v.regex(/^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/))
 
 const headerValue = v.pipe(

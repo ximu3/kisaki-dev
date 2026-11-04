@@ -1,24 +1,24 @@
 /** @fileoverview Parses and formats the closed native links and lossless owner-scoped extension links using WHATWG URL semantics. */
 
+import type { NativeViewTarget, EntryIdentifier } from './ui/navigation'
+import type { GameOpenInput, AnimeOpenInput, ComicOpenInput, NovelOpenInput } from './sessions'
+import type { WorkType, EntryType, ExternalIdentity } from './library/catalog'
+import type { IdentificationClues } from './metadata/fields'
+import type { ExecutionContext, Registration } from './operations'
 import * as v from 'valibot'
+import { parseExternalValue, readRecord, parseValue, omitFields, id, text } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from './errors'
-import { parseStrictJson } from './json'
-import type { ExecutionContext, Registration } from './operations'
-import { entryTypes, isWorkType, parseExternalIdentity, workTypes } from './library/catalog'
-import type { EntryType, ExternalIdentity, WorkType } from './library/catalog'
-import { parseIdentificationClues } from './metadata/fields'
-import type { IdentificationClues } from './metadata/fields'
+import { parseNativeViewTarget, parseEntryIdentifier, entrySelectionEntries } from './ui/navigation'
+import { workTypes, entryTypes, isWorkType, parseExternalIdentity } from './library/catalog'
 import {
+  parseGameOpenInput,
   parseAnimeOpenInput,
   parseComicOpenInput,
-  parseGameOpenInput,
   parseNovelOpenInput,
 } from './sessions'
-import type { AnimeOpenInput, ComicOpenInput, GameOpenInput, NovelOpenInput } from './sessions'
-import { entrySelectionEntries, parseEntryIdentifier, parseNativeViewTarget } from './ui/navigation'
-import type { EntryIdentifier, NativeViewTarget } from './ui/navigation'
-import { id, omitFields, parseExternalValue, parseValue, readRecord, text } from './validation'
+import { parseIdentificationClues } from './metadata/fields'
+import { parseStrictJson } from './json'
 
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
 

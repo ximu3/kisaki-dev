@@ -6,19 +6,23 @@
 
 **简洁、清晰、干净与克制具有同等首要地位。** 它们覆盖设计文档、代码、测试、防御、限制和工程流程；完整要求由[共同原则](refactor/design/engineering/conventions.md#quality)定义。
 
-**逻辑分段是可读性要求，实施与审阅时都须主动核对。** 代码、测试和文档按职责与实际阅读路径组织，名称、结构和说明直接表达边界与使用条件。独立声明、方法职责与流程阶段保留清楚的分组和空行，同一步骤内保持紧凑，具体遵守[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。收尾时沿正常、失败、取消与清理路径审阅，同时核对分段是否表达实际逻辑；格式、类型和测试通过不能代替人工判断。
+**文件、目录组织与逻辑分段都是可读性和可维护性要求，实施与审阅时都须主动核对。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称与层次直接表达边界和协作关系；拆分与合并遵守[组织规则](refactor/design/engineering/conventions.md#source-layout)。TypeScript 多文件主题与自身入口集中在同一目录。独立声明、方法职责与流程阶段保留清楚的分组和空行，同一步骤内保持紧凑，具体遵守[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。收尾时沿正常、失败、取消与清理路径审阅，同时核对文件归属、目录层次与分段是否表达实际逻辑；格式、类型和测试通过不能代替人工判断。
 
 ## 任务入口与范围
 
-沟通默认使用简体中文。从 [refactor/README.md](refactor/README.md) 和当前工作包读取正式合同。代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+沟通默认使用简体中文。
 
-本仓库维护完整产品设计和已交付工程能力。桌面、七个公共包与 33 项官方扩展的目标归属见工作包。正式项目随所属工作包建立，成篇项目文档由 [W23](refactor/implementation/work-packages.md#w23) 按对象交付；实施期间维护 AGENTS 与 refactor，接口说明和代码注释随实现维护。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
+**开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/` 文档，理解整体设计及各部分之间的关系与约束。** 从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
+
+代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+
+本仓库维护完整产品设计和已交付工程能力。桌面、八个公共包与 33 项官方扩展的目标归属见工作包。正式项目随所属工作包建立，成篇项目文档由 [W23](refactor/implementation/work-packages.md#w23) 按对象交付；实施期间维护 AGENTS 与 refactor，接口说明和代码注释随实现维护。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
 
 Vantage、Kana、libmpv-node 和 oauth-relay 在各自独立仓库实现、验证与交付，并按合同接入。Web 客户端、官网和候选服务端不在当前交付范围，不预建源码。
 
 ## 架构与实现
 
-main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最小能力，extension-host 是独立共享 Node 进程。shared 只含纯合同。公共包使用构建后的 exports，SDK 的纯模块选择桌面公开能力，Node 与 Webview 入口实现接入，官方扩展不导入应用私有代码。
+main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最小能力，extension-host 是独立共享 Node 进程。shared 只保存私有跨运行端接入合同及其必要的值校验与编码。公共包使用构建后的 exports，SDK 的纯模块选择桌面公开能力，Node 与 Webview 入口实现接入，官方扩展不导入应用私有代码。
 
 数据、错误、并发、取消与资源寿命遵循所属设计。失败不通过缩减范围、返回空值或关闭检查消除。
 

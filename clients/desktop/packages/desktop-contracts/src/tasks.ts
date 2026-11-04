@@ -1,27 +1,27 @@
 /** @fileoverview Defines task execution, lightweight control observation and independently retained business-result history. */
 
-import * as v from 'valibot'
-import { parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseJsonValue } from './json'
 import type { JsonValue } from './json'
+import type { ErrorSummary } from './errors'
 import type {
+  ExecutionContext,
   CallOptions,
-  Disposable,
   ListOptions,
   ListResult,
   Listener,
-  ExecutionContext,
+  Disposable,
 } from './operations'
+import * as v from 'valibot'
 import {
-  id,
   nonemptyText,
   nonnegativeNumber,
   parseValue,
+  id,
   text,
   timestamp,
   unique,
 } from './validation'
+import { parseJsonValue } from './json'
+import { parseErrorSummary } from './errors'
 
 /** Managed execution identity, separate from any business report or source configuration. */
 export interface TaskRunRef {
@@ -41,6 +41,7 @@ export const taskRunStatuses = Object.freeze([
 ] as const)
 
 export type TaskRunStatus = (typeof taskRunStatuses)[number]
+
 export type TaskTerminalStatus = 'completed' | 'failed' | 'cancelled' | 'interrupted'
 
 /** Unknown ratios report a phase only. Progress reaching total does not itself finish the task. */
@@ -224,16 +225,6 @@ export function parseTaskRun(input: unknown): TaskRun {
     input,
     'Invalid task history',
   )
-}
-
-/** A nonterminal persisted row with no runtime owner is an unconfirmed interrupted history, not resumed work. */
-export function projectTaskHistory<Result, Input>(
-  run: TaskRun<Result, Input>,
-  hasExecution: boolean,
-): TaskRun<Result, Input> {
-  return !hasExecution && !isTaskTerminal(run.status)
-    ? { ...run, status: 'interrupted', finishedAt: null }
-    : run
 }
 
 /** Validate an execution descriptor's JSON input before any side effect or initial history registration. */

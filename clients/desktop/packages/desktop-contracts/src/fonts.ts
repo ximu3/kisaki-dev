@@ -1,19 +1,19 @@
 /** @fileoverview Defines user font identity, verified font metadata and independent font-resource holds. */
 
+import type { NonEmptyArray, ListOptions, CallOptions, ListResult, Disposable } from './operations'
+import type { PreparedAttachment, ReadResourceRef, FileInput } from './resources'
 import * as v from 'valibot'
-import type { CallOptions, Disposable, ListOptions, ListResult, NonEmptyArray } from './operations'
-import { parseFileInput, parsePreparedAttachment } from './resources'
-import type { FileInput, PreparedAttachment, ReadResourceRef } from './resources'
 import {
-  id,
-  nonemptyText,
-  nonnegativeInteger,
-  optionalFields,
-  parseValue,
   text,
+  nonnegativeInteger,
+  nonemptyText,
   unique,
+  id,
+  parseValue,
+  optionalFields,
   validateExpectedKeys,
 } from './validation'
+import { parsePreparedAttachment, parseFileInput } from './resources'
 
 /** Consumers add their own default/document branches; this shared identity is only system family or user library ID. */
 export type FontRef =

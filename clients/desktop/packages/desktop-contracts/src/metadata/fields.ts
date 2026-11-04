@@ -1,47 +1,46 @@
 /** @fileoverview Owns metadata field values and original identification clues, separate from local write intent and personal data. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { PartialDate } from '../date'
-import { parseFileInput } from '../resources'
 import type { FileInput } from '../resources'
-import { normalizeNfc } from '../text'
+import type {
+  EntryType,
+  EntryFields,
+  WorkType,
+  PartType,
+  Gender,
+  AnimeExtraType,
+  AnimeEpisodeType,
+  ExternalIdentity,
+} from '../library/catalog'
+import type { PartFields } from '../library/parts'
+import type { MetadataRelationAttributeValues, MetadataRelationMembers } from './relations'
+import type { PartialDate } from '../date'
+import * as v from 'valibot'
+import { parseFileInput } from '../resources'
 import {
-  id,
-  nonemptyText,
-  omitFields,
-  optionalFields,
-  parseValue,
-  positiveInteger,
-  text,
-  unique,
-} from '../validation'
-import {
+  identitySchema,
+  languageSchema,
   entryCommonEntries,
   entrySpecificEntries,
-  entryTypes,
-  identityKey,
-  identitySchema,
-  identitiesSchema,
   partialDateSchema,
   genderSchema,
-  languageSchema,
+  identitiesSchema,
+  entryTypes,
+  identityKey,
 } from '../library/catalog'
-import type {
-  AnimeEpisodeType,
-  AnimeExtraType,
-  EntryFields,
-  EntryType,
-  ExternalIdentity,
-  Gender,
-  PartType,
-  WorkType,
-} from '../library/catalog'
-import { partCommonEntries, partSpecificEntries } from '../library/parts'
-import type { PartFields } from '../library/parts'
+import {
+  id,
+  positiveInteger,
+  text,
+  nonemptyText,
+  omitFields,
+  parseValue,
+  optionalFields,
+  unique,
+} from '../validation'
 import { characterRoles } from '../library/relations'
+import { partCommonEntries, partSpecificEntries } from '../library/parts'
+import { DesktopError } from '../errors'
 import { metadataRelationFields } from './relations'
-import type { MetadataRelationAttributeValues, MetadataRelationMembers } from './relations'
 
 /** An optional source-scoped image identity does not bind an Entry or Part in the catalog. */
 export interface ImageIdentity {
@@ -462,204 +461,6 @@ export function parseSourceEntry(input: unknown): SourceEntry {
   }
 
   return value as SourceEntry
-}
-
-/** Matching uses canonical composition and English case folding, without compatibility folding or punctuation removal. */
-export function metadataNameKey(value: string): string {
-  return normalizeNfc(value)
-    .trim()
-    .replace(/\s+/gu, ' ')
-    .replace(/[A-Z]/g, (letter) => letter.toLowerCase())
-}
-
-/** Merge only caller-confirmed clues. First valid single values win as whole values; exact identities retain first-seen order. */
-export function mergeIdentificationClues<T extends EntryType>(
-  type: T,
-  input: readonly IdentificationClues<T>[],
-): IdentificationClues<T> {
-  const values = input.map((item) => parseIdentificationClues(type, item))
-  const result: Record<string, unknown> = {}
-  const identities: ExternalIdentity[] = []
-  const seen = new Set<string>()
-  for (const clues of values) {
-    for (const [field, value] of Object.entries(clues)) {
-      if (field !== 'externalIdentities' && !Object.hasOwn(result, field)) {
-        result[field] = value
-      }
-    }
-
-    for (const identity of clues.externalIdentities ?? []) {
-      const key = identityKey(identity)
-      if (!seen.has(key)) {
-        seen.add(key)
-        identities.push(identity)
-      }
-    }
-  }
-  if (identities.length > 0) {
-    result.externalIdentities = identities
-  }
-  return parseIdentificationClues(type, result)
-}
-
-/** Return whether supplied source clues add an actually new fact; copying original input is not a recognition result. */
-export function hasNewWorkClues(base: WorkClues, result: WorkClues): boolean {
-  if (
-    result.name !== undefined &&
-    (base.name === undefined || metadataNameKey(result.name) !== metadataNameKey(base.name))
-  ) {
-    return true
-  }
-  if (
-    result.originalName !== undefined &&
-    (base.originalName === undefined ||
-      metadataNameKey(result.originalName) !== metadataNameKey(base.originalName))
-  ) {
-    return true
-  }
-
-  const dateKey = (date: PartialDate | undefined): string =>
-    JSON.stringify([date?.year ?? null, date?.month ?? null, date?.day ?? null])
-  if (
-    result.releaseDate !== undefined &&
-    dateKey(result.releaseDate) !== dateKey(base.releaseDate)
-  ) {
-    return true
-  }
-
-  const known = new Set((base.externalIdentities ?? []).map(identityKey))
-  return (result.externalIdentities ?? []).some((identity) => !known.has(identityKey(identity)))
-}
-
-/** Select by declared provider order. Undefined means unanswered; false, zero and partial dates are not empty. */
-export function selectMetadataValue<T>(
-  answers: readonly (T | undefined)[],
-  selection: 'first' | 'firstNonEmpty',
-  isEmpty: (value: T) => boolean,
-): T | undefined {
-  let first: T | undefined
-  for (const value of answers) {
-    if (value === undefined) {
-      continue
-    }
-    if (first === undefined) {
-      first = value
-    }
-    if (selection === 'first' || !isEmpty(value)) {
-      return value
-    }
-  }
-
-  return first
-}
-
-/** Union complete members by their domain's exact key, preserving provider order and the whole first member. */
-export function unionMetadataMembers<T>(
-  answers: readonly (readonly T[] | undefined)[],
-  key: (value: T) => string,
-): readonly T[] | undefined {
-  const result: T[] = []
-  const seen = new Set<string>()
-  let answered = false
-  for (const answer of answers) {
-    if (answer === undefined) {
-      continue
-    }
-    answered = true
-    for (const item of answer) {
-      const identity = key(item)
-      if (!seen.has(identity)) {
-        seen.add(identity)
-        result.push(item)
-      }
-    }
-  }
-
-  return answered ? result : undefined
-}
-
-/** Legal empty answers are null, blank text or empty collections; false, zero and partial calendar facts are nonempty. */
-export function isEmptyMetadataValue(value: MetadataFieldValue<MetadataFieldRef>): boolean {
-  return (
-    value === null ||
-    (typeof value === 'string' && value.trim().length === 0) ||
-    (Array.isArray(value) && value.length === 0)
-  )
-}
-
-/** Only declared collection fields support union; no scalar is converted into a list to accept that selection. */
-export function isMetadataCollectionField(field: MetadataFieldRef): boolean {
-  return (
-    (field.object === 'entry' || field.object === 'part') &&
-    [
-      'aliases',
-      'externalLinks',
-      'originalLanguages',
-      'primaryImage',
-      'backdropImage',
-      'titleLogo',
-      'iconImage',
-    ].includes(field.field)
-  )
-}
-
-/** Select and validate one field with its actual equality rules, preserving the first complete duplicate member. */
-export function selectMetadataFieldValue<F extends MetadataFieldRef>(
-  field: F,
-  answers: readonly (MetadataFieldValue<F> | undefined)[],
-  selection: MetadataFieldValue<F> extends readonly unknown[]
-    ? 'first' | 'firstNonEmpty' | 'union'
-    : 'first' | 'firstNonEmpty',
-): MetadataFieldValue<F> | undefined {
-  const values = answers.map((value) =>
-    value === undefined ? undefined : parseMetadataFieldValue(field, value),
-  )
-  if (selection !== 'union') {
-    return selectMetadataValue<MetadataFieldValue<F>>(values, selection, isEmptyMetadataValue)
-  }
-  if (!isMetadataCollectionField(field)) {
-    throw new DesktopError('InvalidInput', 'Scalar metadata fields do not support union')
-  }
-
-  let ordinal = 0
-  const arrays: (readonly unknown[] | undefined)[] = values.map((value) => {
-    if (value === undefined) {
-      return undefined
-    }
-    if (!Array.isArray(value)) {
-      throw new DesktopError('InvalidInput', 'Metadata union requires complete collection answers')
-    }
-
-    return value
-  })
-
-  const result = unionMetadataMembers(arrays, (member) => {
-    if (field.field === 'aliases') {
-      return metadataNameKey(member as string)
-    }
-    if (field.field === 'originalLanguages') {
-      return member as string
-    }
-    if (field.field === 'externalLinks') {
-      return (member as { url: string }).url
-    }
-
-    const image = member as ImageCandidate
-    if (image.identity) {
-      return JSON.stringify(['source', image.identity.source, image.identity.id])
-    }
-    if (image.image.type === 'url' && Object.keys(image.image.headers ?? {}).length === 0) {
-      return JSON.stringify(['url', image.image.url, image.image.redirect ?? 'follow'])
-    }
-    if (image.image.type === 'resource') {
-      return JSON.stringify(['resource', image.image.resource.id])
-    }
-
-    // Without reliable resource identity, retaining two candidates is preferable to erasing one by guessed equality.
-    return JSON.stringify(['unidentified', ordinal++])
-  })
-
-  return result === undefined ? undefined : parseMetadataFieldValue(field, result)
 }
 
 /** The finite field names come from their actual value schemas, retaining one owner for type applicability. */

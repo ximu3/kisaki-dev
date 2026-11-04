@@ -2,7 +2,7 @@
 
 import type { ErrorSummary } from './errors'
 import type { CallOptions, ListOptions, ListResult } from './operations'
-import type { FileInput, ReadResource } from './resources'
+import type { ReadResource, FileInput } from './resources'
 
 /** Actual registered bytes; a digest checks integrity but is not the attachment's identity. */
 export interface Attachment {

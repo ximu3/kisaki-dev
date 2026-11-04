@@ -1,194 +1,32 @@
-/** @fileoverview Validates source and composed metadata graphs without turning their keys into local write instructions. */
+/** @fileoverview Checks shared metadata graph references, relation applicability and node consistency. */
 
+import type { EntryType, PartType, WorkType } from '../library/catalog'
 import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import { id, optionalFields, parseValue, text, unique } from '../validation'
+import { id, optionalFields, unique } from '../validation'
+import { metadataRelationAttributeEntries } from './fields'
 import {
-  entryTypes,
-  identitiesSchema,
-  identityKey,
-  identitySchema,
-  isWorkType,
-} from '../library/catalog'
-import type { EntryType, ExternalIdentity, PartType, WorkType } from '../library/catalog'
-import {
-  canUseOrganizationRole,
-  canUsePersonRole,
-  normalizeWorkRelation,
-  organizationRoles,
   personRoles,
-  reverseWorkRelationType,
+  organizationRoles,
   workRelationTypes,
+  canUsePersonRole,
+  canUseOrganizationRole,
+  normalizeWorkRelation,
+  reverseWorkRelationType,
 } from '../library/relations'
-import type { WorkRelationType } from '../library/relations'
-import {
-  identificationEntries,
-  metadataEntryEntries,
-  metadataPartEntries,
-  metadataRelationAttributeEntries,
-  parseIdentificationFields,
-  parseMetadataEntryFields,
-  parseMetadataPartFields,
-  parsePartIdentificationFields,
-  partIdentificationEntries,
-} from './fields'
-import type {
-  IdentificationFields,
-  MetadataEntryFields,
-  MetadataPartFields,
-  PartIdentificationFields,
-} from './fields'
-import { parsePartMatchingRules } from './matching'
 import { getMetadataRelations } from './relations'
-import type { MetadataRelationMembers, MetadataRelations } from './relations'
-import { parseMetadataReadRequest } from './requests'
-import { metadataPartKinds } from './values'
-import type {
-  CandidateTag,
-  MetadataCandidate,
-  MetadataReadRequest,
-  MetadataReadResult,
-} from './values'
-
-interface ParsedNode {
-  readonly key: string
-  readonly identity?: ExternalIdentity
-  readonly externalIdentities?: readonly ExternalIdentity[]
-}
-
-interface ParsedCandidateNode extends ParsedNode {
-  readonly identification: IdentificationFields<EntryType> | PartIdentificationFields<PartType>
-  readonly fields: MetadataEntryFields<EntryType> | MetadataPartFields<PartType>
-}
-
-interface ParsedObjects {
-  readonly entry?: ParsedNode
-  readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedNode[]>>
-  readonly parts?: Readonly<Partial<Record<string, readonly ParsedNode[]>>>
-  readonly tags?: readonly CandidateTag[]
-}
-
-interface ParsedCandidateObjects extends ParsedObjects {
-  readonly entry: ParsedCandidateNode
-  readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedCandidateNode[]>>
-  readonly parts?: Readonly<Partial<Record<string, readonly ParsedCandidateNode[]>>>
-}
+import type { ParsedObjects, ParsedNode } from './objects'
+import type { MetadataRelations, MetadataRelationMembers } from './relations'
+import { DesktopError } from '../errors'
+import { entryTypes, isWorkType } from '../library/catalog'
+import { metadataPartKinds } from './objects'
+import type { WorkRelationType } from '../library/relations'
 
 interface NodeKind {
   readonly object: 'entry' | 'part' | 'tag'
   readonly type: EntryType | PartType | 'tag'
 }
 
-const identityEntries = {
-  key: id,
-  identity: v.exactOptional(identitySchema),
-  externalIdentities: v.exactOptional(identitiesSchema),
-}
-
-function checkIdentities<T extends ParsedNode>(node: T): T {
-  if (
-    node.identity &&
-    node.externalIdentities?.some(
-      (identity) => identityKey(identity) === identityKey(node.identity!),
-    )
-  ) {
-    throw new DesktopError(
-      'InvalidInput',
-      'Additional metadata identities must exclude the primary identity',
-    )
-  }
-
-  return node
-}
-
-function sourceEntry(type: EntryType): v.GenericSchema<unknown, ParsedNode> {
-  return v.pipe(
-    v.strictObject({ ...identityEntries, ...optionalFields(metadataEntryEntries(type)) }),
-    v.transform(checkIdentities),
-  )
-}
-
-function sourcePart(type: PartType): v.GenericSchema<unknown, ParsedNode> {
-  return v.pipe(
-    v.strictObject({ ...identityEntries, ...optionalFields(metadataPartEntries(type)) }),
-    v.transform(checkIdentities),
-  )
-}
-
-function candidateEntry(type: EntryType): v.GenericSchema<unknown, ParsedCandidateNode> {
-  return v.pipe(
-    v.strictObject({
-      ...identityEntries,
-      identification: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseIdentificationFields(type, value)),
-      ),
-      fields: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseMetadataEntryFields(type, value)),
-      ),
-    }),
-    v.transform(checkIdentities),
-  )
-}
-
-function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidateNode> {
-  return v.pipe(
-    v.strictObject({
-      ...identityEntries,
-      identification: v.pipe(
-        v.unknown(),
-        v.transform((value) => parsePartIdentificationFields(type, value)),
-      ),
-      fields: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseMetadataPartFields(type, value)),
-      ),
-    }),
-    v.transform(checkIdentities),
-  )
-}
-
-function objectsSchema(
-  root: EntryType,
-  composed: true,
-): v.GenericSchema<unknown, ParsedCandidateObjects>
-function objectsSchema(root: EntryType, composed: false): v.GenericSchema<unknown, ParsedObjects>
-function objectsSchema(
-  root: EntryType,
-  composed: boolean,
-): v.GenericSchema<unknown, ParsedObjects> {
-  const entry = composed ? candidateEntry : sourceEntry
-  const part = composed ? candidatePart : sourcePart
-  const related = Object.fromEntries(
-    entryTypes.map((type) => [type, v.exactOptional(v.array(entry(type)))]),
-  )
-
-  const parts = Object.fromEntries(
-    Object.entries(metadataPartKinds[root]).map(([slot, type]) => [
-      slot,
-      v.exactOptional(v.array(part(type))),
-    ]),
-  )
-
-  const tag = v.strictObject({
-    key: id,
-    name: v.pipe(
-      text,
-      v.check((value) => value.trim().length > 0),
-    ),
-    description: v.exactOptional(v.nullable(text)),
-    isNsfw: v.exactOptional(v.boolean()),
-  })
-  return v.strictObject({
-    entry: composed ? entry(root) : v.exactOptional(entry(root)),
-    relatedEntries: v.exactOptional(v.strictObject(related)),
-    parts: v.exactOptional(Object.keys(parts).length > 0 ? v.strictObject(parts) : v.never()),
-    tags: v.exactOptional(v.array(tag)),
-  })
-}
-
-function relationSchemas(root: EntryType) {
+export function relationSchemas(root: EntryType) {
   const shapes = {
     workCharacters: v.strictObject({
       work: id,
@@ -242,7 +80,7 @@ function relationSchemas(root: EntryType) {
   )
 }
 
-function validateGraph(
+export function validateGraph(
   root: EntryType,
   objects: ParsedObjects | undefined,
   relations: MetadataRelations<EntryType> | undefined,
@@ -452,165 +290,6 @@ function validateGraph(
   }
 
   return referenced
-}
-
-/** Parse a complete composed candidate; personal data, local references and write instructions have no accepted fields. */
-export function parseMetadataCandidate(input: unknown): MetadataCandidate {
-  const { entryType } = parseValue(
-    v.looseObject({ entryType: v.picklist(entryTypes) }),
-    input,
-    'Invalid metadata candidate',
-  )
-  const hasParts = Object.keys(metadataPartKinds[entryType]).length > 0
-  const value = parseValue(
-    v.strictObject({
-      entryType: v.literal(entryType),
-      objects: objectsSchema(entryType, true),
-      relations: v.exactOptional(relationSchemas(entryType)),
-      partMatching: v.exactOptional(
-        hasParts
-          ? v.pipe(
-              v.unknown(),
-              v.transform((value) => parsePartMatchingRules(entryType, value)),
-            )
-          : v.never(),
-      ),
-    }),
-    input,
-    'Invalid composed metadata candidate',
-  )
-  validateGraph(entryType, value.objects, value.relations)
-
-  return value as MetadataCandidate
-}
-
-/** Parse source field answers and key relationships. Supplying the actual request also rejects unrequested data expansion. */
-export function parseMetadataReadResult<T extends EntryType>(
-  root: T,
-  input: unknown,
-  request?: MetadataReadRequest<T>,
-): MetadataReadResult<T>
-export function parseMetadataReadResult(
-  root: EntryType,
-  input: unknown,
-  request?: unknown,
-): unknown {
-  const value = parseValue(
-    v.strictObject({
-      objects: v.exactOptional(objectsSchema(root, false)),
-      relations: v.exactOptional(relationSchemas(root)),
-    }),
-    input,
-    'Invalid metadata read result',
-  )
-  const referenced = validateGraph(root, value.objects, value.relations)
-  if (request) {
-    validateRequestedFields(
-      root,
-      value.objects,
-      value.relations,
-      parseMetadataReadRequest(root, request),
-      referenced,
-    )
-  }
-
-  return value as MetadataReadResult
-}
-
-function validateRequestedFields(
-  root: EntryType,
-  objects: ParsedObjects | undefined,
-  relations: MetadataRelations<EntryType> | undefined,
-  request: MetadataReadRequest,
-  referenced: ReadonlySet<string>,
-): void {
-  function fields(
-    node: ParsedNode,
-    wanted:
-      | { readonly fields: readonly string[]; readonly refs?: readonly ExternalIdentity[] }
-      | undefined,
-    identification: readonly string[],
-    root = false,
-  ): void {
-    if (!root && !wanted && !referenced.has(node.key)) {
-      throw new DesktopError('InvalidInput', 'Provider returned an unrequested metadata object')
-    }
-
-    const identities = [
-      ...(node.identity ? [node.identity] : []),
-      ...(node.externalIdentities ?? []),
-    ].map(identityKey)
-    const inRefs = !wanted?.refs || wanted.refs.some((ref) => identities.includes(identityKey(ref)))
-    const allowed = new Set([
-      'key',
-      'identity',
-      'externalIdentities',
-      ...identification,
-      ...(inRefs ? (wanted?.fields ?? []) : []),
-    ])
-    if (Object.keys(node).some((key) => !allowed.has(key))) {
-      throw new DesktopError(
-        'InvalidInput',
-        'Provider returned fields outside the requested object scope',
-      )
-    }
-  }
-
-  if (objects?.entry) {
-    fields(objects.entry, request.objects?.entry, Object.keys(identificationEntries(root)), true)
-  }
-  for (const type of entryTypes) {
-    for (const node of objects?.relatedEntries?.[type] ?? []) {
-      fields(
-        node,
-        request.objects?.relatedEntries?.[type],
-        Object.keys(identificationEntries(type)),
-      )
-    }
-  }
-
-  const partRequests =
-    request.objects && 'parts' in request.objects ? request.objects.parts : undefined
-  for (const [slot, type] of Object.entries(metadataPartKinds[root])) {
-    for (const node of objects?.parts?.[slot] ?? []) {
-      fields(
-        node,
-        partRequests?.[slot as keyof typeof partRequests],
-        Object.keys(partIdentificationEntries(type)),
-      )
-    }
-  }
-
-  for (const node of objects?.tags ?? []) {
-    fields(node, request.objects?.tags, ['name'])
-  }
-
-  for (const [relation, members] of Object.entries(relations ?? {})) {
-    const wanted = request.relations?.[relation as keyof typeof request.relations] as
-      { readonly fields: readonly string[] } | undefined
-    if (!wanted) {
-      throw new DesktopError(
-        'InvalidInput',
-        'Provider returned unrequested relationship membership',
-      )
-    }
-
-    const attributes = Object.keys(
-      metadataRelationAttributeEntries[relation as keyof MetadataRelationMembers],
-    )
-    for (const member of members) {
-      if (
-        attributes.some(
-          (attribute) => Object.hasOwn(member, attribute) && !wanted.fields.includes(attribute),
-        )
-      ) {
-        throw new DesktopError(
-          'InvalidInput',
-          'Provider returned unrequested relationship attributes',
-        )
-      }
-    }
-  }
 }
 
 /** Interpret a work relation from the metadata root when comparing a declared scope; no second mirror fact is created. */

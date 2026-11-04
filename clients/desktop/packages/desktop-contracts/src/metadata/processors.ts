@@ -1,24 +1,24 @@
 /** @fileoverview Defines field-only batch processors and validates complete or explicitly partial per-key results. */
 
-import * as v from 'valibot'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import type { CallOptions, ExecutionContext, Registration } from '../operations'
-import { id, parseValue, readRecord, unique } from '../validation'
-import { entryTypes, partTypes } from '../library/catalog'
 import type { EntryType, PartType } from '../library/catalog'
-import {
-  parseIdentificationFields,
-  parseMetadataFieldRef,
-  parseMetadataFieldValue,
-  parsePartIdentificationFields,
-} from './fields'
 import type {
   IdentificationFields,
+  PartIdentificationFields,
   MetadataFieldRef,
   MetadataFieldValue,
-  PartIdentificationFields,
 } from './fields'
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
+import type { ExecutionContext, CallOptions, Registration } from '../operations'
+import { parseValue, id, unique, readRecord } from '../validation'
+import * as v from 'valibot'
+import { entryTypes, partTypes } from '../library/catalog'
+import {
+  parseIdentificationFields,
+  parsePartIdentificationFields,
+  parseMetadataFieldRef,
+  parseMetadataFieldValue,
+} from './fields'
+import { DesktopError } from '../errors'
 
 /** Only necessary original identification context is shared, without local database IDs or unrelated resource credentials. */
 export type ProcessingEntryContext = {

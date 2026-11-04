@@ -1,23 +1,23 @@
-/** @fileoverview Defines actual work sessions, current-content controls and confirmed partial outcomes without engine handles. */
+/** @fileoverview Defines session operations and validates medium-specific intents and committed outcomes. */
 
-import * as v from 'valibot'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import type { PreparedImage } from './images'
-import type { CallOptions, Disposable, Listener } from './operations'
-import { id, nonnegativeNumber, omitFields, parseValue, timestamp, unique } from './validation'
-import { parseGameBackupSource } from './library/backup-formats'
-import type { GameBackupSource } from './library/backups'
-import { parseWorkRef } from './library/catalog'
-import type { WorkRef } from './library/catalog'
-import { parseFileTrackSelection } from './library/holdings'
-import type { FileTrackSelection } from './library/holdings-values'
-import { parseReadingPosition } from './library/reading'
 import type {
-  PlaybackPositionInput,
   ReadingPosition,
+  PlaybackPositionInput,
   ReadingPositionInput,
 } from './library/reading'
+import type { GameBackupSource } from './library/holdings/backups'
+import type { CallOptions, Listener, Disposable } from './operations'
+import type { ErrorSummary } from './errors'
+import type { FileTrackSelection } from './library/holdings/preferences'
+import type { PreparedImage } from './images'
+import type { WorkRef } from './library/catalog'
+import { parseValue, nonnegativeNumber, id, timestamp, omitFields, unique } from './validation'
+import * as v from 'valibot'
+import { parseReadingPosition } from './library/reading'
+import { parseGameBackupSource } from './library/holdings/backup-formats'
+import { DesktopError, parseErrorSummary } from './errors'
+import { parseFileTrackSelection } from './library/holdings/preferences'
+import { parseWorkRef } from './library/catalog'
 
 /** elapsedMs includes confirmed unsaved intervals; graceEndsAt is a UTC display deadline, never the timing clock. */
 export interface SessionTiming {
@@ -106,6 +106,7 @@ export interface NovelSession extends SessionBase {
 }
 
 export type FileSession = AnimeSession | ComicSession | NovelSession
+
 export type WorkSession = GameSession | FileSession
 
 /** Controls whether a call may ask the user to choose a target; OS permission requests use a separate flow. */
@@ -428,11 +429,17 @@ export function parseSessionInteraction(input: unknown = 'fail'): SessionInterac
 }
 
 const finite = v.pipe(v.number(), v.finite())
+
 const speed = v.pipe(finite, v.minValue(0.01), v.maxValue(100))
+
 const scale = v.pipe(finite, v.gtValue(0), v.maxValue(100))
+
 const volume = v.pipe(finite, v.minValue(0), v.maxValue(100))
+
 const readingPosition = v.pipe(v.unknown(), v.transform(parseReadingPosition))
+
 const playbackInput = v.union([v.literal('start'), nonnegativeNumber])
+
 const readingInput = v.union([v.literal('start'), readingPosition])
 
 const sourceSnapshot = v.pipe(
@@ -479,6 +486,7 @@ const timing = v.pipe(
 )
 
 const base = { sessionId: id, startedAt: timestamp, timing }
+
 const fileBase = { ...base, fileId: id }
 
 const reading = v.strictObject({
@@ -521,6 +529,7 @@ const anime = v.strictObject({
 })
 
 const comic = v.strictObject({ ...fileBase, type: v.literal('comic'), comicId: id, reading })
+
 const novel = v.strictObject({ ...fileBase, type: v.literal('novel'), novelId: id, reading })
 
 /** Validate one complete actual snapshot without inventing running flags, positions, duration or file ownership. */
@@ -668,10 +677,12 @@ export function parseFileSwitchInput(
   type: 'anime',
   input: unknown,
 ): FileSwitchInput<PlaybackPositionInput>
+
 export function parseFileSwitchInput(
   type: 'comic' | 'novel',
   input: unknown,
 ): FileSwitchInput<ReadingPositionInput>
+
 export function parseFileSwitchInput(
   type: FileSession['type'],
   input: unknown,

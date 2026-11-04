@@ -11,7 +11,6 @@ import type {
 import type { ExecutionContext } from '@kisaki3/desktop-contracts/operations'
 import type { SearchResult } from '@kisaki3/desktop-contracts/search'
 import type { DeeplinkOpenTarget } from '@kisaki3/desktop-contracts/deeplink'
-import type { Translate } from '@kisaki3/desktop-contracts/i18n'
 import type { NetworkApi, NetworkFetchOptions } from '@kisaki3/desktop-contracts/network'
 import type { EventsApi } from '@kisaki3/desktop-contracts/events'
 import type { ApplicationUpdateState } from '@kisaki3/desktop-contracts/updates'
@@ -103,26 +102,6 @@ export function checkContracts(
 
   void emptyDate
   void person
-}
-
-/** Preserve generated key/parameter association without an arbitrary-string overload. */
-export function checkTranslation(
-  translate: Translate,
-  key: 'library.selection' | 'library.completion.recorded',
-  values: { count: number } | { name: string },
-): void {
-  translate('actions.save')
-  translate('library.selection', { count: 2 })
-  translate('library.completion.recorded', { name: 'CLANNAD' })
-
-  // @ts-expect-error: Message groups are not leaf keys.
-  translate('library')
-  // @ts-expect-error: A plural argument must be a number.
-  translate('library.selection', { count: 'two' })
-  // @ts-expect-error: Required English parameters cannot be omitted.
-  translate('library.selection')
-  // @ts-expect-error: Independent key/value unions do not establish their correlation.
-  translate(key, values)
 }
 
 /** Non-executing receivers make cross-field invalidity visible independently of excess-property checking. */

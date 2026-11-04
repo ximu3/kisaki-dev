@@ -1,49 +1,49 @@
 /** @fileoverview Declares complete entry reads and writes, independent personal edits and fixed identity operations. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { CallOptions, NonEmptyArray } from '../operations'
-import {
-  nonnegativeInteger,
-  omitFields,
-  optionalFields,
-  parseValue,
-  timestamp,
-  unique,
-  validateExpectedKeys,
-} from '../validation'
-import {
-  calendarDateSchema,
-  entryCommonEntries,
-  entryRefSchema,
-  entrySpecificEntries,
-  entryTypes,
-  evaluationEntries,
-  isWorkType,
-  parseEntryUpdate,
-  recordEntries,
-  statusSchema,
-} from './catalog'
 import type {
-  EntryCreateInput,
-  EntryDetails,
-  EntryRef,
-  EntryType,
-  EntryUpdate,
   Evaluation,
-  ExternalIdentity,
-  WorkRef,
   WorkStatus,
+  EntryType,
+  EntryRef,
+  EntryDetails,
+  ExternalIdentity,
+  EntryCreateInput,
+  EntryUpdate,
+  WorkRef,
 } from './catalog'
+import type { NonEmptyArray, CallOptions } from '../operations'
+import type { EntryQuery } from './query/definition'
 import type {
-  EntryGroupsResult,
   EntryListOptions,
   EntryListResult,
   EntryLocateOptions,
   EntryLocateResult,
-  EntryQuery,
-  EntrySelection,
-} from './query-values'
+  EntryGroupsResult,
+} from './query/listing'
+import type { EntrySelection } from './query/selection'
+import * as v from 'valibot'
+import {
+  optionalFields,
+  parseValue,
+  validateExpectedKeys,
+  unique,
+  omitFields,
+  timestamp,
+  nonnegativeInteger,
+} from '../validation'
+import {
+  evaluationEntries,
+  statusSchema,
+  parseEntryUpdate,
+  entryRefSchema,
+  entryTypes,
+  entryCommonEntries,
+  entrySpecificEntries,
+  isWorkType,
+  recordEntries,
+  calendarDateSchema,
+} from './catalog'
+import { DesktopError } from '../errors'
 
 export interface EvaluationUpdate {
   readonly changes: Partial<Evaluation>

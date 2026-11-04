@@ -1,32 +1,32 @@
 /** @fileoverview Defines complete-operation library facts and independently coalescible read invalidation areas. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { NonEmptyArray } from '../operations'
-import { id, nonemptyText, parseValue, readRecord, text, timestamp, unique } from '../validation'
-import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
 import type {
   EntryRef,
   ExternalIdentity,
   PartRef,
   PartType,
-  PartWorkType,
   WorkRef,
+  PartWorkType,
   WorkType,
 } from './catalog'
-import {
-  parseOrganizationWorkBinding,
-  parsePersonWorkBinding,
-  parseStoredWorkRelationBinding,
-  parseWorkCharacterBinding,
-} from './relations'
 import type {
-  OrganizationWorkBinding,
-  PersonWorkBinding,
-  StoredWorkRelationBinding,
   WorkCharacterBinding,
+  PersonWorkBinding,
+  OrganizationWorkBinding,
+  StoredWorkRelationBinding,
 } from './relations'
+import type { NonEmptyArray } from '../operations'
+import * as v from 'valibot'
+import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
+import { nonemptyText, text, id, unique, readRecord, parseValue, timestamp } from '../validation'
 import { partWorkType } from './parts'
+import { DesktopError } from '../errors'
+import {
+  parseWorkCharacterBinding,
+  parsePersonWorkBinding,
+  parseOrganizationWorkBinding,
+  parseStoredWorkRelationBinding,
+} from './relations'
 
 /** Minimal deleted/merged identity explanation; no body, image bytes, personal record or relationship graph is included. */
 export interface EntryIdentitySnapshot {

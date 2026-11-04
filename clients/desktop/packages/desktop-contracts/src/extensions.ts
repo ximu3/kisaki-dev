@@ -1,37 +1,31 @@
-/** @fileoverview Defines native extension installation, explicit repository trust and independent shared-host runtime facts. */
+/** @fileoverview Composes extension inventory, repositories, adoption and update operations. */
 
-import * as v from 'valibot'
-import { normalizeTargets, parseVersion } from '@kisaki3/extension-distribution/compatibility'
 import type {
-  CompatibilityIssue,
   ExtensionTarget,
+  CompatibilityIssue,
 } from '@kisaki3/extension-distribution/compatibility'
-import { normalizeManifest } from '@kisaki3/extension-distribution/manifest'
-import type { ExtensionManifest } from '@kisaki3/extension-distribution/manifest'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { normalizeRegistry, parsePublicKey } from '@kisaki3/extension-distribution/registry'
-import type { RegistryDocument } from '@kisaki3/extension-distribution/registry'
-import { DesktopError, parseErrorSummary } from './errors'
 import type { ErrorSummary } from './errors'
-import { parseHttpUrl } from './network'
+import type { ExtensionManifest } from '@kisaki3/extension-distribution/manifest'
+import type { RegistryDocument } from '@kisaki3/extension-distribution/registry'
 import type { CallOptions, Disposable, Listener } from './operations'
-import { parseAbsolutePath } from './paths'
+import * as v from 'valibot'
 import {
-  id,
-  optionalFields,
   parseExternalValue,
-  parseValue,
   text,
-  timestamp,
+  id,
+  parseValue,
   unique,
+  optionalFields,
   validateExpectedKeys,
+  timestamp,
 } from './validation'
-
-export type { ExtensionManifest } from '@kisaki3/extension-distribution/manifest'
-export type {
-  CompatibilityIssue,
-  ExtensionTarget,
-} from '@kisaki3/extension-distribution/compatibility'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
+import { parseVersion, normalizeTargets } from '@kisaki3/extension-distribution/compatibility'
+import { parseErrorSummary, DesktopError } from './errors'
+import { parsePublicKey, normalizeRegistry } from '@kisaki3/extension-distribution/registry'
+import { parseAbsolutePath } from './paths'
+import { parseHttpUrl } from './network'
+import { normalizeManifest } from '@kisaki3/extension-distribution/manifest'
 
 export type ExtensionPackageSource =
   | {
@@ -278,7 +272,9 @@ const publicKey = v.pipe(
 )
 
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
+
 const repositoryEntries = { url, declaredId: extensionId, trustedPublicKey: publicKey }
 
 const repositorySource = {
@@ -550,3 +546,10 @@ export function parseExtensionRegistrySnapshot(input: unknown): ExtensionRegistr
     'Invalid registry snapshot',
   )
 }
+
+export type { ExtensionManifest } from '@kisaki3/extension-distribution/manifest'
+
+export type {
+  CompatibilityIssue,
+  ExtensionTarget,
+} from '@kisaki3/extension-distribution/compatibility'

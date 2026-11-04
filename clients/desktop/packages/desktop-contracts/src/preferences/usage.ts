@@ -1,17 +1,17 @@
 /** @fileoverview Owns complete desktop reading/playback preferences independently of media engines and per-file runtime state. */
 
-import * as v from 'valibot'
-import { parseTokenValue } from '@kisaki3/desktop-appearance/values'
-import { parseLanguageTag } from '../library/catalog'
-import { parseFontRef } from '../fonts'
 import type { FontRef } from '../fonts'
+import * as v from 'valibot'
+import { parseLanguageTag } from '../library/catalog'
 import {
   nonnegativeNumber,
-  optionalFields,
-  parseExternalValue,
   parseValue,
+  parseExternalValue,
+  optionalFields,
   validateExpectedKeys,
 } from '../validation'
+import { parseFontRef } from '../fonts'
+import { parseTokenValue } from '@kisaki3/desktop-appearance/values'
 
 /** Global panel defaults do not control game launch configuration or current process monitoring. */
 export interface GamePreferences {
@@ -276,79 +276,6 @@ export function validateReadingExpected(
   validateExpectedKeys(changes, expected)
   validateExpectedKeys(changes.pages ?? {}, expected?.pages)
   validateExpectedKeys(changes.text ?? {}, expected?.text)
-}
-
-/** A fresh complete default for either reading medium; callers keep comic and novel selections independently. */
-export function getReadingDefaults(): ReadingPreferences {
-  return {
-    flow: 'paginated',
-    pages: {
-      arrangement: 'single',
-      progression: 'document',
-      firstPage: 'single',
-
-      fit: 'page',
-      autoCrop: false,
-      brightness: 1,
-      contrast: 1,
-    },
-    text: {
-      pagesPerView: 1,
-      writingMode: 'document',
-
-      font: { type: 'document' },
-      fontSize: 20,
-      lineHeight: 1.8,
-      paragraphSpacing: 'document',
-      alignment: 'document',
-
-      padding: 24,
-      maxLineLength: 36,
-    },
-    colors: { type: 'theme' },
-  }
-}
-
-/** A fresh playback configuration, independent of remembered volume/mute and any opened file. */
-export function getAnimePlaybackDefaults(): AnimePlaybackPreferences {
-  return {
-    audioLanguages: [],
-    subtitleLanguages: [],
-    subtitlesEnabled: true,
-
-    playbackSpeed: 1,
-    subtitleScale: 1,
-
-    autoAdvance: false,
-    autoMarkWatched: true,
-  }
-}
-
-/** All four medium defaults and the single shared foreground grace interval. */
-export function getUsageDefaults(): UsagePreferences {
-  return {
-    foregroundGracePeriodMs: 600_000,
-    game: { showPanelOnStart: false, panelAlwaysOnTop: true },
-    anime: getAnimePlaybackDefaults(),
-    comic: getReadingDefaults(),
-    novel: getReadingDefaults(),
-  }
-}
-
-/** Select one enabled complete snapshot, never a field-by-field merge across global, work and file layers. */
-export function selectCompletePreferences<T>(
-  global: T,
-  work: UsageOverride<T> | null,
-  file: UsageOverride<T> | null,
-): { readonly source: 'global' | 'work' | 'file'; readonly settings: T } {
-  if (file?.enabled) {
-    return { source: 'file', settings: file.settings }
-  }
-  if (work?.enabled) {
-    return { source: 'work', settings: work.settings }
-  }
-
-  return { source: 'global', settings: global }
 }
 
 /** Validate initialize/update intent and field-local baselines without reselecting or copying a current parent. */

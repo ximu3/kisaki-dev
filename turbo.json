@@ -7,7 +7,7 @@
   "tasks": {
     "check:package": {
       "dependsOn": ["pack"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!src/**/*.test.ts", "!src/**/*.test.tsx"],
       "outputs": [],
       "cache": false
     },
@@ -104,7 +104,7 @@
     },
     "test:consumers": {
       "dependsOn": ["check:package"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!src/**/*.test.ts", "!src/**/*.test.tsx"],
       "cache": false
     }
   }

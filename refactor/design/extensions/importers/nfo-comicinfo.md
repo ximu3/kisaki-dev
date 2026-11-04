@@ -219,8 +219,8 @@ Type=Deleted、DoublePage、Rotation、Manga 阅读方向、ImageSize／尺寸�
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

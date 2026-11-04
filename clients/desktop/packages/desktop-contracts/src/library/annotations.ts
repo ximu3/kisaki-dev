@@ -1,18 +1,18 @@
 /** @fileoverview Defines saved content annotations, bounded summaries and atomic edits of complete content targets. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import type { PreparedAttachment } from '../resources'
-import { id, optionalFields, parseValue, text, unique, validateExpectedKeys } from '../validation'
-import { preparedSchema, workRefSchema, workTypes } from './catalog'
-import type { EntryRef, WorkRef, WorkType } from './catalog'
-import { parsePlaybackAnnotationLocation, parseReadingAnnotationLocation } from './reading'
+import type { WorkType, WorkRef, EntryRef } from './catalog'
 import type {
   PlaybackAnnotationLocation,
   ReadingAnnotationLocation,
   ReadingPageRef,
 } from './reading'
+import type { PreparedAttachment } from '../resources'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import * as v from 'valibot'
+import { workTypes, workRefSchema, preparedSchema } from './catalog'
+import { id, text, parseValue, unique, optionalFields, validateExpectedKeys } from '../validation'
+import { parseReadingAnnotationLocation, parsePlaybackAnnotationLocation } from './reading'
+import { DesktopError } from '../errors'
 
 /** An annotation's table-qualified identity, independent of its file's continued existence. */
 export interface AnnotationRef<T extends WorkType = WorkType> {
@@ -178,6 +178,7 @@ export const nullableTitleSchema = v.pipe(
 )
 
 const readingLocation = v.pipe(v.unknown(), v.transform(parseReadingAnnotationLocation))
+
 const playbackLocation = v.pipe(v.unknown(), v.transform(parsePlaybackAnnotationLocation))
 
 const targetEntries = {

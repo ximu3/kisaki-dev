@@ -1,13 +1,13 @@
 /** @fileoverview Defines explicit work completion facts, creation baselines and current-completion batch semantics. */
 
-import * as v from 'valibot'
-import type { CalendarDate } from '../date'
-import { DesktopError } from '../errors'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import { nonnegativeInteger, optionalFields, parseValue, validateExpectedKeys } from '../validation'
-import { completionFieldsSchema, workRefSchema } from './catalog'
 import type { CompletionFields, WorkRef, WorkType } from './catalog'
-import type { DateTest } from './query-values'
+import type { CalendarDate } from '../date'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import type { DateTest } from './query/conditions'
+import { completionFieldsSchema, workRefSchema } from './catalog'
+import * as v from 'valibot'
+import { nonnegativeInteger, parseValue, optionalFields, validateExpectedKeys } from '../validation'
+import { DesktopError } from '../errors'
 
 /** A stable one-time fact. Null date still contributes to count but not to calendar-period statistics. */
 export interface WorkCompletion extends CompletionFields {
@@ -139,27 +139,4 @@ export function parseCompletionCreateMany(input: unknown): NonEmptyArray<Complet
   }
 
   return items
-}
-
-/** Coalesce equivalent current-completion intents by first work appearance while preserving any supplied baseline. */
-export function parseRecordCurrentMany(input: unknown): NonEmptyArray<CompletionCreateItem> {
-  const items = parseCompletionCreateMany(input)
-  const result = new Map<string, CompletionCreateItem>()
-  for (const item of items) {
-    const key = JSON.stringify([item.work.type, item.work.id])
-    const previous = result.get(key)
-    if (
-      previous &&
-      (JSON.stringify(previous.completedDate) !== JSON.stringify(item.completedDate) ||
-        previous.note !== item.note)
-    ) {
-      throw new DesktopError('InvalidInput', 'Conflicting completion actions for one work')
-    }
-    if (!previous || (!previous.expected && item.expected)) {
-      result.set(key, item)
-    }
-  }
-
-  const values = [...result.values()]
-  return [values[0]!, ...values.slice(1)]
 }

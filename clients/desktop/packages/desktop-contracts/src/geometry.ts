@@ -24,7 +24,9 @@ export type NormalizedQuad = readonly [
 ]
 
 const unit = v.pipe(v.number(), v.finite(), v.minValue(0), v.maxValue(1))
+
 const extent = v.pipe(unit, v.gtValue(0))
+
 const pointSchema = v.strictObject({ x: unit, y: unit })
 
 const rectSchema = v.pipe(

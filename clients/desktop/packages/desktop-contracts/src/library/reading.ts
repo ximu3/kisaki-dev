@@ -1,18 +1,18 @@
 /** @fileoverview Owns persistent reading coordinates, selections and video locations without importing a content engine. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import { parseNormalizedPoint, parseNormalizedQuad, parseNormalizedRect } from '../geometry'
 import type { NormalizedPoint, NormalizedQuad, NormalizedRect } from '../geometry'
 import type { NonEmptyArray } from '../operations'
+import * as v from 'valibot'
 import {
   nonemptyText,
   nonnegativeInteger,
-  nonnegativeNumber,
   parseValue,
   unique,
+  nonnegativeNumber,
 } from '../validation'
 import { parseCfiPoint } from './cfi'
+import { parseNormalizedPoint, parseNormalizedQuad, parseNormalizedRect } from '../geometry'
+import { DesktopError } from '../errors'
 
 /** Canonical lowercase WHATWG encoding names, excluding the non-content replacement decoder. */
 export const textEncodings = Object.freeze([
@@ -137,6 +137,7 @@ export type PlaybackAnnotationLocation =
 
 /** start is a current operation instruction and is never persisted as a location. */
 export type ReadingPositionInput = ReadingPosition | 'start'
+
 export type PlaybackPositionInput = number | 'start'
 
 const anchorSchema = v.variant('type', [
