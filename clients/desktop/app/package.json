@@ -27,15 +27,10 @@
     "test:dev": "vitest run --config config/vitest/vitest.config.dev.ts",
     "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
     "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
-    "clean": "tsx tools/clean.ts",
-    "generate:unicode": "tsx tools/generate-unicode.ts"
+    "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
-    "better-sqlite3": "13.0.3",
-    "@kisaki3/desktop-contracts": "workspace:^",
-    "@kisaki3/desktop-localization": "workspace:^",
-    "@kisaki3/desktop-appearance": "workspace:^",
-    "@kisaki3/extension-distribution": "workspace:^"
+    "better-sqlite3": "13.0.3"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",

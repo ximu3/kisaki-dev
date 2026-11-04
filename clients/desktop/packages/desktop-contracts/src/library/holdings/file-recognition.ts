@@ -348,12 +348,6 @@ export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   return value
 }
 
-/** Integer-only labels lose leading zeros for matching; decimal, textual and non-ASCII labels retain exact trimmed spelling. */
-export function fileNumberKey(value: string): string {
-  const trimmed = value.trim()
-  return /^[0-9]+$/.test(trimmed) ? trimmed.replace(/^0+(?=[0-9])/, '') : trimmed
-}
-
 /** Already expanded labels; the matcher never reinterprets templates or applies the offset again. */
 export type FileNumberCondition =
   | { readonly kind: 'single'; readonly value: string }

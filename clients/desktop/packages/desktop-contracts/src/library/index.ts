@@ -495,7 +495,6 @@ export {
   parseFileRecognitionDefinition,
   parseFileRecognitionDefinitionShape,
   parseFileRecognitionProfileUpdate,
-  fileNumberKey,
 } from './holdings/file-recognition'
 
 export type {

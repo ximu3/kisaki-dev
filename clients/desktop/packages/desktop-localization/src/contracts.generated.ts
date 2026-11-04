@@ -1,7 +1,6 @@
 /** @fileoverview Generated from en/index.ts by generate:messages. Do not edit the call contract independently. */
 
 export interface MessageArguments {
-  readonly "appearance.themes.default": never
   readonly "actions.save": never
   readonly "actions.cancel": never
   readonly "actions.close": never

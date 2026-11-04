@@ -116,10 +116,6 @@ test(
         consumers: ['desktop-contracts', 'desktop-localization'],
       },
       {
-        path: 'clients/desktop/app/assets/unicode/18.0.0/UnicodeData.txt',
-        desktop: [],
-      },
-      {
         path: 'clients/desktop/packages/desktop-contracts/tests/fixtures/consumers/node/consumer.ts',
         desktop: [],
         consumers: ['desktop-contracts'],
@@ -133,7 +129,6 @@ test(
         path: 'clients/desktop/packages/desktop-localization/src/translate.test.ts',
         desktop: [],
       },
-      { path: 'clients/desktop/app/src/main/features/scanner/extract.ts', desktop: [] },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },

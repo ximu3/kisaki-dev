@@ -3,7 +3,6 @@ pnpm-lock.yaml
 **/Cargo.lock
 **/binding.d.ts
 # These sources are emitted deterministically by their owning data generators.
-clients/desktop/app/src/main/infrastructure/text/unicode.generated.ts
 clients/desktop/packages/desktop-localization/src/contracts.generated.ts
 node_modules/
 **/dist/

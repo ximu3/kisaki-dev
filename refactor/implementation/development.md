@@ -24,15 +24,13 @@
 
 桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md) 验证入口查阅。
 
-desktop-contracts 按业务子路径导出显式接口与值校验；类型、校验和操作按主题就近维护，多文件公开入口位于主题目录内。主进程 `src/main` 保存已交付的默认值、预设、匹配、识别、排序与恢复实现；数据库、窗口、资源和宿主接入仍由所属工作包完成。纯单测随源码放置，真实消费者与其样板保留在所属包的 tests 中。
+desktop-contracts 按业务子路径导出显式接口、值校验与规范编码。类型、校验和操作按主题就近维护，多文件公开入口位于主题目录内。纯单测随源码放置，真实消费者与其样板保留在所属包的 tests 中。本体业务实现按所属工作包建立。
 
-名称排序使用桌面 app/assets/unicode 中按原始字节保留的 Unicode 18 数据；app 的 `generate:unicode` 维护 src/main/infrastructure/text/unicode.generated.ts，普通测试核对来源摘要、生成一致性及完整规范化向量。Unicode NOTICE 随应用拥有，合同制品不携带名称索引实现。
-
-desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照，应用在有效语言或译本变化时替换快照；当前选择、登记及响应式接入属于应用。两个工程的生成命令分别通过 `pnpm --filter @kisaki3/desktop run generate:unicode` 与 `pnpm --filter @kisaki3/desktop-localization run generate:messages` 执行，生成源由各自生成器负责排版。
+desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm --filter @kisaki3/desktop-localization run generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；有效语言、译本登记和响应式接入由后续本体工作包实现。生成源由生成器负责排版。
 
 桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
-`tests/fixtures/runtime` 验证四个 renderer/preload 入口、main、utility process、Solid 热更新及资源加载。运行必须提供测试拥有的绝对资料目录；窗口名称对应编译入口，本地消息供测试控制使用。产品窗口、公开通信和扩展宿主按所属工作包实现。该隔离载体不消费产品 src/main；其任务只准备实际使用的工程工具、原生绑定、字体和图标，产品纯函数及 Unicode 原始数据变化由常规检查覆盖。
+`tests/fixtures/runtime` 验证四个 renderer/preload 入口、main、utility process、Solid 热更新及资源加载。运行必须提供测试拥有的绝对资料目录；窗口名称对应编译入口，本地消息供测试控制使用。产品窗口、公开通信和扩展宿主按所属工作包实现。
 
 `tools/dev/session` 拥有服务、监听、候选和进程寿命，调用方提供源码根目录与启动能力。`renderer` 管理 Vite，`inputs` 管理输入监听，`generation` 编译 Node 程序，`dependencies` 准备完整依赖候选；采用新副本后刷新文档并释放旧副本。失败保留既有可用结果，正常退出可以取消，资源释放完成后结束会话。
 

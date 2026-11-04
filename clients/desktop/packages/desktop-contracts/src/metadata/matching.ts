@@ -94,23 +94,3 @@ export type PartMatchingRules<T extends EntryType> = {
 export type MetadataMatchingRules<T extends EntryType> = {
   readonly [K in EntryType]?: readonly MatchingRule<EntryMatchingField<K>>[]
 } & PartMatchingRules<T>
-
-/** Validate one entry rule using the same field vocabulary as complete matching profiles. */
-export function parseEntryMatchingRule<T extends EntryType>(
-  type: T,
-  input: unknown,
-): MatchingRule<EntryMatchingField<T>> {
-  return parseValue(rules(Object.keys(identificationEntries(type))), [input])[0]! as MatchingRule<
-    EntryMatchingField<T>
-  >
-}
-
-/** Validate one part rule, including the comic-chapter volume context. */
-export function parsePartMatchingRule<T extends PartType>(
-  type: T,
-  input: unknown,
-): MatchingRule<PartMatchingField<T>> {
-  return parseValue(rules(getPartMatchingFields(type)), [input])[0]! as MatchingRule<
-    PartMatchingField<T>
-  >
-}

@@ -98,18 +98,6 @@ importers:
 
   clients/desktop/app:
     dependencies:
-      '@kisaki3/desktop-appearance':
-        specifier: workspace:^
-        version: link:../packages/desktop-appearance
-      '@kisaki3/desktop-contracts':
-        specifier: workspace:^
-        version: link:../packages/desktop-contracts
-      '@kisaki3/desktop-localization':
-        specifier: workspace:^
-        version: link:../packages/desktop-localization
-      '@kisaki3/extension-distribution':
-        specifier: workspace:^
-        version: link:../packages/extension-distribution
       better-sqlite3:
         specifier: 13.0.3
         version: 13.0.3

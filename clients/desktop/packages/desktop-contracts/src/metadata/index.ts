@@ -108,8 +108,6 @@ export {
   getPartMatchingFields,
   parsePartMatchingRules,
   parseMetadataMatchingRules,
-  parseEntryMatchingRule,
-  parsePartMatchingRule,
 } from './matching'
 
 export { parseMetadataReadRequest, requireMetadataRequestSupport } from './requests'
