@@ -4,7 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { runCli } from '@kisaki3/tooling/cli'
-import { englishMessages } from '../src/i18n/en'
+import { englishMessages } from '../src/i18n/en/index'
 import { getMessageContracts } from '../src/i18n/messages'
 import type { MessageCatalog } from '../src/i18n/messages'
 
@@ -22,7 +22,7 @@ export function renderMessageTypes(source: MessageCatalog): string {
     return `  readonly ${JSON.stringify(key)}: ${fields ? `{ ${fields} }` : 'never'}`
   })
 
-  return `/** @fileoverview Generated from i18n/en.ts by generate:messages. Do not edit the call contract independently. */
+  return `/** @fileoverview Generated from i18n/en/index.ts by generate:messages. Do not edit the call contract independently. */
 
 export interface MessageArguments {
 ${lines.join('\n')}

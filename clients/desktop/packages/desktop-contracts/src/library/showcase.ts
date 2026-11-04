@@ -3,7 +3,7 @@
 import * as v from 'valibot'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from '../errors'
-import { englishMessages } from '../i18n/en'
+import { showcaseMessages } from '../i18n/en/showcase'
 import type { CallOptions, StoredDefinition } from '../operations'
 import {
   id,
@@ -195,7 +195,7 @@ export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
 
 /** Return fresh, complete preset values. Applying one to an existing draft preserves its identity, visibility and position. */
 export function getShowcasePresets(): readonly ShowcasePreset[] {
-  const labels = englishMessages.showcase.presets
+  const labels = showcaseMessages.presets
 
   function entry(
     types: readonly [EntryType, ...EntryType[]],

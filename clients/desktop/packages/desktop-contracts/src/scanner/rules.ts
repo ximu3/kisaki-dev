@@ -3,7 +3,7 @@
 import * as v from 'valibot'
 import { parsePartialDate } from '../date'
 import { DesktopError } from '../errors'
-import { englishMessages } from '../i18n/en'
+import { scannerMessages } from '../i18n/en/scanner'
 import { id, nonemptyText, parseValue, text } from '../validation'
 import { parseExternalIdentity } from '../library/catalog'
 import type { ExternalIdentity } from '../library/catalog'
@@ -257,7 +257,7 @@ export function getClueExtractionPresets(): readonly ClueExtractionPreset[] {
 
   return patterns.map(([id, label, pattern]) => ({
     id,
-    ...englishMessages.scanner.presets[label],
+    ...scannerMessages.presets[label],
     rule: {
       enabled: true,
       input: 'baseName',

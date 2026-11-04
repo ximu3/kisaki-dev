@@ -4,11 +4,11 @@ import * as v from 'valibot'
 import { parseId, normalizeLocale } from '@kisaki3/extension-distribution/metadata'
 import type { CallOptions, Disposable, Listener, Registration } from './operations'
 import { id, nonemptyText, parseExternalValue, parseValue } from './validation'
-import { englishMessages } from './i18n/en'
+import { englishMessages } from './i18n/en/index'
 import { validateMessageCatalog } from './i18n/messages'
 import type { MessageCatalog } from './i18n/messages'
 
-export { englishMessages } from './i18n/en'
+export { englishMessages } from './i18n/en/index'
 export {
   flattenMessages,
   getMessageContracts,

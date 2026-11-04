@@ -1,4 +1,4 @@
-/** @fileoverview Generated from i18n/en.ts by generate:messages. Do not edit the call contract independently. */
+/** @fileoverview Generated from i18n/en/index.ts by generate:messages. Do not edit the call contract independently. */
 
 export interface MessageArguments {
   readonly "actions.save": never

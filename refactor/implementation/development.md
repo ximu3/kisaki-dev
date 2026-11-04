@@ -23,7 +23,7 @@
 
 桌面公共包通过构建后的子路径交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md) 验证入口查阅。
 
-desktop-contracts 按业务子路径导出显式类型和纯规则，实际数据库、资源、窗口与宿主操作由所属工作包实现。名称排序采用保留在包内 assets 的 Unicode 18 原始数据，生成表由 `generate:unicode` 维护；英语 ICU 源文及其生成声明分别位于 src/i18n/en.ts 与 contracts.generated.ts，使用 `generate:messages` 更新。两个命令都由该包通过 pnpm 执行。普通 build 校验原始数据摘要及生成一致性，再交接完整构建结果；生成源由各自生成器负责排版。
+desktop-contracts 按业务子路径导出显式类型和纯规则，实际数据库、资源、窗口与宿主操作由所属工作包实现。名称排序采用保留在包内 assets 的 Unicode 18 原始数据，生成表由 `generate:unicode` 维护；英语 ICU 源文位于 src/i18n/en，按领域维护，由 index.ts 静态汇总。消息声明位于 src/i18n/contracts.generated.ts，使用 `generate:messages` 更新。两个生成命令都由该包通过 pnpm 执行。普通 build 校验原始数据摘要及生成一致性，再交接完整构建结果；生成源由各自生成器负责排版。
 
 桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
