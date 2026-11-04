@@ -1,4 +1,4 @@
-/** @fileoverview Verifies requests behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies metadata read requests preserve field scope and independently requested relations. */
 
 import { test, expect } from 'vitest'
 import { parseMetadataReadRequest, requireMetadataRequestSupport } from './requests'

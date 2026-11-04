@@ -58,7 +58,9 @@ export type Annotation = {
     readonly id: string
     readonly title: string | null
     readonly content: string
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   } & WorkId<K> &
     AnnotationTargetByType[K]
@@ -125,7 +127,9 @@ export interface AnnotationSummary {
   readonly locationKind: 'image' | 'position' | 'range' | 'text' | 'region'
   readonly positionHint: AnnotationPositionHint | null
 
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -134,11 +138,13 @@ export type AnnotationLocationItem =
   | {
       readonly ref: AnnotationRef<'anime'>
       readonly location: PlaybackAnnotationLocation
+      /** UTC milliseconds since the Unix epoch. */
       readonly createdAt: number
     }
   | {
       readonly ref: AnnotationRef<'comic' | 'novel'>
       readonly location: ReadingAnnotationLocation
+      /** UTC milliseconds since the Unix epoch. */
       readonly createdAt: number
     }
 
@@ -149,24 +155,52 @@ export interface AnnotationLocationResult {
 
 /** Reads and writes own saved facts. Returning to content is a sessions operation, not a side effect of get. */
 export interface AnnotationsApi {
+  /**
+   * Read lightweight annotation summaries under the requested saved-fact scope; full text and
+   * geometry are fetched separately.
+   */
   list(
     query: AnnotationQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<AnnotationSummary>>
+
+  /**
+   * Read the complete saved annotation without opening, seeking or otherwise changing a content
+   * session.
+   */
   get(ref: AnnotationRef, call?: CallOptions): Promise<Annotation | null>
+
+  /**
+   * Read original locations for one file's content-order index, excluding saved text, images and
+   * unrelated files.
+   */
   listLocations(
     scope: { readonly work: EntryRef<'anime' | 'comic' | 'novel'>; readonly fileId: string },
     options: ListOptions,
     call?: CallOptions,
   ): Promise<AnnotationLocationResult>
 
+  /**
+   * Commit the annotation, its exact location and adopted content together; optional evidence
+   * remains separate from source identity.
+   */
   create(input: AnnotationCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and commit the submitted annotation fields and related content; do not reinterpret a
+   * saved location against different bytes.
+   */
   update(
     ...args: {
       [K in WorkType]: [ref: AnnotationRef<K>, input: AnnotationUpdate<K>, call?: CallOptions]
     }[WorkType]
   ): Promise<void>
+
+  /**
+   * Delete the selected saved annotations and their owned references without deleting or
+   * controlling the underlying content.
+   */
   delete(refs: AnnotationRef | NonEmptyArray<AnnotationRef>, call?: CallOptions): Promise<void>
 }
 

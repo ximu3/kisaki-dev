@@ -57,7 +57,9 @@ export interface ScanConfig {
 
   readonly sortOrder: number
 
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -87,20 +89,49 @@ export interface ScanConfigSnapshot {
 
 /** Configuration summaries omit complete definitions. Ordinary creation/updates own later watch/initial-scan work separately. */
 export interface ScanConfigsApi {
+  /** Read saved configuration summaries without loading complete rule definitions. */
   list(
     filter?: { readonly workType?: WorkType },
     call?: CallOptions,
   ): Promise<readonly Omit<ScanConfig, 'definition'>[]>
+
+  /**
+   * Read the complete saved configuration, retaining invalid definitions and unavailable
+   * references explicitly.
+   */
   get(id: string, call?: CallOptions): Promise<ScanConfig | null>
 
+  /**
+   * Commit the configuration before separately owned watch and initial-scan adoption; saved
+   * success does not imply those later operations succeeded.
+   */
   create(input: ScanConfigCreate, call?: CallOptions): Promise<ScanConfig>
+
+  /**
+   * Compare and commit changed fields; accepted scans retain their own snapshot while later work
+   * adopts the new configuration.
+   */
   update(id: string, input: ScanConfigUpdate, call?: CallOptions): Promise<ScanConfig>
+
+  /**
+   * Remove the saved configuration and its future watch input; accepted work and established
+   * library facts keep their own lifetimes.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /** Reorder selected configurations against the complete saved directory baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
+  /**
+   * Read fixed clue-extraction presets for a draft; these do not create file-recognition
+   * profiles or scanner configurations.
+   */
   listRulePresets(call?: CallOptions): Promise<readonly ClueExtractionPreset[]>
 
+  /**
+   * Subscribe before reading configurations; directory invalidation remains separate from
+   * runtime-state observation.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 

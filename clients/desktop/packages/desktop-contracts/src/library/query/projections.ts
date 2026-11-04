@@ -176,7 +176,9 @@ interface CommonProjection {
 
   readonly addedDate: PartialDate | null
   readonly effectiveAddedDate: PartialDate
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -187,6 +189,7 @@ interface WorkProjection {
 
   readonly additionalDurationMs: number
   readonly totalDurationMs: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly lastActiveAt: number | null
   readonly completionCount: number
   readonly firstCompletedDate: CalendarDate | null

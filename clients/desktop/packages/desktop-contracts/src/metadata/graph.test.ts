@@ -1,4 +1,4 @@
-/** @fileoverview Verifies graph behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies source responses and composed candidates preserve their distinct graph contracts. */
 
 import { test, expect } from 'vitest'
 

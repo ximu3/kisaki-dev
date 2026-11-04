@@ -29,7 +29,9 @@ export type ContentDirectory<T extends WorkType = WorkType> = {
     readonly id: string
     readonly work: EntryRef<K>
     readonly path: string
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   } & (K extends FileWorkType
     ? {
@@ -104,28 +106,56 @@ export interface HoldingsRelocationResult {
 
 /** Directory registration owns discovery only; deletion retains files/configurations, and relocation never moves user bytes. */
 export interface ContentDirectoriesApi {
+  /**
+   * Read this work's registered discovery roots and their saved definitions, including
+   * explicitly unavailable settings.
+   */
   list<T extends WorkType>(
     work: EntryRef<T>,
     call?: CallOptions,
   ): Promise<readonly ContentDirectory<T>[]>
+
+  /**
+   * Read one registered root under the supplied work without moving bytes or discovering new
+   * files.
+   */
   get<T extends WorkType>(
     work: EntryRef<T>,
     directoryId: string,
     call?: CallOptions,
   ): Promise<ContentDirectory<T> | null>
 
+  /**
+   * Register a discovery root with its complete media-specific configuration; user files remain
+   * in their existing location.
+   */
   create(
     ...args: {
       [K in WorkType]: [work: EntryRef<K>, input: DirectoryCreateFields<K>, call?: CallOptions]
     }[WorkType]
   ): Promise<string>
+
+  /**
+   * Compare and save changed discovery settings or profile selection; existing file associations
+   * and their modes remain unchanged.
+   */
   update(
     work: EntryRef<FileWorkType>,
     directoryId: string,
     input: DirectoryUpdate,
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Remove only this discovery registration; retain existing files, launch configurations and
+   * user bytes.
+   */
   delete(work: WorkRef, directoryId: string, call?: CallOptions): Promise<void>
+
+  /**
+   * Verify the explicitly selected path mappings and update stable registrations; report
+   * conflicts without moving or merging user files.
+   */
   relocate(
     work: WorkRef,
     directoryId: string,

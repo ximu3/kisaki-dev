@@ -49,7 +49,9 @@ export interface GameLaunchConfig {
   readonly isPreferred: boolean
   readonly sortOrder: number
 
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -73,21 +75,51 @@ export interface GameLaunchConfigUpdate {
 
 /** Editing influences future sessions only. Removal retains historical snapshots and never deletes installation/save bytes. */
 export interface GameLaunchConfigsApi {
+  /**
+   * Read this game's saved launch configurations in their formal order; unavailable definitions
+   * remain visible.
+   */
   list(gameId: string, call?: CallOptions): Promise<readonly GameLaunchConfig[]>
+
+  /**
+   * Read one saved configuration without resolving its launch target or changing an existing
+   * session snapshot.
+   */
   get(gameId: string, id: string, call?: CallOptions): Promise<GameLaunchConfig | null>
 
+  /**
+   * Create a complete launch configuration for this game, including only the explicitly
+   * requested preferred selection.
+   */
   create(gameId: string, input: GameLaunchConfigCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and commit changed configuration fields for future launches; active sessions retain
+   * their established snapshot.
+   */
   update(
     gameId: string,
     id: string,
     input: GameLaunchConfigUpdate,
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Remove the configuration and maintain its formal references, preserving history and
+   * installation/save bytes.
+   */
   delete(gameId: string, id: string, call?: CallOptions): Promise<void>
 
+  /** Reorder selected configurations against the complete game-side order baseline. */
   reorder(gameId: string, input: ReorderInput, call?: CallOptions): Promise<void>
+
+  /** Move configurations in the game's current order without changing the preferred selection. */
   move(gameId: string, input: MoveInput, call?: CallOptions): Promise<void>
 
+  /**
+   * Set or clear this game's explicit preferred configuration after its optional comparison; do
+   * not launch or switch a session.
+   */
   setPreferred(
     gameId: string,
     launchConfigId: string | null,

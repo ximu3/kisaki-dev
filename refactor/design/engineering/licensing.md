@@ -12,6 +12,7 @@
 | Web 客户端自有实现（不在桌面交付范围内）             | AGPL-3.0-only               | 源码归 clients/web；客户端与服务端分别维护合同与实现                                                |
 | desktop-appearance、desktop-ui                       | MIT                         | 视觉词表、纯值、样式、通用呈现与交互                                                                |
 | desktop-contracts                                    | MIT                         | 完整桌面业务值、操作与参与合同                                                                      |
+| desktop-localization                                 | MIT                         | 领域英语、关联消息类型、译本校验与纯格式化                                                          |
 | desktop-rpc                                          | MIT                         | 窗口、SDK 和开发控制共用的环境无关通信内核                                                          |
 | extension-distribution、extension-sdk、extension-cli | MIT                         | 制品格式与签名、扩展纯合同与运行接入、作者工作流                                                    |
 | 脚手架复制到作者项目的自有模板                       | MIT                         | 生成代码的授权可明确取得；模板许可与宿主组合条件分别判断                                            |

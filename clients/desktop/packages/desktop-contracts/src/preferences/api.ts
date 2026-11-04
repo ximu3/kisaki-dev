@@ -174,14 +174,31 @@ export interface PreferenceField {
 }
 
 export interface PreferencesApi {
+  /**
+   * Read the saved configuration snapshot, retaining unavailable identities and invalid
+   * executable definitions as explicit states.
+   */
   get(call?: CallOptions): Promise<PreferencesSnapshot>
+
+  /**
+   * Read complete defaults for the current application context without modifying saved
+   * preferences or a caller's draft.
+   */
   getDefaults(call?: CallOptions): Promise<Preferences>
 
   /** Compare and commit only submitted fields, all-or-nothing. Runtime adoption is a separate observable result. */
   update(input: PreferencesUpdate, call?: CallOptions): Promise<PreferencesSnapshot>
 
+  /**
+   * Read localized field navigation and search descriptions; field keys do not authorize
+   * arbitrary path writes.
+   */
   listFields(call?: CallOptions): Promise<readonly PreferenceField[]>
 
+  /**
+   * Subscribe before reading preferences; invalidation requests a fresh snapshot without
+   * replacing unsaved edits.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 

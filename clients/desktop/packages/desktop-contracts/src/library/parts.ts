@@ -113,7 +113,9 @@ export type PartDetails<T extends PartType = PartType> = {
     readonly data: PartFields<K>
     readonly completed: boolean
     readonly sortOrder: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   }
 }[T]
@@ -171,15 +173,35 @@ export type VolumeChapterChange =
 
 /** Actual part operations commit related references together; failures do not return partial identity migrations. */
 export interface PartsApi {
+  /**
+   * Read parts within one real work and kind, retaining their saved order under the requested
+   * filters.
+   */
   list(query: PartQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<PartDetails>>
+
+  /** Read saved part details without opening a held file or changing any completion mark. */
   get(ref: PartRef, call?: CallOptions): Promise<PartDetails | null>
 
+  /**
+   * Commit a new part and its adopted content under the supplied work; the returned identity
+   * retains its actual kind.
+   */
   create(input: PartCreate, call?: CallOptions): Promise<PartRef>
+
+  /**
+   * Compare and save this part's changed fields and related references together; the owning work
+   * and kind remain fixed.
+   */
   update(
     ...args: {
       [K in PartType]: [ref: PartRef<K>, input: Omit<PartUpdate<K>, 'ref'>, call?: CallOptions]
     }[PartType]
   ): Promise<void>
+
+  /**
+   * Delete the selected parts and update dependent references in one operation; held media files
+   * are not deleted.
+   */
   delete(refs: PartRef | NonEmptyArray<PartRef>, call?: CallOptions): Promise<void>
 
   /** Merge only the same kind within one work; completed is the union, target preference and filled facts win. */
@@ -189,17 +211,36 @@ export interface PartsApi {
     }[PartType],
     call?: CallOptions,
   ): Promise<PartRef>
+
+  /**
+   * Correct an anime episode or extra in place, preserving identity and replacing kind-specific
+   * fields atomically.
+   */
   changeKind(
     ref: PartRef<'animeEpisode' | 'animeExtra'>,
     input: PartKindChange,
     call?: CallOptions,
   ): Promise<PartRef<'animeEpisode' | 'animeExtra'>>
 
+  /**
+   * Reorder selected slots in the complete work/kind side using its full baseline; filters do
+   * not narrow that baseline.
+   */
   reorder(scope: PartOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
+
+  /**
+   * Move the supplied parts in input order within their current work/kind side, before the
+   * anchor or to the end.
+   */
   move(scope: PartOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
 
   /** Set the part mark only; this never creates or clears a work completion record. */
   setCompleted(ref: PartRef, completed: boolean, call?: CallOptions): Promise<void>
+
+  /**
+   * Set every supplied part mark atomically; this neither creates nor clears work completion
+   * records.
+   */
   setCompletedMany(
     refs: NonEmptyArray<PartRef>,
     completed: boolean,
@@ -216,17 +257,27 @@ export type PartOrderScope = {
 
 /** Comic volume membership only; both endpoints must belong to the same comic at commit. */
 export interface VolumeChaptersApi {
+  /** Read a comic volume's chapter associations in their saved volume-specific order. */
   list(
     volumeId: string,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<VolumeChapter>>
 
+  /**
+   * Compare and change the complete ordered chapter side atomically; both endpoints must remain
+   * in the same comic.
+   */
   applyChanges(
     volumeId: string,
     input: { readonly change: VolumeChapterChange; readonly expected?: readonly VolumeChapter[] },
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Compare and change only this volume-specific chapter number, preserving the chapter's
+   * work-level number.
+   */
   update(
     volumeId: string,
     chapterId: string,
@@ -237,7 +288,13 @@ export interface VolumeChaptersApi {
     call?: CallOptions,
   ): Promise<void>
 
+  /** Reorder selected chapter slots against the complete volume membership baseline. */
   reorder(volumeId: string, input: ReorderInput, call?: CallOptions): Promise<void>
+
+  /**
+   * Move the supplied chapter associations within the volume's current order without changing
+   * work-level chapter order.
+   */
   move(volumeId: string, input: MoveInput, call?: CallOptions): Promise<void>
 }
 

@@ -150,6 +150,7 @@ export interface ExtensionRepositoryUpdate {
 /** This is a display projection of verified content; cryptographic verification still uses the original signed bytes. */
 export interface ExtensionRegistrySnapshot {
   readonly registry: RegistryDocument
+  /** UTC milliseconds since the Unix epoch. */
   readonly fetchedAt: number
   readonly responseUrl: string
 }
@@ -168,23 +169,60 @@ export interface ExtensionRepositoryInspection {
 }
 
 export interface ExtensionRepositoriesApi {
+  /**
+   * Read configured repository trust, verified cached snapshots and current errors as separate
+   * facts.
+   */
   list(call?: CallOptions): Promise<readonly ExtensionRepositoryState[]>
+
+  /** Read one configured repository and its last verified cache without refreshing the network. */
   get(repositoryId: string, call?: CallOptions): Promise<ExtensionRepositoryState | null>
+
+  /**
+   * Fetch and inspect the declared registry identity and key without creating trust or changing
+   * repository configuration.
+   */
   inspect(url: string, call?: CallOptions): Promise<ExtensionRepositoryInspection>
 
+  /**
+   * Save the explicitly confirmed repository identity, address and pinned key; remote key
+   * declarations alone do not establish trust.
+   */
   add(input: ExtensionRepositoryInput, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and save the requested repository configuration changes; any changed trust follows
+   * the explicit native management flow.
+   */
   update(repositoryId: string, input: ExtensionRepositoryUpdate, call?: CallOptions): Promise<void>
 
   /** Unbind and revoke this repository's prepared updates; installed packages, enabled choices and private data remain. */
   remove(repositoryId: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Verify fetched original bytes against the existing pin before replacing the cached snapshot;
+   * failure preserves the last verified content.
+   */
   refresh(repositoryId: string, call?: CallOptions): Promise<ExtensionRegistrySnapshot>
 
+  /**
+   * Subscribe before reading repository state; invalidation does not itself refresh a registry
+   * or install a package.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
 export interface ExtensionRuntimeApi {
+  /**
+   * Read the actual shared-host state independently of installed packages and each extension's
+   * enabled intent.
+   */
   getState(call?: CallOptions): Promise<ExtensionRuntimeState>
+
+  /**
+   * Deliver current shared-host state and subsequent changes; releasing observation neither
+   * stops nor restarts the host.
+   */
   observe(listener: Listener<ExtensionRuntimeState>): Disposable
 
   /** Rebuild the shared host using committed versions only; no pending update or old business call is replayed. */
@@ -198,9 +236,28 @@ export interface ExtensionsApi {
   readonly repositories: ExtensionRepositoriesApi
   readonly runtime: ExtensionRuntimeApi
 
+  /**
+   * Read installed summaries, including saved enabled intent and prepared updates, without
+   * treating them as activation success.
+   */
   list(call?: CallOptions): Promise<readonly InstalledExtensionSummary[]>
+
+  /**
+   * Read an installed package's available metadata; missing or invalid package bytes do not
+   * fabricate a manifest.
+   */
   get(extensionId: string, call?: CallOptions): Promise<InstalledExtension | null>
+
+  /**
+   * Read package, compatibility, activation and shared-runtime facts independently for this
+   * installed identity.
+   */
   getState(extensionId: string, call?: CallOptions): Promise<ExtensionState | null>
+
+  /**
+   * Deliver current extension state and subsequent changes; observation never enables, activates
+   * or reinstalls the extension.
+   */
   observe(extensionId: string, listener: Listener<ExtensionState | null>): Disposable
 
   /** Default enabled=true and attempt activation. An already installed ID requires the explicit update flow. */
@@ -210,15 +267,37 @@ export interface ExtensionsApi {
     call?: CallOptions,
   ): Promise<ExtensionInstallResult>
 
+  /**
+   * Save enabled intent and attempt activation under current compatibility; the returned state
+   * reports actual activation separately.
+   */
   enable(extensionId: string, call?: CallOptions): Promise<ExtensionState>
+
+  /**
+   * Save disabled intent and finish this instance's owned cleanup, preserving installed code and
+   * private data.
+   */
   disable(extensionId: string, call?: CallOptions): Promise<ExtensionState>
 
+  /**
+   * End the actual instance and remove its installed package, handling private data by the
+   * explicit choice; previously adopted library facts remain.
+   */
   uninstall(
     input: { readonly extensionId: string; readonly privateData: 'keep' | 'delete' },
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Check each bound trusted source under the extension's compatibility and prerelease policy;
+   * failures remain reported rather than becoming no-update results.
+   */
   checkUpdates(call?: CallOptions): Promise<ExtensionCheckUpdatesResult>
+
+  /**
+   * Download and verify the explicitly selected package without activating it; preparation
+   * failure preserves any previously valid receipt.
+   */
   prepareUpdate(
     extensionId: string,
     source: ExtensionPackageSource,
@@ -231,17 +310,30 @@ export interface ExtensionsApi {
     call?: CallOptions,
   ): Promise<ExtensionApplyUpdatesResult>
 
+  /**
+   * Bind the installed extension to the selected configured repository or none; changing source
+   * revokes updates prepared under the old binding.
+   */
   setUpdateSource(
     extensionId: string,
     repositoryId: string | null,
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Save this extension's update-selection preference without installing, downgrading or
+   * changing the running version.
+   */
   setAllowPrerelease(
     extensionId: string,
     allowPrerelease: boolean,
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Subscribe before reading installed-package summaries; runtime observation remains
+   * independently owned.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -440,6 +532,7 @@ export function parseExtensionState(input: unknown): ExtensionState {
   return parseValue(v.strictObject({ extensionId, activation }), input, 'Invalid extension state')
 }
 
+/** Validate shared-host state independently of package installation, compatibility and individual activation. */
 export function parseExtensionRuntimeState(input: unknown): ExtensionRuntimeState {
   return parseValue(
     v.variant('status', [
@@ -456,6 +549,7 @@ export function parseExtensionActivationResult(input: unknown): ExtensionActivat
   return parseValue(activationResult, input, 'Invalid extension activation result')
 }
 
+/** Keep committed installation facts separate from the actual activation outcome. */
 export function parseExtensionInstallResult(input: unknown): ExtensionInstallResult {
   return parseValue(
     v.strictObject({
@@ -518,6 +612,7 @@ export function parseExtensionRepositoryInput(input: unknown): ExtensionReposito
   )
 }
 
+/** Validate changed repository fields and their matching baselines without establishing or replacing trust. */
 export function parseExtensionRepositoryUpdate(input: unknown): ExtensionRepositoryUpdate {
   const fields = v.strictObject(optionalFields(repositoryEntries))
   const value = parseValue(

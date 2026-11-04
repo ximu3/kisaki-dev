@@ -1,4 +1,4 @@
-/** @fileoverview Verifies profiles behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies metadata profiles select valid fields, rules and declared participants. */
 
 import { test, expect } from 'vitest'
 

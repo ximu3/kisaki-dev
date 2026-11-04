@@ -33,19 +33,37 @@ export interface UiTranslation {
 }
 
 export interface UiTranslationsApi {
+  /** Read available translation identities and native display names, including built-in English. */
   list(call?: CallOptions): Promise<readonly UiTranslation[]>
 
+  /**
+   * Validate known messages against the application's English contract before registering the
+   * supplied catalog for this extension instance; failure preserves existing translations.
+   */
   register(
     input: UiTranslationRegistration,
     call?: CallOptions,
   ): Promise<Registration<UiTranslationRef & { readonly type: 'extension' }>>
 
+  /**
+   * Subscribe to translation-directory invalidation; removal preserves saved selection and lets
+   * effective language fall back.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
 /** Actual effective language; a lost translation falls back without changing the saved selection. */
 export interface UiLocaleApi {
+  /**
+   * Read the currently effective locale, including fallback, rather than the saved translation
+   * selection.
+   */
   get(): UiLocale
+
+  /**
+   * Subscribe to changes of effective locale; releasing the listener does not change language or
+   * saved preferences.
+   */
   onChanged(listener: Listener<UiLocale>): Disposable
 }
 

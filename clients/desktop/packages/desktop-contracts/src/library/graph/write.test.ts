@@ -1,4 +1,4 @@
-/** @fileoverview Verifies write behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies complete graph identity, endpoint ownership, relation consistency and creation results. */
 
 import { test, expect } from 'vitest'
 

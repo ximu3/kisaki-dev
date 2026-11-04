@@ -24,6 +24,7 @@ export interface SessionTiming {
   readonly paused: boolean
   readonly counting: boolean
   readonly elapsedMs: number
+  /** UTC display deadline in milliseconds; null means no active grace period. */
   readonly graceEndsAt: number | null
 }
 
@@ -66,6 +67,7 @@ export type SessionSaveSource = Extract<GameBackupSource, { readonly type: 'snap
 
 export interface SessionBase {
   readonly sessionId: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number
 
   readonly timing: SessionTiming
@@ -141,6 +143,7 @@ export interface SessionEndReasonMap {
 /** Recording failure is independent of the actual end reason. A detached game has already saved its final recording. */
 export type SessionEndedMap = {
   readonly [K in keyof SessionStartedMap]: SessionStartedMap[K] & {
+    /** UTC milliseconds since the Unix epoch. */
     readonly endedAt: number
     readonly reason: SessionEndReasonMap[K]
     readonly recordingError?: ErrorSummary
@@ -256,6 +259,7 @@ export type RecordingIssue =
 
 export type PendingRecording = {
   readonly sessionId: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly endedAt: number
   readonly activityIds: readonly string[]
   readonly positionPending: boolean
@@ -286,9 +290,22 @@ export interface RecordingRetryResult {
 
 /** Controls target one actual session. Timing never changes playback; close waits for recording and resource completion. */
 export interface SessionControls {
+  /**
+   * Pause user-controlled accumulation and finish the current timing interval without pausing
+   * playback or closing content.
+   */
   pauseTiming(sessionId: string, call?: CallOptions): Promise<void>
+
+  /**
+   * Clear the user's timing pause; accumulation still requires the medium's actual activity and
+   * foreground conditions.
+   */
   resumeTiming(sessionId: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Show the actual content window and request OS focus without opening another session or
+   * clearing pauses.
+   */
   focus(sessionId: string, call?: CallOptions): Promise<void>
 
   /** Repeated active closes share completion; an ended ID succeeds without retrying previously failed recording. */
@@ -313,7 +330,16 @@ export interface GameSessionsApi extends SessionControls {
 }
 
 export interface AnimeSessionsApi extends SessionControls {
+  /**
+   * Wait for usable content and initial positioning; same-file reuse keeps playback and timing
+   * state, with explicit positions applied in place.
+   */
   open(input: AnimeOpenInput, call?: SessionInteractionOptions): Promise<AnimeSession>
+
+  /**
+   * Prepare the target before ending the old file, then await recording and resource cleanup;
+   * failures after that boundary retain previousEnded facts.
+   */
   switchFile(
     sessionId: string,
     input: FileSwitchInput<PlaybackPositionInput>,
@@ -322,30 +348,68 @@ export interface AnimeSessionsApi extends SessionControls {
 
   /** Return confirmed actual seconds, not the requested start instruction. Seeking never implicitly resumes playback. */
   seek(sessionId: string, position: PlaybackPositionInput, call?: CallOptions): Promise<number>
+
+  /**
+   * Resume this actual file's playback and await adoption; timing eligibility remains a separate
+   * decision.
+   */
   play(sessionId: string, call?: CallOptions): Promise<void>
+
+  /**
+   * Pause this actual file's playback and await adoption without changing the user's
+   * timing-pause choice.
+   */
   pause(sessionId: string, call?: CallOptions): Promise<void>
 
   /** Temporary speed lasts only for this actual file; persistent defaults are separate. */
   setSpeed(sessionId: string, speed: number, call?: CallOptions): Promise<void>
+
+  /**
+   * Apply visibility only to the current file and wait for actual adoption; do not save a
+   * persistent subtitle preference.
+   */
   setSubtitlesVisible(sessionId: string, visible: boolean, call?: CallOptions): Promise<void>
 
+  /**
+   * Validate 0-100 percent, save application playback memory, then apply only to this player;
+   * failures distinguish saved intent from actual adoption.
+   */
   setVolume(
     sessionId: string,
     volumePercent: number,
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
+
+  /**
+   * Save application mute memory before applying it to this player; other open players retain
+   * their current state.
+   */
   setMuted(sessionId: string, muted: boolean, call?: CallOptions): Promise<PlaybackSettingResult>
 
+  /**
+   * Save the multiplier in the currently selected complete playback configuration, then apply
+   * only subtitle scale to this player.
+   */
   setSubtitleScale(
     sessionId: string,
     scale: number,
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
+
+  /**
+   * Save the signed audio offset in seconds for this file before applying it to the actual
+   * player.
+   */
   setAudioDelay(
     sessionId: string,
     seconds: number,
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
+
+  /**
+   * Save the signed subtitle offset in seconds for this file before applying it to the actual
+   * player.
+   */
   setSubtitleDelay(
     sessionId: string,
     seconds: number,
@@ -359,7 +423,17 @@ export interface AnimeSessionsApi extends SessionControls {
     options?: { readonly remember?: boolean },
     call?: CallOptions,
   ): Promise<PlaybackSettingResult>
+
+  /**
+   * Read this file's actual track list and selection; runtime references do not identify tracks
+   * in another file or session.
+   */
   getTracks(sessionId: string, call?: CallOptions): Promise<readonly PlaybackTrack[]>
+
+  /**
+   * Deliver the current track list followed by changes; releasing observation does not change
+   * selection or stop playback.
+   */
   observeTracks(sessionId: string, listener: Listener<readonly PlaybackTrack[]>): Disposable
 
   /** Image and seconds come from the same actual file capture before independent encoding/preparation. */
@@ -367,13 +441,26 @@ export interface AnimeSessionsApi extends SessionControls {
 }
 
 export interface ComicSessionsApi extends SessionControls {
+  /**
+   * Wait for usable reading content and initial positioning; ordinary same-file reuse preserves
+   * the established session state.
+   */
   open(input: ComicOpenInput, call?: SessionInteractionOptions): Promise<ComicSession>
+
+  /**
+   * Prepare and switch the actual reading file through the FileSwitchResult lifecycle; preserve
+   * the user's timing pause and retain previousEnded facts on later failure.
+   */
   switchFile(
     sessionId: string,
     input: FileSwitchInput<ReadingPositionInput>,
     call?: CallOptions,
   ): Promise<FileSwitchResult<ComicSession>>
 
+  /**
+   * Locate only within this actual file and return the confirmed persistent position; start is
+   * resolved rather than echoed, and unavailable locations fail.
+   */
   seek(
     sessionId: string,
     position: ReadingPositionInput,
@@ -382,13 +469,26 @@ export interface ComicSessionsApi extends SessionControls {
 }
 
 export interface NovelSessionsApi extends SessionControls {
+  /**
+   * Wait for usable reading content and initial positioning; ordinary same-file reuse preserves
+   * the established session state.
+   */
   open(input: NovelOpenInput, call?: SessionInteractionOptions): Promise<NovelSession>
+
+  /**
+   * Prepare and switch the actual reading file through the FileSwitchResult lifecycle; preserve
+   * the user's timing pause and retain previousEnded facts on later failure.
+   */
   switchFile(
     sessionId: string,
     input: FileSwitchInput<ReadingPositionInput>,
     call?: CallOptions,
   ): Promise<FileSwitchResult<NovelSession>>
 
+  /**
+   * Locate only within this actual file and return the confirmed persistent position; start is
+   * resolved rather than echoed, and unavailable locations fail.
+   */
   seek(
     sessionId: string,
     position: ReadingPositionInput,
@@ -398,11 +498,28 @@ export interface NovelSessionsApi extends SessionControls {
 
 /** Native-only collection, retained for the current process. Discard requires the user's explicit choice. */
 export interface SessionRecordingsApi {
+  /**
+   * Read confirmed recording facts retained after save failure in this process; these are not
+   * active content sessions.
+   */
   list(call?: CallOptions): Promise<readonly PendingRecording[]>
 
+  /**
+   * Retry only the retained confirmed recording facts, preserving unresolved results without
+   * reopening content or duplicating committed activities.
+   */
   retry(sessionId: string, call?: CallOptions): Promise<RecordingRetryResult>
+
+  /**
+   * Discard this session's remaining unsaved facts after the user's explicit choice; already
+   * saved records stay intact.
+   */
   discard(sessionId: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Subscribe before reading pending recordings; invalidation requests a refreshed list without
+   * retrying or discarding facts.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -413,7 +530,16 @@ export interface SessionsApi {
   readonly novel: NovelSessionsApi
   readonly recordings: SessionRecordingsApi
 
+  /**
+   * Read snapshots of actual current sessions; ended sessions and retained unsaved recordings
+   * are separate collections.
+   */
   list(call?: CallOptions): Promise<readonly WorkSession[]>
+
+  /**
+   * Read one current session snapshot; an ended identity returns null and never resolves to a
+   * later session of the same work.
+   */
   get(sessionId: string, call?: CallOptions): Promise<WorkSession | null>
 
   /** Deliver current then changed complete snapshots without a read/subscribe gap; disposal never closes content. */
@@ -600,6 +726,7 @@ export function parsePlaybackPositionInput(input: unknown): PlaybackPositionInpu
   return parseValue(playbackInput, input, 'Invalid playback position')
 }
 
+/** Accept a persistent reading coordinate or the transient start instruction without resolving document content. */
 export function parseReadingPositionInput(input: unknown): ReadingPositionInput {
   return parseValue(readingInput, input, 'Invalid reading position input')
 }
@@ -613,6 +740,7 @@ export function parseGameOpenInput(input: unknown): GameOpenInput {
   )
 }
 
+/** Validate compatible anime target constraints; an explicit position requires an explicit file. */
 export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -635,6 +763,7 @@ export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   return value as AnimeOpenInput
 }
 
+/** Validate comic volume/chapter/file constraints without choosing a file or resolving its reading position. */
 export function parseComicOpenInput(input: unknown): ComicOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -654,6 +783,7 @@ export function parseComicOpenInput(input: unknown): ComicOpenInput {
   return value as ComicOpenInput
 }
 
+/** Validate novel volume/file constraints; an explicit reading position remains bound to the supplied file. */
 export function parseNovelOpenInput(input: unknown): NovelOpenInput {
   const value = parseValue(
     v.strictObject({
@@ -678,6 +808,7 @@ export function parseFileSwitchInput(
   input: unknown,
 ): FileSwitchInput<PlaybackPositionInput>
 
+/** Validate the requested reading file and optional reading coordinate without accepting playback seconds. */
 export function parseFileSwitchInput(
   type: 'comic' | 'novel',
   input: unknown,

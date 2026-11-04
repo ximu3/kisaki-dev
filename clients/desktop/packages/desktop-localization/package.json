@@ -39,8 +39,8 @@
     "clean": "tsx tools/clean.ts"
   },
   "dependencies": {
-    "@kisaki3/desktop-contracts": "workspace:^",
     "@formatjs/icu-messageformat-parser": "3.5.22",
+    "@kisaki3/desktop-contracts": "workspace:^",
     "intl-messageformat": "12.1.4"
   },
   "devDependencies": {

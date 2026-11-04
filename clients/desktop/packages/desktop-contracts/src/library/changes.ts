@@ -153,6 +153,7 @@ export type LibraryChange =
 
 /** One successful complete operation emits its own fact boundary; no-change success emits nothing. */
 export interface LibraryChanged {
+  /** UTC milliseconds since the Unix epoch. */
   readonly committedAt: number
   readonly changes: NonEmptyArray<LibraryChange>
 }
@@ -412,6 +413,7 @@ export function parseLibraryChanged(input: unknown): LibraryChanged {
   )
 }
 
+/** Validate a nonempty set of affected read areas, without interpreting it as a business fact or query result. */
 export function parseLibraryInvalidation(input: unknown): LibraryInvalidation {
   const area = v.picklist(libraryInvalidationAreas)
   return parseValue(

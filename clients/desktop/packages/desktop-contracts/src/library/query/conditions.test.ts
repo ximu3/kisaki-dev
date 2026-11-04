@@ -1,19 +1,10 @@
-/** @fileoverview Verifies conditions behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies entry condition value semantics, field constraints and relation qualifiers. */
 
 import { test, expect } from 'vitest'
 
 import { parseEntryCondition } from './conditions'
-import { parseEntryQuery } from './definition'
-import type { EntryQuery } from './definition'
 
-const query: EntryQuery = {
-  scope: { type: 'library' },
-  search: '',
-  rules: [{ enabled: true, types: ['game', 'person'], filter: { match: 'all', conditions: [] } }],
-  sort: { type: 'field', field: 'name', direction: 'asc' },
-}
-
-test('rejects unknown and incompatible clauses even in disabled groups', () => {
+test('rejects unknown fields, invalid value ranges and unsupported condition combinations', () => {
   for (const condition of [
     { field: 'rating', op: 'range', bounds: { min: 101 } },
     { field: 'rating', op: 'range', bounds: {} },
@@ -27,26 +18,43 @@ test('rejects unknown and incompatible clauses even in disabled groups', () => {
   ]) {
     expect(() => parseEntryCondition(condition)).toThrow()
   }
+})
 
-  expect(() =>
-    parseEntryQuery({
-      ...query,
-      rules: [
-        {
-          enabled: false,
-          types: ['person'],
-          filter: { match: 'all', conditions: [{ field: 'status', op: 'in', values: [null] }] },
-        },
-      ],
+test('keeps zero, explicit null, precise dates and deduplicated selections meaningful', () => {
+  expect(
+    parseEntryCondition({ field: 'status', op: 'notIn', values: ['active', null, 'active'] }),
+  ).toEqual({ field: 'status', op: 'notIn', values: ['active', null] })
+
+  expect(
+    parseEntryCondition({ field: 'rating', op: 'range', bounds: { min: 0, max: 0 } }),
+  ).toMatchObject({ bounds: { min: 0, max: 0 } })
+
+  expect(
+    parseEntryCondition({
+      field: 'birthDate',
+      op: 'absoluteRange',
+      bounds: { min: { year: 0 }, max: { year: 0 } },
     }),
-  ).toThrow()
+  ).toMatchObject({ bounds: { min: { year: 0 } } })
+
+  expect(
+    parseEntryCondition({
+      field: 'parts',
+      scope: { partType: 'animeEpisode', classification: { op: 'in', values: [null] } },
+      measure: 'accessible',
+      op: 'range',
+      bounds: { max: 0 },
+    }),
+  ).toMatchObject({ measure: 'accessible' })
 
   expect(() =>
-    parseEntryQuery({ ...query, sort: { type: 'field', field: 'releaseDate', direction: 'asc' } }),
-  ).toThrow()
-
-  expect(() =>
-    parseEntryQuery({ ...query, scope: { type: 'library', showHidden: true } }),
+    parseEntryCondition({
+      field: 'parts',
+      scope: { partType: 'novelVolume', classification: { op: 'in', values: [null] } },
+      measure: 'registered',
+      op: 'range',
+      bounds: { min: 0 },
+    }),
   ).toThrow()
 })
 

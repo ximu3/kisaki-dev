@@ -67,11 +67,20 @@ export type UsagePreferenceTarget =
 
 /** Complete custom settings stay independent of parent changes and do not reconfigure already-open content by themselves. */
 export interface HoldingsPreferencesApi {
+  /**
+   * Read the work or file's saved complete override, distinguishing absent customization from an
+   * invalid stored definition.
+   */
   get<T extends FileWorkType>(
     work: EntryRef<T>,
     target: UsagePreferenceTarget,
     call?: CallOptions,
   ): Promise<StoredDefinition<UsageOverride<FilePreferencesByType[T]>> | null>
+
+  /**
+   * Initialize from the supplied complete snapshot or compare and change the existing override;
+   * parent changes do not silently rebase it.
+   */
   update(
     ...args: {
       [K in FileWorkType]: [
@@ -83,6 +92,10 @@ export interface HoldingsPreferencesApi {
     }[FileWorkType]
   ): Promise<UsageOverride<FilePreferencesByType[FileWorkType]>>
 
+  /**
+   * Select one complete enabled file, work or global configuration for this file; do not merge
+   * individual fields or reconfigure open content.
+   */
   getEffective<T extends FileWorkType>(
     work: EntryRef<T>,
     fileId: string,
@@ -95,11 +108,20 @@ export interface HoldingsPreferencesApi {
 
 /** File-specific saved choices are independent of whole playback overrides and runtime track IDs. */
 export interface FilePlaybackChoicesApi {
+  /**
+   * Read saved source-local audio/subtitle choices and offsets, retaining invalid stored
+   * definitions explicitly.
+   */
   get(
     animeId: string,
     fileId: string,
     call?: CallOptions,
   ): Promise<StoredDefinition<FilePlaybackChoices>>
+
+  /**
+   * Compare and commit only the submitted saved choices; opaque runtime track IDs and whole
+   * playback overrides remain separate.
+   */
   update(
     animeId: string,
     fileId: string,

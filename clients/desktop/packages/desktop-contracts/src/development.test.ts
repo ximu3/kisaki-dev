@@ -1,4 +1,4 @@
-/** @fileoverview Verifies development behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies build-bound development receipts and explicit outcomes for interrupted preparation. */
 
 import { test, expect } from 'vitest'
 

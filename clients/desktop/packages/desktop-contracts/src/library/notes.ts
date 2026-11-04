@@ -18,7 +18,9 @@ export interface NoteFields {
 
 export interface Note extends NoteFields {
   readonly id: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -27,7 +29,9 @@ export interface NoteSummary {
   readonly title: string | null
   readonly contentExcerpt: string | null
   readonly primaryImageId: string | null
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -67,25 +71,62 @@ export type NoteOrderScope =
   | { readonly type: 'entry'; readonly entry: EntryRef }
 
 export interface NoteEntriesApi {
+  /**
+   * Read the note's associated entry identities in its saved order, independently of entry-side
+   * note order.
+   */
   list(noteId: string, options: ListOptions, call?: CallOptions): Promise<ListResult<EntryRef>>
 
+  /**
+   * Compare and change this note's complete ordered association side atomically; removing
+   * associations does not delete entries.
+   */
   applyChanges(
     noteId: string,
     input: { readonly change: NoteEntryChange; readonly expected?: readonly EntryRef[] },
     call?: CallOptions,
   ): Promise<void>
 
+  /** Reorder selected slots on the actual note or entry side using its complete baseline. */
   reorder(scope: NoteOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
+
+  /**
+   * Apply current-position move intent to the supplied side; the opposite side's order stays
+   * unchanged.
+   */
   move(scope: NoteOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
 }
 
 /** A new note must have a title, nonblank body or adopted cover; editor opening and associations alone create nothing. */
 export interface NotesApi {
+  /**
+   * Read note summaries in the requested association scope; independent unassociated notes
+   * remain valid records.
+   */
   list(query: NoteQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<NoteSummary>>
+
+  /**
+   * Read the saved article and its metadata without creating a draft or acquiring displayed
+   * attachment resources.
+   */
   get(id: string, call?: CallOptions): Promise<Note | null>
 
+  /**
+   * Commit a meaningful new note, its associations and adopted attachments together; opening an
+   * editor alone creates nothing.
+   */
   create(input: NoteCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and commit the changed article fields and any complete association replacement; an
+   * existing empty note remains valid.
+   */
   update(id: string, input: NoteUpdate, call?: CallOptions): Promise<void>
+
+  /**
+   * Delete the selected notes and their references, preserving associated entries and
+   * independently held attachment bytes.
+   */
   delete(ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
   readonly entries: NoteEntriesApi

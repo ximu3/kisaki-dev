@@ -1,4 +1,4 @@
-/** @fileoverview Verifies backup formats behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies backup manifest integrity and canonical tree bytes against an independent hash calculation. */
 
 import { test, expect } from 'vitest'
 import { createHash } from 'node:crypto'
@@ -10,7 +10,6 @@ import {
   parseGameBackupArchiveManifest,
   parseGameBackupArchiveJson,
 } from './archive'
-import { parseGameBackupCreateInput } from './api'
 
 import { DesktopError } from '../../../errors'
 
@@ -67,8 +66,4 @@ test('backup tree bytes and digest match an independently constructed ordered UT
       ),
     ),
   ).toBe('DataIntegrityError')
-
-  expect(() =>
-    parseGameBackupCreateInput({ source: { type: 'config', launchConfigId: 'config' } }),
-  ).toThrow(DesktopError)
 })

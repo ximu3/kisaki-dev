@@ -1,6 +1,6 @@
 /** @fileoverview Owns the versioned development endpoint and immutable build adoption/release values, independently of RPC frames. */
 
-import type { ViewDocument } from './ui/api'
+import type { ViewDocument } from './ui/views'
 import type { ErrorSummary } from './errors'
 import type { ExtensionActivationResult } from './extensions'
 import type { CallOptions } from './operations'
@@ -12,7 +12,7 @@ import { parseErrorSummary, DesktopError } from './errors'
 import { parseExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
-import { parseViewDocument } from './ui/api'
+import { parseViewDocument } from './ui/views'
 
 export const developmentProtocolId = 'kisaki.development'
 
@@ -166,6 +166,7 @@ export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
   )
 }
 
+/** Validate the ready peer's build identity and available API version without treating readiness as application activation. */
 export function parseDevelopmentReady(input: unknown): DevelopmentReady {
   return parseValue(
     v.strictObject({ appVersion: version, buildId: id, apiVersion: v.nullable(version) }),

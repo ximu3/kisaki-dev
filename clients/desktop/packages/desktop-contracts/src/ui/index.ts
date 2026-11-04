@@ -1,37 +1,10 @@
-/** @fileoverview Publishes the ui capability contract. */
+/** @fileoverview Publishes desktop UI capabilities and their view, page, menu, feedback and navigation contracts. */
 
-export {
-  parseViewDocument,
-  parseUiIcon,
-  parseToastMessage,
-  validateMenuItems,
-  parseNotificationMessage,
-} from './api'
+export type { UiApi } from './api'
 
-export { parsePageRef } from './pages'
-export type { PageRef } from './pages'
-export {
-  parseEntryIdentifier,
-  parseEntryViewSelection,
-  parseNativeViewTarget,
-  parseSearchTarget,
-} from './navigation'
-
+export { parseViewDocument } from './views'
 export type {
-  EntryIdentifier,
-  EntryViewSelectionByType,
-  EntryViewSelection,
-  EntryViewTarget,
-  NativeViewTarget,
-  SearchTarget,
-} from './navigation'
-
-export type {
-  UiIcon,
   ViewDocument,
-  ToastMessage,
-  ToastHandle,
-  ToastApi,
   ViewMethod,
   ViewMethods,
   ViewNotifications,
@@ -40,15 +13,44 @@ export type {
   HostView,
   ViewContext,
   ViewDefinition,
-  PageDefinition,
-  PagesApi,
   DialogsApi,
+} from './views'
+
+export { parsePageRef } from './pages'
+export type { PageRef, PageDefinition, PagesApi } from './pages'
+
+export { validateMenuItems } from './menus'
+export type {
   MenuItemPresentation,
   MenuFeedback,
   MenuItem,
   MenuContextMap,
   MenusApi,
+} from './menus'
+
+export { parseToastMessage, parseNotificationMessage } from './feedback'
+export type {
+  ToastMessage,
+  ToastHandle,
+  ToastApi,
   NotificationMessage,
   NotificationsApi,
-  UiApi,
-} from './api'
+} from './feedback'
+
+export { parseUiIcon } from './icons'
+export type { UiIcon } from './icons'
+
+export {
+  parseEntryIdentifier,
+  parseEntryViewSelection,
+  parseNativeViewTarget,
+  parseSearchTarget,
+} from './navigation'
+export type {
+  EntryIdentifier,
+  EntryViewSelectionByType,
+  EntryViewSelection,
+  EntryViewTarget,
+  NativeViewTarget,
+  SearchTarget,
+} from './navigation'

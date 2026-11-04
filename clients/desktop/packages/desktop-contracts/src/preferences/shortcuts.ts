@@ -1,4 +1,4 @@
-/** @fileoverview Owns the fixed shortcut catalog, Electron accelerator syntax and platform defaults. */
+/** @fileoverview Owns the fixed shortcut identities, Electron accelerator syntax and platform conflict checks. */
 
 import { parseValue, nonemptyText } from '../validation'
 import { DesktopError } from '../errors'

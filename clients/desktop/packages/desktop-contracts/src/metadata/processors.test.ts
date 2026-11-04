@@ -1,4 +1,4 @@
-/** @fileoverview Verifies processors behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies field processor results retain key coverage and valid partial outcomes. */
 
 import { test, expect } from 'vitest'
 import { parseFieldProcessingInput, parseFieldProcessingResult } from './processors'

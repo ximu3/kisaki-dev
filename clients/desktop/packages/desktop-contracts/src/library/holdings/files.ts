@@ -40,9 +40,14 @@ import { associationSchema, partKey, partSchema, mode } from './associations'
 /** Unknown, positively accessible and known unavailable observations never collapse into the same state. */
 export type FileAvailability =
   | { readonly status: 'unchecked' }
-  | { readonly status: 'accessible'; readonly checkedAt: number }
+  | {
+      readonly status: 'accessible'
+      /** UTC milliseconds since the Unix epoch. */
+      readonly checkedAt: number
+    }
   | {
       readonly status: 'unavailable'
+      /** UTC milliseconds since the Unix epoch. */
       readonly checkedAt: number
       readonly reason: 'missing' | 'unreadable'
       readonly error: ErrorSummary
@@ -77,7 +82,9 @@ export type HeldFile<T extends FileWorkType = FileWorkType> = {
 
     readonly availability: FileAvailability
     readonly preferences: StoredDefinition<UsageOverride<FilePreferencesByType[K]>> | null
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   } & FileAssociationState &
     (K extends 'anime'
@@ -128,12 +135,20 @@ export interface FileMergeResult {
 
 /** Actual files belong directly to a work. Explicit association/path changes must respect active-file occupancy. */
 export interface HeldFilesApi {
+  /**
+   * Read this work's saved file registrations under the requested filters; unavailable files
+   * remain registered.
+   */
   list<T extends FileWorkType>(
     work: EntryRef<T>,
     query: FileQuery<T>,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<HeldFile<T>>>
+
+  /**
+   * Read the saved file facts and availability without opening content or changing its position.
+   */
   get<T extends FileWorkType>(
     work: EntryRef<T>,
     fileId: string,
@@ -146,6 +161,8 @@ export interface HeldFilesApi {
       [K in FileWorkType]: [work: EntryRef<K>, input: FileCreateFields<K>, call?: CallOptions]
     }[FileWorkType]
   ): Promise<string>
+
+  /** Compare and save only the file note, independently of association, path and playback state. */
   update(
     work: EntryRef<FileWorkType>,
     fileId: string,
@@ -155,12 +172,21 @@ export interface HeldFilesApi {
     },
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Remove the selected registrations and maintain their references after checking active use;
+   * leave user file bytes untouched.
+   */
   delete(
     work: EntryRef<FileWorkType>,
     fileIds: NonEmptyArray<string>,
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Compare and commit the complete explicit association edit and set manual mode together;
+   * active-file occupancy is rechecked.
+   */
   editAssociations(
     ...args: {
       [K in FileWorkType]: [
@@ -183,11 +209,20 @@ export interface HeldFilesApi {
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Set or clear the explicit work or part preference after checking ownership, association and
+   * any submitted baseline.
+   */
   setPreferred(
     ...args: {
       [K in FileWorkType]: [work: EntryRef<K>, input: PreferredFileInput<K>, call?: CallOptions]
     }[FileWorkType]
   ): Promise<void>
+
+  /**
+   * Compare and commit all supplied part preferences atomically; any invalid target or failed
+   * baseline rejects the batch.
+   */
   setPreferredMany(
     ...args: {
       [K in FileWorkType]: [
@@ -197,12 +232,22 @@ export interface HeldFilesApi {
       ]
     }[FileWorkType]
   ): Promise<void>
+
+  /**
+   * Verify a newly selected access path while retaining file identity and saved state; another
+   * registration at that path is a conflict.
+   */
   relocate(
     work: EntryRef<FileWorkType>,
     fileId: string,
     input: { readonly path: string; readonly expected?: { readonly path: string } },
     call?: CallOptions,
   ): Promise<HoldingsRelocationResult>
+
+  /**
+   * Retain the explicit target identity and one participant's selected path, migrating saved
+   * references atomically after occupancy checks.
+   */
   merge(
     work: EntryRef<FileWorkType>,
     input: FileMergeInput,

@@ -1,4 +1,4 @@
-/** @fileoverview Verifies date behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies partial-date preservation, calendar validity and exact era-text round trips. */
 
 import { test, expect } from 'vitest'
 

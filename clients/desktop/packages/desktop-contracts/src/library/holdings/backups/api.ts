@@ -29,7 +29,7 @@ export type GameBackupSource =
       readonly path: string
     }
 
-/** Source content means all regular files and directories; missing content is not an empty save. */
+/** The cause of this archived snapshot; protection backups created before replacement use beforeRestore. */
 export type GameBackupReason = 'manual' | 'automatic' | 'beforeRestore'
 
 export interface GameBackup {
@@ -45,6 +45,7 @@ export interface GameBackup {
   readonly archiveAttachmentId: string
   readonly treeDigest: string
   readonly unpackedSizeBytes: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 
   readonly note: string | null
@@ -111,6 +112,7 @@ export interface GameBackupRecoveryManifest {
   readonly before:
     { readonly type: 'absent' } | { readonly type: 'present'; readonly treeDigest: string }
   readonly after: { readonly treeDigest: string }
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 }
 
@@ -131,10 +133,15 @@ export type GameBackupRecovery = {
   readonly targetKind: 'file' | 'directory'
   readonly workspacePath: string
   readonly manifestSha256: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 } & (
   | { readonly resolution: null; readonly resolvedAt: null }
-  | { readonly resolution: RecoveryResolution; readonly resolvedAt: number }
+  | {
+      readonly resolution: RecoveryResolution
+      /** UTC milliseconds since the Unix epoch. */
+      readonly resolvedAt: number
+    }
 )
 
 export type RecoveryLocationObservation =
@@ -162,10 +169,19 @@ export interface GameBackupRecoveryInspection {
 
 /** Independent recovery operations survive task-history cleanup and never auto-resume on application startup. */
 export interface GameBackupRecoveriesApi {
+  /**
+   * Read persistent recovery records independently of task history, with the requested game and
+   * resolution filters.
+   */
   list(
     query: ListOptions & { readonly gameId?: string; readonly state?: 'pending' | 'resolved' },
     call?: CallOptions,
   ): Promise<ListResult<GameBackupRecovery>>
+
+  /**
+   * Read one recovery record and its stored manifest state without resuming or modifying
+   * recovery.
+   */
   get(
     id: string,
     call?: CallOptions,
@@ -173,8 +189,17 @@ export interface GameBackupRecoveriesApi {
     | (GameBackupRecovery & { readonly manifest: StoredDefinition<GameBackupRecoveryManifest> })
     | null
   >
+
+  /**
+   * Inspect actual target and retained materials, returning currently available actions and a
+   * comparison basis without changing files.
+   */
   inspect(id: string, call?: CallOptions): Promise<GameBackupRecoveryInspection>
 
+  /**
+   * Reinspect and compare the supplied basis before executing the explicit action; stale
+   * evidence cannot authorize replacement.
+   */
   resolve(
     input: {
       readonly recoveryId: string
@@ -190,23 +215,54 @@ export interface GameBackupRecoveriesApi {
 
 /** Backup operations use actual source/target paths and occupancy, never task history as proof of filesystem completion. */
 export interface GameBackupsApi {
+  /**
+   * Read this game's archived snapshots by their actual creation time, retaining source identity
+   * and lock state.
+   */
   list(
     gameId: string,
     options: ListOptions & { readonly sourceConfigId?: string; readonly locked?: boolean },
     call?: CallOptions,
   ): Promise<ListResult<GameBackup>>
+
+  /**
+   * Read a saved backup record without opening its archive or claiming that the original source
+   * still exists.
+   */
   get(gameId: string, backupId: string, call?: CallOptions): Promise<GameBackup | null>
 
+  /**
+   * Prepare and verify a complete archive before committing the backup; an explicitly requested
+   * unchanged result reuses the actual prior backup.
+   */
   create(
     gameId: string,
     input: GameBackupCreateInput,
     call?: CallOptions,
   ): Promise<GameBackupCreateResult>
+
+  /**
+   * Confirm the fixed target, protect existing content and restore verified bytes; failure or
+   * cancellation preserves actual target and recovery facts in any valid partial result.
+   */
   restore(input: GameBackupRestoreInput, call?: CallOptions): Promise<GameBackupRestoreResult>
 
+  /**
+   * Protect this backup from automatic retention cleanup; explicit manual deletion remains a
+   * separate operation.
+   */
   lock(gameId: string, backupId: string, call?: CallOptions): Promise<void>
+
+  /**
+   * Remove automatic-retention protection without immediately deleting the backup or triggering
+   * cleanup.
+   */
   unlock(gameId: string, backupId: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Compare and update only this backup's note; archive bytes, creation facts and source
+   * identity remain immutable.
+   */
   update(
     gameId: string,
     backupId: string,
@@ -216,6 +272,11 @@ export interface GameBackupsApi {
     },
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Explicitly delete the selected archives and records after occupancy checks; manual deletion
+   * can include locked backups and never touches the current save target.
+   */
   delete(gameId: string, backupIds: NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
   readonly recoveries: GameBackupRecoveriesApi

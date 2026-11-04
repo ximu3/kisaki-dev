@@ -1,8 +1,8 @@
 /** @fileoverview Checks package format, normalized values and strict JSON failure locations. */
 
 import { expect, test } from 'vitest'
-import { normalizeManifest, parseManifest, parsePackagePath } from '../src/manifest'
-import { manifest } from './support/fixtures'
+import { normalizeManifest, parseManifest, parsePackagePath } from './manifest'
+import { manifest } from '../tests/support/fixtures'
 
 test('complete manifests normalize locales and targets while preserving free display values', () => {
   const input = manifest({

@@ -1,4 +1,4 @@
-/** @fileoverview Verifies resources behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies acquired resource holds and credential-bearing file request boundaries. */
 
 import { test, expect } from 'vitest'
 

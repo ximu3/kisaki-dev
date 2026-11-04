@@ -1,9 +1,9 @@
 /** @fileoverview Verifies accepted visual forms and failures at the public value boundary. */
 
 import { expect, test } from 'vitest'
-import { defaults } from '../src/defaults'
-import { parseTokenValue, parseTokenValues } from '../src/values'
-import type { TokenName } from '../src/tokens'
+import { defaults } from './defaults'
+import { parseTokenValue, parseTokenValues } from './values'
+import type { TokenName } from './tokens'
 
 test('parses literal colors, text metrics, font stacks and complete shadow layers', () => {
   const examples: [TokenName, string][] = [

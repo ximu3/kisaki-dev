@@ -282,7 +282,7 @@ metadata、ingest 和 scanner 保持各自模块与事实归属。ingest 按合�
 
 验收：A05–A08、A14–A16、A18、A27 的资料获取、采用、扫描及界面断言成立。来源字段、共享关联、原子写入、目录范围、占用和取消均交付真实结果。
 
-依据：[资料获取](../design/domains/metadata/README.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata/profiles.md) · [预设](../design/domains/metadata/presets/README.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/file-recognition/presets.md)。
+依据：[资料获取](../design/domains/metadata/README.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata/profiles.md) · [预设](../design/domains/metadata/presets/README.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/scanner.md#presets)。
 
 <a id="w15"></a>
 

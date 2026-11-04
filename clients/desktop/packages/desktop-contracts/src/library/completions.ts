@@ -13,7 +13,9 @@ import { DesktopError } from '../errors'
 export interface WorkCompletion extends CompletionFields {
   readonly id: string
   readonly work: WorkRef
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -54,8 +56,19 @@ export interface CompletionStatistics {
 
 /** Completion history does not change activities, positions or part marks. Only recordCurrent also clears current status. */
 export interface CompletionsApi {
+  /**
+   * Read this work's individual completion facts, preserving distinct records even when dates
+   * and notes match.
+   */
   list(work: WorkRef, options: ListOptions, call?: CallOptions): Promise<ListResult<WorkCompletion>>
+
+  /** Read one saved completion fact for the supplied work without changing current status. */
   get(work: WorkRef, completionId: string, call?: CallOptions): Promise<WorkCompletion | null>
+
+  /**
+   * Count records and distinct works within the supplied scope; report unknown dates separately
+   * from calendar groups.
+   */
   statistics(
     query: {
       readonly scope: WorkStatisticsScope
@@ -65,6 +78,10 @@ export interface CompletionsApi {
     call?: CallOptions,
   ): Promise<CompletionStatistics>
 
+  /**
+   * Commit one explicit historical completion after the optional count comparison; preserve the
+   * work's current status.
+   */
   create(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
   /** Every input is a separate fact, including identical facts for the same work; IDs correspond one-to-one. */
@@ -82,12 +99,21 @@ export interface CompletionsApi {
     call?: CallOptions,
   ): Promise<readonly { readonly work: WorkRef; readonly completionId: string }[]>
 
+  /**
+   * Compare and correct only the submitted fact fields, keeping its stable identity and owning
+   * work.
+   */
   update(
     work: WorkRef,
     completionId: string,
     input: CompletionUpdate,
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Remove this completion fact without rewriting activities, part marks, position or current
+   * status.
+   */
   delete(work: WorkRef, completionId: string, call?: CallOptions): Promise<void>
 }
 

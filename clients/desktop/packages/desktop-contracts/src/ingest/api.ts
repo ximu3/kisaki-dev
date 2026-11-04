@@ -26,12 +26,25 @@ export interface IngestBatchResult<Result> {
 
 /** Each operation waits for its actual end, including graph commit and applicable initial local-content verification. */
 export interface IngestApi {
+  /**
+   * Complete identity resolution, source acquisition, preparation and creation for one input;
+   * alreadyExists does not adopt initial personal values.
+   */
   add<T extends EntryType>(input: IngestAddInput<T>, call?: CallOptions): Promise<AddResult<T>>
+
+  /**
+   * Run complete additions with per-item commits and indexed outcomes; ordinary item failure
+   * permits later items, while cancellation retains completed facts.
+   */
   addMany(
     inputs: readonly IngestAddInput[],
     call?: CallOptions,
   ): Promise<IngestBatchResult<AddResult>>
 
+  /**
+   * Fix the existing target and authorized fields before acquisition and adoption; source
+   * results cannot redirect the target or broaden the update.
+   */
   update(
     ...args: {
       [K in IngestUpdateType]: [
@@ -41,6 +54,11 @@ export interface IngestApi {
       ]
     }[IngestUpdateType]
   ): Promise<UpdateResult>
+
+  /**
+   * Run the fixed update inputs with per-item commits and indexed outcomes, preserving completed
+   * items if later work fails or is cancelled.
+   */
   updateMany(
     inputs: readonly IngestUpdateItem[],
     call?: CallOptions,
@@ -49,7 +67,16 @@ export interface IngestApi {
 
 /** Native scanner/batch collaboration reuses the same complete business work inside an already admitted execution, without nested tasks. */
 export interface IngestExecutor {
+  /**
+   * Execute the same complete addition inside the caller's accepted execution context without
+   * creating a nested task.
+   */
   add(input: IngestAddInput, context: ExecutionContext): Promise<AddResult>
+
+  /**
+   * Execute the same fixed-target update inside the caller's accepted execution context without
+   * exposing intermediate write stages.
+   */
   update(input: IngestUpdateItem, context: ExecutionContext): Promise<UpdateResult>
 }
 

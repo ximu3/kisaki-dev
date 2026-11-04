@@ -1,8 +1,8 @@
 /** @fileoverview Checks complete default branches and the separation from desktop resource identities. */
 
 import { expect, test } from 'vitest'
-import { defaults } from '../src/defaults'
-import { tokens } from '../src/tokens'
+import { defaults } from './defaults'
+import { tokens } from './tokens'
 
 test('both defaults provide the fixed vocabulary without sharing mutable state', () => {
   expect(Object.keys(tokens)).toHaveLength(45)

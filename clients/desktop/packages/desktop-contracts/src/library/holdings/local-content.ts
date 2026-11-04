@@ -53,7 +53,7 @@ export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
   }[]
 }
 
-/** Validate a current input for one already known work; expected identities, when present, must be complete and nonempty. */
+/** Validate one current file or directory input for an already known work, without inspecting the filesystem. */
 export function parseLocalContentInput(input: unknown): LocalContentInput {
   return parseValue(
     v.strictObject({ type: v.picklist(['directory', 'file']), path }),
@@ -62,6 +62,7 @@ export function parseLocalContentInput(input: unknown): LocalContentInput {
   )
 }
 
+/** Validate a complete, nonempty identity precondition without resolving or rebinding its actual work. */
 export function parseLocalContentRegistrationOptions(
   input: unknown,
 ): LocalContentRegistrationOptions {

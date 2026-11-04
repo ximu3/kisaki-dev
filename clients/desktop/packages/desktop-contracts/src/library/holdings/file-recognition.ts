@@ -123,7 +123,9 @@ export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly description: string | null
   readonly definition: StoredDefinition<FileRecognitionDefinition<T>>
   readonly sortOrder: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -142,15 +144,30 @@ export interface FileRecognitionPreset<T extends FileWorkType> {
 
 /** Shared profiles are independently managed. Referenced profiles cannot be deleted or silently replaced. */
 export interface FileRecognitionProfilesApi<T extends FileWorkType> {
+  /** Read saved profile identities and descriptions for this media type in formal order. */
   list(
     call?: CallOptions,
   ): Promise<readonly Pick<FileRecognitionProfile<T>, 'id' | 'workType' | 'name' | 'description'>[]>
+
+  /**
+   * Read the profile and its saved definition, retaining corruption as an explicit unavailable
+   * value.
+   */
   get(id: string, call?: CallOptions): Promise<FileRecognitionProfile<T> | null>
 
+  /**
+   * Create an independent profile from a complete definition; presets and copies enter through
+   * the same ordinary save path.
+   */
   create(
     input: FileRecognitionProfileFields<T>,
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
+
+  /**
+   * Compare and save changed profile fields, treating the definition as one value; existing file
+   * associations are not rewritten by the save.
+   */
   update(
     id: string,
     input: {
@@ -159,10 +176,20 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     },
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
+
+  /**
+   * Delete only an unreferenced profile; referencing content directories must be handled
+   * explicitly before removal.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /** Reorder selected profiles against the complete media-specific directory baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
+  /**
+   * Read actual content directories that reference this profile so callers can resolve
+   * dependencies before deletion.
+   */
   references(
     id: string,
     call?: CallOptions,
@@ -170,6 +197,7 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     readonly { readonly work: EntryRef<T>; readonly directoryId: string; readonly path: string }[]
   >
 
+  /** Read fixed definitions for copying into a draft; listing presets creates no saved profiles. */
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 

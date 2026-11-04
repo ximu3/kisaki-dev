@@ -73,8 +73,11 @@ export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly result: Result | null
   readonly error: ErrorSummary | null
 
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number | null
+  /** UTC milliseconds since the Unix epoch. */
   readonly finishedAt: number | null
 }
 
@@ -91,6 +94,7 @@ export interface TaskDefinition<Input = JsonValue> {
   readonly title: string
   readonly description?: string | null
   readonly input?: Input | null
+  /** Defaults to false; only executions with real safe checkpoints can enable pause controls. */
   readonly supportsPause?: boolean
 }
 
@@ -98,49 +102,106 @@ export interface TaskDefinition<Input = JsonValue> {
 export interface TaskExecutionContext<Result> extends ExecutionContext {
   readonly ref: TaskRunRef
 
+  /**
+   * Honor pause and cancellation at a business-owned safe point; do not call while holding a
+   * synchronous database transaction.
+   */
   checkpoint(): Promise<void>
 
+  /**
+   * Publish lightweight current progress without persisting a replacement result or declaring
+   * task completion.
+   */
   reportProgress(progress: TaskProgress): void
+
+  /**
+   * Persist a validated snapshot of already established business facts; await this checkpoint
+   * and handle persistence failure.
+   */
   reportResult(result: Result): Promise<void>
 }
 
 export interface TaskQuery {
   readonly types?: readonly string[]
   readonly statuses?: readonly TaskRunStatus[]
+  /** Inclusive creation-time lower bound in UTC milliseconds since the Unix epoch. */
   readonly createdFrom?: number
+  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
   readonly search?: string
 }
 
 export interface TaskHistoryFilter {
   readonly types?: readonly string[]
+  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
 /** run waits for business and task-owner cleanup. wait observes a managed run without cancelling it when observation is cancelled. */
 export interface TasksApi {
+  /**
+   * Admit and own the callback's real execution through business completion and cleanup;
+   * cancellation preserves established facts and valid partial results.
+   */
   run<Result, Input = JsonValue>(
     definition: TaskDefinition<Input>,
     execute: (context: TaskExecutionContext<Result>) => Promise<Result>,
     call?: CallOptions,
   ): Promise<Result>
 
+  /**
+   * Read persisted task summaries under the requested scope without reconstructing live business
+   * execution.
+   */
   list(
     query: TaskQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<TaskRunSummary>>
+
+  /**
+   * Read the recorded input, result and error for this task identity; historical results do not
+   * authorize resumption.
+   */
   get(ref: TaskRunRef, call?: CallOptions): Promise<TaskRun | null>
+
+  /**
+   * Deliver current task control state and subsequent changes; ending observation does not
+   * cancel the execution.
+   */
   observe(ref: TaskRunRef, listener: Listener<TaskState>, call?: CallOptions): Promise<Disposable>
+
+  /**
+   * Wait for an actual terminal record and return its recorded outcome; cancelling this wait
+   * leaves the managed execution running.
+   */
   wait(ref: TaskRunRef, call?: CallOptions): Promise<TaskTerminalRun>
 
   /** Control completion acknowledges the current real state, not immediate business termination. Terminal calls are idempotent. */
   pause(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
+
+  /**
+   * Request resumption from the current pause state and return acknowledged control state; this
+   * does not restart a terminal run.
+   */
   resume(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
+
+  /**
+   * Request cancellation and return actual control state; use wait to observe completed business
+   * cleanup, with terminal control calls idempotent.
+   */
   cancel(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
+  /**
+   * Remove only matching terminal history and return its count; accepted work and domain-owned
+   * reports or recovery records remain intact.
+   */
   clearHistory(filter?: TaskHistoryFilter, call?: CallOptions): Promise<number>
 
+  /**
+   * Subscribe before reading task history; list invalidation is separate from runtime progress
+   * observation.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 

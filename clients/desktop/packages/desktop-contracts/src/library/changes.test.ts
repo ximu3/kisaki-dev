@@ -1,4 +1,4 @@
-/** @fileoverview Verifies changes behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies library change facts retain applicable identity context across part-kind corrections. */
 
 import { test, expect } from 'vitest'
 

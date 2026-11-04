@@ -1,4 +1,4 @@
-/** @fileoverview Verifies management behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies prepared extension receipts preserve pinned trust and exact artifact identity. */
 
 import { test, expect } from 'vitest'
 import { generateKeyPairSync } from 'node:crypto'

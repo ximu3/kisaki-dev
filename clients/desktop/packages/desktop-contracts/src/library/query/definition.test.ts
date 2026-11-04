@@ -1,43 +1,36 @@
-/** @fileoverview Verifies definition behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies complete query validation across scopes, disabled groups and applicable sort fields. */
 
 import { test, expect } from 'vitest'
 
-import { parseEntryCondition } from './conditions'
+import { parseEntryQuery } from './definition'
+import type { EntryQuery } from './definition'
 
-test('keeps zero, explicit null, precise dates and deduplicated selections meaningful', () => {
-  expect(
-    parseEntryCondition({ field: 'status', op: 'notIn', values: ['active', null, 'active'] }),
-  ).toEqual({ field: 'status', op: 'notIn', values: ['active', null] })
+const query: EntryQuery = {
+  scope: { type: 'library' },
+  search: '',
+  rules: [{ enabled: true, types: ['game', 'person'], filter: { match: 'all', conditions: [] } }],
+  sort: { type: 'field', field: 'name', direction: 'asc' },
+}
 
-  expect(
-    parseEntryCondition({ field: 'rating', op: 'range', bounds: { min: 0, max: 0 } }),
-  ).toMatchObject({ bounds: { min: 0, max: 0 } })
-
-  expect(
-    parseEntryCondition({
-      field: 'birthDate',
-      op: 'absoluteRange',
-      bounds: { min: { year: 0 }, max: { year: 0 } },
+test('checks disabled groups, sort applicability and the exact entrance definition', () => {
+  expect(() =>
+    parseEntryQuery({
+      ...query,
+      rules: [
+        {
+          enabled: false,
+          types: ['person'],
+          filter: { match: 'all', conditions: [{ field: 'status', op: 'in', values: [null] }] },
+        },
+      ],
     }),
-  ).toMatchObject({ bounds: { min: { year: 0 } } })
-
-  expect(
-    parseEntryCondition({
-      field: 'parts',
-      scope: { partType: 'animeEpisode', classification: { op: 'in', values: [null] } },
-      measure: 'accessible',
-      op: 'range',
-      bounds: { max: 0 },
-    }),
-  ).toMatchObject({ measure: 'accessible' })
+  ).toThrow()
 
   expect(() =>
-    parseEntryCondition({
-      field: 'parts',
-      scope: { partType: 'novelVolume', classification: { op: 'in', values: [null] } },
-      measure: 'registered',
-      op: 'range',
-      bounds: { min: 0 },
-    }),
+    parseEntryQuery({ ...query, sort: { type: 'field', field: 'releaseDate', direction: 'asc' } }),
+  ).toThrow()
+
+  expect(() =>
+    parseEntryQuery({ ...query, scope: { type: 'library', showHidden: true } }),
   ).toThrow()
 })

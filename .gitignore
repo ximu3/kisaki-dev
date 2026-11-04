@@ -11,6 +11,8 @@ playwright-report/
 .vitest/
 coverage/
 *.tsbuildinfo
+__pycache__/
+*.pyc
 .env
 .env.*
 !.env.example

@@ -63,7 +63,9 @@ export interface Font {
   readonly id: string
   readonly name: string
   readonly files: NonEmptyArray<FontFile>
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -72,6 +74,10 @@ export interface FontRead {
   readonly font: Font
   readonly resources: Readonly<Record<string, ReadResourceRef>>
 
+  /**
+   * Release this fixed read's resource holds idempotently; other reads and saved font references
+   * remain unchanged.
+   */
   dispose(): Promise<void>
 }
 
@@ -92,21 +98,53 @@ export interface FontUpdate {
 
 /** User records and byte lifetimes are distinct. There is no clone operation or automatic deletion of unused fonts. */
 export interface FontsApi {
+  /** Search and page user font records only; system families are listed separately. */
   list(
     query: { readonly search: string },
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<Pick<Font, 'id' | 'name' | 'createdAt' | 'updatedAt'>>>
+
+  /** Read saved font metadata without acquiring its files; a missing identity returns null. */
   get(id: string, call?: CallOptions): Promise<Font | null>
+
+  /** Enumerate system family names without importing font files into the user library. */
   listSystem(call?: CallOptions): Promise<readonly string[]>
 
+  /**
+   * Verify file content and acquire parsed font metadata for preview; no Font record is created,
+   * and the caller releases the hold.
+   */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedFontFile>
+
+  /**
+   * Prepare all submitted files and commit one complete user font; failure leaves no partially
+   * created font.
+   */
   import(input: FontImportInput, call?: CallOptions): Promise<Font>
+
+  /**
+   * Compare the submitted name and final file set, preparing new files before one commit;
+   * failure preserves the saved set.
+   */
   update(id: string, input: FontUpdate, call?: CallOptions): Promise<Font>
+
+  /**
+   * Remove the user font record without rewriting saved selections; already acquired reads
+   * retain their bytes until release.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Acquire one fixed font and its readable files; failure releases partial acquisitions instead
+   * of returning an incomplete read.
+   */
   open(id: string, call?: CallOptions): Promise<FontRead>
 
+  /**
+   * Subscribe before reading the font directory; invalidation requests a fresh snapshot and does
+   * not rewrite drafts.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 

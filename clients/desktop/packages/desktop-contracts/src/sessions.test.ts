@@ -1,4 +1,4 @@
-/** @fileoverview Verifies api behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies session target constraints, lifecycle facts and partial recording or playback outcomes. */
 
 import { test, expect, describe, it } from 'vitest'
 

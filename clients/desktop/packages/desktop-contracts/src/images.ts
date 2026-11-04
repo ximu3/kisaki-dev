@@ -10,7 +10,9 @@ export type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif' | 'gif'
 
 /** Dimensions reflect source orientation; frameCount is the actual readable count, one for static images. */
 export interface PreparedImage extends PreparedAttachment {
+  /** Width in pixels after source orientation. */
   readonly width: number
+  /** Height in pixels after source orientation. */
   readonly height: number
   readonly format: ImageFormat
   readonly frameCount: number
@@ -32,6 +34,10 @@ export interface ImageTransform {
 
 /** Preparation and transformation return independently held results; rejected work preserves the old image. */
 export interface ImagesApi {
+  /**
+   * Read and verify image bytes, converting supported vector/icon inputs to PNG; return an
+   * independent hold without committing a business reference.
+   */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedImage>
 
   /** Animated inputs require an explicit frameIndex; the host verifies frame and final crop bounds. */

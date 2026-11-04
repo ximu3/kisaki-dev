@@ -59,6 +59,10 @@ export interface MetadataFieldProcessor {
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
 
+  /**
+   * Process only the supplied field values; normal completion covers every input key, while
+   * failure may retain valid completed keys.
+   */
   process(input: FieldProcessingInput, context: ExecutionContext): Promise<FieldProcessingResult>
 }
 
@@ -71,9 +75,19 @@ export interface MetadataFieldProcessorDescriptor {
 
 /** Registration only publishes an implementation; profiles explicitly select its ID and order for each allowed field. */
 export interface MetadataFieldProcessorsApi {
+  /**
+   * Read registered processor descriptions and supported fields without executing any
+   * processing.
+   */
   list(call?: CallOptions): Promise<readonly MetadataFieldProcessorDescriptor[]>
+
+  /** Read the current descriptor for one complete processor identity. */
   get(processorId: string, call?: CallOptions): Promise<MetadataFieldProcessorDescriptor | null>
 
+  /**
+   * Register field processing for the actual owner and instance; profiles still explicitly
+   * choose its fields and execution order.
+   */
   register(
     processorId: string,
     processor: MetadataFieldProcessor,

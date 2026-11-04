@@ -295,13 +295,16 @@ export type EntryDetails<T extends EntryType = EntryType> = {
   [K in T]: Omit<EntryFields<K>, 'description'> & {
     readonly id: string
     readonly type: K
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
     readonly evaluation: Evaluation
   } & (K extends WorkType
       ? {
           readonly record: WorkRecord
           readonly totalDurationMs: number
+          /** UTC milliseconds since the Unix epoch. */
           readonly lastActiveAt: number | null
           readonly completionCount: number
           readonly firstCompletedDate: CalendarDate | null

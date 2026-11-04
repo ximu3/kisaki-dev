@@ -37,9 +37,19 @@ export interface WorkRecognizerDescriptor {
 }
 
 export interface WorkRecognizersApi {
+  /**
+   * Read currently registered recognizer descriptions and supported work types without invoking
+   * recognition.
+   */
   list(call?: CallOptions): Promise<readonly WorkRecognizerDescriptor[]>
+
+  /** Read one available recognizer descriptor by its complete identity. */
   get(id: string, call?: CallOptions): Promise<WorkRecognizerDescriptor | null>
 
+  /**
+   * Register recognition for the actual owner and instance; the configuration explicitly selects
+   * participating recognizers.
+   */
   register(
     recognizerId: string,
     implementation: WorkRecognizer,

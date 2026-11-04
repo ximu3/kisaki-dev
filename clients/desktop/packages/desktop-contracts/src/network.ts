@@ -32,10 +32,12 @@ export type NetworkState =
   | { readonly status: 'failed'; readonly error: ErrorSummary }
 
 export interface NetworkFetchOptions {
+  /** Defaults to GET; the caller supplies any method required by its explicitly encoded body. */
   readonly method?: string
   readonly headers?: NonNullable<RequestInit['headers']>
   readonly body?: Exclude<RequestInit['body'], undefined>
   readonly signal?: AbortSignal
+  /** Defaults to follow; credential-bearing source requests explicitly choose error. */
   readonly redirect?: 'follow' | 'error'
 }
 
@@ -51,11 +53,34 @@ export interface NetworkResponse {
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean
 
+  /** Consume the body once as text; body-stream failures and cancellation reject the read. */
   text(): Promise<string>
+
+  /**
+   * Consume and parse the body once as JSON; invalid JSON and body-stream failures reject the
+   * read.
+   */
   json(): Promise<unknown>
+
+  /**
+   * Consume the body once into an owned buffer; body-stream failures and cancellation reject the
+   * read.
+   */
   arrayBuffer(): Promise<ArrayBuffer>
+
+  /**
+   * Consume the body once into owned bytes; body-stream failures and cancellation reject the
+   * read.
+   */
   bytes(): Promise<Uint8Array<ArrayBuffer>>
+
+  /** Consume the body once as a Blob; body-stream failures and cancellation reject the read. */
   blob(): Promise<Blob>
+
+  /**
+   * Consume and parse the body once using its content type; unsupported or invalid form data
+   * rejects the read.
+   */
   formData(): Promise<FormData>
 }
 
@@ -63,7 +88,16 @@ export interface NetworkApi {
   /** Resolve at response headers. Later cancellation fails outstanding body reads; HTTP error statuses remain normal responses. */
   fetch(url: string | URL, options?: NetworkFetchOptions): Promise<NetworkResponse>
 
+  /**
+   * Read whether the saved network choice has been adopted; a failed apply remains distinct from
+   * a usable direct route.
+   */
   getState(): Promise<NetworkState>
+
+  /**
+   * Deliver current readiness and subsequent changes; releasing observation does not cancel
+   * requests.
+   */
   observe(listener: Listener<NetworkState>): Disposable
 }
 
@@ -137,6 +171,7 @@ export function parseProxyCredentials(input: unknown): ProxyCredentials {
   )
 }
 
+/** Validate absent credentials or their opaque revision without accepting plaintext or claiming successful decryption. */
 export function parseProxyCredentialState(input: unknown): ProxyCredentialState | null {
   return parseValue(
     v.nullable(v.strictObject({ revision: id })),

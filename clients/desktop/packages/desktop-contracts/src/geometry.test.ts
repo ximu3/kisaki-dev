@@ -1,4 +1,4 @@
-/** @fileoverview Verifies geometry behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies normalized rectangles and quads reject degeneracy and out-of-bounds coordinates. */
 
 import { test, expect } from 'vitest'
 

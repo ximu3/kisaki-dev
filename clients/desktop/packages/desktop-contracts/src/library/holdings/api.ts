@@ -29,12 +29,21 @@ export interface HoldingsApi {
     readonly novel: FileRecognitionProfilesApi<'novel'>
   }
 
+  /**
+   * Register actual local input for this fixed work, rechecking any identity precondition before
+   * commit; report initial-refresh issues separately from established registrations.
+   */
   registerLocalContent(
     work: WorkRef,
     input: LocalContentInput,
     options?: LocalContentRegistrationOptions,
     call?: CallOptions,
   ): Promise<LocalContentRegistrationResult>
+
+  /**
+   * Complete discovery and maintenance for this work, preserving held data and manual
+   * associations; report actual per-file availability and adoption outcomes.
+   */
   refresh<T extends FileWorkType>(
     work: EntryRef<T>,
     call?: CallOptions,

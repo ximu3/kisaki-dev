@@ -10,8 +10,8 @@ import {
   signRegistry,
   verifyFileBytes,
   verifyRegistry,
-} from '../src/node/signing'
-import { registry } from './support/fixtures'
+} from './signing'
+import { registry } from '../../tests/support/fixtures'
 
 const keys = generateRegistryKeyPair()
 const trust = { id: 'sample.registry', publicKey: keys.publicKey }

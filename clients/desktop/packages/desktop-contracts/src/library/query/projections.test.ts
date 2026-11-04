@@ -1,4 +1,4 @@
-/** @fileoverview Verifies projections behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies mixed entry projections preserve requested and applicable field boundaries. */
 
 import { test, expect } from 'vitest'
 

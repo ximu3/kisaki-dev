@@ -1,4 +1,4 @@
-/** @fileoverview Verifies selection behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies fixed grouped selections retain explicit expanded endpoints and failure boundaries. */
 
 import { test, expect } from 'vitest'
 

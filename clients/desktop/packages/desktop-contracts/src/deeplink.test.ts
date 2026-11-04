@@ -1,4 +1,4 @@
-/** @fileoverview Verifies deeplink behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies lossless application links, exact positions and rejection of malformed or injected routes. */
 
 import { describe, it, expect } from 'vitest'
 

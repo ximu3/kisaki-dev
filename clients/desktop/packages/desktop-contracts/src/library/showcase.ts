@@ -46,7 +46,9 @@ export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly id: string
   readonly query: StoredDefinition<ShowcaseQuery>
   readonly sortOrder: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -86,9 +88,22 @@ export interface ShowcasePreset {
 
 /** Lists return all saved configurations. Presets fill drafts and are never automatically materialized. */
 export interface ShowcaseApi {
+  /**
+   * Read every saved section in formal order, including hidden sections and explicitly invalid
+   * stored queries.
+   */
   list(call?: CallOptions): Promise<readonly ShowcaseSection[]>
+
+  /**
+   * Read the fixed preset configurations for copying into a draft; listing never creates
+   * sections.
+   */
   listPresets(call?: CallOptions): Promise<readonly ShowcasePreset[]>
 
+  /**
+   * Compare and commit all submitted section changes and full-order intent atomically; return
+   * the saved sections and created identities.
+   */
   applyChanges(input: ShowcaseChanges, call?: CallOptions): Promise<ShowcaseChangeResult>
 }
 

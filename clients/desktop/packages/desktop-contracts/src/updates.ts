@@ -22,6 +22,7 @@ import { normalizeLocale, normalizeLocalizedText } from '@kisaki3/extension-dist
 /** sha512 uses the updater's canonical Base64 format, never extension-distribution's hexadecimal SHA-256. */
 export interface ApplicationUpdateFile {
   readonly url: string
+  /** File size in bytes; null when release metadata does not provide it. */
   readonly size: number | null
   readonly sha512: string
 }
@@ -34,6 +35,7 @@ export interface ApplicationRelease {
   readonly version: string
   readonly tagName: string
   readonly releaseUrl: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly publishedAt: number
   readonly delivery: ApplicationDelivery
 }
@@ -54,13 +56,23 @@ export interface ApplicationReleaseNotes {
 
 export type ApplicationUpdateCheck =
   | { readonly status: 'notChecked' }
-  | { readonly status: 'upToDate'; readonly checkedAt: number }
+  | {
+      readonly status: 'upToDate'
+      /** UTC milliseconds since the Unix epoch. */
+      readonly checkedAt: number
+    }
   | {
       readonly status: 'available'
+      /** UTC milliseconds since the Unix epoch. */
       readonly checkedAt: number
       readonly release: ApplicationRelease
     }
-  | { readonly status: 'failed'; readonly checkedAt: number; readonly error: ErrorSummary }
+  | {
+      readonly status: 'failed'
+      /** UTC milliseconds since the Unix epoch. */
+      readonly checkedAt: number
+      readonly error: ErrorSummary
+    }
 
 export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
   | { readonly type: 'checking' }
@@ -81,11 +93,22 @@ export interface ApplicationUpdateState {
 }
 
 export interface UpdatesApi {
+  /** Read release-check, verified preparation and current operation facts independently. */
   getState(call?: CallOptions): Promise<ApplicationUpdateState>
+
+  /**
+   * Deliver current update state and subsequent changes; ending observation does not cancel
+   * checking, preparation or installation.
+   */
   observe(listener: Listener<ApplicationUpdateState>): Disposable
 
   /** Null means a successful check found no newer allowed release; a failed check rejects. */
   check(call?: CallOptions): Promise<ApplicationRelease | null>
+
+  /**
+   * Read the selected desktop release's localized notes; unavailable notes do not invalidate its
+   * verified update artifact.
+   */
   getReleaseNotes(release: ApplicationRelease, call?: CallOptions): Promise<ApplicationReleaseNotes>
 
   /** Manual carriers reject preparation. A successful receipt means all selected bytes have actually been verified. */

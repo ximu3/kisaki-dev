@@ -26,10 +26,28 @@ export interface ScannerApi {
   readonly runs: ScanRunsApi
   readonly recognizers: WorkRecognizersApi
 
+  /**
+   * Evaluate a draft's bounded candidates and recognition without saving the configuration,
+   * entries or a ScanRun.
+   */
   preview(input: ScanPreviewInput, call?: CallOptions): Promise<ScanPreviewResult>
+
+  /**
+   * Run the complete saved configuration and return its actual report; runtime progress and
+   * control use the current task reference.
+   */
   scan(configId: string, call?: CallOptions): Promise<ScanResult>
 
+  /**
+   * Read watch readiness and the accepted current scan separately; removing the configuration
+   * does not erase in-flight work.
+   */
   getState(configId: string, call?: CallOptions): Promise<ScannerState | null>
+
+  /**
+   * Deliver current scanner state and subsequent changes; ending observation does not stop its
+   * watch or accepted scan.
+   */
   observe(
     configId: string,
     listener: Listener<ScannerState | null>,

@@ -7,7 +7,7 @@ import {
   parseCategory,
   parseId,
   resolveLocalizedText,
-} from '../src/metadata'
+} from './metadata'
 
 test('IDs allow single and dotted segments without deriving author identity', () => {
   for (const id of ['a', 'author-name', 'author.package-2', 'x3.language.zh-hans']) {

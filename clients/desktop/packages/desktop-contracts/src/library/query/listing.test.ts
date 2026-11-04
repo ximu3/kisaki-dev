@@ -1,4 +1,4 @@
-/** @fileoverview Verifies listing behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies query result intervals, counts and target location stay internally consistent. */
 
 import { test, expect } from 'vitest'
 import { parseEntryQuery } from './definition'

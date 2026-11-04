@@ -4,5 +4,6 @@
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/node.tsbuildinfo"
   },
-  "include": ["../../src/node/**/*.ts"]
+  "include": ["../../src/node/**/*.ts"],
+  "exclude": ["../../src/**/*.test.ts"]
 }

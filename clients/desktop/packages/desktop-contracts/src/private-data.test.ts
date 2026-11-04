@@ -1,4 +1,4 @@
-/** @fileoverview Verifies private data behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies private mutations preserve JSON null, deletion intent and independent revision comparisons. */
 
 import { it, expect } from 'vitest'
 

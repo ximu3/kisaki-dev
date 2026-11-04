@@ -60,8 +60,11 @@ export interface ScanRun {
   readonly result: ScanResult | null
   readonly error: ErrorSummary | null
 
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number | null
+  /** UTC milliseconds since the Unix epoch. */
   readonly finishedAt: number | null
 }
 
@@ -70,24 +73,43 @@ export type ScanRunSummary = Omit<ScanRun, 'configSnapshot' | 'result'>
 export interface ScanRunQuery {
   readonly scanConfigId?: string
   readonly statuses?: readonly ScanRunStatus[]
+  /** Inclusive creation-time lower bound in UTC milliseconds since the Unix epoch. */
   readonly createdFrom?: number
+  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
 /** Report cleanup removes finished scan history only and never cascades to tasks, configurations, entries or local files. */
 export interface ScanRunsApi {
+  /**
+   * Read persisted scan-report summaries in the requested scope; task execution remains
+   * independently owned.
+   */
   list(
     query: ScanRunQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<ScanRunSummary>>
+
+  /** Read the stored report and configuration snapshot without resuming the scan. */
   get(runId: string, call?: CallOptions): Promise<ScanRun | null>
 
+  /**
+   * Remove only finished scan history matching the filter and return the count; tasks,
+   * configurations, library data and files remain intact.
+   */
   clear(
-    filter?: { readonly scanConfigId?: string; readonly createdBefore?: number },
+    filter?: {
+      readonly scanConfigId?: string
+      /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */ readonly createdBefore?: number
+    },
     call?: CallOptions,
   ): Promise<number>
 
+  /**
+   * Subscribe before reading report history; notifications request a new snapshot rather than
+   * carrying live scan progress.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 

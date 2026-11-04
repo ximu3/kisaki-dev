@@ -1,4 +1,4 @@
-/** @fileoverview Verifies providers behavior using isolated synthetic inputs. */
+/** @fileoverview Verifies declared provider methods and per-context field capabilities without executing them. */
 
 import { test, expect } from 'vitest'
 

@@ -10,8 +10,11 @@ export interface Attachment {
   readonly mediaType: string
   readonly sizeBytes: number
   readonly sha256: string
+  /** Image width in pixels when known; null for content without known dimensions. */
   readonly width: number | null
+  /** Image height in pixels when known; null for content without known dimensions. */
   readonly height: number | null
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 }
 
@@ -24,6 +27,10 @@ export interface AttachmentCleanupResult {
 
 /** Saved identity reads do not imply byte availability. Cleanup never edits business references. */
 export interface AttachmentsApi {
+  /**
+   * Read registered attachment metadata without acquiring bytes or claiming that the file is
+   * currently available.
+   */
   get(id: string, call?: CallOptions): Promise<Attachment | null>
 
   /** Acquire the fixed content or fail while retaining the saved attachment and all references. */

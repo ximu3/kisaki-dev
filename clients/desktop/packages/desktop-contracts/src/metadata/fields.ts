@@ -393,6 +393,7 @@ export function parseIdentificationFields<T extends EntryType>(
   ) as IdentificationFields<T>
 }
 
+/** Validate original identification facts for this part kind without inventing fields or local identities. */
 export function parsePartIdentificationFields<T extends PartType>(
   type: T,
   input: unknown,
@@ -470,6 +471,7 @@ export function getMetadataEntryFields<T extends EntryType>(
   return Object.keys(metadataEntryEntries(type)) as MetadataEntryField<T>[]
 }
 
+/** Return the writable metadata field vocabulary for the actual part kind, excluding identity and personal state. */
 export function getMetadataPartFields<T extends PartType>(
   type: T,
 ): readonly MetadataPartField<T>[] {
