@@ -128,7 +128,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 验收：同一值在各公开入口含义一致，查询与写入语义明确，公开声明不暴露校验库内部构造类型；类型、值约束与格式化在 Node 和浏览器中独立消费。消息键与参数关联、译本合法性、缺词的英语回退及字面标签规则成立。按 A03、A04、A23、A31 验证两个包各自的合同、制品和消费边界。
 
-依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library-query-contracts.md) · [写入合同](../design/domains/library-write-contracts.md) · [本地化](../design/ui/localization.md) · [接入协议](../design/engineering/protocols.md)。
+依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library/query/contracts.md) · [写入合同](../design/domains/library/write/contracts.md) · [本地化](../design/ui/localization.md) · [接入协议](../design/engineering/protocols.md)。
 
 合同包拥有接口语义及其值的合法性，不以函数是否有副作用决定归属。产品默认配置、预设、业务计算、匹配与结果选择、存储异常处理由所属本体能力实现；规范编码与必要校验随对应值维护。本工作包不建立本体业务源码；业务实现、对应测试、生成数据和资源随所属工作包交付。数据库 codec 消费所属值规则，实际存储接入仍由 W06 完成。
 
@@ -202,7 +202,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 验收：A01–A05、A14、A17–A20、A27、A29、A30 的资料与界面断言成立；代表链路先验证再扩大实现。
 
-依据：[资料操作](../design/domains/library-operations.md) · [查询](../design/domains/library-queries.md) · [领域目录](../design/domains/README.md) · [资料界面](../design/ui/explorer.md)。
+依据：[资料操作](../design/domains/library/write/README.md) · [查询](../design/domains/library/query/README.md) · [领域目录](../design/domains/README.md) · [资料界面](../design/ui/explorer.md)。
 
 <a id="independent-projects"></a>
 
@@ -266,7 +266,7 @@ W09–W12 各自拥有完整工程、公共合同、实现、测试、工具链�
 
 验收：A09、A14–A16、A18、A27、A29 的本地文件与持有断言成立，正式操作和对应界面可直接使用。
 
-依据：[持有](../design/domains/holdings.md) · [文件维护](../design/domains/file-maintenance.md) · [文件识别](../design/domains/file-recognition.md) · [媒体接入](../design/engineering/integrations.md#media)。
+依据：[持有](../design/domains/holdings.md) · [文件维护](../design/domains/file-maintenance.md) · [文件识别](../design/domains/file-recognition/README.md) · [媒体接入](../design/engineering/integrations.md#media)。
 
 <a id="w14"></a>
 
@@ -282,7 +282,7 @@ metadata、ingest 和 scanner 保持各自模块与事实归属。ingest 按合�
 
 验收：A05–A08、A14–A16、A18、A27 的资料获取、采用、扫描及界面断言成立。来源字段、共享关联、原子写入、目录范围、占用和取消均交付真实结果。
 
-依据：[资料获取](../design/domains/metadata.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata-profiles.md) · [预设](../design/domains/metadata-presets.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/file-recognition-presets.md)。
+依据：[资料获取](../design/domains/metadata/README.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata/profiles.md) · [预设](../design/domains/metadata/presets/README.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/file-recognition/presets.md)。
 
 <a id="w15"></a>
 
@@ -324,7 +324,7 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 
 验收：A12、A14、A16、A17、A20、A27–A30 的全部阅读入口与格式断言成立。
 
-依据：[阅读](../design/domains/reader.md) · [标注](../design/domains/annotations.md) · [阅读接入](../design/engineering/integrations.md#reading)。
+依据：[阅读](../design/domains/reader.md) · [标注](../design/domains/annotations/README.md) · [阅读接入](../design/engineering/integrations.md#reading)。
 
 <a id="w18"></a>
 
@@ -392,7 +392,7 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 
 验收：A05、A16、A18、A22、A23、A27、A32 及[逐项专项](../verification/coverage.md#extensions)中 01–30 项断言成立，实际进度见[交付清单](delivery-checklist.md#extensions)。
 
-依据：[来源目录](../design/extensions/catalog.md) · [同步](../design/extensions/synchronization.md) · [导入器](../design/extensions/importers.md)。
+依据：[来源目录](../design/extensions/catalog.md) · [同步](../design/extensions/synchronization.md) · [导入器](../design/extensions/importers/README.md)。
 
 <a id="w22"></a>
 

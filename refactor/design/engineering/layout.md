@@ -294,7 +294,7 @@ clients/desktop/app/tests/
 
 原生业务与数据库套件在运行器启动前选定开发 Electron 的 Node 宿主及匹配 ABI；环境变量和启动参数由该任务的脚本与配置提供。测试中的环境变量配置、fixture 或 setup 不能把已经启动的普通 Node 进程变为另一 ABI。构建和原生依赖准备复用已有工程任务；应用实例、临时资料、订阅及清理由运行器 fixture 和 tests/support 管理，确需的测试专用启动辅助也归 tests/support。
 
-桌面的 tests/support/development-controller.ts 启动、观察并关闭开发测试子进程；development-worker.ts 在该子进程内运行真实开发会话。验证任务的准备关系由 Turbo 定义；构建和打包仍由工程工具执行，字节核对在实际打包与制品消费处完成。
+桌面的 tests/support/development/controller.ts 启动、观察并关闭开发测试子进程；development/worker.ts 在该子进程内运行真实开发会话。验证任务的准备关系由 Turbo 定义；构建和打包仍由工程工具执行，字节核对在实际打包与制品消费处完成。
 
 根统一检查包含根工具及实际 workspace 的常规测试，各套件的执行范围与未执行部分分别报告。最终制品保留正式安全配置，通过适用的外部或现场方式验证；测试入口和用例不改变[运行覆盖与交付要求](../../verification/acceptance.md#runtime-coverage)。
 

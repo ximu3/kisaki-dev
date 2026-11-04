@@ -6,16 +6,16 @@ def block(name,start):return next(x for x in blocks(name) if x.startswith(start)
 parts=[
 block('refactor/design/domains/catalog.md','type EntryRef'),
 block('refactor/design/domains/reader.md','interface NormalizedPoint'),
-block('refactor/design/domains/annotations.md','type PlaybackAnnotationLocation'),
+block('refactor/design/domains/annotations/README.md','type PlaybackAnnotationLocation'),
 block('refactor/design/domains/anime.md','type FileTrackSelection'),
 block('refactor/design/domains/sessions.md','type SavedPlaybackSetting'),
-*blocks('refactor/design/domains/annotation-contracts.md'),
+*blocks('refactor/design/domains/annotations/contracts.md'),
 block('refactor/design/domains/search.md','type SearchTarget'),
 block('refactor/design/ui/navigation.md','type PageRef'),
 block('refactor/design/domains/preferences.md','type PreferenceKey'),
 block('refactor/design/domains/preferences.md','type ShortcutKey'),
 block('refactor/design/domains/appearance.md','type ThemeRef'),
-block('refactor/design/domains/library-graph-contracts.md','type GraphPartCreate')]
+block('refactor/design/domains/library/write/graph.md','type GraphPartCreate')]
 support='''// Owner values used by the extracted declaration checks.
 type WorkType = 'game' | 'anime' | 'comic' | 'novel'
 type EntryType = WorkType | 'character' | 'person' | 'organization'

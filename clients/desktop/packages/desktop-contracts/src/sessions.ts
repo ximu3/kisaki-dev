@@ -5,7 +5,7 @@ import type {
   PlaybackPositionInput,
   ReadingPositionInput,
 } from './library/reading'
-import type { GameBackupSource } from './library/holdings/backups'
+import type { GameBackupSource } from './library/holdings/backups/api'
 import type { CallOptions, Listener, Disposable } from './operations'
 import type { ErrorSummary } from './errors'
 import type { FileTrackSelection } from './library/holdings/preferences'
@@ -14,7 +14,7 @@ import type { WorkRef } from './library/catalog'
 import { parseValue, nonnegativeNumber, id, timestamp, omitFields, unique } from './validation'
 import * as v from 'valibot'
 import { parseReadingPosition } from './library/reading'
-import { parseGameBackupSource } from './library/holdings/backup-formats'
+import { parseGameBackupSource } from './library/holdings/backups/api'
 import { DesktopError, parseErrorSummary } from './errors'
 import { parseFileTrackSelection } from './library/holdings/preferences'
 import { parseWorkRef } from './library/catalog'

@@ -6,7 +6,7 @@ Goodreads 导入器读取官方 Library Export CSV，迁入明确作品、本人
 
 ## 用途与对象范围
 
-读取本地 CSV 进行手动迁移，新作品按[共同流程](../importers.md#flow)直接采用有效来源资料。不提供 Goodreads 账号连接、自建公开搜索、自动导入、持续同步或远端写入。只登记一个导入页面，不注册 metadata provider，不改变公共 Entry 搜索合同。
+读取本地 CSV 进行手动迁移，新作品按[共同流程](README.md#flow)直接采用有效来源资料。不提供 Goodreads 账号连接、自建公开搜索、自动导入、持续同步或远端写入。只登记一个导入页面，不注册 metadata provider，不改变公共 Entry 搜索合同。
 
 已绑定且范围一致的 Goodreads Book Id 或规范 ISBN 可以对应已有 Comic、Novel、ComicVolume 或 NovelVolume。查询全部有效身份，出现类型、归属或多目标冲突时报告，不取首项或按名称合并。Book Id 标识书目，不能由其数值或标题推导整作、版本或所属作品。
 

@@ -149,11 +149,11 @@ const registration = await context.metadata.providers.register({
 })
 ```
 
-capabilities 分别为七种 Entry 上下文声明实际实现的 search、resolve、read 和图片候选能力，字段使用[固定目录](../domains/metadata-profiles.md#fields)。执行时按来源要求核对连接与网络条件，各记录只回答真实可用的值。能力缺席表示不支持，已声明能力须有实现。search 面向条目，并独立声明搜索方式；Part 经 parts 读取。
+capabilities 分别为七种 Entry 上下文声明实际实现的 search、resolve、read 和图片候选能力，字段使用[固定目录](../domains/metadata/profiles.md#fields)。执行时按来源要求核对连接与网络条件，各记录只回答真实可用的值。能力缺席表示不支持，已声明能力须有实现。search 面向条目，并独立声明搜索方式；Part 经 parts 读取。
 
 read.objects 的 fields 声明普通字段，identitySources 声明可直接读取的 ExternalIdentity.source。根节点用它解释 openSession.identity，相关 Entry 与 Part 节点用它解释 refs；来源优先序由资料方案决定。相关节点省略 identitySources 时，读取限于真实根或关系上下文；支持根身份读取时须明确声明该列表。关系读取可以使用 entry.fields: []，仅为已知相关 Entry 或 Part 补字段时也可以省略根 entry。
 
-relations 能力节点包含 fields，表示可提供的普通属性；fields:[] 表示只提供成员。四类资料关系还声明 scope，取[固定范围](../domains/metadata-contracts.md#relation-scopes)、null 或 session。固定范围在登记时确定；null 表示该能力只提供补充事实；session 由读取会话根据目标确定为具体范围或 null。entryTags、volumeChapters 和分部所属清单的上下文范围由各自关系键确定。
+relations 能力节点包含 fields，表示可提供的普通属性；fields:[] 表示只提供成员。四类资料关系还声明 scope，取[固定范围](../domains/metadata/contracts.md#relation-scopes)、null 或 session。固定范围在登记时确定；null 表示该能力只提供补充事实；session 由读取会话根据目标确定为具体范围或 null。entryTags、volumeChapters 和分部所属清单的上下文范围由各自关系键确定。
 
 节点缺席表示未提供该能力。请求中的 fields 选择本次属性，成功结果直接返回成员数组。resolve:true 表示实现了定位操作，实际结果由输入线索决定。
 
@@ -305,7 +305,7 @@ read 按会话已经确定的范围读取本次请求。Provider 完成必要分
 
 对象数组提供对象字段，关系数组提供成员事实。即使只请求关系，回答仍包含必要端点和识别依据。可选属性缺席保持未回答，成员范围按会话合同完整取得。
 
-失败集合从 partialResult 中省略，已完整取得的其他集合和字段可以保留。例如，名称成功而分集第二页失败时，partialResult 保留名称，workEpisodes 缺席。metadata 按预先确定的关系范围处理这个缺口；本地采用使用[合成规则](../domains/metadata-contracts.md#relation-scopes)。
+失败集合从 partialResult 中省略，已完整取得的其他集合和字段可以保留。例如，名称成功而分集第二页失败时，partialResult 保留名称，workEpisodes 缺席。metadata 按预先确定的关系范围处理这个缺口；本地采用使用[合成规则](../domains/metadata/contracts.md#relation-scopes)。
 
 来源内部可以复用已取得的响应，公开输出按声明、请求和资料方案组织。图片交付 ImageCandidate，附件准备与正式写入由本体负责。
 
@@ -355,7 +355,7 @@ const result = await processor.process(
 
 process(input, context) 的 items 每项包含本次唯一的 key、有限字段标识、当前值，以及必要的已有只读上下文。正常结果是普通的 key 到新值映射，必须覆盖全部输入 key。无需修改时也要明确返回原值，不能漏项后报告成功。失败的 partialResult 可以只包含成功项，不能补上原值来伪装成功。
 
-每个字段按其 processors 顺序执行，同一步骤中兼容的项目可以批量处理。partialResult 中的成功项只表示本步骤成功，仍须完成该字段剩余的处理器链。失败项停止后续处理；候选字段的采用遵守[整条链成功规则](../domains/metadata-profiles.md#processors)，其他独立字段继续。原始匹配资料保持独立，处理结果不能改变身份依据。
+每个字段按其 processors 顺序执行，同一步骤中兼容的项目可以批量处理。partialResult 中的成功项只表示本步骤成功，仍须完成该字段剩余的处理器链。失败项停止后续处理；候选字段的采用遵守[整条链成功规则](../domains/metadata/profiles.md#processors)，其他独立字段继续。原始匹配资料保持独立，处理结果不能改变身份依据。
 
 处理器只返回本次获准字段的加工值，对象、关系、身份和资料写入继续由调用流程负责。翻译服务与阈值等设置属于扩展，处理器的选用与顺序属于 Profile。
 

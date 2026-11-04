@@ -3,7 +3,7 @@
 import type { ContentDirectoriesApi } from './directories'
 import type { HeldFilesApi } from './files'
 import type { GameLaunchConfigsApi } from './game-configuration'
-import type { GameBackupsApi } from './backups'
+import type { GameBackupsApi } from './backups/api'
 import type { HoldingsPreferencesApi } from './preferences'
 import type { FileRecognitionProfilesApi } from './file-recognition'
 import type { FileWorkType, WorkRef, EntryRef } from '../catalog'

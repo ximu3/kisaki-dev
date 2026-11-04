@@ -459,9 +459,6 @@ export type {
   GameBackupIssue,
   GameBackupCreateResult,
   GameBackupCreateInput,
-  GameBackupArchiveEntry,
-  GameBackupArchiveManifest,
-  GameBackupTreeRow,
   GameBackupRestoreInput,
   RecoveryLocation,
   RecoveryAction,
@@ -474,13 +471,20 @@ export type {
   GameBackupRecoveryInspection,
   GameBackupRecoveriesApi,
   GameBackupsApi,
-} from './holdings/backups'
+} from './holdings/backups/api'
+export type {
+  GameBackupArchiveEntry,
+  GameBackupArchiveManifest,
+  GameBackupTreeRow,
+} from './holdings/backups/archive'
 
 export {
   encodeGameBackupTree,
   gameBackupTreeDigest,
   parseGameBackupArchiveManifest,
   parseGameBackupArchiveJson,
+} from './holdings/backups/archive'
+export {
   parseGameBackupSource,
   parseGameBackupCreateInput,
   parseGameBackupRestoreInput,
@@ -488,7 +492,7 @@ export {
   parseGameBackupRecoveryProgress,
   gameBackupRecoveryBasis,
   parseGameBackupRestoreResult,
-} from './holdings/backup-formats'
+} from './holdings/backups/api'
 
 export {
   parseFileTarget,

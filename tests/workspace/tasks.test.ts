@@ -132,6 +132,7 @@ test(
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },
+      { path: 'clients/desktop/app/tests/support/development/worker.ts', desktop: ['test:dev'] },
       {
         path: 'clients/desktop/app/tests/support/window-observation.ts',
         desktop: ['test:artifacts', 'test:dev'],

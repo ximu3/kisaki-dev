@@ -1,6 +1,6 @@
 # 官方扩展目录
 
-官方扩展共 33 项：17 个资料与平台来源、13 个迁移导入器、3 个界面译本。下表链接每项完整设计；共同职责分别见[来源接入](sources.md)、[迁移导入](importers.md)和[译本交付](languages.md)。
+官方扩展共 33 项：17 个资料与平台来源、13 个迁移导入器、3 个界面译本。下表链接每项完整设计；共同职责分别见[来源接入](sources/README.md)、[迁移导入](importers/README.md)和[译本交付](languages.md)。
 
 <a id="catalog"></a>
 
@@ -66,7 +66,7 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 
 ## 导入器与译本
 
-第 18–30 项按[输入与格式合同](importers.md#catalog)提供样本、版本范围、选择与执行界面、对象对应和损失报告。第 31–33 项按[语言合同](languages.md)完整覆盖英语基准，分别具有独立身份、安装包与更新；简体、繁体和日语的用词各由对应译本设计规定。
+第 18–30 项按[输入与格式合同](importers/README.md#catalog)提供样本、版本范围、选择与执行界面、对象对应和损失报告。第 31–33 项按[语言合同](languages.md)完整覆盖英语基准，分别具有独立身份、安装包与更新；简体、繁体和日语的用词各由对应译本设计规定。
 
 译本通过在线安装取得，已安装译本可离线使用。英语基准、主题创作与用户字体分别属于本体及其公共能力，不额外计为译本或专用扩展。
 
@@ -78,7 +78,7 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 
 每个项目维护自己的 package.json、kisx.config.ts、README、release-notes 和 tests/fixtures。来源响应与输入格式样本归实际扩展；读取、映射及真实运行分别验证，测试目录按[共同结构](../engineering/layout.md#tests)采用适用部分。out、dist 和 .local 按[开发制品规则](development.md#build)保存运行布局、安装包和持续开发状态。
 
-源码按实际能力展开：[来源扩展](sources.md#organization)组织客户端、资料与适用的个人操作，[导入器](importers.md#organization)保留各自输入语义，[译本](languages.md#implementation)负责轻量登记与消息目录。三种 CLI 模板提供工程起点，具体模块由逐项设计确定；共用解析使用普通依赖，不导入其他扩展的私有源码。
+源码按实际能力展开：[来源扩展](sources/README.md#organization)组织客户端、资料与适用的个人操作，[导入器](importers/README.md#organization)保留各自输入语义，[译本](languages.md#implementation)负责轻量登记与消息目录。三种 CLI 模板提供工程起点，具体模块由逐项设计确定；共用解析使用普通依赖，不导入其他扩展的私有源码。
 
 每项交付包含实际入口、权限、失败和取消处理、生命周期、依赖、manifest、文档及可安装制品。没有适用能力时不添加空实现。
 

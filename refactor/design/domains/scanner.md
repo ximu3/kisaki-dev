@@ -50,7 +50,7 @@ definition 的规则如下：
 | exclude        | 相对路径条件列表，多条取任一，优先于 include；排除目录同时排除其子树                                                                                  |
 | identification | 默认使用目录名或去除扩展名的文件名；可通过正则捕获提取线索，并通过 recognizerId 明确选用多个 scanner.recognizers 实现；算法设置归扩展，不执行任意脚本 |
 
-引用的资料方案必须存在且类型匹配。配置可以通过 recognizerId 明确选择多个识别器，算法设置由扩展管理。每个识别器取得内容相同的只读基础线索，其结果保留实现归属，不接力改写候选，也不调用所有已注册识别器。作品候选的基础名称提取是扫描配置自身的原生能力，不建立另一套扫描识别方案；已有作品内部的[文件识别方案](file-recognition.md#recognition-profiles)由 holdings 管理。
+引用的资料方案必须存在且类型匹配。配置可以通过 recognizerId 明确选择多个识别器，算法设置由扩展管理。每个识别器取得内容相同的只读基础线索，其结果保留实现归属，不接力改写候选，也不调用所有已注册识别器。作品候选的基础名称提取是扫描配置自身的原生能力，不建立另一套扫描识别方案；已有作品内部的[文件识别方案](file-recognition/README.md#recognition-profiles)由 holdings 管理。
 
 scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围内使用相同的管理语义。
 
@@ -65,7 +65,7 @@ scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围�
 
 配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 接收实际排序范围与移动意图，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
 
-update 只提交实际 changes。definition 作为整体校验并替换，不执行隐含的深层合并。expected 遵守[字段基线](library-operations.md)合同。
+update 只提交实际 changes。definition 作为整体校验并替换，不执行隐含的深层合并。expected 遵守[字段基线](library/write/README.md)合同。
 
 配置保存按结构合法性校验，执行时再核对当前能力是否可用。扩展不可用期间，可以改名、停用或保留引用。ScanConfig 管理扫描意图，已入库对象与绑定由资料库独立管理。删除正在执行的配置后，本次任务继续，界面说明其状态并提供任务入口。
 
@@ -171,7 +171,7 @@ candidates 按稳定路径顺序保存已处理项。每项包含 path、clues�
 | 当前运行 | scanner.getState(id)、scanner.observe(id)：读取与观察配置对应的真实运行状态 |
 | 扫描历史 | scanner.runs：历史列表、详情与清理                                          |
 
-scan 等待本次完整执行，并直接交付 ScanResult。失败使用[共同完整操作合同](library-operations.md)，不改为返回 TaskRunRef。运行引用来自内部实际任务上下文，不能从历史推测。
+scan 等待本次完整执行，并直接交付 ScanResult。失败使用[共同完整操作合同](library/write/README.md)，不改为返回 TaskRunRef。运行引用来自内部实际任务上下文，不能从历史推测。
 
 ScannerState 包含 watch: { status, error } 和 currentRun: { scanRunId, taskRef } | null。watch.status 为 disabled、starting、active 或 unavailable，error 使用共同安全错误。候选问题或单次扫描失败，不自动表示监听不可用。
 
@@ -225,7 +225,7 @@ ScanConfig.definition.identification 为 { rules, recognizerIds }：rules 保存
 
 每个候选准备不可变的 baseName 和 relativePath，根始终是 ScanConfig.root_path。目录的 baseName 使用完整目录名，文件则去除最后一个扩展名；无扩展名文件保持原名，开头的单个点不算扩展名。relativePath 相对于扫描根，使用 `/` 分隔，文件保留扩展名，目录无尾分隔符，不含盘符或绝对路径前缀。原始文字及大小写保持不变，目录中的点号不按扩展名处理。
 
-input 选择当前规则的匹配文本，界面分别显示“名称”和“相对路径”。规则自行声明所需文本，不在匹配失败后自动换用另一种。scanner 的文本始终描述待新增作品候选；已有作品内部文件使用 holdings 的[匹配文本](file-recognition.md#recognition-inputs)合同，两者复用正则与模板机制，各自保留明确的发现边界。
+input 选择当前规则的匹配文本，界面分别显示“名称”和“相对路径”。规则自行声明所需文本，不在匹配失败后自动换用另一种。scanner 的文本始终描述待新增作品候选；已有作品内部文件使用 holdings 的[匹配文本](file-recognition/README.md#recognition-inputs)合同，两者复用正则与模板机制，各自保留明确的发现边界。
 
 执行按列表顺序尝试启用规则。每项选择一份原始文本，并必须匹配完整字符串。第一条完整匹配的规则决定本次解释，随后验证输出。输出无效时记录问题，不能继续尝试后续规则或退回基准名称。
 
@@ -369,7 +369,7 @@ paren-suffix
 
 采用预设会创建普通规则草稿，生成新 id，并使用当前界面语言提供可编辑名称，不保持持续模板绑定。新规则按目录顺序追加，原规则不动，用户可以自行重排。不能只按 pattern 判断规则相同，也不能在后台把具体规则移到宽泛规则之前。
 
-预览应标明实际命中的规则，后续规则不参与结果。未保存草稿不会启动监听。扫描线索规则、[资料方案](metadata-presets.md)和[展示柜](../ui/showcase.md)分别管理自己的预设目录、配置值和采用操作。引导调用相应模块的创建能力，后台触发由各[功能拥有者](tasks.md#automation)负责。
+预览应标明实际命中的规则，后续规则不参与结果。未保存草稿不会启动监听。扫描线索规则、[资料方案](metadata/presets/README.md)和[展示柜](../ui/showcase.md)分别管理自己的预设目录、配置值和采用操作。引导调用相应模块的创建能力，后台触发由各[功能拥有者](tasks.md#automation)负责。
 
 <a id="validation"></a>
 
@@ -381,7 +381,7 @@ paren-suffix
 
 自定义正则必须在可终止的独立执行单元中求值，编译和匹配共同受预算及取消约束。在主进程同步正则外包一层 Promise 超时，不能中止实际求值，因此不满足要求。
 
-holdings 的文件识别方案复用同一执行隔离、预算与取消机制，具体超限影响范围遵守[文件规则合同](file-recognition.md#recognition-output)。共同机制只执行文本规则，不接管作品发现、分部查询或关联写入；业务结果与失败仍由各调用方负责。
+holdings 的文件识别方案复用同一执行隔离、预算与取消机制，具体超限影响范围遵守[文件规则合同](file-recognition/README.md#recognition-output)。共同机制只执行文本规则，不接管作品发现、分部查询或关联写入；业务结果与失败仍由各调用方负责。
 
 scanner 集中维护有限执行预算，预览和实际扫描共用同一限制。预算约束规则编译及单个候选的匹配和线索生成，不将整个目录遍历或资料获取的总时长算作正则超时。超限时终止执行单元，停止本次配置求值，并保留已完成与未完成范围；未处理项不能记为未匹配。阈值由具名的内部实现参数定义，验证覆盖正常规则、恶意回溯、取消及终止后的资源释放，不增加用户必填性能参数，也不自动延长限制后重试。
 
@@ -411,7 +411,7 @@ manager 统一拥有同一配置的在途扫描与尚未接纳的核对范围。
 
 完整 scan 由 manager 接纳并调用 tasks.run。在真实任务上下文中取得 TaskRunRef，按[扫描报告合同](#history)通过 runs 的内部写入能力建立 ScanRun，并保存本次身份关联。起始报告保存成功后才进入可能产生业务副作用的扫描。公开 scanner.runs 仍只提供历史查询与清理，不开放创建、伪造或修改运行报告的接口。
 
-scan.ts 执行已接纳的业务，通过 ingest 声明的[原生单项业务调用](metadata.md#organization)处理候选，报告真实进度与检查点。manager 使用同次执行形成的报告组织 ScanRun 保存和任务结果交付，tasks 负责 TaskRun 的状态与托管收尾。只有整个 tasks.run 调用结束后，manager 才按本次身份清除运行关联和忙碌占用，再处理仍有效的待核对范围。
+scan.ts 执行已接纳的业务，通过 ingest 声明的[原生单项业务调用](metadata/README.md#organization)处理候选，报告真实进度与检查点。manager 使用同次执行形成的报告组织 ScanRun 保存和任务结果交付，tasks 负责 TaskRun 的状态与托管收尾。只有整个 tasks.run 调用结束后，manager 才按本次身份清除运行关联和忙碌占用，再处理仍有效的待核对范围。
 
 报告与任务记录遵守[独立历史保存边界](tasks.md#history)。scanner 在业务回调内保存 ScanRun，tasks 在回调结束后完成 TaskRun；完整 scan 调用仍等待全部托管收尾。两处复用同次生成的结果，不通过联合提交回调或共享事务协调各自历史。
 

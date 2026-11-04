@@ -259,7 +259,7 @@ organizations 保存以下专属字段：
 | anime_episodes | id   | anime_id → animes.entry_id |
 | anime_extras   | id   | anime_id → animes.entry_id |
 
-每个 Part 直接且唯一地属于对应作品，作品与分部形成一对多关系。漫画话直接属于漫画；卷对话的收录由 comic_volume_chapters 表达，不增加必填的卷父键。分部创建时明确所属作品，不提供独立跨作品改归属。作品合并统一迁移分部归属；同一作品内的重复分部可以通过[明确分部合并](library-operations.md#part-merges)整理，用户选择保留身份，其他引用共同迁移。
+每个 Part 直接且唯一地属于对应作品，作品与分部形成一对多关系。漫画话直接属于漫画；卷对话的收录由 comic_volume_chapters 表达，不增加必填的卷父键。分部创建时明确所属作品，不提供独立跨作品改归属。作品合并统一迁移分部归属；同一作品内的重复分部可以通过[明确分部合并](library/write/README.md#part-merges)整理，用户选择保留身份，其他引用共同迁移。
 
 五张分部表各自保存以下字段：
 
@@ -341,10 +341,10 @@ organizations 保存以下专属字段：
 | 合集、标签与当前整理           | [个人整理](collections-and-tags.md)                                                                                    |
 | 持有目录、文件、绑定和首选     | [本地持有](holdings.md) 与各媒介文档                                                                                   |
 | 游戏配置、备份及记录           | [游戏](games.md)、[备份](backups.md)                                                                                   |
-| 笔记、标注及正文引用           | [笔记](notes.md)、[标注](annotations.md)、[附件](attachments.md)                                                       |
+| 笔记、标注及正文引用           | [笔记](notes.md)、[标注](annotations/README.md)、[附件](attachments.md)                                                |
 | 使用记录与运行上下文           | 各媒介记录及 [会话](sessions.md)                                                                                       |
 | 任务与扫描配置、历史           | [任务](tasks.md)、[扫描](scanner.md)                                                                                   |
-| metadata_profiles 与资料采用   | [资料方案](metadata-profiles.md)、[资料获取](metadata.md)                                                              |
+| metadata_profiles 与资料采用   | [资料方案](metadata/profiles.md)、[资料获取](metadata/README.md)                                                       |
 | 偏好和引导状态                 | [偏好](preferences.md)、[引导](onboarding.md)                                                                          |
 | 扩展安装、仓库、私有值与凭据   | [扩展运行](../extensions/runtime.md)、[分发](../extensions/distribution.md)、[私有数据](../extensions/private-data.md) |
 

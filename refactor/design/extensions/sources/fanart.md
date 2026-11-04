@@ -134,4 +134,4 @@ client 解释本来源请求、凭据方式和响应；metadata 拥有资源种�
 
 验收覆盖字段范围、明确身份读取、人工选图不绑定、语言、缓存归属、取消和附件采用。动画预设选用 Fanart 时，其根图片读取仅适用于已确认影片；剧集素材通过独立选图入口使用。预设定义明确此范围，字段优先序由预设定义，用户保存的方案不自动改写。
 
-参考：[官方 API](https://api.fanart.tv/)、[官方客户端](https://github.com/fanart-tv/fanart.tv-api)、[提供者合同](../providers.md)、[手动图片选择](../../domains/metadata.md#search)、[附件合同](../../domains/attachments.md#images)。
+参考：[官方 API](https://api.fanart.tv/)、[官方客户端](https://github.com/fanart-tv/fanart.tv-api)、[提供者合同](../providers.md)、[手动图片选择](../../domains/metadata/README.md#search)、[附件合同](../../domains/attachments.md#images)。

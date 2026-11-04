@@ -9,8 +9,8 @@ import { readFile, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { hostTarget } from '../../../tools/lib/targets'
 import { closeNativeWindow, hasNativeWindow } from '../../support/window-observation'
-import { prepareDevelopmentWorkspace } from '../../support/development-workspace'
-import { startDevelopmentController } from '../../support/development-controller'
+import { prepareDevelopmentWorkspace } from '../../support/development/workspace'
+import { startDevelopmentController } from '../../support/development/controller'
 
 let workspace: Awaited<ReturnType<typeof prepareDevelopmentWorkspace>>
 

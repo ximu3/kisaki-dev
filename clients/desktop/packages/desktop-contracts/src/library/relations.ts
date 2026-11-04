@@ -7,7 +7,7 @@ import * as v from 'valibot'
 import { id, text, parseValue, optionalFields, validateExpectedKeys } from '../validation'
 import { workRefSchema } from './catalog'
 import { DesktopError } from '../errors'
-import { compareIdentityText } from '../text'
+import { compareIdentityText } from '../scalar-order'
 
 /** Role in this work; null means an existing association whose importance is not classified. */
 export const characterRoles = Object.freeze(['main', 'supporting', 'cameo', 'other'] as const)

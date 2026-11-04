@@ -100,11 +100,11 @@ app/compose.ts 创建实际能力并提供依赖；app/bindings.ts 建立本体�
 
 产品模块按真实工作流单向协作：scanner 调用 ingest，并按明确选项调用 library.holdings 的登记能力；ingest 调用 metadata 和 library，sessions 调用 library。metadata 不查询或写入本地资料，library 不反向调用 metadata、ingest 或 sessions。合并和删除需要判断对象是否正在使用时，由 app 向 library 注入范围明确的回调。infrastructure 不导入产品模块；它需要的产品判断通过调用参数或装配层取得。
 
-library 的职责区域、目录组织与事务内协作见[资料库完整操作](domains/library-operations.md#ownership)。内部区域和公开命名空间各按自身用途划分。
+library 的职责区域、目录组织与事务内协作见[资料库完整操作](domains/library/write/README.md#ownership)。内部区域和公开命名空间各按自身用途划分。
 
 metadata 同时管理提供者目录、资料获取方案、读取会话和单次执行内的缓存。extensions 将扩展实现登记到 metadata 的原生接口，并管理扩展实例的寿命。ingest 先从 library 取得本地目标与身份，获取候选后决定本地对应和采用方式，最后调用 library 写入。metadata_profiles 的业务管理属于 metadata；文件识别方案及其预设按媒介归 library.holdings 管理，正式表结构均属于数据库设施。来源合成、本地采用和已有对象合并各有操作边界；它们可以共用纯比较规则，但不能混用策略含义。
 
-metadata 按来源目录、方案、搜索和单次获取组织，ingest 按新增、更新及本地采用规则组织，具体落点见[获取与采用的内部组织](domains/metadata.md#organization)。scanner 的管理入口拥有配置运行上下文及完整扫描寿命，单次执行、监听和扫描报告分别协作，见[扫描执行拥有者](domains/scanner.md#organization)。模块名称体现实际职责，公开操作按调用者需要的完整能力定义。
+metadata 按来源目录、方案、搜索和单次获取组织，ingest 按新增、更新及本地采用规则组织，具体落点见[获取与采用的内部组织](domains/metadata/README.md#organization)。scanner 的管理入口拥有配置运行上下文及完整扫描寿命，单次执行、监听和扫描报告分别协作，见[扫描执行拥有者](domains/scanner.md#organization)。模块名称体现实际职责，公开操作按调用者需要的完整能力定义。
 
 extensions 的管理入口组织完整管理操作，包处理、更新准备、运行资源和原生接入各有拥有者，见[扩展模块的内部组织](extensions/runtime.md#organization)。扩展内部 updates 与应用自身的 features/updates 分别处理各自制品及行为。共享宿主的实际运行与重建互斥由扩展 runtime 拥有，管理入口协调版本采用与实际运行，不维护平行状态或反向调用关系。
 
@@ -126,7 +126,7 @@ sessions 管理四类 Work 的使用上下文、控制、观察、有效计时�
 
 每个窗口的 app 负责入口、装配和宿主，features 负责场景与工作流，窗口内的 domain-ui 负责复用业务界面。其他窗口不能依赖主窗口的路由、当前选择或私有 API。跨窗口动作通过本体能力执行，每个挂载实例分别管理自己的查询、草稿、订阅和释放。
 
-阅读器按呈现、导航和标注组织代码，漫画与小说共用固定页面、文本重排和混合文档的阅读机制。实际版式与适用设置由文档内容决定，Work 类别只提供作品、卷话及记录上下文。播放器负责播放界面，游戏面板负责会话面板和折叠布局。多个窗口共用的标注列表与编辑组件位于 renderer/domain-ui/annotations，通过明确参数和回调接入。采集标注与读取当前内容的逻辑留在各窗口。内容执行和会话控制见 [使用会话](domains/sessions.md) 与 [标注](domains/annotations.md)。
+阅读器按呈现、导航和标注组织代码，漫画与小说共用固定页面、文本重排和混合文档的阅读机制。实际版式与适用设置由文档内容决定，Work 类别只提供作品、卷话及记录上下文。播放器负责播放界面，游戏面板负责会话面板和折叠布局。多个窗口共用的标注列表与编辑组件位于 renderer/domain-ui/annotations，通过明确参数和回调接入。采集标注与读取当前内容的逻辑留在各窗口。内容执行和会话控制见 [使用会话](domains/sessions.md) 与 [标注](domains/annotations/README.md)。
 
 公共 UI 原语由 desktop-ui 包提供，桌面业务组件留在应用内。多个窗口确实需要的技术机制放入 renderer/infrastructure。即使复用 Dialog 实现，每个窗口也必须独立持有宿主、打开状态和草稿。更新 Dialog 位于 windows/main/features/updates，使用主窗口 API 和 Dialog 宿主；下载、准备和安装仍由主进程 updates 执行。系统菜单使用主进程的原生菜单能力。
 

@@ -2,7 +2,7 @@
 
 library.holdings 管理四类 Work 与用户本地内容的联系。作品内容目录保存用户登记的本地位置，动画、漫画和小说还从中持续发现文件；文件或启动配置表示实际使用目标。目录、文件和配置分别直接属于作品，各有稳定身份，文件系统位置使用绝对路径。登记持有或删除资料，都不会隐式改动用户文件的字节。
 
-本文说明目录、文件和启动配置的登记，以及关联与使用目标的选择。[文件识别](file-recognition.md)定义命名规则和分部匹配，[文件维护](file-maintenance.md)定义刷新、重定位与重复登记修复。
+本文说明目录、文件和启动配置的登记，以及关联与使用目标的选择。[文件识别](file-recognition/README.md)定义命名规则和分部匹配，[文件维护](file-maintenance.md)定义刷新、重定位与重复登记修复。
 
 <a id="directories"></a>
 
@@ -19,7 +19,7 @@ library.holdings 管理四类 Work 与用户本地内容的联系。作品内容
 
 四张表共同保存 id（TEXT 稳定主键）、所属作品外键（TEXT）、path（TEXT [规范绝对路径](file-maintenance.md#operations)），以及 created_at、updated_at（INTEGER，UTC 毫秒）。同一作品不能重复登记按[文件系统规则](file-maintenance.md#operations)等价的位置，但不设置跨作品的全局路径唯一约束。
 
-AnimeDirectory、ComicDirectory 和 NovelDirectory 另有 definition，只保存经过语义校验的 JSON 目录发现范围、包含与排除条件；命名解释使用下方[文件识别方案](file-recognition.md#recognition-profiles)。三个目录表分别保存可空的 recognition_profile_id，引用同类方案，默认 NULL 表示仅使用内置识别规则。目录不内联方案副本，也不在方案之上叠加目录覆盖规则。GameDirectory 不保存这些文件发现设置或方案引用。共同的路径、枚举和规则执行机制可以复用，设置改变不删除已经登记的文件。
+AnimeDirectory、ComicDirectory 和 NovelDirectory 另有 definition，只保存经过语义校验的 JSON 目录发现范围、包含与排除条件；命名解释使用下方[文件识别方案](file-recognition/README.md#recognition-profiles)。三个目录表分别保存可空的 recognition_profile_id，引用同类方案，默认 NULL 表示仅使用内置识别规则。目录不内联方案副本，也不在方案之上叠加目录覆盖规则。GameDirectory 不保存这些文件发现设置或方案引用。共同的路径、枚举和规则执行机制可以复用，设置改变不删除已经登记的文件。
 
 目录共同参与本地内容管理，不设置首选目录或持久的当前目录。按目录筛选文件只是视图选择，不切换实际内容，也不改变首选文件。动画、漫画和小说在同一作品下登记的内容目录互不包含，按规范路径检查；多个不同磁盘位置或互不包含的目录可以并列存在。该约束独立于深度和过滤，不能通过排除子树同时登记父、子目录，也不用于限制 scanner 的不同扫描配置。
 
@@ -106,7 +106,7 @@ registrations 非空，返回本次实际登记或复用的身份。游戏同目
 
 自动识别图片目录时，要求该目录直接包含图片，且没有下级独立阅读目标。如果根目录图片与子读物混合，不能同时登记父子范围；明确的子目标正常处理，剩余范围交由用户选择。手动登记的图片目录形成读取边界，后续刷新不再拆分其内部。
 
-文件直接属于作品，可以没有直接分部关联，也可以关联多个分部。已经指定本地 Part 时先核对归属；具有规范 ExternalIdentity 时查询实际绑定；其他情况再按[有序规则](file-recognition.md#recognition-rules)、[编号比较](file-recognition.md#number-label-matching)和[完整关联](file-recognition.md#recognition-ranges)，使用目录明确引用的识别方案及内置依据。只有对应唯一且无冲突时才能自动关联。
+文件直接属于作品，可以没有直接分部关联，也可以关联多个分部。已经指定本地 Part 时先核对归属；具有规范 ExternalIdentity 时查询实际绑定；其他情况再按[有序规则](file-recognition/README.md#recognition-rules)、[编号比较](file-recognition/README.md#number-label-matching)和[完整关联](file-recognition/README.md#recognition-ranges)，使用目录明确引用的识别方案及内置依据。只有对应唯一且无冲突时才能自动关联。
 
 显式规则失效时保留问题，不能换另一种解释凑出结果。裸编号不能根据文件格式猜成卷或话，解释卷内话号前必须确定卷范围。
 
@@ -152,7 +152,7 @@ declare function setAssociationMode(
   input: {
     mode: FileAssociationMode
     expected?: { associationMode: FileAssociationMode }
-  }
+  },
 ): Promise<void>
 ```
 

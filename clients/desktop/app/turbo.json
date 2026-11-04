@@ -126,7 +126,7 @@
         "tsconfig.json",
         "config/vitest/vitest.config.dev.ts",
         "tests/tools/dev/**",
-        "tests/support/development*.ts",
+        "tests/support/development/**",
         "tests/support/preparation-worker.ts",
         "tests/support/window-observation.ts",
         "!tests/fixtures/runtime/src/**/*.test.ts",

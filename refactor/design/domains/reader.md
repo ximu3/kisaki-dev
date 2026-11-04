@@ -75,7 +75,7 @@ const reader = await openReader({
   settings,
   position,
   assetsBaseUrl,
-  handleKeyDown
+  handleKeyDown,
 })
 ```
 
@@ -137,7 +137,7 @@ getTextContext(position) 返回 `Promise<string | null>`，按本次文档的源
 
 Kisaki 向内核提供只读标记投影，其中包含定位、不透明 id 和必要原文，使用统一标记样式与当前选中状态。内核负责绘制，并回传交互；批注编辑、修改和删除由本体完成，内核不保存另一份 Annotation。内核的技术样式能力不要求 Kisaki 为每条标注保存颜色。
 
-标记投影的反馈还包含本次文档中可解析标记的源内容顺序及无法恢复的标记 ID，供[当前文件标注面板](annotations.md#ordering)排列。顺序与绘制共用源解释，相同起点可以明确并列，由宿主补齐稳定顺序；不能用编码字符串排序替代。宿主只保存当前文档的轻量索引，完整批注和摘录仍按需读取，内核不查询本体资料库。
+标记投影的反馈还包含本次文档中可解析标记的源内容顺序及无法恢复的标记 ID，供[当前文件标注面板](annotations/README.md#ordering)排列。顺序与绘制共用源解释，相同起点可以明确并列，由宿主补齐稳定顺序；不能用编码字符串排序替代。宿主只保存当前文档的轻量索引，完整批注和摘录仍按需读取，内核不查询本体资料库。
 
 书签的可见内容画面和所选页面区域的图像由应用阅读接入取得，可以使用 Electron [capturePage](https://www.electronjs.org/docs/latest/api/web-contents#contentscapturepagerect-opts)。Kana 不因此依赖 Electron 或 PreparedImage。完整采集操作见[内容采集](sessions.md#capture)。
 
@@ -233,7 +233,7 @@ PDF 文字提取项编号不作为长期身份。使用页面几何，也不额�
 
 ## 内容变化与位置兼容
 
-定位值只描述实际文件内部的内容，fileId 由所属记录或操作输入携带。Work、Part、Session、quote 和批注分别由相应记录保存。视频位置使用文件内秒数，视频标注的点位和起止范围遵守 [PlaybackAnnotationLocation](annotations.md#video-values)。每份文件独立保存位置；文件同名、属于同一作品或同一分部，都不会自动继承其他文件的位置。
+定位值只描述实际文件内部的内容，fileId 由所属记录或操作输入携带。Work、Part、Session、quote 和批注分别由相应记录保存。视频位置使用文件内秒数，视频标注的点位和起止范围遵守 [PlaybackAnnotationLocation](annotations/README.md#video-values)。每份文件独立保存位置；文件同名、属于同一作品或同一分部，都不会自动继承其他文件的位置。
 
 字号、窗口、分页、注入节点和按需章节加载，不得改变已保存位置的含义。固定页面使用稳定页面身份及页内位置，图片目录和归档不能只使用当前排序号。显示缩放、裁边及旋转由接入进行正反映射，不改变持久坐标。真正裁切或替换源文件，则属于内容变化。
 
