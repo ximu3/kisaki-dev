@@ -6,11 +6,13 @@
 
 **简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这四项[共同原则](refactor/design/engineering/conventions.md#quality)为准。
 
-**防御和测试要极度克制。** 防御集中在真实输入、权限、持久化和副作用边界，内部调用复用已经成立的保证。测试验证消费者关心的行为，同一保证在所属层验证，接入只核对新增风险。日常改动默认不新增防御分支或回归用例，修复可用已有检查或一次性复现核实。只有真实场景中有明确的失败后果、现有保证不足且终态确需长期保障时，才补最小必要措施。删去重复校验、只为假想异常设置的分支和失去用途的测试。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
-
 **按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同类问题在共同拥有层修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
-**用干净、直接的正向叙述。** 设计、文档、注释与界面文案都从读者要理解或完成的事写起，直接说明谁负责、怎样使用、会得到什么结果。限制、差异或失败会影响读者判断或操作时，在相关位置写清条件和后果。保留理解取舍所需的理由，删去重复强调和无关对照。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
+**防御和测试要极度克制。** 只为终态中仍有明确后果、现有保证尚未覆盖的真实风险保留防御分支。能从模型或流程中消除错误状态时，修正根因并清理相应的补救分支。外部输入、权限、持久化和副作用的风险由所属边界处理，内部调用直接依赖已有保证。删去重复校验和只为假想异常设置的分支。
+
+日常改动默认不追加防御或回归用例。修复可用已有检查或一次性复现核实。只有关键行为需要持续验证、其余检查会漏掉具体错误时，才保留能检出它的最小用例。同一保证在所属层验证，接入只核对新增风险。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
+
+**用干净、直接的正向叙述。** 设计、文档、注释和界面文案围绕读者的任务展开，直接说明采用的做法和实际结果。删去上下文已说清的内容、重复强调和为假想疑问写的排除说明。影响理解、选择或操作的条件、差异和失败后果应就近交代，理解取舍所需的理由与有用的对照应保留。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
 **实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档集中在主题目录内，使用目录内入口，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[主题组织](refactor/design/engineering/conventions.md#source-layout)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
 
