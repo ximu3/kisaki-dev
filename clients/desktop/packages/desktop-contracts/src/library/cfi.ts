@@ -2,6 +2,18 @@
 
 import { DesktopError } from '../errors'
 
+/** CFI adopts XML's Char production, including tab, LF and CR; other discouraged scalars remain legal. */
+function isXmlCharacter(codePoint: number): boolean {
+  return (
+    codePoint === 0x9 ||
+    codePoint === 0xa ||
+    codePoint === 0xd ||
+    (codePoint >= 0x20 && codePoint <= 0xd7ff) ||
+    (codePoint >= 0xe000 && codePoint <= 0xfffd) ||
+    (codePoint >= 0x10000 && codePoint <= 0x10ffff)
+  )
+}
+
 /** Validate the point subset of EPUB CFI 1.1; ranges are represented by two complete ReadingAnchor values. */
 export function parseCfiPoint(value: string): string {
   let offset = 8
@@ -51,6 +63,7 @@ export function parseCfiPoint(value: string): string {
   function assertionValue(noSpace = false): void {
     const start = offset
     while (offset < end && !',;]='.includes(value[offset]!)) {
+      const codePoint = value.codePointAt(offset)!
       const character = value[offset]!
       if (character === '^') {
         offset += 1
@@ -59,12 +72,12 @@ export function parseCfiPoint(value: string): string {
         }
       } else if (
         '[()'.includes(character) ||
-        character.charCodeAt(0) < 32 ||
+        !isXmlCharacter(codePoint) ||
         (noSpace && character === ' ')
       ) {
         invalid()
       }
-      offset += 1
+      offset += codePoint > 0xffff ? 2 : 1
     }
 
     if (offset === start) {

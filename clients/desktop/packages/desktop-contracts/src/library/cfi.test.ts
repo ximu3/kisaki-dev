@@ -1,8 +1,18 @@
-/** @fileoverview Verifies exact CFI numeric syntax independently of document size and JavaScript number precision. */
+/** @fileoverview Verifies CFI scalar and exact numeric syntax independently of document content and JavaScript number precision. */
 
 import { expect, test } from 'vitest'
 import { parseCfiPoint } from './cfi'
 import { DesktopError } from '../errors'
+
+test('validates XML characters in CFI assertions without rejecting legal whitespace', () => {
+  const point = 'epubcfi(/6/2[;custom=章😀\tline\nnext\rfinal])'
+
+  expect(parseCfiPoint(point)).toBe(point)
+
+  for (const value of ['\ufffe', '\uffff']) {
+    expect(() => parseCfiPoint(`epubcfi(/6/2[;custom=${value}])`)).toThrow(DesktopError)
+  }
+})
 
 test('preserves exact numeric tokens before source bounds are known', () => {
   const points = [
