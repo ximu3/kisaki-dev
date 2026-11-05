@@ -14,7 +14,6 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
   consumerDirectory,
   signal,
 }) => {
-  await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 

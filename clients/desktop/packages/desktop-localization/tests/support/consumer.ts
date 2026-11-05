@@ -1,4 +1,4 @@
-/** @fileoverview Installs separate Node/browser consumers from the actual contract and public dependency tarballs. */
+/** @fileoverview Installs separate Node/browser consumers from the localization package and its packed dependencies. */
 
 import { test } from 'vitest'
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'

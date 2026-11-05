@@ -14,7 +14,6 @@ test('NodeNext declarations and signing execute from the installed tarball', asy
   consumerDirectory,
   signal,
 }) => {
-  await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 

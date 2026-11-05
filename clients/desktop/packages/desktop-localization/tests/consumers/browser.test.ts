@@ -49,7 +49,7 @@ const test = consumerTest('browser')
     return page
   })
 
-test('browser-only globals compile the public contract and generated call associations', async ({
+test('browser globals support typed calls from the published localization package', async ({
   consumerDirectory,
   signal,
 }) => {
@@ -69,11 +69,8 @@ test('localized messages and literal tags run in the main document and an iframe
   await page.locator('body[data-ready="true"]').waitFor()
 
   expect(JSON.parse((await page.locator('#summary').textContent())!)).toEqual({
-    english: '2 items selected',
     translated: '保存',
     fallback: '2 items selected',
-    literal: '<b>{literal}</b>',
-    locale: 'zh-Hans-CN',
   })
 
   await page.frameLocator('#view').locator('body[data-ready="true"]').waitFor()

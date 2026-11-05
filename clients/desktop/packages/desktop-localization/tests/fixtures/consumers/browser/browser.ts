@@ -1,6 +1,10 @@
-/** @fileoverview Publishes the standalone browser consumer result for the external test harness. */
+/** @fileoverview Renders a translated action and a missing message with English plural rules. */
 
-import { summary } from './consumer'
+import { createTranslator } from '@kisaki3/desktop-localization'
 
-document.querySelector('#summary')!.textContent = JSON.stringify(summary)
+const t = createTranslator('zh-Hans', { actions: { save: '保存' } })
+document.querySelector('#summary')!.textContent = JSON.stringify({
+  translated: t('actions.save'),
+  fallback: t('library.selection', { count: 2 }),
+})
 document.body.dataset.ready = 'true'

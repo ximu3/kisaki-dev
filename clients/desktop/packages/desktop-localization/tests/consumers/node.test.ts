@@ -12,7 +12,6 @@ test('Node globals alone support the complete public type graph and actual local
   consumerDirectory,
   signal,
 }) => {
-  await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
 
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])

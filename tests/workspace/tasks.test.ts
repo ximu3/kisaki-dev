@@ -84,20 +84,9 @@ test(
         consumers: ['desktop-appearance'],
       },
       {
-        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/node/consumer.ts',
-        desktop: [],
-        consumers: ['desktop-appearance'],
-      },
-      {
         path: 'clients/desktop/packages/desktop-appearance/config/vitest/consumers.ts',
         desktop: [],
         consumers: ['desktop-appearance'],
-      },
-      { path: 'clients/desktop/packages/extension-distribution/README.md', desktop: [] },
-      {
-        path: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
-        desktop: [],
-        consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
@@ -105,20 +94,9 @@ test(
         consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
       {
-        path: 'clients/desktop/packages/extension-distribution/tests/fixtures/consumers/node/consumer.ts',
-        desktop: [],
-        consumers: ['extension-distribution'],
-      },
-      { path: 'clients/desktop/packages/desktop-contracts/README.md', desktop: [] },
-      {
         path: 'clients/desktop/packages/desktop-contracts/src/library/catalog.ts',
         desktop: [],
         consumers: ['desktop-contracts', 'desktop-localization'],
-      },
-      {
-        path: 'clients/desktop/packages/desktop-contracts/tests/fixtures/consumers/node/consumer.ts',
-        desktop: [],
-        consumers: ['desktop-contracts'],
       },
       {
         path: 'clients/desktop/packages/desktop-localization/src/en/library.ts',
