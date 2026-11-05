@@ -1,0 +1,3 @@
+- Connect two peers over an ordered message transport with a versioned, context-checked handshake.
+- Call explicitly exposed methods in either direction, deliver notifications and request cancellation while waiting for the actual outcome.
+- Validate finite JSON frames, deliver endpoint-defined safe failures and release pending calls when the connection closes.

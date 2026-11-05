@@ -1,0 +1,18 @@
+{
+  "name": "rpc-electron-consumer",
+  "private": true,
+  "type": "commonjs",
+  "main": ".cache/main/main.js",
+  "scripts": {
+    "build": "tsc -b && vite build --base=./"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-rpc": "0.1.0-dev.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "electron": "45.0.0",
+    "typescript": "6.0.3",
+    "vite": "8.3.3"
+  }
+}

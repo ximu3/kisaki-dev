@@ -10,6 +10,7 @@
 | W01 视觉包               | [公开值、样式与独立消费者验证](w01/README.md)                                                           |
 | W02 分发协议包           | [格式、兼容选版、签名与独立消费者验证](w02/README.md)                                                   |
 | W03 桌面合同与本地化     | [接口、值约束、消息格式化与两个包的独立消费](w03/README.md)                                             |
+| W04 通信机制             | [有限帧、连接寿命和两种真实通道的制品消费](w04/README.md)                                               |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | 构建与开发               | [Node 构建与解析](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md)                        |
 | 声明检查                 | [声明检查分工](w00/declaration-checks.md)                                                               |
