@@ -19,7 +19,7 @@
 | Solid          | 1.9.x                      | solid-js 1.9.16                                                                   |
 | 官方路由       | 与 Solid 1.9 相容的 1.x    | @solidjs/router 1.0.0                                                             |
 | 编译集成       | 支持 Solid 1 的插件 2.x    | vite-plugin-solid 2.11.14                                                         |
-| 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package/README.md)实现并验证                                    |
+| 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证                                           |
 | 虚拟列表与网格 | TanStack Virtual 3.x       | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心 3.1.0 与辅助包组合见 [拖拽实现](../ui/virtualization.md#dependency)          |
 
@@ -79,7 +79,7 @@ exports 定义公开入口，静态检查继续覆盖实际导入链、循环与
 | 包                     | 主要源码职责                                                                                                                             |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | desktop-appearance     | tokens、values、defaults 分别维护词表、规则与默认值；CSS 和映射按[视觉交付](#visual-packages)组织                                        |
-| desktop-ui             | 组件家族与配套实现按[家族](../ui/package/README.md#organization)组织，组件样式就近维护，公开构建入口显式映射                             |
+| desktop-ui             | 组件家族与配套实现按[能力与协作关系](../ui/package.md#organization)组织；公开构建入口就近放置，共用交互按实际复用提取                    |
 | desktop-contracts      | library、metadata、ingest、scanner、sessions、tasks 等模块拥有各自接口、值约束与编码；基础值使用明确叶模块，development 拥有开发控制合同 |
 | desktop-localization   | 英语按领域维护，类型从同一源文生成；目录与参数校验、纯格式化按实际职责组织，运行中的译本登记和选择归本体 i18n                            |
 | desktop-rpc            | connection 管理调用与连接，frames 定义有限帧，transport 定义传输接入；内部按真实状态与资源寿命组织                                       |
@@ -140,11 +140,15 @@ desktop-contracts/appearance 在字体槽中组合桌面字体选择，直接引
 
 desktop-ui 通过 props、事件、回调和普通呈现值接入行为，不导入桌面合同、SDK、数据库或客户端查询层。应用内的 domain-ui 提供桌面业务界面。非 Solid 扩展可以使用 desktop-appearance 和框架无关 SDK。
 
-公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package/README.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式，应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
+公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式；应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
 
-desktop-ui 以带 `ks-` 前缀的普通 CSS 编写组件样式，与所属家族就近维护。公开 `/styles.css` 的源码入口聚合 W01 基础样式与 W05 组件规则，由 Vite 将导入展开为一份 CSS。tsdown 和 unplugin-solid 的 Rolldown 接入编译各家族 ESM 与声明。包的 build 在同一候选目录准备全部输出，成功后交接 dist。样式出口及副作用配置保证显式导入被保留。详见[样式与定制](../ui/package/styles.md#delivery)。
+desktop-ui 使用 Tailwind 4 编写和构建组件的常规样式，TSX 中的工具类与变体组织遵守[UI 包规范](../ui/package.md#organization)。src/styles.css 是包内编译入口，接入 Tailwind、desktop-appearance 的基础样式、映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。
 
-Solid 作为 peer 依赖。宿主文档通过[窗口样式入口](layout.md#renderer-styles)采用成品 CSS，可以另用 W01 的可选 Tailwind 映射编译自己使用的工具类。字体字节、加载、文档级重置和窗口布局分别归宿主。组件的焦点、浮层和反馈资源跟随实例寿命。
+UI 成品包含组件自身必要的基础规则，不无条件注入影响整个文档的 [Preflight](https://tailwindcss.com/docs/preflight#disabling-preflight)。文档级重置由实际宿主统一安排。应用或扩展自己的 Tailwind 构建只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一映射；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
+
+CSS 提供明确的消费入口，并通过副作用配置确保构建保留；消费者不扫描包的 src 生成样式。Solid 作为 peer 依赖，不重复打包。字体字节和加载由宿主管理，纯视觉包不承担桌面资源职责，也不预先承诺所有 UI 框架或 SSR 模式。
+
+关闭、通知和外观能力接入实际宿主会话，不额外建立公共业务包装或全局客户端上下文。
 
 <a id="workspace"></a>
 
@@ -193,8 +197,8 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | pnpm                         | workspace 成员、各包实际依赖、统一锁文件、catalog、安装与 tarball 打包             |
 | Turborepo                    | 从真实依赖形成任务顺序、受影响范围、并发与合格任务的缓存                           |
 | TypeScript、ESLint、Prettier | 类型与环境检查、代码规范和导入规则、统一排版                                       |
-| tsdown                       | 公开 TypeScript/Solid 包的 ESM 和类型声明                                          |
-| Vite 与桌面 tools            | 桌面程序编译、开发会话与资源装配，以及 UI 包的成品 CSS 聚合                        |
+| tsdown                       | 公开 TypeScript/Solid 包的代码、类型声明与声明过的样式输出                         |
+| Vite 与桌面 tools            | 各 Electron 程序和 renderer 的编译、开发服务器、桌面生命周期与资源装配             |
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                                 |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                                 |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                                   |

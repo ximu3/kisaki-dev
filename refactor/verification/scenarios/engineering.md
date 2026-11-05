@@ -210,6 +210,4 @@ A03、A04 和 A27 按[日期验证分工](../../design/domains/values.md#date-op
 
 A23 验证[公共包的组织与消费](../../design/engineering/workspace.md#package-organization)：纯 Node 扩展从 SDK 获得完整作者类型与实际上下文，框架无关 Webview 使用对应接入，Solid Webview 按需增加 desktop-ui 和 Solid。三种路径都不读取应用或其他包的私有源码；纯定义入口不初始化 Node、DOM 或框架运行环境。CLI 的程序化入口与命令复用同一工作流，生成模板实际随制品提供，分发仓库维护可以只消费已经构建的安装包。
 
-A20、A23 和 A29 按[样式交付](../../design/ui/package/styles.md#delivery)验证无 Tailwind 的仓库外 Solid 项目。直接导入成品 CSS，分别比对加载前后未挂载 Kisaki 组件的宿主 `.grid`、`.hidden`、`.flex` 元素的 display，检查它们是否仍按宿主规则布局。W01 约定的文档字体、根字号和配色正常采用，主题变量、缩放和根 `class` 的局部样式分别生效。核对初始依赖图与实际打开功能后的图表、编辑器加载和释放。W01 的可选映射由独立消费者编译验证。
-
-四个窗口分别按[窗口入口](../../design/engineering/layout.md#renderer-styles)加载自身样式与共同基础。逐窗检查主题、字体和正文排版，阅读正文遵守自身排版合同。
+A20、A23 和 A29 验证[样式交付](../../design/engineering/workspace.md#visual-packages)与[窗口入口](../../design/engineering/layout.md#renderer-styles)：无 Tailwind 的消费者可以使用 desktop-appearance 的普通能力与 desktop-ui 的成品 CSS，选择映射的项目可以编译自己的语义工具类；两者都不读取包内源码。四个窗口分别加载自身入口和共同基础，在不加载主窗口 CSS 时仍完整呈现。组件基础规则不无条件重置消费文档，阅读正文保持自身排版；主题与字体改变通过各文档的正常接入生效，不需要重新构建样式或维护四份主题值。

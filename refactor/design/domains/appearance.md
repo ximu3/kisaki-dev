@@ -18,41 +18,45 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 ## 基础 token 与派生样式
 
-主题的亮、暗分支各包含下列 43 个键。desktop-appearance 定义词表、值的文法、亮暗默认值和 CSS 呈现方式。desktop-contracts 的 AppearanceTokens 沿用相同键集，将两个字体槽组合为可持久保存的字体选择。
+AppearanceTokens 使用固定、扁平的 CSS 属性键，共 45 项：39 项配色与表面效果值、2 个字体栈和 4 项文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
 
-| 用途           | 基础 token                                                                                                                                                                        |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 内容与框架     | `--background`、`--foreground`、`--chrome`、`--chrome-foreground`                                                                                                                 |
-| 浮层与对话框   | `--popover`、`--popover-foreground`、`--dialog`、`--dialog-foreground`                                                                                                            |
-| 操作与交互     | `--primary`、`--primary-foreground`、`--secondary`、`--secondary-foreground`、`--muted`、`--muted-foreground`、`--accent`、`--accent-foreground`、`--input`、`--input-foreground` |
-| 反馈与边界     | `--destructive`、`--destructive-foreground`、`--info`、`--info-foreground`、`--success`、`--success-foreground`、`--warning`、`--warning-foreground`、`--border`、`--ring`        |
-| 图表数据       | `--chart-1`、`--chart-2`、`--chart-3`、`--chart-4`、`--chart-5`                                                                                                                   |
-| 圆角与阴影     | `--radius`、`--shadow-raised`、`--shadow-overlay`、`--shadow-modal`                                                                                                               |
-| 字体与文字基准 | `--font-sans`、`--font-mono`、`--text-base-size`、`--text-base-weight`、`--text-base-line-height`、`--text-base-letter-spacing`                                                   |
+```json
+{
+  "--background": "oklch(0.17 0.015 258)",
+  "--foreground": "oklch(0.9 0.012 256)",
+  "--primary": "oklch(0.64 0.17 256)",
+  "--accent": "oklch(0.85 0.06 252 / 0.16)",
+  "--ring": "oklch(0.64 0.17 256)",
+  "--radius": "6px"
+}
+```
 
-### 内容、窗口框架与控件
+完整 token 目录如下：
 
-`--background` 是内容底板的基色。`--chrome` 是标题栏、侧栏、结构性页头和阅读器控制带等窗口框架的基色。两者的最终颜色 alpha 都须为 1，省略 alpha 和显式完全不透明的颜色均可。主题编辑器为这两个字段提供不透明颜色选择。
+| 用途           | 基础 token                                                                                                                                                      |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 基底与表面     | --background、--foreground、--surface、--surface-foreground、--popover、--popover-foreground、--dialog、--dialog-foreground                                     |
+| 操作与交互     | --primary、--primary-foreground、--secondary、--secondary-foreground、--muted、--muted-foreground、--accent、--accent-foreground、--input、--input-foreground   |
+| 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring、--chart |
+| 圆角与阴影     | --radius、--shadow-raised、--shadow-overlay、--shadow-modal                                                                                                     |
+| 光效与材质     | --pane-alpha、--light-1、--light-2、--light-3、--light-strength、--grain-opacity                                                                                |
+| 字体与文字基准 | --font-sans、--font-mono、--text-base-size、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
 
-内容和框架分别用 `--color-background` 和 `--color-chrome` 直接绘制对应基色。停靠的导航区属于窗口框架，浮起时使用 popover 表面。嵌在对话框里的工具栏在 dialog 底板上使用局部填充。
+表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。primary、accent 和 ring 分别表示主要操作、强调与焦点，各 foreground 对应自己的表面。三种阴影分别用于 raised、overlay 和 modal，光效及材质项也保留各自含义。
 
-primary 表达主要操作，accent 表达交互强调，ring 用于键盘焦点。secondary 及其配对前景是独立可编辑的次要填色，用于次要按钮、次要徽标等低强调元素的常态呈现。muted 用于柔和的局部填充，muted-foreground 可用于说明文字。各 foreground 与各自背景配对，三种阴影分别服务于抬升元素、浮层和模态内容。
+字体槽保存稳定选择或资源引用，在运行时转换成 CSS 字体栈。AppearanceTokens 使用固定键目录，其他 token 分别按颜色、阴影、长度、百分比和数值等文法校验，保留 OKLCH、透明度、normal 及多层阴影等合法表达。包路径与临时 URL 留在资源读取接入中。
 
-### 图表色槽
+主题保存完整、可直接编辑的视觉值，不保存计算表达式或任意上下文引用。颜色接受十六进制、具名颜色、transparent，以及 rgb／rgba、hsl／hsla、hwb、lab、lch、oklab、oklch 和预定义色彩空间的 color 表示；颜色分量仍遵循 CSS 的范围与裁剪语义。calc、min、max、clamp、color-mix、相对颜色，以及 var、env、attr、currentColor、系统颜色和级联关键字不属于主题值。作者可以在代码中计算后提交完整值，公共样式继续使用 CSS 计算完成共同派生。这一边界让编辑器直接修改字段值，无需额外管理引用、公式、循环和上下文失效。
 
-五个色槽在每个明暗分支中分别设色。`--chart-1` 提供默认数据色，同一指标的折线、面积或热力档可以从它派生不同密度。多系列图按稳定系列键绑定槽位，颜色与业务含义的对应由使用者提供。普通 CSS 与可选 Tailwind 映射通过 `--color-chart-1` 至 `--color-chart-5` 引用对应值。完整接入见[公共图表](../ui/package/chart.md)。
+圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。pane-alpha、light-strength 和 grain-opacity 为 0–100% 的百分比。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
 
-### 值与呈现
+纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。
 
-主题保存可直接编辑的字面值。颜色支持十六进制、具名颜色、rgb／rgba、hsl／hsla、hwb、lab、lch、oklab、oklch 及预定义色彩空间的 color 表示，颜色分量遵循 CSS 的范围与裁剪语义。除两个不透明基色外，颜色接受透明度及 transparent。纯值解析对公式、相对颜色、上下文引用和级联关键字报告无效输入。作者可以计算后提交字面值，公共 CSS 负责共同派生，编辑器由此能逐项修改。
+纯视觉包拥有词表、默认视觉值和 CSS 对应关系，桌面合同在此基础上组合字体选择。默认主题、编辑器、本体页面和 Webview 使用同一套词表，不为扩展另设缩减版本。背景能力只包括配色，不提供用户背景图片或 motion 配置，程序光效和固定纹理也不会扩大这一范围。
 
-圆角和基础字号使用非负字面长度。文字间距接受 normal 或字面长度，可为负值。行高接受 normal、非负数值、长度或百分比，字重接受 normal、bold 或 1–1000 的数值。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset。
+Tailwind 的 `--color-*`、radius-sm/md/lg/xl、字号阶梯和组件尺寸由共同样式派生。`--tw-*` 和 `--vis-*` 不持久保存，每个源值只提供一个编辑入口。局部封面光色只存在于页面运行状态。默认主题的色轴和亮度安排不强制约束其他主题。焦点统一使用 ring，radius 为 0 时，所有派生值仍必须合法。
 
-纯视觉字体槽接受 CSS 字体栈，桌面主题保存字体选择，文档呈现使用实际解析出的字体族。完整分支恰好具有词表中的键。部分更新限定在对应字段内，沿用相同的值规则。纯规则在 Node 与浏览器中执行相同的解析与规范化，数值须为有限值，非法输入报告失败。主题的实际对比度和字体加载效果由呈现验收核对。
-
-默认主题、本地编辑器、扩展主题登记、预览和文档投影共用同一词表。`--color-*`、尺寸阶梯与阴影映射属于呈现，`--interface-scale` 来自偏好，图表引擎变量属于适配层。每个基础值在主题中只需编辑一次。radius 为 0 时派生圆角仍须合法。文档和窗口使用当前主题配色，层次由底色、边界和投影表达。
-
-纯视觉包的普通 CSS 与可选 Tailwind 映射遵守[视觉包交付](../engineering/workspace.md#visual-packages)，本体各文档使用[各自的样式入口](../engineering/layout.md#renderer-styles)。
+公共 appearance 的普通 CSS 与可选 Tailwind 映射遵守[视觉包交付](../engineering/workspace.md#visual-packages)，本体各文档使用[各自的样式入口](../engineering/layout.md#renderer-styles)。UI 与应用通过同一组正式变量取得当前外观，映射、组件样式和窗口基础样式不各自保存主题副本。
 
 <a id="theme"></a>
 
