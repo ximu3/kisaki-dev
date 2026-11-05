@@ -17,7 +17,7 @@
 | 开发连接                 | [Node 传输与实际退出](development-ipc/2026-10-26/README.md)                                             |
 | 官方来源、迁移格式与译本 | [逐项证据](extensions.md)                                                                               |
 | 媒体信息                 | [读取范围与实测](media-information/2026-10-24/README.md)                                                |
-| 会话结果与存档格式       | [类型消费与 ZIP 编码](contract-closure/2026-10-24/README.md)                                            |
+| 存档格式与内容树摘要       | [ZIP 成员、清单与确定编码](contract-closure/2026-10-24/README.md)                                            |
 | 存档恢复、查询与事务     | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                              |
 | Drizzle RC               | [编码、迁移和隔离运行](public-contracts/2026-10-22/README.md)                                           |
 | 日期、虚拟化与界面隔离   | [技术验证](technical-tradeoffs/2026-10-22/README.md)                                                    |
@@ -40,7 +40,7 @@
 
 ## Kana
 
-浏览器范围、格式与图片排序、资源运行与传输的完整对照均记录了输入摘要。核对当时的脚本与数据时，可从[试件归档](https://github.com/ximu3/kisaki-dev/tree/66d39a78e19945bde223223769dd42741bb45cb1/refactor/verification/evidence)取同路径文件，比对运行记录中的 SHA-256。当前脚本的运行条件见各试件说明。
+浏览器范围、格式、图片排序与资源传输的原始输入可按运行记录中的 SHA-256 从[试件归档](https://github.com/ximu3/kisaki-dev/tree/66d39a78e19945bde223223769dd42741bb45cb1/refactor/verification/evidence)取得。
 
 | 范围             | 记录                                                                                                                                                                                               |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -58,7 +58,7 @@
 
 | 范围                 | 记录                                                                                                                                                                                                                          |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 值与调用             | [编码与容器](libmpv-values/verification.md)、[值表示](libmpv-explicit-values/verification.md)、[消息传递](libmpv-value-options/verification.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md) |
+| 值与调用             | [值表示](libmpv-explicit-values/verification.md)、[消息传递](libmpv-value-options/verification.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md) |
 | 订阅、事件与流       | [订阅](libmpv-subscriptions/verification.md)、[事件](libmpv-notifications/verification.md)、[流](libmpv-streams/verification.md)、[属性](libmpv-properties/verification.md)                                                   |
 | 初始化与运行库       | [初始化](libmpv-initialization/verification.md)、[常驻运行库](libmpv-runtime/runtime.md)、[Node 桥接](libmpv-node-bridge/verification.md)                                                                                     |
 | 输出、播放与资源寿命 | [输出合同](libmpv-video/verification.md)、[GPU](libmpv-gpu/verification.md)、[软件输出](libmpv-output/verification.md)、[播放](libmpv-playback/verification.md)、[跨进程交接](libmpv-handoff/verification.md)                 |

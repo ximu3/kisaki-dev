@@ -6,7 +6,7 @@
 
 ## 正文字号与相对层次
 
-从当前展示条件下、尚未施加读者字号覆盖的作者样式取得正文根基准 B，以及各文字元素的计算字号 s；读者选择的基准为 F 时，该元素采用 s × F／B。这样也能保留作者用绝对字号设定的标题、正文与注音层次。见[字号覆盖对照](../../../verification/evidence/kana-layout-policy/layout-policy.md)和[字号比例实测](../../../verification/evidence/kana-presentation/presentation.md)。
+从当前展示条件下、尚未施加读者字号覆盖的作者样式取得正文根基准 B，以及各文字元素的计算字号 s；读者选择的基准为 F 时，该元素采用 s × F／B。这样也能保留作者用绝对字号设定的标题、正文与注音层次。见[字号比例实测](../../../verification/evidence/kana-presentation/presentation.md)和[样式转换验证](../../../verification/evidence/kana-style-conversion/conversion.md)。
 
 例如正文根为 14px、标题 28px、注音 7px，选择 20px 后得到 20px、40px、10px。若正文根为 16px，某一段明确使用 14px，选择 20px 后该段为 17.5px；这是保留作者相对小字的结果。fontSize 是正文根基准，不能同时承诺每个段落都精确等于该数值。
 

@@ -36,7 +36,7 @@ type UiTranslationRef =
 
 preferences 保存具体 UiTranslationRef。i18n 根据这份引用及当前登记计算有效语言。两个译本即使 locale 相同，切换引用也会刷新使用中的消息。
 
-messages 是按领域嵌套的纯数据。普通对象表示分组，字符串保存 ICU 源文。每级键是非空且不含点的路径段，叶子的完整路径标识消息。源码可以分文件维护，宿主从汇总后的树派生索引。
+messages 是按领域嵌套的纯数据。分组使用普通对象的自有、可枚举数据属性，字符串保存 ICU 源文。每级键是非空且不含点的路径段，叶子的完整路径标识消息。源码可以分文件维护，宿主从汇总后的树派生索引。
 
 locale 使用 Intl 支持的规范标签 baseName，不混入数字、日期或排序的扩展选项。官方标签为 en、zh-Hans、zh-Hant 和 ja。标签格式合法与实际存在译本是两件事，见 [Intl.Locale](https://tc39.es/ecma402/#sec-intl.locale)。
 

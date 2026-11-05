@@ -105,7 +105,7 @@ R 编号标识完整交付要求，W 编号标识实施工作包，A 编号标�
 | 32. 繁体中文语言扩展 | 按[完整方案](../design/extensions/languages.md#traditional)交付台湾措辞的完整译文，并独立审校                                  |
 | 33. 日语语言扩展     | [完整方案](../design/extensions/languages.md#japanese)已确认；自然日语、参数位置、长文本、字体与换行、完整消息及独立制品       |
 
-三个译本的[共享核验](evidence/language-extensions/contracts-and-fixtures.md)记录 FormatJS、类型生成、语言匹配及内存登记／回退模型的实际结果，检查次数按同一份共享证据计数。三份完整译文、正式宿主、浏览器／Webview、原生菜单、字体布局与六目标安装分别完成对应验收。
+三个译本共用[静态文案匹配](evidence/w02/README.md)和[类型化消息、目录校验与回退](evidence/w03/README.md)的制品证据。W22 分别验证三份完整译文、正式宿主、窗口与原生菜单、字体布局及六目标安装。
 
 Node、框架无关 Webview 和 Solid/ui 三种模板，都必须从仓库外 tarball 创建项目，完成类型检查、构建、开发运行和真实 .kisx 安装。Solid 模板还要贯通 activate、context、轻量登记、私有业务、页面与 Dialog、完整本体调用、任务、失败、取消、dispose，以及 i18n 和外观。
 

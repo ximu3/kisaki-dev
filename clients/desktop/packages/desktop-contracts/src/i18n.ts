@@ -83,14 +83,17 @@ export function parseMessageCatalog(input: unknown): MessageCatalog {
     }
     ancestors.add(record)
 
-    const entries = Object.entries(record).map(
-      ([key, child]): [string, string | MessageCatalog] => {
-        if (key.length === 0 || key.includes('.')) {
-          throw new DesktopError('InvalidInput', 'Message keys must be nonempty path segments')
-        }
-        return [key, typeof child === 'string' ? child : group(child)]
-      },
-    )
+    const entries = Object.keys(record).map((key): [string, string | MessageCatalog] => {
+      if (key.length === 0 || key.includes('.')) {
+        throw new DesktopError('InvalidInput', 'Message keys must be nonempty path segments')
+      }
+      const property = Object.getOwnPropertyDescriptor(record, key)!
+      if (!Object.hasOwn(property, 'value')) {
+        throw new DesktopError('InvalidInput', 'Message catalogs require data properties')
+      }
+      const child: unknown = property.value
+      return [key, typeof child === 'string' ? child : group(child)]
+    })
 
     ancestors.delete(record)
     return Object.fromEntries(entries)

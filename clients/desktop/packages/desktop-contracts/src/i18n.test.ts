@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 import { DesktopError } from './errors'
 import { parseMessageCatalog, parseUiTranslationRegistration } from './i18n'
 
-test('catalog parsing preserves literal leaves and returns independent ordinary data', () => {
+test('catalogs copy plain data properties and reject invalid groups', () => {
   const source = { domain: { empty: '', future: '{unparsed' } }
   const parsed = parseMessageCatalog(source)
   source.domain.empty = 'changed'
@@ -12,9 +12,27 @@ test('catalog parsing preserves literal leaves and returns independent ordinary 
   expect(parseMessageCatalog(JSON.parse('{"__proto__":{"constructor":"literal"}}'))).toEqual(
     JSON.parse('{"__proto__":{"constructor":"literal"}}'),
   )
+
+  const cycle: Record<string, unknown> = {}
+  cycle.child = cycle
+  const accessor = {
+    get message(): string {
+      throw new Error('Catalog parsing invoked a getter')
+    },
+  }
+  for (const input of [
+    cycle,
+    accessor,
+    { 'dotted.key': 'text' },
+    { value: 1 },
+    { value: [] },
+    new Date(),
+  ]) {
+    expect(() => parseMessageCatalog(input)).toThrow(DesktopError)
+  }
 })
 
-test('registration validates shape and owner-local identity without reading a product catalog', () => {
+test('registration canonicalizes the locale and retains unknown product messages', () => {
   const value = parseUiTranslationRegistration({
     id: 'test',
     name: 'Test',
@@ -22,9 +40,5 @@ test('registration validates shape and owner-local identity without reading a pr
     messages: { future: '{unparsed' },
   })
   expect(value.locale).toBe('en-US')
-  const cycle: Record<string, unknown> = {}
-  cycle.child = cycle
-  for (const input of [cycle, { 'dotted.key': 'text' }, { value: 1 }, { value: [] }, new Date()]) {
-    expect(() => parseMessageCatalog(input)).toThrow(DesktopError)
-  }
+  expect(value.messages).toEqual({ future: '{unparsed' })
 })

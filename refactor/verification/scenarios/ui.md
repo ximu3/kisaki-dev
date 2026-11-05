@@ -32,7 +32,7 @@ A23 和 A29 按第 31–33 项[完整方案](../../design/extensions/languages.m
 
 使用真实 Node、浏览器和 Webview，覆盖所有窗口、应用内与原生菜单、无障碍文字、字体、缩放、长名称与长文案。运行验收包括零扩展英语、安装及首次安装失败与恢复、语言恢复、更新与卸载、首屏预算，以及上述消息和登记行为。仓库外 SDK／CLI 使用、构建和六目标安装分别验证。
 
-[共享核验](../evidence/language-extensions/contracts-and-fixtures.md)只覆盖实际 Node ICU、类型生成样本、匹配与内存生命周期模型。代表性样本不代替三份全量译文、正式宿主、真实 UI、浏览器／Webview 和平台安装。
+纯消息合同复用[正式本地化包的验证](../evidence/w03/README.md)。每个译本以本次实际英语基准检查完整目录，并在已安装的扩展实例中验证登记、切换与释放。
 
 <a id="previews"></a>
 
