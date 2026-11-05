@@ -1,0 +1,206 @@
+{
+  "name": "@kisaki3/desktop-ui",
+  "version": "0.1.0-dev.0",
+  "description": "Native Solid controls, charts, Markdown and drag interactions for Kisaki desktop interfaces.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki-dev.git",
+    "directory": "clients/desktop/packages/desktop-ui"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "release-notes"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "import": "./dist/button.js"
+    },
+    "./link": {
+      "types": "./dist/link.d.ts",
+      "import": "./dist/link.js"
+    },
+    "./badge": {
+      "types": "./dist/badge.d.ts",
+      "import": "./dist/badge.js"
+    },
+    "./separator": {
+      "types": "./dist/separator.d.ts",
+      "import": "./dist/separator.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner.d.ts",
+      "import": "./dist/spinner.js"
+    },
+    "./progress": {
+      "types": "./dist/progress.d.ts",
+      "import": "./dist/progress.js"
+    },
+    "./alert": {
+      "types": "./dist/alert.d.ts",
+      "import": "./dist/alert.js"
+    },
+    "./image": {
+      "types": "./dist/image.d.ts",
+      "import": "./dist/image.js"
+    },
+    "./empty-state": {
+      "types": "./dist/empty-state.d.ts",
+      "import": "./dist/empty-state.js"
+    },
+    "./field": {
+      "types": "./dist/field.d.ts",
+      "import": "./dist/field.js"
+    },
+    "./input": {
+      "types": "./dist/input.d.ts",
+      "import": "./dist/input.js"
+    },
+    "./textarea": {
+      "types": "./dist/textarea.d.ts",
+      "import": "./dist/textarea.js"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox.d.ts",
+      "import": "./dist/checkbox.js"
+    },
+    "./switch": {
+      "types": "./dist/switch.d.ts",
+      "import": "./dist/switch.js"
+    },
+    "./radio-group": {
+      "types": "./dist/radio-group.d.ts",
+      "import": "./dist/radio-group.js"
+    },
+    "./select": {
+      "types": "./dist/select.d.ts",
+      "import": "./dist/select.js"
+    },
+    "./combobox": {
+      "types": "./dist/combobox.d.ts",
+      "import": "./dist/combobox.js"
+    },
+    "./slider": {
+      "types": "./dist/slider.d.ts",
+      "import": "./dist/slider.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "import": "./dist/tabs.js"
+    },
+    "./segmented-control": {
+      "types": "./dist/segmented-control.d.ts",
+      "import": "./dist/segmented-control.js"
+    },
+    "./collapsible": {
+      "types": "./dist/collapsible.d.ts",
+      "import": "./dist/collapsible.js"
+    },
+    "./table": {
+      "types": "./dist/table.d.ts",
+      "import": "./dist/table.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/scroll-area.d.ts",
+      "import": "./dist/scroll-area.js"
+    },
+    "./dialog": {
+      "types": "./dist/dialog.d.ts",
+      "import": "./dist/dialog.js"
+    },
+    "./popover": {
+      "types": "./dist/popover.d.ts",
+      "import": "./dist/popover.js"
+    },
+    "./menu": {
+      "types": "./dist/menu.d.ts",
+      "import": "./dist/menu.js"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip.d.ts",
+      "import": "./dist/tooltip.js"
+    },
+    "./toast": {
+      "types": "./dist/toast.d.ts",
+      "import": "./dist/toast.js"
+    },
+    "./chart": {
+      "types": "./dist/chart.d.ts",
+      "import": "./dist/chart.js"
+    },
+    "./markdown": {
+      "types": "./dist/markdown.d.ts",
+      "import": "./dist/markdown.js"
+    },
+    "./drag": {
+      "types": "./dist/drag.d.ts",
+      "import": "./dist/drag.js"
+    },
+    "./styles.css": {
+      "types": "./dist/styles.d.ts",
+      "default": "./dist/styles.css"
+    }
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "pack": "kisaki-package pack",
+    "check:package": "kisaki-package check",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test:consumers": "vitest run --config config/vitest/consumers.ts",
+    "clean": "tsx tools/clean.ts"
+  },
+  "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "3.1.0",
+    "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "3.2.0",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "2.2.0",
+    "@atlaskit/pragmatic-drag-and-drop-live-region": "2.1.0",
+    "@codemirror/commands": "6.11.1",
+    "@codemirror/lang-markdown": "6.5.2",
+    "@codemirror/language": "6.13.1",
+    "@codemirror/state": "6.7.6",
+    "@codemirror/view": "6.43.15",
+    "@kisaki3/desktop-appearance": "workspace:^",
+    "@mdit/plugin-footnote": "1.1.3",
+    "@mdit/plugin-tasklist": "1.1.4",
+    "@types/d3-scale": "4.0.9",
+    "@types/d3-selection": "3.0.12",
+    "@unovis/solid": "1.7.1",
+    "@unovis/ts": "1.7.1",
+    "csstype": "3.2.3",
+    "markdown-it": "15.0.3",
+    "tailwind-merge": "3.7.0"
+  },
+  "peerDependencies": {
+    "solid-js": "~1.9.16"
+  },
+  "devDependencies": {
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/cli": "4.3.3",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "solid-js": "catalog:",
+    "tailwindcss": "4.3.3",
+    "tsdown": "0.23.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "unplugin-solid": "2.0.0",
+    "vite": "catalog:",
+    "vite-plugin-solid": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "ui-solid-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.json --module NodeNext --moduleResolution NodeNext"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-ui": "0.1.0-dev.0",
+    "solid-js": "1.9.16"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}

@@ -71,7 +71,12 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance', 'desktop-contracts', 'desktop-localization'],
+        consumers: [
+          'desktop-appearance',
+          'desktop-contracts',
+          'desktop-localization',
+          'desktop-ui',
+        ],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',

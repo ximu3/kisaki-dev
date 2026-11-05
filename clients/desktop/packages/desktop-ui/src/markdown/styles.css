@@ -1,0 +1,63 @@
+@layer components {
+  .ks-editor .cm-editor {
+    min-height: inherit;
+    font-size: var(--text-sm);
+  }
+  .ks-editor .cm-content {
+    font-family: var(--font-mono);
+    caret-color: var(--color-foreground);
+  }
+  .ks-editor .cm-editor.cm-focused {
+    outline: none;
+  }
+  .ks-markdown {
+    overflow-wrap: anywhere;
+    line-height: 1.55;
+  }
+  .ks-markdown > :first-child {
+    margin-top: 0;
+  }
+  .ks-markdown > :last-child {
+    margin-bottom: 0;
+  }
+  .ks-markdown :is(h1, h2, h3, h4) {
+    line-height: 1.25;
+    margin: 1em 0 0.4em;
+  }
+  .ks-markdown p {
+    margin: 0.5em 0;
+  }
+  .ks-markdown img {
+    max-width: 100%;
+    height: auto;
+  }
+  .ks-markdown a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .ks-markdown :is(code, pre) {
+    font-family: var(--font-mono);
+    background: var(--color-muted);
+    border-radius: var(--radius-sm);
+  }
+  .ks-markdown pre {
+    padding: 0.65rem;
+    overflow-x: auto;
+  }
+  .ks-markdown blockquote {
+    margin-inline: 0;
+    border-inline-start: 3px solid var(--color-border);
+    padding-inline-start: 0.75rem;
+    color: var(--color-muted-foreground);
+  }
+  .ks-markdown table {
+    border-collapse: collapse;
+  }
+  .ks-markdown :is(th, td) {
+    border: 1px solid var(--color-border);
+    padding: 0.25rem 0.5rem;
+  }
+  .ks-markdown .task-list-item {
+    list-style: none;
+  }
+}

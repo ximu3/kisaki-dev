@@ -20,6 +20,17 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'ui-has-no-product-runtime',
+    from: 'clients/desktop/packages/desktop-ui/src/field.tsx',
+    to: 'clients/desktop/packages/desktop-contracts/src/operations.ts',
+    source: "export type { Value } from '../../desktop-contracts/src/operations'\n",
+  },
+  {
+    name: 'ui-has-no-node-runtime',
+    from: 'clients/desktop/packages/desktop-ui/src/image.tsx',
+    source: "export { readFile } from 'node:fs/promises'\n",
+  },
+  {
     name: 'rpc-has-no-host-or-product-dependencies',
     from: 'clients/desktop/packages/desktop-rpc/src/frames.ts',
     to: 'clients/desktop/packages/desktop-contracts/src/json.ts',

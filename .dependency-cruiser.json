@@ -1,6 +1,20 @@
 {
   "forbidden": [
     {
+      "name": "ui-has-no-product-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
+      "to": {
+        "path": "^clients/desktop/(app|extensions)/|^clients/desktop/packages/(?!desktop-(appearance|ui)/)|(^|/)node_modules/electron/"
+      }
+    },
+    {
+      "name": "ui-has-no-node-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
       "name": "rpc-has-no-host-or-product-dependencies",
       "severity": "error",
       "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },
@@ -31,7 +45,7 @@
         "path": "^clients/desktop/packages/desktop-contracts/src/"
       },
       "to": {
-        "path": "^clients/desktop/app/|^clients/desktop/extensions/|(^|/)node_modules/(electron|solid-js)/"
+        "path": "^clients/desktop/app/|^clients/desktop/extensions/|^clients/desktop/packages/desktop-ui/|(^|/)node_modules/(electron|solid-js)/"
       }
     },
     {
@@ -61,7 +75,7 @@
         "path": "^clients/desktop/packages/desktop-localization/src/"
       },
       "to": {
-        "path": "^clients/desktop/app/|^clients/desktop/extensions/|(^|/)node_modules/(electron|solid-js)/"
+        "path": "^clients/desktop/app/|^clients/desktop/extensions/|^clients/desktop/packages/desktop-ui/|(^|/)node_modules/(electron|solid-js)/"
       }
     },
     {
@@ -113,7 +127,7 @@
         "path": "^clients/desktop/packages/desktop-appearance/src/"
       },
       "to": {
-        "path": "^clients/desktop/app/|^clients/desktop/extensions/"
+        "path": "^clients/desktop/app/|^clients/desktop/extensions/|^clients/desktop/packages/desktop-ui/"
       }
     },
     {
