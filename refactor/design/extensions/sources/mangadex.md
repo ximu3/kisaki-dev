@@ -226,7 +226,7 @@ src/
 ├── node/
 │   ├── entry.ts
 │   ├── client/
-│   │   ├── client.ts
+│   │   ├── gateway.ts
 │   │   ├── archives.ts
 │   │   ├── records.ts
 │   │   ├── lists.ts

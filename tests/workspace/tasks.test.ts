@@ -79,7 +79,7 @@ test(
         consumers: ['desktop-appearance'],
       },
       {
-        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/browser/browser.ts',
+        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/browser/entry.ts',
         desktop: [],
         consumers: ['desktop-appearance'],
       },

@@ -78,7 +78,7 @@ Foliate 将格式内容、固定／重排呈现和辅助阅读能力分开，再
     │   │   ├── zip-worker.ts
     │   │   └── cache.ts
     │   ├── view/
-    │   │   ├── view.ts
+    │   │   ├── coordinator.ts
     │   │   ├── fixed.ts
     │   │   ├── reflow.ts
     │   │   ├── document.ts
@@ -96,7 +96,7 @@ Foliate 将格式内容、固定／重排呈现和辅助阅读能力分开，再
     ├── docs/
     └── release-notes/
 
-目录按实际职责组织。EPUB、MOBI/KF8、PDF 的多文件实现各自成目录；较小实现先保留单文件，需要多份逻辑协作时再拆为模块目录。formats 按格式分类，open.ts 负责识别和创建；view 是协作模块，由 view.ts 管理挂载、可见内容和排版更新。index.ts 只列公开导出。
+目录按实际职责组织。EPUB、MOBI/KF8、PDF 的多文件实现各自成目录；较小实现先保留单文件，需要多份逻辑协作时再拆为模块目录。formats 按格式分类，open.ts 负责识别和创建。view/coordinator.ts 管理挂载和可见内容，协调 fixed 与 reflow 的排版更新。index.ts 只列公开导出。
 
 | 拥有者     | 责任                                                                   |
 | ---------- | ---------------------------------------------------------------------- |
