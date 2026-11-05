@@ -7,6 +7,7 @@ import {
   createRenderEffect,
   onCleanup,
   onMount,
+  Show,
   splitProps,
   type JSX,
 } from 'solid-js'
@@ -100,6 +101,7 @@ export function RadioChoices(props: RadioGroupProps & { segmented?: boolean }): 
                 name={local.name}
                 form={rest.form}
                 value={option.value}
+                aria-description={option.description}
                 disabled={option.disabled}
                 ref={(el) => {
                   controls.set(option, el)
@@ -111,7 +113,14 @@ export function RadioChoices(props: RadioGroupProps & { segmented?: boolean }): 
                 required={local.required}
                 on:change={changed}
               />
-              {option.label}
+              <span>
+                {option.label}
+                <Show when={!local.segmented && option.description}>
+                  <span aria-hidden="true" class="block text-xs text-muted-foreground">
+                    {option.description}
+                  </span>
+                </Show>
+              </span>
             </label>
           )}
         </For>

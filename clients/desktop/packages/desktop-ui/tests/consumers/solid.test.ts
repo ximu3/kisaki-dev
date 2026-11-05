@@ -62,6 +62,14 @@ test('form drafts, rejected resets, constraints and successful controls agree wi
   const form = page.locator('#entry')
   const values = () =>
     form.evaluate((node) => Array.from(new FormData(node as HTMLFormElement).entries()))
+  const medium = page.getByLabel('Medium', { exact: true })
+  await medium.click()
+  const novel = medium.getByRole('option', { name: 'Novel', exact: true })
+  expect(await novel.getAttribute('aria-description')).toBe('Volumes of prose')
+  expect(await novel.evaluate((el) => getComputedStyle(el, '::after').content)).toBe(
+    '"Volumes of prose"',
+  )
+  await page.keyboard.press('Escape')
   const title = page.getByLabel('Title', { exact: true })
   await title.fill('Revised title')
   await page.getByLabel('Medium', { exact: true }).selectOption('comic')

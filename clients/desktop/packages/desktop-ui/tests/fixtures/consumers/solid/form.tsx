@@ -14,7 +14,7 @@ import { SegmentedControl } from '@kisaki3/desktop-ui/segmented-control'
 import { Button } from '@kisaki3/desktop-ui/button'
 
 const kinds = [
-  { value: 'novel', label: 'Novel' },
+  { value: 'novel', label: 'Novel', description: 'Volumes of prose' },
   { value: 'comic', label: 'Comic' },
   { value: 'game', label: 'Game', disabled: true },
 ]

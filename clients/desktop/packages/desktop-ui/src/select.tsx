@@ -16,6 +16,8 @@ import { inputClass, onFormReset } from './form/native'
 export interface SelectOption {
   value: string
   label: string
+  /** The single-select picker shows this explanation. Its closed button keeps the short label. */
+  description?: string
   disabled?: boolean
 }
 
@@ -122,6 +124,8 @@ export function Select(props: SelectProps | MultiSelectProps): JSX.Element {
         {(option) => (
           <option
             value={option.value}
+            aria-label={option.description ? option.label : undefined}
+            aria-description={option.description}
             disabled={option.disabled}
             ref={(el) =>
               createRenderEffect(() => {

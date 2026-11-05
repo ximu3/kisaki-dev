@@ -14,4 +14,4 @@
 | Select 使用 appearance: base-select 与 selectedcontent | 实际样式为 base-select，选中内容呈现为 Alpha。             |
 | 查询 CSS 与 DOM 能力                                   | 支持 anchor-name、closedBy、requestClose 和 Popover。      |
 
-这些结果支持[公共 UI](../../../design/ui/package.md#ownership)采用原生能力的技术基线。它们验证原生 DOM，Solid 受控状态、复杂选项、组件组合、输入法和全部目标环境继续由 W05 的正式实现验收。
+这些结果支持[公共 UI](../../../design/ui/package.md#ownership)采用原生能力的技术基线。Solid 受控状态、选项、组件组合与输入法的正式制品验证见 [W05 记录](../w05/README.md)。

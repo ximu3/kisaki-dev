@@ -216,6 +216,8 @@ export function Combobox(props: ComboboxProps): JSX.Element {
             <div
               id={optionId(i())}
               role="option"
+              aria-label={option.label}
+              aria-description={option.description}
               aria-selected={selection()?.value === option.value}
               aria-current={active() === option.value}
               aria-disabled={!!option.disabled}
@@ -227,6 +229,9 @@ export function Combobox(props: ComboboxProps): JSX.Element {
               }}
             >
               {option.label}
+              <Show when={option.description}>
+                <span class="block text-xs text-muted-foreground">{option.description}</span>
+              </Show>
             </div>
           )}
         </For>
