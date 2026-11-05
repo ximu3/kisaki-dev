@@ -31,7 +31,7 @@
 
 ## CSP 的实际边界
 
-[Firefox 的 CSP 观察](csp-path-observation.json)显示，img-src 检查还包含 worker.js 地址，因此内容 CSP 需要覆盖专用传输目录。该记录保存脚本摘要、资源请求及浏览器错误。
+[Firefox 的 CSP 观察](csp-path-observation.json)显示，img-src 检查还包含 worker.js 地址，因此内容 CSP 需要覆盖专用传输目录。这次失败观察保留了请求、浏览器错误和脚本摘要。归档中的脚本对应随后通过的 24 组对照，按上方 transport-contract.json 的摘要核对。
 
 四个环境共用同一规则：内容 CSP 允许专用传输目录，worker 根据非导航请求的实际 client 与本次实例路径核对范围，资源拥有者只返回本次成员。它没有向普通宿主目录或其他网络地址放行，也没有增加浏览器名称判断。
 
