@@ -463,20 +463,18 @@ export function reverseWorkRelationType(type: WorkRelationType): WorkRelationTyp
   return inverse[type]
 }
 
-/** Validate endpoints, medium constraints and direction, then return the sole canonical binding for its business key. */
-export function normalizeWorkRelation(input: WorkRelationBinding): StoredWorkRelationBinding {
-  const value = parseValue(
-    v.strictObject(workRelationBindingEntries),
-    input,
-    'Invalid work relation',
-  )
+/** Check the domain constraints on structurally parsed endpoints and relation type. */
+export function validateWorkRelation(value: WorkRelationBinding): void {
   if (value.from.id === value.to.id) {
     throw new DesktopError('InvalidInput', 'A work cannot relate to itself')
   }
   if (!canUseWorkRelation(value.type, value.from.type, value.to.type)) {
     throw new DesktopError('InvalidInput', 'Work relation does not support these media')
   }
+}
 
+/** Put a validated binding in storage direction, ordering symmetric endpoints by identity. */
+export function canonicalWorkRelation(value: WorkRelationBinding): StoredWorkRelationBinding {
   const symmetric = value.type === 'related' || value.type === 'alternativeVersion'
   const swap =
     reverseTypes.includes(value.type) ||
@@ -486,6 +484,17 @@ export function normalizeWorkRelation(input: WorkRelationBinding): StoredWorkRel
     to: swap ? value.from : value.to,
     type: (swap ? inverse[value.type] : value.type) as StoredWorkRelationType,
   }
+}
+
+/** Parse an external binding, check its endpoints and return the canonical business-key direction. */
+export function normalizeWorkRelation(input: WorkRelationBinding): StoredWorkRelationBinding {
+  const value = parseValue(
+    v.strictObject(workRelationBindingEntries),
+    input,
+    'Invalid work relation',
+  )
+  validateWorkRelation(value)
+  return canonicalWorkRelation(value)
 }
 
 /** Validate a complete explicit work-character fact, including nullable role. */
@@ -541,7 +550,8 @@ export function parseStoredWorkRelationBinding(input: unknown): StoredWorkRelati
     input,
     'Invalid stored work relation binding',
   )
-  const normalized = normalizeWorkRelation(value)
+  validateWorkRelation(value)
+  const normalized = canonicalWorkRelation(value)
   if (normalized.type !== value.type || normalized.from.id !== value.from.id) {
     throw new DesktopError('InvalidInput', 'Expected work relation binding must be canonical')
   }
@@ -590,7 +600,7 @@ export function parseWorkRelationCreate(input: unknown): WorkRelationCreate {
     input,
     'Invalid work relation',
   )
-  normalizeWorkRelation({ from: value.from, to: value.to, type: value.type })
+  validateWorkRelation(value)
   return value
 }
 
@@ -659,7 +669,7 @@ export function parseWorkRelationUpdate(input: unknown): WorkRelationUpdate {
   validateExpectedKeys(value.changes, value.expected, ['binding'])
   const final = { ...value.expected?.binding, ...value.changes }
   if (final.from && final.to && final.type) {
-    normalizeWorkRelation({ from: final.from, to: final.to, type: final.type })
+    validateWorkRelation({ from: final.from, to: final.to, type: final.type })
   }
   return value
 }

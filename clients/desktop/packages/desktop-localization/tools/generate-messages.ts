@@ -1,8 +1,7 @@
 /** @fileoverview Generates correlated desktop call types from the sole English ICU catalog. */
 
 import { readFile, writeFile } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { join } from 'node:path'
 import { runCli } from '@kisaki3/tooling/cli'
 import { englishMessages } from '../src/en/index'
 import { getMessageContracts } from '../src/messages'
@@ -51,6 +50,6 @@ export async function writeMessageTypes(signal?: AbortSignal): Promise<void> {
   await writeFile(join(import.meta.dirname, '../src/contracts.generated.ts'), output)
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (import.meta.main) {
   await runCli(writeMessageTypes)
 }

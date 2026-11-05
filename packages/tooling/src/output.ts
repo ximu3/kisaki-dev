@@ -3,7 +3,7 @@
  * preserving the previous output on preparation failure.
  */
 
-import { mkdir, mkdtemp, rename, rm, stat } from 'node:fs/promises'
+import { mkdir, mkdtemp, rename, rm } from 'node:fs/promises'
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 
 /**
@@ -38,7 +38,6 @@ export async function replaceOutput<T>(
     signal?.throwIfAborted()
 
     try {
-      await stat(destination)
       await rename(destination, previous)
       movedPrevious = true
     } catch (cause) {

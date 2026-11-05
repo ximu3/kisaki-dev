@@ -226,6 +226,6 @@ Type=Deleted、DoublePage、Rotation、Manga 阅读方向、ImageSize／尺寸�
         ├── contracts.ts
         └── validation.ts
 
-input 只解释已声明格式、包装和读取边界；NFO 与 ComicInfo 分开维护字段合同。mapping 负责本次范围、身份、字段及位置语义，不新增通用文件导入框架。import 使用公开完整操作，IPC 只转发，Webview 不自行解析媒体或写正式数据。
+input 只解释已声明格式、包装和读取边界；NFO 与 ComicInfo 分开维护字段合同。mapping 负责将本次输入的范围、身份、字段与位置映射到本体合同。import 使用公开完整操作，IPC 只转发，Webview 不自行解析媒体或写正式数据。
 
 正式验收覆盖真实导出与不同生产者、声明编码和大型文件、完整 XML／归档预算、命名空间和字段存在性、整剧／季／作品／卷话范围、离线 prepared／initial 新增、原批次继续与已有资料采用、全部图片约定、完整来源比较器及文化排序、持久路径与符号链接、实际播放器／Kana 跳转、异常恢复、已有值保护、空历史数量基线、取消、独立扩展制品及六个桌面目标。

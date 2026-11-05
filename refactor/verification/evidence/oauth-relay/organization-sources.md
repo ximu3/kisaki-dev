@@ -1,6 +1,6 @@
 # oauth-relay 工程组织的协议与框架依据
 
-对应已确认的 [oauth-relay 工程组织](../../../design/projects/oauth-relay/README.md)。读取公开规范、框架说明及上游认证文档，未创建服务仓库、运行新服务、取得或兑换用户凭据，也未检查或切换现有部署。
+本页依据公开规范、框架说明和上游认证文档核对 [oauth-relay 工程组织](../../../design/projects/oauth-relay/README.md)。服务运行、实际凭据交换和部署由各自的验证记录说明。
 
 ## 来源与组织判断
 

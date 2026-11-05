@@ -1,6 +1,6 @@
 # Kotatsu 导入器：源码与合成核验
 
-对应第 29 项[完整方案](../../../design/extensions/importers/kotatsu.md)，完整方案已确认。用户明确没有实际备份并选择合成样本；本目录不包含用户漫画、账号资料或真实备份。
+本组用固定版本源码和合成备份核对 [Kotatsu 导入规则](../../../design/extensions/importers/kotatsu.md)。核验范围限于这些合成输入。
 
 ## 来源与基线
 

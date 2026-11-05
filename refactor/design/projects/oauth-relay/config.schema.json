@@ -5,7 +5,7 @@
   "additionalProperties": false,
   "required": ["publicOrigin", "applications"],
   "properties": {
-    "publicOrigin": { "type": "string", "pattern": "^https://", "maxLength": 2048 },
+    "publicOrigin": { "type": "string", "pattern": "^https://" },
     "listen": {
       "type": "object",
       "additionalProperties": false,
@@ -45,7 +45,6 @@
       "items": {
         "type": "string",
         "minLength": 1,
-        "maxLength": 1024,
         "pattern": "^[\\u0021\\u0023-\\u005B\\u005D-\\u007E]+$"
       }
     },
@@ -53,7 +52,7 @@
       "type": "object",
       "required": ["clientId", "clientSecretEnv", "allowedScopes", "defaultScopes"],
       "properties": {
-        "clientId": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "clientId": { "type": "string", "minLength": 1 },
         "clientSecretEnv": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
         "allowedScopes": { "$ref": "#/$defs/scopes" },
         "defaultScopes": { "$ref": "#/$defs/scopes" }
@@ -94,7 +93,7 @@
           "required": ["kind", "uri"],
           "properties": {
             "kind": { "const": "fixed" },
-            "uri": { "type": "string", "minLength": 1, "maxLength": 2048 }
+            "uri": { "type": "string", "minLength": 1 }
           }
         },
         {
@@ -104,7 +103,7 @@
           "properties": {
             "kind": { "const": "loopback" },
             "host": { "enum": ["127.0.0.1", "::1"] },
-            "path": { "type": "string", "pattern": "^/[^?#]*$", "maxLength": 1024 }
+            "path": { "type": "string", "pattern": "^/[^?#]*$" }
           }
         }
       ]
@@ -118,7 +117,7 @@
         "corsOrigins": {
           "type": "array",
           "uniqueItems": true,
-          "items": { "type": "string", "pattern": "^https://", "maxLength": 2048 }
+          "items": { "type": "string", "pattern": "^https://" }
         },
         "providers": {
           "type": "object",

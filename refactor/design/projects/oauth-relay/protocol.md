@@ -71,7 +71,7 @@ app 和 transport 分别限制入站输入与出站响应，并使用实际可�
 | GET /callback      | 上游查询参数中的 state 与 code 或 error            | 302 回到已接纳的客户端 URI，带原始 code 或安全错误，以及原客户端 state |
 | POST /token        | 表单中的 authorization_code 或 refresh_token grant | 200，保留上游字段含义的 JSON 对象                                      |
 | POST /revoke       | client_id、token，可选 token_type_hint             | 上游确认处理后返回 200 空响应；不保存撤销历史                          |
-| POST /token-status | client_id、access_token                            | 200，上游提供的令牌信息 JSON；不另造统一 active 或 userId              |
+| POST /token-status | client_id、access_token                            | 200，返回上游令牌信息 JSON，字段及其含义由该 provider 定义              |
 
 POST 统一使用 application/x-www-form-urlencoded、UTF-8。撤销与令牌状态路径只开放 provider 有依据的实际能力；不支持时返回 unsupported_operation。客户端不向 relay 提交 client_secret，也不通过 Authorization 头选择另一套应用认证方式。
 
@@ -183,6 +183,8 @@ corsOrigins 默认空数组；确有浏览器消费者时登记完整 HTTPS orig
 
 所有配置在监听前检查：未知字段、默认权限不是允许权限子集、错误 URI、同来源 clientId 被不同应用重复登记、秘密环境引用不存在或为空，都导致启动失败。错误只指明安全字段路径或环境变量名，不打印秘密值。结构 schema 与跨字段、URL、环境引用检查共同构成启动边界；schema 校验不能单独证明所有语义。
 
-采用以下默认值：authorizationSeconds=600、exchangeSeconds=60、upstreamTimeoutSeconds=20、shutdownSeconds=25、maxSessions=1024、maxUpstreamRequests=64、maxRequestBytes=16384、maxResponseBytes=1048576。这些运行默认值允许在启动配置调整；不是已经通过负载测量的容量承诺。新工作无法接纳时明确失败，已经接纳的授权会话不为腾位而被丢弃。
+登记的 [clientId](https://www.rfc-editor.org/rfc/rfc6749.html#section-2.2) 使用上游发放的原值。scope、HTTPS origin 与回调按各自的语法和登记规则校验。输入大小在接收请求时按实际字节限制，回调仍须精确匹配。
+
+运行预算的默认值为 authorizationSeconds=600、exchangeSeconds=60、upstreamTimeoutSeconds=20、shutdownSeconds=25、maxSessions=1024、maxUpstreamRequests=64、maxRequestBytes=16384、maxResponseBytes=1048576。部署者可在启动配置中调整，容量按实际负载验证。无法接纳新请求时返回容量错误，已经接纳的授权会话继续处理。
 
 Compose 的普通插值参数只负责镜像、主机端口及配置文件路径；私有 env_file 或明确 environment 承担容器秘密注入。真实 JSON 只读挂载，环境秘密不进入 config.example.json、镜像层或镜像构建参数。Compose .env 的存在不等于环境变量已进入容器。

@@ -16,7 +16,7 @@ workspace 组织源码工程，registry 是发现、安装和更新所用的协�
 
 创建入口分别为 `kisx workspace create <directory>`、`kisx extension create <directory>` 和 `kisx registry init <directory>`。单扩展不必建立多包工作区。向现有工作区添加扩展时，复用同一生成流程并将项目加入普通 pnpm 成员，无须预先存在分发索引、README 生成块、专用标记或未修改的旧模板。
 
-程序化入口为 extension-cli/workspace、extension-cli/extension、extension-cli/registry 和 extension-cli/config，直接复用 CLI 背后的工作流实现。调用显式传入目录，不修改整个进程的 cwd。只有 CLI 负责交互提问、终端输出和退出码。一次操作完成后返回结构化产物，dev 则返回可停止的会话。config 只提供轻量类型和 defineConfig，不另建配置包。
+程序化入口为 extension-cli/workspace、extension-cli/extension、extension-cli/registry 和 extension-cli/config，直接复用 CLI 背后的工作流实现。调用显式传入目录，不修改整个进程的 cwd。只有 CLI 负责交互提问、终端输出和退出码。一次操作完成后返回结构化产物，dev 则返回可停止的会话。extension-cli/config 提供配置类型和 defineConfig。
 
 extension-distribution 定义 manifest、registry、静态展示、兼容规则和纯校验，并通过 Node 子入口提供签名能力，不依赖本体 API。extension-sdk 的纯模块定义运行合同，Node 与 Webview 模块实现接入。应用只消费制品格式，不依赖 CLI 或编译器。CLI 拥有项目创建工作流，官方扩展同样通过其公开程序化入口完成自动化。
 
@@ -76,7 +76,7 @@ registry.json 保存待签名正文，dist/index.json 保存采用同一业务�
 
 Node 代码、manifest 和依赖资源形成完整结果后，工具才交付明确的构建引用。不能根据输出文件存在、日志文字或固定延时猜测 ready。当前运行目录与候选输出分开，每个输出只有一个写入者。失败构建不能覆盖现用内容，已经交付的构建必须保留到所有读取者释放。短期构建身份不修改 package.version，也不进入安装历史。
 
-共享宿主一次只执行一个重建。工具独自维护尚未交付的候选集合，每个扩展只保留最新完整结果；同一连接只允许一批采用正在执行，收到其结果后再交付下一批。应用执行已经固定的本批集合，不再维护第二份候选队列。防抖不能代替编译就绪。工具报告构建，应用报告采用和激活，各层失败分别显示。旧目录只有在宿主及其他读取者都释放后才能清理。
+共享宿主一次只执行一个重建。工具独自维护尚未交付的候选集合，每个扩展只保留最新完整结果；同一连接只允许一批采用正在执行，收到其结果后再交付下一批。应用只接收并执行本批已经确定的候选。防抖不能代替编译就绪。工具报告构建，应用报告采用和激活，各层失败分别显示。旧目录只有在宿主及其他读取者都释放后才能清理。
 
 Node 构建成功后，默认自动重建共享宿主：撤销旧贡献和调用，完成有界清理，再建立新 context。重建不重放业务，也不重发 app.ready；原生已接管的任务按剩余依赖处理。开发重建允许丢失尚未保存的内存草稿，不逐次执行普通 close 确认，不设置 dirty 门槛，也不序列化全部状态。该规则不能用于正式更新。主动开发重建不消耗异常恢复次数。
 

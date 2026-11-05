@@ -1,6 +1,6 @@
 # 原生项目工程组织的源码依据
 
-对应 [Vantage 与 libmpv-node 工程组织](../../../design/projects/native-runtime.md)，组织方案已确认。这里记录支持职责拆分的上游事实，未构建两个独立项目，未执行操作系统后端、libmpv 渲染或 Electron GPU 交接。
+本页以固定上游源码说明 [Vantage 与 libmpv-node 的工程边界](../../../design/projects/native-runtime.md)。证据范围是接口与职责，原生后端、渲染和 GPU 交接分别以运行结果验收。
 
 ## 固定来源与结论
 

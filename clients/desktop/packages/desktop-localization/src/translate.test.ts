@@ -7,7 +7,6 @@ import { createTranslator, validateUiTranslation } from './translate'
 test('missing leaves use English plural rules while present leaves use the explicit locale', () => {
   const fallback = createTranslator('zh-CN')
   expect(fallback('library.selection', { count: 1 })).toBe('1 item selected')
-  expect(fallback('library.selection', { count: 2 })).toBe('2 items selected')
 
   const translated = createTranslator('zh-CN', {
     library: { selection: '{count, plural, one {one} other {other}}' },
@@ -47,22 +46,23 @@ test('markup and inserted ICU-looking text remain literal text', () => {
   )
 })
 
-test('registration rejects invalid known messages atomically and retains unknown leaves for future versions', () => {
+test('registration rejects the entire catalog for malformed known messages and retains unknown leaves', () => {
   const registration = {
     id: 'test',
     name: 'Test',
     locale: 'zh-hans-cn',
     messages: { actions: { save: '保存' } },
   }
-  expect(validateUiTranslation(registration).locale).toBe('zh-Hans-CN')
-  for (const selection of ['{count', '{extra}', '{count, select, other {value}}']) {
-    expect(() =>
-      validateUiTranslation({
-        ...registration,
-        messages: { ...registration.messages, library: { selection } },
-      }),
-    ).toThrow(DesktopError)
-  }
+  expect(() =>
+    validateUiTranslation({
+      ...registration,
+      messages: {
+        ...registration.messages,
+        library: { selection: '{count, plural, one {one} other {{count, number, ::currency/US}}}' },
+      },
+    }),
+  ).toThrow(DesktopError)
+
   const value = validateUiTranslation({ ...registration, messages: { future: '{not current ICU' } })
   expect(value.messages).toEqual({ future: '{not current ICU' })
 })

@@ -44,7 +44,7 @@ onboarding 在主窗口的分步 Dialog 中呈现推荐，组织用户编辑和�
 
 ## 推荐身份与处理记录
 
-引导合同属于 desktop-contracts/onboarding，仅供本体使用。OnboardingGroup 包含 preferences、extensions、metadataProfiles、scanner 和 showcase；OnboardingMode 包含 firstUse、update 和 manual。onboarding_state 是单例，正式 JSON 保存 firstPresentedAt、firstCompletedAt、lastPresentedVersion 和 handled。前两个时间可以为空，否则使用 UTC 毫秒；版本保存实际展示时的版本或 null。handled 按稳定 itemId 保存处理结果，不另设逐项表或持久草稿。
+引导合同属于 desktop-contracts/onboarding，仅供本体使用。OnboardingGroup 包含 preferences、extensions、metadataProfiles、scanner 和 showcase；OnboardingMode 包含 firstUse、update 和 manual。onboarding_state 是单例，正式 JSON 保存 firstPresentedAt、firstCompletedAt、lastPresentedVersion 和 handled。前两个时间可以为空，否则使用 UTC 毫秒；版本保存实际展示时的版本或 null。handled 以稳定 itemId 为键保存各项处理结果。
 
 初始迁移创建这一单例行，firstPresentedAt、firstCompletedAt 和 lastPresentedVersion 均为 null，handled 为空对象。这表示尚未展示、完成或处理任何推荐；创建记录本身不触发引导界面。
 

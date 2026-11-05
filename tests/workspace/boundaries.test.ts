@@ -128,23 +128,13 @@ beforeAll(async () => {
     JSON.stringify({ private: true, devDependencies: { 'undeclared-tool': '1.0.0' } }),
   )
 
-  const fixturePackages = [
-    {
-      path: 'node_modules/undeclared-tool',
-      manifest: { name: 'undeclared-tool', version: '1.0.0', main: './index.js' },
-      files: { 'index.js': 'exports.value = 1\n' },
-    },
-  ]
-
-  for (const fixture of fixturePackages) {
-    const root = join(directory, fixture.path)
-    await mkdir(root, { recursive: true })
-    await writeFile(join(root, 'package.json'), JSON.stringify(fixture.manifest))
-    for (const [file, content] of Object.entries(fixture.files)) {
-      await mkdir(dirname(join(root, file)), { recursive: true })
-      await writeFile(join(root, file), content!)
-    }
-  }
+  const undeclared = join(directory, 'node_modules', 'undeclared-tool')
+  await mkdir(undeclared, { recursive: true })
+  await writeFile(
+    join(undeclared, 'package.json'),
+    JSON.stringify({ name: 'undeclared-tool', version: '1.0.0', main: './index.js' }),
+  )
+  await writeFile(join(undeclared, 'index.js'), 'exports.value = 1\n')
 
   const scope = join(directory, 'node_modules', '@kisaki3')
   await mkdir(scope, { recursive: true })

@@ -202,7 +202,7 @@ game_records 以 game_id 为主键并引用 games.entry_id，保存以下当前�
 
 ## 活动、补记与平台总量
 
-游戏累计时长等于 game_play_activity 中已经确认的有效时长，加上 game_records.additional_duration_ms。编辑、来源总量采用、并发基线与统计遵守四类作品共同的[附加时长合同](records.md#duration)，不另设游戏专属规则。
+游戏累计时长等于 game_play_activity 中已经确认的有效时长，加上 game_records.additional_duration_ms。编辑、来源总量采用、并发基线与统计遵守四类作品共同的[附加时长合同](records.md#duration)。
 
 外部平台总量与本地活动可能重叠，计时口径也可能不同；用户明确采用后才形成附加时长。后续来源变化仍须由用户再次决定是否采用，本地保存采用后的附加时长。
 

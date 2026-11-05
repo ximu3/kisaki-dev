@@ -112,7 +112,7 @@ applicableLanguages 表示整份固定预设面向哪种资料语言需求，与
 
 ## 共同取值与对应规则
 
-各类型表中的箭头表示 firstNonEmpty 按顺序选择来源，“合并”表示 union，“不配置”表示 definition 省略该规则。fields.entry 定义根对象字段；relations 先按成员规则确定集合，再补充已对应关系的属性，属性来源不引入新成员。
+各类型表中的箭头表示 firstNonEmpty 按顺序选择来源，“合并”表示 union，“不配置”表示 definition 省略该规则。根条目字段写入 `fields.entry`。关联条目字段按目标类型分节，分别写入 `fields.relatedEntries` 的对应键，例如关联游戏写入 `fields.relatedEntries.game`。relations 先按成员规则确定集合，再补充已对应关系的属性，属性来源不引入新成员。
 
 fields.tags 读取标签定义，entryTags 表达条目与标签的应用关系。标签身份沿共同 nameKey 规则处理，普通同名应用保留已有标签资料。
 

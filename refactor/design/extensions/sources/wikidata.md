@@ -16,7 +16,7 @@ Wikidata 提供可追溯的结构化事实、真实对象身份与部分内容�
 | 图片与正文         | 不提供图片采集或百科正文；简短 description 用于搜索消歧，不填充剧情或档案长简介            |
 | 本人接入与 Webview | 匿名资料扩展，无账号、导入、同步、编辑知识库或独立 Webview 页面                            |
 
-字段、语言、关系选择与来源顺序由本体资料方案管理，不另设一套属性勾选器、用户 SPARQL 编辑器或图谱配置。普通 Wikidata 条目链接沿 externalLinks 提供。
+字段、语言、关系选择和来源顺序均在本体资料方案中配置。普通 Wikidata 条目链接沿 externalLinks 提供。
 
 当前官方范围没有独立 Wikimedia Commons 接入，本方案不额外调用其图片检索、许可或文件 API，也不凭 P18／P154 文件名拼出图片原图。图片文件页可以作为明确出处外链保留；结构化数据的 CC0 不替代图片自身许可。
 
@@ -139,7 +139,7 @@ P725 的定义包括译配，P161 主要是实演演员，不能相互替代。�
 
 P144 的 based on 与反向 P4969 derivative work 表达创作基础，P155／P156 表达来源序列中的相邻顺序。这些都是有明确含义的直接联系，但范围宽于 adaptation、spinOff、sequel。只有陈述限定或明确作品上下文能够唯一证明现有具体类型时才采用该类型；否则采用 related，在 note 中保留“基于”“衍生自／衍生作品”“来源序列中的前一项／后一项”及实际方向。跨媒介、发布时间和共有角色本身不能确定具体类型。
 
-P155／P156 既可能是主陈述，也可能限定 P179；读取限定形式时同时核对该序列范围。保留直接前后项不等于把同一系列的所有成员两两关联。本方案接受 related 与说明承接较宽的语义，不新增通用基于、派生或序列关系类型。属性定义见 [P144](https://www.wikidata.org/wiki/Property:P144)、[P4969](https://www.wikidata.org/wiki/Property:P4969)、[P155](https://www.wikidata.org/wiki/Property:P155)、[P156](https://www.wikidata.org/wiki/Property:P156)和 [P2512](https://www.wikidata.org/wiki/Property:P2512)。
+P155／P156 既可能是主陈述，也可能限定 P179；读取限定形式时同时核对该序列范围。保留直接前后项不等于把同一系列的所有成员两两关联。能确认直接联系但语义较宽时，使用 related 并注明来源含义。属性定义见 [P144](https://www.wikidata.org/wiki/Property:P144)、[P4969](https://www.wikidata.org/wiki/Property:P4969)、[P155](https://www.wikidata.org/wiki/Property:P155)、[P156](https://www.wikidata.org/wiki/Property:P156)和 [P2512](https://www.wikidata.org/wiki/Property:P2512)。
 
 同一来源方向规范化后合并重复事实，保留有用说明；不因多个属性相互指向就创建重复关系。来源未提供相应类型时，不自行补成改编、前传、外传或重制。
 

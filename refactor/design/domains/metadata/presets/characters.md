@@ -1,6 +1,6 @@
 # 角色资料预设
 
-本页定义角色资料的简体中文、繁体中文、英文和日文四项固定预设。语言初值见[预设目录](README.md#catalog)，matching 与 selection 遵守[共同取值规则](README.md#selection)。下列来源、字段和关系规则保持固定，不随 UI 语言或来源可用性改变。
+本页定义角色资料的简体中文、繁体中文、英文和日文四项固定预设。语言初值见[适用语言与固定初值](README.md#languages)，matching 与 selection 遵守[共同取值规则](README.md#selection)。
 
 <a id="scope"></a>
 
@@ -24,8 +24,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 <a id="entry"></a>
 
 ## 根条目字段
-
-下表定义 fields.entry，表格记法见[共同取值规则](README.md#selection)。
 
 | 字段          | 简体                                         | 繁体                                         | 英文                                         | 日文                                         |
 | ------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
@@ -99,8 +97,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 
 ### 关联游戏字段
 
-下表定义 fields.relatedEntries.game 的固定规则。
-
 | 字段              | 版本             | 固定取值                          |
 | ----------------- | ---------------- | --------------------------------- |
 | name              | 简体、繁体、日文 | VNDB → Bangumi → YMGal → Wikidata |
@@ -121,8 +117,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 <a id="related-anime"></a>
 
 ### 关联动画字段
-
-下表定义 fields.relatedEntries.anime 的固定规则。
 
 | 字段                        | 版本       | 固定取值                        |
 | --------------------------- | ---------- | ------------------------------- |
@@ -151,8 +145,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 
 ### 关联漫画字段
 
-下表定义 fields.relatedEntries.comic 的固定规则。
-
 | 字段                 | 版本       | 固定取值                        |
 | -------------------- | ---------- | ------------------------------- |
 | name                 | 简体       | Bangumi → Wikidata → AniList    |
@@ -180,8 +172,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 
 ### 关联小说字段
 
-下表定义 fields.relatedEntries.novel 的固定规则。
-
 | 字段                | 版本             | 固定取值                        |
 | ------------------- | ---------------- | ------------------------------- |
 | name                | 简体、繁体、日文 | Bangumi → Wikidata → AniList    |
@@ -205,8 +195,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 <a id="related-person"></a>
 
 ### 关联人物字段
-
-下表定义 fields.relatedEntries.person 的固定规则。
 
 | 字段          | 版本       | 固定取值                                     |
 | ------------- | ---------- | -------------------------------------------- |

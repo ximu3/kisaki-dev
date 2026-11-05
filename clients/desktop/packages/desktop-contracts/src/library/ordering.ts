@@ -1,4 +1,4 @@
-/** @fileoverview Applies complete-baseline reorder and current-position move intent without losing unselected slots. */
+/** @fileoverview Defines and validates reorder requests with a complete baseline and move requests with an anchor. */
 
 import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'

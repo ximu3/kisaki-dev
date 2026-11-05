@@ -37,18 +37,20 @@ fn valid_path(path: &str) -> bool {
 /// Preserve the system cause while distinguishing a currently missing source from a missing parent.
 fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     // Missing target parents use the same system code as missing sources on both platforms.
-    let missing_reason = if std::fs::symlink_metadata(source)
-        .is_err_and(|error| error.kind() == io::ErrorKind::NotFound)
-    {
-        "sourceMissing"
-    } else {
-        "ioFailure"
+    let missing_reason = || {
+        if std::fs::symlink_metadata(source)
+            .is_err_and(|error| error.kind() == io::ErrorKind::NotFound)
+        {
+            "sourceMissing"
+        } else {
+            "ioFailure"
+        }
     };
 
     #[cfg(windows)]
     let reason = match error.raw_os_error() {
         Some(80 | 183) => "targetExists",
-        Some(2 | 3) => missing_reason,
+        Some(2 | 3) => missing_reason(),
         Some(17) => "crossDevice",
         Some(1 | 50 | 120) => "unsupported",
         Some(5 | 32 | 33) => "permissionDenied",
@@ -58,7 +60,7 @@ fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     #[cfg(unix)]
     let reason = match error.raw_os_error() {
         Some(libc::EEXIST | libc::ENOTEMPTY) => "targetExists",
-        Some(libc::ENOENT) => missing_reason,
+        Some(libc::ENOENT) => missing_reason(),
         Some(libc::EXDEV) => "crossDevice",
         Some(libc::ENOSYS | libc::EOPNOTSUPP | libc::EINVAL) => "unsupported",
         Some(libc::EACCES | libc::EPERM) => "permissionDenied",

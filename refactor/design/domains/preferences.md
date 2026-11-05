@@ -18,7 +18,7 @@ general、appearance、navigation、library、usage、playback、shortcuts、net
 
 主进程负责正式写入，SQL 约束继续保证非空、单例及引用要求。读取时采用缺省不会自动写回数据库、删除附件或恢复出厂设置。全局偏好与 library 中作品、文件的自定义配置属于不同范围。
 
-初始化使用当时的默认值建立完整配置。已保存值不会随着新版本的默认值改变，即使某个值恰好等于默认，也仍然是正式选择。新增字段通过[本体数据库迁移](../engineering/database.md#initialization)补齐，不另建配置专用版本系统。system、document 等具有明确跟随含义的值仍动态解释，主题引用也可以跟随相应资源更新。“恢复默认”只把当前默认值放进草稿，用户保存后才正式采用。
+初始化使用当时的默认值建立完整配置。已保存值不会随着新版本的默认值改变，即使某个值恰好等于默认，也仍然是正式选择。新增字段随[本体数据库迁移](../engineering/database.md#initialization)补齐。system、document 等具有明确跟随含义的值仍动态解释，主题引用也可以跟随相应资源更新。“恢复默认”只把当前默认值放进草稿，用户保存后才正式采用。
 
 <a id="fields"></a>
 
@@ -299,7 +299,7 @@ library.showNsfw 默认 true。全局修改会更新仍在使用默认范围的�
 
 ## 代理配置与受保护凭据
 
-network.mode 支持 system、direct 和 manual，默认 system。手动模式接受一个明确的 HTTP、HTTPS 或 SOCKS5 端点、Electron bypass 规则及适用的认证，用户名和密码不能嵌入 URL。复杂 PAC 或路由交由系统模式处理，应用不另建路由编辑器。切换模式保留手动配置，但启用 manual 时必须确保配置有效。
+network.mode 支持 system、direct 和 manual，默认 system。手动模式接受一个明确的 HTTP、HTTPS 或 SOCKS5 端点、Electron bypass 规则及适用的认证，用户名和密码不能嵌入 URL。复杂 PAC 或路由由系统模式处理。切换模式保留手动配置，但启用 manual 时必须确保配置有效。
 
 HTTP 认证使用公开底层能力。SOCKS5 不提供 Chromium 不支持的认证输入，具体限制见[Chromium 代理文档](https://github.com/chromium/chromium/blob/main/net/docs/proxy.md)。network 只在 ClientRequest login 的代理标记、主机和端口均匹配时提供代理凭据，网站登录仍由扩展负责。
 

@@ -4,8 +4,7 @@
  */
 
 import { rm } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { join } from 'node:path'
 import { appRoot } from './lib/paths'
 import { runCli } from '@kisaki3/tooling/cli'
 
@@ -18,6 +17,6 @@ export async function cleanOutputs(signal?: AbortSignal): Promise<void> {
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  await runCli((signal) => cleanOutputs(signal))
+if (import.meta.main) {
+  await runCli(cleanOutputs)
 }

@@ -1,6 +1,6 @@
 # Linux 组件、KWin 版本与 AppImage 接入依据
 
-2026-10-19 核对，对应已确认方向的[Linux 组件与交付](../../../design/projects/vantage/linux.md)。本次读取固定版本源码、规范和 AppImage 文档，没有安装组件、写入桌面登记、执行 Linux 桌面或采集窗口。
+2026-10-19，以固定版本源码、规范和 AppImage 文档核对 [Linux 组件与交付](../../../design/projects/vantage/linux.md)。本页提供组件接入依据，实际安装、桌面登记与采集由运行验收覆盖。
 
 ## KWin 检查确实存在版本差异
 

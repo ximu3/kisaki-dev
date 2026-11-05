@@ -38,4 +38,4 @@ AniList 使用 JSON token 请求，Bangumi 使用表单请求；Bangumi 刷新�
 
 [受控上游对照](../oauth-relay-protocol/protocol.md)验证了本地 verifier 的检查范围。上游 code 与授权请求的绑定取决于各来源实际提供的能力，按[来源协议](../../../design/projects/oauth-relay/providers.md#protocol-providers)接入。
 
-完整 provider 实现、错误和附加令牌操作、容器及真实部署消费仍须按所属范围验证。
+结果图像使用 JPEG 编码，文件名与摘要沿用原始核验记录。完整 provider 实现、错误和附加令牌操作、容器及真实部署消费仍须按所属范围验证。

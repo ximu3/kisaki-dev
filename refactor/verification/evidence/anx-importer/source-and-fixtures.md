@@ -1,6 +1,6 @@
 # Anx Reader 来源与合成核验
 
-2026-10-17，第 27 项。[完整方案](../../../design/extensions/importers/anx.md)及 98% 来源已读判定采用已确认。用户明确没有实际备份、数据库或笔记导出，本次只使用合成资料；没有运行 Anx、Flutter 应用、源同步或正式 Kisaki 导入器。
+2026-10-17，以固定源码和合成资料核对 [Anx Reader 导入规则](../../../design/extensions/importers/anx.md)，包括来源判定已读的 98% 阈值。本组覆盖格式与映射，应用运行、源同步和正式导入另行验收。
 
 <a id="sources"></a>
 
