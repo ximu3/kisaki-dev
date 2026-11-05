@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./config/typescript/tsconfig.main.json" },
+    { "path": "./config/typescript/tsconfig.renderer.json" }
+  ]
+}

@@ -20,6 +20,17 @@ const cases: {
   allowed?: boolean
 }[] = [
   {
+    name: 'rpc-has-no-host-or-product-dependencies',
+    from: 'clients/desktop/packages/desktop-rpc/src/frames.ts',
+    to: 'clients/desktop/packages/desktop-contracts/src/json.ts',
+    source: "export type { Value } from '../../desktop-contracts/src/json'\n",
+  },
+  {
+    name: 'rpc-has-no-node-runtime',
+    from: 'clients/desktop/packages/desktop-rpc/src/transport.ts',
+    source: "export { MessageChannel } from 'node:worker_threads'\n",
+  },
+  {
     name: 'contracts-do-not-import-localization',
     from: 'clients/desktop/packages/desktop-contracts/src/i18n.ts',
     to: 'clients/desktop/packages/desktop-localization/src/index.ts',
