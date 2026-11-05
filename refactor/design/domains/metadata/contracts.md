@@ -59,7 +59,7 @@ PartMatchingRules 使用 MetadataProfile.matching 的相应 Part 键与同一规
 
 漫画话 identification 中的 numberLabel 只表达作品话号。匹配字段 volumeNumberLabel 专指卷内编号，从候选 volumeChapters 的 numberLabel 取得，并由已唯一对应的 volume key 限定；它不是另一份可采用的 Part 字段。没有准确对应卷，或同一候选存在多个不能唯一选择的卷内编号范围时，该规则不可用。不同卷的同号话、作品话号与卷内话号不组成一个无作用域的索引；numberLabel 不隐含回退到 volumeNumberLabel。
 
-profile 获取将本次方案的 Part 规则复制到候选；prepared 直接提供同一规则值，不增加另一份 Profile、策略 ID 或来源专用回调。导入器需要按编号或名称复用分部时，必须在其固定映射中明确提供所用规则，不能从全局默认方案取得隐藏政策。全部本地采用按[唯一匹配决策](README.md#local-parts)执行。
+profile 获取将本次方案的 Part 规则复制到候选，prepared 直接提供同一形状的规则值。导入器需要按编号或名称复用分部时，必须在其固定映射中明确提供所用规则，不能从全局默认方案取得隐藏政策。全部本地采用按[唯一匹配决策](README.md#local-parts)执行。
 
 <a id="relations"></a>
 

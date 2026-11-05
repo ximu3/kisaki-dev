@@ -1,6 +1,6 @@
 # Vantage 原生窗口画面边界依据
 
-2026-10-19 复核，对应已确认的[原生单窗边界](../../../design/projects/vantage/api.md#capture-boundary)。本次读取官方文档、规范和固定版本源码，没有运行 Vantage addon 或任何原生窗口采集，没有改变系统权限，也没有把现有 Windows 绘制探针记为 WGC 证据。
+2026-10-19，以官方文档、规范和固定版本源码核对[原生单窗采集边界](../../../design/projects/vantage/api.md#capture-boundary)。本页结论来自接口阅读，原生采集与实际权限以对应运行记录为准。
 
 ## 已读取的事实
 

@@ -1,6 +1,6 @@
 # KOReader 导入器：源码与合成核验
 
-对应第 28 项[完整方案](../../../design/extensions/importers/koreader.md)，完整方案已确认。用户明确没有实际资料并选择合成样本；本目录不包含真实用户书库。
+本组依据固定版本源码和合成书库，核对 [KOReader 导入规则](../../../design/extensions/importers/koreader.md)中的格式与映射。
 
 ## 固定来源
 

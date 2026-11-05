@@ -6,7 +6,7 @@
 
 ## 分类与检索范围
 
-search.query({ text, category }, { offset, limit }) 每次查询一个类别，返回 { items, total }。total 表示相同查询和可见范围内的完整数量，不另加 hasMore。“全部”只是界面模式：并发读取各类别的预览，不增加一个 category，也不计算跨类别总数。
+search.query({ text, category }, { offset, limit }) 每次查询一个类别，返回 { items, total }。total 表示相同查询和可见范围内的完整数量。“全部”是界面模式，并发读取各类别的预览及其各自的 total。
 
 text、category、offset 和 limit 均必填。offset 为非负安全整数，limit 沿库列表合同限定为 1–200 的安全整数；超限返回 InvalidInput，不截断请求。offset 超过 total 时返回空 items 与实际 total，空 text 使用下述空查询规则。未知类别、额外参数和非法值在执行前拒绝。
 

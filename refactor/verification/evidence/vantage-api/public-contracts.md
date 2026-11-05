@@ -1,6 +1,6 @@
 # Vantage 公共值与调用语义的依据
 
-对应已确认的 [Vantage 公共值与调用语义](../../../design/projects/vantage/api.md)。读取十项平台说明，并对脚本自己创建的一个 Windows 子进程进行有限原生调用；没有构建或执行 Vantage 包，没有读取或控制其他用户程序，没有执行窗口操作或画面采集。
+本页核对 [Vantage 公共值与调用语义](../../../design/projects/vantage/api.md)。依据包括十项平台说明和对一个自建 Windows 子进程的原生调用。本组运行范围限于该进程，窗口、采集与正式包另行验证。
 
 ## 平台说明
 

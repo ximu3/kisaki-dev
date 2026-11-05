@@ -46,4 +46,4 @@
 
 官方依据：[v4 本人授权](https://developer.themoviedb.org/v4/docs/authentication-user)、[session 转换](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)、[评分与待看](https://developer.themoviedb.org/reference/movie-add-rating)、[私密列表读取](https://developer.themoviedb.org/v4/reference/list-details)、[列表枚举](https://developer.themoviedb.org/v4/reference/account-lists)和[用户令牌撤销](https://developer.themoviedb.org/v4/reference/auth-logout)。
 
-![本次核验与清理结果](account-results.png)
+![本次核验与清理结果](account-results.jpg)

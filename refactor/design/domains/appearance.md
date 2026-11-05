@@ -6,7 +6,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 ## 模块职责与资源使用
 
-主进程中的 features/appearance、features/fonts 和 preferences 保持独立。主题能力位于 appearance.themes，不另设顶层 themes 模块。原生主题编辑器提供完整创作能力，不依赖专用官方扩展。fonts 复用 attachments 存储字节。主题和字体库各有自己的管理界面，资源选择器可以直接打开这些界面；管理操作与偏好草稿仍按[偏好编辑规则](preferences.md#editor)独立保存。
+主进程中的 features/appearance、features/fonts 和 preferences 保持独立。主题能力位于 appearance.themes，本体的原生主题编辑器提供完整创作能力。fonts 复用 attachments 存储字节。主题和字体库各有自己的管理界面，资源选择器可以直接打开这些界面；管理操作与偏好草稿仍按[偏好编辑规则](preferences.md#editor)独立保存。
 
 @kisaki3/desktop-appearance 提供纯视觉词表、值规则和 CSS。desktop-contracts/appearance 定义桌面主题、字体选择及外观交付，desktop-contracts/fonts 定义 FontRef 和字体读取合同。SDK 使用相同的本体定义。
 
@@ -48,7 +48,7 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 45 项：39 项配
 
 主题保存完整、可直接编辑的视觉值，不保存计算表达式或任意上下文引用。颜色接受十六进制、具名颜色、transparent，以及 rgb／rgba、hsl／hsla、hwb、lab、lch、oklab、oklch 和预定义色彩空间的 color 表示；颜色分量仍遵循 CSS 的范围与裁剪语义。calc、min、max、clamp、color-mix、相对颜色，以及 var、env、attr、currentColor、系统颜色和级联关键字不属于主题值。作者可以在代码中计算后提交完整值，公共样式继续使用 CSS 计算完成共同派生。这一边界让编辑器直接修改字段值，无需额外管理引用、公式、循环和上下文失效。
 
-圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位按 CSS 的既有语义作用，不引入另一套单位。pane-alpha、light-strength 和 grain-opacity 为 0–100% 的百分比。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
+圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。pane-alpha、light-strength 和 grain-opacity 为 0–100% 的百分比。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
 
 纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。
 

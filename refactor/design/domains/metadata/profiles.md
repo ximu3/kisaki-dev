@@ -57,7 +57,7 @@ providers 声明去重后的参与集合，根身份由匹配规则确定，各�
 
 matching 按 Entry 类型及适用 Part 类别配置回退。主对象和同类型相关对象共用来源对应规则，完整身份始终先于回退，Part 始终限制在所属作品内。取得的候选固定本次 Part 规则为 partMatching，ingest 按[本地分部决策](README.md#local-parts)复用唯一匹配；这不授予七类 Entry 按名称自动复用的权限，也不使弱匹配成为长期来源身份绑定。
 
-一个 provider 无需同时支持根定位、字段、相关对象、分部字段和分部清单。已知分部图片或人物字段的读取能力，可以直接被相应规则使用，但这不赋予 provider 枚举对象的能力。方案不另设 resolution.providers 或定位来源池。
+一个 provider 无需同时支持根定位、字段、相关对象、分部字段和分部清单。已知分部图片或人物字段的读取能力，可以直接被相应规则使用，但这不赋予 provider 枚举对象的能力。
 
 关系规则使用 { providers, selection, fields? }：providers 与 selection 确定成员集合，fields 为这些成员配置属性来源。属性规则只处理已经选定的成员。适用字段的 processors 保存有序稳定 ID，私有参数由扩展管理。
 
@@ -183,7 +183,7 @@ fields.tags 只处理标签自身的 description 和 isNsfw。relations.entryTag
 
 ## 提供者引用与私有设置
 
-MetadataProvider 注册在 metadata.providers。一个全局稳定 providerId 可以提供多种对象、字段、关系和图片能力，不按对象另设注册域。profile 直接引用该 ID，不建立本地别名、provider kind 包装、runtimeHandle、sessionId 或私有参数表。
+MetadataProvider 统一登记在 metadata.providers。同一个全局稳定的 providerId 可以提供多种对象、字段、关系和图片能力。资料方案直接保存并引用这个 ID。
 
 Provider 应完整实现来源在本体资料范围内支持的能力，并准确声明对象、字段、关系和读取条件。每次 read 只处理请求范围。主来源、备用来源或定位用途，由 Profile 的具体规则决定。Provider 负责解释来源资料，不执行跨来源合成或本地覆盖。账号同步和收藏导入通过独立操作完成，交易和评论等数据不进入普通元数据合同。
 
@@ -191,7 +191,7 @@ providerId 选择实现，ExternalIdentity.source 表示身份来源，两者不
 
 账号、凭据、地址和连接设置由扩展管理，资料语言使用 preferredLanguages。从方案移除某个 provider 时，在同一草稿中处理仍引用它的规则。扩展停用、卸载或暂时不可用时保留引用，并显示名称、状态及扩展详情入口，供用户调整。provider 是否只用于定位由规则引用关系决定。
 
-执行 context 只提供运行资源。对象、字段和 refs 等实际业务输入保留在请求中。缓存应按真实影响响应的请求及私有设置区分，宿主不复制整份私有配置，也不另建缓存命名空间协议。
+执行 context 只提供运行资源。对象、字段和 refs 等实际业务输入保留在请求中。提供者按影响响应的请求和私有设置区分缓存，配置仍由所属扩展管理。
 
 <a id="fields"></a>
 

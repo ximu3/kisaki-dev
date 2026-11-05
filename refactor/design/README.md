@@ -16,7 +16,7 @@
 
 实现遵守[编码与实现质量](engineering/conventions.md)、[界面文案](ui/components.md#copy)和[项目文档](engineering/documentation.md#owners)规范。
 
-[产品判断原则](product.md#judgment)用于评价整体取舍，[不过度防御](engineering/conventions.md#validation)规定边界检查及必要恢复的判断依据，覆盖代码、交互、界面文案和使用说明。具体机制按用户目标、实际后果和总复杂性决定。
+[产品判断原则](product.md#judgment)用于评价整体取舍。防御分支按[边界与风险](engineering/conventions.md#proportionality)决定，长期用例按[验证价值](engineering/conventions.md#test-retention)保留。设计正文和界面文案按各自读者需要的事实、条件与结果取舍。
 
 桌面本体、公共包、官方扩展和独立项目遵守同一[设计充分性要求](engineering/conventions.md#design-completion)。影响关键决定的外部事实与技术可行性按[设计验证](../verification/acceptance.md#design-validation)在定稿前核实，验证结果用于修订设计；实施工作包接手已明确且有依据的方案。
 

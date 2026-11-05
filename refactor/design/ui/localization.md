@@ -100,7 +100,7 @@ ICU 格式化使用 [intl-messageformat](https://formatjs.github.io/docs/intl-me
 | manifest、registry 和宿主贡献文案 | 沿 LocalizedText，优先精确语言标签，再在同语言及文字体系内匹配；仍未命中时使用所属文案的 defaultLocale |
 | 扩展自有界面                      | 由扩展自己的消息目录和 i18n 实现处理；官方模板沿默认语言回退，宿主译本不接管该目录                     |
 
-LocalizedText 为纯字符串时原样使用。多语对象的键与 defaultLocale 按同一规则规范化，必须包含有效默认值，规范化后重名应报错。它不进行参数插值或消息 key 解析。扩展品牌可以不翻译，应用模板使用主应用已有 i18n，不建立另一套模板翻译系统。
+LocalizedText 为纯字符串时原样使用。多语对象的键与 defaultLocale 按同一规则规范化，必须包含有效默认值，规范化后重名应报错。它不进行参数插值或消息 key 解析。扩展品牌可沿用原名，应用模板通过主应用 i18n 解析文案。
 
 匹配先规范语言标签并尝试精确命中。未命中时，使用 Intl.Locale.maximize 得到语言和文字体系，筛选候选，再通过 @formatjs/intl-localematcher 选择兼容版本。仍未命中时，使用该文案自己的 defaultLocale。候选按规范标签稳定排序，不依赖对象插入顺序。
 

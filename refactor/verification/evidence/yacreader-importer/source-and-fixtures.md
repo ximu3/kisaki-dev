@@ -1,6 +1,6 @@
 # YACReader 导入器：源码与合成核验
 
-对应第 30 项[已确认完整方案](../../../design/extensions/importers/yacreader.md)。用户明确没有实际书库、备份或资料导出并选择合成样本；这里没有用户漫画、账户内容或实际迁移结果。
+本组以固定版本源码和合成书库核对 [YACReader 导入规则](../../../design/extensions/importers/yacreader.md)。结果覆盖样本解释，实际书库迁移由正式扩展验收。
 
 ## 来源与基线
 

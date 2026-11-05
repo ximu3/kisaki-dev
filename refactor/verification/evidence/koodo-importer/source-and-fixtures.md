@@ -1,6 +1,6 @@
 # Koodo Reader 来源与合成核验
 
-2026-10-17，第 26 项。[完整方案](../../../design/extensions/importers/koodo.md)及累计时长修订已确认。用户明确没有实际备份或导出，使用合成样本；没有运行 Koodo、源插件或正式 Kisaki 导入器，没有使用用户书籍或笔记。
+2026-10-17，以固定源码和合成样本核对 [Koodo Reader 导入规则](../../../design/extensions/importers/koodo.md)，包括累计时长的含义。本组证据限于格式与映射。
 
 <a id="sources"></a>
 

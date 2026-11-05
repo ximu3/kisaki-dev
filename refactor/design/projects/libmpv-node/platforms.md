@@ -98,7 +98,7 @@ vo、窗口嵌入目标、图形上下文与受管颜色目标等涉及输出所
 
 原生 target-prim 与 target-trc 对应[输出目标](video.md#targets)，treat-srgb-as-power22 为 no，target-peak 采用 auto；原生 tone mapping、gamut mapping 及其他画质选项保留其职责。Render API 取得实际八位输出深度，最终量化之前保留解码与媒体处理需要的精度。
 
-生产目标使用相应 RGBA／BGRA UNORM 存储，避免再通过硬件 sRGB 附件写入执行一次重复编码。GL 的内部格式、D3D 的视图格式、最终字节排列和宿主标签一起核对；modifier 或缓冲区类型不代表颜色空间。受管属性与调用方原生选项的关系继续遵守[使用约定](video.md#constraints)，不新增一套原生配置保护机制。
+生产目标使用相应 RGBA／BGRA UNORM 存储，避免再通过硬件 sRGB 附件写入执行一次重复编码。GL 的内部格式、D3D 的视图格式、最终字节排列和宿主标签一起核对；modifier 或缓冲区类型不代表颜色空间。受管属性与调用方原生选项的关系继续遵守[使用约定](video.md#constraints)。
 
 <a id="production"></a>
 
