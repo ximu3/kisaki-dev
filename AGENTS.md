@@ -14,7 +14,7 @@
 
 **用干净、直接的正向叙述。** 设计、文档、注释和界面文案围绕读者的任务展开，直接说明采用的做法和实际结果。删去上下文已说清的内容、重复强调和为假想疑问写的排除说明。影响理解、选择或操作的条件、差异和失败后果应就近交代，理解取舍所需的理由与有用的对照应保留。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
-**实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档集中在主题目录内，使用目录内入口，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[主题组织](refactor/design/engineering/conventions.md#source-layout)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
+**实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[主题组织](refactor/design/engineering/conventions.md#source-layout)、[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
 
 ## 任务入口与范围
 
