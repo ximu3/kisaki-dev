@@ -16,4 +16,4 @@
 
 `pnpm check` 检查工作区类型、lint、导入边界、格式和常规测试。`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-rpc` 构建 ESM 与声明，生成一份 tarball，通过 publint 和 ATTW 的 ESM 检查，再安装到两个临时工程。NodeNext 与浏览器 Bundler 消费分别启用完整声明检查和类型感知 lint。
 
-包内制品位于 `out/package/package.tgz`，消费者报告位于 `test-results/consumers/results.json`。连接内核与宿主适配的分工见[协议合同](../../../design/engineering/protocols.md#frames)。产品窗口、扩展实例与开发应用的身份绑定、就绪和退出分别随 W07、W18 和 W19 验收。
+包内制品位于 `out/package/package.tgz`，消费者报告位于 `test-results/consumers/results.json`。临时消费者目录由对应测试释放，注入 TypeScript 编译错误后已核对失败路径的清理。连接内核与宿主适配的分工见[协议合同](../../../design/engineering/protocols.md#frames)。产品窗口、扩展实例与开发应用的身份绑定、就绪和退出分别随 W07、W18 和 W19 验收。
