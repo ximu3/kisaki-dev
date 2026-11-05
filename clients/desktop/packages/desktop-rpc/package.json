@@ -1,0 +1,55 @@
+{
+  "name": "@kisaki3/desktop-rpc",
+  "version": "0.1.0-dev.0",
+  "description": "Environment-independent bidirectional RPC for message transports.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=24.11.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximu3/kisaki-dev.git",
+    "directory": "clients/desktop/packages/desktop-rpc"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "release-notes"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsx tools/build.ts",
+    "pack": "kisaki-package pack",
+    "check:package": "kisaki-package check",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:consumers": "vitest run --config config/vitest/consumers.ts",
+    "clean": "tsx tools/clean.ts"
+  },
+  "devDependencies": {
+    "@kisaki3/eslint-config": "workspace:*",
+    "@kisaki3/tooling": "workspace:*",
+    "@kisaki3/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "electron": "45.0.0",
+    "eslint": "catalog:",
+    "jiti": "catalog:",
+    "tsdown": "0.23.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

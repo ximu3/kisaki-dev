@@ -242,7 +242,7 @@ jobs:
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
       - name: Test public package consumers
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
-        run: pnpm desktop:test:consumers
+        run: xvfb-run --auto-servernum pnpm desktop:test:consumers
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json

@@ -1,6 +1,20 @@
 {
   "forbidden": [
     {
+      "name": "rpc-has-no-host-or-product-dependencies",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },
+      "to": {
+        "path": "^clients/desktop/(app|extensions)/|^clients/desktop/packages/(?!desktop-rpc/)|(^|/)node_modules/(electron|solid-js)/"
+      }
+    },
+    {
+      "name": "rpc-has-no-node-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
       "name": "contracts-have-no-node-runtime",
       "severity": "error",
       "from": {
