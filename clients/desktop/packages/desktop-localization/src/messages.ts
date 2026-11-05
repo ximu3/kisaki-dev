@@ -132,11 +132,9 @@ export function checkMessageCompatibility(
 
     const translatedContract = getMessageParameterContract(translated[key]!)
     for (const [parameter, kinds] of Object.entries(translatedContract)) {
-      const required = contract[parameter]
       if (
         !Object.hasOwn(contract, parameter) ||
-        !required ||
-        required.some((kind) => !kinds.includes(kind))
+        contract[parameter]!.some((kind) => !kinds.includes(kind))
       ) {
         throw new DesktopError('InvalidInput', 'Translated message narrows or adds a parameter')
       }

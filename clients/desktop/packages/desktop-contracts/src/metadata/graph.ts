@@ -10,7 +10,8 @@ import {
   workRelationTypes,
   canUsePersonRole,
   canUseOrganizationRole,
-  normalizeWorkRelation,
+  canonicalWorkRelation,
+  validateWorkRelation,
   reverseWorkRelationType,
 } from '../library/relations'
 import { getMetadataRelations } from './relations'
@@ -217,11 +218,13 @@ export function validateGraph(
             )
           }
 
-          const normalized = normalizeWorkRelation({
+          const binding = {
             from: { type: fromType, id: member.from },
             to: { type: toType, id: member.to },
             type: member.type,
-          })
+          }
+          validateWorkRelation(binding)
+          const normalized = canonicalWorkRelation(binding)
           businessKeys.push(JSON.stringify([normalized.from.id, normalized.to.id, normalized.type]))
           break
         }

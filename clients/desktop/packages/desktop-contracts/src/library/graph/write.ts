@@ -52,7 +52,8 @@ import {
   workRelationTypes,
   canUsePersonRole,
   canUseOrganizationRole,
-  normalizeWorkRelation,
+  canonicalWorkRelation,
+  validateWorkRelation,
   parseWorkCharacterBinding,
   parsePersonWorkBinding,
   parseOrganizationWorkBinding,
@@ -331,18 +332,24 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
   }
 
-  function relationKey(value: GraphWorkRelationAdd): string {
-    const normalized = normalizeWorkRelation({
+  function workRelationBinding(value: GraphWorkRelationAdd) {
+    return {
       from: { type: workType(value.from), id: entryKey(value.from) },
       to: { type: workType(value.to), id: entryKey(value.to) },
       type: value.type,
-    })
+    }
+  }
+
+  function relationKey(value: GraphWorkRelationAdd): string {
+    const normalized = canonicalWorkRelation(workRelationBinding(value))
     return JSON.stringify([normalized.from.id, normalized.to.id, normalized.type])
   }
 
   function checkRelation(value: Partial<GraphWorkRelationAdd>): void {
     if (value.from && value.to && value.type) {
-      relationKey({ from: value.from, to: value.to, type: value.type })
+      validateWorkRelation(
+        workRelationBinding({ from: value.from, to: value.to, type: value.type }),
+      )
     }
   }
 

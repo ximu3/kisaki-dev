@@ -13,17 +13,10 @@ import type { AnnotationRef } from '../library/annotations'
 import type { ThemeRef } from '../appearance'
 import type { PageRef } from './pages'
 import type { PreferenceKey } from '../preferences/api'
-import {
-  optionalFields,
-  id,
-  parseValue,
-  readRecord,
-  omitFields,
-  parseExternalValue,
-} from '../validation'
+import { optionalFields, id, parseValue, readRecord, parseExternalValue } from '../validation'
 import * as v from 'valibot'
 import {
-  parseExternalIdentity,
+  identitySchema,
   entryTypes,
   parseEntryRef,
   parsePartRef,
@@ -125,22 +118,20 @@ export const entrySelectionEntries = {
 
 /** Validate explicit root identity without inferring local/external status from the string's appearance. */
 export function parseEntryIdentifier(input: unknown): EntryIdentifier {
-  const value = parseValue(
+  return parseValue(
     v.variant('type', [
       v.strictObject({ type: v.literal('local'), id }),
-      v.strictObject({ type: v.literal('external'), source: id, sourceId: id }),
+      v.strictObject({ type: v.literal('external'), ...identitySchema.entries }),
     ]),
     input,
     'Invalid entry identifier',
   )
-  if (value.type === 'external') {
-    return {
-      type: 'external',
-      ...parseExternalIdentity({ source: value.source, sourceId: value.sourceId }),
-    }
-  }
+}
 
-  return value
+function checkPartSelection(selection: object): void {
+  if (Object.hasOwn(selection, 'episodeId') && Object.hasOwn(selection, 'extraId')) {
+    throw new DesktopError('InvalidInput', 'Episode and extra selectors are mutually exclusive')
+  }
 }
 
 /** Shared entry-selector rules for internal navigation and public URLs. Real membership is checked by the receiving owner. */
@@ -150,9 +141,7 @@ export function parseEntryViewSelection<T extends EntryType>(
 ): EntryViewSelection<T> {
   const fields: v.ObjectEntries = entrySelectionEntries[type]
   const value = parseValue(v.strictObject(fields), input, 'Invalid entry selection')
-  if (type === 'anime' && 'episodeId' in value && 'extraId' in value) {
-    throw new DesktopError('InvalidInput', 'Episode and extra selectors are mutually exclusive')
-  }
+  checkPartSelection(value)
 
   return value as EntryViewSelection<T>
 }
@@ -172,8 +161,7 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
       input,
       'Invalid entry view target',
     )
-    const selection = omitFields(value, ['type', 'entryType', 'identifier'])
-    parseEntryViewSelection(entryType, selection)
+    checkPartSelection(value)
     return value as EntryViewTarget
   }
 

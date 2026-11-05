@@ -48,9 +48,8 @@ test('flat indexes parse all display, release and artifact fields without resolv
     artifacts: [{ targets: ['linux-x64', 'windows-x64'], license: 'MIT' }],
   })
 
-  expect(
-    parseSignedRegistry(JSON.stringify({ ...input, signature: `${'A'.repeat(86)}==` })).signature,
-  ).toHaveLength(88)
+  const signature = `${'A'.repeat(86)}==`
+  expect(parseSignedRegistry(JSON.stringify({ ...input, signature })).signature).toBe(signature)
   expect(() => parseSignedRegistry(JSON.stringify(input))).toThrowError(
     expect.objectContaining({ path: ['signature'] }),
   )

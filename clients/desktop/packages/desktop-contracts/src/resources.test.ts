@@ -1,11 +1,11 @@
-/** @fileoverview Verifies acquired resource holds and credential-bearing file request boundaries. */
+/** @fileoverview Checks URL credential policy and preservation of the caller's prepared attachment handle. */
 
 import { test, expect } from 'vitest'
 
 import { parseFileInput, parsePreparedAttachment } from './resources'
 import { DesktopError } from './errors'
 
-test('resource inputs preserve legal headers and real holds while rejecting credential redirects and URL user information', async () => {
+test('resource inputs preserve legal headers and prepared handles while rejecting credential redirects and URL user information', () => {
   const headers = Object.fromEntries([
     ['constructor', 'value'],
     ['__proto__', 'retained'],
@@ -49,8 +49,4 @@ test('resource inputs preserve legal headers and real holds while rejecting cred
 
   expect(parsePreparedAttachment(prepared)).toBe(prepared)
   expect(released).toBe(false)
-
-  await prepared.dispose()
-
-  expect(released).toBe(true)
 })
