@@ -6,11 +6,11 @@
 
 **简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这四项[共同原则](refactor/design/engineering/conventions.md#quality)为准。
 
-**防御和测试都要克制。** 在外部输入、权限、持久化和副作用边界检查实际风险，内部调用复用已经成立的保证。新增或保留一项限制、回退或测试，应能指出它处理的具体后果或能发现的错误。同一行为在所属层验证，接入层验证新增风险。按改动影响选用现有证据和必要用例，疑问解决后结束验证。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
+**防御和测试要极度克制。** 复用已有保证，只保留终态应对真实风险所必需的分支和用例。日常改动默认不新增防御或回归用例，修复可以一次性验证。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
 
-**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同步修改共同拥有者、调用方、测试和说明，清理失去用途的旧路径。待交付能力记入实施计划和状态页。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
+**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
-**用干净、直接的正向叙述。** 设计、文档、注释与界面文案都从读者要理解或完成的事写起，直接说明谁负责、怎样使用、会得到什么结果。限制、差异和失败写在相关步骤，交代触发条件与实际后果。保留影响判断的理由，删去重复强调和无关对照。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
+**用干净、直接的正向叙述。** 说清实际做法和结果，只留读者理解、判断或行动所需的内容。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
 **实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档集中在主题目录内，使用目录内入口，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[主题组织](refactor/design/engineering/conventions.md#source-layout)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
 
