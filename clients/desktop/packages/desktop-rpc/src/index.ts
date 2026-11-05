@@ -1,6 +1,6 @@
 /** @fileoverview Public entry for the environment-independent RPC connection and wire contract. */
 
-export { RpcConnection } from './connection'
+export { RpcConnection } from './connection/instance'
 export type {
   RpcEndpoint,
   RpcErrorCodec,
