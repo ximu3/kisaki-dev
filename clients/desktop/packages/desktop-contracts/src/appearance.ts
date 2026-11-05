@@ -50,7 +50,7 @@ export type ThemeFont =
 
 export type UserThemeFont = Exclude<ThemeFont, { readonly type: 'extension' }>
 
-/** All 45 vocabulary keys are present; only font slots replace CSS strings with stable desktop selections. */
+/** Each visual key follows the shared grammar; font slots carry stable desktop selections. */
 export type AppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, ThemeFont>
 >
