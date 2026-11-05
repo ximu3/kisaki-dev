@@ -91,13 +91,13 @@ test('ordinary CSS works by itself, preserves document controls and has complete
       return {
         scheme: style.colorScheme,
         background: style.backgroundColor,
-        modalShadow: CSS.supports('box-shadow', style.getPropertyValue('--shadow-modal')),
+        shadow: style.getPropertyValue('--shadow-modal'),
       }
     })
 
     expect(actual.scheme).toBe(scheme)
     expect(actual.background).toContain('oklch(')
-    expect(actual.modalShadow).toBe(true)
+    expect(actual.shadow).toContain('inset')
   }
 })
 
@@ -106,7 +106,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   page,
 }) => {
   await page.goto(siteUrl)
-  expect(await page.locator('body').getAttribute('data-token-count')).toBe('43')
+  expect(await page.locator('body').getAttribute('data-token-count')).toBe('45')
   expect(await page.locator('body').getAttribute('data-valid-css')).toBe('true')
 
   for (const scheme of ['light', 'dark']) {
@@ -129,15 +129,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
     expect(pair[0]).toEqual(pair[1])
     expect(pair[1]?.radius).toBe('4px')
     expect(pair[1]?.size).toBe('12.25px')
-    const series = await page.locator('#series rect').evaluateAll((bars) =>
-      bars.map((bar, i) => {
-        bar.style.color = `var(--chart-${i + 1})`
-        const { color, fill } = getComputedStyle(bar)
-        return { color, fill }
-      }),
-    )
-    expect(series.map((bar) => bar.fill)).toEqual(series.map((bar) => bar.color))
-    expect(new Set(series.map((bar) => bar.fill)).size).toBe(5)
     expect(
       await page.locator('#mapped').evaluate((node) => getComputedStyle(node).boxShadow),
     ).not.toBe('none')
@@ -145,7 +136,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
 
   await page.locator('html').evaluate((node) => {
     node.style.setProperty('--primary', 'rgb(80 120 160)')
-    node.style.setProperty('--chrome', 'rgb(35 40 46)')
     node.style.setProperty('--font-sans', 'monospace')
     node.style.setProperty('--radius', '0px')
     node.style.setProperty('--interface-scale', '150')
@@ -162,9 +152,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
     }
   })
 
-  expect(
-    await page.locator('#chrome').evaluate((node) => getComputedStyle(node).backgroundColor),
-  ).toBe('rgb(35, 40, 46)')
   expect(changed).toEqual({
     color: 'rgb(80, 120, 160)',
     font: 'monospace',

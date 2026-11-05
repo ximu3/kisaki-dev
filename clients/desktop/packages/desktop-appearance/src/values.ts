@@ -8,10 +8,10 @@ import type { TokenKind, TokenName, TokenValues } from './tokens'
 const colorSyntax = '<hex-color> | <named-color> | transparent | <color-function>'
 const syntaxes: Readonly<Record<TokenKind, string>> = {
   color: colorSyntax,
-  'opaque-color': colorSyntax,
   radius: '<length [0,∞]>',
   // An explicit color keeps each layer independent of the element's currentColor.
   shadow: `none | [ [${colorSyntax}] && <length>{2,4} && inset? ]#`,
+  percentage: '<percentage [0,100]>',
   'font-family': '[ <family-name> | <generic-family> ]#',
   'font-size': '<length [0,∞]>',
   'font-weight': 'normal | bold | <number [1,1000]>',
@@ -55,36 +55,6 @@ function hasLiteralComponents(value: Value): boolean {
   })
 
   return valid
-}
-
-/** Content and window chrome accept a literal color whose CSS alpha resolves to one. */
-function isOpaqueColor(value: Value): boolean {
-  const color = value.children.first!
-  if (color.type === 'Hash') {
-    const hex = color.value.toLowerCase()
-    if (hex.length === 4) {
-      return hex.endsWith('f')
-    }
-    return hex.length !== 8 || hex.endsWith('ff')
-  }
-  if (color.type !== 'Function') {
-    return color.type === 'Identifier' && ident.decode(color.name).toLowerCase() !== 'transparent'
-  }
-
-  // A validated color function has either a slash alpha or a fourth comma-separated argument.
-  const args = color.children.toArray()
-  const explicitAlpha =
-    args.some((node) => node.type === 'Operator' && node.value === '/') ||
-    args.filter((node) => node.type === 'Operator' && node.value === ',').length === 3
-  if (!explicitAlpha) {
-    return true
-  }
-
-  const alpha = args.at(-1)!
-  if (alpha.type === 'Percentage') {
-    return Number(alpha.value) >= 100
-  }
-  return alpha.type === 'Number' && Number(alpha.value) >= 1
 }
 
 /** A layer's third length is its blur radius; offsets and spread may remain negative. */
@@ -136,7 +106,6 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
   if (
     ast.type !== 'Value' ||
     !hasLiteralComponents(ast) ||
-    (kind === 'opaque-color' && !isOpaqueColor(ast)) ||
     (kind === 'shadow' && !hasValidShadowBlur(ast))
   ) {
     throw new TypeError(`Invalid value for appearance token ${name}`)
@@ -146,7 +115,7 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
 }
 
 /**
- * Parse one complete branch into a new immutable snapshot.
+ * Parse exactly one complete 45-token branch into a new immutable snapshot.
  * Missing or extra keys and invalid values throw TypeError; no defaults are supplied.
  * The input is not modified, and no partially parsed result escapes on failure.
  */

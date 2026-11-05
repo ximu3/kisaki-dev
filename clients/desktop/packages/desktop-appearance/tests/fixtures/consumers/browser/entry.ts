@@ -11,9 +11,9 @@ import { summary } from './consumer.js'
 const values = parseTokenValues(defaults.light)
 const properties = {
   color: 'color',
-  'opaque-color': 'color',
   radius: 'border-radius',
   shadow: 'box-shadow',
+  percentage: 'opacity',
   'font-family': 'font-family',
   'font-size': 'font-size',
   'font-weight': 'font-weight',

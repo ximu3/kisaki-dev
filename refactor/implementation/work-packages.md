@@ -100,7 +100,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 依赖：W00 与已确认的视觉合同。
 
-交付[完整视觉词表](../design/domains/appearance.md#tokens)、纯值规则、亮暗默认值、基础和派生 CSS、可选 Tailwind 映射，以及独立类型和样式入口。
+交付：完整视觉词表、纯值规则、亮暗默认值、基础和派生 CSS、可选 Tailwind 映射，以及独立类型和样式入口。
 
 验收：纯值、普通 CSS 和映射分别可消费，默认外观完整，包保持纯视觉职责；仓库外制品、声明、资源许可与接口说明通过 A23、A29、A31 的对应断言。
 
@@ -130,8 +130,6 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library/query/contracts.md) · [写入合同](../design/domains/library/write/contracts.md) · [本地化](../design/ui/localization.md) · [接入协议](../design/engineering/protocols.md)。
 
-合同包从 W01 的正式词表组合 AppearanceTokens、字体选择和 ViewAppearance，在完整主题、部分更新与文档投影的入口核对所属值约束。
-
 合同包拥有接口语义及其值的合法性，不以函数是否有副作用决定归属。产品默认配置、预设、业务计算、匹配与结果选择、存储异常处理由所属本体能力实现；规范编码与必要校验随对应值维护。本工作包不建立本体业务源码；业务实现、对应测试、生成数据和资源随所属工作包交付。数据库 codec 消费所属值规则，实际存储接入仍由 W06 完成。
 
 本地化包不持有当前译本、登记实例或窗口状态；本体 i18n 负责有效语言、生命周期、恢复与同步。SDK 在 W18 从两个包选择作者所需的合同、英语基准与校验能力，扩展作者仍使用 SDK 的纯作者入口。各能力的英语文案随所属功能继续维护同一源文，W22 核对完整界面覆盖与三个官方译本。
@@ -152,13 +150,13 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 ## W05：desktop-ui
 
-依赖 W01 按[当前视觉词表](../design/domains/appearance.md#tokens)交付的制品及 Solid 1.9 工程基线。主题登记输入和文档投影的值合同由 W03 随 W01 词表接续。
+依赖：W01 与 Solid 1.9 工程基线。
 
-交付[全部 UI 家族](../design/ui/package/README.md#families)的组件、组合位置和普通 CSS。覆盖原生表单、独立的模式切换与面板导航、可组合触发器、键盘与焦点，以及图表、Markdown、拖拽和资源释放。家族子路径与默认样式可直接从普通 Solid 工程消费。
+交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单、键盘与焦点、浮层、图表、Markdown、拖拽、样式及资源寿命。按组件家族提供子路径，默认样式组合视觉基础，普通 Solid 消费者可直接使用。
 
-A18–A20、A23、A29、A31 的对应门槛包括[真实控件组合](../verification/scenarios/ui.md#public-controls)、[同一 tarball 的声明与样式消费](../verification/scenarios/engineering.md#public-consumers)、亮暗视觉及独立清理。支持范围见[包交付](../design/ui/package/README.md#delivery)。
+验收：浏览器行为、完整视觉状态、声明、无 Tailwind 消费及独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的公共组件断言。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
 
-依据见[公共 UI 包](../design/ui/package/README.md)、[共同界面](../design/ui/components.md)和[人工重排](../design/ui/virtualization.md)。
+依据：[UI 包](../design/ui/package.md) · [交互与可访问性](../design/ui/components.md) · [拖拽与虚拟化](../design/ui/virtualization.md)。
 
 <a id="w06"></a>
 

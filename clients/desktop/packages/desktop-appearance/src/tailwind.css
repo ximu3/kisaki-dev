@@ -2,8 +2,8 @@
 @theme inline reference {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
-  --color-chrome: var(--color-chrome);
-  --color-chrome-foreground: var(--color-chrome-foreground);
+  --color-surface: var(--color-surface);
+  --color-surface-foreground: var(--color-surface-foreground);
   --color-popover: var(--color-popover);
   --color-popover-foreground: var(--color-popover-foreground);
   --color-dialog: var(--color-dialog);
@@ -30,12 +30,11 @@
   --color-warning-foreground: var(--color-warning-foreground);
   --color-border: var(--color-border);
   --color-ring: var(--color-ring);
+  --color-chart: var(--color-chart);
 
-  --color-chart-1: var(--color-chart-1);
-  --color-chart-2: var(--color-chart-2);
-  --color-chart-3: var(--color-chart-3);
-  --color-chart-4: var(--color-chart-4);
-  --color-chart-5: var(--color-chart-5);
+  --color-light-1: var(--color-light-1);
+  --color-light-2: var(--color-light-2);
+  --color-light-3: var(--color-light-3);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);

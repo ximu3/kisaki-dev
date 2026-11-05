@@ -3,21 +3,21 @@
 /** Value grammars describe one CSS value, without declarations or resource references. */
 export type TokenKind =
   | 'color'
-  | 'opaque-color'
   | 'radius'
   | 'shadow'
+  | 'percentage'
   | 'font-family'
   | 'font-size'
   | 'font-weight'
   | 'line-height'
   | 'letter-spacing'
 
-/** The complete visual vocabulary, shared by theme definitions and document styles. */
+/** The fixed 45-token vocabulary; grouping and persistence belong to consumers. */
 export const tokens = Object.freeze({
-  '--background': 'opaque-color',
+  '--background': 'color',
   '--foreground': 'color',
-  '--chrome': 'opaque-color',
-  '--chrome-foreground': 'color',
+  '--surface': 'color',
+  '--surface-foreground': 'color',
   '--popover': 'color',
   '--popover-foreground': 'color',
   '--dialog': 'color',
@@ -44,17 +44,19 @@ export const tokens = Object.freeze({
   '--warning-foreground': 'color',
   '--border': 'color',
   '--ring': 'color',
-
-  '--chart-1': 'color',
-  '--chart-2': 'color',
-  '--chart-3': 'color',
-  '--chart-4': 'color',
-  '--chart-5': 'color',
+  '--chart': 'color',
 
   '--radius': 'radius',
   '--shadow-raised': 'shadow',
   '--shadow-overlay': 'shadow',
   '--shadow-modal': 'shadow',
+
+  '--pane-alpha': 'percentage',
+  '--light-1': 'color',
+  '--light-2': 'color',
+  '--light-3': 'color',
+  '--light-strength': 'percentage',
+  '--grain-opacity': 'percentage',
 
   '--font-sans': 'font-family',
   '--font-mono': 'font-family',

@@ -2,7 +2,7 @@
 
 import { expect, test } from 'vitest'
 import { defaults } from '@kisaki3/desktop-appearance/defaults'
-import { parseUserThemeUpdate, parseViewAppearance } from './appearance'
+import { parseViewAppearance } from './appearance'
 import { DesktopError } from './errors'
 
 test('accepts complete view values and translates visual parser failures with their cause', () => {
@@ -28,16 +28,4 @@ test('accepts complete view values and translates visual parser failures with th
       expect(error.cause).toBeInstanceOf(TypeError)
     }
   }
-})
-
-test('conditional theme edits validate opaque bases and accept individual chart slots', () => {
-  const edit = {
-    changes: { light: { '--chrome': '#ffffff', '--chart-5': '#947115' } },
-    expected: { light: { '--chrome': '#dde1e5' } },
-  }
-  expect(parseUserThemeUpdate(edit)).toEqual(edit)
-
-  expect(() =>
-    parseUserThemeUpdate({ ...edit, expected: { light: { '--chrome': 'transparent' } } }),
-  ).toThrow(DesktopError)
 })
