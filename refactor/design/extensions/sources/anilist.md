@@ -272,12 +272,12 @@ src/
 ├── node/
 │   ├── entry.ts
 │   ├── client/
-│   │   ├── client.ts
+│   │   ├── gateway.ts
 │   │   ├── documents.ts
 │   │   ├── validation.ts
 │   │   └── types.ts
 │   ├── account/
-│   │   ├── account.ts
+│   │   ├── manager.ts
 │   │   ├── authorization.ts
 │   │   └── store.ts
 │   ├── metadata/

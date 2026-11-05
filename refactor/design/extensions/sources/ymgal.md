@@ -135,7 +135,7 @@ src/
 ├── node/
 │   ├── entry.ts
 │   ├── client/
-│   │   ├── client.ts
+│   │   ├── gateway.ts
 │   │   ├── credentials.ts
 │   │   ├── validation.ts
 │   │   └── types.ts
