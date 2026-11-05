@@ -26,6 +26,7 @@ F:/project/3/kisaki 和 F:/project/3/process-list 保留到存档验证完成。
 | libmpv-node 原生绑定      | @ximu3/libmpv-node                                                              | 独立的 libmpv Node 绑定与可选受管渲染，Kisaki 是消费方                                         |
 | Kisaki 桌面外观与 UI      | @kisaki3/desktop-appearance、@kisaki3/desktop-ui                                | 表达桌面与扩展界面的视觉体系和组件合同                                                         |
 | Kisaki 桌面共同合同       | @kisaki3/desktop-contracts                                                      | 桌面本体与扩展共同使用的能力合同                                                               |
+| Kisaki 桌面本地化         | @kisaki3/desktop-localization                                                   | 领域英语、关联消息类型、译本校验与纯格式化                                                     |
 | Kisaki 扩展运行与作者生态 | @kisaki3/extension-distribution、@kisaki3/extension-sdk、@kisaki3/extension-cli | 运行规范、分发格式、运行接入和作者工作流；真实名称与迁移按 [npm 版本与退役](#npm-history) 核对 |
 | Kisaki 桌面通信机制       | @kisaki3/desktop-rpc                                                            | 桌面与 SDK 共用的环境无关消息式内核；不因通用机制另立项目，发布前核对实际控制权                |
 

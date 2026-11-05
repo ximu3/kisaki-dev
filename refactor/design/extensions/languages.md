@@ -40,9 +40,9 @@
 
 主应用英语拥有消息键、含义与调用参数。三个译本按领域维护嵌套 ICU 字符串，完整路径是消息身份；对象是分组，字符串是叶子，不使用函数、数组、运行代码或公开 AST 作为消息值。单段键不含点，文件移动不改变消息身份。
 
-从同一英语基准生成叶子键、参数约束和作者校验所需的源文。公共纯合同归 desktop-contracts/i18n，经 SDK 的纯作者入口提供；本体和扩展项目使用这一份生成合同，消息身份遵循本体的键与参数规则。
+desktop-localization 从同一英语源文生成叶子键、参数约束，并提供作者基准与校验能力；译本登记等接入合同归 desktop-contracts/i18n。SDK 的纯作者入口统一选择两者，扩展作者无须额外依赖内部拥有者。本体和扩展项目使用同源基准，消息身份遵循本体的键与参数规则。
 
-三个官方项目在普通构建前检查中导入自己的纯消息目录，并对公开基准验证完整性、ICU 和参数。通用 kisx 的静态制品校验不执行 activate 来发现译文；正式登记仍由宿主按当前英语合同核验。SDK 中的作者基准与运行应用可能来自不同已发布版本，运行时规则负责处理新增与缺失键，不拿包版本冒充消息版本。
+三个官方项目在普通构建前检查中导入自己的纯消息目录，并对公开基准验证完整性、ICU 和参数。通用 kisx 的静态制品校验不执行 activate 来发现译文；正式登记仍由宿主按当前英语合同核验。SDK 中的作者基准与运行应用可能来自不同已发布版本，新增与缺失键按运行应用的英语基准和回退规则处理。
 
 ICU 解析与格式化采用[现成 FormatJS 实现](https://formatjs.github.io/docs/intl-messageformat/)，不自研语法和复数规则。普通插值接受 string 或 number，number／plural／selectordinal 要求 number，date／time 接受 Date 或毫秒，select 接受 string。多处使用同一参数取兼容约束的交集，交集为空时英语构建失败；select 分支不是参数的封闭枚举。
 
@@ -131,8 +131,8 @@ manifest、registry 和发行说明使用 LocalizedText，自有 defaultLocale �
 
     src/
     ├── entry.ts
-    ├── messages.ts
     └── messages/
+        ├── index.ts
         ├── actions.ts
         ├── library.ts
         ├── records.ts
@@ -141,7 +141,7 @@ manifest、registry 和发行说明使用 LocalizedText，自有 defaultLocale �
     tests/
     └── fixtures/
 
-entry 轻量登记稳定身份；messages.ts 汇总本项目的完整嵌套目录；领域文件只保存本语言文本。不为三项建立共享运行译文、简繁转换层、英语运行继承或互相导入的私有目录。共用纯校验与 ICU 工具由既有公共能力提供。
+entry 轻量登记稳定身份；messages/index.ts 汇总本项目的完整嵌套目录；领域文件只保存本语言文本。不为三项建立共享运行译文、简繁转换层、英语运行继承或互相导入的私有目录。共用纯校验与 ICU 工具由既有公共能力提供。
 
 每项维护 package.json、kisx.config.ts、README、四语 release-notes 与测试。包版本以 package.json.version 为唯一来源，manifest 提供实际 API 兼容范围、ESM 入口、英文默认展示文案及四语名称／说明。分类只用于发现，不推导激活顺序或权限。
 

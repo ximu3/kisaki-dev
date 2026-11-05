@@ -180,7 +180,7 @@ P478 是明确的卷号，可提供 volume.numberLabel。P1545 是序位，默�
 | P12561               | SteamGridDB 的真实游戏身份，沿该来源正式语法                                          |
 | P675                 | googlebooks / volume/&lt;id&gt;，保留大小写，仅在书目与本体目标范围一致时采用         |
 
-IGDB 的 P5794 实际可为 slug，不能冒充其 API 数字 ID；itch.io 的 P7294 是项目 URL，不能直接变成 game ID。TMDB TV ID 不足以构成单季的完整坐标，NDL Authority ID 也不是 NDL 书目 ID。以上只保留有意义的来源链接，不调用另一来源补齐未知坐标或递归扩展身份。
+IGDB 的 P5794 可为 slug，采用数字身份须取得对应的 API ID；itch.io 的 P7294 是项目 URL，不能直接变成 game ID。TMDB TV ID 不足以构成单季的完整坐标，NDL Authority ID 也不是 NDL 书目 ID。以上只保留有意义的来源链接，不调用另一来源补齐未知坐标或递归扩展身份。
 
 未知属性与不支持网站的真实链接可以保留为普通出处，但不触发额外网站读取。源数据与引用的原始出处按共同规则区分，多个聚合来源引用同一上游不能算多份独立证据。
 

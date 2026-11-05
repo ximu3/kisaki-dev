@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "rootDir": ".",
+    "strict": true,
+    "outDir": ".cache/node",
+    "skipLibCheck": false,
+    "types": ["node"],
+    "lib": ["ES2023"],
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["*.ts"]
+}

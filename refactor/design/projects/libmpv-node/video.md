@@ -235,7 +235,7 @@ Mpv 的同核心流回调重入规则也覆盖 configure、reportSwap 等会进�
 | sRGB 曲线               | 使用真实 sRGB 处理，treat-srgb-as-power22 保持 no                               |
 | 输出 ICC 颜色管理       | 不配置覆盖目标空间的 icc-profile 或自动显示器 ICC；最终显示配置归宿主系统       |
 | 背景                    | 使用 background=color 与不透明 background-color，缺省黑色；透明素材仍按上游处理 |
-| 呈现同步                | 使用真实宿主能力，reportSwap 不由纹理生产、导入或引用回收冒充                   |
+| 呈现同步                | reportSwap 由实际控制显示节奏的宿主按真实翻页反馈调用                   |
 
 上述设置由创建和 configure 协调为一致目标；不另设原生选项锁。普通音量、轨道、滤镜、缩放与字幕选项不因属于图形相关设置就被一并禁止。用户 shader 遵守所选 SDR 表示，不被绑定占作额外单位转换，也不强制修改字幕混合方式。
 

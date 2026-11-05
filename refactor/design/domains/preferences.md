@@ -64,7 +64,7 @@ interface UsagePreferences {
 | usage.novel.pages                              | 同一原始页面偏好合同，作为小说全局默认独立保存                                                                                     |
 | usage.novel.text                               | 同一正文排版偏好合同，作为小说全局默认独立保存                                                                                     |
 | usage.novel.colors                             | 阅读配色，默认 { type: 'theme' }；作为小说全局默认独立保存                                                                         |
-| playback.volumePercent                         | 0–100 的有限数，包含两端，单位为百分比，默认 100；应用记住的上次播放音量                                                          |
+| playback.volumePercent                         | 0–100 的有限数，包含两端，单位为百分比，默认 100；应用记住的上次播放音量                                                           |
 | playback.muted                                 | boolean，默认 false；应用记住的上次静音选择                                                                                        |
 | shortcuts                                      | 按本文件固定配置键保存 { enabled, accelerators }；初值采用 [快捷键目录](../ui/navigation.md) 的平台默认，未绑定为 []               |
 | network.mode                                   | system / direct / manual；默认 system                                                                                              |
@@ -240,11 +240,11 @@ JSON 列负责持久化存储，表单按实际修改字段提交并核对相应
 ```ts
 preferences.update({
   changes: {
-    navigation: { visibleLimit: 5 }
+    navigation: { visibleLimit: 5 },
   },
   expected: {
-    navigation: { visibleLimit: 7 }
-  }
+    navigation: { visibleLimit: 7 },
+  },
 })
 ```
 
@@ -252,7 +252,7 @@ preferences.update({
 
 数组整体替换只针对本次修改的数组字段。例如保存导航排序草稿时，提交完整的 order 数组，并核对该数组的原值；visibleLimit 和其他偏好保持不变。接口不按数组下标局部修改，也不猜测追加、删除或合并的含义。
 
-跨组修改可以一次提交，只有全部条件通过才写入。冲突或校验失败不产生部分保存，编辑草稿继续保留。expected 的具体要求遵守[并发提交](library-operations.md)；省略基线的直接操作不能被界面当作受保护的表单保存。
+跨组修改可以一次提交，只有全部条件通过才写入。冲突或校验失败不产生部分保存，编辑草稿继续保留。expected 的具体要求遵守[并发提交](library/write/README.md)；省略基线的直接操作不能被界面当作受保护的表单保存。
 
 get 表达保存的意图，实际外观、网络连接、播放控制或快捷键注册状态由对应能力报告。update 成功只表示持久化完成，运行采用失败要独立反馈，不能伪装成保存失败。播放器的即时保存由 sessions 组合本次持久写入与当前实例采用，不通过偏好失效通知联动其他播放器。系统不为偏好增加通用执行任务。
 
@@ -293,7 +293,7 @@ library.showNsfw 默认 true。全局修改会更新仍在使用默认范围的�
 
 同一目标内切换页签、分页、排序或刷新时，保留临时范围；新开独立查看、换目标或结束当前流程时，回到默认。范围寿命由真实导航和编辑流程决定，不能因组件重新挂载而提前清除，也不能因页面缓存而意外延续。敏感内容的临时选择使用相同边界。
 
-浏览、关系、筛选、计数、分组、反向列表和定位共用相应可见范围，并遵守[关系维护](relations.md)与[库查询](library-queries.md)的反馈及修改规则。切换范围不修改记录标记或已保存条件。后台查重、身份核对、资料采用、合并删除和完整整理仍依据真实数据；隐藏不表示不存在，也不表示用户要求解除关联。
+浏览、关系、筛选、计数、分组、反向列表和定位共用相应可见范围，并遵守[关系维护](relations.md)与[库查询](library/query/README.md)的反馈及修改规则。切换范围不修改记录标记或已保存条件。后台查重、身份核对、资料采用、合并删除和完整整理仍依据真实数据；隐藏不表示不存在，也不表示用户要求解除关联。
 
 <a id="network"></a>
 

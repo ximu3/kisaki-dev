@@ -14,7 +14,7 @@
 
 方案取舍遵守[产品判断原则](design/product.md#judgment)，设计是否足以实施按[设计充分性与实现自由](design/engineering/conventions.md#design-completion)核对。关键业务与公开语义在规格中确定，局部实现选择在明确约束内完成。
 
-当前交付包括 clients/desktop 下的桌面本体、七个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
+当前交付包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
 
 现有界面与交互体验整体沿用，按规格作局部调整并补充新增能力；组件与内部结构按新架构独立设计，见[现有 UI 保留原则](design/ui/components.md#existing-ui)。
 
@@ -31,7 +31,7 @@
 | 构建、发布或维护工程 | [工程与发行](design/engineering/README.md)                                                                                              |
 | 核对要求与交付       | [R01–R32 覆盖矩阵](verification/coverage.md) → [A01–A33 验收](verification/acceptance.md) → [验证证据](verification/evidence/README.md) |
 | 了解当前进度         | [实施状态](implementation/status.md)                                                                                                    |
-| 运行或维护当前工程   | [源码职责、环境准备与可运行命令](implementation/development.md)                                                                        |
+| 运行或维护当前工程   | [源码职责、环境准备与可运行命令](implementation/development.md)                                                                         |
 
 完整主题导航见[设计目录](design/README.md)。
 

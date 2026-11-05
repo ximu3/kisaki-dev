@@ -71,7 +71,7 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance', 'desktop-contracts'],
+        consumers: ['desktop-appearance', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
@@ -84,50 +84,33 @@ test(
         consumers: ['desktop-appearance'],
       },
       {
-        path: 'clients/desktop/packages/desktop-appearance/tests/fixtures/consumers/node/consumer.ts',
-        desktop: [],
-        consumers: ['desktop-appearance'],
-      },
-      {
         path: 'clients/desktop/packages/desktop-appearance/config/vitest/consumers.ts',
         desktop: [],
         consumers: ['desktop-appearance'],
       },
-      { path: 'clients/desktop/packages/extension-distribution/README.md', desktop: [] },
-      {
-        path: 'clients/desktop/packages/extension-distribution/src/manifest.ts',
-        desktop: [],
-        consumers: ['extension-distribution', 'desktop-contracts'],
-      },
       {
         path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
         desktop: [],
-        consumers: ['extension-distribution', 'desktop-contracts'],
+        consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
-      {
-        path: 'clients/desktop/packages/extension-distribution/tests/fixtures/consumers/node/consumer.ts',
-        desktop: [],
-        consumers: ['extension-distribution'],
-      },
-      { path: 'clients/desktop/packages/desktop-contracts/README.md', desktop: [] },
       {
         path: 'clients/desktop/packages/desktop-contracts/src/library/catalog.ts',
         desktop: [],
-        consumers: ['desktop-contracts'],
+        consumers: ['desktop-contracts', 'desktop-localization'],
       },
       {
-        path: 'clients/desktop/packages/desktop-contracts/assets/unicode/18.0.0/UnicodeData.txt',
+        path: 'clients/desktop/packages/desktop-localization/src/en/library.ts',
         desktop: [],
-        consumers: ['desktop-contracts'],
+        consumers: ['desktop-localization'],
       },
       {
-        path: 'clients/desktop/packages/desktop-contracts/tests/fixtures/consumers/node/consumer.ts',
+        path: 'clients/desktop/packages/desktop-localization/src/translate.test.ts',
         desktop: [],
-        consumers: ['desktop-contracts'],
       },
       { path: 'clients/desktop/app/config/typescript/tsconfig.tests.json', desktop: [] },
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },
+      { path: 'clients/desktop/app/tests/support/development/worker.ts', desktop: ['test:dev'] },
       {
         path: 'clients/desktop/app/tests/support/window-observation.ts',
         desktop: ['test:artifacts', 'test:dev'],

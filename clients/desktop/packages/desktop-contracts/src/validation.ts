@@ -1,8 +1,8 @@
 /** @fileoverview Shares internal value checks while keeping validation-library types out of public declarations. */
 
 import * as v from 'valibot'
-import { DistributionError } from '@kisaki3/extension-distribution/errors'
 import { DesktopError } from './errors'
+import { DistributionError } from '@kisaki3/extension-distribution/errors'
 
 export const text = v.pipe(
   v.string(),
@@ -17,8 +17,11 @@ export const nonemptyText = v.pipe(
 export const id = nonemptyText
 
 export const integer = v.pipe(v.number(), v.safeInteger())
+
 export const nonnegativeInteger = v.pipe(integer, v.minValue(0))
+
 export const positiveInteger = v.pipe(integer, v.minValue(1))
+
 export const nonnegativeNumber = v.pipe(v.number(), v.finite(), v.minValue(0))
 
 export const timestamp = v.pipe(

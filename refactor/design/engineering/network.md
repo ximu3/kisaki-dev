@@ -63,7 +63,7 @@ NetworkResponse 提供 url、redirected、status、statusText、ok、headers、b
 
 代理模式为 system、direct 或 manual，默认使用 system。选择值及凭据由 [preferences](../domains/preferences.md#network) 保存，app 的[固定绑定](../architecture.md#app-composition)将偏好变化交给 network 的完整采用入口。配置结构合法表示可以开始采用，连接和认证结果由实际请求确定。
 
-偏好保存后，network 采用新设置并重建受影响的连接。这一步可以中断在途请求；新请求等待新配置就绪，已中断请求不自动重放。采用失败时保留用户选择并报告网络未就绪，不能偷偷沿用旧代理或改为直连。system 模式允许的直连行为按系统设置执行。
+偏好保存后，network 采用新设置并重建受影响的连接。这一步可以中断在途请求；新请求等待新配置就绪，已中断请求不自动重放。采用失败时保留用户选择，报告网络未就绪，请求不得改走旧代理或直连。system 模式允许的直连行为按系统设置执行。
 
 setProxy 返回不代表所有既有连接都已切换，接入必须验证实际连接行为。HTTP 错误状态仍作为正常响应交给业务处理；连接、TLS、超时等传输失败则报告网络错误。响应提供准确的最终地址，供 registry 等业务解析相对资源。
 

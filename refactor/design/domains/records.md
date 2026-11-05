@@ -2,7 +2,7 @@
 
 个人记录支持快速管理当前状态，并回顾、修改每次完成的记录。当前状态、作品完成记录、分部完成标记、文件位置和实际活动分别保存，不组成体验轮次或使用过程。
 
-条目当前个人值及附加时长由 library 的 entries 实现，完成历史位于 records/completions；分部标记、文件位置与活动遵守[内部归属](library-operations.md#personal-regions)。本篇将相关产品含义一起说明，不据此建立统一记录实体或把所有实现放入同一模块。
+条目当前个人值及附加时长由 library 的 entries 实现，完成历史位于 records/completions；分部标记、文件位置与活动遵守[内部归属](library/write/README.md#personal-regions)。本篇将相关产品含义一起说明，不据此建立统一记录实体或把所有实现放入同一模块。
 
 <a id="model"></a>
 
@@ -37,7 +37,7 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 
 记录归属于作品，只有完整条目合并可以迁移归属。日常编辑不改变 id 或 work_id。索引覆盖作品内的日期与稳定补序、work_id 与创建顺序，以及完成日期范围到 work_id 的期间查询。相同日期、相同备注和同时为空都不构成唯一约束。
 
-读取提供 completionCount、firstCompletedDate 和 lastCompletedDate，与[公共查询值](library-query-contracts.md#projection)使用同一字段名。次数是该作品记录行数；两个日期分别取已知非空日期中的最小值和最大值，没有已知日期时为 null。未知日期的记录仍计入次数，不据此推断实际最早或最后一次完成发生在何时。它们都是只读投影，日期按年、月、日比较，不比较 JSON 编码文字。查询、期间统计和未知日期口径见[完成记录查询](library-queries.md#completion-records)。
+读取提供 completionCount、firstCompletedDate 和 lastCompletedDate，与[公共查询值](library/query/contracts.md#projection)使用同一字段名。次数是该作品记录行数；两个日期分别取已知非空日期中的最小值和最大值，没有已知日期时为 null。未知日期的记录仍计入次数，不据此推断实际最早或最后一次完成发生在何时。它们都是只读投影，日期按年、月、日比较，不比较 JSON 编码文字。查询、期间统计和未知日期口径见[完成记录查询](library/query/README.md#completion-records)。
 
 <a id="duration"></a>
 
@@ -47,7 +47,7 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 
 公开当前记录字段统一为 record.additionalDurationMs，随 entries.create／update、原生新增的 initial 或明确图写入采用。修改只设置非负绝对值，不提供递增总时长或按来源账号保存累计值的接口。已有值编辑沿用 expected.record.additionalDurationMs；缺行的基线为 0。四类作品共用这一字段与修改合同，来源资料候选不携带此个人值。
 
-四类作品详情都允许编辑附加时长，无需本地文件、启动配置、分部完成或作品完成记录。表单区分已经记录的活动时长与附加时长，只编辑后者。已知明确发生区间时使用[活动补录](library-operations.md#activities)；活动更正或删除不自动反算附加值，也不允许用负附加值抵消错误活动。
+四类作品详情都允许编辑附加时长，无需本地文件、启动配置、分部完成或作品完成记录。表单区分已经记录的活动时长与附加时长，只编辑后者。已知明确发生区间时使用[活动补录](library/write/README.md#activities)；活动更正或删除不自动反算附加值，也不允许用负附加值抵消错误活动。
 
 采用外部累计总量时，先明确目标 Work 和来源覆盖范围。用户选定来源总量 T，以本次读取的已保存活动量 A 为基准，将附加时长设置为 T−A；已有附加值不再次叠加。新作品没有本地活动，选中的来源总量直接作为初始附加值。来源总量小于 A 时，该总量不采用，不截断、不生成负数、不删除活动。
 
@@ -93,7 +93,7 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 
 条目当前个人值使用 entries.update 或相应的即时设置操作。作品状态只适用于 Work，其他 Entry 只接受适用评价字段。完成历史使用 completions 的完整操作，不与评分、收藏和状态组合成另一种个人记录写入接口。创建条目和 writeGraph 可以携带明确的初始完成记录；completionRecords 是逐条事实的输入数组，不是独立完成计数。metadata 候选和资料方案不携带这些个人值。
 
-相关提交实际改变业务事实后，按[完整写入](library-operations.md)发布对应变更摘要，供列表、详情、统计和同步重读；摘要不携带备注正文。新增记录不会因日期或备注与已有记录相同而自动省略。
+相关提交实际改变业务事实后，按[完整写入](library/write/README.md)发布对应变更摘要，供列表、详情、统计和同步重读；摘要不携带备注正文。新增记录不会因日期或备注与已有记录相同而自动省略。
 
 <a id="creation-baseline"></a>
 
@@ -107,7 +107,7 @@ create、createMany、recordCurrent 和 recordCurrentMany 的 expected 只允许
 await library.completions.create(workRef, {
   completedDate: null,
   note: null,
-  expected: { completionCount: 0 }
+  expected: { completionCount: 0 },
 })
 ```
 
@@ -125,7 +125,7 @@ completionCount 在这里是只读前提，不是可写计数或历史版本。�
 
 界面说明“为 N 部作品各新增一条完成记录”，将共同日期和备注填入各目标的输入项目，并直接执行普通批量补录。只为尚无历史的作品补录时，先使用“无完成记录”筛选确定目标。
 
-界面批量操作的作品目标遵守[固定目标集合](library-operations.md#selection)：在开始前固定并按作品身份去重，修改后离开筛选结果的作品仍属于原批次，新进入结果的作品不加入。短数据库批次共同成功或失败，不静默跳过失效或不适用目标。
+界面批量操作的作品目标遵守[固定目标集合](library/write/README.md#selection)：在开始前固定并按作品身份去重，修改后离开筛选结果的作品仍属于原批次，新进入结果的作品不加入。短数据库批次共同成功或失败，不静默跳过失效或不适用目标。
 
 recordCurrentMany 接收明确的非空项目数组，每项表达对一部作品执行一次完成动作。同一作品重复出现时，日期与备注按正式字段规范化后必须相同，所提供的数量基线也必须一致；符合条件的项目合并为一次动作，输入矛盾时整批拒绝，不选择其中一项覆盖其他项。结果按作品首次出现的顺序返回，每部作品对应一个新记录 ID。
 
@@ -153,8 +153,8 @@ AnimeEpisode、AnimeExtra、NovelVolume、ComicVolume 和 ComicChapter 的个人
 
 来源解释、采用字段和操作选择由扩展负责。已有作品的历史初始化通过上述数量基线保证前提，当前值和历史分别调用适用的完整操作；需要新增完成事实并清除当前状态时使用 recordCurrent。各独立操作按实际结果报告，不承诺同一来源项目的全部个人值共同原子提交。
 
-管理软件的真实逐次历史和明确的完成总数按[迁移导入](../extensions/importers.md)处理。初始化空历史与明确追加历史分别表达；普通新增不按同日或同备注去重。导入器继续原批次时复用已完成步骤，新建批次的明确追加仍可新增，批次进度不成为完成记录的身份或通用防重状态。
+管理软件的真实逐次历史和明确的完成总数按[迁移导入](../extensions/importers/README.md)处理。初始化空历史与明确追加历史分别表达；普通新增不按同日或同备注去重。导入器继续原批次时复用已完成步骤，新建批次的明确追加仍可新增，批次进度不成为完成记录的身份或通用防重状态。
 
-合并作品时，完成记录保留 ID、日期和备注并迁入保留作品；不按同日、相同文字或空日期自动删除记录。当前状态采用保留作品的值，包括 null。作品合并保留各分部身份及标记；用户另行明确合并同一内容的分部时，按[分部合并](library-operations.md#part-merges)将标记取任一侧为 true。合并不另外产生完成记录，完整规则见[合并与删除](library-operations.md#identity-operations)。
+合并作品时，完成记录保留 ID、日期和备注并迁入保留作品；不按同日、相同文字或空日期自动删除记录。当前状态采用保留作品的值，包括 null。作品合并保留各分部身份及标记；用户另行明确合并同一内容的分部时，按[分部合并](library/write/README.md#part-merges)将标记取任一侧为 true。合并不另外产生完成记录，完整规则见[合并与删除](library/write/README.md#identity-operations)。
 
 删除作品会删除其拥有的完成记录，独立笔记、文件字节及其他数据按各自删除合同处理。作品删除后退出该来源同步范围，不以本地条目缺失为由删除平台收藏。删除文件登记、移除目录或文件暂时失联不删除作品完成历史。

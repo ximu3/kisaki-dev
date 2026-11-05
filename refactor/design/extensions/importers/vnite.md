@@ -6,7 +6,7 @@ Vnite 导入器迁入游戏资料、本人记录、图文回忆、整理和本�
 
 ## 用途与输入
 
-读取本地备份进行手动迁移，按[共同流程](../importers.md#flow)选择游戏与数据范围，无须资料方案。只登记一个导入页面，不注册 metadata provider，不连接 Vnite 账号或云同步，也不持续读取运行目录；联网补充另行发起。
+读取本地备份进行手动迁移，按[共同流程](README.md#flow)选择游戏与数据范围，无须资料方案。只登记一个导入页面，不注册 metadata provider，不连接 Vnite 账号或云同步，也不持续读取运行目录；联网补充另行发起。
 
 支持官方 vnite-database-*.zip 数据库备份。该 ZIP 的根直接包含 game、game-local、game-collection 等 PouchDB / LevelDB 目录，并非条目 JSON；文件名不承担格式识别。按数据库结构和文档字段识别已验证的格式系列，v4.14.0 是源码基线，不把备份文件名中的日期当软件版本。用户通过 Vnite 自己的备份入口产生文件，本扩展不替其关闭数据库、恢复备份或重启应用。
 
@@ -79,7 +79,7 @@ record.score 使用 0–10 分、0.1 步进，乘 10 转为本体整数评分；
 
 record.timers 中的 start、end 是带时区的时间点。有效区间转为 UTC 毫秒，durationMs 采用 end-start。Vnite 已在生成这些区间时处理暂停、短暂中断合并和短区间筛选，导入不重新计算其前台状态或再次套用当前计时阈值。
 
-源区间没有可靠的历史启动配置身份，迁入活动不强行关联当前 game-local 配置。源区间存在重叠时保留实际记录，本体统计沿[共同活动口径](../../domains/library-queries.md#activity-statistics)处理；不同批次不按相似时间合并，同批次继续按步骤结果跳过已完成项。
+源区间没有可靠的历史启动配置身份，迁入活动不强行关联当前 game-local 配置。源区间存在重叠时保留实际记录，本体统计沿[共同活动口径](../../domains/library/query/README.md#activity-statistics)处理；不同批次不按相似时间合并，同批次继续按步骤结果跳过已完成项。
 
 record.playTime 的单位是毫秒。源码中的累计值由区间合计、dailyPlayTimes 的按日补录及无日期补记组成。按日值没有准确起止时间，不能伪造零点开始的活动。同时采用明细与总量时：
 
@@ -134,7 +134,7 @@ saves/{saveId}.zip 保留在原输入中，作为原有归档保存。Vnite 将�
 
 来源普通资料、评分与状态、活动、回忆、标签与合集默认选中，作用于新游戏。已有对象默认保留，采用来源个人值、追加活动与采用总时长分别选择。补充资料笔记、本地启动及存档设置默认关闭；联网补充通过导入结果另行发起。
 
-游戏创建使用 prepared 与独立 initial，普通资料及初始个人值共同提交。alreadyExists 按已有对象选项处理；活动、笔记、合集和配置分别使用完整操作。进度与源键对应按[批次合同](../importers.md#repeat)保存，失败不撤销已经成立的对象，继续不重复成功步骤。
+游戏创建使用 prepared 与独立 initial，普通资料及初始个人值共同提交。alreadyExists 按已有对象选项处理；活动、笔记、合集和配置分别使用完整操作。进度与源键对应按[批次合同](README.md#repeat)保存，失败不撤销已经成立的对象，继续不重复成功步骤。
 
 只对本次选择但实际未完成的内容说明原因；来源的显示偏好、正常默认值和未选择功能不逐项告警。正文、命令、完整记录和用户备份内容不进入运行日志。导入页面遵守[共同文案规范](../../ui/components.md#copy)。
 
@@ -161,8 +161,8 @@ saves/{saveId}.zip 保留在原输入中，作为原有归档保存。Vnite 将�
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

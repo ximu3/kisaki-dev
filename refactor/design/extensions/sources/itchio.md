@@ -47,7 +47,7 @@ search 和 resolve 遵循共同候选与 matching 规则。已知 itchio 身份�
 
 HTML 只读取项目介绍与平台生成的信息区域，安全转为共同 Markdown。论坛、评价、开发日志、购买弹窗和下载正文不混入介绍；源码或 HTML 不作为可执行组件加载。页面和公开 JSON 缺项、解析失败及来源确实为空分别处理，不能用搜索词补正文。
 
-没有正式多语言字段时，保留发布者实际文字，不承诺切换资料语言就能得到译文。不提供 originalName 或虚构 aliases；Languages 表示支持语言，不能成为 originalLanguages。published_at、created_at、updated_at 分别是平台发布或技术日期，不冒充作品首次发行。游戏模型没有独立发行状态字段，来源的开发阶段也不转成个人状态。
+没有正式多语言字段时，保留发布者实际文字，不承诺切换资料语言就能得到译文。不提供 originalName 或虚构 aliases；Languages 表示支持语言，不能成为 originalLanguages。published_at、created_at、updated_at 只说明平台发布或记录变更时间，作品首发日期需要独立依据。游戏模型没有独立发行状态字段，来源的开发阶段也不转成个人状态。
 
 公众星级与评价人数不属于本人评分。没有同义敏感／剧透字段时保持未知，不从某张图片、作者账号、页面警告或未出现成人标签反推 false。
 

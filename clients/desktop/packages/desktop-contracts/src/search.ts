@@ -1,22 +1,20 @@
 /** @fileoverview Defines bounded application search and category-correlated native navigation results. */
 
-import * as v from 'valibot'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
-import { DesktopError } from './errors'
-import type { CallOptions, ListOptions } from './operations'
-import { parseSearchTarget } from './ui/navigation'
 import type { SearchTarget } from './ui/navigation'
+import type { ListOptions, CallOptions } from './operations'
+import * as v from 'valibot'
 import {
-  id,
   nonemptyText,
-  nonnegativeInteger,
   parseExternalValue,
   parseValue,
   text,
+  nonnegativeInteger,
+  id,
 } from './validation'
-
-export type { SearchTarget } from './ui/navigation'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
+import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
+import { parseSearchTarget } from './ui/navigation'
+import { DesktopError } from './errors'
 
 export const searchCategories = Object.freeze([
   'catalog',
@@ -123,6 +121,7 @@ export function parseSearchResult<T extends SearchCategory>(
   category: T,
   input: unknown,
 ): SearchResult<T>
+
 export function parseSearchResult(category: SearchCategory, input: unknown): SearchResult {
   const value = parseValue(
     v.strictObject({
@@ -151,21 +150,4 @@ export function parseSearchResult(category: SearchCategory, input: unknown): Sea
 
   return value
 }
-
-/** Bound an already selected plain-text excerpt to 160 UTF-16 units, ending only at a complete extended grapheme. */
-export function truncateSearchExcerpt(input: string): string {
-  const value = parseValue(text, input, 'Invalid excerpt text')
-  if (value.length <= 160) {
-    return value
-  }
-
-  let end = 0
-  for (const part of new Intl.Segmenter('en', { granularity: 'grapheme' }).segment(value)) {
-    if (part.index + part.segment.length > 160) {
-      break
-    }
-    end = part.index + part.segment.length
-  }
-
-  return value.slice(0, end)
-}
+export type { SearchTarget } from './ui/navigation'

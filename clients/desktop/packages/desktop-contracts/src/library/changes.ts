@@ -1,32 +1,32 @@
 /** @fileoverview Defines complete-operation library facts and independently coalescible read invalidation areas. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { NonEmptyArray } from '../operations'
-import { id, nonemptyText, parseValue, readRecord, text, timestamp, unique } from '../validation'
-import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
 import type {
   EntryRef,
   ExternalIdentity,
   PartRef,
   PartType,
-  PartWorkType,
   WorkRef,
+  PartWorkType,
   WorkType,
 } from './catalog'
-import {
-  parseOrganizationWorkBinding,
-  parsePersonWorkBinding,
-  parseStoredWorkRelationBinding,
-  parseWorkCharacterBinding,
-} from './relations'
 import type {
-  OrganizationWorkBinding,
-  PersonWorkBinding,
-  StoredWorkRelationBinding,
   WorkCharacterBinding,
+  PersonWorkBinding,
+  OrganizationWorkBinding,
+  StoredWorkRelationBinding,
 } from './relations'
+import type { NonEmptyArray } from '../operations'
+import * as v from 'valibot'
+import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
+import { nonemptyText, text, id, unique, readRecord, parseValue, timestamp } from '../validation'
 import { partWorkType } from './parts'
+import { DesktopError } from '../errors'
+import {
+  parseWorkCharacterBinding,
+  parsePersonWorkBinding,
+  parseOrganizationWorkBinding,
+  parseStoredWorkRelationBinding,
+} from './relations'
 
 /** Minimal deleted/merged identity explanation; no body, image bytes, personal record or relationship graph is included. */
 export interface EntryIdentitySnapshot {
@@ -153,6 +153,7 @@ export type LibraryChange =
 
 /** One successful complete operation emits its own fact boundary; no-change success emits nothing. */
 export interface LibraryChanged {
+  /** UTC milliseconds since the Unix epoch. */
   readonly committedAt: number
   readonly changes: NonEmptyArray<LibraryChange>
 }
@@ -412,6 +413,7 @@ export function parseLibraryChanged(input: unknown): LibraryChanged {
   )
 }
 
+/** Validate a nonempty set of affected read areas, without interpreting it as a business fact or query result. */
 export function parseLibraryInvalidation(input: unknown): LibraryInvalidation {
   const area = v.picklist(libraryInvalidationAreas)
   return parseValue(

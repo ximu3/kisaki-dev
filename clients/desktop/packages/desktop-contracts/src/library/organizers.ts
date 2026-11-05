@@ -1,30 +1,29 @@
 /** @fileoverview Defines collections and tags as independent organizers with explicit member-side edits. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
 import type {
-  ListOptions,
-  ListResult,
-  NonEmptyArray,
-  CallOptions,
   StoredDefinition,
+  NonEmptyArray,
+  ListOptions,
+  CallOptions,
+  ListResult,
 } from '../operations'
+import type { DynamicRules } from './query/definition'
+import type { EntryRef } from './catalog'
 import type { PreparedAttachment } from '../resources'
-import { createTagNameKey } from '../text'
+import type { ReorderInput, MoveInput } from './ordering'
+import * as v from 'valibot'
 import {
-  id,
   nonemptyText,
-  optionalFields,
-  parseValue,
   text,
+  id,
+  parseValue,
+  optionalFields,
   unique,
   validateExpectedKeys,
 } from '../validation'
+import { parseDynamicRules } from './query/definition'
 import { entryRefSchema, preparedSchema } from './catalog'
-import type { EntryRef } from './catalog'
-import type { MoveInput, ReorderInput } from './ordering'
-import { parseDynamicRules } from './query'
-import type { DynamicRules } from './query-values'
+import { DesktopError } from '../errors'
 
 /** Organizer fields do not propagate sensitivity to their members. Markdown is preserved except wholly blank values. */
 export interface CollectionFields {
@@ -44,7 +43,9 @@ export interface TagFields {
 export type Collection = CollectionFields & {
   readonly id: string
   readonly sortOrder: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 } & (
     | { readonly membershipMode: 'manual'; readonly dynamicRules: null }
@@ -54,7 +55,9 @@ export type Collection = CollectionFields & {
 export interface Tag extends TagFields {
   readonly id: string
   readonly nameKey: string
+  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -177,12 +180,20 @@ export interface OrganizerMergeResult {
 
 /** Manual member operations never convert dynamic collections or modify the actual entries. */
 export interface CollectionMembersApi {
+  /**
+   * Read a manual collection's saved member associations and notes; dynamic results use the
+   * entry query surface.
+   */
   list(
     collectionId: string,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<CollectionMember>>
 
+  /**
+   * Compare and change the manual collection's complete ordered side atomically; hidden members
+   * are not an implicit removal request.
+   */
   applyChanges(
     collectionId: string,
     input: {
@@ -191,6 +202,11 @@ export interface CollectionMembersApi {
     },
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Compare and change this member's note without editing the entry or its other collection
+   * memberships.
+   */
   update(
     collectionId: string,
     entry: EntryRef,
@@ -198,19 +214,38 @@ export interface CollectionMembersApi {
     call?: CallOptions,
   ): Promise<void>
 
+  /** Reorder selected member slots against the manual collection's complete order baseline. */
   reorder(collectionId: string, input: ReorderInput<EntryRef>, call?: CallOptions): Promise<void>
+
+  /**
+   * Move the supplied manual members within current order; this operation never converts a
+   * dynamic collection.
+   */
   move(collectionId: string, input: MoveInput<EntryRef>, call?: CallOptions): Promise<void>
 }
 
 /** Tag-entry applications have separate note/spoiler attributes and their own order on each real side. */
 export interface TagEntriesApi {
+  /**
+   * Read the tag's visible applications and their saved application attributes in tag-side
+   * order.
+   */
   list(tagId: string, options: ListOptions, call?: CallOptions): Promise<ListResult<TagEntry>>
 
+  /**
+   * Compare and change this tag's complete ordered application side; removing its last
+   * application leaves the tag intact.
+   */
   applyChanges(
     tagId: string,
     input: { readonly change: TagEntryChange; readonly expected?: readonly TagEntry[] },
     call?: CallOptions,
   ): Promise<void>
+
+  /**
+   * Compare and change only this application's note or spoiler flag; the tag's shared definition
+   * remains unchanged.
+   */
   update(
     tagId: string,
     entry: EntryRef,
@@ -221,31 +256,81 @@ export interface TagEntriesApi {
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Reorder selected application slots against the complete tag-side baseline, preserving
+   * entry-side tag order.
+   */
   reorder(tagId: string, input: ReorderInput<EntryRef>, call?: CallOptions): Promise<void>
+
+  /**
+   * Move the supplied applications in the tag's current order without changing order on their
+   * entry sides.
+   */
   move(tagId: string, input: MoveInput<EntryRef>, call?: CallOptions): Promise<void>
 }
 
 /** Collection merge requires manual participants; conversion first evaluates complete data in one atomic operation. */
 export interface CollectionsApi {
+  /**
+   * Read visible collection summaries and their current projections without materializing
+   * dynamic membership.
+   */
   list(
     query: CollectionQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<CollectionListItem>>
+
+  /**
+   * Read saved collection configuration; an invalid stored dynamic rule remains explicit instead
+   * of broadening membership.
+   */
   get(id: string, call?: CallOptions): Promise<Collection | null>
 
+  /**
+   * Commit a manual collection with explicit members or a dynamic collection with complete
+   * rules; no background membership copy is created.
+   */
   create(input: CollectionCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and commit changed collection facts or the complete dynamic rule value; membership
+   * mode is not an ordinary field edit.
+   */
   update(id: string, input: CollectionUpdate, call?: CallOptions): Promise<void>
+
+  /**
+   * Delete this collection and its owned references while retaining member entries and their
+   * personal records.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Merge only manual collections into the chosen target under fixed current-fact rules; any
+   * invalid participant rolls back the whole operation.
+   */
   merge(input: OrganizerMerge, call?: CallOptions): Promise<OrganizerMergeResult>
+
+  /**
+   * Compare the saved rules and materialize their complete unfiltered result in one commit,
+   * retaining this collection's identity.
+   */
   convertToManual(
     id: string,
     input: { readonly expected: { readonly dynamicRules: DynamicRules } },
     call?: CallOptions,
   ): Promise<void>
 
+  /**
+   * Reorder selected collection slots against the complete library collection order, independent
+   * of membership changes.
+   */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
+
+  /**
+   * Move the selected collections in current library order; entry-side collection lists follow
+   * that same order.
+   */
   move(input: MoveInput, call?: CallOptions): Promise<void>
 
   readonly members: CollectionMembersApi
@@ -253,14 +338,43 @@ export interface CollectionsApi {
 
 /** Tags remain after their final application is removed. Creation/name conflicts never imply an automatic merge. */
 export interface TagsApi {
+  /**
+   * Read visible tag summaries, including unused tags, under the requested name and application
+   * filters.
+   */
   list(query: TagQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<TagListItem>>
+
+  /** Read the saved shared tag definition without changing any application. */
   get(id: string, call?: CallOptions): Promise<Tag | null>
+
+  /**
+   * Look up a tag using the canonical name rule; committing operations still recheck name
+   * uniqueness against actual records.
+   */
   findByName(name: string, call?: CallOptions): Promise<Tag | null>
 
+  /**
+   * Create an independent tag after a full canonical-name uniqueness check; a conflict never
+   * silently merges or edits an existing tag.
+   */
   create(input: TagCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and commit changed shared tag facts; application notes, spoiler flags and orders
+   * remain separate.
+   */
   update(id: string, input: TagUpdate, call?: CallOptions): Promise<void>
+
+  /**
+   * Delete the tag and its applications without deleting entries or personal records;
+   * referencing rules retain an unavailable identity.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Merge definitions, applications and formal references into the explicit target atomically
+   * using the fixed merge rules.
+   */
   merge(input: OrganizerMerge, call?: CallOptions): Promise<OrganizerMergeResult>
 
   readonly entries: TagEntriesApi
@@ -277,7 +391,9 @@ const description = v.pipe(
 )
 
 export const tagEntries = { name, description, isNsfw: v.boolean() }
+
 const collectionEntries = { ...tagEntries, primaryImageId: v.nullable(id) }
+
 const dynamicRules = v.pipe(v.unknown(), v.transform(parseDynamicRules))
 
 const sort = v.union([
@@ -314,6 +430,7 @@ export function parseCollectionQuery(input: unknown): CollectionQuery {
   )
 }
 
+/** Validate tag-directory search, sort and optional usage filtering without changing tag applications. */
 export function parseTagQuery(input: unknown): TagQuery {
   return parseValue(
     v.strictObject({ search: text, sort, used: v.exactOptional(v.boolean()) }),
@@ -375,7 +492,6 @@ export function parseTagCreate(input: unknown): TagCreate {
     input,
     'Invalid tag creation',
   )
-  createTagNameKey(value.name)
   return value
 }
 

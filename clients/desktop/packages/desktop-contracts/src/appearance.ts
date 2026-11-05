@@ -1,38 +1,35 @@
 /** @fileoverview Combines the shared visual vocabulary with desktop theme identity, font resources and preview lifetimes. */
 
-import * as v from 'valibot'
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
+import type { FontRef, FontFileMetadata } from './fonts'
+import type { NonEmptyArray, CallOptions, Disposable, Listener } from './operations'
 import type {
-  ColorScheme,
-  FontTokenName,
-  TokenName,
-  TokenValues,
   VisualTokenName,
+  FontTokenName,
+  ColorScheme,
+  TokenValues,
+  TokenName,
 } from '@kisaki3/desktop-appearance/tokens'
-import { light, dark } from '@kisaki3/desktop-appearance/defaults'
-import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { normalizeLocalizedText, parseId } from '@kisaki3/extension-distribution/metadata'
-import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
-import { DesktopError } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseFontRef } from './fonts'
-import type { FontFileMetadata, FontRef } from './fonts'
-import type { CallOptions, Disposable, Listener, NonEmptyArray } from './operations'
 import type { ReadResourceRef } from './resources'
+import type { ErrorSummary } from './errors'
+import * as v from 'valibot'
 import {
   id,
-  integer,
-  nonemptyText,
-  optionalFields,
   parseExternalValue,
+  integer,
   parseValue,
   readRecord,
-  text,
+  nonemptyText,
+  optionalFields,
   validateExpectedKeys,
+  text,
 } from './validation'
-
-export type { ColorScheme } from '@kisaki3/desktop-appearance/tokens'
+import { parseId, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
+import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
+import { parseFontRef } from './fonts'
+import { tokens } from '@kisaki3/desktop-appearance/tokens'
+import { DesktopError } from './errors'
+import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 
 /** A selected definition keeps its origin and stable ID even while unavailable. */
 export type ThemeRef =
@@ -64,6 +61,7 @@ export type UserAppearanceTokens = Readonly<
 
 export interface AppearancePreferences {
   readonly mode: 'system' | ColorScheme
+  /** Integer UI scale in percent, from 75 through 200; text and content zoom remain separate. */
   readonly interfaceScale: number
   readonly theme: ThemeRef
 }
@@ -115,6 +113,10 @@ export interface ThemeRead {
   readonly theme: Theme
   readonly fontResources: ThemeFontResources
 
+  /**
+   * Release this read's font-resource holds idempotently; its plain snapshot remains readable
+   * and other reads stay valid.
+   */
   dispose(): Promise<void>
 }
 
@@ -122,8 +124,16 @@ export interface ThemeRead {
 export interface ThemeRegistration {
   readonly ref: Extract<ThemeRef, { readonly type: 'extension' }>
 
+  /**
+   * Validate and replace the complete definition atomically, preserving this registration's
+   * identity and old value on failure.
+   */
   update(input: ThemeDefinition, call?: CallOptions): Promise<void>
 
+  /**
+   * Remove only this registration; already acquired reads keep their holds, and a later
+   * registration is unaffected.
+   */
   dispose(): Promise<void>
 }
 
@@ -134,10 +144,22 @@ export interface AppearancePreviewInput {
 
 /** One actual view owns a preview; takeover ends the previous handle, and late updates cannot affect the new owner. */
 export interface AppearancePreview {
+  /**
+   * Validate, prepare and publish the new branch; failure preserves the current preview, and
+   * ended handles reject updates.
+   */
   update(input: AppearancePreviewInput): Promise<void>
 
+  /**
+   * End this preview idempotently and resolve the latest saved appearance; do not restore the
+   * editor's opening snapshot.
+   */
   dispose(): Promise<void>
 
+  /**
+   * Notify once when this handle ends, including a subscription made after it has ended;
+   * releasing only removes the listener.
+   */
   onDispose(listener: () => void): Disposable
 }
 
@@ -157,6 +179,7 @@ export interface ViewFontFace {
 
 export interface ViewAppearance {
   readonly colorScheme: ColorScheme
+  /** UI scale in percent. */
   readonly interfaceScale: number
   readonly cssVariables: TokenValues
   readonly fontFaces: readonly ViewFontFace[]
@@ -175,6 +198,7 @@ export type AppearanceIssue =
 export interface AppearanceState {
   readonly theme: ThemeRef | null
   readonly colorScheme: ColorScheme
+  /** UI scale in percent. */
   readonly interfaceScale: number
   readonly tokens: AppearanceTokens
   readonly issues: readonly AppearanceIssue[]
@@ -182,29 +206,63 @@ export interface AppearanceState {
 
 /** The complete desktop theme surface; the SDK binds register's complete ref to the real extension before forwarding. */
 export interface ThemesApi {
+  /** Read available theme identities and display names without acquiring their font resources. */
   list(call?: CallOptions): Promise<readonly Pick<Theme, 'ref' | 'name'>[]>
+
+  /**
+   * Read the complete definition for browsing or editing without acquiring a ThemeRead; absence
+   * returns null.
+   */
   get(ref: ThemeRef, call?: CallOptions): Promise<Theme | null>
 
+  /**
+   * Commit a user theme with two complete branches without selecting it or saving any
+   * preferences draft.
+   */
   create(
     input: UserThemeCreate,
     call?: CallOptions,
   ): Promise<Extract<ThemeRef, { readonly type: 'user' }>>
+
+  /**
+   * Prepare extension-private font files, then commit the copied theme and new user fonts
+   * atomically; existing user fonts retain shared identities.
+   */
   clone(
     ref: ThemeRef,
     input: { readonly name: string },
     call?: CallOptions,
   ): Promise<Extract<ThemeRef, { readonly type: 'user' }>>
+
+  /**
+   * Compare and commit only the changed name, tokens and complete font selections; a failed
+   * comparison preserves the saved theme.
+   */
   update(id: string, input: UserThemeUpdate, call?: CallOptions): Promise<void>
+
+  /** Delete a user theme without deleting its fonts or rewriting consumers' saved references. */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /**
+   * Acquire a fixed definition and all required font resources; any failed acquisition releases
+   * partial holds and rejects the read.
+   */
   open(ref: ThemeRef, call?: CallOptions): Promise<ThemeRead>
 
+  /**
+   * Register a complete theme for the actual extension owner; duplicate local identities fail,
+   * and the returned handle owns removal.
+   */
   register(
     ref: Extract<ThemeRef, { readonly type: 'extension' }>,
     input: ThemeDefinition,
     call?: CallOptions,
   ): Promise<ThemeRegistration>
 
+  /**
+   * Subscribe before reading the theme directory; notifications request a new snapshot without
+   * replacing an editing draft.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -212,9 +270,22 @@ export interface ThemesApi {
 export interface AppearanceApi {
   readonly themes: ThemesApi
 
+  /**
+   * Read effective appearance and availability issues without creating a preview or changing the
+   * saved selection.
+   */
   getState(call?: CallOptions): Promise<AppearanceState>
+
+  /**
+   * Deliver current effective appearance and subsequent changes; releasing observation leaves
+   * appearance state unchanged.
+   */
   observe(listener: Listener<AppearanceState>, call?: CallOptions): Promise<Disposable>
 
+  /**
+   * Take over the one application preview for the actual view. Resolve after validation,
+   * resource preparation and publication, before all documents necessarily render.
+   */
   preview(input: AppearancePreviewInput, call?: CallOptions): Promise<AppearancePreview>
 }
 
@@ -232,6 +303,7 @@ const themeRef = v.variant('type', [
 ])
 
 const colorScheme = v.picklist(['light', 'dark'])
+
 const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
 
 const extensionFile = v.strictObject({
@@ -402,7 +474,12 @@ export function parseViewAppearance(input: unknown): ViewAppearance {
     v.strictObject({
       colorScheme,
       interfaceScale: scale,
-      cssVariables: v.pipe(v.unknown(), v.transform(parseTokenValues)),
+      cssVariables: v.pipe(
+        v.unknown(),
+        v.transform((value) =>
+          parseExternalValue(parseTokenValues, value, 'Invalid view appearance tokens'),
+        ),
+      ),
       fontFaces: v.array(
         v.strictObject({
           family: nonemptyText,
@@ -423,12 +500,4 @@ export function parseViewAppearance(input: unknown): ViewAppearance {
   )
 }
 
-/** Desktop defaults reuse the delivered visual values, replacing only the two font stacks with their default selections. */
-export function getDefaultTheme(): Theme {
-  return {
-    ref: { type: 'builtin', id: 'default' },
-    name: 'Default',
-    light: { ...light, '--font-sans': { type: 'default' }, '--font-mono': { type: 'default' } },
-    dark: { ...dark, '--font-sans': { type: 'default' }, '--font-mono': { type: 'default' } },
-  }
-}
+export type { ColorScheme } from '@kisaki3/desktop-appearance/tokens'

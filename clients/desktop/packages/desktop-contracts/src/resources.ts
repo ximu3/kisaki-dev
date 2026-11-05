@@ -1,9 +1,9 @@
 /** @fileoverview Separates transient file inputs, acquired content and view-bound resource addresses. */
 
 import * as v from 'valibot'
-import { DesktopError } from './errors'
+import { id, text, nonemptyText, parseDictionary, parseValue } from './validation'
 import { parseHttpUrl } from './network'
-import { id, nonemptyText, parseDictionary, parseValue, text } from './validation'
+import { DesktopError } from './errors'
 
 /** An opaque reference to already acquired, fixed content; the actual caller determines its authority. */
 export interface ReadResourceRef {
@@ -30,6 +30,10 @@ export interface PreparedAttachment {
   readonly attachmentId: string
   readonly resource: ReadResourceRef
 
+  /**
+   * Release this preparation hold idempotently after use; adopted references and other holders
+   * remain valid.
+   */
   dispose(): Promise<void>
 }
 
@@ -37,6 +41,10 @@ export interface PreparedAttachment {
 export interface ReadResource {
   readonly resource: ReadResourceRef
 
+  /**
+   * Stop new reads through this handle and await in-flight cleanup; repeated disposal does not
+   * affect other holders.
+   */
   dispose(): Promise<void>
 }
 
@@ -44,15 +52,21 @@ export interface ReadResource {
 export interface ViewResourceBinding {
   readonly urls: Readonly<Record<string, string>>
 
+  /** Revoke this binding's URLs and release only its holds; other view bindings remain valid. */
   dispose(): Promise<void>
 }
 
 /** Binds already acquired content to the actual view, preserving input keys and acquiring independent holds. */
 export interface ViewResourcesApi {
+  /**
+   * Acquire independent holds for the actual view and return URLs under the same keys; failure
+   * cleans partial bindings without consuming the caller's holds.
+   */
   bind(resources: Readonly<Record<string, ReadResourceRef>>): Promise<ViewResourceBinding>
 }
 
 const resourceSchema = v.strictObject({ id })
+
 const headerName = v.pipe(text, v.regex(/^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/))
 
 const headerValue = v.pipe(

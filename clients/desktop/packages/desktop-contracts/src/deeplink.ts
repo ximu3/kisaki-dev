@@ -1,24 +1,24 @@
 /** @fileoverview Parses and formats the closed native links and lossless owner-scoped extension links using WHATWG URL semantics. */
 
+import type { NativeViewTarget, EntryIdentifier } from './ui/navigation'
+import type {
+  GameOpenInput,
+  AnimeOpenInput,
+  ComicOpenInput,
+  NovelOpenInput,
+} from './sessions/targets'
+import type { WorkType, EntryType, ExternalIdentity } from './library/catalog'
+import type { IdentificationClues } from './metadata/fields'
+import type { ExecutionContext, Registration } from './operations'
 import * as v from 'valibot'
+import { parseExternalValue, readRecord, parseValue, omitFields, id, text } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from './errors'
-import { parseStrictJson } from './json'
-import type { ExecutionContext, Registration } from './operations'
-import { entryTypes, isWorkType, parseExternalIdentity, workTypes } from './library/catalog'
-import type { EntryType, ExternalIdentity, WorkType } from './library/catalog'
+import { parseNativeViewTarget, parseEntryIdentifier, entrySelectionEntries } from './ui/navigation'
+import { workTypes, entryTypes, isWorkType } from './library/catalog'
+import { openSelectionEntries, openTargetSchema } from './sessions/targets'
 import { parseIdentificationClues } from './metadata/fields'
-import type { IdentificationClues } from './metadata/fields'
-import {
-  parseAnimeOpenInput,
-  parseComicOpenInput,
-  parseGameOpenInput,
-  parseNovelOpenInput,
-} from './sessions'
-import type { AnimeOpenInput, ComicOpenInput, GameOpenInput, NovelOpenInput } from './sessions'
-import { entrySelectionEntries, parseEntryIdentifier, parseNativeViewTarget } from './ui/navigation'
-import type { EntryIdentifier, NativeViewTarget } from './ui/navigation'
-import { id, omitFields, parseExternalValue, parseValue, readRecord, text } from './validation'
+import { parseStrictJson } from './json'
 
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
 
@@ -110,13 +110,6 @@ const extensionIdentity = v.pipe(
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
 
-const openSelectors = {
-  game: ['launchConfigId'],
-  anime: ['episodeId', 'extraId', 'fileId', 'position'],
-  comic: ['volumeId', 'chapterId', 'fileId', 'position'],
-  novel: ['volumeId', 'fileId', 'position'],
-} as const
-
 function invalid(message = 'Invalid application link'): never {
   throw new DesktopError('InvalidInput', message)
 }
@@ -143,47 +136,14 @@ function parsePublicView(input: unknown): PublicViewTarget {
 function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   const record = readRecord(input)
   const workType = parseValue(v.picklist(workTypes), record.workType)
-  const fields = Object.fromEntries(
-    openSelectors[workType].map((key) => [key, v.exactOptional(v.unknown())]),
-  )
-  const target = parseValue(
-    v.strictObject({
+  return parseValue(
+    openTargetSchema(workType, {
       workType: v.literal(workType),
       identifier: v.pipe(v.unknown(), v.transform(parseEntryIdentifier)),
-      ...fields,
     }),
     input,
-  )
-  const { identifier } = target
-  const selection = omitFields(target, ['identifier', 'workType'])
-
-  // Reuse actual session selector checks; the placeholder identity is never returned or used for a lookup.
-  switch (workType) {
-    case 'game':
-      return {
-        workType,
-        identifier,
-        ...omitFields(parseGameOpenInput({ gameId: 'root', ...selection }), ['gameId']),
-      }
-    case 'anime':
-      return {
-        workType,
-        identifier,
-        ...omitFields(parseAnimeOpenInput({ animeId: 'root', ...selection }), ['animeId']),
-      }
-    case 'comic':
-      return {
-        workType,
-        identifier,
-        ...omitFields(parseComicOpenInput({ comicId: 'root', ...selection }), ['comicId']),
-      }
-    case 'novel':
-      return {
-        workType,
-        identifier,
-        ...omitFields(parseNovelOpenInput({ novelId: 'root', ...selection }), ['novelId']),
-      }
-  }
+    'Invalid open link target',
+  ) as DeeplinkOpenTarget
 }
 
 function parseAddInput(input: unknown): DeeplinkAddInput {
@@ -249,10 +209,10 @@ export function parseRequest(input: unknown): DeeplinkRequest {
 
 function readIdentifier(parts: readonly string[]): EntryIdentifier {
   if (parts[0] === 'local' && parts.length === 2) {
-    return parseEntryIdentifier({ type: 'local', id: parts[1] })
+    return { type: 'local', id: parts[1]! }
   }
   if (parts[0] === 'external' && parts.length === 3) {
-    return parseEntryIdentifier({ type: 'external', source: parts[1], sourceId: parts[2] })
+    return { type: 'external', source: parts[1]!, sourceId: parts[2]! }
   }
 
   return invalid('Invalid entry link address')
@@ -337,11 +297,10 @@ export function parse(input: string): DeeplinkRequest {
   const fragment = raw[5] === undefined ? undefined : decode(raw[5])
 
   if (url.hostname === 'extension') {
-    const extensionId = parseExternalValue(parseId, path[0], 'Invalid extension link identity')
     return parseRequest({
       scheme,
       type: 'extension',
-      extensionId,
+      extensionId: path[0],
       path: path.slice(1),
       query,
       ...(fragment === undefined ? {} : { fragment }),
@@ -387,9 +346,7 @@ export function parse(input: string): DeeplinkRequest {
       ...(parameters.source === undefined
         ? {}
         : {
-            externalIdentities: [
-              parseExternalIdentity({ source: parameters.source, sourceId: parameters.sourceId }),
-            ],
+            externalIdentities: [{ source: parameters.source, sourceId: parameters.sourceId }],
           }),
     }
 
@@ -406,7 +363,7 @@ export function parse(input: string): DeeplinkRequest {
 
   if (url.hostname === 'open') {
     const workType = parseValue(v.picklist(workTypes), path[0])
-    requireKeys(parameters, openSelectors[workType])
+    requireKeys(parameters, Object.keys(openSelectionEntries[workType]))
     return parseRequest({
       scheme,
       type: 'open',

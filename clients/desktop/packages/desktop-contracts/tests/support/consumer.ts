@@ -10,7 +10,7 @@ import { runPnpm } from '@kisaki3/tooling/process'
 
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Install only packed outputs. Overrides supply the still-unpublished public dependency versions without workspace/source aliases. */
+/** Install the contract package and its packed dependencies for an independent consumer. */
 export function consumerTest(scenario: 'node' | 'browser') {
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-contracts-${scenario}-`))
@@ -39,11 +39,23 @@ export function consumerTest(scenario: 'node' | 'browser') {
 
     await runPnpm(['install', '--ignore-scripts'], { cwd: consumerDirectory })
 
+    // Include every published declaration through the same package resolution used by the consumer.
+    const installed = JSON.parse(
+      await readFile(
+        join(consumerDirectory, 'node_modules/@kisaki3/desktop-contracts/package.json'),
+        'utf8',
+      ),
+    ) as { name: string; exports: Record<string, unknown> }
+    const imports = Object.keys(installed.exports).map(
+      (subpath) => `import '${installed.name}${subpath.slice(1)}'`,
+    )
+    await writeFile(join(consumerDirectory, 'public-entries.d.ts'), imports.join('\n'))
+
     return consumerDirectory
   })
 }
 
-/** Check the consumers' own source with its installed types, not workspace path aliases or disabled declaration checks. */
+/** Lint the consumer against its own project and installed declarations. */
 export async function lintConsumer(directory: string): Promise<ESLint.LintResult[]> {
   const lint = new ESLint({
     cwd: directory,

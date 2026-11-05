@@ -1,24 +1,24 @@
 /** @fileoverview Defines field-only batch processors and validates complete or explicitly partial per-key results. */
 
-import * as v from 'valibot'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import type { CallOptions, ExecutionContext, Registration } from '../operations'
-import { id, parseValue, readRecord, unique } from '../validation'
-import { entryTypes, partTypes } from '../library/catalog'
 import type { EntryType, PartType } from '../library/catalog'
-import {
-  parseIdentificationFields,
-  parseMetadataFieldRef,
-  parseMetadataFieldValue,
-  parsePartIdentificationFields,
-} from './fields'
 import type {
   IdentificationFields,
+  PartIdentificationFields,
   MetadataFieldRef,
   MetadataFieldValue,
-  PartIdentificationFields,
 } from './fields'
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
+import type { ExecutionContext, CallOptions, Registration } from '../operations'
+import { parseValue, id, unique, readRecord } from '../validation'
+import * as v from 'valibot'
+import { entryTypes, partTypes } from '../library/catalog'
+import {
+  parseIdentificationFields,
+  parsePartIdentificationFields,
+  parseMetadataFieldRef,
+  parseMetadataFieldValue,
+} from './fields'
+import { DesktopError } from '../errors'
 
 /** Only necessary original identification context is shared, without local database IDs or unrelated resource credentials. */
 export type ProcessingEntryContext = {
@@ -59,6 +59,10 @@ export interface MetadataFieldProcessor {
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
 
+  /**
+   * Process only the supplied field values; normal completion covers every input key, while
+   * failure may retain valid completed keys.
+   */
   process(input: FieldProcessingInput, context: ExecutionContext): Promise<FieldProcessingResult>
 }
 
@@ -71,9 +75,19 @@ export interface MetadataFieldProcessorDescriptor {
 
 /** Registration only publishes an implementation; profiles explicitly select its ID and order for each allowed field. */
 export interface MetadataFieldProcessorsApi {
+  /**
+   * Read registered processor descriptions and supported fields without executing any
+   * processing.
+   */
   list(call?: CallOptions): Promise<readonly MetadataFieldProcessorDescriptor[]>
+
+  /** Read the current descriptor for one complete processor identity. */
   get(processorId: string, call?: CallOptions): Promise<MetadataFieldProcessorDescriptor | null>
 
+  /**
+   * Register field processing for the actual owner and instance; profiles still explicitly
+   * choose its fields and execution order.
+   */
   register(
     processorId: string,
     processor: MetadataFieldProcessor,

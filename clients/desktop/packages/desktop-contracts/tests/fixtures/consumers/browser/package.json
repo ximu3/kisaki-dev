@@ -6,8 +6,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@kisaki3/desktop-contracts": "0.1.0-dev.0",
-    "intl-messageformat": "12.1.4"
+    "@kisaki3/desktop-contracts": "0.1.0-dev.0"
   },
   "devDependencies": {
     "typescript": "6.0.3",

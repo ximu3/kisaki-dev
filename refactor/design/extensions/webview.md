@@ -60,7 +60,7 @@ iframe 的 sandbox 仅包含 allow-scripts 与 allow-same-origin，不开放弹�
 
 原生 UI、Node 与 Webview 通过 `ui.openExternal(url: string): Promise<void>` 发起明确的外部链接动作。原生拥有者验证完整 HTTP(S) URL，拒绝带用户名／密码的地址及其他 scheme，再交给系统浏览器。Node 使用 context.ui.openExternal，Webview 使用绑定当前视图的 ui.openExternal。被拒绝的导航、重定向与 window.open 保持拒绝结果，不自动外开或重试业务。
 
-CSP 可能在导航事件前拒绝目标并使文档进入加载失败。宿主应撤销已失效 document 的通道，显示准确的视图加载问题，不能假装旧页面和草稿仍完整可用，也不能直接重放保存操作。正常宿主关闭或离开视图继续走[关闭确认](#closing)；扩展自己重载文档不等于保存。
+CSP 可能在导航事件前拒绝目标并使文档进入加载失败。宿主撤销失效 document 的通道，显示视图加载失败。旧页面和草稿的状态可能已丢失，已经发出的保存操作不自动重放。正常宿主关闭或离开视图继续走[关闭确认](#closing)；扩展自己重载文档不等于保存。
 
 实际 Session 同时安装 setPermissionCheckHandler 与 setPermissionRequestHandler；Webview 的浏览器权限默认拒绝，未知权限与无法绑定的来源也拒绝，不沿用 Electron 的宽松缺省。相机、麦克风、定位、通知、剪贴板读取、文件系统及设备访问等不因加载扩展页面自动获准；iframe 不额外委托这些权限。原生能力按自己的窗口规则提供，不能以共用 Session 为由一并放开。普通输入控件的用户复制、粘贴与获准读取系统剪贴板的 API 不是同一权限。两类处理器的责任见 [Electron Session](https://www.electronjs.org/docs/latest/api/session)。
 

@@ -1,0 +1,345 @@
+/** @fileoverview Defines requested projection fields and validates their entry-specific result shapes. */
+
+import * as v from 'valibot'
+import {
+  nonnegativeInteger,
+  text,
+  id,
+  rating,
+  timestamp,
+  parseValue,
+  nonemptyText,
+} from '../../validation'
+import {
+  partialDateSchema,
+  languageSchema,
+  statusSchema,
+  releaseStatusSchema,
+  genderSchema,
+  measureSchema,
+  calendarDateSchema,
+  entryTypes,
+} from '../catalog'
+import { entryFieldTypes } from './fields'
+import type { PartialDate, CalendarDate } from '../../date'
+import type {
+  LanguageTag,
+  WorkStatus,
+  ReleaseStatus,
+  AnimeEpisodeType,
+  AnimeExtraType,
+  Gender,
+  BloodType,
+  CharacterMeasure,
+  EntryType,
+} from '../catalog'
+import type { EntryQuery } from './definition'
+import { DesktopError } from '../../errors'
+
+const counts = v.strictObject({
+  registered: nonnegativeInteger,
+  completed: nonnegativeInteger,
+  withFiles: nonnegativeInteger,
+  accessible: nonnegativeInteger,
+})
+
+function classifiedCounts(keys: readonly string[]) {
+  return v.strictObject({
+    ...counts.entries,
+    byType: v.strictObject(Object.fromEntries(keys.map((key) => [key, counts]))),
+  })
+}
+
+const partCountSchemas = {
+  anime: v.strictObject({
+    animeEpisode: classifiedCounts(['regular', 'special', 'unknown']),
+    animeExtra: classifiedCounts([
+      'opening',
+      'ending',
+      'promotion',
+      'interview',
+      'other',
+      'unknown',
+    ]),
+  }),
+  comic: v.strictObject({ comicVolume: counts, comicChapter: counts }),
+  novel: v.strictObject({ novelVolume: counts }),
+}
+
+const date = v.nullable(partialDateSchema)
+
+const count = v.nullable(nonnegativeInteger)
+
+const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>, v.GenericSchema>> =
+  {
+    originalName: v.nullable(text),
+    sortName: v.nullable(text),
+    primaryImageId: v.nullable(id),
+
+    isNsfw: v.boolean(),
+    favorite: v.boolean(),
+    rating: v.nullable(rating),
+
+    addedDate: date,
+    effectiveAddedDate: partialDateSchema,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+
+    releaseDate: date,
+    originalLanguages: v.array(languageSchema),
+    status: v.nullable(statusSchema),
+    additionalDurationMs: nonnegativeInteger,
+
+    releaseStatus: v.nullable(releaseStatusSchema),
+    releaseEndDate: date,
+    declaredDurationMs: count,
+    declaredRegularEpisodeCount: count,
+    declaredSpecialEpisodeCount: count,
+    declaredPageCount: count,
+    declaredVolumeCount: count,
+    declaredChapterCount: count,
+
+    birthDate: date,
+    gender: v.nullable(genderSchema),
+    deathDate: date,
+    bloodType: v.nullable(v.picklist(['a', 'b', 'ab', 'o'])),
+    age: v.nullable(measureSchema),
+    height: v.nullable(measureSchema),
+    weight: v.nullable(measureSchema),
+    bust: v.nullable(measureSchema),
+    waist: v.nullable(measureSchema),
+    hips: v.nullable(measureSchema),
+    cupSize: v.nullable(text),
+
+    foundedDate: date,
+    dissolvedDate: date,
+
+    totalDurationMs: nonnegativeInteger,
+    lastActiveAt: v.nullable(timestamp),
+    completionCount: nonnegativeInteger,
+    firstCompletedDate: v.nullable(calendarDateSchema),
+    lastCompletedDate: v.nullable(calendarDateSchema),
+
+    registeredFileCount: nonnegativeInteger,
+    accessibleFileCount: nonnegativeInteger,
+    uncheckedFileCount: nonnegativeInteger,
+  }
+
+/** Check exactly the requested applicable values; missing, unrequested and inapplicable properties all fail. */
+export function parseEntryListItem(
+  input: unknown,
+  fields: readonly EntryProjectionField[] = [],
+): EntryListItem {
+  const { type } = parseValue(
+    v.looseObject({ type: v.picklist(entryTypes) }),
+    input,
+    'Invalid entry projection',
+  )
+
+  const selected: Record<string, v.GenericSchema> = {}
+  for (const field of fields) {
+    if (!entryFieldTypes[field].includes(type)) {
+      continue
+    }
+    if (field === 'partCounts') {
+      if (type === 'anime' || type === 'comic' || type === 'novel') {
+        selected[field] = partCountSchemas[type]
+      }
+    } else {
+      selected[field] = fieldSchemas[field]
+    }
+  }
+
+  return parseValue(
+    v.strictObject({ ...selected, id, type: v.literal(type), name: nonemptyText }),
+    input,
+    'Invalid entry projection',
+  ) as EntryListItem
+}
+
+/** These four counts describe separate facts; unknown anime classification is a read-only grouping key. */
+export interface PartCounts {
+  readonly registered: number
+  readonly completed: number
+  readonly withFiles: number
+  readonly accessible: number
+}
+
+interface CommonProjection {
+  readonly originalName: string | null
+  readonly sortName: string | null
+  readonly primaryImageId: string | null
+
+  readonly isNsfw: boolean
+  readonly favorite: boolean
+  readonly rating: number | null
+
+  readonly addedDate: PartialDate | null
+  readonly effectiveAddedDate: PartialDate
+  /** UTC milliseconds since the Unix epoch. */
+  readonly createdAt: number
+  /** UTC milliseconds since the Unix epoch. */
+  readonly updatedAt: number
+}
+
+interface WorkProjection {
+  readonly releaseDate: PartialDate | null
+  readonly originalLanguages: readonly LanguageTag[]
+  readonly status: WorkStatus | null
+
+  readonly additionalDurationMs: number
+  readonly totalDurationMs: number
+  /** UTC milliseconds since the Unix epoch. */
+  readonly lastActiveAt: number | null
+  readonly completionCount: number
+  readonly firstCompletedDate: CalendarDate | null
+  readonly lastCompletedDate: CalendarDate | null
+}
+
+interface MediaProjection {
+  readonly releaseStatus: ReleaseStatus | null
+  readonly releaseEndDate: PartialDate | null
+
+  readonly registeredFileCount: number
+  readonly accessibleFileCount: number
+  readonly uncheckedFileCount: number
+}
+
+/** Only applicable branches contain requested fields. Unrequested fields are absent rather than filled with null. */
+export interface EntryProjectionByType {
+  readonly game: CommonProjection & WorkProjection
+
+  readonly anime: CommonProjection &
+    WorkProjection &
+    MediaProjection & {
+      readonly declaredDurationMs: number | null
+      readonly declaredRegularEpisodeCount: number | null
+      readonly declaredSpecialEpisodeCount: number | null
+      readonly partCounts: {
+        readonly animeEpisode: PartCounts & {
+          readonly byType: Readonly<Record<AnimeEpisodeType | 'unknown', PartCounts>>
+        }
+        readonly animeExtra: PartCounts & {
+          readonly byType: Readonly<Record<AnimeExtraType | 'unknown', PartCounts>>
+        }
+      }
+    }
+
+  readonly comic: CommonProjection &
+    WorkProjection &
+    MediaProjection & {
+      readonly declaredPageCount: number | null
+      readonly declaredVolumeCount: number | null
+      readonly declaredChapterCount: number | null
+      readonly partCounts: { readonly comicVolume: PartCounts; readonly comicChapter: PartCounts }
+    }
+
+  readonly novel: CommonProjection &
+    WorkProjection &
+    MediaProjection & {
+      readonly declaredPageCount: number | null
+      readonly declaredVolumeCount: number | null
+      readonly partCounts: { readonly novelVolume: PartCounts }
+    }
+
+  readonly character: CommonProjection & {
+    readonly birthDate: PartialDate | null
+    readonly gender: Gender | null
+    readonly bloodType: BloodType | null
+    readonly age: CharacterMeasure | null
+    readonly height: CharacterMeasure | null
+    readonly weight: CharacterMeasure | null
+    readonly bust: CharacterMeasure | null
+    readonly waist: CharacterMeasure | null
+    readonly hips: CharacterMeasure | null
+    readonly cupSize: string | null
+  }
+
+  readonly person: CommonProjection & {
+    readonly birthDate: PartialDate | null
+    readonly deathDate: PartialDate | null
+    readonly gender: Gender | null
+  }
+
+  readonly organization: CommonProjection & {
+    readonly foundedDate: PartialDate | null
+    readonly dissolvedDate: PartialDate | null
+  }
+}
+
+export type EntryProjectionField = { [K in EntryType]: keyof EntryProjectionByType[K] }[EntryType]
+
+export type EntryListItem = {
+  [K in EntryType]: { readonly id: string; readonly type: K; readonly name: string } & Partial<
+    EntryProjectionByType[K]
+  >
+}[EntryType]
+
+/** Requested list columns are bounded scalar facts and summaries, never arbitrary relation expansions or full bodies. */
+export const entryProjectionFields: readonly EntryProjectionField[] = Object.freeze([
+  'originalName',
+  'sortName',
+  'primaryImageId',
+  'isNsfw',
+  'favorite',
+  'rating',
+  'addedDate',
+  'effectiveAddedDate',
+  'createdAt',
+  'updatedAt',
+  'releaseDate',
+  'originalLanguages',
+  'status',
+  'additionalDurationMs',
+  'releaseStatus',
+  'releaseEndDate',
+  'declaredDurationMs',
+  'declaredRegularEpisodeCount',
+  'declaredSpecialEpisodeCount',
+  'declaredPageCount',
+  'declaredVolumeCount',
+  'declaredChapterCount',
+  'birthDate',
+  'gender',
+  'deathDate',
+  'bloodType',
+  'age',
+  'height',
+  'weight',
+  'bust',
+  'waist',
+  'hips',
+  'cupSize',
+  'foundedDate',
+  'dissolvedDate',
+  'totalDurationMs',
+  'lastActiveAt',
+  'completionCount',
+  'firstCompletedDate',
+  'lastCompletedDate',
+  'registeredFileCount',
+  'accessibleFileCount',
+  'uncheckedFileCount',
+  'partCounts',
+])
+
+export function checkProjection(
+  fields: readonly EntryProjectionField[] | undefined,
+  query: EntryQuery,
+): void {
+  const types = query.rules.filter((rule) => rule.enabled).flatMap((rule) => rule.types)
+  if (
+    types.length > 0 &&
+    fields?.some((field) => !types.some((type) => entryFieldTypes[field].includes(type)))
+  ) {
+    throw new DesktopError(
+      'InvalidInput',
+      'A requested field is not applicable to any enabled type',
+    )
+  }
+}
+
+export const projectionSchema = v.pipe(
+  v.array(v.picklist(entryProjectionFields)),
+  v.transform((fields) => [...new Set(fields)]),
+)

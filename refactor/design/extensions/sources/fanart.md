@@ -76,7 +76,7 @@ banner、clearart、碟面与专辑封面没有同义的本体用途，不按长
 
 固定使用 v3.2，正确读取字符串形式的尺寸、likes、季号及数组形式的 albums。未知图片族保持为未映射，不动态扩展本体字段；缺少单张图片的可选信息不伪造 0、false 或署名。整个已支持资源请求失败时不能用空数组掩盖。
 
-原图使用 API 的真实 URL。官方 CDN 的 preview 与 bigpreview 只是同一原图的较小预览，分别用于约 200、400 像素的展示；二者不成为独立候选，原尺寸也不能冒充预览尺寸。只有确定的 Fanart CDN 地址按官方规则生成这两种预览地址，不对任意 URL 做路径替换。
+原图使用 API 的真实 URL。官方 CDN 的 preview 与 bigpreview 只是同一原图的较小预览，分别用于约 200、400 像素的展示；预览与原图属于同一候选，只有尺寸已知时才标注对应版本的尺寸。只有确定的 Fanart CDN 地址按官方规则生成这两种预览地址，不对任意 URL 做路径替换。
 
 API 实测没有返回图片作者或逐图许可字段，不用 Artist 名称猜上传者，不把 SDK 的 MIT 许可或接口说明的许可声明套到所有图片上。保留可确认的来源与原图链接，素材权利按实际来源说明处理，不生成虚构归属。
 
@@ -134,4 +134,4 @@ client 解释本来源请求、凭据方式和响应；metadata 拥有资源种�
 
 验收覆盖字段范围、明确身份读取、人工选图不绑定、语言、缓存归属、取消和附件采用。动画预设选用 Fanart 时，其根图片读取仅适用于已确认影片；剧集素材通过独立选图入口使用。预设定义明确此范围，字段优先序由预设定义，用户保存的方案不自动改写。
 
-参考：[官方 API](https://api.fanart.tv/)、[官方客户端](https://github.com/fanart-tv/fanart.tv-api)、[提供者合同](../providers.md)、[手动图片选择](../../domains/metadata.md#search)、[附件合同](../../domains/attachments.md#images)。
+参考：[官方 API](https://api.fanart.tv/)、[官方客户端](https://github.com/fanart-tv/fanart.tv-api)、[提供者合同](../providers.md)、[手动图片选择](../../domains/metadata/README.md#search)、[附件合同](../../domains/attachments.md#images)。

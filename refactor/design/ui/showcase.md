@@ -8,7 +8,7 @@ library.showcase 保存具名区块的查询、显示配置和排列。区块内
 
 query.kind 为 entry、collection 或 tag，直接组合对应对象的查询合同，不另存 entity_type、顶层 types 或平行条件。
 
-Entry 使用 scope、search、规则组和整体 sort；query 的 Entry 分支另带[referenceLabels](../domains/library-query-contracts.md#saved-references) 名称快照。执行时提取纯 EntryQuery，kind 与名称快照不传给列表方法。
+Entry 使用 scope、search、规则组和整体 sort；query 的 Entry 分支另带[referenceLabels](../domains/library/query/contracts.md#saved-references) 名称快照。执行时提取纯 EntryQuery，kind 与名称快照不传给列表方法。
 
 Collection 与 Tag 不进入 EntryType，也不增加 listSectionItems 转发或 Showcase 查询引擎。
 
@@ -37,13 +37,13 @@ Collection 与 Tag 不进入 EntryType，也不增加 listSectionItems 转发或
 | favorite-organizations  | 组织收藏 | organization | favorite 为 true     | 沿用范围顺序               | grid       | 24           |
 | collections             | 合集     | Collection   | 不增加额外条件       | 沿用范围顺序               | horizontal | 12           |
 
-最近体验按真实使用记录选择作品。资料更新、配置修改与补录完成记录均不改变最近使用。最近加入按[有效加入日期](../domains/library-queries.md#fields)排序：优先采用 added_date，整个字段为空时才回退到创建日期，范围不限最近天数。
+最近体验按真实使用记录选择作品。资料更新、配置修改与补录完成记录均不改变最近使用。最近加入按[有效加入日期](../domains/library/query/README.md#fields)排序：优先采用 added_date，整个字段为空时才回退到创建日期，范围不限最近天数。
 
-active 和 planned 对应当前状态，与是否持有文件、过去是否完成分别判断；打开内容不会自动设置 active。完成历史使用[完成记录查询](../domains/library-queries.md#completion-records)。评分排行排除未评分，保留 0 分，使用本地评分且不设置额外门槛。
+active 和 planned 对应当前状态，与是否持有文件、过去是否完成分别判断；打开内容不会自动设置 active。完成历史使用[完成记录查询](../domains/library/query/README.md#completion-records)。评分排行排除未评分，保留 0 分，使用本地评分且不设置额外门槛。
 
 收藏只判断 favorite。角色、人物和组织即使没有关联作品，也可以进入收藏区块。
 
-四个收藏预设的 scope 顺序使用有效排序名或 name，并以 ID 稳定排序；合集使用自身排列和 ID，不附加无效的升降方向。六个作品用途预设都面向四种作品。需要单类时，先载入普通草稿，再明确修改类型，目录筛选不会动态生成参数化预设。目录不提供默认的四种“全部作品”或“全部标签”，用户仍可手动创建。Tag 没有图片，不能用成员封面冒充标签图。
+四个收藏预设的 scope 顺序使用有效排序名或 name，并以 ID 稳定排序；合集使用自身排列和 ID，不附加无效的升降方向。六个作品用途预设都面向四种作品。需要单类时，先载入普通草稿，再明确修改类型，目录筛选不会动态生成参数化预设。目录不提供默认的四种“全部作品”或“全部标签”，用户仍可手动创建。Tag 没有图片字段。成员封面属于对应条目。
 
 目录名称、说明和初始标题可以翻译，业务配置只有一份。载入草稿时将初始标题解析为普通文本，保存后独立存在，查询或 UI 语言变化不会自动改名。有限区块的“查看全部”沿同一查询与排序去掉上限；标题不能宣称展示全部，实际却限制数量。
 

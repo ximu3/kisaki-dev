@@ -1,49 +1,49 @@
 /** @fileoverview Declares complete entry reads and writes, independent personal edits and fixed identity operations. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { CallOptions, NonEmptyArray } from '../operations'
-import {
-  nonnegativeInteger,
-  omitFields,
-  optionalFields,
-  parseValue,
-  timestamp,
-  unique,
-  validateExpectedKeys,
-} from '../validation'
-import {
-  calendarDateSchema,
-  entryCommonEntries,
-  entryRefSchema,
-  entrySpecificEntries,
-  entryTypes,
-  evaluationEntries,
-  isWorkType,
-  parseEntryUpdate,
-  recordEntries,
-  statusSchema,
-} from './catalog'
 import type {
-  EntryCreateInput,
-  EntryDetails,
-  EntryRef,
-  EntryType,
-  EntryUpdate,
   Evaluation,
-  ExternalIdentity,
-  WorkRef,
   WorkStatus,
+  EntryType,
+  EntryRef,
+  EntryDetails,
+  ExternalIdentity,
+  EntryCreateInput,
+  EntryUpdate,
+  WorkRef,
 } from './catalog'
+import type { NonEmptyArray, CallOptions } from '../operations'
+import type { EntryQuery } from './query/definition'
 import type {
-  EntryGroupsResult,
   EntryListOptions,
   EntryListResult,
   EntryLocateOptions,
   EntryLocateResult,
-  EntryQuery,
-  EntrySelection,
-} from './query-values'
+  EntryGroupsResult,
+} from './query/listing'
+import type { EntrySelection } from './query/selection'
+import * as v from 'valibot'
+import {
+  optionalFields,
+  parseValue,
+  validateExpectedKeys,
+  unique,
+  omitFields,
+  timestamp,
+  nonnegativeInteger,
+} from '../validation'
+import {
+  evaluationEntries,
+  statusSchema,
+  parseEntryUpdate,
+  entryRefSchema,
+  entryTypes,
+  entryCommonEntries,
+  entrySpecificEntries,
+  isWorkType,
+  recordEntries,
+  calendarDateSchema,
+} from './catalog'
+import { DesktopError } from '../errors'
 
 export interface EvaluationUpdate {
   readonly changes: Partial<Evaluation>
@@ -61,22 +61,45 @@ export type EntryMergeInput = {
 }[EntryType]
 
 export interface EntriesApi {
+  /**
+   * Read one interval of the complete visible query with only the requested projections; count
+   * and rows share the same read.
+   */
   list(query: EntryQuery, options: EntryListOptions, call?: CallOptions): Promise<EntryListResult>
+
+  /**
+   * Read one visible entry's saved details without opening content or acquiring its attachments.
+   */
   get<T extends EntryType>(ref: EntryRef<T>, call?: CallOptions): Promise<EntryDetails<T> | null>
 
   /** Long saved Markdown is fetched separately; the ordinary visible no-match/empty-body result is null. */
   getDescription(ref: EntryRef, call?: CallOptions): Promise<string | null>
+
+  /**
+   * Locate a visible matching entry within the query's current order; absence or a nonmatching
+   * target returns null.
+   */
   locate(
     query: EntryQuery,
     target: EntryRef,
     options: EntryLocateOptions,
     call?: CallOptions,
   ): Promise<EntryLocateResult | null>
+
+  /**
+   * Read complete collection-group boundaries for this query, independently of the currently
+   * loaded intervals.
+   */
   groups(
     query: EntryQuery,
     grouping: { readonly type: 'collections' },
     call?: CallOptions,
   ): Promise<EntryGroupsResult>
+
+  /**
+   * Resolve a fixed deduplicated selection in one read; changed endpoints or crossed groups fail
+   * with SelectionChanged.
+   */
   selectRefs(
     query: EntryQuery,
     selection: EntrySelection,
@@ -86,7 +109,16 @@ export interface EntriesApi {
   /** Visible lookup only: a null result is never evidence that an identity is free for binding. */
   findByExternalIdentity(identity: ExternalIdentity, call?: CallOptions): Promise<EntryRef | null>
 
+  /**
+   * Commit the complete entry, initial personal values and adopted attachments together; return
+   * its stable typed identity.
+   */
   create<I extends EntryCreateInput>(input: I, call?: CallOptions): Promise<EntryRef<I['type']>>
+
+  /**
+   * Compare and commit the submitted fields and their actual related references; unrelated
+   * fields do not form a whole-row lock.
+   */
   update(
     ...args: {
       [K in EntryType]: [ref: EntryRef<K>, input: Omit<EntryUpdate<K>, 'ref'>, call?: CallOptions]
@@ -96,10 +128,28 @@ export interface EntriesApi {
   /** One short atomic commit; a missing target or failed baseline rejects the complete batch. */
   updateMany(input: NonEmptyArray<EntryUpdate>, call?: CallOptions): Promise<void>
 
+  /**
+   * Compare and save only the submitted personal rating or favorite fields, independently of
+   * current work status.
+   */
   setEvaluation(ref: EntryRef, input: EvaluationUpdate, call?: CallOptions): Promise<void>
+
+  /**
+   * Set or clear the work's current status after its optional comparison; completion history
+   * remains unchanged.
+   */
   setWorkStatus(work: WorkRef, input: WorkStatusUpdate, call?: CallOptions): Promise<void>
 
+  /**
+   * Bind the exact external identity after a full uniqueness check, including hidden records;
+   * binding never implies a merge.
+   */
   bindExternalIdentity(ref: EntryRef, identity: ExternalIdentity, call?: CallOptions): Promise<void>
+
+  /**
+   * Remove this exact binding without deleting the entry, source data or other external
+   * identities.
+   */
   unbindExternalIdentity(
     ref: EntryRef,
     identity: ExternalIdentity,

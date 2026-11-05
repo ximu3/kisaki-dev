@@ -6,7 +6,7 @@
 
 ## 完整交付
 
-公共包、独立项目和各项官方扩展分别拥有完整的实现责任。每个实施工作包交付其范围内可实际使用的终态能力：公开合同、操作与对应界面、正常和失败行为、取消与清理、构建资源、适用制品、实际消费及验证共同满足要求。纯合同包完成值、类型与纯规则，工程工作包完成真实工作流；后续消费者负责自己的接入。
+公共包、独立项目和各项官方扩展分别拥有完整的实现责任。每个实施工作包交付其范围内可实际使用的终态能力：公开合同、操作与对应界面、正常和失败行为、取消与清理、构建资源、适用制品、实际消费及验证共同满足要求。纯合同包完成接口、值约束与规范编码，工程工作包完成真实工作流；后续消费者负责自己的接入。
 
 工作包内部可以按依赖分步实现，完成登记时须闭合本包承诺的全部范围。接口声明、代码注释、运行文案、发行说明和许可材料随实现维护；成篇项目文档由 W23 负责。后续修改属于缺陷修复、合同维护或新需求，已知的未实现操作和占位结果仍记为当前工作包未完成。
 
@@ -29,23 +29,23 @@
 
 ## 实施顺序与并行工作
 
-| 顺序    | 完整责任                                | 接续条件                                       |
-| ------- | --------------------------------------- | ---------------------------------------------- |
-| W00     | 工程与测试入口                          | 后续工作复用并维护已有工程能力                 |
-| W01–W05 | 视觉、分发、桌面合同、RPC 与 UI 公共包  | 按各包真实依赖完成实现与独立消费               |
-| W06–W08 | 存储、应用运行、资料与记录              | 提供真实数据、资源、窗口与业务操作             |
-| W09–W12 | Vantage、Kana、libmpv-node、oauth-relay | 独立完成工程、制品和适用运行，可提前并行       |
-| W13     | 本地内容与文件维护                      | 为采用、扫描和使用会话提供完整文件能力         |
-| W14     | 资料获取、采用与扫描                    | 使用 W13 完成本地登记和识别                    |
-| W15–W17 | 共同使用会话、游戏、视频和阅读          | 消费真实文件与独立技术项目制品                 |
-| W18     | extension-sdk、扩展宿主与应用搜索       | 在本体业务就绪后闭合全部公开接入               |
-| W19     | extension-cli 与作者流程                | 使用 W18 的真实宿主完成模板、开发与安装        |
-| W20     | 桌面构建、安装与应用更新                | 完成安装升级、更新和发行工作流                 |
-| W21     | 30 项官方功能扩展                       | 使用完整 SDK、CLI 与本体业务逐项验收           |
-| W22     | 引导、全局组合与三个官方译本            | 先完成引导及英语基准，再以全部实际扩展联合验收 |
-| W23     | 项目文档与协作入口                      | 按各对象实际实现分批完成，整体在 W24 前就绪    |
-| W24     | 发布前整体验收                          | 核对固定候选版本、完整用户流程与交付文件       |
-| W25     | 公开发行与发布核验                      | 按依赖顺序执行本轮首发，取得实际渠道与生产结果 |
+| 顺序    | 完整责任                                       | 接续条件                                       |
+| ------- | ---------------------------------------------- | ---------------------------------------------- |
+| W00     | 工程与测试入口                                 | 后续工作复用并维护已有工程能力                 |
+| W01–W05 | 视觉、分发、桌面合同、本地化、RPC 与 UI 公共包 | 按各包真实依赖完成实现与独立消费               |
+| W06–W08 | 存储、应用运行、资料与记录                     | 提供真实数据、资源、窗口与业务操作             |
+| W09–W12 | Vantage、Kana、libmpv-node、oauth-relay        | 独立完成工程、制品和适用运行，可提前并行       |
+| W13     | 本地内容与文件维护                             | 为采用、扫描和使用会话提供完整文件能力         |
+| W14     | 资料获取、采用与扫描                           | 使用 W13 完成本地登记和识别                    |
+| W15–W17 | 共同使用会话、游戏、视频和阅读                 | 消费真实文件与独立技术项目制品                 |
+| W18     | extension-sdk、扩展宿主与应用搜索              | 在本体业务就绪后闭合全部公开接入               |
+| W19     | extension-cli 与作者流程                       | 使用 W18 的真实宿主完成模板、开发与安装        |
+| W20     | 桌面构建、安装与应用更新                       | 完成安装升级、更新和发行工作流                 |
+| W21     | 30 项官方功能扩展                              | 使用完整 SDK、CLI 与本体业务逐项验收           |
+| W22     | 引导、全局组合与三个官方译本                   | 先完成引导及英语基准，再以全部实际扩展联合验收 |
+| W23     | 项目文档与协作入口                             | 按各对象实际实现分批完成，整体在 W24 前就绪    |
+| W24     | 发布前整体验收                                 | 核对固定候选版本、完整用户流程与交付文件       |
+| W25     | 公开发行与发布核验                             | 按依赖顺序执行本轮首发，取得实际渠道与生产结果 |
 
 ```mermaid
 flowchart TD
@@ -120,17 +120,19 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 <a id="w03"></a>
 
-## W03：desktop-contracts
+## W03：desktop-contracts 与 desktop-localization
 
 依赖：W01、W02 的实际公共值。
 
-交付：完整桌面值、查询、编辑基线、操作、结果、错误、参与接口和适用纯校验；包含资源、事件、会话、管理、deeplink、开发控制以及英语消息类型生成与校验合同。
+交付：desktop-contracts 定义完整桌面能力的 API、输入输出、编辑基线、错误、事件、参与接口与资源合同，以及调用方和实现方共同遵守的值约束、规范编码和运行时校验；覆盖资料、查询、写入、会话、管理、deeplink 与开发控制。desktop-localization 独立交付按领域维护的英语 ICU 源文、同源生成的关联消息类型、作者基准、译本校验与纯格式化能力。两个包分别提供构建制品与仓库外消费入口。
 
-验收：同一值在各公开入口含义一致，查询与写入语义明确，声明和纯规则可独立消费；A03、A04、A23、A31 的合同断言成立。
+验收：同一值在各公开入口含义一致，查询与写入语义明确，公开声明不暴露校验库内部构造类型；类型、值约束与格式化在 Node 和浏览器中独立消费。消息键与参数关联、译本合法性、缺词的英语回退及字面标签规则成立。按 A03、A04、A23、A31 验证两个包各自的合同、制品和消费边界。
 
-依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library-query-contracts.md) · [写入合同](../design/domains/library-write-contracts.md) · [接入协议](../design/engineering/protocols.md)。
+依据：[公共值](../design/domains/values.md) · [查询合同](../design/domains/library/query/contracts.md) · [写入合同](../design/domains/library/write/contracts.md) · [本地化](../design/ui/localization.md) · [接入协议](../design/engineering/protocols.md)。
 
-公共业务模型与纯规则由本包完整定义，实际操作由所属本体工作包实现。各能力的英语文案同步维护同一公共基准，类型与作者校验从该源文生成。
+合同包拥有接口语义及其值的合法性，不以函数是否有副作用决定归属。产品默认配置、预设、业务计算、匹配与结果选择、存储异常处理由所属本体能力实现；规范编码与必要校验随对应值维护。本工作包不建立本体业务源码；业务实现、对应测试、生成数据和资源随所属工作包交付。数据库 codec 消费所属值规则，实际存储接入仍由 W06 完成。
+
+本地化包不持有当前译本、登记实例或窗口状态；本体 i18n 负责有效语言、生命周期、恢复与同步。SDK 在 W18 从两个包选择作者所需的合同、英语基准与校验能力，扩展作者仍使用 SDK 的纯作者入口。各能力的英语文案随所属功能继续维护同一源文，W22 核对完整界面覆盖与三个官方译本。
 
 <a id="w04"></a>
 
@@ -200,7 +202,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 验收：A01–A05、A14、A17–A20、A27、A29、A30 的资料与界面断言成立；代表链路先验证再扩大实现。
 
-依据：[资料操作](../design/domains/library-operations.md) · [查询](../design/domains/library-queries.md) · [领域目录](../design/domains/README.md) · [资料界面](../design/ui/explorer.md)。
+依据：[资料操作](../design/domains/library/write/README.md) · [查询](../design/domains/library/query/README.md) · [领域目录](../design/domains/README.md) · [资料界面](../design/ui/explorer.md)。
 
 <a id="independent-projects"></a>
 
@@ -264,7 +266,7 @@ W09–W12 各自拥有完整工程、公共合同、实现、测试、工具链�
 
 验收：A09、A14–A16、A18、A27、A29 的本地文件与持有断言成立，正式操作和对应界面可直接使用。
 
-依据：[持有](../design/domains/holdings.md) · [文件维护](../design/domains/file-maintenance.md) · [文件识别](../design/domains/file-recognition.md) · [媒体接入](../design/engineering/integrations.md#media)。
+依据：[持有](../design/domains/holdings.md) · [文件维护](../design/domains/file-maintenance.md) · [文件识别](../design/domains/file-recognition/README.md) · [媒体接入](../design/engineering/integrations.md#media)。
 
 <a id="w14"></a>
 
@@ -280,7 +282,7 @@ metadata、ingest 和 scanner 保持各自模块与事实归属。ingest 按合�
 
 验收：A05–A08、A14–A16、A18、A27 的资料获取、采用、扫描及界面断言成立。来源字段、共享关联、原子写入、目录范围、占用和取消均交付真实结果。
 
-依据：[资料获取](../design/domains/metadata.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata-profiles.md) · [预设](../design/domains/metadata-presets.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/file-recognition-presets.md)。
+依据：[资料获取](../design/domains/metadata/README.md) · [参与接口](../design/extensions/providers.md) · [资料方案](../design/domains/metadata/profiles.md) · [预设](../design/domains/metadata/presets/README.md) · [扫描](../design/domains/scanner.md) · [线索预设](../design/domains/scanner.md#presets)。
 
 <a id="w15"></a>
 
@@ -322,7 +324,7 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 
 验收：A12、A14、A16、A17、A20、A27–A30 的全部阅读入口与格式断言成立。
 
-依据：[阅读](../design/domains/reader.md) · [标注](../design/domains/annotations.md) · [阅读接入](../design/engineering/integrations.md#reading)。
+依据：[阅读](../design/domains/reader.md) · [标注](../design/domains/annotations/README.md) · [阅读接入](../design/engineering/integrations.md#reading)。
 
 <a id="w18"></a>
 
@@ -390,7 +392,7 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 
 验收：A05、A16、A18、A22、A23、A27、A32 及[逐项专项](../verification/coverage.md#extensions)中 01–30 项断言成立，实际进度见[交付清单](delivery-checklist.md#extensions)。
 
-依据：[来源目录](../design/extensions/catalog.md) · [同步](../design/extensions/synchronization.md) · [导入器](../design/extensions/importers.md)。
+依据：[来源目录](../design/extensions/catalog.md) · [同步](../design/extensions/synchronization.md) · [导入器](../design/extensions/importers/README.md)。
 
 <a id="w22"></a>
 
@@ -444,7 +446,7 @@ onboarding 拥有推荐记录、草稿与采用编排，各业务模块继续拥
 
 依赖：W24 发布前整体验收通过，所属发布和部署条件及授权齐备。
 
-交付：本轮桌面应用、七个公共包、33 项官方扩展和四个独立项目的首次公开发行。完成正式仓库接续、适用的 npm 与镜像发布、GitHub Release、正式说明与扩展索引部署，以及 oauth-relay 生产服务切换。各项目保持独立身份、版本、制品与发行结果，按[首发规则](../design/engineering/releases.md#first-release)和实际依赖安排顺序。
+交付：本轮桌面应用、八个公共包、33 项官方扩展和四个独立项目的首次公开发行。完成正式仓库接续、适用的 npm 与镜像发布、GitHub Release、正式说明与扩展索引部署，以及 oauth-relay 生产服务切换。各项目保持独立身份、版本、制品与发行结果，按[首发规则](../design/engineering/releases.md#first-release)和实际依赖安排顺序。
 
 核对最终发行来源和待发布文件，沿所属版本 PR 与发行流程交付；从公开渠道取得同一版本，验证来源、摘要、安装、声明与真实消费，核对正式更新源、签名索引和生产服务接入。首次 npm 身份、适用发布认证与来源证明遵守[发布规则](../design/engineering/repository.md#npm-publishing)。公开操作的实际结果逐项记录，部分成功按同一来源继续处理。
 

@@ -64,7 +64,7 @@ originalName 与 aliases 只采用同一目标具有明确依据的原名与名�
 
 Series 根只提供实际 title 与 imageUrl 的名称、代表封面，不从首个成员补造介绍、原作语言、日期、声明数量或发行状态。三个不同 Series 的 bannerImageUrl 实际指向同一张通用漫画拼图，已读取图片核对；不提供 backdropImage，不采用该默认素材。
 
-membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume，实际语言、分类、ISBN 和页数需要补读详情。书架成员按实际分页与总量核对，处理重复、空页及并发计数变化；需要根据缺席写 false 时必须已经完整读取相应范围。失败不冒充空集合，独立成功资料可进入 partialResult。
+membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume，实际语言、分类、ISBN 和页数需要补读详情。书架成员按实际分页与总量核对，处理重复、空页及并发计数变化；需要根据缺席写 false 时必须已经完整读取相应范围。读取失败时报告对应错误，独立成功的资料可进入 partialResult。
 
 <a id="account"></a>
 
@@ -76,7 +76,7 @@ membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume�
 
 图书范围使用 https://www.googleapis.com/auth/books，身份范围使用下文的 openid 与 email。Books 没有单独只读 scope，账号页准确说明它包含图书管理权限；具体读取和写入仍由用户启用的操作决定，不随连接自动执行。
 
-本人身份由 OpenID 取得，连接请求 books、openid、email，不请求 profile。Books 端点缺少稳定账号标识的依据见[身份核验](../../../verification/evidence/book-sources/live-api.md)。Google ID token.sub 用于稳定识别 Google 账号，邮箱只用于显示；不把 sub 冒充 Books user ID，个人接口使用 /mylibrary，无须伪造 Books 用户编号。
+本人身份由 OpenID 取得，连接请求 books、openid、email，不请求 profile。Books 端点缺少稳定账号标识的依据见[身份核验](../../../verification/evidence/book-sources/live-api.md)。Google ID token.sub 用于稳定识别 Google 账号，邮箱只用于显示；个人接口通过 /mylibrary 定位当前书库。
 
 按官方 OpenID 配置验证签名、issuer、audience、有效期及本次 nonce，并核对实际授予的 books、openid 与 email 范围；刷新时核对同一 sub。换账号、刷新、取消、断开与秘密提交沿[共同连接合同](../private-data.md#connection)，新授权成功前保留旧有效连接。
 
@@ -117,7 +117,7 @@ userInfo.review.rating 的 ONE、TWO、THREE、FOUR、FIVE 分别对应本人评
 | 同时在 To Read 与 Reading Now      | 当前状态无法唯一解释，不采用该字段        | 不采用当前状态             |
 | Have Read 成员                     | 按共同规则初始化未知日期的完成事实        | isCompleted=true           |
 | 完整 Have Read 范围中明确未标记    | 不删除作品完成历史                        | 明确采用卷标记时可写 false |
-| 本人 ONE…FIVE 星级／明确 NOT_RATED | 20…100／未评分；review 缺席不冒充明确清除 | 没有卷评分字段，不采用     |
+| 本人 ONE…FIVE 星级／明确 NOT_RATED | 20…100／未评分；缺少 review 时保留本地评分 | 没有卷评分字段，不采用     |
 
 读过可以与当前计划或在读共存。唯一当前安排存在时保留该安排，并单独初始化过去完成；只有 Have Read 而无当前安排时沿已完成规则采用。两个当前安排冲突时仍可独立采用可靠的完成事实。三个阅读书架都没有该书时，不据此清空本地当前状态或历史。
 

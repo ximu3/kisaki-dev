@@ -3,7 +3,7 @@
     "target": "ES2023",
     "rootDir": ".",
     "strict": true,
-    "noEmit": true,
+    "outDir": ".cache/node",
     "skipLibCheck": false,
     "types": [],
     "lib": ["ES2023"],

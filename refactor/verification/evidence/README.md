@@ -8,8 +8,8 @@
 | ------------------------ | ------------------------------------------------------------------------------------------------------- |
 | W00 工程与验收           | [工程载体的本机与平台验证](w00/README.md)                                                               |
 | W01 视觉包               | [公开值、样式与独立消费者验证](w01/README.md)                                                           |
-| W02 分发协议包           | [格式、兼容选版、签名与独立消费者验证](w02/README.md)                                                  |
-| W03 桌面合同包 | [值、查询、写入、参与接口与独立消费者验证](w03/README.md) |
+| W02 分发协议包           | [格式、兼容选版、签名与独立消费者验证](w02/README.md)                                                   |
+| W03 桌面合同与本地化     | [接口、值约束、消息格式化与两个包的独立消费](w03/README.md)                                             |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | 构建与开发               | [Node 构建与解析](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md)                        |
 | 声明检查                 | [声明检查分工](w00/declaration-checks.md)                                                               |
@@ -17,7 +17,7 @@
 | 开发连接                 | [Node 传输与实际退出](development-ipc/2026-10-26/README.md)                                             |
 | 官方来源、迁移格式与译本 | [逐项证据](extensions.md)                                                                               |
 | 媒体信息                 | [读取范围与实测](media-information/2026-10-24/README.md)                                                |
-| 会话结果与存档格式       | [类型消费与 ZIP 编码](contract-closure/2026-10-24/README.md)                                            |
+| 存档格式与内容树摘要       | [ZIP 成员、清单与确定编码](contract-closure/2026-10-24/README.md)                                            |
 | 存档恢复、查询与事务     | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                              |
 | Drizzle RC               | [编码、迁移和隔离运行](public-contracts/2026-10-22/README.md)                                           |
 | 日期、虚拟化与界面隔离   | [技术验证](technical-tradeoffs/2026-10-22/README.md)                                                    |
@@ -40,6 +40,8 @@
 
 ## Kana
 
+浏览器范围、格式、图片排序与资源传输的原始输入可按运行记录中的 SHA-256 从[试件归档](https://github.com/ximu3/kisaki-dev/tree/66d39a78e19945bde223223769dd42741bb45cb1/refactor/verification/evidence)取得。
+
 | 范围             | 记录                                                                                                                                                                                               |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 公共入口与包消费 | [声明消费](kana-api/public-contracts.md)、[整包接入](kana-package/assembly.md)                                                                                                                     |
@@ -54,15 +56,15 @@
 
 ## libmpv-node
 
-| 范围                 | 记录                                                                                                                                                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 值与调用             | [值表示](libmpv-explicit-values/verification.md)、[消息传递](libmpv-value-options/verification.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md)                              |
-| 订阅、事件与流       | [订阅](libmpv-subscriptions/verification.md)、[事件](libmpv-notifications/verification.md)、[流](libmpv-streams/verification.md)、[属性](libmpv-properties/verification.md)                                   |
-| 初始化与运行库       | [初始化](libmpv-initialization/verification.md)、[常驻运行库](libmpv-runtime/runtime.md)、[Node 桥接](libmpv-node-bridge/verification.md)                                                                     |
-| 输出、播放与资源寿命 | [输出合同](libmpv-video/verification.md)、[GPU](libmpv-gpu/verification.md)、[软件输出](libmpv-output/verification.md)、[播放](libmpv-playback/verification.md)、[跨进程交接](libmpv-handoff/verification.md) |
-| SDR 颜色与截图       | [颜色对照](libmpv-sdr-integration/sdr.md)、[截图布局](libmpv-screenshot/screenshot.md)、[逐结果来源补丁](contract-closure/2026-10-22/README.md#screenshot)                                                    |
-| 黑色字幕回归         | [同源修复对照](libmpv-upstream-fix/verification.md)及其原始夹具                                                                                                                                               |
-| 构建、依赖与包消费   | [候选装配](libmpv-package/package.md)、[固定平台接口](libmpv-platforms/verification.md)                                                                                                                       |
+| 范围                 | 记录                                                                                                                                                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 值与调用             | [值表示](libmpv-explicit-values/verification.md)、[消息传递](libmpv-value-options/verification.md)、[调用](libmpv-calls/verification.md)、[控制](libmpv-control/verification.md) |
+| 订阅、事件与流       | [订阅](libmpv-subscriptions/verification.md)、[事件](libmpv-notifications/verification.md)、[流](libmpv-streams/verification.md)、[属性](libmpv-properties/verification.md)                                                   |
+| 初始化与运行库       | [初始化](libmpv-initialization/verification.md)、[常驻运行库](libmpv-runtime/runtime.md)、[Node 桥接](libmpv-node-bridge/verification.md)                                                                                     |
+| 输出、播放与资源寿命 | [输出合同](libmpv-video/verification.md)、[GPU](libmpv-gpu/verification.md)、[软件输出](libmpv-output/verification.md)、[播放](libmpv-playback/verification.md)、[跨进程交接](libmpv-handoff/verification.md)                 |
+| SDR 颜色与截图       | [颜色对照](libmpv-sdr-integration/sdr.md)、[截图布局](libmpv-screenshot/screenshot.md)、[逐结果来源补丁](contract-closure/2026-10-22/README.md#screenshot)                                                                    |
+| 黑色字幕回归         | [同源修复对照](libmpv-upstream-fix/verification.md)及[固定输入](libmpv-composition/README.md)                                                                                                                                 |
+| 构建、依赖与包消费   | [候选装配](libmpv-package/package.md)、[固定平台接口](libmpv-platforms/verification.md)                                                                                                                                       |
 
 <a id="oauth-relay"></a>
 

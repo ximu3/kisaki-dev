@@ -1,28 +1,16 @@
-/** @fileoverview Validates ordered matching fields and compares original evidence without promoting it to identity. */
+/** @fileoverview Defines matching field vocabulary and validates ordered profile rules. */
 
 import * as v from 'valibot'
-import { parseValue, unique } from '../validation'
+import { unique, parseValue } from '../validation'
+import type { PartType, EntryType } from '../library/catalog'
+import { partIdentificationEntries, identificationEntries } from './fields'
+import { metadataPartKinds } from './objects'
 import { entryTypes } from '../library/catalog'
-import type { EntryType, PartType } from '../library/catalog'
-import { fileNumberKey } from '../library/file-recognition'
-import {
-  identificationEntries,
-  metadataNameKey,
-  parseIdentificationFields,
-  parsePartIdentificationFields,
-  partIdentificationEntries,
-} from './fields'
 import type { IdentificationFields, PartIdentificationFields } from './fields'
-import { metadataPartKinds } from './values'
-import type {
-  EntryMatchingField,
-  MatchingRule,
-  MetadataMatchingRules,
-  PartMatchingField,
-  PartMatchingRules,
-} from './values'
+import type { NonEmptyArray } from '../operations'
+import type { MetadataPartKey, MetadataPartType } from './objects'
 
-function rules(fields: readonly string[]) {
+export function rules(fields: readonly string[]) {
   const field = v.picklist(fields)
   return v.array(
     v.strictObject({
@@ -86,89 +74,23 @@ export function parseMetadataMatchingRules<T extends EntryType>(
   ) as MetadataMatchingRules<T>
 }
 
-/** A missing component makes the entire composite key unavailable, never a wildcard that matches another object. */
-export type MatchingComparison = 'unavailable' | 'equal' | 'different'
+export type EntryMatchingField<T extends EntryType> = Extract<keyof IdentificationFields<T>, string>
 
-function comparisonValue(field: string, value: unknown): string | undefined {
-  if (value === undefined || value === null) {
-    return undefined
-  }
-  if (field === 'name' || field === 'originalName') {
-    return typeof value === 'string' && value.trim() ? metadataNameKey(value) : undefined
-  }
-  if (field === 'aliases') {
-    if (!Array.isArray(value) || value.length === 0) {
-      return undefined
-    }
+export type PartMatchingField<T extends PartType> =
+  | Extract<keyof PartIdentificationFields<T>, string>
+  | (T extends 'comicChapter' ? 'volumeNumberLabel' : never)
 
-    // Aliases are compared as complete normalized sets; a shared fragment does not become an identity claim.
-    return JSON.stringify([...new Set((value as string[]).map(metadataNameKey))].sort())
-  }
-  if (field === 'numberLabel' || field === 'volumeNumberLabel') {
-    return typeof value === 'string' && value.trim() ? fileNumberKey(value) : undefined
-  }
-  if (typeof value === 'object' && ('year' in value || 'month' in value || 'day' in value)) {
-    const date = value as { year?: number; month?: number; day?: number }
-    return JSON.stringify([date.year ?? null, date.month ?? null, date.day ?? null])
-  }
-
-  return JSON.stringify(value)
+/** Every field must have an original comparable value. Only zero matches advances to the next ordered fallback rule. */
+export interface MatchingRule<Field extends PropertyKey> {
+  readonly fields: NonEmptyArray<Field>
 }
 
-function compareFields(fields: readonly string[], left: object, right: object): MatchingComparison {
-  let equal = true
-  const a = left as Record<string, unknown>
-  const b = right as Record<string, unknown>
-  for (const field of fields) {
-    const first = comparisonValue(field, a[field])
-    const second = comparisonValue(field, b[field])
-    if (first === undefined || second === undefined) {
-      return 'unavailable'
-    }
-    if (first !== second) {
-      equal = false
-    }
-  }
-
-  return equal ? 'equal' : 'different'
+export type PartMatchingRules<T extends EntryType> = {
+  readonly [K in MetadataPartKey<T>]?: readonly MatchingRule<
+    PartMatchingField<MetadataPartType<T, K>>
+  >[]
 }
 
-/** Compare one explicitly selected original-entry rule; uniqueness, conflicts and strong-identity adoption are separate decisions. */
-export function compareEntryIdentification<T extends EntryType>(
-  type: T,
-  rule: MatchingRule<EntryMatchingField<T>>,
-  left: IdentificationFields<T>,
-  right: IdentificationFields<T>,
-): MatchingComparison {
-  const parsed = parseValue(rules(Object.keys(identificationEntries(type))), [rule])[0]!
-  return compareFields(
-    parsed.fields,
-    parseIdentificationFields(type, left),
-    parseIdentificationFields(type, right),
-  )
-}
-
-/**
- * Compare one same-work, same-kind part rule. Supply volumeNumberLabels only after its volume was uniquely
- * corresponded on both sides; absence leaves that rule unavailable rather than falling back to a work number.
- */
-export function comparePartIdentification<T extends PartType>(
-  type: T,
-  rule: MatchingRule<PartMatchingField<T>>,
-  left: PartIdentificationFields<T>,
-  right: PartIdentificationFields<T>,
-  volumeNumberLabels?: { readonly left: string; readonly right: string },
-): MatchingComparison {
-  const parsed = parseValue(rules(getPartMatchingFields(type)), [rule])[0]!
-  return compareFields(
-    parsed.fields,
-    {
-      ...parsePartIdentificationFields(type, left),
-      ...(volumeNumberLabels ? { volumeNumberLabel: volumeNumberLabels.left } : {}),
-    },
-    {
-      ...parsePartIdentificationFields(type, right),
-      ...(volumeNumberLabels ? { volumeNumberLabel: volumeNumberLabels.right } : {}),
-    },
-  )
-}
+export type MetadataMatchingRules<T extends EntryType> = {
+  readonly [K in EntryType]?: readonly MatchingRule<EntryMatchingField<K>>[]
+} & PartMatchingRules<T>

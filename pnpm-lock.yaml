@@ -249,9 +249,6 @@ importers:
       '@eslint-community/regexpp':
         specifier: 4.12.2
         version: 4.12.2
-      '@formatjs/icu-messageformat-parser':
-        specifier: 3.5.22
-        version: 3.5.22
       '@kisaki3/desktop-appearance':
         specifier: workspace:^
         version: link:../desktop-appearance
@@ -286,9 +283,58 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.13.0(jiti@2.7.0)
+      jiti:
+        specifier: 'catalog:'
+        version: 2.7.0
+      tsdown:
+        specifier: 0.23.0
+        version: 0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.25)(tsx@4.23.15)(typescript@6.0.3)
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      typescript-eslint:
+        specifier: 'catalog:'
+        version: 8.72.0(eslint@10.13.0(jiti@2.7.0))(typescript@6.0.3)
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.3(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+
+  clients/desktop/packages/desktop-localization:
+    dependencies:
+      '@formatjs/icu-messageformat-parser':
+        specifier: 3.5.22
+        version: 3.5.22
+      '@kisaki3/desktop-contracts':
+        specifier: workspace:^
+        version: link:../desktop-contracts
       intl-messageformat:
         specifier: 12.1.4
         version: 12.1.4
+    devDependencies:
+      '@kisaki3/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../packages/eslint-config
+      '@kisaki3/tooling':
+        specifier: workspace:*
+        version: link:../../../../packages/tooling
+      '@kisaki3/typescript-config':
+        specifier: workspace:*
+        version: link:../../../../packages/typescript-config
+      '@playwright/test':
+        specifier: 1.64.1
+        version: 1.64.1
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)
       jiti:
         specifier: 'catalog:'
         version: 2.7.0

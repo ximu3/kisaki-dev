@@ -1,21 +1,21 @@
 /** @fileoverview Defines native application information, actual system integration and coordinated exit without process/window handles. */
 
-import * as v from 'valibot'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { DesktopError, parseErrorSummary } from './errors'
 import type { ErrorSummary } from './errors'
-import { parseWorkRef } from './library/catalog'
-import type { WorkRef, WorkType } from './library/catalog'
-import type { CallOptions, Disposable, Listener } from './operations'
+import type { CallOptions, Listener, Disposable } from './operations'
+import type { WorkType, WorkRef } from './library/catalog'
+import * as v from 'valibot'
 import { parseAbsolutePath } from './paths'
+import { parseErrorSummary, DesktopError } from './errors'
 import {
-  id,
-  nonemptyText,
-  nonnegativeInteger,
-  parseExternalValue,
   parseValue,
+  parseExternalValue,
+  nonemptyText,
+  id,
   unique,
+  nonnegativeInteger,
 } from './validation'
+import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseWorkRef } from './library/catalog'
 
 export const applicationIdentities = Object.freeze({
   production: { appId: 'me.kisaki', scheme: 'kisaki' },
@@ -82,15 +82,37 @@ export interface SystemIntegrationState {
 }
 
 export interface SystemIntegrationApi {
+  /**
+   * Read actual OS integration and data-location facts; unsupported or failed reads remain
+   * explicit states.
+   */
   getState(call?: CallOptions): Promise<SystemIntegrationState>
 
   /** Apply the OS operation and reread actual state; this is not a preferences draft write. */
   setLoginItem(enabled: boolean, call?: CallOptions): Promise<LoginItemState>
+
+  /**
+   * Request registration of this application's own scheme and reread its actual association; OS
+   * approval remains separate.
+   */
   registerProtocol(call?: CallOptions): Promise<ProtocolIntegrationState>
+
+  /**
+   * Register the supported desktop integration and return its actual state; other platforms
+   * remain notApplicable.
+   */
   registerDesktopEntry(call?: CallOptions): Promise<DesktopEntryState>
 
+  /**
+   * Open the available OS settings for the requested integration; this does not grant permission
+   * or change preferences.
+   */
   openSettings(target: 'loginItem' | 'protocol', call?: CallOptions): Promise<void>
 
+  /**
+   * Prepare the explicitly chosen existing or empty root for the next launch. The current root
+   * and its data remain in place.
+   */
   setDataMode(input: DataModeChange, call?: CallOptions): Promise<DataLocationState>
 }
 
@@ -128,11 +150,25 @@ export type ApplicationExitResult =
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 
 export interface ApplicationExitApi {
+  /**
+   * Read the coordinator's current progress, including accepted work that has not yet created a
+   * task record.
+   */
   getState(call?: CallOptions): Promise<ApplicationExitState>
+
+  /**
+   * Deliver the current exit state and subsequent changes; releasing observation does not cancel
+   * exit.
+   */
   observe(listener: Listener<ApplicationExitState>): Disposable
 
   /** Wait for actual content, recording and resource cleanup. Never escalate ordinary close to force termination. */
   quit(call?: CallOptions): Promise<ApplicationExitResult>
+
+  /**
+   * Run the same close, recording and release sequence as quit before restarting; cancellation
+   * preserves completed work.
+   */
   restart(call?: CallOptions): Promise<ApplicationExitResult>
 
   /** Resume normal acceptance; ended content and saved facts are not recreated or rolled back. */
@@ -146,6 +182,10 @@ export interface AppApi {
   readonly systemIntegration: SystemIntegrationApi
   readonly exit: ApplicationExitApi
 
+  /**
+   * Read a shareable snapshot of the running application's version, OS and process architecture,
+   * excluding private paths.
+   */
   getEnvironment(call?: CallOptions): Promise<ApplicationEnvironment>
 
   /** User-invoked clipboard action; success means the safe environment summary was actually copied, never uploaded. */
@@ -153,7 +193,9 @@ export interface AppApi {
 }
 
 const mode = v.picklist(['normal', 'portable'])
+
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
 /** Parse only the intentionally shareable environment fields, rejecting accidental private diagnostics. */
@@ -174,12 +216,6 @@ export function parseApplicationEnvironment(input: unknown): ApplicationEnvironm
   )
 }
 
-/** Stable plain-text clipboard content; formatting neither reads the machine nor copies anything. */
-export function formatApplicationEnvironment(input: ApplicationEnvironment): string {
-  const value = parseApplicationEnvironment(input)
-  return `Kisaki ${value.version}\n${value.operatingSystem.name} ${value.operatingSystem.version}\n${value.architecture}`
-}
-
 /** Failed portable-marker reads remain unavailable rather than silently selecting another profile. */
 export function parseDataLocationState(input: unknown): DataLocationState {
   return parseValue(
@@ -197,13 +233,7 @@ export function parseDataLocationState(input: unknown): DataLocationState {
   )
 }
 
-/** Pending restart is derived from actual current and selected modes; null means the next selection could not be read. */
-export function dataModeRequiresRestart(state: DataLocationState): boolean | null {
-  return state.portable.status === 'unavailable'
-    ? null
-    : state.portable.status === 'available' && state.current.mode !== state.portable.nextMode
-}
-
+/** Validate next-launch mode and explicit target intent without inspecting, moving or creating data directories. */
 export function parseDataModeChange(input: unknown): DataModeChange {
   return parseValue(
     v.strictObject({ mode, target: v.picklist(['existing', 'empty']) }),

@@ -1,20 +1,21 @@
 /** @fileoverview Owns the versioned development endpoint and immutable build adoption/release values, independently of RPC frames. */
 
+import type { ViewDocument } from './ui/views'
+import type { ErrorSummary } from './errors'
+import type { ExtensionActivationResult } from './extensions'
+import type { CallOptions } from './operations'
 import * as v from 'valibot'
+import { parseExternalValue, positiveInteger, parseValue, unique, id } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
+import { parseErrorSummary, DesktopError } from './errors'
 import { parseExtensionActivationResult } from './extensions'
-import type { ExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
-import type { CallOptions } from './operations'
-import { parseViewDocument } from './ui'
-import type { ViewDocument } from './ui'
-import { id, parseExternalValue, parseValue, positiveInteger, unique } from './validation'
+import { parseViewDocument } from './ui/views'
 
 export const developmentProtocolId = 'kisaki.development'
+
 export const developmentProtocolVersion = 1
 
 /** Build numbers increase per extension on this connection. Directories stay immutable until their real readers release them. */
@@ -89,6 +90,7 @@ const version = v.pipe(
 )
 
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
+
 const ref = v.strictObject({ extensionId, buildId: positiveInteger })
 
 const buildResult = v.variant('outcome', [
@@ -164,6 +166,7 @@ export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
   )
 }
 
+/** Validate the ready peer's build identity and available API version without treating readiness as application activation. */
 export function parseDevelopmentReady(input: unknown): DevelopmentReady {
   return parseValue(
     v.strictObject({ appVersion: version, buildId: id, apiVersion: v.nullable(version) }),

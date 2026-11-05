@@ -1,8 +1,8 @@
 /** @fileoverview Defines call context, bounded reads and the lifetimes shared by desktop capabilities. */
 
-import * as v from 'valibot'
-import { intervalEntries, parseValue } from './validation'
 import type { ErrorSummary } from './errors'
+import { parseValue, intervalEntries } from './validation'
+import * as v from 'valibot'
 
 /** At least one submitted value; uniqueness and domain constraints are checked at the input boundary. */
 export type NonEmptyArray<T> = readonly [T, ...T[]]
@@ -11,7 +11,11 @@ export type NonEmptyArray<T> = readonly [T, ...T[]]
 export type Bounds<T> =
   { readonly min: T; readonly max?: T } | { readonly min?: T; readonly max: T }
 
-/** A caller may request cancellation; actual instance identity is bound by the receiving endpoint. */
+/**
+ * Request cancellation of this call; the receiving endpoint binds the actual caller instance.
+ * Operations finish necessary commit or cleanup before settling and preserve completed facts.
+ * Cancelling an observation or a wait only ends that call, not the work it observes.
+ */
 export interface CallOptions {
   readonly signal?: AbortSignal
 }
@@ -20,6 +24,10 @@ export interface CallOptions {
 export interface Registration<Ref> {
   readonly ref: Ref
 
+  /**
+   * Remove this instance's registration and finish its cleanup; repeated disposal has no further
+   * effect.
+   */
   dispose(): Promise<void>
 }
 
@@ -30,6 +38,10 @@ export interface ExecutionContext {
 
 /** A release belongs to its creating instance; releasing again has no further effect. */
 export interface Disposable {
+  /**
+   * Stop this instance's future delivery or use; await a returned promise for release
+   * completion.
+   */
   dispose(): void | Promise<void>
 }
 

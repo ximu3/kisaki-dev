@@ -48,17 +48,17 @@ preload 桥接所属窗口的最小明确能力。窗口客户端与主进程接
 
 需要任务管理的业务通过 tasks 执行，并等待真实结束后返回自身结果。只有合同明确表示“创建独立任务”的入口才返回 TaskRunRef。进度和控制通过明确的运行接口取得，调用者不必查询历史才能理解普通结果。持续使用内容的会话由 sessions 管理。
 
-业务输入与调用选项分开传递。调用方使用可选 signal 请求取消，实际执行者取得只读 ExecutionContext.signal；受托任务另有 ref、checkpoint、reportProgress 和 reportResult。扩展、视图及调用身份由实际接入绑定，业务参数不能选择或冒充另一实例。内部 helper 只接收自己真正需要的能力。
+业务输入与调用选项分开传递。调用方使用可选 signal 请求取消，实际执行者取得只读 ExecutionContext.signal；受托任务另有 ref、checkpoint、reportProgress 和 reportResult。接入端将每次调用绑定到发起调用的扩展和视图实例，业务参数无权指定调用方身份。内部 helper 只接收自己真正需要的能力。
 
 支持在调用内完成必要选择的操作，采用 `interaction: 'fail' | 'prompt'` 这一共用交互约定，默认 fail。当前由四类 sessions.open，以及 sessions.game.focus／captureImage 在调用选项中提供。它只决定本次操作需要用户选择目标时是否发起选择，不改变目标优先级与显式约束；不保存在配置或会话中，不随调用来源、事件或异步链隐式继承。嵌套调用需要选择时，调用方在该次调用中明确传入。其他业务操作不接受这一选项。
 
 打开目标与游戏窗口分别按[会话选择规则](domains/sessions.md#open)和[窗口选择规则](domains/games.md#windows)确定，再应用本次选项：
 
-| 实际条件 | interaction: prompt | interaction: fail 或省略 |
-| --- | --- | --- |
-| 已按规则确定目标且具备执行条件 | 按所属操作执行 | 按所属操作执行 |
-| 需要用户选择目标 | 完成选择后继续本次操作 | 不发起选择，以 InteractionRequired 拒绝 |
-| 显式条件无效或目标不可用 | 返回具体问题 | 返回具体问题 |
+| 实际条件                       | interaction: prompt    | interaction: fail 或省略                |
+| ------------------------------ | ---------------------- | --------------------------------------- |
+| 已按规则确定目标且具备执行条件 | 按所属操作执行         | 按所属操作执行                          |
+| 需要用户选择目标               | 完成选择后继续本次操作 | 不发起选择，以 InteractionRequired 拒绝 |
+| 显式条件无效或目标不可用       | 返回具体问题           | 返回具体问题                            |
 
 原生点击与原生 open 深链明确使用 prompt；SDK 调用者按本次业务意图选择，后台自动操作使用 fail。正常交付内容窗口仍遵守操作本身的完成合同。prompt 不表示用户已经确认某个覆盖、恢复或安装行为，不能免除其他操作规定的确认。
 
@@ -108,7 +108,7 @@ interface ExecutionFailure<Result> extends ErrorSummary {
 }
 ```
 
-这两个类型定义在 desktop-contracts/errors。[错误目录](domains/library-write-contracts.md#errors)固定本体 code 的含义；string 是通用传输边界，不允许各端临时创造同义错误码。ErrorSummary 用于历史、运行状态和事件。ExecutionFailure 表示一次调用的失败，也可以携带已经成立的部分结果；SDK 将其恢复为可识别的错误。程序按 code 分类，message 只提供安全说明。历史中的 result 与 error 分开保存，不在错误摘要内重复嵌套结果。
+这两个类型定义在 desktop-contracts/errors。[错误目录](domains/library/write/contracts.md#errors)固定本体 code 的含义；string 是通用传输边界，不允许各端临时创造同义错误码。ErrorSummary 用于历史、运行状态和事件。ExecutionFailure 表示一次调用的失败，也可以携带已经成立的部分结果；SDK 将其恢复为可识别的错误。程序按 code 分类，message 只提供安全说明。历史中的 result 与 error 分开保存，不在错误摘要内重复嵌套结果。
 
 各业务自行定义 issues，并用明确字段保存上下文。例如，来源问题指明 provider，扫描问题保留路径与必要线索，备份问题说明受影响的事实；不使用全局任意 details。扫描正常完成时可以包含未识别候选，只有整体执行故障才拒绝调用。open 承诺交付已经就绪的会话，因此会话没有建立时不能返回成功。
 
@@ -282,7 +282,7 @@ PreparedImage、transform 参数、图片处理顺序和采用规则由 [附件�
 
 NativeViewTarget 定义在 desktop-contracts/ui，按具体原生目标区分分支。目标包括 Entry 列表、详情与适用的本地选择，Collection、Tag、Note 的列表或 id，Annotation 的已保存内容，tasks.runId，scanner.configId 或 runId，metadataProfiles.profileId，sessions.recordings（可带 sessionId 定位未保存记录），preferences，extensions.extensionId 或 pageId，以及已有的主题、字体、系统集成、更新和引导入口。
 
-Entry 使用 EntryIdentifier，并核对从属类型。Annotation 使用 [AnnotationRef](domains/annotations.md#api)，按身份打开已保存内容；返回原文件仍由内容界面的明确操作发起。ui.navigate(target) 等待宿主就绪并接纳导航后返回 void，不隐含保存、启动或采用操作。
+Entry 使用 EntryIdentifier，并核对从属类型。Annotation 使用 [AnnotationRef](domains/annotations/README.md#api)，按身份打开已保存内容；返回原文件仍由内容界面的明确操作发起。ui.navigate(target) 等待宿主就绪并接纳导航后返回 void，不隐含保存、启动或采用操作。
 
 desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。extension-sdk 的纯合同选取所需定义并声明 Node 的 context.deeplink.register，运行实现绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
 
@@ -300,9 +300,9 @@ windows、processes、database 和 attachments 各自保留内部句柄与技术
 
 | 能力                                 | 合同拥有者                                                                                                                       |
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| 资料库、完整修改与读取               | [库操作](domains/library-operations.md)、[库查询](domains/library-queries.md)                                                    |
-| 资料搜索、定位、读取与合成           | [资料获取](domains/metadata.md)、[提供者](extensions/providers.md)、[资料方案](domains/metadata-profiles.md)                     |
-| 资料新增与更新采用                   | [资料采用](domains/metadata.md)                                                                                                  |
+| 资料库、完整修改与读取               | [库操作](domains/library/write/README.md)、[库查询](domains/library/query/README.md)                                             |
+| 资料搜索、定位、读取与合成           | [资料获取](domains/metadata/README.md)、[提供者](extensions/providers.md)、[资料方案](domains/metadata/profiles.md)              |
+| 资料新增与更新采用                   | [资料采用](domains/metadata/README.md)                                                                                           |
 | 扫描配置、预览、执行及历史           | [扫描](domains/scanner.md)                                                                                                       |
 | 四类作品的打开、控制、观察和收尾     | [使用会话](domains/sessions.md)                                                                                                  |
 | 任务执行、观察和控制                 | [任务](domains/tasks.md)                                                                                                         |

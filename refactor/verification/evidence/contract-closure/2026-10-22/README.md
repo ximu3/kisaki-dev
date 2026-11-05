@@ -1,6 +1,6 @@
 # 关键合同与截图来源探针
 
-2026-10-22 验证了时钟分段、无身份分部匹配、局部类型及截图来源补丁。以下分别记录纯规则模型、声明消费和 Windows 原生实验的实际范围。
+2026-10-22 验证了时钟分段、无身份分部匹配及截图来源补丁。本页记录规则模型和 Windows 原生实验的实际范围。
 
 <a id="screenshot"></a>
 
@@ -34,11 +34,7 @@
 
 尚未验收无图整体失败、负 stride、持续采集、macOS／Linux 或完整正式绑定。它们继续属于[libmpv 场景](../../../scenarios/libmpv.md)及[本体采集](../../../../design/engineering/integrations.md#screenshot)，不由这五项结果代替。
 
-<a id="types-models"></a>
-
-## 声明与规则检查
-
-[check_types.py](check_types.py)从现行文档提取 14 个代码块，组合必要的拥有者值，生成[声明样例](contracts.ts)及[编译配置](tsconfig.json)。正常的保存结果、标注、分部、搜索和导航输入通过；17 项预期类型拒绝成立，见[检查结果](type-results.json)。数值范围、真实文件归属和全部公开包仍不在这项编译检查内。
+## 时钟、匹配与像素规则
 
 [verify_models.py](verify_models.py)核对正常、回拨、前跳及容差边界的区间，分部唯一／歧义／不足与新增资格，以及原生像素和截图接纳条件；结果为[20 项通过](model-results.json)。模型用来检验规则自洽，不代表数据库、会话或宿主实现已经通过。
 
@@ -46,10 +42,9 @@
 
 ## 复现
 
-从仓库根目录运行。只重算声明和规则时，使用已记录的原生像素收据；输出默认写入 node_modules/.cache/libmpv-design/contract-closure-replay/receipts，运行收据写入该输出目录：
+从仓库根目录运行。重算规则时，使用已记录的原生像素收据；输出默认写入 node_modules/.cache/libmpv-design/contract-closure-replay/receipts，运行收据写入该输出目录：
 
 ```powershell
-python -B -X utf8 refactor/verification/evidence/contract-closure/2026-10-22/check_types.py
 python -B -X utf8 refactor/verification/evidence/contract-closure/2026-10-22/verify_models.py
 ```
 

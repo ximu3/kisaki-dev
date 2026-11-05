@@ -56,7 +56,7 @@ NFO 只处理用户本次明确选择的动画内容；movie／tvshow 根名本�
 
 创建、更新、分部与关系均使用本体完整操作。完整公开身份先查询本地对应；没有公开身份时可以使用明确本地目标，或在最低资料与粒度成立时 prepared 新增。同名不保证身份相同。分部编号在正确作品／卷范围解释，零季不自动判为 Extra，特别篇与附加内容保留实际种类。
 
-已明确作品、种类及编号含义的分部候选携带 partMatching：卷或作品话号使用 fields: ['numberLabel']，动画分集使用 fields: ['type', 'numberLabel']，明确的漫画卷内话号使用 fields: ['volumeNumberLabel']。没有适用编号的分部不启用名称回退，继续使用准确身份或本次明确目标；这不授权从季号、Series 或文件排列补造编号。对应、新增权限和歧义处理统一沿[本地分部决策](../../domains/metadata.md#local-parts)，不能通过多个弱规则任选一项。
+已明确作品、种类及编号含义的分部候选携带 partMatching：卷或作品话号使用 fields: ['numberLabel']，动画分集使用 fields: ['type', 'numberLabel']，明确的漫画卷内话号使用 fields: ['volumeNumberLabel']。没有适用编号的分部不启用名称回退，继续使用准确身份或本次明确目标；这不授权从季号、Series 或文件排列补造编号。对应、新增权限和歧义处理统一沿[本地分部决策](../../domains/metadata/README.md#local-parts)，不能通过多个弱规则任选一项。
 
 新作品采用所选有效文件字段、真实分部与关系，并与个人 initial 同次提交。已有对象默认保留普通资料，用户可选择补空或覆盖；缺席字段和关系保持。选择普通字段不自动选择私人记录、合集、笔记、媒体或续读，本地封面沿共同图片选择规则处理。联网补充是另一次明确操作。
 
@@ -158,7 +158,7 @@ ComicInfo 可从明确 FrontCover 页取得同一书籍实际封面，先完成�
 
 独立 ComicInfo.xml 需要明确所描述的漫画文件或图片目录；文件所在目录里有多个漫画时不自动任选。内嵌 ComicInfo 的 CBZ 已明确属于该归档，但书目与 Work／Part 的关系仍须核对。媒体已经位于持久位置时直接登记，不把研究目录或临时解包位置作为正式持有路径。
 
-NFO 中 file／path／filenameandpath 只在用户选用来源路径并明确根映射后参与核验，不优先于已确认的相邻配对。DVD／蓝光、ISO、stack://、多段拼接、插件流与 .strm 的虚拟时间轴不假装成一份普通本地视频；资料可以独立采用，无法对应的文件与位置报告未迁入。
+NFO 中 file／path／filenameandpath 只在用户选用来源路径并明确根映射后参与核验，不优先于已确认的相邻配对。DVD／蓝光、ISO、stack://、多段拼接、插件流与 .strm 使用的虚拟时间轴超出单文件视频的定位范围。资料可以独立采用，无法对应的文件与位置报告未迁入。
 
 resume.position 和 total 单位是秒，允许有限非负小数。先核对同一实际文件、实际时间轴与位置边界；源 total 有效时额外核对其一致性，缺席或 0 表示未知，不单独否决同一文件中合法的正位置。源与实际时长因已知容器精度产生的差异按本体媒体观察规则处理，不按比例缩放位置，不将越界值夹到末尾。缺少同一时间轴依据时不迁入位置。
 
@@ -190,7 +190,7 @@ Type=Deleted、DoublePage、Rotation、Manga 阅读方向、ImageSize／尺寸�
 
 每个本体完整操作分别提交，不承诺整批文件或一条来源资料的所有后续步骤共同原子完成。取消停止后续工作，已完成部分保留，关闭页面不取消后台任务。缺媒体不阻止独立资料采用，图片或书签失败不把已有资料称为全部失败。
 
-结果记录实际完成与未迁入原因。新建与继续批次沿[共同规则](../importers.md#repeat)处理，同批次保留源对象与步骤结果，不重复已完成的 Note／Annotation；未知提交先核对。另建批次可以明确追加，完成总数仍不能追加到非空历史。
+结果记录实际完成与未迁入原因。新建与继续批次沿[共同规则](README.md#repeat)处理，同批次保留源对象与步骤结果，不重复已完成的 Note／Annotation；未知提交先核对。另建批次可以明确追加，完成总数仍不能追加到非空历史。
 
 <a id="implementation"></a>
 
@@ -219,8 +219,8 @@ Type=Deleted、DoublePage、Rotation、Manga 阅读方向、ImageSize／尺寸�
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

@@ -2,7 +2,7 @@
 
 对应[属性请求格式](../../../design/projects/libmpv-node/values.md#property-formats)与[属性观察模式](../../../design/projects/libmpv-node/notifications.md#property-modes)。这些补全按上游确定的格式边界纳入既有调用合同，没有新增播放器状态或另一种订阅生命周期。
 
-getProperty 与带值观察区分请求格式和 JavaScript／native 表示。文字读取保持 getPropertyText，文字观察增加 observePropertyText；无值提示由 observeProperty 的 none 格式明确选择，不冒充 unavailable。
+getProperty 与带值观察区分请求格式和 JavaScript／native 表示。文字读取保持 getPropertyText，文字观察增加 observePropertyText；observeProperty 的 none 格式表示调用方选择无值提示，unavailable 表示属性不可用。
 
 [消费样例](consumer.ts)检查显式和动态格式的结果、格式泛型必须有真实选项、无值提示的接收器、文字观察以及不支持的 OSD 观察。它引用原有声明，不重新复制一套 Mpv 接口。
 

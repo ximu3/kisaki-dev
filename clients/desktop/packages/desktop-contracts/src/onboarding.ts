@@ -1,31 +1,31 @@
 /** @fileoverview Defines native recommendation handling as explicit business inputs and durable per-item outcomes, never persistent drafts. */
 
-import * as v from 'valibot'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError, parseErrorSummary } from './errors'
-import type { ErrorSummary } from './errors'
-import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
 import type { ExtensionPackageSource, ExtensionRepositoryInput } from './extensions'
-import { parseShowcaseChanges, parseShowcaseFields } from './library/showcase'
-import type { ShowcaseFields } from './library/showcase'
-import { parseMetadataProfileCreate } from './metadata/profiles'
+import type { PreferencesChanges, PreferencesExpected } from './preferences/api'
 import type { MetadataProfileCreate } from './metadata/profiles'
-import type { CallOptions, Disposable, NonEmptyArray } from './operations'
-import { parsePreferencesUpdate } from './preferences'
-import type { PreferencesChanges, PreferencesExpected } from './preferences'
-import { parseScanConfigCreate } from './scanner'
-import type { ScanConfigCreate } from './scanner/values'
+import type { ScanConfigCreate } from './scanner/configs'
+import type { ShowcaseFields } from './library/showcase'
+import type { NonEmptyArray, CallOptions, Disposable } from './operations'
+import type { ErrorSummary } from './errors'
+import * as v from 'valibot'
 import {
-  id,
-  parseDictionary,
   parseExternalValue,
+  id,
+  unique,
+  timestamp,
   parseValue,
+  parseDictionary,
   readRecord,
   text,
-  timestamp,
-  unique,
 } from './validation'
+import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseId } from '@kisaki3/extension-distribution/metadata'
+import { parseErrorSummary, DesktopError } from './errors'
+import { parsePreferencesUpdate } from './preferences/api'
+import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
+import { parseMetadataProfileCreate } from './metadata/profiles'
+import { parseScanConfigCreate } from './scanner/configs'
+import { parseShowcaseFields, parseShowcaseChanges } from './library/showcase'
 
 export const onboardingGroups = Object.freeze([
   'preferences',
@@ -36,6 +36,7 @@ export const onboardingGroups = Object.freeze([
 ] as const)
 
 export type OnboardingGroup = (typeof onboardingGroups)[number]
+
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
 export type OnboardingResourceRef =
@@ -45,16 +46,23 @@ export type OnboardingResourceRef =
   | { readonly type: 'showcaseSection'; readonly sectionId: string }
 
 export type OnboardingHandled =
-  | { readonly outcome: 'skipped'; readonly handledAt: number }
+  | {
+      readonly outcome: 'skipped'
+      /** UTC milliseconds since the Unix epoch. */
+      readonly handledAt: number
+    }
   | {
       readonly outcome: 'applied'
+      /** UTC milliseconds since the Unix epoch. */
       readonly handledAt: number
       readonly resources: readonly OnboardingResourceRef[]
     }
 
 /** handled keys are stable native catalog identities; deleted/unavailable resources do not erase these historical outcomes. */
 export interface OnboardingState {
+  /** UTC milliseconds since the Unix epoch; null until the guide is actually presented. */
   readonly firstPresentedAt: number | null
+  /** UTC milliseconds since the Unix epoch; null until first-use guidance is completed. */
   readonly firstCompletedAt: number | null
   readonly lastPresentedVersion: string | null
   readonly handled: Readonly<Record<string, OnboardingHandled>>
@@ -135,7 +143,16 @@ export interface OnboardingSkipInput {
 }
 
 export interface OnboardingApi {
+  /**
+   * Read formal presentation and handling state without marking the guide as shown or completing
+   * recommendations.
+   */
   getState(call?: CallOptions): Promise<OnboardingState>
+
+  /**
+   * Read applicable recommendations and their actual handling/resource state for the requested
+   * mode; querying does not apply them.
+   */
   listItems(
     input: { readonly mode: OnboardingMode },
     call?: CallOptions,
@@ -147,6 +164,11 @@ export interface OnboardingApi {
     call?: CallOptions,
   ): Promise<OnboardingState>
 
+  /**
+   * Compare handling and business baselines before adoption; same-database groups commit
+   * together, while sequential extension installs preserve established outcomes on later
+   * failure.
+   */
   apply<I extends OnboardingApplyInput>(
     input: I,
     call?: CallOptions,
@@ -158,8 +180,16 @@ export interface OnboardingApi {
     call?: CallOptions,
   ): Promise<readonly { readonly itemId: string; readonly handled: OnboardingHandled }[]>
 
+  /**
+   * Finish this guide presentation and record first completion when applicable; unfinished
+   * business is not marked successful.
+   */
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
 
+  /**
+   * Subscribe to formal onboarding-state changes; notifications never contain or commit the
+   * editor's unsaved inputs.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -197,11 +227,7 @@ const issue = v.strictObject({
   error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
 })
 
-/** Initial singleton state says nothing has been presented or adopted; it does not itself open onboarding. */
-export function getOnboardingDefaults(): OnboardingState {
-  return { firstPresentedAt: null, firstCompletedAt: null, lastPresentedVersion: null, handled: {} }
-}
-
+/** Validate one established applied/skipped outcome with its timestamp and actual resource references. */
 export function parseOnboardingHandled(input: unknown): OnboardingHandled {
   return parseValue(handled, input, 'Invalid onboarding handled result')
 }
@@ -358,6 +384,7 @@ export function validateOnboardingItemGroups(
   }
 }
 
+/** Require distinct explicit recommendation identities and their complete handling baselines before skipping. */
 export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   const item = v.strictObject({ itemId: id, expectedHandled })
   return parseValue(

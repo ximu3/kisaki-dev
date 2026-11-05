@@ -22,7 +22,7 @@
 
 Books Discovery revision 为 20261013，仅列出统一 books 管理范围，没有专用只读范围。官方旧说明建议从 Bookshelf.selfLink 取得 Books user ID；本次本人列表与单个书架均缺少该字段。正式 OAuth2 tokeninfo 请求返回应用、scope 和有效期，也没有用户标识，因此不能把此时的图书授权报告为已核验稳定身份。
 
-授权范围为 openid 与 email，验证 ID token 签名、issuer、audience、有效期与本次 nonce；刷新后 sub 保持一致，邮箱存在且已验证，实际书架读取返回 200。Google ID token.sub 标识 Google 账号，不冒充 Books user ID；没有请求 profile。过期回调按验证规则拒绝。
+授权范围为 openid 与 email，验证 ID token 签名、issuer、audience、有效期与本次 nonce；刷新后 sub 保持一致，邮箱存在且已验证，实际书架读取返回 200。Google ID token.sub 标识 Google 账号，Books 的个人书库按账号授权访问；没有请求 profile。过期回调按验证规则拒绝。
 
 ## Google Books 的对象范围
 

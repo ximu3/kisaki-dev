@@ -1,0 +1,3 @@
+- Publish the domain English catalog, generated message and argument types, and translation validation.
+- Format isolated catalog snapshots with English fallback and literal markup, without application language state.
+- Verify packed NodeNext, browser and iframe consumers.

@@ -42,7 +42,7 @@ ProcessRef／WindowRef 继续表示库持有并核对的原实例。后端串行
 | ---------------- | ---------------------------------------------------------------------------------------------------------- |
 | Windows 进程     | 以必要权限持有原进程句柄；读取与等待不要求终止权限。控制使用同一原实例的相应句柄，句柄关闭不结束进程       |
 | Linux 进程       | pidfd 拥有原实例的观察和信号目标，发现／打开前后的进程事实共同核对；proc 路径与名称读取不覆盖 pidfd 的身份 |
-| macOS 进程       | 进程信息中的创建时间与 kqueue 的原进程观察接续，路径按实际 libproc 结果读取；不使用截断名称冒充完整文件名  |
+| macOS 进程       | 进程信息中的创建时间与 kqueue 的原进程观察接续，路径按实际 libproc 结果读取；截断名称只作有限信息，完整文件名以实际读取结果为准  |
 | Win32／X11 窗口  | 原生编号、创建／销毁事件与所属连接共同维护有效引用；观察断裂使引用失效，不能凭编号重新附着                 |
 | macOS 窗口       | 持有 AXUIElement，并保持所属原进程和窗口生命周期；CGWindowID 仅用于一次原生对应                            |
 | GNOME／KWin 窗口 | 组件持有 Meta.Window／KWin Window 对象，内部窗口令牌属于该组件实例及连接；对象销毁或组件重建使旧令牌失效   |
@@ -103,7 +103,7 @@ Kisaki 的处理继续遵守既定监测规则：进程存活可靠而前台未�
 
 后端使用 CreateForWindow、CreateFreeThreaded 和短期 GraphicsCaptureSession，排除光标，以浮点表面保留捕获精度。取得有效帧后按同帧 ContentSize 处理尺寸，以 Direct2D 的原生 HDR tone map／color management 完成 SDR 归一，再复制紧密行布局并转换为 straight alpha。借用的原生帧在释放前完成读取，输出字节独立持有。
 
-Windows scRGB 的原生亮度基准只用于解释输入及设置原生效果参数。输出是标准 sRGB SDR 文件图像；不把当前显示器峰值作为保存文件的目标，也不新增公开亮度旋钮。内容最大亮度优先采用可靠元数据，否则沿 Microsoft 示例从该帧内容估计；不使用一份固定值冒充全部窗口的内容亮度。[原生效果](https://learn.microsoft.com/en-us/windows/win32/direct2d/hdr-tone-map-effect)、[固定内容分析示例](https://github.com/microsoft/Windows-universal-samples/blob/dca302ef956bb9a2653da4e3d925de4bbf4fa174/Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp)
+Windows scRGB 的原生亮度基准只用于解释输入及设置原生效果参数。输出是标准 sRGB SDR 文件图像；不把当前显示器峰值作为保存文件的目标，也不新增公开亮度旋钮。内容最大亮度优先采用可靠元数据，否则沿 Microsoft 示例从该帧内容估计。[原生效果](https://learn.microsoft.com/en-us/windows/win32/direct2d/hdr-tone-map-effect)、[固定内容分析示例](https://github.com/microsoft/Windows-universal-samples/blob/dca302ef956bb9a2653da4e3d925de4bbf4fa174/Samples/D2DAdvancedColorImages/cpp/D2DAdvancedColorImages/D2DAdvancedColorImagesRenderer.cpp)
 
 <a id="macos"></a>
 

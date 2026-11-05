@@ -40,7 +40,7 @@ Kisaki 是面向 ACGN 收藏、使用与记忆的本地资料库。它帮助用�
 完整交付包含以下内容：
 
 - Electron 桌面应用，包括主进程、preload、主界面、阅读器、播放器、游戏面板和独立扩展宿主。
-- 七个公开包，分别负责桌面合同、视觉基础、Solid UI、共享 RPC、分发格式、扩展 SDK 和 CLI。SDK 同时交付纯公开合同与运行接入。扩展脚手架由 CLI 提供。
+- 八个公开包，分别负责桌面合同、本地化、视觉基础、Solid UI、共享 RPC、分发格式、扩展 SDK 和 CLI。SDK 同时交付纯公开合同与运行接入。扩展脚手架由 CLI 提供。
 - 33 项 [官方扩展](extensions/catalog.md)，其中资料或平台扩展 17 项、迁移导入扩展 13 项、语言扩展 3 项。
 - 新库初始化、工程与测试工具、构建发行、使用文档和协作规范。
 - Vantage、Kana、libmpv-node 和 oauth-relay 四个 [独立技术项目](projects/README.md) 的交付，以及桌面应用和官方扩展对其正式发行物或服务的接入。
@@ -49,7 +49,7 @@ Kisaki 是面向 ACGN 收藏、使用与记忆的本地资料库。它帮助用�
 
 第三方平台的账号连接、用户库导入和个人记录同步由扩展提供。本体自有账号、云服务端、云同步、公开 Web 展示、移动端、常驻 daemon，以及面向用户的独立应用 CLI 不属于本次桌面交付。真人影视和 phash-match 不在正式产品范围内。TMDB 只接入适用的动画、人物和组织资料。
 
-kisaki 仓库按 clients、site 和候选 server 划分工程归属。当前交付范围是 clients/desktop 中的桌面客户端、七个公共包和官方扩展；Webview 属于桌面扩展界面。clients/web、site 与 server 保留后续工程归属，服务端同仓须满足源码公开范围相容和许可明确。四个独立技术项目各自维护仓库。软件许可与服务访问见[许可约定](engineering/licensing.md)。
+kisaki 仓库按 clients、site 和候选 server 划分工程归属。当前交付范围是 clients/desktop 中的桌面客户端、八个公共包和官方扩展；Webview 属于桌面扩展界面。clients/web、site 与 server 保留后续工程归属，服务端同仓须满足源码公开范围相容和许可明确。四个独立技术项目各自维护仓库。软件许可与服务访问见[许可约定](engineering/licensing.md)。
 
 <a id="model"></a>
 

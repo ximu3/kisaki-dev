@@ -8,22 +8,25 @@
 
 ## 当前源码职责
 
-| 位置                                                     | 当前职责                                                               |
-| -------------------------------------------------------- | ---------------------------------------------------------------------- |
-| 根 `tools` 与 `tests/tools`                              | Git hooks、验证环境记录及所属工具的回归验证                            |
-| 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界         |
-| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、候选输出、命令执行、错误交付和 CLI 收尾          |
-| `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理             |
-| `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                   |
-| `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                           |
-| `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证           |
-| `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射   |
-| `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名 |
-| `clients/desktop/packages/desktop-contracts` | 桌面业务值、查询与写入合同、参与接口、会话和管理、深链、开发控制及英语消息类型与纯校验 |
+| 位置                                                     | 当前职责                                                                         |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 根 `tools` 与 `tests/tools`                              | Git hooks、验证环境记录及所属工具的回归验证                                      |
+| 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界                   |
+| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、候选输出、命令执行、错误交付和 CLI 收尾                    |
+| `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理                       |
+| `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                             |
+| `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                                     |
+| `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
+| `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射             |
+| `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名           |
+| `clients/desktop/packages/desktop-localization`          | 英语源文、关联消息类型、作者校验与纯格式化                                       |
+| `clients/desktop/packages/desktop-contracts`             | 桌面接口、值约束、规范编码、查询与写入合同、参与接口、会话、管理、深链和开发控制 |
 
-桌面公共包通过构建后的子路径交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md) 验证入口查阅。
+桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立 Node 与浏览器工程核对同一 tarball；用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md) 验证入口查阅。
 
-desktop-contracts 按业务子路径导出显式类型和纯规则，实际数据库、资源、窗口与宿主操作由所属工作包实现。名称排序采用保留在包内 assets 的 Unicode 18 原始数据，生成表由 `generate:unicode` 维护；英语 ICU 源文及其生成声明分别位于 src/i18n/en.ts 与 contracts.generated.ts，使用 `generate:messages` 更新。两个命令都由该包通过 pnpm 执行。普通 build 校验原始数据摘要及生成一致性，再交接完整构建结果；生成源由各自生成器负责排版。
+desktop-contracts 按业务子路径导出显式接口、值校验与规范编码。类型、校验和操作按主题就近维护，多文件公开入口位于主题目录内。纯单测随源码放置，真实消费者与其样板保留在所属包的 tests 中。本体业务实现按所属工作包建立。
+
+desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm --filter @kisaki3/desktop-localization run generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；有效语言、译本登记和响应式接入由后续本体工作包实现。生成源由生成器负责排版。
 
 桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
@@ -96,7 +99,7 @@ pack 的输入由已声明的 build 依赖，以及包元数据、许可和发�
 | `pnpm desktop:test:artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
 | `pnpm desktop:test:performance` | 先构建，记录 20 次工程载体启动耗时与内存，验证进程退出                       |
 
-浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。三个已建立公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。desktop-contracts 的独立消费者还安装 W01、W02 的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。四个已建立公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
 制品输入用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认 `dist/<target>/artifacts.json`。Windows 使用窗口句柄，macOS 使用已获准的系统辅助功能，Linux X11 使用窗口管理器观察。X11 结果不代表 Wayland 验收。
 

@@ -114,7 +114,7 @@ ExternalIdentity 只包含 source 和字符串 sourceId。source 使用[统一�
 
 name 保存当前显示名称，original_name 保存有依据的原文名称，aliases 保存艺名、别称和其他译名，sort_name 保存明确指定的人工排序名称。显示名与原文相同时可以同时存在，但缺少原文依据时不能为了填满字段而复制。改名、检索归一和界面语言切换，都不能改写其他正式名称。
 
-没有 sort_name 时按显示名排序，派生拼音等检索键不能冒充人工填写值。新建条目必须取得非空显示名，不批量写入占位名；名称相同也不能作为身份匹配的充分依据。
+没有 sort_name 时按显示名排序，sort_name 保留用户填写的值，拼音等检索键按检索规则派生。新建条目必须取得非空显示名，不批量写入占位名；名称相同也不能作为身份匹配的充分依据。
 
 primary_image_id 表示唯一的当前识别图。作品中可称为封面，人物和角色中可称为肖像，组织中可称为标志；比例与布局由用途决定。作品背景、标题标志和游戏图标有各自用途，保存在具体类型表。远端 URL、原文件路径和已经保存的附件是不同值。图片在事务外准备，完整操作负责提交引用，失败时保留原图。
 
@@ -259,7 +259,7 @@ organizations 保存以下专属字段：
 | anime_episodes | id   | anime_id → animes.entry_id |
 | anime_extras   | id   | anime_id → animes.entry_id |
 
-每个 Part 直接且唯一地属于对应作品，作品与分部形成一对多关系。漫画话直接属于漫画；卷对话的收录由 comic_volume_chapters 表达，不增加必填的卷父键。分部创建时明确所属作品，不提供独立跨作品改归属。作品合并统一迁移分部归属；同一作品内的重复分部可以通过[明确分部合并](library-operations.md#part-merges)整理，用户选择保留身份，其他引用共同迁移。
+每个 Part 直接且唯一地属于对应作品，作品与分部形成一对多关系。漫画话直接属于漫画；卷对话的收录由 comic_volume_chapters 表达，不增加必填的卷父键。分部创建时明确所属作品，不提供独立跨作品改归属。作品合并统一迁移分部归属；同一作品内的重复分部可以通过[明确分部合并](library/write/README.md#part-merges)整理，用户选择保留身份，其他引用共同迁移。
 
 五张分部表各自保存以下字段：
 
@@ -341,10 +341,10 @@ organizations 保存以下专属字段：
 | 合集、标签与当前整理           | [个人整理](collections-and-tags.md)                                                                                    |
 | 持有目录、文件、绑定和首选     | [本地持有](holdings.md) 与各媒介文档                                                                                   |
 | 游戏配置、备份及记录           | [游戏](games.md)、[备份](backups.md)                                                                                   |
-| 笔记、标注及正文引用           | [笔记](notes.md)、[标注](annotations.md)、[附件](attachments.md)                                                       |
+| 笔记、标注及正文引用           | [笔记](notes.md)、[标注](annotations/README.md)、[附件](attachments.md)                                                |
 | 使用记录与运行上下文           | 各媒介记录及 [会话](sessions.md)                                                                                       |
 | 任务与扫描配置、历史           | [任务](tasks.md)、[扫描](scanner.md)                                                                                   |
-| metadata_profiles 与资料采用   | [资料方案](metadata-profiles.md)、[资料获取](metadata.md)                                                              |
+| metadata_profiles 与资料采用   | [资料方案](metadata/profiles.md)、[资料获取](metadata/README.md)                                                       |
 | 偏好和引导状态                 | [偏好](preferences.md)、[引导](onboarding.md)                                                                          |
 | 扩展安装、仓库、私有值与凭据   | [扩展运行](../extensions/runtime.md)、[分发](../extensions/distribution.md)、[私有数据](../extensions/private-data.md) |
 

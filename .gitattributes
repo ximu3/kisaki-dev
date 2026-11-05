@@ -1,9 +1,7 @@
 * text=auto eol=lf
 # Retained evidence digests identify the original bytes, including line endings.
 refactor/verification/evidence/** -text
-clients/desktop/packages/desktop-contracts/assets/unicode/** -text linguist-vendored=true
-clients/desktop/packages/desktop-contracts/src/text/unicode.generated.ts linguist-generated=true
-clients/desktop/packages/desktop-contracts/src/i18n/contracts.generated.ts linguist-generated=true
+clients/desktop/packages/desktop-localization/src/contracts.generated.ts linguist-generated=true
 *.png binary
 *.ico binary
 *.icns binary

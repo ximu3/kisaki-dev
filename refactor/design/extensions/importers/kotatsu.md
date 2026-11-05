@@ -86,7 +86,7 @@ statistics 每行按 manga_id＋started_at 标识，started_at 与 duration 均�
 
 累计方式先确定实际源范围，按准确 Work 归集一次，再遵守[共同附加时长规则](../../domains/records.md#duration)：新作品初始化 T，已有作品明确采用后设置 T−A，其中 A 为本次已保存活动量；T<A 时不采用。固定本次绝对值和 expected 基线，不在已有附加值上加 T。同范围活动和总量不会重复计入，不另存时长概况笔记。
 
-同一统计主键的相同副本只计一次，矛盾副本报告，不取较大时长。相同时间但不同真实记录不能仅凭时间相同去重；原生活动的重叠统计沿[统一口径](../../domains/library-queries.md#activity-statistics)。完整 statistics 中某书没有记录时累计为 0，分段缺失则未知；非法 duration 阻止对应书目的完整总量采用，不把可读部分称为完整。
+同一统计主键的相同副本只计一次，矛盾副本报告，不取较大时长。相同时间但不同真实记录不能仅凭时间相同去重；原生活动的重叠统计沿[统一口径](../../domains/library/query/README.md#activity-statistics)。完整 statistics 中某书没有记录时累计为 0，分段缺失则未知；非法 duration 阻止对应书目的完整总量采用，不把可读部分称为完整。
 
 history 保存每部漫画最近的阅读位置与进度，其时间、chapter 数和 pages 计数只按这一用途解释。活动从原始统计中的真实区间迁入：继续同批次时复用已完成步骤，另建批次并明确追加时才新增活动。
 
@@ -134,7 +134,7 @@ history 保存每部漫画最近的阅读位置与进度，其时间、chapter �
 
 完整操作分别提交，取消停止后续步骤，关闭页面不取消后台任务。结果区区分新增、更新、未变化、部分完成、跳过、失败和所选内容未迁入原因。当前可用文字或记录不因媒体缺失而全部丢失，文件登记也不掩盖位置失败。
 
-新建与继续批次遵守[共同规则](../importers.md#repeat)。同批次复用实际目标和已完成步骤，不重复追加活动、评论或书签；未知提交保留待核对。另建批次的追加、空历史最低完成及累计时长仍按各自明确选择处理。
+新建与继续批次遵守[共同规则](README.md#repeat)。同批次复用实际目标和已完成步骤，不重复追加活动、评论或书签；未知提交保留待核对。另建批次的追加、空历史最低完成及累计时长仍按各自明确选择处理。
 
 <a id="implementation"></a>
 
@@ -160,8 +160,8 @@ history 保存每部漫画最近的阅读位置与进度，其时间、chapter �
     ├── webview/
     │   ├── entry.tsx
     │   ├── page.tsx
-    │   ├── selection/selection.tsx
-    │   ├── results/results.tsx
+    │   ├── selection.tsx
+    │   ├── results.tsx
     │   └── styles.css
     └── shared/
         ├── contracts.ts

@@ -1,8 +1,8 @@
 /** @fileoverview Reads strict JSON without duplicate decoded property names or lossy primitive values. */
 
-import { visit } from 'jsonc-parser'
 import { DesktopError } from './errors'
 import { readRecord } from './validation'
+import { visit } from 'jsonc-parser'
 
 /** Plain persisted desktop data. RPC frame values are independently owned by the environment-neutral transport package. */
 export type JsonValue =

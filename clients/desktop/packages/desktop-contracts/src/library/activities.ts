@@ -1,17 +1,19 @@
 /** @fileoverview Describes actual activity intervals and preserves their occurrence context during ordinary edits. */
 
-import * as v from 'valibot'
-import { DesktopError } from '../errors'
-import type { CalendarDate } from '../date'
-import type { ListOptions, ListResult, NonEmptyArray, CallOptions } from '../operations'
-import { id, nonnegativeNumber, parseValue, text, timestamp } from '../validation'
-import { workRefSchema } from './catalog'
-import type { EntryRef, PartRef, WorkRef, WorkType } from './catalog'
+import type { PartRef, WorkType, EntryRef, WorkRef } from './catalog'
 import type { WorkStatisticsScope } from './completions'
+import type { CalendarDate } from '../date'
+import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
+import { timestamp, nonnegativeNumber, id, parseValue, text } from '../validation'
+import * as v from 'valibot'
+import { workRefSchema } from './catalog'
+import { DesktopError } from '../errors'
 
 /** UTC millisecond interval with a separately recorded effective duration; overlapping records are not unioned. */
 export interface ActivityTiming {
+  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number
+  /** UTC milliseconds since the Unix epoch. */
   readonly endedAt: number
   readonly durationMs: number
 }
@@ -63,6 +65,7 @@ export type ActivityUpdate<K extends WorkType = WorkType> = {
   }
 }
 
+/** UTC milliseconds since the Unix epoch; the interval includes from and excludes to. */
 export interface InstantRange {
   readonly from: number
   readonly to: number
@@ -111,14 +114,32 @@ export interface ActivityStatistics {
 
 /** Managed active intervals must end before manual editing/deletion; ordinary operations never control a session. */
 export interface ActivitiesApi {
+  /**
+   * Read saved activity records in the requested work/time/context scope; work-level additional
+   * duration is not a record.
+   */
   list(
     query: ActivityQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<Activity>>
+
+  /**
+   * Read one saved activity belonging to the supplied work; the active session remains a
+   * separate runtime object.
+   */
   get(work: WorkRef, activityId: string, call?: CallOptions): Promise<Activity | null>
 
+  /**
+   * Record an explicit valid past interval and its actual context; this does not start a session
+   * or infer missing history.
+   */
   create(input: ActivityCreate, call?: CallOptions): Promise<string>
+
+  /**
+   * Compare and correct a saved activity after any managed interval has ended; additional
+   * duration and reading position stay unchanged.
+   */
   update(
     ...args: {
       [K in WorkType]: [
@@ -129,8 +150,17 @@ export interface ActivitiesApi {
       ]
     }[WorkType]
   ): Promise<void>
+
+  /**
+   * Delete only the supplied saved activities after managed use has ended; never stop a session
+   * or adjust additional duration.
+   */
   delete(work: WorkRef, ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
+  /**
+   * Aggregate saved intervals using the requested scope and calendar grouping; undated
+   * additional duration has no period allocation.
+   */
   statistics(
     query: ActivityQuery & { readonly groupBy?: 'hour' | 'day' | 'week' | 'month' | 'year' },
     call?: CallOptions,
@@ -217,25 +247,6 @@ export function parseActivityUpdate(
   }
 
   return value
-}
-
-/** Allocate one saved effective duration proportionally to an intersecting [from, to) range without rounding. */
-export function activityDurationInRange(activity: ActivityTiming, range: InstantRange): number {
-  const value = parseActivityTiming(activity)
-  const bounds = parseValue(
-    v.pipe(
-      v.strictObject({ from: timestamp, to: timestamp }),
-      v.check((input) => input.from < input.to),
-    ),
-    range,
-    'Invalid activity range',
-  )
-
-  const overlap = Math.max(
-    0,
-    Math.min(value.endedAt, bounds.to) - Math.max(value.startedAt, bounds.from),
-  )
-  return value.durationMs * (overlap / (value.endedAt - value.startedAt))
 }
 
 /** Validate bounded historical labels independently from the current referenced names. */

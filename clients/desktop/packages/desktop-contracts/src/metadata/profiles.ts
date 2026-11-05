@@ -1,28 +1,29 @@
 /** @fileoverview Defines reusable metadata profiles with explicit provider order, matching and per-field selection rules. */
 
-import * as v from 'valibot'
+import type { NonEmptyArray, StoredDefinition, CallOptions, Disposable } from '../operations'
+import type { EntryType } from '../library/catalog'
+import type { MetadataEntryFieldValues, MetadataPartFieldValues } from './fields'
+import type { MetadataPartKey, MetadataPartType } from './objects'
+import type { MetadataRelationAttributeValues, MetadataRelationKey } from './relations'
+import type { MetadataMatchingRules } from './matching'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import type { CallOptions, Disposable, NonEmptyArray, StoredDefinition } from '../operations'
+import type { ReorderInput } from '../library/ordering'
+import * as v from 'valibot'
 import {
   id,
-  nonemptyText,
-  optionalFields,
-  parseValue,
-  text,
   unique,
+  parseValue,
+  nonemptyText,
+  text,
+  optionalFields,
   validateExpectedKeys,
 } from '../validation'
 import { entryTypes, languageSchema } from '../library/catalog'
-import type { EntryType } from '../library/catalog'
-import type { ReorderInput } from '../library/ordering'
 import { getMetadataEntryFields, getMetadataPartFields } from './fields'
-import type { MetadataEntryFieldValues, MetadataPartFieldValues } from './fields'
-import { parseMetadataMatchingRules } from './matching'
+import { metadataPartKinds } from './objects'
 import { getMetadataRelations, metadataRelationFields } from './relations'
-import type { MetadataRelationAttributeValues, MetadataRelationKey } from './relations'
-import { metadataPartKinds } from './values'
-import type { MetadataMatchingRules, MetadataPartKey, MetadataPartType } from './values'
+import { parseMetadataMatchingRules } from './matching'
+import { DesktopError } from '../errors'
 
 /** Scalars have no union operation. Ordered processors transform only the selected field after correspondence is fixed. */
 export interface MetadataFieldRule<Value> {
@@ -98,7 +99,9 @@ export type MetadataProfile<T extends EntryType = EntryType> = {
     readonly definition: StoredDefinition<MetadataProfileDefinition<K>>
     readonly isDefault: boolean
     readonly sortOrder: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   }
 }[T]
@@ -148,6 +151,7 @@ export type MetadataProfilePreset<T extends EntryType = EntryType> = {
 
 /** Deletion rechecks formal references. Copying uses a fresh ordinary create and does not copy default status. */
 export interface MetadataProfilesApi {
+  /** Read saved profile summaries in formal order, optionally restricted to one entry type. */
   list(
     filter?: { readonly entryType?: EntryType },
     call?: CallOptions,
@@ -157,19 +161,47 @@ export interface MetadataProfilesApi {
       'id' | 'name' | 'description' | 'entryType' | 'preferredLanguages' | 'isDefault'
     >[]
   >
+
+  /**
+   * Read a complete saved profile, preserving unavailable participants and invalid definitions
+   * explicitly.
+   */
   get(id: string, call?: CallOptions): Promise<MetadataProfile | null>
 
+  /**
+   * Commit an independent complete profile; preset selection or copying does not itself save or
+   * select a default.
+   */
   create(input: MetadataProfileCreate, call?: CallOptions): Promise<MetadataProfile>
+
+  /**
+   * Compare and commit changed profile fields and complete definition values; already accepted
+   * fetches retain their fixed snapshot.
+   */
   update(id: string, input: MetadataProfileUpdate, call?: CallOptions): Promise<MetadataProfile>
+
+  /**
+   * Recheck formal references before removal; do not silently rewrite scanner configurations or
+   * other users of this profile.
+   */
   delete(id: string, call?: CallOptions): Promise<void>
 
+  /** Reorder selected profiles against the complete order for their entry type. */
   reorder(entryType: EntryType, input: ReorderInput, call?: CallOptions): Promise<void>
 
+  /**
+   * Read fixed definitions matching the requested entry type and applicable language for copying
+   * into a draft.
+   */
   listPresets(
     filter?: { readonly entryType?: EntryType; readonly language?: string },
     call?: CallOptions,
   ): Promise<readonly MetadataProfilePreset[]>
 
+  /**
+   * Subscribe before reading the saved profile directory; invalidation requests refreshed data
+   * without replacing drafts.
+   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -209,6 +241,7 @@ export function parseMetadataProfileDefinition<T extends EntryType>(
   root: T,
   input: unknown,
 ): MetadataProfileDefinition<T>
+
 export function parseMetadataProfileDefinition(
   root: EntryType,
   input: unknown,

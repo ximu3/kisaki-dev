@@ -6,7 +6,7 @@
 
 [可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
-源码审查逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
+源码审查先核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
 
 <a id="verification-scope"></a>
 
@@ -71,7 +71,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Vantage KWin Wayland    | 实际 KWin 5／6 接入、控制与单窗采集，覆盖需要桌面登记和已取消该登记检查的实现分支                                                                                    |
 | libmpv-node 与 Electron | Windows D3D11、macOS CGL／IOSurface、Linux EGL／dma-buf 分别完成带音频与字幕的播放、定位／切换、画面消费、截图及最终回收；Linux 消费同时覆盖 X11 与原生 Wayland      |
 | Kana                    | 在声明维护的浏览器与实际端口中，从打包资源打开代表性的重排、原始页与混合内容，完成定位、选择／复制及关闭；Safari、WebKitGTK 和 Electron 三条维护线使用各自实际运行时 |
-| oauth-relay             | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；隔离部署与客户端完成各来源已承诺的授权／刷新链路，W25 核验生产接入，远端账号操作不因架构数量重复执行 |
+| oauth-relay             | 两种目标架构镜像分别完成启动、HTTP 请求、健康检查和正常停止；隔离部署与客户端完成各来源已承诺的授权／刷新链路，W25 核验生产接入，远端账号操作不因架构数量重复执行    |
 
 这些是首次交付的运行下限，具体正确性仍由所属 A 场景判断。组件加载、授权、系统接口或资源交接存在实质不同的实现分支时，分别取得至少一份运行证据；同一分支的全部系统小版本、GPU 型号与设置不要求组成笛卡尔积矩阵。普通纯规则在拥有层验证，共同机制不因调用入口多就重跑整套测试。
 
@@ -155,7 +155,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [A30](#performance)                                | 启动、导航、列表、编辑、阅读和长流程没有未经解释的性能退化。                                                                                                                                                                        |
 | [A31](#structure)                                  | 导入边界、包依赖、运行环境、生成文件和资源清理规则实际生效。                                                                                                                                                                        |
 | [A32](#completion)                                 | 文档、公共示例、skill 路由和真实命令一致，全部入口可用。                                                                                                                                                                            |
-| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展消费本次锁定的新制品，通过仓库外消费、资源装配、真实调用和目标环境联合验证，并在 W25 完成正式取得与生产接入核验。 |
+| [A33](scenarios/projects.md)                       | 相关独立项目完成自身实现与工程交付，Kisaki 和对应官方扩展消费本次锁定的新制品，通过仓库外消费、资源装配、真实调用和目标环境联合验证，并在 W25 完成正式取得与生产接入核验。                                                          |
 
 具体场景按责任组织：
 
@@ -196,23 +196,23 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 下表定义完整交付时的任务合同，命令随所属工作包建立。当前可运行的工程入口见[当前工程与开发](../implementation/development.md)，实际交付范围见[实施状态](../implementation/status.md)；工程测试载体通过带 fixture 限定的命令执行。
 
-| 命令                                                 | 责任                                                                      |
-| ---------------------------------------------------- | ------------------------------------------------------------------------- |
-| pnpm desktop:dev                                     | 启动隔离资料目录中的桌面会话，完成依赖首轮构建和实际就绪协调              |
-| pnpm desktop:build                                   | 编译桌面各程序与依赖，不签名、发布或生成安装包                            |
-| pnpm desktop:package --target windows-x64            | 为明确目标准备完整资源并打包，CI 另提供适用的签名环境                     |
-| pnpm desktop:test:artifacts                          | 对明确提供的最终桌面制品执行结构与实际运行测试                            |
-| pnpm desktop:test:e2e                                | 在真实开发应用中运行桌面完整工作流测试                                    |
-| pnpm typecheck / pnpm lint / pnpm test               | 调度根工程及实际 workspace 的对应检查；test 为明确配置的常规测试          |
-| pnpm format:check                                    | 全仓格式检查，不先构建依赖                                                |
-| pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                            |
-| pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                      |
-| pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                           |
+| 命令                                                 | 责任                                                                        |
+| ---------------------------------------------------- | --------------------------------------------------------------------------- |
+| pnpm desktop:dev                                     | 启动隔离资料目录中的桌面会话，完成依赖首轮构建和实际就绪协调                |
+| pnpm desktop:build                                   | 编译桌面各程序与依赖，不签名、发布或生成安装包                              |
+| pnpm desktop:package --target windows-x64            | 为明确目标准备完整资源并打包，CI 另提供适用的签名环境                       |
+| pnpm desktop:test:artifacts                          | 对明确提供的最终桌面制品执行结构与实际运行测试                              |
+| pnpm desktop:test:e2e                                | 在真实开发应用中运行桌面完整工作流测试                                      |
+| pnpm typecheck / pnpm lint / pnpm test               | 调度根工程及实际 workspace 的对应检查；test 为明确配置的常规测试            |
+| pnpm format:check                                    | 全仓格式检查，不先构建依赖                                                  |
+| pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                              |
+| pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                        |
+| pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                             |
 | pnpm desktop:test:consumers                          | 调度各包消费者任务及前置准备，核对实际 tarball 的结构、声明、样式与作者接入 |
-| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵            |
-| pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                          |
-| pnpm install:hooks / pnpm uninstall:hooks            | 当前仓库 hooks 的明确生命周期                                             |
-| pnpm run clean                                       | 仅清理项目声明的构建输出                                                  |
+| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵              |
+| pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                            |
+| pnpm install:hooks / pnpm uninstall:hooks            | 当前仓库 hooks 的明确生命周期                                               |
+| pnpm run clean                                       | 仅清理项目声明的构建输出                                                    |
 
 根命令区分全仓任务与 clients/desktop/app 目标。desktop:* 不隐式构建或发布全部 .kisx，build 和 check 根据真实 workspace 依赖图执行，桌面开发入口固定为 desktop:dev。根 tools 处理机械交付工作，clients/desktop/app/tools 处理桌面会话与制品。项目级操作使用 pnpm filter，扩展作者使用 kisx。
 
@@ -260,20 +260,20 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 源码质量与工具组织同时取得[可读性、注释覆盖和 tools 结构](scenarios/engineering.md#source-quality)的审查与验证记录，范围包括运行实现、原生接入、工具、配置和测试。
 
-| 检查范围与规则来源                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
-| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../design/engineering/conventions.md#source-layout)                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
-| [公开能力拥有者](../design/domains/library-operations.md#ownership)、[条目／分部／关系组织](../design/domains/library-operations.md#catalog-regions)                                     | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
-| [整理与个人记录](../design/domains/library-operations.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                  | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
-| [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
-| [会话组织](../design/domains/sessions.md#organization)                                                                                                                                   | 并发打开、失败、旧身份控制、退出与占用释放的运行记录                            | 实例登记是运行事实的唯一来源，接纳、占用、记录与资源收尾保持同一真实寿命                    |
-| [获取与采用](../design/domains/metadata.md#organization)、[扫描拥有者](../design/domains/scanner.md#organization)                                                                        | 来源读取、采用、TaskRun、ScanRun 与报告的调用及状态对应                         | 临时来源资源、正式提交和运行历史各有归属，任务粒度与失败后的剩余事实符合合同                |
-| [扩展组织](../design/extensions/runtime.md#organization)、[消息协议](../design/engineering/protocols.md)                                                                                 | 包准备／采用／激活、实例重建、窗口与 SDK 调用、取消及资源释放记录               | 版本与运行结果分别报告，旧代调用失效，接入没有越过真实开放范围或复制业务状态                |
-| [虚拟化](../design/ui/virtualization.md)、[窗口与状态](../design/architecture.md#renderer)                                                                                               | TanStack 接入、业务行映射、查询快照、草稿及窗口销毁记录                         | 几何与业务数据边界成立，真实身份不依赖 DOM；局部数据和组件寿命满足实际交互                  |
-| [独立产品](../design/projects/README.md#purpose)、[Kisaki 接入](../design/engineering/integrations.md)                                                                                   | 项目自身的公开消费者与平台制品；本体联合消费记录                                | 独立合同可实际消费，库内保证与应用业务职责分别成立，接入不引用项目私有源码                  |
-| [本体私有原生能力](../design/engineering/native.md)                                                                                                                                      | Node 入口与声明、原生导出核对、导入图、目标制品及最终应用加载记录               | 类型与加载归原生工程，设施只保留应用接入；原生制品与本体构建对应，适用生命周期有运行验证    |
-| [工程工作流](../design/engineering/workspace.md)、[发行说明](../design/engineering/releases.md#notes)                                                                                    | 构建输入、输出拥有者、进程交接、版本及说明源到制品的对应                        | 工程命令和发行来源可复核，运行资源与版本对应；生成结果没有另一份手写事实来源                |
+| 检查范围与规则来源                                                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
+| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../design/engineering/conventions.md#source-layout)                                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 程序与私有合同边界成立，公开能力按真实入口选用，内部布局能解释实际功能职责                  |
+| [公开能力拥有者](../design/domains/library/write/README.md#ownership)、[条目／分部／关系组织](../design/domains/library/write/README.md#catalog-regions)                                                                 | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
+| [整理与个人记录](../design/domains/library/write/README.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                                                | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
+| [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
+| [会话组织](../design/domains/sessions.md#organization)                                                                                                                                                                   | 并发打开、失败、旧身份控制、退出与占用释放的运行记录                            | 实例登记是运行事实的唯一来源，接纳、占用、记录与资源收尾保持同一真实寿命                    |
+| [获取与采用](../design/domains/metadata/README.md#organization)、[扫描拥有者](../design/domains/scanner.md#organization)                                                                                                 | 来源读取、采用、TaskRun、ScanRun 与报告的调用及状态对应                         | 临时来源资源、正式提交和运行历史各有归属，任务粒度与失败后的剩余事实符合合同                |
+| [扩展组织](../design/extensions/runtime.md#organization)、[消息协议](../design/engineering/protocols.md)                                                                                                                 | 包准备／采用／激活、实例重建、窗口与 SDK 调用、取消及资源释放记录               | 版本与运行结果分别报告，旧代调用失效，接入没有越过真实开放范围或复制业务状态                |
+| [虚拟化](../design/ui/virtualization.md)、[窗口与状态](../design/architecture.md#renderer)                                                                                                                               | TanStack 接入、业务行映射、查询快照、草稿及窗口销毁记录                         | 几何与业务数据边界成立，真实身份不依赖 DOM；局部数据和组件寿命满足实际交互                  |
+| [独立产品](../design/projects/README.md#purpose)、[Kisaki 接入](../design/engineering/integrations.md)                                                                                                                   | 项目自身的公开消费者与平台制品；本体联合消费记录                                | 独立合同可实际消费，库内保证与应用业务职责分别成立，接入不引用项目私有源码                  |
+| [本体私有原生能力](../design/engineering/native.md)                                                                                                                                                                      | Node 入口与声明、原生导出核对、导入图、目标制品及最终应用加载记录               | 类型与加载归原生工程，设施只保留应用接入；原生制品与本体构建对应，适用生命周期有运行验证    |
+| [工程工作流](../design/engineering/workspace.md)、[发行说明](../design/engineering/releases.md#notes)                                                                                                                    | 构建输入、输出拥有者、进程交接、版本及说明源到制品的对应                        | 工程命令和发行来源可复核，运行资源与版本对应；生成结果没有另一份手写事实来源                |
 | [编码规范](../design/engineering/conventions.md)、[源码语言](../design/engineering/conventions.md#source-language)、[文案](../design/ui/components.md#copy)、[注释及文档](../design/engineering/documentation.md#owners) | 源码清单、类型与 lint 结果、代码审查、真实界面、公开示例和文档引用检查          | 自维护 Node 与浏览器源码使用 TypeScript；表达与职责相符，公开示例可运行，无用途内容完成清理 |
 
 检查同时使用静态依赖、正式制品与实际运行证据；单独的目录树或声明不能证明运行寿命正确。发现差异时回到唯一设计拥有者处理，再同步验收记录，不在本页追加平行例外。
@@ -286,7 +286,7 @@ W24 对固定候选版本核对下列条件。目标平台的运行覆盖与实�
 
 - R01–R32 和 A01–A33 的发布前实现与验证均有真实证据，必需实现、制品和运行检查没有遗留。四个独立项目完成自身工程，新候选制品已经由调用方真实消费，relay 在隔离部署中完成上游与客户端联调。
 - 七种 Entry、五种 Part、四类关系、个人记录、持有内容和附件的语义一致。UI、扩展与后台共用本体操作，全部原生窗口、入口和失败路径可用。
-- 33 项扩展、三个译本、三种作者模板和七个公共包完成仓库外消费验收，新库持久化与隔离通过验证。
+- 33 项扩展、三个译本、三种作者模板和八个公共包完成仓库外消费验收，新库持久化与隔离通过验证。
 - 六个目标的正式包完整生成，资源、ABI、签名与兼容性依据均已核对；在可用环境完成更新、普通与便携运行及失败恢复测试，各系统与架构的实际覆盖分别记录。更新器不会误选工具或 SDK 发布，hooks 的安装卸载、部分暂存和 worktree 不改变全局配置。
 - 最终文件附有实际许可、NOTICE、额外许可所需权利、对应源码和构建材料。发行与说明更正使用已经验证的字节。
 - 现有界面与交互体验整体保留，主要布局、视觉风格、信息密度和常用操作通过基线对照。规格规定的局部调整、新增界面及局部修复与整体一致，没有全局视觉改版、导航重组或普遍更换交互方式，也没有未经解释的性能退化、资源泄漏或主线程无界工作。
@@ -299,7 +299,7 @@ W24 对固定候选版本核对下列条件。目标平台的运行覆盖与实�
 W25 在发布前条件成立的基础上，按[本轮首发](../design/engineering/releases.md#first-release)完成公开发行和[发布核验](scenarios/engineering.md#public-release)：
 
 - 正式仓库接续、来源存档、提交历史、协作规则和发行绑定核对完成，源码与必要的验证材料有有效取得路径。
-- 桌面、七个公共包、33 项官方扩展和四个独立项目的适用制品已公开可得，来源、版本、依赖、摘要与交付记录一致；仓库外从正式渠道取得并完成安装与消费验证。
+- 桌面、八个公共包、33 项官方扩展和四个独立项目的适用制品已公开可得，来源、版本、依赖、摘要与交付记录一致；仓库外从正式渠道取得并完成安装与消费验证。
 - 正式发行说明、扩展索引及所引用资源可取得，签名、身份、版本与已发布制品对应；桌面实际更新来源和安装交接可用。
 - oauth-relay 已完成生产服务切换，正式域名、TLS、应用配置、健康状态及客户端授权和刷新按合同验证。
 - 本次实际使用的发布认证、适用 provenance、渠道更新和部署结果有真实证据。首次建包与后续 OIDC 验证按[所属规则](../design/engineering/repository.md#npm-publishing)分别记录；保留已验证的发布字节，部分成功与尚未执行的操作按实际结果报告。

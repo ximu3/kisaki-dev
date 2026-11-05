@@ -1,4 +1,4 @@
-/** @fileoverview Verifies packed declarations without Node types and real browser/document ICU consumption without polyfills. */
+/** @fileoverview Checks packed desktop contracts in a browser type environment, a document and an iframe. */
 
 import { expect } from 'vitest'
 import { join } from 'node:path'
@@ -49,7 +49,7 @@ const test = consumerTest('browser')
     return page
   })
 
-test('browser-only globals compile the public contract and generated call associations', async ({
+test('browser globals support the published desktop contracts', async ({
   consumerDirectory,
   signal,
 }) => {
@@ -58,7 +58,7 @@ test('browser-only globals compile the public contract and generated call associ
   expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
 })
 
-test('pure values and literal-tag ICU messages run in the main document and an iframe', async ({
+test('links and locales run in the main document and catalog values run in an iframe', async ({
   page,
   siteUrl,
 }) => {
@@ -69,20 +69,15 @@ test('pure values and literal-tag ICU messages run in the main document and an i
   await page.locator('body[data-ready="true"]').waitFor()
 
   expect(JSON.parse((await page.locator('#summary').textContent())!)).toEqual({
-    date: { year: 2004 },
-    entryType: 'game',
-    order: -1,
-    metadataType: 'anime',
-    message: '2 items selected',
+    locale: 'zh-Hans-CN',
     link: 'kisaki://view/anime/external/bangumi/subject%2F123',
-    themeFont: 'default',
-    protocol: 1,
   })
 
   await page.frameLocator('#view').locator('body[data-ready="true"]').waitFor()
 
   expect(await page.frameLocator('#view').locator('body').textContent()).toBe(
-    '<b>{literal}</b> · 2',
+    '{"literal":"<b>{literal}</b>"}',
   )
+
   expect(errors).toEqual([])
 })

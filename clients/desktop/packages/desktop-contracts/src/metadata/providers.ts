@@ -1,47 +1,44 @@
 /** @fileoverview Defines explicitly selected metadata providers, their pure capabilities and independently releasable read sessions. */
 
-import * as v from 'valibot'
-import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { DesktopError } from '../errors'
-import type { CallOptions, NonEmptyArray, ExecutionContext, Registration } from '../operations'
-import { nonemptyText, parseExternalValue, parseValue, text, unique } from '../validation'
-import { entryTypes, identitySchema, languageSchema } from '../library/catalog'
 import type { EntryType, ExternalIdentity } from '../library/catalog'
-import {
-  getMetadataEntryFields,
-  getMetadataPartFields,
-  parseIdentificationClues,
-  parseImageCandidate,
-  parseSourceEntry,
-} from './fields'
 import type {
+  SourceEntry,
   IdentificationClues,
+  MetadataImageField,
   ImageCandidate,
   MetadataEntryField,
-  MetadataImageField,
   MetadataPartField,
-  SourceEntry,
 } from './fields'
-import {
-  getMetadataRelations,
-  metadataRelationFields,
-  parseMetadataRelationScope,
-} from './relations'
+import type { NonEmptyArray, ExecutionContext, CallOptions, Registration } from '../operations'
+import type { MetadataPartKey, MetadataPartType } from './objects'
 import type {
-  MetadataRelationAttributeValues,
   MetadataRelationKey,
+  MetadataRelationAttributeValues,
   MetadataRelationScopeValues,
   MetadataSessionRelationScopes,
   ScopedMetadataRelationKey,
 } from './relations'
-import { metadataPartKinds } from './values'
-import type {
-  MetadataPartKey,
-  MetadataPartType,
-  MetadataReadRequest,
-  MetadataReadResult,
-} from './values'
+import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
+import type { MetadataReadRequest } from './requests'
+import type { MetadataReadResult } from './responses'
+import * as v from 'valibot'
+import { languageSchema, identitySchema, entryTypes } from '../library/catalog'
+import { text, unique, parseExternalValue, parseValue, nonemptyText } from '../validation'
+import {
+  getMetadataEntryFields,
+  getMetadataPartFields,
+  parseIdentificationClues,
+  parseSourceEntry,
+  parseImageCandidate,
+} from './fields'
+import { metadataPartKinds } from './objects'
+import {
+  getMetadataRelations,
+  parseMetadataRelationScope,
+  metadataRelationFields,
+} from './relations'
+import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
+import { DesktopError } from '../errors'
 
 /** Search cursors are opaque and belong only to this provider/type/query/language tuple; an empty page is not the end. */
 export interface MetadataSearchInput<T extends EntryType = EntryType> {
@@ -143,8 +140,16 @@ export type MetadataProviderCapabilities<T extends EntryType = EntryType> = {
 export interface MetadataReadSession<T extends EntryType = EntryType> {
   readonly relationScopes: MetadataSessionRelationScopes<T>
 
+  /**
+   * Read requested facts within this session's fixed language and relation scopes; overlapping
+   * calls keep independent cancellation.
+   */
   read(request: MetadataReadRequest<T>, context: ExecutionContext): Promise<MetadataReadResult<T>>
 
+  /**
+   * Reject new reads, await accepted reads and release session resources idempotently,
+   * independently of any cancelled read signal.
+   */
   close(): Promise<void>
 }
 
@@ -154,17 +159,34 @@ export interface MetadataProvider<T extends EntryType = EntryType> {
   readonly description?: LocalizedText
   readonly capabilities: MetadataProviderCapabilities<T>
 
+  /**
+   * Return source candidates and actual matching evidence for the requested type; search does
+   * not establish a local binding.
+   */
   search?(
     input: MetadataSearchInput<T>,
     context: ExecutionContext,
   ): Promise<MetadataSearchResult<T>>
+
+  /**
+   * Return a resolved identity or the complete candidate range with source matching evidence;
+   * distinguish no match from insufficient input.
+   */
   resolve?(input: MetadataResolveInput<T>, context: ExecutionContext): Promise<ResolveResult<T>>
 
+  /**
+   * Fix source context and relation scopes before returning an owned read session; failed setup
+   * releases partial resources.
+   */
   openSession?(
     input: MetadataOpenSessionInput<T>,
     context: ExecutionContext,
   ): Promise<MetadataReadSession<T>>
 
+  /**
+   * Return candidates only for the declared image use and supported source coordinates; image
+   * adoption remains a host operation.
+   */
   searchImages?(
     input: MetadataImageSearchInput<T>,
     context: ExecutionContext,
@@ -180,9 +202,19 @@ export interface MetadataProviderDescriptor {
 
 /** The desktop registers complete IDs. The SDK prefixes the actual extension owner to its instance-local id. */
 export interface MetadataProvidersApi {
+  /**
+   * Read currently registered provider descriptions and declared capabilities without starting
+   * source requests.
+   */
   list(call?: CallOptions): Promise<readonly MetadataProviderDescriptor[]>
+
+  /** Read one currently available provider descriptor by its complete identity. */
   get(providerId: string, call?: CallOptions): Promise<MetadataProviderDescriptor | null>
 
+  /**
+   * Register the implementation for its actual owner and instance; duplicate identities fail,
+   * and the returned handle owns removal.
+   */
   register(
     providerId: string,
     provider: MetadataProvider,
