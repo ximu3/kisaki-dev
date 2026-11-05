@@ -1,6 +1,6 @@
 # oauth-relay HTTP 与配置设计验证
 
-对应 [已确认的 HTTP 与运行配置](../../../design/projects/oauth-relay/protocol.md)。运行隔离的 Hono 服务、受控上游和 loopback 接收器，核对已确认模型的关键执行条件，并为参数、错误和配置细化提供证据。没有创建正式 relay 项目、读取真实凭据、发起真实来源授权、撤销令牌或修改现有部署。
+本组运行隔离的 Hono 服务、受控上游和 loopback 接收器，核对 [HTTP 协议与运行配置](../../../design/projects/oauth-relay/protocol.md)。请求使用合成凭据，运行范围限于本地试件。
 
 ## 固定输入
 
@@ -13,7 +13,7 @@
 | 网络             | 三个仅绑定 127.0.0.1 的动态端口；试件运行时不请求真实上游         |
 | 凭据与媒体       | 仅程序生成的随机 state／verifier／code 和自有虚构令牌，无用户数据 |
 
-[prepare.py](prepare.py)从官方 registry 取得精确版本元数据，下载 tarball 并核对 SHA-512 integrity 后解包到独立缓存；未运行安装脚本、未更改工作区 manifest 或锁文件。包入口、归档和十项主要来源摘要见 [source-input.json](source-input.json)。另外两项来源及 Google 客户端固定提交见 [provider-sources.json](provider-sources.json)。生产 Node、框架与镜像组合尚未冻结。
+[prepare.py](prepare.py)从官方 registry 取得精确版本元数据，下载 tarball 并核对 SHA-512 integrity 后解包到独立缓存；未运行安装脚本、未更改工作区 manifest 或锁文件。包入口、归档和十项主要来源摘要见 [source-input.json](source-input.json)。另外两项来源及 Google 客户端固定提交见 [provider-sources.json](provider-sources.json)。本组采用上表运行环境，部署用的 Node 与镜像版本见[构建输入](../../../design/projects/oauth-relay/deployment.md#inputs)。
 
 Hono 路由通过 Node adapter 监听真实本机端口。调用方使用 HTTP 跟随明确的授权跳转，最后由 loopback 接收器收到原客户端 state 与原始上游 code；没有启动浏览器，也没有验证 TLS、CORS、反向代理或操作系统外部浏览器行为。来源阅读与这个本地实验各自提供不同范围的依据。
 
@@ -39,7 +39,7 @@ Hono 路由通过 Node adapter 监听真实本机端口。调用方使用 HTTP �
 
 [配置 schema](../../../design/projects/oauth-relay/config.schema.json)和[无秘密示例](../../../design/projects/oauth-relay/config.example.json)由 [check-config.mjs](check-config.mjs)共同核对。结构采用 Ajv，URI、权限子集、重复上游登记及环境引用采用试件自己的语义检查；这不预先决定正式服务必须使用哪一个校验依赖。
 
-示例配置通过。六组有意义的反例被拒绝：配置中填写秘密字面量、默认权限超出允许范围、公开 origin 带路径、跨应用复用同一来源 clientId、loopback 使用 localhost、秘密环境引用缺失。检查只传入程序生成的虚构环境对象，没有读取进程中的用户秘密。
+2026-11-05 使用现行 schema 复核，示例通过，以下六种无效配置被拒绝：配置中填写秘密字面量、默认权限超出允许范围、公开 origin 带路径、跨应用复用同一来源 clientId、loopback 使用 localhost、秘密环境引用缺失。检查只传入程序生成的虚构环境对象，没有读取进程中的用户秘密。
 
 结果及 schema／示例／检查程序摘要见 [configuration-contract.json](configuration-contract.json)。该检查支持已确认的配置形状，不表示正式 CLI、配置装载、镜像环境注入、Compose 或真实登记已验收。
 

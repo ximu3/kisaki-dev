@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-23T04:03:33.004Z",
+  "checkedAt": "2026-11-05T06:45:49.738Z",
   "exampleAccepted": true,
   "rejected": [
     "literal secret in configuration",
@@ -16,7 +16,7 @@
   },
   "sources": {
     "../../../design/projects/oauth-relay/config.example.json": "131f6bd44ef11d1e0d2bfe78470affca0fd8876b625130b4a0ac616b8475d09b",
-    "../../../design/projects/oauth-relay/config.schema.json": "5bbff0f316dc5297354d69bf213dfdbe5c17ea72afe0c37ed83437cb2dea9394",
+    "../../../design/projects/oauth-relay/config.schema.json": "d5dcbe8de25746d9d7016eb78ebf7448654a2eab5afcdf9fcc812814a1951369",
     "check-config.mjs": "e59cc6b0087b6f463f2b94f31ad14dbbba10c315a31f8c304553c926d92e9f9c"
   },
   "realEnvironmentSecretsRead": false,
