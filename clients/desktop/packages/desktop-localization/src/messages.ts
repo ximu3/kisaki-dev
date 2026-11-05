@@ -4,6 +4,7 @@ import type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
 import { parseMessageCatalog } from '@kisaki3/desktop-contracts/i18n'
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser'
 import { parse, TYPE } from '@formatjs/icu-messageformat-parser'
+import { IntlMessageFormat } from 'intl-messageformat'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
 export type MessageArgumentKind = 'string' | 'number' | 'date'
@@ -37,7 +38,7 @@ export function flattenMessages(input: unknown): Readonly<Record<string, string>
   return flattenParsedCatalog(parseMessageCatalog(input))
 }
 
-/** Parse ICU with literal tags and intersect each parameter's supported argument kinds. */
+/** Parse ICU with literal tags, validate number styles and intersect each parameter's supported argument kinds. */
 export function getMessageParameterContract(message: string): MessageParameterContract {
   let ast: MessageFormatElement[]
   try {
@@ -50,15 +51,25 @@ export function getMessageParameterContract(message: string): MessageParameterCo
 
   function visit(elements: readonly MessageFormatElement[]): void {
     for (const element of elements) {
-      if (element.type === TYPE.literal || element.type === TYPE.pound) {
-        continue
-      }
-      if (element.type === TYPE.tag) {
-        throw new DesktopError('InvalidInput', 'Rich message tags are not supported')
+      if (element.type === TYPE.number && element.style) {
+        // FormatJS leaves named and skeleton number options for Intl to check at formatting time.
+        const options =
+          typeof element.style === 'string'
+            ? IntlMessageFormat.formats.number[element.style]
+            : element.style.parsedOptions
+        try {
+          new Intl.NumberFormat(undefined, options)
+        } catch (cause) {
+          throw new DesktopError('InvalidInput', 'Invalid ICU number format', { cause })
+        }
       }
 
       let kinds: readonly MessageArgumentKind[]
       switch (element.type) {
+        case TYPE.literal:
+        case TYPE.pound:
+        case TYPE.tag: // ignoreTag parses markup as literal text.
+          continue
         case TYPE.argument:
           kinds = ['string', 'number']
           break

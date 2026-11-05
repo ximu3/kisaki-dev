@@ -56,7 +56,10 @@ test('registration rejects the entire catalog for malformed known messages and r
   expect(() =>
     validateUiTranslation({
       ...registration,
-      messages: { ...registration.messages, library: { selection: '{count' } },
+      messages: {
+        ...registration.messages,
+        library: { selection: '{count, plural, one {one} other {{count, number, ::currency/US}}}' },
+      },
     }),
   ).toThrow(DesktopError)
 
