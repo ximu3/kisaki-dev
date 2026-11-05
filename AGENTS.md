@@ -6,11 +6,11 @@
 
 **简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这四项[共同原则](refactor/design/engineering/conventions.md#quality)为准。
 
-**防御和测试要极度克制。** 复用已有保证，只保留终态应对真实风险所必需的分支和用例。日常改动默认不新增防御或回归用例，修复可以一次性验证。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
+**防御和测试要极度克制。** 防御集中在真实输入、权限、持久化和副作用边界，内部调用复用已经成立的保证。测试验证消费者关心的行为，同一保证在所属层验证，接入只核对新增风险。日常改动默认不新增防御分支或回归用例，修复可用已有检查或一次性复现核实。只有真实场景中有明确的失败后果、现有保证不足且终态确需长期保障时，才补最小必要措施。删去重复校验、只为假想异常设置的分支和失去用途的测试。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
 
-**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
+**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同类问题在共同拥有层修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
-**用干净、直接的正向叙述。** 说清实际做法和结果，只留读者理解、判断或行动所需的内容。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
+**用干净、直接的正向叙述。** 设计、文档、注释与界面文案都从读者要理解或完成的事写起，直接说明谁负责、怎样使用、会得到什么结果。限制、差异或失败会影响读者判断或操作时，在相关位置写清条件和后果。保留理解取舍所需的理由，删去重复强调和无关对照。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
 **实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档集中在主题目录内，使用目录内入口，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[主题组织](refactor/design/engineering/conventions.md#source-layout)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
 
@@ -36,6 +36,6 @@ main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最�
 
 测试按[数据隔离规则](refactor/verification/acceptance.md#isolation)使用专用样本和独立的数据目录。Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。普通 check 不包含真实桌面、制品和性能验收；按实际影响选择验证。
 
-交付状态变化时更新[实施状态](refactor/implementation/status.md)，验证材料按[实际用途](refactor/design/engineering/documentation.md#evidence)维护。通用文档维护现行规则与必要依据，Git 与 PR 承载修改经过，见[文档归属](refactor/design/engineering/documentation.md#owners)。
+工作包界定交付范围，[实施状态](refactor/implementation/status.md)记录实际进度，在交付状态变化时更新。验证材料按[实际用途](refactor/design/engineering/documentation.md#evidence)维护。通用文档维护现行规则与必要依据，Git 与 PR 承载修改经过，见[文档归属](refactor/design/engineering/documentation.md#owners)。
 
 本轮首次公开发行、正式仓库接续和生产服务切换由 [W25](refactor/implementation/work-packages.md#w25) 在整体验收后完成。构建、测试和打包不隐含外部发布；仓库重建、npm 发布、平台签署身份及部署按实际授权处理，超出任务范围的对外操作先讨论。未取得的六目标、签名或后端运行证据保持未完成。
