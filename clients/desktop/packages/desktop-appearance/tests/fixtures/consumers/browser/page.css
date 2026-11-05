@@ -19,7 +19,13 @@ button {
   height: calc(var(--spacing) * 7);
 }
 
-#pane {
+#chrome {
   padding: 1rem;
+  margin-top: 1rem;
+}
+
+#series {
+  display: block;
+  width: 15rem;
   margin-top: 1rem;
 }

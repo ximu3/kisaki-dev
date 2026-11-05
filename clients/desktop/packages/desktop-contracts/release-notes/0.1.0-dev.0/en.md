@@ -1,4 +1,5 @@
 - Define desktop library values, typed queries, editing baselines, atomic graph inputs, relationships, records and local-content contracts.
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.
+- Validate theme definitions, edits and document projections against the shared 43-token vocabulary, including opaque content and window chrome colors.
 - Provide strict native and extension deeplink round trips, versioned development control values, generic message catalogs and translation registration.
 - Keep interface value validation independent from application execution, defaults and localization resources; verify packed NodeNext and browser consumers.

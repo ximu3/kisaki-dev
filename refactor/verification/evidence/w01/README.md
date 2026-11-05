@@ -1,5 +1,25 @@
 # W01 desktop-appearance 验证
 
+<a id="current-contract"></a>
+
+## 当前外观词表与桌面合同
+
+2026-11-05，在 Windows x64 使用 Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3 和 Chromium 156.0.8078.4 验证[43 键合同](../../../design/domains/appearance.md#tokens)。`pnpm check` 通过。通过 Turbo 执行 desktop-appearance、desktop-contracts 和 desktop-localization 的 `test:consumers`，三者分别通过 4、3 和 3 项仓库外检查，包括各包制品门禁与完整声明检查。
+
+- 两个默认分支均为 43 键。浏览器实际呈现不透明的内容与窗口框架色，五个 SVG 柱的 Tailwind 填色分别等于对应的普通 CSS 色槽。修改文档上的框架色会更新已挂载的区域。将次要填色和前景设为淡紫色与深紫色后，muted 的底色和前景仍取各自原值。
+- 以正式入口核对两项基色的短／长十六进制、具名色、旧式逗号函数、现代斜杠 alpha 和预定义色彩空间。完全不透明的值按 CSS 的裁剪语义通过，半透明、transparent 和缺失 alpha 分量（`/ none`）被拒绝。普通控件填色仍可采用合法透明度。
+- 同一组输入经完整主题定义、用户创建、部分更新、预览和文档投影核对，不合法的底色均被归类为 InvalidInput。退役的九个键在纯词表和桌面更新入口均被拒绝，也未出现在受检 tarball 的公开代码、声明和样式中。
+
+本机受检 `0.1.0-dev.0` tarball 的 SHA-256 如下。消费用的声明、运行模块和 CSS 都来自对应包的同一份文件。
+
+| 包                   | SHA-256                                                            |
+| -------------------- | ------------------------------------------------------------------ |
+| desktop-appearance   | `d6474629d36243a92f8b2f4f29fbedf4b755e72e51150cefbc1f4a47b330c111` |
+| desktop-contracts    | `4537010ff24152a15545daa08128b1af46d8e2110652553a234719e5cbb5444e` |
+| desktop-localization | `641bb47f060013f1905586d1668d7684ee79c7d1e494826518c1f2072f459996` |
+
+## 首次交付环境
+
 2026-11-01，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3、Tailwind 4.3.3、Playwright 1.64.1 和 Chromium 156.0.8078.4 下验证正式包实现。交付及远端验收状态见[实施状态](../../../implementation/status.md#progress)。
 
 ## 交付与本机结果
