@@ -4,20 +4,27 @@ import type {
   ReadingPosition,
   PlaybackPositionInput,
   ReadingPositionInput,
-} from './library/reading'
-import type { GameBackupSource } from './library/holdings/backups/api'
-import type { CallOptions, Listener, Disposable } from './operations'
-import type { ErrorSummary } from './errors'
-import type { FileTrackSelection } from './library/holdings/preferences'
-import type { PreparedImage } from './images'
-import type { WorkRef } from './library/catalog'
-import { parseValue, nonnegativeNumber, id, timestamp, omitFields, unique } from './validation'
+} from '../library/reading'
+import type {
+  GameOpenInput,
+  AnimeOpenInput,
+  ComicOpenInput,
+  NovelOpenInput,
+  FileSwitchInput,
+} from './targets'
+import type { GameBackupSource } from '../library/holdings/backups/api'
+import type { CallOptions, Listener, Disposable } from '../operations'
+import type { ErrorSummary } from '../errors'
+import type { FileTrackSelection } from '../library/holdings/preferences'
+import type { PreparedImage } from '../images'
+import type { WorkRef } from '../library/catalog'
+import { parseValue, nonnegativeNumber, id, timestamp, unique } from '../validation'
 import * as v from 'valibot'
-import { parseReadingPosition } from './library/reading'
-import { parseGameBackupSource } from './library/holdings/backups/api'
-import { DesktopError, parseErrorSummary } from './errors'
-import { parseFileTrackSelection } from './library/holdings/preferences'
-import { parseWorkRef } from './library/catalog'
+import { parseReadingPosition } from '../library/reading'
+import { parseGameBackupSource } from '../library/holdings/backups/api'
+import { DesktopError, parseErrorSummary } from '../errors'
+import { parseFileTrackSelection } from '../library/holdings/preferences'
+import { parseWorkRef } from '../library/catalog'
 
 /** elapsedMs includes confirmed unsaved intervals; graceEndsAt is a UTC display deadline, never the timing clock. */
 export interface SessionTiming {
@@ -148,38 +155,6 @@ export type SessionEndedMap = {
     readonly reason: SessionEndReasonMap[K]
     readonly recordingError?: ErrorSummary
   }
-}
-
-/** Explicit position, including start, always requires an explicit file identity. All supplied selectors constrain the target. */
-export type FilePositionChoice<P> =
-  | { readonly fileId?: string; readonly position?: never }
-  | { readonly fileId: string; readonly position: P }
-
-export interface GameOpenInput {
-  readonly gameId: string
-  readonly launchConfigId?: string
-}
-
-export type AnimeOpenInput = { readonly animeId: string } & (
-  | { readonly episodeId?: string; readonly extraId?: never }
-  | { readonly episodeId?: never; readonly extraId: string }
-) &
-  FilePositionChoice<PlaybackPositionInput>
-
-export type ComicOpenInput = {
-  readonly comicId: string
-  readonly volumeId?: string
-  readonly chapterId?: string
-} & FilePositionChoice<ReadingPositionInput>
-
-export type NovelOpenInput = {
-  readonly novelId: string
-  readonly volumeId?: string
-} & FilePositionChoice<ReadingPositionInput>
-
-export interface FileSwitchInput<P> {
-  readonly fileId: string
-  readonly position?: P
 }
 
 /** Only ready is a normal return. previousEnded is a legal failure result and does not claim successful recording/cleanup. */
@@ -564,10 +539,6 @@ const volume = v.pipe(finite, v.minValue(0), v.maxValue(100))
 
 const readingPosition = v.pipe(v.unknown(), v.transform(parseReadingPosition))
 
-const playbackInput = v.union([v.literal('start'), nonnegativeNumber])
-
-const readingInput = v.union([v.literal('start'), readingPosition])
-
 const sourceSnapshot = v.pipe(
   v.unknown(),
   v.transform((input) => {
@@ -658,6 +629,15 @@ const comic = v.strictObject({ ...fileBase, type: v.literal('comic'), comicId: i
 
 const novel = v.strictObject({ ...fileBase, type: v.literal('novel'), novelId: id, reading })
 
+function checkSaveSource(session: Pick<GameSession, 'launchConfigId' | 'saveSource'>): void {
+  if (session.saveSource && session.saveSource.launchConfigId !== session.launchConfigId) {
+    throw new DesktopError(
+      'InvalidInput',
+      'Session save source belongs to another launch configuration',
+    )
+  }
+}
+
 /** Validate one complete actual snapshot without inventing running flags, positions, duration or file ownership. */
 export function parseWorkSession(input: unknown): WorkSession {
   const value = parseValue(
@@ -665,15 +645,8 @@ export function parseWorkSession(input: unknown): WorkSession {
     input,
     'Invalid work session',
   )
-  if (
-    value.type === 'game' &&
-    value.saveSource &&
-    value.saveSource.launchConfigId !== value.launchConfigId
-  ) {
-    throw new DesktopError(
-      'InvalidInput',
-      'Session save source belongs to another launch configuration',
-    )
+  if (value.type === 'game') {
+    checkSaveSource(value)
   }
 
   return value
@@ -687,14 +660,9 @@ export function parseSessionStarted<T extends keyof SessionStartedMap>(
   const fields: v.ObjectEntries = startedEntries[type]
   const value = parseValue(v.strictObject(fields), input, 'Invalid session start event')
   if (type === 'game') {
-    const gameValue = value as SessionStartedMap['game']
-    if (gameValue.saveSource && gameValue.saveSource.launchConfigId !== gameValue.launchConfigId) {
-      throw new DesktopError(
-        'InvalidInput',
-        'Session event save source belongs to another launch configuration',
-      )
-    }
+    checkSaveSource(value as SessionStartedMap['game'])
   }
+
   return value as SessionStartedMap[T]
 }
 
@@ -713,119 +681,14 @@ export function parseSessionEnded<T extends keyof SessionEndedMap>(
     recordingError: v.exactOptional(v.pipe(v.unknown(), v.transform(parseErrorSummary))),
   }
   const value = parseValue(v.strictObject(fields), input, 'Invalid session end event')
-  parseSessionStarted(type, omitFields(value, ['endedAt', 'reason', 'recordingError']))
+  if (type === 'game') {
+    checkSaveSource(value as SessionStartedMap['game'])
+  }
   if (value.reason === 'detached' && value.recordingError !== undefined) {
     throw new DesktopError('InvalidInput', 'A detached game cannot have an unsaved final recording')
   }
 
   return value as SessionEndedMap[T]
-}
-
-/** Validate current-file location input; start remains an instruction until the executor returns actual coordinates. */
-export function parsePlaybackPositionInput(input: unknown): PlaybackPositionInput {
-  return parseValue(playbackInput, input, 'Invalid playback position')
-}
-
-/** Accept a persistent reading coordinate or the transient start instruction without resolving document content. */
-export function parseReadingPositionInput(input: unknown): ReadingPositionInput {
-  return parseValue(readingInput, input, 'Invalid reading position input')
-}
-
-/** Validate both structural selectors and combinations; actual ownership/availability is resolved by sessions. */
-export function parseGameOpenInput(input: unknown): GameOpenInput {
-  return parseValue(
-    v.strictObject({ gameId: id, launchConfigId: v.exactOptional(id) }),
-    input,
-    'Invalid game open input',
-  )
-}
-
-/** Validate compatible anime target constraints; an explicit position requires an explicit file. */
-export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
-  const value = parseValue(
-    v.strictObject({
-      animeId: id,
-      episodeId: v.exactOptional(id),
-      extraId: v.exactOptional(id),
-      fileId: v.exactOptional(id),
-      position: v.exactOptional(playbackInput),
-    }),
-    input,
-    'Invalid anime open input',
-  )
-  if (
-    (value.episodeId !== undefined && value.extraId !== undefined) ||
-    (value.position !== undefined && value.fileId === undefined)
-  ) {
-    throw new DesktopError('InvalidInput', 'Conflicting or incomplete anime target constraints')
-  }
-
-  return value as AnimeOpenInput
-}
-
-/** Validate comic volume/chapter/file constraints without choosing a file or resolving its reading position. */
-export function parseComicOpenInput(input: unknown): ComicOpenInput {
-  const value = parseValue(
-    v.strictObject({
-      comicId: id,
-      volumeId: v.exactOptional(id),
-      chapterId: v.exactOptional(id),
-      fileId: v.exactOptional(id),
-      position: v.exactOptional(readingInput),
-    }),
-    input,
-    'Invalid comic open input',
-  )
-  if (value.position !== undefined && value.fileId === undefined) {
-    throw new DesktopError('InvalidInput', 'An explicit position requires a file')
-  }
-
-  return value as ComicOpenInput
-}
-
-/** Validate novel volume/file constraints; an explicit reading position remains bound to the supplied file. */
-export function parseNovelOpenInput(input: unknown): NovelOpenInput {
-  const value = parseValue(
-    v.strictObject({
-      novelId: id,
-      volumeId: v.exactOptional(id),
-      fileId: v.exactOptional(id),
-      position: v.exactOptional(readingInput),
-    }),
-    input,
-    'Invalid novel open input',
-  )
-  if (value.position !== undefined && value.fileId === undefined) {
-    throw new DesktopError('InvalidInput', 'An explicit position requires a file')
-  }
-
-  return value as NovelOpenInput
-}
-
-/** A switch fixes the requested file; reading and playback coordinate families cannot cross. */
-export function parseFileSwitchInput(
-  type: 'anime',
-  input: unknown,
-): FileSwitchInput<PlaybackPositionInput>
-
-/** Validate the requested reading file and optional reading coordinate without accepting playback seconds. */
-export function parseFileSwitchInput(
-  type: 'comic' | 'novel',
-  input: unknown,
-): FileSwitchInput<ReadingPositionInput>
-
-export function parseFileSwitchInput(
-  type: FileSession['type'],
-  input: unknown,
-): FileSwitchInput<PlaybackPositionInput | ReadingPositionInput> {
-  return parseValue(
-    v.strictObject({
-      fileId: id,
-      position: v.exactOptional(type === 'anime' ? playbackInput : readingInput),
-    }),
-    input,
-    'Invalid file switch',
-  )
 }
 
 /** Parse the complete result family; a caller handling success additionally requires outcome ready. */

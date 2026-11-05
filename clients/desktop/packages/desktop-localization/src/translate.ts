@@ -7,25 +7,28 @@ import type { MessageCatalog, UiTranslationRegistration } from '@kisaki3/desktop
 import { englishMessages } from './en/index'
 import type { Translate, TranslationCall } from './contracts.generated'
 import {
+  checkMessageCompatibility,
   flattenMessages,
-  getMessageContracts,
+  flattenParsedCatalog,
+  indexMessageSource,
   validateMessageArguments,
-  validateMessageCatalog,
 } from './messages'
 
-const source = flattenMessages(englishMessages)
-const contracts = getMessageContracts(englishMessages)
+const { messages: source, contracts } = indexMessageSource(englishMessages)
 
 /** Validate registration shape and known message compatibility as one atomic unit. */
 export function validateUiTranslation(input: unknown): UiTranslationRegistration {
   const value = parseUiTranslationRegistration(input)
-  return { ...value, messages: validateMessageCatalog(value.messages, englishMessages) }
+  checkMessageCompatibility(flattenParsedCatalog(value.messages), contracts)
+  return value
 }
 
 /** The caller replaces this snapshot when its effective language or catalog changes. Missing leaves use English plural rules. */
 export function createTranslator(locale: string, catalog: MessageCatalog = {}): Translate {
   const language = parseUiLocale(locale)
-  const translated = flattenMessages(validateMessageCatalog(catalog, englishMessages))
+  const translated = flattenMessages(catalog)
+  checkMessageCompatibility(translated, contracts)
+
   const formatters = new Map<string, IntlMessageFormat>()
 
   return (...args: TranslationCall): string => {

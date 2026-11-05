@@ -80,6 +80,15 @@ function validateTree(entries: readonly GameBackupArchiveEntry[]): void {
   }
 }
 
+function encodeOrderedTree(entries: readonly GameBackupArchiveEntry[]): Uint8Array {
+  const rows: GameBackupTreeRow[] = entries.map((entry) =>
+    entry.type === 'directory'
+      ? [entry.path, 'directory']
+      : [entry.path, 'file', entry.sizeBytes, entry.sha256],
+  )
+  return new TextEncoder().encode(JSON.stringify(rows))
+}
+
 /** Encode root and every member as compact UTF-8 JSON rows ordered by exact path bytes, without BOM or final newline. */
 export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): Uint8Array {
   const entries = parseValue(
@@ -88,16 +97,7 @@ export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): 
     'Invalid backup tree',
   )
   validateTree(entries)
-
-  const rows: GameBackupTreeRow[] = [...entries]
-    .sort((a, b) => compareIdentityText(a.path, b.path))
-    .map((entry) =>
-      entry.type === 'directory'
-        ? [entry.path, 'directory']
-        : [entry.path, 'file', entry.sizeBytes, entry.sha256],
-    )
-
-  return new TextEncoder().encode(JSON.stringify(rows))
+  return encodeOrderedTree(entries.toSorted((a, b) => compareIdentityText(a.path, b.path)))
 }
 
 /** Hash logical content only; ZIP compression, member order, permissions and timestamps do not affect this digest. */
@@ -134,7 +134,7 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
         (entry, index) =>
           index > 0 && compareIdentityText(value.entries[index - 1]!.path, entry.path) >= 0,
       ) ||
-      gameBackupTreeDigest(value.entries) !== value.treeDigest
+      bytesToHex(sha256(encodeOrderedTree(value.entries))) !== value.treeDigest
     ) {
       throw new DesktopError('InvalidInput', 'Backup tree order or content digest does not match')
     }

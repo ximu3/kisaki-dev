@@ -5,7 +5,7 @@ import type { ScanResult } from './scanner/runs'
 import type { ErrorSummary } from './errors'
 import type { JsonValue } from './json'
 import type { LibraryChanged } from './library/changes'
-import type { SessionStartedMap, SessionEndedMap } from './sessions'
+import type { SessionStartedMap, SessionEndedMap } from './sessions/api'
 import type { Disposable } from './operations'
 import * as v from 'valibot'
 import { parseErrorSummary, DesktopError } from './errors'
@@ -13,7 +13,7 @@ import { parseValue, id, timestamp, nonemptyText, parseExternalValue } from './v
 import { parseScanResult, requireCompleteScanResult } from './scanner/runs'
 import { parseJsonValue } from './json'
 import { parseLibraryChanged } from './library/changes'
-import { parseSessionStarted, parseSessionEnded } from './sessions'
+import { parseSessionStarted, parseSessionEnded } from './sessions/api'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 
 /** The business report and managed task can finish separately. This fact does not claim a TaskRun or failed history was saved. */

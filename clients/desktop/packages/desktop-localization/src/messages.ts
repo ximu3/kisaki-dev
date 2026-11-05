@@ -13,9 +13,10 @@ export type MessageParameterContract = Readonly<Record<string, readonly MessageA
 
 export type MessageContracts = Readonly<Record<string, MessageParameterContract>>
 
-/** Flatten a pure catalog for validation/indexing; empty strings remain present and unknown keys are not discarded. */
-export function flattenMessages(input: unknown): Readonly<Record<string, string>> {
+/** Index the leaves of a catalog whose groups and keys have already been parsed. */
+export function flattenParsedCatalog(catalog: MessageCatalog): Readonly<Record<string, string>> {
   const result = new Map<string, string>()
+
   function visit(group: MessageCatalog, prefix: string): void {
     for (const [key, child] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${key}` : key
@@ -27,11 +28,16 @@ export function flattenMessages(input: unknown): Readonly<Record<string, string>
     }
   }
 
-  visit(parseMessageCatalog(input), '')
+  visit(catalog, '')
   return Object.fromEntries(result)
 }
 
-/** Parse ICU with literal tags. Incompatible uses of one parameter reject the message instead of guessing its type. */
+/** Parse a catalog and index its leaves by path, including unknown keys and empty strings. */
+export function flattenMessages(input: unknown): Readonly<Record<string, string>> {
+  return flattenParsedCatalog(parseMessageCatalog(input))
+}
+
+/** Parse ICU with literal tags and intersect each parameter's supported argument kinds. */
 export function getMessageParameterContract(message: string): MessageParameterContract {
   let ast: MessageFormatElement[]
   try {
@@ -96,28 +102,29 @@ export function getMessageParameterContract(message: string): MessageParameterCo
   )
 }
 
-/** Derive the one author/type-generation baseline from source text; no independently maintained parameter table is accepted. */
-export function getMessageContracts(source: MessageCatalog): MessageContracts {
-  return Object.fromEntries(
-    Object.entries(flattenMessages(source)).map(([key, message]) => [
-      key,
-      getMessageParameterContract(message),
-    ]),
+/** Index source text and its argument contracts together for consumers of the same baseline. */
+export function indexMessageSource(source: MessageCatalog) {
+  const messages = flattenMessages(source)
+  const contracts: MessageContracts = Object.fromEntries(
+    Object.entries(messages).map(([key, message]) => [key, getMessageParameterContract(message)]),
   )
+  return { messages, contracts }
 }
 
-/** Unknown leaves are ignored by current resolution. Known leaves may omit parameters but may not narrow valid source calls. */
-export function validateMessageCatalog(
-  input: unknown,
-  source: MessageCatalog,
-  options: { readonly complete?: boolean } = {},
-): MessageCatalog {
-  const catalog = parseMessageCatalog(input)
-  const translated = flattenMessages(catalog)
-  const contracts = getMessageContracts(source)
+/** Derive the argument contracts used for author validation and type generation from source text. */
+export function getMessageContracts(source: MessageCatalog): MessageContracts {
+  return indexMessageSource(source).contracts
+}
+
+/** Check known translations against source calls, optionally requiring every source key. */
+export function checkMessageCompatibility(
+  translated: Readonly<Record<string, string>>,
+  contracts: MessageContracts,
+  complete = false,
+): void {
   for (const [key, contract] of Object.entries(contracts)) {
     if (!Object.hasOwn(translated, key)) {
-      if (options.complete) {
+      if (complete) {
         throw new DesktopError('InvalidInput', 'Translation is missing a required message')
       }
       continue
@@ -135,7 +142,20 @@ export function validateMessageCatalog(
       }
     }
   }
+}
 
+/** Parse a translation catalog and check its known messages against the supplied source. */
+export function validateMessageCatalog(
+  input: unknown,
+  source: MessageCatalog,
+  options: { readonly complete?: boolean } = {},
+): MessageCatalog {
+  const catalog = parseMessageCatalog(input)
+  checkMessageCompatibility(
+    flattenParsedCatalog(catalog),
+    getMessageContracts(source),
+    options.complete,
+  )
   return catalog
 }
 

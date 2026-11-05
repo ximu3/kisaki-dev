@@ -2,7 +2,7 @@
 
 import { expect, test } from 'vitest'
 import { DesktopError, parseExecutionFailure } from './errors'
-import { parsePlaybackSettingResult } from './sessions'
+import { parsePlaybackSettingResult } from './sessions/api'
 
 test('retains a legal partial result without accepting an incomplete replacement', () => {
   const partialResult = {

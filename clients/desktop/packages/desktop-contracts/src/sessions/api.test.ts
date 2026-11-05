@@ -2,20 +2,19 @@
 
 import { test, expect, describe, it } from 'vitest'
 
-import { parseNativeEventPayload } from './events'
+import { parseNativeEventPayload } from '../events'
 import {
   parseSessionEnded,
   parseWorkSession,
   parseSessionInteraction,
-  parseAnimeOpenInput,
-  parseComicOpenInput,
   parseFileSwitchResult,
   parsePlaybackSettingResult,
   parseRecordingRetryResult,
-} from './sessions'
-import { DesktopError } from './errors'
+} from './api'
+import { parseAnimeOpenInput, parseComicOpenInput } from './targets'
+import { DesktopError } from '../errors'
 
-import { parse as parseLink } from './deeplink'
+import { parse as parseLink } from '../deeplink'
 
 test('session lifecycle facts retain actual launch snapshots and distinguish detach from failed final recording', () => {
   const context = {
