@@ -31,7 +31,7 @@ Mihon [v0.21.0 发布说明](https://github.com/mihonapp/mihon/releases/tag/v0.2
 4. 遵守源码缺省值。BackupManga.favorite 缺省 true；read、bookmark 缺省 false。缺席数组可能是导出时未选章节、分类或追踪，不能拿空数组清空本地资料或记录。
 5. 只读取已声明的数据投影。设置、来源设置和扩展仓库不反序列化为可执行对象，私密值不进入日志、报告或笔记。manga／chapter 的 memo 是来源扩展数据，不当作私人备注。
 
-[旧模型](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt)中为更早备份保留的 brokenSources／brokenHistory 含非标准字段 0，不属于本项标准消息合同；当前 v0.15.3 正常导出的 sources=101、history=104 属于支持范围。legacy JSON、任意分支私有消息和备份查看器自定义 JSON 不作为输入系列。受影响内容明确报告，不假装已经恢复。
+[旧模型](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/backup/models/Backup.kt)中为更早备份保留的 brokenSources／brokenHistory 含非标准字段 0，不属于本项标准消息合同；当前 v0.15.3 正常导出的 sources=101、history=104 属于支持范围。legacy JSON、任意分支私有消息和备份查看器自定义 JSON 不作为输入系列。对超出支持范围的内容报告未迁入。
 
 源文件始终只读。导入不调用源应用恢复、升级数据库或安装扩展，不把备份上传到在线查看器。正式制品随包提供解析依赖，运行时不从 CDN 下载执行代码。
 
@@ -114,9 +114,9 @@ Komga（6）、Kavita（8）、Suwayomi（9）的记录属于自建服务或阅�
 
 ## 分类、笔记、整章书签与阅读概况
 
-分类可选迁为手动 Collection。[创建器](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt)写入 manga.categories 的是分类 order，而非当前分类 id。联接必须按 order，重复 order 或未知引用报告整理未完成；不回退按 id、名称或数组下标。系统“未分类”没有真实用户分类记录，不创建同名合集。空选择不删除现有成员，同名合集不自动合并。
+分类可选迁为手动 Collection。[创建器](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/backup/create/creators/MangaBackupCreator.kt)在 manga.categories 中保存分类的 order。导入器按 order 查找唯一分类，遇到重复或未知引用时报告整理未完成。系统“未分类”没有真实用户分类记录，不创建同名合集。空选择不删除现有成员，同名合集不自动合并。
 
-分类 order 仅表达分类的排列，不证明分类内条目的手动顺序。成员只采用准确对应 Entry；多条来源记录归同一个 Work 时只建立一次成员关系，Part 不能偷偷替换成母体成员。source flags 的排序／筛选设置不成为本地智能合集规则。genre 与私人分类分开，只有选定的 genre 才作为普通标签。
+分类 order 仅表达分类的排列，不证明分类内条目的手动顺序。成员只采用准确对应 Entry；多条来源记录归同一个 Work 时只建立一次成员关系。仅能对应 Part 的记录不产生母体成员关系。source flags 的排序／筛选设置不成为本地智能合集规则。genre 与私人分类分开，只有选定的 genre 才作为普通标签。
 
 | 内容                  | 保存方式                                                                                    |
 | --------------------- | ------------------------------------------------------------------------------------------- |

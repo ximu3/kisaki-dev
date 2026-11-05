@@ -8,7 +8,7 @@
 
 继续使用[固定探针 DLL](../libmpv-native/binary-input.json)、[GPU addon](../libmpv-gpu/verification.md)和代码生成的参考图片。执行前校验 DLL、addon 和样本摘要，不读取用户配置或媒体。临时 Lua、GLSL 与来源副本均位于仓库忽略的缓存目录。
 
-实际 DLL 报告 mpv v0.41.0-1205-g01e2533f3、libplacebo v7.376.0 (v7.360.0-171-g0df80ae-dirty) 与 FFmpeg N-127617-g94cba3150。libplacebo 的公开 0df80ae 源码作为定义参照，不能冒充带 dirty 标记制品的完全一致来源；整个探针组合仍不是最终发行依赖。
+实际 DLL 报告 mpv v0.41.0-1205-g01e2533f3、libplacebo v7.376.0 (v7.360.0-171-g0df80ae-dirty) 与 FFmpeg N-127617-g94cba3150。libplacebo 的公开 0df80ae 源码用于核对定义。被测制品带有 dirty 标记，精确源码对应关系未确认；整个探针组合仍不是最终发行依赖。
 
 [source-probe.py](source-probe.py)记录固定 mpv／Electron 与上述 libplacebo 参照的 13 份来源摘要和 15 项文本检查，结果见 [source-contract.json](source-contract.json)。这些是来源定位，不是执行测试。新的运行行为分别由下述两个探针记录。
 

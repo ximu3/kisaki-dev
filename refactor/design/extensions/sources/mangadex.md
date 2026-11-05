@@ -120,7 +120,7 @@ contentRating=safe 对应 isNsfw=false，suggestive、erotica、pornographic 对
 | --------------------- | ----------------------------------------------------------------------- |
 | al 的规范数值 ID      | anilist / media/<id>                                                    |
 | mal 的规范数值 ID     | myanimelist / manga/<id>                                                |
-| kt 的规范数值 ID      | kitsu / manga/<id>；slug 形态只保留官方可解释的查询链接，不冒充数值身份 |
+| kt 的规范数值 ID      | kitsu / manga/<id>；slug 形态只保留官方可解释的查询链接 |
 | mu 的明确新式系列代码 | mangaupdates / series/<code>；纯数字旧编号不直接当作新式系列代码        |
 | bw 的明确 series/<id> | bookwalker-jp / series/<id>；单册或无法确定作品范围的地址不绑定根作品   |
 

@@ -11,7 +11,7 @@
 | 所需字段查询 | 请求 vote、started、finished、labels.id，返回 0 条、more = false | 证明请求合法及本次 API 清单为空，不证明实际字段值已经核对 |
 | 最小查询确认 | 仅请求默认身份字段并计数，count = 0、more = false                | 空结果与所选记录字段无关                                  |
 
-完整读取本次空 API 清单不等于遍历了所有网站占位项，也不证明账号从未保存过记录。来源对已删除 VN 的省略继续遵守[读取范围](../../../design/extensions/sources/vndb.md#account-reading)。私有虚拟标签的出现，不能冒充已经验证了用户自建私有标签或私有作品记录。
+完整读取本次空 API 清单不等于遍历了所有网站占位项，也不证明账号从未保存过记录。来源对已删除 VN 的省略继续遵守[读取范围](../../../design/extensions/sources/vndb.md#account-reading)。本次观察到私有虚拟标签。用户自建私有标签与私有作品记录不在本组样本内。
 
 ## 尚未覆盖
 

@@ -15,7 +15,7 @@
 | [资源](resources.md)          | 授权、传输、取消、预算、临时存储及部署         |
 | [构建与发行](distribution.md) | ESM、资产清单、后端执行范围与制品              |
 
-业务持久值和会话归属见[Kisaki 接入](../../engineering/integrations.md#reading)，技术依据见[验证记录](../../../verification/evidence/README.md#kana)。
+业务持久值和会话归属见[Kisaki 接入](../../engineering/integrations.md#reading)，工程边界的依据见[格式、资源与浏览器接口](../../../verification/evidence/kana/organization-sources.md)，运行结果见[验证记录](../../../verification/evidence/README.md#kana)。
 
 <a id="scope"></a>
 

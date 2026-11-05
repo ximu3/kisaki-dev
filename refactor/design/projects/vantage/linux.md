@@ -27,7 +27,7 @@ Linux 的普通进程能力不依赖显示服务器。窗口与前台按实际 X
 
 GNOME 的 Meta.Window.get_pid 在已核对版本通过后端取得实际客户端 PID；其中 X11 分支使用 XRes。KWin 6.8 的 X11Window 同样取得 XRes PID，KWin 5.24 的 Toplevel.pid 则仍读取窗口属性，因此旧组件须同时交付原生 XID，由 Rust 后端另作 XRes 核对。Wayland 客户端使用 compositor 持有的连接进程信息；不能把这些版本差异压成一条“pid 一定可信”的规则。[Mutter 42](https://github.com/GNOME/mutter/blob/42.0/src/x11/window-x11.c)、[KWin 5.24](https://github.com/KDE/kwin/blob/v5.24.7/src/toplevel.cpp)、[KWin 6.8](https://github.com/KDE/kwin/blob/v6.8.0/src/x11window.cpp)
 
-Wayland 桌面中的 XWayland 窗口仍由所属 GNOME／KWin 组件统一枚举和控制。对其 XID 使用 XRes 只是核对进程关系，不将 XWayland 枚举冒充完整 Wayland 桌面。
+Wayland 桌面中的 XWayland 窗口仍由所属 GNOME／KWin 组件统一枚举和控制。XRes 根据 XID 核对该 XWayland 窗口的进程关系，完整桌面枚举由 GNOME 或 KWin 组件提供。
 
 <a id="protocol"></a>
 

@@ -29,7 +29,7 @@ source 使用 mangaupdates，sourceId 采用资源类别与网站当前规范的
 | Author    | author/&lt;code&gt;    | 已明确类别的 Person 或 Organization |
 | Publisher | publisher/&lt;code&gt; | 真实出版方 Organization             |
 
-API 的十进制整数 ID 与当前页面代码在边界处准确转换；《四叶妹妹》的 23606352927 与 auem2hr 已核对。序列化为规范字符串，不通过浮点舍入接受超出安全整数范围的值。名称 slug 不参与身份，author 与 publisher 不能仅因数字相同就合并。旧 series.html?id= 的历史编号属于另一编号体系，不把它转 base36 冒充当前 ID；缺少明确对应时只保留外链。
+API 的十进制整数 ID 与当前页面代码在边界处准确转换；《四叶妹妹》的 23606352927 与 auem2hr 已核对。序列化为规范字符串，不通过浮点舍入接受超出安全整数范围的值。名称 slug 不参与身份，author 与 publisher 不能仅因数字相同就合并。旧 series.html?id= 使用独立的编号体系。只有查到明确对应才能采用当前 ID，否则只保留外链。
 
 Novel 类型对应小说；Manga、Manhwa、Manhua、OEL 及其他明确漫画类型对应漫画。来源把同人小说实际归为 Novel，Doujinshi 按其漫画目录中的同人作品解释；遇到与媒介证据矛盾的记录报告无法归类。Artbook、Drama CD 和未知类型不强行映射。国别风格名称不直接推导 originalLanguages。
 
@@ -88,7 +88,7 @@ Person 根或已明确的 Author 团体根，可以通过自己的真实身份�
 
 Person 根的 personWorks 固定为 comic、novel 中本页映射的 creator、drawing、illustration，character 为 none，并按媒介职责相容性限定组合。Organization 根的 organizationWorks 使用 scope:session：Author 身份为 creator、other，Publisher 身份为 publisher；作品根只提供 publisher。各范围在读取前固定。
 
-作品的 publishers 按实际 Original／English 出版范围解释。原作出版方提供 organizationWorks.publisher；English 译版署名不冒充原作出版参与，出版地或 Publisher 档案自身 type 不能替代每部作品上的署名范围。Publisher 反查需要再核对 Series 的出版项。发行说明只用于相应关系 note，刊物名称不自动建立出版社或出版品牌，介绍中的隶属措辞也不解析为组织关系。
+作品的 publishers 按实际 Original／English 出版范围解释。原作出版方提供 organizationWorks.publisher；English 署名只说明译版出版关系。出版参与的范围以每部作品的实际署名为准。Publisher 反查需要再核对 Series 的出版项。发行说明只用于相应关系 note，刊物名称不自动建立出版社或出版品牌，介绍中的隶属措辞也不解析为组织关系。
 
 | 来源直接关系                      | 采用                                                                                    |
 | --------------------------------- | --------------------------------------------------------------------------------------- |

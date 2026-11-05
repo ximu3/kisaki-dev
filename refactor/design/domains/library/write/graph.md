@@ -80,7 +80,7 @@ GraphRelations 只含 workCharacters、personWorks、organizationWorks、workRel
 
 Entry 端点使用对应类型的 GraphEntryRef。role、character 的可空性沿正式关系定义，必须显式给出；note、isSpoiler 省略时分别为 null、false。workRelations 使用正式关系类型，事务内统一方向并检查业务键。删除关系不删除端点。
 
-ingest 的完整范围替换在准备时解析为明确的增、改、删集合。修改项沿各自 update.expected，只比较 binding 和本次修改字段；删除项随关系区域提供 `expected: readonly RelationSnapshot[]`，每项包含 id、完整 binding、note 及适用 isSpoiler，并且只允许引用本次 remove 中的关系。它不是图级版本或任意查询条件。提交时待删关系必须仍与原快照一致；准备期间后来增加的其他关系保留，不扩入本次删除范围。来源完整性只决定这次固定范围的删除资格，不授予删除在途新增事实的权限。
+ingest 的完整范围替换在准备时解析为明确的增、改、删集合。修改项沿各自 update.expected，只比较 binding 和本次修改字段；删除项随关系区域提供 `expected: readonly RelationSnapshot[]`，每项包含 id、完整 binding、note 及适用 isSpoiler，并且只允许引用本次 remove 中的关系。提交时待删关系必须仍与原快照一致；准备期间后来增加的其他关系保留，不扩入本次删除范围。来源完整性决定这组已选关系是否具备删除资格。
 
 entryTags 使用 `{ entry, change, expected? }` 数组，change 复用标签侧 replace／modify，成员中的 tagId 使用 GraphTagRef。volumeChapters 使用 `{ volume, change, expected? }` 数组，成员为 `{ chapter: GraphPartRef<'comicChapter'>, numberLabel: string | null }`；replace 的数组顺序表达该卷收录顺序，expected 比较完整原成员、编号及顺序。两端必须属于同一漫画，作品话号不被改写。
 

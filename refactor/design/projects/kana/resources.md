@@ -60,7 +60,7 @@ Kana 取消并收尾自己发起的读取，释放自己创建或明确接管的
 
 Electron 通过标准、安全且支持 fetch 与 Service Worker 的受控协议提供应用页面和包资产，并注册到真实窗口的 Session。内容文档与宿主控制代码保持测量、事件所需的同源 DOM 访问，资源加载同时遵守 CSP。实现依据[协议能力](https://www.electronjs.org/docs/latest/api/protocol#protocolregisterschemesasprivilegedcustomschemes)完成登记与读取。
 
-assetsBaseUrl 表示明确部署的同源发行资产目录。资产清单包括实际转发脚本，同源、专用作用域及 Electron 协议能力属于[公开接入合同](distribution.md#assets)。缺少必要能力或资产时，在打开相关内容的准备阶段以 assetUnavailable 明确失败，不悄悄退回另一套有不同 CSS 语义的 Blob 改写路线。
+assetsBaseUrl 表示明确部署的同源发行资产目录。资产清单包括实际转发脚本，同源、专用作用域及 Electron 协议能力属于[公开接入合同](distribution.md#assets)。缺少必要能力或资产时，相关内容的打开操作在准备阶段以 assetUnavailable 失败。
 
 模块导入仍不登记 worker 或加载资产。实际打开需要这种呈现的内容时，Kana 建立或复用对应版本的登记；纯值入口、Node 消费和不涉及该机制的计算没有这一副作用。
 

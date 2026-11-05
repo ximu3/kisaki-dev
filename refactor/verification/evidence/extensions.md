@@ -4,25 +4,25 @@
 
 ## 资料与平台来源
 
-| 来源         | 核对范围与记录                                                                                                          |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| VNDB         | [身份、元数据及本人操作](#vndb)                                                                                         |
-| Bangumi      | [对象粒度、关系、目录及本人操作](#bangumi)                                                                              |
-| 月幕Galgame  | [公开合同](ymgal/public-contracts.md)、[字段映射](ymgal/metadata-mapping.md)                                            |
-| MangaDex     | [公开与个人接口](mangadex/public-contracts.md)、[元数据与卷话](mangadex/metadata-mapping.md)                            |
-| TMDB         | [公开资料及游客评分](tmdb/live-api.md)、[本人授权与私密列表](tmdb/account-api.md)、[字段映射](tmdb/metadata-mapping.md) |
-| SteamGridDB  | [四类图片、分页、ICO 及资源格式](artwork-sources/live-api.md)                                                           |
-| Steam        | [商店、名称查询、本人清单与时长](game-sources/live-api.md)                                                              |
-| IGDB         | [对象粒度、公司与角色、关系和图片](game-sources/live-api.md)                                                            |
-| MyAnimeList  | [官方授权、刷新、动画与小说记录](anime-platforms/live-api.md)                                                           |
-| AniList      | [资料、本人记录、评分与完成联动](anime-platforms/live-api.md)                                                           |
-| Google Books | [书目、系列、身份授权及限定书架写入](book-sources/live-api.md)                                                          |
-| RanobeDB     | [作品、单册、发行与个人 API 边界](book-sources/live-api.md)                                                             |
-| MangaUpdates | [资料、同账号续期、状态与评分写入](mangaupdates/live-api.md)                                                            |
-| NDL Search   | [出版记录、ISBN、查询与书影边界](reference-sources/live-api.md)                                                         |
-| itch.io      | [公开资料、只读授权、合集与撤销](reference-sources/live-api.md#itch)                                                    |
-| Wikidata     | [类型、粒度、rank、关系与内容目录](reference-sources/live-api.md)                                                       |
-| Fanart.tv    | [影片、剧集与季、人物组织及图片资源](artwork-sources/live-api.md)                                                       |
+| 来源         | 核对范围与记录                                                                                                                                                        |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| VNDB         | [身份、元数据及本人操作](#vndb)                                                                                                                                       |
+| Bangumi      | [对象粒度、关系、目录及本人操作](#bangumi)                                                                                                                            |
+| 月幕Galgame  | [公开合同](ymgal/public-contracts.md)、[字段映射](ymgal/metadata-mapping.md)                                                                                          |
+| MangaDex     | [公开与个人接口](mangadex/public-contracts.md)、[元数据与卷话](mangadex/metadata-mapping.md)                                                                          |
+| TMDB         | [标准季与分组范围](tmdb/public-contracts.md)、[公开资料及游客评分](tmdb/live-api.md)、[本人授权与私密列表](tmdb/account-api.md)、[字段映射](tmdb/metadata-mapping.md) |
+| SteamGridDB  | [四类图片、分页、ICO 及资源格式](artwork-sources/live-api.md)                                                                                                         |
+| Steam        | [商店、名称查询、本人清单与时长](game-sources/live-api.md)                                                                                                            |
+| IGDB         | [对象粒度、公司与角色、关系和图片](game-sources/live-api.md)                                                                                                          |
+| MyAnimeList  | [官方授权、刷新、动画与小说记录](anime-platforms/live-api.md)                                                                                                         |
+| AniList      | [资料、本人记录、评分与完成联动](anime-platforms/live-api.md)                                                                                                         |
+| Google Books | [书目、系列、身份授权及限定书架写入](book-sources/live-api.md)                                                                                                        |
+| RanobeDB     | [作品、单册、发行与个人 API 边界](book-sources/live-api.md)                                                                                                           |
+| MangaUpdates | [资料、同账号续期、状态与评分写入](mangaupdates/live-api.md)                                                                                                          |
+| NDL Search   | [出版记录、ISBN、查询与书影边界](reference-sources/live-api.md)                                                                                                       |
+| itch.io      | [公开资料、只读授权、合集与撤销](reference-sources/live-api.md#itch)                                                                                                  |
+| Wikidata     | [类型、粒度、rank、关系与内容目录](reference-sources/live-api.md)                                                                                                     |
+| Fanart.tv    | [影片、剧集与季、人物组织及图片资源](artwork-sources/live-api.md)                                                                                                     |
 
 各记录说明来源响应、输入样本、实际结果与适用范围，完整扩展验收按所属工作包执行。
 

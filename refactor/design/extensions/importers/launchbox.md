@@ -64,7 +64,7 @@ DatabaseID 是 LaunchBox Games Database 的公开游戏记录号，规范身份�
 
 Notes 本身没有“由本人撰写”的保证。用户确实用它写了私人文字时，可以单独选择“将 Notes 保留为笔记”；创建一篇关联游戏的普通 Note，不额外用相同正文覆盖作品简介，除非两个选项均明确选择。空内容不建笔记，另建批次可以明确新建，同批次继续跳过已完成步骤，不按正文合并不同事实。
 
-CustomField 通过 GameID 关联，Name / Value 是文字数据而非类型声明。页面按本次出现的字段列出“忽略、文字笔记、标签、手动分组”用途，默认忽略。用户选择后保留字段名与对应值；文本不执行为公式或脚本，不根据名字含 rating、completed、hours 或日期就生成私人记录。分组按明确源字段及完整值组织，不把任意分号一律拆为多个标签。选择完整列表语义时才采用分号分隔。
+CustomField 通过 GameID 关联，Name 和 Value 分别保存字段名与文本值。页面按本次出现的字段列出“忽略、文字笔记、标签、手动分组”用途，默认忽略。用户选择后保留字段名与对应值；文本不执行为公式或脚本，不根据名字含 rating、completed、hours 或日期就生成私人记录。分组按明确源字段及完整值组织，不把任意分号一律拆为多个标签。选择完整列表语义时才采用分号分隔。
 
 <a id="personal"></a>
 
@@ -121,7 +121,7 @@ Genre、PlayMode、Platform 和已选自定义字段按本次用途成为普通�
 
 成员通过本次 GameId 对应建立；同一目标只成为一次成员。明确手动排序且 ManualOrder 为有效非负序号时保留顺序，同值按原成员顺序保持稳定；-1 代表未提供人工位置，不当第一个成员。非手动排序不宣称保存了源界面的动态排序，按本次成员顺序追加，已有成员顺序保持。
 
-AutoPopulate=true 的列表由过滤规则决定，XML 中出现的成员不保证是完整当前快照。本项不把缓存成员冒充完整合集、不复制源过滤器或运行源插件；用户需要保留该集合时，可在 LaunchBox 中转为手动快照后再提供 Data。所选自动列表明确报告未迁入，其他手动列表继续。
+AutoPopulate=true 的列表由过滤规则决定，XML 中出现的成员不保证是完整当前快照。要迁入这类合集，用户可先在 LaunchBox 中转为手动快照，再提供 Data。过滤器与源插件留在 LaunchBox。所选自动列表明确报告未迁入，其他手动列表继续。
 
 平台本身作为标签；源 Platform Categories / Parents 负责侧栏层级和多父显示，不自动转成本体嵌套合集。其层级没有本项承诺的同义采用，不把一个平台或列表的多处展示复制为多个作品或多份成员。若用户选择平台分组，可以按本次实际 Game.Platform 成员建立普通平面合集，仍使用新建／明确复用规则。
 
@@ -140,7 +140,7 @@ FrontImagePath、BackgroundImagePath 等是公开运行时 API 属性，不据�
 | Clear Logo          | 标题标志 |
 | 明确游戏 Icon       | 游戏图标 |
 
-Back、3D Box、Cart、Disc、Banner、Screenshot 等不自动冒充以上用途；平台、分类或列表的默认图不补作游戏自己的图片。来源没有图标文件时不从可执行文件提取替代。
+自动映射跳过 Back、3D Box、Cart、Disc、Banner、Screenshot 等其他图片用途；平台、分类或列表的默认图不补作游戏自己的图片。来源没有图标文件时不从可执行文件提取替代。
 
 按[官方开发者说明](https://forums.launchbox-app.com/topic/90566-question-about-metadata-in-database-versus-xml-files/)核对完整 ROM basename、合法化的完整标题，以及标题附数字或本地 GUID 后缀的已知格式。不去掉括号、地区、版本、冠词或标点模糊匹配另一作品。同平台多个同名游戏必须能由 GUID 或明确 ROM 名消除歧义，否则只报告图片未采用。
 
@@ -173,7 +173,7 @@ Back、3D Box、Cart、Disc、Banner、Screenshot 等不自动冒充以上用途
 
 明确展开 %romfile%、%platform%、%gameid%、%romlocation%、%romfilename%、%romextension%、%romlocation_noquotes% 和 %noromfile%。%romfile% 依 NoQuotes / FileNameWithoutExtensionAndPath 决定路径形态；缺少该占位且没有 %noromfile% 时才按来源规则追加 ROM，NoSpace 控制前置空格。源参数是 Windows 程序参数，不能原样拼入 shell 后改变百分号、引号或命令元字符含义。
 
-%launchboxorbigboxexepath%、未知源运行变量、AutoExtract、动态生成 M3U、内建 DOSBox / ScummVM、源模拟器插件和依赖脚本的启动不在可直接转换范围：它们依赖源程序运行时，不能用看似相同的 EXE 命令冒充等价。已经存在且由模拟器直接读取的实际 M3U 可按普通 ROM 处理；不会为导入临时生成另一份光盘列表。源辅助脚本与设置只有在确实不影响主目标独立启动时，才允许保存主目标并列明未迁入的辅助行为。
+%launchboxorbigboxexepath%、未知源运行变量、AutoExtract、动态生成 M3U、内建 DOSBox / ScummVM、源模拟器插件和依赖脚本的启动不在可直接转换范围：这些启动方式依赖源程序运行时，单独的 EXE 命令不足以复现。已经存在且由模拟器直接读取的实际 M3U 可按普通 ROM 处理；不会为导入临时生成另一份光盘列表。源辅助脚本与设置只有在确实不影响主目标独立启动时，才允许保存主目标并列明未迁入的辅助行为。
 
 监测和计时采用本体正常配置合同。已登记真实专属目录时可使用本体从目录创建配置的正常监测默认；模拟器进程和公共 ROM 目录不代表某个游戏的独立运行，不能静默用它们填监测目标。其余明确启动目标可以作为未完成配置保存，后续在正常配置编辑中补全。源启动屏幕、进程／窗口跟踪、AutoHotkey 暂停与退出、时间阈值和轮询参数不转换成本体计时语义。
 

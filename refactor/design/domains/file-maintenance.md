@@ -81,7 +81,7 @@ library.holdings.files.merge(work, { sourceFileId, targetFileId, path }) 用于�
 | 作品与分部首选                 | 原来指向 source 的首选重定向到 target，其他文件的既有首选不变；重复配对共同维护唯一性   |
 | 标注与活动                     | 全部保留原记录 ID、内容和发生时快照，将文件引用迁到 target；位置在实际跳转时继续校验    |
 | 文件备注                       | 相同内容保留一份，不同非空备注按 target、source 顺序分段保留                            |
-| 观察事实                       | 按选中位置的本次核对更新，不用旧可用性冒充新位置已经可读                                |
+| 观察事实                       | 按本次对选中位置的核对结果更新可用性                                |
 
 准备期间固定两条记录和所选原路径，事务前完成实际文件核对；最终短事务重查路径依据、作品、全部引用与两份文件的使用占用，一起迁移并移除 source。保存前出现路径变化、第三份登记冲突或必要引用冲突时整项失败，不改选另一位置。任一文件不存在为 NotFound，类型／归属不符为 InvalidReference，占用为 InUse，路径关系无法确认或冲突按 PathUnresolved／PathConflict，其他并发依据变化为 Conflict。
 

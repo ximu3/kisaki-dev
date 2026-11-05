@@ -48,7 +48,7 @@ preload 桥接所属窗口的最小明确能力。窗口客户端与主进程接
 
 需要任务管理的业务通过 tasks 执行，并等待真实结束后返回自身结果。只有合同明确表示“创建独立任务”的入口才返回 TaskRunRef。进度和控制通过明确的运行接口取得，调用者不必查询历史才能理解普通结果。持续使用内容的会话由 sessions 管理。
 
-业务输入与调用选项分开传递。调用方使用可选 signal 请求取消，实际执行者取得只读 ExecutionContext.signal；受托任务另有 ref、checkpoint、reportProgress 和 reportResult。扩展、视图及调用身份由实际接入绑定，业务参数不能选择或冒充另一实例。内部 helper 只接收自己真正需要的能力。
+业务输入与调用选项分开传递。调用方使用可选 signal 请求取消，实际执行者取得只读 ExecutionContext.signal；受托任务另有 ref、checkpoint、reportProgress 和 reportResult。接入端将每次调用绑定到发起调用的扩展和视图实例，业务参数无权指定调用方身份。内部 helper 只接收自己真正需要的能力。
 
 支持在调用内完成必要选择的操作，采用 `interaction: 'fail' | 'prompt'` 这一共用交互约定，默认 fail。当前由四类 sessions.open，以及 sessions.game.focus／captureImage 在调用选项中提供。它只决定本次操作需要用户选择目标时是否发起选择，不改变目标优先级与显式约束；不保存在配置或会话中，不随调用来源、事件或异步链隐式继承。嵌套调用需要选择时，调用方在该次调用中明确传入。其他业务操作不接受这一选项。
 
