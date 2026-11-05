@@ -121,7 +121,9 @@ Vitest 转换缓存归各项目的 `node_modules/.vitest-cache`。TypeScript 增
 
 `@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、候选输出和命令执行。调用方传入取消信号并等待所属资源结束；终止请求失败时立即输出诊断，继续等实际进程和输出流关闭后报告错误。原始操作与清理同时失败时按此顺序保留两项错误。
 
-`runPnpm` 与 `readPnpm` 使用 `npm_execpath` 指向的当前 pnpm，因此相关工具和测试通过 pnpm 项目脚本运行。普通外部命令由调用方明确提供可执行文件与参数。`kisaki-package pack` 成功后替换 `out/package/package.tgz`，`check` 对同一文件执行 publint 和 ATTW；任务顺序由 Turbo 拥有。
+`runPnpm` 与 `readPnpm` 使用 `npm_execpath` 指向的当前 pnpm，因此相关工具和测试通过 pnpm 项目脚本运行。普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/download/release/v24.11.1/docs/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
+
+`kisaki-package pack` 成功后替换 `out/package/package.tgz`，`check` 对同一文件执行 publint 和 ATTW。任务顺序由 Turbo 拥有。命令入口在 Git 中保留可执行位，与 [pnpm 在 POSIX 上安装 bin 的方式](https://github.com/pnpm/pnpm/blob/v11.11.0/pnpm11/bins/linker/src/index.ts#L367-L368)一致，安装依赖不会因此把工程工具标记为已修改。
 
 <a id="ci"></a>
 

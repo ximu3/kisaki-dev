@@ -5,8 +5,8 @@
 
 import { spawnSync } from 'node:child_process'
 import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -112,6 +112,10 @@ export async function configureHooks(
   await readFile(join(root, '.husky', 'pre-commit'))
 
   await mkdir(ownedDirectory, { recursive: true })
+  await writeFile(
+    join(ownedDirectory, 'pre-commit'),
+    'sh "$(git rev-parse --show-toplevel)/.husky/pre-commit"\n',
+  )
 
   const installed = spawnSync(process.execPath, [huskyBin, ownedDirectory.replaceAll('\\', '/')], {
     cwd: root,
@@ -145,18 +149,13 @@ export async function configureHooks(
     )
   }
 
-  await writeFile(
-    join(ownedDirectory, 'pre-commit'),
-    'sh "$(git rev-parse --show-toplevel)/.husky/pre-commit"\n',
-  )
-
   return {
     status: 'installed',
     message: 'Repository pre-commit checks are installed for all worktrees.',
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (import.meta.main) {
   const operation = process.argv[2]
   if (operation !== 'install' && operation !== 'uninstall') {
     console.error('Usage: hooks <install|uninstall>')

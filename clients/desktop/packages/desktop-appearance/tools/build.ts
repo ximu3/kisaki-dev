@@ -1,9 +1,8 @@
 /** @fileoverview Builds public ESM, declarations and CSS as one complete candidate. */
 
 import { copyFile, readFile, writeFile } from 'node:fs/promises'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join } from 'node:path'
 import { createRequire } from 'node:module'
-import { pathToFileURL } from 'node:url'
 import { build } from 'tsdown'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { runCli } from '@kisaki3/tooling/cli'
@@ -66,6 +65,6 @@ ${declarations(defaults.dark)}
   )
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (import.meta.main) {
   await runCli(buildPackage)
 }

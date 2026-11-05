@@ -1,7 +1,6 @@
 /** @fileoverview Builds the desktop localization package before adopting its public outputs. */
 
-import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { join } from 'node:path'
 import { build } from 'tsdown'
 import { runCli } from '@kisaki3/tooling/cli'
 import { replaceOutput } from '@kisaki3/tooling/output'
@@ -22,6 +21,6 @@ export async function buildPackage(signal?: AbortSignal): Promise<void> {
   )
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (import.meta.main) {
   await runCli(buildPackage)
 }
