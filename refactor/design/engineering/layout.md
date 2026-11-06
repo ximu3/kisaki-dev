@@ -547,6 +547,6 @@ clients/desktop/app/src/renderer/
 
 renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 desktop-appearance 映射。四个窗口分别由 entry.tsx 导入自己的 styles.css，组合共同基础、UI 包的成品 CSS 和窗口专属样式。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
 
-常规布局和状态样式在组件中使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块。阅读窗口的外壳与内容容器归 reader/app；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
+应用页面与业务组件的常规布局和状态样式使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块；公共 UI 包内部采用 [CSS Modules](../ui/package.md#styles)。阅读窗口的外壳与内容容器归 reader/app；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
 
 renderer/infrastructure/appearance 为应用界面提供实际主题变量和字体，阅读接入再将所需颜色与字体转换为 Kana 输入。窗口 CSS 使用共同变量；主题变化通过正常外观接入和 Reader 设置采用生效，不重新编译工具类。

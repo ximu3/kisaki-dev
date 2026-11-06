@@ -79,7 +79,7 @@ exports 定义公开入口，静态检查继续覆盖实际导入链、循环与
 | 包                     | 主要源码职责                                                                                                                             |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | desktop-appearance     | tokens、values、defaults 分别维护词表、规则与默认值；CSS 和映射按[视觉交付](#visual-packages)组织                                        |
-| desktop-ui             | 组件家族与配套实现按[能力与协作关系](../ui/package.md#organization)组织；公开构建入口就近放置，共用交互按实际复用提取                    |
+| desktop-ui             | components 维护完整组件家族，internal 维护跨家族的包内机制；源码、局部样式和入口按[能力与协作关系](../ui/package.md#organization)组织 |
 | desktop-contracts      | library、metadata、ingest、scanner、sessions、tasks 等模块拥有各自接口、值约束与编码；基础值使用明确叶模块，development 拥有开发控制合同 |
 | desktop-localization   | 英语按领域维护，类型从同一源文生成；目录与参数校验、纯格式化按实际职责组织，运行中的译本登记和选择归本体 i18n                            |
 | desktop-rpc            | connection 管理调用与连接，frames 定义有限帧，transport 定义传输接入；内部按真实状态与资源寿命组织                                       |
@@ -142,9 +142,11 @@ desktop-ui 通过 props、事件、回调和普通呈现值接入行为，不导
 
 公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式；应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
 
-desktop-ui 使用 Tailwind 4 编写和构建组件的常规样式，TSX 中的工具类与变体组织遵守[UI 包规范](../ui/package.md#organization)。src/styles.css 是包内编译入口，接入 Tailwind、desktop-appearance 的基础样式、映射及必要 CSS，并生成组件实际使用的样式。dist/styles.css 是完整的普通 CSS，通过包的样式入口交付；消费者不需要安装 Tailwind 或重新编译 UI 样式。
+desktop-ui 使用 CSS Modules 编写组件样式，组织、状态与宿主覆盖遵守[UI 样式合同](../ui/package.md#styles)。src/styles.css 接入 desktop-appearance 的普通 CSS 并声明层叠顺序；tsdown 提取各组件的局部样式，统一生成 dist/styles.css，通过包的样式入口交付。消费者直接使用构建后的类名映射和普通 CSS，无须安装 Tailwind 或处理 CSS Modules 源文件。
 
-UI 成品包含组件自身必要的基础规则，不无条件注入影响整个文档的 [Preflight](https://tailwindcss.com/docs/preflight#disabling-preflight)。文档级重置由实际宿主统一安排。应用或扩展自己的 Tailwind 构建只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一映射；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
+CSS 构建采用与 tsdown 0.23.0 同版的 @tsdown/css 0.23.0，通过公开模块处理与合并输出选项接入。上游仍将 [CSS 支持](https://tsdown.dev/options/css)标为实验性，升级时核对局部类名、层叠、资源与最终消费行为；基础可行性见[UI 包验证](../../verification/evidence/desktop-ui/README.md#styles)。多入口的样式归集、CSS 副作用、导出路径和资源地址随正式 tarball 一起验证。
+
+UI 成品包含组件自身必要的基础规则，文档级重置由实际宿主统一安排。应用页面继续使用 Tailwind，扩展页面按自身工程选择样式工具。使用 Tailwind 的工程只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一视觉映射与[层叠顺序](../ui/package.md#styles)；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
 
 CSS 提供明确的消费入口，并通过副作用配置确保构建保留；消费者不扫描包的 src 生成样式。Solid 作为 peer 依赖，不重复打包。字体字节和加载由宿主管理，纯视觉包不承担桌面资源职责，也不预先承诺所有 UI 框架或 SSR 模式。
 

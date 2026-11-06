@@ -1,6 +1,8 @@
 # 公共 UI 包
 
-`@kisaki3/desktop-ui` 为 Solid 1.9 提供可独立消费的控件、图表、Markdown、拖拽与样式。组件从实际交互需求设计，采用浏览器原生语义和成熟专用工具。视觉协议由 desktop-appearance 提供，业务数据与操作由宿主传入。工程规则见[公共包](../engineering/workspace.md#visual-packages)，应用体验见[界面原则](components.md#existing-ui)。
+`@kisaki3/desktop-ui` 为 Solid 1.9 提供可独立消费的完整控件、图表、Markdown、拖拽与样式。通用控件、浮层和 Toast 自行实现，采用浏览器原生能力；编辑、图表、拖拽和虚拟几何使用所属专用工具。视觉协议由 desktop-appearance 提供，业务数据与操作由宿主传入。
+
+按任务阅读：[职责](#ownership) · [公开能力](#families) · [表单](#forms) · [浮层与焦点](#overlays) · [Toast](#toast) · [源码与入口](#organization) · [样式](#styles) · [交付](#delivery)。应用体验见[共同界面](components.md)，工程与制品规则见[公共包](../engineering/workspace.md#visual-packages)。
 
 <a id="ownership"></a>
 
@@ -13,15 +15,17 @@
 | desktop-ui         | 组件 API、交互状态、组合、外观、可访问性接入及自身资源寿命   |
 | 应用与扩展         | 业务数据、异步请求、草稿、验证保存、权限、资源取得与页面布局 |
 
-组件直接使用合适的 HTML 元素。按钮、链接、文本、复选和单选保留原生行为；常规 Select 使用受支持的原生选择能力，Dialog 使用原生模态与关闭机制。Popover 等顶层能力承担呈现与适用的关闭行为，组件补足其实际需要的触发、定位、焦点和键盘语义。Combobox、菜单、多选及复合控件按各自状态与交互设计。
+组件 API、Props、交互与外观由本包完整维护。公开入口提供可直接使用的控件及必要组合部件；跨家族的共同机制保持包内实现。普通 Button、Input 可以直接使用，主题由 CSS 变量生效；需要协作的 Field、Dialog、Toast 等各自建立局部上下文。
+
+组件直接使用合适的 HTML 元素。按钮、链接、文本、复选和单选保留原生行为；常规 Select 使用受支持的可定制原生选择能力，Dialog 使用原生模态与关闭机制。Popover 等顶层能力承担呈现与适用的关闭行为，组件补足其实际需要的触发、定位、焦点和键盘语义。Combobox、菜单、多选及复合控件按各自状态与交互设计。
 
 每个状态有明确拥有者。控件维护临时交互，调用方维护业务值与草稿；受控值和非受控默认值分别遵守其合同。标签、说明、错误、禁用与表单状态在实际组合中保持一致。
 
-普通控件直接表达自身语义；需要内容协作的 Dialog、菜单等开放必要组成部分。组件 API、Props 与内部状态依据本包职责设计。专用工具提供编辑、图表、拖拽和几何能力，适配承担视觉、Solid 生命周期和资源责任。
+专用工具通过公开 API 接入。CodeMirror 与 markdown-it 提供 Markdown 编辑与呈现，Unovis 提供图表，Pragmatic Drag and Drop 与 TanStack Virtual 分别提供拖拽和虚拟几何；本包适配承担共同外观、Solid 生命周期和自身资源责任。
 
 desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结果和业务动作由调用方提供，资料选择器、部分日期编辑器、媒体卡片、业务确认和设置页归 domain-ui 或具体扩展。
 
-组件创建的监听、观察、编辑器、图表和 DOM 随实例更新与销毁收尾。宿主传入的资源保持原有所有权，明确转交的句柄按合同释放。主题选择、字体取得与桌面资源由宿主完成。
+组件创建的监听、观察、计时器、编辑器、图表和 DOM 随实例更新与销毁收尾。宿主传入的资源保持原有所有权，明确转交的句柄按合同释放。主题选择、字体取得与桌面资源由宿主完成。
 
 依据：[HTML 表单](https://html.spec.whatwg.org/multipage/forms.html)、[Dialog](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)、[Popover](https://html.spec.whatwg.org/multipage/popover.html)、[WAI 交互模式](https://www.w3.org/WAI/ARIA/apg/patterns/)及[Solid 生命周期](https://docs.solidjs.com/concepts/effects)。固定 Electron 环境的原生能力记录见[接入依据](../../verification/evidence/native-ui/README.md)。
 
@@ -32,14 +36,14 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 | 范围       | 公开职责                                                              |
 | ---------- | --------------------------------------------------------------------- |
 | 基础呈现   | 按钮、链接、徽标、分隔、加载、进度、警示、图片与空状态                |
-| 表单控件   | Field、单行和多行文本、复选、开关、单选组、选择器、Combobox 与 Slider |
+| 表单控件   | Field、字段组、表单反馈区、单行和多行文本、复选、开关、单选组、选择器、Combobox 与 Slider |
 | 内容结构   | Tabs、分段选择、折叠、表格与滚动区域                                  |
 | 浮层与反馈 | Dialog、确认对话框、Popover、下拉菜单、上下文菜单、Tooltip 与 Toast   |
 | 图表       | 通用图表呈现、主题、图例、提示及实例更新与销毁                        |
 | Markdown   | 源码编辑、安全呈现、工具栏、编辑命令及资源清理                        |
 | 拖拽       | Solid 生命周期接入、手柄、插入指示与通用反馈                          |
 
-组件家族围绕同一交互语义或资源寿命组织。例如 Dialog 的触发、内容、标题与关闭动作属于同一家族，Markdown 的编辑、呈现与工具栏共同提供内容能力。具体公开符号和 Props 随完整接口实现明确列出。
+组件家族围绕同一交互语义或资源寿命组织。例如 Dialog 的触发、内容、标题与关闭动作属于同一家族，Markdown 的编辑、呈现与工具栏共同提供内容能力。下拉菜单与上下文菜单归入 menu 家族，共用菜单项、子菜单和导航规则，分别实现触发方式。具体公开符号和 Props 随完整接口实现明确列出。
 
 | 能力     | 宿主拥有的内容                                                                                                          |
 | -------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -48,7 +52,63 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 | 拖拽     | 对象身份、移动范围、许可、选择集合、数据就绪和持久顺序，见[人工重排](virtualization.md#reorder)                         |
 | 虚拟化   | 视图直接使用 TanStack Virtual，拥有真实数量、行映射、数据读取、选择和身份锚点，见[几何边界](virtualization.md#geometry) |
 
-专用工具通过公开 API 消费。所有组件家族统一使用子路径，公开入口与内部文件按各自职责组织。
+所有组件家族统一使用子路径。基础控件的导入链保持轻量，编辑器与图表按完整能力独立消费，公开入口与内部文件按各自职责组织。
+
+<a id="forms"></a>
+
+### Field 与表单接入
+
+Field 组织标签、控件、说明和错误，使可访问性关系易于正确建立；一个输入值由对应控件或调用方拥有。单行和多行文本分别使用语义输入元素，简单输入可直接使用。一组相关控件采用 fieldset 与 legend。错误状态与错误文本按字段独立关联，当前反馈区显示哪一项不改变其他字段的可访问说明。
+
+控件保留 name、表单归属、默认值、必填、禁用、有效性与原生提交事件。form.reset 恢复默认状态并正确接续 Solid 值，取消 reset 保持现状；fieldset 禁用、失效选项和外部值更新各按实际输入状态处理。可见值、提交值与校验结果保持一致。
+
+表单反馈区提供稳定的呈现空间、错误摘要、当前字段原因和明确的定位动作。调用方拥有校验结果、字段身份、提交与保存流程，并负责展开页签或分组后定位字段；组件通过传入的状态和回调协作。字段错误文本可以在不占布局空间的位置保持可访问关联，集中反馈不要求在字段下方插入错误段。
+
+本体与官方扩展按[固定反馈区规则](components.md#validation)组合表单，使用 novalidate 接管交互校验提示，在 submit 中取消默认导航并执行统一校验。原生有效性可以参与校验，反馈时机由表单决定。公共控件保持这些原生能力，独立消费者按自己的流程组合；Webview 的原生提交由[容器合同](../extensions/webview.md#isolation)保证。
+
+文本编辑保留输入法组合、选择、撤销和原生事件。提交、搜索和快捷键在明确的用户动作中执行；输入法组合期间保持编辑语义。异步选项与当前选择分别表达，调用方根据真实请求管理加载和失败。
+
+原生表单、受控更新和组合关系通过实际浏览器核对。特殊控件需要自维护交互时，公开合同明确其键盘、焦点、可访问名称与表单结果。
+
+依据：[HTML 表单控件](https://html.spec.whatwg.org/multipage/form-elements.html)、[表单处理](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html)、[WAI 表单分组](https://www.w3.org/WAI/tutorials/forms/grouping/)与[错误反馈](https://www.w3.org/WAI/tutorials/forms/notifications/)。
+
+<a id="overlays"></a>
+
+### 浮层、选项与焦点
+
+Dialog 接续原生 showModal、requestClose、cancel 与 close 行为，保持 open 状态、模态范围和焦点一致。用户关闭意图可以被调用方阻止，异步保存与未保存确认由[视图宿主](components.md#closing)协调。嵌套 Dialog 分别拥有内容与寿命，关闭后按实际仍有效的触发位置返回焦点。
+
+菜单、Popover、Tooltip 和 Combobox 的弹出部分按需要复用包内的原生弹出接入与定位机制，具体家族拥有自己的开关、选择和键盘语义。共同机制处理实际元素、监听、定位更新与释放，不依赖成品 Popover 的外观或内容结构。
+
+菜单按自身模式移动实际焦点，Combobox 通常将焦点留在输入框，以活跃选项关联表达当前高亮；输入文字、已选值和高亮分别维护。可以复用相同的选项遍历计算，焦点策略仍由对应组件拥有。关闭内层候选或菜单时，Escape 只完成当前交互的关闭，不同时关闭仍在使用的外层 Dialog。
+
+浮层与 Toast 在所属文档和实际模态范围内呈现；原生 top layer 与模态外的 inert 状态由浏览器决定，定位或层叠不能扩大交互范围。Webview 内的 Dialog 只约束自己的文档，宿主容器遵守[扩展视图合同](../extensions/webview.md#container)。
+
+依据：[HTML 模态范围](https://html.spec.whatwg.org/multipage/interaction.html#modal-dialogs-and-inert-subtrees)、[WAI 菜单](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/)、[Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)与[Tooltip](components.md#tooltip)。原生模态与提示交互见[接入验证](../../verification/evidence/desktop-ui/README.md#modal)。
+
+<a id="toast"></a>
+
+### Toast 实例与消息寿命
+
+Toast 自行实现消息、展示区域、计时和资源释放。展示区域归所属窗口、页面或 Dialog，消息绑定实际发起视图或操作的 owner；区域仍在使用不意味着其中某个已结束 owner 的消息可以继续保留。Dialog 中的提示位于该 Dialog 的可交互范围内，嵌套交互保持各自归属。
+
+Solid 组件建立时通过 useToast 取得局部实例，事件与异步函数使用已经取得的实例。show 返回提供 update 与 dismiss 的消息句柄；update 替换仍存活的提示，dismiss 结束提示。用户关闭、计时结束或 owner 释放后，旧句柄更新不重新创建消息。owner 结束时清理所属消息、计时器和动作引用，迟到结果不再显示。
+
+本地消息可以提供明确的动作回调，业务拥有者绑定原操作目标并在目标失效时撤下动作。业务结果、取消和部分完成由发起者解释，再选择文案、类型与持续方式。保存后需要关闭 Dialog 而继续展示的结果，在关闭前明确交给仍存活的窗口 owner；反馈责任遵守[唯一负责人规则](components.md#notifications)。
+
+普通完成提示按共同持续时间结束，persistent 提示保留到明确关闭或 owner 结束。悬停或键盘焦点位于提示内时暂停计时。默认外观采用紧凑的右下角区域，文字、状态图标、必要动作与关闭入口清楚可用；显示与更新不抢焦点，播报按消息含义和实际变化安排，避免每次更新重复触发紧急提示。
+
+SDK 的 [ui.toast](../extensions/webview.md#toast) 由宿主适配到共同呈现，传递可序列化消息和句柄操作。本地组件的动作回调留在当前文档，UI 包通过自身 API 接入，不依赖 SDK。字段纠错使用[表单反馈区](components.md#validation)。
+
+依据：[Solid owner 与清理](https://docs.solidjs.com/reference/lifecycle/on-cleanup)、[WAI 状态提示](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)。
+
+### 变体、内容与状态
+
+变体表达视觉用途，尺寸表达密度。Button 等家族的普通、危险、描边、次要、透明和文字表现，以及图标尺寸，沿既有体验核对；交互状态包含 hover、active、focus-visible、disabled 和适用的 invalid／selected／expanded。业务“加载中”或“保存失败”由调用方提供，不在控件内部推断操作结果。
+
+内容、图标、动作名称、描述和错误由调用方传入。只有图标的控件仍须有可访问名称；Tooltip 补充用途或快捷键，不代替名称。导航使用 Link，执行操作使用 Button；视觉相同不改变语义。
+
+浮层与反馈组件提供可组合的标题、内容及动作，交互状态与清理由组件负责。草稿关闭确认、任务通知策略和跨窗口协调属于视图或宿主；业务关闭计划和全局桌面会话由应用拥有。
 
 ### 图表
 
@@ -70,26 +130,6 @@ Markdown 采用 CodeMirror 6 源码编辑和 markdown-it 15.0.3 呈现，任务�
 
 依据：[CodeMirror 模块与生命周期](https://codemirror.net/docs/guide/)、[Markdown 安全策略](https://github.com/markdown-it/markdown-it/blob/master/docs/safety.md)、[任务列表选项](https://mdit-plugins.github.io/tasklist.html)及[脚注](https://mdit-plugins.github.io/footnote.html)。
 
-### Field 与表单接入
-
-Field 组织标签、控件、说明和错误，使可访问性关系易于正确建立；一个输入值由对应控件或调用方拥有。单行和多行文本分别使用语义输入元素，简单输入可直接使用。一组相关控件采用 fieldset 与 legend。
-
-控件保留 name、表单归属、默认值、必填、禁用、校验与提交语义。form.reset 恢复默认状态并正确接续 Solid 值，取消 reset 保持现状；fieldset 禁用、失效选项和外部值更新各按实际输入状态处理。可见值、提交值与校验结果保持一致。
-
-文本编辑保留输入法组合、选择、撤销和原生事件。提交、搜索和快捷键在明确的用户动作中执行；输入法组合期间保持编辑语义。异步选项与当前选择分别表达，调用方根据真实请求管理加载和失败。
-
-原生表单、受控更新和组合关系通过实际浏览器核对。特殊控件需要自维护交互时，公开合同明确其键盘、焦点、可访问名称与表单结果。
-
-依据：[HTML 表单控件](https://html.spec.whatwg.org/multipage/form-elements.html)、[表单处理](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html)及[WAI 表单分组](https://www.w3.org/WAI/tutorials/forms/grouping/)。
-
-### 变体、内容与状态
-
-变体表达视觉用途，尺寸表达密度。Button 等家族的普通、危险、描边、次要、透明和文字表现，以及图标尺寸，沿既有体验核对；交互状态包含 hover、active、focus-visible、disabled 和适用的 invalid／selected／expanded。业务“加载中”或“保存失败”由调用方提供，不在控件内部推断操作结果。
-
-内容、图标、动作名称、描述和错误由调用方传入。只有图标的控件仍须有可访问名称；Tooltip 补充用途或快捷键，不代替名称。导航使用 Link，执行操作使用 Button；视觉相同不改变语义。
-
-浮层与反馈组件提供可组合的标题、内容及动作，交互状态与清理由组件负责。草稿关闭确认、任务通知策略和跨窗口协调属于视图或宿主；业务关闭计划和全局桌面会话由应用拥有。
-
 <a id="organization"></a>
 
 ## 源码与公开入口
@@ -103,17 +143,65 @@ import { MarkdownEditor, MarkdownPreview } from '@kisaki3/desktop-ui/markdown'
 import '@kisaki3/desktop-ui/styles.css'
 ```
 
-源码以组件家族或完整能力为维护单位，单文件和目录按职责与协作关系选择。共享状态且经常一起阅读、修改的内容集中组织；可以独立使用、依赖或资源寿命不同的职责，可在同一能力目录内分文件协作。所有家族遵循相同标准，文件数量与层级由实际阅读和修改路径决定。
+src/components 按组件家族或完整能力组织，家族内共同维护实现、状态、样式和专用适配。src/internal 保存跨家族实际复用且不公开的机制，内部按焦点、定位等具体职责命名。只服务一个家族的辅助随所属家族维护，共同机制不反向依赖具体成品组件。
 
-公开子路径定义消费边界，内部文件承载实现分工。正式构建入口遵守[主题目录与入口规则](../engineering/conventions.md#module-imports)，就近选择该能力的公开接口，通过构建配置与 exports 映射到公开子路径；包内协作直接引用实际模块。
+以下结构表达职责与入口位置，文件按实际协作建立：
 
-Props、状态、变体与专用辅助跟随所属实现；相同语义的真实复用再提取到最小共同范围，共用模块按具体职责命名。虚拟几何由实际使用者直接消费 TanStack Virtual，UI 组件按需要使用其公开能力。
+```text
+desktop-ui/
+├─ src/
+│  ├─ components/
+│  │  ├─ button/
+│  │  │  ├─ index.ts
+│  │  │  ├─ control.tsx
+│  │  │  └─ styles.module.css
+│  │  ├─ field/
+│  │  ├─ dialog/
+│  │  ├─ menu/
+│  │  ├─ combobox/
+│  │  ├─ popover/
+│  │  ├─ tooltip/
+│  │  ├─ toast/
+│  │  │  ├─ index.ts
+│  │  │  ├─ controller.ts
+│  │  │  ├─ region.tsx
+│  │  │  └─ styles.module.css
+│  │  ├─ markdown/
+│  │  ├─ chart/
+│  │  └─ drag/
+│  ├─ internal/
+│  └─ styles.css
+├─ tools/
+└─ tests/
+```
 
-常规样式使用 TSX 中完整、可静态识别的 Tailwind 类名，变体定义就近维护。原生伪元素、排版或主题映射需要专用 CSS 时，就近放置。调用方 class 与默认工具类通过 tailwind-merge 合并，消费者自己的样式由其工程提供。
+共享状态且经常一起阅读、修改的内容集中组织；可以独立使用、依赖或资源寿命不同的职责，在同一家族内分文件协作。Props、变体与专用辅助跟随所属实现，文件数量与层级由实际阅读和修改路径决定。
+
+公开子路径定义消费边界，内部文件承载实现分工。正式构建入口遵守[主题目录与入口规则](../engineering/conventions.md#module-imports)，由家族内的 index.ts 选择公开接口，通过构建配置与 exports 映射到 /button 等子路径。components 与 internal 是源码组织目录，分类目录不增加汇总导出；包内协作直接引用实际模块。
 
 公开 Props 表达组件自身行为及适用原生元素能力。活跃 props 按 Solid 的响应式语义读取，使用 splitProps 和 mergeProps 保持更新；真实资源在明确的挂载、更新与清理边界接入。
 
-依据：[Solid props](https://docs.solidjs.com/concepts/components/props)、[splitProps](https://docs.solidjs.com/reference/reactive-utilities/split-props)、[Tailwind 类名检测](https://tailwindcss.com/docs/detecting-classes-in-source-files)、[类名合并](https://github.com/dcastil/tailwind-merge)及[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
+依据：[Solid props](https://docs.solidjs.com/concepts/components/props)、[splitProps](https://docs.solidjs.com/reference/reactive-utilities/split-props)与[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
+
+<a id="styles"></a>
+
+## 组件样式与宿主覆盖
+
+组件内部使用 CSS Modules 和 desktop-appearance 的正式 CSS 变量。每个家族的部件、变体、交互状态和原生伪元素就近维护，使完整控件的外观可以集中审阅；TSX 负责结构、状态和交互，样式文件负责其视觉表现。图表、编辑器等专用工具的样式适配也留在所属家族。
+
+CSS Modules 生成的局部类名属于实现细节。公共定制通过组件 Props、视觉变量、各公开部件的 class 及明确记录的状态属性接入。disabled、focus-visible 等采用原生语义；变体、尺寸和复合状态使用对应属性。字段错误外观由表单提供的反馈状态决定，不能仅因初始值不满足原生约束就提前标错。
+
+组件类名与调用方 class 正常组合。普通样式遵循共同层叠顺序：
+
+```css
+@layer theme, base, components, utilities;
+```
+
+完整样式入口在各层首次出现前声明顺序。appearance 的视觉值与文档基础分别使用 theme 和 base，UI 控件规则放在 components，宿主工具类使用 utilities。普通外观可由后层规则或宿主未分层样式覆盖；不依靠类名排列顺序或普遍使用 !important 争夺优先级。类名局部化不隔离继承与全局规则，文档重置由宿主统一安排。
+
+src/styles.css 声明层叠顺序并接入 appearance 的基础样式。构建提取各家族的 CSS Modules，合并为可独立导入的普通 CSS；依赖、产物和消费检查由[视觉交付](../engineering/workspace.md#visual-packages)定义。应用页面继续使用 Tailwind，扩展页面按自身工程选择样式工具；组件包的构建类名不进入宿主扫描范围。
+
+依据：[CSS Modules](https://github.com/css-modules/css-modules)、[CSS 层叠顺序](https://www.w3.org/TR/css-cascade-5/#layer-order)与[Tailwind 组件层](https://tailwindcss.com/docs/adding-custom-styles#adding-component-classes)。
 
 <a id="delivery"></a>
 
@@ -123,6 +211,6 @@ Props、状态、变体与专用辅助跟随所属实现；相同语义的真实
 
 默认样式组合 desktop-appearance 的基础视觉值和组件 CSS。普通 Solid 1.9 项目通过公开子路径与样式入口直接消费，宿主可以覆盖视觉变量。包支持满足当前桌面 Chromium 能力基线的浏览器环境；其他浏览器与 SSR 的支持按实际证据声明。
 
-仓库外验证使用构建后的 exports、完整声明和普通 CSS。核对基础控件消费的依赖范围，以及按完整功能延迟加载编辑器和图表的行为。类型、样式、浏览器交互和实际视觉分别验收。
+仓库外验证使用构建后的 exports、完整声明和普通 CSS，覆盖无 Tailwind 消费与宿主工具类共同使用、主题变量和层叠覆盖。核对基础控件消费的依赖范围，以及按完整功能延迟加载编辑器和图表的行为。类型、样式、浏览器交互和实际视觉分别验收。
 
-行为验证覆盖公开控件及其关键组合：受控和默认值、提交与重置、必填与禁用、输入法、键盘、焦点、浮层关闭、外部状态变化、异步选项及资源释放。共同机制在拥有层验证，专用能力补充自身风险，测试结构依据行为与实际组合确定。
+行为验证覆盖公开控件及其关键组合：受控和默认值、提交与重置、必填与禁用、输入法、键盘、焦点、浮层关闭、外部状态变化、异步选项及资源释放。Dialog、Combobox 与 Toast 的交互范围，以及表单反馈的稳定布局和字段关联，按[界面场景](../../verification/scenarios/ui.md#ui-package)核对。共同机制在拥有层验证，专用能力补充自身风险，测试结构依据行为与实际组合确定。

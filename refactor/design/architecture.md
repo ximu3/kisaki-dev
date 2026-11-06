@@ -130,7 +130,7 @@ sessions 管理四类 Work 的使用上下文、控制、观察、有效计时�
 
 阅读器按呈现、导航和标注组织代码，漫画与小说共用固定页面、文本重排和混合文档的阅读机制。实际版式与适用设置由文档内容决定，Work 类别只提供作品、卷话及记录上下文。播放器负责播放界面，游戏面板负责会话面板和折叠布局。多个窗口共用的标注列表与编辑组件位于 renderer/domain-ui/annotations，通过明确参数和回调接入。采集标注与读取当前内容的逻辑留在各窗口。内容执行和会话控制见 [使用会话](domains/sessions.md) 与 [标注](domains/annotations/README.md)。
 
-公共 UI 原语由 desktop-ui 包提供，桌面业务组件留在应用内。多个窗口确实需要的技术机制放入 renderer/infrastructure。即使复用 Dialog 实现，每个窗口也必须独立持有宿主、打开状态和草稿。更新 Dialog 位于 windows/main/features/updates，使用主窗口 API 和 Dialog 宿主；下载、准备和安装仍由主进程 updates 执行。系统菜单使用主进程的原生菜单能力。
+通用 UI 组件由 desktop-ui 包提供，桌面业务组件留在应用内。多个窗口确实需要的技术机制放入 renderer/infrastructure。即使复用 Dialog 实现，每个窗口也必须独立持有宿主、打开状态和草稿。更新 Dialog 位于 windows/main/features/updates，使用主窗口 API 和 Dialog 宿主；下载、准备和安装仍由主进程 updates 执行。系统菜单使用主进程的原生菜单能力。
 
 <a id="state"></a>
 
