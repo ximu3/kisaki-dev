@@ -5,14 +5,13 @@ export type TokenKind =
   | 'color'
   | 'radius'
   | 'shadow'
-  | 'percentage'
   | 'font-family'
   | 'font-size'
   | 'font-weight'
   | 'line-height'
   | 'letter-spacing'
 
-/** The fixed 45-token vocabulary; grouping and persistence belong to consumers. */
+/** The fixed visual vocabulary; grouping and persistence belong to consumers. */
 export const tokens = Object.freeze({
   '--background': 'color',
   '--foreground': 'color',
@@ -50,13 +49,6 @@ export const tokens = Object.freeze({
   '--shadow-raised': 'shadow',
   '--shadow-overlay': 'shadow',
   '--shadow-modal': 'shadow',
-
-  '--pane-alpha': 'percentage',
-  '--light-1': 'color',
-  '--light-2': 'color',
-  '--light-3': 'color',
-  '--light-strength': 'percentage',
-  '--grain-opacity': 'percentage',
 
   '--font-sans': 'font-family',
   '--font-mono': 'font-family',

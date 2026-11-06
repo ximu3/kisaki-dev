@@ -4,7 +4,7 @@
 
 ## 当前交付
 
-截至 2026-11-05，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-06，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生 UI、组件子路径、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization 和 desktop-rpc，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
@@ -25,7 +25,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 工作包                                                        | 当前结果与待完成范围                                                                                                                                                                                                                         |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [W00 工程与测试入口](work-packages.md#w00)                    | 实现与适用验收已完成，见[实际交付](#w00)与[关闭验证](../verification/evidence/w00/development.md#shutdown)。                                                                                                                                 |
-| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[本机及 CI 证据](../verification/evidence/w01/README.md)。项目文档待 W23，尚未公开发布。                                                           |
+| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：39 项视觉词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[验证记录](../verification/evidence/w01/README.md#current-vocabulary)。项目文档待 W23，尚未公开发布。                                                           |
 | [W02 extension-distribution](work-packages.md#w02)            | 实现与适用验收已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W03 桌面合同与本地化](work-packages.md#w03)                  | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。             |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |

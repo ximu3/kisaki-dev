@@ -27,8 +27,6 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
     ['--font-mono', '"var(--family)", monospace'],
     ['--shadow-overlay', 'inset 0 1px 0 #fff8, -1px 2px 3px -4px oklch(0 0 0 / .4)'],
     ['--shadow-raised', 'none'],
-    ['--pane-alpha', '0%'],
-    ['--grain-opacity', '100%'],
   ]
 
   for (const [token, value] of examples) {
@@ -68,9 +66,6 @@ test('rejects formulas, context references, invalid kinds and malformed CSS', ()
     ['--shadow-raised', '0 1px 2px'],
     ['--shadow-raised', '0 1px 2px currentColor'],
     ['--shadow-raised', '0 1px 2px red, inset 0 0 -1px blue'],
-    ['--pane-alpha', '101%'],
-    ['--pane-alpha', '-1%'],
-    ['--pane-alpha', '0.5'],
     ['--radius', '1e999px'],
     ['--primary', 'rgb(1e999 0 0)'],
     ['--radius', 6],

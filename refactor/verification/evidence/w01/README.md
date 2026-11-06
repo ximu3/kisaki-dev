@@ -2,6 +2,14 @@
 
 2026-11-01，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3、Tailwind 4.3.3、Playwright 1.64.1 和 Chromium 156.0.8078.4 下验证正式包实现。交付及远端验收状态见[实施状态](../../../implementation/status.md#progress)。
 
+<a id="current-vocabulary"></a>
+
+## 现行词表与消费验证
+
+2026-11-06，在本机 Windows x64 验证现行 39 项视觉词表、亮暗默认值、纯值规则、普通 CSS 与 Tailwind 映射。`pnpm check` 通过；`pnpm exec turbo run test:consumers --filter=...@kisaki3/desktop-appearance` 完成视觉包及下游桌面合同、本地化包的构建、打包、声明检查和独立消费，三个包分别通过 4、3、3 项用例。
+
+另用本次生成的 CSS 在 Chromium 中核对亮暗两种模式的背景和表面：默认配色与运行时自定义颜色均直接采用对应主题值，自定义颜色的透明度保持原值。消费者截图已人工核对，临时页面与浏览器正常释放。下方历史结果保留各自版本与运行范围。
+
 ## 交付与本机结果
 
 | 范围         | 实际结果                                                                                                                                                                                                 |

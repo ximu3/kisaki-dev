@@ -17,7 +17,7 @@
 | `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                             |
 | `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                                     |
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
-| `clients/desktop/packages/desktop-appearance`            | 45 项视觉 token、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射             |
+| `clients/desktop/packages/desktop-appearance`            | 视觉词表、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射                    |
 | `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名           |
 | `clients/desktop/packages/desktop-localization`          | 英语源文、关联消息类型、作者校验与纯格式化                                       |
 | `clients/desktop/packages/desktop-contracts`             | 桌面接口、值约束、规范编码、查询与写入合同、参与接口、会话、管理、深链和开发控制 |

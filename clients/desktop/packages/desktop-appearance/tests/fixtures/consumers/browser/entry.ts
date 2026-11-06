@@ -13,7 +13,6 @@ const properties = {
   color: 'color',
   radius: 'border-radius',
   shadow: 'box-shadow',
-  percentage: 'opacity',
   'font-family': 'font-family',
   'font-size': 'font-size',
   'font-weight': 'font-weight',

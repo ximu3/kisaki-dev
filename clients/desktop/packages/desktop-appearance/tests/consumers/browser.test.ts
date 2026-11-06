@@ -106,7 +106,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   page,
 }) => {
   await page.goto(siteUrl)
-  expect(await page.locator('body').getAttribute('data-token-count')).toBe('45')
+  expect(await page.locator('body').getAttribute('data-token-count')).toBe('39')
   expect(await page.locator('body').getAttribute('data-valid-css')).toBe('true')
 
   for (const scheme of ['light', 'dark']) {

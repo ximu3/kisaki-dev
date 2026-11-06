@@ -44,13 +44,6 @@ export const light: TokenValues = Object.freeze({
   '--shadow-modal':
     'inset 0 1px 0 oklch(1 0 0 / 0.55), inset 0 -1px 0 oklch(0.13 0.02 258 / 0.06), 0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24)',
 
-  '--pane-alpha': '72%',
-  '--light-1': 'oklch(0.88 0.045 248)',
-  '--light-2': 'oklch(0.9 0.03 260)',
-  '--light-3': 'oklch(0.87 0.05 268)',
-  '--light-strength': '50%',
-  '--grain-opacity': '9%',
-
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
     "'Noto Sans Mono Variable', 'Noto Sans SC Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
@@ -100,13 +93,6 @@ export const dark: TokenValues = Object.freeze({
     'inset 0 1px 0 oklch(1 0 0 / 0.08), inset 0 -1px 0 oklch(0 0 0 / 0.35), 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 10px 24px -6px oklch(0 0 0 / 0.5)',
   '--shadow-modal':
     'inset 0 1px 0 oklch(1 0 0 / 0.1), inset 0 -1px 0 oklch(0 0 0 / 0.4), 0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65)',
-
-  '--pane-alpha': '75%',
-  '--light-1': 'oklch(0.52 0.055 248)',
-  '--light-2': 'oklch(0.56 0.04 260)',
-  '--light-3': 'oklch(0.5 0.06 268)',
-  '--light-strength': '45%',
-  '--grain-opacity': '16%',
 
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
