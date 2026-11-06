@@ -17,6 +17,7 @@ export interface ArtifactWorkspace {
   executablePath: string
   resourceDirectory: string
   fusePath: string
+
   close(): Promise<void>
 }
 

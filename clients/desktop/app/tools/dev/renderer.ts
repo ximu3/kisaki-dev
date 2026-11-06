@@ -17,8 +17,10 @@ export interface DevelopmentRenderer {
   readonly url: string
   /** Query the active client resolver for engineering checks, including after restart. */
   resolveDependency: DependencyResolver
+
   /** Take ownership of a complete candidate, refresh documents, then release the previous copy. */
   adopt(snapshot: DependencySnapshot): Promise<void>
+
   close(): Promise<void>
 }
 

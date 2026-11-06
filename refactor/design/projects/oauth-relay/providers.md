@@ -34,7 +34,9 @@ Bangumi 和 AniList 的已有来源核验分别见 [Bangumi 本人操作](../../
 | AniList  | anilist.co/api/v2/oauth/authorize；JSON POST 到 /api/v2/oauth/token，明确 Accept:application/json                          | 已有真实 code 交换及 refresh_token 成功证据，保留该能力               | Viewer 用于账号查询。独立撤销和令牌状态 API 尚无依据                                        |
 | Google   | accounts.google.com/o/oauth2/v2/auth；表单 POST 到 oauth2.googleapis.com/token，采用已登记 Web 客户端的 client_secret_post | 官方 offline access 与刷新协议                                        | revoke 对应 /revoke；token-status 对应 /tokeninfo 的真实令牌信息；不并入 Kisaki 的 Google Books 桌面直连 |
 
-Bangumi 的请求与短 code 窗口见[固定认证说明](https://github.com/bangumi/api/blob/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md)。scope 的实际限制仍须对应真实登记与令牌，不能从旧说明里的“尚未实现”推导任意权限保证。AniList 的 JSON 编码见[官方示例](https://github.com/AniList/docs/blob/master/docs/guide/snippets/auth/authorization-code/javascript.js)；文档对刷新能力的描述与[已有实测](../../../verification/evidence/anime-platforms/live-api.md)并列记录，不抹去后者。
+Bangumi 的请求与短 code 窗口见[固定认证说明](https://github.com/bangumi/api/blob/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md)。scope 的实际限制仍须对应真实登记与令牌，不能从旧说明里的“尚未实现”推导任意权限保证。
+
+AniList 的 JSON 编码见[官方示例](https://github.com/AniList/docs/blob/master/docs/guide/snippets/auth/authorization-code/javascript.js)；文档对刷新能力的描述与[已有实测](../../../verification/evidence/anime-platforms/live-api.md)并列记录，不抹去后者。
 
 Google 的[发现文档](https://accounts.google.com/.well-known/openid-configuration)声明 S256、client_secret_post 与撤销端点；同次客户端 challenge 和 verifier 可以沿该上游链路传递，不遇错改用 plain。token-status 按[固定版官方 Node 客户端](https://github.com/googleapis/google-auth-library-nodejs/blob/6ac9ab4fd49d64d8315f16d7f2757da04fbeb579/src/auth/oauth2client.ts)实际使用的 POST tokeninfo 与 Bearer 头调用，保留原始响应字段，不照抄该 SDK 将 expires_in 转成 expiry_date 的本地变换。返回的 aud、client_id 等由调用方按实际结果核对，不补造为当前接入值。
 
@@ -68,7 +70,9 @@ providers/registry.ts 只登记实际实现及其能力。每个 provider 的定
 
 表中的相同字段指该操作的字段名称，值始终来自当前 application/provider。上游 token 请求中的 redirect_uri 是登记的 relay HTTPS 回调；客户端提交的 loopback URI 仅用于核对本次客户端交接。Bangumi／AniList 不发送上游 PKCE 字段，relay 仍执行自己的 S256 核对；这一边界见[真实来源结果](#upstream-binding)。
 
-Bangumi 的刷新和 token_status 字段有[固定认证说明](https://github.com/bangumi/api/blob/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md)作为依据；其 scope:null 不能解释为只读权限。AniList 的 JSON 请求沿[官方示例](https://github.com/AniList/docs/blob/master/docs/guide/snippets/auth/authorization-code/javascript.js)，续期字段采用[已执行的请求](../../../verification/evidence/oauth-relay-provider/live-probe.mjs)及[实际结果](../../../verification/evidence/oauth-relay-provider/providers.md)。没有能力的附加操作返回既定 unsupported_operation，不尝试猜测端点或调用 Viewer 代替。
+Bangumi 的刷新和 token_status 字段有[固定认证说明](https://github.com/bangumi/api/blob/65d29cff2331e08c0110d30d515f7f1b6488f845/docs-raw/How-to-Auth.md)作为依据；其 scope:null 不能解释为只读权限。
+
+AniList 的 JSON 请求沿[官方示例](https://github.com/AniList/docs/blob/master/docs/guide/snippets/auth/authorization-code/javascript.js)，续期字段采用[已执行的请求](../../../verification/evidence/oauth-relay-provider/live-probe.mjs)及[实际结果](../../../verification/evidence/oauth-relay-provider/providers.md)。没有能力的附加操作返回既定 unsupported_operation，不尝试猜测端点或调用 Viewer 代替。
 
 Google 的 code、refresh 和 tokeninfo 编码可对应到[固定官方客户端源码](https://github.com/googleapis/google-auth-library-nodejs/blob/6ac9ab4fd49d64d8315f16d7f2757da04fbeb579/src/auth/oauth2client.ts)。这里采用其协议依据，不采用 SDK 的自动重试、本地 expiry_date 转换或把撤销 token 放进查询串的实现。撤销使用[官方 Node 示例](https://developers.google.com/identity/protocols/oauth2/web-server#tokenrevoke)支持的表单正文。
 

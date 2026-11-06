@@ -11,6 +11,7 @@
 | W02 分发协议包           | [格式、兼容选版、签名与独立消费者验证](w02/README.md)                                                   |
 | W03 桌面合同与本地化     | [接口、值约束、消息格式化与两个包的独立消费](w03/README.md)                                             |
 | W04 通信机制             | [有限帧、连接寿命和两种真实通道的制品消费](w04/README.md)                                               |
+| W05 公共 UI | [完整组件、样式与浏览器／Electron 制品消费](w05/README.md) |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | UI 包接入                | [CSS Modules、表单提交与模态提示范围](desktop-ui/README.md)                                             |
 | 构建与开发               | [Node 构建与解析](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md)                        |

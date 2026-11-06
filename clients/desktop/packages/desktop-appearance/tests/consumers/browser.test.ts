@@ -106,7 +106,7 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   page,
 }) => {
   await page.goto(siteUrl)
-  expect(await page.locator('body').getAttribute('data-token-count')).toBe('39')
+  expect(await page.locator('body').getAttribute('data-token-count')).toBe('43')
   expect(await page.locator('body').getAttribute('data-valid-css')).toBe('true')
 
   for (const scheme of ['light', 'dark']) {
@@ -172,4 +172,17 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   ).toEqual({ background: 'rgb(30, 40, 50)', foreground: 'rgb(230, 240, 250)' })
 
   await page.screenshot({ path: join(packageRoot, 'test-results/consumers/appearance.png') })
+  for (let index = 1; index <= 5; index++) {
+    await page
+      .locator('html')
+      .evaluate(
+        (node, index) => node.style.setProperty(`--chart-${index}`, `rgb(${index} 50 100)`),
+        index,
+      )
+    expect(
+      await page
+        .locator(`#palette > :nth-child(${index})`)
+        .evaluate((node) => getComputedStyle(node).backgroundColor),
+    ).toBe(`rgb(${index}, 50, 100)`)
+  }
 })

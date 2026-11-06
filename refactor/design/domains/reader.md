@@ -254,6 +254,7 @@ EPUB、TXT、PDF、图片目录与归档、MOBI/AZW 和 FB2 都须验证续读�
 
 ```ts
 type ReadingPositionInput = ReadingPosition | 'start'
+
 type PlaybackPositionInput = number | 'start'
 ```
 

@@ -27,6 +27,7 @@ export function parseCategory(input: unknown, path: FieldPath = []): ExtensionCa
   if (category === undefined) {
     invalid(path, 'Unknown category for a new declaration')
   }
+
   return category
 }
 
@@ -60,6 +61,7 @@ export function parseId(input: unknown, path: FieldPath = []): string {
   ) {
     invalid(path, 'Invalid extension or registry ID')
   }
+
   return value
 }
 
@@ -97,6 +99,7 @@ export function normalizeLocalizedText(
   if (!entries.has(fallback)) {
     invalid(path, 'Localized text must contain its default locale')
   }
+
   return Object.fromEntries(entries)
 }
 
@@ -136,6 +139,7 @@ export function parseUrlReference(input: unknown, path: FieldPath = []): string 
   if (!URL.canParse(value, 'https://registry.invalid/index.json')) {
     invalid(path, 'Invalid URL reference')
   }
+
   return value
 }
 
@@ -146,6 +150,7 @@ export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   if (!URL.canParse(value)) {
     invalid(path, 'Expected an absolute URL')
   }
+
   return value
 }
 

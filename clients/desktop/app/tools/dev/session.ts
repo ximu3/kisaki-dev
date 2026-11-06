@@ -26,8 +26,10 @@ const debug = debuglog('kisaki:development')
 export interface DevelopmentApplication {
   pid: number
   exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
+
   /** Request normal exit; cancelled means the application declined the close request. */
   stop(): Promise<'cancelled' | 'exited'>
+
   /** Force the owned process to end and wait for its exit. */
   terminate(): Promise<void>
 }
@@ -37,8 +39,10 @@ export interface DevelopmentLaunchOptions {
   executable: string
   args: string[]
   cwd: string
+
   profile: string
   buildId: string
+
   signal: AbortSignal
   startupTimeoutMs: number
 }
@@ -59,8 +63,10 @@ export interface DevelopmentSession {
   readonly rendererUrl: string
   /** Current running generation; absent before launch, during replacement and after process exit. */
   readonly current: DevelopmentBuild | undefined
+
   /** Request normal application exit, then close tools and outputs; cancellation keeps the session usable. */
   stop(): Promise<'cancelled' | 'stopped'>
+
   /** Explicitly end this session's application before closing its tools and outputs. */
   terminate(): Promise<void>
 }
@@ -382,6 +388,7 @@ export async function startDevelopmentSession(
           signal.removeEventListener('abort', cancel)
           options.signal?.removeEventListener('abort', cancelPreparation)
           controller.abort(new Error('Development session stopping'))
+
           const failures = shutdownFailures
           shutdownFailures = []
           child = undefined

@@ -33,8 +33,10 @@ test('same-locale translators and later catalog changes cannot share stale messa
   const catalog = { actions: { save: '保存' } }
   const first = createTranslator('zh-CN', catalog)
   expect(first('actions.save')).toBe('保存')
+
   catalog.actions.save = '存储'
   const second = createTranslator('zh-CN', catalog)
+
   expect(second('actions.save')).toBe('存储')
   expect(first('actions.save')).toBe('保存')
 })

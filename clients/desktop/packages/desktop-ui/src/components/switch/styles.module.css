@@ -1,0 +1,63 @@
+/* Switch presentation keeps the actual checkbox as the focus and submission target. */
+
+@layer components {
+  .root[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+  .root {
+    appearance: none;
+    box-sizing: border-box;
+    width: 2rem;
+    height: 1.125rem;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--muted);
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .root::before {
+    content: '';
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin: 0.125rem;
+    border-radius: 50%;
+    background: var(--muted-foreground);
+    transition: transform 100ms;
+  }
+
+  .root:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .root:checked::before {
+    transform: translateX(0.875rem);
+    background: var(--primary-foreground);
+  }
+
+  .root:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .root:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .root::before {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      appearance: auto;
+    }
+    .root::before {
+      display: none;
+    }
+  }
+}

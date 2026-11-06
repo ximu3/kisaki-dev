@@ -16,6 +16,7 @@ export function safeFailure(error: unknown): { code: string; message: string } {
   if (error instanceof RpcError && error.code && error.message) {
     return { code: error.code, message: error.message }
   }
+
   return { code: 'OperationFailed', message: 'The operation failed' }
 }
 

@@ -11,10 +11,12 @@ import type { DevelopmentSession } from '../../../tools/dev/session'
 
 const controller = new AbortController()
 const scenario = process.argv[2]
+
 let rejectStop!: (cause: unknown) => void
 const stopFailure = new Promise<never>((_resolve, reject) => {
   rejectStop = reject
 })
+
 let session: DevelopmentSession | undefined
 let failed = false
 
@@ -95,6 +97,7 @@ try {
             rejectStop = false
             return Promise.reject(new Error('Synthetic application stop failure'))
           }
+
           return application.stop()
         },
       }

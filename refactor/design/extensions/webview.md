@@ -26,7 +26,9 @@ Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用
 
 iframe 的 sandbox 仅包含 allow-scripts、allow-same-origin 与 allow-forms，保留弹窗、下载、顶层导航和浏览器模态权限的限制。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
 
-allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
+allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。
+
+两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
 
 <a id="csp"></a>
 

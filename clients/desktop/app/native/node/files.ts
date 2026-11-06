@@ -45,6 +45,7 @@ export class FileSyncError extends Error {
 export interface NativeFiles {
   /** Move on a worker; resolve only after the same-filesystem, no-replace operation succeeds. */
   moveNoReplace(source: string, target: string): Promise<void>
+
   /** Flush one existing regular file on a worker and close its handle before resolving. */
   syncFile(path: string): Promise<void>
 }
@@ -66,6 +67,7 @@ export function createNativeFiles(binding: typeof Binding): NativeFiles {
         throw new FileMoveError(result.reason as MoveFailureReason, result.systemCode ?? undefined)
       }
     },
+
     async syncFile(path) {
       if (!validPath(path)) {
         throw new FileSyncError('invalidArgument', undefined)

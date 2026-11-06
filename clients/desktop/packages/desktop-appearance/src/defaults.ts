@@ -34,7 +34,12 @@ export const light: TokenValues = Object.freeze({
   '--warning-foreground': 'oklch(0.22 0.03 80)',
   '--border': 'oklch(0.86 0.012 256)',
   '--ring': 'oklch(0.56 0.2 258)',
-  '--chart': 'oklch(0.62 0.11 255)',
+
+  '--chart-1': 'oklch(0.62 0.11 255)',
+  '--chart-2': 'oklch(0.61 0.11 175)',
+  '--chart-3': 'oklch(0.69 0.13 75)',
+  '--chart-4': 'oklch(0.6 0.15 305)',
+  '--chart-5': 'oklch(0.65 0.18 25)',
 
   '--radius': '6px',
   '--shadow-raised':
@@ -85,7 +90,12 @@ export const dark: TokenValues = Object.freeze({
   '--warning-foreground': 'oklch(0.22 0.03 80)',
   '--border': 'oklch(0.45 0.02 258 / 0.35)',
   '--ring': 'oklch(0.64 0.17 256)',
-  '--chart': 'oklch(0.7 0.12 255)',
+
+  '--chart-1': 'oklch(0.7 0.12 255)',
+  '--chart-2': 'oklch(0.74 0.12 175)',
+  '--chart-3': 'oklch(0.78 0.13 75)',
+  '--chart-4': 'oklch(0.73 0.14 305)',
+  '--chart-5': 'oklch(0.73 0.16 25)',
 
   '--radius': '6px',
   '--shadow-raised': '0 1px 2px 0 oklch(0 0 0 / 0.35), 0 4px 12px -2px oklch(0 0 0 / 0.4)',

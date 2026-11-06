@@ -18,7 +18,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 ## 基础 token 与派生样式
 
-AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配色、圆角、阴影、字体栈和文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
+AppearanceTokens 使用固定、扁平的 CSS 属性键，共 43 项，覆盖配色、圆角、阴影、字体栈和文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
 
 ```json
 {
@@ -37,7 +37,8 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 界面区域       | --background、--foreground、--chrome、--chrome-foreground、--popover、--popover-foreground、--dialog、--dialog-foreground                                       |
 | 操作与交互     | --primary、--primary-foreground、--secondary、--secondary-foreground、--muted、--muted-foreground、--accent、--accent-foreground、--input、--input-foreground   |
-| 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring、--chart |
+| 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring |
+| 图表系列       | --chart-1、--chart-2、--chart-3、--chart-4、--chart-5 |
 | 圆角与阴影     | --radius、--shadow-raised、--shadow-overlay、--shadow-modal                                                                                                     |
 | 字体与文字基准 | --font-sans、--font-mono、--text-base-size、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
 
@@ -46,6 +47,8 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配
 background 用于主内容底色；chrome 用于应用框架、导航与控制区域，包括标题栏、侧栏、页面控制带和阅读器工具栏；popover 与 dialog 分别用于浮层和模态对话框。各 foreground 用于对应背景上的文字和图标。
 
 primary、accent 和 ring 分别表示主要操作、强调与焦点。三种阴影分别用于 raised、overlay 和 modal。
+
+chart-1 至 chart-5 是五个可独立编辑的系列色，亮暗分支分别提供完整配色；系列身份与颜色的对应由图表配置拥有。默认主题依次采用蓝、青、琥珀、紫和珊瑚色，同一序号在亮暗模式中保持色类。普通 CSS 提供对应的 --color-chart-1 至 --color-chart-5，Tailwind 沿相同名称生成工具类。编号式图表词表与 [shadcn 的主题约定](https://ui.shadcn.com/docs/theming)一致，具体默认值由 desktop-appearance 维护。
 
 字体槽保存稳定选择或资源引用，在运行时转换成 CSS 字体栈。AppearanceTokens 使用固定键目录，其他 token 分别按颜色、阴影、长度、百分比和数值等文法校验，保留 OKLCH、透明度、normal 及多层阴影等合法表达。包路径与临时 URL 留在资源读取接入中。
 

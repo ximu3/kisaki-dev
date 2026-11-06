@@ -39,6 +39,7 @@ export class RpcConnection {
       () => this.#end(new RpcError('ConnectionClosed', 'RPC handshake timed out')),
       10_000,
     )
+
     try {
       transport.start(
         (input) => this.#receive(input),
@@ -72,10 +73,12 @@ export class RpcConnection {
     if (this.#exhausted) {
       throw new RpcError('ResourceLimit', 'RPC request IDs are exhausted')
     }
+
     const values = parseJsonValue(args)
     if (typeof method !== 'string' || !Array.isArray(values)) {
       throw new RpcError('InvalidInput', 'Expected a method name and an argument array')
     }
+
     return this.#outgoing.request(method, values, options?.signal, (frame) => this.#send(frame))
   }
 
@@ -108,6 +111,7 @@ export class RpcConnection {
     if (!this.#transport) {
       return false
     }
+
     try {
       this.#transport.send(frame)
       return true
@@ -122,6 +126,7 @@ export class RpcConnection {
     if (!endpoint) {
       return
     }
+
     try {
       if (
         !this.#established &&
@@ -131,6 +136,7 @@ export class RpcConnection {
         this.#rejectHandshake(new RpcError('ProtocolMismatch', 'Unsupported RPC wire version'))
         return
       }
+
       const frame = parseRpcFrame(input)
       if (!this.#established) {
         this.#handshake(frame, endpoint)
@@ -174,6 +180,7 @@ export class RpcConnection {
       this.#end(new RpcError(frame.error.code, frame.error.message))
       return
     }
+
     let reply: Extract<RpcFrame, { type: 'accepted' }> | undefined
     if (handshake.role === 'initiator' && frame.type === 'accepted') {
       if (handshake.accepts && handshake.accepts(frame.context) !== true) {
@@ -184,6 +191,7 @@ export class RpcConnection {
         this.#rejectHandshake(new RpcError('ProtocolMismatch', 'Unsupported endpoint protocol'))
         return
       }
+
       try {
         reply = { type: 'accepted', context: parseJsonValue(handshake.accept(frame.context)) }
       } catch (cause) {
@@ -259,6 +267,7 @@ export class RpcConnection {
       if (!this.#transport) {
         return
       }
+
       let error: JsonValue
       try {
         error = parseJsonValue(errors.encode(cause, frame.method))
@@ -280,6 +289,7 @@ export class RpcConnection {
     if (!notifications || !Object.hasOwn(notifications.topics, frame.topic)) {
       return
     }
+
     const failed = (error: unknown) => notifications.onError(error, frame.topic)
     try {
       const result = notifications.topics[frame.topic]!(frame.value)
@@ -306,6 +316,7 @@ export class RpcConnection {
     if (!transport) {
       return
     }
+
     this.#transport = undefined
     this.#endpoint = undefined
     clearTimeout(this.#timer)
@@ -318,6 +329,7 @@ export class RpcConnection {
         reason = connectionClosed(cause)
       }
     }
+
     this.#rejectReady(reason)
     const lost = reason.code === 'ConnectionClosed' ? reason : connectionClosed(reason)
     this.#outgoing.close(lost)
@@ -325,6 +337,7 @@ export class RpcConnection {
       controller.abort(lost)
     }
     this.#incoming.clear()
+
     try {
       transport.close()
     } catch (cause) {
@@ -333,6 +346,7 @@ export class RpcConnection {
       )
       return
     }
+
     this.#resolveClosed(reason)
   }
 }

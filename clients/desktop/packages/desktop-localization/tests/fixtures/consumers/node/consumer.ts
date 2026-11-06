@@ -1,4 +1,5 @@
 /** @fileoverview Consumes only the packed localization entrypoint and its declared runtime dependencies. */
+
 import { createTranslator, validateUiTranslation } from '@kisaki3/desktop-localization'
 
 export const summary = {

@@ -1,0 +1,49 @@
+/* Tabs retain compact navigation and persistent panel geometry. */
+
+@layer components {
+  .list {
+    display: flex;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .list[aria-orientation='vertical'] {
+    flex-direction: column;
+    border-bottom: 0;
+    border-inline-end: 1px solid var(--border);
+  }
+
+  .tab {
+    font: inherit;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+  }
+  .tab[aria-selected='true'] {
+    border-color: var(--primary);
+    color: var(--foreground);
+  }
+  .tab:hover {
+    background: var(--accent);
+  }
+  .tab:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .tab:focus-visible,
+  .panel:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+
+  .panel {
+    padding-block: 0.75rem;
+  }
+  .panel[hidden] {
+    display: none;
+  }
+}

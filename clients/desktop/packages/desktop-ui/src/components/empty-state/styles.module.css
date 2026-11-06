@@ -1,0 +1,40 @@
+/* empty-state presentation in the shared component layer. */
+
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .heading {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .description {
+    margin: 0;
+    max-width: 36rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .icon {
+    color: var(--muted-foreground);
+  }
+  .icon:empty,
+  .description:empty,
+  .actions:empty {
+    display: none;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}

@@ -312,7 +312,9 @@ inspect 的结果为以下只读结构，文件树全文不经过普通界面或
 
 ```ts
 type RecoveryLocation = 'target' | 'original' | 'prepared' | 'displaced'
+
 type RecoveryAction = 'continue' | 'rollback' | 'keepCurrent'
+
 type RecoveryResolution = 'restored' | 'rolledBack' | 'keptCurrent'
 
 type RecoveryLocationObservation =
@@ -323,8 +325,10 @@ type RecoveryLocationObservation =
 interface GameBackupRecoveryInspection {
   recoveryId: string
   resolution: RecoveryResolution | null
+
   manifest: GameBackupRecoveryManifest | null
   locations: Record<RecoveryLocation, RecoveryLocationObservation>
+
   actions: readonly RecoveryAction[]
   issues: readonly {
     location: RecoveryLocation | 'manifest' | 'index'

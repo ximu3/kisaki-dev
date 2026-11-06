@@ -1,0 +1,595 @@
+/** @fileoverview Independent component workshop covers native controls, feedback and nested interactions. */
+
+import { createMemo, createSignal, lazy, Show } from 'solid-js'
+import type { JSX } from 'solid-js'
+import { render } from 'solid-js/web'
+import { Button } from '@kisaki3/desktop-ui/button'
+import { Link } from '@kisaki3/desktop-ui/link'
+import { Badge } from '@kisaki3/desktop-ui/badge'
+import { Alert } from '@kisaki3/desktop-ui/alert'
+import { Separator } from '@kisaki3/desktop-ui/separator'
+import { Spinner } from '@kisaki3/desktop-ui/spinner'
+import { Progress } from '@kisaki3/desktop-ui/progress'
+import { Image } from '@kisaki3/desktop-ui/image'
+import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
+import { Input } from '@kisaki3/desktop-ui/input'
+import { Textarea } from '@kisaki3/desktop-ui/textarea'
+import { Checkbox } from '@kisaki3/desktop-ui/checkbox'
+import { Switch } from '@kisaki3/desktop-ui/switch'
+import { Slider } from '@kisaki3/desktop-ui/slider'
+import { Select, MultiSelect } from '@kisaki3/desktop-ui/select'
+import { RadioGroup, Radio } from '@kisaki3/desktop-ui/radio-group'
+import { SegmentedControl } from '@kisaki3/desktop-ui/segmented-control'
+import {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FormFeedback,
+} from '@kisaki3/desktop-ui/field'
+import type { FieldIssue } from '@kisaki3/desktop-ui/field'
+import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
+import { Collapsible } from '@kisaki3/desktop-ui/collapsible'
+import { ScrollArea } from '@kisaki3/desktop-ui/scroll-area'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from '@kisaki3/desktop-ui/table'
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+  DialogBody,
+  DialogFooter,
+  AlertDialogContent,
+} from '@kisaki3/desktop-ui/dialog'
+import { Popover, PopoverTrigger, PopoverContent } from '@kisaki3/desktop-ui/popover'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@kisaki3/desktop-ui/tooltip'
+import {
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuSubTrigger,
+  ContextMenuTrigger,
+  MenuCheckboxItem,
+  MenuRadioItem,
+  MenuGroup,
+  MenuSeparator,
+} from '@kisaki3/desktop-ui/menu'
+import { Combobox } from '@kisaki3/desktop-ui/combobox'
+import { ToastProvider, useToast } from '@kisaki3/desktop-ui/toast'
+import type { ToastHandle } from '@kisaki3/desktop-ui/toast'
+import type { FixtureApi } from './api.js'
+import '@kisaki3/desktop-ui/styles.css'
+import './page.css'
+
+const Resources = lazy(() => import('./resources.js'))
+
+const noop = () => {}
+window.fixture = {
+  setExternal: noop,
+  setOptions: noop,
+  setOwner: noop,
+  showLoading: noop,
+  updateToast: noop,
+  dismissToast: noop,
+  lateToast: noop,
+  rootToast: noop,
+  setLongMessage: noop,
+  dispose: noop,
+} satisfies FixtureApi
+
+/** Each operation captures this view's toast owner, including work that finishes after removal. */
+function ToastOwner(): JSX.Element {
+  const toast = useToast()
+  let handle: ToastHandle | undefined
+
+  window.fixture.showLoading = (persistent) => {
+    handle = toast.show(
+      {
+        type: 'loading',
+        message: 'Preparing sample',
+        action: {
+          label: 'Inspect sample',
+          onClick: () => {
+            document.body.dataset.action = 'inspected'
+          },
+        },
+      },
+      { persistent },
+    )
+  }
+  window.fixture.updateToast = () => handle?.update({ type: 'success', message: 'Sample ready' })
+  window.fixture.dismissToast = () => handle?.dismiss()
+  window.fixture.lateToast = () => {
+    handle?.update({ type: 'error', message: 'Late update' })
+    toast.show({ type: 'info', message: 'Late creation' })
+  }
+
+  return (
+    <Button variant="secondary" onClick={() => window.fixture.showLoading(false)}>
+      Show loading
+    </Button>
+  )
+}
+
+/** Real native form behaviors exercise multiple control families at the shared boundary. */
+function Controls(): JSX.Element {
+  const [external, setExternal] = createSignal('original')
+  const [disabled, setDisabled] = createSignal(false)
+  const [cancelReset, setCancelReset] = createSignal(false)
+  window.fixture.setExternal = setExternal
+
+  return (
+    <section>
+      <h2>Native controls</h2>
+      <form
+        id="controls"
+        onSubmit={(event) => {
+          event.preventDefault()
+          document.body.dataset.submitted = JSON.stringify([...new FormData(event.currentTarget)])
+        }}
+        onReset={(event) => {
+          if (cancelReset()) {
+            event.preventDefault()
+          }
+        }}
+      >
+        <FieldGroup disabled={disabled()}>
+          <FieldLegend>Preferences</FieldLegend>
+          <Field id="query">
+            <FieldLabel>Query</FieldLabel>
+            <Input name="query" defaultValue="seed" />
+            <FieldDescription>Native text, selection and undo.</FieldDescription>
+          </Field>
+          <Field id="notes">
+            <FieldLabel>Notes</FieldLabel>
+            <Textarea name="notes" defaultValue="A short note" />
+          </Field>
+          <div class="row">
+            <label>
+              <Checkbox name="check" value="yes" defaultChecked /> Include
+            </label>
+            <label>
+              <Switch name="switch" value="enabled" defaultChecked /> Enabled
+            </label>
+          </div>
+          <RadioGroup label="Density" name="density" defaultValue="comfortable">
+            <label>
+              <Radio value="compact" />
+              Compact
+            </label>
+            <label>
+              <Radio value="comfortable" />
+              Comfortable
+            </label>
+          </RadioGroup>
+          <Field id="select">
+            <FieldLabel>Choice</FieldLabel>
+            <Select name="choice" defaultValue="alpha" required>
+              <option value="">Choose</option>
+              <option value="alpha">Alpha</option>
+              <option value="disabled" disabled>
+                Unavailable
+              </option>
+              <option value="beta">Beta</option>
+            </Select>
+          </Field>
+          <Field id="multi">
+            <FieldLabel>Multiple choices</FieldLabel>
+            <MultiSelect name="multi" defaultValue={['a', 'c']}>
+              <option value="a">Amber</option>
+              <option value="b">Blue</option>
+              <option value="c">Coral</option>
+            </MultiSelect>
+          </Field>
+          <Field id="level">
+            <FieldLabel>Level</FieldLabel>
+            <Slider name="level" defaultValue={25} min={0} max={100} />
+          </Field>
+          <SegmentedControl
+            label="View"
+            name="view"
+            defaultValue="list"
+            options={[
+              { value: 'list', label: 'List' },
+              { value: 'grid', label: 'Grid' },
+              { value: 'disabled', label: 'Unavailable', disabled: true },
+            ]}
+          />
+        </FieldGroup>
+        <div class="row">
+          <Button type="submit">Submit controls</Button>
+          <Button type="reset" variant="outline">
+            Reset controls
+          </Button>
+        </div>
+      </form>
+      <Field id="external">
+        <FieldLabel>External controlled field</FieldLabel>
+        <Input
+          name="external"
+          form="controls"
+          value={external()}
+          defaultValue="original"
+          onValueChange={setExternal}
+        />
+      </Field>
+      <div class="row">
+        <Button variant="text" onClick={() => setDisabled(!disabled())}>
+          Toggle fieldset
+        </Button>
+        <label>
+          <input
+            type="checkbox"
+            checked={cancelReset()}
+            onChange={(event) => setCancelReset(event.currentTarget.checked)}
+          />
+          Cancel resets
+        </label>
+      </div>
+    </section>
+  )
+}
+
+/** Validation and reveal/focus policy belong to this form; the feedback component only presents them. */
+function Validation(): JSX.Element {
+  const [title, setTitle] = createSignal('')
+  const [description, setDescription] = createSignal('')
+
+  const [submitted, setSubmitted] = createSignal(false)
+  const [active, setActive] = createSignal<string | null | undefined>(null)
+  const [long, setLong] = createSignal('Enter a title.')
+  const [tab, setTab] = createSignal('basic')
+
+  window.fixture.setLongMessage = (language) =>
+    setLong(
+      `${language}: ${'请填写可辨认的名称。請填寫可辨認的名稱。判別できる名前を入力してください。 Provide a recognizable title. '.repeat(8)}`,
+    )
+
+  const issues = createMemo<FieldIssue[]>(() =>
+    submitted()
+      ? [
+          ...(!title()
+            ? [{ id: 'title', label: 'Title', summary: 'Enter a title.', message: long() }]
+            : []),
+          ...(!description()
+            ? [
+                {
+                  id: 'description',
+                  label: 'Description',
+                  summary: 'Enter a description.',
+                  message: 'Describe the sample so that it can be recognized.',
+                },
+              ]
+            : []),
+        ]
+      : [],
+  )
+
+  const locate = (id: string) => {
+    setTab(id === 'title' ? 'basic' : 'detail')
+    queueMicrotask(() => document.getElementById(id)?.focus())
+  }
+
+  return (
+    <section>
+      <h2>Form feedback</h2>
+      <form
+        novalidate
+        onSubmit={(event) => {
+          event.preventDefault()
+          setSubmitted(true)
+          const first = issues()[0]
+          if (first) {
+            locate(first.id)
+          }
+        }}
+      >
+        <Tabs value={tab()} onValueChange={setTab}>
+          <TabList aria-label="Fields">
+            <Tab value="basic">Basic</Tab>
+            <Tab value="detail">Detail</Tab>
+          </TabList>
+          <TabPanel value="basic">
+            <Field id="title" required invalid={issues().some((issue) => issue.id === 'title')}>
+              <FieldLabel>Title</FieldLabel>
+              <Input
+                name="title"
+                value={title()}
+                onValueChange={setTitle}
+                onFocus={() => setActive('title')}
+              />
+              <FieldDescription>A stable name for this sample.</FieldDescription>
+              <FieldError>{long()}</FieldError>
+            </Field>
+          </TabPanel>
+          <TabPanel value="detail">
+            <Field
+              id="description"
+              required
+              invalid={issues().some((issue) => issue.id === 'description')}
+            >
+              <FieldLabel>Description</FieldLabel>
+              <Textarea
+                value={description()}
+                onValueChange={setDescription}
+                onFocus={() => setActive('description')}
+              />
+              <FieldError>Enter a description.</FieldError>
+            </Field>
+          </TabPanel>
+        </Tabs>
+        <FormFeedback
+          id="feedback"
+          issues={issues()}
+          activeFieldId={active()}
+          summary={(count) => `${count} fields need attention`}
+          onLocate={locate}
+          detailsLabel="Details"
+          locateLabel="Locate"
+          onFocusIn={() => setActive(undefined)}
+        />
+        <Button type="submit">Save sample</Button>
+      </form>
+    </section>
+  )
+}
+
+/** One synthetic options list can be replaced without discarding the independently committed choice. */
+function Candidate(): JSX.Element {
+  const [options, setOptions] = createSignal([
+    { value: 'a', label: 'Alpha' },
+    { value: 'd', label: 'Disabled', disabled: true },
+    { value: 'b', label: 'Beta' },
+  ])
+  window.fixture.setOptions = () =>
+    setOptions([
+      { value: 'g', label: 'Gamma' },
+      { value: 'z', label: 'Zeta' },
+    ])
+
+  return (
+    <FieldGroup aria-label="Candidate group">
+      <Field id="candidate">
+        <FieldLabel>Candidate</FieldLabel>
+        <Combobox
+          name="candidate"
+          options={options()}
+          defaultValue={{ value: 'a', label: 'Alpha' }}
+          emptyMessage="No choices"
+          loadingMessage="Loading choices"
+          invalidSelectionMessage="Choose a listed option."
+        />
+      </Field>
+    </FieldGroup>
+  )
+}
+
+/** Native modal nesting and local menus expose real focus and close behavior. */
+function Interactions(): JSX.Element {
+  const [checked, setChecked] = createSignal(false)
+  const [radio, setRadio] = createSignal('one')
+  const [block, setBlock] = createSignal(false)
+
+  return (
+    <section>
+      <h2>Interactions</h2>
+      <div class="row">
+        <Dialog>
+          <DialogTrigger>Open dialog</DialogTrigger>
+          <DialogContent
+            onCloseRequest={(event) => {
+              if (block()) {
+                event.preventDefault()
+              }
+            }}
+          >
+            <ToastProvider regionLabel="Dialog notifications" closeLabel="Dismiss notification">
+              <DialogTitle>Edit sample</DialogTitle>
+              <DialogBody>
+                <Candidate />
+                <label>
+                  <Checkbox checked={block()} onCheckedChange={setBlock} />
+                  Block close
+                </label>
+                <Menu>
+                  <MenuTrigger variant="outline">Actions</MenuTrigger>
+                  <MenuContent aria-label="Actions">
+                    <MenuItem
+                      onSelect={() => {
+                        document.body.dataset.menu = 'first'
+                      }}
+                    >
+                      First action
+                    </MenuItem>
+                    <MenuItem disabled>Disabled action</MenuItem>
+                    <MenuCheckboxItem
+                      checked={checked()}
+                      onCheckedChange={setChecked}
+                      closeOnSelect={false}
+                    >
+                      Pinned
+                    </MenuCheckboxItem>
+                    <MenuSeparator />
+                    <MenuGroup aria-label="Mode">
+                      <MenuRadioItem value="one" selectedValue={radio()} onValueChange={setRadio}>
+                        One
+                      </MenuRadioItem>
+                      <MenuRadioItem value="two" selectedValue={radio()} onValueChange={setRadio}>
+                        Two
+                      </MenuRadioItem>
+                    </MenuGroup>
+                    <Menu>
+                      <MenuSubTrigger>More</MenuSubTrigger>
+                      <MenuContent aria-label="More">
+                        <MenuItem>Nested action</MenuItem>
+                      </MenuContent>
+                    </Menu>
+                  </MenuContent>
+                </Menu>
+                <ToastOwner />
+                <Dialog>
+                  <DialogTrigger>Nested dialog</DialogTrigger>
+                  <AlertDialogContent>
+                    <DialogTitle>Confirm sample</DialogTitle>
+                    <DialogClose>Return</DialogClose>
+                  </AlertDialogContent>
+                </Dialog>
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose>Close editor</DialogClose>
+              </DialogFooter>
+            </ToastProvider>
+          </DialogContent>
+        </Dialog>
+        <Popover>
+          <PopoverTrigger variant="outline">Help</PopoverTrigger>
+          <PopoverContent>
+            <p>Contextual help remains inside the current document.</p>
+            <Button>Help action</Button>
+          </PopoverContent>
+        </Popover>
+        <Tooltip>
+          <TooltipTrigger variant="ghost" aria-label="Information">
+            ⓘ
+          </TooltipTrigger>
+          <TooltipContent>
+            Information about the sample. This text remains readable while hovered.
+          </TooltipContent>
+        </Tooltip>
+      </div>
+      <Menu>
+        <ContextMenuTrigger id="context-target" class="context">
+          Context menu target
+        </ContextMenuTrigger>
+        <MenuContent aria-label="Context actions">
+          <MenuItem>Context action</MenuItem>
+        </MenuContent>
+      </Menu>
+    </section>
+  )
+}
+
+/** Gallery content is synthetic and touches no application data. */
+function App(): JSX.Element {
+  const rootToast = useToast()
+  const [owner, setOwner] = createSignal(true)
+  const [resources, setResources] = createSignal(false)
+
+  window.fixture.setOwner = setOwner
+  window.fixture.rootToast = () =>
+    rootToast.show({ type: 'info', message: 'Window owner survives' }, { persistent: true })
+
+  return (
+    <main>
+      <header>
+        <span class="eyebrow">KISAKI · SOLID 1.9</span>
+        <h1>Component workshop</h1>
+        <p>Independent controls, shared appearance, native interaction.</p>
+        <div class="row">
+          <Button
+            id="theme"
+            variant="outline"
+            onClick={() => {
+              document.documentElement.dataset.colorScheme =
+                document.documentElement.dataset.colorScheme === 'dark' ? 'light' : 'dark'
+            }}
+          >
+            Switch theme
+          </Button>
+          <Link href="#gallery">Browse components</Link>
+        </div>
+      </header>
+      <div class="grid">
+        <Controls />
+        <Validation />
+        <Interactions />
+        <section id="gallery">
+          <h2>Presentation</h2>
+          <div class="row">
+            <Button>Primary</Button>
+            <Button variant="destructive">Danger</Button>
+            <Button variant="outline" class="host-override">
+              Override
+            </Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button disabled>Disabled</Button>
+            <Button busy>Saving</Button>
+          </div>
+          <div class="row">
+            <Badge>Ready</Badge>
+            <Badge tone="success">Success</Badge>
+            <Badge tone="warning">Warning</Badge>
+            <Spinner label="Loading" />
+          </div>
+          <Progress value={0.65} aria-label="Progress" />
+          <Alert tone="info">The sample preserves ordinary document behavior.</Alert>
+          <Separator />
+          <Collapsible summary="More information">
+            <p>Native disclosure content.</p>
+          </Collapsible>
+          <ScrollArea aria-label="Sample table">
+            <Table>
+              <TableCaption>Synthetic rows</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead scope="col">Name</TableHead>
+                  <TableHead scope="col">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Sample A</TableCell>
+                  <TableCell>Ready</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </ScrollArea>
+          <Image alt="Unavailable sample" src="/missing.png" />
+          <EmptyState
+            heading="No additional samples"
+            description="Add an item when one is available."
+          />
+        </section>
+        <section>
+          <h2>Feedback lifetime</h2>
+          <Show when={owner()}>
+            <ToastOwner />
+          </Show>
+          <Button variant="text" onClick={() => setOwner(!owner())}>
+            Toggle owner
+          </Button>
+        </section>
+        <section class="wide">
+          <h2>Complete capabilities</h2>
+          <Button onClick={() => setResources(!resources())}>
+            {resources() ? 'Release resources' : 'Load resources'}
+          </Button>
+          <Show when={resources()}>
+            <Resources />
+          </Show>
+        </section>
+      </div>
+    </main>
+  )
+}
+
+window.fixture.dispose = render(
+  () => (
+    <ToastProvider regionLabel="Window notifications" closeLabel="Dismiss notification">
+      <App />
+    </ToastProvider>
+  ),
+  document.getElementById('app')!,
+)

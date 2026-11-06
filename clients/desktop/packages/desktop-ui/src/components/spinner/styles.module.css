@@ -1,0 +1,26 @@
+/* spinner presentation in the shared component layer. */
+
+@layer components {
+  .root {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .root {
+      animation: none;
+    }
+  }
+}

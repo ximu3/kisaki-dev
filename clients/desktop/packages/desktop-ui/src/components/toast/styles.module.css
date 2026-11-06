@@ -1,0 +1,55 @@
+/* Compact feedback stays within the actual document and modal ancestor. */
+
+@layer components {
+  .region {
+    position: fixed;
+    inset: auto 1rem 1rem auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--foreground);
+    width: min(26rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    overflow: auto;
+  }
+  .region:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    padding: 0.625rem 0.75rem;
+    background: var(--popover);
+    color: var(--popover-foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-overlay);
+    font-size: 0.875rem;
+  }
+
+  .text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .icon {
+    flex-shrink: 0;
+    color: var(--info);
+  }
+  .item[data-type='success'] .icon {
+    color: var(--success);
+  }
+  .item[data-type='warning'] .icon {
+    color: var(--warning);
+  }
+  .item[data-type='error'] .icon {
+    color: var(--destructive);
+  }
+}

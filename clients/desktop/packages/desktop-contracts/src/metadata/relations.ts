@@ -319,6 +319,7 @@ function hasScopeMembers(
       (value.roles ?? organizationRoles).some((role) => canUseOrganizationRole(role, type)),
     )
   }
+
   return matchingTypes.length > 0
 }
 
@@ -342,6 +343,7 @@ export function parseMetadataRelationScope<
       'Metadata relation scope contradicts its root, medium or responsibility',
     )
   }
+
   return value
 }
 

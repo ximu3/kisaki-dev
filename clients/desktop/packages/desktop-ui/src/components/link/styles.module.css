@@ -1,0 +1,17 @@
+/* link presentation in the shared component layer. */
+
+@layer components {
+  .root {
+    color: var(--primary);
+    text-underline-offset: 3px;
+  }
+
+  .root:hover {
+    text-decoration: underline;
+  }
+  .root:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+}

@@ -1,0 +1,50 @@
+/* Modal geometry stays in the browser top layer and follows the inherited theme. */
+
+@layer components {
+  .root {
+    box-sizing: border-box;
+    width: min(36rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: var(--dialog);
+    color: var(--dialog-foreground);
+    box-shadow: var(--shadow-modal);
+    overflow: auto;
+  }
+  .root::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+  .root:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .title {
+    margin: 0 0 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .description {
+    margin: 0 0 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .body {
+    min-height: 0;
+    overflow: auto;
+    padding-block: 0.25rem;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 1rem;
+  }
+}

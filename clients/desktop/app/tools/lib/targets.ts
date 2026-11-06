@@ -31,5 +31,6 @@ export function parseTarget(value: string): DesktopTarget {
   if (!Object.hasOwn(targetTriples, value)) {
     throw new Error(`Unsupported desktop target: ${value}`)
   }
+
   return value as DesktopTarget
 }

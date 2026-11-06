@@ -15,7 +15,9 @@ import type { DesktopDependency } from './dependencies'
 /** Session callbacks receive changes and terminal watcher failures after initial readiness. */
 interface InputWatchOptions {
   signal?: AbortSignal
+
   onChange(change: 'runtime' | 'public-package'): void
+
   onError(cause: unknown): void
 }
 

@@ -10,10 +10,12 @@ export interface Attachment {
   readonly mediaType: string
   readonly sizeBytes: number
   readonly sha256: string
+
   /** Image width in pixels when known; null for content without known dimensions. */
   readonly width: number | null
   /** Image height in pixels when known; null for content without known dimensions. */
   readonly height: number | null
+
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 }

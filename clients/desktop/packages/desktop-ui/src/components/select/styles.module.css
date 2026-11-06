@@ -1,0 +1,55 @@
+/* The native select owns its picker, option navigation and form semantics. */
+
+@layer components {
+  .root {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--input-foreground);
+    background: var(--input);
+    font: inherit;
+    font-size: 0.875rem;
+  }
+
+  .root:not([multiple]),
+  .root:not([multiple])::picker(select) {
+    appearance: base-select;
+  }
+  .root:not([multiple]) {
+    min-height: 1.75rem;
+  }
+  .root::picker(select) {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--shadow-overlay);
+    padding: 0.25rem;
+  }
+
+  .root option {
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+  }
+  .root option:checked {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .root option:disabled {
+    opacity: 0.5;
+  }
+
+  .root:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+  .root[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+  .root:disabled {
+    opacity: 0.5;
+  }
+}

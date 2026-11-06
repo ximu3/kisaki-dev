@@ -1,0 +1,17 @@
+/* separator presentation in the shared component layer. */
+
+@layer components {
+  .root {
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .root[data-orientation='horizontal'] {
+    height: 1px;
+    width: 100%;
+  }
+  .root[data-orientation='vertical'] {
+    width: 1px;
+    align-self: stretch;
+  }
+}

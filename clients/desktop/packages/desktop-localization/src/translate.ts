@@ -36,6 +36,7 @@ export function createTranslator(locale: string, catalog: MessageCatalog = {}): 
     if (!Object.hasOwn(contracts, key)) {
       throw new DesktopError('InvalidInput', 'Unknown message key')
     }
+
     const values = validateMessageArguments(contracts[key]!, input)
     let formatter = formatters.get(key)
     if (!formatter) {

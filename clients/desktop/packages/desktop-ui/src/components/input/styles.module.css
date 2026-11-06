@@ -1,0 +1,33 @@
+/* Native text field geometry and explicit validation appearance. */
+
+@layer components {
+  .root {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 1.75rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--input);
+    color: var(--input-foreground);
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.25;
+  }
+
+  .root::placeholder {
+    color: var(--muted-foreground);
+  }
+  .root:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+  .root[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+  .root:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}

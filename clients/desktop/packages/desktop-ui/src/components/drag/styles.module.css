@@ -1,0 +1,55 @@
+/* Drag feedback adds no competing positioning or ordering model. */
+
+@layer components {
+  .handle {
+    cursor: grab;
+    touch-action: none;
+  }
+  .handle:active {
+    cursor: grabbing;
+  }
+
+  .indicator {
+    position: absolute;
+    pointer-events: none;
+    background: var(--primary);
+    border-radius: 1px;
+    z-index: 1;
+  }
+  .indicator[data-edge='top'],
+  .indicator[data-edge='bottom'] {
+    height: 2px;
+    left: 0;
+    right: 0;
+  }
+  .indicator[data-edge='top'] {
+    top: -1px;
+  }
+  .indicator[data-edge='bottom'] {
+    bottom: -1px;
+  }
+
+  .indicator[data-edge='left'],
+  .indicator[data-edge='right'] {
+    width: 2px;
+    top: 0;
+    bottom: 0;
+  }
+  .indicator[data-edge='left'] {
+    left: -1px;
+  }
+  .indicator[data-edge='right'] {
+    right: -1px;
+  }
+
+  .feedback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

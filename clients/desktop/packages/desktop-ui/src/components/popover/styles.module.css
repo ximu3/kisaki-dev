@@ -1,0 +1,19 @@
+/* Popover coordinates come from the instance-owned positioning mechanism. */
+
+@layer components {
+  .root {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    box-sizing: border-box;
+    max-width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
+    overflow: auto;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--shadow-overlay);
+  }
+}

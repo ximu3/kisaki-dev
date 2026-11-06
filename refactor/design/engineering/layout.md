@@ -97,7 +97,9 @@ Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
-各工程遵守[通用配置归属](conventions.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。根工具、配置、测试的三个类型项目归根 config/typescript；消费者等测试变体配置归实际执行它的工程，由所属命令显式指定。
+各工程遵守[通用配置归属](conventions.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。
+
+依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。根工具、配置、测试的三个类型项目归根 config/typescript；消费者等测试变体配置归实际执行它的工程，由所属命令显式指定。
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 负责桌面端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
