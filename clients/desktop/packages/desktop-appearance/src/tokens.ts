@@ -15,8 +15,9 @@ export type TokenKind =
 export const tokens = Object.freeze({
   '--background': 'color',
   '--foreground': 'color',
-  '--surface': 'color',
-  '--surface-foreground': 'color',
+  /** Background for the application frame, navigation and control regions. */
+  '--chrome': 'color',
+  '--chrome-foreground': 'color',
   '--popover': 'color',
   '--popover-foreground': 'color',
   '--dialog': 'color',

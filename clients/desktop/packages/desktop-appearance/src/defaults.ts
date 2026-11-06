@@ -6,8 +6,8 @@ import type { ColorScheme, TokenValues } from './tokens'
 export const light: TokenValues = Object.freeze({
   '--background': 'oklch(0.965 0.005 256)',
   '--foreground': 'oklch(0.21 0.03 260)',
-  '--surface': 'oklch(0.935 0.008 256)',
-  '--surface-foreground': 'oklch(0.16 0.03 260)',
+  '--chrome': 'oklch(0.935 0.008 256)',
+  '--chrome-foreground': 'oklch(0.16 0.03 260)',
   '--popover': 'oklch(0.995 0.002 256)',
   '--popover-foreground': 'oklch(0.16 0.03 260)',
   '--dialog': 'oklch(0.995 0.002 256)',
@@ -57,8 +57,8 @@ export const light: TokenValues = Object.freeze({
 export const dark: TokenValues = Object.freeze({
   '--background': 'oklch(0.17 0.015 258)',
   '--foreground': 'oklch(0.9 0.012 256)',
-  '--surface': 'oklch(0.15 0.015 258)',
-  '--surface-foreground': 'oklch(0.9 0.012 256)',
+  '--chrome': 'oklch(0.15 0.015 258)',
+  '--chrome-foreground': 'oklch(0.9 0.012 256)',
   '--popover': 'oklch(0.24 0.02 258)',
   '--popover-foreground': 'oklch(0.9 0.012 256)',
   '--dialog': 'oklch(0.27 0.02 258)',
