@@ -15,6 +15,7 @@ const electron = createRequire(import.meta.url)('electron') as string
 test('Electron consumes the same packed UI in a sandboxed document with native modal scope', async ({
   consumerDirectory,
   siteUrl,
+  resultsDirectory,
 }) => {
   const input = await readFile(join(packageRoot, 'tests/fixtures/electron/main.ts'), 'utf8')
   const script = join(consumerDirectory, 'electron-main.js')
@@ -37,7 +38,7 @@ test('Electron consumes the same packed UI in a sandboxed document with native m
   onTestFinished(() => application.close())
   const page = await application.firstWindow()
   await writeFile(
-    join(packageRoot, 'test-results/consumers/electron-environment.json'),
+    join(resultsDirectory, 'electron-environment.json'),
     JSON.stringify(
       await application.evaluate(() => ({
         versions: process.versions,

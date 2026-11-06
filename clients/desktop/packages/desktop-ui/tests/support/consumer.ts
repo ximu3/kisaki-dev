@@ -1,6 +1,6 @@
 /** @fileoverview Installs actual UI and appearance tarballs outside the repository and serves their consumer. */
 
-import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { join, resolve } from 'node:path'
@@ -15,6 +15,11 @@ export const packageRoot = resolve(import.meta.dirname, '../..')
 
 /** A file-scoped isolated installation; every browser and server closes before the directory is removed. */
 export const consumerTest = test
+  .extend('resultsDirectory', { scope: 'file' }, async () => {
+    const directory = join(packageRoot, 'test-results/consumers')
+    await mkdir(directory, { recursive: true })
+    return directory
+  })
   .extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-ui-consumer-'))
     onCleanup(() => rm(directory, { recursive: true, force: true }))
@@ -58,13 +63,13 @@ export const consumerTest = test
 
     return server.resolvedUrls!.local[0]!
   })
-  .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
+  .extend('browser', { scope: 'file' }, async ({ resultsDirectory }, { onCleanup }) => {
     const browser = await chromium.launch()
     onCleanup(() => browser.close())
 
     const archive = await readFile(join(packageRoot, 'out/package/package.tgz'))
     await writeFile(
-      join(packageRoot, 'test-results/consumers/environment.json'),
+      join(resultsDirectory, 'environment.json'),
       JSON.stringify(
         {
           node: process.version,
