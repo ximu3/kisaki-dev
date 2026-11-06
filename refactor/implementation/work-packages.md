@@ -152,9 +152,9 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 依赖：W01 与 Solid 1.9 工程基线。
 
-交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单、键盘与焦点、浮层、图表、Markdown、拖拽、样式及资源寿命。按组件家族提供子路径，默认样式组合视觉基础，普通 Solid 消费者可直接使用。
+交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单与反馈、键盘与焦点、浮层、Toast、图表、Markdown、拖拽、样式及资源寿命。通用控件自行实现，专用能力按既定工具接入；按组件家族提供子路径和 CSS Modules 构建后的普通 CSS，默认样式组合视觉基础。
 
-验收：浏览器行为、完整视觉状态、声明、无 Tailwind 消费及独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的公共组件断言。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
+验收：浏览器行为、完整视觉状态、声明、无 Tailwind 与宿主工具类消费、独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的[公共组件与反馈断言](../verification/scenarios/ui.md#ui-package)。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
 
 依据：[UI 包](../design/ui/package.md) · [交互与可访问性](../design/ui/components.md) · [拖拽与虚拟化](../design/ui/virtualization.md)。
 

@@ -17,7 +17,9 @@ export interface MenuItemPresentation {
   readonly disabled?: boolean
 }
 
-export type MenuFeedback = void | ToastMessage
+/** Menu callbacks return completed operation feedback, with no handle for loading updates. */
+export type MenuFeedback =
+  void | (ToastMessage & { readonly type: Exclude<ToastMessage['type'], 'loading'> })
 
 export type MenuItem =
   | { readonly type: 'separator' }

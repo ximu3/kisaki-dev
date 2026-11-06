@@ -12,7 +12,7 @@ document.root 指定扩展包内资源根，entry 指定该根中的 HTML。宿�
 
 Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用 Electron webview 标签，也不向 SDK 公开容器类，见 [Electron Web Embeds](https://www.electronjs.org/docs/latest/tutorial/web-embeds)。主应用、官方扩展和模板共用 Solid 与基础 UI；第三方可以使用 Vue、React 或原生前端。SDK 和 appearance 不依赖 Solid。
 
-官方代码表单共用字段组、说明、间距、Toast 和焦点规则，内容层次按实际业务组织。前端可以复用纯校验，Node 在保存时仍需验证。业务结果只由发起界面反馈一次，扩展不能自行推断全局任务或数据库结论。隔离、布局、键盘、浮层、外观和释放都需要在真实环境中验收。
+官方代码表单共用字段组、说明、间距、[固定反馈区与字段定位](../ui/components.md#validation)，内容层次按实际业务组织。前端可以复用纯校验，Node 在保存时仍需验证。业务结果只由发起界面反馈一次，扩展不能自行推断全局任务或数据库结论。隔离、布局、键盘、浮层、外观和释放都需要在真实环境中验收。
 
 <a id="isolation"></a>
 
@@ -24,7 +24,9 @@ Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用
 
 承载窗口启用 sandbox、contextIsolation 和 webSecurity，关闭 nodeIntegration、nodeIntegrationInSubFrames。AppImage 在受限系统上的实际进程隔离遵守[启动兼容政策](../engineering/build.md#appimage-compatibility)，不能仅凭窗口的 sandbox 配置宣称进程沙箱始终存在。原生 preload 只在主 frame 暴露本窗口所需的有限桥接；主进程接入仍校验实际 senderFrame，不能仅凭同一 webContents 接受子 frame。Webview 只取得自己的 SDK MessagePort，不取得 Electron、Node、原生窗口客户端或其他视图的桥接。
 
-iframe 的 sandbox 仅包含 allow-scripts 与 allow-same-origin，不开放弹窗、下载、表单提交、顶层导航或模态权限。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
+iframe 的 sandbox 仅包含 allow-scripts、allow-same-origin 与 allow-forms，保留弹窗、下载、顶层导航和浏览器模态权限的限制。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
+
+allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
 
 <a id="csp"></a>
 
@@ -222,14 +224,18 @@ radio.group 只在同一贡献的同级 items 中有效，不跨子菜单或扩�
 
 getItems(menuContext, { signal }) 与叶子回调的 execution 分开，各有自己的 signal；关闭菜单不取消已经选中的操作。菜单动作调用会话打开或游戏窗口操作时，按本次意图显式传入 interaction，不从菜单来源隐式继承策略。
 
-叶子回调可以同步或异步返回 void，或至多一条 ToastMessage。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
+叶子回调可以同步或异步返回 MenuFeedback，完成后至多交付一条结果提示。结果类型为 info、success、warning 或 error。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
 
 ```ts
 interface ToastMessage {
-  type: 'info' | 'success' | 'warning' | 'error'
+  type: 'loading' | 'info' | 'success' | 'warning' | 'error'
   title: LocalizedText
   description?: LocalizedText
 }
+
+type MenuFeedback =
+  | void
+  | (ToastMessage & { type: Exclude<ToastMessage['type'], 'loading'> })
 ```
 
 提示和错误由发起窗口按业务结果显示，取消作为正常结束处理。Node 菜单回调通过所属业务返回结果，前端负责本次反馈。明确交给后台负责的操作由后台通知完成，各渠道共用同一反馈归属；原窗口失效时按既定归属结束提示。复杂进度使用已有任务或业务界面。
@@ -238,9 +244,11 @@ interface ToastMessage {
 
 ## Webview 局部提示
 
-ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。默认持续时间与应用一致，persistent 提示保留到用户关闭或 owner 结束。消息不包含业务回调、进度、任意组件或任务结果。
+ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。loading 不启动自动关闭计时，更新为普通结果后从转换时开始计时；明确设置 persistent 的提示跨状态保留到用户关闭、主动 dismiss 或 owner 结束。默认展示时间与应用一致，完整转换遵守[Toast 状态与寿命](../ui/package.md#toast)。消息不包含业务回调、进度、任意组件或任务结果。
 
-表单校验维持一条 persistent 提示并更新内容，字段错误状态独立保存。用户关闭提示不会清除字段错误，普通输入也不会让已经关闭的提示重新出现；后续主动提交可以再次提示。表单的短期 owner 结束时 dismiss，页面释放时清理本页全部提示。行为遵循共同 [Toast 规则](../ui/components.md#validation)，菜单返回的提示不自定义生命周期。
+update 完整替换仍存活的提示内容，用户关闭、计时结束或 owner 释放后不重新弹出；dismiss 只结束呈现，不取消或完成业务操作。短期业务 owner 结束时 dismiss，视图释放时宿主清理该视图的全部提示与句柄。宿主按真实视图和模态容器提供展示区域，菜单返回的结果提示使用所属窗口的共同持续方式。
+
+表单错误由页面自己的[固定反馈区](../ui/components.md#validation)呈现。Webview 内部的 Solid Dialog 可以直接组合本地 desktop-ui Toast，局部上下文与动作回调留在该文档；SDK 提示只传递上述框架无关消息。每次业务结果沿[唯一反馈归属](../ui/components.md#notifications)选择实际负责的入口。
 
 <a id="closing"></a>
 

@@ -211,3 +211,5 @@ A03、A04 和 A27 按[日期验证分工](../../design/domains/values.md#date-op
 A23 验证[公共包的组织与消费](../../design/engineering/workspace.md#package-organization)：纯 Node 扩展从 SDK 获得完整作者类型与实际上下文，框架无关 Webview 使用对应接入，Solid Webview 按需增加 desktop-ui 和 Solid。三种路径都不读取应用或其他包的私有源码；纯定义入口不初始化 Node、DOM 或框架运行环境。CLI 的程序化入口与命令复用同一工作流，生成模板实际随制品提供，分发仓库维护可以只消费已经构建的安装包。
 
 A20、A23 和 A29 验证[样式交付](../../design/engineering/workspace.md#visual-packages)与[窗口入口](../../design/engineering/layout.md#renderer-styles)：无 Tailwind 的消费者可以使用 desktop-appearance 的普通能力与 desktop-ui 的成品 CSS，选择映射的项目可以编译自己的语义工具类；两者都不读取包内源码。四个窗口分别加载自身入口和共同基础，在不加载主窗口 CSS 时仍完整呈现。组件基础规则不无条件重置消费文档，阅读正文保持自身排版；主题与字体改变通过各文档的正常接入生效，不需要重新构建样式或维护四份主题值。
+
+UI 多入口构建的 CSS Modules 类名映射与成品 CSS 一致，消费者无需处理 .module.css 源文件。按[共同层叠顺序](../../design/ui/package.md#styles)分别交换 UI 样式与宿主工具类的加载顺序，确认普通外观覆盖符合合同；无 Tailwind 时用普通 CSS 完成相同定制。基础组件的导入链不加载编辑器与图表，样式副作用、导出路径及资源地址在实际 tarball 中保持有效。
