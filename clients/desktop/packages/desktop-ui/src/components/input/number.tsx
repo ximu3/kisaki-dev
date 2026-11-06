@@ -1,10 +1,11 @@
 /** @fileoverview Native numeric editing with themed step controls. */
 
-import { createEffect, createSignal, splitProps } from 'solid-js'
+import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef, callHandler } from '../../internal/dom'
+import { assignRef } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { Icon, mdiChevronDown, mdiChevronUp } from '../../internal/icons'
+import { createValue } from '../../internal/state'
 import { NativeInput } from './native'
 import type { NativeInputProps } from './native'
 import styles from './styles.module.css'
@@ -17,15 +18,21 @@ export interface NumberInputProps extends Omit<NativeInputProps, 'type' | 'step'
 }
 
 export function NumberInput(props: NumberInputProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['increaseLabel', 'decreaseLabel', 'ref', 'onInput'])
+  const [local, rest] = splitProps(props, [
+    'value',
+    'defaultValue',
+    'onValueChange',
+    'increaseLabel',
+    'decreaseLabel',
+    'ref',
+  ])
   const field = fieldAttributes()
-  const [text, setText] = createSignal(props.value ?? props.defaultValue ?? '')
+  const [value, change] = createValue(
+    () => local.value,
+    () => local.defaultValue ?? '',
+    (next) => local.onValueChange?.(next),
+  )
   let input!: HTMLInputElement
-  createEffect(() => {
-    if (props.value !== undefined) {
-      setText(props.value)
-    }
-  })
 
   const step = (direction: 1 | -1) => {
     if (direction === 1) {
@@ -42,13 +49,12 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
       <NativeInput
         {...rest}
         type="number"
+        value={value()}
+        defaultValue={local.defaultValue}
+        onValueChange={change}
         ref={(node) => {
           input = node
           assignRef(local.ref, node)
-        }}
-        onInput={(event) => {
-          setText(event.currentTarget.value)
-          callHandler(local.onInput, event)
         }}
       />
       <span class={styles.steps}>
@@ -56,7 +62,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           type="button"
           tabIndex={-1}
           aria-label={local.increaseLabel}
-          disabled={blocked() || (text() !== '' && Number(text()) >= Number(props.max))}
+          disabled={blocked() || (value() !== '' && Number(value()) >= Number(props.max))}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(1)}
         >
@@ -66,7 +72,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           type="button"
           tabIndex={-1}
           aria-label={local.decreaseLabel}
-          disabled={blocked() || (text() !== '' && Number(text()) <= Number(props.min))}
+          disabled={blocked() || (value() !== '' && Number(value()) <= Number(props.min))}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(-1)}
         >

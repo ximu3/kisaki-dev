@@ -153,7 +153,11 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
     ['date', '2024-02-29'],
     ['color', '#33669980'],
   ])
+  await page.getByRole('spinbutton', { name: 'Quantity' }).fill('5')
+  await browserExpect(page.getByRole('button', { name: 'Increase', exact: true })).toBeDisabled()
   await page.getByRole('button', { name: 'Reset special fields' }).click()
+  await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('2')
+  await browserExpect(page.getByRole('button', { name: 'Increase', exact: true })).toBeEnabled()
   await browserExpect(date).toHaveValue('2024-02-28')
   await browserExpect(color).toHaveValue('#336699')
 })
