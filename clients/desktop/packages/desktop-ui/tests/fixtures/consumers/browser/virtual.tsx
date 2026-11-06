@@ -1,6 +1,6 @@
 /** @fileoverview A large independently virtualized collection exercises stable selection identity. */
 
-import { createSignal, For, onCleanup } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { createVirtualizer } from '@tanstack/solid-virtual'
 import { MultiSelect } from '@kisaki3/desktop-ui/select'
@@ -38,6 +38,10 @@ export function VirtualChoices(): JSX.Element {
               return state.open()
             },
           })
+          createEffect(() => {
+            virtualizer.getVirtualItems()
+            virtualizer.measureElement(null)
+          })
           scrollTo = (value) =>
             queueMicrotask(() => {
               if (state.open()) {
@@ -53,8 +57,10 @@ export function VirtualChoices(): JSX.Element {
               <For each={virtualizer.getVirtualItems()}>
                 {(row) => (
                   <div
-                    ref={(node) => virtualizer.measureElement(node)}
-                    data-index={row.index}
+                    ref={(node) => {
+                      node.dataset.index = String(row.index)
+                      virtualizer.measureElement(node)
+                    }}
                     style={{
                       position: 'absolute',
                       width: '100%',
