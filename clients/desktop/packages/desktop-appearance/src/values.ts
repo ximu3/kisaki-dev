@@ -11,7 +11,6 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   radius: '<length [0,∞]>',
   // An explicit color keeps each layer independent of the element's currentColor.
   shadow: `none | [ [${colorSyntax}] && <length>{2,4} && inset? ]#`,
-  percentage: '<percentage [0,100]>',
   'font-family': '[ <family-name> | <generic-family> ]#',
   'font-size': '<length [0,∞]>',
   'font-weight': 'normal | bold | <number [1,1000]>',
@@ -115,7 +114,7 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
 }
 
 /**
- * Parse exactly one complete 45-token branch into a new immutable snapshot.
+ * Parse exactly one complete token branch into a new immutable snapshot.
  * Missing or extra keys and invalid values throw TypeError; no defaults are supplied.
  * The input is not modified, and no partially parsed result escapes on failure.
  */

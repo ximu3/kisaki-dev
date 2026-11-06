@@ -18,7 +18,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 ## 基础 token 与派生样式
 
-AppearanceTokens 使用固定、扁平的 CSS 属性键，共 45 项：39 项配色与表面效果值、2 个字体栈和 4 项文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
+AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配色、圆角、阴影、字体栈和文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
 
 ```json
 {
@@ -39,22 +39,21 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 45 项：39 项配
 | 操作与交互     | --primary、--primary-foreground、--secondary、--secondary-foreground、--muted、--muted-foreground、--accent、--accent-foreground、--input、--input-foreground   |
 | 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring、--chart |
 | 圆角与阴影     | --radius、--shadow-raised、--shadow-overlay、--shadow-modal                                                                                                     |
-| 光效与材质     | --pane-alpha、--light-1、--light-2、--light-3、--light-strength、--grain-opacity                                                                                |
 | 字体与文字基准 | --font-sans、--font-mono、--text-base-size、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
 
-表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。primary、accent 和 ring 分别表示主要操作、强调与焦点，各 foreground 对应自己的表面。三种阴影分别用于 raised、overlay 和 modal，光效及材质项也保留各自含义。
+表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。primary、accent 和 ring 分别表示主要操作、强调与焦点，各 foreground 对应自己的表面。三种阴影分别用于 raised、overlay 和 modal。
 
 字体槽保存稳定选择或资源引用，在运行时转换成 CSS 字体栈。AppearanceTokens 使用固定键目录，其他 token 分别按颜色、阴影、长度、百分比和数值等文法校验，保留 OKLCH、透明度、normal 及多层阴影等合法表达。包路径与临时 URL 留在资源读取接入中。
 
 主题保存完整、可直接编辑的视觉值，不保存计算表达式或任意上下文引用。颜色接受十六进制、具名颜色、transparent，以及 rgb／rgba、hsl／hsla、hwb、lab、lch、oklab、oklch 和预定义色彩空间的 color 表示；颜色分量仍遵循 CSS 的范围与裁剪语义。calc、min、max、clamp、color-mix、相对颜色，以及 var、env、attr、currentColor、系统颜色和级联关键字不属于主题值。作者可以在代码中计算后提交完整值，公共样式继续使用 CSS 计算完成共同派生。这一边界让编辑器直接修改字段值，无需额外管理引用、公式、循环和上下文失效。
 
-圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。pane-alpha、light-strength 和 grain-opacity 为 0–100% 的百分比。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
+圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
 
 纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。
 
-纯视觉包拥有词表、默认视觉值和 CSS 对应关系，桌面合同在此基础上组合字体选择。默认主题、编辑器、本体页面和 Webview 使用同一套词表，不为扩展另设缩减版本。背景能力只包括配色，不提供用户背景图片或 motion 配置，程序光效和固定纹理也不会扩大这一范围。
+纯视觉包拥有词表、默认视觉值和 CSS 对应关系，桌面合同在此基础上组合字体选择。默认主题、编辑器、本体页面和 Webview 使用同一套词表，不为扩展另设缩减版本。背景能力只包括配色，不提供用户背景图片或 motion 配置。
 
-Tailwind 的 `--color-*`、radius-sm/md/lg/xl、字号阶梯和组件尺寸由共同样式派生。`--tw-*` 和 `--vis-*` 不持久保存，每个源值只提供一个编辑入口。局部封面光色只存在于页面运行状态。默认主题的色轴和亮度安排不强制约束其他主题。焦点统一使用 ring，radius 为 0 时，所有派生值仍必须合法。
+基底与表面直接使用对应主题配色，Tailwind 的 `--color-*` 直接引用对应的配色 token。radius-sm/md/lg/xl、字号阶梯和组件尺寸由共同样式派生。`--tw-*` 和 `--vis-*` 不持久保存，每个源值只提供一个编辑入口。默认主题的色轴和亮度安排不强制约束其他主题。焦点统一使用 ring，radius 为 0 时，所有派生值仍必须合法。
 
 公共 appearance 的普通 CSS 与可选 Tailwind 映射遵守[视觉包交付](../engineering/workspace.md#visual-packages)，本体各文档使用[各自的样式入口](../engineering/layout.md#renderer-styles)。UI 与应用通过同一组正式变量取得当前外观，映射、组件样式和窗口基础样式不各自保存主题副本。
 

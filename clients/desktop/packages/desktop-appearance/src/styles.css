@@ -2,9 +2,9 @@
 @layer theme {
   :root,
   [data-color-scheme] {
-    --color-background: color-mix(in oklch, var(--background) var(--pane-alpha), transparent);
+    --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --color-surface: color-mix(in oklch, var(--surface) var(--pane-alpha), transparent);
+    --color-surface: var(--surface);
     --color-surface-foreground: var(--surface-foreground);
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
@@ -33,9 +33,6 @@
     --color-border: var(--border);
     --color-ring: var(--ring);
     --color-chart: var(--chart);
-    --color-light-1: var(--light-1);
-    --color-light-2: var(--light-2);
-    --color-light-3: var(--light-3);
 
     /* Keep the existing radius ladder valid at a zero base radius. */
     --radius-sm: max(0px, calc(var(--radius) - 4px));
