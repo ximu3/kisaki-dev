@@ -136,6 +136,8 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
 
   await page.locator('html').evaluate((node) => {
     node.style.setProperty('--primary', 'rgb(80 120 160)')
+    node.style.setProperty('--chrome', 'rgb(30 40 50)')
+    node.style.setProperty('--chrome-foreground', 'rgb(230 240 250)')
     node.style.setProperty('--font-sans', 'monospace')
     node.style.setProperty('--radius', '0px')
     node.style.setProperty('--interface-scale', '150')
@@ -161,6 +163,13 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   expect(
     await page.locator('#mapped').evaluate((node) => getComputedStyle(node).boxShadow),
   ).toContain('rgb(10, 20, 30) 1px 2px 3px')
+
+  expect(
+    await page.locator('#chrome').evaluate((node) => {
+      const style = getComputedStyle(node)
+      return { background: style.backgroundColor, foreground: style.color }
+    }),
+  ).toEqual({ background: 'rgb(30, 40, 50)', foreground: 'rgb(230, 240, 250)' })
 
   await page.screenshot({ path: join(packageRoot, 'test-results/consumers/appearance.png') })
 })

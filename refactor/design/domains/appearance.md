@@ -35,13 +35,17 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配
 
 | 用途           | 基础 token                                                                                                                                                      |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 基底与表面     | --background、--foreground、--surface、--surface-foreground、--popover、--popover-foreground、--dialog、--dialog-foreground                                     |
+| 界面区域       | --background、--foreground、--chrome、--chrome-foreground、--popover、--popover-foreground、--dialog、--dialog-foreground                                       |
 | 操作与交互     | --primary、--primary-foreground、--secondary、--secondary-foreground、--muted、--muted-foreground、--accent、--accent-foreground、--input、--input-foreground   |
 | 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring、--chart |
 | 圆角与阴影     | --radius、--shadow-raised、--shadow-overlay、--shadow-modal                                                                                                     |
 | 字体与文字基准 | --font-sans、--font-mono、--text-base-size、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
 
-表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。primary、accent 和 ring 分别表示主要操作、强调与焦点，各 foreground 对应自己的表面。三种阴影分别用于 raised、overlay 和 modal。
+表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。
+
+background 用于主内容底色；chrome 用于应用框架、导航与控制区域，包括标题栏、侧栏、页面控制带和阅读器工具栏；popover 与 dialog 分别用于浮层和模态对话框。各 foreground 用于对应背景上的文字和图标。
+
+primary、accent 和 ring 分别表示主要操作、强调与焦点。三种阴影分别用于 raised、overlay 和 modal。
 
 字体槽保存稳定选择或资源引用，在运行时转换成 CSS 字体栈。AppearanceTokens 使用固定键目录，其他 token 分别按颜色、阴影、长度、百分比和数值等文法校验，保留 OKLCH、透明度、normal 及多层阴影等合法表达。包路径与临时 URL 留在资源读取接入中。
 
@@ -53,7 +57,7 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 39 项，覆盖配
 
 纯视觉包拥有词表、默认视觉值和 CSS 对应关系，桌面合同在此基础上组合字体选择。默认主题、编辑器、本体页面和 Webview 使用同一套词表，不为扩展另设缩减版本。背景能力只包括配色，不提供用户背景图片或 motion 配置。
 
-基底与表面直接使用对应主题配色，Tailwind 的 `--color-*` 直接引用对应的配色 token。radius-sm/md/lg/xl、字号阶梯和组件尺寸由共同样式派生。`--tw-*` 和 `--vis-*` 不持久保存，每个源值只提供一个编辑入口。默认主题的色轴和亮度安排不强制约束其他主题。焦点统一使用 ring，radius 为 0 时，所有派生值仍必须合法。
+各区域直接使用所属主题配色，Tailwind 的 `--color-*` 直接引用对应的配色 token。radius-sm/md/lg/xl、字号阶梯和组件尺寸由共同样式派生。`--tw-*` 和 `--vis-*` 不持久保存，每个源值只提供一个编辑入口。默认主题的色轴和亮度安排不强制约束其他主题。焦点统一使用 ring，radius 为 0 时，所有派生值仍必须合法。
 
 公共 appearance 的普通 CSS 与可选 Tailwind 映射遵守[视觉包交付](../engineering/workspace.md#visual-packages)，本体各文档使用[各自的样式入口](../engineering/layout.md#renderer-styles)。UI 与应用通过同一组正式变量取得当前外观，映射、组件样式和窗口基础样式不各自保存主题副本。
 

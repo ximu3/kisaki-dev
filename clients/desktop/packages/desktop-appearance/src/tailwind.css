@@ -2,8 +2,8 @@
 @theme inline reference {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
-  --color-surface: var(--color-surface);
-  --color-surface-foreground: var(--color-surface-foreground);
+  --color-chrome: var(--color-chrome);
+  --color-chrome-foreground: var(--color-chrome-foreground);
   --color-popover: var(--color-popover);
   --color-popover-foreground: var(--color-popover-foreground);
   --color-dialog: var(--color-dialog);
