@@ -9,29 +9,30 @@ import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata
 import { parseNativeViewTarget } from './navigation'
 
 export interface ToastMessage {
-  readonly type: 'info' | 'success' | 'warning' | 'error'
+  /** Loading represents an ongoing operation and suspends automatic dismissal. */
+  readonly type: 'loading' | 'info' | 'success' | 'warning' | 'error'
   readonly title: LocalizedText
   readonly description?: LocalizedText
 }
 
 export interface ToastHandle {
   /**
-   * Replace this prompt's message without changing underlying validation state or reopening a
-   * dismissed prompt.
+   * Replace a live prompt's complete message without reopening an ended prompt. Changing from
+   * loading to a result starts the result's display duration unless persistent was requested.
    */
   update(message: ToastMessage): void
 
   /**
-   * Close this owned prompt without declaring the business operation or validation problem
-   * resolved.
+   * Close this owned prompt without canceling or resolving the underlying business operation.
    */
   dismiss(): void
 }
 
 export interface ToastApi {
   /**
-   * Show feedback owned by the actual view; persistent prompts remain until dismissal or owner
-   * release, with no fallback to system notifications.
+   * Show feedback owned by the actual view. Loading prompts do not time out; persistent prompts
+   * remain across message updates until dismissal or owner release. Neither falls back to system
+   * notifications.
    */
   show(message: ToastMessage, options?: { readonly persistent?: boolean }): ToastHandle
 }
@@ -61,7 +62,7 @@ export function parseToastMessage(input: unknown, defaultLocale: string): ToastM
   )
   return parseValue(
     v.strictObject({
-      type: v.picklist(['info', 'success', 'warning', 'error']),
+      type: v.picklist(['loading', 'info', 'success', 'warning', 'error']),
       title: localized,
       description: v.exactOptional(localized),
     }),

@@ -224,14 +224,18 @@ radio.group 只在同一贡献的同级 items 中有效，不跨子菜单或扩�
 
 getItems(menuContext, { signal }) 与叶子回调的 execution 分开，各有自己的 signal；关闭菜单不取消已经选中的操作。菜单动作调用会话打开或游戏窗口操作时，按本次意图显式传入 interaction，不从菜单来源隐式继承策略。
 
-叶子回调可以同步或异步返回 void，或至多一条 ToastMessage。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
+叶子回调可以同步或异步返回 MenuFeedback，完成后至多交付一条结果提示。结果类型为 info、success、warning 或 error。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
 
 ```ts
 interface ToastMessage {
-  type: 'info' | 'success' | 'warning' | 'error'
+  type: 'loading' | 'info' | 'success' | 'warning' | 'error'
   title: LocalizedText
   description?: LocalizedText
 }
+
+type MenuFeedback =
+  | void
+  | (ToastMessage & { type: Exclude<ToastMessage['type'], 'loading'> })
 ```
 
 提示和错误由发起窗口按业务结果显示，取消作为正常结束处理。Node 菜单回调通过所属业务返回结果，前端负责本次反馈。明确交给后台负责的操作由后台通知完成，各渠道共用同一反馈归属；原窗口失效时按既定归属结束提示。复杂进度使用已有任务或业务界面。
@@ -240,9 +244,9 @@ interface ToastMessage {
 
 ## Webview 局部提示
 
-ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。默认持续时间与应用一致，persistent 提示保留到用户关闭或 owner 结束。消息不包含业务回调、进度、任意组件或任务结果。
+ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。loading 不启动自动关闭计时，更新为普通结果后从转换时开始计时；明确设置 persistent 的提示跨状态保留到用户关闭、主动 dismiss 或 owner 结束。默认展示时间与应用一致，完整转换遵守[Toast 状态与寿命](../ui/package.md#toast)。消息不包含业务回调、进度、任意组件或任务结果。
 
-update 只修改仍存活的提示，用户关闭、计时结束或 owner 释放后不重新弹出；dismiss 只结束呈现，不改变业务结果。短期业务 owner 结束时 dismiss，视图释放时宿主清理该视图的全部提示与句柄。宿主按真实视图和模态容器提供展示区域，行为遵循[共同 Toast 合同](../ui/package.md#toast)，菜单返回的提示使用所属窗口的共同持续方式。
+update 完整替换仍存活的提示内容，用户关闭、计时结束或 owner 释放后不重新弹出；dismiss 只结束呈现，不取消或完成业务操作。短期业务 owner 结束时 dismiss，视图释放时宿主清理该视图的全部提示与句柄。宿主按真实视图和模态容器提供展示区域，菜单返回的结果提示使用所属窗口的共同持续方式。
 
 表单错误由页面自己的[固定反馈区](../ui/components.md#validation)呈现。Webview 内部的 Solid Dialog 可以直接组合本地 desktop-ui Toast，局部上下文与动作回调留在该文档；SDK 提示只传递上述框架无关消息。每次业务结果沿[唯一反馈归属](../ui/components.md#notifications)选择实际负责的入口。
 
