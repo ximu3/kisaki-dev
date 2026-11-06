@@ -11,6 +11,7 @@ import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
 import { assignRef, classes } from '../../internal/dom'
 import styles from './styles.module.css'
+import { editorTheme } from './theme'
 
 const highlighting = HighlightStyle.define([
   { tag: tags.heading, color: 'var(--primary)', fontWeight: '600' },
@@ -74,6 +75,7 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
       state: EditorState.create({
         doc: local.value ?? local.defaultValue ?? '',
         extensions: [
+          editorTheme,
           lineNumbers(),
           history(),
           keymap.of([...defaultKeymap, ...historyKeymap]),

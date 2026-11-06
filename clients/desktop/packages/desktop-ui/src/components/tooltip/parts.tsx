@@ -1,29 +1,17 @@
-/** @fileoverview Hoverable, keyboard-readable tooltips with a local timer lifetime. */
+/** @fileoverview Hoverable, keyboard-readable tooltips with a shared reading lifetime. */
 
-import {
-  createContext,
-  createSignal,
-  createUniqueId,
-  onCleanup,
-  splitProps,
-  useContext,
-} from 'solid-js'
-import type { Accessor, JSX, ParentProps } from 'solid-js'
+import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
+import type { JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createPopup } from '../../internal/popup'
+import { createTooltip } from '../../internal/tooltip'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import styles from './styles.module.css'
 
-interface TooltipState {
+interface TooltipState extends ReturnType<typeof createTooltip> {
   id: string
   anchor: HTMLElement | undefined
-
-  open: Accessor<boolean>
-  setOpen: (open: boolean) => void
-
-  enter: (immediate?: boolean) => void
-  leave: () => void
 }
 
 const TooltipContext = createContext<TooltipState>()
@@ -33,29 +21,12 @@ export interface TooltipProps extends ParentProps {
   delayMs?: number
 }
 
-/** Own one tooltip and its delay. Hovering the content continues the same reading interaction. */
+/** Trigger and content share hover and focus state, including Escape dismissal. */
 export function Tooltip(props: TooltipProps): JSX.Element {
-  const [open, setOpen] = createSignal(false)
-  let timer: ReturnType<typeof setTimeout> | undefined
-  onCleanup(() => clearTimeout(timer))
-
-  const enter = (immediate = false) => {
-    clearTimeout(timer)
-    if (immediate) {
-      setOpen(true)
-    } else {
-      timer = setTimeout(() => setOpen(true), props.delayMs ?? 400)
-    }
-  }
-  const leave = () => {
-    clearTimeout(timer)
-    timer = setTimeout(() => setOpen(false), 120)
-  }
+  const state = createTooltip(() => props.delayMs ?? 400)
 
   return (
-    <TooltipContext.Provider
-      value={{ id: createUniqueId(), open, setOpen, enter, leave, anchor: undefined }}
-    >
+    <TooltipContext.Provider value={{ ...state, id: createUniqueId(), anchor: undefined }}>
       {props.children}
     </TooltipContext.Provider>
   )
@@ -82,19 +53,19 @@ export function TooltipTrigger(props: ButtonProps): JSX.Element {
       }}
       aria-describedby={[local['aria-describedby'], state.id].filter(Boolean).join(' ')}
       onPointerEnter={(event) => {
-        state.enter()
+        state.hover('trigger', true)
         callHandler(local.onPointerEnter, event)
       }}
       onPointerLeave={(event) => {
-        state.leave()
+        state.hover('trigger', false)
         callHandler(local.onPointerLeave, event)
       }}
       onFocus={(event) => {
-        state.enter(true)
+        state.focus(true)
         callHandler(local.onFocus, event)
       }}
       onBlur={(event) => {
-        state.leave()
+        state.focus(false)
         callHandler(local.onBlur, event)
       }}
     />
@@ -111,7 +82,11 @@ export function TooltipContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.E
     element: () => content,
     anchor: () => state.anchor!,
     open: state.open,
-    change: state.setOpen,
+    change: (open) => {
+      if (!open) {
+        state.dismiss()
+      }
+    },
     restoreFocus: false,
   })
 
@@ -127,18 +102,17 @@ export function TooltipContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.E
       role="tooltip"
       class={classes(styles.root, local.class)}
       onPointerEnter={(event) => {
-        state.enter(true)
+        state.hover('content', true)
         callHandler(local.onPointerEnter, event)
       }}
       onPointerLeave={(event) => {
-        state.leave()
+        state.hover('content', false)
         callHandler(local.onPointerLeave, event)
       }}
     />
   )
 }
 
-/** Resolve the tooltip's local timer and presentation owner. */
 function useTooltip(): TooltipState {
   const state = useContext(TooltipContext)
   if (!state) {

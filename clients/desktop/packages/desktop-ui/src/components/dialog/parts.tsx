@@ -14,6 +14,7 @@ import {
 import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
+import { registerModal } from '../../internal/modal-host'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import styles from './styles.module.css'
@@ -100,17 +101,25 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   ])
 
   let node!: HTMLDialogElement
+  let releaseModal: (() => void) | undefined
+  const release = () => {
+    releaseModal?.()
+    releaseModal = undefined
+  }
   onMount(() => {
     dialog.node = node
     createEffect(() => {
       if (dialog.open() && !node.open) {
         node.showModal()
+        releaseModal = registerModal(node)
       } else if (!dialog.open() && node.open) {
+        release()
         node.close()
       }
     })
     onCleanup(() => {
       dialog.node = undefined
+      release()
       if (node.open) {
         node.close()
       }
@@ -141,6 +150,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
       }}
       onClose={(event) => {
         if (!node.open) {
+          release()
           dialog.change(false)
         }
         callHandler(local.onClose, event)
@@ -168,6 +178,13 @@ export function DialogClose(props: ButtonProps): JSX.Element {
       }}
     />
   )
+}
+
+/** Fixed heading area, separated from the scrollable body in ordinary dialogs. */
+export function DialogHeader(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
+  const [local, rest] = splitProps(props, ['class'])
+
+  return <div {...rest} class={classes(styles.header, local.class)} />
 }
 
 /** Accessible modal heading, linked by DialogContent. */

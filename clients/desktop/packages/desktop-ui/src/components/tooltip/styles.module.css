@@ -5,11 +5,11 @@
     position: fixed;
     inset: auto;
     margin: 0;
-    max-width: min(24rem, calc(100vw - 1rem));
-    max-height: calc(100dvh - 1rem);
+    max-width: min(24rem, var(--popup-available-width, calc(100vw - 1rem)));
+    max-height: var(--popup-available-height, calc(100dvh - 1rem));
     overflow: auto;
     padding: 0.375rem 0.5rem;
-    border: 1px solid var(--border);
+    border: 0;
     border-radius: var(--radius-md);
     background: var(--popover);
     color: var(--popover-foreground);

@@ -1,11 +1,11 @@
-/** @fileoverview Public owner-bound toast API and local presentation region. */
+/** @fileoverview Public window-level notification API and its single presentation host. */
 
 export {
-  useToast,
+  toast,
   type ToastApi,
   type ToastHandle,
   type ToastMessage,
   type ToastOptions,
   type ToastType,
 } from './controller'
-export { ToastProvider, type ToastProviderProps } from './region'
+export { Toaster, type ToasterProps } from './region'

@@ -5,6 +5,7 @@ import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../internal/dom'
 import { createValue, onFormReset } from '../../internal/state'
 import styles from './styles.module.css'
+import segmented from '../../internal/segmented.module.css'
 
 /** Labels are caller-provided content; values are stable native form values. */
 export interface SegmentOption {
@@ -67,7 +68,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
         assignRef(local.ref, node)
       }}
       aria-label={local.label}
-      class={classes(styles.root, local.class)}
+      class={classes(segmented.group, local.class)}
     >
       <For each={local.options}>
         {(option) => (
@@ -86,7 +87,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
                 }
               }}
             />
-            <span>{option.label}</span>
+            <span class={segmented.item}>{option.label}</span>
           </label>
         )}
       </For>

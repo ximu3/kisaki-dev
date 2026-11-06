@@ -7,6 +7,7 @@ import {
   dropTargetForElements,
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
+import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element'
 
 /** Create in a Solid owner. The accessor runs after DOM refs exist and replaces registration when its inputs change. */
 export function createDraggable(
@@ -15,7 +16,21 @@ export function createDraggable(
   createEffect(() => {
     const current = options()
     if (current) {
-      onCleanup(draggable(current))
+      const stop = draggable({
+        ...current,
+        onDragStart: (event) => {
+          current.element.dataset.uiDragging = ''
+          current.onDragStart?.(event)
+        },
+        onDrop: (event) => {
+          delete current.element.dataset.uiDragging
+          current.onDrop?.(event)
+        },
+      })
+      onCleanup(() => {
+        stop()
+        delete current.element.dataset.uiDragging
+      })
     }
   })
 }
@@ -40,6 +55,18 @@ export function createDragMonitor(
     const current = options()
     if (current) {
       onCleanup(monitorForElements(current))
+    }
+  })
+}
+
+/** The host supplies the scrolling viewport and drag eligibility; disposal stops registration. */
+export function createDragAutoScroll(
+  options: Accessor<Parameters<typeof autoScrollForElements>[0] | undefined>,
+): void {
+  createEffect(() => {
+    const current = options()
+    if (current) {
+      onCleanup(autoScrollForElements(current))
     }
   })
 }

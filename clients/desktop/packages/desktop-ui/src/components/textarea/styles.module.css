@@ -20,11 +20,14 @@
     color: var(--muted-foreground);
   }
   .root:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 1px;
+    outline: none;
+    border-color: var(--ring);
   }
   .root[aria-invalid='true'] {
     border-color: var(--destructive);
+  }
+  .root[aria-invalid='true']:focus-visible {
+    border-color: color-mix(in oklch, var(--destructive) 65%, var(--ring));
   }
   .root:disabled {
     opacity: 0.5;

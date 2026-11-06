@@ -12,7 +12,7 @@ import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { Progress } from '@kisaki3/desktop-ui/progress'
 import { Image } from '@kisaki3/desktop-ui/image'
 import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
-import { Input } from '@kisaki3/desktop-ui/input'
+import { Input, NumberInput, DateInput, ColorInput } from '@kisaki3/desktop-ui/input'
 import { Textarea } from '@kisaki3/desktop-ui/textarea'
 import { Checkbox } from '@kisaki3/desktop-ui/checkbox'
 import { Switch } from '@kisaki3/desktop-ui/switch'
@@ -47,6 +47,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
+  DialogHeader,
   DialogClose,
   DialogBody,
   DialogFooter,
@@ -67,9 +68,10 @@ import {
   MenuSeparator,
 } from '@kisaki3/desktop-ui/menu'
 import { Combobox } from '@kisaki3/desktop-ui/combobox'
-import { ToastProvider, useToast } from '@kisaki3/desktop-ui/toast'
+import { Toaster, toast } from '@kisaki3/desktop-ui/toast'
 import type { ToastHandle } from '@kisaki3/desktop-ui/toast'
 import type { FixtureApi } from './api.js'
+import { VirtualChoices } from './virtual.js'
 import '@kisaki3/desktop-ui/styles.css'
 import './page.css'
 
@@ -83,15 +85,13 @@ window.fixture = {
   showLoading: noop,
   updateToast: noop,
   dismissToast: noop,
-  lateToast: noop,
   rootToast: noop,
   setLongMessage: noop,
   dispose: noop,
 } satisfies FixtureApi
 
-/** Each operation captures this view's toast owner, including work that finishes after removal. */
+/** Window messages survive the originating component; ended handles remain inert. */
 function ToastOwner(): JSX.Element {
-  const toast = useToast()
   let handle: ToastHandle | undefined
 
   window.fixture.showLoading = (persistent) => {
@@ -111,10 +111,6 @@ function ToastOwner(): JSX.Element {
   }
   window.fixture.updateToast = () => handle?.update({ type: 'success', message: 'Sample ready' })
   window.fixture.dismissToast = () => handle?.dismiss()
-  window.fixture.lateToast = () => {
-    handle?.update({ type: 'error', message: 'Late update' })
-    toast.show({ type: 'info', message: 'Late creation' })
-  }
 
   return (
     <Button variant="secondary" onClick={() => window.fixture.showLoading(false)}>
@@ -133,6 +129,44 @@ function Controls(): JSX.Element {
   return (
     <section>
       <h2>Native controls</h2>
+      <VirtualChoices />
+      <form id="special-fields">
+        <NumberInput
+          aria-label="Quantity"
+          name="quantity"
+          defaultValue="2"
+          min="0"
+          max="5"
+          increaseLabel="Increase"
+          decreaseLabel="Decrease"
+        />
+        <DateInput
+          aria-label="Calendar date"
+          name="date"
+          defaultValue="2024-02-28"
+          min="2024-02-01"
+          max="2024-03-31"
+          locale="en-US"
+          calendarLabel="Choose date"
+          previousMonthLabel="Previous month"
+          nextMonthLabel="Next month"
+          invalidDateMessage="Enter a valid date in range."
+        />
+        <ColorInput
+          aria-label="Color value"
+          name="color"
+          defaultValue="#336699"
+          pickerLabel="Choose color"
+          hueLabel="Hue"
+          saturationLabel="Saturation"
+          brightnessLabel="Brightness"
+          alphaLabel="Alpha"
+          invalidColorMessage="Enter a CSS color."
+        />
+        <Button type="reset" variant="outline">
+          Reset special fields
+        </Button>
+      </form>
       <form
         id="controls"
         onSubmit={(event) => {
@@ -176,22 +210,33 @@ function Controls(): JSX.Element {
           </RadioGroup>
           <Field id="select">
             <FieldLabel>Choice</FieldLabel>
-            <Select name="choice" defaultValue="alpha" required>
-              <option value="">Choose</option>
-              <option value="alpha">Alpha</option>
-              <option value="disabled" disabled>
-                Unavailable
-              </option>
-              <option value="beta">Beta</option>
-            </Select>
+            <Select
+              name="choice"
+              defaultValue="alpha"
+              required
+              options={[
+                { value: '', label: 'Choose' },
+                { value: 'alpha', label: 'Alpha' },
+                { value: 'disabled', label: 'Unavailable', disabled: true },
+                { value: 'beta', label: 'Beta' },
+              ]}
+              emptyMessage="No choices"
+              invalidSelectionMessage="Choose an available option."
+            />
           </Field>
           <Field id="multi">
             <FieldLabel>Multiple choices</FieldLabel>
-            <MultiSelect name="multi" defaultValue={['a', 'c']}>
-              <option value="a">Amber</option>
-              <option value="b">Blue</option>
-              <option value="c">Coral</option>
-            </MultiSelect>
+            <MultiSelect
+              name="multi"
+              defaultValue={['a', 'c']}
+              options={[
+                { value: 'a', label: 'Amber' },
+                { value: 'b', label: 'Blue' },
+                { value: 'c', label: 'Coral' },
+              ]}
+              emptyMessage="No choices"
+              invalidSelectionMessage="Choose an available option."
+            />
           </Field>
           <Field id="level">
             <FieldLabel>Level</FieldLabel>
@@ -336,8 +381,6 @@ function Validation(): JSX.Element {
           activeFieldId={active()}
           summary={(count) => `${count} fields need attention`}
           onLocate={locate}
-          detailsLabel="Details"
-          locateLabel="Locate"
           onFocusIn={() => setActive(undefined)}
         />
         <Button type="submit">Save sample</Button>
@@ -395,62 +438,66 @@ function Interactions(): JSX.Element {
               }
             }}
           >
-            <ToastProvider regionLabel="Dialog notifications" closeLabel="Dismiss notification">
+            <DialogHeader>
               <DialogTitle>Edit sample</DialogTitle>
-              <DialogBody>
-                <Candidate />
-                <label>
-                  <Checkbox checked={block()} onCheckedChange={setBlock} />
-                  Block close
-                </label>
-                <Menu>
-                  <MenuTrigger variant="outline">Actions</MenuTrigger>
-                  <MenuContent aria-label="Actions">
-                    <MenuItem
-                      onSelect={() => {
-                        document.body.dataset.menu = 'first'
-                      }}
-                    >
-                      First action
-                    </MenuItem>
-                    <MenuItem disabled>Disabled action</MenuItem>
-                    <MenuCheckboxItem
-                      checked={checked()}
-                      onCheckedChange={setChecked}
-                      closeOnSelect={false}
-                    >
-                      Pinned
-                    </MenuCheckboxItem>
-                    <MenuSeparator />
-                    <MenuGroup aria-label="Mode">
-                      <MenuRadioItem value="one" selectedValue={radio()} onValueChange={setRadio}>
-                        One
-                      </MenuRadioItem>
-                      <MenuRadioItem value="two" selectedValue={radio()} onValueChange={setRadio}>
-                        Two
-                      </MenuRadioItem>
-                    </MenuGroup>
-                    <Menu>
-                      <MenuSubTrigger>More</MenuSubTrigger>
-                      <MenuContent aria-label="More">
-                        <MenuItem>Nested action</MenuItem>
-                      </MenuContent>
-                    </Menu>
-                  </MenuContent>
-                </Menu>
-                <ToastOwner />
-                <Dialog>
-                  <DialogTrigger>Nested dialog</DialogTrigger>
-                  <AlertDialogContent>
+            </DialogHeader>
+            <DialogBody>
+              <Candidate />
+              <label>
+                <Checkbox checked={block()} onCheckedChange={setBlock} />
+                Block close
+              </label>
+              <Menu>
+                <MenuTrigger variant="outline">Actions</MenuTrigger>
+                <MenuContent aria-label="Actions">
+                  <MenuItem
+                    onSelect={() => {
+                      document.body.dataset.menu = 'first'
+                    }}
+                  >
+                    First action
+                  </MenuItem>
+                  <MenuItem disabled>Disabled action</MenuItem>
+                  <MenuCheckboxItem
+                    checked={checked()}
+                    onCheckedChange={setChecked}
+                    closeOnSelect={false}
+                  >
+                    Pinned
+                  </MenuCheckboxItem>
+                  <MenuSeparator />
+                  <MenuGroup aria-label="Mode">
+                    <MenuRadioItem value="one" selectedValue={radio()} onValueChange={setRadio}>
+                      One
+                    </MenuRadioItem>
+                    <MenuRadioItem value="two" selectedValue={radio()} onValueChange={setRadio}>
+                      Two
+                    </MenuRadioItem>
+                  </MenuGroup>
+                  <Menu>
+                    <MenuSubTrigger>More</MenuSubTrigger>
+                    <MenuContent aria-label="More">
+                      <MenuItem>Nested action</MenuItem>
+                    </MenuContent>
+                  </Menu>
+                </MenuContent>
+              </Menu>
+              <ToastOwner />
+              <Dialog>
+                <DialogTrigger>Nested dialog</DialogTrigger>
+                <AlertDialogContent>
+                  <DialogHeader>
                     <DialogTitle>Confirm sample</DialogTitle>
+                  </DialogHeader>
+                  <DialogFooter>
                     <DialogClose>Return</DialogClose>
-                  </AlertDialogContent>
-                </Dialog>
-              </DialogBody>
-              <DialogFooter>
-                <DialogClose>Close editor</DialogClose>
-              </DialogFooter>
-            </ToastProvider>
+                  </DialogFooter>
+                </AlertDialogContent>
+              </Dialog>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose>Close editor</DialogClose>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
         <Popover>
@@ -483,13 +530,12 @@ function Interactions(): JSX.Element {
 
 /** Gallery content is synthetic and touches no application data. */
 function App(): JSX.Element {
-  const rootToast = useToast()
   const [owner, setOwner] = createSignal(true)
   const [resources, setResources] = createSignal(false)
 
   window.fixture.setOwner = setOwner
   window.fixture.rootToast = () =>
-    rootToast.show({ type: 'info', message: 'Window owner survives' }, { persistent: true })
+    toast.show({ type: 'info', message: 'Window owner survives' }, { persistent: true })
 
   return (
     <main>
@@ -587,9 +633,10 @@ function App(): JSX.Element {
 
 window.fixture.dispose = render(
   () => (
-    <ToastProvider regionLabel="Window notifications" closeLabel="Dismiss notification">
+    <>
+      <Toaster regionLabel="Window notifications" closeLabel="Dismiss notification" />
       <App />
-    </ToastProvider>
+    </>
   ),
   document.getElementById('app')!,
 )

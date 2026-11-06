@@ -91,13 +91,13 @@ test('ordinary CSS works by itself, preserves document controls and has complete
       return {
         scheme: style.colorScheme,
         background: style.backgroundColor,
-        shadow: style.getPropertyValue('--shadow-modal'),
+        shadowValid: CSS.supports('box-shadow', style.getPropertyValue('--shadow-modal')),
       }
     })
 
     expect(actual.scheme).toBe(scheme)
     expect(actual.background).toContain('oklch(')
-    expect(actual.shadow).toContain('inset')
+    expect(actual.shadowValid).toBe(true)
   }
 })
 

@@ -28,17 +28,53 @@
   }
 
   .option {
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    box-sizing: border-box;
     width: 1rem;
     height: 1rem;
     margin: 0 0.375rem 0 0;
-    accent-color: var(--primary);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--input);
+    cursor: pointer;
     vertical-align: middle;
   }
+  .option::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--primary);
+    scale: 0;
+    transition: scale 100ms ease;
+  }
+  .option:checked {
+    border-color: var(--primary);
+  }
+  .option:checked::after {
+    scale: 1;
+  }
   .option:focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 1px solid var(--ring);
     outline-offset: 2px;
   }
   .option:disabled {
     opacity: 0.5;
+    cursor: default;
+  }
+  @media (forced-colors: active) {
+    .option {
+      appearance: auto;
+    }
+    .option::after {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .option::after {
+      transition: none;
+    }
   }
 }

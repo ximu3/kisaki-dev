@@ -9,7 +9,6 @@ export interface FixtureApi {
   showLoading: (persistent: boolean) => void
   updateToast: () => void
   dismissToast: () => void
-  lateToast: () => void
   rootToast: () => void
 
   editorText?: () => string

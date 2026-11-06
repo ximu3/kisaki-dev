@@ -212,7 +212,7 @@ export default function Resources(): JSX.Element {
         class="drag-target"
         id="drop-target"
       >
-        Drop target{edge() && <DropIndicator edge={edge()!} />}
+        Drop target{edge() && <DropIndicator edge={edge()!} gap={10} />}
       </div>
       <DragFeedback>{feedback()}</DragFeedback>
     </div>

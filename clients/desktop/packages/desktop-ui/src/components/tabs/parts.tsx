@@ -14,6 +14,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation } from '../../internal/focus'
 import styles from './styles.module.css'
+import segmented from '../../internal/segmented.module.css'
 
 const TabsContext = createContext<{
   id: string
@@ -73,7 +74,7 @@ export function Tabs(props: TabsProps): JSX.Element {
         activation: () => local.activation ?? 'automatic',
       }}
     >
-      <div {...rest} class={classes(styles.root, local.class)}>
+      <div {...rest} class={local.class}>
         {local.children}
       </div>
     </TabsContext.Provider>
@@ -106,7 +107,7 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
       }}
       role="tablist"
       aria-orientation={tabs.orientation()}
-      class={classes(styles.list, local.class)}
+      class={classes(segmented.group, local.class)}
       onKeyDown={(event) => {
         callHandler(local.onKeyDown, event)
         if (!event.defaultPrevented) {
@@ -143,7 +144,7 @@ export function Tab(props: TabProps): JSX.Element {
       aria-controls={`${tabs.id}-panel-${local.value}`}
       aria-selected={tabs.value() === local.value}
       tabIndex={tabs.focusValue() === local.value ? 0 : -1}
-      class={classes(styles.tab, local.class)}
+      class={classes(segmented.item, local.class)}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {

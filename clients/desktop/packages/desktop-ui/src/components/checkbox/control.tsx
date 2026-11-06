@@ -6,6 +6,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
 import type { CheckedValueProps } from '../../internal/checked-control'
+import { Icon, mdiCheck, mdiMinus } from '../../internal/icons'
 import styles from './styles.module.css'
 
 /** checked determines form submission; indeterminate is a separately controlled visual state. */
@@ -36,20 +37,24 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
   )
 
   return (
-    <input
-      {...fieldAttributes()}
-      {...rest}
-      type="checkbox"
-      ref={(node) => {
-        input = node
-        assignRef(local.ref, node)
-      }}
-      class={classes(styles.root, local.class)}
-      onChange={(event) => {
-        update()
-        input.indeterminate = !!local.indeterminate
-        callHandler(local.onChange, event)
-      }}
-    />
+    <span class={styles.container}>
+      <input
+        {...fieldAttributes()}
+        {...rest}
+        type="checkbox"
+        ref={(node) => {
+          input = node
+          assignRef(local.ref, node)
+        }}
+        class={classes(styles.root, local.class)}
+        onChange={(event) => {
+          update()
+          input.indeterminate = !!local.indeterminate
+          callHandler(local.onChange, event)
+        }}
+      />
+      <Icon path={mdiCheck} class={styles.check} />
+      <Icon path={mdiMinus} class={styles.mixed} />
+    </span>
   )
 }

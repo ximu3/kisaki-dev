@@ -1,6 +1,6 @@
 /** @fileoverview Associates controls with the nearest field's label, description and own error. */
 
-import { createContext, useContext } from 'solid-js'
+import { createContext, onCleanup, onMount, useContext } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
 /** Field state stays local to a single control or a group with one accessible name. */
@@ -48,4 +48,24 @@ export function fieldAttributes() {
       return ids.join(' ') || undefined
     },
   }
+}
+
+/** Native disabled and readonly state also closes an active custom editing interaction. */
+export function closeWhenUnavailable(element: Accessor<HTMLElement>, close: () => void): void {
+  onMount(() => {
+    const node = element()
+    const sync = () => {
+      if (node.matches(':disabled') || node.hasAttribute('readonly')) {
+        close()
+      }
+    }
+    const observer = new MutationObserver(sync)
+    observer.observe(node, { attributes: true, attributeFilter: ['disabled', 'readonly'] })
+    for (let parent = node.parentElement; parent; parent = parent.parentElement) {
+      if (parent.tagName === 'FIELDSET') {
+        observer.observe(parent, { attributes: true, attributeFilter: ['disabled'] })
+      }
+    }
+    onCleanup(() => observer.disconnect())
+  })
 }

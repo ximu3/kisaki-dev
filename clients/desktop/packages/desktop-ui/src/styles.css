@@ -1,3 +1,44 @@
 /* Public cascade order precedes the appearance defaults and every component family. */
 
 @layer theme, base, components, utilities;
+
+@layer base {
+  :where(*) {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent) transparent;
+  }
+
+  :where(button, input, textarea, select, summary) {
+    transition:
+      background-color 100ms ease,
+      color 100ms ease,
+      border-color 100ms ease,
+      opacity 100ms ease;
+  }
+
+  [data-ui-popup] {
+    max-width: var(--popup-available-width);
+    max-height: var(--popup-available-height);
+    overflow: auto;
+    opacity: 0;
+    transition:
+      opacity 120ms ease,
+      display 120ms allow-discrete,
+      overlay 120ms allow-discrete;
+  }
+  [data-ui-popup]:popover-open {
+    opacity: 1;
+  }
+  @starting-style {
+    [data-ui-popup]:popover-open {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(button, input, textarea, select, summary),
+    [data-ui-popup] {
+      transition: none;
+    }
+  }
+}

@@ -1,13 +1,23 @@
-/** @fileoverview Fixed form feedback with caller-owned issues and explicit field-location actions. */
+/** @fileoverview Compact form feedback with direct field location and read-only hover details. */
 
-import { createEffect, createMemo, createSignal, For, Show, splitProps } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  For,
+  Show,
+  splitProps,
+} from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
-import { Button } from '../button/control'
-import { Popover, PopoverTrigger, PopoverContent } from '../popover/parts'
+import { Icon, mdiAlertCircleOutline } from '../../internal/icons'
+import { createPopup } from '../../internal/popup'
+import { createTooltip } from '../../internal/tooltip'
+import tooltipStyles from '../tooltip/styles.module.css'
 import styles from './feedback.module.css'
 
-/** summary is a concise complete correction; message retains the full explanation in details. */
+/** summary is a concise correction; message retains the full explanation. */
 export interface FieldIssue {
   readonly id: string
   readonly label: string
@@ -23,26 +33,21 @@ export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   onLocate: (id: string) => void
 
   summary: (count: number) => string
-  detailsLabel: string
-  locateLabel: string
   message?: string
 }
 
-/** Reserve a stable area. Submission, validation and revealing hidden fields are handled by the host form. */
+/** Reserve one control row. The caller owns validation and revealing the located field. */
 export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'issues',
     'activeFieldId',
     'summary',
     'onLocate',
-    'detailsLabel',
-    'locateLabel',
     'message',
     'class',
   ])
 
   const [remembered, setRemembered] = createSignal<string | null>(null)
-  const [details, setDetails] = createSignal(false)
   createEffect(() => {
     if (local.activeFieldId !== undefined) {
       setRemembered(local.activeFieldId)
@@ -65,50 +70,87 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
 
   return (
     <div {...rest} class={classes(styles.root, local.class)}>
-      <div class={styles.message} role="status" aria-live="polite">
-        {text()}
-      </div>
-      <Show when={local.issues.length > 0}>
-        <div class={styles.actions}>
-          <Show when={current() && local.issues.length > 1}>
-            <span>{local.summary(local.issues.length - 1)}</span>
-          </Show>
-          <Button
-            variant="text"
-            size="sm"
-            onClick={() => local.onLocate(current()?.id ?? local.issues[0]!.id)}
-          >
-            {local.locateLabel}
-          </Button>
-          <Popover open={details()} onOpenChange={setDetails}>
-            <PopoverTrigger variant="outline" size="sm">
-              {local.detailsLabel}
-            </PopoverTrigger>
-            <PopoverContent role="region" aria-label={local.detailsLabel} class={styles.details}>
-              <p>{local.summary(local.issues.length)}</p>
-              <ul>
-                <For each={local.issues}>
-                  {(issue) => (
-                    <li>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setDetails(false)
-                          setRemembered(issue.id)
-                          local.onLocate(issue.id)
-                        }}
-                      >
-                        {issue.label}
-                      </button>
-                      <p>{issue.message}</p>
-                    </li>
-                  )}
-                </For>
-              </ul>
-            </PopoverContent>
-          </Popover>
-        </div>
+      <Show when={local.issues.length} fallback={<span role="status">{text()}</span>}>
+        <FeedbackPrompt
+          issues={local.issues}
+          text={text()}
+          onLocate={() => local.onLocate(current()?.id ?? local.issues[0]!.id)}
+        />
       </Show>
     </div>
+  )
+}
+
+function FeedbackPrompt(props: {
+  issues: readonly FieldIssue[]
+  text: string
+  onLocate: () => void
+}): JSX.Element {
+  const tooltip = createTooltip(() => 300)
+  const id = createUniqueId()
+  let trigger!: HTMLButtonElement
+  let content!: HTMLDivElement
+
+  createPopup({
+    element: () => content,
+    anchor: () => trigger,
+    open: tooltip.open,
+    change: (open) => {
+      if (!open) {
+        tooltip.dismiss()
+      }
+    },
+    placement: () => 'top-start',
+    restoreFocus: false,
+  })
+
+  return (
+    <>
+      <button
+        ref={(node) => {
+          trigger = node
+        }}
+        type="button"
+        class={styles.prompt}
+        aria-label={props.text}
+        aria-describedby={id}
+        onClick={props.onLocate}
+        onFocus={() => tooltip.focus(true)}
+        onBlur={() => tooltip.focus(false)}
+      >
+        <span class={styles.message} role="status" aria-live="polite">
+          {props.text}
+        </span>
+        <span
+          class={styles.icon}
+          onPointerEnter={() => tooltip.hover('trigger', true)}
+          onPointerLeave={() => tooltip.hover('trigger', false)}
+        >
+          <Icon path={mdiAlertCircleOutline} />
+        </span>
+      </button>
+      <div
+        ref={(node) => {
+          content = node
+        }}
+        id={id}
+        popover="manual"
+        role="tooltip"
+        class={classes(tooltipStyles.root, styles.details)}
+        onPointerEnter={() => tooltip.hover('content', true)}
+        onPointerLeave={() => tooltip.hover('content', false)}
+      >
+        <ul>
+          <For each={props.issues}>
+            {(issue) => (
+              <li>
+                <strong>{issue.label}</strong>
+                <p>{issue.message}</p>
+              </li>
+            )}
+          </For>
+        </ul>
+      </div>
+    </>
   )
 }

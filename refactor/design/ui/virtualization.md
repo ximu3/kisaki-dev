@@ -48,13 +48,12 @@
 
 | 包                                            | 版本  | 责任                       |
 | --------------------------------------------- | ----- | -------------------------- |
-| @atlaskit/pragmatic-drag-and-drop             | 3.1.0 | 基础拖拽、落点注册与事件   |
-| @atlaskit/pragmatic-drag-and-drop-hitbox      | 2.2.0 | 落点边缘判定               |
-| @atlaskit/pragmatic-drag-and-drop-auto-scroll | 3.2.0 | 拖动过程中的自动滚动       |
-| @atlaskit/pragmatic-drag-and-drop-live-region | 2.1.0 | 辅助技术播报及共享区域清理 |
+| @atlaskit/pragmatic-drag-and-drop             | 4.0.0 | 基础拖拽、落点注册与事件   |
+| @atlaskit/pragmatic-drag-and-drop-hitbox      | 3.0.0 | 落点边缘判定               |
+| @atlaskit/pragmatic-drag-and-drop-auto-scroll | 3.2.1 | 拖动过程中的自动滚动       |
 
 实现使用 Pragmatic Drag and Drop 框架无关核心及必要辅助包的公开入口，统一插入线、外观、菜单和可访问反馈。不引入 React 展示层，也不修改依赖库，Solid 按正常挂载与清理接入。依据见[核心](https://atlassian.design/components/pragmatic-drag-and-drop/core-package/)、[辅助包](https://atlassian.design/components/pragmatic-drag-and-drop/optional-packages)和[虚拟化](https://atlassian.design/components/pragmatic-drag-and-drop/core-package/recipes/virtualization)。
 
-公共 desktop-ui 提供登记、目标、稳定监视器和自动滚动的 Solid 接入；选项失效或拥有者结束时释放。手柄同时接入键盘可用的等价移动操作，插入线只呈现当前有效边缘。播报文字来自宿主，最后一个拥有者结束后释放共享 live region 及待播报消息。
+公共 desktop-ui 提供登记、目标、稳定监视器和自动滚动的 Solid 接入；选项失效或拥有者结束时释放。手柄同时接入键盘可用的等价移动操作，插入线按真实项目间距显示在间隙中点；源项目保留布局并降低不透明度，预览使用紧凑摘要。播报文字来自宿主，由所在视图的 DragFeedback 状态区域呈现，随视图释放。
 
 验收在 Solid 1.9 下覆盖普通列表与网格、动态尺寸、筛选子集、多选、自动滚动后源行离屏、尚未加载的目标、取消和并发失败，并同时验证[完整查询与定位](../domains/library/query/README.md)。

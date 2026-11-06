@@ -1,31 +1,12 @@
 /** @fileoverview Solid chart containers accept child components and expose only layout snapshots. */
 
-import { createSignal, onCleanup, onMount, splitProps } from 'solid-js'
+import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { VisXYContainer, VisSingleContainer } from '@unovis/solid'
 import type { VisXYContainerProps, VisSingleContainerProps } from '@unovis/solid'
 import type { Spacing } from '@unovis/ts'
 
-/** Follow the document's motion preference and release its listener with the chart. */
-function createAnimation(duration: () => number | undefined): () => { duration?: number } {
-  const [reduced, setReduced] = createSignal(false)
-  onMount(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const changed = () => setReduced(query.matches)
-    changed()
-    query.addEventListener('change', changed)
-    onCleanup(() => query.removeEventListener('change', changed))
-  })
-
-  return () => {
-    if (reduced()) {
-      return { duration: 0 }
-    }
-
-    const value = duration()
-    return value === undefined ? {} : { duration: value }
-  }
-}
+import { createChartDuration } from './motion'
 
 /** Read-only CSS-pixel geometry from one completed chart render. */
 export interface ChartGeometry {
@@ -58,12 +39,12 @@ export type XYContainerProps<Datum> = Omit<
 /** Lifecycle and data updates are handled by the official Solid adapter. */
 export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
-  const animation = createAnimation(() => local.duration)
+  const duration = createChartDuration(() => local.duration)
 
   return (
     <VisXYContainer
       {...rest}
-      {...animation()}
+      duration={duration()}
       onRenderComplete={(
         _svg,
         margin,
@@ -95,12 +76,12 @@ export type SingleContainerProps<Datum> = Omit<
 /** Compose a Donut and optional tooltip without constructing an external engine object. */
 export function SingleContainer<Datum>(props: SingleContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
-  const animation = createAnimation(() => local.duration)
+  const duration = createChartDuration(() => local.duration)
 
   return (
     <VisSingleContainer
       {...rest}
-      {...animation()}
+      duration={duration()}
       onRenderComplete={(
         _svg,
         margin,

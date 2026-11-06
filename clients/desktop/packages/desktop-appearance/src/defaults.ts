@@ -45,9 +45,9 @@ export const light: TokenValues = Object.freeze({
   '--shadow-raised':
     '0 1px 2px 0 oklch(0.13 0.02 258 / 0.08), 0 3px 10px -2px oklch(0.13 0.02 258 / 0.1)',
   '--shadow-overlay':
-    'inset 0 1px 0 oklch(1 0 0 / 0.5), inset 0 -1px 0 oklch(0.13 0.02 258 / 0.05), 0 1px 2px 0 oklch(0.13 0.02 258 / 0.1), 0 10px 24px -6px oklch(0.13 0.02 258 / 0.16)',
+    '0 1px 2px 0 oklch(0.13 0.02 258 / 0.1), 0 10px 24px -6px oklch(0.13 0.02 258 / 0.16)',
   '--shadow-modal':
-    'inset 0 1px 0 oklch(1 0 0 / 0.55), inset 0 -1px 0 oklch(0.13 0.02 258 / 0.06), 0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24)',
+    '0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24)',
 
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
@@ -99,10 +99,8 @@ export const dark: TokenValues = Object.freeze({
 
   '--radius': '6px',
   '--shadow-raised': '0 1px 2px 0 oklch(0 0 0 / 0.35), 0 4px 12px -2px oklch(0 0 0 / 0.4)',
-  '--shadow-overlay':
-    'inset 0 1px 0 oklch(1 0 0 / 0.08), inset 0 -1px 0 oklch(0 0 0 / 0.35), 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 10px 24px -6px oklch(0 0 0 / 0.5)',
-  '--shadow-modal':
-    'inset 0 1px 0 oklch(1 0 0 / 0.1), inset 0 -1px 0 oklch(0 0 0 / 0.4), 0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65)',
+  '--shadow-overlay': '0 1px 2px 0 oklch(0 0 0 / 0.45), 0 10px 24px -6px oklch(0 0 0 / 0.5)',
+  '--shadow-modal': '0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65)',
 
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':

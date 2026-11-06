@@ -8,31 +8,7 @@
     font-size: 0.875rem;
   }
   .editor:focus-within {
-    outline: 2px solid var(--ring);
-    outline-offset: 1px;
-  }
-
-  .editor :global(.cm-editor) {
-    background: var(--input);
-    color: var(--input-foreground);
-  }
-  .editor :global(.cm-scroller) {
-    font-family: var(--font-mono);
-    min-height: 8rem;
-  }
-  .editor :global(.cm-gutters) {
-    background: var(--muted);
-    color: var(--muted-foreground);
-    border-color: var(--border);
-  }
-  .editor :global(.cm-focused) {
-    outline: none;
-  }
-  .editor :global(.cm-cursor) {
-    border-left-color: var(--foreground);
-  }
-  .editor :global(.cm-selectionBackground) {
-    background: var(--accent);
+    border-color: var(--ring);
   }
 
   .toolbar {

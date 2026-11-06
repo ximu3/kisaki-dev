@@ -5,6 +5,7 @@ import type { JSX } from 'solid-js'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import { callHandler, classes } from '../../internal/dom'
+import { Icon, mdiDrag } from '../../internal/icons'
 import styles from './styles.module.css'
 
 /** Optional keyboard movement is a direct host command, independent of pointer drag state. */
@@ -14,7 +15,7 @@ export interface DragHandleProps extends ButtonProps {
 
 /** Name the handle and attach its ref to createDraggable. Click can open the host's movement menu. */
 export function DragHandle(props: DragHandleProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['onMove', 'onKeyDown', 'class'])
+  const [local, rest] = splitProps(props, ['onMove', 'onKeyDown', 'class', 'children'])
 
   return (
     <Button
@@ -35,18 +36,22 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
           local.onMove(event.key === 'ArrowUp' ? 'previous' : 'next')
         }
       }}
-    />
+    >
+      {local.children ?? <Icon path={mdiDrag} />}
+    </Button>
   )
 }
 
 /** Edge is actual target geometry, not a persisted row index. */
 export interface DropIndicatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
   edge: 'top' | 'right' | 'bottom' | 'left'
+  /** Actual gap between neighboring target boxes, as CSS pixels or a CSS length. */
+  gap: number | string
 }
 
 /** Position inside a relatively positioned target when the host has confirmed it can accept the drop. */
 export function DropIndicator(props: DropIndicatorProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['edge', 'class'])
+  const [local, rest] = splitProps(props, ['edge', 'gap', 'class', 'style'])
 
   return (
     <div
@@ -54,6 +59,14 @@ export function DropIndicator(props: DropIndicatorProps): JSX.Element {
       aria-hidden="true"
       data-edge={local.edge}
       class={classes(styles.indicator, local.class)}
+      style={
+        typeof local.style === 'string'
+          ? `--drop-gap: ${typeof local.gap === 'number' ? `${local.gap}px` : local.gap}; ${local.style}`
+          : {
+              '--drop-gap': typeof local.gap === 'number' ? `${local.gap}px` : local.gap,
+              ...local.style,
+            }
+      }
     />
   )
 }

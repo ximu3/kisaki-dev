@@ -24,8 +24,13 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   await page.getByLabel('Include', { exact: true }).uncheck()
   await page.getByLabel('Enabled', { exact: true }).uncheck()
   await page.getByLabel('Compact', { exact: true }).check()
-  await page.locator('#select').selectOption('beta')
-  await page.locator('#multi').selectOption(['b'])
+  await page.locator('#select').click()
+  await page.getByRole('option', { name: 'Beta', exact: true }).click()
+  await page.locator('#multi').click()
+  await page.getByRole('option', { name: 'Amber', exact: true }).click()
+  await page.getByRole('option', { name: 'Coral', exact: true }).click()
+  await page.getByRole('option', { name: 'Blue', exact: true }).click()
+  await page.keyboard.press('Escape')
   await page.getByLabel('Grid', { exact: true }).check()
   await page.locator('#level').focus()
   await page.keyboard.press('End')
@@ -57,12 +62,18 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   await browserExpect(page.locator('#external')).toHaveValue('original')
   await browserExpect(page.getByLabel('Comfortable', { exact: true })).toBeChecked()
   await browserExpect(page.getByLabel('List', { exact: true })).toBeChecked()
-  await browserExpect(page.locator('#multi')).toHaveValues(['a', 'c'])
+  await browserExpect(page.locator('select[name="multi"]')).toHaveValues(['a', 'c'])
 
-  await page.locator('#select').selectOption('')
+  await page.locator('#select').click()
+  await page.getByRole('option', { name: 'Choose', exact: true }).click()
   expect(
-    await page.locator('#select').evaluate((node: HTMLSelectElement) => node.validity.valueMissing),
+    await page
+      .locator('select[name="choice"]')
+      .evaluate((node: HTMLSelectElement) => node.validity.valueMissing),
   ).toBe(true)
+
+  await page.getByRole('button', { name: 'Submit controls' }).click()
+  await browserExpect(page.locator('#select')).toBeFocused()
 
   await page.getByRole('button', { name: 'Toggle fieldset' }).click()
   await browserExpect(page.locator('#query')).toBeDisabled()
@@ -70,6 +81,81 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   expect(await page.locator('body').getAttribute('data-submitted')).toBe(
     JSON.stringify([['external', 'original']]),
   )
+})
+
+test('virtual selection keeps offscreen values while keyboard navigation mounts the active option', async ({
+  page,
+}) => {
+  const trigger = page.getByRole('combobox', { name: 'Virtual choices' })
+  await trigger.click()
+  await browserExpect(page.getByRole('option', { name: 'Item 9000', exact: true })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  )
+  expect(await page.getByRole('option').count()).toBeLessThan(40)
+  await trigger.press('End')
+  const last = page.getByRole('option', { name: 'Item 10000', exact: true })
+  await browserExpect(last).toBeVisible()
+  await browserExpect(trigger).toHaveAttribute(
+    'aria-activedescendant',
+    (await last.getAttribute('id'))!,
+  )
+  await trigger.press('Space')
+  await trigger.press('Escape')
+  expect(
+    await page
+      .locator('#virtual-form')
+      .evaluate((node: HTMLFormElement) => new FormData(node).getAll('virtual')),
+  ).toEqual(['8999', '9999'])
+})
+
+test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
+  page,
+}) => {
+  await page.getByRole('button', { name: 'Increase', exact: true }).click()
+  await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('3')
+
+  const date = page.getByRole('textbox', { name: 'Calendar date' })
+  await date.fill('2024-02-30')
+  expect(await date.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(false)
+  await date.fill('2024-02-28')
+  await page.getByRole('button', { name: 'Choose date', exact: true }).click()
+  const day = page.getByRole('gridcell', { name: 'Wednesday, February 28, 2024', exact: true })
+  await browserExpect(day).toBeFocused()
+  await day.press('ArrowRight')
+  await page.keyboard.press('Enter')
+  await browserExpect(date).toHaveValue('2024-02-29')
+  await browserExpect(date).toBeFocused()
+  await page.getByRole('button', { name: 'Choose date', exact: true }).click()
+  await page
+    .getByRole('gridcell', { name: 'Thursday, February 29, 2024', exact: true })
+    .press('ArrowRight')
+  await browserExpect(
+    page.getByRole('gridcell', { name: 'Friday, March 1, 2024', exact: true }),
+  ).toBeFocused()
+  await page.keyboard.press('Escape')
+
+  const color = page.getByRole('textbox', { name: 'Color value' })
+  await color.fill('invalid-color')
+  expect(await color.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(false)
+  await color.fill('rgb(51 102 153)')
+  await page.getByRole('button', { name: 'Choose color', exact: true }).click()
+  await page.getByRole('slider', { name: 'Alpha', exact: true }).fill('50')
+  await page.keyboard.press('Escape')
+  await browserExpect(color).toHaveValue('#33669980')
+
+  expect(
+    await page
+      .locator('#special-fields')
+      .evaluate((node: HTMLFormElement) => [...new FormData(node)]),
+  ).toEqual([
+    ['quantity', '3'],
+    ['date', '2024-02-29'],
+    ['color', '#33669980'],
+  ])
+  await page.getByRole('button', { name: 'Reset special fields' }).click()
+  await browserExpect(date).toHaveValue('2024-02-28')
+  await browserExpect(color).toHaveValue('#336699')
 })
 
 test('IME defers controlled writes and native editing retains undo', async ({ page }) => {
@@ -104,15 +190,17 @@ test('form feedback retains geometry and per-field errors while revealing and lo
     expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
   }
 
-  await page.getByRole('button', { name: 'Details', exact: true }).click()
-  await page.getByRole('button', { name: 'Description', exact: true }).click()
-  await browserExpect(page.locator('#description')).toBeFocused()
-  await page.locator('#description').fill('A useful description')
-  await browserExpect(page.locator('#description')).toBeFocused()
-
-  await page.getByRole('button', { name: 'Locate', exact: true }).click()
+  await page.locator('#feedback').getByRole('button', { name: /Title/ }).press('Shift')
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeVisible()
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toContainText('Description')
+  await page.keyboard.press('Escape')
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeHidden()
+  await page.locator('#feedback button').click()
   await browserExpect(page.locator('#title')).toBeFocused()
   await page.locator('#title').fill('Complete')
+  await page.locator('#feedback button').click()
+  await browserExpect(page.locator('#description')).toBeFocused()
+  await page.locator('#description').fill('A useful description')
   await browserExpect(page.locator('#feedback')).toHaveText('')
   expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
 })
@@ -160,6 +248,13 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
   await page.keyboard.press('Escape')
   await browserExpect(dialog).toBeVisible()
 
+  await page.getByRole('button', { name: 'Actions', exact: true }).click()
+  await page.getByRole('menuitem', { name: 'More', exact: true }).hover()
+  await browserExpect(page.getByRole('menuitem', { name: 'Nested action' })).toBeVisible()
+  await page.getByRole('menuitem', { name: 'Nested action' }).hover()
+  await page.getByRole('menuitem', { name: 'Nested action' }).click()
+  await browserExpect(page.getByRole('menu', { name: 'Actions', exact: true })).toBeHidden()
+
   await page.getByRole('button', { name: 'Nested dialog' }).click()
   await page.getByRole('button', { name: 'Return', exact: true }).click()
   await browserExpect(page.getByRole('button', { name: 'Nested dialog' })).toBeFocused()
@@ -185,7 +280,7 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
   await browserExpect(page.getByRole('tooltip')).toBeHidden()
 })
 
-test('toast clocks pause, updates retain focus, and disposed owners cannot resurrect messages', async ({
+test('toast clocks pause, survive caller disposal and follow active modals until explicitly ended', async ({
   page,
 }) => {
   await page.clock.install()
@@ -212,20 +307,33 @@ test('toast clocks pause, updates retain focus, and disposed owners cannot resur
 
   await page.evaluate(() => {
     window.fixture.setOwner(false)
-    window.fixture.lateToast()
+    window.fixture.updateToast()
   })
-  await browserExpect(page.getByText('Sample ready', { exact: true })).toHaveCount(0)
-  await browserExpect(page.getByText('Late update', { exact: true })).toHaveCount(0)
-  await browserExpect(page.getByText('Late creation', { exact: true })).toHaveCount(0)
+  await browserExpect(page.getByText('Sample ready', { exact: true })).toBeVisible()
   await browserExpect(page.getByText('Window owner survives', { exact: true })).toBeVisible()
+  await page.evaluate(() => window.fixture.dismissToast())
   await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
   await page.evaluate(() => window.fixture.showLoading(false))
   await page.getByRole('button', { name: 'Inspect sample' }).click()
   await browserExpect(page.locator('body')).toHaveAttribute('data-action', 'inspected')
+  await page.getByRole('button', { name: 'Nested dialog' }).click()
+  await page.getByRole('button', { name: 'Inspect sample' }).click()
+  await browserExpect(
+    page.getByRole('alertdialog').getByRole('region', { name: 'Window notifications' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'Return', exact: true }).click()
   await page.getByRole('button', { name: 'Close editor' }).click()
-  await page.evaluate(() => window.fixture.lateToast())
-  await browserExpect(page.getByText('Preparing sample', { exact: true })).toHaveCount(0)
-  await browserExpect(page.getByText('Late creation', { exact: true })).toHaveCount(0)
+  await browserExpect(page.getByText('Preparing sample', { exact: true })).toBeVisible()
+  await page.evaluate(() => window.fixture.updateToast())
+  await browserExpect(page.getByText('Sample ready', { exact: true })).toBeVisible()
+  await page.evaluate(() => {
+    window.fixture.dismissToast()
+    window.fixture.updateToast()
+  })
+  await browserExpect(page.getByText('Sample ready', { exact: true })).toHaveCount(0)
+  await page.evaluate(() => window.fixture.dispose())
+  await page.clock.fastForward(10_000)
+  await browserExpect(page.getByRole('region', { name: 'Window notifications' })).toHaveCount(0)
 })
 
 test('Markdown, charts and drag load as complete capabilities and release their instances', async ({

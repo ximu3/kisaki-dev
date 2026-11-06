@@ -1,6 +1,12 @@
 /** @fileoverview Public drag registration, handles, insertion markers and feedback. */
 
-export { createDraggable, createDropTarget, createDragMonitor } from './adapter'
+export {
+  createDraggable,
+  createDropTarget,
+  createDragMonitor,
+  createDragAutoScroll,
+} from './adapter'
+export { setDragPreview } from './preview'
 export {
   DragHandle,
   DropIndicator,

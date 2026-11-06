@@ -6,6 +6,7 @@ export {
   DialogContent,
   DialogClose,
   DialogTitle,
+  DialogHeader,
   DialogDescription,
   DialogBody,
   DialogFooter,

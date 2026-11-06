@@ -4,19 +4,19 @@
 
 ## 交付与检查
 
-组件从 31 个家族子路径导出，源码、Props、状态与样式位于所属 `src/components/<family>`；`src/internal` 保存实际共用的字段关联、值、表单重置、焦点和定位机制。
+组件从 31 个家族子路径导出，源码、Props、状态与样式位于所属 `src/components/<family>`；`src/internal` 保存实际共用的字段关联、值、表单重置、焦点、逻辑选项集合、Tooltip 阅读寿命、模态宿主与定位机制。
 
 | 范围 | 已交付与实际验证 |
 | --- | --- |
 | 基础呈现 | Button、Link、Badge、Separator、Spinner、Progress、Alert、Image 和 EmptyState；原生语义、变体、焦点、禁用与默认样式。 |
-| 表单 | Field、FieldGroup、FormFeedback、Input、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性与输入法组合。 |
-| 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、语义表格和原生滚动。 |
-| 浮层 | Dialog、确认内容、Popover、下拉／上下文／子菜单和 Tooltip；原生模态、可阻止的关闭请求、逐层 Escape、嵌套焦点返回，以及 Tooltip 的键盘与悬停阅读。 |
-| 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。四语长说明进入详情，窄窗口和 150% 缩放中保持预留几何。 |
-| Toast | loading 保持、结果转换计时、persistent 保持、悬停暂停、独立 owner 清理、旧句柄失效和迟到结果。Dialog 内的动作可实际点击，关闭后消息随 owner 结束。 |
-| Markdown | CodeMirror 编辑、工具栏事务与撤销、受控正文更新及销毁；Markdown、表格、只读任务与脚注呈现，实例标识隔离，原始 HTML 为文本，未映射图片不请求来源 URL，普通链接可交宿主处理。 |
-| 图表 | Unovis 官方 Solid 子组件的 XY／单图容器、折线、面积、分组柱、堆叠柱、散点、环图、轴、提示和 Crosshair；真实数据更新、只读布局结果、文本提示、交互图例与卸载。五个系列色使用 chart-1 至 chart-5。 |
-| 拖拽 | Pragmatic Drag and Drop 的生命周期接入、手柄、命中边缘、插入指示和反馈；实际指针放下与明确的键盘移动动作。业务身份、许可和保存由消费者维护。 |
+| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性、输入法组合、日期跨月选择与 alpha 编辑；万项虚拟列表的离屏值、键盘定位和提交。 |
+| 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、共同分段外观、语义表格和统一原生滚动条。 |
+| 浮层 | Dialog、确认内容、Popover、下拉／上下文／子菜单和 Tooltip；原生模态、可阻止的关闭请求、逐层 Escape、嵌套焦点返回、子菜单悬停与移入，以及 Tooltip 的键盘与悬停阅读。Floating UI 负责视口约束与翻转。 |
+| 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。紧凑提示直接定位，圆圈图标悬停与键盘聚焦提供只读详情；四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |
+| Toast | 命令式 toast 与单一 Toaster；loading、结果转换、persistent、悬停暂停、旧句柄失效和显示宿主清理。发起组件与 Dialog 卸载后消息保持；同一队列在嵌套 Dialog 中移动，动作可实际点击。 |
+| Markdown | CodeMirror 主题与编辑、工具栏事务与撤销、受控正文更新及销毁；Markdown、表格、只读任务与脚注呈现，实例标识隔离，原始 HTML 为文本，未映射图片不请求来源 URL，普通链接可交宿主处理。 |
+| 图表 | Unovis 官方 Solid 子组件的 XY／单图容器、折线、面积、分组柱、堆叠柱、散点、环图、轴、提示和 Crosshair；真实数据更新、只读布局结果、文本提示、交互图例与卸载。五个系列色使用 chart-1 至 chart-5；数据变化、指针跟随与 Tooltip 分别采用短动效并遵守 reduced-motion。 |
+| 拖拽 | Pragmatic Drag and Drop 的生命周期接入、自动滚动、紧凑预览、手柄、命中边缘、间隙中点插入指示和反馈；实际指针放下与明确的键盘移动动作。业务身份、许可和保存由消费者维护。 |
 | 样式与制品 | CSS Modules 的构建类名对应普通 CSS，样式入口包含 appearance 默认值；无 Tailwind 消费、真实 Tailwind 两种加载顺序及未分层覆盖通过。基础入口与延迟加载的完整专用能力分开。 |
 
 Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖在 manifest 中明确交付。仓库外消费者同时以 Bundler 和 NodeNext、`skipLibCheck: false` 检查完整声明，并运行类型感知 lint。包内 CSS 声明另有完整声明检查项目。
@@ -25,9 +25,9 @@ Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖�
 
 `pnpm check` 执行工作区类型、lint、边界、格式和常规测试。UI 的真实浏览器与 Electron 检查属于独立消费者任务，普通 check 不启动桌面。
 
-`pnpm exec turbo run test:consumers --filter=...@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance、desktop-contracts、desktop-localization、desktop-ui 分别通过 4、3、3、10 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
+`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 12 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
 
-UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存结果、实际环境与 tarball SHA-256，以及亮暗、窄窗口、专用能力和 Electron 截图。已人工核对实际截图；其他包的报告保留在各自相同用途的输出目录。CI 按对应 PR 的实际运行登记。
+UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存结果、实际环境与 tarball SHA-256，以及亮暗、窄窗口、专用能力和 Electron 截图。已人工核对实际截图，以及独立组件审查页的长 Dialog、亮暗控件、只读错误详情、图表实际数值与拖拽结果；其他包的报告保留在各自相同用途的输出目录。CI 按对应 PR 的实际运行登记。
 
 构建沿 [tsdown 的 Solid 接入](https://tsdown.dev/recipes/solid-support)和 [CSS Modules 提取](https://tsdown.dev/options/css)，使用固定 tsdown／CSS 0.23.0 与适配 Solid 1.9 的 unplugin-solid 1.0.0。专用工具通过其公开入口接入，声明归集保留 Unovis 的许可材料。
 

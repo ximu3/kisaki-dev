@@ -6,6 +6,7 @@ import {
   createSignal,
   createUniqueId,
   Show,
+  onCleanup,
   onMount,
   splitProps,
   useContext,
@@ -15,6 +16,8 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
 import { createPopup } from '../../internal/popup'
+import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icons'
+import { createSubmenuHover } from './hover'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import styles from './styles.module.css'
@@ -27,6 +30,10 @@ interface MenuState {
   change: (open: boolean) => void
 
   anchor: HTMLElement | undefined
+  content: HTMLElement | undefined
+  children: Set<MenuState>
+  focusOnOpen: boolean
+  hover: ReturnType<typeof createSubmenuHover>
   point: Accessor<{ x: number; y: number } | undefined>
   setPoint: (point: { x: number; y: number } | undefined) => void
   last: boolean
@@ -50,23 +57,51 @@ export function Menu(props: MenuProps): JSX.Element {
     (next) => props.onOpenChange?.(next),
   )
   const [point, setPoint] = createSignal<{ x: number; y: number }>()
+  const hover = createSubmenuHover({
+    anchor: () => state.anchor,
+    content: () => state.content,
+    isOpen: open,
+    open: () => {
+      state.focusOnOpen = false
+      state.change(true)
+    },
+    close: () => state.change(false),
+  })
+  const state: MenuState = {
+    id: createUniqueId(),
+    open,
+    change: (next) => {
+      if (next) {
+        parent?.children.forEach((sibling) => {
+          if (sibling !== state) {
+            sibling.change(false)
+          }
+        })
+      } else {
+        hover.stop()
+        state.children.forEach((child) => child.change(false))
+      }
+      change(next)
+    },
+    anchor: undefined,
+    content: undefined,
+    children: new Set(),
+    focusOnOpen: true,
+    hover,
+    point,
+    setPoint,
+    last: false,
+    parent,
+  }
+  parent?.children.add(state)
+  onCleanup(() => parent?.children.delete(state))
+  createEffect(() => {
+    if (!open()) {
+      state.children.forEach((child) => child.change(false))
+    }
+  })
 
-  return (
-    <MenuContext.Provider
-      value={{
-        id: createUniqueId(),
-        open,
-        change,
-        anchor: undefined,
-        point,
-        setPoint,
-        last: false,
-        parent,
-      }}
-    >
-      {props.children}
-    </MenuContext.Provider>
-  )
+  return <MenuContext.Provider value={state}>{props.children}</MenuContext.Provider>
 }
 
 /** Button trigger supports pointer activation and ArrowUp/ArrowDown entry. */
@@ -148,7 +183,13 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
 /** Place submenu content inside the parent MenuContent; the native popover ancestry retains its parent. */
 export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, ['class', 'ref', 'onKeyDown'])
+  const [local, rest] = splitProps(props, [
+    'class',
+    'ref',
+    'onKeyDown',
+    'onPointerEnter',
+    'onPointerLeave',
+  ])
 
   let content!: HTMLDivElement
   const selector = '[role^="menuitem"]'
@@ -171,7 +212,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   )
   onMount(() =>
     createEffect(() => {
-      if (state.open()) {
+      if (state.open() && state.focusOnOpen) {
         queueMicrotask(() => {
           if (state.open()) {
             const options = items()
@@ -187,6 +228,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
       {...rest}
       ref={(node) => {
         content = node
+        state.content = node
         assignRef(local.ref, node)
       }}
       id={state.id}
@@ -194,6 +236,16 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
       role="menu"
       tabIndex={-1}
       class={classes(styles.root, local.class)}
+      onPointerEnter={(event) => {
+        state.hover.stop()
+        callHandler(local.onPointerEnter, event)
+      }}
+      onPointerLeave={(event) => {
+        if (state.parent && !content.contains(event.relatedTarget as Node | null)) {
+          state.hover.leaveContent()
+        }
+        callHandler(local.onPointerLeave, event)
+      }}
       onKeyDown={(event) => {
         callHandler(local.onKeyDown, event)
         if (event.defaultPrevented) {
@@ -238,6 +290,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
     'class',
     'onClick',
     'children',
+    'onPointerMove',
   ])
 
   return (
@@ -248,6 +301,17 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       tabIndex={-1}
       data-destructive={local.destructive || undefined}
       class={classes(styles.item, local.class)}
+      onPointerMove={(event) => {
+        callHandler(local.onPointerMove, event)
+        if (
+          !event.defaultPrevented &&
+          !event.currentTarget.disabled &&
+          ![...state.children].some((child) => child.hover.inTransit())
+        ) {
+          state.children.forEach((child) => child.change(false))
+          event.currentTarget.focus({ preventScroll: true })
+        }
+      }}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (event.defaultPrevented) {
@@ -267,12 +331,14 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
         }
       }}
     >
+      <span class={styles.label}>{local.children}</span>
       <Show when={props['aria-checked'] !== undefined}>
         <span aria-hidden="true" class={styles.check}>
-          {props['aria-checked'] === true ? '✓' : ''}
+          <Show when={props['aria-checked'] === true}>
+            <Icon path={mdiCheck} />
+          </Show>
         </span>
       </Show>
-      {local.children}
     </button>
   )
 }
@@ -327,7 +393,15 @@ export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
 /** The nested Menu owns this trigger and its sibling content. ArrowRight enters, ArrowLeft returns. */
 export function MenuSubTrigger(props: ButtonProps): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, ['class', 'ref', 'onClick', 'onKeyDown', 'children'])
+  const [local, rest] = splitProps(props, [
+    'class',
+    'ref',
+    'onClick',
+    'onKeyDown',
+    'children',
+    'onPointerEnter',
+    'onPointerLeave',
+  ])
 
   return (
     <button
@@ -343,9 +417,27 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
       aria-haspopup="menu"
       aria-expanded={state.open()}
       aria-controls={state.id}
+      onPointerEnter={(event) => {
+        callHandler(local.onPointerEnter, event)
+        if (
+          !event.defaultPrevented &&
+          !event.currentTarget.disabled &&
+          ![...(state.parent?.children ?? [])].some(
+            (child) => child !== state && child.hover.inTransit(),
+          )
+        ) {
+          event.currentTarget.focus({ preventScroll: true })
+          state.hover.enter()
+        }
+      }}
+      onPointerLeave={(event) => {
+        state.hover.leave(event)
+        callHandler(local.onPointerLeave, event)
+      }}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
+          state.focusOnOpen = true
           state.change(!state.open())
         }
       }}
@@ -356,13 +448,14 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
         if (!event.defaultPrevented && event.key === forward) {
           event.preventDefault()
           event.stopPropagation()
+          state.focusOnOpen = true
           state.change(true)
         }
       }}
     >
       {local.children}
       <span aria-hidden="true" class={styles.arrow}>
-        ›
+        <Icon path={mdiChevronRight} />
       </span>
     </button>
   )

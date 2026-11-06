@@ -27,10 +27,11 @@
     padding: 0.625rem 0.75rem;
     background: var(--popover);
     color: var(--popover-foreground);
-    border: 1px solid var(--border);
+    border: 0;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-overlay);
     font-size: 0.875rem;
+    animation: enter 140ms ease-out;
   }
 
   .text {
@@ -51,5 +52,21 @@
   }
   .item[data-type='error'] .icon {
     color: var(--destructive);
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      translate: 0 0.25rem;
+    }
+    to {
+      opacity: 1;
+      translate: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .item {
+      animation: none;
+    }
   }
 }
