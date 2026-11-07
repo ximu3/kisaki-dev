@@ -71,7 +71,7 @@
 
   .chips {
     position: relative;
-    --edge-size: 1.125rem;
+    --edge-size: min(1.125rem, 25%);
     --start-inset: 0px;
     --end-inset: 0px;
     display: flex;

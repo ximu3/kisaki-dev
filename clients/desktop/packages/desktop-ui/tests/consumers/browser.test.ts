@@ -122,8 +122,15 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
         ),
       )
   expect(await wheelPrevious()).toBe(false)
-  await form.getByRole('button', { name: 'Next selected items' }).click()
-  await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeEnabled()
+  const forward = form.getByRole('button', { name: 'Next selected items' })
+  const backward = form.getByRole('button', { name: 'Previous selected items' })
+  const firstChip = form.getByRole('button', { name: 'Remove Item 9000' })
+  const endBeforeScroll = (await forward.boundingBox())!.x - (await firstChip.boundingBox())!.x
+  await forward.click()
+  await browserExpect(backward).toBeEnabled()
+  const edge = (await backward.boundingBox())!
+  const startAfterScroll = edge.x + edge.width - (await firstChip.boundingBox())!.x
+  expect(startAfterScroll).toBeLessThanOrEqual(endBeforeScroll + 1)
   await form.getByRole('button', { name: 'Remove Item 10000' }).click()
   await form.evaluate((form) => form.style.removeProperty('width'))
   await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()

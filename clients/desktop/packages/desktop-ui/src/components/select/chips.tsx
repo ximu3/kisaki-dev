@@ -44,8 +44,12 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     setCanPrevious(before)
     setCanNext(after)
   }
-  const scroll = (step: number) =>
-    viewport.scrollBy({ left: direction() * step * viewport.clientWidth })
+  const scroll = (step: 1 | -1, arrow: HTMLButtonElement) => {
+    // Both edge buttons can be visible between pages. Keep the exposed intervals contiguous.
+    const pageWidth =
+      viewport.getBoundingClientRect().width - 2 * arrow.getBoundingClientRect().width
+    viewport.scrollBy({ left: direction() * step * pageWidth })
+  }
   const reveal = (button: Element) => {
     const box = viewport.getBoundingClientRect()
     const target = button.getBoundingClientRect()
@@ -109,7 +113,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canPrevious()}
         disabled={props.disabled}
-        onClick={() => scroll(-1)}
+        onClick={(event) => scroll(-1, event.currentTarget)}
       >
         <Icon path={mdiChevronLeft} />
       </button>
@@ -163,7 +167,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canNext()}
         disabled={props.disabled}
-        onClick={() => scroll(1)}
+        onClick={(event) => scroll(1, event.currentTarget)}
       >
         <Icon path={mdiChevronRight} />
       </button>
