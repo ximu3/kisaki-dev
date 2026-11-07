@@ -4,7 +4,7 @@ import * as v from 'valibot'
 import { unique, parseValue, nonemptyText } from '../validation'
 import { identitiesSchema, entryTypes } from '../library/catalog'
 import type { EntryType } from '../library/catalog'
-import { getMetadataEntryFields, getMetadataPartFields } from './fields'
+import { fieldNamesSchema, getMetadataEntryFields, getMetadataPartFields } from './fields'
 import { metadataPartKinds } from './objects'
 import { getMetadataRelations, metadataRelationFields } from './relations'
 import { DesktopError } from '../errors'
@@ -12,16 +12,9 @@ import type { MetadataRelationKey, MetadataRelationAttributeValues } from './rel
 import type { ObjectFieldRequest, MetadataPartKey, MetadataPartType } from './objects'
 import type { MetadataEntryField, MetadataPartField } from './fields'
 
-function fields(names: readonly string[]) {
-  return v.pipe(
-    v.array(v.picklist(names)),
-    v.check((values) => unique(values, (value) => value)),
-  )
-}
-
 function objectRequest(names: readonly string[], withRefs: boolean) {
   return v.strictObject({
-    fields: fields(names),
+    fields: fieldNamesSchema(names),
     refs: v.exactOptional(withRefs ? identitiesSchema : v.never()),
   })
 }
@@ -50,7 +43,9 @@ export function parseMetadataReadRequest(root: EntryType, input: unknown): Metad
   const relations = Object.fromEntries(
     getMetadataRelations(root).map((relation) => [
       relation,
-      v.exactOptional(v.strictObject({ fields: fields(metadataRelationFields[relation]) })),
+      v.exactOptional(
+        v.strictObject({ fields: fieldNamesSchema(metadataRelationFields[relation]) }),
+      ),
     ]),
   )
   return parseValue(
@@ -62,7 +57,7 @@ export function parseMetadataReadRequest(root: EntryType, input: unknown): Metad
           parts: v.exactOptional(Object.keys(parts).length > 0 ? v.strictObject(parts) : v.never()),
           tags: v.exactOptional(
             v.strictObject({
-              fields: fields(['description', 'isNsfw']),
+              fields: fieldNamesSchema(['description', 'isNsfw']),
               names: v.exactOptional(
                 v.pipe(
                   v.array(nonemptyText),

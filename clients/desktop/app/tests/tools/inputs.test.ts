@@ -13,7 +13,15 @@ import { startInputWatcher } from '../../tools/dev/inputs'
 
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
 // Only relocate owned files; use the actual Vite server and Chokidar input watcher.
-vi.mock('../../tools/lib/paths', () => paths)
+vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
+  ...(await importOriginal()),
+  get appRoot() {
+    return paths.appRoot
+  },
+  get repositoryRoot() {
+    return paths.repositoryRoot
+  },
+}))
 
 let renderer: Awaited<ReturnType<typeof startRenderer>> | undefined
 let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined

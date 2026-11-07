@@ -6,7 +6,7 @@
 
 [可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)覆盖源码、测试、工具、配置与设计示例。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
-源码审查先核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
+审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)将规格、实现和消费者放在同一条使用路径上核对，比较同类入口的粒度、风格与实际结果。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
 
 <a id="verification-scope"></a>
 

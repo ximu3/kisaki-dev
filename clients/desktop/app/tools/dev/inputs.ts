@@ -5,11 +5,11 @@
 
 import { once } from 'node:events'
 import { readdir } from 'node:fs/promises'
-import { basename, isAbsolute, join, relative, sep } from 'node:path'
+import { basename, join } from 'node:path'
 import { watch } from 'chokidar'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { FSWatcher } from 'chokidar'
-import { appRoot, repositoryRoot } from '../lib/paths'
+import { appRoot, containsPath, repositoryRoot } from '../lib/paths'
 import type { DesktopDependency } from './dependencies'
 
 /** Session callbacks receive changes and terminal watcher failures after initial readiness. */
@@ -19,11 +19,6 @@ interface InputWatchOptions {
   onChange(change: 'runtime' | 'public-package'): void
 
   onError(cause: unknown): void
-}
-
-function contains(parent: string, path: string): boolean {
-  const child = relative(parent, path)
-  return child !== '..' && !child.startsWith(`..${sep}`) && !isAbsolute(child)
 }
 
 /** Keep documentation, verification and generated state outside the live production input set. */
@@ -107,9 +102,9 @@ export async function startInputWatcher(
     await once(watcher, 'ready', { signal: options.signal })
     initialized = true
     watcher.on('all', (_event, path) => {
-      if (packageInputs.some((input) => contains(input, path))) {
+      if (packageInputs.some((input) => containsPath(input, path))) {
         options.onChange('public-package')
-      } else if (runtimeInputs.some((input) => contains(input, path))) {
+      } else if (runtimeInputs.some((input) => containsPath(input, path))) {
         options.onChange('runtime')
       }
     })

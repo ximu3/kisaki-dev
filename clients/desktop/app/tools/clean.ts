@@ -3,18 +3,13 @@
  * and caches.
  */
 
-import { rm } from 'node:fs/promises'
-import { join } from 'node:path'
+import { removeOutputs } from '@kisaki3/tooling/output'
 import { appRoot } from './lib/paths'
 import { runCli } from '@kisaki3/tooling/cli'
 
 /** Remove declared application outputs after its tasks stop; preserve caches and profiles. */
-export async function cleanOutputs(signal?: AbortSignal): Promise<void> {
-  for (const name of ['out', 'dist']) {
-    signal?.throwIfAborted()
-
-    await rm(join(appRoot, name), { recursive: true, force: true })
-  }
+export function cleanOutputs(signal?: AbortSignal): Promise<void> {
+  return removeOutputs(appRoot, ['out', 'dist'], signal)
 }
 
 if (import.meta.main) {

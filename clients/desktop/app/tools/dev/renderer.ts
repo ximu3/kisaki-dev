@@ -6,6 +6,7 @@ import { createServer } from 'vite'
 import { rm } from 'node:fs/promises'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
+import { containsPath } from '../lib/paths'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { ViteDevServer } from 'vite'
@@ -22,11 +23,6 @@ export interface DevelopmentRenderer {
   adopt(snapshot: DependencySnapshot): Promise<void>
 
   close(): Promise<void>
-}
-
-function contains(parent: string, path: string): boolean {
-  const child = relative(parent, path)
-  return child !== '..' && !child.startsWith(`..${sep}`) && !isAbsolute(child)
 }
 
 /** Start the renderer server; adopted copies are replaced on refresh and released on close(). */
@@ -51,7 +47,7 @@ export async function startRenderer(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
           )
 
-          if (importer && contains(snapshotDirectory, importer)) {
+          if (importer && containsPath(snapshotDirectory, importer)) {
             // Imports within the current copy use its package context. Installed third-party
             // dependencies retain the original package's pnpm resolution context.
             if (
@@ -70,7 +66,7 @@ export async function startRenderer(
               relative(snapshotDirectory, importer).split(sep)[0]!,
             )
             const owner = members.find(({ name }) =>
-              contains(join(copyDirectory, 'node_modules', name), importer),
+              containsPath(join(copyDirectory, 'node_modules', name), importer),
             )
             if (owner) {
               return this.resolve(source, join(owner.path, 'package.json'), {
