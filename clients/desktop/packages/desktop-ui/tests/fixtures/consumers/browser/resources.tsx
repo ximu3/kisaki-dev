@@ -3,13 +3,8 @@
 import { createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Button } from '@kisaki3/desktop-ui/button'
-import {
-  MarkdownEditor,
-  MarkdownToolbar,
-  MarkdownPreview,
-  runMarkdownCommand,
-} from '@kisaki3/desktop-ui/markdown'
-import type { MarkdownEditorProps, MarkdownCommand } from '@kisaki3/desktop-ui/markdown'
+import { MarkdownEditor, MarkdownPreview } from '@kisaki3/desktop-ui/markdown'
+import type { MarkdownCommand, MarkdownToolbarAction } from '@kisaki3/desktop-ui/markdown'
 import {
   Chart,
   XYContainer,
@@ -61,9 +56,14 @@ const initial =
 /** Mutable data belongs to the consumer; each capability releases only the resources it creates. */
 export default function Resources(): JSX.Element {
   const [text, setText] = createSignal(initial)
-  const [view, setView] =
-    createSignal<Parameters<NonNullable<MarkdownEditorProps['onViewChange']>>[0]>()
   const [readOnly, setReadOnly] = createSignal(false)
+  const [sourceOnly, setSourceOnly] = createSignal(false)
+  const insertReference: MarkdownToolbarAction = {
+    id: 'reference',
+    label: 'Insert reference',
+    icon: () => <span aria-hidden="true">§</span>,
+    run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
+  }
 
   const [data, setData] = createSignal([
     { x: 1, y: 2, z: 1 },
@@ -96,15 +96,8 @@ export default function Resources(): JSX.Element {
     },
   }))
 
-  window.fixture.editorText = () => view()?.state.doc.toString() ?? ''
   window.fixture.editorSet = setText
-  window.fixture.editorSelect = () => view()?.dispatch({ selection: { anchor: 2, head: 8 } })
-  window.fixture.format = (command) => {
-    const current = view()
-    if (current) {
-      runMarkdownCommand(current, command)
-    }
-  }
+  window.fixture.setSourceOnly = setSourceOnly
 
   onCleanup(() => {
     document.body.dataset.resourcesReleased = 'true'
@@ -121,14 +114,19 @@ export default function Resources(): JSX.Element {
           />
           Read only
         </label>
-        <MarkdownToolbar label="Formatting" labels={labels} view={view()} />
         <MarkdownEditor
+          style={{ 'max-height': '15rem' }}
           readOnly={readOnly()}
           value={text()}
           onValueChange={setText}
           label="Markdown source"
+          toolbarLabel="Formatting"
+          commandLabel={(command) => labels[command]}
+          toolbar={(standard) => (sourceOnly() ? [] : [...standard, insertReference])}
           onViewChange={(current) => {
-            setView(current)
+            window.fixture.editorText = () => current?.state.doc.toString() ?? ''
+            window.fixture.editorSelect = () =>
+              current?.dispatch({ selection: { anchor: 2, head: 8 } })
             window.fixture.editorReleased = current === undefined
           }}
         />

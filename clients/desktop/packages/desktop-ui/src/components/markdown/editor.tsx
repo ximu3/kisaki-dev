@@ -1,6 +1,6 @@
 /** @fileoverview CodeMirror source editing with reactive configuration and explicit view lifetime. */
 
-import { createEffect, onCleanup, onMount, splitProps } from 'solid-js'
+import { createEffect, createSignal, onCleanup, onMount, Show, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Compartment, EditorState, Transaction } from '@codemirror/state'
 import type { Extension } from '@codemirror/state'
@@ -10,8 +10,11 @@ import { markdown } from '@codemirror/lang-markdown'
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
 import { assignRef, classes } from '../../internal/dom'
+import type { MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 import { editorTheme } from './theme'
+import { MarkdownToolbar } from './toolbar'
+import type { MarkdownToolbarConfig } from './toolbar'
 
 const highlighting = HighlightStyle.define([
   { tag: tags.heading, color: 'var(--primary)', fontWeight: '600' },
@@ -24,7 +27,7 @@ const highlighting = HighlightStyle.define([
 ])
 
 /** The host owns text and save policy; onViewChange(undefined) invalidates the borrowed editor on unmount. */
-export interface MarkdownEditorProps extends Omit<
+interface EditorProps<C extends MarkdownCommand> extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   'onChange' | 'children'
 > {
@@ -35,14 +38,30 @@ export interface MarkdownEditorProps extends Omit<
   label: string
   placeholder?: string
   readOnly?: boolean
+  toolbar?: MarkdownToolbarConfig<C> | undefined
+  /** Defaults to the editor's localized accessible name. */
+  toolbarLabel?: string
+  commandLabel?: (command: NoInfer<C>) => string
 
   extensions?: Extension
   onViewChange?: (view: EditorView | undefined) => void
   cspNonce?: string
 }
 
+/** Only displayed built-ins request a localized label. Custom-only and empty lists supply their own names. */
+export type MarkdownEditorProps<C extends MarkdownCommand = MarkdownCommand> = EditorProps<C> &
+  (
+    | { toolbar: MarkdownToolbarConfig<never> }
+    | ({ commandLabel: (command: NoInfer<C>) => string } & ([MarkdownCommand] extends [C]
+        ? unknown
+        : { toolbar: MarkdownToolbarConfig<C> }))
+  )
+
 /** Create one CodeMirror view. External text updates wait for composition and do not add an undo step. */
-export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
+export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
+  input: MarkdownEditorProps<C>,
+): JSX.Element {
+  const props: EditorProps<C> = input
   const [local, rest] = splitProps(props, [
     'value',
     'defaultValue',
@@ -50,6 +69,9 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
     'label',
     'placeholder',
     'readOnly',
+    'toolbarLabel',
+    'commandLabel',
+    'toolbar',
     'extensions',
     'onViewChange',
     'cspNonce',
@@ -58,6 +80,9 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
   ])
 
   let parent!: HTMLDivElement
+  let view!: EditorView
+  const [state, setState] = createSignal<EditorState>()
+
   onMount(() => {
     const configuration = new Compartment()
     let synchronizing = false
@@ -70,7 +95,7 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
       local.extensions ?? [],
     ]
 
-    const view = new EditorView({
+    view = new EditorView({
       parent,
       state: EditorState.create({
         doc: local.value ?? local.defaultValue ?? '',
@@ -85,6 +110,7 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
           EditorView.cspNonce.of(local.cspNonce ?? ''),
           configuration.of(extension()),
           EditorView.updateListener.of((update) => {
+            setState(update.state)
             if (update.docChanged && !synchronizing) {
               local.onValueChange?.(update.state.doc.toString())
             }
@@ -92,6 +118,7 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
         ],
       }),
     })
+    setState(view.state)
 
     const sync = () => {
       if (
@@ -131,11 +158,26 @@ export function MarkdownEditor(props: MarkdownEditorProps): JSX.Element {
   return (
     <div
       {...rest}
-      ref={(node) => {
-        parent = node
-        assignRef(local.ref, node)
-      }}
+      ref={(node) => assignRef(local.ref, node)}
       class={classes(styles.editor, local.class)}
-    />
+    >
+      <Show when={state()}>
+        {(current) => (
+          <MarkdownToolbar
+            view={view}
+            state={current()}
+            label={local.toolbarLabel ?? local.label}
+            commandLabel={local.commandLabel}
+            config={local.toolbar}
+          />
+        )}
+      </Show>
+      <div
+        class={styles.source}
+        ref={(node) => {
+          parent = node
+        }}
+      />
+    </div>
   )
 }

@@ -3,8 +3,11 @@
 @layer components {
   .row {
     display: inline-grid;
+    box-sizing: border-box;
+    min-height: var(--kui-control-height);
     grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
+    align-content: center;
     column-gap: var(--kui-inline-gap);
     width: fit-content;
     max-width: 100%;

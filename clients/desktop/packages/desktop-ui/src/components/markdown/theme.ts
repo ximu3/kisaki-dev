@@ -4,12 +4,14 @@ import { EditorView } from '@codemirror/view'
 
 export const editorTheme = EditorView.theme({
   '&': {
+    flex: '1 1 auto',
+    minHeight: '0',
     backgroundColor: 'var(--input)',
     color: 'var(--input-foreground)',
   },
   '&.cm-focused': { outline: 'none' },
-  '.cm-scroller': { fontFamily: 'var(--font-mono)', minHeight: '8rem' },
-  '.cm-content': { caretColor: 'var(--foreground)' },
+  '.cm-scroller': { fontFamily: 'var(--font-mono)', overflow: 'auto', minHeight: '0' },
+  '.cm-content': { caretColor: 'var(--foreground)', minHeight: '8rem' },
   '.cm-gutters': {
     backgroundColor: 'var(--muted)',
     color: 'var(--muted-foreground)',

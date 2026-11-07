@@ -32,7 +32,6 @@
     transition:
       background-color var(--kui-hover-duration) ease,
       color var(--kui-hover-duration) ease,
-      border-color var(--kui-hover-duration) ease,
       opacity var(--kui-hover-duration) ease;
   }
 
@@ -44,24 +43,10 @@
     max-width: var(--popup-available-width);
     max-height: var(--popup-available-height);
     overflow: auto;
-    opacity: 0;
-    transition:
-      opacity 120ms ease,
-      display 120ms allow-discrete,
-      overlay 120ms allow-discrete;
-  }
-  [data-ui-popup]:popover-open {
-    opacity: 1;
-  }
-  @starting-style {
-    [data-ui-popup]:popover-open {
-      opacity: 0;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    :where(button, input, textarea, select, summary),
-    [data-ui-popup] {
+    :where(button, input, textarea, select, summary) {
       transition: none;
     }
   }

@@ -2,6 +2,10 @@
 
 @layer components {
   .editor {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -13,11 +17,21 @@
 
   .toolbar {
     display: flex;
+    flex: none;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.125rem;
     padding: 0.25rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--border);
+    background: var(--input);
+  }
+
+  .source {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
   }
 
   .preview {

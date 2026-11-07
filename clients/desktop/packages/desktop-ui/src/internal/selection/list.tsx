@@ -16,7 +16,6 @@ interface ListProps extends SelectionListProps {
   id: string
   anchor: Accessor<HTMLElement>
   reference?: Accessor<HTMLElement> | undefined
-  options: readonly SelectionOption[]
   collection: SelectionCollection
   selected: readonly string[]
   open: boolean
@@ -31,12 +30,11 @@ interface ListProps extends SelectionListProps {
 
 /** The trigger owns focus and the collection owns navigation, including offscreen virtual rows. */
 export function SelectionList(props: ListProps): JSX.Element {
-  let popup!: HTMLDivElement
   let list!: HTMLDivElement
 
   const groups = () => {
     const result: { label: string | undefined; options: SelectionOption[] }[] = []
-    for (const option of props.options) {
+    for (const option of props.collection.options()) {
       const last = result.at(-1)
       if (last && last.label === option.group) {
         last.options.push(option)
@@ -46,8 +44,9 @@ export function SelectionList(props: ListProps): JSX.Element {
     }
     return result
   }
+
   createPopup({
-    element: () => popup,
+    element: () => list,
     anchor: props.anchor,
     reference: props.reference,
     open: () => props.open,
@@ -89,10 +88,11 @@ export function SelectionList(props: ListProps): JSX.Element {
       role="option"
       aria-selected={props.selected.includes(option.value)}
       aria-disabled={option.disabled || undefined}
-      aria-posinset={props.options.indexOf(option) + 1}
-      aria-setsize={props.options.length}
+      aria-posinset={props.collection.positionOf(option.value)}
+      aria-setsize={props.collection.options().length}
+      data-last={option.value === props.collection.options().at(-1)?.value || undefined}
       data-active={props.collection.active() === option.value || undefined}
-      class={classes(row.row, styles.option)}
+      class={styles.option}
       onPointerMove={() => {
         if (!option.disabled) {
           props.collection.highlight(option.value)
@@ -104,24 +104,26 @@ export function SelectionList(props: ListProps): JSX.Element {
         }
       }}
     >
-      <span class={styles.optionText}>
-        {option.content ?? option.label}
-        <Show when={option.description}>
-          <small>{option.description}</small>
-        </Show>
-      </span>
-      <span class={row.mark}>
-        <Show when={props.selected.includes(option.value)}>
-          <Icon path={mdiCheck} />
-        </Show>
-      </span>
+      <div class={row.row}>
+        <span class={styles.optionText}>
+          {option.content ?? option.label}
+          <Show when={option.description}>
+            <small>{option.description}</small>
+          </Show>
+        </span>
+        <span class={row.mark}>
+          <Show when={props.selected.includes(option.value)}>
+            <Icon path={mdiCheck} />
+          </Show>
+        </span>
+      </div>
     </div>
   )
 
   return (
     <div
       ref={(node) => {
-        popup = node
+        list = node
       }}
       id={props.id}
       popover="auto"
@@ -131,50 +133,43 @@ export function SelectionList(props: ListProps): JSX.Element {
       aria-busy={props.loading || undefined}
       class={classes(surface.surface, styles.list, props.listClass)}
       onPointerDown={(event) => {
-        if (event.target !== event.currentTarget && event.target !== list) {
+        if (event.target !== event.currentTarget) {
           event.preventDefault()
         }
       }}
     >
-      <div
-        class={styles.viewport}
-        ref={(node) => {
-          list = node
-        }}
+      <Show
+        when={!props.loading}
+        fallback={
+          <div class={styles.message} role="status">
+            {props.loadingMessage}
+          </div>
+        }
       >
         <Show
-          when={!props.loading}
-          fallback={
-            <div class={styles.message} role="status">
-              {props.loadingMessage}
-            </div>
-          }
+          when={props.collection.options().length}
+          fallback={<div class={styles.message}>{props.emptyMessage}</div>}
         >
-          <Show
-            when={props.options.length}
-            fallback={<div class={styles.message}>{props.emptyMessage}</div>}
-          >
-            {props.renderOptions ? (
-              props.renderOptions({
-                options: () => props.options,
-                open: () => props.open,
-                renderOption,
-              })
-            ) : (
-              <For each={groups()}>
-                {(group) => (
-                  <div role={group.label ? 'group' : undefined} aria-label={group.label}>
-                    <Show when={group.label}>
-                      <div class={styles.groupTitle}>{group.label}</div>
-                    </Show>
-                    <For each={group.options}>{renderOption}</For>
-                  </div>
-                )}
-              </For>
-            )}
-          </Show>
+          {props.renderOptions ? (
+            props.renderOptions({
+              options: props.collection.options,
+              open: () => props.open,
+              renderOption,
+            })
+          ) : (
+            <For each={groups()}>
+              {(group) => (
+                <div role={group.label ? 'group' : undefined} aria-label={group.label}>
+                  <Show when={group.label}>
+                    <div class={styles.groupTitle}>{group.label}</div>
+                  </Show>
+                  <For each={group.options}>{renderOption}</For>
+                </div>
+              )}
+            </For>
+          )}
         </Show>
-      </div>
+      </Show>
     </div>
   )
 }

@@ -4,29 +4,36 @@
   :where(.list) {
     width: max-content;
     max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
-    padding: 0.25rem;
-    overflow: hidden;
-  }
-  :where(.list:popover-open) {
-    display: flex;
-    flex-direction: column;
-  }
-  .viewport {
-    min-height: 0;
+    padding: 0;
     overflow: auto;
     overscroll-behavior: contain;
   }
 
   .groupTitle {
-    padding: 0.5rem 0.5rem 0.25rem;
+    padding: 0.5rem 0.75rem 0.25rem;
     color: var(--muted-foreground);
     font-size: var(--kui-caption-font);
   }
-  .option[data-active] {
+  .option {
+    box-sizing: border-box;
+    min-inline-size: min-content;
+    padding-inline: 0.25rem;
+  }
+  /* The virtualizer measures the first and last insets as part of their rows. */
+  .option[aria-posinset='1'] {
+    padding-block-start: 0.25rem;
+  }
+  .groupTitle + .option {
+    padding-block-start: 0;
+  }
+  .option[data-last] {
+    padding-block-end: 0.25rem;
+  }
+  .option[data-active] > div {
     background: var(--accent);
     color: var(--accent-foreground);
   }
-  .option[aria-disabled='true'] {
+  .option[aria-disabled='true'] > div {
     opacity: 0.5;
     cursor: default;
   }
@@ -42,7 +49,7 @@
   }
 
   .message {
-    padding: 0.5rem;
+    padding: 0.75rem;
     color: var(--muted-foreground);
   }
 }

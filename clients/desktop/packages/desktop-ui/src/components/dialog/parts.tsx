@@ -142,7 +142,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
       aria-describedby={
         props['aria-describedby'] ?? (dialog.description() ? `${dialog.id}-description` : undefined)
       }
-      class={classes(surface.surface, styles.root, local.class)}
+      class={classes(surface.surface, surface.panel, styles.root, local.class)}
       closedby={local.closeOnOutside ? 'any' : 'closerequest'}
       onCancel={(event) => {
         callHandler(local.onCancel, event)
@@ -192,7 +192,7 @@ export function DialogHeader(props: DialogHeaderProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children', 'closeLabel'])
 
   return (
-    <div {...rest} class={classes(styles.header, local.class)}>
+    <div {...rest} class={classes(styles.header, surface.withClose, local.class)}>
       {local.children}
       <Show when={local.closeLabel}>
         {(label) => (
@@ -200,7 +200,7 @@ export function DialogHeader(props: DialogHeaderProps): JSX.Element {
             type="button"
             variant="ghost"
             size="icon"
-            class={styles.close}
+            class={surface.close}
             aria-label={label()}
           >
             <Icon path={mdiClose} />

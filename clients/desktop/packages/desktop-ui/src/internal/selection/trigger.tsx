@@ -35,7 +35,7 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
   const show = () => {
     local.onOpenChange(true)
     const selected = local.selected.find((key) => {
-      const item = local.collection.byValue().get(key)
+      const item = local.collection.get(key)
       return item && !item.disabled
     })
     local.collection.highlight(selected ?? local.collection.enabled()[0]?.value)
@@ -96,7 +96,7 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
           event.preventDefault()
           const key = local.collection.active()
           if (key !== undefined) {
-            local.onChoose(local.collection.byValue().get(key)!)
+            local.onChoose(local.collection.get(key)!)
           }
         } else if (
           event.key.length === 1 &&

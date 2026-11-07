@@ -1,6 +1,6 @@
 /** @fileoverview Window notification presentation, paused clocks and active-modal mounting. */
 
-import { createEffect, For, onCleanup, onMount, Show, untrack } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, onMount, Show, untrack } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { createToastController } from './controller'
 import type { ToastEntry } from './controller'
@@ -11,6 +11,8 @@ import { Spinner } from '../spinner/control'
 import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
+
+const expiryFadeMs = 90
 
 /** Install once per window. Labels are supplied by the host's locale. */
 export interface ToasterProps {
@@ -71,6 +73,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
       popover="manual"
       role="region"
       aria-label={props.regionLabel}
+      style={{ '--kui-toast-expiry-fade': `${expiryFadeMs}ms` }}
       class={`${styles.region} ${props.class ?? ''}`}
     >
       <For each={controller.entries()}>
@@ -95,16 +98,21 @@ function ToastItem(props: {
   dismiss: () => void
 }): JSX.Element {
   let timer: ReturnType<typeof setTimeout> | undefined
+  let fadeTimer: ReturnType<typeof setTimeout> | undefined
   let remaining = props.entry.durationMs
   let started = 0
   let hovered = false
   let focused = false
+  const [expiring, setExpiring] = createSignal(false)
+
   const statusType = () => {
     const type = props.entry.message().type
     return type === 'loading' ? 'info' : type
   }
 
   const stop = () => {
+    clearTimeout(fadeTimer)
+    setExpiring(false)
     if (timer !== undefined) {
       clearTimeout(timer)
       timer = undefined
@@ -121,6 +129,7 @@ function ToastItem(props: {
     }
 
     started = performance.now()
+    fadeTimer = setTimeout(() => setExpiring(true), Math.max(0, remaining - expiryFadeMs))
     timer = setTimeout(props.dismiss, remaining)
   }
 
@@ -134,8 +143,9 @@ function ToastItem(props: {
 
   return (
     <div
-      class={classes(surface.surface, styles.item)}
+      class={classes(surface.surface, surface.panel, surface.withClose, styles.item)}
       data-type={props.entry.message().type}
+      data-expiring={expiring() || undefined}
       onPointerEnter={() => {
         hovered = true
         stop()
@@ -168,12 +178,23 @@ function ToastItem(props: {
       </div>
       <Show when={props.entry.message().action}>
         {(action) => (
-          <Button size="sm" variant="outline" onClick={() => action().onClick()}>
+          <Button
+            size="sm"
+            variant="outline"
+            class={styles.action}
+            onClick={() => action().onClick()}
+          >
             {action().label}
           </Button>
         )}
       </Show>
-      <Button size="icon-xs" variant="ghost" aria-label={props.closeLabel} onClick={props.dismiss}>
+      <Button
+        size="icon"
+        variant="ghost"
+        class={surface.close}
+        aria-label={props.closeLabel}
+        onClick={props.dismiss}
+      >
         <Icon path={mdiClose} />
       </Button>
     </div>

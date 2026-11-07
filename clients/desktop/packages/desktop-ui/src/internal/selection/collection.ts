@@ -4,14 +4,22 @@ import { createMemo, createSignal, onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { SelectionOption } from './types'
 
-export function createSelection(options: Accessor<readonly SelectionOption[]>) {
-  const [highlighted, setHighlighted] = createSignal<string>()
+export function createSelection(source: Accessor<readonly SelectionOption[]>) {
+  const options = createMemo(source)
+  const entries = createMemo(
+    () =>
+      new Map(options().map((option, index) => [option.value, { option, position: index + 1 }])),
+  )
+  const get = (value: string) => entries().get(value)?.option
+  const positionOf = (value: string) => entries().get(value)?.position
   const enabled = createMemo(() => options().filter((option) => !option.disabled))
-  const byValue = createMemo(() => new Map(options().map((option) => [option.value, option])))
+
+  const [highlighted, setHighlighted] = createSignal<string>()
   const active = () => {
-    const option = byValue().get(highlighted() ?? '')
+    const option = get(highlighted() ?? '')
     return option && !option.disabled ? option.value : undefined
   }
+
   let search = ''
   let timer: ReturnType<typeof setTimeout> | undefined
   onCleanup(() => clearTimeout(timer))
@@ -48,7 +56,7 @@ export function createSelection(options: Accessor<readonly SelectionOption[]>) {
     )
   }
 
-  return { active, highlight, move, type, byValue, enabled }
+  return { options, get, positionOf, enabled, active, highlight, move, type }
 }
 
 export type SelectionCollection = ReturnType<typeof createSelection>

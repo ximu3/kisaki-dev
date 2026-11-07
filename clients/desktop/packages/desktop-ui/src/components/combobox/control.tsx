@@ -197,7 +197,7 @@ export function Combobox(props: ComboboxProps): JSX.Element {
             event.preventDefault()
             collection.move(event.key === 'Home' ? 'first' : 'last')
           } else if (open() && event.key === 'Enter') {
-            const option = collection.byValue().get(collection.active() ?? '')
+            const option = collection.get(collection.active() ?? '')
             if (option) {
               event.preventDefault()
               choose(option)
@@ -217,7 +217,6 @@ export function Combobox(props: ComboboxProps): JSX.Element {
         id={id}
         anchor={() => input}
         collection={collection}
-        options={local.options}
         selected={selected() ? [selected()!.value] : []}
         open={open()}
         onOpenChange={(next) => {

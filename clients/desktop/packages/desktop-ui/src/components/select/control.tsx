@@ -152,7 +152,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
 
   const selectedOptions = createMemo(() =>
     local.selected.flatMap((value) => {
-      const option = collection.byValue().get(value)
+      const option = collection.get(value)
       return option ? [option] : []
     }),
   )
@@ -165,7 +165,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
       mirror.value = ''
     }
     const invalid = local.selected.some((value) => {
-      const option = collection.byValue().get(value)
+      const option = collection.get(value)
       return !option || option.disabled
     })
     mirror.setCustomValidity(invalid ? local.invalidSelectionMessage : '')
@@ -208,7 +208,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
         {(chips) => (
           <SelectedChips
             values={local.selected}
-            label={(key) => collection.byValue().get(key)?.label ?? key}
+            label={(key) => collection.get(key)?.label ?? key}
             disabled={attributes.disabled}
             removeLabel={chips().removeLabel}
             scrollPreviousLabel={chips().scrollPreviousLabel}
@@ -247,7 +247,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
               : classes(styles.value, !selectedOptions().length ? styles.placeholder : undefined)
           }
         >
-          {local.selected.map((key) => collection.byValue().get(key)?.label ?? key).join(', ') ||
+          {local.selected.map((key) => collection.get(key)?.label ?? key).join(', ') ||
             local.placeholder}
         </span>
         <Icon path={mdiChevronDown} class={styles.arrow} />
@@ -282,7 +282,6 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
         id={id}
         anchor={() => trigger}
         reference={() => frame}
-        options={local.options}
         collection={collection}
         selected={local.selected}
         multiple={multiple()}

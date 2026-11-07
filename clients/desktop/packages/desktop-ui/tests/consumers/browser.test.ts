@@ -96,12 +96,16 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
   await trigger.press('End')
   const last = page.getByRole('option', { name: 'Item 10000', exact: true })
   await browserExpect(last).toBeInViewport({ ratio: 0.99 })
+  await browserExpect(last).toHaveAttribute('aria-posinset', '10000')
+  const list = page.locator('#virtual-form [role="listbox"]')
+  expect(await list.evaluate((node) => node.scrollTop)).toBeGreaterThan(0)
   await browserExpect(trigger).toHaveAttribute(
     'aria-activedescendant',
     (await last.getAttribute('id'))!,
   )
   await trigger.press('Space')
   await trigger.press('Escape')
+  expect(await list.evaluate((node) => node.getBoundingClientRect().height)).toBe(0)
   expect(
     await page
       .locator('#virtual-form')
@@ -444,8 +448,13 @@ test('Markdown, charts and drag load as complete capabilities and release their 
 
   const readOnly = page.getByRole('checkbox', { name: 'Read only', exact: true })
   const bold = page.getByRole('button', { name: 'Bold', exact: true })
+  const toolbar = page.getByRole('toolbar', { name: 'Formatting' })
+  const undo = toolbar.getByRole('button', { name: 'Undo', exact: true })
+  const reference = toolbar.getByRole('button', { name: 'Insert reference' })
+  await browserExpect(undo).toBeDisabled()
   await readOnly.check()
   await browserExpect(bold).toBeDisabled()
+  await browserExpect(reference).toBeDisabled()
   await readOnly.uncheck()
   await browserExpect(bold).toBeEnabled()
 
@@ -460,12 +469,24 @@ test('Markdown, charts and drag load as complete capabilities and release their 
   await first.getByRole('link', { name: 'External', exact: true }).click()
   await browserExpect(page.locator('body')).toHaveAttribute('data-link', 'https://example.com/')
 
-  await page.evaluate(() => {
-    window.fixture.editorSelect?.()
-    window.fixture.format?.('bold')
-  })
+  await bold.focus()
+  await page.keyboard.press('ArrowRight')
+  await browserExpect(toolbar.getByRole('button', { name: 'Italic' })).toBeFocused()
+  await page.keyboard.press('Tab')
+  await browserExpect(page.getByRole('textbox', { name: 'Markdown source' })).toBeFocused()
+
+  await page.evaluate(() => window.fixture.editorSelect?.())
+  await bold.click()
   expect(await page.evaluate(() => window.fixture.editorText?.())).toContain('**Sample**')
-  await page.evaluate(() => window.fixture.format?.('undo'))
+  await undo.click()
+  expect(await page.evaluate(() => window.fixture.editorText?.())).toMatch(/^# Sample/)
+  await page.evaluate(() => window.fixture.editorSelect?.())
+  await reference.click()
+  await browserExpect(first).toContainText('Reference')
+  await page.evaluate(() => window.fixture.setSourceOnly?.(true))
+  await browserExpect(toolbar).toHaveCount(0)
+  await page.evaluate(() => window.fixture.setSourceOnly?.(false))
+  await undo.click()
   expect(await page.evaluate(() => window.fixture.editorText?.())).toMatch(/^# Sample/)
   await page.evaluate(() => window.fixture.editorSet?.('External replacement'))
   await browserExpect(first).toHaveText('External replacement')

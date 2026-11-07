@@ -23,6 +23,7 @@ export interface SelectionListRenderProps {
 export interface SelectionListProps {
   renderOptions?: ((props: SelectionListRenderProps) => JSX.Element) | undefined
   scrollToValue?: ((value: string) => void) | undefined
+  /** The native listbox is the scroll element on both axes. */
   listRef?: ((element: HTMLDivElement) => void) | undefined
   listClass?: string | undefined
 }

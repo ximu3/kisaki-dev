@@ -15,7 +15,7 @@ export interface FixtureApi {
   editorSet?: (value: string) => void
   editorSelect?: () => void
   editorReleased?: boolean
-  format?: (command: 'bold' | 'undo') => void
+  setSourceOnly?: (sourceOnly: boolean) => void
 
   dispose: () => void
 }

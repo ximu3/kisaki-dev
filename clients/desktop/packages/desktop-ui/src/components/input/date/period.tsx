@@ -76,7 +76,6 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
         listClass={styles.periodList}
         anchor={() => trigger}
         listRef={setViewport}
-        options={options()}
         collection={collection}
         selected={[String(props.value)]}
         open={open()}

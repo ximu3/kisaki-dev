@@ -7,7 +7,6 @@
     max-height: calc(100dvh - 2rem);
     margin: auto;
     padding: 0;
-    border-radius: var(--radius-lg);
     background: var(--dialog);
     color: var(--dialog-foreground);
     box-shadow: var(--shadow-modal);
@@ -16,22 +15,14 @@
   .root[open] {
     display: flex;
     flex-direction: column;
-    animation: enter 140ms ease-out;
   }
   .root::backdrop {
     background: transparent;
   }
-  @keyframes enter {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
 
   .header {
     flex: none;
+    overflow-wrap: anywhere;
     padding: 0.625rem 1rem;
     border-bottom: 1px solid var(--border);
   }
@@ -41,24 +32,6 @@
     font-size: var(--kui-control-font);
     font-weight: 600;
     line-height: var(--kui-control-line);
-  }
-
-  .header:has(> .close) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: var(--kui-inline-gap);
-  }
-  .header:has(> .close) > :not(.close) {
-    grid-column: 1;
-  }
-  .header .close {
-    grid-area: 1 / 2;
-    color: var(--muted-foreground);
-  }
-  .header .close:not(:disabled):hover {
-    background: transparent;
-    color: var(--foreground);
   }
 
   .description {
@@ -97,11 +70,5 @@
   .root[role='alertdialog'] .footer {
     padding-top: 0;
     padding-bottom: 0.75rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .root[open] {
-      animation: none;
-    }
   }
 }
