@@ -12,6 +12,13 @@
     --kui-icon-size: 1rem;
     --kui-icon-small: 0.75rem;
     --kui-inline-gap: 0.5rem;
+    --kui-hover-duration: 100ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-color-scheme] {
+      --kui-hover-duration: 0ms;
+    }
   }
 }
 
@@ -23,10 +30,10 @@
 
   :where(button, input, textarea, select, summary) {
     transition:
-      background-color 100ms ease,
-      color 100ms ease,
-      border-color 100ms ease,
-      opacity 100ms ease;
+      background-color var(--kui-hover-duration) ease,
+      color var(--kui-hover-duration) ease,
+      border-color var(--kui-hover-duration) ease,
+      opacity var(--kui-hover-duration) ease;
   }
 
   [data-ui-popup] {

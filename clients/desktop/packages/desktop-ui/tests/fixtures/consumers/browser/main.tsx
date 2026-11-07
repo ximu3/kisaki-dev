@@ -300,16 +300,12 @@ function Validation(): JSX.Element {
   const issues = createMemo<FieldIssue[]>(() =>
     submitted()
       ? [
-          ...(!title()
-            ? [{ id: 'title', label: 'Title', summary: 'Enter a title.', message: long() }]
-            : []),
+          ...(!title() ? [{ id: 'title', summary: 'Enter a title.', message: long() }] : []),
           ...(!description()
             ? [
                 {
                   id: 'description',
-                  label: 'Description',
                   summary: 'Enter a description.',
-                  message: 'Describe the sample so that it can be recognized.',
                 },
               ]
             : []),
@@ -374,7 +370,9 @@ function Validation(): JSX.Element {
           id="feedback"
           issues={issues()}
           activeFieldId={active()}
-          summary={(count) => `${count} fields need attention`}
+          summary={(count, current) =>
+            current ? `${current.summary} (${count - 1} more)` : `${count} fields need attention`
+          }
           onLocate={locate}
           onFocusIn={() => setActive(undefined)}
         />
@@ -433,7 +431,7 @@ function Interactions(): JSX.Element {
               }
             }}
           >
-            <DialogHeader>
+            <DialogHeader closeLabel="Close editor">
               <DialogTitle>Edit sample</DialogTitle>
             </DialogHeader>
             <DialogBody>
@@ -487,9 +485,6 @@ function Interactions(): JSX.Element {
                 </AlertDialogContent>
               </Dialog>
             </DialogBody>
-            <DialogFooter>
-              <DialogClose>Close editor</DialogClose>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
         <Popover>

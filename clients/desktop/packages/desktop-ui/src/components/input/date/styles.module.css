@@ -1,13 +1,7 @@
 /* A complete calendar uses the same compact controls and clean floating surface. */
 
 @layer components {
-  .container {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-  }
   .editor {
-    padding-inline-end: 1.5rem;
     font-variant-numeric: tabular-nums;
   }
   .editor::-webkit-calendar-picker-indicator {
@@ -17,31 +11,14 @@
     padding: 0;
   }
   .trigger {
-    position: absolute;
-    inset-block: 1px;
-    inset-inline-end: 1px;
-    display: grid;
-    place-items: center;
-    width: 1.25rem;
-    padding: 0;
-    border: 0;
-    border-radius: var(--radius-sm);
-    background: transparent;
     color: var(--muted-foreground);
-    font-size: 1rem;
-    cursor: pointer;
   }
-  .trigger:hover:not(:disabled) {
-    background: var(--accent);
+  .trigger:hover:not(:disabled),
+  .trigger[aria-expanded='true'] {
     color: var(--foreground);
   }
   .trigger:disabled {
     opacity: 0.5;
-    cursor: default;
-  }
-  .trigger:focus-visible {
-    outline: 1px solid var(--ring);
-    outline-offset: -2px;
   }
 
   .calendar {

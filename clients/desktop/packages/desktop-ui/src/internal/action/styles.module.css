@@ -21,8 +21,8 @@
     background: transparent;
     cursor: pointer;
     transition:
-      background-color 100ms,
-      color 100ms;
+      background-color var(--kui-hover-duration) ease,
+      color var(--kui-hover-duration) ease;
   }
 
   .root:focus-visible {
@@ -50,7 +50,6 @@
   .root[data-variant='secondary'] {
     background: var(--secondary);
     color: var(--secondary-foreground);
-    border-color: var(--border);
   }
   .root[data-variant='link'] {
     color: var(--primary);
@@ -118,6 +117,12 @@
     height: var(--kui-icon-size);
     flex-shrink: 0;
     pointer-events: none;
+  }
+
+  @media (forced-colors: active) {
+    .root[data-variant='secondary'] {
+      border-color: ButtonText;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

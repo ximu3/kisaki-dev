@@ -2,8 +2,8 @@
 
 @layer components {
   :where(.surface) {
-    border: 0;
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     background: var(--popover);
     color: var(--popover-foreground);
     box-shadow: var(--shadow-overlay);

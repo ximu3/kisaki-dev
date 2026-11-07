@@ -26,7 +26,8 @@
 
     --vis-tooltip-background-color: var(--popover);
     --vis-tooltip-text-color: var(--popover-foreground);
-    --vis-tooltip-border-color: transparent;
+    --vis-tooltip-border-color: var(--border);
+    --vis-tooltip-border-radius: var(--radius-md);
     --vis-tooltip-box-shadow: var(--shadow-overlay);
     --vis-tooltip-transition-duration: 100ms;
   }

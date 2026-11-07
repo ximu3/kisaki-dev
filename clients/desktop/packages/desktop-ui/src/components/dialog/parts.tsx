@@ -13,10 +13,12 @@ import {
 } from 'solid-js'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
+import { Icon, mdiClose } from '../../internal/icon/icon'
 import { createValue } from '../../internal/state'
 import { registerModal } from '../../internal/modal-host'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
+import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 interface DialogState {
@@ -140,7 +142,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
       aria-describedby={
         props['aria-describedby'] ?? (dialog.description() ? `${dialog.id}-description` : undefined)
       }
-      class={classes(styles.root, local.class)}
+      class={classes(surface.surface, styles.root, local.class)}
       closedby={local.closeOnOutside ? 'any' : 'closerequest'}
       onCancel={(event) => {
         callHandler(local.onCancel, event)
@@ -168,7 +170,7 @@ export function DialogClose(props: ButtonProps): JSX.Element {
 
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       {...rest}
       onClick={(event) => {
         callHandler(local.onClick, event)
@@ -180,11 +182,33 @@ export function DialogClose(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Fixed heading area, separated from the scrollable body in ordinary dialogs. */
-export function DialogHeader(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+/** Provide a localized close label for a header exit when the footer has no dismissal action. */
+export interface DialogHeaderProps extends JSX.HTMLAttributes<HTMLDivElement> {
+  closeLabel?: string
+}
 
-  return <div {...rest} class={classes(styles.header, local.class)} />
+/** The header exit requests the same cancelable close as Escape and DialogClose. */
+export function DialogHeader(props: DialogHeaderProps): JSX.Element {
+  const [local, rest] = splitProps(props, ['class', 'children', 'closeLabel'])
+
+  return (
+    <div {...rest} class={classes(styles.header, local.class)}>
+      {local.children}
+      <Show when={local.closeLabel}>
+        {(label) => (
+          <DialogClose
+            type="button"
+            variant="ghost"
+            size="icon"
+            class={styles.close}
+            aria-label={label()}
+          >
+            <Icon path={mdiClose} />
+          </DialogClose>
+        )}
+      </Show>
+    </div>
+  )
 }
 
 /** Accessible modal heading, linked by DialogContent. */

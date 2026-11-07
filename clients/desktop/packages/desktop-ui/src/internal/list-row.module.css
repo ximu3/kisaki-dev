@@ -21,6 +21,7 @@
     flex: none;
     place-items: center;
     width: var(--kui-icon-size);
+    --kui-glyph-size: calc(var(--kui-icon-size) * 12 / 14);
     margin-inline-start: auto;
     color: inherit;
   }

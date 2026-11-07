@@ -6,23 +6,24 @@ import {
   createSignal,
   createUniqueId,
   For,
+  on,
+  onCleanup,
+  onMount,
   Show,
   splitProps,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../../internal/dom'
-import { Icon, mdiAlertCircleOutline } from '../../../internal/icon/icon'
 import { TooltipSurface } from '../../../internal/tooltip/content'
 import { createTooltip } from '../../../internal/tooltip/controller'
 import styles from './styles.module.css'
 
-/** summary is a concise correction; message retains the full explanation. */
+/** summary identifies the field in a complete correction. message can supply a more detailed correction. */
 export interface FieldIssue {
   readonly id: string
-  readonly label: string
 
   readonly summary: string
-  readonly message: string
+  readonly message?: string
 }
 
 /** undefined activeFieldId retains feedback focus, null indicates a different valid field. */
@@ -31,7 +32,8 @@ export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   activeFieldId?: string | null | undefined
   onLocate: (id: string) => void
 
-  summary: (count: number) => string
+  /** Format a multi-issue prompt, including the remaining count when a field is active. */
+  summary: (count: number, current: FieldIssue | undefined) => string
   message?: string
 }
 
@@ -59,12 +61,10 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
       return local.message
     }
 
-    const issue = current()
-    if (issue) {
-      return `${issue.label}: ${issue.summary}`
+    if (local.issues.length > 1) {
+      return local.summary(local.issues.length, current())
     }
-
-    return local.issues.length ? local.summary(local.issues.length) : ''
+    return local.issues[0]?.summary ?? ''
   }
 
   return (
@@ -88,6 +88,20 @@ function FeedbackPrompt(props: {
   const tooltip = createTooltip(() => 300)
   const id = createUniqueId()
   let trigger!: HTMLButtonElement
+  let message!: HTMLSpanElement
+  const [clipped, setClipped] = createSignal(false)
+  const hasDetails = () =>
+    props.issues.length > 1 ||
+    clipped() ||
+    props.issues.some((issue) => (issue.message ?? issue.summary) !== props.text)
+
+  onMount(() => {
+    const measure = () => setClipped(message.scrollWidth > message.clientWidth)
+    const size = new ResizeObserver(measure)
+    size.observe(message)
+    createEffect(on(() => props.text, measure))
+    onCleanup(() => size.disconnect())
+  })
 
   return (
     <>
@@ -98,40 +112,39 @@ function FeedbackPrompt(props: {
         type="button"
         class={styles.prompt}
         aria-label={props.text}
-        aria-describedby={id}
-        onClick={props.onLocate}
+        aria-describedby={hasDetails() ? id : undefined}
+        onClick={() => {
+          tooltip.dismiss()
+          props.onLocate()
+        }}
+        onPointerEnter={() => tooltip.hover('trigger', true)}
+        onPointerLeave={() => tooltip.hover('trigger', false)}
         onFocus={() => tooltip.focus(true)}
         onBlur={() => tooltip.focus(false)}
       >
-        <span class={styles.message} role="status" aria-live="polite">
+        <span
+          ref={(node) => {
+            message = node
+          }}
+          class={styles.message}
+          role="status"
+        >
           {props.text}
         </span>
-        <span
-          class={styles.icon}
-          onPointerEnter={() => tooltip.hover('trigger', true)}
-          onPointerLeave={() => tooltip.hover('trigger', false)}
-        >
-          <Icon path={mdiAlertCircleOutline} />
-        </span>
       </button>
-      <TooltipSurface
-        id={id}
-        reading={tooltip}
-        anchor={() => trigger}
-        placement="top-start"
-        class={styles.details}
-      >
-        <ul>
-          <For each={props.issues}>
-            {(issue) => (
-              <li>
-                <strong>{issue.label}</strong>
-                <p>{issue.message}</p>
-              </li>
-            )}
-          </For>
-        </ul>
-      </TooltipSurface>
+      <Show when={hasDetails()}>
+        <TooltipSurface
+          id={id}
+          reading={tooltip}
+          anchor={() => trigger}
+          placement="top-start"
+          class={styles.details}
+        >
+          <ul>
+            <For each={props.issues}>{(issue) => <li>{issue.message ?? issue.summary}</li>}</For>
+          </ul>
+        </TooltipSurface>
+      </Show>
     </>
   )
 }

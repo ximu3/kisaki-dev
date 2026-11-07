@@ -2,12 +2,14 @@
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef } from '../../../internal/dom'
+import { assignRef, classes } from '../../../internal/dom'
 import { fieldAttributes } from '../../../internal/field'
 import { Icon, mdiChevronDown, mdiChevronUp } from '../../../internal/icon/icon'
 import { createValue } from '../../../internal/state'
 import { NativeInput } from '../native'
 import type { NativeInputProps } from '../native'
+import { InputFrame } from '../frame'
+import frame from '../styles.module.css'
 import styles from './styles.module.css'
 
 /** Values retain the native string model, including the empty state; min, max and step stay native. */
@@ -26,6 +28,8 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'increaseLabel',
     'decreaseLabel',
     'ref',
+    'class',
+    'style',
   ])
   const field = fieldAttributes()
   const [value, change] = createValue(
@@ -46,9 +50,10 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
 
   return (
-    <div class={styles.number}>
+    <InputFrame class={local.class} style={local.style}>
       <NativeInput
         {...rest}
+        class={classes(frame.editor, styles.editor)}
         type="number"
         value={value()}
         defaultValue={local.defaultValue}
@@ -58,7 +63,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           assignRef(local.ref, node)
         }}
       />
-      <span class={styles.steps}>
+      <span class={classes(frame.end, styles.steps)}>
         <button
           type="button"
           tabIndex={-1}
@@ -80,6 +85,6 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           <Icon path={mdiChevronDown} />
         </button>
       </span>
-    </div>
+    </InputFrame>
   )
 }

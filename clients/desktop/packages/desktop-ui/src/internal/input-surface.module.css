@@ -20,20 +20,21 @@
   .surface::placeholder {
     color: var(--muted-foreground);
   }
-  .surface:focus-visible,
-  .surface:focus-within {
+  .surface:where([aria-invalid='true'], :has(> input[aria-invalid='true'])) {
+    border-color: var(--destructive);
+  }
+  .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
     outline: none;
     border-color: var(--ring);
   }
-  .surface[aria-invalid='true'] {
-    border-color: var(--destructive);
-  }
-  .surface[aria-invalid='true']:focus-within {
-    border-color: color-mix(in oklch, var(--destructive) 65%, var(--ring));
-  }
-  .surface:disabled,
-  .surface[data-disabled] {
+  .surface:where(:disabled, [data-disabled], :has(> input:disabled)) {
     opacity: 0.5;
     cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
+      border-color: Highlight;
+    }
   }
 }

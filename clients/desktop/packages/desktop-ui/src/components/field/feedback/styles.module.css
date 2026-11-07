@@ -4,7 +4,7 @@
   .root {
     flex: 1 1 0;
     min-width: 0;
-    height: 1.75rem;
+    height: var(--kui-control-height);
     display: flex;
     align-items: center;
     margin-inline-end: auto;
@@ -15,7 +15,6 @@
   .prompt {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
     max-width: 100%;
     min-width: 0;
     height: 100%;
@@ -27,9 +26,6 @@
     font: inherit;
     text-align: start;
     cursor: pointer;
-  }
-  .prompt:hover {
-    color: color-mix(in oklch, var(--destructive) 80%, var(--foreground));
   }
   .prompt:focus-visible {
     outline: 1px solid var(--ring);
@@ -43,12 +39,6 @@
     white-space: nowrap;
   }
 
-  .icon {
-    display: flex;
-    flex: none;
-    font-size: 1rem;
-  }
-
   .details {
     width: min(24rem, calc(100vw - 1rem));
     --kui-tooltip-padding: 0.625rem 0.75rem;
@@ -60,9 +50,5 @@
   }
   .details li + li {
     margin-top: 0.625rem;
-  }
-  .details p {
-    margin: 0.125rem 0 0;
-    overflow-wrap: anywhere;
   }
 }

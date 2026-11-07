@@ -15,7 +15,8 @@ import { assignRef, callHandler, classes } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, mdiCalendarOutline } from '../../../internal/icon/icon'
 import { createValue, onFormReset } from '../../../internal/state'
-import surface from '../../../internal/input-surface.module.css'
+import { InputFrame } from '../frame'
+import frame from '../styles.module.css'
 import type { InputProps } from '../control'
 import { parseDate } from './calendar'
 import { DatePicker } from './picker'
@@ -41,6 +42,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
       'step',
       'ref',
       'class',
+      'style',
       'onInput',
       'onKeyDown',
       'onPaste',
@@ -128,7 +130,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
   })
 
   return (
-    <div class={styles.container}>
+    <InputFrame class={local.class} style={local.style} open={open()}>
       <input
         {...field}
         {...rest}
@@ -141,7 +143,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
           input = node
           assignRef(local.ref, node)
         }}
-        class={classes(surface.surface, surface.singleLine, styles.editor, local.class)}
+        class={classes(frame.editor, styles.editor)}
         onInput={(event) => {
           if (!input.validity.badInput && (!input.value || parseDate(input.value))) {
             change(input.value)
@@ -176,7 +178,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
       />
       <button
         type="button"
-        class={styles.trigger}
+        class={classes(frame.end, styles.trigger)}
         ref={(node) => {
           trigger = node
         }}
@@ -206,6 +208,6 @@ export function DateInput(props: DateInputProps): JSX.Element {
           }}
         />
       </Show>
-    </div>
+    </InputFrame>
   )
 }

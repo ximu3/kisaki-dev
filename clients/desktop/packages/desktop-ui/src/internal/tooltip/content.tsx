@@ -45,8 +45,8 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     <div
       {...rest}
       role="tooltip"
-      popover="manual"
       ref={(node) => {
+        node.popover = 'hint'
         content = node
         assignRef(local.ref, node)
       }}

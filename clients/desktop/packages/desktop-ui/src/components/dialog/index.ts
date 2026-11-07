@@ -13,4 +13,5 @@ export {
   AlertDialogContent,
   type DialogProps,
   type DialogContentProps,
+  type DialogHeaderProps,
 } from './parts'

@@ -9,9 +9,6 @@
     box-sizing: border-box;
     max-width: 18rem;
     padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-md);
-    background: var(--popover);
-    color: var(--popover-foreground);
     box-shadow: var(--shadow-raised);
     font: 0.8125rem var(--font-sans);
     overflow: hidden;

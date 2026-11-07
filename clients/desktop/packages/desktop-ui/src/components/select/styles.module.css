@@ -32,6 +32,16 @@
     color: var(--muted-foreground);
   }
 
+  .trigger:hover:not(:disabled) .arrow,
+  .trigger[aria-expanded='true'] .arrow,
+  .toggle:hover:not(:disabled) .arrow,
+  .toggle[aria-expanded='true'] .arrow {
+    color: var(--foreground);
+  }
+  .arrow {
+    transition: color var(--kui-hover-duration) ease;
+  }
+
   .multiple {
     padding-inline: 0.1875rem;
   }
@@ -60,18 +70,35 @@
   }
 
   .chips {
+    position: relative;
+    --edge-size: 1.125rem;
+    --start-inset: 0px;
+    --end-inset: 0px;
     display: flex;
     align-items: center;
     min-width: 0;
     max-width: 100%;
     flex: 0 1 auto;
   }
+  .chips[data-previous] {
+    --start-inset: var(--edge-size);
+  }
+  .chips[data-next] {
+    --end-inset: var(--edge-size);
+  }
+
   .viewport {
+    clip-path: inset(0 var(--end-inset) 0 var(--start-inset));
+    scroll-padding-inline: var(--start-inset) var(--end-inset);
+    overscroll-behavior-x: contain;
     display: flex;
     align-items: center;
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
+  }
+  .viewport:dir(rtl) {
+    clip-path: inset(0 var(--start-inset) 0 var(--end-inset));
   }
   .track {
     width: max-content;
@@ -102,13 +129,13 @@
     border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
-    color: inherit;
+    color: var(--muted-foreground);
     cursor: pointer;
     --kui-glyph-size: var(--kui-icon-small);
   }
   .chip button:hover:not(:disabled),
   .scroll:hover:not(:disabled) {
-    background: var(--accent);
+    color: var(--foreground);
   }
   .chip button:focus-visible,
   .scroll:focus-visible {
@@ -116,13 +143,19 @@
     outline-offset: -1px;
   }
   .scroll {
+    position: absolute;
+    inset-block: 0;
+    margin-block: auto;
+    width: var(--edge-size);
+  }
+  .scroll:first-child {
+    inset-inline-start: 0;
+  }
+  .scroll:last-child {
+    inset-inline-end: 0;
+  }
+  .scroll[hidden] {
     display: none;
-  }
-  .chips[data-overflow] .scroll {
-    display: grid;
-  }
-  .scroll:disabled {
-    visibility: hidden;
   }
   .scroll:dir(rtl) svg {
     scale: -1 1;

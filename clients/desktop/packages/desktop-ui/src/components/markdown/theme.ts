@@ -27,12 +27,17 @@ export const editorTheme = EditorView.theme({
     borderColor: 'var(--border)',
   },
   '.cm-panels.cm-panels-top': { borderBottomColor: 'var(--border)' },
+  '.cm-tooltip': {
+    border: '1px solid var(--border)',
+    borderRadius: 'var(--radius-md)',
+    boxShadow: 'var(--shadow-overlay)',
+  },
   '.cm-panels.cm-panels-bottom': { borderTopColor: 'var(--border)' },
   '.cm-button': {
     backgroundImage: 'none',
     backgroundColor: 'var(--secondary)',
     color: 'var(--secondary-foreground)',
-    borderColor: 'var(--border)',
+    borderColor: 'transparent',
     borderRadius: 'var(--radius-sm)',
   },
   '.cm-textfield': {

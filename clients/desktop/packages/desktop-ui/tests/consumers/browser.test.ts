@@ -112,11 +112,22 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
     form.style.width = '8rem'
   })
   const form = page.locator('#virtual-form')
+  await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()
+  const wheelPrevious = () =>
+    form
+      .getByRole('button', { name: 'Remove Item 9000' })
+      .evaluate((button) =>
+        button.dispatchEvent(
+          new WheelEvent('wheel', { deltaY: -80, bubbles: true, cancelable: true }),
+        ),
+      )
+  expect(await wheelPrevious()).toBe(false)
   await form.getByRole('button', { name: 'Next selected items' }).click()
   await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeEnabled()
   await form.getByRole('button', { name: 'Remove Item 10000' }).click()
   await form.evaluate((form) => form.style.removeProperty('width'))
   await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()
+  expect(await wheelPrevious()).toBe(true)
 })
 
 test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
@@ -126,11 +137,10 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
   await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('3')
 
   const date = page.getByLabel('Calendar date', { exact: true })
-  const insets = await date.evaluate((node) => {
-    const style = getComputedStyle(node)
-    return { start: parseFloat(style.paddingInlineStart), end: parseFloat(style.paddingInlineEnd) }
-  })
-  expect(insets.end).toBeGreaterThan(insets.start)
+  const editor = await date.boundingBox()
+  const action = await page.getByRole('button', { name: 'Choose date', exact: true }).boundingBox()
+  expect(action!.x).toBeCloseTo(editor!.x + editor!.width, 1)
+  expect(action!.height).toBeCloseTo(editor!.height, 1)
   await date.focus()
   await date.press('Backspace')
   expect(await date.evaluate((node: HTMLInputElement) => node.validity.badInput)).toBe(true)
@@ -222,14 +232,25 @@ test('form feedback retains geometry and per-field errors while revealing and lo
     expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
   }
 
-  await page.locator('#feedback').getByRole('button', { name: /Title/ }).press('Shift')
+  await page.locator('#feedback').getByRole('button', { name: 'Enter a title. (1 more)' }).hover()
   await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeVisible()
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toContainText('Description')
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toContainText(
+    'Enter a description.',
+  )
   await page.keyboard.press('Escape')
   await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeHidden()
   await page.locator('#feedback button').click()
   await browserExpect(page.locator('#title')).toBeFocused()
   await page.locator('#title').fill('Complete')
+  await browserExpect(page.locator('#feedback button')).toHaveText('Enter a description.')
+  await page.locator('#feedback').evaluate((element) => {
+    element.style.maxWidth = '4ch'
+  })
+  await page.locator('#feedback button').hover()
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toHaveText('Enter a description.')
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeVisible()
+  await page.locator('#feedback').evaluate((element) => element.style.removeProperty('max-width'))
+  await browserExpect(page.locator('#feedback [role="tooltip"]')).toHaveCount(0)
   await page.locator('#feedback button').click()
   await browserExpect(page.locator('#description')).toBeFocused()
   await page.locator('#description').fill('A useful description')
@@ -292,6 +313,8 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
   await browserExpect(page.getByRole('button', { name: 'Nested dialog' })).toBeFocused()
 
   await page.getByLabel('Block close').check()
+  await page.getByRole('button', { name: 'Close editor' }).click()
+  await browserExpect(dialog).toBeVisible()
   await page.keyboard.press('Escape')
   await browserExpect(dialog).toBeVisible()
 
