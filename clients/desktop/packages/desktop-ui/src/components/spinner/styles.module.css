@@ -1,25 +1,24 @@
-/* spinner presentation in the shared component layer. */
+/* A fixed glyph slot holds the rotating MDI loading arc. */
 
 @layer components {
   .root {
-    display: inline-block;
-    box-sizing: border-box;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
-    border-top-color: currentColor;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    display: inline-grid;
+    place-items: center;
+    width: var(--kui-icon-size);
+    height: var(--kui-icon-size);
+    vertical-align: middle;
   }
-
-  @keyframes spin {
+  .glyph {
+    animation: rotate 800ms linear infinite;
+    transform-origin: center;
+  }
+  @keyframes rotate {
     to {
       transform: rotate(360deg);
     }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .root {
+    .glyph {
       animation: none;
     }
   }

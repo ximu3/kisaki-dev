@@ -1,57 +1,62 @@
-/** @fileoverview Typed ISO dates and a themed calendar share one value and validity boundary. */
+/** @fileoverview Native date segments and a themed calendar share one form control and ISO value. */
 
 import {
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  For,
   onMount,
   Show,
   splitProps,
+  untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../../internal/dom'
-import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
-import { Icon, mdiCalendarOutline, mdiChevronLeft, mdiChevronRight } from '../../../internal/icons'
-import { createPopup } from '../../../internal/popup'
+import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
+import { Icon, mdiCalendarOutline } from '../../../internal/icon/icon'
 import { createValue, onFormReset } from '../../../internal/state'
-import { NativeInput } from '../native'
+import surface from '../../../internal/input-surface.module.css'
 import type { InputProps } from '../control'
-import { addDays, addMonths, calendarDays, isDateAllowed, parseDate, todayValue } from './calendar'
+import { parseDate } from './calendar'
+import { DatePicker } from './picker'
+import type { CalendarProps } from './picker'
 import styles from './styles.module.css'
 
-/** Valid values are complete YYYY-MM-DD dates. Text drafts stay visible and participate in validity. */
-export interface DateInputProps extends Omit<InputProps, 'type' | 'min' | 'max' | 'step'> {
-  min?: string
-  max?: string
+/** Complete ISO dates and the empty value cross the editing boundary. Incomplete segments remain native drafts. */
+export interface DateInputProps
+  extends Omit<InputProps, 'type' | 'min' | 'max' | 'step'>, CalendarProps {
   step?: number
-  locale?: string
-  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
-
-  calendarLabel: string
-  previousMonthLabel: string
-  nextMonthLabel: string
   invalidDateMessage: string
 }
 
+/** The ref targets the native editor. Browsing the calendar changes the value only when a day is chosen. */
 export function DateInput(props: DateInputProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
-    'value',
-    'defaultValue',
-    'onValueChange',
-    'min',
-    'max',
-    'step',
-    'locale',
-    'weekStartsOn',
-    'calendarLabel',
-    'previousMonthLabel',
-    'nextMonthLabel',
-    'invalidDateMessage',
-    'ref',
-    'onKeyDown',
-  ])
+  const [local, calendar, rest] = splitProps(
+    props,
+    [
+      'value',
+      'defaultValue',
+      'onValueChange',
+      'invalidDateMessage',
+      'step',
+      'ref',
+      'class',
+      'onInput',
+      'onKeyDown',
+      'onPaste',
+    ],
+    [
+      'min',
+      'max',
+      'locale',
+      'weekStartsOn',
+      'calendarLabel',
+      'monthLabel',
+      'yearLabel',
+      'previousMonthLabel',
+      'nextMonthLabel',
+    ],
+  )
   const field = fieldAttributes()
   const [value, change] = createValue(
     () => local.value,
@@ -59,255 +64,148 @@ export function DateInput(props: DateInputProps): JSX.Element {
     (next) => local.onValueChange?.(next),
   )
   const [open, setOpen] = createSignal(false)
-  const [active, setActive] = createSignal(todayValue())
-  const [month, setMonth] = createSignal(todayValue())
   const id = createUniqueId()
   let input!: HTMLInputElement
   let trigger!: HTMLButtonElement
-  let calendar!: HTMLDivElement
 
-  const allowed = (date: string) =>
-    isDateAllowed(date, local.min, local.max, local.step ?? 1, local.defaultValue)
-  const clamp = (date: string) => {
-    if (date < (local.min ?? '0001-01-01')) {
-      return local.min ?? '0001-01-01'
-    }
-    if (date > (local.max ?? '9999-12-31')) {
-      return local.max ?? '9999-12-31'
-    }
-    return date
-  }
-  const formats = createMemo(() => ({
-    month: new Intl.DateTimeFormat(local.locale, {
-      year: 'numeric',
-      month: 'long',
-      timeZone: 'UTC',
-    }),
-    day: new Intl.DateTimeFormat(local.locale, { dateStyle: 'full', timeZone: 'UTC' }),
-    weekday: new Intl.DateTimeFormat(local.locale, { weekday: 'long', timeZone: 'UTC' }),
-    shortWeekday: new Intl.DateTimeFormat(local.locale, { weekday: 'short', timeZone: 'UTC' }),
-  }))
-  const days = createMemo(() => calendarDays(month(), local.weekStartsOn ?? 1))
-  const weekdays = () =>
-    Array.from({ length: 7 }, (_, index) =>
-      addDays('2023-01-01', (local.weekStartsOn ?? 1) + index),
-    )
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
-  const show = () => {
-    const date = clamp(parseDate(value()) ? value() : todayValue())
-    setActive(date)
-    setMonth(`${date.slice(0, 7)}-01`)
-    setOpen(true)
+  const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
+  const max = createMemo(() => (parseDate(calendar.max ?? '') ? calendar.max! : '9999-12-31'))
+
+  // Ask the same native date constraint implementation about a day without disturbing the edited segments.
+  const constraints = createMemo(() => {
+    const candidate = document.createElement('input')
+    candidate.type = 'date'
+    candidate.min = min() ?? ''
+    candidate.max = max()
+    candidate.defaultValue = local.defaultValue ?? ''
+    if (local.step !== undefined) {
+      candidate.step = String(local.step)
+    }
+    return candidate
+  })
+  const allowed = (date: string) => {
+    const candidate = constraints()
+    candidate.value = date
+    return candidate.value !== '' && candidate.validity.valid
   }
-  const focusDay = (date: string) => {
-    date = clamp(date)
-    setActive(date)
-    setMonth(`${date.slice(0, 7)}-01`)
-    queueMicrotask(() =>
-      calendar.querySelector<HTMLButtonElement>(`[data-date="${date}"]`)?.focus(),
+  const validate = () =>
+    input.setCustomValidity(
+      input.validity.badInput || (input.value && !allowed(input.value))
+        ? local.invalidDateMessage
+        : '',
     )
+  const sync = () => {
+    if (input.value !== value()) {
+      input.value = value()
+    }
+    validate()
   }
-  const choose = (date: string) => {
-    change(date)
-    setOpen(false)
-    input.focus()
+  const enter = (date: string) => {
+    input.value = date
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    input.dispatchEvent(new Event('change', { bubbles: true }))
   }
 
-  createPopup({
-    element: () => calendar,
-    anchor: () => trigger,
-    open,
-    change: setOpen,
-    placement: () => 'bottom-end',
-  })
   closeWhenUnavailable(
     () => input,
     () => setOpen(false),
   )
   onFormReset(
     () => input,
-    () => setOpen(false),
+    () => {
+      change(local.defaultValue ?? '')
+      sync()
+      setOpen(false)
+    },
   )
   onMount(() => {
-    createEffect(() =>
-      input.setCustomValidity(value() && !allowed(value()) ? local.invalidDateMessage : ''),
-    )
     createEffect(() => {
-      if (open()) {
-        queueMicrotask(() => {
-          if (open()) {
-            calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
-          }
-        })
-      }
+      input.defaultValue = local.defaultValue ?? ''
+      untrack(sync)
     })
+    createEffect(sync)
   })
 
   return (
     <div class={styles.container}>
-      <NativeInput
+      <input
+        {...field}
         {...rest}
-        type="text"
-        inputmode="numeric"
-        placeholder={props.placeholder ?? 'YYYY-MM-DD'}
-        value={value()}
-        defaultValue={local.defaultValue}
-        onValueChange={change}
+        type="date"
+        lang={calendar.locale ?? props.lang}
+        min={min()}
+        max={max()}
+        step={local.step}
         ref={(node) => {
           input = node
           assignRef(local.ref, node)
         }}
+        class={classes(surface.surface, surface.singleLine, styles.editor, local.class)}
+        onInput={(event) => {
+          if (!input.validity.badInput && (!input.value || parseDate(input.value))) {
+            change(input.value)
+            sync()
+          } else {
+            validate()
+          }
+          callHandler(local.onInput, event)
+        }}
+        onPaste={(event) => {
+          callHandler(local.onPaste, event)
+          if (event.defaultPrevented || blocked() || !event.clipboardData) {
+            return
+          }
+          const date = event.clipboardData.getData('text/plain').trim()
+          event.preventDefault()
+          if (parseDate(date)) {
+            enter(date)
+          }
+        }}
         onKeyDown={(event) => {
           callHandler(local.onKeyDown, event)
-          if (!event.defaultPrevented && event.altKey && event.key === 'ArrowDown' && !blocked()) {
+          if (
+            !event.defaultPrevented &&
+            !blocked() &&
+            (event.key === 'F4' || (event.altKey && event.key === 'ArrowDown'))
+          ) {
             event.preventDefault()
-            show()
+            setOpen(true)
           }
         }}
       />
       <button
+        type="button"
+        class={styles.trigger}
         ref={(node) => {
           trigger = node
         }}
-        type="button"
-        aria-label={local.calendarLabel}
+        aria-label={calendar.calendarLabel}
         aria-haspopup="dialog"
         aria-expanded={open()}
-        aria-controls={id}
-        class={styles.trigger}
+        aria-controls={open() ? id : undefined}
         disabled={blocked()}
-        onClick={() => (open() ? setOpen(false) : show())}
+        onClick={() => setOpen(!open())}
       >
         <Icon path={mdiCalendarOutline} />
       </button>
-      <div
-        ref={(node) => {
-          calendar = node
-        }}
-        id={id}
-        popover="auto"
-        role="dialog"
-        aria-label={local.calendarLabel}
-        class={styles.calendar}
-        onFocusOut={(event) => {
-          if (
-            event.relatedTarget &&
-            !calendar.contains(event.relatedTarget as Node | null) &&
-            event.relatedTarget !== trigger
-          ) {
+      <Show when={open()}>
+        <DatePicker
+          {...calendar}
+          min={min()}
+          max={max()}
+          id={id}
+          anchor={() => trigger}
+          value={value()}
+          allowed={allowed}
+          close={() => setOpen(false)}
+          choose={(date) => {
+            enter(date)
             setOpen(false)
-          }
-        }}
-      >
-        <div class={styles.heading}>
-          <button
-            type="button"
-            aria-label={local.previousMonthLabel}
-            disabled={month().slice(0, 7) <= (local.min ?? '0001-01-01').slice(0, 7)}
-            onClick={() => {
-              setMonth(addMonths(month(), -1))
-              setActive(clamp(month()))
-            }}
-          >
-            <Icon path={mdiChevronLeft} />
-          </button>
-          <span aria-live="polite">{formats().month.format(parseDate(month()))}</span>
-          <button
-            type="button"
-            aria-label={local.nextMonthLabel}
-            disabled={month().slice(0, 7) >= (local.max ?? '9999-12-31').slice(0, 7)}
-            onClick={() => {
-              setMonth(addMonths(month(), 1))
-              setActive(clamp(month()))
-            }}
-          >
-            <Icon path={mdiChevronRight} />
-          </button>
-        </div>
-        <div
-          role="grid"
-          aria-label={formats().month.format(parseDate(month()))}
-          onKeyDown={(event) => {
-            let date: string | undefined
-            if (event.key === 'ArrowLeft') {
-              date = addDays(active(), -1)
-            }
-            if (event.key === 'ArrowRight') {
-              date = addDays(active(), 1)
-            }
-            if (event.key === 'ArrowUp') {
-              date = addDays(active(), -7)
-            }
-            if (event.key === 'ArrowDown') {
-              date = addDays(active(), 7)
-            }
-            if (event.key === 'PageUp') {
-              date = addMonths(active(), event.shiftKey ? -12 : -1)
-            }
-            if (event.key === 'PageDown') {
-              date = addMonths(active(), event.shiftKey ? 12 : 1)
-            }
-            const weekday = (parseDate(active())!.getUTCDay() - (local.weekStartsOn ?? 1) + 7) % 7
-            if (event.key === 'Home') {
-              date = addDays(active(), -weekday)
-            }
-            if (event.key === 'End') {
-              date = addDays(active(), 6 - weekday)
-            }
-            if (date) {
-              event.preventDefault()
-              event.stopPropagation()
-              focusDay(date)
-            }
+            input.focus()
           }}
-        >
-          <div role="row" class={styles.week}>
-            <For each={weekdays()}>
-              {(date) => (
-                <span role="columnheader" aria-label={formats().weekday.format(parseDate(date))}>
-                  {formats().shortWeekday.format(parseDate(date))}
-                </span>
-              )}
-            </For>
-          </div>
-          <For each={days()}>
-            {(week) => (
-              <div role="row" class={styles.week}>
-                <For each={week}>
-                  {(date) => (
-                    <Show when={date} keyed fallback={<span role="gridcell" />}>
-                      {(date) => (
-                        <button
-                          type="button"
-                          role="gridcell"
-                          data-date={date}
-                          aria-label={formats().day.format(parseDate(date))}
-                          aria-selected={value() === date}
-                          aria-current={date === todayValue() ? 'date' : undefined}
-                          aria-disabled={!allowed(date)}
-                          tabIndex={active() === date ? 0 : -1}
-                          class={classes(
-                            styles.day,
-                            date.slice(0, 7) !== month().slice(0, 7) ? styles.outside : undefined,
-                          )}
-                          onFocus={() => setActive(date)}
-                          onClick={() => {
-                            if (allowed(date)) {
-                              choose(date)
-                            }
-                          }}
-                        >
-                          {Number(date.slice(8))}
-                        </button>
-                      )}
-                    </Show>
-                  )}
-                </For>
-              </div>
-            )}
-          </For>
-        </div>
-      </div>
+        />
+      </Show>
     </div>
   )
 }

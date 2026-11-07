@@ -6,7 +6,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindTextControl } from '../../internal/text-control'
 import type { TextValueProps } from '../../internal/text-control'
-import styles from './styles.module.css'
+import surface from '../../internal/input-surface.module.css'
 
 /** Common native text binding; public controls choose the editing type and presentation. */
 export interface NativeInputProps
@@ -37,7 +37,7 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
         input = node
         assignRef(local.ref, node)
       }}
-      class={classes(styles.root, local.class)}
+      class={classes(surface.surface, surface.singleLine, local.class)}
       onInput={(event) => {
         update()
         callHandler(local.onInput, event)

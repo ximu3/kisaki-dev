@@ -14,9 +14,7 @@ export function Table(props: JSX.HTMLAttributes<HTMLTableElement>): JSX.Element 
 
 /** Group the table's column-header rows in a native thead. */
 export function TableHeader(props: JSX.HTMLAttributes<HTMLTableSectionElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
-
-  return <thead {...rest} class={classes(styles.thead, local.class)} />
+  return <thead {...props} />
 }
 
 /** Group the table's main data rows in a native tbody. */

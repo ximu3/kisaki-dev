@@ -1,35 +1,9 @@
-/* Multiline fields preserve native resizing and stable error borders. */
+/* Multiline content adds its own inset and native resize handle. */
 
 @layer components {
   .root {
-    box-sizing: border-box;
-    width: 100%;
     min-height: 5rem;
     padding: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--input);
-    color: var(--input-foreground);
-    font: inherit;
-    font-size: 0.875rem;
-    line-height: 1.5;
     resize: vertical;
-  }
-
-  .root::placeholder {
-    color: var(--muted-foreground);
-  }
-  .root:focus-visible {
-    outline: none;
-    border-color: var(--ring);
-  }
-  .root[aria-invalid='true'] {
-    border-color: var(--destructive);
-  }
-  .root[aria-invalid='true']:focus-visible {
-    border-color: color-mix(in oklch, var(--destructive) 65%, var(--ring));
-  }
-  .root:disabled {
-    opacity: 0.5;
   }
 }

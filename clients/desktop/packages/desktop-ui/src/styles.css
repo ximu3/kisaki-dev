@@ -2,6 +2,19 @@
 
 @layer theme, base, components, utilities;
 
+@layer theme {
+  :root,
+  [data-color-scheme] {
+    --kui-control-font: var(--text-sm);
+    --kui-caption-font: var(--text-xs);
+    --kui-control-line: var(--text-base-line-height);
+    --kui-control-height: 1.75rem;
+    --kui-icon-size: 1rem;
+    --kui-icon-small: 0.75rem;
+    --kui-inline-gap: 0.5rem;
+  }
+}
+
 @layer base {
   :where(*) {
     scrollbar-width: thin;
@@ -17,6 +30,10 @@
   }
 
   [data-ui-popup] {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    box-sizing: border-box;
     max-width: var(--popup-available-width);
     max-height: var(--popup-available-height);
     overflow: auto;

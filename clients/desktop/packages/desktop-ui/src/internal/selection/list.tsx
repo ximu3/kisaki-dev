@@ -3,16 +3,19 @@
 import { createEffect, createMemo, For, onMount, Show } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
-import { Icon, mdiCheck } from '../icons'
-import { createPopup } from '../popup'
+import { Icon, mdiCheck } from '../icon/icon'
+import { createPopup } from '../popup/controller'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionListProps, SelectionOption } from './types'
+import surface from '../popup/surface.module.css'
+import row from '../list-row.module.css'
 import styles from './styles.module.css'
 
 interface ListProps extends SelectionListProps {
   id: string
   anchor: Accessor<HTMLElement>
+  reference?: Accessor<HTMLElement> | undefined
   options: readonly SelectionOption[]
   collection: SelectionCollection
   selected: readonly string[]
@@ -26,6 +29,7 @@ interface ListProps extends SelectionListProps {
   label?: string | undefined
 }
 
+/** The trigger owns focus and the collection owns navigation, including offscreen virtual rows. */
 export function SelectionList(props: ListProps): JSX.Element {
   let list!: HTMLDivElement
   const groups = createMemo(() => {
@@ -43,6 +47,7 @@ export function SelectionList(props: ListProps): JSX.Element {
   createPopup({
     element: () => list,
     anchor: props.anchor,
+    reference: props.reference,
     open: () => props.open,
     change: props.onOpenChange,
     matchWidth: true,
@@ -74,7 +79,7 @@ export function SelectionList(props: ListProps): JSX.Element {
       aria-posinset={props.options.indexOf(option) + 1}
       aria-setsize={props.options.length}
       data-active={props.collection.active() === option.value || undefined}
-      class={styles.option}
+      class={classes(row.row, styles.option)}
       onPointerMove={() => {
         if (!option.disabled) {
           props.collection.highlight(option.value)
@@ -92,7 +97,7 @@ export function SelectionList(props: ListProps): JSX.Element {
           <small>{option.description}</small>
         </Show>
       </span>
-      <span class={styles.check}>
+      <span class={row.mark}>
         <Show when={props.selected.includes(option.value)}>
           <Icon path={mdiCheck} />
         </Show>
@@ -111,7 +116,7 @@ export function SelectionList(props: ListProps): JSX.Element {
       aria-label={props.label}
       aria-multiselectable={props.multiple || undefined}
       aria-busy={props.loading || undefined}
-      class={classes(styles.list, props.listClass)}
+      class={classes(surface.surface, styles.list, props.listClass)}
       onPointerDown={(event) => {
         if (event.target !== event.currentTarget) {
           event.preventDefault()

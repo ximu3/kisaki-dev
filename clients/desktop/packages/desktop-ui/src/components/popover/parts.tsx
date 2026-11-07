@@ -4,10 +4,11 @@ import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
-import { createPopup } from '../../internal/popup'
-import type { PopupPlacement } from '../../internal/popup'
+import { createPopup } from '../../internal/popup/controller'
+import type { PopupPlacement } from '../../internal/popup/controller'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
+import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 interface PopoverState {
@@ -94,7 +95,7 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
         node = element
         assignRef(local.ref, element)
       }}
-      class={classes(styles.root, local.class)}
+      class={classes(surface.surface, styles.root, local.class)}
     />
   )
 }

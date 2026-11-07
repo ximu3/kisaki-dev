@@ -65,7 +65,7 @@
     position: absolute;
     width: 1px;
     height: 1px;
-    margin: var(--drop-offset);
+    margin: -1px;
     padding: 0;
     clip-path: inset(50%);
     overflow: hidden;

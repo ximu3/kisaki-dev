@@ -1,0 +1,11 @@
+/* Floating content shares one opaque surface within its native presentation boundary. */
+
+@layer components {
+  :where(.surface) {
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--shadow-overlay);
+  }
+}

@@ -13,14 +13,18 @@ import {
   untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
-import { fieldAttributes, closeWhenUnavailable } from '../../internal/field'
-import { Icon, mdiChevronDown } from '../../internal/icons'
-import { createSelection, optionId } from '../../internal/selection/collection'
+import { assignRef, classes } from '../../internal/dom'
+import { fieldAttributes } from '../../internal/field'
+import { Icon, mdiChevronDown } from '../../internal/icon/icon'
+import { createSelection } from '../../internal/selection/collection'
 import { SelectionList } from '../../internal/selection/list'
 import type { SelectionListProps, SelectionOption } from '../../internal/selection/types'
+import { SelectionTrigger } from '../../internal/selection/trigger'
 import { createValue, onFormReset } from '../../internal/state'
-import styles from '../../internal/selection/styles.module.css'
+import { SelectedChips } from './chips'
+import type { ChipLabels } from './chips'
+import surface from '../../internal/input-surface.module.css'
+import styles from './styles.module.css'
 
 interface SelectBaseProps
   extends
@@ -45,12 +49,13 @@ export interface SelectProps extends SelectBaseProps {
 }
 
 /** User activation toggles one value; no platform modifier key is required. */
-export interface MultiSelectProps extends SelectBaseProps {
+export interface MultiSelectProps extends SelectBaseProps, ChipLabels {
   value?: readonly string[]
   defaultValue?: readonly string[]
   onValueChange?: (value: readonly string[]) => void
 }
 
+/** A single choice closes the list. The trigger keeps keyboard focus and native form validation targets it. */
 export function Select(props: SelectProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
   const [value, change] = createValue(
@@ -70,8 +75,13 @@ export function Select(props: SelectProps): JSX.Element {
   )
 }
 
+/** Toggle choices in the open list or remove them directly in the field. Submission preserves selected order. */
 export function MultiSelect(props: MultiSelectProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
+  const [local, labels, rest] = splitProps(
+    props,
+    ['value', 'defaultValue', 'onValueChange'],
+    ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
+  )
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? [],
@@ -81,7 +91,9 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
   return (
     <SelectionControl
       {...rest}
-      multiple
+      chips={mergeProps(labels, {
+        remove: (key: string) => change(value().filter((item) => item !== key)),
+      })}
       selected={value()}
       defaults={local.defaultValue ?? []}
       onChoose={(option) =>
@@ -97,7 +109,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
 }
 
 interface SelectionControlProps extends SelectBaseProps {
-  multiple?: boolean
+  chips?: ChipLabels & { remove: (key: string) => void }
   selected: readonly string[]
   defaults: readonly string[]
   onChoose: (option: SelectionOption) => void
@@ -116,7 +128,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
     'scrollToValue',
     'listRef',
     'listClass',
-    'multiple',
+    'chips',
     'selected',
     'defaults',
     'onChoose',
@@ -129,11 +141,13 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
     'onInvalid',
     'name',
   ])
+  const multiple = () => local.chips !== undefined
   const attributes = mergeProps(fieldAttributes(), rest)
   const [open, setOpen] = createSignal(false)
   const collection = createSelection(() => local.options)
   const id = createUniqueId()
   let trigger!: HTMLButtonElement
+  let frame!: HTMLDivElement
   let mirror!: HTMLSelectElement
 
   const selectedOptions = createMemo(() =>
@@ -147,7 +161,7 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
       option.defaultSelected = local.defaults.includes(option.value)
       option.selected = local.selected.includes(option.value)
     }
-    if (!local.multiple && !selectedOptions().length) {
+    if (!multiple() && !selectedOptions().length) {
       mirror.value = ''
     }
     const invalid = local.selected.some((value) => {
@@ -165,103 +179,79 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
       setOpen(false)
     },
   )
-  closeWhenUnavailable(
-    () => trigger,
-    () => setOpen(false),
-  )
-
-  const show = () => {
-    setOpen(true)
-    const selected = selectedOptions().find((option) => !option.disabled)
-    collection.highlight(selected?.value ?? collection.enabled()[0]?.value)
-  }
   const choose = (option: SelectionOption) => {
     local.onChoose(option)
-    if (!local.multiple) {
+    if (!multiple()) {
       setOpen(false)
     }
   }
 
   return (
-    <div class={styles.container}>
-      <button
+    <div
+      ref={(node) => {
+        frame = node
+      }}
+      class={
+        multiple()
+          ? classes(
+              styles.container,
+              surface.surface,
+              surface.singleLine,
+              styles.multiple,
+              local.class,
+            )
+          : styles.container
+      }
+      aria-invalid={multiple() ? attributes['aria-invalid'] : undefined}
+    >
+      <Show when={local.chips}>
+        {(chips) => (
+          <SelectedChips
+            values={local.selected}
+            label={(key) => collection.byValue().get(key)?.label ?? key}
+            disabled={attributes.disabled}
+            removeLabel={chips().removeLabel}
+            scrollPreviousLabel={chips().scrollPreviousLabel}
+            scrollNextLabel={chips().scrollNextLabel}
+            onRemove={chips().remove}
+            focusTrigger={() => trigger.focus()}
+          />
+        )}
+      </Show>
+      <SelectionTrigger
         {...attributes}
-        type="button"
+        listId={id}
+        collection={collection}
+        selected={local.selected}
+        open={open()}
+        onOpenChange={setOpen}
+        onChoose={choose}
+        onClick={local.onClick}
+        onBlur={local.onBlur}
+        onKeyDown={local.onKeyDown}
+        aria-required={local.required ?? attributes.required}
         ref={(node) => {
           trigger = node
           assignRef(local.ref, node)
         }}
-        role="combobox"
-        aria-haspopup="listbox"
-        aria-expanded={open()}
-        aria-controls={id}
-        aria-required={local.required ?? attributes.required}
-        aria-activedescendant={
-          open() && collection.active() !== undefined
-            ? optionId(id, collection.active()!)
-            : undefined
+        class={
+          multiple()
+            ? styles.toggle
+            : classes(surface.surface, surface.singleLine, styles.trigger, local.class)
         }
-        class={classes(styles.trigger, local.class)}
-        onClick={(event) => {
-          callHandler(local.onClick, event)
-          if (!event.defaultPrevented) {
-            if (open()) {
-              setOpen(false)
-            } else {
-              show()
-            }
-          }
-        }}
-        onBlur={(event) => {
-          setOpen(false)
-          callHandler(local.onBlur, event)
-        }}
-        onKeyDown={(event) => {
-          callHandler(local.onKeyDown, event)
-          if (event.defaultPrevented || event.isComposing) {
-            return
-          }
-
-          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-            event.preventDefault()
-            if (!open()) {
-              show()
-            } else {
-              collection.move(event.key === 'ArrowDown' ? 1 : -1)
-            }
-          } else if (open() && (event.key === 'Home' || event.key === 'End')) {
-            event.preventDefault()
-            collection.move(event.key === 'Home' ? 'first' : 'last')
-          } else if (open() && (event.key === 'Enter' || event.key === ' ')) {
-            event.preventDefault()
-            const option = collection.byValue().get(collection.active() ?? '')
-            if (option) {
-              choose(option)
-            }
-          } else if (
-            event.key.length === 1 &&
-            event.key !== ' ' &&
-            !event.ctrlKey &&
-            !event.metaKey &&
-            !event.altKey
-          ) {
-            event.preventDefault()
-            if (!open()) {
-              show()
-            }
-            collection.type(event.key)
-          }
-        }}
       >
         <span
-          class={classes(styles.value, !selectedOptions().length ? styles.placeholder : undefined)}
+          class={
+            multiple() && local.selected.length
+              ? styles.summary
+              : classes(styles.value, !selectedOptions().length ? styles.placeholder : undefined)
+          }
         >
-          {selectedOptions()
-            .map((option) => option.label)
-            .join(', ') || local.placeholder}
+          {local.selected.map((key) => collection.byValue().get(key)?.label ?? key).join(', ') ||
+            local.placeholder}
         </span>
         <Icon path={mdiChevronDown} class={styles.arrow} />
-      </button>
+      </SelectionTrigger>
       <select
         ref={(node) => {
           mirror = node
@@ -273,11 +263,11 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
         form={props.form}
         required={local.required ?? attributes.required}
         disabled={attributes.disabled}
-        multiple={local.multiple}
+        multiple={multiple()}
         onInvalid={local.onInvalid}
         onFocus={() => trigger.focus()}
       >
-        <Show when={!local.multiple}>
+        <Show when={!multiple()}>
           <option value="" />
         </Show>
         <For each={selectedOptions()}>
@@ -291,10 +281,11 @@ function SelectionControl(props: SelectionControlProps): JSX.Element {
       <SelectionList
         id={id}
         anchor={() => trigger}
+        reference={() => frame}
         options={local.options}
         collection={collection}
         selected={local.selected}
-        multiple={local.multiple}
+        multiple={multiple()}
         open={open()}
         onOpenChange={setOpen}
         onChoose={choose}

@@ -6,6 +6,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindTextControl } from '../../internal/text-control'
 import type { TextValueProps } from '../../internal/text-control'
+import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
 
 /** Default text initializes the native reset baseline; value selects controlled mode. */
@@ -34,7 +35,7 @@ export function Textarea(props: TextareaProps): JSX.Element {
         input = node
         assignRef(local.ref, node)
       }}
-      class={classes(styles.root, local.class)}
+      class={classes(surface.surface, styles.root, local.class)}
       onInput={(event) => {
         update()
         callHandler(local.onInput, event)

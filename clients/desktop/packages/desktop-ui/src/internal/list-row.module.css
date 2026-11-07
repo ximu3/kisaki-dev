@@ -1,0 +1,27 @@
+/* A compact row and trailing mark serve menu actions and selectable options. */
+
+@layer components {
+  .row {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    gap: var(--kui-inline-gap);
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--kui-icon-size);
+    margin-inline-start: auto;
+    color: inherit;
+  }
+}

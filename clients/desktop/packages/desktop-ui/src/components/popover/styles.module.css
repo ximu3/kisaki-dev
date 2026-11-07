@@ -1,19 +1,7 @@
-/* Popover coordinates come from the instance-owned positioning mechanism. */
+/* Interactive popovers own their content inset. */
 
 @layer components {
   .root {
-    position: fixed;
-    inset: auto;
-    margin: 0;
-    box-sizing: border-box;
-    max-width: var(--popup-available-width, calc(100vw - 1rem));
-    max-height: var(--popup-available-height, calc(100dvh - 1rem));
-    overflow: auto;
     padding: 0.75rem;
-    border: 0;
-    border-radius: var(--radius-lg);
-    background: var(--popover);
-    color: var(--popover-foreground);
-    box-shadow: var(--shadow-overlay);
   }
 }

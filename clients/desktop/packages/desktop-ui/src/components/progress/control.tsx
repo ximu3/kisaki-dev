@@ -1,4 +1,4 @@
-/** @fileoverview progress presentation using native document semantics. */
+/** @fileoverview Native progress elements represent determinate and indeterminate work. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'

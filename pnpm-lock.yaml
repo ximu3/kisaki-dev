@@ -443,6 +443,9 @@ importers:
       '@mdit/plugin-tasklist':
         specifier: 1.1.4
         version: 1.1.4(markdown-it@15.0.3)
+      '@tanstack/solid-virtual':
+        specifier: 3.13.48
+        version: 3.13.48(solid-js@1.9.16)
       '@types/d3-scale':
         specifier: 4.0.9
         version: 4.0.9
@@ -480,9 +483,6 @@ importers:
       '@tailwindcss/cli':
         specifier: 4.3.3
         version: 4.3.3
-      '@tanstack/solid-virtual':
-        specifier: 3.13.48
-        version: 3.13.48(solid-js@1.9.16)
       '@tsdown/css':
         specifier: 0.23.0
         version: 0.23.0(jiti@2.7.0)(postcss@8.5.31)(tsdown@0.23.0)(tsx@4.23.15)(yaml@2.9.1)

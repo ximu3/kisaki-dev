@@ -5,7 +5,7 @@ import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { createValue, onFormReset } from '../../internal/state'
-import styles from './styles.module.css'
+import styles from '../../internal/range.module.css'
 
 /** min/max/step use native range rules; defaultValue defaults to the native midpoint. */
 export interface SliderProps extends Omit<
@@ -67,7 +67,7 @@ export function Slider(props: SliderProps): JSX.Element {
         input = node
         assignRef(local.ref, node)
       }}
-      class={classes(styles.root, local.class)}
+      class={classes(styles.range, local.class)}
       onInput={(event) => {
         change(event.currentTarget.valueAsNumber)
         untrack(sync)

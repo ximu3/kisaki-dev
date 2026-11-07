@@ -2,12 +2,12 @@
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef } from '../../internal/dom'
-import { fieldAttributes } from '../../internal/field'
-import { Icon, mdiChevronDown, mdiChevronUp } from '../../internal/icons'
-import { createValue } from '../../internal/state'
-import { NativeInput } from './native'
-import type { NativeInputProps } from './native'
+import { assignRef } from '../../../internal/dom'
+import { fieldAttributes } from '../../../internal/field'
+import { Icon, mdiChevronDown, mdiChevronUp } from '../../../internal/icon/icon'
+import { createValue } from '../../../internal/state'
+import { NativeInput } from '../native'
+import type { NativeInputProps } from '../native'
 import styles from './styles.module.css'
 
 /** Values retain the native string model, including the empty state; min, max and step stay native. */
@@ -17,6 +17,7 @@ export interface NumberInputProps extends Omit<NativeInputProps, 'type' | 'step'
   decreaseLabel: string
 }
 
+/** The step buttons edit the native number field and follow its range and disabled state. */
 export function NumberInput(props: NumberInputProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',

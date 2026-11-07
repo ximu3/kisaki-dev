@@ -1,4 +1,4 @@
-/** @fileoverview separator presentation using native document semantics. */
+/** @fileoverview Decorative and semantic dividers share horizontal and vertical geometry. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'

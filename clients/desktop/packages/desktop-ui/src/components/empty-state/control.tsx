@@ -1,4 +1,4 @@
-/** @fileoverview empty-state presentation using native document semantics. */
+/** @fileoverview Empty content combines a heading, description and optional action. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'

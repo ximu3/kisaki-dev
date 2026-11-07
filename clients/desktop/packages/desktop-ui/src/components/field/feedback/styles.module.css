@@ -9,7 +9,7 @@
     align-items: center;
     margin-inline-end: auto;
     color: var(--muted-foreground);
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
   }
 
   .prompt {
@@ -51,7 +51,7 @@
 
   .details {
     width: min(24rem, calc(100vw - 1rem));
-    padding: 0.625rem 0.75rem;
+    --kui-tooltip-padding: 0.625rem 0.75rem;
   }
   .details ul {
     margin: 0;

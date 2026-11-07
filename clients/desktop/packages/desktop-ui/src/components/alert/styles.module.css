@@ -10,14 +10,13 @@
     border-radius: var(--radius-lg);
     background: var(--muted);
     color: var(--foreground);
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
   }
 
   .icon {
     flex: none;
-    margin-top: 0.125rem;
-    font-size: 1rem;
+    margin-block-start: calc((1lh - var(--kui-icon-size)) / 2);
     color: var(--info);
   }
   .root[data-tone='success'] .icon {

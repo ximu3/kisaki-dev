@@ -8,14 +8,14 @@
     justify-content: center;
     gap: 0.375rem;
     flex-shrink: 0;
-    height: 1.75rem;
-    padding: 0.25rem 0.75rem;
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.75rem;
     border: 1px solid transparent;
     border-radius: var(--radius-md);
     font: inherit;
-    font-size: 0.875rem;
+    font-size: var(--kui-control-font);
     font-weight: 500;
-    line-height: 1.25;
+    line-height: var(--kui-control-line);
     white-space: nowrap;
     color: var(--foreground);
     background: transparent;
@@ -82,29 +82,40 @@
 
   .root[data-size='xs'],
   .root[data-size='icon-xs'] {
-    height: 1.25rem;
+    min-height: 1.25rem;
     padding: 0 0.375rem;
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
   }
   .root[data-size='sm'],
   .root[data-size='icon-sm'] {
-    height: 1.5rem;
+    min-height: 1.5rem;
     padding: 0.125rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
   }
   .root[data-size='lg'],
   .root[data-size='icon-lg'] {
-    height: 2rem;
+    min-height: 2rem;
     padding: 0.375rem 1rem;
   }
   .root[data-size^='icon'] {
     aspect-ratio: 1;
+    height: var(--kui-control-height);
     padding: 0;
   }
 
+  .root[data-size='icon-xs'] {
+    height: 1.25rem;
+  }
+  .root[data-size='icon-sm'] {
+    height: 1.5rem;
+  }
+  .root[data-size='icon-lg'] {
+    height: 2rem;
+  }
   .root > svg {
-    width: 1rem;
-    height: 1rem;
+    display: block;
+    width: var(--kui-icon-size);
+    height: var(--kui-icon-size);
     flex-shrink: 0;
     pointer-events: none;
   }

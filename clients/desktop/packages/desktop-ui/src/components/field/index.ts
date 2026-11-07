@@ -9,4 +9,4 @@ export {
   FieldLegend,
   type FieldProps,
 } from './parts'
-export { FormFeedback, type FormFeedbackProps, type FieldIssue } from './feedback'
+export { FormFeedback, type FormFeedbackProps, type FieldIssue } from './feedback/control'

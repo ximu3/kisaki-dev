@@ -1,8 +1,9 @@
-/** @fileoverview spinner presentation using native document semantics. */
+/** @fileoverview A stationary status slot contains the animated MDI loading glyph. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
+import { Icon, mdiLoading } from '../../internal/icon/icon'
 import styles from './styles.module.css'
 
 /** The label supplies the accessible status; omit it for a decorative indicator beside existing text. */
@@ -21,6 +22,8 @@ export function Spinner(props: SpinnerProps): JSX.Element {
       role={local.label ? 'status' : undefined}
       aria-label={local.label}
       aria-hidden={local.label ? undefined : true}
-    />
+    >
+      <Icon path={mdiLoading} class={styles.glyph} />
+    </span>
   )
 }

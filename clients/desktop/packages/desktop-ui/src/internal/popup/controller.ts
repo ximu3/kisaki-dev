@@ -13,6 +13,7 @@ export type PopupPlacement =
 export function createPopup(options: {
   element: Accessor<HTMLElement>
   anchor: Accessor<HTMLElement>
+  reference?: Accessor<HTMLElement> | undefined
 
   open: Accessor<boolean>
   change: (open: boolean) => void
@@ -63,7 +64,7 @@ export function createPopup(options: {
             contextElement: anchor,
             getBoundingClientRect: () => new DOMRect(point.x, point.y, 0, 0),
           }
-        : anchor
+        : (options.reference?.() ?? anchor)
       let active = true
       node.showPopover({ source: anchor })
 
@@ -89,7 +90,7 @@ export function createPopup(options: {
                     `${Math.max(0, availableHeight)}px`,
                   )
                   if (options.matchWidth) {
-                    node.style.minWidth = `${rects.reference.width}px`
+                    node.style.minWidth = `${Math.min(rects.reference.width, Math.max(0, availableWidth))}px`
                   }
                 }
               },

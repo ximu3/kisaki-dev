@@ -5,7 +5,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    font-size: 0.875rem;
+    font-size: var(--kui-control-font);
   }
   .editor:focus-within {
     border-color: var(--ring);

@@ -1,0 +1,39 @@
+/* Input and selection surfaces share text metrics, borders and focus geometry. */
+
+@layer components {
+  :where(.surface) {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--input);
+    color: var(--input-foreground);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+  }
+  :where(.singleLine) {
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.5rem;
+  }
+  .surface::placeholder {
+    color: var(--muted-foreground);
+  }
+  .surface:focus-visible,
+  .surface:focus-within {
+    outline: none;
+    border-color: var(--ring);
+  }
+  .surface[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+  .surface[aria-invalid='true']:focus-within {
+    border-color: color-mix(in oklch, var(--destructive) 65%, var(--ring));
+  }
+  .surface:disabled,
+  .surface[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+  }
+}

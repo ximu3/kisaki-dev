@@ -141,6 +141,8 @@ function Controls(): JSX.Element {
           decreaseLabel="Decrease"
         />
         <DateInput
+          yearLabel="Year"
+          monthLabel="Month"
           aria-label="Calendar date"
           name="date"
           defaultValue="2024-02-28"
@@ -191,22 +193,12 @@ function Controls(): JSX.Element {
             <Textarea name="notes" defaultValue="A short note" />
           </Field>
           <div class="row">
-            <label>
-              <Checkbox name="check" value="yes" defaultChecked /> Include
-            </label>
-            <label>
-              <Switch name="switch" value="enabled" defaultChecked /> Enabled
-            </label>
+            <Checkbox name="check" value="yes" defaultChecked label="Include" />
+            <Switch name="switch" value="enabled" defaultChecked label="Enabled" />
           </div>
           <RadioGroup label="Density" name="density" defaultValue="comfortable">
-            <label>
-              <Radio value="compact" />
-              Compact
-            </label>
-            <label>
-              <Radio value="comfortable" />
-              Comfortable
-            </label>
+            <Radio value="compact" label="Compact" />
+            <Radio value="comfortable" label="Comfortable" />
           </RadioGroup>
           <Field id="select">
             <FieldLabel>Choice</FieldLabel>
@@ -227,6 +219,9 @@ function Controls(): JSX.Element {
           <Field id="multi">
             <FieldLabel>Multiple choices</FieldLabel>
             <MultiSelect
+              removeLabel={(label) => `Remove ${label}`}
+              scrollPreviousLabel="Previous selected items"
+              scrollNextLabel="Next selected items"
               name="multi"
               defaultValue={['a', 'c']}
               options={[
@@ -443,10 +438,7 @@ function Interactions(): JSX.Element {
             </DialogHeader>
             <DialogBody>
               <Candidate />
-              <label>
-                <Checkbox checked={block()} onCheckedChange={setBlock} />
-                Block close
-              </label>
+              <Checkbox checked={block()} onCheckedChange={setBlock} label="Block close" />
               <Menu>
                 <MenuTrigger variant="outline">Actions</MenuTrigger>
                 <MenuContent aria-label="Actions">

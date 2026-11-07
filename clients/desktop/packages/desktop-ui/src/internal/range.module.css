@@ -1,0 +1,46 @@
+/* Native ranges keep a stable track and thumb across pointer states. */
+
+@layer components {
+  .range {
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: var(--kui-control-height);
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 0.25rem;
+    border-radius: var(--radius-sm);
+    background: var(--muted);
+  }
+  .range::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--kui-icon-small);
+    height: var(--kui-icon-small);
+    margin-top: calc((0.25rem - var(--kui-icon-small)) / 2);
+    border: 0;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+  .range:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 1px;
+  }
+  .range[aria-invalid='true']::-webkit-slider-runnable-track {
+    background: var(--destructive);
+  }
+  .range:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  @media (forced-colors: active) {
+    .range,
+    .range::-webkit-slider-thumb {
+      appearance: auto;
+    }
+  }
+}

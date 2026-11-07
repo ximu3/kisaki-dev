@@ -5,6 +5,7 @@ import type { Accessor, JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { createValue, onFormReset } from '../../internal/state'
+import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
 const RadioContext = createContext<{
@@ -94,6 +95,7 @@ export interface RadioProps extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
   'type' | 'value' | 'checked' | 'name'
 > {
+  label?: JSX.Element
   value: string
 }
 
@@ -104,24 +106,26 @@ export function Radio(props: RadioProps): JSX.Element {
     throw new Error('Radio requires RadioGroup.')
   }
 
-  const [local, rest] = splitProps(props, ['class', 'onChange', 'value'])
+  const [local, rest] = splitProps(props, ['class', 'onChange', 'value', 'label'])
 
   return (
-    <input
-      {...rest}
-      type="radio"
-      name={group.name()}
-      form={group.form()}
-      required={group.required()}
-      value={local.value}
-      checked={group.value() === local.value}
-      class={classes(styles.option, local.class)}
-      onChange={(event) => {
-        if (event.currentTarget.checked) {
-          group.change(local.value)
-        }
-        callHandler(local.onChange, event)
-      }}
-    />
+    <ChoiceRow label={local.label}>
+      <input
+        {...rest}
+        type="radio"
+        name={group.name()}
+        form={group.form()}
+        required={group.required()}
+        value={local.value}
+        checked={group.value() === local.value}
+        class={classes(styles.option, local.class)}
+        onChange={(event) => {
+          if (event.currentTarget.checked) {
+            group.change(local.value)
+          }
+          callHandler(local.onChange, event)
+        }}
+      />
+    </ChoiceRow>
   )
 }

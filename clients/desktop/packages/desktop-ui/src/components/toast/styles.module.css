@@ -21,16 +21,12 @@
 
   .item {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 0.5rem;
     box-sizing: border-box;
     padding: 0.625rem 0.75rem;
-    background: var(--popover);
-    color: var(--popover-foreground);
-    border: 0;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-overlay);
-    font-size: 0.875rem;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
     animation: enter 140ms ease-out;
   }
 
@@ -41,7 +37,11 @@
   }
 
   .icon {
-    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    height: 1lh;
+    width: var(--kui-icon-size);
+    flex: none;
     color: var(--info);
   }
   .item[data-type='success'] .icon {

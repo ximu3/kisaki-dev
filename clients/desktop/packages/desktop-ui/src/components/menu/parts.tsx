@@ -15,11 +15,13 @@ import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
-import { createPopup } from '../../internal/popup'
-import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icons'
+import { createPopup } from '../../internal/popup/controller'
+import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icon/icon'
 import { createSubmenuHover } from './hover'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
+import surface from '../../internal/popup/surface.module.css'
+import row from '../../internal/list-row.module.css'
 import styles from './styles.module.css'
 
 interface MenuState {
@@ -202,7 +204,12 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
     open: state.open,
     change: state.change,
     point: state.point,
-    placement: () => (state.parent ? 'right-start' : 'bottom-start'),
+    placement: () => {
+      if (state.parent) {
+        return getComputedStyle(state.anchor!).direction === 'rtl' ? 'left-start' : 'right-start'
+      }
+      return 'bottom-start'
+    },
   })
 
   const navigate = createFocusNavigation(
@@ -235,7 +242,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
       popover="auto"
       role="menu"
       tabIndex={-1}
-      class={classes(styles.root, local.class)}
+      class={classes(surface.surface, styles.root, local.class)}
       onPointerEnter={(event) => {
         state.hover.stop()
         callHandler(local.onPointerEnter, event)
@@ -300,7 +307,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       role={props.role ?? 'menuitem'}
       tabIndex={-1}
       data-destructive={local.destructive || undefined}
-      class={classes(styles.item, local.class)}
+      class={classes(row.row, styles.item, local.class)}
       onPointerMove={(event) => {
         callHandler(local.onPointerMove, event)
         if (
@@ -333,7 +340,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
     >
       <span class={styles.label}>{local.children}</span>
       <Show when={props['aria-checked'] !== undefined}>
-        <span aria-hidden="true" class={styles.check}>
+        <span aria-hidden="true" class={row.mark}>
           <Show when={props['aria-checked'] === true}>
             <Icon path={mdiCheck} />
           </Show>
@@ -413,7 +420,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
         state.anchor = node
         assignRef(local.ref, node)
       }}
-      class={classes(styles.item, local.class)}
+      class={classes(row.row, styles.item, local.class)}
       aria-haspopup="menu"
       aria-expanded={state.open()}
       aria-controls={state.id}

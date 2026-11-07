@@ -8,4 +8,4 @@ export {
   type PopoverProps,
   type PopoverContentProps,
 } from './parts'
-export type { PopupPlacement } from '../../internal/popup'
+export type { PopupPlacement } from '../../internal/popup/controller'

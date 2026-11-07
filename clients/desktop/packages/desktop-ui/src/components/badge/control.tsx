@@ -1,4 +1,4 @@
-/** @fileoverview badge presentation using native document semantics. */
+/** @fileoverview Compact labels communicate status with text and semantic color. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'

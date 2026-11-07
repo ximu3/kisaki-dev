@@ -39,7 +39,7 @@
 
   .summary {
     color: var(--muted-foreground);
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
     padding-top: 0.5rem;
   }
 
@@ -57,7 +57,7 @@
     color: var(--foreground);
     padding: 0.25rem;
     font: inherit;
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
     cursor: pointer;
   }
   .legend button[aria-pressed='false'] {
@@ -78,7 +78,7 @@
     grid-template-columns: auto auto;
     gap: 0.25rem 0.75rem;
     margin: 0;
-    font-size: 0.75rem;
+    font-size: var(--kui-caption-font);
   }
   .tooltip dd {
     margin: 0;

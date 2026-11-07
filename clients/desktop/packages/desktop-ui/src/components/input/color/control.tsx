@@ -12,12 +12,14 @@ import {
   untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef } from '../../../internal/dom'
+import { assignRef, classes } from '../../../internal/dom'
 import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
-import { createPopup } from '../../../internal/popup'
+import { createPopup } from '../../../internal/popup/controller'
 import { createValue, onFormReset } from '../../../internal/state'
 import { NativeInput } from '../native'
 import type { InputProps } from '../control'
+import range from '../../../internal/range.module.css'
+import surface from '../../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 /** Typed CSS color syntax is retained; picker gestures produce hex with alpha when needed. */
@@ -30,6 +32,7 @@ export interface ColorInputProps extends Omit<InputProps, 'type'> {
   invalidColorMessage: string
 }
 
+/** Text and picker edits share a form value. Invalid text stays available for correction. */
 export function ColorInput(props: ColorInputProps): JSX.Element {
   const toHsv = converter('hsv')
   const [local, rest] = splitProps(props, [
@@ -146,7 +149,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         popover="auto"
         role="dialog"
         aria-label={local.pickerLabel}
-        class={styles.picker}
+        class={classes(surface.surface, styles.picker)}
         onFocusOut={(event) => {
           if (
             !picker.contains(event.relatedTarget as Node | null) &&
@@ -183,18 +186,20 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
               hue = node
             }}
             type="range"
+            class={range.range}
             min="0"
             max="360"
             step="1"
             value={color().h ?? 0}
             onInput={(event) => commit({ h: event.currentTarget.valueAsNumber })}
           />
-          <output>{Math.round(color().h ?? 0)}掳</output>
+          <output>{Math.round(color().h ?? 0)}°</output>
         </label>
         <label class={styles.channel}>
           <span>{local.saturationLabel}</span>
           <input
             type="range"
+            class={range.range}
             min="0"
             max="100"
             step="1"
@@ -207,6 +212,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
           <span>{local.brightnessLabel}</span>
           <input
             type="range"
+            class={range.range}
             min="0"
             max="100"
             step="1"
@@ -219,6 +225,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
           <span>{local.alphaLabel}</span>
           <input
             type="range"
+            class={range.range}
             min="0"
             max="100"
             step="1"

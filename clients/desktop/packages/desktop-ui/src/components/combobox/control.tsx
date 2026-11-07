@@ -12,12 +12,12 @@ import {
 import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes, closeWhenUnavailable } from '../../internal/field'
-import { Icon, mdiChevronDown } from '../../internal/icons'
+import { Icon, mdiChevronDown } from '../../internal/icon/icon'
 import { createSelection, optionId } from '../../internal/selection/collection'
 import { SelectionList } from '../../internal/selection/list'
 import type { SelectionListProps, SelectionOption } from '../../internal/selection/types'
 import { createValue, onFormReset } from '../../internal/state'
-import inputStyles from '../input/styles.module.css'
+import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
 
 export type ComboboxOption = SelectionOption
@@ -156,7 +156,7 @@ export function Combobox(props: ComboboxProps): JSX.Element {
           input = node
           assignRef(local.ref, node)
         }}
-        class={classes(inputStyles.root, styles.input, local.class)}
+        class={classes(surface.surface, surface.singleLine, styles.input, local.class)}
         onCompositionStart={(event) => {
           composing = true
           callHandler(local.onCompositionStart, event)

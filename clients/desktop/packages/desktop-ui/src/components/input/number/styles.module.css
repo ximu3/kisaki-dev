@@ -1,0 +1,45 @@
+/* Numeric step buttons share the native editor height. */
+
+@layer components {
+  .number {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+  .number input {
+    appearance: textfield;
+    padding-inline-end: 1.375rem;
+  }
+  .number input::-webkit-inner-spin-button,
+  .number input::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+  .steps {
+    position: absolute;
+    inset-block: 1px;
+    inset-inline-end: 1px;
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    width: 1.125rem;
+  }
+  .steps button {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted-foreground);
+    --kui-glyph-size: var(--kui-icon-small);
+    cursor: pointer;
+  }
+  .steps button:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+  .steps button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}

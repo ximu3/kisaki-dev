@@ -7,6 +7,8 @@ import {
   mdiInformationOutline,
 } from '@mdi/js'
 import type { JSX } from 'solid-js'
+import { classes } from '../dom'
+import styles from './styles.module.css'
 
 export {
   mdiAlertCircleOutline,
@@ -18,19 +20,18 @@ export {
   mdiChevronUp,
   mdiClose,
   mdiDrag,
+  mdiLoading,
   mdiMinus,
 } from '@mdi/js'
 
-/** Decorative symbols inherit text color and size; the enclosing control owns its name. */
+/** The enclosing control owns the accessible name and selects a glyph size when needed. */
 export function Icon(props: { path: string; class?: string | undefined }): JSX.Element {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="1em"
-      height="1em"
       fill="currentColor"
       aria-hidden="true"
-      class={props.class}
+      class={classes(styles.glyph, props.class)}
     >
       <path d={props.path} />
     </svg>

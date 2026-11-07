@@ -1,0 +1,29 @@
+/* The control center follows the first line, including when its label wraps. */
+
+@layer components {
+  .row {
+    display: inline-grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--kui-inline-gap);
+    width: fit-content;
+    max-width: 100%;
+    padding-block: 0.125rem;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+    cursor: pointer;
+  }
+  .control {
+    display: grid;
+    height: 1lh;
+    place-items: center;
+  }
+  .label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .row:has(:disabled) {
+    color: var(--muted-foreground);
+    cursor: default;
+  }
+}

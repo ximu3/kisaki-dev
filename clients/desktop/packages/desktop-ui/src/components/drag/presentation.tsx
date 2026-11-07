@@ -5,7 +5,7 @@ import type { JSX } from 'solid-js'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import { callHandler, classes } from '../../internal/dom'
-import { Icon, mdiDrag } from '../../internal/icons'
+import { Icon, mdiDrag } from '../../internal/icon/icon'
 import styles from './styles.module.css'
 
 /** Optional keyboard movement is a direct host command, independent of pointer drag state. */

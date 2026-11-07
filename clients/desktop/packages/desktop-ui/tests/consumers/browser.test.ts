@@ -26,8 +26,9 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   await page.getByLabel('Compact', { exact: true }).check()
   await page.locator('#select').click()
   await page.getByRole('option', { name: 'Beta', exact: true }).click()
+  await page.getByRole('button', { name: 'Remove Amber' }).click()
+  await browserExpect(page.getByRole('button', { name: 'Remove Coral' })).toBeFocused()
   await page.locator('#multi').click()
-  await page.getByRole('option', { name: 'Amber', exact: true }).click()
   await page.getByRole('option', { name: 'Coral', exact: true }).click()
   await page.getByRole('option', { name: 'Blue', exact: true }).click()
   await page.keyboard.press('Escape')
@@ -107,6 +108,16 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
       .locator('#virtual-form')
       .evaluate((node: HTMLFormElement) => new FormData(node).getAll('virtual')),
   ).toEqual(['8999', '9999'])
+
+  await page.locator('#virtual-form').evaluate((form) => {
+    form.style.width = '8rem'
+  })
+  const form = page.locator('#virtual-form')
+  await form.getByRole('button', { name: 'Next selected items' }).click()
+  await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeEnabled()
+  await form.getByRole('button', { name: 'Remove Item 10000' }).click()
+  await form.evaluate((form) => form.style.removeProperty('width'))
+  await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()
 })
 
 test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
@@ -115,13 +126,31 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
   await page.getByRole('button', { name: 'Increase', exact: true }).click()
   await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('3')
 
-  const date = page.getByRole('textbox', { name: 'Calendar date' })
-  await date.fill('2024-02-30')
-  expect(await date.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(false)
-  await date.fill('2024-02-28')
+  const date = page.getByLabel('Calendar date', { exact: true })
+  const insets = await date.evaluate((node) => {
+    const style = getComputedStyle(node)
+    return { start: parseFloat(style.paddingInlineStart), end: parseFloat(style.paddingInlineEnd) }
+  })
+  expect(insets.end).toBeGreaterThan(insets.start)
+  await date.focus()
+  await date.press('Backspace')
+  expect(await date.evaluate((node: HTMLInputElement) => node.validity.badInput)).toBe(true)
+  const source = page.locator('#query')
+  await source.fill('2024-02-28')
+  await source.press('ControlOrMeta+A')
+  await source.press('ControlOrMeta+C')
+  await date.press('ControlOrMeta+V')
+  await browserExpect(date).toHaveValue('2024-02-28')
   await page.getByRole('button', { name: 'Choose date', exact: true }).click()
   const day = page.getByRole('gridcell', { name: 'Wednesday, February 28, 2024', exact: true })
   await browserExpect(day).toBeFocused()
+  const month = page.getByRole('combobox', { name: 'Month', exact: true })
+  await month.click()
+  await page.getByRole('option', { name: 'March', exact: true }).click()
+  await browserExpect(page.getByRole('grid', { name: 'March 2024' })).toBeVisible()
+  await browserExpect(date).toHaveValue('2024-02-28')
+  await month.click()
+  await page.getByRole('option', { name: 'February', exact: true }).click()
   await day.press('ArrowRight')
   await page.keyboard.press('Enter')
   await browserExpect(date).toHaveValue('2024-02-29')

@@ -10,12 +10,11 @@ import {
   splitProps,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
-import { Icon, mdiAlertCircleOutline } from '../../internal/icons'
-import { createPopup } from '../../internal/popup'
-import { createTooltip } from '../../internal/tooltip'
-import tooltipStyles from '../tooltip/styles.module.css'
-import styles from './feedback.module.css'
+import { classes } from '../../../internal/dom'
+import { Icon, mdiAlertCircleOutline } from '../../../internal/icon/icon'
+import { TooltipSurface } from '../../../internal/tooltip/content'
+import { createTooltip } from '../../../internal/tooltip/controller'
+import styles from './styles.module.css'
 
 /** summary is a concise correction; message retains the full explanation. */
 export interface FieldIssue {
@@ -89,20 +88,6 @@ function FeedbackPrompt(props: {
   const tooltip = createTooltip(() => 300)
   const id = createUniqueId()
   let trigger!: HTMLButtonElement
-  let content!: HTMLDivElement
-
-  createPopup({
-    element: () => content,
-    anchor: () => trigger,
-    open: tooltip.open,
-    change: (open) => {
-      if (!open) {
-        tooltip.dismiss()
-      }
-    },
-    placement: () => 'top-start',
-    restoreFocus: false,
-  })
 
   return (
     <>
@@ -129,16 +114,12 @@ function FeedbackPrompt(props: {
           <Icon path={mdiAlertCircleOutline} />
         </span>
       </button>
-      <div
-        ref={(node) => {
-          content = node
-        }}
+      <TooltipSurface
         id={id}
-        popover="manual"
-        role="tooltip"
-        class={classes(tooltipStyles.root, styles.details)}
-        onPointerEnter={() => tooltip.hover('content', true)}
-        onPointerLeave={() => tooltip.hover('content', false)}
+        reading={tooltip}
+        anchor={() => trigger}
+        placement="top-start"
+        class={styles.details}
       >
         <ul>
           <For each={props.issues}>
@@ -150,7 +131,7 @@ function FeedbackPrompt(props: {
             )}
           </For>
         </ul>
-      </div>
+      </TooltipSurface>
     </>
   )
 }

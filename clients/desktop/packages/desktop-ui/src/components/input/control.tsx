@@ -9,6 +9,7 @@ export interface InputProps extends Omit<NativeInputProps, 'type'> {
   type?: 'text' | 'password' | 'search' | 'email' | 'url' | 'tel'
 }
 
+/** Native text editing accepts direct labels or a surrounding Field. */
 export function Input(props: InputProps): JSX.Element {
   return <NativeInput {...props} />
 }

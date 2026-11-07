@@ -1,15 +1,15 @@
 # W05 公共 UI 包验证
 
-2026-11-06，在 Windows x64、Node 24.11.1、pnpm 11.11.0、Solid 1.9.16 和 TypeScript 6.0.3 下验证 `@kisaki3/desktop-ui@0.1.0-dev.0`。浏览器为 Playwright 1.64.1 的 Chromium 156.0.8078.4；实际 Electron 45.0.0 使用 Chromium 156.0.8078.48、Node 24.22.0。范围为 [W05](../../../implementation/work-packages.md#w05) 的公共组件、独立制品及浏览器交互。
+2026-11-07，在 Windows x64、Node 24.11.1、pnpm 11.11.0、Solid 1.9.16 和 TypeScript 6.0.3 下验证 `@kisaki3/desktop-ui@0.1.0-dev.0`。浏览器为 Playwright 1.64.1 的 Chromium 156.0.8078.4；实际 Electron 45.0.0 使用 Chromium 156.0.8078.48、Node 24.22.0。范围为 [W05](../../../implementation/work-packages.md#w05) 的公共组件、独立制品及浏览器交互。
 
 ## 交付与检查
 
-组件从 31 个家族子路径导出，源码、Props、状态与样式位于所属 `src/components/<family>`；`src/internal` 保存实际共用的字段关联、值、表单重置、焦点、逻辑选项集合、Tooltip 阅读寿命、模态宿主与定位机制。
+组件从 31 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。
 
 | 范围 | 已交付与实际验证 |
 | --- | --- |
 | 基础呈现 | Button、Link、Badge、Separator、Spinner、Progress、Alert、Image 和 EmptyState；原生语义、变体、焦点、禁用与默认样式。 |
-| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性、输入法组合、日期跨月选择与 alpha 编辑；万项虚拟列表的离屏值、键盘定位和提交。 |
+| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性、输入法组合、日期分段删除、完整日期粘贴、独立切换月份、跨月键盘选择与 alpha 编辑。万项虚拟列表核对离屏值、键盘定位和提交，框内标签核对移除、焦点与窄字段滚动。 |
 | 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、共同分段外观、语义表格和统一原生滚动条。 |
 | 浮层 | Dialog、确认内容、Popover、下拉／上下文／子菜单和 Tooltip；原生模态、可阻止的关闭请求、逐层 Escape、嵌套焦点返回、子菜单悬停与移入，以及 Tooltip 的键盘与悬停阅读。Floating UI 负责视口约束与翻转。 |
 | 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。紧凑提示直接定位，圆圈图标悬停与键盘聚焦提供只读详情；四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |

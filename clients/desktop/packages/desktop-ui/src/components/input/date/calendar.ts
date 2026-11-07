@@ -58,19 +58,3 @@ export function calendarDays(month: string, weekStartsOn: number): (string | und
     }),
   )
 }
-
-export function isDateAllowed(
-  value: string,
-  min?: string,
-  max?: string,
-  step = 1,
-  baseline = '1970-01-01',
-): boolean {
-  const date = parseDate(value)
-  if (!date || (min && value < min) || (max && value > max)) {
-    return false
-  }
-
-  const base = parseDate(min ?? baseline) ?? parseDate('1970-01-01')!
-  return ((date.getTime() - base.getTime()) / dayMs) % step === 0
-}

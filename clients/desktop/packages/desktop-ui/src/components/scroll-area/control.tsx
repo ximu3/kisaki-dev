@@ -1,4 +1,4 @@
-/** @fileoverview scroll-area presentation using native document semantics. */
+/** @fileoverview A focusable viewport exposes the native scroll container. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'

@@ -3,19 +3,13 @@
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
-import styles from './styles.module.css'
-
-/** Visual purpose; navigation remains the Link family's responsibility. */
-export type ButtonVariant =
-  'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'text'
-
-/** Heights follow the inherited interface scale; icon sizes retain a square hit area. */
-export type ButtonSize = 'default' | 'xs' | 'sm' | 'lg' | 'icon' | 'icon-xs' | 'icon-sm' | 'icon-lg'
+import type { ActionSize, ActionVariant } from '../../internal/action/types'
+import styles from '../../internal/action/styles.module.css'
 
 /** Supply an accessible name for icon-only content. Busy disables new activation. */
 export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant
-  size?: ButtonSize
+  variant?: ActionVariant
+  size?: ActionSize
 
   busy?: boolean
 }

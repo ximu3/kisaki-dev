@@ -17,6 +17,9 @@ export function VirtualChoices(): JSX.Element {
   return (
     <form id="virtual-form">
       <MultiSelect
+        removeLabel={(label) => `Remove ${label}`}
+        scrollPreviousLabel="Previous selected items"
+        scrollNextLabel="Next selected items"
         name="virtual"
         aria-label="Virtual choices"
         options={choices}

@@ -4,10 +4,12 @@ import { createEffect, For, onCleanup, onMount, Show, untrack } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { createToastController } from './controller'
 import type { ToastEntry } from './controller'
-import { Icon, mdiClose, StatusIcon } from '../../internal/icons'
+import { Icon, mdiClose, StatusIcon } from '../../internal/icon/icon'
 import { observeModalHost } from '../../internal/modal-host'
 import { Button } from '../button/control'
 import { Spinner } from '../spinner/control'
+import { classes } from '../../internal/dom'
+import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 /** Install once per window. Labels are supplied by the host's locale. */
@@ -132,7 +134,7 @@ function ToastItem(props: {
 
   return (
     <div
-      class={styles.item}
+      class={classes(surface.surface, styles.item)}
       data-type={props.entry.message().type}
       onPointerEnter={() => {
         hovered = true

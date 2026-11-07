@@ -2,12 +2,11 @@
 
 import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
-import { createPopup } from '../../internal/popup'
-import { createTooltip } from '../../internal/tooltip'
+import { assignRef, callHandler } from '../../internal/dom'
+import { TooltipSurface } from '../../internal/tooltip/content'
+import { createTooltip } from '../../internal/tooltip/controller'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
-import styles from './styles.module.css'
 
 interface TooltipState extends ReturnType<typeof createTooltip> {
   id: string
@@ -75,42 +74,7 @@ export function TooltipTrigger(props: ButtonProps): JSX.Element {
 /** Hoverable explanation constrained to the viewport, without taking keyboard focus. */
 export function TooltipContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useTooltip()
-  const [local, rest] = splitProps(props, ['class', 'onPointerEnter', 'onPointerLeave', 'ref'])
-
-  let content!: HTMLDivElement
-  createPopup({
-    element: () => content,
-    anchor: () => state.anchor!,
-    open: state.open,
-    change: (open) => {
-      if (!open) {
-        state.dismiss()
-      }
-    },
-    restoreFocus: false,
-  })
-
-  return (
-    <div
-      {...rest}
-      ref={(node) => {
-        content = node
-        assignRef(local.ref, node)
-      }}
-      id={state.id}
-      popover="manual"
-      role="tooltip"
-      class={classes(styles.root, local.class)}
-      onPointerEnter={(event) => {
-        state.hover('content', true)
-        callHandler(local.onPointerEnter, event)
-      }}
-      onPointerLeave={(event) => {
-        state.hover('content', false)
-        callHandler(local.onPointerLeave, event)
-      }}
-    />
-  )
+  return <TooltipSurface {...props} id={state.id} anchor={() => state.anchor!} reading={state} />
 }
 
 function useTooltip(): TooltipState {

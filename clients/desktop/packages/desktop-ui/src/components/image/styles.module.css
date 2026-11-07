@@ -15,6 +15,6 @@
     min-height: 3rem;
     background: var(--muted);
     color: var(--muted-foreground);
-    font-size: 0.875rem;
+    font-size: var(--kui-control-font);
   }
 }
