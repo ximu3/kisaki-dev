@@ -89,14 +89,13 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
 }) => {
   const trigger = page.getByRole('combobox', { name: 'Virtual choices' })
   await trigger.click()
-  await browserExpect(page.getByRole('option', { name: 'Item 9000', exact: true })).toHaveAttribute(
-    'aria-selected',
-    'true',
-  )
+  const selected = page.getByRole('option', { name: 'Item 9000', exact: true })
+  await browserExpect(selected).toHaveAttribute('aria-selected', 'true')
+  await browserExpect(selected).toBeInViewport({ ratio: 0.99 })
   expect(await page.getByRole('option').count()).toBeLessThan(40)
   await trigger.press('End')
   const last = page.getByRole('option', { name: 'Item 10000', exact: true })
-  await browserExpect(last).toBeVisible()
+  await browserExpect(last).toBeInViewport({ ratio: 0.99 })
   await browserExpect(trigger).toHaveAttribute(
     'aria-activedescendant',
     (await last.getAttribute('id'))!,

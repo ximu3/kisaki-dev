@@ -1,6 +1,6 @@
 /** @fileoverview Shared popup rows, selected marks and virtual scrolling handoff. */
 
-import { createEffect, createMemo, For, onMount, Show } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
 import { Icon, mdiCheck } from '../icon/icon'
@@ -31,8 +31,10 @@ interface ListProps extends SelectionListProps {
 
 /** The trigger owns focus and the collection owns navigation, including offscreen virtual rows. */
 export function SelectionList(props: ListProps): JSX.Element {
+  let popup!: HTMLDivElement
   let list!: HTMLDivElement
-  const groups = createMemo(() => {
+
+  const groups = () => {
     const result: { label: string | undefined; options: SelectionOption[] }[] = []
     for (const option of props.options) {
       const last = result.at(-1)
@@ -43,9 +45,9 @@ export function SelectionList(props: ListProps): JSX.Element {
       }
     }
     return result
-  })
+  }
   createPopup({
-    element: () => list,
+    element: () => popup,
     anchor: props.anchor,
     reference: props.reference,
     open: () => props.open,
@@ -56,9 +58,19 @@ export function SelectionList(props: ListProps): JSX.Element {
 
   onMount(() => {
     props.listRef?.(list)
+    const [height, setHeight] = createSignal(0)
+    const size = new ResizeObserver(() => setHeight(list.clientHeight))
+    size.observe(list)
+    onCleanup(() => size.disconnect())
+
     createEffect(() => {
       const active = props.collection.active()
-      if (props.open && active !== undefined) {
+      if (!props.open || active === undefined || !height()) {
+        return
+      }
+
+      // Virtual layouts must receive the open viewport's size before positioning the active row.
+      const frame = requestAnimationFrame(() => {
         if (props.scrollToValue) {
           props.scrollToValue(active)
         } else {
@@ -66,7 +78,8 @@ export function SelectionList(props: ListProps): JSX.Element {
             .getElementById(optionId(props.id, active))
             ?.scrollIntoView({ block: 'nearest' })
         }
-      }
+      })
+      onCleanup(() => cancelAnimationFrame(frame))
     })
   })
 
@@ -108,7 +121,7 @@ export function SelectionList(props: ListProps): JSX.Element {
   return (
     <div
       ref={(node) => {
-        list = node
+        popup = node
       }}
       id={props.id}
       popover="auto"
@@ -118,43 +131,50 @@ export function SelectionList(props: ListProps): JSX.Element {
       aria-busy={props.loading || undefined}
       class={classes(surface.surface, styles.list, props.listClass)}
       onPointerDown={(event) => {
-        if (event.target !== event.currentTarget) {
+        if (event.target !== event.currentTarget && event.target !== list) {
           event.preventDefault()
         }
       }}
     >
-      <Show
-        when={!props.loading}
-        fallback={
-          <div class={styles.message} role="status">
-            {props.loadingMessage}
-          </div>
-        }
+      <div
+        class={styles.viewport}
+        ref={(node) => {
+          list = node
+        }}
       >
         <Show
-          when={props.options.length}
-          fallback={<div class={styles.message}>{props.emptyMessage}</div>}
+          when={!props.loading}
+          fallback={
+            <div class={styles.message} role="status">
+              {props.loadingMessage}
+            </div>
+          }
         >
-          {props.renderOptions ? (
-            props.renderOptions({
-              options: () => props.options,
-              open: () => props.open,
-              renderOption,
-            })
-          ) : (
-            <For each={groups()}>
-              {(group) => (
-                <div role={group.label ? 'group' : undefined} aria-label={group.label}>
-                  <Show when={group.label}>
-                    <div class={styles.groupTitle}>{group.label}</div>
-                  </Show>
-                  <For each={group.options}>{renderOption}</For>
-                </div>
-              )}
-            </For>
-          )}
+          <Show
+            when={props.options.length}
+            fallback={<div class={styles.message}>{props.emptyMessage}</div>}
+          >
+            {props.renderOptions ? (
+              props.renderOptions({
+                options: () => props.options,
+                open: () => props.open,
+                renderOption,
+              })
+            ) : (
+              <For each={groups()}>
+                {(group) => (
+                  <div role={group.label ? 'group' : undefined} aria-label={group.label}>
+                    <Show when={group.label}>
+                      <div class={styles.groupTitle}>{group.label}</div>
+                    </Show>
+                    <For each={group.options}>{renderOption}</For>
+                  </div>
+                )}
+              </For>
+            )}
+          </Show>
         </Show>
-      </Show>
+      </div>
     </div>
   )
 }

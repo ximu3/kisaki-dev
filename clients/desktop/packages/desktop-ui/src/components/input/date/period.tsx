@@ -33,6 +33,7 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
         })
       : [],
   )
+  const rowHeight = createMemo(() => (open() ? trigger.getBoundingClientRect().height : 0))
   const collection = createSelection(options)
   const rows = createVirtualizer({
     get count() {
@@ -42,7 +43,8 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
       return open()
     },
     getScrollElement: () => viewport() ?? null,
-    estimateSize: () => trigger.getBoundingClientRect().height,
+    estimateSize: rowHeight,
+    measureElement: (element) => element.getBoundingClientRect().height,
     getItemKey: (index) => props.first + index,
     overscan: 3,
   })
@@ -81,11 +83,7 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
         onOpenChange={setOpen}
         onChoose={choose}
         scrollToValue={(value) =>
-          queueMicrotask(() => {
-            if (open()) {
-              rows.scrollToIndex(Number(value) - props.first, { align: 'auto' })
-            }
-          })
+          rows.scrollToIndex(Number(value) - props.first, { align: 'auto' })
         }
         renderOptions={({ renderOption }) => (
           <div class={styles.periodTrack} style={{ height: `${rows.getTotalSize()}px` }}>

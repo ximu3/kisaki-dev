@@ -5,6 +5,15 @@
     width: max-content;
     max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
     padding: 0.25rem;
+    overflow: hidden;
+  }
+  :where(.list:popover-open) {
+    display: flex;
+    flex-direction: column;
+  }
+  .viewport {
+    min-height: 0;
+    overflow: auto;
     overscroll-behavior: contain;
   }
 

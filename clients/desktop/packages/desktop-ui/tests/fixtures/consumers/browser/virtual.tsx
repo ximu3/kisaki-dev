@@ -45,12 +45,7 @@ export function VirtualChoices(): JSX.Element {
             virtualizer.getVirtualItems()
             virtualizer.measureElement(null)
           })
-          scrollTo = (value) =>
-            queueMicrotask(() => {
-              if (state.open()) {
-                virtualizer.scrollToIndex(Number(value), { align: 'auto' })
-              }
-            })
+          scrollTo = (value) => virtualizer.scrollToIndex(Number(value), { align: 'auto' })
           onCleanup(() => {
             scrollTo = undefined
           })
