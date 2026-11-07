@@ -291,6 +291,7 @@ function Validation(): JSX.Element {
   const [active, setActive] = createSignal<string | null | undefined>(null)
   const [long, setLong] = createSignal('Enter a title.')
   const [tab, setTab] = createSignal('basic')
+  let feedback!: HTMLDivElement
 
   window.fixture.setLongMessage = (language) =>
     setLong(
@@ -323,6 +324,14 @@ function Validation(): JSX.Element {
       <h2>Form feedback</h2>
       <form
         novalidate
+        onFocusIn={(event) =>
+          setActive(feedback.contains(event.target) ? undefined : event.target.id || null)
+        }
+        onFocusOut={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setActive(null)
+          }
+        }}
         onSubmit={(event) => {
           event.preventDefault()
           setSubmitted(true)
@@ -340,12 +349,7 @@ function Validation(): JSX.Element {
           <TabPanel value="basic">
             <Field id="title" required invalid={issues().some((issue) => issue.id === 'title')}>
               <FieldLabel>Title</FieldLabel>
-              <Input
-                name="title"
-                value={title()}
-                onValueChange={setTitle}
-                onFocus={() => setActive('title')}
-              />
+              <Input name="title" value={title()} onValueChange={setTitle} />
               <FieldDescription>A stable name for this sample.</FieldDescription>
               <FieldError>{long()}</FieldError>
             </Field>
@@ -357,24 +361,22 @@ function Validation(): JSX.Element {
               invalid={issues().some((issue) => issue.id === 'description')}
             >
               <FieldLabel>Description</FieldLabel>
-              <Textarea
-                value={description()}
-                onValueChange={setDescription}
-                onFocus={() => setActive('description')}
-              />
+              <Textarea value={description()} onValueChange={setDescription} />
               <FieldError>Enter a description.</FieldError>
             </Field>
           </TabPanel>
         </Tabs>
         <FormFeedback
           id="feedback"
+          ref={(node) => {
+            feedback = node
+          }}
           issues={issues()}
           activeFieldId={active()}
-          summary={(count, current) =>
-            current ? `${current.summary} (${count - 1} more)` : `${count} fields need attention`
+          summary={(count) =>
+            count === 1 ? '1 field needs attention' : `${count} fields need attention`
           }
           onLocate={locate}
-          onFocusIn={() => setActive(undefined)}
         />
         <Button type="submit">Save sample</Button>
       </form>

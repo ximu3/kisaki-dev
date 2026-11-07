@@ -233,33 +233,48 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   await browserExpect(page.locator('#title')).toHaveAttribute('aria-invalid', 'true')
   const described = await page.locator('#title').getAttribute('aria-describedby')
   expect(described).toContain('title-error')
+  const prompt = page.locator('#feedback button')
+  const detail = page.locator('#feedback [role="tooltip"]')
+  await browserExpect(prompt).toHaveAccessibleName('Enter a title.')
+  await browserExpect(detail).toHaveCount(0)
 
   for (const language of ['English', '简体中文', '繁體中文', '日本語']) {
     await page.evaluate((language) => window.fixture.setLongMessage(language), language)
     expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
   }
 
-  await page.locator('#feedback').getByRole('button', { name: 'Enter a title. (1 more)' }).hover()
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeVisible()
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toContainText(
-    'Enter a description.',
-  )
+  await prompt.hover()
+  await browserExpect(detail).toBeVisible()
+  await browserExpect(detail).toHaveText((await page.locator('#title-error').textContent())!)
+  await prompt.focus()
+  await browserExpect(prompt).toHaveAccessibleName('Enter a title.')
   await page.keyboard.press('Escape')
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeHidden()
-  await page.locator('#feedback button').click()
+  await browserExpect(detail).toBeHidden()
+
+  await page.getByRole('tab', { name: 'Detail', exact: true }).click()
+  await page.locator('#description').focus()
+  await browserExpect(prompt).toHaveText('Enter a description.')
+  await browserExpect(detail).toHaveCount(0)
+  await page.getByRole('button', { name: 'Save sample' }).focus()
+  await browserExpect(prompt).toHaveText('2 fields need attention')
+  await prompt.click()
   await browserExpect(page.locator('#title')).toBeFocused()
+
   await page.locator('#title').fill('Complete')
-  await browserExpect(page.locator('#feedback button')).toHaveText('Enter a description.')
+  await browserExpect(page.locator('#title')).toBeFocused()
+  await browserExpect(prompt).toHaveText('1 field needs attention')
+  await browserExpect(detail).toHaveCount(0)
+  await prompt.click()
+  await browserExpect(page.locator('#description')).toBeFocused()
+
   await page.locator('#feedback').evaluate((element) => {
     element.style.maxWidth = '4ch'
   })
-  await page.locator('#feedback button').hover()
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toHaveText('Enter a description.')
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toBeVisible()
+  await prompt.hover()
+  await browserExpect(detail).toHaveText('Enter a description.')
+  await browserExpect(detail).toBeVisible()
   await page.locator('#feedback').evaluate((element) => element.style.removeProperty('max-width'))
-  await browserExpect(page.locator('#feedback [role="tooltip"]')).toHaveCount(0)
-  await page.locator('#feedback button').click()
-  await browserExpect(page.locator('#description')).toBeFocused()
+  await browserExpect(detail).toHaveCount(0)
   await page.locator('#description').fill('A useful description')
   await browserExpect(page.locator('#feedback')).toHaveText('')
   expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)

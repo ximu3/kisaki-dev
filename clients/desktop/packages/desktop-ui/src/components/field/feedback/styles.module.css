@@ -40,15 +40,12 @@
   }
 
   .details {
-    width: min(24rem, calc(100vw - 1rem));
     --kui-tooltip-padding: 0.625rem 0.75rem;
   }
-  .details ul {
+  .details p {
     margin: 0;
-    padding: 0;
-    list-style: none;
   }
-  .details li + li {
-    margin-top: 0.625rem;
+  .details p + p {
+    margin-top: 0.25rem;
   }
 }

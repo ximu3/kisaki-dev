@@ -5,7 +5,6 @@ import {
   createMemo,
   createSignal,
   createUniqueId,
-  For,
   on,
   onCleanup,
   onMount,
@@ -18,7 +17,7 @@ import { TooltipSurface } from '../../../internal/tooltip/content'
 import { createTooltip } from '../../../internal/tooltip/controller'
 import styles from './styles.module.css'
 
-/** summary identifies the field in a complete correction. message can supply a more detailed correction. */
+/** The summary identifies the field in a complete correction. Its optional message explains that field's error. */
 export interface FieldIssue {
   readonly id: string
 
@@ -26,14 +25,15 @@ export interface FieldIssue {
   readonly message?: string
 }
 
-/** undefined activeFieldId retains feedback focus, null indicates a different valid field. */
+/** An active field id selects its issue. Use null for the overview and undefined to retain context while reading feedback. */
 export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   issues: readonly FieldIssue[]
   activeFieldId?: string | null | undefined
   onLocate: (id: string) => void
 
-  /** Format a multi-issue prompt, including the remaining count when a field is active. */
-  summary: (count: number, current: FieldIssue | undefined) => string
+  /** Format the standalone error count when no erroneous field is active. */
+  summary: (count: number) => string
+  /** Explicit form-level feedback takes precedence over field and count prompts. */
   message?: string
 }
 
@@ -56,23 +56,17 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   })
 
   const current = createMemo(() => local.issues.find((issue) => issue.id === remembered()))
-  const text = () => {
-    if (local.message !== undefined) {
-      return local.message
-    }
-
-    if (local.issues.length > 1) {
-      return local.summary(local.issues.length, current())
-    }
-    return local.issues[0]?.summary ?? ''
-  }
+  const text = () =>
+    local.message ??
+    current()?.summary ??
+    (local.issues.length ? local.summary(local.issues.length) : '')
 
   return (
     <div {...rest} class={classes(styles.root, local.class)}>
       <Show when={local.issues.length} fallback={<span role="status">{text()}</span>}>
         <FeedbackPrompt
-          issues={local.issues}
           text={text()}
+          detail={local.message === undefined ? current()?.message : undefined}
           onLocate={() => local.onLocate(current()?.id ?? local.issues[0]!.id)}
         />
       </Show>
@@ -81,8 +75,8 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
 }
 
 function FeedbackPrompt(props: {
-  issues: readonly FieldIssue[]
   text: string
+  detail: string | undefined
   onLocate: () => void
 }): JSX.Element {
   const tooltip = createTooltip(() => 300)
@@ -90,10 +84,7 @@ function FeedbackPrompt(props: {
   let trigger!: HTMLButtonElement
   let message!: HTMLSpanElement
   const [clipped, setClipped] = createSignal(false)
-  const hasDetails = () =>
-    props.issues.length > 1 ||
-    clipped() ||
-    props.issues.some((issue) => (issue.message ?? issue.summary) !== props.text)
+  const detail = () => (props.detail === props.text ? undefined : props.detail)
 
   onMount(() => {
     const measure = () => setClipped(message.scrollWidth > message.clientWidth)
@@ -112,7 +103,7 @@ function FeedbackPrompt(props: {
         type="button"
         class={styles.prompt}
         aria-label={props.text}
-        aria-describedby={hasDetails() ? id : undefined}
+        aria-describedby={detail() ? id : undefined}
         onClick={() => {
           tooltip.dismiss()
           props.onLocate()
@@ -132,7 +123,7 @@ function FeedbackPrompt(props: {
           {props.text}
         </span>
       </button>
-      <Show when={hasDetails()}>
+      <Show when={detail() || clipped()}>
         <TooltipSurface
           id={id}
           reading={tooltip}
@@ -140,9 +131,10 @@ function FeedbackPrompt(props: {
           placement="top-start"
           class={styles.details}
         >
-          <ul>
-            <For each={props.issues}>{(issue) => <li>{issue.message ?? issue.summary}</li>}</For>
-          </ul>
+          <Show when={clipped() && detail()}>
+            <p aria-hidden="true">{props.text}</p>
+          </Show>
+          <p>{detail() || props.text}</p>
         </TooltipSurface>
       </Show>
     </>

@@ -12,7 +12,7 @@
 | 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性、输入法组合、原生分段删除、完整日期粘贴、独立切换月份、跨月键盘选择与 alpha 编辑。复合输入的端部操作列与编辑区共用一圈边框。万项虚拟列表核对离屏值、键盘定位和提交，框内标签核对移除、焦点和窄字段滚动，溢出时到达端点仍由字段处理滚轮，空间充足时由外层滚动。 |
 | 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、共同分段外观、语义表格和统一原生滚动条。 |
 | 浮层 | Dialog、确认内容、Popover、下拉／上下文／子菜单和 Tooltip；原生模态、标题栏按钮与 Escape 的可阻止关闭请求、逐层 Escape、嵌套焦点返回、子菜单悬停与移入，以及 Tooltip 的键盘与悬停阅读。Floating UI 负责视口约束与翻转。 |
-| 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。完整纠错短句直接定位。多项错误、补充原因或文字截断时，悬停和键盘聚焦可阅读详情。四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |
+| 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。聚焦错误字段时只显示其短句和可选说明，聚焦有效字段时显示独立总数，点击汇总定位第一项。截断的短句可以悬停或聚焦阅读全文。四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |
 | Toast | 命令式 toast 与单一 Toaster；loading、结果转换、persistent、悬停暂停、旧句柄失效和显示宿主清理。发起组件与 Dialog 卸载后消息保持；同一队列在嵌套 Dialog 中移动，动作可实际点击。 |
 | Markdown | CodeMirror 主题与编辑、工具栏事务与撤销、受控正文更新及销毁；Markdown、表格、只读任务与脚注呈现，实例标识隔离，原始 HTML 为文本，未映射图片不请求来源 URL，普通链接可交宿主处理。 |
 | 图表 | Unovis 官方 Solid 子组件的 XY／单图容器、折线、面积、分组柱、堆叠柱、散点、环图、轴、提示和 Crosshair；真实数据更新、只读布局结果、文本提示、交互图例与卸载。五个系列色使用 chart-1 至 chart-5；数据变化、指针跟随与 Tooltip 分别采用短动效并遵守 reduced-motion。 |
