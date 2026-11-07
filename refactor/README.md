@@ -14,7 +14,7 @@
 
 方案取舍遵守[产品判断原则](design/product.md#judgment)，设计是否足以实施按[设计充分性与实现自由](design/engineering/conventions.md#design-completion)核对。关键业务与公开语义在规格中确定，局部实现选择在明确约束内完成。
 
-当前交付包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
+本轮交付范围包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web 客户端、官网和候选服务端留待后续项目。
 
 现有界面与交互体验整体沿用，按规格作局部调整并补充新增能力；组件与内部结构按新架构独立设计，见[现有 UI 保留原则](design/ui/components.md#existing-ui)。
 
