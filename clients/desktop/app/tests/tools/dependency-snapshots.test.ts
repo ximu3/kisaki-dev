@@ -16,6 +16,7 @@ test('Vite resolves complete snapshots and accepts environment-specific exports 
   await mkdir(parent, { recursive: true })
   const directory = await mkdtemp(join(parent, 'dependency-snapshot-test-'))
   onTestFinished(() => rm(directory, { recursive: true, force: true }))
+
   const packageRoot = join(directory, 'package')
   const snapshotsRoot = join(directory, 'snapshots')
   const name = '@kisaki3/snapshot-fixture'

@@ -1,0 +1,71 @@
+/* Custom outline states retain the real checkbox's focus, validity and form behavior. */
+
+@layer components {
+  .container {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  .root {
+    appearance: none;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-grid;
+    place-content: center;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--input);
+    color: var(--primary-foreground);
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  .check,
+  .mixed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    --kui-glyph-size: 0.875rem;
+    color: var(--primary-foreground);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .root:checked,
+  .root:indeterminate {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .root:checked:not(:indeterminate) ~ .check,
+  .root:indeterminate ~ .mixed {
+    opacity: 1;
+  }
+  .root:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .root:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .root:disabled:checked:not(:indeterminate) ~ .check,
+  .root:disabled:indeterminate ~ .mixed {
+    opacity: 0.5;
+  }
+  .root[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      appearance: auto;
+    }
+    .check,
+    .mixed {
+      display: none;
+    }
+  }
+}

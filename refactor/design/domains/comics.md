@@ -67,7 +67,9 @@ provider 在作品范围中分别回答作品、卷、话和收录，只提供�
 
 ## 记录与删除
 
-comic_records 以 comic_id 为主键并引用 comics.entry_id，保存三种作品当前状态或 null，以及 additional_duration_ms。附加阅读时长使用非负安全整数毫秒，缺行按 0 读取，编辑、来源累计值采用和统计遵守[共同附加时长合同](records.md#duration)。comic_volume_records 和 comic_chapter_records 分别以 volume_id、chapter_id 为主键引用实际分部，只保存 is_completed 布尔标记，不保存日期、次数、附加时长或逐次历史。作品完成历史独立保存在[work_completion_records](records.md#schema)，三个范围遵守[共同完成操作](records.md#operations)。
+comic_records 以 comic_id 为主键并引用 comics.entry_id，保存三种作品当前状态或 null，以及 additional_duration_ms。附加阅读时长使用非负安全整数毫秒，缺行按 0 读取，编辑、来源累计值采用和统计遵守[共同附加时长合同](records.md#duration)。
+
+comic_volume_records 和 comic_chapter_records 分别以 volume_id、chapter_id 为主键引用实际分部，只保存 is_completed 布尔标记，不保存日期、次数、附加时长或逐次历史。作品完成历史独立保存在[work_completion_records](records.md#schema)，三个范围遵守[共同完成操作](records.md#operations)。
 
 作品完成与实际阅读遵守[共同记录模型](records.md#model)及[会话规则](sessions.md#personal-status)。卷、话只使用各自的完成标记。
 

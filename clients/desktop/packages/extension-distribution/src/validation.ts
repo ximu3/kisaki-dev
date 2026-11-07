@@ -62,6 +62,7 @@ export function record(value: unknown, path: FieldPath): Record<string, unknown>
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     invalid(path, 'Expected an object')
   }
+
   return value as Record<string, unknown>
 }
 
@@ -74,6 +75,7 @@ export function string(value: unknown, path: FieldPath, nonempty = true): string
   ) {
     invalid(path, 'Expected a valid string')
   }
+
   return value
 }
 
@@ -112,6 +114,7 @@ export function schemaVersion(value: unknown, path: FieldPath): 1 {
       path,
     )
   }
+
   return 1
 }
 
@@ -120,6 +123,7 @@ export function unsignedInteger(value: unknown, path: FieldPath): number {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 0) {
     invalid(path, 'Expected a nonnegative safe integer')
   }
+
   return value
 }
 
@@ -132,6 +136,7 @@ export function timestamp(value: unknown, path: FieldPath): number {
   ) {
     invalid(path, 'Expected a valid UTC millisecond timestamp')
   }
+
   return value
 }
 
@@ -141,5 +146,6 @@ export function sha256(value: unknown, path: FieldPath): string {
   if (/^[a-f0-9]{64}$/.exec(digest)?.[0] !== digest) {
     invalid(path, 'Expected a lowercase SHA-256 digest')
   }
+
   return digest
 }

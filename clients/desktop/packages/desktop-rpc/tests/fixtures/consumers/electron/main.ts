@@ -43,12 +43,15 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   try {
     window.webContents.postMessage('fixture-port', null, [port2])
     assert.equal(await rpc.ready, 'document')
+
     const value = { nested: [false, null, '窓'] }
     assert.deepEqual(await rpc.request('echo', [value]), value)
+
     await assert.rejects(rpc.request('edit', [], { signal: cancel.signal }), {
       code: 'Cancelled',
       message: 'Edit cancelled in document',
     })
+
     await assert.rejects(rpc.request('waitForWindow'), { code: 'ConnectionClosed' })
     assert.equal(window.isDestroyed(), true)
   } finally {

@@ -1,0 +1,28 @@
+/* The editable selector uses common input geometry with a decorative disclosure affordance. */
+
+@layer components {
+  .container {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .input {
+    padding-inline-end: 1.875rem;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 0.5rem;
+    translate: 0 -50%;
+    color: var(--muted-foreground);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: color var(--kui-hover-duration) ease;
+  }
+  .input:hover:not(:disabled) + .arrow,
+  .input[aria-expanded='true'] + .arrow {
+    color: var(--foreground);
+  }
+}

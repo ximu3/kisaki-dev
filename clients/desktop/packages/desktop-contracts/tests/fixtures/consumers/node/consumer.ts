@@ -1,4 +1,5 @@
 /** @fileoverview Consumes the packed desktop value and operation contracts with standard host APIs. */
+
 import { parsePartialDate } from '@kisaki3/desktop-contracts/date'
 import { parseEntryCreate } from '@kisaki3/desktop-contracts/library'
 import { parseSourceEntry } from '@kisaki3/desktop-contracts/metadata'

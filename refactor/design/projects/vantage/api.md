@@ -305,6 +305,7 @@ ObservationListener 是普通通知回调，库不等待返回值或返回的 Pr
 
 ```ts
 type Permission = 'accessibility' | 'screenCapture'
+
 type PermissionStatus = 'granted' | 'notGranted'
 
 queryPermission(permission, options?)

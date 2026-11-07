@@ -1,0 +1,80 @@
+/* Radio group structure uses a real fieldset and option focus targets. */
+
+@layer components {
+  .root[aria-invalid='true'] {
+    outline: 1px solid var(--destructive);
+    outline-offset: 0.25rem;
+    border-radius: var(--radius-sm);
+  }
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .root[data-orientation='horizontal'] {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .legend {
+    font-size: var(--kui-control-font);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    padding: 0;
+  }
+
+  .option {
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    box-sizing: border-box;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--input);
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .option::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--primary);
+    scale: 0;
+    transition: scale 100ms ease;
+  }
+  .option:checked {
+    border-color: var(--primary);
+  }
+  .option:checked::after {
+    scale: 1;
+  }
+  .option:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .option:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  @media (forced-colors: active) {
+    .option {
+      appearance: auto;
+    }
+    .option::after {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .option::after {
+      transition: none;
+    }
+  }
+}

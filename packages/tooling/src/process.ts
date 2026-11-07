@@ -33,6 +33,35 @@ export class CommandFailed extends Error {
   }
 }
 
+/** Report whether the owned group has members that can still run, preserving signal failures. */
+async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<boolean> {
+  try {
+    process.kill(-group, signal)
+    return true
+  } catch (cause) {
+    const code = (cause as NodeJS.ErrnoException).code
+    if (code === 'ESRCH') {
+      return false
+    }
+    if (process.platform === 'darwin' && code === 'EPERM') {
+      // Darwin excludes zombies from group signals and can return EPERM while their group is reaped.
+      const { stdout } = await promisify(execFile)('/bin/ps', ['-axo', 'pgid=,stat='])
+      const live = stdout
+        .trim()
+        .split('\n')
+        .some((line) => {
+          const [pgid, state] = line.trim().split(/\s+/)
+          return Number(pgid) === group && !state?.startsWith('Z')
+        })
+      if (!live) {
+        return false
+      }
+    }
+
+    throw cause
+  }
+}
+
 /** Terminate the spawned command tree and wait for the platform termination request. */
 async function stopCommand(child: ChildProcess): Promise<void> {
   if (!child.pid || child.exitCode !== null || child.signalCode !== null) {
@@ -53,23 +82,13 @@ async function stopCommand(child: ChildProcess): Promise<void> {
     return
   }
 
-  try {
-    process.kill(-child.pid, 'SIGTERM')
-  } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
-      throw cause
-    }
+  if (!(await signalGroup(child.pid, 'SIGTERM'))) {
     return
   }
 
   const deadline = Date.now() + 5_000
   while (Date.now() < deadline) {
-    try {
-      process.kill(-child.pid, 0)
-    } catch (cause) {
-      if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
-        throw cause
-      }
+    if (!(await signalGroup(child.pid, 0))) {
       return
     }
 
@@ -77,13 +96,7 @@ async function stopCommand(child: ChildProcess): Promise<void> {
   }
 
   // The owned group gets five seconds to stop normally before forced termination.
-  try {
-    process.kill(-child.pid, 'SIGKILL')
-  } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
-      throw cause
-    }
-  }
+  await signalGroup(child.pid, 'SIGKILL')
 }
 
 /** Wait for command closure and cancellation completion; spawn errors still wait for closed streams. */

@@ -52,6 +52,7 @@ export function parseVersion(input: unknown, path: FieldPath = []): string {
   if (`${version.version}${build}` !== value) {
     invalid(path, 'Expected a canonical SemVer version')
   }
+
   return value
 }
 
@@ -61,6 +62,7 @@ export function parseVersionRange(input: unknown, path: FieldPath = []): string 
   if (validRange(value) === null) {
     invalid(path, 'Expected a SemVer range')
   }
+
   return value
 }
 
@@ -70,6 +72,7 @@ export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarg
   if (!extensionTargets.some((known) => known === target)) {
     invalid(path, 'Unsupported extension target')
   }
+
   return target as ExtensionTarget
 }
 
@@ -79,6 +82,7 @@ export function normalizeTargets(input: unknown, path: FieldPath = []): Extensio
   if (!targets.length || new Set(targets).size !== targets.length) {
     invalid(path, 'Expected nonempty unique extension targets')
   }
+
   return targets.sort()
 }
 

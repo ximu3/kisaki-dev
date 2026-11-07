@@ -25,6 +25,7 @@ import * as v from 'valibot'
 import { languageSchema, identitySchema, entryTypes } from '../library/catalog'
 import { text, unique, parseExternalValue, parseValue, nonemptyText } from '../validation'
 import {
+  fieldNamesSchema,
   getMetadataEntryFields,
   getMetadataPartFields,
   parseIdentificationClues,
@@ -229,13 +230,6 @@ const languages = v.pipe(
 
 const paging = { cursor: v.exactOptional(text), preferredLanguages: v.exactOptional(languages) }
 
-function fieldNames(names: readonly string[]) {
-  return v.pipe(
-    v.array(v.picklist(names)),
-    v.check((values) => unique(values, (value) => value)),
-  )
-}
-
 const sources = v.pipe(
   v.tupleWithRest([identitySchema.entries.source], identitySchema.entries.source),
   v.check((values) => unique(values, (value) => value)),
@@ -243,7 +237,7 @@ const sources = v.pipe(
 
 function nodeCapability(fields: readonly string[], root: boolean) {
   return v.strictObject({
-    fields: fieldNames(fields),
+    fields: fieldNamesSchema(fields),
     identitySources: root ? sources : v.exactOptional(sources),
   })
 }
@@ -286,8 +280,8 @@ export function parseMetadataProviderCapabilities(
             ),
           )
           const capability = scoped
-            ? v.strictObject({ fields: fieldNames(metadataRelationFields[relation]), scope })
-            : v.strictObject({ fields: fieldNames(metadataRelationFields[relation]) })
+            ? v.strictObject({ fields: fieldNamesSchema(metadataRelationFields[relation]), scope })
+            : v.strictObject({ fields: fieldNamesSchema(metadataRelationFields[relation]) })
           return [relation, v.exactOptional(capability)]
         }),
       )
@@ -299,7 +293,7 @@ export function parseMetadataProviderCapabilities(
             relatedEntries: v.exactOptional(v.strictObject(related)),
             parts: v.exactOptional(Object.keys(parts).length ? v.strictObject(parts) : v.never()),
             tags: v.exactOptional(
-              v.strictObject({ fields: fieldNames(['description', 'isNsfw']) }),
+              v.strictObject({ fields: fieldNamesSchema(['description', 'isNsfw']) }),
             ),
           }),
         ),

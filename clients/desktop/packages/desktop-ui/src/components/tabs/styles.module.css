@@ -1,0 +1,14 @@
+/* Tabs retain panel ownership and focus independently of their shared segmented appearance. */
+
+@layer components {
+  .panel {
+    padding-block: 0.75rem;
+  }
+  .panel:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: -1px;
+  }
+  .panel[hidden] {
+    display: none;
+  }
+}

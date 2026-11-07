@@ -1,0 +1,36 @@
+/* Quiet inline messages share a surface and distinguish their meaning through outline symbols. */
+
+@layer components {
+  .root {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+  }
+
+  .icon {
+    flex: none;
+    margin-block-start: calc((1lh - var(--kui-icon-size)) / 2);
+    color: var(--info);
+  }
+  .root[data-tone='success'] .icon {
+    color: var(--success);
+  }
+  .root[data-tone='warning'] .icon {
+    color: var(--warning);
+  }
+  .root[data-tone='destructive'] .icon {
+    color: var(--destructive);
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+}

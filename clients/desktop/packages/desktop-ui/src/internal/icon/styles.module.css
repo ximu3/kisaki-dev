@@ -1,0 +1,11 @@
+/* System glyphs occupy a stable box independent of neighboring text baselines. */
+
+@layer components {
+  .glyph {
+    display: block;
+    flex: none;
+    width: var(--kui-glyph-size, var(--kui-icon-size));
+    height: var(--kui-glyph-size, var(--kui-icon-size));
+    pointer-events: none;
+  }
+}

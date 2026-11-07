@@ -12,10 +12,12 @@ const debug = debuglog('kisaki:fixture')
 
 const argument = (name: string) =>
   process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3)
+
 const profile = argument('profile')
 if (!profile || !isAbsolute(profile)) {
   throw new Error('The engineering fixture requires an explicit isolated profile')
 }
+
 const kind = argument('window') ?? 'main'
 if (!['main', 'reader', 'player', 'game-panel'].includes(kind)) {
   throw new Error('Unknown fixture entry')
@@ -27,11 +29,13 @@ const runtime = app.isPackaged
 const resources = app.isPackaged
   ? join(process.resourcesPath, 'resources')
   : join(runtime, 'resources')
+
 const browser = join(profile, 'browser')
 mkdirSync(browser, { recursive: true })
 app.setPath('userData', profile)
 app.setPath('sessionData', browser)
 app.setName('Kisaki engineering fixture')
+
 protocol.registerSchemesAsPrivileged([
   { scheme: 'fixture', privileges: { standard: true, secure: true, supportFetchAPI: true } },
 ])
@@ -116,6 +120,7 @@ async function runFixture(): Promise<void> {
   }))
 
   let canQuit = false
+
   /** Exercise normal cancellable window close without defining a product shutdown contract. */
   function closeWindow(): void {
     debug('Closing window: destroyed=%s', window.isDestroyed())

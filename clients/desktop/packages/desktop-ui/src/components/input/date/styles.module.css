@@ -1,0 +1,132 @@
+/* A complete calendar uses the same compact controls and clean floating surface. */
+
+@layer components {
+  .editor {
+    font-variant-numeric: tabular-nums;
+  }
+  .editor::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  .editor::-webkit-datetime-edit {
+    padding: 0;
+  }
+  .trigger {
+    color: var(--muted-foreground);
+  }
+  .trigger:hover:not(:disabled),
+  .trigger[aria-expanded='true'] {
+    color: var(--foreground);
+  }
+  .trigger:disabled {
+    opacity: 0.5;
+  }
+
+  .calendar {
+    width: 17rem;
+    padding: 0.5rem;
+  }
+
+  .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  .periods {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .heading button {
+    display: inline-grid;
+    place-items: center;
+    height: var(--kui-control-height);
+    padding: 0 0.25rem;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--kui-control-font);
+    cursor: pointer;
+  }
+  .heading > button {
+    width: var(--kui-control-height);
+  }
+  .heading > button:hover:not(:disabled) {
+    background: var(--accent);
+  }
+  .period:hover,
+  .period[aria-expanded='true'] {
+    box-shadow: var(--shadow-raised);
+  }
+  .periodList {
+    width: max(7rem, var(--popup-width));
+  }
+  .periodTrack {
+    position: relative;
+  }
+  .periodRow {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+  .heading button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.125rem;
+  }
+  .week [role='columnheader'] {
+    text-align: center;
+    padding-block: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+  }
+
+  .day {
+    position: relative;
+    aspect-ratio: 1;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--kui-caption-font);
+    cursor: pointer;
+  }
+  .day:hover {
+    background: var(--accent);
+  }
+  .day[aria-current='date']::after {
+    content: '';
+    position: absolute;
+    bottom: 0.125rem;
+    left: 50%;
+    width: 0.1875rem;
+    height: 0.1875rem;
+    border-radius: 50%;
+    background: currentColor;
+    translate: -50% 0;
+  }
+  .day[aria-selected='true'] {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  .day[aria-disabled='true'] {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .outside {
+    color: var(--muted-foreground);
+  }
+  .day:focus-visible,
+  .heading button:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: -1px;
+  }
+}

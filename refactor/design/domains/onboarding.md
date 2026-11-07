@@ -133,7 +133,9 @@ onboarding 在同一事务写入 `handled[itemId] = { outcome: 'applied', handle
 
 普通配置 create/update 中，`expected: { defaultProfileId?: string | null }` 只用于 metadata.profiles 设置 isDefault 为 true 的操作：比较同类型当前默认的真实 ID，null 表示要求当前无默认；其他修改不接受这个条件。引导表单设默认时必须提供它，一次采用同类型多份默认方案为 InvalidInput。现有来源能力的可用性按正式保存规则判断，不要求引导安装器或网络调用进入事务。
 
-apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
+apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。
+
+完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
 
 输入或目录归属错误为 InvalidInput；必要资源缺失为 NotFound；handled 或业务基线不符为 Conflict；实际安装、持久化或运行错误由拥有者提供稳定分类。提交前取消不写同库配置；提交后的取消不撤销成果，也不重复创建。skip 接收非空且 itemId 不重复的 items，每项仅含 { itemId, expectedHandled }；在短事务中比较所选项目的处理基线，只将尚未采用的项目记为 skipped。已经 applied 或 skipped 且基线相符的项目保留原结果与时间，无变化不发失效；并发采用使旧基线冲突，不能被 skip 覆盖。
 

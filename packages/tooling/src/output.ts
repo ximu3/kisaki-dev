@@ -1,10 +1,32 @@
 /**
- * @fileoverview Replaces project-owned outputs with complete candidate directories while
- * preserving the previous output on preparation failure.
+ * @fileoverview Manages declared project outputs, including candidate handoff and cleanup.
  */
 
 import { mkdir, mkdtemp, rename, rm } from 'node:fs/promises'
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
+
+/** Resolve only descendants of the project that owns the output. */
+function projectOutput(project: string, output: string): string {
+  const destination = resolve(project, output)
+  const child = relative(resolve(project), destination)
+  if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
+    throw new Error('Output is outside its project')
+  }
+
+  return destination
+}
+
+/** Remove declared outputs in owner-specified order after the project's active tasks stop. */
+export async function removeOutputs(
+  project: string,
+  outputs: readonly string[],
+  signal?: AbortSignal,
+): Promise<void> {
+  for (const output of outputs) {
+    signal?.throwIfAborted()
+    await rm(projectOutput(project, output), { recursive: true, force: true })
+  }
+}
 
 /**
  * Prepare a private candidate and replace one project-owned output after success.
@@ -18,12 +40,7 @@ export async function replaceOutput<T>(
   prepare: (staging: string) => Promise<T>,
   signal?: AbortSignal,
 ): Promise<T> {
-  const destination = resolve(project, output)
-  const child = relative(resolve(project), destination)
-  if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
-    throw new Error('Output is outside its project')
-  }
-
+  const destination = projectOutput(project, output)
   signal?.throwIfAborted()
 
   await mkdir(dirname(destination), { recursive: true })

@@ -31,6 +31,7 @@ export type RpcNotification = (value: JsonValue) => void | Promise<void>
 export interface RpcErrorCodec {
   /** Convert a local exception to public data. Keep credentials, stacks and causes local. */
   encode(error: unknown, method: string): JsonValue
+
   /** Recognize mechanism failures ({code, message}) and the endpoint's own safe failures. */
   decode(value: JsonValue, method: string): Error
 }
@@ -39,12 +40,14 @@ export interface RpcErrorCodec {
 export interface RpcEndpoint {
   readonly protocol: RpcProtocol
   readonly handshake: RpcHandshake
+
   readonly methods?: Readonly<Record<string, RpcMethod>>
   readonly notifications?: {
     readonly topics: Readonly<Record<string, RpcNotification>>
     /** Record a handler failure locally. The reporting hook owns its own errors. */
     readonly onError: (error: unknown, topic: string) => void
   }
+
   readonly errors?: RpcErrorCodec
 }
 
@@ -54,6 +57,7 @@ export const defaultErrorCodec: RpcErrorCodec = {
     if (isErrorSummary(value)) {
       return new RpcError(value.code, value.message)
     }
+
     return new RpcError('ProtocolViolation', 'Invalid RPC failure')
   },
 }

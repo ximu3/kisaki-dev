@@ -28,6 +28,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     if (typeof value !== 'object' || value === null || ancestors.has(value)) {
       return invalid()
     }
+
     // Structured clone can deliver a graph with shared children. Copy each distinct object once.
     const existing = copies.get(value)
     if (existing) {
@@ -70,6 +71,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     if (typeof key !== 'string' || !property.enumerable || !Object.hasOwn(property, 'value')) {
       return invalid()
     }
+
     // Define even "__proto__" as an own data property without invoking an inherited setter.
     Object.defineProperty(item.target, key, {
       value: read(property.value),
@@ -78,5 +80,6 @@ export function parseJsonValue(input: unknown): JsonValue {
       writable: true,
     })
   }
+
   return root
 }

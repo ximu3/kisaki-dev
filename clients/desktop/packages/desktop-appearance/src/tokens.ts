@@ -44,7 +44,12 @@ export const tokens = Object.freeze({
   '--warning-foreground': 'color',
   '--border': 'color',
   '--ring': 'color',
-  '--chart': 'color',
+
+  '--chart-1': 'color',
+  '--chart-2': 'color',
+  '--chart-3': 'color',
+  '--chart-4': 'color',
+  '--chart-5': 'color',
 
   '--radius': 'radius',
   '--shadow-raised': 'shadow',

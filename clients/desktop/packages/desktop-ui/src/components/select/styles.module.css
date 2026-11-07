@@ -1,0 +1,176 @@
+/* Single and multiple choices share a visible field while chip actions stay separate buttons. */
+
+@layer components {
+  .container {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .trigger,
+  .multiple {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .trigger {
+    text-align: start;
+    cursor: pointer;
+  }
+  .trigger:disabled {
+    cursor: default;
+  }
+  .value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .placeholder,
+  .arrow {
+    color: var(--muted-foreground);
+  }
+
+  .trigger:hover:not(:disabled) .arrow,
+  .trigger[aria-expanded='true'] .arrow,
+  .toggle:hover:not(:disabled) .arrow,
+  .toggle[aria-expanded='true'] .arrow {
+    color: var(--foreground);
+  }
+  .arrow {
+    transition: color var(--kui-hover-duration) ease;
+  }
+
+  .multiple {
+    padding-inline: 0.1875rem;
+  }
+  .multiple:has(> [role='combobox']:disabled) {
+    opacity: 0.5;
+  }
+  .toggle {
+    flex: 1 0 auto;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    min-width: 1.25rem;
+    margin: 0;
+    padding: 0 0.1875rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  .toggle:focus-visible {
+    outline: none;
+  }
+
+  .chips {
+    position: relative;
+    --edge-size: min(1.125rem, 25%);
+    --start-inset: 0px;
+    --end-inset: 0px;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    flex: 0 1 auto;
+  }
+  .chips[data-previous] {
+    --start-inset: var(--edge-size);
+  }
+  .chips[data-next] {
+    --end-inset: var(--edge-size);
+  }
+
+  .viewport {
+    clip-path: inset(0 var(--end-inset) 0 var(--start-inset));
+    scroll-padding-inline: var(--start-inset) var(--end-inset);
+    overscroll-behavior-x: contain;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .viewport:dir(rtl) {
+    clip-path: inset(0 var(--start-inset) 0 var(--end-inset));
+  }
+  .track {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .chip {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.125rem;
+    min-height: 1lh;
+    padding-inline-start: 0.375rem;
+    border-radius: var(--radius-sm);
+    background: var(--muted);
+    color: var(--foreground);
+    white-space: nowrap;
+  }
+  .chip button,
+  .scroll {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    --kui-glyph-size: var(--kui-icon-small);
+  }
+  .chip button:hover:not(:disabled),
+  .scroll:hover:not(:disabled) {
+    color: var(--foreground);
+  }
+  .chip button:focus-visible,
+  .scroll:focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: -1px;
+  }
+  .scroll {
+    position: absolute;
+    inset-block: 0;
+    margin-block: auto;
+    width: var(--edge-size);
+  }
+  .scroll:first-child {
+    inset-inline-start: 0;
+  }
+  .scroll:last-child {
+    inset-inline-end: 0;
+  }
+  .scroll[hidden] {
+    display: none;
+  }
+  .scroll:dir(rtl) svg {
+    scale: -1 1;
+  }
+
+  .submission,
+  .summary {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    border: 0;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

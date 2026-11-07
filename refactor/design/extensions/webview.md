@@ -26,7 +26,9 @@ Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用
 
 iframe 的 sandbox 仅包含 allow-scripts、allow-same-origin 与 allow-forms，保留弹窗、下载、顶层导航和浏览器模态权限的限制。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
 
-allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
+allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。
+
+两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
 
 <a id="csp"></a>
 
@@ -244,11 +246,11 @@ type MenuFeedback =
 
 ## Webview 局部提示
 
-ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。loading 不启动自动关闭计时，更新为普通结果后从转换时开始计时；明确设置 persistent 的提示跨状态保留到用户关闭、主动 dismiss 或 owner 结束。默认展示时间与应用一致，完整转换遵守[Toast 状态与寿命](../ui/package.md#toast)。消息不包含业务回调、进度、任意组件或任务结果。
+ui.toast.show(message, { persistent? }) 返回可以 update(message) 和 dismiss() 的句柄。loading 不启动自动关闭计时，更新为普通结果后从转换时开始计时；明确设置 persistent 的提示跨状态保留到用户关闭、主动 dismiss 或所属视图释放。默认展示时间与应用一致，完整转换遵守[Toast 状态与寿命](../ui/package.md#toast)。消息不包含业务回调、进度、任意组件或任务结果。
 
-update 完整替换仍存活的提示内容，用户关闭、计时结束或 owner 释放后不重新弹出；dismiss 只结束呈现，不取消或完成业务操作。短期业务 owner 结束时 dismiss，视图释放时宿主清理该视图的全部提示与句柄。宿主按真实视图和模态容器提供展示区域，菜单返回的结果提示使用所属窗口的共同持续方式。
+update 完整替换仍存活的提示内容，用户关闭、计时结束或所属视图释放后不重新弹出；dismiss 只结束呈现，不取消或完成业务操作。临时目标失效时由操作负责人 dismiss，Webview 释放时宿主清理该视图的全部 SDK 提示与句柄。宿主按所属窗口统一显示 SDK 提示，菜单返回的结果提示使用同一持续方式。
 
-表单错误由页面自己的[固定反馈区](../ui/components.md#validation)呈现。Webview 内部的 Solid Dialog 可以直接组合本地 desktop-ui Toast，局部上下文与动作回调留在该文档；SDK 提示只传递上述框架无关消息。每次业务结果沿[唯一反馈归属](../ui/components.md#notifications)选择实际负责的入口。
+表单错误由页面自己的[固定反馈区](../ui/components.md#validation)呈现。Webview 文档可装配一个本地 desktop-ui Toaster，组件和 UI 函数直接使用 toast.show；内部 Dialog 共用该队列，动作回调留在当前文档，文档释放时清理。本地 Toast 与 SDK 提示分别遵守各自的文档边界，SDK 只传递上述框架无关消息。每次业务结果沿[唯一反馈归属](../ui/components.md#notifications)选择实际负责的入口。
 
 <a id="closing"></a>
 

@@ -305,6 +305,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const character = entryReference(['character'] as const)
   const person = entryReference(['person'] as const)
   const organization = entryReference(['organization'] as const)
+
   const characterFields = { work, character, role: v.nullable(v.picklist(characterRoles)) }
   const personFields = {
     work,
@@ -397,6 +398,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
       return value
     }),
   )
+
   const personEdit = v.pipe(
     relationEdit(personFields, personBinding, true),
     v.transform((value) => {

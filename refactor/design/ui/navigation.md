@@ -199,7 +199,9 @@ handler 返回 `Promise<void>`，完成表示该链接约定的请求处理已�
 
 授权期间只监听本机回环，结束、取消、超时或实例失效时释放。来源允许动态端口时使用动态端口，要求精确登记时才使用固定地址。固定地址被占用时，在打开浏览器前报告，不把请求交给另一实例或自动切换 scheme。回调绑定发起操作、预期来源和地址，重复、过期或旧操作的回调不能影响新授权。应用重启不继续未完成操作。
 
-公共原生客户端的授权码流程使用 PKCE S256，loopback 不能代替完整保护，见 [RFC8252](https://www.rfc-editor.org/rfc/rfc8252.html#section-7.3)、[Google 桌面客户端](https://developers.google.com/identity/protocols/oauth2/native-app) 和 [RFC9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-2.1.1)。MAL 的固定直连 loopback 与 plain PKCE 是明确兼容例外，不先尝试 S256 再自动降级。MangaDex 个人客户端按[来源认证](../extensions/private-data.md)使用明确方式，主动连接中输入的密码不持久化。
+公共原生客户端的授权码流程使用 PKCE S256，loopback 不能代替完整保护，见 [RFC8252](https://www.rfc-editor.org/rfc/rfc8252.html#section-7.3)、[Google 桌面客户端](https://developers.google.com/identity/protocols/oauth2/native-app) 和 [RFC9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-2.1.1)。
+
+MAL 的固定直连 loopback 与 plain PKCE 是明确兼容例外，不先尝试 S256 再自动降级。MangaDex 个人客户端按[来源认证](../extensions/private-data.md)使用明确方式，主动连接中输入的密码不持久化。
 
 使用 relay 的来源先回到登记的 HTTPS 地址，最后一跳到 Kisaki 时使用 loopback。该要求不限制独立 relay 其他消费者的回调类型。凭据保存和来源兼容验收属于认证合同，普通协议关联与授权分别管理。
 

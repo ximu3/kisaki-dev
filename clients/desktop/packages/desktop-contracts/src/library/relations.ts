@@ -277,14 +277,18 @@ export type WorkRelationScope = { readonly side: 'from' | 'to'; readonly work: W
 /** Each concrete relation API uses its own closed scope and binding; the helper is internal to declarations. */
 interface RelationApi<Scope, Fact, Create, Update> {
   list(scope: Scope, options: ListOptions, call?: CallOptions): Promise<ListResult<Fact>>
+
   get(id: string, call?: CallOptions): Promise<Fact | null>
 
   /** Ordinary duplicate creation is Conflict; writeGraph's explicit add has its own idempotent semantics. */
   create(input: Create, call?: CallOptions): Promise<string>
+
   update(id: string, input: Update, call?: CallOptions): Promise<void>
+
   delete(id: string, call?: CallOptions): Promise<void>
 
   reorder(scope: Scope, input: ReorderInput, call?: CallOptions): Promise<void>
+
   move(scope: Scope, input: MoveInput, call?: CallOptions): Promise<void>
 }
 
@@ -407,6 +411,7 @@ export function canUseWorkRelation(type: WorkRelationType, from: WorkType, to: W
   if (['port', 'portSource', 'expansion', 'baseGame'].includes(type)) {
     return from === 'game' && to === 'game'
   }
+
   return true
 }
 

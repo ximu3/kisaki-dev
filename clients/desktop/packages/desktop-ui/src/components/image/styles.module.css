@@ -1,0 +1,20 @@
+/* Images preserve aspect ratio and explicit alternate content. */
+
+@layer components {
+  .root {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-size: var(--kui-control-font);
+  }
+}

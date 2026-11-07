@@ -246,6 +246,7 @@ export interface EntryProjectionByType {
     readonly birthDate: PartialDate | null
     readonly gender: Gender | null
     readonly bloodType: BloodType | null
+
     readonly age: CharacterMeasure | null
     readonly height: CharacterMeasure | null
     readonly weight: CharacterMeasure | null

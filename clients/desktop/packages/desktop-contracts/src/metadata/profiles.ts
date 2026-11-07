@@ -95,10 +95,13 @@ export type MetadataProfile<T extends EntryType = EntryType> = {
     readonly name: string
     readonly description: string | null
     readonly entryType: K
+
     readonly preferredLanguages: readonly string[]
     readonly definition: StoredDefinition<MetadataProfileDefinition<K>>
+
     readonly isDefault: boolean
     readonly sortOrder: number
+
     /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
     /** UTC milliseconds since the Unix epoch. */
@@ -111,8 +114,10 @@ export type MetadataProfileCreate = {
     readonly name: string
     readonly entryType: K
     readonly description?: string | null
+
     readonly preferredLanguages?: readonly string[]
     readonly definition: MetadataProfileDefinition<K>
+
     readonly isDefault?: boolean
     readonly expected?: { readonly defaultProfileId: string | null }
   }
@@ -143,6 +148,7 @@ export type MetadataProfilePreset<T extends EntryType = EntryType> = {
     readonly name: LocalizedText
     readonly description: LocalizedText
     readonly applicableLanguages: NonEmptyArray<string> | null
+
     readonly entryType: K
     readonly preferredLanguages: readonly string[]
     readonly definition: MetadataProfileDefinition<K>

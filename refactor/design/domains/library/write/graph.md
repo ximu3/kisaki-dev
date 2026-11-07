@@ -33,7 +33,9 @@ interface LibraryWriteResult {
 }
 
 type GraphEntryRef<T extends EntryType = EntryType> = EntryRef<T> | { key: string }
+
 type GraphPartRef<T extends PartType = PartType> = PartRef<T> | { key: string }
+
 type GraphTagRef = { id: string } | { key: string }
 ```
 

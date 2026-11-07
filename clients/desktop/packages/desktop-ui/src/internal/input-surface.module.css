@@ -1,0 +1,40 @@
+/* Input and selection surfaces share text metrics, borders and focus geometry. */
+
+@layer components {
+  :where(.surface) {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--input);
+    color: var(--input-foreground);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+  }
+  :where(.singleLine) {
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.5rem;
+  }
+  .surface::placeholder {
+    color: var(--muted-foreground);
+  }
+  .surface:where([aria-invalid='true'], :has(> input[aria-invalid='true'])) {
+    border-color: var(--destructive);
+  }
+  .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
+    outline: none;
+    border-color: var(--ring);
+  }
+  .surface:where(:disabled, [data-disabled], :has(> input:disabled)) {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
+      border-color: Highlight;
+    }
+  }
+}

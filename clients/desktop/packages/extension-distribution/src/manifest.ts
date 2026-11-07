@@ -40,6 +40,7 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
   ) {
     invalid(path, 'Expected an unambiguous package-relative file path')
   }
+
   return value
 }
 

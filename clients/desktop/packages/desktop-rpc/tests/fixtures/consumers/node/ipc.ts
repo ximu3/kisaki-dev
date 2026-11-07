@@ -7,6 +7,7 @@ import type { RpcTransport } from '@kisaki3/desktop-rpc'
 export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTransport {
   let failed: (cause: Error) => void
   let detach: () => void
+
   return {
     start(receive, closed) {
       failed = closed
@@ -19,6 +20,7 @@ export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTranspo
         channel.off('error', closed)
       }
     },
+
     send(frame) {
       channel.send!(frame, undefined, undefined, (error: Error | null) => {
         if (error) {
@@ -26,6 +28,7 @@ export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTranspo
         }
       })
     },
+
     close() {
       detach()
       if (channel.connected) {

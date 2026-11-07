@@ -1,6 +1,6 @@
 # W02 extension-distribution 验证
 
-2026-11-03，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3 和 Playwright 1.64.1 下复核 0.1.0-dev.0 包实现、制品与独立消费。当前交付与远端结果见[实施状态](../../../implementation/status.md#progress)。
+2026-11-03，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3 和 Playwright 1.64.1 下复核 0.1.0-dev.0 包实现、制品与独立消费。工作包进度与远端验收结果见[实施状态](../../../implementation/status.md#progress)。
 
 ## 合同与本机结果
 

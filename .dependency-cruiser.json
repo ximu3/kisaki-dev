@@ -1,6 +1,20 @@
 {
   "forbidden": [
     {
+      "name": "ui-only-consumes-appearance-within-desktop",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
+      "to": {
+        "path": "^clients/desktop/(app|extensions)/|^clients/desktop/packages/(?!desktop-ui/|desktop-appearance/)"
+      }
+    },
+    {
+      "name": "ui-has-no-node-runtime",
+      "severity": "error",
+      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
+      "to": { "dependencyTypes": ["core"] }
+    },
+    {
       "name": "rpc-has-no-host-or-product-dependencies",
       "severity": "error",
       "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },

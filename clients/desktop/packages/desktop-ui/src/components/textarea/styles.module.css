@@ -1,0 +1,9 @@
+/* Multiline content adds its own inset and native resize handle. */
+
+@layer components {
+  .root {
+    min-height: 5rem;
+    padding: 0.5rem;
+    resize: vertical;
+  }
+}

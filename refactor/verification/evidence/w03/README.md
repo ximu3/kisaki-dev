@@ -1,6 +1,6 @@
 # W03 桌面合同与本地化验证
 
-2026-11-05，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3 与 Playwright 1.64.1 下验证两个 0.1.0-dev.0 公共包。当前交付状态见[实施状态](../../../implementation/status.md#progress)。
+2026-11-05，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3 与 Playwright 1.64.1 下验证两个 0.1.0-dev.0 公共包。工作包进度见[实施状态](../../../implementation/status.md#progress)。
 
 ## 交付与验证范围
 

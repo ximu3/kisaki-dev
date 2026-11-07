@@ -1,0 +1,25 @@
+/* A fixed glyph slot holds the rotating MDI loading arc. */
+
+@layer components {
+  .root {
+    display: inline-grid;
+    place-items: center;
+    width: var(--kui-icon-size);
+    height: var(--kui-icon-size);
+    vertical-align: middle;
+  }
+  .glyph {
+    animation: rotate 800ms linear infinite;
+    transform-origin: center;
+  }
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glyph {
+      animation: none;
+    }
+  }
+}

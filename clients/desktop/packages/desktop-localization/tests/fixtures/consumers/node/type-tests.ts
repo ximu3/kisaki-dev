@@ -1,4 +1,5 @@
 /** @fileoverview Verifies generated key and argument correlations in this consumer's actual type environment. */
+
 import type { Translate } from '@kisaki3/desktop-localization'
 
 /** Preserve generated key/parameter association without an arbitrary-string overload. */

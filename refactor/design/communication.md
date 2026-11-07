@@ -258,7 +258,9 @@ interface EntryIdentitySnapshot {
 
 游戏会话事件不携带启动时的自动备份开关。备份能力处理结束事实时，按[接纳时点](domains/backups.md#automatic)读取同一 launchConfigId 的当前选择；这不改变事件中已经固定的身份与来源，也不允许改用当前配置路径补造本次来源。
 
-结束事件在同一上下文上增加 endedAt、该类型允许的 reason，以及可选的 recordingError: ErrorSummary。实际内容已经结束而最后记录保存失败时，按[关闭合同](domains/sessions.md#close)报告操作失败并结束会话，查询返回 null，结束事件保留真实原因并附带错误。明确 detached 要求记录提交成功；保存失败按[脱离合同](domains/sessions.md#detach)保留会话，不发布结束事件。recordingError 说明本次最终保存失败；实际会话已经结束，未提交值按[运行内快照](domains/sessions.md#pending-recordings)保留。重试或放弃不改写这个已发布事实，也不重发结束事件。状态、事件与操作失败使用同次收尾事实；后续备份或同步失败不计入 recordingError。
+结束事件在同一上下文上增加 endedAt、该类型允许的 reason，以及可选的 recordingError: ErrorSummary。实际内容已经结束而最后记录保存失败时，按[关闭合同](domains/sessions.md#close)报告操作失败并结束会话，查询返回 null，结束事件保留真实原因并附带错误。明确 detached 要求记录提交成功；保存失败按[脱离合同](domains/sessions.md#detach)保留会话，不发布结束事件。
+
+recordingError 说明本次最终保存失败；实际会话已经结束，未提交值按[运行内快照](domains/sessions.md#pending-recordings)保留。重试或放弃不改写这个已发布事实，也不重发结束事件。状态、事件与操作失败使用同次收尾事实；后续备份或同步失败不计入 recordingError。
 
 同一会话至多发布一次开始和一次结束，结束事件在收尾形成结果后发布。崩溃或强制终止可能来不及发出事件，重启后不补发。sessionId 只标识运行上下文，不建立持久会话父表。内部引擎和进程句柄不对外公开。
 
@@ -284,7 +286,9 @@ NativeViewTarget 定义在 desktop-contracts/ui，按具体原生目标区分分
 
 Entry 使用 EntryIdentifier，并核对从属类型。Annotation 使用 [AnnotationRef](domains/annotations/README.md#api)，按身份打开已保存内容；返回原文件仍由内容界面的明确操作发起。ui.navigate(target) 等待宿主就绪并接纳导航后返回 void，不隐含保存、启动或采用操作。
 
-desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。extension-sdk 的纯合同选取所需定义并声明 Node 的 context.deeplink.register，运行实现绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
+desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按 view、open、add 和 extension 区分请求。字段、公开目标、编码和重复参数规则见[应用入口](ui/navigation.md)；extension 分支保留正式扩展身份、路径、有序查询项与可选 fragment，采用共同 URL 解析与校验，业务含义由目标扩展解释。
+
+extension-sdk 的纯合同选取所需定义并声明 Node 的 context.deeplink.register，运行实现绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
 
 notifications.show 接收 { title, body, open?: NativeViewTarget }，返回 accepted 或 unavailable；投递失败时拒绝调用。accepted 只表示操作系统已经接纳。Node SDK 使用这项能力，Webview 使用所属视图的 Toast。通知点击由 app 协调，只有已经定义的公开入口可以通过协议激活。内部目标不会因此获得应用退出后的恢复保证。接口不公开 Electron Notification、点击脚本或完整业务结果，不保存通知历史，也不在不可用时自动改投 Toast。
 

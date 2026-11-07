@@ -62,6 +62,7 @@ function publicKey(value: string): KeyObject {
       'publicKey',
     ])
   }
+
   return key
 }
 
@@ -76,6 +77,7 @@ function privateKey(value: string | KeyObject): KeyObject {
   if (key.type !== 'private' || key.asymmetricKeyType !== 'ed25519') {
     throw new DistributionError('invalid-key', 'Registry private key must use Ed25519')
   }
+
   return key
 }
 

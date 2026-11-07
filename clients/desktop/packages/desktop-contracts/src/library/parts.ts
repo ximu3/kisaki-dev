@@ -110,9 +110,11 @@ export type PartDetails<T extends PartType = PartType> = {
   [K in T]: {
     readonly ref: PartRef<K>
     readonly work: EntryRef<PartWorkType<K>>
+
     readonly data: PartFields<K>
     readonly completed: boolean
     readonly sortOrder: number
+
     /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
     /** UTC milliseconds since the Unix epoch. */

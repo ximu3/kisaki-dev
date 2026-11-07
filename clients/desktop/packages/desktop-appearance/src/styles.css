@@ -1,4 +1,5 @@
 /* Shared visual derivations and document typography. Defaults are prepended at build time. */
+
 @layer theme {
   :root,
   [data-color-scheme] {
@@ -32,7 +33,11 @@
     --color-warning-foreground: var(--warning-foreground);
     --color-border: var(--border);
     --color-ring: var(--ring);
-    --color-chart: var(--chart);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
 
     /* Keep the existing radius ladder valid at a zero base radius. */
     --radius-sm: max(0px, calc(var(--radius) - 4px));

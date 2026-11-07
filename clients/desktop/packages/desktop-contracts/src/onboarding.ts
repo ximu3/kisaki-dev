@@ -333,6 +333,7 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
   const record = readRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
   const parseInput: (input: unknown) => OnboardingInputMap[OnboardingGroup] = inputParsers[group]
+
   const item = v.strictObject({
     itemId: id,
     expectedHandled,
@@ -349,6 +350,7 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
     input,
     'Invalid onboarding apply input',
   ) as OnboardingApplyInput
+
   if (value.group === 'preferences' && value.items.length !== 1) {
     throw new DesktopError('InvalidInput', 'Onboarding preferences apply one item')
   }
@@ -367,6 +369,7 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
   if (value.group === 'showcase') {
     parseShowcaseChanges({ create: value.items.map((item) => item.input) })
   }
+
   return value
 }
 

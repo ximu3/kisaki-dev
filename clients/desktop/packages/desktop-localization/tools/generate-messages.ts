@@ -26,8 +26,11 @@ export function renderMessageTypes(source: MessageCatalog): string {
 export interface MessageArguments {
 ${lines.join('\n')}
 }
+
 export type MessageKey = keyof MessageArguments
+
 export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
+
 /** Format one typed message call as plain text; tags are literal. */
 export type Translate = (...args: TranslationCall) => string
 `

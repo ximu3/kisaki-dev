@@ -464,6 +464,14 @@ export function parseSourceEntry(input: unknown): SourceEntry {
   return value as SourceEntry
 }
 
+/** Declared capabilities and read requests select distinct names from the same field vocabulary. */
+export function fieldNamesSchema(names: readonly string[]) {
+  return v.pipe(
+    v.array(v.picklist(names)),
+    v.check((values) => unique(values, (value) => value)),
+  )
+}
+
 /** The finite field names come from their actual value schemas, retaining one owner for type applicability. */
 export function getMetadataEntryFields<T extends EntryType>(
   type: T,

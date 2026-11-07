@@ -121,8 +121,10 @@ export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly workType: T
   readonly name: string
   readonly description: string | null
+
   readonly definition: StoredDefinition<FileRecognitionDefinition<T>>
   readonly sortOrder: number
+
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
   /** UTC milliseconds since the Unix epoch. */

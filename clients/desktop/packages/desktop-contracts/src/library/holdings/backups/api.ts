@@ -94,9 +94,11 @@ export interface GameBackupRestoreResult {
   readonly backupId: string
   readonly target: { readonly path: string; readonly kind: 'file' | 'directory' }
   readonly targetState: 'restored' | 'preserved' | 'recoveryRequired' | 'keptCurrent'
+
   readonly protectionBackupId: string | null
   readonly recoveryId: string | null
   readonly recoveryResolution: RecoveryResolution | null
+
   readonly issues: readonly GameBackupIssue[]
 }
 
@@ -129,10 +131,13 @@ export type GameBackupRecovery = {
   readonly gameId: string
   readonly backupId: string
   readonly protectionBackupId: string | null
+
   readonly targetPath: string
   readonly targetKind: 'file' | 'directory'
+
   readonly workspacePath: string
   readonly manifestSha256: string
+
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 } & (
@@ -157,8 +162,10 @@ export type RecoveryLocationObservation =
 export interface GameBackupRecoveryInspection {
   readonly recoveryId: string
   readonly resolution: RecoveryResolution | null
+
   readonly manifest: GameBackupRecoveryManifest | null
   readonly locations: Readonly<Record<RecoveryLocation, RecoveryLocationObservation>>
+
   readonly actions: readonly RecoveryAction[]
   readonly issues: readonly {
     readonly location: RecoveryLocation | 'manifest' | 'index'

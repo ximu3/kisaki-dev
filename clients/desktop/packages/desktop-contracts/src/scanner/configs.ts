@@ -66,9 +66,11 @@ export interface ScanConfig {
 export interface ScanConfigCreate {
   readonly name: string
   readonly workType: WorkType
+
   readonly rootPath: string
   readonly metadataProfileId: string
   readonly definition: ScanDefinition
+
   readonly registerExistingContent?: boolean
   readonly watchEnabled?: boolean
 }

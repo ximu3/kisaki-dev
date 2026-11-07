@@ -128,6 +128,7 @@ export function parsePublicKey(input: unknown, path: FieldPath = []): string {
   ) {
     invalid(path, 'Expected an SPKI PEM public key')
   }
+
   return value
 }
 
@@ -137,6 +138,7 @@ export function parseSignature(input: unknown, path: FieldPath = []): string {
   if (/^[A-Za-z0-9+/]{85}[AQgw]==$/.exec(value)?.[0] !== value) {
     invalid(path, 'Expected an Ed25519 Base64 signature')
   }
+
   return value
 }
 

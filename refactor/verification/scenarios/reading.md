@@ -46,7 +46,11 @@ A12 和 A27 按[作者样式输入](../../design/projects/kana/styles.md)验证�
 
 ## 资源传输与取消
 
-A12 和 A27 按[资源加载与部署](../../design/projects/kana/resources.md)验证浏览器与 Electron 共用包内 Service Worker，内容请求保持目录关系并由授权资源拥有者交付，不要求宿主解析书内成员。同源资产、专用作用域与 Electron 协议能力满足公开接入条件，缺少必要能力时明确报告 assetUnavailable；模块导入不登记 worker。内容 CSP 与实例、成员权限共同限制加载，越界和失效请求不回到网络。关闭一个 Reader 撤销其内容地址和读取，不影响其他实例，也不注销仍在使用的静态登记；worker 重启不丢失仍存活的合法资源拥有者。分块传输、背压、预算、取消、已有 PWA、版本作用域、登记冲突与清理均须在实际接入中验证，局部机制试件不代替整包及维护窗口验收。
+A12 和 A27 按[资源加载与部署](../../design/projects/kana/resources.md)验证浏览器与 Electron 共用包内 Service Worker，内容请求保持目录关系并由授权资源拥有者交付，不要求宿主解析书内成员。同源资产、专用作用域与 Electron 协议能力满足公开接入条件，缺少必要能力时明确报告 assetUnavailable；模块导入不登记 worker。
+
+内容 CSP 与实例、成员权限共同限制加载，越界和失效请求不回到网络。关闭一个 Reader 撤销其内容地址和读取，不影响其他实例，也不注销仍在使用的静态登记；worker 重启不丢失仍存活的合法资源拥有者。
+
+分块传输、背压、预算、取消、已有 PWA、版本作用域、登记冲突与清理均须在实际接入中验证，局部机制试件不代替整包及维护窗口验收。
 
 交付采用[原生可转移流](../../design/projects/kana/resources.md#streams)，没有按浏览器切换的 chunk 备用协议；借入缓冲保持有效，排队和在途读取遵守各自限额。取消或中途失败不交付部分成功，一个释放失败仍等待其余释放。覆盖元信息尚未就绪时关闭、拥有者消失、活动 worker 中断、存活端点的正常慢操作，以及同页独立库副本分别路由。登记存在不能代替安装完成，取消打开不发布迟到入口；旧版本消费结束后清理其登记，不影响新版本与 PWA。临时对象创建或写入失败时停止输入并清理，不转为整份内存快照；原生内部预读和后端容量不得被误报为已经受某个总 MB 上限控制。
 
@@ -56,7 +60,9 @@ A12 和 A27 按[资源加载与部署](../../design/projects/kana/resources.md)�
 
 A12 和 A27 按[呈现与交互机制](../../design/projects/kana/layout.md)验证按实际阅读面建立完整章节投影，各面共用同一源解释、格式索引和 Reader 状态。横排和两种竖排均形成正确的左右阅读面，相邻片段无缺字或重复，源范围跨面连续，起始空槽位不插入源内容节点。各面字体和设置由同一次布局采用，附加 DOM 占用计入预算并正常释放；辅助技术不重复交付全文，焦点与逻辑源位置保持一致。显式一／双面不因窗口变窄而切换或缩小字号；无法形成阅读区域时以 layoutUnavailable／insufficientSpace 结束该次操作，既有 Reader 不因此结束，failure 不被写成该局部失败。隐藏与恢复、重排后的源落点、同轴接续、换轴时的惯性与焦点分别核对。
 
-Kana 的终态浏览器验收覆盖[范围与维护窗口](../../design/projects/kana/README.md#browser-versions)：Chrome、Edge、Firefox 常规通道的当前稳定版，macOS Safari 当前正式稳定版，WebKitGTK 当前稳定系列最新维护版，以及 Electron 最近三个稳定主版本的最新稳定更新。记录每次发行实际验证的运行时、系统与构建，不以 Kisaki 单条运行线代替三条 Electron 线，不以 Windows WebKit 测试构建代替 Safari 或 WebKitGTK。普通自动分栏通过不代替显式分页、复杂作者样式和完整输入验收；移动端、ESR、扩展稳定通道及长期固定旧版分支不构成另行维护范围。运行不查询在线最新版或只按 User-Agent 拒绝打开。
+Kana 的终态浏览器验收覆盖[范围与维护窗口](../../design/projects/kana/README.md#browser-versions)：Chrome、Edge、Firefox 常规通道的当前稳定版，macOS Safari 当前正式稳定版，WebKitGTK 当前稳定系列最新维护版，以及 Electron 最近三个稳定主版本的最新稳定更新。记录每次发行实际验证的运行时、系统与构建，不以 Kisaki 单条运行线代替三条 Electron 线，不以 Windows WebKit 测试构建代替 Safari 或 WebKitGTK。
+
+普通自动分栏通过不代替显式分页、复杂作者样式和完整输入验收；移动端、ESR、扩展稳定通道及长期固定旧版分支不构成另行维护范围。运行不查询在线最新版或只按 User-Agent 拒绝打开。
 
 正文根基准与作者元素计算字号的比例在绝对字号、相对字号和重排后保持；正文根 16px、局部段落 14px、目标基准 20px 时，该段应为 17.5px，不被强制为 20px。固定图像尺寸不随普通文字统一放大，原始源位置不变。ReadingView.forwardDirection 与 pageSlots 对应已采用布局，固定页面数非空、连续重排为 null，视口里同时可见多个组不改变该字段的含义，主应用不据此回写偏好。
 

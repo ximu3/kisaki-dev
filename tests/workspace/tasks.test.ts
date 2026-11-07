@@ -71,7 +71,12 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance', 'desktop-contracts', 'desktop-localization'],
+        consumers: [
+          'desktop-appearance',
+          'desktop-contracts',
+          'desktop-localization',
+          'desktop-ui',
+        ],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
@@ -130,6 +135,7 @@ test(
         desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
       },
     ]
+
     const members = JSON.parse(
       await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
     ) as { path: string }[]
@@ -155,6 +161,7 @@ test(
       await mkdir(dirname(join(directory, item.path)), { recursive: true })
       await writeFile(join(directory, item.path), 'initial fixture input\n')
     }
+
     await execute('git', ['init', '--initial-branch=main'], options)
     await execute('git', ['add', '.'], options)
     const commit = [
@@ -171,9 +178,11 @@ test(
       'Fixture input',
     ]
     await execute('git', commit, options)
+
     const variables = join(directory, '.local/verification-refs.json')
     await mkdir(dirname(variables), { recursive: true })
     await writeFile(variables, JSON.stringify({ base: 'HEAD^', head: 'HEAD' }))
+
     for (const item of cases) {
       await writeFile(join(directory, item.path), 'changed fixture input\n')
       await execute('git', ['add', item.path], options)
@@ -189,6 +198,7 @@ test(
         ],
         options,
       )
+
       const report = JSON.parse(stdout) as {
         errors?: unknown[]
         data: {
