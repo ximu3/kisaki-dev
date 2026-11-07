@@ -341,7 +341,14 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
   await browserExpect(dialog).toBeVisible()
 
   await page.getByLabel('Block close').uncheck()
-  await page.getByRole('button', { name: 'Close editor' }).click()
+  const closedHeight = await page
+    .getByRole('button', { name: 'Close editor' })
+    .evaluate((button: HTMLButtonElement) => {
+      const panel = button.closest('dialog')!
+      button.click()
+      return panel.getBoundingClientRect().height
+    })
+  expect(closedHeight).toBe(0)
   await browserExpect(page.getByRole('button', { name: 'Open dialog', exact: true })).toBeFocused()
 
   await page.locator('#context-target').focus()
@@ -361,7 +368,15 @@ test('toast clocks pause, survive caller disposal and follow active modals until
   page,
 }) => {
   await page.clock.install()
-  await page.evaluate(() => window.fixture.showLoading(false))
+  const initialOverflow = await page.evaluate(() => {
+    window.fixture.showLoading(false)
+    const region = document.querySelector<HTMLElement>('[role="region"][popover]:popover-open')!
+    return {
+      x: region.scrollWidth - region.clientWidth,
+      y: region.scrollHeight - region.clientHeight,
+    }
+  })
+  expect(initialOverflow).toEqual({ x: 0, y: 0 })
   await page.clock.fastForward(10_000)
   await browserExpect(page.getByText('Preparing sample', { exact: true })).toBeVisible()
 
@@ -426,6 +441,14 @@ test('Markdown, charts and drag load as complete capabilities and release their 
 
   await page.getByRole('button', { name: 'Load resources' }).click()
   await browserExpect(page.getByRole('textbox', { name: 'Markdown source' })).toBeVisible()
+
+  const readOnly = page.getByRole('checkbox', { name: 'Read only', exact: true })
+  const bold = page.getByRole('button', { name: 'Bold', exact: true })
+  await readOnly.check()
+  await browserExpect(bold).toBeDisabled()
+  await readOnly.uncheck()
+  await browserExpect(bold).toBeEnabled()
+
   const first = page.locator('#preview-one')
   const second = page.locator('#preview-two')
   await browserExpect(first.locator('img')).toHaveCount(0)

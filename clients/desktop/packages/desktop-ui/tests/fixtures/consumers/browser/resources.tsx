@@ -63,6 +63,7 @@ export default function Resources(): JSX.Element {
   const [text, setText] = createSignal(initial)
   const [view, setView] =
     createSignal<Parameters<NonNullable<MarkdownEditorProps['onViewChange']>>[0]>()
+  const [readOnly, setReadOnly] = createSignal(false)
 
   const [data, setData] = createSignal([
     { x: 1, y: 2, z: 1 },
@@ -112,8 +113,17 @@ export default function Resources(): JSX.Element {
   return (
     <div class="resource-grid">
       <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={readOnly()}
+            onChange={(event) => setReadOnly(event.currentTarget.checked)}
+          />
+          Read only
+        </label>
         <MarkdownToolbar label="Formatting" labels={labels} view={view()} />
         <MarkdownEditor
+          readOnly={readOnly()}
           value={text()}
           onValueChange={setText}
           label="Markdown source"

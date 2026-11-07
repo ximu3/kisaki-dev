@@ -1,6 +1,6 @@
 /** @fileoverview Keyboard-accessible Markdown actions sharing the editor's transactions. */
 
-import { For } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import type { EditorView } from '@codemirror/view'
 import { Button } from '../button/control'
@@ -30,13 +30,27 @@ export interface MarkdownToolbarProps {
   label: string
   labels: Readonly<Record<MarkdownCommand, string>>
   commands?: readonly MarkdownCommand[]
-  /** Pass the host's changing read-only or operation-availability state. */
+  /** Disable commands for additional host-owned reasons. The view owns its read-only state. */
   disabled?: boolean
 }
 
 /** Prevent pointer focus transfer so a click formats the editor's existing selection. */
 export function MarkdownToolbar(props: MarkdownToolbarProps): JSX.Element {
   let root!: HTMLDivElement
+  const [readOnly, setReadOnly] = createSignal(true)
+
+  createEffect(() => {
+    const view = props.view
+    setReadOnly(!view || view.state.readOnly)
+
+    if (view) {
+      // CodeMirror reflects read-only changes on its public content DOM, including full state replacements.
+      const observer = new MutationObserver(() => setReadOnly(view.state.readOnly))
+      observer.observe(view.contentDOM, { attributes: true, attributeFilter: ['aria-readonly'] })
+      onCleanup(() => observer.disconnect())
+    }
+  })
+
   const navigate = createFocusNavigation(
     () => root,
     'button',
@@ -58,7 +72,7 @@ export function MarkdownToolbar(props: MarkdownToolbarProps): JSX.Element {
           <Button
             size="sm"
             variant="ghost"
-            disabled={props.disabled || !props.view || props.view.state.readOnly}
+            disabled={props.disabled || readOnly()}
             onPointerDown={(event) => event.preventDefault()}
             onClick={() => {
               if (props.view) {
