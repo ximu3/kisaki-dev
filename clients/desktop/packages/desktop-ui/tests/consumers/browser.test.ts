@@ -9,7 +9,7 @@ import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest as test, lintConsumer, packageRoot } from '../support/consumer'
 import type {} from '../fixtures/consumers/browser/api'
 
-/** Text must occupy its final bounds even while the frame is visibly scaled. */
+/** Sample the actual material and text halfway through entry and at rest. */
 async function checkSurface(panel: Locator, textSelector: string): Promise<void> {
   const result = await panel.evaluate((node, selector) => {
     const range = document.createRange()
@@ -26,31 +26,34 @@ async function checkSurface(panel: Locator, textSelector: string): Promise<void>
       animation.currentTime = Number(animation.effect!.getTiming().duration) / 2
     }
     const mid = geometry()
-    const scale = Number(getComputedStyle(node, '::before').scale)
+    const opacity = Number(getComputedStyle(node).opacity)
     for (const animation of animations) {
       animation.finish()
     }
     return {
       mid,
       end: geometry(),
-      scale,
-      fading: animations.some((animation) => animation.transitionProperty === 'opacity'),
+      opacity,
+      moving: animations.some((animation) =>
+        ['transform', 'scale', 'translate'].includes(animation.transitionProperty),
+      ),
     }
   }, textSelector)
-  expect(result.scale).toBeGreaterThan(0.97)
-  expect(result.scale).toBeLessThan(1)
-  expect(result.fading).toBe(true)
+  expect(result.opacity).toBeGreaterThan(0)
+  expect(result.opacity).toBeLessThan(1)
+  expect(result.moving).toBe(false)
   expect(result.end[2]).toBeGreaterThan(0)
   expect(result.mid).toEqual(result.end)
 }
 
-test('floating frames preserve text geometry and a chart follows its pointer without replaying entry', async ({
+test('surfaces fade in place and a chart follows its pointer without replaying entry', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.evaluate(() => {
     document.documentElement.style.setProperty('--kui-anchor-enter', '3s')
     document.documentElement.style.setProperty('--kui-modal-enter', '3s')
+    document.documentElement.style.setProperty('--kui-hint-enter', '3s')
   })
   await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: 'Edit sample' })
@@ -99,7 +102,7 @@ test('floating frames preserve text geometry and a chart follows its pointer wit
     await tip.evaluate((node) =>
       node
         .getAnimations({ subtree: true })
-        .some((a) => a instanceof CSSTransition && a.transitionProperty === 'scale'),
+        .some((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity'),
     ),
   ).toBe(false)
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -255,6 +258,7 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
 test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.getByRole('button', { name: 'Increase', exact: true }).click()
   await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('3')
 
@@ -282,10 +286,21 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
   await browserExpect(date).toHaveValue('2024-02-28')
   await month.click()
   await page.getByRole('option', { name: 'February', exact: true }).click()
+  const outgoing = await day.evaluateHandle((node) => {
+    const panel = node.closest<HTMLElement>('[popover]')!
+    panel.style.setProperty('--kui-anchor-exit', '3s')
+    return panel
+  })
   await day.press('ArrowRight')
   await page.keyboard.press('Enter')
   await browserExpect(date).toHaveValue('2024-02-29')
   await browserExpect(date).toBeFocused()
+  expect(
+    await outgoing.evaluate((panel) =>
+      panel.querySelector('[role=gridcell][aria-selected=true]')?.getAttribute('data-date'),
+    ),
+  ).toBe('2024-02-28')
+  await outgoing.dispose()
   await page.getByRole('button', { name: 'Choose date', exact: true }).click()
   await page
     .getByRole('gridcell', { name: 'Thursday, February 29, 2024', exact: true })
@@ -589,6 +604,34 @@ test('toast clocks pause, survive caller disposal and follow active modals until
   await page.evaluate(() => window.fixture.dispose())
   await page.clock.fastForward(10_000)
   await browserExpect(page.getByRole('region', { name: 'Window notifications' })).toHaveCount(0)
+})
+
+test('toolbar hints share the initial wait and yield to the latest reading target', async ({
+  page,
+}) => {
+  await page.getByRole('button', { name: 'Load resources' }).click()
+  const bold = page.getByRole('button', { name: 'Bold', exact: true })
+  const italic = page.getByRole('button', { name: 'Italic', exact: true })
+  const visible = page.locator('[role=tooltip]:popover-open')
+  await bold.waitFor()
+  await page.clock.install({ time: new Date('2024-01-01T00:00:00Z') })
+  await page.clock.pauseAt(new Date('2024-01-01T00:00:10Z'))
+
+  await bold.dispatchEvent('pointerenter')
+  await page.clock.fastForward(299)
+  expect(await visible.count()).toBe(0)
+  await page.clock.fastForward(1)
+  expect(await visible.allTextContents()).toEqual(['Bold'])
+  await bold.dispatchEvent('pointerleave')
+  await italic.dispatchEvent('pointerenter')
+  expect(await visible.allTextContents()).toEqual(['Italic'])
+
+  await italic.dispatchEvent('pointerleave')
+  await page.clock.runFor(421)
+  await bold.dispatchEvent('pointerenter')
+  await italic.focus()
+  await page.clock.fastForward(300)
+  expect(await visible.allTextContents()).toEqual(['Italic'])
 })
 
 test('Markdown, charts and drag load as complete capabilities and release their instances', async ({

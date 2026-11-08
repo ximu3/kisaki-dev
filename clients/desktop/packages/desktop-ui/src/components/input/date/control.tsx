@@ -14,13 +14,13 @@ import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, mdiCalendarOutline } from '../../../internal/icon/icon'
+import { createPresentation } from '../../../internal/popup/presentation'
 import { createValue, onFormReset } from '../../../internal/state'
 import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import type { InputProps } from '../control'
 import { parseDate } from './calendar'
 import { DatePicker } from './picker'
-import { createPresentation } from '../../../internal/popup/presentation'
 import type { CalendarProps } from './picker'
 import styles from './styles.module.css'
 
@@ -213,8 +213,8 @@ export function DateInput(props: DateInputProps): JSX.Element {
           allowed={allowed}
           close={() => setOpen(false)}
           choose={(date) => {
-            enter(date)
             setOpen(false)
+            enter(date)
             input.focus()
           }}
         />

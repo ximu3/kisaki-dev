@@ -51,8 +51,8 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
     overscan: 3,
   })
   const choose = (option: SelectionOption) => {
-    props.choose(Number(option.value))
     setOpen(false)
+    props.choose(Number(option.value))
   }
 
   return (

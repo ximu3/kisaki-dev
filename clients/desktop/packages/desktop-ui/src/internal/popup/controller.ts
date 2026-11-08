@@ -1,25 +1,13 @@
 /** @fileoverview Native top-layer presentation with collision-aware Floating UI positioning. */
 
 import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
-import type { Middleware, VirtualElement } from '@floating-ui/dom'
+import type { VirtualElement } from '@floating-ui/dom'
 import { createEffect, onCleanup, onMount } from 'solid-js'
 import type { Accessor } from 'solid-js'
-import { applySurfaceOrigin, surfaceOrigin } from './origin'
-import type { SurfaceOrigin } from './origin'
 
 /** Placement uses physical viewport edges; start/end follow the anchor's text direction. */
 export type PopupPlacement =
   'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'
-
-/** The animation and content reveal use the same resolved side, including flipped and point anchors. */
-const origin: Middleware = {
-  name: 'origin',
-  fn({ x, y, rects }) {
-    const { reference, floating } = rects
-    const center = { x: reference.x + reference.width / 2, y: reference.y + reference.height / 2 }
-    return { data: surfaceOrigin(center, { ...floating, x, y }) }
-  },
-}
 
 /** Native modal scope follows DOM ancestry. Position observers live only while open. */
 export function createPopup(options: {
@@ -39,8 +27,23 @@ export function createPopup(options: {
     const node = options.element()
     node.dataset.uiPopup = ''
     const anchor = options.anchor()
+
+    let lastHighlight: HTMLElement | null = null
     const toggle = (event: ToggleEvent) => {
-      if (event.newState === 'closed' && options.open()) {
+      lastHighlight?.removeAttribute('data-exit-highlight')
+      lastHighlight = null
+      if (event.newState !== 'closed') {
+        return
+      }
+
+      const row =
+        node.querySelector<HTMLElement>('[data-option-highlight]:hover') ??
+        node.querySelector<HTMLElement>('[data-option-highlight~="focus"]:focus-visible')
+      if (row?.closest('[popover]') === node) {
+        row.setAttribute('data-exit-highlight', '')
+        lastHighlight = row
+      }
+      if (options.open()) {
         options.change(false)
       }
     }
@@ -83,6 +86,9 @@ export function createPopup(options: {
           }
         : (options.reference?.() ?? anchor)
       let active = true
+      if (getComputedStyle(node).display === 'none') {
+        node.setAttribute('data-measuring', '')
+      }
       node.showPopover({ source: anchor })
 
       const update = () => {
@@ -112,14 +118,14 @@ export function createPopup(options: {
                 }
               },
             }),
-            origin,
           ],
-        }).then(({ x, y, placement: resolved, middlewareData }) => {
+        }).then(({ x, y, placement: resolved }) => {
           if (active) {
-            node.style.left = `${x}px`
-            node.style.top = `${y}px`
+            const ratio = node.ownerDocument.defaultView!.devicePixelRatio
+            node.style.left = `${Math.round(x * ratio) / ratio}px`
+            node.style.top = `${Math.round(y * ratio) / ratio}px`
             node.dataset.placement = resolved
-            applySurfaceOrigin(node, middlewareData.origin as SurfaceOrigin)
+            node.removeAttribute('data-measuring')
           }
         })
       }

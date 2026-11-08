@@ -79,7 +79,7 @@ function FeedbackPrompt(props: {
   detail: string | undefined
   onLocate: () => void
 }): JSX.Element {
-  const tooltip = createTooltip(() => 300)
+  const tooltip = createTooltip()
   const id = createUniqueId()
   let trigger!: HTMLButtonElement
   let message!: HTMLSpanElement

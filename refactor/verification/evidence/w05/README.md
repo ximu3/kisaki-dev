@@ -9,13 +9,13 @@
 | 范围 | 已交付与实际验证 |
 | --- | --- |
 | 基础呈现 | Button、Link、Badge、Separator、Spinner、Progress、Alert、Image 和 EmptyState；原生语义、变体、焦点、禁用与默认样式。 |
-| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Checkbox、Switch、RadioGroup、Select、MultiSelect、Combobox、Slider；FormData、外部表单归属、默认与受控值、重置、取消重置、fieldset 禁用、原生有效性、输入法组合、原生分段删除、完整日期粘贴、独立切换月份、跨月键盘选择与 alpha 编辑。复合输入的端部操作列与编辑区共用一圈边框。静态字段标题提供可访问名称，Combobox 在弹出面板中检索并跨候选变更保留单选与多选。真实 listbox 承担滚动，万项虚拟列表核对离屏值、首末项度量、键盘定位、关闭时的几何和提交，框内标签核对移除、焦点和窄字段滚动，溢出时到达端点仍由字段处理滚轮，空间充足时由外层滚动。 |
+| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Select、MultiSelect、Combobox、Checkbox、RadioGroup、Switch 和 Slider。核对静态标题与说明、表单提交、重置与取消重置、禁用、受控值和输入法组合。日期分段编辑、粘贴、年月浏览及跨月选择接续原生输入。选日后字段立即取得新值，退场仍呈现旧选中标记。多选跨检索保留记录，虚拟列表在末项退出时保有行和视口。 |
 | 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、共同分段外观、语义表格和统一原生滚动条。 |
-| 浮层 | Dialog、确认内容、Popover、下拉／上下文／子菜单和 Tooltip；原生模态、标题栏按钮与 Escape 的可阻止关闭请求、单边分组线、外框进退场与稳定文字、逐层 Escape 与嵌套焦点返回、子菜单悬停与移入，以及 Tooltip 的键盘与悬停阅读。Floating UI 负责视口约束与翻转。 |
+| 浮层 | Dialog、确认框、Popover、下拉／上下文／子菜单和 Tooltip。核对三档原位淡变、逐层 Escape、可阻止的关闭、键盘与焦点归还、子菜单悬停与移入。首次悬停 300ms，工具间连续交接即时，键盘聚焦可接管正在等待的提示。Floating UI 定位遵守视口约束和实际翻转结果。 |
 | 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。聚焦错误字段时只显示其短句和可选说明，聚焦有效字段时显示独立总数，点击汇总定位第一项。截断的短句可以悬停或聚焦阅读全文。四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |
 | Toast | 命令式 toast 与单一 Toaster；从下方入场的滚动范围、队列让位与补位、右上角关闭、loading、结果转换、persistent、自然到期与悬停暂停、旧句柄失效和显示宿主清理。发起组件与 Dialog 卸载后消息保持；同一队列在嵌套 Dialog 中移动，动作可实际点击。 |
 | Markdown | CodeMirror 主题与编辑、紧凑的内置格式栏、前景色悬停、宿主按钮操作当前选区、单一 Tab 入口与方向键、空工具栏、只读往返切换与历史可用性、格式事务与撤销、受控正文更新及销毁；Markdown、表格、只读任务与脚注呈现，实例标识隔离，原始 HTML 为文本，未映射图片不请求来源 URL，普通链接可交宿主处理。 |
-| 图表 | Unovis 官方 Solid 子组件的 XY／单图容器、折线、面积、分组柱、堆叠柱、散点、环图、轴、提示和 Crosshair；真实数据更新、只读布局结果、文本提示、交互图例与卸载。五个系列色使用 chart-1 至 chart-5；数据使用短过渡，提示外框在显隐时收放，指针与数据位置即时更新，并遵守 reduced-motion。 |
+| 图表 | Unovis 的 XY／单图容器、折线、面积、分组柱、堆叠柱、散点、环图、轴、数据提示和 Crosshair。核对数据更新、只读布局结果、交互图例、五个系列色和卸载。提示随可见性淡变，跨数据点即时换值、定位，减少动效时直接显隐。 |
 | 拖拽 | Pragmatic Drag and Drop 的生命周期接入、自动滚动、紧凑预览、手柄、命中边缘、间隙中点插入指示和反馈；实际指针放下与明确的键盘移动动作。业务身份、许可和保存由消费者维护。 |
 | 样式与制品 | CSS Modules 的构建类名对应普通 CSS，样式入口包含 appearance 默认值；无 Tailwind 消费、真实 Tailwind 两种加载顺序及未分层覆盖通过。基础入口与延迟加载的完整专用能力分开。 |
 
@@ -25,11 +25,13 @@ Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖�
 
 `pnpm check` 执行工作区类型、lint、边界、格式和常规测试。UI 的真实浏览器与 Electron 检查属于独立消费者任务，普通 check 不启动桌面。
 
-`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 14 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
+`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 15 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
 
 UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存结果、实际环境与 tarball SHA-256，以及亮暗、窄窗口、专用能力和 Electron 截图。独立审查页核对了亮暗控件、分数像素下的通高分隔线、拾色器通道焦点、滑轨填色、长 Dialog、只读错误详情、图表实际数值与拖拽结果；其他包的报告保留在各自相同用途的输出目录。CI 按对应 PR 的实际运行登记。
 
-默认主题的双向溢出样例在 100% 与 150% 界面缩放下，列表面板的四边内距均为 0。万项虚拟列表同时出现两条滚动条时，End 可完整显示最后一项。150px 限高的 Markdown 编辑器由正文视口承载溢出内容。系统正常动效下核对通知自然到期、主动关闭与程序撤下的退场，以及跨模态移动时的身份和时钟。减少动效时直接到达终态。独立制品检查同时比较外框缩放中的文字坐标与终态，并在图表提示存续期间移动指针，验证定位更新与入场互相独立。
+默认主题的双向溢出样例在 100% 与 150% 界面缩放下，列表面板的四边内距均为 0。万项虚拟列表同时出现两条滚动条时，End 可完整显示最后一项。150px 限高的 Markdown 编辑器由正文视口承载溢出内容。
+
+制品消费者在淡入中段及终态比较菜单、Dialog 和图表提示的文字几何。连续跨图表数据点时沿用同一提示。用真实工具栏验证首次悬停时钟、跨按钮交接和键盘接管。通知自然退场计入读时，主动关闭使句柄立即失效，跨模态移动保留通知身份和时钟。
 
 构建沿 [tsdown 的 Solid 接入](https://tsdown.dev/recipes/solid-support)和 [CSS Modules 提取](https://tsdown.dev/options/css)，使用固定 tsdown／CSS 0.23.0 与适配 Solid 1.9 的 unplugin-solid 1.0.0。专用工具通过其公开入口接入，声明归集保留 Unovis 的许可材料。
 

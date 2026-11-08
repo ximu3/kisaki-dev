@@ -29,6 +29,7 @@
 
   .option {
     appearance: none;
+    position: relative;
     display: inline-grid;
     place-content: center;
     box-sizing: border-box;
@@ -43,18 +44,20 @@
   }
   .option::after {
     content: '';
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--primary);
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--primary);
+    background: radial-gradient(
+      circle at center,
+      var(--primary) calc(0.25rem - 0.5px),
+      transparent calc(0.25rem + 0.5px)
+    );
     opacity: 0;
-  }
-  .option:checked {
-    border-color: var(--primary);
+    transition: opacity var(--kui-feedback-duration) ease-out;
   }
   .option:checked::after {
     opacity: 1;
-    transition: opacity 100ms ease-out;
   }
   .option:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);

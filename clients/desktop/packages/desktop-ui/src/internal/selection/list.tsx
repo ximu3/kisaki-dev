@@ -5,6 +5,7 @@ import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
 import { Icon, mdiCheck } from '../icon/icon'
 import { createPopup } from '../popup/controller'
+import { displayedWhileOpen } from '../popup/presentation'
 import type { SelectionPopup } from './popup'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
@@ -35,6 +36,7 @@ interface ListProps extends SelectionListProps {
 export function SelectionList(props: ListProps): JSX.Element {
   let list!: HTMLDivElement
   const { id, open, present } = props.popup
+  const selected = displayedWhileOpen(open, () => props.selected)
 
   createEffect(() => {
     if (props.search && open() && props.collection.active() === undefined) {
@@ -96,7 +98,7 @@ export function SelectionList(props: ListProps): JSX.Element {
     <div
       id={optionId(id, option.value)}
       role="option"
-      aria-selected={props.selected.includes(option.value)}
+      aria-selected={selected().includes(option.value)}
       aria-disabled={option.disabled || undefined}
       aria-posinset={props.collection.positionOf(option.value)}
       aria-setsize={props.collection.options().length}
@@ -122,7 +124,7 @@ export function SelectionList(props: ListProps): JSX.Element {
           </Show>
         </span>
         <span class={row.mark}>
-          <Show when={props.selected.includes(option.value)}>
+          <Show when={selected().includes(option.value)}>
             <Icon path={mdiCheck} />
           </Show>
         </span>

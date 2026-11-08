@@ -5,6 +5,7 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../../internal/dom'
 import { Icon, mdiChevronLeft, mdiChevronRight } from '../../../internal/icon/icon'
 import { createPopup } from '../../../internal/popup/controller'
+import { displayedWhileOpen } from '../../../internal/popup/presentation'
 import frame from '../../../internal/popup/surface.module.css'
 import { addDays, addMonths, calendarDays, parseDate, todayValue } from './calendar'
 import { PeriodSelect } from './period'
@@ -68,6 +69,11 @@ export function DatePicker(props: PickerProps): JSX.Element {
     weekday: new Intl.DateTimeFormat(props.locale, { weekday: 'long', timeZone: 'UTC' }),
     shortWeekday: new Intl.DateTimeFormat(props.locale, { weekday: 'short', timeZone: 'UTC' }),
   }))
+
+  const selected = displayedWhileOpen(
+    () => props.open,
+    () => props.value,
+  )
   const initial = clamp(parseDate(props.value) ? props.value : todayValue())
   const [active, setActive] = createSignal(initial)
   const [month, setMonth] = createSignal(`${initial.slice(0, 7)}-01`)
@@ -205,6 +211,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
         </div>
         <div
           role="grid"
+          class={styles.grid}
           aria-label={formats().month.format(parseDate(month()))}
           onKeyDown={(event) => {
             let date: string | undefined
@@ -259,9 +266,10 @@ export function DatePicker(props: PickerProps): JSX.Element {
                         <button
                           type="button"
                           role="gridcell"
+                          data-option-highlight="hover"
                           data-date={date}
                           aria-label={formats().day.format(parseDate(date))}
-                          aria-selected={props.value === date}
+                          aria-selected={selected() === date}
                           aria-current={date === todayValue() ? 'date' : undefined}
                           aria-disabled={!props.allowed(date)}
                           tabIndex={active() === date ? 0 : -1}

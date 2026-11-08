@@ -7,6 +7,7 @@
     padding: 0;
     width: 100%;
     min-width: 0;
+    min-height: var(--kui-control-height);
   }
 
   .trigger {
@@ -15,16 +16,24 @@
     gap: 0.25rem;
     box-sizing: border-box;
     min-width: 0;
-    min-height: var(--kui-control-height);
-    margin: -1px;
+    min-height: 0;
+    margin: 0;
     padding: 0.125rem 0.5rem;
-    border: 1px solid transparent;
+    padding-inline-end: 0;
+    border: 0;
     border-radius: inherit;
     background: transparent;
     color: inherit;
     font: inherit;
     text-align: start;
     cursor: pointer;
+  }
+  /* The button also receives clicks on the field's perimeter. */
+  .trigger::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
   }
   .container:has(> .trigger:disabled) {
     opacity: 0.5;
@@ -51,7 +60,9 @@
     color: var(--foreground);
   }
   .arrow {
-    flex: none;
+    display: grid;
+    place-items: center;
+    flex: 0 0 var(--kui-field-affix-width);
     margin-inline-start: auto;
     transition: color var(--kui-hover-duration) ease;
   }

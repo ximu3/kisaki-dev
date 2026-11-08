@@ -27,7 +27,7 @@
   .chevron {
     flex: none;
     font-size: 1rem;
-    transition: rotate 120ms ease;
+    transition: rotate var(--kui-feedback-duration) ease;
   }
   .root[open] .chevron {
     rotate: 90deg;

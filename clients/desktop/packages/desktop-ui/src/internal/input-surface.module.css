@@ -2,6 +2,7 @@
 
 @layer components {
   :where(.surface) {
+    --kui-field-affix-width: calc(var(--kui-control-height) - 2px);
     box-sizing: border-box;
     width: 100%;
     min-width: 0;

@@ -5,7 +5,6 @@ import type { JSX } from 'solid-js'
 import { VisTooltip, VisTooltipSelectors } from '@unovis/solid'
 import type { VisTooltipProps } from '@unovis/solid'
 import { classes } from '../../internal/dom'
-import { applySurfaceOrigin, surfaceOrigin } from '../../internal/popup/origin'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
@@ -54,7 +53,6 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
   onMount(() => {
     const plot = marker.parentElement!
     let element: HTMLElement | null = null
-    let point: { x: number; y: number } | undefined
     let pending = 0
 
     const sync = () => {
@@ -64,12 +62,6 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
       const visible = element.classList.contains(VisTooltipSelectors.show)
       if (visible === element.hasAttribute('data-kui-chart-open')) {
         return
-      }
-      if (point) {
-        const rect = element.getBoundingClientRect()
-        if (rect.width && rect.height) {
-          applySurfaceOrigin(element, surfaceOrigin(point, rect))
-        }
       }
       element.toggleAttribute('data-kui-chart-open', visible)
       if (!visible) {
@@ -126,27 +118,23 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
         `[data-kui-chart-tooltip="${CSS.escape(id)}"]`,
       )
       if (element) {
+        plot.removeEventListener('mousemove', connect, true)
         element.classList.add(surface.chart!, styles.engineTooltip!)
         // Keep Unovis's display lifecycle and opacity transition, driven by the surface's visible state.
         element.style.opacity = 'var(--kui-chart-opacity)'
+        element.style.transitionProperty = 'opacity'
         element.style.transitionTimingFunction = 'var(--kui-frame-ease)'
         visibility.observe(element, { attributes: true, attributeFilter: ['class'] })
         sync()
       }
     }
 
-    const pointer = (event: MouseEvent) => {
-      point = { x: event.clientX, y: event.clientY }
-      if (!element) {
-        connect()
-      }
-    }
-    plot.addEventListener('mousemove', pointer, { capture: true, passive: true })
+    plot.addEventListener('mousemove', connect, { capture: true, passive: true })
     queueMicrotask(connect)
     onCleanup(() => {
       visibility.disconnect()
       cancelAnimationFrame(pending)
-      plot.removeEventListener('mousemove', pointer, true)
+      plot.removeEventListener('mousemove', connect, true)
     })
   })
 

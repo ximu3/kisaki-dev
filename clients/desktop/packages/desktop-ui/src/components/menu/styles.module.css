@@ -16,7 +16,8 @@
     transition: none;
   }
   .item:focus-visible,
-  .item:hover {
+  .item:hover,
+  .item[data-exit-highlight] {
     background: var(--accent);
     color: var(--accent-foreground);
     outline: none;

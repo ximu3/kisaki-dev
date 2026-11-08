@@ -1,13 +1,9 @@
-/* Native panels keep their final geometry. Only the material behind the content changes scale. */
+/* Text-bearing surfaces fade at their final reading position. */
 
 @layer components {
   :where(.anchor, .chart) {
-    --kui-popup-origin-x: 50%;
-    --kui-popup-origin-y: 50%;
-    --kui-frame-start: var(--kui-anchor-scale, 0.97);
-    --kui-frame-enter: var(--kui-anchor-enter, 80ms);
-    --kui-frame-x: var(--kui-popup-origin-x, 50%);
-    --kui-frame-y: var(--kui-popup-origin-y, 50%);
+    --kui-frame-enter: var(--kui-anchor-enter);
+    --kui-frame-exit: var(--kui-anchor-exit);
     --kui-frame-fill: var(--popover);
     --kui-frame-shadow: var(--shadow-overlay);
     --kui-frame-radius: var(--radius-md);
@@ -15,27 +11,22 @@
   }
 
   :where(.modal) {
-    --kui-frame-start: var(--kui-modal-scale, 0.98);
-    --kui-frame-enter: var(--kui-modal-enter, 100ms);
-    --kui-frame-x: 50%;
-    --kui-frame-y: 50%;
+    --kui-frame-enter: var(--kui-modal-enter);
+    --kui-frame-exit: var(--kui-modal-exit);
     --kui-frame-fill: var(--dialog);
     --kui-frame-shadow: var(--shadow-modal);
     --kui-frame-radius: var(--radius-lg);
     color: var(--dialog-foreground);
   }
 
+  :where(.anchor[role='tooltip'], .chart) {
+    --kui-frame-enter: var(--kui-hint-enter);
+    --kui-frame-exit: var(--kui-hint-exit);
+  }
+
   :where(.anchor, .modal, .chart) {
-    --kui-frame-time: var(--kui-surface-exit, 80ms);
-    --kui-frame-ease: cubic-bezier(0.4, 0, 1, 1);
-    --kui-frame-inset: calc(1 - var(--kui-frame-start));
-    --kui-frame-inner-radius: max(0px, calc(var(--kui-frame-radius) - 1px));
-    --kui-frame-closed-clip: inset(
-      calc(var(--kui-frame-y) * var(--kui-frame-inset))
-        calc((100% - var(--kui-frame-x)) * var(--kui-frame-inset))
-        calc((100% - var(--kui-frame-y)) * var(--kui-frame-inset))
-        calc(var(--kui-frame-x) * var(--kui-frame-inset)) round var(--kui-frame-inner-radius)
-    );
+    --kui-frame-time: var(--kui-frame-exit);
+    --kui-frame-ease: var(--kui-exit-ease);
   }
 
   :where(.chart) {
@@ -47,14 +38,16 @@
   :where(.chart:not([data-kui-chart-open])) {
     interactivity: inert;
   }
+
   :where(.anchor, .modal) {
     box-sizing: border-box;
     flex-direction: column;
     padding: 0;
     overflow: visible;
-    border: 1px solid transparent;
+    border: 1px solid var(--border);
     border-radius: var(--kui-frame-radius);
-    background: transparent;
+    background: var(--kui-frame-fill);
+    box-shadow: var(--kui-frame-shadow);
     opacity: 0;
     pointer-events: none;
     interactivity: inert;
@@ -64,34 +57,18 @@
     transition-behavior: allow-discrete;
   }
 
-  :where(.anchor, .modal, .chart)::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    z-index: -1;
-    pointer-events: none;
-    border: 1px solid var(--border);
-    border-radius: inherit;
-    background: var(--kui-frame-fill);
-    box-shadow: var(--kui-frame-shadow);
-    transform-origin: var(--kui-frame-x) var(--kui-frame-y);
-    scale: var(--kui-frame-start);
-    transition: scale var(--kui-frame-time) var(--kui-frame-ease);
-  }
-
   :where(.viewport) {
     flex: 1 1 auto;
     box-sizing: border-box;
     min-inline-size: 0;
     min-block-size: 0;
     overflow: auto;
-    clip-path: var(--kui-frame-closed-clip);
-    transition: clip-path var(--kui-frame-time) var(--kui-frame-ease);
+    border-radius: max(0px, calc(var(--kui-frame-radius) - 1px));
   }
 
   :where(.anchor:popover-open, .modal[open], .chart[data-kui-chart-open]) {
     --kui-frame-time: var(--kui-frame-enter);
-    --kui-frame-ease: cubic-bezier(0.16, 0.72, 0.25, 1);
+    --kui-frame-ease: var(--kui-enter-ease);
   }
   :where(.anchor:popover-open, .modal[open]) {
     display: flex;
@@ -99,14 +76,15 @@
     pointer-events: auto;
     interactivity: auto;
   }
-  :where(.anchor:popover-open, .modal[open], .chart[data-kui-chart-open])::before {
-    scale: 1;
-  }
-  :where(.anchor:popover-open, .modal[open], .chart[data-kui-chart-open]) > .viewport {
-    clip-path: inset(0 round var(--kui-frame-inner-radius));
-  }
   :where(.anchor:not(:popover-open), .modal:not([open]))::backdrop {
     pointer-events: none;
+  }
+  :where(.anchor:popover-open[data-measuring]) {
+    opacity: 0;
+    transition: none;
+  }
+  :where(.anchor[data-tooltip-handoff]) {
+    transition: none;
   }
 
   @starting-style {
@@ -116,18 +94,10 @@
     :where(.anchor:popover-open, .modal[open]) {
       opacity: 0;
     }
-    :where(.anchor:popover-open, .modal[open], .chart[data-kui-chart-open])::before {
-      scale: var(--kui-frame-start);
-    }
-    :where(.anchor:popover-open, .modal[open]) > .viewport {
-      clip-path: var(--kui-frame-closed-clip);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    :where(.anchor, .modal),
-    :where(.anchor, .modal, .chart)::before,
-    .viewport {
+    :where(.anchor, .modal, .chart) {
       transition: none;
     }
   }

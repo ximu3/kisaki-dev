@@ -35,9 +35,9 @@
     cursor: pointer;
     white-space: nowrap;
     transition:
-      background-color 100ms ease,
-      color 100ms ease,
-      box-shadow 100ms ease;
+      background-color var(--kui-feedback-duration) ease,
+      color var(--kui-feedback-duration) ease,
+      box-shadow var(--kui-feedback-duration) ease;
   }
   button.item:hover:not(:disabled),
   input:not(:disabled) + .item:hover {

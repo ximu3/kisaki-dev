@@ -1,6 +1,6 @@
 /** @fileoverview A read-only tooltip surface shares native positioning and reading state. */
 
-import { splitProps } from 'solid-js'
+import { onCleanup, onMount, splitProps } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../dom'
 import { createPopup } from '../popup/controller'
@@ -28,6 +28,7 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     'onPointerLeave',
   ])
   let content!: HTMLDivElement
+  onMount(() => onCleanup(local.reading.connect(content.ownerDocument)))
 
   createPopup({
     element: () => content,
@@ -46,6 +47,7 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     <div
       {...rest}
       role="tooltip"
+      data-tooltip-handoff={local.reading.handoff() || undefined}
       ref={(node) => {
         node.popover = 'hint'
         content = node

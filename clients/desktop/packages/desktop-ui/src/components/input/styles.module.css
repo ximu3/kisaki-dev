@@ -28,7 +28,8 @@
   .end,
   .start {
     display: grid;
-    flex: 0 0 1.375rem;
+    box-sizing: content-box;
+    flex: 0 0 var(--kui-field-affix-width);
     padding: 0;
     border: 0;
     background: transparent;

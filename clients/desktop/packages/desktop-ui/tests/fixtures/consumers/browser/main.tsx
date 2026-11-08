@@ -184,9 +184,11 @@ function Controls(): JSX.Element {
         <FieldGroup disabled={disabled()}>
           <FieldLegend>Preferences</FieldLegend>
           <Field id="query">
-            <FieldLabel>Query</FieldLabel>
+            <div class="field-heading">
+              <FieldLabel>Query</FieldLabel>
+              <FieldDescription>Native text, selection and undo.</FieldDescription>
+            </div>
             <Input name="query" defaultValue="seed" />
-            <FieldDescription>Native text, selection and undo.</FieldDescription>
           </Field>
           <Field id="notes">
             <FieldLabel>Notes</FieldLabel>
@@ -348,9 +350,11 @@ function Validation(): JSX.Element {
           </TabList>
           <TabPanel value="basic">
             <Field id="title" required invalid={issues().some((issue) => issue.id === 'title')}>
-              <FieldLabel>Title</FieldLabel>
+              <div class="field-heading">
+                <FieldLabel>Title</FieldLabel>
+                <FieldDescription>A stable name for this sample.</FieldDescription>
+              </div>
               <Input name="title" value={title()} onValueChange={setTitle} />
-              <FieldDescription>A stable name for this sample.</FieldDescription>
               <FieldError>{long()}</FieldError>
             </Field>
           </TabPanel>

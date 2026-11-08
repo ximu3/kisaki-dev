@@ -1,6 +1,7 @@
 /** @fileoverview Dropdown and context menus share item navigation and nested native popovers. */
 
 import {
+  batch,
   createContext,
   createEffect,
   createSignal,
@@ -16,6 +17,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
 import { createPopup } from '../../internal/popup/controller'
+import { displayedWhileOpen } from '../../internal/popup/presentation'
 import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icon/icon'
 import { createSubmenuHover } from './hover'
 import { Button } from '../button/control'
@@ -304,6 +306,7 @@ export interface MenuItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElemen
 /** Real focus follows menu navigation. The caller owns asynchronous action completion and feedback. */
 export function MenuItem(props: MenuItemProps): JSX.Element {
   const state = useMenu()
+  const checked = displayedWhileOpen(state.open, () => props['aria-checked'])
   const [local, rest] = splitProps(props, [
     'onSelect',
     'closeOnSelect',
@@ -319,6 +322,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       type="button"
       {...rest}
       role={props.role ?? 'menuitem'}
+      data-option-highlight="hover focus"
       tabIndex={-1}
       data-destructive={local.destructive || undefined}
       class={classes(row.row, styles.item, local.class)}
@@ -339,23 +343,25 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
           return
         }
 
-        local.onSelect?.()
-        if (local.closeOnSelect !== false) {
-          let current: MenuState | undefined = state
-          let trigger = state.anchor
-          while (current) {
-            current.change(false)
-            trigger = current.anchor
-            current = current.parent
+        let trigger: HTMLElement | undefined
+        batch(() => {
+          local.onSelect?.()
+          if (local.closeOnSelect !== false) {
+            let current: MenuState | undefined = state
+            while (current) {
+              current.change(false)
+              trigger = current.anchor
+              current = current.parent
+            }
           }
-          trigger?.focus()
-        }
+        })
+        trigger?.focus()
       }}
     >
       <span class={styles.label}>{local.children}</span>
-      <Show when={props['aria-checked'] !== undefined}>
+      <Show when={checked() !== undefined}>
         <span aria-hidden="true" class={row.mark}>
-          <Show when={props['aria-checked'] === true}>
+          <Show when={checked() === true}>
             <Icon path={mdiCheck} />
           </Show>
         </span>
@@ -429,6 +435,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
       type="button"
       {...rest}
       role="menuitem"
+      data-option-highlight="hover focus"
       tabIndex={-1}
       ref={(node) => {
         state.anchor = node

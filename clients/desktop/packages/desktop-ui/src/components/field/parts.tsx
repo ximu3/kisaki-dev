@@ -74,7 +74,7 @@ export function FieldLabel(props: JSX.HTMLAttributes<HTMLSpanElement>): JSX.Elem
   )
 }
 
-/** Stable usage guidance, independent of the current validation result. */
+/** Place stable guidance below the label, ahead of the control in reading order. */
 export function FieldDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
   const field = useContext(FieldContext)
   field?.setDescription(true)

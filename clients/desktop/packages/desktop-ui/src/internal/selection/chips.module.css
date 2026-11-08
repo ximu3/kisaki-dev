@@ -5,8 +5,7 @@
     position: absolute;
     inset-block: 1px;
     inset-inline-start: 0.1875rem;
-    inset-inline-end: calc(var(--kui-icon-size) + 0.875rem);
-    inline-size: fit-content;
+    inset-inline-end: calc(var(--kui-field-affix-width) + 0.25rem);
     pointer-events: none;
     --edge-size: min(1.125rem, 25%);
     --start-inset: 0px;
@@ -14,7 +13,6 @@
     display: flex;
     align-items: center;
     min-width: 0;
-    max-inline-size: calc(100% - var(--kui-icon-size) - 1.125rem);
   }
   .chips[data-previous] {
     --start-inset: var(--edge-size);

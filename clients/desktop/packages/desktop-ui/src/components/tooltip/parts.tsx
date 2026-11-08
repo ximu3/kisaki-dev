@@ -17,12 +17,13 @@ const TooltipContext = createContext<TooltipState>()
 
 /** Tooltip supplements an existing accessible name; content contains no interactive controls. */
 export interface TooltipProps extends ParentProps {
+  /** Initial pointer wait in milliseconds. Defaults to 300. */
   delayMs?: number
 }
 
 /** Trigger and content share hover and focus state, including Escape dismissal. */
 export function Tooltip(props: TooltipProps): JSX.Element {
-  const state = createTooltip(() => props.delayMs ?? 400)
+  const state = createTooltip(() => props.delayMs)
 
   return (
     <TooltipContext.Provider value={{ ...state, id: createUniqueId(), anchor: undefined }}>

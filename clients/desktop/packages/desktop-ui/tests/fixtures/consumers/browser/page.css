@@ -59,6 +59,10 @@ form {
   display: grid;
   gap: 1rem;
 }
+.field-heading {
+  display: grid;
+  gap: 0.125rem;
+}
 .wide {
   grid-column: 1/-1;
 }

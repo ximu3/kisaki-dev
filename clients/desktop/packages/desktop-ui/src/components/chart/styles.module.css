@@ -23,19 +23,16 @@
     --vis-axis-label-color: var(--foreground);
     --vis-axis-grid-color: var(--border);
     --vis-axis-tick-color: var(--border);
+  }
 
+  .root,
+  .engineTooltip {
     --vis-tooltip-background-color: var(--popover);
     --vis-tooltip-text-color: var(--popover-foreground);
     --vis-tooltip-border-color: var(--border);
     --vis-tooltip-border-radius: var(--radius-md);
     --vis-tooltip-box-shadow: var(--shadow-overlay);
-    --vis-tooltip-transition-duration: 100ms;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .root {
-      --vis-tooltip-transition-duration: 0ms;
-    }
+    --vis-tooltip-transition-duration: var(--kui-hint-enter);
   }
 
   .summary {
@@ -83,17 +80,13 @@
   }
   .engineTooltip {
     --vis-tooltip-padding: 0px;
-    --vis-tooltip-background-color: transparent;
-    --vis-tooltip-border-color: transparent;
-    --vis-tooltip-border-radius: var(--radius-md);
-    --vis-tooltip-box-shadow: none;
-    --vis-tooltip-text-color: var(--popover-foreground);
     --vis-tooltip-transition-duration: var(--kui-frame-time);
   }
   .tooltipViewport {
     padding: 0.375rem 0.5rem;
   }
   @media (prefers-reduced-motion: reduce) {
+    .root,
     .engineTooltip {
       --vis-tooltip-transition-duration: 0ms;
     }

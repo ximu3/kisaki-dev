@@ -28,7 +28,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     background: var(--muted-foreground);
-    transition: transform 100ms;
+    transition: transform var(--kui-feedback-duration) ease;
   }
 
   .root:checked {

@@ -220,7 +220,9 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
         >
           {summary()}
         </span>
-        <Icon path={local.search ? mdiUnfoldMoreHorizontal : mdiChevronDown} class={styles.arrow} />
+        <span class={styles.arrow} aria-hidden="true">
+          <Icon path={local.search ? mdiUnfoldMoreHorizontal : mdiChevronDown} />
+        </span>
       </SelectionTrigger>
       <Show when={local.chips && keys().length ? local.chips : undefined}>
         {(chips) => (
