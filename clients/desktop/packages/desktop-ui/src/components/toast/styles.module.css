@@ -15,9 +15,9 @@
     color: var(--foreground);
     overflow: visible;
     pointer-events: none;
-    --kui-toast-stack-duration: 100ms;
+    --kui-toast-stack-ms: 100;
     --kui-toast-enter-duration: 100ms;
-    --kui-toast-exit-duration: 80ms;
+    --kui-toast-exit-ms: 80;
   }
 
   .stack {
@@ -95,7 +95,7 @@
   .item:is([data-ended], [data-expiring]) {
     opacity: 0;
     translate: 0 0.375rem;
-    transition-duration: var(--kui-toast-exit-duration);
+    transition-duration: calc(var(--kui-toast-exit-ms) * 1ms);
     transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
   }
   .item[data-ended] {
@@ -111,7 +111,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .region {
-      --kui-toast-exit-duration: 0ms;
+      --kui-toast-exit-ms: 0;
     }
     .item {
       transition: none;

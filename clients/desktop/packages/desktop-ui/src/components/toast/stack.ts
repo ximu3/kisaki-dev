@@ -33,7 +33,7 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
       return
     }
     const style = getComputedStyle(stack)
-    const duration = parseFloat(style.getPropertyValue('--kui-toast-stack-duration'))
+    const duration = Number(style.getPropertyValue('--kui-toast-stack-ms'))
     if (!(duration > 0)) {
       change()
       return

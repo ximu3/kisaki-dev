@@ -542,8 +542,21 @@ test('toast clocks pause, survive caller disposal and follow active modals until
   await page.evaluate(() => {
     window.fixture.showLoading(true)
     window.fixture.updateToast()
-    window.fixture.rootToast()
   })
+  const stackDuration = await page.evaluate(async () => {
+    const card = document.querySelector('[role="region"][popover] [data-type]')!
+    window.fixture.rootToast()
+    await Promise.resolve()
+    const movement = card
+      .getAnimations()
+      .find(
+        (animation) =>
+          animation.effect instanceof KeyframeEffect &&
+          animation.effect.getKeyframes().some((frame) => 'transform' in frame),
+      )
+    return movement?.effect?.getTiming().duration
+  })
+  expect(stackDuration).toBe(100)
   await page.clock.fastForward(10_000)
   await browserExpect(page.getByText('Sample ready', { exact: true })).toBeVisible()
 

@@ -163,8 +163,7 @@ function ToastItem(props: {
     }
 
     started = performance.now()
-    const configured = getComputedStyle(card).getPropertyValue('--kui-toast-exit-duration')
-    const exitMs = parseFloat(configured)
+    const exitMs = Number(getComputedStyle(card).getPropertyValue('--kui-toast-exit-ms'))
     fadeTimer = setTimeout(() => setExpiring(true), Math.max(0, remaining - exitMs))
     timer = setTimeout(props.dismiss, remaining)
   }
