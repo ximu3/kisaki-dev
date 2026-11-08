@@ -55,6 +55,7 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
     const plot = marker.parentElement!
     let element: HTMLElement | null = null
     let point: { x: number; y: number } | undefined
+    let pending = 0
 
     const sync = () => {
       if (!element) {
@@ -71,9 +72,52 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
         }
       }
       element.toggleAttribute('data-kui-chart-open', visible)
+      if (!visible) {
+        // Unovis normally hides on transitionend. A zero-duration or canceled fade has no such event.
+        const tip = element
+        const fade = () =>
+          tip
+            .getAnimations()
+            .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
+        const finish = () => {
+          if (!tip.classList.contains(VisTooltipSelectors.show) && !fade()) {
+            tip.classList.add(VisTooltipSelectors.hidden)
+          }
+        }
+        const exit = fade()
+        if (exit) {
+          void exit.finished.catch(finish)
+        } else {
+          finish()
+        }
+      }
     }
 
-    const visibility = new MutationObserver(sync)
+    const visibility = new MutationObserver(() => {
+      if (!element) {
+        return
+      }
+      // A mark may relinquish its tooltip during mousemove, before the crosshair renders the
+      // same sample in a frame callback. Only a missing result after that frame is a close.
+      if (
+        !element.classList.contains(VisTooltipSelectors.show) &&
+        plot.matches(':hover') &&
+        element.hasAttribute('data-kui-chart-open')
+      ) {
+        if (!pending) {
+          pending = requestAnimationFrame(() => {
+            pending = requestAnimationFrame(() => {
+              pending = 0
+              sync()
+            })
+          })
+        }
+      } else {
+        cancelAnimationFrame(pending)
+        pending = 0
+        sync()
+      }
+    })
     const connect = () => {
       if (element || !marker.isConnected) {
         return
@@ -101,6 +145,7 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
     queueMicrotask(connect)
     onCleanup(() => {
       visibility.disconnect()
+      cancelAnimationFrame(pending)
       plot.removeEventListener('mousemove', pointer, true)
     })
   })

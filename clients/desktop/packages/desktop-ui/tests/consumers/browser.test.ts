@@ -72,10 +72,29 @@ test('floating frames preserve text geometry and a chart follows its pointer wit
   await browserExpect(tip).toBeVisible()
   await checkSurface(tip, 'dt')
   const prior = await tip.evaluate((node) => node.getBoundingClientRect().left)
-  await page.mouse.move(box.x + box.width * 0.78, box.y + box.height / 2)
+  const visibility = await tip.evaluateHandle((node) => {
+    const state = {
+      changes: 0,
+      observer: new MutationObserver((records) => {
+        state.changes += records.length
+      }),
+    }
+    state.observer.observe(node, { attributes: true, attributeFilter: ['data-kui-chart-open'] })
+    return state
+  })
+  for (const fraction of [0.52, 0.63, 0.74, 0.85]) {
+    await page.mouse.move(box.x + box.width * fraction, box.y + box.height / 2)
+  }
   await browserExpect
     .poll(() => tip.evaluate((node) => node.getBoundingClientRect().left))
     .not.toBe(prior)
+  expect(
+    await visibility.evaluate((state) => {
+      state.observer.disconnect()
+      return state.changes
+    }),
+  ).toBe(0)
+  await visibility.dispose()
   expect(
     await tip.evaluate((node) =>
       node
@@ -83,6 +102,9 @@ test('floating frames preserve text geometry and a chart follows its pointer wit
         .some((a) => a instanceof CSSTransition && a.transitionProperty === 'scale'),
     ),
   ).toBe(false)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.mouse.move(0, 0)
+  await browserExpect(page.locator('[data-kui-chart-tooltip]')).toBeHidden()
 })
 
 test('packed declarations pass complete Bundler and NodeNext checks and typed consumer lint', async ({
