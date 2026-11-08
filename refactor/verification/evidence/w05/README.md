@@ -9,9 +9,9 @@
 | 范围 | 已交付与实际验证 |
 | --- | --- |
 | 基础呈现 | Button、Link、Badge、Separator、Spinner、Progress、Alert、Image 和 EmptyState；原生语义、变体、焦点、禁用与默认样式。 |
-| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Select、MultiSelect、Combobox、Checkbox、RadioGroup、Switch 和 Slider。核对静态标题与说明、表单提交、重置与取消重置、禁用、受控值和输入法组合。日期分段编辑、粘贴、年月浏览及跨月选择接续原生输入。选日后字段立即取得新值，退场仍呈现旧选中标记。多选跨检索保留记录，虚拟列表在末项退出时保有行和视口。 |
+| 表单 | Field、FieldGroup、FormFeedback、Input、NumberInput、DateInput、ColorInput、Textarea、Select、MultiSelect、Combobox、Checkbox、RadioGroup、Switch 和 Slider。核对静态标题与说明、表单提交、重置与取消重置、禁用、受控值和输入法组合。日期分段编辑、粘贴、年月浏览及跨月选择接续原生输入。选日后字段立即取得新值，退场仍呈现旧选中标记。另核对 alpha 编辑、跨检索选择、标签移除后的焦点与窄字段滚动。虚拟列表在末项退出时保有行和视口。 |
 | 内容结构 | Tabs、SegmentedControl、Collapsible、Table 和 ScrollArea；键盘选择、真实焦点、共同分段外观、语义表格和统一原生滚动条。 |
-| 浮层 | Dialog、确认框、Popover、下拉／上下文／子菜单和 Tooltip。核对三档原位淡变、逐层 Escape、可阻止的关闭、键盘与焦点归还、子菜单悬停与移入。首次悬停 300ms，工具间连续交接即时，键盘聚焦可接管正在等待的提示。Floating UI 定位遵守视口约束和实际翻转结果。 |
+| 浮层 | Dialog、确认框、Popover、下拉／上下文／子菜单和 Tooltip。核对三档原位淡变、逐层 Escape、可阻止的关闭、键盘与焦点归还、子菜单悬停与移入。工具间可连续阅读提示，键盘聚焦可接管正在等待的提示。Floating UI 定位遵守视口约束和实际翻转结果。 |
 | 固定反馈 | 初次不标错；提交后定位，跨页签展开字段，独立错误描述，纠正时保留焦点。聚焦错误字段时只显示其短句和可选说明，聚焦有效字段时显示独立总数，点击汇总定位第一项。截断的短句可以悬停或聚焦阅读全文。四语长说明、窄窗口和 150% 缩放保持预留几何，Dialog Body 滚动时 Header 与 Footer 保持可用。 |
 | Toast | 命令式 toast 与单一 Toaster；从下方入场的滚动范围、队列让位与补位、右上角关闭、loading、结果转换、persistent、自然到期与悬停暂停、旧句柄失效和显示宿主清理。发起组件与 Dialog 卸载后消息保持；同一队列在嵌套 Dialog 中移动，动作可实际点击。 |
 | Markdown | CodeMirror 主题与编辑、紧凑的内置格式栏、前景色悬停、宿主按钮操作当前选区、单一 Tab 入口与方向键、空工具栏、只读往返切换与历史可用性、格式事务与撤销、受控正文更新及销毁；Markdown、表格、只读任务与脚注呈现，实例标识隔离，原始 HTML 为文本，未映射图片不请求来源 URL，普通链接可交宿主处理。 |
@@ -25,13 +25,13 @@ Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖�
 
 `pnpm check` 执行工作区类型、lint、边界、格式和常规测试。UI 的真实浏览器与 Electron 检查属于独立消费者任务，普通 check 不启动桌面。
 
-`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 15 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
+`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 14 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
 
 UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存结果、实际环境与 tarball SHA-256，以及亮暗、窄窗口、专用能力和 Electron 截图。独立审查页核对了亮暗控件、分数像素下的通高分隔线、拾色器通道焦点、滑轨填色、长 Dialog、只读错误详情、图表实际数值与拖拽结果；其他包的报告保留在各自相同用途的输出目录。CI 按对应 PR 的实际运行登记。
 
 默认主题的双向溢出样例在 100% 与 150% 界面缩放下，列表面板的四边内距均为 0。万项虚拟列表同时出现两条滚动条时，End 可完整显示最后一项。150px 限高的 Markdown 编辑器由正文视口承载溢出内容。
 
-制品消费者在淡入中段及终态比较菜单、Dialog 和图表提示的文字几何。连续跨图表数据点时沿用同一提示。用真实工具栏验证首次悬停时钟、跨按钮交接和键盘接管。通知自然退场计入读时，主动关闭使句柄立即失效，跨模态移动保留通知身份和时钟。
+制品消费者在淡入中段及终态比较菜单、Dialog 和图表提示的文字几何。连续跨图表数据点时沿用同一提示。通知自然退场计入读时，主动关闭使句柄立即失效，跨模态移动保留通知身份和时钟。
 
 构建沿 [tsdown 的 Solid 接入](https://tsdown.dev/recipes/solid-support)和 [CSS Modules 提取](https://tsdown.dev/options/css)，使用固定 tsdown／CSS 0.23.0 与适配 Solid 1.9 的 unplugin-solid 1.0.0。专用工具通过其公开入口接入，声明归集保留 Unovis 的许可材料。
 
