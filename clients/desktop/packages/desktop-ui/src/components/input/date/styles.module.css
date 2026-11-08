@@ -144,16 +144,15 @@
 
   @media (forced-colors: active) {
     .day[aria-selected='true'] {
-      forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
-    }
-    .day[aria-selected='true']:focus-visible {
       outline-color: HighlightText;
     }
     .day[aria-current='date']::after {
-      forced-color-adjust: preserve-parent-color;
-      background: currentColor;
+      background: ButtonText;
+    }
+    .day[aria-selected='true'][aria-current='date']::after {
+      background: HighlightText;
     }
   }
 }

@@ -39,8 +39,8 @@
       color var(--kui-feedback-duration) ease,
       box-shadow var(--kui-feedback-duration) ease;
   }
-  button.item:hover:not(:disabled),
-  input:not(:disabled) + .item:hover {
+  :where(button:not(:disabled)).item:hover,
+  :where(input:not(:disabled)) + .item:hover {
     color: var(--foreground);
   }
   .item[aria-selected='true'],
@@ -58,6 +58,15 @@
   input:disabled + .item {
     opacity: 0.5;
     cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    .item[aria-selected='true'],
+    input:checked + .item {
+      background: Highlight;
+      color: HighlightText;
+      outline-color: HighlightText;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

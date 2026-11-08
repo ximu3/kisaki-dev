@@ -232,6 +232,8 @@ Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧�
 
 Tabs 与 SegmentedControl 共用紧凑分段外观和尺寸，分别保留面板导航与单值选择语义。Alert 是常驻提示，使用图标、正文与必要动作表达信息，不承担字段错误的集中反馈。
 
+在系统强制配色环境中，日历、Tabs 与 SegmentedControl 使用 Highlight 和 HighlightText 表达已选项，焦点移走后仍可辨认。选中项的内描焦点环使用选中前景色，今天被选中时圆点也使用该色。颜色角色见 [CSS 系统颜色](https://www.w3.org/TR/css-color-4/#css-system-colors)。
+
 UI 自有滚动区域采用共同的原生滚动条样式。选择列表的视口紧贴面板内缘，承担两个方向的滚动。选项按稳定 value 定位，首末项留白计入真实行高。调用方的虚拟布局以同一视口为原点。
 
 Separator 的水平线与垂直线各绘制一条 1 CSS px 逻辑边框。菜单分组复用水平 Separator 并伸到两侧内缘。相邻区块由一处绘制共享边界。Dialog 与 Toast 的关闭按钮靠角放置，悬停只增强图标，键盘焦点沿热区内缘描出。独立动作采用 2px 焦点环，复合字段通过整框边线表达焦点。
