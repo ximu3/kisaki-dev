@@ -393,6 +393,7 @@ function Candidate(): JSX.Element {
   ])
   window.fixture.setOptions = () =>
     setOptions([
+      { value: 'a', label: 'Already selected', disabled: true },
       { value: 'g', label: 'Gamma' },
       { value: 'z', label: 'Zeta' },
     ])

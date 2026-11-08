@@ -1,10 +1,11 @@
 /** @fileoverview Single and multiple desktop selectors commit stable option keys. */
 
-import { mergeProps, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createMemo, mergeProps, splitProps } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { ChipLabels } from '../../internal/selection/chips'
 import { SelectionField } from '../../internal/selection/field'
 import type { ChoiceFieldProps } from '../../internal/selection/field'
+import type { SelectionOption } from '../../internal/selection/types'
 import { createValue } from '../../internal/state'
 
 /** An empty value represents no choice. Options retain identity independently of mounted rows. */
@@ -21,9 +22,17 @@ export interface MultiSelectProps extends ChoiceFieldProps, ChipLabels {
   onValueChange?: (value: readonly string[]) => void
 }
 
+/** Key-based fields resolve and validate their values against the full option collection. */
+function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
+  const catalog = createMemo(() => new Map(options().map((option) => [option.value, option])))
+  return (key: string): SelectionOption =>
+    catalog().get(key) ?? { value: key, label: key, disabled: true }
+}
+
 /** A single choice closes the list. The trigger keeps keyboard focus and native form validation targets it. */
 export function Select(props: SelectProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
+  const resolve = resolveKeys(() => rest.options)
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -33,7 +42,7 @@ export function Select(props: SelectProps): JSX.Element {
   return (
     <SelectionField
       {...rest}
-      selected={value() ? [value()] : []}
+      selected={value() ? [resolve(value())] : []}
       defaults={local.defaultValue ? [local.defaultValue] : []}
       onChoose={(option) => change(option.value)}
       onReset={() => change(local.defaultValue ?? '')}
@@ -53,6 +62,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
     () => local.defaultValue ?? [],
     (next) => local.onValueChange?.(next),
   )
+  const resolve = resolveKeys(() => rest.options)
 
   return (
     <SelectionField
@@ -60,7 +70,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
       chips={mergeProps(labels, {
         remove: (key: string) => change(value().filter((item) => item !== key)),
       })}
-      selected={value()}
+      selected={value().map(resolve)}
       defaults={local.defaultValue ?? []}
       onChoose={(option) =>
         change(

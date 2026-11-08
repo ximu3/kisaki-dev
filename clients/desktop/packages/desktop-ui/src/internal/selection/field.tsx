@@ -52,10 +52,8 @@ export interface ChoiceSearchProps {
   loadingMessage: JSX.Element
 }
 
-type Choice = string | SelectionOption
-
 interface SelectionFieldProps extends ChoiceFieldProps {
-  selected: readonly Choice[]
+  selected: readonly SelectionOption[]
   defaults: readonly string[]
   chips?: ChipLabels & { remove: (key: string) => void }
   search?: ChoiceSearchProps
@@ -113,18 +111,18 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     }
     const options = local.options
     const filter = search?.filter
-    const text = query().trim()
+    const searchText = query()
+    const text = searchText.trim()
     if (!search || filter === false || (!filter && !text)) {
       return { options, loading: false }
     }
     const needle = text.toLocaleLowerCase()
     const matches = filter
-      ? options.filter((option) => filter(option, query()))
+      ? options.filter((option) => filter(option, searchText))
       : options.filter((option) => option.label.toLocaleLowerCase().includes(needle))
     return { options: matches, loading: false }
   }, empty)
   const collection = createSelection(() => candidates().options)
-  const catalog = createMemo(() => new Map(local.options.map((option) => [option.value, option])))
   createEffect(
     on(
       present,
@@ -137,18 +135,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     ),
   )
 
-  const selected = createMemo(() => {
-    const available = catalog()
-    const entries = new Map<string, SelectionOption>()
-    for (const choice of local.selected) {
-      const key = typeof choice === 'string' ? choice : choice.value
-      const option =
-        available.get(key) ??
-        (typeof choice === 'string' ? { value: key, label: key, disabled: true } : choice)
-      entries.set(key, option)
-    }
-    return entries
-  })
+  const selected = createMemo(() => new Map(local.selected.map((option) => [option.value, option])))
   const records = createMemo(() => Array.from(selected().values()))
   const keys = createMemo(() => Array.from(selected().keys()))
   const summary = () =>
