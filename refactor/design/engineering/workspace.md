@@ -268,6 +268,8 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 PR 的比较范围是目标分支与当前版本之间的全部改动。affected 决定需要运行的任务，缓存决定被选中的可缓存任务是否复用既有结果。手动代码验证请求完整范围。
 
+桌面应用、desktop-rpc 和 desktop-ui 的真实运行验收共用 catalog 固定的 Electron。桌面工程的 prepare:electron 调用随 Electron 提供的 install-electron，确认当前平台的二进制已就绪。需要启动开发 Electron 的任务在同一 Turbo 图中共享这一个准备步骤。构建清单记录实际安装的 Electron 版本。
+
 构建准备与回归选择分别表达。test:native 通过 Turbo 依赖 build:native 与 prepare:resources；desktop:test:e2e 和 desktop:test:performance 依赖 build:fixture；test:dev 依赖 build:native，test:artifacts 依赖 package:fixture。应用包内脚本是实际叶操作，根入口通过同一任务图完成准备。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。未改变但被选中任务依赖的构建，不使其他验证范围一起扩大；输入清单随运行器、配置、辅助和资源依赖同步更新。
 
 CI 的工作流按工程职责划分，执行任务按目标环境划分，步骤表达该环境中的验证阶段。根 verification.yml 传递比较基线、目标提交和完整验证请求，调用 verification-repository.yml 与 verification-desktop.yml，并拥有最终 Required checks；工程工作流拥有自己的输入判断、工具链、环境、缓存和报告。后续工程进入实际范围时增加对应的可调用工作流与根层调用，不预建空工程，也不要求沿用桌面工具链或六目标矩阵。

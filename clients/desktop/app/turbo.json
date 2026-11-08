@@ -4,8 +4,12 @@
     "test": {
       "cache": false
     },
+    "prepare:electron": {
+      "inputs": ["package.json"],
+      "cache": false
+    },
     "test:native": {
-      "dependsOn": ["build:native", "prepare:resources"],
+      "dependsOn": ["build:native", "prepare:resources", "prepare:electron"],
       "inputs": [
         "native/**",
         "!native/target/**",
@@ -25,7 +29,7 @@
       "cache": false
     },
     "test:e2e": {
-      "dependsOn": ["build:fixture"],
+      "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
         "tests/fixtures/runtime/src/**",
         "native/**",
@@ -52,7 +56,7 @@
       "cache": false
     },
     "test:artifacts": {
-      "dependsOn": ["package:fixture"],
+      "dependsOn": ["package:fixture", "prepare:electron"],
       "inputs": [
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
@@ -83,7 +87,7 @@
       "cache": false
     },
     "test:performance": {
-      "dependsOn": ["build:fixture"],
+      "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
         "tests/fixtures/runtime/src/**",
         "native/**",
@@ -109,7 +113,7 @@
       "cache": false
     },
     "test:dev": {
-      "dependsOn": ["build:native"],
+      "dependsOn": ["build:native", "prepare:electron"],
       "env": ["TSDOWN_*", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
         "tools/dev/**",

@@ -12,6 +12,9 @@ catalogs:
     '@types/node':
       specifier: 24.19.2
       version: 24.19.2
+    electron:
+      specifier: 45.0.0
+      version: 45.0.0
     eslint:
       specifier: 10.13.0
       version: 10.13.0
@@ -142,7 +145,7 @@ importers:
         specifier: 10.1.0
         version: 10.1.0
       electron:
-        specifier: 45.0.0
+        specifier: 'catalog:'
         version: 45.0.0
       electron-builder:
         specifier: 26.15.3
@@ -372,7 +375,7 @@ importers:
         specifier: 'catalog:'
         version: 24.19.2
       electron:
-        specifier: 45.0.0
+        specifier: 'catalog:'
         version: 45.0.0
       eslint:
         specifier: 'catalog:'
@@ -493,7 +496,7 @@ importers:
         specifier: 'catalog:'
         version: 24.19.2
       electron:
-        specifier: 45.0.0
+        specifier: 'catalog:'
         version: 45.0.0
       eslint:
         specifier: 'catalog:'

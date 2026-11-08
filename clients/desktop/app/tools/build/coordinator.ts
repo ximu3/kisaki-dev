@@ -5,6 +5,7 @@
 
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import electronManifest from 'electron/package.json' with { type: 'json' }
 import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
@@ -37,7 +38,6 @@ export async function buildDesktop(
         homepage: string
         author: { name: string; email: string }
         license: string
-        devDependencies: { electron: string }
       }
 
       const resources = join(appRoot, 'out', 'resources', target)
@@ -107,7 +107,7 @@ export async function buildDesktop(
         buildId,
         target,
         version: manifest.version,
-        electronVersion: manifest.devDependencies.electron,
+        electronVersion: electronManifest.version,
         files,
       }
       if ((await buildInputIdentity({ signal })) !== buildId) {

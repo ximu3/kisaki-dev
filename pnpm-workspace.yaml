@@ -7,6 +7,7 @@ autoInstallPeers: false
 catalog:
   '@eslint/js': 10.0.1
   '@types/node': 24.19.2
+  electron: 45.0.0
   eslint: 10.13.0
   jiti: 2.7.0
   solid-js: 1.9.16
