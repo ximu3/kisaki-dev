@@ -29,7 +29,7 @@ export function Textarea(props: TextareaProps): JSX.Element {
 
   return (
     <textarea
-      {...fieldAttributes()}
+      {...fieldAttributes(props)}
       {...rest}
       ref={(node) => {
         input = node

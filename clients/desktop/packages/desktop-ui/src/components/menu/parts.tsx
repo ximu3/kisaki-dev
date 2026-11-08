@@ -19,8 +19,9 @@ import { createPopup } from '../../internal/popup/controller'
 import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icon/icon'
 import { createSubmenuHover } from './hover'
 import { Button } from '../button/control'
+import { Separator } from '../separator/control'
 import type { ButtonProps } from '../button/control'
-import surface from '../../internal/popup/surface.module.css'
+import frame from '../../internal/popup/surface.module.css'
 import row from '../../internal/list-row.module.css'
 import styles from './styles.module.css'
 
@@ -118,12 +119,14 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
         state.anchor = node
         assignRef(local.ref, node)
       }}
+      popovertarget={state.id}
       aria-haspopup="menu"
       aria-expanded={state.open()}
       aria-controls={state.id}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
+          event.preventDefault()
           state.setPoint(undefined)
           state.last = false
           state.change(!state.open())
@@ -187,6 +190,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   const state = useMenu()
   const [local, rest] = splitProps(props, [
     'class',
+    'children',
     'ref',
     'onKeyDown',
     'onPointerEnter',
@@ -194,6 +198,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   ])
 
   let content!: HTMLDivElement
+  let viewport!: HTMLDivElement
   const selector = '[role^="menuitem"]'
   const items = () =>
     focusableItems(content, selector).filter((node) => node.closest('[role="menu"]') === content)
@@ -213,7 +218,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   })
 
   const navigate = createFocusNavigation(
-    () => content,
+    () => viewport,
     ':scope > [role^="menuitem"], :scope > [role="group"] > [role^="menuitem"]',
     () => 'vertical',
   )
@@ -242,7 +247,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
       popover="auto"
       role="menu"
       tabIndex={-1}
-      class={classes(surface.surface, styles.root, local.class)}
+      class={classes(frame.anchor, styles.root, local.class)}
       onPointerEnter={(event) => {
         state.hover.stop()
         callHandler(local.onPointerEnter, event)
@@ -276,7 +281,16 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
         navigate(event)
         event.stopPropagation()
       }}
-    />
+    >
+      <div
+        ref={(node) => {
+          viewport = node
+        }}
+        class={classes(frame.viewport, styles.items)}
+      >
+        {local.children}
+      </div>
+    </div>
   )
 }
 
@@ -421,6 +435,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
         assignRef(local.ref, node)
       }}
       class={classes(row.row, styles.item, local.class)}
+      popovertarget={state.id}
       aria-haspopup="menu"
       aria-expanded={state.open()}
       aria-controls={state.id}
@@ -444,6 +459,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
+          event.preventDefault()
           state.focusOnOpen = true
           state.change(!state.open())
         }
@@ -477,7 +493,7 @@ export function MenuGroup(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elemen
 export function MenuSeparator(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
-  return <div {...rest} role="separator" class={classes(styles.separator, local.class)} />
+  return <Separator {...rest} decorative={false} class={classes(styles.separator, local.class)} />
 }
 
 /** Resolve the nearest menu state for item selection and submenu ancestry. */

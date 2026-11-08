@@ -1,11 +1,11 @@
 /** @fileoverview Calendar navigation owns the viewed period and focus until the caller accepts a day. */
 
-import { createEffect, createMemo, createSignal, For, onMount, Show } from 'solid-js'
+import { createEffect, createMemo, createSignal, For, on, onMount, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../../internal/dom'
 import { Icon, mdiChevronLeft, mdiChevronRight } from '../../../internal/icon/icon'
 import { createPopup } from '../../../internal/popup/controller'
-import surface from '../../../internal/popup/surface.module.css'
+import frame from '../../../internal/popup/surface.module.css'
 import { addDays, addMonths, calendarDays, parseDate, todayValue } from './calendar'
 import { PeriodSelect } from './period'
 import styles from './styles.module.css'
@@ -25,6 +25,8 @@ export interface CalendarProps {
 }
 
 interface PickerProps extends CalendarProps {
+  open: boolean
+  panelRef: (node: HTMLDivElement) => void
   id: string
   anchor: () => HTMLButtonElement
   value: string
@@ -99,7 +101,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
   createPopup({
     element: () => calendar,
     anchor: props.anchor,
-    open: () => true,
+    open: () => props.open,
     change: (open) => {
       if (!open) {
         props.close()
@@ -114,8 +116,21 @@ export function DatePicker(props: PickerProps): JSX.Element {
         browse(next)
       }
     })
-    queueMicrotask(() =>
-      calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus(),
+    createEffect(
+      on(
+        () => props.open,
+        (opening) => {
+          if (!opening) {
+            return
+          }
+          browse(parseDate(props.value) ? props.value : todayValue())
+          queueMicrotask(() => {
+            if (props.open) {
+              calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
+            }
+          })
+        },
+      ),
     )
   })
 
@@ -123,12 +138,13 @@ export function DatePicker(props: PickerProps): JSX.Element {
     <div
       ref={(node) => {
         calendar = node
+        props.panelRef(node)
       }}
       id={props.id}
       popover="auto"
       role="dialog"
       aria-label={props.calendarLabel}
-      class={classes(surface.surface, styles.calendar)}
+      class={classes(frame.anchor, styles.calendar)}
       onFocusOut={(event) => {
         if (
           event.relatedTarget &&
@@ -139,135 +155,137 @@ export function DatePicker(props: PickerProps): JSX.Element {
         }
       }}
     >
-      <div class={styles.heading}>
-        <button
-          type="button"
-          aria-label={props.previousMonthLabel}
-          disabled={month().slice(0, 7) <= (props.min ?? '0001-01-01').slice(0, 7)}
-          onClick={() => browse(addMonths(month(), -1))}
-        >
-          <Icon path={mdiChevronLeft} />
-        </button>
-        <div class={styles.periods}>
-          <For each={periodOrder()}>
-            {(part) =>
-              part === 'month' ? (
-                <PeriodSelect
-                  label={props.monthLabel}
-                  value={viewMonth()}
-                  first={viewYear() === minYear() ? Number(props.min?.slice(5, 7) ?? 1) : 1}
-                  last={viewYear() === maxYear() ? Number(props.max?.slice(5, 7) ?? 12) : 12}
-                  format={(value) =>
-                    formats().monthName.format(
-                      parseDate(`2000-${String(value).padStart(2, '0')}-01`),
-                    )
-                  }
-                  choose={(value) => browse(addMonths(month(), value - viewMonth()))}
-                />
-              ) : (
-                <PeriodSelect
-                  label={props.yearLabel}
-                  value={viewYear()}
-                  first={minYear()}
-                  last={maxYear()}
-                  format={(value) => formats().year.format(value)}
-                  choose={(value) => browse(addMonths(month(), (value - viewYear()) * 12))}
-                />
-              )
-            }
-          </For>
+      <div class={classes(frame.viewport, styles.content)}>
+        <div class={styles.heading}>
+          <button
+            type="button"
+            aria-label={props.previousMonthLabel}
+            disabled={month().slice(0, 7) <= (props.min ?? '0001-01-01').slice(0, 7)}
+            onClick={() => browse(addMonths(month(), -1))}
+          >
+            <Icon path={mdiChevronLeft} />
+          </button>
+          <div class={styles.periods}>
+            <For each={periodOrder()}>
+              {(part) =>
+                part === 'month' ? (
+                  <PeriodSelect
+                    label={props.monthLabel}
+                    value={viewMonth()}
+                    first={viewYear() === minYear() ? Number(props.min?.slice(5, 7) ?? 1) : 1}
+                    last={viewYear() === maxYear() ? Number(props.max?.slice(5, 7) ?? 12) : 12}
+                    format={(value) =>
+                      formats().monthName.format(
+                        parseDate(`2000-${String(value).padStart(2, '0')}-01`),
+                      )
+                    }
+                    choose={(value) => browse(addMonths(month(), value - viewMonth()))}
+                  />
+                ) : (
+                  <PeriodSelect
+                    label={props.yearLabel}
+                    value={viewYear()}
+                    first={minYear()}
+                    last={maxYear()}
+                    format={(value) => formats().year.format(value)}
+                    choose={(value) => browse(addMonths(month(), (value - viewYear()) * 12))}
+                  />
+                )
+              }
+            </For>
+          </div>
+          <button
+            type="button"
+            aria-label={props.nextMonthLabel}
+            disabled={month().slice(0, 7) >= (props.max ?? '9999-12-31').slice(0, 7)}
+            onClick={() => browse(addMonths(month(), 1))}
+          >
+            <Icon path={mdiChevronRight} />
+          </button>
         </div>
-        <button
-          type="button"
-          aria-label={props.nextMonthLabel}
-          disabled={month().slice(0, 7) >= (props.max ?? '9999-12-31').slice(0, 7)}
-          onClick={() => browse(addMonths(month(), 1))}
+        <div
+          role="grid"
+          aria-label={formats().month.format(parseDate(month()))}
+          onKeyDown={(event) => {
+            let date: string | undefined
+            if (event.key === 'ArrowLeft') {
+              date = addDays(active(), -1)
+            }
+            if (event.key === 'ArrowRight') {
+              date = addDays(active(), 1)
+            }
+            if (event.key === 'ArrowUp') {
+              date = addDays(active(), -7)
+            }
+            if (event.key === 'ArrowDown') {
+              date = addDays(active(), 7)
+            }
+            if (event.key === 'PageUp') {
+              date = addMonths(active(), event.shiftKey ? -12 : -1)
+            }
+            if (event.key === 'PageDown') {
+              date = addMonths(active(), event.shiftKey ? 12 : 1)
+            }
+            const weekday = (parseDate(active())!.getUTCDay() - (props.weekStartsOn ?? 1) + 7) % 7
+            if (event.key === 'Home') {
+              date = addDays(active(), -weekday)
+            }
+            if (event.key === 'End') {
+              date = addDays(active(), 6 - weekday)
+            }
+            if (date) {
+              event.preventDefault()
+              event.stopPropagation()
+              focusDay(date)
+            }
+          }}
         >
-          <Icon path={mdiChevronRight} />
-        </button>
-      </div>
-      <div
-        role="grid"
-        aria-label={formats().month.format(parseDate(month()))}
-        onKeyDown={(event) => {
-          let date: string | undefined
-          if (event.key === 'ArrowLeft') {
-            date = addDays(active(), -1)
-          }
-          if (event.key === 'ArrowRight') {
-            date = addDays(active(), 1)
-          }
-          if (event.key === 'ArrowUp') {
-            date = addDays(active(), -7)
-          }
-          if (event.key === 'ArrowDown') {
-            date = addDays(active(), 7)
-          }
-          if (event.key === 'PageUp') {
-            date = addMonths(active(), event.shiftKey ? -12 : -1)
-          }
-          if (event.key === 'PageDown') {
-            date = addMonths(active(), event.shiftKey ? 12 : 1)
-          }
-          const weekday = (parseDate(active())!.getUTCDay() - (props.weekStartsOn ?? 1) + 7) % 7
-          if (event.key === 'Home') {
-            date = addDays(active(), -weekday)
-          }
-          if (event.key === 'End') {
-            date = addDays(active(), 6 - weekday)
-          }
-          if (date) {
-            event.preventDefault()
-            event.stopPropagation()
-            focusDay(date)
-          }
-        }}
-      >
-        <div role="row" class={styles.week}>
-          <For each={weekdays()}>
-            {(date) => (
-              <span role="columnheader" aria-label={formats().weekday.format(parseDate(date))}>
-                {formats().shortWeekday.format(parseDate(date))}
-              </span>
+          <div role="row" class={styles.week}>
+            <For each={weekdays()}>
+              {(date) => (
+                <span role="columnheader" aria-label={formats().weekday.format(parseDate(date))}>
+                  {formats().shortWeekday.format(parseDate(date))}
+                </span>
+              )}
+            </For>
+          </div>
+          <For each={days()}>
+            {(week) => (
+              <div role="row" class={styles.week}>
+                <For each={week}>
+                  {(date) => (
+                    <Show when={date} keyed fallback={<span role="gridcell" />}>
+                      {(date) => (
+                        <button
+                          type="button"
+                          role="gridcell"
+                          data-date={date}
+                          aria-label={formats().day.format(parseDate(date))}
+                          aria-selected={props.value === date}
+                          aria-current={date === todayValue() ? 'date' : undefined}
+                          aria-disabled={!props.allowed(date)}
+                          tabIndex={active() === date ? 0 : -1}
+                          class={classes(
+                            styles.day,
+                            date.slice(0, 7) !== month().slice(0, 7) ? styles.outside : undefined,
+                          )}
+                          onFocus={() => setActive(date)}
+                          onClick={() => {
+                            if (props.allowed(date)) {
+                              props.choose(date)
+                            }
+                          }}
+                        >
+                          {Number(date.slice(8))}
+                        </button>
+                      )}
+                    </Show>
+                  )}
+                </For>
+              </div>
             )}
           </For>
         </div>
-        <For each={days()}>
-          {(week) => (
-            <div role="row" class={styles.week}>
-              <For each={week}>
-                {(date) => (
-                  <Show when={date} keyed fallback={<span role="gridcell" />}>
-                    {(date) => (
-                      <button
-                        type="button"
-                        role="gridcell"
-                        data-date={date}
-                        aria-label={formats().day.format(parseDate(date))}
-                        aria-selected={props.value === date}
-                        aria-current={date === todayValue() ? 'date' : undefined}
-                        aria-disabled={!props.allowed(date)}
-                        tabIndex={active() === date ? 0 : -1}
-                        class={classes(
-                          styles.day,
-                          date.slice(0, 7) !== month().slice(0, 7) ? styles.outside : undefined,
-                        )}
-                        onFocus={() => setActive(date)}
-                        onClick={() => {
-                          if (props.allowed(date)) {
-                            props.choose(date)
-                          }
-                        }}
-                      >
-                        {Number(date.slice(8))}
-                      </button>
-                    )}
-                  </Show>
-                )}
-              </For>
-            </div>
-          )}
-        </For>
       </div>
     </div>
   )

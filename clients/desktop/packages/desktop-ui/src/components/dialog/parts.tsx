@@ -16,6 +16,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { Icon, mdiClose } from '../../internal/icon/icon'
 import { createValue } from '../../internal/state'
 import { registerModal } from '../../internal/modal-host'
+import { createPresentation } from '../../internal/popup/presentation'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import surface from '../../internal/popup/surface.module.css'
@@ -41,7 +42,7 @@ export interface DialogProps extends ParentProps {
   onOpenChange?: (open: boolean) => void
 }
 
-/** Establish a local modal owner. Closing content ends child resources; opening creates new children. */
+/** Establish a local modal owner; content remains mounted until its presentation finishes. */
 export function Dialog(props: DialogProps): JSX.Element {
   const [description, setDescription] = createSignal(false)
   const [open, change] = createValue(
@@ -103,6 +104,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   ])
 
   let node!: HTMLDialogElement
+  const present = createPresentation(dialog.open, () => node)
   let releaseModal: (() => void) | undefined
   const release = () => {
     releaseModal?.()
@@ -142,7 +144,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
       aria-describedby={
         props['aria-describedby'] ?? (dialog.description() ? `${dialog.id}-description` : undefined)
       }
-      class={classes(surface.surface, surface.panel, styles.root, local.class)}
+      class={classes(surface.modal, styles.root, local.class)}
       closedby={local.closeOnOutside ? 'any' : 'closerequest'}
       onCancel={(event) => {
         callHandler(local.onCancel, event)
@@ -158,7 +160,9 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
         callHandler(local.onClose, event)
       }}
     >
-      <Show when={dialog.open()}>{local.children}</Show>
+      <Show when={present()}>
+        <div class={classes(surface.viewport, styles.content)}>{local.children}</div>
+      </Show>
     </dialog>
   )
 }

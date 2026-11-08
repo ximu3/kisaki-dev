@@ -25,7 +25,6 @@ export {
   VisScatter as Scatter,
   VisDonut as Donut,
   VisAxis as Axis,
-  VisTooltip as ChartTooltip,
 } from '@unovis/solid'
 export type {
   VisLineProps as LineProps,
@@ -35,8 +34,8 @@ export type {
   VisScatterProps as ScatterProps,
   VisDonutProps as DonutProps,
   VisAxisProps as AxisProps,
-  VisTooltipProps as ChartTooltipProps,
 } from '@unovis/solid'
 
 export { Crosshair, type CrosshairProps } from './crosshair'
+export { ChartTooltip, type ChartTooltipProps } from './tooltip'
 export { donutSelectors } from './selectors'

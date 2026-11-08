@@ -2,11 +2,88 @@
 
 import { expect } from 'vitest'
 import { expect as browserExpect } from '@playwright/test'
+import type { Locator } from '@playwright/test'
 import { join } from 'node:path'
 import { readFile } from 'node:fs/promises'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest as test, lintConsumer, packageRoot } from '../support/consumer'
 import type {} from '../fixtures/consumers/browser/api'
+
+/** Text must occupy its final bounds even while the frame is visibly scaled. */
+async function checkSurface(panel: Locator, textSelector: string): Promise<void> {
+  const result = await panel.evaluate((node, selector) => {
+    const range = document.createRange()
+    range.selectNodeContents(node.querySelector(selector)!)
+    const geometry = () => {
+      const { x, y, width, height } = range.getBoundingClientRect()
+      return [x, y, width, height]
+    }
+    const animations = node
+      .getAnimations({ subtree: true })
+      .filter((a) => a instanceof CSSTransition)
+    for (const animation of animations) {
+      animation.pause()
+      animation.currentTime = Number(animation.effect!.getTiming().duration) / 2
+    }
+    const mid = geometry()
+    const scale = Number(getComputedStyle(node, '::before').scale)
+    for (const animation of animations) {
+      animation.finish()
+    }
+    return {
+      mid,
+      end: geometry(),
+      scale,
+      fading: animations.some((animation) => animation.transitionProperty === 'opacity'),
+    }
+  }, textSelector)
+  expect(result.scale).toBeGreaterThan(0.97)
+  expect(result.scale).toBeLessThan(1)
+  expect(result.fading).toBe(true)
+  expect(result.end[2]).toBeGreaterThan(0)
+  expect(result.mid).toEqual(result.end)
+}
+
+test('floating frames preserve text geometry and a chart follows its pointer without replaying entry', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--kui-anchor-enter', '3s')
+    document.documentElement.style.setProperty('--kui-modal-enter', '3s')
+  })
+  await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: 'Edit sample' })
+  await checkSurface(dialog, 'h2')
+  await page.getByRole('button', { name: 'Actions', exact: true }).click()
+  await checkSurface(
+    page.getByRole('menu', { name: 'Actions', exact: true }),
+    'button[aria-haspopup=menu]',
+  )
+  await page.keyboard.press('Escape')
+  await page.keyboard.press('Escape')
+
+  await page.getByRole('button', { name: 'Load resources', exact: true }).click()
+  const plot = page.locator('[data-vis-xy-container] svg').first()
+  await plot.scrollIntoViewIfNeeded()
+  const box = (await plot.boundingBox())!
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2)
+  const tip = page.locator('[data-kui-chart-open]')
+  await browserExpect(tip).toBeVisible()
+  await checkSurface(tip, 'dt')
+  const prior = await tip.evaluate((node) => node.getBoundingClientRect().left)
+  await page.mouse.move(box.x + box.width * 0.78, box.y + box.height / 2)
+  await browserExpect
+    .poll(() => tip.evaluate((node) => node.getBoundingClientRect().left))
+    .not.toBe(prior)
+  expect(
+    await tip.evaluate((node) =>
+      node
+        .getAnimations({ subtree: true })
+        .some((a) => a instanceof CSSTransition && a.transitionProperty === 'scale'),
+    ),
+  ).toBe(false)
+})
 
 test('packed declarations pass complete Bundler and NodeNext checks and typed consumer lint', async ({
   consumerDirectory,
@@ -87,6 +164,7 @@ test('native controls submit, reset, cancel reset, follow external values and ho
 test('virtual selection keeps offscreen values while keyboard navigation mounts the active option', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   const trigger = page.getByRole('combobox', { name: 'Virtual choices' })
   await trigger.click()
   const selected = page.getByRole('option', { name: 'Item 9000', exact: true })
@@ -104,8 +182,19 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
     (await last.getAttribute('id'))!,
   )
   await trigger.press('Space')
-  await trigger.press('Escape')
-  expect(await list.evaluate((node) => node.getBoundingClientRect().height)).toBe(0)
+  const closing = await list.evaluate((viewport) => {
+    const panel = viewport.closest<HTMLElement>('[popover]')!
+    const before = [viewport.clientHeight, viewport.scrollTop, viewport.childElementCount]
+    panel.hidePopover()
+    return {
+      before,
+      after: [viewport.clientHeight, viewport.scrollTop, viewport.childElementCount],
+      open: panel.matches(':popover-open'),
+    }
+  })
+  expect(closing.open).toBe(false)
+  expect(closing.after).toEqual(closing.before)
+  await browserExpect(list).toBeHidden()
   expect(
     await page
       .locator('#virtual-form')
@@ -284,21 +373,27 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
 })
 
-test('native dialogs, menus and combobox close one interaction at a time and return real focus', async ({
+test('searchable fields edit a popup query and submit committed selections across result changes', async ({
   page,
 }) => {
   await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: 'Edit sample' })
-  await browserExpect(dialog).toBeVisible()
+  const candidate = page.getByRole('button', { name: 'Candidate', exact: true })
+  const search = page.getByRole('combobox', { name: 'Search candidates' })
 
-  const candidate = page.getByRole('combobox', { name: 'Candidate' })
-  await candidate.focus()
-  await page.keyboard.press('ArrowDown')
-  await page.keyboard.press('ArrowDown')
+  await page.locator('#candidate-label').click()
+  await browserExpect(candidate).not.toBeFocused()
+  await browserExpect(candidate).toHaveAttribute('aria-expanded', 'false')
+  await candidate.press('ArrowDown')
+  await browserExpect(search).toBeFocused()
+  await search.press('ArrowDown')
+  await search.press('Enter')
+  await browserExpect(candidate).toHaveText('Beta')
   await browserExpect(candidate).toBeFocused()
-  await page.keyboard.press('Enter')
-  await browserExpect(candidate).toHaveValue('Beta')
 
+  await candidate.click()
+  await candidate.click()
+  await browserExpect(candidate).toHaveAttribute('aria-expanded', 'false')
   await candidate.press('ArrowDown')
   await candidate.evaluate((node) => {
     node.closest('fieldset')!.disabled = true
@@ -309,10 +404,37 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
     node.closest('fieldset')!.disabled = false
   })
 
+  const related = page.getByRole('button', { name: 'Related choices', exact: true })
+  const query = page.getByRole('combobox', { name: 'Search related choices' })
+  await related.click()
+  await query.fill('Bet')
+  await query.dispatchEvent('keydown', { key: 'Enter', isComposing: true })
+  await browserExpect(related).toHaveText('Alpha')
+  await query.press('Enter')
+  await browserExpect(query).toHaveValue('Bet')
   await page.evaluate(() => window.fixture.setOptions())
-  await browserExpect(candidate).toHaveValue('Beta')
-  await candidate.press('ArrowDown')
-  await candidate.press('Escape')
+  await query.fill('Zeta')
+  await page.getByRole('option', { name: 'Zeta' }).click()
+  await query.press('Escape')
+  await browserExpect(related).toBeFocused()
+  const form = page.locator('#candidate-form')
+  expect(await form.evaluate((node: HTMLFormElement) => [...new FormData(node)])).toEqual([
+    ['candidate', 'b'],
+    ['related', 'a'],
+    ['related', 'b'],
+    ['related', 'z'],
+  ])
+  await form.evaluate((node: HTMLFormElement) => node.reset())
+  await browserExpect(related).toHaveText('Alpha')
+  await browserExpect(candidate).toHaveText('Alpha')
+})
+
+test('native dialogs and menus close one interaction at a time and return real focus', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: 'Edit sample' })
   await browserExpect(dialog).toBeVisible()
 
   await page.getByRole('button', { name: 'Actions', exact: true }).click()
@@ -345,14 +467,16 @@ test('native dialogs, menus and combobox close one interaction at a time and ret
   await browserExpect(dialog).toBeVisible()
 
   await page.getByLabel('Block close').uncheck()
-  const closedHeight = await page
+  const closing = await page
     .getByRole('button', { name: 'Close editor' })
     .evaluate((button: HTMLButtonElement) => {
       const panel = button.closest('dialog')!
+      const height = panel.offsetHeight
       button.click()
-      return panel.getBoundingClientRect().height
+      return { height, retained: panel.offsetHeight, modal: panel.matches(':modal') }
     })
-  expect(closedHeight).toBe(0)
+  expect(closing.modal).toBe(false)
+  expect(closing.retained).toBe(closing.height)
   await browserExpect(page.getByRole('button', { name: 'Open dialog', exact: true })).toBeFocused()
 
   await page.locator('#context-target').focus()

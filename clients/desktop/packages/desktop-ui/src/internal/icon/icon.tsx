@@ -21,7 +21,9 @@ export {
   mdiClose,
   mdiDrag,
   mdiLoading,
+  mdiMagnify,
   mdiMinus,
+  mdiUnfoldMoreHorizontal,
 } from '@mdi/js'
 
 /** The enclosing control owns the accessible name and selects a glyph size when needed. */

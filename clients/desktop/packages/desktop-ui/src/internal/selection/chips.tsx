@@ -2,8 +2,8 @@
 
 import { createSignal, For, onCleanup, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { Icon, mdiChevronLeft, mdiChevronRight, mdiClose } from '../../internal/icon/icon'
-import styles from './styles.module.css'
+import { Icon, mdiChevronLeft, mdiChevronRight, mdiClose } from '../icon/icon'
+import styles from './chips.module.css'
 
 /** Labels describe removing a particular value or revealing selected values in either direction. */
 export interface ChipLabels {
@@ -16,6 +16,9 @@ interface SelectedChipsProps extends ChipLabels {
   values: readonly string[]
   label: (value: string) => string
   disabled: boolean | undefined
+  panelId: string
+  open: boolean
+  field: () => HTMLElement
   onRemove: (value: string) => void
   focusTrigger: () => void
 }
@@ -71,6 +74,18 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     ) {
       return
     }
+    if (!(event.target instanceof Node && group.contains(event.target))) {
+      const box = group.getBoundingClientRect()
+      if (
+        event.clientX < box.left ||
+        event.clientX > box.right ||
+        event.clientY < box.top ||
+        event.clientY > box.bottom
+      ) {
+        return
+      }
+    }
+
     let unit = 1
     if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
       unit = viewport.clientWidth
@@ -88,10 +103,11 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     const observer = new ResizeObserver(update)
     observer.observe(viewport)
     observer.observe(track)
-    group.addEventListener('wheel', wheel, { passive: false })
+    const field = props.field()
+    field.addEventListener('wheel', wheel, { passive: false })
     onCleanup(() => {
       observer.disconnect()
-      group.removeEventListener('wheel', wheel)
+      field.removeEventListener('wheel', wheel)
     })
   })
 
@@ -113,7 +129,12 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canPrevious()}
         disabled={props.disabled}
-        onClick={(event) => scroll(-1, event.currentTarget)}
+        popovertarget={props.open ? props.panelId : undefined}
+        popovertargetaction="show"
+        onClick={(event) => {
+          event.preventDefault()
+          scroll(-1, event.currentTarget)
+        }}
       >
         <Icon path={mdiChevronLeft} />
       </button>
@@ -139,9 +160,16 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                   type="button"
                   aria-label={props.removeLabel(props.label(value))}
                   disabled={props.disabled}
-                  onClick={() => {
+                  popovertarget={props.open ? props.panelId : undefined}
+                  popovertargetaction="show"
+                  onClick={(event) => {
+                    event.preventDefault()
                     const position = index()
                     props.onRemove(value)
+                    if (props.open) {
+                      props.focusTrigger()
+                      return
+                    }
                     const buttons = track.querySelectorAll('button')
                     const next = buttons[Math.min(position, buttons.length - 1)]
                     if (next) {
@@ -167,7 +195,12 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canNext()}
         disabled={props.disabled}
-        onClick={(event) => scroll(1, event.currentTarget)}
+        popovertarget={props.open ? props.panelId : undefined}
+        popovertargetaction="show"
+        onClick={(event) => {
+          event.preventDefault()
+          scroll(1, event.currentTarget)
+        }}
       >
         <Icon path={mdiChevronRight} />
       </button>

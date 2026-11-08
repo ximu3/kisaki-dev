@@ -1,17 +1,19 @@
-/* separator presentation in the shared component layer. */
+/* One logical border paints a divider at fractional desktop scales. */
 
 @layer components {
-  .root {
-    background: var(--border);
-    flex-shrink: 0;
+  :where(.root) {
+    flex: none;
+    box-sizing: content-box;
+    border: 0;
   }
-
-  .root[data-orientation='horizontal'] {
-    height: 1px;
-    width: 100%;
+  :where(.root[data-orientation='horizontal']) {
+    block-size: 0;
+    inline-size: 100%;
+    border-block-start: 1px solid var(--border);
   }
-  .root[data-orientation='vertical'] {
-    width: 1px;
+  :where(.root[data-orientation='vertical']) {
+    inline-size: 0;
     align-self: stretch;
+    border-inline-start: 1px solid var(--border);
   }
 }

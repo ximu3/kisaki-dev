@@ -34,6 +34,8 @@ export interface ToastEntry {
 
   message: Accessor<ToastMessage>
   replace: (message: ToastMessage) => void
+  ended: Accessor<boolean>
+  end: () => void
 
   persistent: boolean
   durationMs: number
@@ -53,35 +55,50 @@ export const toast: ToastApi = {
 }
 
 /** The display host owns messages and timers; component disposal does not remove messages. */
-export function createToastController(defaultDurationMs: () => number) {
+export function createToastController(
+  defaultDurationMs: () => number,
+  arrange: (change: () => void) => void,
+) {
   if (current) {
     throw new Error('Only one Toaster may be installed in a document.')
   }
 
   const [entries, setEntries] = createSignal<ToastEntry[]>([])
   let nextId = 0
-  const dismiss = (id: number) => setEntries((items) => items.filter((item) => item.id !== id))
+  const dismiss = (id: number) =>
+    entries()
+      .find((item) => item.id === id)
+      ?.end()
+  const release = (id: number) =>
+    arrange(() => setEntries((items) => items.filter((item) => item.id !== id)))
   const api: ToastApi = {
     show(message, options = {}) {
       const id = nextId++
       const [value, replace] = createSignal(message, { equals: false })
-      setEntries((items) => [
-        ...items,
-        {
-          id,
-          message: value,
-          replace,
-          persistent: options.persistent ?? false,
-          durationMs: options.durationMs ?? defaultDurationMs(),
-        },
-      ])
+      const [ended, setEnded] = createSignal(false)
+      arrange(() =>
+        setEntries((items) => [
+          ...items,
+          {
+            id,
+            message: value,
+            replace,
+            ended,
+            end: () => setEnded(true),
+            persistent: options.persistent ?? false,
+            durationMs: options.durationMs ?? defaultDurationMs(),
+          },
+        ]),
+      )
 
       return {
         dismiss: () => dismiss(id),
-        update: (next) =>
-          entries()
-            .find((item) => item.id === id)
-            ?.replace(next),
+        update: (next) => {
+          const entry = entries().find((item) => item.id === id && !item.ended())
+          if (entry) {
+            arrange(() => entry.replace(next))
+          }
+        },
       }
     },
   }
@@ -91,5 +108,5 @@ export function createToastController(defaultDurationMs: () => number) {
     setEntries([])
   })
 
-  return { entries, dismiss }
+  return { entries, dismiss, release }
 }

@@ -4,7 +4,7 @@ import { createEffect, createSignal, onCleanup, onMount, Show, splitProps } from
 import type { JSX } from 'solid-js'
 import { Compartment, EditorState, Transaction } from '@codemirror/state'
 import type { Extension } from '@codemirror/state'
-import { EditorView, keymap, lineNumbers, placeholder } from '@codemirror/view'
+import { EditorView, keymap, placeholder } from '@codemirror/view'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { markdown } from '@codemirror/lang-markdown'
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
@@ -101,7 +101,6 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
         doc: local.value ?? local.defaultValue ?? '',
         extensions: [
           editorTheme,
-          lineNumbers(),
           history(),
           keymap.of([...defaultKeymap, ...historyKeymap]),
           markdown(),

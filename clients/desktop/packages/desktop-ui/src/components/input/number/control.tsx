@@ -31,7 +31,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'class',
     'style',
   ])
-  const field = fieldAttributes()
+  const field = fieldAttributes(props)
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',

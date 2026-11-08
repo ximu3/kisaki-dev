@@ -3,6 +3,7 @@
 import { createUniqueId, For, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../internal/dom'
+import { fieldAttributes } from '../../internal/field'
 import { createValue, onFormReset } from '../../internal/state'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
@@ -41,6 +42,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
     'ref',
   ])
 
+  const field = fieldAttributes(props, () => local.label)
   const id = createUniqueId()
   const baseline = () =>
     local.defaultValue ?? local.options.find((option) => !option.disabled)?.value ?? ''
@@ -62,6 +64,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
 
   return (
     <fieldset
+      {...field}
       {...rest}
       ref={(node) => {
         group = node
@@ -80,7 +83,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
               value={option.value}
               checked={value() === option.value}
               disabled={option.disabled}
-              required={local.required}
+              required={local.required ?? field.required}
               onChange={(event) => {
                 if (event.currentTarget.checked) {
                   change(option.value)

@@ -21,7 +21,7 @@ import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import type { InputProps } from '../control'
 import { RangeInput } from '../../../internal/range/control'
-import surface from '../../../internal/popup/surface.module.css'
+import popup from '../../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 /** Typed CSS color syntax is retained; picker gestures produce hex with alpha when needed. */
@@ -51,7 +51,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     'class',
     'style',
   ])
-  const field = fieldAttributes()
+  const field = fieldAttributes(props)
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -138,11 +138,15 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         type="button"
         class={classes(frame.start, styles.swatch)}
         aria-label={local.pickerLabel}
+        popovertarget={id}
         aria-haspopup="dialog"
         aria-controls={id}
         aria-expanded={open()}
         disabled={blocked()}
-        onClick={() => setOpen(!open())}
+        onClick={(event) => {
+          event.preventDefault()
+          setOpen(!open())
+        }}
       >
         <span style={{ background: swatch() }} />
       </button>
@@ -154,7 +158,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         popover="auto"
         role="dialog"
         aria-label={local.pickerLabel}
-        class={classes(surface.surface, styles.picker)}
+        class={classes(popup.anchor, styles.picker)}
         onFocusOut={(event) => {
           if (
             !picker.contains(event.relatedTarget as Node | null) &&
@@ -164,66 +168,68 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
           }
         }}
       >
-        <div
-          aria-hidden="true"
-          class={styles.plane}
-          style={{ '--color-hue': `hsl(${color().h ?? 0} 100% 50%)` }}
-          onPointerDown={(event) => {
-            event.preventDefault()
-            event.currentTarget.setPointerCapture(event.pointerId)
-            paint(event)
-          }}
-          onPointerMove={(event) => {
-            if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        <div class={classes(popup.viewport, styles.content)}>
+          <div
+            aria-hidden="true"
+            class={styles.plane}
+            style={{ '--color-hue': `hsl(${color().h ?? 0} 100% 50%)` }}
+            onPointerDown={(event) => {
+              event.preventDefault()
+              event.currentTarget.setPointerCapture(event.pointerId)
               paint(event)
-            }
-          }}
-        >
-          <span
-            class={styles.cursor}
-            style={{ left: `${color().s * 100}%`, top: `${(1 - color().v) * 100}%` }}
-          />
-        </div>
-        <label class={styles.channel}>
-          <span>{local.hueLabel}</span>
-          <RangeInput
-            min={0}
-            ref={(node) => {
-              hue = node
             }}
-            max={360}
-            value={color().h ?? 0}
-            onValueChange={(h) => commit({ h })}
-          />
-          <output>{Math.round(color().h ?? 0)}°</output>
-        </label>
-        <label class={styles.channel}>
-          <span>{local.saturationLabel}</span>
-          <RangeInput
-            min={0}
-            value={color().s * 100}
-            onValueChange={(value) => commit({ s: value / 100 })}
-          />
-          <output>{Math.round(color().s * 100)}%</output>
-        </label>
-        <label class={styles.channel}>
-          <span>{local.brightnessLabel}</span>
-          <RangeInput
-            min={0}
-            value={color().v * 100}
-            onValueChange={(value) => commit({ v: value / 100 })}
-          />
-          <output>{Math.round(color().v * 100)}%</output>
-        </label>
-        <label class={styles.channel}>
-          <span>{local.alphaLabel}</span>
-          <RangeInput
-            min={0}
-            value={(color().alpha ?? 1) * 100}
-            onValueChange={(value) => commit({ alpha: value / 100 })}
-          />
-          <output>{Math.round((color().alpha ?? 1) * 100)}%</output>
-        </label>
+            onPointerMove={(event) => {
+              if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                paint(event)
+              }
+            }}
+          >
+            <span
+              class={styles.cursor}
+              style={{ left: `${color().s * 100}%`, top: `${(1 - color().v) * 100}%` }}
+            />
+          </div>
+          <label class={styles.channel}>
+            <span>{local.hueLabel}</span>
+            <RangeInput
+              min={0}
+              ref={(node) => {
+                hue = node
+              }}
+              max={360}
+              value={color().h ?? 0}
+              onValueChange={(h) => commit({ h })}
+            />
+            <output>{Math.round(color().h ?? 0)}°</output>
+          </label>
+          <label class={styles.channel}>
+            <span>{local.saturationLabel}</span>
+            <RangeInput
+              min={0}
+              value={color().s * 100}
+              onValueChange={(value) => commit({ s: value / 100 })}
+            />
+            <output>{Math.round(color().s * 100)}%</output>
+          </label>
+          <label class={styles.channel}>
+            <span>{local.brightnessLabel}</span>
+            <RangeInput
+              min={0}
+              value={color().v * 100}
+              onValueChange={(value) => commit({ v: value / 100 })}
+            />
+            <output>{Math.round(color().v * 100)}%</output>
+          </label>
+          <label class={styles.channel}>
+            <span>{local.alphaLabel}</span>
+            <RangeInput
+              min={0}
+              value={(color().alpha ?? 1) * 100}
+              onValueChange={(value) => commit({ alpha: value / 100 })}
+            />
+            <output>{Math.round((color().alpha ?? 1) * 100)}%</output>
+          </label>
+        </div>
       </div>
     </InputFrame>
   )

@@ -13,6 +13,7 @@
     --kui-icon-small: 0.75rem;
     --kui-inline-gap: 0.5rem;
     --kui-hover-duration: 100ms;
+    --kui-focus-width: 2px;
   }
   @media (prefers-reduced-motion: reduce) {
     :root,

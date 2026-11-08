@@ -43,7 +43,7 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
     <ChoiceRow label={local.label}>
       <span class={styles.container}>
         <input
-          {...fieldAttributes()}
+          {...fieldAttributes(props, () => local.label)}
           {...rest}
           type="checkbox"
           ref={(node) => {

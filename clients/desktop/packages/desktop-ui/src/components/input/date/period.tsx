@@ -1,8 +1,9 @@
 /** @fileoverview Calendar month and year choices navigate the view independently of its selected day. */
 
-import { createMemo, createSignal, createUniqueId, For } from 'solid-js'
+import { createMemo, createSignal, For } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { createVirtualizer } from '@tanstack/solid-virtual'
+import { createSelectionPopup } from '../../../internal/selection/popup'
 import { createSelection } from '../../../internal/selection/collection'
 import { SelectionList } from '../../../internal/selection/list'
 import { SelectionTrigger } from '../../../internal/selection/trigger'
@@ -20,31 +21,32 @@ interface PeriodProps {
 
 /** Only the visible range mounts, including when the calendar offers all 9,999 years. */
 export function PeriodSelect(props: PeriodProps): JSX.Element {
-  const [open, setOpen] = createSignal(false)
+  const popup = createSelectionPopup()
+  const { present, setOpen } = popup
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
-  const id = createUniqueId()
   let trigger!: HTMLButtonElement
 
   const options = createMemo(() =>
-    open()
+    present()
       ? Array.from({ length: props.last - props.first + 1 }, (_, index) => {
           const value = props.first + index
           return { value: String(value), label: props.format(value) }
         })
       : [],
   )
-  const rowHeight = createMemo(() => (open() ? trigger.getBoundingClientRect().height : 0))
+  const rowHeight = createMemo(() => (present() ? parseFloat(getComputedStyle(trigger).height) : 0))
   const collection = createSelection(options)
   const rows = createVirtualizer({
     get count() {
       return options().length
     },
     get enabled() {
-      return open()
+      return present()
     },
     getScrollElement: () => viewport() ?? null,
     estimateSize: rowHeight,
-    measureElement: (element) => element.getBoundingClientRect().height,
+    measureElement: (element, entry) =>
+      entry?.borderBoxSize[0]?.blockSize ?? parseFloat(getComputedStyle(element).height),
     getItemKey: (index) => props.first + index,
     overscan: 3,
   })
@@ -59,27 +61,23 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
         ref={(node) => {
           trigger = node
         }}
-        class={styles.period}
         aria-label={props.label}
-        listId={id}
+        popup={popup}
         collection={collection}
         selected={[String(props.value)]}
-        open={open()}
-        onOpenChange={setOpen}
+        onBlur={() => setOpen(false)}
         onChoose={choose}
       >
         {props.format(props.value)}
       </SelectionTrigger>
       <SelectionList
-        id={id}
+        popup={popup}
         label={props.label}
         listClass={styles.periodList}
         anchor={() => trigger}
         listRef={setViewport}
         collection={collection}
         selected={[String(props.value)]}
-        open={open()}
-        onOpenChange={setOpen}
         onChoose={choose}
         scrollToValue={(value) =>
           rows.scrollToIndex(Number(value) - props.first, { align: 'auto' })

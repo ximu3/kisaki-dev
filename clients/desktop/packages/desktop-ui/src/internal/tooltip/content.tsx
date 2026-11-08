@@ -6,7 +6,7 @@ import { assignRef, callHandler, classes } from '../dom'
 import { createPopup } from '../popup/controller'
 import type { PopupPlacement } from '../popup/controller'
 import type { createTooltip } from './controller'
-import surface from '../popup/surface.module.css'
+import frame from '../popup/surface.module.css'
 import styles from './styles.module.css'
 
 interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -22,6 +22,7 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     'reading',
     'placement',
     'class',
+    'children',
     'ref',
     'onPointerEnter',
     'onPointerLeave',
@@ -50,7 +51,7 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
         content = node
         assignRef(local.ref, node)
       }}
-      class={classes(surface.surface, styles.content, local.class)}
+      class={classes(frame.anchor, styles.content, local.class)}
       onPointerEnter={(event) => {
         local.reading.hover('content', true)
         callHandler(local.onPointerEnter, event)
@@ -59,6 +60,8 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
         local.reading.hover('content', false)
         callHandler(local.onPointerLeave, event)
       }}
-    />
+    >
+      <div class={classes(frame.viewport, styles.text)}>{local.children}</div>
+    </div>
   )
 }

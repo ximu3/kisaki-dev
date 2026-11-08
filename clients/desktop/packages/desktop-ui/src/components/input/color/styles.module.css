@@ -21,6 +21,8 @@
 
   .picker {
     width: 18rem;
+  }
+  .content {
     padding: 0.75rem;
   }
 

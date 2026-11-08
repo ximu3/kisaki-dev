@@ -174,6 +174,7 @@ export default function Resources(): JSX.Element {
             <Axis type="x" />
             <Axis type="y" />
             <Crosshair
+              hideWhenFarFromPointer={false}
               template={() =>
                 chartTooltipContent(document, [
                   { label: 'Safe text', value: '<script>data</script>' },

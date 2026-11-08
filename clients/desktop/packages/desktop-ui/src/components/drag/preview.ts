@@ -16,7 +16,7 @@ export function setDragPreview(options: {
     getOffset: pointerOutsideOfPreview({ x: '12px', y: '8px' }),
     render: ({ container }) => {
       const preview = container.ownerDocument.createElement('div')
-      preview.className = classes(surface.surface, styles.preview)
+      preview.className = classes(surface.staticSurface, styles.preview)
       preview.textContent = options.label
       container.append(preview)
     },

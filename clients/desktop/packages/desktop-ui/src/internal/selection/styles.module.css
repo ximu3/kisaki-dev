@@ -4,9 +4,40 @@
   :where(.list) {
     width: max-content;
     max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
-    padding: 0;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .options {
+    min-block-size: 0;
+    min-inline-size: 0;
     overflow: auto;
     overscroll-behavior: contain;
+  }
+
+  .search {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--kui-inline-gap);
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.75rem;
+    border-block-end: 1px solid var(--border);
+    color: var(--muted-foreground);
+  }
+  .search input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--popover-foreground);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
   }
 
   .groupTitle {

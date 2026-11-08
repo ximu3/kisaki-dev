@@ -27,7 +27,7 @@ export function Slider(props: SliderProps): JSX.Element {
 
   return (
     <RangeInput
-      {...fieldAttributes()}
+      {...fieldAttributes(props)}
       {...rest}
       value={value()}
       defaultValue={baseline()}

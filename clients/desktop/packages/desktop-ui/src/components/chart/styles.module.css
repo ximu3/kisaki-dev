@@ -65,7 +65,7 @@
     opacity: 0.45;
   }
   .legend button:focus-visible {
-    outline: 2px solid var(--ring);
+    outline: var(--kui-focus-width) solid var(--ring);
     border-radius: var(--radius-sm);
   }
   .legend span {
@@ -80,6 +80,23 @@
     gap: 0.25rem 0.75rem;
     margin: 0;
     font-size: var(--kui-caption-font);
+  }
+  .engineTooltip {
+    --vis-tooltip-padding: 0px;
+    --vis-tooltip-background-color: transparent;
+    --vis-tooltip-border-color: transparent;
+    --vis-tooltip-border-radius: var(--radius-md);
+    --vis-tooltip-box-shadow: none;
+    --vis-tooltip-text-color: var(--popover-foreground);
+    --vis-tooltip-transition-duration: var(--kui-frame-time);
+  }
+  .tooltipViewport {
+    padding: 0.375rem 0.5rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .engineTooltip {
+      --vis-tooltip-transition-duration: 0ms;
+    }
   }
   .tooltip dd {
     margin: 0;

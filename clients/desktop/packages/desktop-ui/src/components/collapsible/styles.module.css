@@ -18,7 +18,7 @@
     font-weight: 500;
   }
   .summary:focus-visible {
-    outline: 2px solid var(--ring);
+    outline: var(--kui-focus-width) solid var(--ring);
   }
 
   .summary::-webkit-details-marker {

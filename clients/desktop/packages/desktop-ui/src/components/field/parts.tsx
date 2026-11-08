@@ -27,6 +27,7 @@ export function Field(props: FieldProps): JSX.Element {
   ])
 
   const id = local.id ?? createUniqueId()
+  const [label, setLabel] = createSignal(false)
   const [description, setDescription] = createSignal(false)
   const [error, setError] = createSignal(false)
 
@@ -37,6 +38,8 @@ export function Field(props: FieldProps): JSX.Element {
         invalid: () => !!local.invalid,
         required: () => !!local.required,
         disabled: () => !!local.disabled,
+        label,
+        setLabel,
         description,
         error,
         setDescription,
@@ -54,12 +57,21 @@ export function Field(props: FieldProps): JSX.Element {
   )
 }
 
-/** Label the field's native control; explicit for can identify a custom host control. */
-export function FieldLabel(props: JSX.LabelHTMLAttributes<HTMLLabelElement>): JSX.Element {
+/** A static field title names its control without becoming another activation target. */
+export function FieldLabel(props: JSX.HTMLAttributes<HTMLSpanElement>): JSX.Element {
   const field = useContext(FieldContext)
+  field?.setLabel(true)
+  onCleanup(() => field?.setLabel(false))
+
   const [local, rest] = splitProps(props, ['class'])
 
-  return <label for={field?.id} {...rest} class={classes(styles.label, local.class)} />
+  return (
+    <span
+      {...rest}
+      id={field ? `${field.id}-label` : props.id}
+      class={classes(styles.label, local.class)}
+    />
+  )
 }
 
 /** Stable usage guidance, independent of the current validation result. */

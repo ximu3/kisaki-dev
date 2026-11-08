@@ -6,15 +6,11 @@
     width: min(36rem, calc(100vw - 2rem));
     max-height: calc(100dvh - 2rem);
     margin: auto;
-    padding: 0;
-    background: var(--dialog);
-    color: var(--dialog-foreground);
-    box-shadow: var(--shadow-modal);
-    overflow: hidden;
   }
-  .root[open] {
+  .content {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
   .root::backdrop {
     background: transparent;

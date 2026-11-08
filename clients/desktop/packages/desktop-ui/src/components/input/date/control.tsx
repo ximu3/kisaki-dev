@@ -20,6 +20,7 @@ import frame from '../styles.module.css'
 import type { InputProps } from '../control'
 import { parseDate } from './calendar'
 import { DatePicker } from './picker'
+import { createPresentation } from '../../../internal/popup/presentation'
 import type { CalendarProps } from './picker'
 import styles from './styles.module.css'
 
@@ -59,7 +60,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
       'nextMonthLabel',
     ],
   )
-  const field = fieldAttributes()
+  const field = fieldAttributes(props)
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -69,6 +70,8 @@ export function DateInput(props: DateInputProps): JSX.Element {
   const id = createUniqueId()
   let input!: HTMLInputElement
   let trigger!: HTMLButtonElement
+  let picker: HTMLDivElement | undefined
+  const present = createPresentation(open, () => picker)
 
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
   const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
@@ -183,17 +186,25 @@ export function DateInput(props: DateInputProps): JSX.Element {
           trigger = node
         }}
         aria-label={calendar.calendarLabel}
+        popovertarget={id}
         aria-haspopup="dialog"
         aria-expanded={open()}
         aria-controls={open() ? id : undefined}
         disabled={blocked()}
-        onClick={() => setOpen(!open())}
+        onClick={(event) => {
+          event.preventDefault()
+          setOpen(!open())
+        }}
       >
         <Icon path={mdiCalendarOutline} />
       </button>
-      <Show when={open()}>
+      <Show when={present()}>
         <DatePicker
           {...calendar}
+          open={open()}
+          panelRef={(node) => {
+            picker = node
+          }}
           min={min()}
           max={max()}
           id={id}

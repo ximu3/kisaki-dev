@@ -28,7 +28,7 @@
     cursor: pointer;
   }
   .prompt:focus-visible {
-    outline: 1px solid var(--ring);
+    outline: var(--kui-focus-width) solid var(--ring);
     outline-offset: 2px;
   }
 

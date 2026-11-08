@@ -38,7 +38,7 @@ export function VirtualChoices(): JSX.Element {
             estimateSize: () => 30,
             overscan: 4,
             get enabled() {
-              return state.open()
+              return state.present()
             },
           })
           createEffect(() => {

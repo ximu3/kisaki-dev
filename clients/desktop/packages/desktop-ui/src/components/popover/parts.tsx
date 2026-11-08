@@ -8,7 +8,7 @@ import { createPopup } from '../../internal/popup/controller'
 import type { PopupPlacement } from '../../internal/popup/controller'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
-import surface from '../../internal/popup/surface.module.css'
+import frame from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
 interface PopoverState {
@@ -57,9 +57,11 @@ export function PopoverTrigger(props: ButtonProps): JSX.Element {
       }}
       aria-expanded={state.open()}
       aria-controls={state.id}
+      popovertarget={state.id}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
+          event.preventDefault()
           state.change(!state.open())
         }
       }}
@@ -70,12 +72,20 @@ export function PopoverTrigger(props: ButtonProps): JSX.Element {
 /** Native popover content; autofocus may designate its first focus target. */
 export interface PopoverContentProps extends JSX.HTMLAttributes<HTMLDivElement> {
   placement?: PopupPlacement
+  /** Style the content viewport independently of the positioned native panel. */
+  viewportClass?: string
 }
 
 /** Light dismissal and Escape close only this popup; child resources follow the caller's mounted content. */
 export function PopoverContent(props: PopoverContentProps): JSX.Element {
   const state = usePopover()
-  const [local, rest] = splitProps(props, ['placement', 'class', 'ref'])
+  const [local, rest] = splitProps(props, [
+    'placement',
+    'class',
+    'viewportClass',
+    'children',
+    'ref',
+  ])
 
   let node!: HTMLDivElement
   createPopup({
@@ -95,8 +105,12 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
         node = element
         assignRef(local.ref, element)
       }}
-      class={classes(surface.surface, styles.root, local.class)}
-    />
+      class={classes(frame.anchor, local.class)}
+    >
+      <div class={classes(frame.viewport, styles.content, local.viewportClass)}>
+        {local.children}
+      </div>
+    </div>
   )
 }
 

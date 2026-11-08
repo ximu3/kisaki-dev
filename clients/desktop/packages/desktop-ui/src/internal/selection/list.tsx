@@ -5,32 +5,42 @@ import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
 import { Icon, mdiCheck } from '../icon/icon'
 import { createPopup } from '../popup/controller'
+import type { SelectionPopup } from './popup'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionListProps, SelectionOption } from './types'
-import surface from '../popup/surface.module.css'
+import { SearchInput } from './search'
+import type { SearchState } from './search'
+import frame from '../popup/surface.module.css'
 import row from '../list-row.module.css'
 import styles from './styles.module.css'
 
 interface ListProps extends SelectionListProps {
-  id: string
+  popup: SelectionPopup
   anchor: Accessor<HTMLElement>
   reference?: Accessor<HTMLElement> | undefined
   collection: SelectionCollection
   selected: readonly string[]
-  open: boolean
-  onOpenChange: (open: boolean) => void
   onChoose: (option: SelectionOption) => void
   multiple?: boolean | undefined
   loading?: boolean | undefined
   emptyMessage?: JSX.Element
   loadingMessage?: JSX.Element
   label?: string | undefined
+  labelledBy?: string | undefined
+  search?: SearchState | undefined
 }
 
 /** The trigger owns focus and the collection owns navigation, including offscreen virtual rows. */
 export function SelectionList(props: ListProps): JSX.Element {
   let list!: HTMLDivElement
+  const { id, open, present } = props.popup
+
+  createEffect(() => {
+    if (props.search && open() && props.collection.active() === undefined) {
+      props.collection.highlight(props.collection.enabled()[0]?.value)
+    }
+  })
 
   const groups = () => {
     const result: { label: string | undefined; options: SelectionOption[] }[] = []
@@ -46,13 +56,13 @@ export function SelectionList(props: ListProps): JSX.Element {
   }
 
   createPopup({
-    element: () => list,
+    element: props.popup.panel,
     anchor: props.anchor,
     reference: props.reference,
-    open: () => props.open,
-    change: props.onOpenChange,
+    open,
+    change: props.popup.setOpen,
     matchWidth: true,
-    restoreFocus: false,
+    restoreFocus: props.search !== undefined,
   })
 
   onMount(() => {
@@ -64,7 +74,7 @@ export function SelectionList(props: ListProps): JSX.Element {
 
     createEffect(() => {
       const active = props.collection.active()
-      if (!props.open || active === undefined || !height()) {
+      if (!open() || active === undefined || !height()) {
         return
       }
 
@@ -74,7 +84,7 @@ export function SelectionList(props: ListProps): JSX.Element {
           props.scrollToValue(active)
         } else {
           list.ownerDocument
-            .getElementById(optionId(props.id, active))
+            .getElementById(optionId(id, active))
             ?.scrollIntoView({ block: 'nearest' })
         }
       })
@@ -84,7 +94,7 @@ export function SelectionList(props: ListProps): JSX.Element {
 
   const renderOption = (option: SelectionOption) => (
     <div
-      id={optionId(props.id, option.value)}
+      id={optionId(id, option.value)}
       role="option"
       aria-selected={props.selected.includes(option.value)}
       aria-disabled={option.disabled || undefined}
@@ -122,54 +132,78 @@ export function SelectionList(props: ListProps): JSX.Element {
 
   return (
     <div
-      ref={(node) => {
-        list = node
-      }}
-      id={props.id}
       popover="auto"
-      role="listbox"
-      aria-label={props.label}
-      aria-multiselectable={props.multiple || undefined}
-      aria-busy={props.loading || undefined}
-      class={classes(surface.surface, styles.list, props.listClass)}
-      onPointerDown={(event) => {
-        if (event.target !== event.currentTarget) {
-          event.preventDefault()
-        }
-      }}
+      ref={props.popup.attach}
+      id={props.popup.panelId}
+      class={classes(frame.anchor, styles.list, props.listClass)}
+      role={props.search ? 'dialog' : undefined}
+      aria-labelledby={props.search ? props.labelledBy : undefined}
+      aria-label={props.search ? (props.label ?? props.search.label) : undefined}
     >
-      <Show
-        when={!props.loading}
-        fallback={
-          <div class={styles.message} role="status">
-            {props.loadingMessage}
-          </div>
-        }
-      >
-        <Show
-          when={props.collection.options().length}
-          fallback={<div class={styles.message}>{props.emptyMessage}</div>}
-        >
-          {props.renderOptions ? (
-            props.renderOptions({
-              options: props.collection.options,
-              open: () => props.open,
-              renderOption,
-            })
-          ) : (
-            <For each={groups()}>
-              {(group) => (
-                <div role={group.label ? 'group' : undefined} aria-label={group.label}>
-                  <Show when={group.label}>
-                    <div class={styles.groupTitle}>{group.label}</div>
-                  </Show>
-                  <For each={group.options}>{renderOption}</For>
-                </div>
-              )}
-            </For>
+      <div class={classes(frame.viewport, styles.content)}>
+        <Show when={props.search}>
+          {(search) => (
+            <SearchInput
+              state={search()}
+              listId={id}
+              open={open()}
+              collection={props.collection}
+              choose={props.onChoose}
+            />
           )}
         </Show>
-      </Show>
+        <div
+          ref={(node) => {
+            list = node
+          }}
+          class={styles.options}
+          id={id}
+          role="listbox"
+          aria-label={props.label}
+          aria-labelledby={props.labelledBy}
+          aria-multiselectable={props.multiple || undefined}
+          aria-busy={props.loading || undefined}
+          onPointerDown={(event) => {
+            if (event.target !== event.currentTarget) {
+              event.preventDefault()
+            }
+          }}
+        >
+          <Show
+            when={!props.loading}
+            fallback={
+              <div class={styles.message} role="status">
+                {props.loadingMessage}
+              </div>
+            }
+          >
+            <Show
+              when={props.collection.options().length}
+              fallback={<div class={styles.message}>{props.emptyMessage}</div>}
+            >
+              {props.renderOptions ? (
+                props.renderOptions({
+                  options: props.collection.options,
+                  open,
+                  present,
+                  renderOption,
+                })
+              ) : (
+                <For each={groups()}>
+                  {(group) => (
+                    <div role={group.label ? 'group' : undefined} aria-label={group.label}>
+                      <Show when={group.label}>
+                        <div class={styles.groupTitle}>{group.label}</div>
+                      </Show>
+                      <For each={group.options}>{renderOption}</For>
+                    </div>
+                  )}
+                </For>
+              )}
+            </Show>
+          </Show>
+        </div>
+      </div>
     </div>
   )
 }

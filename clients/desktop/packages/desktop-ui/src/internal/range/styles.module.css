@@ -39,8 +39,8 @@
     background: var(--range-fill);
   }
   .range:focus-visible {
-    outline: 1px solid var(--ring);
-    outline-offset: 1px;
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: 2px;
   }
   .range[aria-invalid='true'] {
     --range-fill: var(--destructive);

@@ -1,7 +1,7 @@
 /** @fileoverview Associates controls with the nearest field's label, description and own error. */
 
 import { createContext, onCleanup, onMount, useContext } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 
 /** Field state stays local to a single control or a group with one accessible name. */
 export interface FieldContextValue {
@@ -11,8 +11,10 @@ export interface FieldContextValue {
   required: Accessor<boolean>
   disabled: Accessor<boolean>
 
+  label: Accessor<boolean>
   description: Accessor<boolean>
   error: Accessor<boolean>
+  setLabel: (value: boolean) => void
   setDescription: (value: boolean) => void
   setError: (value: boolean) => void
 }
@@ -20,7 +22,7 @@ export interface FieldContextValue {
 export const FieldContext = createContext<FieldContextValue>()
 
 /** Reactive native attributes; explicit control attributes may override these defaults. */
-export function fieldAttributes() {
+export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<JSX.Element>) {
   const field = useContext(FieldContext)
 
   return {
@@ -32,6 +34,12 @@ export function fieldAttributes() {
     },
     get disabled() {
       return field?.disabled()
+    },
+    get 'aria-labelledby'() {
+      if (props['aria-label'] || ownLabel?.() != null || !field?.label()) {
+        return undefined
+      }
+      return `${field.id}-label`
     },
     get 'aria-invalid'() {
       return field?.invalid() || undefined

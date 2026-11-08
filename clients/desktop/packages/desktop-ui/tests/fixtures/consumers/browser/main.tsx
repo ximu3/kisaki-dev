@@ -398,19 +398,38 @@ function Candidate(): JSX.Element {
     ])
 
   return (
-    <FieldGroup aria-label="Candidate group">
-      <Field id="candidate">
-        <FieldLabel>Candidate</FieldLabel>
-        <Combobox
-          name="candidate"
-          options={options()}
-          defaultValue={{ value: 'a', label: 'Alpha' }}
-          emptyMessage="No choices"
-          loadingMessage="Loading choices"
-          invalidSelectionMessage="Choose a listed option."
-        />
-      </Field>
-    </FieldGroup>
+    <form id="candidate-form">
+      <FieldGroup aria-label="Candidate group">
+        <Field id="candidate">
+          <FieldLabel>Candidate</FieldLabel>
+          <Combobox
+            name="candidate"
+            searchLabel="Search candidates"
+            options={options()}
+            defaultValue={{ value: 'a', label: 'Alpha' }}
+            emptyMessage="No choices"
+            loadingMessage="Loading choices"
+            invalidSelectionMessage="Choose a listed option."
+          />
+        </Field>
+        <Field id="related">
+          <FieldLabel>Related choices</FieldLabel>
+          <Combobox
+            multiple
+            name="related"
+            searchLabel="Search related choices"
+            options={options()}
+            defaultValue={[{ value: 'a', label: 'Alpha' }]}
+            emptyMessage="No choices"
+            loadingMessage="Loading choices"
+            invalidSelectionMessage="Choose a listed option."
+            removeLabel={(label) => 'Remove ' + label}
+            scrollPreviousLabel="Previous choices"
+            scrollNextLabel="Next choices"
+          />
+        </Field>
+      </FieldGroup>
+    </form>
   )
 }
 

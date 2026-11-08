@@ -3,23 +3,56 @@
 @layer components {
   .region {
     position: fixed;
-    inset: auto 1rem 1rem auto;
+    inset: auto 0 0 auto;
+    box-sizing: border-box;
+    inline-size: min(30rem, 100vw);
+    block-size: 100dvh;
+    max-block-size: 100dvh;
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
     color: var(--foreground);
-    width: min(28rem, calc(100vw - 2rem));
-    max-height: calc(100dvh - 2rem);
-    overflow: auto;
+    overflow: visible;
+    pointer-events: none;
+    --kui-toast-stack-duration: 100ms;
+    --kui-toast-enter-duration: 100ms;
+    --kui-toast-exit-duration: 80ms;
   }
-  .region:popover-open {
+
+  .stack {
+    min-block-size: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     gap: 0.5rem;
+    overflow-y: clip;
+    overflow-x: visible;
+  }
+  .stack::before,
+  .stack::after {
+    content: '';
+    flex: 0 0 0.5rem;
+    pointer-events: none;
+  }
+  .region[data-overflow] {
+    overflow: auto;
+    pointer-events: auto;
+  }
+  .region[data-overflow] .stack {
+    overflow: clip;
   }
 
   .item {
+    flex: none;
+    margin-inline: 1rem;
+    border-radius: var(--radius-lg);
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+    transition:
+      opacity var(--kui-toast-enter-duration) cubic-bezier(0.16, 0.72, 0.25, 1),
+      translate var(--kui-toast-enter-duration) cubic-bezier(0.16, 0.72, 0.25, 1);
     display: grid;
     grid-template-columns: 1.125rem minmax(0, 1fr);
     align-items: start;
@@ -59,10 +92,29 @@
     color: var(--destructive);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .item[data-expiring] {
+  .item:is([data-ended], [data-expiring]) {
+    opacity: 0;
+    translate: 0 0.375rem;
+    transition-duration: var(--kui-toast-exit-duration);
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  .item[data-ended] {
+    pointer-events: none;
+  }
+
+  @starting-style {
+    .item[data-arriving] {
       opacity: 0;
-      transition: opacity var(--kui-toast-expiry-fade) ease-in;
+      translate: 0 0.375rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .region {
+      --kui-toast-exit-duration: 0ms;
+    }
+    .item {
+      transition: none;
     }
   }
 }

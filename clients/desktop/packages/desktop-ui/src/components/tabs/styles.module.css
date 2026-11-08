@@ -5,8 +5,8 @@
     padding-block: 0.75rem;
   }
   .panel:focus-visible {
-    outline: 1px solid var(--ring);
-    outline-offset: -1px;
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: -2px;
   }
   .panel[hidden] {
     display: none;

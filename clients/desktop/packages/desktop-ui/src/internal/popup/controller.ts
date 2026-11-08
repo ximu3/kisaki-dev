@@ -1,13 +1,25 @@
 /** @fileoverview Native top-layer presentation with collision-aware Floating UI positioning. */
 
 import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
-import type { VirtualElement } from '@floating-ui/dom'
+import type { Middleware, VirtualElement } from '@floating-ui/dom'
 import { createEffect, onCleanup, onMount } from 'solid-js'
 import type { Accessor } from 'solid-js'
+import { applySurfaceOrigin, surfaceOrigin } from './origin'
+import type { SurfaceOrigin } from './origin'
 
 /** Placement uses physical viewport edges; start/end follow the anchor's text direction. */
 export type PopupPlacement =
   'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'
+
+/** The animation and content reveal use the same resolved side, including flipped and point anchors. */
+const origin: Middleware = {
+  name: 'origin',
+  fn({ x, y, rects }) {
+    const { reference, floating } = rects
+    const center = { x: reference.x + reference.width / 2, y: reference.y + reference.height / 2 }
+    return { data: surfaceOrigin(center, { ...floating, x, y }) }
+  },
+}
 
 /** Native modal scope follows DOM ancestry. Position observers live only while open. */
 export function createPopup(options: {
@@ -33,7 +45,12 @@ export function createPopup(options: {
       }
     }
     const escape = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || !node.matches(':popover-open')) {
+      if (
+        event.defaultPrevented ||
+        event.isComposing ||
+        event.key !== 'Escape' ||
+        !node.matches(':popover-open')
+      ) {
         return
       }
 
@@ -95,12 +112,14 @@ export function createPopup(options: {
                 }
               },
             }),
+            origin,
           ],
-        }).then(({ x, y, placement: resolved }) => {
+        }).then(({ x, y, placement: resolved, middlewareData }) => {
           if (active) {
             node.style.left = `${x}px`
             node.style.top = `${y}px`
             node.dataset.placement = resolved
+            applySurfaceOrigin(node, middlewareData.origin as SurfaceOrigin)
           }
         })
       }

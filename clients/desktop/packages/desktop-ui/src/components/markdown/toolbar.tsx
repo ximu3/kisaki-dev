@@ -152,6 +152,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
             return (
               <Tooltip>
                 <TooltipTrigger
+                  class={styles.command}
                   size="icon"
                   variant="ghost"
                   aria-label={action().label}

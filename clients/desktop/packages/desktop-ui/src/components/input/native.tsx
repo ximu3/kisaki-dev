@@ -29,7 +29,7 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
   return (
     <input
       type="text"
-      {...fieldAttributes()}
+      {...fieldAttributes(props)}
       {...rest}
       ref={(node) => {
         input = node

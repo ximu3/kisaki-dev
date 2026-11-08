@@ -3,9 +3,11 @@
 @layer components {
   .content {
     max-width: min(24rem, var(--popup-available-width, calc(100vw - 1rem)));
-    padding: var(--kui-tooltip-padding, 0.375rem 0.5rem);
     font-size: var(--kui-caption-font);
     line-height: var(--kui-control-line);
     overflow-wrap: anywhere;
+  }
+  .text {
+    padding: var(--kui-tooltip-padding, 0.375rem 0.5rem);
   }
 }

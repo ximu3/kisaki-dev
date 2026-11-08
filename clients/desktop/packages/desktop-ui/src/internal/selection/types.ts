@@ -16,6 +16,8 @@ export interface SelectionOption {
 export interface SelectionListRenderProps {
   options: Accessor<readonly SelectionOption[]>
   open: Accessor<boolean>
+  /** Enable virtual geometry for the full time the viewport is painted, including its exit. */
+  present: Accessor<boolean>
   renderOption: (option: SelectionOption) => JSX.Element
 }
 
@@ -23,7 +25,7 @@ export interface SelectionListRenderProps {
 export interface SelectionListProps {
   renderOptions?: ((props: SelectionListRenderProps) => JSX.Element) | undefined
   scrollToValue?: ((value: string) => void) | undefined
-  /** The native listbox is the scroll element on both axes. */
+  /** The listbox viewport owns both scroll axes and the virtual row origin. */
   listRef?: ((element: HTMLDivElement) => void) | undefined
   listClass?: string | undefined
 }

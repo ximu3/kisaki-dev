@@ -51,7 +51,8 @@ test('Electron consumes the same packed UI in a sandboxed document with native m
   )
 
   await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
-  await page.getByRole('combobox', { name: 'Candidate' }).press('ArrowDown')
+  await page.getByRole('button', { name: 'Candidate', exact: true }).press('ArrowDown')
+  await expect(page.getByRole('combobox', { name: 'Search candidates' })).toBeFocused()
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog', { name: 'Edit sample' })).toBeVisible()
   await page.getByRole('button', { name: 'Close editor' }).click()

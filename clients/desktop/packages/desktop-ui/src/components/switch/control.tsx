@@ -35,7 +35,7 @@ export function Switch(props: SwitchProps): JSX.Element {
   return (
     <ChoiceRow label={local.label}>
       <input
-        {...fieldAttributes()}
+        {...fieldAttributes(props, () => local.label)}
         {...rest}
         type="checkbox"
         role="switch"

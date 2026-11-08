@@ -3,6 +3,7 @@
 import { createEffect, createSignal, For, onCleanup, onMount, Show, untrack } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { createToastController } from './controller'
+import { createStackMotion } from './stack'
 import type { ToastEntry } from './controller'
 import { Icon, mdiClose, StatusIcon } from '../../internal/icon/icon'
 import { observeModalHost } from '../../internal/modal-host'
@@ -11,8 +12,6 @@ import { Spinner } from '../spinner/control'
 import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
-
-const expiryFadeMs = 90
 
 /** Install once per window. Labels are supplied by the host's locale. */
 export interface ToasterProps {
@@ -24,8 +23,12 @@ export interface ToasterProps {
 
 /** Keep the same region and clocks while moving it into the active native modal. */
 export function Toaster(props: ToasterProps): JSX.Element {
-  const controller = createToastController(() => props.durationMs ?? 5000)
   let region!: HTMLDivElement
+  let track!: HTMLDivElement
+  const controller = createToastController(
+    () => props.durationMs ?? 5000,
+    createStackMotion(() => track),
+  )
   onMount(() => {
     const marker = region.ownerDocument.createComment('toast host')
     region.before(marker)
@@ -34,6 +37,12 @@ export function Toaster(props: ToasterProps): JSX.Element {
         region.showPopover()
       }
     }
+    const resize = new ResizeObserver(() => {
+      region.toggleAttribute('data-overflow', track.offsetHeight > region.clientHeight)
+    })
+    resize.observe(track)
+    resize.observe(region)
+
     const stop = observeModalHost(region.ownerDocument, (host) => {
       untrack(() => {
         if (region.matches(':popover-open')) {
@@ -56,6 +65,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
       }
     })
     onCleanup(() => {
+      resize.disconnect()
       stop()
       if (region.matches(':popover-open')) {
         region.hidePopover()
@@ -73,20 +83,28 @@ export function Toaster(props: ToasterProps): JSX.Element {
       popover="manual"
       role="region"
       aria-label={props.regionLabel}
-      style={{ '--kui-toast-expiry-fade': `${expiryFadeMs}ms` }}
       class={`${styles.region} ${props.class ?? ''}`}
     >
-      <For each={controller.entries()}>
-        {(entry) => (
-          <ToastItem
-            entry={entry}
-            closeLabel={props.closeLabel}
-            dismiss={() => {
-              controller.dismiss(entry.id)
-            }}
-          />
-        )}
-      </For>
+      <div
+        ref={(node) => {
+          track = node
+        }}
+        data-toast-stack=""
+        class={styles.stack}
+      >
+        <For each={controller.entries()}>
+          {(entry) => (
+            <ToastItem
+              entry={entry}
+              closeLabel={props.closeLabel}
+              release={() => controller.release(entry.id)}
+              dismiss={() => {
+                controller.dismiss(entry.id)
+              }}
+            />
+          )}
+        </For>
+      </div>
     </div>
   )
 }
@@ -96,7 +114,9 @@ function ToastItem(props: {
   entry: ToastEntry
   closeLabel: string
   dismiss: () => void
+  release: () => void
 }): JSX.Element {
+  let card!: HTMLDivElement
   let timer: ReturnType<typeof setTimeout> | undefined
   let fadeTimer: ReturnType<typeof setTimeout> | undefined
   let remaining = props.entry.durationMs
@@ -104,6 +124,14 @@ function ToastItem(props: {
   let hovered = false
   let focused = false
   const [expiring, setExpiring] = createSignal(false)
+
+  onMount(() => {
+    queueMicrotask(() => {
+      // Resolve the initial transition once; moving the queue into a modal retains existing cards.
+      card.getAnimations()
+      card.removeAttribute('data-arriving')
+    })
+  })
 
   const statusType = () => {
     const type = props.entry.message().type
@@ -120,7 +148,13 @@ function ToastItem(props: {
     }
   }
   const resume = () => {
-    if (hovered || focused || props.entry.persistent || props.entry.message().type === 'loading') {
+    if (
+      props.entry.ended() ||
+      hovered ||
+      focused ||
+      props.entry.persistent ||
+      props.entry.message().type === 'loading'
+    ) {
       return
     }
 
@@ -129,21 +163,61 @@ function ToastItem(props: {
     }
 
     started = performance.now()
-    fadeTimer = setTimeout(() => setExpiring(true), Math.max(0, remaining - expiryFadeMs))
+    const configured = getComputedStyle(card).getPropertyValue('--kui-toast-exit-duration')
+    const exitMs = parseFloat(configured)
+    fadeTimer = setTimeout(() => setExpiring(true), Math.max(0, remaining - exitMs))
     timer = setTimeout(props.dismiss, remaining)
   }
 
   createEffect(() => {
     void props.entry.message()
+    if (props.entry.ended()) {
+      return
+    }
     stop()
     remaining = props.entry.durationMs
     resume()
+  })
+  createEffect(() => {
+    if (!props.entry.ended()) {
+      return
+    }
+    clearTimeout(timer)
+    clearTimeout(fadeTimer)
+    let current = true
+    onCleanup(() => {
+      current = false
+    })
+    queueMicrotask(() => {
+      if (!current) {
+        return
+      }
+      const exit = card
+        .getAnimations()
+        .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
+      const finish = () => {
+        if (current) {
+          props.release()
+        }
+      }
+      if (exit) {
+        void exit.finished.then(finish, finish)
+      } else {
+        finish()
+      }
+    })
   })
   onCleanup(stop)
 
   return (
     <div
-      class={classes(surface.surface, surface.panel, surface.withClose, styles.item)}
+      ref={(node) => {
+        card = node
+      }}
+      data-arriving=""
+      data-ended={props.entry.ended() || undefined}
+      inert={props.entry.ended()}
+      class={classes(surface.staticSurface, surface.withClose, styles.item)}
       data-type={props.entry.message().type}
       data-expiring={expiring() || undefined}
       onPointerEnter={() => {
@@ -182,7 +256,11 @@ function ToastItem(props: {
             size="sm"
             variant="outline"
             class={styles.action}
-            onClick={() => action().onClick()}
+            onClick={() => {
+              if (!props.entry.ended()) {
+                action().onClick()
+              }
+            }}
           >
             {action().label}
           </Button>

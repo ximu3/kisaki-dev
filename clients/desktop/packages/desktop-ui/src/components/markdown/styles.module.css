@@ -20,10 +20,23 @@
     flex: none;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.125rem;
-    padding: 0.25rem;
+    gap: 0;
+    padding: 0 0.125rem;
     border-bottom: 1px solid var(--border);
-    background: var(--input);
+    background: color-mix(in srgb, var(--muted) 60%, var(--input));
+    --kui-icon-size: 1.125rem;
+  }
+
+  .toolbar .command {
+    color: var(--muted-foreground);
+    transition: color var(--kui-hover-duration) ease;
+  }
+  .toolbar .command:hover:not(:disabled) {
+    background: transparent;
+    color: var(--foreground);
+  }
+  .toolbar .command:focus-visible {
+    outline-offset: -2px;
   }
 
   .source {

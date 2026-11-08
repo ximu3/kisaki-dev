@@ -7,33 +7,31 @@ import { closeWhenUnavailable } from '../field'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
+import type { SelectionPopup } from './popup'
 
 interface SelectionTriggerProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  listId: string
+  popup: SelectionPopup
   collection: SelectionCollection
   selected: readonly string[]
-  open: boolean
-  onOpenChange: (open: boolean) => void
   onChoose: (option: SelectionOption) => void
+  focusSearch?: (() => void) | undefined
 }
 
 /** Use with SelectionList. The owner decides whether a choice closes the list. */
 export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
   const [local, rest] = splitProps(props, [
-    'listId',
+    'popup',
     'collection',
     'selected',
-    'open',
-    'onOpenChange',
     'onChoose',
+    'focusSearch',
     'ref',
     'onClick',
     'onKeyDown',
-    'onBlur',
   ])
   let trigger!: HTMLButtonElement
   const show = () => {
-    local.onOpenChange(true)
+    local.popup.setOpen(true)
     const selected = local.selected.find((key) => {
       const item = local.collection.get(key)
       return item && !item.disabled
@@ -42,20 +40,21 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
   }
   closeWhenUnavailable(
     () => trigger,
-    () => local.onOpenChange(false),
+    () => local.popup.setOpen(false),
   )
 
   return (
     <button
       {...rest}
       type="button"
-      role="combobox"
-      aria-haspopup="listbox"
-      aria-expanded={local.open}
-      aria-controls={local.listId}
+      role={local.focusSearch ? undefined : 'combobox'}
+      popovertarget={local.popup.panelId}
+      aria-haspopup={local.focusSearch ? 'dialog' : 'listbox'}
+      aria-expanded={local.popup.open()}
+      aria-controls={local.focusSearch ? local.popup.panelId : local.popup.id}
       aria-activedescendant={
-        local.open && local.collection.active() !== undefined
-          ? optionId(local.listId, local.collection.active()!)
+        !local.focusSearch && local.popup.open() && local.collection.active() !== undefined
+          ? optionId(local.popup.id, local.collection.active()!)
           : undefined
       }
       ref={(node) => {
@@ -65,16 +64,13 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
-          if (local.open) {
-            local.onOpenChange(false)
+          event.preventDefault()
+          if (local.popup.open()) {
+            local.popup.setOpen(false)
           } else {
             show()
           }
         }
-      }}
-      onBlur={(event) => {
-        local.onOpenChange(false)
-        callHandler(local.onBlur, event)
       }}
       onKeyDown={(event) => {
         callHandler(local.onKeyDown, event)
@@ -84,15 +80,19 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
 
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
           event.preventDefault()
-          if (local.open) {
+          if (local.popup.open() && local.focusSearch) {
+            local.focusSearch()
+          } else if (local.popup.open()) {
             local.collection.move(event.key === 'ArrowDown' ? 1 : -1)
           } else {
             show()
           }
-        } else if (local.open && (event.key === 'Home' || event.key === 'End')) {
+        } else if (local.focusSearch) {
+          return
+        } else if (local.popup.open() && (event.key === 'Home' || event.key === 'End')) {
           event.preventDefault()
           local.collection.move(event.key === 'Home' ? 'first' : 'last')
-        } else if (local.open && (event.key === 'Enter' || event.key === ' ')) {
+        } else if (local.popup.open() && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault()
           const key = local.collection.active()
           if (key !== undefined) {
@@ -106,7 +106,7 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
           !event.metaKey
         ) {
           event.preventDefault()
-          if (!local.open) {
+          if (!local.popup.open()) {
             show()
           }
           local.collection.type(event.key)

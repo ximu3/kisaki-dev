@@ -47,17 +47,17 @@
     height: 0.5rem;
     border-radius: 50%;
     background: var(--primary);
-    scale: 0;
-    transition: scale 100ms ease;
+    opacity: 0;
   }
   .option:checked {
     border-color: var(--primary);
   }
   .option:checked::after {
-    scale: 1;
+    opacity: 1;
+    transition: opacity 100ms ease-out;
   }
   .option:focus-visible {
-    outline: 1px solid var(--ring);
+    outline: var(--kui-focus-width) solid var(--ring);
     outline-offset: 2px;
   }
   .option:disabled {
@@ -73,7 +73,7 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .option::after {
+    .option:checked::after {
       transition: none;
     }
   }

@@ -45,7 +45,7 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
     'ref',
   ])
 
-  const field = fieldAttributes()
+  const field = fieldAttributes(props, () => local.label)
   const name = createUniqueId()
   const [value, change] = createValue(
     () => local.value,
