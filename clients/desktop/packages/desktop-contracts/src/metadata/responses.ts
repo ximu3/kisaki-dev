@@ -18,6 +18,7 @@ import type {
 import type { MetadataRelations, MetadataRelationMembers } from './relations'
 import { DesktopError } from '../errors'
 import { identityKey, entryTypes } from '../library/catalog'
+import { tagNameKey } from '../library/organizers'
 import {
   identificationEntries,
   partIdentificationEntries,
@@ -123,8 +124,13 @@ function validateRequestedFields(
     }
   }
 
+  const tagRequest = request.objects?.tags
+  const tagKeys = tagRequest?.names && new Set(tagRequest.names.map(tagNameKey))
   for (const node of objects?.tags ?? []) {
-    fields(node, request.objects?.tags, ['name'])
+    const wanted = tagRequest && {
+      fields: !tagKeys || tagKeys.has(tagNameKey(node.name)) ? tagRequest.fields : [],
+    }
+    fields(node, wanted, ['name'])
   }
 
   for (const [relation, members] of Object.entries(relations ?? {})) {

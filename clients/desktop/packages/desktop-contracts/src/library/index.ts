@@ -247,6 +247,7 @@ export type {
 } from './organizers'
 
 export {
+  tagNameKey,
   parseCollectionQuery,
   parseTagQuery,
   parseCollectionCreate,

@@ -150,4 +150,5 @@ export function parseSearchResult(category: SearchCategory, input: unknown): Sea
 
   return value
 }
+
 export type { SearchTarget } from './ui/navigation'

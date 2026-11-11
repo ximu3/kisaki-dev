@@ -164,6 +164,8 @@ W24 按[发布前条件](../acceptance.md#pre-release-completion)核对固定候
 
 A23、A25 和 A31 按[发行身份](../../design/engineering/releases.md#release-identity)核对项目 manifest、Git tag、说明 URL 和 JSON。@kisaki3/desktop 生成 desktop@0.1.0 与 `/release-notes/desktop@0.1.0.json`，@kisaki3/extension-sdk 生成 extension-sdk@0.1.0 与对应地址；npm 包保留完整作用域。两个项目去掉作用域后重名时，发行检查在发布前失败；目录移动不改变地址，根工程和内部工具没有自己的发行项。
 
+自有桌面、公共包、官方扩展及独立项目的版本含 `+build.7` 时，发行准备明确拒绝；合法的 beta／rc 标识保持。构建来源由提交与制品摘要对应，manifest、Git tag、说明及平台登记的版本一致。第三方扩展的完整 SemVer 解析与相同优先级冲突规则继续成立。
+
 选择、元数据与失败场景在隔离发行样本和测试源中验证，W25 再按上一节核对正式渠道结果。
 
 私有桌面和官方扩展项目也保留 @kisaki3 作用域，同时设置 private: true。npm 发行清单只包含实际公开包，桌面与 .kisx 的 GitHub Release 交付分别按所属项目执行；不能由作用域推定项目需要发布到 npm。

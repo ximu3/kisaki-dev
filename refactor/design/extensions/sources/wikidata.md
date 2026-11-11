@@ -225,6 +225,6 @@ client 负责官方读取、缓存、分页与固定查询。classification 明�
 
 来源依据见[接口核验](../../../verification/evidence/reference-sources/live-api.md#wikidata)。验收覆盖多页反查、重定向、未知值、互相冲突的限定、取消、部分失败、真实小说卷与其他已知 Part refs，以及本体实际采用。
 
-默认预设中的名称、别名、适用语言、生平日期和外链按既定来源顺序采用。六份非游戏根预设的关联 Game.originalLanguages 不使用 Wikidata；沿其他有效来源采用，没有其他来源时保持不配置。四类作品的 workRelations.note 在其他有效来源后采用 Wikidata，保留其实际关系含义。
+默认预设中的名称、别名、适用语言、生平日期和外链按既定来源顺序采用。六份非游戏根预设的关联 Game.originalLanguages 不使用 Wikidata；沿其他有效来源采用，没有其他来源时保持不配置。四类作品的 workRelations.note 采用 Wikidata，保留其实际关系含义。
 
 默认预设不将 Wikidata 用于全部人员、图片或分部规则；真实目录与其他字段仍可由用户在自定义方案中选用。字段与粒度依据见[来源核验](../../../verification/evidence/reference-sources/live-api.md)。

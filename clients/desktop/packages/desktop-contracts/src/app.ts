@@ -198,16 +198,21 @@ const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Parse the application's release identity, using a separate build ID rather than SemVer build metadata. */
+export function parseApplicationVersion(input: unknown): string {
+  const version = parseExternalValue(parseVersion, input, 'Invalid application version')
+  if (version.includes('+')) {
+    throw new DesktopError('InvalidInput', 'Application versions cannot contain build metadata')
+  }
+
+  return version
+}
+
 /** Parse only the intentionally shareable environment fields, rejecting accidental private diagnostics. */
 export function parseApplicationEnvironment(input: unknown): ApplicationEnvironment {
   return parseValue(
     v.strictObject({
-      version: v.pipe(
-        v.unknown(),
-        v.transform((value) =>
-          parseExternalValue(parseVersion, value, 'Invalid application version'),
-        ),
-      ),
+      version: v.pipe(v.unknown(), v.transform(parseApplicationVersion)),
       operatingSystem: v.strictObject({ name: nonemptyText, version: nonemptyText }),
       architecture: v.picklist(['x64', 'arm64']),
     }),

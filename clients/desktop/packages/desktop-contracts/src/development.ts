@@ -13,6 +13,7 @@ import { parseExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
 import { parseViewDocument } from './ui/views'
+import { parseApplicationVersion } from './app'
 
 export const developmentProtocolId = 'kisaki.development'
 
@@ -89,6 +90,8 @@ const version = v.pipe(
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid development version')),
 )
 
+const appVersion = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
+
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
 const ref = v.strictObject({ extensionId, buildId: positiveInteger })
@@ -160,7 +163,7 @@ export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuil
 /** Accepted is handshake identity only; ready separately states whether the actual extension API exists. */
 export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
   return parseValue(
-    v.strictObject({ appVersion: version, buildId: id }),
+    v.strictObject({ appVersion, buildId: id }),
     input,
     'Invalid development acceptance',
   )
@@ -169,7 +172,7 @@ export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
 /** Validate the ready peer's build identity and available API version without treating readiness as application activation. */
 export function parseDevelopmentReady(input: unknown): DevelopmentReady {
   return parseValue(
-    v.strictObject({ appVersion: version, buildId: id, apiVersion: v.nullable(version) }),
+    v.strictObject({ appVersion, buildId: id, apiVersion: v.nullable(version) }),
     input,
     'Invalid development ready notification',
   )

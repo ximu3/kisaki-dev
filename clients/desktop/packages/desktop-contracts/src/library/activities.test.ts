@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 import { parseActivityCreate } from './activities'
 import { DesktopError } from '../errors'
 
-test('activity creation rejects future intervals and incompatible work context', () => {
+test('activity creation requires integer duration, past intervals and compatible work context', () => {
   const activity = { startedAt: 1000, endedAt: 5000, durationMs: 2000 }
 
   expect(() =>
@@ -14,6 +14,10 @@ test('activity creation rejects future intervals and incompatible work context',
   expect(
     parseActivityCreate({ work: { type: 'novel', id: 'n' }, ...activity }, 5000),
   ).not.toHaveProperty('context')
+
+  expect(() =>
+    parseActivityCreate({ work: { type: 'novel', id: 'n' }, ...activity, durationMs: 0.5 }, 5000),
+  ).toThrow(DesktopError)
 
   expect(() =>
     parseActivityCreate(

@@ -26,6 +26,7 @@ import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './ex
 import { parseMetadataProfileCreate } from './metadata/profiles'
 import { parseScanConfigCreate } from './scanner/configs'
 import { parseShowcaseFields, parseShowcaseChanges } from './library/showcase'
+import { parseApplicationVersion } from './app'
 
 export const onboardingGroups = Object.freeze([
   'preferences',
@@ -238,7 +239,7 @@ export function parseOnboardingState(input: unknown): OnboardingState {
     v.strictObject({
       firstPresentedAt: v.nullable(timestamp),
       firstCompletedAt: v.nullable(timestamp),
-      lastPresentedVersion: v.nullable(version),
+      lastPresentedVersion: v.nullable(v.pipe(v.unknown(), v.transform(parseApplicationVersion))),
       handled: v.pipe(
         v.unknown(),
         v.transform((value) => parseDictionary(id, handled, value)),

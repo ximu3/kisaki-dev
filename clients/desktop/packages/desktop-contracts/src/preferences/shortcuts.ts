@@ -181,6 +181,33 @@ export interface ShortcutConflict {
   readonly accelerator: string
 }
 
+/** Electron's shifted punctuation carries both the base key code and Shift, independently of its display spelling. */
+const shiftedKeyCodes = new Map(
+  Object.entries({
+    '!': '1',
+    '"': "'",
+    '#': '3',
+    $: '4',
+    '%': '5',
+    '&': '7',
+    '(': '9',
+    ')': '0',
+    '*': '8',
+    Plus: '=',
+    ':': ';',
+    '<': ',',
+    '>': '.',
+    '?': '/',
+    '@': '2',
+    '^': '6',
+    _: '-',
+    '{': '[',
+    '|': '\\',
+    '}': ']',
+    '~': '`',
+  }),
+)
+
 /** Compare potentially overlapping scopes even when no game is active; actual OS/layout registration remains a runtime result. */
 export function findShortcutConflicts(
   preferences: ShortcutsPreferences,
@@ -194,30 +221,31 @@ export function findShortcutConflicts(
 
     for (const accelerator of preferences[key].accelerators) {
       const parts = parseAccelerator(accelerator).split('+')
-      const code = parts.pop()!
+      const keyCode = parts.pop()!
       const effective = new Set(
-        parts.flatMap((part) => {
+        parts.map((part) => {
           if (part === 'CommandOrControl') {
-            return [platform === 'darwin' ? 'Command' : 'Control']
+            return platform === 'darwin' ? 'Super' : 'Control'
           }
-          if (part === 'Super' && platform === 'darwin') {
-            return ['Command']
+          if (part === 'Command') {
+            return 'Super'
           }
           if (part === 'Option') {
-            return platform === 'darwin' ? ['Alt'] : []
-          }
-          if (part === 'Command' && platform !== 'darwin') {
-            return []
+            return 'Alt'
           }
 
-          return [part]
+          return part
         }),
       )
+      const shiftedCode = shiftedKeyCodes.get(keyCode)
+      if (shiftedCode !== undefined) {
+        effective.add('Shift')
+      }
       active.push({
         key,
         scope: key.split('.')[0]!,
         accelerator,
-        identity: [...effective].sort().join('+') + ':' + code,
+        identity: [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode),
       })
     }
   }

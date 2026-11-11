@@ -13,6 +13,8 @@ import { hostTarget } from '../../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
+const invalidPaths = process.platform === 'win32' ? ['relative', '\\drive-rooted'] : ['relative']
+
 let directory: string
 
 beforeEach(async () => {
@@ -83,9 +85,9 @@ test('reports absent sources and rejects invalid paths before scheduling native 
   await expect(missingParent).rejects.toBeInstanceOf(FileMoveError)
   await expect(missingParent).rejects.toMatchObject({ reason: 'ioFailure' })
 
-  await expect(files.moveNoReplace('relative', join(directory, 'target'))).rejects.toThrow(
-    TypeError,
-  )
+  for (const path of invalidPaths) {
+    await expect(files.moveNoReplace(path, join(directory, 'target'))).rejects.toThrow(TypeError)
+  }
 })
 
 test('a cross-volume move fails without copying or deleting the source', async (context) => {
@@ -144,7 +146,11 @@ test('synchronizes existing regular files and reports missing or wrong-type path
   await expect(files.syncFile(join(directory, 'missing'))).rejects.toMatchObject({
     reason: 'pathMissing',
   })
-  await expect(files.syncFile('relative')).rejects.toBeInstanceOf(FileSyncError)
+  for (const path of invalidPaths) {
+    const result = files.syncFile(path)
+    await expect(result).rejects.toBeInstanceOf(FileSyncError)
+    await expect(result).rejects.toMatchObject({ reason: 'invalidArgument' })
+  }
 
   // Windows rejects deleting an open file: cleanup also proves the worker released its handle.
   await rm(path)

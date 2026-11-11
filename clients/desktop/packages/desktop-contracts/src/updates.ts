@@ -13,7 +13,7 @@ import {
   parseValue,
   timestamp,
 } from './validation'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseApplicationVersion } from './app'
 import { parseHttpUrl } from './network'
 import { parseErrorSummary, DesktopError } from './errors'
 import { parseTaskRunRef } from './tasks'
@@ -118,12 +118,7 @@ export interface UpdatesApi {
   installAndRestart(call?: CallOptions): Promise<void>
 }
 
-const version = v.pipe(
-  v.unknown(),
-  v.transform((value) =>
-    parseExternalValue(parseVersion, value, 'Invalid desktop release version'),
-  ),
-)
+const version = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
 
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
 
@@ -155,11 +150,7 @@ export function getDesktopReleaseVersion(tag: string): string | null {
   }
 
   try {
-    return parseExternalValue(
-      parseVersion,
-      tag.slice('desktop@'.length),
-      'Invalid desktop release tag',
-    )
+    return parseApplicationVersion(tag.slice('desktop@'.length))
   } catch (error) {
     if (error instanceof DesktopError && error.code === 'InvalidInput') {
       return null

@@ -143,7 +143,7 @@ export function timestamp(value: unknown, path: FieldPath): number {
 /** Require a lowercase SHA-256 hexadecimal digest. */
 export function sha256(value: unknown, path: FieldPath): string {
   const digest = string(value, path)
-  if (/^[a-f0-9]{64}$/.exec(digest)?.[0] !== digest) {
+  if (!/^[a-f0-9]{64}$/.test(digest)) {
     invalid(path, 'Expected a lowercase SHA-256 digest')
   }
 

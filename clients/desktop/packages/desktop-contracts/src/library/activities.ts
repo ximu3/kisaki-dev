@@ -4,7 +4,7 @@ import type { PartRef, WorkType, EntryRef, WorkRef } from './catalog'
 import type { WorkStatisticsScope } from './completions'
 import type { CalendarDate } from '../date'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
-import { timestamp, nonnegativeNumber, id, parseValue, text } from '../validation'
+import { timestamp, nonnegativeInteger, id, parseValue, text } from '../validation'
 import * as v from 'valibot'
 import { workRefSchema } from './catalog'
 import { DesktopError } from '../errors'
@@ -15,6 +15,7 @@ export interface ActivityTiming {
   readonly startedAt: number
   /** UTC milliseconds since the Unix epoch. */
   readonly endedAt: number
+  /** Nonnegative safe integer milliseconds, no greater than the interval length. */
   readonly durationMs: number
 }
 
@@ -167,7 +168,7 @@ export interface ActivitiesApi {
   ): Promise<ActivityStatistics>
 }
 
-const timingEntries = { startedAt: timestamp, endedAt: timestamp, durationMs: nonnegativeNumber }
+const timingEntries = { startedAt: timestamp, endedAt: timestamp, durationMs: nonnegativeInteger }
 
 const timingSchema = v.pipe(
   v.strictObject(timingEntries),

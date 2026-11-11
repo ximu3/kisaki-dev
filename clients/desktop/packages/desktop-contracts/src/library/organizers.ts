@@ -417,6 +417,11 @@ const tagEntrySchema = v.strictObject({
 
 const entryKey = (entry: EntryRef): string => JSON.stringify([entry.type, entry.id])
 
+/** Compute the locale-independent identity key for a validated tag name, preserving its display spelling separately. */
+export function tagNameKey(name: string): string {
+  return name.normalize('NFKC').trim().replace(/\s+/gu, ' ').toLowerCase()
+}
+
 /** Parse an organizer query without a visibility override or any entry-only fields. */
 export function parseCollectionQuery(input: unknown): CollectionQuery {
   return parseValue(

@@ -252,7 +252,7 @@ await session.read(
 )
 ```
 
-session.read(request, context) 返回 `Promise<MetadataReadResult<T>>`。objects.entry 选择根字段，relatedEntries 按 Entry 类型组织，parts 使用适用的 volume、chapter、episode 或 extra，tags 使用 names 和 nameKey。节点中的 fields 选择普通资料；相关 Entry 与 Part 还可以提供 refs。没有 refs 时，目标来自所请求关系的端点，或能够明确确定的 Entry 范围；依据不足应返回明确错误。空 refs 表示没有字段读取目标，但不影响另行请求的关系。
+session.read(request, context) 返回 `Promise<MetadataReadResult<T>>`。objects.entry 选择根字段，relatedEntries 按 Entry 类型组织，parts 使用适用的 volume、chapter、episode 或 extra。节点中的 fields 选择普通资料；相关 Entry 与 Part 通过 refs 限定字段读取对象，tags 通过 names 按[标签 nameKey 规则](../domains/collections-and-tags.md#tag-fields)限定，纯值函数由 desktop-contracts/library.tagNameKey 提供。未提供对象限定时，目标来自所请求关系的端点，或能够明确确定的 Entry 范围；依据不足应返回明确错误。空 refs 或 names 表示没有普通字段读取目标，不影响另行请求的关系及必要端点。
 
 关系项出现就表示请求该集合。fields: [] 仍要求返回必要端点和维度，省略关系项才表示不读取。读取明确 Part 的字段不要求来源拥有根记录或完整清单；返回清单则必须有真实来源依据。请求不携带本地库 ID、Profile、采用策略或用户记录。
 

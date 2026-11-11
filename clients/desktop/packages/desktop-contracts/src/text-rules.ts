@@ -33,7 +33,7 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
       },
     })
 
-    const source = `^(?:${pattern})(?![\\s\\S])`
+    const source = `^(?:${pattern})$`
     const flags = ignoreCase ? 'iu' : 'u'
     new RegExp(source, flags)
 

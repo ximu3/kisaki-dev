@@ -252,7 +252,7 @@ export function parse(input: string): DeeplinkRequest {
   const raw = /^([a-z][a-z0-9+.-]*):\/\/([^/?#]*)([^?#]*)(?:\?([^#]*))?(?:#([\s\S]*))?$/i.exec(
     source,
   )
-  if (!raw || raw[0] !== source) {
+  if (!raw) {
     invalid()
   }
 

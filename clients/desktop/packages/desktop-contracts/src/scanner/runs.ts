@@ -101,7 +101,8 @@ export interface ScanRunsApi {
   clear(
     filter?: {
       readonly scanConfigId?: string
-      /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */ readonly createdBefore?: number
+      /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
+      readonly createdBefore?: number
     },
     call?: CallOptions,
   ): Promise<number>

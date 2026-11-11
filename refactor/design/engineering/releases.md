@@ -28,7 +28,9 @@ package.json.version 是当前项目版本的唯一来源。扩展通过 package
 
 kisaki 表示产品与仓库，桌面发行名为 desktop。每个发行单位拥有仓库内唯一、稳定的发行名，使用小写 kebab-case。Node 项目从 package.json.name 去掉可选作用域后取得该名称，不另存一份手写别名；npm 发布仍使用完整包名。根工程、目录分类和内部工具不形成发行单位。
 
-Git 标签使用 `<发行名>@<完整 SemVer>`，保留预发布标识与 build metadata，不添加 v 或 npm 作用域。说明地址复用同一个完整 tag，见[静态说明](#metadata)。
+所有自有发行单位使用不含 build metadata（`+` 后缀）的 SemVer，预发布标识正常保留。npm 会在发布时移除 build metadata，统一约束使 manifest、Git、说明与发布平台保持同一版本身份；构建来源由固定提交和制品摘要记录。[npm 发布实现](https://github.com/npm/cli/blob/latest/workspaces/libnpmpublish/lib/publish.js)
+
+Git 标签使用 `<发行名>@<完整 SemVer>`，不添加 v 或 npm 作用域。CI 在发行准备前拒绝自有项目的 `+` 后缀，说明地址复用同一个完整 tag，见[静态说明](#metadata)。这项自有发行约束不收窄第三方扩展的完整 SemVer 输入合同。
 
 | 发行单位  | 项目包名               | 发行名        | Git tag 示例        |
 | --------- | ---------------------- | ------------- | ------------------- |
@@ -148,7 +150,7 @@ dist 的说明覆盖桌面应用、八个公共包和官方扩展，公共包包
 
 kisaki.me 是产品主入口，dist.kisaki.me 提供静态说明和索引。安装包、.kisx 和大型归档放在 Releases，公开库放在 npm，地址见 [公开入口](repository.md#application)。静态分发独立部署，各服务按实际需要选择部署平台；Web 产品范围遵守产品与仓库合同。
 
-说明 URL 统一为 `https://dist.kisaki.me/release-notes/<完整 tag>.json`。发行名和版本分别通过校验后拼成一个路径段，保留 tag 中的 @、点、连字符和加号；地址不包含 npm 作用域、额外平台目录或语言后缀。
+说明 URL 统一为 `https://dist.kisaki.me/release-notes/<完整 tag>.json`。发行名和版本分别通过校验后拼成一个路径段，保留 tag 中的 @、点和连字符；地址不包含 npm 作用域、额外平台目录或语言后缀。
 
 ```text
 /release-notes/desktop@0.1.0.json

@@ -54,7 +54,7 @@
 5. FFmpeg／ffprobe 6.1.1 生成并读取实际 64×64 视频，时间轴为 2 秒；1.25 秒续播合法，默认 0／0 不清空位置，越界与不一致 total 不被缩放。配对覆盖同 basename、新多集后缀、多个媒体候选和同一文件的不同续播点。
 6. 全部 20 个输入文件在验证前后与 manifest 的 SHA-256 一致。
 
-结果共 **101 项通过**，详见 [synthetic-results.json](synthetic-results.json)。这些是格式与语义探针，未运行 Kodi／ComicRack，也未执行 Kisaki 的 profile 新增、prepared 文件采用、附件、Note、Annotation 或播放器打开。
+结果共 **101 项通过**，详见 [synthetic-results.json](synthetic-results.json)。这些是格式与语义探针，未运行 Kodi／ComicRack，也未执行 Kisaki 的作品新增、来源资料采用、附件、Note、Annotation 或播放器打开。
 
 <a id="reproduce"></a>
 

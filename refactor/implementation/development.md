@@ -92,7 +92,7 @@ pnpm desktop:package:fixture --target windows-x64
 
 桌面公共包各自提供 build、pack、check:package、test:consumers 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 通过 Turbo 调度各包的消费者任务，自动接续构建、一次打包、制品检查和仓库外消费。 UI 与 RPC 消费者共享桌面工程的 `prepare:electron` 前置任务，运行时就绪后并行验证。
 
-用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
+用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。普通 CI 将影响分析选中的包传给实际消费者任务；完整检查入口执行全部公共包。
 
 pack 的输入由已声明的 build 依赖，以及包元数据、许可和发行说明组成。公共依赖的产品变化会接续下游消费者验证；测试样板和测试配置仍只影响其所属消费者，不成为下游制品输入。
 

@@ -41,6 +41,7 @@ jobs:
       artifacts: ${{ steps.affected.outputs.artifacts }}
       tooling: ${{ steps.affected.outputs.tooling }}
       consumers: ${{ steps.affected.outputs.consumers }}
+      consumer-packages: ${{ steps.affected.outputs.consumer-packages }}
       selected: ${{ steps.affected.outputs.selected }}
       matrix: ${{ steps.affected.outputs.matrix }}
     env:
@@ -152,15 +153,20 @@ jobs:
           if [[ "$tooling" == true ]]; then requiresAllTargets=true; fi
 
           consumers="$complete"
+          consumerPackages='[]'
           if [[ "$complete" == false ]]; then
-            consumers=$(jq -r '
-              any(.data.affectedTasks.items[];
+            consumerPackages=$(jq -c '[
+              .data.affectedTasks.items[] | select(
                 .command != null and
                 .name == "test:consumers" and
-                (.package.path | startswith("clients/desktop/packages/")))
+                (.package.path | startswith("clients/desktop/packages/"))) |
+              .package.name
+            ] | unique
             ' "$report")
+            consumers=$(jq -r 'length > 0' <<< "$consumerPackages")
           fi
           echo "consumers=$consumers" >> "$GITHUB_OUTPUT"
+          echo "consumer-packages=$consumerPackages" >> "$GITHUB_OUTPUT"
 
           if [[ "$requiresAllTargets" == true ]]; then
             matrix=$(jq -c . <<< "$TARGETS")
@@ -242,7 +248,16 @@ jobs:
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
       - name: Test public package consumers
         if: needs.select.outputs.consumers == 'true' && matrix.target == 'linux-x64'
-        run: xvfb-run --auto-servernum pnpm desktop:test:consumers
+        shell: bash
+        env:
+          COMPLETE: ${{ needs.select.outputs.complete }}
+          CONSUMER_PACKAGES: ${{ needs.select.outputs.consumer-packages }}
+        run: |
+          filters=('--filter=./clients/desktop/packages/*')
+          if [[ "$COMPLETE" == false ]]; then
+            mapfile -t filters < <(jq -r '.[] | "--filter=\(.)"' <<< "$CONSUMER_PACKAGES")
+          fi
+          xvfb-run --auto-servernum pnpm exec turbo run test:consumers "${filters[@]}"
       - name: Test tooling
         if: needs.select.outputs.tooling == 'true'
         run: pnpm --filter @kisaki3/tooling test --reporter=default --reporter=json --outputFile=test-results/results.json

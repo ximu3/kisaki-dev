@@ -28,7 +28,7 @@
 
 ## 对方案的影响
 
-- 新作品统一经 profile／initial，所选来源资料随后 prepared 更新；内部 ID 与 MD5 不创建公开身份。
+- 内部 ID 与 MD5 不创建公开身份；新作品与所选资料按[导入合同](../../../design/extensions/importers/anx.md#identity)采用。
 - 评分是本人五分尺度。98% 来源已读判定用于最低完成事实：整部 Work 仅初始化空历史，Part 只设标记，日期未知；库成员和分组不推断喜爱或当前安排。
 - 按日存储的秒数可以先汇总，再作为无日期附加时长采用；不能因为 getter 叫 startedAt 就生成 Activity，也不另建概况笔记。
 - 标签必须读取 tb_styles 的已声明标记，普通字体行排除；关系浮点数不能随意截断。层级组转为带完整可读路径的平面合集，只有直接书籍成员。
@@ -80,10 +80,12 @@
 
 ## 复现与限度
 
-在仓库根使用已有 Python 与 Node 运行 source-probe.py、build-fixture.py、verify.py；CFI 探针使用：
+复现使用仓库外的隔离副本，保留本主题相对根目录的层次，并在该根目录安装固定的 `fflate@0.8.3` 与 `@xmldom/xmldom@0.8.11`：`pnpm add --ignore-scripts --save-exact fflate@0.8.3 @xmldom/xmldom@0.8.11`。脚本输出留在副本中，当前工作区依赖不代替这次核验的版本。
+
+在隔离副本根目录使用已有 Python 与 Node 运行 source-probe.py、build-fixture.py、verify.py；CFI 探针使用：
 
     node --experimental-vm-modules refactor/verification/evidence/anx-importer/verify-cfi.mjs
 
-Python 使用已提供的 SQLite、Pillow 和 pypdf，Node 使用仓库现有的 fflate 与 xmldom；没有为本次安装依赖。源码探针保存来源收据及派生合同，不在仓库复制整份应用源码。正式扩展必须独立交付依赖，不沿用探针的联网加载或实验性 VM 运行方式。
+Python 使用 SQLite、Pillow 和 pypdf；本次原始核验复用了当时已有的依赖，没有修改工作区依赖。源码探针保存来源收据及派生合同，不在仓库复制整份应用源码。正式扩展必须独立交付依赖，不沿用探针的联网加载或实验性 VM 运行方式。
 
 当前共 108 项检查属于格式、数据模块与采用模型验证。真实 schema 7 副本、完整编码与资源边界、源库一致性、完整 CFI 与源正文变化、平台路径、实际原生新增／更新、附加时长和整理、附件、标注与笔记、取消及六平台制品，仍按方案独立验收。

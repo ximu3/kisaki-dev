@@ -16,7 +16,7 @@ updates 负责发现和选择应用发布版本、检查更新、准备下载，
 
 ## 发布发现与制品选择
 
-应用更新只接受精确匹配 desktop@<合法 SemVer> 的标签，发行名遵守[统一规则](../engineering/releases.md#release-identity)。发现过程须处理足够的候选及分页，排除 draft，根据用户偏好筛选预发布，并核对发布元信息。最终从允许范围中选择高于当前版本的最高版本，不隐式降级。GitHub Latest、Atom 的第一项以及同仓其他包或工具的发布时间，都不能决定应用版本。
+应用更新只接受精确匹配 desktop@<桌面发行版本> 的标签，版本与发行名遵守[统一规则](../engineering/releases.md#release-identity)。发现过程须处理足够的候选及分页，排除 draft，根据用户偏好筛选预发布，并核对发布元信息。最终从允许范围中选择高于当前版本的最高版本，不隐式降级。GitHub Latest、Atom 的第一项以及同仓其他包或工具的发布时间，都不能决定应用版本。
 
 候选制品必须匹配系统版本、平台、架构和当前分发载体。inApp 使用已选 release 的准确资产目录与目标通道，交给 electron-updater 的 generic feed，复用其下载、校验、缓存和安装能力。执行器不能再通过 GitHub 自动挑选另一发布族。manual 则提供对应制品的下载入口。不同载体的规则见[构建交付](../engineering/build.md)。
 

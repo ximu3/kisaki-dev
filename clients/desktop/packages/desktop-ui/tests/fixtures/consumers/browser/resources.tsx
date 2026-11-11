@@ -153,7 +153,10 @@ export default function Resources(): JSX.Element {
         >
           Update chart
         </Button>
-        <Chart label="Sample series" summary="Three observations, shown as several chart marks.">
+        <Chart
+          label="Sample series"
+          summary={`${data().length} observations, shown as several chart marks.`}
+        >
           <XYContainer
             data={data()}
             height={220}
@@ -191,7 +194,7 @@ export default function Resources(): JSX.Element {
           ]}
           onToggle={() => setSelected(!selected())}
         />
-        <Chart label="Distribution" summary="Values are grouped into three segments.">
+        <Chart label="Distribution" summary={`Values are grouped into ${data().length} segments.`}>
           <SingleContainer data={data()} height={160} duration={0}>
             <Donut value={(item: { y: number }) => item.y} />
           </SingleContainer>

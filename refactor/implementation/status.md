@@ -4,7 +4,7 @@
 
 ## 实施进展
 
-截至 2026-11-07，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-11，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 11 个项目（含根工程）。产品能力按下表工作包实施。
 
@@ -21,6 +21,8 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 完整产品、签署、公证、安装升级、系统支持下限和主要后端验收仍待完成。npm、正式下载、更新索引及生产服务尚未发布。各对象按[验收标准](../verification/acceptance.md)登记自己的结果。
 
 工程维护仍有[四条依赖安全公告](../verification/evidence/w00/dependencies.md)待处理，涉及 extract-zip、glob 和 minimatch。现有检查通过不表示这些依赖问题已经修复。
+
+现行设计与已交付实现已完成跨模块复核，合同、输入归属、原生错误、请求范围和编辑边界的修正通过本机常规检查及公共包消费验证。[复核记录](../verification/evidence/project-review/README.md)说明覆盖、判断依据、实际验证与保留的未完成范围。
 
 <a id="progress"></a>
 

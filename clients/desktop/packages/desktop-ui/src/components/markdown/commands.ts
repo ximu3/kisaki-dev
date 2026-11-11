@@ -62,7 +62,7 @@ export function runMarkdownCommand(view: EditorView, command: MarkdownCommand): 
       command
     ]
     const from = view.state.doc.lineAt(range.from).from
-    const to = view.state.doc.lineAt(range.to).to
+    const to = view.state.doc.lineAt(range.empty ? range.to : range.to - 1).to
     const lines = view.state.sliceDoc(from, to).split('\n')
     const remove = lines.every((line) => line.startsWith(prefix))
 
