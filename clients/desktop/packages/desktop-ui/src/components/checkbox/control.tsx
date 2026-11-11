@@ -6,7 +6,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
 import type { CheckedValueProps } from '../../internal/checked-control'
-import { Icon, mdiCheck, mdiMinus } from '../../internal/icon/icon'
+import { Icon, mdiCheck, mdiMinus } from '../../internal/icon/glyph'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 

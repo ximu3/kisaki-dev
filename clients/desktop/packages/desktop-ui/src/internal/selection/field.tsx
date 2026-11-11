@@ -14,7 +14,7 @@ import {
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../dom'
 import { fieldAttributes } from '../field'
-import { Icon, mdiChevronDown, mdiUnfoldMoreHorizontal } from '../icon/icon'
+import { Icon, mdiChevronDown, mdiUnfoldMoreHorizontal } from '../icon/glyph'
 import { createValue, onFormReset } from '../state'
 import { SelectedChips } from './chips'
 import type { ChipLabels } from './chips'

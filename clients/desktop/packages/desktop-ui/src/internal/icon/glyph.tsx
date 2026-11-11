@@ -1,4 +1,4 @@
-/** @fileoverview Shared outline icon geometry and status symbols from Material Design Icons. */
+/** @fileoverview Shared outline glyph geometry and status symbols from Material Design Icons. */
 
 import {
   mdiAlertCircleOutline,

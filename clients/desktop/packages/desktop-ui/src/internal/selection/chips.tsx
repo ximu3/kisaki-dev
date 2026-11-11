@@ -2,7 +2,7 @@
 
 import { createSignal, For, onCleanup, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { Icon, mdiChevronLeft, mdiChevronRight, mdiClose } from '../icon/icon'
+import { Icon, mdiChevronLeft, mdiChevronRight, mdiClose } from '../icon/glyph'
 import styles from './chips.module.css'
 
 /** Labels describe removing a particular value or revealing selected values in either direction. */

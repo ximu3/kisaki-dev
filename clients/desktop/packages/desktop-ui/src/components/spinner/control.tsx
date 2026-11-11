@@ -3,7 +3,7 @@
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
-import { Icon, mdiLoading } from '../../internal/icon/icon'
+import { Icon, mdiLoading } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /** The label supplies the accessible status; omit it for a decorative indicator beside existing text. */

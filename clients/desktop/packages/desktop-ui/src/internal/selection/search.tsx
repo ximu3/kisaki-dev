@@ -2,7 +2,7 @@
 
 import { createEffect, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { Icon, mdiMagnify } from '../icon/icon'
+import { Icon, mdiMagnify } from '../icon/glyph'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionOption } from './types'

@@ -13,7 +13,7 @@ import {
 } from 'solid-js'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../internal/dom'
-import { Icon, mdiClose } from '../../internal/icon/icon'
+import { Icon, mdiClose } from '../../internal/icon/glyph'
 import { createValue } from '../../internal/state'
 import { registerModal } from '../../internal/modal-host'
 import { createPresentation } from '../../internal/popup/presentation'

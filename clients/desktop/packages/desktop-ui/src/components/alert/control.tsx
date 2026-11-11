@@ -3,7 +3,7 @@
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
-import { StatusIcon } from '../../internal/icon/icon'
+import { StatusIcon } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /** Tone and announcement are separate; choose role=alert only for an urgent new message. */

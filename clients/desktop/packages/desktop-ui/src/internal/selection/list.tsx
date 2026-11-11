@@ -3,7 +3,7 @@
 import { createEffect, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
-import { Icon, mdiCheck } from '../icon/icon'
+import { Icon, mdiCheck } from '../icon/glyph'
 import { createPopup } from '../popup/controller'
 import { displayedWhileOpen } from '../popup/presentation'
 import type { SelectionPopup } from './popup'

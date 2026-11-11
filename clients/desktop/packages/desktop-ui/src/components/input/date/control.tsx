@@ -13,7 +13,7 @@ import {
 import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
-import { Icon, mdiCalendarOutline } from '../../../internal/icon/icon'
+import { Icon, mdiCalendarOutline } from '../../../internal/icon/glyph'
 import { createPresentation } from '../../../internal/popup/presentation'
 import { createValue, onFormReset } from '../../../internal/state'
 import { InputFrame } from '../frame'

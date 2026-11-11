@@ -3,7 +3,7 @@
 import { createEffect, createMemo, createSignal, For, on, onMount, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../../internal/dom'
-import { Icon, mdiChevronLeft, mdiChevronRight } from '../../../internal/icon/icon'
+import { Icon, mdiChevronLeft, mdiChevronRight } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
 import { displayedWhileOpen } from '../../../internal/popup/presentation'
 import frame from '../../../internal/popup/surface.module.css'

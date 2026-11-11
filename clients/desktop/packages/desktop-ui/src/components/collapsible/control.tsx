@@ -4,7 +4,7 @@ import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
-import { Icon, mdiChevronRight } from '../../internal/icon/icon'
+import { Icon, mdiChevronRight } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /** name opts into native exclusive grouping; summary is the focusable disclosure label. */

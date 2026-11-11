@@ -20,7 +20,7 @@ import {
   mdiUndo,
 } from '@mdi/js'
 import { createFocusNavigation } from '../../internal/focus'
-import { Icon } from '../../internal/icon/icon'
+import { Icon } from '../../internal/icon/glyph'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
 import { runMarkdownCommand } from './commands'
 import type { MarkdownCommand } from './commands'
