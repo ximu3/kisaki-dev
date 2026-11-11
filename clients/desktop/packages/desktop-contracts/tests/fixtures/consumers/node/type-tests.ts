@@ -1,7 +1,13 @@
 /** @fileoverview Checks consumer-visible correlations and forbidden combinations; the functions are never executed. */
 
 import type { PartialDate } from '@kisaki3/desktop-contracts/date'
-import type { LibraryApi, EntryCreateInput } from '@kisaki3/desktop-contracts/library'
+import type {
+  LibraryApi,
+  EntryCreateInput,
+  ShowcaseApi,
+  ShowcaseFields,
+  ShowcaseSection,
+} from '@kisaki3/desktop-contracts/library'
 import type { MetadataReadRequest } from '@kisaki3/desktop-contracts/metadata'
 import type {
   AnimeSessionsApi,
@@ -26,6 +32,32 @@ interface ExampleViewMethods {
 
 interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
+}
+
+/** Saved sections and explicit creation batches use the same complete fields as onboarding. */
+export async function checkShowcase(showcase: ShowcaseApi, initial: ShowcaseFields): Promise<void> {
+  const created = await showcase.create(initial)
+  const saved = await showcase.update(created.id, {
+    changes: { name: 'Updated section' },
+    expected: { name: created.name },
+  })
+  const section: ShowcaseSection | null = await showcase.get(saved.id)
+  const batch: readonly ShowcaseSection[] = await showcase.createMany([initial, initial])
+
+  await showcase.reorder({
+    order: [saved.id, 'another-section'],
+    expected: { order: ['another-section', 'hidden-section', saved.id] },
+  })
+  await showcase.delete(saved.id)
+
+  const apply: OnboardingApplyInput = {
+    group: 'showcase',
+    items: [{ itemId: 'collections', expectedHandled: null, input: initial }],
+  }
+
+  void section
+  void batch
+  void apply
 }
 
 /** Named interface contracts work without index signatures; optional and required inputs keep their own call shape. */

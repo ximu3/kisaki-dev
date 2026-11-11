@@ -52,7 +52,7 @@ definition 的规则如下：
 
 引用的资料方案必须存在且类型匹配。配置可以通过 recognizerId 明确选择多个识别器，算法设置由扩展管理。每个识别器取得内容相同的只读基础线索，其结果保留实现归属，不接力改写候选，也不调用所有已注册识别器。作品候选的基础名称提取是扫描配置自身的原生能力，不建立另一套扫描识别方案；已有作品内部的[文件识别方案](file-recognition/README.md#recognition-profiles)由 holdings 管理。
 
-scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围内使用相同的管理语义。
+scanner.configs 提供以下管理方法。metadata.profiles 和文件识别方案在自己的范围内使用相同的管理语义。管理列表展示正式配置，单项表单保存直接完成 create 或 update，列表提供的删除、启停和重排各自提交；关闭列表保留已完成结果。定义内部的规则、条件与有序列表属于该配置草稿，局部字段编辑确认后随配置一起保存，遵守[共同编辑边界](../ui/state.md#editing-units)。
 
 | 方法              | 输入与返回                                                            |
 | ----------------- | --------------------------------------------------------------------- |
@@ -61,9 +61,9 @@ scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围�
 | create(input)     | 返回实际保存的新配置                                                  |
 | update(id, input) | input 包含 changes 与可选 expected；返回修改后的完整配置              |
 | delete(id)        | 完成符合所属业务引用规则的删除，返回 void                             |
-| reorder(input)    | 按排序范围与移动意图完成重排，返回 void                               |
+| reorder(input) | 按完整原顺序基线重排指定配置，返回 void |
 
-配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 接收实际排序范围与移动意图，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
+配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 使用[完整顺序基线与子集槽位](library/write/contracts.md#membership)，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
 
 update 只提交实际 changes。definition 作为整体校验并替换，不执行隐含的深层合并。expected 遵守[字段基线](library/write/README.md)合同。
 

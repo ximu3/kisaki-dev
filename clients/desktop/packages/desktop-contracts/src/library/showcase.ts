@@ -1,8 +1,9 @@
-/** @fileoverview Defines saved showcase sections, atomic form changes and the ten independent preset configurations. */
+/** @fileoverview Defines independently saved showcase sections, explicit batch creation and fixed preset configurations. */
 
 import type { QueryReferenceLabel, EntryQuery } from './query/definition'
 import type { CollectionQuery, TagQuery } from './organizers'
-import type { StoredDefinition, CallOptions } from '../operations'
+import type { NonEmptyArray, StoredDefinition, CallOptions } from '../operations'
+import type { ReorderInput } from './ordering'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import {
   readRecord,
@@ -10,14 +11,11 @@ import {
   nonemptyText,
   positiveInteger,
   optionalFields,
-  id,
-  unique,
   validateExpectedKeys,
 } from '../validation'
 import * as v from 'valibot'
 import { parseCollectionQuery, parseTagQuery } from './organizers'
 import { parseEntryQuery, parseQueryReferenceLabels } from './query/definition'
-import { DesktopError } from '../errors'
 
 /** Query kind selects an existing public reader. Showcase never owns a second query engine or membership set. */
 export type ShowcaseQuery =
@@ -52,30 +50,10 @@ export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly updatedAt: number
 }
 
-export type ShowcaseSectionRef = { readonly id: string } | { readonly key: string }
-
-/** Each form change is one atomic configuration operation. Full order includes hidden sections. */
-export interface ShowcaseChanges {
-  readonly create?: readonly { readonly key: string; readonly data: ShowcaseFields }[]
-
-  readonly update?: readonly {
-    readonly id: string
-    readonly changes: Partial<ShowcaseFields>
-    readonly expected?: Partial<ShowcaseFields>
-  }[]
-
-  /** Form deletion compares the complete original configuration. An explicit immediate delete may omit it. */
-  readonly delete?: readonly { readonly id: string; readonly expected?: ShowcaseFields }[]
-
-  readonly order?: {
-    readonly items: readonly ShowcaseSectionRef[]
-    readonly expected: readonly string[]
-  }
-}
-
-export interface ShowcaseChangeResult {
-  readonly sections: readonly ShowcaseSection[]
-  readonly created: Readonly<Record<string, string>>
+/** Query is one edit unit; title and display fields have independent baselines. */
+export interface ShowcaseUpdate {
+  readonly changes: Partial<ShowcaseFields>
+  readonly expected?: Partial<ShowcaseFields>
 }
 
 export interface ShowcasePreset {
@@ -94,17 +72,35 @@ export interface ShowcaseApi {
    */
   list(call?: CallOptions): Promise<readonly ShowcaseSection[]>
 
+  /** Read one saved configuration, retaining an invalid stored query explicitly. */
+  get(id: string, call?: CallOptions): Promise<ShowcaseSection | null>
+
   /**
    * Read the fixed preset configurations for copying into a draft; listing never creates
    * sections.
    */
   listPresets(call?: CallOptions): Promise<readonly ShowcasePreset[]>
 
+  /** Save a new independent section at the end of the directory. */
+  create(input: ShowcaseFields, call?: CallOptions): Promise<ShowcaseSection>
+
   /**
-   * Compare and commit all submitted section changes and full-order intent atomically; return
-   * the saved sections and created identities.
+   * Atomically append an explicit batch and return saved sections in input order. Equal
+   * configurations remain independent.
    */
-  applyChanges(input: ShowcaseChanges, call?: CallOptions): Promise<ShowcaseChangeResult>
+  createMany(
+    input: NonEmptyArray<ShowcaseFields>,
+    call?: CallOptions,
+  ): Promise<readonly ShowcaseSection[]>
+
+  /** Compare and commit changed fields without depending on unrelated directory ordering. */
+  update(id: string, input: ShowcaseUpdate, call?: CallOptions): Promise<ShowcaseSection>
+
+  /** Remove the section configuration; library content keeps its own lifetime. */
+  delete(id: string, call?: CallOptions): Promise<void>
+
+  /** Reorder selected sections against the complete saved directory baseline, including hidden sections. */
+  reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 }
 
 /** Parse the selected reader's exact query and keep reference labels out of execution parameters. */
@@ -144,63 +140,20 @@ export function parseShowcaseFields(input: unknown): ShowcaseFields {
   return parseValue(v.strictObject(fields), input, 'Invalid showcase configuration')
 }
 
-/** Reject contradictory edits and unresolved create keys before any persistent work. Current order is checked at commit. */
-export function parseShowcaseChanges(input: unknown): ShowcaseChanges {
+/** Validate an explicit nonempty creation batch without merging equal configurations. */
+export function parseShowcaseCreateMany(input: unknown): NonEmptyArray<ShowcaseFields> {
+  const section = v.strictObject(fields)
+  return parseValue(v.tupleWithRest([section], section), input, 'Invalid showcase creation batch')
+}
+
+/** Ordinary editing compares only changed fields; query and its reference labels are one complete value. */
+export function parseShowcaseUpdate(input: unknown): ShowcaseUpdate {
   const partial = v.strictObject(optionalFields(fields))
   const value = parseValue(
-    v.strictObject({
-      create: v.exactOptional(
-        v.pipe(
-          v.array(v.strictObject({ key: id, data: v.strictObject(fields) })),
-          v.check((items) => unique(items, (item) => item.key)),
-        ),
-      ),
-      update: v.exactOptional(
-        v.pipe(
-          v.array(v.strictObject({ id, changes: partial, expected: v.exactOptional(partial) })),
-          v.check((items) => unique(items, (item) => item.id)),
-        ),
-      ),
-      delete: v.exactOptional(
-        v.pipe(
-          v.array(v.strictObject({ id, expected: v.exactOptional(v.strictObject(fields)) })),
-          v.check((items) => unique(items, (item) => item.id)),
-        ),
-      ),
-      order: v.exactOptional(
-        v.strictObject({
-          items: v.pipe(
-            v.array(v.union([v.strictObject({ id }), v.strictObject({ key: id })])),
-            v.check((refs) => unique(refs, (ref) => JSON.stringify(ref))),
-          ),
-          expected: v.pipe(
-            v.array(id),
-            v.check((ids) => unique(ids, (value) => value)),
-          ),
-        }),
-      ),
-    }),
+    v.strictObject({ changes: partial, expected: v.exactOptional(partial) }),
     input,
-    'Invalid showcase changes',
+    'Invalid showcase edit',
   )
-
-  const removed = new Set(value.delete?.map((item) => item.id))
-  const created = new Set(value.create?.map((item) => item.key))
-  for (const update of value.update ?? []) {
-    if (removed.has(update.id)) {
-      throw new DesktopError('InvalidInput', 'A section cannot be edited and deleted together')
-    }
-    validateExpectedKeys(update.changes, update.expected)
-  }
-
-  if (
-    value.order?.items.some((ref) => ('key' in ref ? !created.has(ref.key) : removed.has(ref.id)))
-  ) {
-    throw new DesktopError(
-      'InvalidInput',
-      'Final showcase order contains a missing create key or a removed section',
-    )
-  }
-
+  validateExpectedKeys(value.changes, value.expected)
   return value
 }

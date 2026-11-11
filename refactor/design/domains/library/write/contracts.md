@@ -41,7 +41,7 @@
 | 备份备注修改                                                     | 只比较 note；lock／unlock 是当前意图，不接受快照。恢复处理使用独立 inspect basis，不套用普通字段 expected                                                                             |
 | metadata.profiles、scanner.configs、文件识别方案                 | 名称和其他可编辑独立字段分别比较，definition 整体比较；MetadataProfile 设置 isDefault: true 另允许 defaultProfileId，见[默认方案](../../metadata/profiles.md)                         |
 | preferences.update                                               | 只允许本次修改的正式配置字段；数组、选择引用和完整凭据按[偏好合同](../../preferences.md)作为相应单位，凭据只比较读取状态／revision                                                    |
-| showcase.applyChanges                                            | 修改项只比较 name、query、layout、itemSize、limit、openMode、isVisible 的实际修改项，query 整体比较；表单删除按本区块完整原配置比较，最终排列核对完整原顺序，不能把可见区块片段当全集 |
+| showcase.update | 只比较 name、query、layout、itemSize、limit、openMode、isVisible 的实际修改项，query 整体比较；重排另按共同排列合同核对包含隐藏区块的完整原顺序 |
 | appearance 的主题保存与选用                                      | 名称与分支 token 按实际修改比较，整体替换分支时比较该分支完整原值；条件选用只比较正式主题选择引用。保存成功但选用失败保留已保存主题                                                   |
 
 外部身份、标签、手动合集等集合的“完整”，指该编辑范围的正式事实，包含普通隐藏的关联；普通列表片段、搜索结果和读到的一页不能作为替换基线。没有编辑这些集合时，不要求查询它们，也不阻止其他字段保存。
@@ -61,11 +61,13 @@ annotations 的 target 将需要共同核对的字段组成一个比较单位。
 
 activities 的时间区间与真实上下文共同决定这条事实描述哪次活动，因此整组核对。会话写入和最终快照重试使用会话已有的运行顺序及保存基线，不通过普通补录接口绕过这些约束。
 
-create 默认不接收 expected；完成记录数量、默认 MetadataProfile 与引导采用是各自明确的例外。除 showcase 表单删除的明确原配置外，delete 不接收 expected；merge、bind／unbind 外部身份、即时增减成员、运行控制和普通读取不接受通用 expected。writeGraph 的普通更新复用本表相应合同；[关系范围采用](graph.md#relations)另外只核对本次明确删除的完整关系快照，修改项仍使用相应 update.expected，不追加图级 revision，也不把其他图节点的任意字段变成条件。
+create 默认不接收 expected；完成记录数量、默认 MetadataProfile 与引导采用是各自明确的例外。delete 不接收 expected；merge、bind／unbind 外部身份、即时增减成员、运行控制和普通读取不接受通用 expected。writeGraph 的普通更新复用本表相应合同；[关系范围采用](graph.md#relations)另外只核对本次明确删除的完整关系快照，修改项仍使用相应 update.expected，不追加图级 revision，也不把其他图节点的任意字段变成条件。
 
 <a id="membership"></a>
 
 ## 关联修改与排列的输入
+
+独立关联管理入口的增减、单项属性编辑和重排各自完成正式提交，管理列表不另设总保存。作为 Entry、Note 等对象表单字段编辑的关联集合，使用该对象的同一份草稿与完整保存操作。明确的批量关联调整按本次选择范围一次提交，遵守[编辑对象与保存边界](../../../ui/state.md#editing-units)。
 
 Entry 中的标签关联值为 `{ tagId, note, isSpoiler }`，手动合集关联值为 `{ collectionId, note }`；标签数组顺序表示当前 Entry 这一侧的顺序；条目的合集集合不具有独立排列，展示始终沿用合集全局顺序。空备注为 null。初始创建可以省略 note／isSpoiler，分别采用 null／false；已保存值与 expected 使用完整形状。合集成员侧使用 `{ entry: EntryRef, note }`，标签应用侧使用 `{ entry: EntryRef, note, isSpoiler }`。
 

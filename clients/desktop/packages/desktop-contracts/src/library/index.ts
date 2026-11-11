@@ -572,14 +572,17 @@ export type {
   ShowcaseQuery,
   ShowcaseFields,
   ShowcaseSection,
-  ShowcaseSectionRef,
-  ShowcaseChanges,
-  ShowcaseChangeResult,
+  ShowcaseUpdate,
   ShowcasePreset,
   ShowcaseApi,
 } from './showcase'
 
-export { parseShowcaseQuery, parseShowcaseFields, parseShowcaseChanges } from './showcase'
+export {
+  parseShowcaseQuery,
+  parseShowcaseFields,
+  parseShowcaseCreateMany,
+  parseShowcaseUpdate,
+} from './showcase'
 
 export type {
   EntryIdentitySnapshot,

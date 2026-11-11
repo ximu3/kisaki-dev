@@ -25,7 +25,7 @@ import { parsePreferencesUpdate } from './preferences/api'
 import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
 import { parseMetadataProfileCreate } from './metadata/profiles'
 import { parseScanConfigCreate } from './scanner/configs'
-import { parseShowcaseFields, parseShowcaseChanges } from './library/showcase'
+import { parseShowcaseFields } from './library/showcase'
 import { parseApplicationVersion } from './app'
 
 export const onboardingGroups = Object.freeze([
@@ -99,7 +99,7 @@ export interface OnboardingInputMap {
   readonly extensions: { readonly source: OnboardingExtensionSource; readonly enabled?: boolean }
   readonly metadataProfiles: MetadataProfileCreate & { readonly isDefault: boolean }
   readonly scanner: ScanConfigCreate
-  readonly showcase: { readonly key: string; readonly data: ShowcaseFields }
+  readonly showcase: ShowcaseFields
 }
 
 export interface OnboardingItemInput<G extends OnboardingGroup> {
@@ -321,12 +321,7 @@ const inputParsers = {
   extensions: parseExtensionInput,
   metadataProfiles: parseProfileInput,
   scanner: parseScanConfigCreate,
-  showcase: (input: unknown) =>
-    parseValue(
-      v.strictObject({ key: id, data: v.pipe(v.unknown(), v.transform(parseShowcaseFields)) }),
-      input,
-      'Invalid onboarding showcase creation',
-    ),
+  showcase: parseShowcaseFields,
 }
 
 /** Reuse each owner's complete input. Scanner regex validation must run inside its normal bounded terminable validation unit. */
@@ -366,9 +361,6 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
       'InvalidInput',
       'Only one profile per type can become default in one apply',
     )
-  }
-  if (value.group === 'showcase') {
-    parseShowcaseChanges({ create: value.items.map((item) => item.input) })
   }
 
   return value
