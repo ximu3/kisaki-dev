@@ -58,6 +58,12 @@
     right: var(--drop-offset);
   }
 
+  @media (forced-colors: active) {
+    .indicator {
+      background: Highlight;
+    }
+  }
+
   .feedback {
     position: absolute;
     width: 1px;

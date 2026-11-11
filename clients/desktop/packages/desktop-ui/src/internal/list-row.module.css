@@ -2,6 +2,8 @@
 
 @layer components {
   .row {
+    --kui-row-active-background: var(--accent);
+    --kui-row-active-foreground: var(--accent-foreground);
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -24,5 +26,12 @@
     --kui-glyph-size: calc(var(--kui-icon-size) * 12 / 14);
     margin-inline-start: auto;
     color: inherit;
+  }
+
+  @media (forced-colors: active) {
+    .row {
+      --kui-row-active-background: Highlight;
+      --kui-row-active-foreground: HighlightText;
+    }
   }
 }

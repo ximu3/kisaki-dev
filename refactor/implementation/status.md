@@ -20,6 +20,8 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 完整产品、签署、公证、安装升级、系统支持下限和主要后端验收仍待完成。npm、正式下载、更新索引及生产服务尚未发布。各对象按[验收标准](../verification/acceptance.md)登记自己的结果。
 
+工程维护仍有[四条依赖安全公告](../verification/evidence/w00/dependencies.md)待处理，涉及 extract-zip、glob 和 minimatch。现有检查通过不表示这些依赖问题已经修复。
+
 <a id="progress"></a>
 
 ## 工作包进度

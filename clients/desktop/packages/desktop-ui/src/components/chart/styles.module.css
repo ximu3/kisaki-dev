@@ -69,6 +69,8 @@
     width: 0.625rem;
     height: 0.625rem;
     border-radius: 2px;
+    /* Match the data colors preserved by the SVG plot. */
+    forced-color-adjust: none;
   }
 
   .tooltip {
@@ -94,5 +96,17 @@
   .tooltip dd {
     margin: 0;
     text-align: end;
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      --vis-text-color: CanvasText;
+      --vis-axis-tick-label-color: CanvasText;
+      --vis-axis-label-color: CanvasText;
+      --vis-axis-grid-color: CanvasText;
+      --vis-axis-tick-color: CanvasText;
+      --vis-crosshair-line-stroke-color: CanvasText;
+      --vis-crosshair-circle-stroke-color: Canvas;
+    }
   }
 }

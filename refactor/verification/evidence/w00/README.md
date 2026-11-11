@@ -43,5 +43,6 @@ Workspace 登记根工程、桌面工程和三个私有工程包。桌面构建�
 - [编译与包解析](build-tools.md)
 - [开发监听与隔离副本](development.md)
 - [类型与声明检查](declaration-checks.md)
+- [工程依赖的安全核对与未解决公告](dependencies.md)
 
 本页结果适用于所列本机和 CI 工程载体。产品业务、公共包消费、正式宿主、签署和安装升级由[工作包](../../../implementation/work-packages.md)及[状态页](../../../implementation/status.md)分别登记。启动观察的负载包括窗口与原生模块。

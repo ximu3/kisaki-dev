@@ -366,7 +366,7 @@ ci.yml 接收 PR 和手动事件，再调用 verification.yml 协调代码验证
 
 pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
 
-纯规则使用普通 Node 下的 Vitest，Solid 组件使用 Browser Mode，数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包 tarball 消费和扩展真实安装各自完成，不能相互代替。
+纯规则使用普通 Node 下的 Vitest，Solid 组件及其组合在真实浏览器中验证。公共包的仓库外 tarball 消费由 Node 测试任务驱动 Playwright，核对实际构建、声明、样式与交互；包内浏览器用例可使用 Vitest Browser Mode。数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包消费和扩展真实安装各自完成。
 
 Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 显式指定相对项目 root 的 node_modules/.vitest-cache，避免合法并行的项目互相清理缓存。缓存只复用转换结果，不替代实际执行测试；同一工程的独立任务继续遵守输出访问约束。原生模块测试由开发 Electron 的 Node 模式执行应用自身的 Vitest CLI，不跨目录取根工程的运行器。
 

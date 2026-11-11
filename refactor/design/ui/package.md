@@ -145,7 +145,7 @@ SDK 的 [ui.toast](../extensions/webview.md#toast) 由宿主适配到共同呈�
 
 图表使用 Unovis 1.7.1 的官方 Solid 适配，以 SVG、CSS 变量和子组件组合接入共同外观。公共入口提供 XY 与单图容器、折线、面积、分组柱、堆叠柱、散点、环图、坐标轴、Tooltip 和 Crosshair。业务统计继续拥有查询、聚合、单位、数据选择和结果解释；图表及其相关实例由 Solid 适配统一创建、更新与销毁，不接收外部手工创建的引擎实例。布局回调需要的几何以只读值提供。
 
-主题容器将 desktop-appearance 的 chart-1 至 chart-5 接到图表系列色，并映射字体、边框与阴影；系列配置选择相应颜色。交互图例使用语义按钮，选中状态由调用方提供；提示模板的字符串作为文本显示，自定义结构可返回 HTMLElement，chartTooltipContent 生成具名数据行。显隐使用 Unovis 公开状态，定位与实例寿命由官方 Solid 适配维护。调用方同时提供名称、数据摘要或适用的文本替代。严格 CSP 的宿主在导入图表前按工具公开方式设置 nonce，由宿主统一维护策略。
+主题容器将 desktop-appearance 的 chart-1 至 chart-5 接到图表系列色，并映射字体、边框与阴影；系列配置选择相应颜色。系统强制配色下，坐标与文字采用系统颜色，图例色样与 SVG 数据标记保持对应。交互图例使用语义按钮，选中状态由调用方提供；提示模板的字符串作为文本显示，自定义结构可返回 HTMLElement，chartTooltipContent 生成具名数据行。显隐使用 Unovis 公开状态，定位与实例寿命由官方 Solid 适配维护。调用方同时提供名称、数据摘要或适用的文本替代。严格 CSP 的宿主在导入图表前按工具公开方式设置 nonce，由宿主统一维护策略。
 
 配置继续消费工具的公开类型。Unovis 1.7.1 的声明路径面向 bundler；本包汇总实际使用的声明，并显式交付仍被引用的类型依赖，保持 NodeNext 的完整声明检查。实例寿命归 Solid 组合，公共类型不承诺与外部引擎实例互换。
 
@@ -232,7 +232,7 @@ Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧�
 
 Tabs 与 SegmentedControl 共用紧凑分段外观和尺寸，分别保留面板导航与单值选择语义。Alert 是常驻提示，使用图标、正文与必要动作表达信息，不承担字段错误的集中反馈。
 
-在系统强制配色环境中，日历、Tabs 与 SegmentedControl 使用 Highlight 和 HighlightText 表达已选项，焦点移走后仍可辨认。选中项的内描焦点环使用选中前景色，今天被选中时圆点也使用该色。颜色角色见 [CSS 系统颜色](https://www.w3.org/TR/css-color-4/#css-system-colors)。
+系统强制配色覆盖全部组件家族。菜单与候选列表的当前操作项、日历、Tabs 与 SegmentedControl 的已选项使用 Highlight 和 HighlightText；选中与当前高亮各自保留对应的标记。焦点使用可见轮廓，选中项的内描焦点环与今日圆点使用选中前景色。进度条以系统颜色保留轨道、实际进度及不定进度图案，拖拽插入位置同样保持可辨。拾色器的色域与颜色样本保留所表示的原色，周围控件跟随系统配色。颜色角色与调整范围见 [CSS 系统颜色](https://www.w3.org/TR/css-color-4/#css-system-colors)和[强制配色规则](https://www.w3.org/TR/css-color-adjust-1/#forced-colors-mode)。
 
 UI 自有滚动区域采用共同的原生滚动条样式。选择列表的视口紧贴面板内缘，承担两个方向的滚动。选项按稳定 value 定位，首末项留白计入真实行高。调用方的虚拟布局以同一视口为原点。
 

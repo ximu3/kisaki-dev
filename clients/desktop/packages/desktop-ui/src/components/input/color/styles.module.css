@@ -61,4 +61,11 @@
     color: var(--muted-foreground);
     font-variant-numeric: tabular-nums;
   }
+
+  /* These surfaces represent color data; the surrounding controls keep the system palette. */
+  .swatch::before,
+  .swatch span,
+  .plane {
+    forced-color-adjust: none;
+  }
 }

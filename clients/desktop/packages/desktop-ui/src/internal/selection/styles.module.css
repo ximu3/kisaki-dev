@@ -61,8 +61,8 @@
     padding-block-end: 0.25rem;
   }
   .option[data-active] > div {
-    background: var(--accent);
-    color: var(--accent-foreground);
+    background: var(--kui-row-active-background);
+    color: var(--kui-row-active-foreground);
   }
   .option[aria-disabled='true'] > div {
     opacity: 0.5;
@@ -77,6 +77,16 @@
     display: block;
     margin-top: 0.125rem;
     color: var(--muted-foreground);
+  }
+
+  @media (forced-colors: active) {
+    .option[data-active] > div {
+      /* The row already supplies the paired system colors for all of its text. */
+      forced-color-adjust: none;
+    }
+    .option[data-active] small {
+      color: inherit;
+    }
   }
 
   .message {

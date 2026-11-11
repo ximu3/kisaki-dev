@@ -301,4 +301,4 @@ Toast 的窗口队列、区域、句柄与计时遵守[消息寿命](package.md#
 
 [appearance](../domains/appearance.md) 根据完整主题引用、mode 和 interfaceScale 解析有效外观，再向窗口和 Webview 交付当前 colorScheme、缩放、CSS 值及字体资源投影。字体由各文档实际加载，持久主题定义不直接作为文档呈现值。preferences、主题创作和字体管理各守自身范围，不持久保存一份当前 token 副本。
 
-键盘导航、可见 ring 焦点、Dialog 焦点约束、屏幕阅读器名称、对比度和减少动效，都在 Chromium 中验收。公共控件遵守[UI 包规范](package.md)，封装后的实际组合保留原语的键盘与可访问性行为。
+键盘导航、可见 ring 焦点、Dialog 焦点约束、屏幕阅读器名称、对比度、系统强制配色和减少动效，都在 Chromium 中验收。沿同类入口核对当前操作项、已选项、进度与反馈在实际配色下仍可辨认。公共控件遵守[UI 包规范](package.md)，封装后的实际组合保留原语的键盘与可访问性行为。

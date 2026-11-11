@@ -1,10 +1,20 @@
 # Kisaki
 
+## 任务入口
+
+沟通默认使用简体中文。
+
+**先建立完整的设计理解。** 开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/`，理解整体目标及各部分之间的关系与约束。从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
+
+**以现行成熟实践校验方案。** 对技术选择、API 使用、架构与资源边界、交互和可访问性的实质判断，查阅当前官方文档、维护者说明与成熟项目实践，并核实所用版本的实际能力。优先采用能完整满足目标的原生能力、公开 API 和简洁方案，同时审视现行规范与既有实现。现代化最佳实践以目标、支持环境和可验证的结果为依据，具体取舍遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
+
+代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+
 ## 工作原则
 
 **从全局出发思考、讨论、设计、改动和审阅。** 从完整目标和使用路径找到事实与规则的拥有者，横向比较所有同类对象和入口，统一模型粒度、命名、交互、风格与验证尺度。共有问题在共同拥有层解决，沿全部受影响的消费者落实到终态。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
-**整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。重要判断查阅相关社区、维护者与成熟项目实践，并核对实际工具能力。
+**整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
 **简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这四项[共同原则](refactor/design/engineering/conventions.md#quality)为准。
 
@@ -20,13 +30,7 @@
 
 **实施与审阅都要主动核对文件与目录。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
 
-## 任务入口与范围
-
-沟通默认使用简体中文。
-
-**开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/` 文档，理解整体设计及各部分之间的关系与约束。** 从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
-
-代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+## 仓库范围
 
 本仓库维护完整产品设计和已交付工程能力。桌面、八个公共包与 33 项官方扩展的目标归属见工作包。正式项目随所属工作包建立，成篇项目文档由 [W23](refactor/implementation/work-packages.md#w23) 按对象交付；实施期间维护 AGENTS 与 refactor，接口说明和代码注释随实现维护。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
 

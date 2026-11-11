@@ -55,7 +55,7 @@ test('required identity, entry, schema and runtime fields reject invalid values 
 
   for (const [field, value] of changes) {
     const path: unknown = expect.arrayContaining([field])
-    expect(() => normalizeManifest({ ...manifest(), [field]: value })).toThrowError(
+    expect(() => normalizeManifest({ ...manifest(), [field]: value })).toThrow(
       expect.objectContaining({ path }),
     )
   }
@@ -103,7 +103,7 @@ test('paths remain package-relative without pretending to validate a physical ar
 
 test('strict JSON rejects comments, trailing commas, duplicate decoded names and invalid JCS values', () => {
   for (const json of ['{"id":"a", "\\u0069d":"b"}', '{"unknown":{"x":1,"x":2}}']) {
-    expect(() => parseManifest(json)).toThrowError(
+    expect(() => parseManifest(json)).toThrow(
       expect.objectContaining({ code: 'duplicate-property' }),
     )
   }
@@ -119,7 +119,7 @@ test('strict JSON rejects comments, trailing commas, duplicate decoded names and
     expect(() => parseManifest(json)).toThrow()
   }
 
-  expect(() => normalizeManifest({ ...manifest(), entry: NaN })).toThrowError(
+  expect(() => normalizeManifest({ ...manifest(), entry: NaN })).toThrow(
     expect.objectContaining({ path: ['entry'] }),
   )
   expect(() => normalizeManifest({ ...manifest(), description: undefined })).toThrow()
