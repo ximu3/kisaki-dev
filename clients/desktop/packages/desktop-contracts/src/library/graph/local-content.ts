@@ -8,7 +8,7 @@ import type { DirectoryCreateFields } from '../holdings/directories'
 import type { GameLaunchConfigCreate } from '../holdings/game-configuration'
 
 import * as v from 'valibot'
-import { readRecord, parseValue, unique } from '../../validation'
+import { parseRecord, parseValue, unique } from '../../validation'
 import { parseFileCreateFields } from '../holdings/files'
 import { filePartTypes } from '../holdings/associations'
 import { partKey } from './nodes'
@@ -60,7 +60,7 @@ export function parseGraphLocalContent(
   ) => v.GenericSchema<unknown, GraphPartRef<T>>,
 ): GraphLocalContent | undefined {
   function parseGraphFile<T extends FileWorkType>(type: T, input: unknown): GraphFileCreate<T> {
-    const source = readRecord(input)
+    const source = parseRecord(input)
     const { associations, ...fields } = source
     const value = parseFileCreateFields(type, fields)
     const part = partReference(filePartTypes[type])

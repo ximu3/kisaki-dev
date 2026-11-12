@@ -13,7 +13,7 @@ import type { AnnotationRef } from '../library/annotations'
 import type { ThemeRef } from '../appearance'
 import type { PageRef } from './pages'
 import type { PreferenceKey } from '../preferences/api'
-import { optionalFields, id, parseValue, readRecord, parseExternalValue } from '../validation'
+import { optionalFields, id, parseValue, parseRecord, parseExternalValue } from '../validation'
 import * as v from 'valibot'
 import {
   identitySchema,
@@ -148,7 +148,7 @@ export function parseEntryViewSelection<T extends EntryType>(
 
 /** Validate native targets without creating a window, resolving IDs or changing visibility. */
 export function parseNativeViewTarget(input: unknown): NativeViewTarget {
-  const record = readRecord(input)
+  const record = parseRecord(input)
   if (record.type === 'entry') {
     const entryType = parseValue(v.picklist(entryTypes), record.entryType)
     const value = parseValue(

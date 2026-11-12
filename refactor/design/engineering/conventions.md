@@ -123,14 +123,65 @@ JavaScript 环境中的自维护源码使用 TypeScript，普通模块、脚本�
 采用锁定版本支持的公开 API 与配置。TypeScript 的共用 lint 检查依赖声明中的弃用标记；发现自维护用法的弃用提示时，核对当前类型声明与官方迁移说明，适用的成熟替代经对应验证后采用。需要保留的兼容用法说明原因和适用条件。类型断言、关闭检查、修改第三方源码或强制覆盖传递依赖不能代替正确接入。
 
 <a id="naming"></a>
-<a id="directory-readability"></a>
-<a id="source-layout"></a>
 
 ## 组织与命名
 
-TypeScript 工程的目录和普通文件使用 kebab-case，组件、类和类型使用 PascalCase，函数与变量使用 camelCase。Rust 的模块、函数与变量使用 snake_case，类型采用 UpperCamelCase，模块文件与模块名对应。工具规定的名称、外部字段与生成绑定由各自拥有者定义。
+TypeScript 工程的目录和普通文件使用 kebab-case，组件、类和类型使用 PascalCase，函数与变量使用 camelCase。Rust 的模块、函数与变量使用 snake_case，类型采用 UpperCamelCase，静态项与常量使用 SCREAMING_SNAKE_CASE，模块文件与模块名对应。工具规定的名称、外部字段与生成绑定由各自拥有者定义。
 
 名称表达对象、动作或业务判断；跨边界数量注明必要单位和口径，如 `timeoutMs`、`sizeBytes`。缩写沿用明确的领域惯例，局部短名称由紧邻上下文解释，不用编号或泛化名称掩盖职责。同一个变量在其寿命内保持同一业务含义。
+
+<a id="naming-scope"></a>
+
+### 范围与限定词
+
+先确定名称所指的对象及其责任，再选择读者在实际使用位置需要的限定词。对外名称应能在参数、返回值和跨模块调用中辨明所属对象；局部类型、变量和辅助函数可以利用所在模块及紧邻流程的明确上下文。是否导出、调用者数量或结构相似，本身不决定名称是否应当通用。
+
+限定词表达模型自身的范围。ExtensionManifest 描述扩展包，保留 Extension；同时覆盖本体与扩展页面的 PageRef 保留共同名称。领域能力和通用机制按自身职责命名，不能仅因扩展使用它们就增加 Extension。扩展专有的贡献定义则明确其归属，尤其是其文件路径、身份或生命周期依赖当前扩展上下文时。
+
+场景拥有的投影可以保留场景名称，例如仅用于搜索结果的 SearchIcon。共同类型在已确认的共同语义及消费合同成立时提取；结构相似或未来可能复用，不构成提前上移的依据。已有具体对象词能够说明范围时，采用该对象词，避免重复叠加限定。
+
+同一职责中的同类名称保持一致的词序与缩写。自有 TypeScript 标识符中的一般缩写按词拼接，例如 ExtensionUiIcon、RpcConnection、extensionId；标准对象名、外部 API、协议字段和原始材料沿所属定义保留。名称不以编程语法类别代替对象含义。
+
+<a id="type-roles"></a>
+
+### 类型与对象角色
+
+类型和类优先使用准确的业务名或职责名；需要区分同一对象的不同角色时，再使用相应角色词。常用角色按下表理解，同一层次中含义相同的值采用一致名称。
+
+| 角色词 | 含义 |
+| --- | --- |
+| Create、Update | 普通对象的新建资料或字段变更；由对象名称限定，如 ScanConfigCreate、ScanConfigUpdate |
+| Input | 完整业务操作或值采用所需的输入，如 OnboardingApplyInput、FileInput |
+| Options | 在明确目标之外控制读取、执行或呈现方式的选项；由实际用途决定，不以字段是否可选判断 |
+| Definition | 配置、能力或贡献的声明，描述由拥有者采用的内容与行为，如 MetadataProfileDefinition |
+| Descriptor | 对能力或已登记对象的可读描述，提供身份、元数据或能力信息，如 MetadataProviderDescriptor |
+| Ref | 指向正式对象或运行期对象的身份与必要归属，如 EntryRef、ReadResourceRef；读取内容和生命周期操作由对应能力提供 |
+| Handle | 可直接操作的运行期句柄，说明其更新、关闭或释放责任，如 ToastHandle |
+| Registration | 已建立的登记及其撤销、替换等能力，如 ExtensionThemeRegistration |
+| Snapshot | 某次取得的固定值，范围与取得时点由所属操作明确，如 ScanConfigSnapshot |
+| State | 对象在本次观察中的状态及其合法组合，如 ExtensionState |
+| Summary | 面向明确消费范围的摘要投影，保留该范围所需信息，如 ErrorSummary、InstalledExtensionSummary |
+| Result | 一次操作按合同交付的结果，包括该操作允许的部分成果，如 OnboardingApplyResult |
+| Context | 有明确作用域的一组环境、身份或能力，如 ExecutionContext、ExtensionContext |
+
+已有完整业务名称的对象直接使用该名称。角色词用于说明实际区别，不为每个参数对象增加 Input、每个返回对象增加 Result，也不为同一份值建立只换名称的类型。需要专门的创建、更新或调用输入时，连同允许字段、默认值与基线定义其角色，避免用同一个模糊类型承担不同合同。
+
+类、工厂与模块都按实际承担的对象和责任命名。接口说明调用方可以依赖的承诺，实现名称说明它提供的具体能力；状态、资源与寿命的边界见[运行架构](../architecture.md#module-interfaces)。
+
+<a id="operation-names"></a>
+
+### 操作与回调
+
+函数和方法用实际完成的动作或计算结果命名，判断函数表达可回答的业务条件。对象与作用域已经由所属 API 或参数明确时，名称保留区分操作所需的信息；同一领域中相同动作使用相同词序。get、list、read、resolve 等名称按所属合同的对象与结果含义选择。
+
+事件、回调、处理函数和订阅入口按各自职责命名。框架规定的 onClick 等入口遵循框架惯例；自有回调说明发生的事实或请求，处理函数说明负责的动作。异步性通过返回类型与完成合同表达，Async 等限定只用于确实需要区分的对应能力。
+
+这些选择参照 [Google TypeScript 的描述性命名与缩写惯例](https://google.github.io/styleguide/tsguide.html#naming)和 [Rust API 的命名与词序规则](https://rust-lang.github.io/api-guidelines/naming.html)，具体对象范围、角色和语言差异仍由本项目合同确定。
+
+<a id="directory-readability"></a>
+<a id="source-layout"></a>
+
+### 文件与目录
 
 目录按能力、工作对象、运行环境或工程边界组织，同级采用清楚的划分依据。专用实现随拥有者放置，共享代码归相同语义的最小合理范围；测试复用本身不构成上移理由。入口、内部实现、配置、样本和工具的角色可辨，目录层级不重复表达同一含义。
 

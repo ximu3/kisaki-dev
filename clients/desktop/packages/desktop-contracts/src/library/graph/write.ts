@@ -38,7 +38,7 @@ import {
   id,
   text,
   unique,
-  readRecord,
+  parseRecord,
   optionalFields,
   parseDictionary,
 } from '../../validation'
@@ -220,7 +220,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   )
 
   function parseEntry(item: unknown): GraphEntryCreate {
-    const source = readRecord(item)
+    const source = parseRecord(item)
     const { key: keyInput, tags: tagInput, ...fields } = source
     const key = parseValue(id, keyInput)
     const value = parseEntryCreate(fields)
@@ -265,7 +265,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   }
 
   function parseTagEdit(item: unknown) {
-    const { id: tagIdInput, ...fields } = readRecord(item)
+    const { id: tagIdInput, ...fields } = parseRecord(item)
     const tagId = parseValue(id, tagIdInput)
     return { id: tagId, ...parseTagUpdate(fields) }
   }

@@ -25,16 +25,16 @@ import {
   parseUrlReference,
 } from './metadata'
 import {
-  array,
-  invalid,
-  optional,
+  parseArray,
+  rejectFormat,
+  parseOptionalField,
   parseJson,
-  record,
-  schemaVersion,
-  sha256,
-  string,
-  timestamp,
-  unsignedInteger,
+  parseRecord,
+  parseSchemaVersion,
+  parseSha256,
+  parseString,
+  parseTimestamp,
+  parseUnsignedInteger,
 } from './validation'
 
 /** Flat registry format version; independent of package and extension API versions. */
@@ -110,23 +110,23 @@ export interface ReleaseSelectionOptions {
 
 /** Validate a file reference without resolving the signed URL or reading its bytes. */
 export function parseFileReference(input: unknown, path: FieldPath = []): FileReference {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   return {
     url: parseUrlReference(value.url, [...path, 'url']),
-    size: unsignedInteger(value.size, [...path, 'size']),
-    sha256: sha256(value.sha256, [...path, 'sha256']),
+    size: parseUnsignedInteger(value.size, [...path, 'size']),
+    sha256: parseSha256(value.sha256, [...path, 'sha256']),
   }
 }
 
 /** Check PEM framing in pure code; the Node signing entry also checks the actual Ed25519 key. */
 export function parsePublicKey(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (
     !/^-----BEGIN PUBLIC KEY-----\r?\n(?:[A-Za-z0-9+/=]+\r?\n)+-----END PUBLIC KEY-----\r?\n?$/.test(
       value,
     )
   ) {
-    invalid(path, 'Expected an SPKI PEM public key')
+    rejectFormat(path, 'Expected an SPKI PEM public key')
   }
 
   return value
@@ -134,30 +134,30 @@ export function parsePublicKey(input: unknown, path: FieldPath = []): string {
 
 /** Require the canonical Base64 representation of a 64-byte Ed25519 signature. */
 export function parseSignature(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (!/^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value)) {
-    invalid(path, 'Expected an Ed25519 Base64 signature')
+    rejectFormat(path, 'Expected an Ed25519 Base64 signature')
   }
 
   return value
 }
 
 function parseArtifact(input: unknown, path: FieldPath): RegistryArtifact {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   return {
     ...parseFileReference(value, path),
     ...parseCompatibility(value, path),
-    ...optional(value, 'license', path, string),
+    ...parseOptionalField(value, 'license', path, parseString),
   }
 }
 
 function parseRelease(input: unknown, path: FieldPath): RegistryRelease {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
 
-  const artifacts = array(value.artifacts, [...path, 'artifacts'], parseArtifact)
+  const artifacts = parseArray(value.artifacts, [...path, 'artifacts'], parseArtifact)
   if (!artifacts.length) {
-    invalid([...path, 'artifacts'], 'A release must provide at least one artifact')
+    rejectFormat([...path, 'artifacts'], 'A release must provide at least one artifact')
   }
 
   const targets = new Set<ExtensionTarget>()
@@ -176,30 +176,30 @@ function parseRelease(input: unknown, path: FieldPath): RegistryRelease {
 
   return {
     version: parseVersion(value.version, [...path, 'version']),
-    publishedAt: timestamp(value.publishedAt, [...path, 'publishedAt']),
+    publishedAt: parseTimestamp(value.publishedAt, [...path, 'publishedAt']),
 
     defaultLocale,
-    ...optional(value, 'releaseNotes', path, (text, location) =>
+    ...parseOptionalField(value, 'releaseNotes', path, (text, location) =>
       normalizeLocalizedText(text, defaultLocale, location),
     ),
-    ...optional(value, 'readme', path, parseFileReference),
+    ...parseOptionalField(value, 'readme', path, parseFileReference),
 
     artifacts,
   }
 }
 
 function parseExtension(input: unknown, path: FieldPath): RegistryExtension {
-  const value = record(input, path)
-  const releases = array(value.releases, [...path, 'releases'], parseRelease)
+  const value = parseRecord(input, path)
+  const releases = parseArray(value.releases, [...path, 'releases'], parseRelease)
   if (!releases.length) {
-    invalid([...path, 'releases'], 'An extension must provide at least one release')
+    rejectFormat([...path, 'releases'], 'An extension must provide at least one release')
   }
   assertUniqueVersions(releases, [...path, 'releases'])
 
   return {
     id: parseId(value.id, [...path, 'id']),
     ...parseMetadata(value, path),
-    ...optional(value, 'icon', path, parseFileReference),
+    ...parseOptionalField(value, 'icon', path, parseFileReference),
     releases,
   }
 }
@@ -226,26 +226,26 @@ function assertUniqueVersions(releases: readonly RegistryRelease[], path: FieldP
  * Unknown fields are not returned; signing must operate on the original JSON, never this projection.
  */
 export function normalizeRegistry(input: unknown): RegistryDocument {
-  const value = record(input, [])
+  const value = parseRecord(input, [])
   const defaultLocale = normalizeLocale(value.defaultLocale, ['defaultLocale'])
 
-  const extensions = array(value.extensions, ['extensions'], parseExtension)
+  const extensions = parseArray(value.extensions, ['extensions'], parseExtension)
   const ids = new Set<string>()
   for (const [index, extension] of extensions.entries()) {
     if (ids.has(extension.id)) {
-      invalid(['extensions', index, 'id'], 'Duplicate extension ID')
+      rejectFormat(['extensions', index, 'id'], 'Duplicate extension ID')
     }
     ids.add(extension.id)
   }
 
   return {
-    schemaVersion: schemaVersion(value.schemaVersion, ['schemaVersion']),
+    schemaVersion: parseSchemaVersion(value.schemaVersion, ['schemaVersion']),
     id: parseId(value.id, ['id']),
     publicKey: parsePublicKey(value.publicKey, ['publicKey']),
 
     defaultLocale,
     name: normalizeLocalizedText(value.name, defaultLocale, ['name']),
-    ...optional(value, 'description', [], (text, location) =>
+    ...parseOptionalField(value, 'description', [], (text, location) =>
       normalizeLocalizedText(text, defaultLocale, location),
     ),
 
@@ -260,7 +260,7 @@ export function parseRegistry(text: string): RegistryDocument {
 
 /** Parse a signed index's structure only. Authentication requires node/signing with explicit trust. */
 export function parseSignedRegistry(text: string): SignedRegistry {
-  const value = record(parseJson(text), [])
+  const value = parseRecord(parseJson(text), [])
   return { ...normalizeRegistry(value), signature: parseSignature(value.signature, ['signature']) }
 }
 

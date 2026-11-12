@@ -5,7 +5,14 @@ import { parseCompatibility, parseVersion } from './compatibility'
 import type { FieldPath } from './errors'
 import type { ExtensionMetadata } from './metadata'
 import { parseId, parseMetadata } from './metadata'
-import { invalid, optional, parseJson, record, schemaVersion, string } from './validation'
+import {
+  rejectFormat,
+  parseOptionalField,
+  parseJson,
+  parseRecord,
+  parseSchemaVersion,
+  parseString,
+} from './validation'
 
 /** The manifest format version implemented by this package, independent of extension API versions. */
 export const manifestSchemaVersion = 1
@@ -29,7 +36,7 @@ export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDecla
  * This checks names only; archive readers must also reject links, collisions and non-file entries.
  */
 export function parsePackagePath(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   const segments = value.split('/')
   if (
     [...value].some(
@@ -38,7 +45,7 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
     /[\\:]/.test(value) ||
     segments.some((segment) => !segment || segment === '.' || segment === '..')
   ) {
-    invalid(path, 'Expected an unambiguous package-relative file path')
+    rejectFormat(path, 'Expected an unambiguous package-relative file path')
   }
 
   return value
@@ -46,10 +53,10 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
 
 /** Validate defined manifest fields and return normalized locales and target order; unknown fields are omitted. */
 export function normalizeManifest(input: unknown): ExtensionManifest {
-  const value = record(input, [])
+  const value = parseRecord(input, [])
 
   return {
-    schemaVersion: schemaVersion(value.schemaVersion, ['schemaVersion']),
+    schemaVersion: parseSchemaVersion(value.schemaVersion, ['schemaVersion']),
     id: parseId(value.id, ['id']),
     version: parseVersion(value.version, ['version']),
 
@@ -57,9 +64,9 @@ export function normalizeManifest(input: unknown): ExtensionManifest {
     ...parseMetadata(value, []),
 
     entry: parsePackagePath(value.entry, ['entry']),
-    ...optional(value, 'icon', [], parsePackagePath),
-    ...optional(value, 'readme', [], parsePackagePath),
-    ...optional(value, 'license', [], string),
+    ...parseOptionalField(value, 'icon', [], parsePackagePath),
+    ...parseOptionalField(value, 'readme', [], parsePackagePath),
+    ...parseOptionalField(value, 'license', [], parseString),
   }
 }
 

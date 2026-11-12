@@ -7,7 +7,7 @@ import type {
   EntryRef,
   EntryDetails,
   ExternalIdentity,
-  EntryCreateInput,
+  EntryCreate,
   EntryUpdate,
   WorkRef,
 } from './catalog'
@@ -113,7 +113,7 @@ export interface EntriesApi {
    * Commit the complete entry, initial personal values and adopted attachments together; return
    * its stable typed identity.
    */
-  create<I extends EntryCreateInput>(input: I, call?: CallOptions): Promise<EntryRef<I['type']>>
+  create<I extends EntryCreate>(input: I, call?: CallOptions): Promise<EntryRef<I['type']>>
 
   /**
    * Compare and commit the submitted fields and their actual related references; unrelated

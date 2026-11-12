@@ -4,14 +4,14 @@ import type { NonEmptyArray, ListOptions, CallOptions, ListResult, Disposable } 
 import type { ErrorSummary, ExecutionFailure } from '../errors'
 import type { LocalContentRegistrationResult } from '../library/holdings/local-content'
 import type { WorkClues } from '../metadata/fields'
-import type { AddResult } from '../ingest/add'
+import type { IngestAddResult } from '../ingest/add'
 import type { WorkType } from '../library/catalog'
 import type { ScanConfigSnapshot } from './configs'
 import * as v from 'valibot'
 import { parseAbsolutePath, parseRelativePath } from '../paths'
 import { parseErrorSummary, DesktopError, parseExecutionFailure } from '../errors'
 import { nonnegativeInteger, parseValue, unique, id, text, timestamp } from '../validation'
-import { parseAddResult } from '../ingest/add'
+import { parseIngestAddResult } from '../ingest/add'
 import { isWorkType } from '../library/catalog'
 import { parseLocalContentRegistrationResult } from '../library/holdings/local-content'
 import { clues } from './recognizers'
@@ -37,8 +37,8 @@ export type ScanLocalContentResult =
 
 /** Already-created roots retain their own result, even if a later existing-content registration fails. */
 export type ScanCandidateResult = { readonly path: string; readonly clues: WorkClues | null } & (
-  | { readonly result: AddResult<WorkType>; readonly localContent: ScanLocalContentResult }
-  | { readonly error: ExecutionFailure<AddResult<WorkType>> }
+  | { readonly result: IngestAddResult<WorkType>; readonly localContent: ScanLocalContentResult }
+  | { readonly error: ExecutionFailure<IngestAddResult<WorkType>> }
 )
 
 export interface ScanResult {
@@ -126,13 +126,13 @@ export const discovery = v.strictObject({
 
 const statuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
 
-function workAddResult(input: unknown): AddResult<WorkType> {
-  const value = parseAddResult(input)
+function parseWorkAddResult(input: unknown): IngestAddResult<WorkType> {
+  const value = parseIngestAddResult(input)
   if (!isWorkType(value.entry.type)) {
     throw new DesktopError('InvalidInput', 'Scanner candidates must resolve to a work')
   }
 
-  return value as AddResult<WorkType>
+  return value as IngestAddResult<WorkType>
 }
 
 const localContent = v.variant('status', [
@@ -152,13 +152,13 @@ const localContent = v.variant('status', [
   }),
 ])
 
-function candidate(input: unknown): ScanCandidateResult {
+function parseScanCandidateResult(input: unknown): ScanCandidateResult {
   const value = parseValue(
     v.union([
       v.strictObject({
         path,
         clues: v.nullable(clues),
-        result: v.pipe(v.unknown(), v.transform(workAddResult)),
+        result: v.pipe(v.unknown(), v.transform(parseWorkAddResult)),
         localContent,
       }),
       v.strictObject({
@@ -166,7 +166,7 @@ function candidate(input: unknown): ScanCandidateResult {
         clues: v.nullable(clues),
         error: v.pipe(
           v.unknown(),
-          v.transform((value) => parseExecutionFailure(value, workAddResult)),
+          v.transform((value) => parseExecutionFailure(value, parseWorkAddResult)),
         ),
       }),
     ]),
@@ -204,7 +204,7 @@ export function parseScanResult(input: unknown): ScanResult {
     v.strictObject({
       discovery,
       candidates: v.pipe(
-        v.array(v.pipe(v.unknown(), v.transform(candidate))),
+        v.array(v.pipe(v.unknown(), v.transform(parseScanCandidateResult))),
         v.check((candidates) => unique(candidates, (item) => item.path)),
       ),
     }),

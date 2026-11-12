@@ -217,13 +217,13 @@ export function parsePreparedFontFile(input: unknown): PreparedFontFile {
   return attachment as PreparedFontFile
 }
 
-function fontInput(input: unknown): FontFileInput {
+function parseFontFileInput(input: unknown): FontFileInput {
   return typeof input === 'object' && input !== null && 'attachmentId' in input
     ? parsePreparedFontFile(input)
     : parseFileInput(input)
 }
 
-function updateInput(input: unknown): FontFileUpdateInput {
+function parseFontFileUpdateInput(input: unknown): FontFileUpdateInput {
   if (
     typeof input === 'object' &&
     input !== null &&
@@ -233,12 +233,12 @@ function updateInput(input: unknown): FontFileUpdateInput {
     return parseValue(v.strictObject({ attachmentId: id }), input)
   }
 
-  return fontInput(input)
+  return parseFontFileInput(input)
 }
 
 /** Require a name and at least one real file source; source decoding and byte-level deduplication belong to import. */
 export function parseFontImport(input: unknown): FontImportInput {
-  const source = v.pipe(v.unknown(), v.transform(fontInput))
+  const source = v.pipe(v.unknown(), v.transform(parseFontFileInput))
   return parseValue(
     v.strictObject({ name: nonemptyText, files: v.tupleWithRest([source], source) }),
     input,
@@ -248,7 +248,7 @@ export function parseFontImport(input: unknown): FontImportInput {
 
 /** Replacement is a complete nonempty file set. A name-only edit never compares or rewrites files. */
 export function parseFontUpdate(input: unknown): FontUpdate {
-  const source = v.pipe(v.unknown(), v.transform(updateInput))
+  const source = v.pipe(v.unknown(), v.transform(parseFontFileUpdateInput))
   const value = parseValue(
     v.strictObject({
       changes: v.strictObject(

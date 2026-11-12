@@ -100,7 +100,7 @@ await context.ui.pages.register({
 const view = await context.ui.pages.open({ pageId: 'account' })
 ```
 
-page 的 id 在扩展内稳定且唯一。title: LocalizedText 和 icon: UiIcon 必填，共同用于导航、目录和宿主标题。全部登记页面都进入完整导航，侧栏按[共同顺序和常显数量](../ui/navigation.md#sidebar)呈现。内部步骤或 tab 不应分别登记 page，本体页面也不会因此改为 Webview。
+page 的 id 在扩展内稳定且唯一。title: LocalizedText 和 icon: ExtensionUiIcon 必填，共同用于导航、目录和宿主标题。全部登记页面都进入完整导航，侧栏按[共同顺序和常显数量](../ui/navigation.md#sidebar)呈现。内部步骤或 tab 不应分别登记 page，本体页面也不会因此改为 Webview。
 
 setup(view) 在每次实际新建视图时执行，可以省略，也可以返回 `Promise<void>`。它负责挂接私有方法和本视图的 Node 监听。SDK 等 setup 完成后才接入前端业务；失败时释放资源并报告失败，无须作者手工发送 ready。共享账号与后台工作不能绑定到每个页面的生命周期。
 
@@ -131,12 +131,12 @@ const view = await context.ui.dialogs.open({
 ## UI 图标值
 
 ```ts
-type UiIcon = { type: 'mdi'; name: string } | { type: 'file'; path: string }
+type ExtensionUiIcon = { type: 'mdi'; name: string } | { type: 'file'; path: string }
 ```
 
-mdi 使用应用固定版本图标目录中的名称，file 使用所属扩展包内的 SVG、PNG 等受控资源。MDI 以 SVG 资源按需加载。宿主统一图标槽位、对齐、状态与回退，品牌图片保留自身比例和颜色。是否必须提供图标，由具体贡献合同决定。UiIcon 不接受组件或渲染函数。
+mdi 使用应用固定版本图标目录中的名称，file 使用所属扩展包内的 SVG、PNG 等受控资源。MDI 以 SVG 资源按需加载。宿主统一图标槽位、对齐、状态与回退，品牌图片保留自身比例和颜色。是否必须提供图标，由具体贡献合同决定。ExtensionUiIcon 不接受组件或渲染函数。
 
-运行时 UiIcon 与 manifest、registry 的品牌图标分别使用自己的资源合同。页面、菜单和导航按登记元数据呈现。
+运行时 ExtensionUiIcon 与 manifest、registry 的品牌图标分别使用自己的资源合同。页面、菜单和导航按登记元数据呈现。
 
 <a id="ipc"></a>
 
@@ -187,7 +187,9 @@ contextKind 不带 .actions。同一 Entry 动作在卡片、表格和详情中�
 
 ```ts
 context.ui.menus.add('entry', ({ entries }) => {
-  if (entries.some((entry) => entry.type !== 'anime')) return []
+  if (entries.some((entry) => entry.type !== 'anime')) {
+    return []
+  }
 
   return [
     {
@@ -220,13 +222,13 @@ action、checkbox、radio 和 submenu 共用 label: LocalizedText，以及可选
 | checkbox  | checked: boolean；onChange(nextChecked, execution)   | 把下一状态交给业务拥有者 |
 | radio     | group: string；checked: boolean；onSelect(execution) | 选择所属组中的这一项     |
 | separator | 无                                                   | 分隔内容                 |
-| submenu   | items: MenuItem[]                                    | 承载子菜单               |
+| submenu   | items: ExtensionMenuItem[]                                    | 承载子菜单               |
 
 radio.group 只在同一贡献的同级 items 中有效，不跨子菜单或扩展。同组最多一项 checked，也可以没有选中项；再次选择已选项不触发回调。checkbox 按本次快照传入 nextChecked，由业务核对并保存。失败时不能显示成已保存新状态，下次 getItems 重新读取实际值。
 
 getItems(menuContext, { signal }) 与叶子回调的 execution 分开，各有自己的 signal；关闭菜单不取消已经选中的操作。菜单动作调用会话打开或游戏窗口操作时，按本次意图显式传入 interaction，不从菜单来源隐式继承策略。
 
-叶子回调可以同步或异步返回 MenuFeedback，完成后至多交付一条结果提示。结果类型为 info、success、warning 或 error。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
+叶子回调可以同步或异步返回 ExtensionMenuFeedback，完成后至多交付一条结果提示。结果类型为 info、success、warning 或 error。底层业务仍返回自己的结果，UI 描述不进入领域结果或任务。
 
 ```ts
 interface ToastMessage {
@@ -235,7 +237,7 @@ interface ToastMessage {
   description?: LocalizedText
 }
 
-type MenuFeedback =
+type ExtensionMenuFeedback =
   | void
   | (ToastMessage & { type: Exclude<ToastMessage['type'], 'loading'> })
 ```

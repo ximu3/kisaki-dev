@@ -9,7 +9,7 @@ export type JsonValue =
   null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue }
 
 /** Reject a field with a stable format category and a path into the original input. */
-export function invalid(path: FieldPath, message: string): never {
+export function rejectFormat(path: FieldPath, message: string): never {
   throw new DistributionError('invalid-format', message, path)
 }
 
@@ -26,7 +26,7 @@ export function parseJson(text: string): JsonValue {
         objects.pop()
       },
       onObjectProperty(name, _offset, _length, _line, _character, path) {
-        string(name, [...path(), name], false)
+        parseString(name, [...path(), name], false)
         const names = objects.at(-1)!
         if (names.has(name)) {
           throw new DistributionError('duplicate-property', 'Duplicate JSON property', [
@@ -38,9 +38,9 @@ export function parseJson(text: string): JsonValue {
       },
       onLiteralValue(value: unknown, _offset, _length, _line, _character, path) {
         if (typeof value === 'string') {
-          string(value, path(), false)
+          parseString(value, path(), false)
         } else if (typeof value === 'number' && !Number.isFinite(value)) {
-          invalid(path(), 'Expected a finite JSON number')
+          rejectFormat(path(), 'Expected a finite JSON number')
         }
       },
       onError(_error, _offset, _length, line, character) {
@@ -58,41 +58,41 @@ export function parseJson(text: string): JsonValue {
 }
 
 /** Require an object at a format boundary; arrays and null are not records. */
-export function record(value: unknown, path: FieldPath): Record<string, unknown> {
+export function parseRecord(value: unknown, path: FieldPath): Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    invalid(path, 'Expected an object')
+    rejectFormat(path, 'Expected an object')
   }
 
   return value as Record<string, unknown>
 }
 
 /** Require a string, preserving its exact content rather than trimming user text. */
-export function string(value: unknown, path: FieldPath, nonempty = true): string {
+export function parseString(value: unknown, path: FieldPath, nonempty = true): string {
   if (
     typeof value !== 'string' ||
     /[\uD800-\uDFFF]/u.test(value) ||
     (nonempty && value.trim().length === 0)
   ) {
-    invalid(path, 'Expected a valid string')
+    rejectFormat(path, 'Expected a valid string')
   }
 
   return value
 }
 
 /** Require an array and validate every position, including empty slots, at its original field location. */
-export function array<T>(
+export function parseArray<T>(
   value: unknown,
   path: FieldPath,
   parse: (value: unknown, path: FieldPath) => T,
 ): T[] {
   if (!Array.isArray(value)) {
-    invalid(path, 'Expected an array')
+    rejectFormat(path, 'Expected an array')
   }
   return Array.from(value, (item: unknown, index) => parse(item, [...path, index]))
 }
 
 /** Parse a present optional property; explicit null and undefined are not omissions. */
-export function optional<K extends string, T>(
+export function parseOptionalField<K extends string, T>(
   object: Record<string, unknown>,
   key: K,
   path: FieldPath,
@@ -106,7 +106,7 @@ export function optional<K extends string, T>(
 }
 
 /** Require the format version implemented by this package. */
-export function schemaVersion(value: unknown, path: FieldPath): 1 {
+export function parseSchemaVersion(value: unknown, path: FieldPath): 1 {
   if (value !== 1) {
     throw new DistributionError(
       'unsupported-schema',
@@ -119,32 +119,32 @@ export function schemaVersion(value: unknown, path: FieldPath): 1 {
 }
 
 /** Parse a nonnegative byte count without loss of precision. */
-export function unsignedInteger(value: unknown, path: FieldPath): number {
+export function parseUnsignedInteger(value: unknown, path: FieldPath): number {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 0) {
-    invalid(path, 'Expected a nonnegative safe integer')
+    rejectFormat(path, 'Expected a nonnegative safe integer')
   }
 
   return value
 }
 
 /** Parse UTC epoch milliseconds that can be represented and displayed as an actual time point. */
-export function timestamp(value: unknown, path: FieldPath): number {
+export function parseTimestamp(value: unknown, path: FieldPath): number {
   if (
     typeof value !== 'number' ||
     !Number.isSafeInteger(value) ||
     Number.isNaN(new Date(value).getTime())
   ) {
-    invalid(path, 'Expected a valid UTC millisecond timestamp')
+    rejectFormat(path, 'Expected a valid UTC millisecond timestamp')
   }
 
   return value
 }
 
 /** Require a lowercase SHA-256 hexadecimal digest. */
-export function sha256(value: unknown, path: FieldPath): string {
-  const digest = string(value, path)
+export function parseSha256(value: unknown, path: FieldPath): string {
+  const digest = parseString(value, path)
   if (!/^[a-f0-9]{64}$/.test(digest)) {
-    invalid(path, 'Expected a lowercase SHA-256 digest')
+    rejectFormat(path, 'Expected a lowercase SHA-256 digest')
   }
 
   return digest

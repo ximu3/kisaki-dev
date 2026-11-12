@@ -15,7 +15,7 @@ import {
   timestamp,
   parseValue,
   parseDictionary,
-  readRecord,
+  parseRecord,
   text,
 } from './validation'
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
@@ -279,7 +279,7 @@ function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
   const prepared = v.pipe(
     v.unknown(),
     v.transform((raw): OnboardingExtensionSource => {
-      const value = readRecord(raw)
+      const value = parseRecord(raw)
       if (value.type !== 'newRepository') {
         return parseExtensionPackageSource(raw)
       }
@@ -326,7 +326,7 @@ const inputParsers = {
 
 /** Reuse each owner's complete input. Scanner regex validation must run inside its normal bounded terminable validation unit. */
 export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput {
-  const record = readRecord(input)
+  const record = parseRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
   const parseInput: (input: unknown) => OnboardingInputMap[OnboardingGroup] = inputParsers[group]
 

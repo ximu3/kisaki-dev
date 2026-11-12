@@ -1,7 +1,7 @@
 /** @fileoverview Defines adoption update scopes, field policies and actual update outcomes. */
 
 import type { EntryType, EntryRef, PartType, PartWorkType, PartRef } from '../library/catalog'
-import { parseValue, readRecord, unique } from '../validation'
+import { parseValue, parseRecord, unique } from '../validation'
 import * as v from 'valibot'
 import { characterRefSchema } from '../library/relations'
 import {
@@ -34,7 +34,7 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
 
   const conditions = parseValue(v.tupleWithRest([v.unknown()], v.unknown()), input)
   const result = conditions.map((condition) => {
-    const original = readRecord(condition)
+    const original = parseRecord(condition)
     const { characters, ...base } = original
     const selected = Object.hasOwn(original, 'characters')
       ? parseValue(
@@ -180,7 +180,7 @@ export type IngestUpdateItem = {
   }
 }[IngestUpdateType]
 
-export interface UpdateResult {
+export interface IngestUpdateResult {
   readonly outcome: 'updated' | 'unchanged'
   readonly target: EntryRef | PartRef
   readonly issues: readonly IngestIssue[]
@@ -247,7 +247,7 @@ export function hasIngestUpdateWork(
 }
 
 /** updated may describe relationship-only or part-list changes; unchanged does not claim complete source data. */
-export function parseUpdateResult(input: unknown): UpdateResult {
+export function parseIngestUpdateResult(input: unknown): IngestUpdateResult {
   return parseValue(
     v.strictObject({
       outcome: v.picklist(['updated', 'unchanged']),

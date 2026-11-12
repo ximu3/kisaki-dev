@@ -6,7 +6,7 @@ import type { NonEmptyArray, StoredDefinition, CallOptions } from '../operations
 import type { ReorderInput } from './ordering'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import {
-  readRecord,
+  parseRecord,
   parseValue,
   nonemptyText,
   positiveInteger,
@@ -105,7 +105,7 @@ export interface ShowcaseApi {
 
 /** Parse the selected reader's exact query and keep reference labels out of execution parameters. */
 export function parseShowcaseQuery(input: unknown): ShowcaseQuery {
-  const { kind: kindInput, ...body } = readRecord(input)
+  const { kind: kindInput, ...body } = parseRecord(input)
   const kind = parseValue(v.picklist(['entry', 'collection', 'tag']), kindInput)
   if (kind === 'collection') {
     return { kind, ...parseCollectionQuery(body) }

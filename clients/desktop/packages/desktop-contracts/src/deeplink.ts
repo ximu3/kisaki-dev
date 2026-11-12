@@ -11,7 +11,7 @@ import type { WorkType, EntryType, ExternalIdentity } from './library/catalog'
 import type { IdentificationClues } from './metadata/fields'
 import type { ExecutionContext, Registration } from './operations'
 import * as v from 'valibot'
-import { parseExternalValue, readRecord, parseValue, omitFields, id, text } from './validation'
+import { parseExternalValue, parseRecord, parseValue, omitFields, id, text } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from './errors'
 import { parseNativeViewTarget, parseEntryIdentifier, entrySelectionEntries } from './ui/navigation'
@@ -134,7 +134,7 @@ function parsePublicView(input: unknown): PublicViewTarget {
 }
 
 function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
-  const record = readRecord(input)
+  const record = parseRecord(input)
   const workType = parseValue(v.picklist(workTypes), record.workType)
   return parseValue(
     openTargetSchema(workType, {
@@ -147,7 +147,7 @@ function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
 }
 
 function parseAddInput(input: unknown): DeeplinkAddInput {
-  const record = readRecord(input)
+  const record = parseRecord(input)
   const entryType = parseValue(v.picklist(entryTypes), record.entryType)
   const result = parseValue(
     v.strictObject({

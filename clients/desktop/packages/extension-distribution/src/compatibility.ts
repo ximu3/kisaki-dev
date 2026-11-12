@@ -2,7 +2,7 @@
 
 import { compare, parse, prerelease, satisfies, validRange } from 'semver'
 import type { FieldPath } from './errors'
-import { array, invalid, optional, string } from './validation'
+import { parseArray, rejectFormat, parseOptionalField, parseString } from './validation'
 
 /** Supported host OS and process-architecture pairs; order does not express preference. */
 export const extensionTargets = Object.freeze([
@@ -42,15 +42,15 @@ export interface CompatibilityIssue {
 
 /** Parse a full SemVer spelling, retaining build metadata without assigning it precedence. */
 export function parseVersion(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   const version = parse(value)
   if (version === null) {
-    invalid(path, 'Expected a SemVer version')
+    rejectFormat(path, 'Expected a SemVer version')
   }
 
   const build = version.build.length ? `+${version.build.join('.')}` : ''
   if (`${version.version}${build}` !== value) {
-    invalid(path, 'Expected a canonical SemVer version')
+    rejectFormat(path, 'Expected a canonical SemVer version')
   }
 
   return value
@@ -58,9 +58,9 @@ export function parseVersion(input: unknown, path: FieldPath = []): string {
 
 /** Validate a Node SemVer range and preserve its authored spelling for artifact comparisons. */
 export function parseVersionRange(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (validRange(value) === null) {
-    invalid(path, 'Expected a SemVer range')
+    rejectFormat(path, 'Expected a SemVer range')
   }
 
   return value
@@ -68,9 +68,9 @@ export function parseVersionRange(input: unknown, path: FieldPath = []): string 
 
 /** Validate one supported target; unknown host pairs are not coerced into supported targets. */
 export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarget {
-  const target = string(input, path)
+  const target = parseString(input, path)
   if (!extensionTargets.some((known) => known === target)) {
-    invalid(path, 'Unsupported extension target')
+    rejectFormat(path, 'Unsupported extension target')
   }
 
   return target as ExtensionTarget
@@ -78,9 +78,9 @@ export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarg
 
 /** Require at least one unique target and sort a new array to make order immaterial. */
 export function normalizeTargets(input: unknown, path: FieldPath = []): ExtensionTarget[] {
-  const targets = array(input, path, parseTarget)
+  const targets = parseArray(input, path, parseTarget)
   if (!targets.length || new Set(targets).size !== targets.length) {
-    invalid(path, 'Expected nonempty unique extension targets')
+    rejectFormat(path, 'Expected nonempty unique extension targets')
   }
 
   return targets.sort()
@@ -108,8 +108,8 @@ export function parseCompatibility(
   return {
     targets: normalizeTargets(value.targets, [...path, 'targets']),
     apiVersionRange: parseVersionRange(value.apiVersionRange, [...path, 'apiVersionRange']),
-    ...optional(value, 'nodeVersionRange', path, parseVersionRange),
-    ...optional(value, 'electronVersionRange', path, parseVersionRange),
+    ...parseOptionalField(value, 'nodeVersionRange', path, parseVersionRange),
+    ...parseOptionalField(value, 'electronVersionRange', path, parseVersionRange),
   }
 }
 

@@ -2,8 +2,14 @@
 
 import { IntlMessageFormat } from 'intl-messageformat'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { parseUiLocale, parseUiTranslationRegistration } from '@kisaki3/desktop-contracts/i18n'
-import type { MessageCatalog, UiTranslationRegistration } from '@kisaki3/desktop-contracts/i18n'
+import {
+  parseUiLocale,
+  parseExtensionUiTranslationDefinition,
+} from '@kisaki3/desktop-contracts/i18n'
+import type {
+  MessageCatalog,
+  ExtensionUiTranslationDefinition,
+} from '@kisaki3/desktop-contracts/i18n'
 import { englishMessages } from './en/index'
 import type { Translate, TranslationCall } from './contracts.generated'
 import {
@@ -17,8 +23,10 @@ import {
 const { messages: source, contracts } = indexMessageSource(englishMessages)
 
 /** Validate registration shape and known message compatibility as one atomic unit. */
-export function validateUiTranslation(input: unknown): UiTranslationRegistration {
-  const value = parseUiTranslationRegistration(input)
+export function validateExtensionUiTranslationDefinition(
+  input: unknown,
+): ExtensionUiTranslationDefinition {
+  const value = parseExtensionUiTranslationDefinition(input)
   checkMessageCompatibility(flattenParsedCatalog(value.messages), contracts)
   return value
 }

@@ -1,7 +1,7 @@
 /** @fileoverview Defines generic message catalogs, translation registration and effective-language observation. */
 
 import type { CallOptions, Registration, Disposable, Listener } from './operations'
-import { readRecord, parseExternalValue, parseValue, id, nonemptyText } from './validation'
+import { parseRecord, parseExternalValue, parseValue, id, nonemptyText } from './validation'
 import { DesktopError } from './errors'
 import { normalizeLocale, parseId } from '@kisaki3/extension-distribution/metadata'
 import * as v from 'valibot'
@@ -19,7 +19,7 @@ export type UiTranslationRef =
   | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
 
 /** An extension-local ID is bound to the actual registering owner by the host, never supplied as an extension identity here. */
-export interface UiTranslationRegistration {
+export interface ExtensionUiTranslationDefinition {
   readonly id: string
   readonly locale: UiLocale
   readonly name: string
@@ -41,7 +41,7 @@ export interface UiTranslationsApi {
    * supplied catalog for this extension instance; failure preserves existing translations.
    */
   register(
-    input: UiTranslationRegistration,
+    input: ExtensionUiTranslationDefinition,
     call?: CallOptions,
   ): Promise<Registration<UiTranslationRef & { readonly type: 'extension' }>>
 
@@ -76,8 +76,8 @@ export interface I18nApi {
 export function parseMessageCatalog(input: unknown): MessageCatalog {
   const ancestors = new Set<object>()
 
-  function group(value: unknown): MessageCatalog {
-    const record = readRecord(value)
+  function parseMessageGroup(value: unknown): MessageCatalog {
+    const record = parseRecord(value)
     if (ancestors.has(record)) {
       throw new DesktopError('InvalidInput', 'Message catalogs cannot contain cycles')
     }
@@ -92,14 +92,14 @@ export function parseMessageCatalog(input: unknown): MessageCatalog {
         throw new DesktopError('InvalidInput', 'Message catalogs require data properties')
       }
       const child: unknown = property.value
-      return [key, typeof child === 'string' ? child : group(child)]
+      return [key, typeof child === 'string' ? child : parseMessageGroup(child)]
     })
 
     ancestors.delete(record)
     return Object.fromEntries(entries)
   }
 
-  return group(input)
+  return parseMessageGroup(input)
 }
 
 /** Parse the shared canonical locale syntax and strip Unicode extension options through the same distribution rule. */
@@ -127,7 +127,9 @@ export function parseUiTranslationRef(input: unknown): UiTranslationRef {
 }
 
 /** Parse registration values; the host additionally checks message compatibility against its localization baseline. */
-export function parseUiTranslationRegistration(input: unknown): UiTranslationRegistration {
+export function parseExtensionUiTranslationDefinition(
+  input: unknown,
+): ExtensionUiTranslationDefinition {
   return parseValue(
     v.strictObject({
       id,

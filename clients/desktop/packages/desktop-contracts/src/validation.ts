@@ -89,7 +89,7 @@ export function omitFields<T extends object, K extends keyof T & string>(
 }
 
 /** Preserve every own data key for strict downstream checks, including names sanitized by loose-object validators. */
-export function readRecord(input: unknown): Record<string, unknown> {
+export function parseRecord(input: unknown): Record<string, unknown> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     throw new DesktopError('InvalidInput', 'Expected an ordinary data object')
   }
@@ -108,7 +108,7 @@ export function parseDictionary<T extends v.GenericSchema>(
   values: T,
   input: unknown,
 ): Record<string, v.InferOutput<T>> {
-  const entries = Object.entries(readRecord(input)).map(
+  const entries = Object.entries(parseRecord(input)).map(
     ([key, value]) => [parseValue(keys, key), parseValue(values, value)] as const,
   )
   if (new Set(entries.map(([key]) => key)).size !== entries.length) {

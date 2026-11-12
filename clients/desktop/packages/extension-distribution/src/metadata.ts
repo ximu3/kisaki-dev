@@ -3,7 +3,13 @@
 import { match } from '@formatjs/intl-localematcher'
 import { DistributionError } from './errors'
 import type { FieldPath } from './errors'
-import { array, invalid, optional, record, string } from './validation'
+import {
+  parseArray,
+  rejectFormat,
+  parseOptionalField,
+  parseRecord,
+  parseString,
+} from './validation'
 
 /** Literal text or translations keyed by canonical Unicode locale identifiers. */
 export type LocalizedText = string | Readonly<Record<string, string>>
@@ -22,10 +28,10 @@ export type ExtensionCategory = (typeof extensionCategories)[number]
 
 /** Validate a newly authored category. Existing manifests and registry listings use tolerant string reads. */
 export function parseCategory(input: unknown, path: FieldPath = []): ExtensionCategory {
-  const value = string(input, path)
+  const value = parseString(input, path)
   const category = extensionCategories.find((known) => known === value)
   if (category === undefined) {
-    invalid(path, 'Unknown category for a new declaration')
+    rejectFormat(path, 'Unknown category for a new declaration')
   }
 
   return category
@@ -54,9 +60,9 @@ export interface ExtensionMetadata {
 
 /** Validate a complete opaque ID; dots delimit syntax only, never ownership or permissions. */
 export function parseId(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z](?:[a-z0-9-]*[a-z0-9])?)*$/.test(value)) {
-    invalid(path, 'Invalid extension or registry ID')
+    rejectFormat(path, 'Invalid extension or registry ID')
   }
 
   return value
@@ -64,7 +70,7 @@ export function parseId(input: unknown, path: FieldPath = []): string {
 
 /** Canonicalize a locale using the host Intl implementation; invalid tags are format errors. */
 export function normalizeLocale(input: unknown, path: FieldPath = []): string {
-  const locale = string(input, path)
+  const locale = parseString(input, path)
   try {
     return Intl.getCanonicalLocales(locale)[0]!
   } catch (cause) {
@@ -80,21 +86,21 @@ export function normalizeLocalizedText(
 ): LocalizedText {
   const fallback = normalizeLocale(defaultLocale)
   if (typeof input === 'string') {
-    return string(input, path, false)
+    return parseString(input, path, false)
   }
 
-  const source = record(input, path)
+  const source = parseRecord(input, path)
   const entries = new Map<string, string>()
   for (const [key, value] of Object.entries(source)) {
     const locale = normalizeLocale(key, [...path, key])
     if (entries.has(locale)) {
-      invalid([...path, key], 'Duplicate normalized locale')
+      rejectFormat([...path, key], 'Duplicate normalized locale')
     }
-    entries.set(locale, string(value, [...path, key], false))
+    entries.set(locale, parseString(value, [...path, key], false))
   }
 
   if (!entries.has(fallback)) {
-    invalid(path, 'Localized text must contain its default locale')
+    rejectFormat(path, 'Localized text must contain its default locale')
   }
 
   return Object.fromEntries(entries)
@@ -132,9 +138,9 @@ export function resolveLocalizedText(
 
 /** Validate a URL reference without resolving or rewriting its signed spelling. */
 export function parseUrlReference(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (!URL.canParse(value, 'https://registry.invalid/index.json')) {
-    invalid(path, 'Invalid URL reference')
+    rejectFormat(path, 'Invalid URL reference')
   }
 
   return value
@@ -145,7 +151,7 @@ export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   const value = parseUrlReference(input, path)
   // Scheme policy belongs to the actual network/open operation.
   if (!URL.canParse(value)) {
-    invalid(path, 'Expected an absolute URL')
+    rejectFormat(path, 'Expected an absolute URL')
   }
 
   return value
@@ -156,25 +162,25 @@ export function parseMetadata(value: Record<string, unknown>, path: FieldPath): 
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
   const localized = (input: unknown, location: FieldPath) =>
     normalizeLocalizedText(input, defaultLocale, location)
-  const strings = (input: unknown, location: FieldPath) => array(input, location, string)
+  const strings = (input: unknown, location: FieldPath) => parseArray(input, location, parseString)
 
   return {
     defaultLocale,
     name: localized(value.name, [...path, 'name']),
-    ...optional(value, 'description', path, localized),
+    ...parseOptionalField(value, 'description', path, localized),
 
-    ...optional(value, 'categories', path, strings),
-    ...optional(value, 'keywords', path, strings),
+    ...parseOptionalField(value, 'categories', path, strings),
+    ...parseOptionalField(value, 'keywords', path, strings),
 
-    ...optional(value, 'author', path, (input, location): ExtensionAuthor => {
-      const author = record(input, location)
+    ...parseOptionalField(value, 'author', path, (input, location): ExtensionAuthor => {
+      const author = parseRecord(input, location)
       return {
-        name: string(author.name, [...location, 'name']),
-        ...optional(author, 'url', location, parseAbsoluteUrl),
+        name: parseString(author.name, [...location, 'name']),
+        ...parseOptionalField(author, 'url', location, parseAbsoluteUrl),
       }
     }),
-    ...optional(value, 'homepage', path, parseAbsoluteUrl),
-    ...optional(value, 'repository', path, parseAbsoluteUrl),
-    ...optional(value, 'issues', path, parseAbsoluteUrl),
+    ...parseOptionalField(value, 'homepage', path, parseAbsoluteUrl),
+    ...parseOptionalField(value, 'repository', path, parseAbsoluteUrl),
+    ...parseOptionalField(value, 'issues', path, parseAbsoluteUrl),
   }
 }

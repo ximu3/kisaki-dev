@@ -172,7 +172,7 @@ register 的局部 id 由宿主绑定为 extensionId:localId，name 和可选 de
 search 提供独立的候选浏览。resolve 使用 { entryType, clues, preferredLanguages? } 在一个来源内定位，并单独接收 context。clues 包含当前类型适用的识别字段和 externalIdentities，WorkClues 是其中的作品分支。resolve 可以直接查询、内部搜索或使用真实映射，不要求先调用公开 search，也不要求实现者同时提供浏览搜索。
 
 ```ts
-type ResolveResult =
+type MetadataResolveResult =
   | { type: 'resolved'; record: SourceEntry }
   | { type: 'candidates'; records: SourceEntry[] }
   | { type: 'notFound' }

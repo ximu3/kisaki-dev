@@ -18,7 +18,7 @@ import {
   parseExternalValue,
   integer,
   parseValue,
-  readRecord,
+  parseRecord,
   nonemptyText,
   optionalFields,
   validateExpectedKeys,
@@ -73,7 +73,8 @@ export interface Theme {
   readonly dark: AppearanceTokens
 }
 
-export interface ThemeDefinition {
+/** Complete branches registered by one extension; private font paths use that extension's resources. */
+export interface ExtensionThemeDefinition {
   readonly name: LocalizedText
   readonly light: AppearanceTokens
   readonly dark: AppearanceTokens
@@ -121,14 +122,14 @@ export interface ThemeRead {
 }
 
 /** Definition replacement is complete and atomic; registration removal does not revoke already held reads. */
-export interface ThemeRegistration {
+export interface ExtensionThemeRegistration {
   readonly ref: Extract<ThemeRef, { readonly type: 'extension' }>
 
   /**
    * Validate and replace the complete definition atomically, preserving this registration's
    * identity and old value on failure.
    */
-  update(input: ThemeDefinition, call?: CallOptions): Promise<void>
+  update(input: ExtensionThemeDefinition, call?: CallOptions): Promise<void>
 
   /**
    * Remove only this registration; already acquired reads keep their holds, and a later
@@ -255,9 +256,9 @@ export interface ThemesApi {
    */
   register(
     ref: Extract<ThemeRef, { readonly type: 'extension' }>,
-    input: ThemeDefinition,
+    input: ExtensionThemeDefinition,
     call?: CallOptions,
-  ): Promise<ThemeRegistration>
+  ): Promise<ExtensionThemeRegistration>
 
   /**
    * Subscribe before reading the theme directory; notifications request a new snapshot without
@@ -349,7 +350,7 @@ function parseTokens(
   partial: boolean,
   user: boolean,
 ): AppearanceTokens | Partial<AppearanceTokens> {
-  const source = readRecord(input)
+  const source = parseRecord(input)
   const keys = Object.keys(source)
   if (
     (!partial && keys.length !== Object.keys(tokens).length) ||
@@ -435,7 +436,10 @@ export function parseUserThemeUpdate(input: unknown): UserThemeUpdate {
 }
 
 /** Normalize static names using the owning manifest's declared default locale, never the current UI language. */
-export function parseThemeDefinition(input: unknown, defaultLocale: string): ThemeDefinition {
+export function parseExtensionThemeDefinition(
+  input: unknown,
+  defaultLocale: string,
+): ExtensionThemeDefinition {
   return parseValue(
     v.strictObject({
       name: v.pipe(

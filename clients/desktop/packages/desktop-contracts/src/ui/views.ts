@@ -8,7 +8,7 @@ import { parseExternalValue, parseValue } from '../validation'
 import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 
 /** root is a controlled package directory ('.' means package root); entry is relative to root and must serve actual HTML. */
-export interface ViewDocument {
+export interface ExtensionViewDocument {
   readonly root: string
   readonly entry: string
 }
@@ -109,27 +109,28 @@ export interface ViewContext {
   onDispose(cleanup: () => void | Promise<void>): Disposable
 }
 
-export interface ViewDefinition<
+/** A package-owned document and initialization belong to each actual view created for this extension. */
+export interface ExtensionViewDefinition<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
 > {
   readonly title: LocalizedText
-  readonly document: ViewDocument
+  readonly document: ExtensionViewDocument
 
   /** Run once per newly created actual view; the frontend is connected only after successful setup. */
   readonly setup?: (view: HostView<M, N>) => void | Promise<void>
 }
 
-export interface DialogsApi {
+export interface ExtensionDialogsApi {
   /** Each call creates an independent view and resolves when interactive, not when the user closes or submits. */
   open<M extends ViewMethodsConstraint<M> = ViewMethods, N extends object = ViewNotifications>(
-    input: ViewDefinition<M, N>,
+    input: ExtensionViewDefinition<M, N>,
     call?: CallOptions,
   ): Promise<HostView<M, N>>
 }
 
 /** Validate a package document; actual containment, symlinks, bytes and MIME are checked by the host. */
-export function parseViewDocument(input: unknown): ViewDocument {
+export function parseExtensionViewDocument(input: unknown): ExtensionViewDocument {
   const path = v.pipe(
     v.unknown(),
     v.transform((value) =>

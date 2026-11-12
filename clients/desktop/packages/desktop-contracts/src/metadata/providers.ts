@@ -63,7 +63,7 @@ export type MetadataResolveInput<T extends EntryType = EntryType> = {
 }[T]
 
 /** candidates is the complete usable candidate range for this resolve, not one truncated search page. */
-export type ResolveResult<T extends EntryType = EntryType> =
+export type MetadataResolveResult<T extends EntryType = EntryType> =
   | { readonly type: 'resolved'; readonly record: SourceEntry<T> }
   | { readonly type: 'candidates'; readonly records: readonly SourceEntry<T>[] }
   | { readonly type: 'notFound' }
@@ -173,7 +173,10 @@ export interface MetadataProvider<T extends EntryType = EntryType> {
    * Return a resolved identity or the complete candidate range with source matching evidence;
    * distinguish no match from insufficient input.
    */
-  resolve?(input: MetadataResolveInput<T>, context: ExecutionContext): Promise<ResolveResult<T>>
+  resolve?(
+    input: MetadataResolveInput<T>,
+    context: ExecutionContext,
+  ): Promise<MetadataResolveResult<T>>
 
   /**
    * Fix source context and relation scopes before returning an owned read session; failed setup
@@ -458,7 +461,10 @@ export function parseMetadataSearchResult<T extends EntryType>(
 }
 
 /** Resolve has four ordinary outcomes and no page cursor, inferred confidence score or completeness flag. */
-export function parseResolveResult<T extends EntryType>(root: T, input: unknown): ResolveResult<T> {
+export function parseMetadataResolveResult<T extends EntryType>(
+  root: T,
+  input: unknown,
+): MetadataResolveResult<T> {
   const entry = v.pipe(v.unknown(), v.transform(parseSourceEntry))
   const value = parseValue(
     v.variant('type', [
@@ -481,7 +487,7 @@ export function parseResolveResult<T extends EntryType>(root: T, input: unknown)
     throw new DesktopError('InvalidInput', 'Resolve returned an incompatible root type')
   }
 
-  return value as ResolveResult<T>
+  return value as MetadataResolveResult<T>
 }
 
 /** Image pages retain original/preview policies and do not claim a local total or completed archive of the remote source. */

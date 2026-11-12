@@ -1,9 +1,9 @@
 /** @fileoverview Defines stable page identities and owner-bound page registration and opening. */
 
 import type { CallOptions, Registration } from '../operations'
-import type { UiIcon } from './icons'
+import type { ExtensionUiIcon } from './icons'
 import type {
-  ViewDefinition,
+  ExtensionViewDefinition,
   HostView,
   ViewMethods,
   ViewNotifications,
@@ -18,21 +18,22 @@ export type PageRef =
   | { readonly type: 'native'; readonly id: string }
   | { readonly type: 'extension'; readonly extensionId: string; readonly pageId: string }
 
-export interface PageDefinition<
+/** A page contribution has one stable local ID within its registering extension. */
+export interface ExtensionPageDefinition<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
-> extends ViewDefinition<M, N> {
+> extends ExtensionViewDefinition<M, N> {
   readonly id: string
-  readonly icon: UiIcon
+  readonly icon: ExtensionUiIcon
 }
 
-export interface PagesApi {
+export interface ExtensionPagesApi {
   /**
    * Register a stable page identity for the actual extension owner without opening it; the
    * returned handle controls future availability.
    */
   register<M extends ViewMethodsConstraint<M> = ViewMethods, N extends object = ViewNotifications>(
-    input: PageDefinition<M, N>,
+    input: ExtensionPageDefinition<M, N>,
     call?: CallOptions,
   ): Promise<Registration<PageRef & { readonly type: 'extension' }>>
 

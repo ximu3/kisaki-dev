@@ -2,13 +2,13 @@
 
 import type { ExecutionFailure } from '../errors'
 import type { EntryType } from '../library/catalog'
-import type { IngestAddInput, AddResult } from './add'
+import type { IngestAddInput, IngestAddResult } from './add'
 import type { CallOptions, ExecutionContext } from '../operations'
 import type {
   IngestUpdateType,
   IngestUpdateRef,
   IngestUpdateInput,
-  UpdateResult,
+  IngestUpdateResult,
   IngestUpdateItem,
 } from './update'
 import * as v from 'valibot'
@@ -30,7 +30,10 @@ export interface IngestApi {
    * Complete identity resolution, source acquisition, preparation and creation for one input;
    * alreadyExists does not adopt initial personal values.
    */
-  add<T extends EntryType>(input: IngestAddInput<T>, call?: CallOptions): Promise<AddResult<T>>
+  add<T extends EntryType>(
+    input: IngestAddInput<T>,
+    call?: CallOptions,
+  ): Promise<IngestAddResult<T>>
 
   /**
    * Run complete additions with per-item commits and indexed outcomes; ordinary item failure
@@ -39,7 +42,7 @@ export interface IngestApi {
   addMany(
     inputs: readonly IngestAddInput[],
     call?: CallOptions,
-  ): Promise<IngestBatchResult<AddResult>>
+  ): Promise<IngestBatchResult<IngestAddResult>>
 
   /**
    * Fix the existing target and authorized fields before acquisition and adoption; source
@@ -53,7 +56,7 @@ export interface IngestApi {
         call?: CallOptions,
       ]
     }[IngestUpdateType]
-  ): Promise<UpdateResult>
+  ): Promise<IngestUpdateResult>
 
   /**
    * Run the fixed update inputs with per-item commits and indexed outcomes, preserving completed
@@ -62,7 +65,7 @@ export interface IngestApi {
   updateMany(
     inputs: readonly IngestUpdateItem[],
     call?: CallOptions,
-  ): Promise<IngestBatchResult<UpdateResult>>
+  ): Promise<IngestBatchResult<IngestUpdateResult>>
 }
 
 /** Native scanner/batch collaboration reuses the same complete business work inside an already admitted execution, without nested tasks. */
@@ -71,13 +74,13 @@ export interface IngestExecutor {
    * Execute the same complete addition inside the caller's accepted execution context without
    * creating a nested task.
    */
-  add(input: IngestAddInput, context: ExecutionContext): Promise<AddResult>
+  add(input: IngestAddInput, context: ExecutionContext): Promise<IngestAddResult>
 
   /**
    * Execute the same fixed-target update inside the caller's accepted execution context without
    * exposing intermediate write stages.
    */
-  update(input: IngestUpdateItem, context: ExecutionContext): Promise<UpdateResult>
+  update(input: IngestUpdateItem, context: ExecutionContext): Promise<IngestUpdateResult>
 }
 
 /** Validate complete or partial batch reporting without manufacturing failed items for work that did not start. */

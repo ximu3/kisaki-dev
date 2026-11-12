@@ -24,7 +24,7 @@ import {
   nonnegativeNumber,
   rating,
   id,
-  readRecord,
+  parseRecord,
   parseValue,
   unique,
 } from '../../validation'
@@ -582,7 +582,7 @@ const conditionSchemas: Readonly<
 
 /** Parse one predicate, normalizing duplicate selections while rejecting unknown fields, operations and qualifiers. */
 export function parseEntryCondition(input: unknown): EntryCondition {
-  const { field: fieldInput, ...body } = readRecord(input)
+  const { field: fieldInput, ...body } = parseRecord(input)
   const field = parseValue(nonemptyText, fieldInput, 'Invalid entry condition')
   if (!Object.hasOwn(conditionSchemas, field)) {
     throw new DesktopError('InvalidInput', 'Unknown entry condition field')

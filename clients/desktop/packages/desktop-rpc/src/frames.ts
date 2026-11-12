@@ -33,18 +33,18 @@ export type RpcFrame =
   | { readonly type: 'notify'; readonly topic: string; readonly value: JsonValue }
   | { readonly type: 'cancel'; readonly id: number }
 
-function record(value: JsonValue | undefined): value is { readonly [key: string]: JsonValue } {
+function isRecord(value: JsonValue | undefined): value is { readonly [key: string]: JsonValue } {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function exact(value: object, ...fields: string[]): boolean {
+function hasExactFields(value: object, ...fields: string[]): boolean {
   return (
     Object.keys(value).length === fields.length &&
     fields.every((field) => Object.hasOwn(value, field))
   )
 }
 
-function positiveInteger(value: JsonValue | undefined): boolean {
+function isPositiveInteger(value: JsonValue | undefined): boolean {
   return typeof value === 'number' && Number.isSafeInteger(value) && value > 0
 }
 
@@ -53,8 +53,8 @@ export function isErrorSummary(
   value: JsonValue | undefined,
 ): value is { code: string; message: string } {
   return (
-    record(value) &&
-    exact(value, 'code', 'message') &&
+    isRecord(value) &&
+    hasExactFields(value, 'code', 'message') &&
     typeof value.code === 'string' &&
     value.code.length > 0 &&
     typeof value.message === 'string' &&
@@ -63,7 +63,7 @@ export function isErrorSummary(
 }
 
 function isFrame(value: JsonValue): value is RpcFrame {
-  if (!record(value) || typeof value.type !== 'string') {
+  if (!isRecord(value) || typeof value.type !== 'string') {
     return false
   }
 
@@ -71,36 +71,36 @@ function isFrame(value: JsonValue): value is RpcFrame {
     case 'hello': {
       const protocol = value.protocol
       return (
-        exact(value, 'type', 'wireVersion', 'protocol', 'context') &&
+        hasExactFields(value, 'type', 'wireVersion', 'protocol', 'context') &&
         value.wireVersion === rpcWireVersion &&
-        record(protocol) &&
-        exact(protocol, 'id', 'version') &&
+        isRecord(protocol) &&
+        hasExactFields(protocol, 'id', 'version') &&
         typeof protocol.id === 'string' &&
-        positiveInteger(protocol.version)
+        isPositiveInteger(protocol.version)
       )
     }
     case 'accepted':
-      return exact(value, 'type', 'context')
+      return hasExactFields(value, 'type', 'context')
     case 'rejected':
-      return exact(value, 'type', 'error') && isErrorSummary(value.error)
+      return hasExactFields(value, 'type', 'error') && isErrorSummary(value.error)
     case 'request':
       return (
-        exact(value, 'type', 'id', 'method', 'args') &&
-        positiveInteger(value.id) &&
+        hasExactFields(value, 'type', 'id', 'method', 'args') &&
+        isPositiveInteger(value.id) &&
         typeof value.method === 'string' &&
         Array.isArray(value.args)
       )
     case 'success':
       return (
-        positiveInteger(value.id) &&
-        (exact(value, 'type', 'id') || exact(value, 'type', 'id', 'value'))
+        isPositiveInteger(value.id) &&
+        (hasExactFields(value, 'type', 'id') || hasExactFields(value, 'type', 'id', 'value'))
       )
     case 'failure':
-      return exact(value, 'type', 'id', 'error') && positiveInteger(value.id)
+      return hasExactFields(value, 'type', 'id', 'error') && isPositiveInteger(value.id)
     case 'notify':
-      return exact(value, 'type', 'topic', 'value') && typeof value.topic === 'string'
+      return hasExactFields(value, 'type', 'topic', 'value') && typeof value.topic === 'string'
     case 'cancel':
-      return exact(value, 'type', 'id') && positiveInteger(value.id)
+      return hasExactFields(value, 'type', 'id') && isPositiveInteger(value.id)
     default:
       return false
   }

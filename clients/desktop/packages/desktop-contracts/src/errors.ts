@@ -91,7 +91,7 @@ export class DesktopError<Result = never> extends Error implements ExecutionFail
 
 /** Read an exact safe error summary; unknown codes are preserved rather than reclassified. */
 export function parseErrorSummary(input: unknown): ErrorSummary {
-  const value = errorRecord(input, ['code', 'message'])
+  const value = parseErrorRecord(input, ['code', 'message'])
   return { code: value.code, message: value.message }
 }
 
@@ -103,7 +103,7 @@ export function parseExecutionFailure<Result>(
   input: unknown,
   parseResult: (input: unknown) => Result,
 ): ExecutionFailure<Result> {
-  const value = errorRecord(input, ['code', 'message', 'partialResult'])
+  const value = parseErrorRecord(input, ['code', 'message', 'partialResult'])
   if (Object.hasOwn(value, 'partialResult')) {
     return {
       code: value.code,
@@ -115,7 +115,7 @@ export function parseExecutionFailure<Result>(
   return { code: value.code, message: value.message }
 }
 
-function errorRecord(
+function parseErrorRecord(
   input: unknown,
   keys: readonly string[],
 ): ErrorSummary & Record<string, unknown> {

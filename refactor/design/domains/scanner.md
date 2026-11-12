@@ -143,11 +143,11 @@ ScanResult 只由 scanner 定义，包含 discovery 和 candidates。discovery �
 
 discovery.issues 使用 { path, error: ErrorSummary }，记录无法读取的目录或输入。被过滤的路径不生成候选，排除规则保存在配置快照中。
 
-candidates 按稳定路径顺序保存已处理项。每项包含 path、clues，以及 result: AddResult 或 error: ExecutionFailure<AddResult>；clues 尚未取得时为 null。取得 AddResult 后，localContent 按下表表达本地内容的登记结果，与作品新增或已存在的结果分别呈现。
+candidates 按稳定路径顺序保存已处理项。每项包含 path、clues，以及 result: IngestAddResult 或 error: ExecutionFailure<IngestAddResult>；clues 尚未取得时为 null。取得 IngestAddResult 后，localContent 按下表表达本地内容的登记结果，与作品新增或已存在的结果分别呈现。
 
 | localContent.status | 含义与载荷                                                                                      |
 | ------------------- | ----------------------------------------------------------------------------------------------- |
-| included            | 新作品的明确本地登记已随新增提交；首次识别问题仍在 AddResult.issues 中                          |
+| included            | 新作品的明确本地登记已随新增提交；首次识别问题仍在 IngestAddResult.issues 中                          |
 | skipped             | 已有作品且本次选项关闭，没有追加本地内容                                                        |
 | registered          | 已有作品的登记调用完成；result 为 LocalContentRegistrationResult，可包含已存在登记              |
 | failed              | 已有作品的登记失败；error 为 ExecutionFailure<LocalContentRegistrationResult>，保留合法部分结果 |

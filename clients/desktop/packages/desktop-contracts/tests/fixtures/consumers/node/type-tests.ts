@@ -3,7 +3,7 @@
 import type { PartialDate } from '@kisaki3/desktop-contracts/date'
 import type {
   LibraryApi,
-  EntryCreateInput,
+  EntryCreate,
   ShowcaseApi,
   ShowcaseFields,
   ShowcaseSection,
@@ -113,7 +113,7 @@ export function checkContracts(
   // @ts-expect-error: A partial date must retain at least one real component.
   const emptyDate: PartialDate = {}
 
-  const person: EntryCreateInput<'person'> = {
+  const person: EntryCreate<'person'> = {
     type: 'person',
     name: 'Person',
     // @ts-expect-error: A person has no work record.

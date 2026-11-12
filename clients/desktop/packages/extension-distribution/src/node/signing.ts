@@ -14,7 +14,7 @@ import { DistributionError } from '../errors'
 import { parseId } from '../metadata'
 import type { FileReference, SignedRegistry } from '../registry'
 import { normalizeRegistry, parsePublicKey, parseSignature } from '../registry'
-import { parseJson, record } from '../validation'
+import { parseJson, parseRecord } from '../validation'
 
 /** Domain separation for registry signatures; the final character is exactly one LF. */
 export const registrySignaturePrefix = 'kisaki-extension-registry:v1\n'
@@ -95,7 +95,7 @@ function signingBytes(body: Record<string, unknown>): Buffer {
 
 /** Return the canonical, domain-separated bytes of valid original JSON without normalizing its fields. */
 export function registrySigningPayload(text: string): Uint8Array {
-  const body = unsignedBody(record(parseJson(text), []))
+  const body = unsignedBody(parseRecord(parseJson(text), []))
   normalizeRegistry(body)
 
   return signingBytes(body)
@@ -106,7 +106,7 @@ export function registrySigningPayload(text: string): Uint8Array {
  * The private key must match the declared public key. Returns complete JSON; performs no I/O or publishing.
  */
 export function signRegistry(text: string, inputKey: string | KeyObject): string {
-  const body = unsignedBody(record(parseJson(text), []))
+  const body = unsignedBody(parseRecord(parseJson(text), []))
   const registry = normalizeRegistry(body)
 
   const key = privateKey(inputKey)
@@ -128,7 +128,7 @@ export function signRegistry(text: string, inputKey: string | KeyObject): string
  * Unknown fields and raw relative URLs participate in verification. The returned value is not signing input.
  */
 export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegistry {
-  const document = record(parseJson(text), [])
+  const document = parseRecord(parseJson(text), [])
   if (parseId(document.id, ['id']) !== parseId(trust.id)) {
     throw new DistributionError(
       'identity-mismatch',
@@ -161,7 +161,7 @@ export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegist
  * This does not establish authorship or trust. Refreshes must call verifyRegistry with saved trust instead.
  */
 export function inspectRegistry(text: string): RegistryInspection {
-  const document = record(parseJson(text), [])
+  const document = parseRecord(parseJson(text), [])
   const trust = {
     id: parseId(document.id, ['id']),
     publicKey: parsePublicKey(document.publicKey, ['publicKey']),

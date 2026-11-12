@@ -1,13 +1,6 @@
 /** @fileoverview Defines graph-local node references, create values and canonical reference keys. */
 
-import type {
-  EntryType,
-  EntryRef,
-  PartType,
-  PartRef,
-  EntryCreateInput,
-  PartWorkType,
-} from '../catalog'
+import type { EntryType, EntryRef, PartType, PartRef, EntryCreate, PartWorkType } from '../catalog'
 import type { PartCreateFields } from '../parts'
 import type { TagUpdate } from '../organizers'
 import * as v from 'valibot'
@@ -36,7 +29,7 @@ export type GraphTagChange =
 
 /** Seven ordinary creation branches, additionally named within this request and able to reference a newly created tag. */
 export type GraphEntryCreate = {
-  [K in EntryType]: Omit<EntryCreateInput<K>, 'tags'> & {
+  [K in EntryType]: Omit<EntryCreate<K>, 'tags'> & {
     readonly key: string
     readonly tags?: readonly GraphTagMember[]
   }

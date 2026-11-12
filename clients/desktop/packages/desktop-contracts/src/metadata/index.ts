@@ -116,7 +116,7 @@ export type {
   MetadataSearchInput,
   MetadataSearchResult,
   MetadataResolveInput,
-  ResolveResult,
+  MetadataResolveResult,
   MetadataOpenSessionInput,
   MetadataImageSearchInput,
   MetadataImageSearchResult,
@@ -137,7 +137,7 @@ export {
   parseMetadataOpenSessionInput,
   parseMetadataImageSearchInput,
   parseMetadataSearchResult,
-  parseResolveResult,
+  parseMetadataResolveResult,
   parseMetadataImageSearchResult,
 } from './providers'
 

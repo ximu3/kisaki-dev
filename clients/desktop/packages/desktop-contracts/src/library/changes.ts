@@ -18,7 +18,7 @@ import type {
 import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
 import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
-import { nonemptyText, text, id, unique, readRecord, parseValue, timestamp } from '../validation'
+import { nonemptyText, text, id, unique, parseRecord, parseValue, timestamp } from '../validation'
 import { partWorkType } from './parts'
 import { DesktopError } from '../errors'
 import {
@@ -214,7 +214,7 @@ function assertPartWork(part: PartRef, work: WorkRef): void {
 
 /** A relation fact keeps its real endpoints and role, without exposing arbitrary related objects. */
 export function parseRelationIdentitySnapshot(input: unknown): RelationIdentitySnapshot {
-  const { type: typeInput, id: identityInput, ...originalBody } = readRecord(input)
+  const { type: typeInput, id: identityInput, ...originalBody } = parseRecord(input)
   const type = parseValue(
     v.picklist(['workCharacter', 'personWork', 'organizationWork', 'workRelation']),
     typeInput,

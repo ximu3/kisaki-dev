@@ -1,7 +1,7 @@
 /** @fileoverview Reads strict JSON without duplicate decoded property names or lossy primitive values. */
 
 import { DesktopError } from './errors'
-import { readRecord } from './validation'
+import { parseRecord } from './validation'
 import { visit } from 'jsonc-parser'
 
 /** Plain persisted desktop data. RPC frame values are independently owned by the environment-neutral transport package. */
@@ -78,7 +78,7 @@ export function parseJsonValue(input: unknown): JsonValue {
         pending.push({ type: 'value', input: value[index], target: output, key: index })
       }
     } else {
-      const entries = Object.entries(readRecord(value))
+      const entries = Object.entries(parseRecord(value))
       if (Object.getOwnPropertyNames(value).length !== entries.length) {
         invalid()
       }

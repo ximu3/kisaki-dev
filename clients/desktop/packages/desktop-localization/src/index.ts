@@ -18,4 +18,4 @@ export {
 } from './messages'
 export type { MessageArgumentKind, MessageParameterContract, MessageContracts } from './messages'
 
-export { createTranslator, validateUiTranslation } from './translate'
+export { createTranslator, validateExtensionUiTranslationDefinition } from './translate'

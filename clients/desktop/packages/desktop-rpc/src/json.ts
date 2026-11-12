@@ -18,7 +18,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     throw new RpcError('InvalidInput', 'Expected an ordinary finite JSON value')
   }
 
-  function read(value: unknown): JsonValue {
+  function parseValue(value: unknown): JsonValue {
     if (value === null || typeof value === 'string' || typeof value === 'boolean') {
       return value
     }
@@ -57,7 +57,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     return target
   }
 
-  const root = read(input)
+  const root = parseValue(input)
   while (stack.length > 0) {
     const item = stack[stack.length - 1]!
     if (item.index === item.keys.length) {
@@ -74,7 +74,7 @@ export function parseJsonValue(input: unknown): JsonValue {
 
     // Define even "__proto__" as an own data property without invoking an inherited setter.
     Object.defineProperty(item.target, key, {
-      value: read(property.value),
+      value: parseValue(property.value),
       enumerable: true,
       configurable: true,
       writable: true,

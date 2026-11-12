@@ -266,7 +266,7 @@ export type EntryExpected<T extends EntryType> = Partial<EntryFields<T>> & {
 } & (T extends WorkType ? { readonly record?: Partial<WorkRecord> } : { readonly record?: never })
 
 /** Each branch relates the real entry type to its catalog and personal fields. Name is required at creation. */
-export type EntryCreateInput<T extends EntryType = EntryType> = {
+export type EntryCreate<T extends EntryType = EntryType> = {
   [K in T]: { readonly type: K; readonly name: string } & Partial<Omit<EntryFields<K>, 'name'>> & {
       readonly evaluation?: Partial<Evaluation>
       readonly tags?: readonly EntryTagInput[]
@@ -601,7 +601,7 @@ export function isWorkType(type: EntryType): type is WorkType {
 }
 
 /** Parse seven closed creation branches, rejecting private values on non-work entries and derived fields everywhere. */
-export function parseEntryCreate(input: unknown): EntryCreateInput {
+export function parseEntryCreate(input: unknown): EntryCreate {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(entryTypes) }),
     input,
@@ -609,7 +609,7 @@ export function parseEntryCreate(input: unknown): EntryCreateInput {
   )
 
   // The selected schema and its work-only fields were chosen by the validated discriminator.
-  return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreateInput
+  return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreate
 }
 
 /** Parse an edit and validate every expected field against its actual save unit; empty changes stay a no-op. */

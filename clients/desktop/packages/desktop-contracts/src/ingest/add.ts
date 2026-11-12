@@ -13,7 +13,7 @@ import type { DirectoryDiscoveryDefinition } from '../library/holdings/directori
 import type { MetadataInput } from './metadata'
 import type { IngestIssue } from './issues'
 import type { NonEmptyArray } from '../operations'
-import { parseValue, optionalFields, readRecord, unique } from '../validation'
+import { parseValue, optionalFields, parseRecord, unique } from '../validation'
 import * as v from 'valibot'
 import {
   entryTypes,
@@ -54,7 +54,7 @@ export type IngestAddInput<T extends EntryType = EntryType> = {
   } & (K extends WorkType ? { readonly localContent?: IngestLocalContent<K> } : object)
 }[T]
 
-export type AddResult<T extends EntryType = EntryType> =
+export type IngestAddResult<T extends EntryType = EntryType> =
   | {
       readonly outcome: 'added'
       readonly entry: EntryRef<T>
@@ -87,7 +87,7 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
         throw new DesktopError('InvalidInput', 'Only works can register local content')
       }
 
-      const { type: typeInput, ...fields } = readRecord(value)
+      const { type: typeInput, ...fields } = parseRecord(value)
       const type = parseValue(v.picklist(['directory', 'file']), typeInput)
       return type === 'directory'
         ? { type, ...parseDirectoryCreateFields(entryType, fields) }
@@ -116,7 +116,7 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
 }
 
 /** An existing outcome needs actual nonempty complete identities; same-name suggestions never qualify as alreadyExists. */
-export function parseAddResult(input: unknown): AddResult {
+export function parseIngestAddResult(input: unknown): IngestAddResult {
   const issues = v.array(v.pipe(v.unknown(), v.transform(parseIngestIssue)))
   return parseValue(
     v.variant('outcome', [

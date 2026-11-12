@@ -1,6 +1,6 @@
 /** @fileoverview Owns the versioned development endpoint and immutable build adoption/release values, independently of RPC frames. */
 
-import type { ViewDocument } from './ui/views'
+import type { ExtensionViewDocument } from './ui/views'
 import type { ErrorSummary } from './errors'
 import type { ExtensionActivationResult } from './extensions'
 import type { CallOptions } from './operations'
@@ -12,7 +12,7 @@ import { parseErrorSummary, DesktopError } from './errors'
 import { parseExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
-import { parseViewDocument } from './ui/views'
+import { parseExtensionViewDocument } from './ui/views'
 import { parseApplicationVersion } from './app'
 
 export const developmentProtocolId = 'kisaki.development'
@@ -24,7 +24,7 @@ export interface DevelopmentBuild {
   readonly extensionId: string
   readonly buildId: number
   readonly rootPath: string
-  readonly webviews: readonly { readonly document: ViewDocument; readonly url: string }[]
+  readonly webviews: readonly { readonly document: ExtensionViewDocument; readonly url: string }[]
 }
 
 export interface DevelopmentBuildRef {
@@ -136,7 +136,7 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
       webviews: v.pipe(
         v.array(
           v.strictObject({
-            document: v.pipe(v.unknown(), v.transform(parseViewDocument)),
+            document: v.pipe(v.unknown(), v.transform(parseExtensionViewDocument)),
             url: v.pipe(v.unknown(), v.transform(parseDevelopmentUrl)),
           }),
         ),

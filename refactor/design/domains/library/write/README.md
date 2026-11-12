@@ -99,7 +99,7 @@ note_entry_links 的 order_in_note 与 order_in_entry，以及其他 order_in_*�
 
 ### 条目资料：library.entries
 
-create 接收七种 EntryCreateInput 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](../query/README.md#api)。
+create 接收七种 EntryCreate 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](../query/README.md#api)。
 
 七类具体字段来自[条目字段](../../catalog.md#entry-fields)；类型与私人记录的适用性在输入分支体现；禁止修改派生值；SDK Node 开放。
 

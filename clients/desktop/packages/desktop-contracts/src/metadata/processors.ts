@@ -9,7 +9,7 @@ import type {
 } from './fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { ExecutionContext, CallOptions, Registration } from '../operations'
-import { parseValue, id, unique, readRecord } from '../validation'
+import { parseValue, id, unique, parseRecord } from '../validation'
 import * as v from 'valibot'
 import { entryTypes, partTypes } from '../library/catalog'
 import {
@@ -95,7 +95,7 @@ export interface MetadataFieldProcessorsApi {
   ): Promise<Registration<string>>
 }
 
-function entryContext(input: unknown): ProcessingEntryContext {
+function parseProcessingEntryContext(input: unknown): ProcessingEntryContext {
   const { type } = parseValue(v.looseObject({ type: v.picklist(entryTypes) }), input)
   return parseValue(
     v.strictObject({
@@ -109,7 +109,7 @@ function entryContext(input: unknown): ProcessingEntryContext {
   ) as ProcessingEntryContext
 }
 
-function partContext(input: unknown): ProcessingPartContext {
+function parseProcessingPartContext(input: unknown): ProcessingPartContext {
   const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), input)
   return parseValue(
     v.strictObject({
@@ -124,9 +124,11 @@ function partContext(input: unknown): ProcessingPartContext {
 }
 
 const contextSchema = v.strictObject({
-  entry: v.exactOptional(v.pipe(v.unknown(), v.transform(entryContext))),
-  part: v.exactOptional(v.pipe(v.unknown(), v.transform(partContext))),
-  relatedEntries: v.exactOptional(v.array(v.pipe(v.unknown(), v.transform(entryContext)))),
+  entry: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingEntryContext))),
+  part: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingPartContext))),
+  relatedEntries: v.exactOptional(
+    v.array(v.pipe(v.unknown(), v.transform(parseProcessingEntryContext))),
+  ),
 })
 
 /** Parse a fixed batch with unique keys and field-specific values, retaining useful empty values as ordinary data. */
@@ -167,7 +169,7 @@ export function parseFieldProcessingResult(
   result: unknown,
   completeness: 'complete' | 'partial' = 'complete',
 ): FieldProcessingResult {
-  const source = readRecord(result)
+  const source = parseRecord(result)
   const byKey = new Map(input.items.map((item) => [item.key, item]))
   if (
     Object.keys(source).some((key) => !byKey.has(key)) ||

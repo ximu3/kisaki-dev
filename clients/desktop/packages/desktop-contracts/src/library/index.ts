@@ -35,7 +35,7 @@ export type {
   EntryCollectionChange,
   EntryChanges,
   EntryExpected,
-  EntryCreateInput,
+  EntryCreate,
   EntryUpdate,
   EntryDetails,
   FileWorkType,
